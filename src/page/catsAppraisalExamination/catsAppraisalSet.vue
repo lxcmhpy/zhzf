@@ -870,7 +870,7 @@ import _ from "lodash";
                                             oneTypeId: ""
                                         });
                                 _this.closeLoading();
-                                 _this.errorMsg('保存成功', 'success')
+                                 _this.errorMsg('保存成功', 'success');
                             },
                             error => {
                                  _this.errorMsg(error.toString(), 'error')
@@ -880,7 +880,7 @@ import _ from "lodash";
                     })
 
                 } else {
-                    _this.errorMsg("您有必填字段未填写！", 'error')
+                    _this.errorMsg("信息填写错误！", 'error');
                     _this.closeLoading();
                     return false;
                 }

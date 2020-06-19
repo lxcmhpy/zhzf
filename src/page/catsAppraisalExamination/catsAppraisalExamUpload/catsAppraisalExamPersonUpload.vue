@@ -302,7 +302,7 @@
                         }
                     })
                } else {
-                    _this.errorMsg("您有必填字段未填写！", 'error')
+                    _this.errorMsg("信息填写错误！", 'error');
                     _this.closeLoading();
                     return false;
                 }

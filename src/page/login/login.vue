@@ -259,7 +259,6 @@ export default {
               res => {
                 // 登录成功
                   // 清除定时器
-                //   clearTimeout(_this.timeOutFlag)
 
                   // _this.getCurrentUser();
                   _this.$router.push({
@@ -319,7 +318,6 @@ export default {
         }
       )
     },
-
     //获取当前登录用户的信息
     getCurrentUser(){
       getCurrentUserApi().then(res=>{
@@ -330,8 +328,6 @@ export default {
         console.log(err);
       })
     },
-
-
     blueUsername() {
       this.hasUserError = false;
     },
@@ -395,9 +391,9 @@ export default {
         this.$store.commit('set_systemTitle',res.data[0].name);
         window.document.title = res.data[0].name;
         //设置省份
-        this.$store.commit('setProvince',res.data[2].name);
+        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?rres.data[2].name:'');
         //是否需要签章
-        this.$store.commit('setShowQZBtn', res.data[1].name == '是'? true : false)
+        this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
         //设置系统首页
         // this.$store.commit('setHomePage', res.data[3].name)
       }, err => {
@@ -412,6 +408,9 @@ export default {
   },
   components: {
       VueSimpleVerify
+  },
+  destroyed(){
+       clearTimeout(this.timeOutFlag);
   }
   // created: function () {
   //   this.getCaptcha();
