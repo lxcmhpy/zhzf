@@ -188,10 +188,10 @@ export default {
       };
       _this.getPageList("getDisScorerList", data);
     },
-
     resetLog() {
-      let _this = this;
-      _this.$refs["examPersonFormRef"].resetFields();
+      this.$refs["examPersonFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getPageAllInfo();
     },
     closeDialog() {
       let _this = this;

@@ -20,7 +20,6 @@ const RouterConfig = {
   mode: "hash",
   routes: routers
 };
-let getRouter;
 export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     let loadingType =  to.params.loadingType ? to.params.loadingType : 'loadPart';

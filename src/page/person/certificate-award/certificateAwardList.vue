@@ -61,7 +61,14 @@
         </div>
 
         <div class="tablePart">
-          <el-table :data="tableData" stripe style="width: 100%;height:100%">
+          <el-table
+            :data="tableData"
+            stripe
+            style="width: 100%;height:100%"
+            v-loading="tableLoading"
+            element-loading-spinner="car-loading"
+            element-loading-text="加载中..."
+          >
             <el-table-column prop="personId" label=" " v-if="false"></el-table-column>
             <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
             <el-table-column prop="sex" label="性别" :formatter="sexFormat" align="center"></el-table-column>
@@ -124,16 +131,14 @@ export default {
       totalPage: 0, //总数
       departments: [], //机构下的部门
       currentOrganId: "",
-      selectUserIdList: [] //选中的userid
+      selectUserIdList: [], //选中的userid
+      tableLoading: false
     };
   },
   components: {
     addParagraph
   },
   methods: {
-    getOrgList() {
-      this.getPersonList();
-    },
     //根据查询条件查询人员基本信息
     getPersonList() {
       let _this = this;
@@ -148,12 +153,15 @@ export default {
         current: _this.currentPage,
         size: _this.pageSize
       };
+      this.tableLoading = true;
       _this.$store.dispatch("getPerCertListMoudle", data).then(
         res => {
+          this.tableLoading = false;
           _this.tableData = res.data.records;
           _this.totalPage = res.data.total;
         },
         err => {
+          this.tableLoading = false;
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
@@ -169,12 +177,12 @@ export default {
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getOrgList();
+      this.getPersonList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getOrgList();
+      this.getPersonList();
     },
     // 表格编辑
     handleEdit(row) {
@@ -185,26 +193,17 @@ export default {
     // 重置查询条件
     reset() {
       this.$refs["userFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getPersonList();
     },
     //点击下拉框的时候后头获取下拉框数据
     getDepatements(name, codeName) {
-      if (this.branchIdsInfo.length === 0) {
+      if (this[codeName].length === 0) {
         this.$store.dispatch("findAllDrawerByName", name).then(
           //查询执法领域
           res => {
             if (res.code === 200) {
-              if (codeName === "branchIdsInfo") {
-                this.branchIdsInfo = res.data;
-              }
-              if (codeName === "postList") {
-                this.postList = res.data;
-              }
-              if (codeName === "oidsInfo") {
-                this.oidsInfo = res.data;
-              }
-              if (codeName === "reviewScoreList") {
-                this.reviewScoreList = res.data;
-              }
+              this[codeName] = res.data;
             } else {
               console.info("没有查询到数据");
             }
