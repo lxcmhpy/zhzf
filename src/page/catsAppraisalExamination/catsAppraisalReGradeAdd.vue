@@ -314,9 +314,14 @@ export default {
             }
             updateScore(row).then(
                 res => {
-                    
+                    let sum = 0
+                    this.pykhScoreDetailsVos.forEach(function(item){
+                         sum += parseInt(item.twoSore===null?'0':item.twoSore)
+                    })
+                    this.form.twoScoreSum = sum
                 },
                 err => {
+                    row[key]=''
                     console.log(err);
                 }
             );
