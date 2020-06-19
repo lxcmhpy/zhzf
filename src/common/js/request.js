@@ -17,9 +17,8 @@ const service = axios.create({
 
 });
 
-var BASEURL
-function getHost () {
-    service({
+var BASEURL;
+service({
     url: '/static/json/hostUrl/host.json',
     method: "get",
     params: {},
@@ -27,33 +26,30 @@ function getHost () {
         res => {
         BASEURL = res.data;
         BASEURL.HOME_PAGE = BASEURL['HOME_PAGE_ROUTER_NAME'];
-        console.log('BASEURL.CURRENT',BASEURL.CURRENT);
-        sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]));
+
         sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
         iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-        iLocalStroage.sets("HOME_PAGE_ROUTER_NAME", BASEURL[BASEURL.CURRENT]);
     },
     error => {
         console.log(error)
     })
-}
-getHost();
 
 
 // request interceptor
 service.interceptors.request.use(
   config => {
     if (BASEURL === '' || BASEURL === 'undefined') {
-        BASEURL = iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-        BASEURL.HOME_PAGE = iLocalStroage.sets("HOME_PAGE_ROUTER_NAME", BASEURL[BASEURL.CURRENT]);
-        sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
+        BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
+        BASEURL.HOME_PAGE = iLocalStroage.gets("HOME_PAGE_ROUTER_NAME");
     }
     if (config.baseUrlType) {
         let baseObj = BASEURL[BASEURL.CURRENT];
         config.baseURL = baseObj[config.baseUrlType];
 
     } else{
-      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST // 默认的base_url
+      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST; // 默认的base_url
+      iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+      sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE);
     }
 
     if (config.responseType) {
@@ -146,7 +142,7 @@ function httpErrorStr(error) {
         alertMessage("请求失败"); //请求失败
         }
     } catch (error) {
-        alertMessage("请刷新重试！");
+        // getHost();
     }
 
   tryHideFullScreenLoading();

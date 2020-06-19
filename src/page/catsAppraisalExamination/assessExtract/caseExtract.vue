@@ -31,10 +31,11 @@
 
         <div class="extractPage">
           <div class="com_extract_top" >
-            <el-transfer width="100%" :titles="['案件列表', '已抽取案件']" v-model="value" 
-            :button-texts="['', '']" 
+            <el-transfer width="100%" :titles="['案件列表', '已抽取案件']" v-model="value"
+            :button-texts="['', '']"
             :data="data"
             @change="handleChange">
+
                 <span slot-scope="{ option }" >
                     <ul class="transfer-list" >
                         <li><span>案件编号{{ option.caseNo }}</span></li>
@@ -43,9 +44,18 @@
                         <li><span>案由{{ option.caseCause }}</span></li>
                     </ul>
                 </span>
-              <el-button class="transfer-footer" slot="left-header" size="small" >操作</el-button>
-              <el-button class="transfer-footer" slot="right-header" size="small">操作</el-button>
-
+                <ul class="transfer-list transfer-list-header" slot="left-footer" >
+                    <li><span>案件编号</span></li>
+                    <li><span>案件类型</span></li>
+                    <li><span>业务领域</span></li>
+                    <li><span>案由</span></li>
+                </ul>
+                <ul class="transfer-list transfer-list-header" slot="right-footer" >
+                    <li><span>案件编号</span></li>
+                    <li><span>案件类型</span></li>
+                    <li><span>业务领域</span></li>
+                    <li><span>案由</span></li>
+                </ul>
             </el-transfer>
           </div>
         </div>
