@@ -17,25 +17,28 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add_openDialog">新增</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-link href="./static/excel/人员表.xlsx">
-                <el-button type="primary" size="medium" icon="el-icon-plus" >模板下载</el-button>
-              </el-link>
+              <el-form-item v-if="baosongStatus">
+                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add_openDialog">新增</el-button>
+              </el-form-item>
+              <el-form-item v-if="baosongStatus">
+                <el-link href="./static/excel/人员表.xlsx">
+                  <el-button type="primary" size="medium" icon="el-icon-plus" >模板下载</el-button>
+                </el-link>
 
-            </el-form-item>
-            <el-form-item>
-              <el-upload
-                class="upload-demo"
-                action=""
-                :http-request="uploadPerson"
-                :show-file-list="false"
-                accept=".xlsx"
-              >
-                <el-button type="primary" size="medium" icon="el-icon-plus">批量导入</el-button>
-              </el-upload>
+              </el-form-item>
+              <el-form-item v-if="baosongStatus">
+                <el-upload
+                  class="upload-demo"
+                  action=""
+                  :http-request="uploadPerson"
+                  :show-file-list="false"
+                  accept=".xlsx"
+                >
+                  <el-button type="primary" size="medium" icon="el-icon-plus">批量导入</el-button>
+                </el-upload>
+              </el-form-item>
+            <el-form-item v-if="baosongStatus">
+              <el-button type="primary" size="medium" @click="clickBaosong">报送</el-button>
             </el-form-item>
 
           </el-form>
@@ -52,28 +55,30 @@
             <el-table-column prop="provinceNo" label="现持省内执法证号" align="center"></el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
+                <el-tag type="success" v-show="scope.row.bsStatus==1">已报送</el-tag>
+                <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
                 <el-tag type="success" v-show="scope.row.staffStatus==1">已抽取</el-tag>
                 <el-tag type="warning"  v-show="scope.row.staffStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="120">
-              <template  slot-scope="scope">
-                <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
-                <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
-                <el-upload
-                  class="upload-demo"
-                  accept=".jpg, .png"
-                  :show-file-list="false"
-                  v-show="scope.row.staffStatus==1"
-                  :http-request="(params)=>saveFile(params,scope.row)"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  multiple
-                  :limit="1">
-                  <el-button size="small" type="primary">上传照片</el-button>
-                </el-upload>
-                <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column label="操作" align="center" width="120" v-if="baosongStatus">
+                <template  slot-scope="scope">
+                  <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
+                  <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
+                  <el-upload
+                    class="upload-demo"
+                    accept=".jpg, .png"
+                    :show-file-list="false"
+                    v-show="scope.row.staffStatus==1"
+                    :http-request="(params)=>saveFile(params,scope.row)"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    multiple
+                    :limit="1">
+                    <el-button size="small" type="primary">上传照片</el-button>
+                  </el-upload>
+                  <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
+                </template>
+              </el-table-column>
           </el-table>
         </div>
 
@@ -137,7 +142,7 @@
 
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,findListVoByBatch,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,confirmSubmissionStaff,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import {StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
   import viewNotice from "../noticeManage/viewNotice";
@@ -171,6 +176,7 @@
           provinceNo:'',
           staffName:''
         },
+        baosongStatus:true,
         dialogImageUrl:'',
         dialogVisible: false,
         uploadHeaders: {
@@ -316,9 +322,35 @@
           if(res.code==200){
             that.errorMsg(res.msg,"success")
             this.fetchData({});
+          }else{
+            that.errorMsg(res.msg,"error")
+          }
+        });
+      },
+      findPersonBsStatus(){
+        let data={}
+        data.OId=this.organId;
+        data.bsStatus=1;
+        findPykhStaffByPage(data).then(res=>{
+          if(res.code==200){
+            if(res.data.total>0){
+              this.baosongStatus=false;
+            }
+          }
+        });
+
+      },
+      clickBaosong(){
+        confirmSubmissionStaff(this.organId).then(res=>{
+          if(res.code==200){
+            this.errorMsg(res.msg,"success")
+            this.fetchData({});
+          }else{
+            that.errorMsg(res.msg,"error")
           }
         });
       }
+
     },
     mounted () {
       let userInfo = iLocalStroage.gets("userInfo");
@@ -326,6 +358,7 @@
       this.organId = userInfo.organId;
       let data={}
       // data.OId=this.organId;
+      this.findPersonBsStatus();
       this.fetchData(data);
 
       // findAllDepartment(this.organId).then(res=>{
