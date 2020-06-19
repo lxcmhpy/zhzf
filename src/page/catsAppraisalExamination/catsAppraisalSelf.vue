@@ -240,8 +240,8 @@ export default {
             }
       },
       commitData(){
-          var re = /^[1-9]([0-9])*$/;
-        let validata = this.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
+          var re = /^[0-9]([0-9])*$/;
+        let validata = this.form.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
         if(validata){
             this.$message({type: "warning",message: "全部评分之后才能提交"});
             return
@@ -265,18 +265,28 @@ export default {
       saveRecord(row,key){
           if(this.oldValue !== row[key]){
               if(key === "twoSore" || key === "oneSore"){
-                var re = /^[1-9]([0-9])*$/;
+                var re = /^[0-9]([0-9])*$/;
                 if (!re.test(row[key])) {
                     row[key]=''
                     this.$message({type: "error",message: "请输入整数"});
                     return
                 }
+                if(parseInt(row[key])>row.score){
+                    row[key]=''
+                    this.$message({type: "error",message: "得分不能高于单项分值"});
+                    return
+                }
               }
             updateScore(row).then(
                 res => {
-
+                    let sum = 0
+                    this.form.pykhScoreDetailsVos.forEach(function(item){
+                         sum += parseInt(item.twoSore===null?'0':item.twoSore)
+                    })
+                    this.form.twosore = sum
                 },
                 err => {
+                    row[key]=''
                     console.log(err);
                 }
             );

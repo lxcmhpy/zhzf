@@ -70,7 +70,9 @@ $dialog-default-height: 560px !default;
   .el-textarea,.el-textarea__inner{
     border-radius: 0px;
   }
-
+  .el-select{
+      width: 100%;
+  }
   /* 小号表单 */
 .el-input--mini {
   .el-input__inner{
@@ -347,4 +349,7 @@ $dialog-default-height: 560px !default;
 }
 .zIndexHidden {
     z-index: -1;
+}
+span {
+    outline: none;
 }

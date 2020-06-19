@@ -18,32 +18,35 @@ const service = axios.create({
 });
 
 var BASEURL
-service({
-  url: '/static/json/hostUrl/host.json',
-  method: "get",
-  params: {},
-}).then(
-  res => {
-    BASEURL = res.data;
-    BASEURL.HOME_PAGE = BASEURL['HOME_PAGE_ROUTER_NAME'];
-    console.log('BASEURL.CURRENT',BASEURL.CURRENT);
-    sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]));
-    sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
-    iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-  },
-  error => {
-    console.log(error)
-  })
-
-
+function getHost () {
+    service({
+    url: '/static/json/hostUrl/host.json',
+    method: "get",
+    params: {},
+    }).then(
+        res => {
+        BASEURL = res.data;
+        BASEURL.HOME_PAGE = BASEURL['HOME_PAGE_ROUTER_NAME'];
+        console.log('BASEURL.CURRENT',BASEURL.CURRENT);
+        sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]));
+        sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
+        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+        iLocalStroage.sets("HOME_PAGE_ROUTER_NAME", BASEURL[BASEURL.CURRENT]);
+    },
+    error => {
+        console.log(error)
+    })
+}
+getHost();
 
 
 // request interceptor
 service.interceptors.request.use(
   config => {
-    if (BASEURL) {
-      iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-      sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
+    if (BASEURL === '' || BASEURL === 'undefined') {
+        BASEURL = iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+        BASEURL.HOME_PAGE = iLocalStroage.sets("HOME_PAGE_ROUTER_NAME", BASEURL[BASEURL.CURRENT]);
+        sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
     }
     if (config.baseUrlType) {
         let baseObj = BASEURL[BASEURL.CURRENT];
@@ -68,12 +71,11 @@ service.interceptors.request.use(
     if (getToken("TokenKey")) {
       config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
     }
-
+    config.url = config.url + '?time='+new Date().getTime();
     console.log('config', config)
     //  config.headers = {
     //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键
-    // }
-
+    // debugger;
     return config;
 
   },
@@ -125,24 +127,29 @@ service.interceptors.response.use(
 );
 
 function httpErrorStr(error) {
+    try {
+        console.log('error', error.response)
+        if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
+        alertMessage("networkError"); //networkError
+        } else if (error.toString().indexOf("500") != -1) {
+        alertMessage("系统错误"); //系统错误
+        } else if (error.toString().indexOf("401") != -1 && error.response.data.code == 400000) {
+        alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
+        // removeToken();
+        } else if (error.message == "stopQuest") {
+        return false;
+        } else if (error.response.data&&error.response.data.error == 'unauthorized') {
+        alertMessage('用户名或密码错误')
+        } else if (error.response.status == 400) {
+        alertMessage(error.response.data.error_description)
+        } else {
+        alertMessage("请求失败"); //请求失败
+        }
+    } catch (error) {
+        alertMessage("请刷新重试！");
+    }
+
   tryHideFullScreenLoading();
-  console.log('error', error.response)
-  if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
-    alertMessage("networkError"); //networkError
-  } else if (error.toString().indexOf("500") != -1) {
-    alertMessage("系统错误"); //系统错误
-  } else if (error.toString().indexOf("401") != -1 && error.response.data.code == 400000) {
-    alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
-    // removeToken();
-  } else if (error.message == "stopQuest") {
-    return false;
-  } else if (error.response.data.error == 'unauthorized') {
-    alertMessage('用户名或密码错误')
-  } else if (error.response.status == 400) {
-    alertMessage(error.response.data.error_description)
-  } else {
-    alertMessage("请求失败"); //请求失败
-  }
 }
 //弹出提示语
 function alertMessage(msg) {
@@ -156,6 +163,7 @@ function alertMessage(msg) {
     message: msg,
     type: 'error'
   })
+
   //message.error(msg)
 }
 
