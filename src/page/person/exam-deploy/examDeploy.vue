@@ -51,11 +51,11 @@
           <el-table-column prop="jobName" label="任务名称" align="center"></el-table-column>
            <el-table-column prop="jobGroup" label="任务分组" align="center"></el-table-column>
             <el-table-column prop="startTime" label="任务开始时间" align="center"></el-table-column>
-             <el-table-column prop="jobStatus" label="任务状态" align="center"></el-table-column>
+             <el-table-column prop="jobStatus" label="任务状态" align="center" :formatter="jobFormat"></el-table-column>
               <el-table-column prop="cronExpression" label="corn表达式" align="center"></el-table-column>
                <el-table-column prop="className" label="类名" align="center"></el-table-column>
                <el-table-column prop="excuteTimes" label="执行次数" align="center"></el-table-column>
-               <el-table-column prop="excuteStatus" label="执行状态" align="center"></el-table-column>
+               <el-table-column prop="excuteStatus" label="执行状态" align="center" :formatter="excuteFormat"></el-table-column>
           <el-table-column prop="cronExpression" label="执行时间" align="center"></el-table-column>
           <!-- <el-table-column prop="isUse" label="是否启用" align="center">
             <template slot-scope="scope">
@@ -132,6 +132,24 @@ export default {
     addStationPage
   },
   methods: {
+    //任务状态
+    jobFormat(row, column) {
+      if (row.jobStatus === "") {
+        return "正常";
+      } else if (row.jobStatus === "2") {
+        return "暂停";
+      }else if (row.jobStatus === "3") {
+        return "执行结束";
+      }
+    },
+    //执行状态
+    excuteFormat(row, column) {
+      if (row.excuteStatus === "1") {
+        return "执行中";
+      } else if (row.excuteStatus === "2") {
+        return "执行结束";
+      }
+    },
     //修改启用状态
     change(event, row) {
       this.$confirm(
