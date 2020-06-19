@@ -21,8 +21,9 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
             </el-form-item> -->
-            <el-form-item>
+            <el-form-item v-show="!isSubmit">
               <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingStaff">随机抽取</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="submitStaff">确认抽取</el-button>
             </el-form-item>
 
           </el-form>
@@ -69,8 +70,8 @@
         organId:"",
         labelPosition: 'right',
         batchList:[],
-        organList:[]
-
+        organList:[],
+        isSubmit:false
       };
     },
     methods:{
@@ -92,8 +93,14 @@
                 staffName:res.data.records[i].staffName,
                 maritimeNo: maritimeNo+provinceNo+ministerialNo,
                 staffId:res.data.records[i].staffId,
-                disabled: res.data.records[i].staffStatus==0?false:true
+                //disabled: res.data.records[i].staffStatus==0?false:true
               });
+            }
+            if(this.value.length>0){
+              this.isSubmit = true
+              personlist.forEach((item)=>{
+                item.disabled=true
+              })
             }
             this.personList=personlist;
           }
@@ -101,7 +108,7 @@
         });
       },
       handleChange(value, direction, movedKeys) {
-        console.log(value, direction, movedKeys);
+        /* console.log(value, direction, movedKeys);
         var ids= [];
         var personList=this.personList;
         console.info("personlist:",personList)
@@ -126,6 +133,37 @@
               _this.value = []
             }
           }
+        }); */
+      },
+      submitStaff() {
+        var ids= [];
+        var personList=this.personList;
+        for(var j=0;j<this.value.length;j++){
+          ids.push(personList[this.value[j]].staffId)
+        }
+        if(ids.length===0){
+          this.$message({type: "warning",message: "请先抽取数据"});
+          return
+        }
+        var submitProStaffData={};
+        submitProStaffData.idList= ids ;
+        submitProStaffData.batchId=this.search.batchId;
+        let _this = this
+        submitStaff(submitProStaffData).then(res=>{
+          if(res.code===200){
+            if(res.data === "操作成功"){
+              _this.personList.forEach((item)=>{
+                item.disabled=true
+              })
+              _this.isSubmit=true
+              _this.$message({type: "success",message: res.data});
+            }else if(res.data === "取消成功"){
+              _this.$message({type: "success",message: res.data});
+              _this.value = []
+            }else{
+              _this.$message({type: "error",message: res.data});
+            }
+          }
         });
       },
       randomSamplingStaff(){
@@ -135,26 +173,19 @@
             type: 'error'
           })
         }else{
+          this.value=[]
+          let _this = this
           randomSamplingStaffByPage(this.search.oId,this.search.batchId).then(res=>{
             if(res.code==200){
-            var personlist=[];
-            for(var i=0;i<res.data.length;i++){
-              if(res.data[i].staffStatus!=0){
-                this.value.push(i)
+              for(var i=0;i<res.data.length;i++){
+                var id = res.data[i].staffId
+                _this.personList.forEach(function(item){
+                    if(item.staffId === id){
+                      _this.value.push(item.key)
+                    }
+                })
               }
-              var maritimeNo=res.data[i].maritimeNo==null?'':res.data[i].maritimeNo+",";
-              var provinceNo=res.data[i].provinceNo==null?'':res.data[i].provinceNo+",";
-              var ministerialNo=res.data[i].ministerialNo==null?'':res.data[i].ministerialNo+",";
-              personlist.push({
-                key: i,
-                label: res.data[i].staffName,
-                staffName:res.data[i].staffName,
-                maritimeNo: maritimeNo+provinceNo+ministerialNo,
-                staffId:res.data[i].staffId
-              });
             }
-            this.personList=personlist;
-          }
           })
         }
       },
