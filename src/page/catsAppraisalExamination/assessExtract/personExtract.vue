@@ -31,7 +31,7 @@
         <div class="extractPage">
           <div class="com_extract_top" >
             <el-transfer width="100%" :titles="['人员列表', '已抽取人员']" v-model="value"
-                         :button-texts="['取消', '抽取']" :data="personList"
+                         :button-texts="['', '']" :data="personList"
                          @change="handleChange">
                 <span slot-scope="{ option }" >
                     <ul class="transfer-list" >

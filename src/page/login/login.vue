@@ -391,7 +391,7 @@ export default {
         this.$store.commit('set_systemTitle',res.data[0].name);
         window.document.title = res.data[0].name;
         //设置省份
-        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?rres.data[2].name:'');
+        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
         //是否需要签章
         this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
         //设置系统首页

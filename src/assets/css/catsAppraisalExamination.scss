@@ -309,9 +309,18 @@
         .el-transfer__buttons {
             width: 90px;
             flex-shrink: 0;
+            box-sizing: border-box;
             button {
                 margin-left:0px;
                 width: 100%;
+                .el-icon-arrow-left::before {
+                    content: "\e6dd";
+                    margin-left:-6px;
+                }
+                .el-icon-arrow-right::before {
+                    content: "\e6dc";
+                    margin-left:-6px;
+                }
             }
         }
         .el-transfer-panel {
@@ -327,10 +336,10 @@
                     margin:0px;
                     margin-right: 10px;
                 }
-                .el-transfer-panel__item {
-                    margin-right: 7px;
-                }
             }
         }
+    }
+    .el-transfer-panel__item {
+        margin-right: 7px;
     }
 }

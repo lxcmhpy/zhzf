@@ -30,8 +30,8 @@
 
         <div class="extractPage">
           <div class="com_extract_top" >
-            <el-transfer width="100%" :titles="['案件列表', '已抽取案件']" v-model="value" 
-            :button-texts="['取消', '抽取']" 
+            <el-transfer width="100%" :titles="['案件列表', '已抽取案件']" v-model="value"
+            :button-texts="['', '']"
             :data="data"
             @change="handleChange">
                 <span slot-scope="{ option }" >
