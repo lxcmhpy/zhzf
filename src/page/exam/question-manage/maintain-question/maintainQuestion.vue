@@ -261,6 +261,8 @@ export default {
     // 重置
     resetLog() {
       this.$refs["questionOutlineFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getSelectOutline();
     },
     //新增-修改试题
     addQuestionInfo() {
@@ -269,15 +271,14 @@ export default {
         currentOutlineId: this.currentOutlineId,
         selectCurrentTreeName: this.selectCurrentTreeName
       };
-      this.$refs.addMaintainQuestionRef.showModal(parentNode, '1');
-      // if (this.currentOutlineId == null || this.currentOutlineId == "") {
-      //   _this.$message({
-      //     type: "error",
-      //     message: "请选择大纲!"
-      //   });
-      // } else {
-      //   this.$refs.addMaintainQuestionRef.showModal(parentNode, '1');
-      // }
+      if (this.currentOutlineId == null || this.currentOutlineId == "") {
+        _this.$message({
+          type: "error",
+          message: "请选择大纲!"
+        });
+      } else {
+        this.$refs.addMaintainQuestionRef.showModal(parentNode, '1');
+      }
     },
     //修改试题
     updateQuestionInfo(questionId, type) {

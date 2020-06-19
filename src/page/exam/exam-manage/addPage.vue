@@ -66,7 +66,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination-box">
+      <div class="paginationBox">
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -165,8 +165,9 @@ export default {
       this.getPageAllInfo();
     },
     resetLog() {
-      let _this = this;
-      _this.$refs["addPageFormRef"].resetFields();
+      this.$refs["addPageFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getPageAllInfo();
     },
     closeDialog() {
       let _this = this;
@@ -194,10 +195,6 @@ export default {
       height: 32px;
       line-height: 32px;
     }
-  }
-   .pagination-box{
-    margin-top: 20px;
-    text-align: center;
   }
 }
 </style>

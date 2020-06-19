@@ -17,6 +17,13 @@
               </el-form-item>
               <el-form-item>
                 <el-button title="搜索" class="searchBtn" size="medium" icon="iconfont law-sousuo" @click="currentPage = 1;getPersonScoreList();"></el-button>
+                <el-button
+                  title="重置"
+                  class="searchBtn"
+                  size="medium"
+                  icon="iconfont law-zhongzhi"
+                  @click="resetSearchForm"
+                ></el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -104,6 +111,12 @@ export default {
         this.tableLoading = false;
         this.$message({ type: 'error', message: err.msg || '' });
       })
+    },
+    // 搜索表单重置
+    resetSearchForm() {
+      this.personName = "";
+      this.currentPage = 1;
+      this.getPersonScoreList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
