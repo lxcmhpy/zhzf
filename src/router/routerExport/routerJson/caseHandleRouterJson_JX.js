@@ -76,7 +76,7 @@ export default [
     path: "/sceneNotesDoc_JX",
     name: "case_handle_sceneNotesDoc_JX",
     meta: {
-      title: "立案登记表——江西"
+      title: "现场笔录——江西"
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/sceneNotesDoc_JX.vue")
   },
@@ -196,7 +196,7 @@ export default [
     path: "/majorAdminLawEnforceAudit",
     name: "case_handle_majorAdminLawEnforceAudit",
     meta: {
-      title: "中止（终结、恢复）行政强制执行审批表"
+      title: "重大行政执法决定法制审核表"
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/majorAdminLawEnforceAudit.vue")
   },
@@ -263,6 +263,14 @@ export default [
       title: "案件调查报告-江西"
     },
     component: () => import("@/page/caseHandle/case/jiangxi/form/caseInvestigReport_JX.vue")
+  },
+  {
+    path: "/payStageDoc_JX",
+    name: "case_handle_payStageDoc_JX",
+    meta: {
+      title: "分期（延期）缴纳罚款通知书-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/payStageDoc_JX.vue")
   },
 ]
 
