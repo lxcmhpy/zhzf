@@ -45,7 +45,8 @@ module.exports = {
     /**
      * Source Maps
      */
-
+    cssSourceMap: false,
+    cacheBusting: false,
     productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: ' #nosources-source-map',
