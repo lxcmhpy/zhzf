@@ -3,15 +3,15 @@
     <div class="searchPageLayout" id="userBox">
       <div class="searchPage">
         <div class="handlePart">
-          <el-form :inline="true" class="search-form" ref="staffOutForm" label-width="70px">
+          <el-form :model="staffOutForm" :inline="true" class="search-form" ref="staffOutForm" label-width="70px">
             <el-row>
-              <el-form-item label="姓名">
+              <el-form-item label="姓名" prop="personName">
                 <el-input v-model="staffOutForm.personName"></el-input>
               </el-form-item>
-              <el-form-item label="执法证号">
+              <el-form-item label="执法证号" prop="certNo">
                 <el-input v-model="staffOutForm.certNo"></el-input>
               </el-form-item>
-              <el-form-item label="调出机构">
+              <el-form-item label="调出机构" prop="outOName">
                 <el-input v-model="staffOutForm.outOName"></el-input>
               </el-form-item>
               <el-form-item label=" " label-width="13px">
@@ -257,8 +257,8 @@ export default {
 
     reset() {
       // 重置查询条件
-      this.$refs["userForm"].resetFields();
-      this.$refs["staffOutForm"].resetFields();
+      this.$refs["userForm"] && this.$refs["userForm"].resetFields();
+      this.$refs["staffOutForm"] && this.$refs["staffOutForm"].resetFields();
     },
     //获取选中的user
     selectData(val) {

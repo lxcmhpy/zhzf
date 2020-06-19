@@ -264,7 +264,7 @@ export default {
       _this.$router.replace({
         name: "viewApplayDetail",
         params: {
-          pageId: row.examNum,
+          pageId: row.examNum,  
           name: row.pageName,
           type: "view"
         }
@@ -277,7 +277,7 @@ export default {
     },
     getSendResultlInfo(row, param) {
       //报送成绩
-      let _this = this;
+      this.$message({ type: 'info', message: '正在开发中' });
       // _this.$refs['invigilateManageCompRef'].showModal(param,row);;
     },
     disposeInfo(row, param) {

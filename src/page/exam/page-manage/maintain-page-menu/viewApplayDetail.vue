@@ -1,15 +1,15 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="applay-detail">
-      <el-tabs style="min-height:800px;">
+      <el-tabs v-model="tabLabel" style="min-height:800px;">
         <el-tab-pane label="试卷信息">
-          <pageDetail :pageData='params'></pageDetail>
+          <pageDetail :pageData="params"></pageDetail>
         </el-tab-pane>
         <el-tab-pane label="题目分布">
-          <questionDetail></questionDetail>
+          <questionDetail v-if="tabLabel == 1"></questionDetail>
         </el-tab-pane>
         <el-tab-pane label="审核记录">
-          <applayDetail></applayDetail>
+          <applayDetail v-if="tabLabel == 2"></applayDetail>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -22,10 +22,11 @@ import questionDetail from "./../../common/questionDetail";
 export default {
   data() {
     return {
-      tableData:[],
-      params:{
-        pageData:{}
-      }
+      tableData: [],
+      params: {
+        pageData: {}
+      },
+      tabLabel: ""
     };
   },
   computed: {
@@ -38,10 +39,7 @@ export default {
     applayDetail,
     questionDetail
   },
-  methods: {
-  },
-  created() {
-  }
+  methods: {}
 };
 </script>
 <style lang="scss" scoped>

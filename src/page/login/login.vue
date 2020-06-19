@@ -244,6 +244,7 @@ export default {
     },
     //登录
     submitLogin(formName) {
+        debugger;
       let _this = this
       // this.$store.commit(types.SET_AUTHTOKEN, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoiTWFkZSBCeSBDQVRTSUMiLCJ1c2VyX25hbWUiOiJ7XCJhdmF0YXJcIjpcImh0dHBzOi8vaS5sb2xpLm5ldC8yMDE5LzA0LzI4LzVjYzVhNzFhNmUzYjYucG5nXCIsXCJkZXBhcnRtZW50SWRcIjpcIjJcIixcImlkXCI6XCI2ODIyNjU2MzM4ODYyMDhcIixcIm1vYmlsZVwiOlwiMTg3ODIwNTkwMzhcIixcIm5pY2tOYW1lXCI6XCJnZmhkZ2huZmdqXCIsXCJvcmdhbklkXCI6XCIxXCIsXCJwYXNzd29yZFwiOlwiJDJhJDEwJHNzR0YuT0dQMTJDcldGMlJUVWNOZGUwZzUxSGgwckc2eTlHZTVGejZDd25rRWhreHV6Um95XCIsXCJwYXNzd29yZFN0YXR1c1wiOjAsXCJzZXhcIjpcIueUt1wiLFwic3RhdHVzXCI6MCxcInR5cGVcIjoxLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9Iiwic2NvcGUiOlsic2VydmVyIl0sImV4cCI6MTU4MzkzMzIyMCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdLCJqdGkiOiIwNjQzOWRkOC0yZWQ3LTQzNzUtODgzZC04ZTI3ODJhNjBmNWIiLCJjbGllbnRfaWQiOiJjYXRzaWMifQ.Btlg5kx2xQY7xCbHuODly-hNICluoD-SbrA0S7lHBEE'); //token
       // _this.getMenu();
@@ -258,14 +259,22 @@ export default {
               res => {
                 // 登录成功
                   // 清除定时器
-                  clearTimeout(_this.timeOutFlag)
+                //   clearTimeout(_this.timeOutFlag)
 
                   // _this.getCurrentUser();
-                  _this.$util.initUser(_this);
+                  _this.$router.push({
+                      name: 'home'
+                  })
+                //   _this.$util.initUser(_this);
                   _this.success = false;
+                //   this.$store.commit('setShowQZBtn', true)
 
                   //设置默认openTab
+                //   this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
+                  //设置是否签章
+
                   // this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
+
               },
               // error => {
               //   console.log('error',error);

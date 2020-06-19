@@ -15,11 +15,11 @@
       ref="examNodeRef"
       :rules="rules"
     >
-      <div class="departTable">
+      <div>
         <el-row>
-          <el-form-item label="记录类型:" prop="rollingType">
+          <el-form-item label="记录类型:" prop="operationType">
             <el-select
-              v-model="examNode.rollingType"
+              v-model="examNode.operationType"
               placeholder="记录类型"
               remote
               @focus="getDictInfo('考试-记录类型','noteTypeList')"
@@ -45,11 +45,10 @@
           </el-form-item>
         </el-row>
         <el-row>
-          <el-form-item label="记录内容" prop="forceReason" placeholder>
-            <el-input type="textarea" rows="2" v-model="examNode.forceReason"></el-input>
+          <el-form-item label="记录内容" prop="operationDescription" placeholder>
+            <el-input type="textarea" rows="2" v-model="examNode.operationDescription"></el-input>
           </el-form-item>
         </el-row>
-        <el-row></el-row>
       </div>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -68,23 +67,25 @@ export default {
       selectCurrentTreeName: "",
       noteTypeList: [],
       examNode: {
-        rollingId: "",
+        operationId: "",
         examId: "", //考试编号
         invigilatorId: "", //监考id
         examperId: "", //考生Id
-        rollingType: "", //记录类型
-        forceReason: "", //原因
+        operationType: "", //记录类型
+        operationDescription: "", //原因
         type: "", //标识是记录类型0：还是交卷类型：1
         happenTime: "" //发生时间
+
+              
       },
       rules: {
-        rollingType: [
+        operationType: [
           { required: true, message: "记录类型不能为空", trigger: "blur" }
         ],
         happenTime: [
           { required: true, message: "发生时间不能为空", trigger: "blur" }
         ],
-        forceReason: [
+        operationDescription: [
           { required: true, message: "记录内容不能为空", trigger: "blur" }
         ]
       },
@@ -141,12 +142,20 @@ export default {
       let _this = this;
       if (_this.handelType == 1) {
         _this.$store.dispatch("addExamRecordInfo", _this.examNode).then(res => {
-          _this.$emit("getExamRoom");
-          _this.$message({
-            type: "success",
-            message: "添加成功!"
-          });
-          _this.visible = false;
+          if(res.data.code == 200){
+            _this.$emit("getExamRoom");
+            _this.$message({
+              type: "success",
+              message: "添加成功!"
+            });
+           _this.visible = false;
+          }else{
+             _this.$message({
+              type: "error",
+              message: "添加失败!"
+            });
+          }
+          
         }, err =>{
           this.$message({ type: 'error', message: err.msg || '' });
         });
@@ -177,14 +186,18 @@ export default {
       _this.examNode.roomId = row.roomId;
       if (type == 1) {
         //新增
+         _this.examNode.operationType = "";
+        _this.examNode.happenTime = "";
+        _this.examNode.operationDescription = "";
+        _this.examNode.operationId = "";
         _this.dialogTitle = "添加考场记录";
         _this.isDisabled = false;
       } else if (type == 2) {
         //修改,查看
-        _this.examNode.rollingType = date.rollingType;
+        _this.examNode.operationType = date.operationType;
         _this.examNode.happenTime = date.happenTime;
-        _this.examNode.forceReason = date.forceReason;
-        _this.examNode.rollingId = date.rollingId;
+        _this.examNode.operationDescription = date.operationDescription;
+        _this.examNode.operationId = date.operationId;
         _this.dialogTitle = "修改考场记录";
         _this.isDisabled = false;
       }

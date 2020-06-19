@@ -58,26 +58,31 @@ import { mapGetters } from "vuex";
       },
       //获取侧边栏菜单
       getSlideMenu(val) {
-     console.log('aksdsjkds',val);
-// debugger;
+          debugger;
         this.currentSlideMenu = [];
         let _this = this
-        for(let i =0;i<this.allMenuList.length;i++) {
+        if(this.allMenuList){
+          for(let i =0;i<this.allMenuList.length;i++) {
             let item = this.allMenuList[i];
-            let key = val.split(/(-menu-)/gi);
-            if (item.name == key[0]) {
+            // let key = val.split(/(-menu-)/gi);
+            // if (item.name == key[0]) {
+            if (item.name == val||(item.path == val)) {
                 if (item.children && item.children.length) {
                     item.children.forEach(item2 => {
-                    _this.currentSlideMenu.push(item2);
-                })
+                        _this.currentSlideMenu.push(item2);
+                    })
                 }
             }
+          }
         }
+        
 //      console.log('currentSlideMenu',this.currentSlideMenu)
       }
     },
     mounted() {
+        debugger;
         this.allMenuList=this.menu;
+        // console.log('mounted this.allMenuList',this.allMenuList)
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
     },
     created() {
@@ -88,12 +93,11 @@ import { mapGetters } from "vuex";
     watch: {
       selectedHeadMenu: function (val, oldVal) {
           // debugger;
-        this.getSlideMenu(val);
+          this.getSlideMenu(val);
       },
       //监听menu
       menu(val){
           // debugger;
-        console.log('menu',val)
         this.allMenuList=this.menu;
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
       }

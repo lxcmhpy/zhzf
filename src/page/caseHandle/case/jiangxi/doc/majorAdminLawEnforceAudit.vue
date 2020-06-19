@@ -1,38 +1,21 @@
 <template>
   <div class="print_box">
-    <div class="print_info" id="removeAdminCoerciveMeasureApproval_print">
+    <div class="print_info" style="height: 1200px" id="majorAdminLawEnforceAudit_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">重大行政执法决定法制审核表</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
         <table
-          class="print_table"
-          style="table-layout: fixed;"
+          class="print_table prolong_table"
           border="1"
           bordercolor="black"
           width="100%"
           cellspacing="0"
         >
           <tr>
-            <td>
+            <td colspan="2">
               <p>案由</p>
             </td>
-            <td colspan="9" class="color_DBE4EF">
-              <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
-              >
-                <el-input
-                  type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
-                  placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
-                ></el-input>
-              </el-form-item>
-            </td>
+            <td colspan="8" class="color_DBE4EF">{{formData.caseName}}</td>
           </tr>
           <tr>
             <td rowspan="2" colspan="2">
@@ -40,17 +23,17 @@
             </td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="illegalFacts"
+                :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="formData.illegalFacts"
+                  v-bind:class="{ over_flow:formData.illegalFacts && formData.illegalFacts.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -62,17 +45,15 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="transactor"
+                :rules="fieldRules('transactor',propertyFeatures['transactor'])"
               >
                 <el-input
-                  type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
+                  v-model="formData.transactor"
+                  v-bind:class="{ over_flow:formData.transactor && formData.transactor.length>14?true:false }"
+                  :maxlength="nameLength"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['transactor'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -81,17 +62,14 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="telephone"
+                :rules="fieldRules('telephone',propertyFeatures['telephone'],validatePhone)"
               >
                 <el-input
-                  type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
+                  v-model="formData.telephone"
+                  maxlength="11"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['telephone'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -123,7 +101,7 @@
             </td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <p>&nbsp;&nbsp;该案件拟处理意见属重大行政执法决定，特提请法制机构进行法制审核。</p>
-              <div class="pdf_seal">
+              <div class="pdf_seal" style="width:280px">
                 <p>承办机构负责人（签章）：{{formData.secondApprovePeo}}</p>
                 <p>
                   <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
@@ -137,23 +115,27 @@
             <td rowspan="12" colspan="2">
               <p>法制审核机构意见</p>
             </td>
-            <td colspan="6"  class="color_DBE4EF">
+            <td colspan="6" class="color_DBE4EF">
               <p>行政执法机关主体是否合法；</p>
             </td>
-            <td colspan="2"  class="color_DBE4EF">
+            <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="legalAgency"
+                :rules="fieldRules('legalAgency',propertyFeatures['legalAgency'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
+                <!-- <el-checkbox-group
+                  v-model="formData.legalAgency"
+                  :max="1"
+                 
+                  :disabled="fieldDisabled(propertyFeatures['legalAgency'])"
                 >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                  <el-checkbox label="是">是</el-checkbox>
+                  <el-checkbox label="否">否</el-checkbox>
+                </el-checkbox-group>-->
+                <el-radio-group v-model="formData.legalAgency">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -163,18 +145,13 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="enforcePeople"
+                :rules="fieldRules('enforcePeople',propertyFeatures['enforcePeople'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.enforcePeople">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -184,18 +161,13 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="lawProcedure"
+                :rules="fieldRules('lawProcedure',propertyFeatures['lawProcedure'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.lawProcedure">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -205,18 +177,13 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="caseFacts"
+                :rules="fieldRules('caseFacts',propertyFeatures['caseFacts'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.caseFacts">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -226,18 +193,13 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="lawRegulations"
+                :rules="fieldRules('lawRegulations',propertyFeatures['lawRegulations'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.lawRegulations">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -247,18 +209,13 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="StatutoryAuth"
+                :rules="fieldRules('StatutoryAuth',propertyFeatures['StatutoryAuth'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.StatutoryAuth">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -268,18 +225,13 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="docSpecification"
+                :rules="fieldRules('docSpecification',propertyFeatures['docSpecification'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.docSpecification">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -289,18 +241,13 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="selfRights"
+                :rules="fieldRules('selfRights',propertyFeatures['selfRights'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.selfRights">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
@@ -310,29 +257,46 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
-                prop="checkBox"
-                :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
+                prop="suspicionCrime"
+                :rules="fieldRules('suspicionCrime',propertyFeatures['suspicionCrime'])"
               >
-                <el-checkbox-group
-                  v-model="formData.checkBox"
-                  :disabled="fieldDisabled(propertyFeatures['checkBox'])"
-                >
-                  <p>
-                    <el-checkbox label="是">是</el-checkbox>
-                    <el-checkbox label="否">否</el-checkbox>
-                  </p>
-                </el-checkbox-group>
+                <el-radio-group v-model="formData.suspicionCrime">
+                  <el-radio label="0">是</el-radio>
+                  <el-radio label="1">否</el-radio>
+                </el-radio-group>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td rowspan="3" colspan="8" class="color_DBE4EF">
-              <p>有关事项说明及审核结论：</p>
-              <div class="pdf_seal">
+              <div class="overflow_lins_style" id="noteDesCon">
+                <div class="overflow_lins">
+                  <el-form-item
+                    prop="auditConclusion"
+                    :rules="fieldRules('auditConclusion',propertyFeatures['auditConclusion'])"
+                  >
+                    <el-input
+                      class="text_indent11 overflow_lins_textarea"
+                      type="textarea"
+                      v-model="formData.auditConclusion"
+                      rows="4"
+                      maxlength="400"
+                      placeholder="\"
+                      :disabled="fieldDisabled(propertyFeatures['auditConclusion'])"
+                    ></el-input>
+                    <span class="overflow_describe_JX" style="padding-bottom:-6px;text-indent:0 !important">有关事项说明及审核结论：</span>
+                    <span class="span_bg span_bg_top">&nbsp;</span>
+                    <p class="span_bg">&nbsp;</p>
+                    <p class="span_bg">&nbsp;</p>
+                    <p class="span_bg">&nbsp;</p>
+                  </el-form-item>
+                </div>
+              </div>
+              <div class="pdf_seal" style="width:280px">
                 <p>法制审核机构负责人（签章）：{{formData.secondApprovePeo}}</p>
                 <p>
                   <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
-                  <span v-else>年&nbsp;&nbsp;日</span>
+                  <span v-else>年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
             </td>
@@ -351,29 +315,19 @@
       </div>
     </div>
     <casePageFloatBtns
-      :pageDomId="'removeAdminCoerciveMeasureApproval_print'"
+      :pageDomId="'majorAdminLawEnforceAudit_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
-      @showApprovePeopleList="showApprovePeopleList"
-      @showApproval="showApproval"
     ></casePageFloatBtns>
-    <!-- 提交审批 -->
-    <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
-    <!-- 审批 -->
-    <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
   </div>
 </template>
 <script>
-import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
-import approvalDialog from "@/page/caseHandle/components/approvalDialog";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    showApprovePeople,
-    approvalDialog,
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
@@ -383,40 +337,21 @@ export default {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
       isOverflow: false,
-      // isOverLine: false,
       formData: {
         caseName: "",
-        party: "",
-        partyIdNo: "",
-        partyAddress: "",
-        partyTel: "",
-        partyName: "",
-        partyUnitAddress: "",
-        partyUnitTel: "",
-        partyManager: "",
-        punishLaw: "",
-        illegalLaw: "",
-        tempPunishAmount: "",
-        socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        partyUnitPosition: "",
-        checkBox: [],
-        test: "",
-        note: "",
-        party: "",
-        partySex: "",
-        partyAge: "",
-        partyManager: "",
-        socialCreditCode: "",
-        caseBasicInfo: "",
-        caseReplay: "",
-        // partyUnitPosition: "",
-        partyZipCode: "",
-        partyManagerPositions: "",
-        closeResult: "",
-        leadOpinion: "",
-        closeSituation: "",
+        illegalFacts: "",
+        transactor: "",
+        telephone: "",
+        legalAgency: "",
+        enforcePeople: "",
+        lawProcedure: "",
+        caseFacts: "",
+        lawRegulations: "",
+        StatutoryAuth: "",
+        docSpecification: "",
+        selfRights: "",
+        suspicionCrime: "",
+        auditConclusion: "",
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
@@ -441,53 +376,45 @@ export default {
       illegalFactsEvidence: "",
       value1: "",
       rules: {
-        party: [
-          { required: true, message: "当事人姓名不能为空", trigger: "blur" }
+        illegalFacts: [
+          { required: true, message: "基本违法事实不能为空", trigger: "blur" }
         ],
-        partyAge: [
-          { required: true, message: "当事人年龄不能为空", trigger: "blur" }
+        transactor: [
+          { required: true, message: "承办人不能为空", trigger: "blur" }
         ],
-        partySex: [
-          { required: true, message: "当时人性别不能为空", trigger: "blur" }
-        ],
-        partyUnitPosition: [
-          { required: true, message: "当事人所在单位不能为空", trigger: "blur" }
-        ],
-        partyAddress: [
-          { required: true, message: "当事人联系地址不能为空", trigger: "blur" }
-        ],
-        partyTel: [
-          {
-            required: true,
-            message: "当事人联系电话不能为空",
-            trigger: "blur"
-          },
+        telephone: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
-        partyZipCode: [
-          { required: true, message: "邮政编码不能为空", trigger: "blur" }
+        legalAgency: [
+          { required: true, message: "执法机关是否合法不能为空", trigger: "blur" }
         ],
-        partyName: [
-          { required: true, message: "单位名称不能为空", trigger: "blur" }
+        enforcePeople: [
+          { required: true, message: "执法人员是否具备执法资格不能为空", trigger: "blur" }
         ],
-        partyUnitAddress: [
-          { required: true, message: "单位地址不能为空", trigger: "blur" }
+        lawProcedure: [
+          { required: true, message: "执法程序是否合法不能为空", trigger: "blur" }
         ],
-        partyUnitTel: [
-          { required: true, message: "单位联系电话不能为空", trigger: "blur" },
-          { validator: validatePhone, trigger: "blur" }
+        caseFacts: [
+          { required: true, message: "案件事实是否准确不能为空", trigger: "blur" }
         ],
-        partyManager: [
-          { required: true, message: "法人不能为空", trigger: "blur" }
+        lawRegulations: [
+          { required: true, message: "适用法律是否准确不能为空", trigger: "blur" }
         ],
-        partyManagerPositions: [
-          { required: true, message: "职务不能为空", trigger: "blur" }
+        StatutoryAuth: [
+          { required: true, message: "是否超越法定权限不能为空", trigger: "blur" }
         ],
-        closeResult: [
-          { required: true, message: "处理结果不能为空", trigger: "blur" }
+        docSpecification: [
+          { required: true, message: "执法文书是否规范不能为空", trigger: "blur" }
         ],
-        closeSituation: [
-          { required: true, message: "执行情况不能为空", trigger: "blur" }
+        selfRights: [
+          { required: true, message: "当事人权益是否得到保障不能为空", trigger: "blur" }
+        ],
+        suspicionCrime: [
+          { required: true, message: "是否涉嫌犯罪不能为空", trigger: "blur" }
+        ],
+        auditConclusion: [
+          { required: true, message: "审核结论不能为空", trigger: "blur" }
         ]
       },
       nameLength: 23,
@@ -508,9 +435,8 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "removeAdminCoerciveMeasureApproval_print"
+        pageDomId: "majorAdminLawEnforceAudit_print"
       },
-      huanjieAndDocId: this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, //结案报告的文书id
       approvalOver: false, //审核完成
       propertyFeatures: ""
     };
@@ -530,26 +456,6 @@ export default {
     saveData(handleType) {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "docForm", true);
-    },
-    showApprovePeopleList() {
-      let data = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId
-      };
-      this.$refs.showApprovePeopleRef.showModal(data);
-    },
-    //审批弹窗
-    showApproval() {
-      //二级审批(经办机构负责人审批、部门负责人审批)
-      console.log(this.formData);
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
-      let caseData = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,
-        firstApproval: approvePeo,
-        approvalNumber: 2 //2次审批
-      };
-      this.$refs.approvalDialogRef.showModal(caseData);
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -608,34 +514,45 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-.textindent0 {
-  text-indent: 0 !important;
+.prolong_table {
+  table-layout: fixed;
+  td,
+  p,
+  span,
+  .el-checkbox {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
 }
-.print_box
-  #removeAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.el-textarea {
-  top: -12px;
+#majorAdminLawEnforceAudit_print {
+  .overflow_lins_style .span_bg {
+    display: block;
+  }
+  .overflow_lins_style .overflow_lins .overflow_lins_textarea {
+    width: calc(100% - 10px);
+    top: 0;
+  }
+  .overflow_lins_style .overflow_lins span.overflow_lins_textarea {
+    white-space: normal;
+    line-height: 23px;
+    text-indent: 0;
+  }
+  #noteDesCon {
+    .overflow_lins_textarea {
+      padding-top: 4px;
+      textarea {
+        line-height: 24px !important;
+      }
+    }
+    span.overflow_lins_textarea {
+      line-height: 24px;
+    }
+    .span_bg {
+      box-sizing: border-box;
+      margin: 4px 0;
+      height: 20px;
+    }
+  }
 }
-.print_box
-  #removeAdminCoerciveMeasureApproval_print
-  .doc_cause
-  .caseNameBox
-  span.over_flow {
-  top: -8px;
-  text-overflow: initial;
-  font-size: 12px;
-  line-height: 14px;
-}
-// .print_box .print_info .pdf_seal {
-//   margin-top: 20px;
-//   margin-bottom: 10px;
-//   width: 240px;
-//   text-align: center;
-//   font-size: 16px;
-//   font-family: SimSun;
-//   float: right;
-// }
 </style>

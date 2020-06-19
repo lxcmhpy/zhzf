@@ -648,3 +648,7 @@
   padding-left: 4px;
   border-left: 4px solid #4573d0;
 }
+/* 去掉文本域的角标,设计中无此角标，直接用最高级 */
+textarea{
+  resize:none !important;
+}

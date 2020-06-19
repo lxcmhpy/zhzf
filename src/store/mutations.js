@@ -80,6 +80,7 @@ const mutations = {
   [types.DELETE_ALLTABS](state) {
     // state.openTab = [{route: "/index",name: "law_supervise_lawSupervise",title: "可视化监管",headActiveNav:"lawSupervise-menu-law_supervise_lawSupervise"}];
     // routerName
+    debugger;
     state.openTab.splice(0,state.openTab.length);
   },
   // 设置当前激活的tab
@@ -105,10 +106,6 @@ const mutations = {
   //更改tab title
   changeOneTabName(state,data){
     state.openTab[data.tabIndex].title = data.title;
-  },
-  //设置部署省份
-  setProvince(state,data){
-    state.province = data;
   },
   // 按titile删除
   [types.DELETE_TABS_BY_TITLE](state, title) {

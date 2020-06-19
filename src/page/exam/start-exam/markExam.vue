@@ -3,6 +3,7 @@
     <div class="exam-wrap">
       <!-- 考试列表 -->
       <div class="exam-list">
+        <p v-if="!examList.length" class="no-list">暂无可评分考试</p>
         <div
           class="exam-item"
           v-for="exam in examList"
@@ -64,7 +65,6 @@ export default {
       this.$store.dispatch('getWaitScoringExam', this.scorerInfo.scorerId).then(res => {
         loading.close();
         if(res.code === 200){
-          console.log(res);
           this.examList = res.data;
         }
       }, err => {
@@ -98,6 +98,11 @@ export default {
 .exam-list {
   margin: 26px 126px;
   min-height: 280px;
+  .no-list{
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+  }
   .exam-item {
     padding: 20px 30px;
     border-bottom: 1px solid #f0f1f6;

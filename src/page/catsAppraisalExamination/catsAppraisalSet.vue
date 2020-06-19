@@ -16,7 +16,7 @@
                             二级
                         </template> -->
                         <template slot-scope="scope">
-                        <div style="padding:0px 35px 35px 45px;min-width:620px;">
+                        <div style="padding:0px 0px 35px 45px;min-width:620px;">
                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                 <el-button type="primary" size="medium" @click="addZbConfig(scope.row)">
                                     <i class="iconfont law-submit-o f12"></i> 添加二级考核指标
@@ -30,7 +30,7 @@
                                             考评细则
                                         </template> -->
                                         <template slot-scope="scope1">
-                                        <div style="padding:0px 35px 35px 45px;min-width:620px;">
+                                        <div style="padding:0px 0px 35px 45px;min-width:620px;">
                                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                                 <el-button type="primary" size="medium" @click="addXzConfig(scope1.row)">
                                                     <i class="iconfont law-submit-o f12"></i> 添加考评细则
@@ -43,7 +43,7 @@
                                                     <!-- <el-table-column prop="sore" label="分值" align="center" ></el-table-column> -->
                                                     <!-- <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column> -->
                                                     <!-- <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column> -->
-                                                    <el-table-column label="操作" align="center" width="250">
+                                                    <el-table-column label="操作" align="center" width="150">
                                                         <template  slot-scope="scope2">
                                                             <el-button type="text" @click.stop @click="updateXzConfig(scope2.$index, scope2.row)">修改</el-button>
                                                             <el-button type="text" @click.stop @click="deletePykhMetricsById(scope2.$index,scope2.row)">删除</el-button>
@@ -72,7 +72,7 @@
                                     </el-table-column>
                                     <el-table-column prop="indexTwo" label="二级考核指标" align="center" ></el-table-column>
                                     <!-- <el-table-column prop="assessType" label="考核类别" align="center" width="100"></el-table-column> -->
-                                    <el-table-column label="操作" align="center" width="250">
+                                    <el-table-column label="操作" align="center"  width="150">
                                         <template  slot-scope="scope1">
                                             <el-button type="text" @click.stop @click="updateZbConfig(scope1.$index, scope1.row)">修改</el-button>
                                             <el-button type="text" @click.stop @click="deletePykhMetricsById(scope.row,scope1.row)">删除</el-button>
@@ -103,7 +103,7 @@
                     <!-- <el-table-column prop="startTime" label="立案开始时间" align="center"></el-table-column> -->
                     <!-- <el-table-column prop="endTime" label="立案截止时间"  align="center"></el-table-column> -->
                     <el-table-column prop="oneType" label="指标类型配置" align="center" width="150"></el-table-column>
-                    <el-table-column label="操作" align="center" width="120">
+                    <el-table-column label="操作" align="center"  width="150">
 
                         <template  slot-scope="scope">
                             <el-button type="text" @click.stop @click="updatePykhConfig(scope.$index, scope.row)">修改</el-button>
@@ -203,7 +203,7 @@
             </div>
         </el-drawer>
         <el-drawer title="考核细则" modal-append-to-body direction="rtl" size="500px" customClass="amap-drawer" :modal="false" :visible.sync="drawer2">
-            <div style="padding:0px 35px 35px 45px;min-width:620px;">
+            <div style="padding:0px 0px 35px 45px;min-width:620px;">
                   <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="135px">
                 <div v-if="xzObj" style="width:400px">
                     <!-- <div class="item">
