@@ -4,9 +4,9 @@
       <section class="form_contianer" v-show="showLogin">
         <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>治超联网监管系统</span></div>-->
         <div class="leftC">
-          <img src="../../../static/images/img/login/zf_bg.png" alt="">
+          <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
           <div class="leftC_title">
-              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitleLogin}}
+              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitle}}
           </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
