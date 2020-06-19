@@ -325,18 +325,27 @@
         }
         .el-transfer-panel {
             flex:1;
-            .transfer-list {
-                display: flex;
-                li {
-                    min-width: 80px;
-                    max-width: 200px;
-                    // flex:1;
-                    overflow:hidden;
-                    // float:left;
-                    margin:0px;
-                    margin-right: 10px;
-                }
+        }
+        .transfer-list {
+            width:100%;
+            overflow:hidden;
+            li {
+                float:left;
+                box-sizing: border-box;
+                width: 24%;
+                text-align: center;
+                overflow:hidden;
+                margin:0px;
+                margin-right: 1%;
             }
+        }
+        .el-transfer-panel__body {
+            margin-top: 40px;
+        }
+        .el-transfer-panel__footer {
+            top: 40px;
+            line-height: 40px;
+            background:#EBEEF5;
         }
     }
     .el-transfer-panel__item {
