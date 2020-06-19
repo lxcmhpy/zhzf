@@ -72,6 +72,8 @@
             </el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
+                <el-tag type="success" v-show="scope.row.bsStatus==1">已报送</el-tag>
+                <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
                 <el-tag type="success" v-show="scope.row.caseStatus==1">已抽取</el-tag>
                 <el-tag type="warning"  v-show="scope.row.caseStatus==0">未抽取</el-tag>
               </template>
@@ -220,7 +222,7 @@
           businessArea:'',
           caseType:''
         },
-        baosongStatus:false,
+        baosongStatus:true,
         businessAreaList:[
             '公路路政','道路运政','水路运政','航道运政','港口行政','海事行政','工程质量安全监督','其他'
         ],
@@ -370,12 +372,12 @@
       },
       findCaseBsStatus(){
         let data={}
-        data.OId=this.organId;
+        data.oid=this.organId;
         data.bsStatus=1;
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){
-            if(res.data.total==0){
-              this.baosongStatus=true;
+            if(res.data.total>0){
+              this.baosongStatus=false;
             }
           }
         });

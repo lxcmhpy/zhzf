@@ -176,7 +176,7 @@
           provinceNo:'',
           staffName:''
         },
-        baosongStatus:false,
+        baosongStatus:true,
         dialogImageUrl:'',
         dialogVisible: false,
         uploadHeaders: {
@@ -333,8 +333,8 @@
         data.bsStatus=1;
         findPykhStaffByPage(data).then(res=>{
           if(res.code==200){
-            if(res.data.total==0){
-              this.baosongStatus=true;
+            if(res.data.total>0){
+              this.baosongStatus=false;
             }
           }
         });
