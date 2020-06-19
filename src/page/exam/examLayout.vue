@@ -71,7 +71,6 @@ export default {
   created(){
     // this.$util.initUser(this);
     // this.success = false;
-    this.$store.commit('setShowQZBtn', true)
     this.getSystemData();
   }
 };
