@@ -159,7 +159,11 @@ export default {
       }
       getDictListDetailByNameApi('系统标题').then(res => {
         this.$store.commit('set_systemTitle',res.data[0].name);
-        window.document.title = res.data[0].name
+        window.document.title = res.data[0].name;
+        //设置省份
+        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
+        //是否需要签章
+        this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
       }, err => {
         console.log(err);
       })
@@ -216,8 +220,6 @@ export default {
   mounted() {
     this.selectedHeadMenu = this.headActiveNav;
     this.userInfo = iLocalStroage.gets('userInfo');
-    // ???
-     this.$store.commit('setShowQZBtn', true);
   },
   created(){
     //判断有没有menu
