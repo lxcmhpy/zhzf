@@ -5,20 +5,6 @@
         <div v-if="questionData && questionData.firstQuestion" class="exam-info question">
           <div class="header">
             <span>{{ questionData.firstQuestion.questionTypeName }}</span>
-            <el-button
-              v-if="!marked"
-              type="text"
-              icon="icon-sign"
-              class="sign-question"
-              @click="markedQuestion(true)"
-            >标记该题</el-button>
-            <el-button
-              v-if="marked"
-              type="text"
-              icon="icon-marked"
-              class="sign-question marked"
-              @click="markedQuestion(false)"
-            >已标记</el-button>
           </div>
           <div class="question-box">
             <questionItem
@@ -28,12 +14,24 @@
             />
           </div>
           <div class="select-btn">
+            <div v-if="!currentGraph.labelStatue" class="sign-btn sign" @click="markedQuestion(true)">
+              <i class="icon-sign"></i>
+              <span style="margin-left:45px;">标记该题</span>
+            </div>
+            <div v-if="currentGraph.labelStatue" class="sign-btn marked" @click="markedQuestion(false)">
+              <i class="icon-marked"></i>
+              <span style="margin-left:50px;">已标记</span>
+            </div>
             <el-button
               class="question-btn"
               :disabled="currentGraph.orderNo === 1"
               @click="nextQuestion('prev')"
             >上一题</el-button>
-            <el-button class="question-btn" @click="nextQuestion('next')" :disabled="nextDisabled">下一题</el-button>
+            <el-button
+              class="question-btn"
+              @click="nextQuestion('next')"
+              :disabled="nextDisabled"
+            >下一题</el-button>
           </div>
         </div>
       </el-col>
@@ -56,12 +54,7 @@
                   width="100px"
                   height="140px"
                 />
-                <img
-                  v-else
-                  :src="personImg"
-                  width="100px"
-                  height="140px"
-                />
+                <img v-else :src="personImg" width="100px" height="140px" />
               </div>
               <div class="exam-person">
                 <p class="name">{{ examPerInfo.personInfo.personName }}</p>
@@ -90,14 +83,17 @@
                 class="question-class"
               >
                 <div class="title">{{ graph.paragraphTypeName }}</div>
-                <div v-if="graph.examResultList && graph.examResultList.length" class="question-wrap">
+                <div
+                  v-if="graph.examResultList && graph.examResultList.length"
+                  class="question-wrap"
+                >
                   <a
                     v-for="num in graph.examResultList"
                     class="item"
                     :key="num.resultId"
                     :class="{
-                      'sign': num.labelStatue === '1',
-                      'finish': num.answer && num.labelStatue !== '1',
+                      'sign': num.labelStatue,
+                      'finish': num.answer && !num.labelStatue,
                       'current': num.resultId == questionData.firstQuestion.resultId}"
                     @click="currentGraph = num ;nextQuestion('', num.orderNo)"
                   >{{ num.orderNum }}</a>
@@ -190,8 +186,8 @@ export default {
             this.questionData.firstQuestion.listPo = this.questionData.firstQuestion.option_list;
             delete this.questionData.firstQuestion.option_list;
             this.setAllQuestionNum(res.data.graphInfo);
-          }else{
-            this.$message({ type: 'error', message: '获取题目失败' });
+          } else {
+            this.$message({ type: "error", message: "获取题目失败" });
           }
         },
         err => {
@@ -286,8 +282,7 @@ export default {
 
     // 标记该题
     markedQuestion(mark) {
-      this.marked = mark;
-      this.currentGraph.labelStatue = mark ? "1" : "0";
+      this.currentGraph.labelStatue = mark;
     },
     // 下一题
     nextQuestion(dir, orderNo) {
@@ -297,15 +292,15 @@ export default {
       if (dir === "prev") {
         answer.orderNo = this.currentGraph.orderNo - 1;
       }
-      if(dir === 'next'){
-        if(this.currentGraph.orderNo === this.questionNumList.length){
+      if (dir === "next") {
+        if (this.currentGraph.orderNo === this.questionNumList.length) {
           answer.orderNo = this.currentGraph.orderNo;
-        }else{
+        } else {
           answer.orderNo = this.currentGraph.orderNo + 1;
         }
       }
       answer.preOrNext = `${this.currentGraph.orderNo},${answer.orderNo}`;
-      if(orderNo !== undefined && orderNo > 0){
+      if (orderNo !== undefined && orderNo > 0) {
         answer.preOrNext = `${answer.orderNo},${orderNo}`;
         answer.orderNo = orderNo;
       }
@@ -322,10 +317,7 @@ export default {
           loading.close();
           if (res.code === 200) {
             this.$refs.questionItem.clearAnswer();
-            if (
-              res.data.data &&
-              JSON.stringify(res.data.data) !== "{}"
-            ) {
+            if (res.data.data && JSON.stringify(res.data.data) !== "{}") {
               this.currentGraph = this.questionNumList[number - 1];
               this.currentGraph.answer = res.data.data.answer;
               res.data.data.listPo = res.data.data.option_list;
@@ -336,12 +328,17 @@ export default {
               this.questionData.firstQuestion.orderNum = this.currentGraph.orderNum;
               let answer = res.data.data.answer;
               this.setQuestionStatus(answer);
+              if (number === this.questionNumList.length) {
+                this.$message({ type: "info", message: "已到最后一题" });
+                this.nextDisabled = true;
+              }
             }
           }
         },
         err => {
           loading.close();
-          this.$message({ type: "error", message: err.msg || "" });
+          // this.$message({ type: "error", message: err.msg || "" });
+          this.quitExam(err.msg);
         }
       );
     },
@@ -401,13 +398,14 @@ export default {
                   this.nextDisabled = true;
                 }
                 this.savePaper(loading);
-              }else{
+              } else {
                 loading.close();
               }
             },
             err => {
               loading.close();
-              this.$message({ type: "error", message: err.msg || "" });
+              // this.$message({ type: "error", message: err.msg || "" });
+              this.quitExam(err.msg);
             }
           );
         })
@@ -422,36 +420,38 @@ export default {
       this.$store.dispatch("getexamResultSubmit", submitData).then(
         res => {
           loading.close();
-          if (res.code === 200) {
-            this.$confirm("提交成功，预祝您考试顺利！", "提示", {
-              confirmButtonText: "确定",
-              iconClass: "iconfont law-success",
-              customClass: "custom-confirm",
-              showCancelButton: false
-            })
-              .then(() => {
-                sessionStorage.removeItem("ExamUserInfo");
-                sessionStorage.removeItem("StartCount");
-                this.$router.push({
-                  path: "/examineeEntry",
-                  query: {
-                    name: sessionStorage.getItem("ExamName")
-                  }
-                });
-              })
-              .catch(() => {});
-          }
+          this.quitExam("提交成功，预祝您考试顺利！");
         },
         err => {
           loading.close();
           this.$confirm("提交失败，请稍后再试！", "提示", {
             confirmButtonText: "确定",
-            iconClass: "custom-remind",
+            iconClass: "custom-question",
             customClass: "custom-confirm",
             showCancelButton: false
           }).catch(() => {});
         }
       );
+    },
+    // 获取题目失败或被强制收卷跳转页面
+    quitExam(msg) {
+      this.$confirm(msg, "提示", {
+        confirmButtonText: "确定",
+        iconClass: "iconfont law-success",
+        customClass: "custom-confirm",
+        showCancelButton: false
+      })
+        .then(() => {
+          sessionStorage.removeItem("ExamUserInfo");
+          sessionStorage.removeItem("StartCount");
+          this.$router.push({
+            path: "/examineeEntry",
+            query: {
+              name: sessionStorage.getItem("ExamName")
+            }
+          });
+        })
+        .catch(() => {});
     },
     // 左侧题目状态和右侧答题卡联动
     setQuestionStatus(checked) {
@@ -481,22 +481,6 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.icon-sign,
-.icon-marked {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
-  background: url("../../../../static/images/img/exam/sign.png");
-  background-size: 100%;
-  vertical-align: bottom;
-}
-.icon-marked {
-  background: url("../../../../static/images/img/exam/marked.png");
-  background-size: 100%;
-}
-</style>
 <style lang="scss" scoped>
 .entry-exam {
   position: absolute;
@@ -700,6 +684,48 @@ export default {
               color: rgba(123, 123, 123, 1);
               background: rgba(201, 201, 201, 0.25);
               border: 1px solid rgba(201, 201, 201, 0.25);
+            }
+          }
+          .sign-btn {
+            display: inline-block;
+            padding-left: 0;
+            padding-right: 0;
+            width: 130px;
+            height: 40px;
+            line-height: 40px;
+            margin-right: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            position: relative;
+            text-align: inherit;
+            border: 1px solid #ddd;
+            color: #7b7b7b;
+            cursor: pointer;
+            .icon-sign,
+            .icon-marked {
+              display: inline-block;
+              width: 18px;
+              height: 18px;
+              background: url("../../../../static/images/img/exam/sign.png");
+              background-size: 100%;
+              position: absolute;
+              left: 20px;
+              top: 11px;
+            }
+            .icon-marked {
+              background: url("../../../../static/images/img/exam/marked.png");
+              background-size: 100%;
+              color: #e61111;
+            }
+            &.sign:hover{
+              background: rgba(221,221,221, 0.2);
+            }
+            &.marked{
+              color: #e61111;
+              border: 1px solid #e61111;
+              &:hover{
+                background: rgba(230,17,17, 0.1);
+              }
             }
           }
         }

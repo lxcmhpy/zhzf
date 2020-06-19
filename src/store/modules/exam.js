@@ -11,7 +11,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
-    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam,editInvigilatorInfo} from '@/api/joinExam';
+    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam,editInvigilatorInfo,examRecordQueryForManangeApi} from '@/api/joinExam';
     import * as types from "../mutation-types";
     
     const exam = {
@@ -828,6 +828,15 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
            examRecordQueryInfo({commit}, data){
             return new Promise((resolve, reject) => {
                 examRecordQueryApi(data).then(
+                    res => { resolve(res); },
+                    err => { reject(err); }
+                )
+            });
+        },
+         //考试记录查询(后台)
+         examRecordQueryForManange({commit}, data){
+            return new Promise((resolve, reject) => {
+                examRecordQueryForManangeApi(data).then(
                     res => { resolve(res); },
                     err => { reject(err); }
                 )

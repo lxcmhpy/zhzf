@@ -25,9 +25,10 @@ service({
 }).then(
   res => {
     BASEURL = res.data;
+    BASEURL.HOME_PAGE = BASEURL['HOME_PAGE_ROUTER_NAME'];
     console.log('BASEURL.CURRENT',BASEURL.CURRENT);
     sessionStorage.setItem('CURRENT_BASE_URL', JSON.stringify(BASEURL[BASEURL.CURRENT]));
-    sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL['HOME_PAGE_ROUTER_NAME']);
+    sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
     iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
   },
   error => {
@@ -42,6 +43,7 @@ service.interceptors.request.use(
   config => {
     if (BASEURL) {
       iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+      sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
     }
     if (config.baseUrlType) {
         let baseObj = BASEURL[BASEURL.CURRENT];

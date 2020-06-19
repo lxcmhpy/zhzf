@@ -4,8 +4,15 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="30%">
-    <el-form :model="scoreManageForm" label-position="right"  label-width="100px" ref="addExamBatchFormRef" :rules="rules">
+    width="30%"
+  >
+    <el-form
+      :model="scoreManageForm"
+      label-position="right"
+      label-width="100px"
+      ref="addExamBatchFormRef"
+      :rules="rules"
+    >
       <el-row>
         <el-form-item label="姓名：" prop="scorerName" class="form-class">
           <el-input v-model="scoreManageForm.scorerName" placeholder="请输入姓名"></el-input>
@@ -34,127 +41,147 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <div v-if="handelType!=3">
-        <el-button  @click="closeDialog">取 消</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
         <el-button type="primary" @click="submit">保 存</el-button>
       </div>
     </div>
   </el-dialog>
 </template>
 <script>
-import { validatePhone } from "@/common/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
-  data(){
-    return{
-      examTypeInfo:[],
-      examBatchSortInfo:[],
-      isDisabled:true,
+  data() {
+    return {
+      examTypeInfo: [],
+      examBatchSortInfo: [],
+      isDisabled: true,
       visible: false,
       scoreManageForm: {
-        scorerId:'',
-       scorerName:'',
-       scorerIdno:"",
-       scorerOrg:'',
-       scorerPro:"",
-       scorerPhone:"",
+        scorerId: "",
+        scorerName: "",
+        scorerIdno: "",
+        scorerOrg: "",
+        scorerPro: "",
+        scorerPhone: ""
       },
       rules: {
-        scorerName: [{ required: true, message: "评分人姓名不能为空", trigger: "blur" }],
-        scorerIdno: [{ required: true, message: "身份证号不能为空", trigger: "blur" }],
-        scorerOrg: [{ required: true, message: "所属单位不能为空", trigger: "blur" }],
-        scorerPro: [{ required: true, message: "所在省份不能为空", trigger: "blur" }],
-        //scorerPhone: [{ required: true, message: "联系方式不能为空", trigger: "blur" }],
-        scorerPhone: [{ required: true,validator: validatePhone, trigger: "blur"}]
+        scorerName: [
+          { required: true, message: "评分人姓名不能为空", trigger: "blur" }
+        ],
+        scorerIdno: [
+          { required: true, message: "身份证号不能为空", trigger: "blur" },
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        scorerOrg: [
+          { required: true, message: "所属单位不能为空", trigger: "blur" }
+        ],
+        scorerPro: [
+          { required: true, message: "所在省份不能为空", trigger: "blur" }
+        ],
+        scorerPhone: [
+          { required: true, message: "联系方式不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ]
       },
       dialogTitle: "", //弹出框title
-      errorName: false, //添加name时的验证
       handelType: 0 //添加 0  修改2  查看3
-    }
+    };
   },
-  methods:{
+  methods: {
     //提交
     submit() {
-      let _this = this;
-      this.$refs.addExamBatchFormRef.validate((valid) => {
+      this.$refs.addExamBatchFormRef.validate(valid => {
         if (valid) {
-                if(_this.handelType==0){
-            _this.$store.dispatch("addExamScorer", _this.scoreManageForm).then(res => {
-              _this.$emit("getExamBatchListComp");
-              _this.$message({ type: "success", message:  "添加成功!" });
-              _this.closeDialog();
-            }, err => {
-              _this.$message({ type: 'error', message: err.msg || '' });
-            });
-          }else if(_this.handelType==1){
-            _this.$store.dispatch("updateExamScorer", _this.scoreManageForm).then(res => {
-              _this.$emit("getExamBatchListComp");
-              _this.$message({ type: "success",  message:  "修改成功!" });
-              _this.closeDialog();
-            }, err => {
-              _this.$message({ type: 'error', message: err.msg || '' });
-            });
+          const loading = this.$loading({
+            lock: true,
+            text: '正在保存',
+            spinner: 'car-loading',
+            customClass: 'loading-box',
+            background: 'rgba(234,237,244, 0.8)'
+          });
+          let dispatchType = "addExamScorer";
+          let successMsg = "添加成功";
+          if (this.handelType == 0) {
+            dispatchType = "addExamScorer";
+            successMsg = "添加成功";
+          } else if (this.handelType == 1) {
+            dispatchType = "updateExamScorer";
+            successMsg = "添加成功";
           }
+          this.$store.dispatch(dispatchType, this.scoreManageForm).then(
+            res => {
+              loading.close();
+              this.$emit("getExamBatchListComp");
+              this.$message({ type: "success", message: successMsg });
+              this.closeDialog();
+            },
+            err => {
+              loading.close();
+              this.$message({ type: "error", message: err.msg || "" });
+            }
+          );
         } else {
-          this.btnDisabled = false;
           return false;
         }
       });
-    
     },
     //点击下拉框的时查询试卷类型
-    getDictInfo(name,codeName){
-      this.$store.dispatch("findAllDrawerByName",name).then(    //考试类型
-        res=>{
-          if(res.code===200){
-            if(codeName==='examTypeInfo'){
-              this.examTypeInfo=res.data;
+    getDictInfo(name, codeName) {
+      this.$store.dispatch("findAllDrawerByName", name).then(
+        //考试类型
+        res => {
+          if (res.code === 200) {
+            if (codeName === "examTypeInfo") {
+              this.examTypeInfo = res.data;
             }
-          }else{
+          } else {
             console.info("没有查询到数据");
           }
         }
       );
     },
-    showModal(row,type) {
-      let _this=this
+    showModal(row, type) {
+      let _this = this;
       _this.visible = true;
       _this.handelType = type;
-       _this.scoreManageForm.scorerId = '';
-        _this.scoreManageForm.scorerName = '';
-        _this.scoreManageForm.scorerIdno='';
-        _this.scoreManageForm.scorerOrg='';
-        _this.scoreManageForm.scorerPro='';
-        _this.scoreManageForm.scorerPhone='';
-      if(type==0){//新增
+      _this.scoreManageForm.scorerId = "";
+      _this.scoreManageForm.scorerName = "";
+      _this.scoreManageForm.scorerIdno = "";
+      _this.scoreManageForm.scorerOrg = "";
+      _this.scoreManageForm.scorerPro = "";
+      _this.scoreManageForm.scorerPhone = "";
+      if (type == 0) {
+        //新增
         _this.dialogTitle = "新增评分人";
-        _this.isDisabled=false;
-      }else if(type==1){//修改,查看
+      } else if (type == 1) {
+        //修改,查看
         _this.dialogTitle = "修改评分人";
-        _this.isDisabled=false;
-         _this.scoreManageForm.scorerId = row.scorerId;
+        _this.scoreManageForm.scorerId = row.scorerId;
         _this.scoreManageForm.scorerName = row.scorerName;
-        _this.scoreManageForm.scorerIdno=row.scorerIdno;
-        _this.scoreManageForm.scorerOrg=row.scorerOrg;
-        _this.scoreManageForm.scorerPro=row.scorerPro;
-        _this.scoreManageForm.scorerPhone=row.scorerPhone;
+        _this.scoreManageForm.scorerIdno = row.scorerIdno;
+        _this.scoreManageForm.scorerOrg = row.scorerOrg;
+        _this.scoreManageForm.scorerPro = row.scorerPro;
+        _this.scoreManageForm.scorerPhone = row.scorerPhone;
       }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
       this.$refs["addExamBatchFormRef"].resetFields();
-      for(const key in this.addExamBatchForm){
-        this.addExamBatchForm[key] = '';
+      for (const key in this.addExamBatchForm) {
+        this.addExamBatchForm[key] = "";
       }
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
->>>.el-select, >>>.el-date-editor{
+>>> .el-select,
+>>> .el-date-editor {
   display: block;
 }
->>>.el-date-editor.el-input,
->>>.el-date-editor.el-input__inner{
+>>> .el-date-editor.el-input,
+>>> .el-date-editor.el-input__inner {
   display: block;
   width: 100%;
 }

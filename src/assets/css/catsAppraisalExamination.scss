@@ -59,6 +59,7 @@
                 display: block;
                 line-height: 40px;
                 margin-left: 23px;
+                cursor: pointer;
                 &.fontGray {
                     color: #333;
                     .tz {
@@ -143,6 +144,10 @@
                 width: 70px;
                 text-align: center;
                 margin-right: 80px;
+                cursor: pointer;
+                img:hover {
+
+                }
                 .menuBox {
                     padding:0px 2px;
                     width: 66px;

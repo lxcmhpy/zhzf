@@ -1,13 +1,13 @@
 <template>
   <div class="com_searchAndpageBoxPadding temp">
-    <div class="searchPage toggleBox">
+    <div class="searchPage">
       <div class="handlePart">
-        <el-form :inline="true" :model="templeteForm" label-width="120px;" ref="templeteFormRef">
+        <el-form :inline="true" :model="templeteForm" label-width="80px" ref="templeteFormRef">
           <div>
             <div class="item">
               <el-row>
                 <el-form-item label="模板名称" prop="templeteName" >
-                  <el-input v-model="templeteForm.templeteName" placeholder="模板名称"></el-input>
+                  <el-input v-model="templeteName" placeholder="模板名称"></el-input>
                 </el-form-item>
                 <el-form-item style="margin-left:20px;">
                   <el-button

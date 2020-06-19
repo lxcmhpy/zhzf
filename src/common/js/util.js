@@ -1,9 +1,9 @@
 
-import {
-  getCurrentUserApi,getMenuApi
-} from "@/api/login";
-import iLocalStroage from "@/common/js/localStroage";
-import {menuList} from "@/common/data/menu";
+// import {
+//   getCurrentUserApi,getMenuApi
+// } from "@/api/login";
+// import iLocalStroage from "@/common/js/localStroage";
+// import {menuList} from "@/common/data/menu";
 
 //公用方法
 let util = {};
@@ -336,50 +336,51 @@ util.openURL = function(pdfPath){
   // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
 }
 
-util.initMenu = function(vm){
-    let _this = vm;
-    console.log('util获取菜单')
-    getMenuApi().then(
-        res => {
-            // ,
-            let menuListNew = [...res.data, ...menuList];
-            _this.$store.commit("SET_MENU", menuListNew);
-        //   _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
-        //   _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
-            let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
-            _this.$store.commit("SET_ACTIVE_INDEX_STO", routerName);
-            _this.$store.commit('set_Head_Active_Nav',routerName);
-            _this.$store.dispatch("addTabs", {
-                route: routerName,
-                name: routerName,
-                title:'首页',
-                headActiveNav: routerName
-            });
-        //   _this.$router.push({ name: "law_supervise_lawSupervise" });
-            _this.$router.push({ name: routerName});
-          // callback();
-        },
-        err => {
-          console.log(err);
-        }
-      )
-}
+// util.initMenu = function(vm){
+//     let _this = vm;
+//     console.log('util获取菜单')
+//     getMenuApi().then(
+//         res => {
+//             // ,
+//             let menuListNew = [...res.data, ...menuList];
+//             _this.$store.commit("SET_MENU", menuListNew);
+//         //   _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
+//         //   _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
+//             let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
+//             _this.$store.commit("SET_ACTIVE_INDEX_STO", routerName);
+//             _this.$store.commit('set_Head_Active_Nav',routerName);
+//             _this.$store.dispatch("addTabs", {
+//                 route: routerName,
+//                 name: routerName,
+//                 title:'首页',
+//                 headActiveNav: routerName
+//             });
+//         //   _this.$router.push({ name: "law_supervise_lawSupervise" });
+//             _this.$router.push({ name: routerName});
+//           // callback();
+//         },
+//         err => {
+//           console.log(err);
+//         }
+//       )
+// }
 
-util.initUser = function(vm){
-  if(!iLocalStroage.gets('userInfo') ||  !vm.$store.state.system.menu){
-    console.log('获取信息')
-    getCurrentUserApi().then(res=>{
-      console.log("当前用户信息",res);
-      iLocalStroage.sets('userInfo', res.data);
-      util.initMenu(vm);
-    },err=>{
-      console.log(err);
-    })
-  }else{
+// util.initUser = function(vm){
+//     debugger;
+//   if(!iLocalStroage.gets('userInfo') ||  !vm.$store.state.system.menu){
+//     console.log('获取信息')
+//     getCurrentUserApi().then(res=>{
+//       console.log("当前用户信息",res);
+//       iLocalStroage.sets('userInfo', res.data);
+//       util.initMenu(vm);
+//     },err=>{
+//       console.log(err);
+//     })
+//   }else{
 
-  }
+//   }
 
-}
+// }
 
 util.getFileType = function(fileName) {
   // 后缀获取

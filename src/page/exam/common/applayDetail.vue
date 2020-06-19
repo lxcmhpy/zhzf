@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div style="margin: 20px;">
       <el-table
         :data="tableData"
         resizable
@@ -26,7 +26,8 @@ export default {
   mixins: [mixinPerson],
   data() {
     return {
-      tableData: []
+      tableData: [],
+      tableLoading: false
     };
   },
   computed: {
@@ -47,15 +48,16 @@ export default {
       let data = {
         pageId: this.pageId
       };
-      // _this.getPageList("pageVerifyListByPageId",data);
+      _this.tableLoading = true;
       _this.$store.dispatch("pageVerifyListByPageId", data).then(
         res => {
+          _this.tableLoading = false;
           if (res.code === 200) {
             _this.tableData = res.data;
           }
         },
         err => {
-          loading.close();
+          _this.tableLoading = false;
           _this.$message({ type: "error", message: err.msg || "" });
         }
       );

@@ -5,14 +5,15 @@ let vm = new Vue();
 
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
+import da from "element-ui/src/locale/lang/da";
 
 // 根据条件分页查询人员列表
 export function findPykhStaffByPage (data) {
   return request({
     url: "/pykh/staff/findPykhStaffByPage",
     method: "get",
-    showloading: false,
-    baseUrlType:'CAPTCHA_HOST',
+    showloading: true,
+    loadingType:'loadPart',
     params: data,
     cancelToken: setCancelSource()
   })
@@ -80,8 +81,8 @@ export function randomSamplingStaffByPage (oId,batchId) {
   return request({
     url: "/pykh/randomSampling/randomSamplingStaffByPage/"+oId+"/"+batchId,
     method: "get",
-    showloading: false,
-    baseUrlType:'CAPTCHA_HOST',
+    showloading: true,
+    loadingType:'loadPart',
     params: null,
     cancelToken: setCancelSource()
   })
@@ -91,10 +92,22 @@ export function randomSamplingStaffByPage (oId,batchId) {
 export function submitProStaff (data) {
   return request({
     url: "/pykh/randomSampling/submitProStaff",
-    method: "get",
-    showloading: false,
-    baseUrlType:'CAPTCHA_HOST',
-    params: data,
+    method: "post",
+    showloading: true,
+    loadingType:'loadPart',
+    data: data,
+    cancelToken: setCancelSource()
+  })
+}
+
+//部级抽取人员
+export function submitStaff (data) {
+  return request({
+    url: "/pykh/randomSampling/submitStaff",
+    method: "post",
+    showloading: true,
+    loadingType:'loadPart',
+    data: data,
     cancelToken: setCancelSource()
   })
 }
