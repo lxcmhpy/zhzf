@@ -155,6 +155,8 @@ export default {
     },
     resetLog() {
       this.$refs["examDeployFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getStationList();
     },
     stationInfo(row, type) {
       //新增

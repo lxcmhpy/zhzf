@@ -269,14 +269,15 @@ export default {
         currentOutlineId: this.currentOutlineId,
         selectCurrentTreeName: this.selectCurrentTreeName
       };
-      if (this.currentOutlineId == null || this.currentOutlineId == "") {
-        _this.$message({
-          type: "error",
-          message: "请选择大纲!"
-        });
-      } else {
-        this.$refs.addMaintainQuestionRef.showModal(parentNode, '1');
-      }
+      this.$refs.addMaintainQuestionRef.showModal(parentNode, '1');
+      // if (this.currentOutlineId == null || this.currentOutlineId == "") {
+      //   _this.$message({
+      //     type: "error",
+      //     message: "请选择大纲!"
+      //   });
+      // } else {
+      //   this.$refs.addMaintainQuestionRef.showModal(parentNode, '1');
+      // }
     },
     //修改试题
     updateQuestionInfo(questionId, type) {

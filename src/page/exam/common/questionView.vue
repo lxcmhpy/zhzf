@@ -33,7 +33,7 @@
                   disabled
                 >{{itemSon.optionNum}}:{{itemSon.optionName}}</el-checkbox>
                 <div class="option-img" v-if="itemSon.optionPicture">
-                  <el-image :src="itemSon.optionPicture"></el-image>
+                  <el-image :src="baseUrl + itemSon.optionPicture"></el-image>
                 </div>
               </div>
               <div v-if="questionTypeTxt === 'essays'" style="width: 100%;">
@@ -59,8 +59,8 @@
         </el-col>
         <el-col v-if="question.questionPicture" :span="8">
           <div class="stem-img">
-            <el-image :src="question.questionPicture"></el-image>
-            <a class="view-img" @click="viewImage(item.questionPicture)">查看大图</a>
+            <el-image :src="baseUrl + question.questionPicture"></el-image>
+            <a class="view-img" @click="viewImage(question.questionPicture)">查看大图</a>
           </div>
         </el-col>
       </el-row>
@@ -91,6 +91,8 @@
   </div>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   name: "questionView",
   props: {
@@ -145,13 +147,16 @@ export default {
           break;
       }
       return txt;
+    },
+    baseUrl() {
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   mounted() {},
   methods: {
     // 查看大图
     viewImage(src) {
-      this.dialogImageUrl = src;
+      this.dialogImageUrl = this.baseUrl + src;
       this.dialogVisible = true;
     },
     // 获取正确答案

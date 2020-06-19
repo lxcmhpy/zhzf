@@ -770,7 +770,6 @@ export function randomQuestion(data){
         url: '/exam/pageManage/randomQuestion',
         method: "get",
         params: data,
-        timeout: 30000,
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -781,7 +780,6 @@ export function randomParagraphQuestion(data){
         url: '/exam/pageManage/randomParagraphQuestion',
         method: "get",
         params: data,
-        timeout: 30000,
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -792,7 +790,6 @@ export function saveReplaceQuestion(data){
         url: '/exam/pageManage/saveRandomParagraphQuestion',
         method: "get",
         params: data,
-        timeout: 30000,
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -802,6 +799,16 @@ export function getSystemParams(){
     return request({
         url: `/exam/paramInfo/getSystemParams`,
         method: "get",
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
+// 删除选型图片
+export function deleteQuestionImage(data){
+    return request({
+        url: `bankQuestion/deleteQuestionOrOptionPictureFileInfo`,
+        method: "get",
+        params: data,
         showloading: false,
         cancelToken: setCancelSource()
     })
