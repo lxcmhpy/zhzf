@@ -9,13 +9,13 @@
               <el-input v-model="search.staffName" clearable placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item label="所属机构">-->
-<!--              <el-input v-model="search.OId" clearable placeholder="请选择"></el-input>-->
+<!--              <el-input v-model="search.oId" clearable placeholder="请选择"></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData(1)">查询</el-button>
             </el-form-item>
               <el-form-item v-if="baosongStatus">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add_openDialog">新增</el-button>
@@ -159,7 +159,7 @@
         total:0,
         search:{
           staffName:"",
-          OId:""
+          oId:""
         },
         organList:[],
         organId:'',
@@ -167,7 +167,7 @@
         visible:false,
         labelPosition: 'right',
         form:{
-          Oid: '',
+          oId: '',
           enforcementCertificate:'',
           idCard:'',
           maritimeNo:'',
@@ -220,7 +220,7 @@
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
-        data.OId=this.organId;
+        data.oId=this.organId;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
@@ -233,6 +233,7 @@
       download_excel(){
       },
       handleSizeChange(val) {
+        this.current = 1;
         this.size=val;
         this.fetchData({});
       },
@@ -243,13 +244,14 @@
       resetSearch(){
         this.search={
           staffName:"",
-            OId:""
+            oId:""
         }
       },
-      searchData(){
+      searchData(current){
+        this.current = current;
         let data={};
         data.staffName=this.search.staffName;
-        data.OId=this.search.OId;
+        data.oId=this.search.oId;
         this.fetchData(data);
       },
       uploadPerson(param) {
@@ -276,7 +278,7 @@
         this.visible = true;
         this.form = {
           batchId:'',
-          OId: this.organId,
+          oId: this.organId,
           enforcementCertificate: '',
           idCard: '',
           maritimeNo: '',
@@ -322,7 +324,7 @@
       },
       findPersonBsStatus(){
         let data={}
-        data.OId=this.organId;
+        data.oId=this.organId;
         data.bsStatus=1;
         findPykhStaffByPage(data).then(res=>{
           if(res.code==200){
@@ -351,7 +353,7 @@
       console.info("userinfo:",userInfo)
       this.organId = userInfo.organId;
       let data={}
-      // data.OId=this.organId;
+      // data.oId=this.organId;
       this.findPersonBsStatus();
       this.fetchData(data);
 
