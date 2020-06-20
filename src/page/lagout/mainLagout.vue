@@ -191,8 +191,10 @@ export default {
             getMenuApi().then(
                 res => {
                     // ,
-                    let menuListNew = [...res.data, ...menuList];
-                    _this.$store.commit("SET_MENU", menuListNew);
+                    // let menuListNew = [...res.data, ...menuList];
+                    // _this.menuList = [...menuList];
+                    _this.menuList = res.data; 
+                    _this.$store.commit("SET_MENU", _this.menuList);
                 //   _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
                 //   _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
                     let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');

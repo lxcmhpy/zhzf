@@ -50,7 +50,7 @@
                         v-for="item in cxlList"
                         :key="item.id"
                         :label="item.name"
-                        :value="item.name"
+                        :value="item.sort"
                         ></el-option>
                     </el-select>
                 </el-form-item>
