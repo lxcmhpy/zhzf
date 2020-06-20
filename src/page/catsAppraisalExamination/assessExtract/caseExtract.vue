@@ -38,10 +38,10 @@
 
                 <span slot-scope="{ option }" >
                     <ul class="transfer-list" >
-                        <li><span>案件编号{{ option.caseNo }}</span></li>
-                        <li><span>案件类型{{ option.caseType }}</span></li>
-                        <li><span>业务领域{{ option.businessArea }}</span></li>
-                        <li><span>案由{{ option.caseCause }}</span></li>
+                        <li><span>{{ option.caseNo }}</span></li>
+                        <li><span>{{ option.caseType }}</span></li>
+                        <li><span>{{ option.businessArea }}</span></li>
+                        <li><span>{{ option.caseCause }}</span></li>
                     </ul>
                 </span>
                 <ul class="transfer-list transfer-list-header" slot="left-footer" >
