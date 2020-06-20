@@ -58,7 +58,7 @@
             <el-table-column prop="caseNo" label="案件编号" align="center"></el-table-column>
             <el-table-column prop="caseParty" label="当事人" align="center"></el-table-column>
             <el-table-column prop="caseType" label="案卷类型" align="center"></el-table-column>
-            <el-table-column prop="caseAgency" label="立案机构" align="center"></el-table-column>
+            <el-table-column prop="caseAgency" label="办案/执法机构" align="center"></el-table-column>
             <el-table-column prop="casesMajor" label="是否是重大案件" align="center"></el-table-column>
             <el-table-column prop="enforcementOfficials1" label="执法人员1" align="center"></el-table-column>
             <el-table-column prop="enforcementOfficials2" label="执法人员2" align="center"></el-table-column>
@@ -81,7 +81,7 @@
               <el-table-column label="操作" align="center" width="120" v-if="baosongStatus">
                 <template  slot-scope="scope">
                   <el-button type="text" @click.stop @click="update(scope.row)" v-show="scope.row.caseStatus==0">修改</el-button>
-                  <el-button type="text" @click.stop @click="delete(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
+                  <el-button type="text" @click.stop @click="deleteCase(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
                   <el-upload
                     class="upload-demo"
                     accept=".pdf"
@@ -106,7 +106,7 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="current"
-              :page-sizes="[this.size, 2*this.size, 3*this.size, 4*this.size]"
+              :page-sizes="[20, 40, 60, 80,100]"
               :page-size=this.size
               layout="total, sizes, prev, pager, next, jumper"
               :total="total">
@@ -122,7 +122,7 @@
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
             </el-form-item> -->
-            <el-form-item label="案卷编号" prop="caseNo">
+            <el-form-item label="案卷编号" >
               <el-input placeholder="请输入" v-model.trim="form.caseNo" ></el-input>
             </el-form-item>
             <el-form-item label="案由">
@@ -136,7 +136,7 @@
             <el-form-item label="当事人">
               <el-input placeholder="请输入" v-model.trim="form.caseParty" ></el-input>
             </el-form-item>
-            <el-form-item label="立案机构">
+            <el-form-item label="办案/执法机构">
               <el-input placeholder="请输入" v-model.trim="form.caseAgency" ></el-input>
             </el-form-item>
             <el-form-item label="执法人员1">
@@ -257,7 +257,8 @@
       },
       fetchData(data){
         data.current=this.current
-        data.size=this.size
+        data.size=this.size;
+        data.oid=this.organId;
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){
             this.dataList=res.data.records;
@@ -269,13 +270,12 @@
       //更改每页显示的条数
     handleSizeChange(val) {
       this.size = val;
-      this.current = 1;
-      this.fetchData();
+      this.fetchData({});
     },
     //更换页码
     handleCurrentChange(val) {
       this.current = val;
-      this.fetchData();
+      this.fetchData({});
     },
       searchData(){
         let data=this.search;
@@ -296,6 +296,36 @@
         this.form=data;
         this.visible=true;
       },
+      deleteCase(data){
+        console.info("***********")
+        this.$confirm("确定删除吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          deleteCaseInfo(data.caseId).then(
+            res => {
+              if(res.data===true){
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.fetchData({})
+              }else{
+                this.$message({
+                  type: "warning",
+                  message: "删除失败!"
+                });
+              }
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        })
+          .catch(() => {});
+      },
+
       addOrUpdate(){
         let _this =this;
         this.$refs['form'].validate((valid) => {
@@ -318,34 +348,7 @@
             }
         })
       },
-      delete(data){
-        this.$confirm("确定删除吗？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-              deleteCaseInfo(data.caseId).then(
-                res => {
-                  if(res.data===true){
-                    this.$message({
-                      type: "success",
-                      message: "删除成功!"
-                    });
-                    this.reload();
-                  }else{
-                    this.$message({
-                      type: "warning",
-                      message: "删除失败!"
-                    });
-                  }
-                },
-                err => {
-                  console.log(err);
-                }
-              );
-            })
-            .catch(() => {});
-      },
+
       uploadCase(param){
         console.log(param);
         var fd = new FormData();
@@ -355,14 +358,10 @@
           res => {
             console.log(res);
             if(res.code==200){
-              if(res.data === "上传成功"){
-                this.fetchData({});
-                this.$message({type: "success",message: res.data});
-              }else{
-                this.$message({type: "error",message:res.data});
-              }
+              this.fetchData({});
+              this.$message({type: "success",message: res.msg});
             }else{
-              this.$message({type: "error",message:res.data});
+              this.$message({type: "error",message:res.msg});
             }
           },
           error => {
@@ -386,11 +385,11 @@
       clickBaosong(){
         confirmSubmissionCase(this.organId).then(res=>{
           if(res.code==200){
-            this.errorMsg(res.msg,"success")
+            this.$message({type: "success",message: res.msg});
             this.findCaseBsStatus();
             this.fetchData({});
           }else{
-            that.errorMsg(res.msg,"error")
+            this.$message({type: "error",message: res.msg});
           }
         });
       }
