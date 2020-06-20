@@ -71,7 +71,6 @@
                     :show-file-list="false"
                     v-show="scope.row.staffStatus==1"
                     :http-request="(params)=>saveFile(params,scope.row)"
-                    action="https://jsonplaceholder.typicode.com/posts/"
                     multiple
                     :limit="1">
                     <el-button size="small" type="primary">上传照片</el-button>
