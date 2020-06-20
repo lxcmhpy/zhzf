@@ -44,7 +44,7 @@
 
     </div>
     <!-- <vehicleCheckDialog ref="vehicleCheckDialogRef"></vehicleCheckDialog> -->
-    <el-drawer class="el-drawer-title-noborder" title="车辆查验" direction="rtl" size="876px" :visible.sync="checkVisible" :show-close="false">
+    <el-drawer class="el-drawer-title-noborder" title="车辆查验111" direction="rtl" size="876px" :visible.sync="checkVisible" :show-close="false">
       <div class="vehicle-dialog table-style">
         <el-form>
           <div class="check-vehicle">
