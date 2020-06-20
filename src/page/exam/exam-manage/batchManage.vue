@@ -153,7 +153,7 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="pagination-box">
+        <div class="paginationBox">
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -410,6 +410,8 @@ export default {
     // 日志重置
     resetLog() {
       this.$refs["batchManageFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getExamBatchList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -480,10 +482,6 @@ export default {
   }
   .m-r-30{
     margin-right: 30px;
-  }
-  .pagination-box{
-    margin-top: 20px;
-    text-align: center;
   }
 }
 </style>

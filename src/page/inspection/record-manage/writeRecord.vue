@@ -15,9 +15,7 @@
           </span>
         </el-popover>
         <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
-
       </div>
-
       <!-- 动态生成表单 -->
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
@@ -427,6 +425,8 @@ export default {
       // 处理个人和法人
       let personFlag = false
       let partyFlag = false
+      console.log('data',data)
+      debugger
       data.forEach(element => {
         if (element.classs == '个人') {
           personFlag = element;
@@ -693,7 +693,7 @@ export default {
       }
       data.forEach(element => {
         // console.log(element)
-        if (element.classs && element.classs != '法人' && element.classs != '个人') {
+        if (element.classs != '法人' && element.classs != '个人') {
           // 组
           this.rule.push(
             {

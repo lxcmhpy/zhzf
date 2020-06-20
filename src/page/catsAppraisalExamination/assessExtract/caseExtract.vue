@@ -21,8 +21,9 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
             </el-form-item> -->
-            <el-form-item>
+            <el-form-item v-show="!isSubmit">
               <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingCase">随机抽取</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="submitCase">确认抽取</el-button>
             </el-form-item>
 
           </el-form>
@@ -30,10 +31,11 @@
 
         <div class="extractPage">
           <div class="com_extract_top" >
-            <el-transfer width="100%" :titles="['案件列表', '已抽取案件']" v-model="value" 
-            :button-texts="['取消', '抽取']" 
+            <el-transfer width="100%" :titles="['案件列表', '已抽取案件']" v-model="value"
+            :button-texts="['', '']"
             :data="data"
             @change="handleChange">
+
                 <span slot-scope="{ option }" >
                     <ul class="transfer-list" >
                         <li><span>案件编号{{ option.caseNo }}</span></li>
@@ -42,9 +44,18 @@
                         <li><span>案由{{ option.caseCause }}</span></li>
                     </ul>
                 </span>
-              <el-button class="transfer-footer" slot="left-header" size="small" >操作</el-button>
-              <el-button class="transfer-footer" slot="right-header" size="small">操作</el-button>
-
+                <ul class="transfer-list transfer-list-header" slot="left-footer" >
+                    <li><span>案件编号</span></li>
+                    <li><span>案件类型</span></li>
+                    <li><span>业务领域</span></li>
+                    <li><span>案由</span></li>
+                </ul>
+                <ul class="transfer-list transfer-list-header" slot="right-footer" >
+                    <li><span>案件编号</span></li>
+                    <li><span>案件类型</span></li>
+                    <li><span>业务领域</span></li>
+                    <li><span>案由</span></li>
+                </ul>
             </el-transfer>
           </div>
         </div>
@@ -74,8 +85,8 @@
         organId:"",
         labelPosition: 'right',
         batchList:[],
-        organList:[]
-
+        organList:[],
+        isSubmit:false
       };
     },
     methods:{
@@ -97,12 +108,18 @@
                 caseCause:res.data.records[i].caseCause
               });
             }
+            if(this.value.length>0){
+              this.isSubmit = true
+              caseList.forEach((item)=>{
+                item.disabled=true
+              })
+            }
             this.data=caseList;
           }
         });
       },
       handleChange(value, direction, movedKeys) {
-        var ids= [];
+        /* var ids= [];
         for(var j=0;j<value.length;j++){
           ids.push(this.data[value[j]].caseId)
         }
@@ -122,6 +139,37 @@
               _this.value = []
             }
           }
+        }); */
+      },
+      submitCase() {
+        var ids= [];
+        for(var j=0;j<this.value.length;j++){
+          ids.push(this.data[this.value[j]].caseId)
+        }
+        if(ids.length===0){
+          this.$message({type: "warning",message: "请先抽取数据"});
+          return
+        }
+        var submitCaseData={};
+        submitCaseData.idList= ids ;
+        submitCaseData.batchId=this.search.batchId;
+        let _this = this
+        submitCase(submitCaseData).then(res=>{
+          if(res.code===200){
+            if(res.data === "操作成功"){
+              _this.data.forEach((item)=>{
+                item.disabled=true
+              })
+              _this.isSubmit=true
+              _this.$message({type: "success",message: res.data});
+            }else if(res.data === "取消成功"){
+              _this.$message({type: "success",message: res.data});
+              _this.value = []
+            }else{
+              _this.$message({type: "error",message: res.data});
+              _this.value = []
+            }
+          }
         });
       },
       randomSamplingCase(){
@@ -131,25 +179,19 @@
             type: 'error'
           })
         }else{
+          this.value=[]
+          let _this = this
           randomSamplingCaseByPage(this.search.oId,this.search.batchId).then(res=>{
             if(res.code==200){
-            var caseList=[];
-            for(var i=0;i<res.data.length;i++){
-              if(res.data[i].caseStatus!=0){
-                this.value.push(i)
+              for(var i=0;i<res.data.length;i++){
+                var id = res.data[i].caseId
+                _this.data.forEach(function(item){
+                    if(item.caseId === id){
+                      _this.value.push(item.key)
+                    }
+                })
               }
-              caseList.push({
-                key: i,
-                label: res.data[i].caseNo,
-                caseNo:res.data[i].caseNo,
-                caseId:res.data[i].caseId,
-                caseType: res.data[i].caseType,
-                businessArea:res.data[i].businessArea,
-                caseCause:res.data[i].caseCause
-              });
             }
-            this.data=caseList;
-          }
           })
         }
       },

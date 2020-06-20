@@ -52,11 +52,21 @@ export function submitCase (data) {
   })
 }
 
-
+// 随机抽取
 export function randomSamplingCaseByPage (oId,batchId) {
   return request({
     url: "/pykh/randomSampling/randomSamplingCaseByPage/"+oId+"/"+batchId,
     method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  })
+}
+// 报送
+export function confirmSubmissionCase (oId) {
+  return request({
+    url: "/pykh/case/confirmSubmissionCase/"+oId,
+    method: "post",
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

@@ -28,24 +28,27 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add">新增</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-link href="./static/excel/案卷信息.xlsx">
-                <el-button type="primary" size="medium" icon="el-icon-plus" >模板下载</el-button>
-              </el-link>
-            </el-form-item>
-            <el-form-item>
-              <el-upload
-                class="upload-demo"
-                action=""
-                :http-request="uploadCase"
-                :show-file-list="false"
-                accept=".xlsx"
-              >
-                <el-button type="primary" size="medium" icon="el-icon-plus">批量导入</el-button>
-              </el-upload>
+              <el-form-item v-if="baosongStatus">
+                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add">新增</el-button>
+              </el-form-item>
+              <el-form-item v-if="baosongStatus">
+                <el-link href="./static/excel/案卷信息.xlsx">
+                  <el-button type="primary" size="medium" icon="el-icon-plus" >模板下载</el-button>
+                </el-link>
+              </el-form-item >
+              <el-form-item v-if="baosongStatus">
+                <el-upload
+                  class="upload-demo"
+                  action=""
+                  :http-request="uploadCase"
+                  :show-file-list="false"
+                  accept=".xlsx"
+                >
+                  <el-button type="primary" size="medium" icon="el-icon-plus">批量导入</el-button>
+                </el-upload>
+              </el-form-item>
+            <el-form-item v-if="baosongStatus">
+              <el-button type="primary" size="medium" @click="clickBaosong">报送</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -69,29 +72,31 @@
             </el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
+                <el-tag type="success" v-show="scope.row.bsStatus==1">已报送</el-tag>
+                <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
                 <el-tag type="success" v-show="scope.row.caseStatus==1">已抽取</el-tag>
                 <el-tag type="warning"  v-show="scope.row.caseStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
+              <el-table-column label="操作" align="center" width="120" v-if="baosongStatus">
+                <template  slot-scope="scope">
+                  <el-button type="text" @click.stop @click="update(scope.row)" v-show="scope.row.caseStatus==0">修改</el-button>
+                  <el-button type="text" @click.stop @click="delete(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
+                  <el-upload
+                    class="upload-demo"
+                    accept=".pdf"
+                    :show-file-list="false"
+                    v-show="scope.row.caseStatus==1"
+                    :http-request="(params)=>saveFile(params,scope.row)"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    multiple
+                    :limit="1">
+                    <el-button size="small" type="primary">上传附件</el-button>
+                  </el-upload>
+                  <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.caseStatus==1 && scope.row.fjStatus==1">查看附件</el-button>
+                </template>
+              </el-table-column>
 
-            <el-table-column label="操作" align="center" width="120">
-              <template  slot-scope="scope">
-                <el-button type="text" @click.stop @click="update(scope.row)" v-show="scope.row.caseStatus==0">修改</el-button>
-                <el-button type="text" @click.stop @click="delete(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
-                <el-upload
-                  class="upload-demo"
-                  accept=".pdf"
-                  :show-file-list="false"
-                  v-show="scope.row.caseStatus==1"
-                  :http-request="(params)=>saveFile(params,scope.row)"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  multiple
-                  :limit="1">
-                  <el-button size="small" type="primary">上传附件</el-button>
-                </el-upload>
-                <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.caseStatus==1 && scope.row.fjStatus==1">查看附件</el-button>
-              </template>
-            </el-table-column>
           </el-table>
         </div>
 
@@ -145,7 +150,7 @@
                 <el-option v-for="(item,index) in handleTypeList" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="涉案金额">
+            <el-form-item label="涉案金额（元）">
               <el-input placeholder="请输入" v-model.trim="form.amountInvolved" ></el-input>
             </el-form-item>
             <el-form-item label="业务领域">
@@ -175,7 +180,7 @@
 
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo,StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
+  import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo,StaffAndCaseFile,confirmSubmissionCase } from "@/api/catsAppraisalExamCaseUpload.js";
   import viewNotice from "../noticeManage/viewNotice";
   import iLocalStroage from '@/common/js/localStroage';
 
@@ -217,6 +222,7 @@
           businessArea:'',
           caseType:''
         },
+        baosongStatus:true,
         businessAreaList:[
             '公路路政','道路运政','水路运政','航道运政','港口行政','海事行政','工程质量安全监督','其他'
         ],
@@ -294,6 +300,7 @@
         let _this =this;
         this.$refs['form'].validate((valid) => {
             if (valid) {
+              _this.form.OId=this.organId
                 saveOrUpdateCaseInfo(_this.form).then(res=>{
                     console.info("保存案件结果：",res)
                     if(res.code==200){
@@ -348,19 +355,51 @@
           res => {
             console.log(res);
             if(res.code==200){
-              this.fetchData({});
+              if(res.data === "上传成功"){
+                this.fetchData({});
+                this.$message({type: "success",message: res.data});
+              }else{
+                this.$message({type: "error",message:res.data});
+              }
+            }else{
+              this.$message({type: "error",message:res.data});
             }
           },
           error => {
             console.log(error);
           }
         );
+      },
+      findCaseBsStatus(){
+        let data={}
+        data.oid=this.organId;
+        data.bsStatus=1;
+        findPykhCaseByPage(data).then(res=>{
+          if(res.code==200){
+            if(res.data.total>0){
+              this.baosongStatus=false;
+            }
+          }
+        });
+
+      },
+      clickBaosong(){
+        confirmSubmissionCase(this.organId).then(res=>{
+          if(res.code==200){
+            this.errorMsg(res.msg,"success")
+            this.findCaseBsStatus();
+            this.fetchData({});
+          }else{
+            that.errorMsg(res.msg,"error")
+          }
+        });
       }
     },
     mounted() {
       let userInfo = iLocalStroage.gets("userInfo");
       this.organId = userInfo.organId;
       let initdata={}
+      this.findCaseBsStatus();
       this.fetchData(initdata);
     }
   }

@@ -307,20 +307,48 @@
         display: flex;
         margin-right: 50px;
         .el-transfer__buttons {
-            width: 130px;
+            width: 90px;
             flex-shrink: 0;
-        }
-        .el-transfer-panel {
-            flex:1;
-            .transfer-list {
-                display: flex;
-                li {
-                    // width: 200px;
-                    overflow:hidden;
-                    // float:left;
-                    margin:0 20px;
+            box-sizing: border-box;
+            button {
+                margin-left:0px;
+                width: 100%;
+                .el-icon-arrow-left::before {
+                    content: "\e6dd";
+                    margin-left:-6px;
+                }
+                .el-icon-arrow-right::before {
+                    content: "\e6dc";
+                    margin-left:-6px;
                 }
             }
         }
+        .el-transfer-panel {
+            flex:1;
+        }
+        .transfer-list {
+            width:100%;
+            overflow:hidden;
+            li {
+                float:left;
+                box-sizing: border-box;
+                width: 24%;
+                text-align: center;
+                overflow:hidden;
+                margin:0px;
+                margin-right: 1%;
+            }
+        }
+        .el-transfer-panel__body {
+            margin-top: 40px;
+        }
+        .el-transfer-panel__footer {
+            top: 40px;
+            line-height: 40px;
+            background:#EBEEF5;
+        }
+    }
+    .el-transfer-panel__item {
+        margin-right: 7px;
     }
 }

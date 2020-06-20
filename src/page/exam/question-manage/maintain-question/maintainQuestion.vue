@@ -261,6 +261,8 @@ export default {
     // 重置
     resetLog() {
       this.$refs["questionOutlineFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getSelectOutline();
     },
     //新增-修改试题
     addQuestionInfo() {

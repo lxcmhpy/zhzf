@@ -36,7 +36,7 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label=" " label-width="13px">
+              <el-form-item label="" label-width="13px">
                 <el-button
                   title="搜索"
                   class="commonBtn searchBtn"
@@ -346,6 +346,8 @@ export default {
     // 重置查询条件
     reset() {
       this.$refs["userForm"].resetFields();
+      this.currentPage = 1;
+      this.getPersonList();
     },
 
     getNowYear() {

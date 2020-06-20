@@ -1,11 +1,12 @@
 @import "./main.scss";
 
 .card-content {
-    height: 208px;
+    height: auto;
     color : #20232B;
 }
 
 .card-title {
+    margin-bottom: 16px;
     height     : 20px;
     line-height: 20px;
     font-size  : 14px;
@@ -14,7 +15,7 @@
 }
 
 .card-ul {
-    margin: 16px -34px 44px 0;
+    margin: 0 -34px 44px 0;
 
     li {
         margin-right : 34px;
@@ -166,7 +167,8 @@
     .el-icon-remove-outline {
         margin   : 0px 0px 0px auto;
         font-size: 16px;
-        color    : #4573D0;
+        color    : #F56C6C;
+        /* color    : #4573D0; */
 
     }
 
@@ -414,4 +416,18 @@
     margin-left: 100px;
     // margin-top: -10px;
     width: 50%;
+}
+.show-icon{
+    display:inline-block;
+    cursor: pointer;
+}
+
+/* 只显示我的 */
+.chose-mine{
+    .el-radio:focus:not(.is-focus):not(:active):not(.is-disabled){
+        .el-radio__inner{
+        box-shadow: 0 0 2px 2px #fff;
+    }
+    } 
+    
 }
