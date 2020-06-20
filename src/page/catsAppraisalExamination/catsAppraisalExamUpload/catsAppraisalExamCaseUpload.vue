@@ -1,4 +1,4 @@
-<template>
+(<template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox toggleBox">
       <div class="handlePart" style="margin-left: 0px;">
@@ -26,7 +26,7 @@
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData(1)">查询</el-button>
             </el-form-item>
               <el-form-item v-if="baosongStatus">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add">新增</el-button>
@@ -207,7 +207,7 @@
           caseNo:'',
           caseCause:'',
           caseType:'',
-          OId:'',
+          oId:'',
           caseAgency:'',
           caseParty:'',
           enforcementOfficials1:'',
@@ -269,6 +269,7 @@
       },
       //更改每页显示的条数
     handleSizeChange(val) {
+      this.current = 1;
       this.size = val;
       this.fetchData({});
     },
@@ -277,7 +278,8 @@
       this.current = val;
       this.fetchData({});
     },
-      searchData(){
+      searchData(current){
+        this.current = current;
         let data=this.search;
         console.info("searchData:",data)
         this.fetchData(data);
@@ -330,7 +332,7 @@
         let _this =this;
         this.$refs['form'].validate((valid) => {
             if (valid) {
-              _this.form.OId=this.organId
+              _this.form.oId=this.organId
                 saveOrUpdateCaseInfo(_this.form).then(res=>{
                     console.info("保存案件结果：",res)
                     if(res.code==200){
@@ -371,7 +373,7 @@
       },
       findCaseBsStatus(){
         let data={}
-        data.oid=this.organId;
+        data.oId=this.organId;
         data.bsStatus=1;
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){
