@@ -84,7 +84,7 @@
                   <el-button type="text" @click.stop @click="deleteCase(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
                   <el-upload
                     class="upload-demo"
-                    accept=".pdf"
+                    accept=".pdf,.PDF"
                     :show-file-list="false"
                     v-show="scope.row.caseStatus==1"
                     :http-request="(params)=>saveFile(params,scope.row)"
@@ -258,7 +258,7 @@
       fetchData(data){
         data.current=this.current
         data.size=this.size;
-        data.oid=this.organId;
+        data.oId=this.organId;
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){
             this.dataList=res.data.records;
