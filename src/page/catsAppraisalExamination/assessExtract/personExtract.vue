@@ -36,11 +36,18 @@
                          @change="handleChange">
                 <span slot-scope="{ option }" >
                     <ul class="transfer-list" >
-                        <li><span>姓名:{{ option.staffName }} </span></li>
-                        <li><span>证件号:{{ option.maritimeNo }} </span></li>
+                        <li><span>:{{ option.staffName }} </span></li>
+                        <li><span>:{{ option.maritimeNo }} </span></li>
                     </ul>
                 </span>
-
+                <ul class="transfer-list transfer-list-header-49" slot="left-footer" >
+                    <li><span>姓名</span></li>
+                    <li><span>证件号</span></li>
+                </ul>
+                <ul class="transfer-list transfer-list-header-49" slot="right-footer" >
+                     <li><span>姓名</span></li>
+                    <li><span>证件号</span></li>
+                </ul>
             </el-transfer>
           </div>
         </div>

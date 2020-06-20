@@ -394,32 +394,23 @@ export default {
     async getSystemData() {
         // let _this = this;
         let res = await getDictListDetailByNameApi('系统标题');
-        this.systemTitleLogin = res.data[0].name;
-        this.$store.commit('set_systemTitle',res.data[0].name);
+        // this.systemTitleLogin = res.data[0].name;
+        this.$store.commit('set_systemTitle',this.systemTitleLogin);
         window.document.title = res.data[0].name;
         //设置省份
         this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
         //是否需要签章
         this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
-    //     new Promise((resolve, reject) => {
-    //         getDictListDetailByNameApi('系统标题').then(res => {
-    //             console.log('系统标题', res);
-    //             //系统标题
-
-    //             //设置系统首页
-    //             // this.$store.commit('setHomePage', res.data[3].name)
-    //         }, err => {
-    //             console.log(err);
-    //         })
-    //   })
     },
   },
-  mounted() {
+  async mounted() {
     this.showLogin = true;
+    this.systemTitleLogin = iLocalStroage.gets("SYS_TITLE");
+    await this.getSystemData();
     // this.test()
   },
   async created () {
-    await this.getSystemData();
+
   },
   components: {
       VueSimpleVerify

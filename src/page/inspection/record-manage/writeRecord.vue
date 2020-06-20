@@ -15,6 +15,7 @@
           </span>
         </el-popover>
         <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
+
       </div>
       <!-- 动态生成表单 -->
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
@@ -425,7 +426,7 @@ export default {
       // 处理个人和法人
       let personFlag = false
       let partyFlag = false
-      console.log('data',data)
+      console.log('data', data)
       debugger
       data.forEach(element => {
         if (element.classs == '个人') {
@@ -694,21 +695,24 @@ export default {
       data.forEach(element => {
         // console.log(element)
         if (element.classs != '法人' && element.classs != '个人') {
-          // 组
-          this.rule.push(
-            {
-              type: 'p',
-              name: 'btn',
-              field: element.classId,
-              props: {
-                type: 'primary',
-                field: 'btn',
-                loading: true
-              },
-              className: 'border-title',
-              children: [element.classs],
-            }
-          )
+          if (element.classs) {
+            // 组
+            this.rule.push(
+              {
+                type: 'p',
+                name: 'btn',
+                field: element.classId,
+                props: {
+                  type: 'primary',
+                  field: 'btn',
+                  loading: true
+                },
+                className: 'border-title',
+                children: [element.classs],
+              }
+            )
+          }
+
 
           // 字段
           element.fieldList.forEach(item => {
@@ -993,21 +997,21 @@ export default {
       }
     },
     // 默认隐藏法人
-    defultPersonParty(){
-       this.personFieldList.forEach(element => {
-          console.log('elmen', element.id)
-          // 避免undefine导致全部隐藏
-          if (element.id) {
-            this.$data.$f.hidden(false, element.id)
-          }
-        });
-        //  隐藏显示法人
-        this.partyFieldList.forEach(element => {
-          console.log('elmen', element)
-          if (element.id) {
-            this.$data.$f.hidden(true, element.id)
-          }
-        });
+    defultPersonParty() {
+      this.personFieldList.forEach(element => {
+        console.log('elmen', element.id)
+        // 避免undefine导致全部隐藏
+        if (element.id) {
+          this.$data.$f.hidden(false, element.id)
+        }
+      });
+      //  隐藏显示法人
+      this.partyFieldList.forEach(element => {
+        console.log('elmen', element)
+        if (element.id) {
+          this.$data.$f.hidden(true, element.id)
+        }
+      });
     }
   },
   mounted() {

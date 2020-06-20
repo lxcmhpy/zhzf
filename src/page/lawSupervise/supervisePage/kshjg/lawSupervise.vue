@@ -524,7 +524,8 @@
                                         <div class="lawHoverContent">
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">过检时间：</span>{{gjObj&&gjObj.checkTime?gjObj.checkTime.split(' ')[1]:''}}</p>
-                                                <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p>
+                                                <!-- <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p> -->
+                                                <p><span class="bgCgray">重点监管：</span><span>是</span></p>
                                             </div>
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">历史告警（次）：</span>{{gjObj.lscc}}</p>
@@ -550,7 +551,8 @@
                                                     <span class="bgCgray f12">超限率</span>
                                                 </div>
                                                 <div class="gj-con">
-                                                    <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
+                                                    <!-- <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span> -->
+                                                    <span>{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
                                                      <p><span class="bgCgray">站点：</span>{{row.siteName}}</p>
                                                 </div>
                                                 </div>

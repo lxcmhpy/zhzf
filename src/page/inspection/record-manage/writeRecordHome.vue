@@ -14,8 +14,8 @@
       <div v-for="(item,index1) in modleList" :key="item.domain" class="card-content">
         <div class="card-title" style="justify-content: flex-start;">{{item.domain}}
           <span v-if="item.templateList">({{item.templateList.length}})</span>
-          <span v-if="item.showFlag"  @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-down"></i></span>
-          <span v-if="!item.showFlag"  @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-up"></i></span>
+          <span v-if="item.templateList&&item.showFlag"  @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-down"></i></span>
+          <span v-if="item.templateList&&!item.showFlag"  @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-up"></i></span>
         </div>
         <ul class="card-ul" v-if="item.showFlag">
           <li v-for="(modle,index) in item.templateList" :key="index">

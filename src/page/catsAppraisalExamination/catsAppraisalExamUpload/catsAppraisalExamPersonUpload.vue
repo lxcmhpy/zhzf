@@ -9,13 +9,13 @@
               <el-input v-model="search.staffName" clearable placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item label="所属机构">-->
-<!--              <el-input v-model="search.OId" clearable placeholder="请选择"></el-input>-->
+<!--              <el-input v-model="search.oId" clearable placeholder="请选择"></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData(1)">查询</el-button>
             </el-form-item>
               <el-form-item v-if="baosongStatus">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add_openDialog">新增</el-button>
@@ -71,7 +71,6 @@
                     :show-file-list="false"
                     v-show="scope.row.staffStatus==1"
                     :http-request="(params)=>saveFile(params,scope.row)"
-                    action="https://jsonplaceholder.typicode.com/posts/"
                     multiple
                     :limit="1">
                     <el-button size="small" type="primary">上传照片</el-button>
@@ -88,8 +87,8 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="current"
-              :page-sizes="[this.size, 2*this.size, 3*this.size, 4*this.size]"
-              :page-size=this.size
+              :page-sizes="[20, 40, 60, 80,100]"
+              :page-size="size"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total">
             </el-pagination>
@@ -160,7 +159,7 @@
         total:0,
         search:{
           staffName:"",
-          OId:""
+          oId:""
         },
         organList:[],
         organId:'',
@@ -168,7 +167,7 @@
         visible:false,
         labelPosition: 'right',
         form:{
-          Oid: '',
+          oId: '',
           enforcementCertificate:'',
           idCard:'',
           maritimeNo:'',
@@ -221,7 +220,7 @@
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
-        data.OId=this.organId;
+        data.oId=this.organId;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
@@ -234,10 +233,9 @@
       download_excel(){
       },
       handleSizeChange(val) {
-        var this_size=this.size;
+        this.current = 1;
         this.size=val;
         this.fetchData({});
-        this.size=this_size;
       },
       handleCurrentChange(val) {
         this.current=val;
@@ -246,13 +244,14 @@
       resetSearch(){
         this.search={
           staffName:"",
-            OId:""
+            oId:""
         }
       },
-      searchData(){
+      searchData(current){
+        this.current = current;
         let data={};
         data.staffName=this.search.staffName;
-        data.OId=this.search.OId;
+        data.oId=this.search.oId;
         this.fetchData(data);
       },
       uploadPerson(param) {
@@ -264,14 +263,10 @@
           res => {
             console.log(res);
             if(res.code==200){
-              if(res.data === "上传成功"){
-                this.fetchData({});
-                this.$message({type: "success",message: res.data});
-              }else{
-                 this.$message({type: "error",message:res.data});
-              }
+                this.$message({type: "success",message: res.msg});
+                this.fetchData({})
             }else{
-              this.$message({type: "error",message:res.data});
+              this.$message({type: "error",message:res.msg});
             }
           },
           error => {
@@ -283,7 +278,7 @@
         this.visible = true;
         this.form = {
           batchId:'',
-          OId: this.organId,
+          oId: this.organId,
           enforcementCertificate: '',
           idCard: '',
           maritimeNo: '',
@@ -329,7 +324,7 @@
       },
       findPersonBsStatus(){
         let data={}
-        data.OId=this.organId;
+        data.oId=this.organId;
         data.bsStatus=1;
         findPykhStaffByPage(data).then(res=>{
           if(res.code==200){
@@ -343,11 +338,11 @@
       clickBaosong(){
         confirmSubmissionStaff(this.organId).then(res=>{
           if(res.code==200){
-            this.errorMsg(res.msg,"success")
+            this.$message({type: "success",message: res.msg});
             this.findPersonBsStatus();
             this.fetchData({});
           }else{
-            that.errorMsg(res.msg,"error")
+            this.$message({type: "error",message: res.msg});
           }
         });
       }
@@ -358,7 +353,7 @@
       console.info("userinfo:",userInfo)
       this.organId = userInfo.organId;
       let data={}
-      // data.OId=this.organId;
+      // data.oId=this.organId;
       this.findPersonBsStatus();
       this.fetchData(data);
 
