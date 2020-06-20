@@ -402,7 +402,7 @@ export default {
   },
   async mounted() {
     this.showLogin = true;
-    this.systemTitleLogin = iLocalStroage.get("SYS_TITLE");
+    this.systemTitleLogin = iLocalStroage.gets("SYS_TITLE");
     await this.getSystemData();
     // this.test()
   },

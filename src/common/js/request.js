@@ -26,10 +26,11 @@ service({
         res => {
         BASEURL = res.data;
         BASEURL.HOME_PAGE = BASEURL['HOME_PAGE_ROUTER_NAME'];
+        BASEURL.SYS_TITLE = BASEURL["SYS_TITLE"];
 
         sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
         iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-        iLocalStroage.set("SYS_TITLE", BASEURL[BASEURL.SYS_TITLE]);
+        iLocalStroage.sets("SYS_TITLE", BASEURL.SYS_TITLE);
     },
     error => {
         console.log(error)
@@ -42,7 +43,7 @@ service.interceptors.request.use(
     if (BASEURL === '' || BASEURL === 'undefined') {
         BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
         BASEURL.HOME_PAGE = iLocalStroage.gets("HOME_PAGE_ROUTER_NAME");
-        BASEURL.SYS_TITLE = iLocalStroage.get("SYS_TITLE");
+        BASEURL.SYS_TITLE = iLocalStroage.gets("SYS_TITLE");
     }
     if (config.baseUrlType) {
         let baseObj = BASEURL[BASEURL.CURRENT];
@@ -52,7 +53,7 @@ service.interceptors.request.use(
       config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST; // 默认的base_url
       iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
       sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE);
-      iLocalStroage.set("SYS_TITLE", BASEURL[BASEURL.SYS_TITLE]);
+      iLocalStroage.sets("SYS_TITLE", BASEURL.SYS_TITLE);
     }
 
     if (config.responseType) {

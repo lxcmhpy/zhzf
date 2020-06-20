@@ -228,7 +228,7 @@ export default {
     window.sessionStorage.clear();
 
     sessionStorage.setItem('LoginSystem', 'examLogin');
-    this.$store.commit('set_systemTitle',iLocalStroage.get("SYS_TITLE"));
+    this.$store.commit('set_systemTitle',iLocalStroage.gets("SYS_TITLE"));
     await this.getSystemData();
   }
 };
