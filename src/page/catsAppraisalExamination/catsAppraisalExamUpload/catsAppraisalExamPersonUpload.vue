@@ -61,21 +61,27 @@
                 <el-tag type="warning"  v-show="scope.row.staffStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
-              <el-table-column label="操作" align="center" width="120" v-if="baosongStatus">
+              <el-table-column label="操作" align="center" width="120" >
                 <template  slot-scope="scope">
-                  <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
-                  <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
-                  <el-upload
-                    class="upload-demo"
-                    accept=".jpg, .png"
-                    :show-file-list="false"
-                    v-show="scope.row.staffStatus==1"
-                    :http-request="(params)=>saveFile(params,scope.row)"
-                    multiple
-                    :limit="1">
-                    <el-button size="small" type="primary">上传照片</el-button>
-                  </el-upload>
-                  <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
+                    <div>
+                        <div v-if="baosongStatus">
+                            <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
+                            <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
+                        </div>
+                        <div v-show="scope.row.caseStatus==1">
+                            <el-upload
+                                class="upload-demo"
+                                accept=".jpg, .png"
+                                :show-file-list="false"
+                                v-show="scope.row.staffStatus==1"
+                                :http-request="(params)=>saveFile(params,scope.row)"
+                                multiple
+                                :limit="1">
+                                <el-button size="small" type="primary">上传照片</el-button>
+                            </el-upload>
+                            <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
+                        </div>
+                  </div>
                 </template>
               </el-table-column>
           </el-table>

@@ -133,6 +133,7 @@ export default {
     loginOut() {
     //   Cookies.remove("TokenKey");
       // this.$store.state.openTab = [];
+      this.$store.commit('CLEAR_ALL_CACHE');
       this.$store.dispatch('deleteAllTabs');
       this.$router.push({name:'login'});
     },

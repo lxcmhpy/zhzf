@@ -6,7 +6,7 @@
         <div class="leftC">
           <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
           <div class="leftC_title">
-              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitle}}
+              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
           </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
@@ -401,13 +401,12 @@ export default {
     },
   },
   async mounted() {
+      debugger;
     this.showLogin = true;
-    this.systemTitleLogin = iLocalStroage.gets("SYS_TITLE");
+    this.systemTitleLogin = localStorage.getItem("SYS_TITLE");
+    debugger;
     await this.getSystemData();
     // this.test()
-  },
-  async created () {
-
   },
   components: {
       VueSimpleVerify
