@@ -387,6 +387,7 @@
         confirmSubmissionCase(this.organId).then(res=>{
           if(res.code==200){
             this.errorMsg(res.msg,"success")
+            this.findCaseBsStatus();
             this.fetchData({});
           }else{
             that.errorMsg(res.msg,"error")

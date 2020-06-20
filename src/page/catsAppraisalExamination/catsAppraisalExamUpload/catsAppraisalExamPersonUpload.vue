@@ -344,6 +344,7 @@
         confirmSubmissionStaff(this.organId).then(res=>{
           if(res.code==200){
             this.errorMsg(res.msg,"success")
+            this.findPersonBsStatus();
             this.fetchData({});
           }else{
             that.errorMsg(res.msg,"error")
