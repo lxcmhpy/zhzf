@@ -196,22 +196,8 @@ export default {
         //查询执法领域
         res => {
           if (res.code === 200) {
-            if (codeName === "branchIdsInfo") {
-              this.branchIdsInfo = res.data;
-              this.branchIdsInfo.unshift({ id: "", name: "全部" });
-            }
-            if (codeName === "stationIdsInfo") {
-              this.stationIdsInfo = res.data;
-              this.stationIdsInfo.unshift({ id: "", name: "全部" });
-            }
-            if (codeName === "oidsInfo") {
-              this.oidsInfo = res.data;
-              this.oidsInfo.unshift({ id: "", name: "全部" });
-            }
-            if (codeName === "stationStatusInfo") {
-              this.stationStatusInfo = res.data;
-              this.stationStatusInfo.unshift({ id: "", name: "全部" });
-            }
+            this[codeName] = res.data;
+            this[codeName].unshift({ id: "", name: "全部" });
           } else {
             console.info("没有查询到数据");
           }
@@ -284,8 +270,9 @@ export default {
       this.getPageAllInfo();
     },
     resetLog() {
-      let _this = this;
-      _this.$refs["examPersonFormRef"].resetFields();
+      this.$refs["examPersonFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getPageAllInfo();
     },
     closeDialog() {
       let _this = this;

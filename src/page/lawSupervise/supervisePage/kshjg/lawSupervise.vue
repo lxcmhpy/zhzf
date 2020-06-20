@@ -1214,7 +1214,7 @@ import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
-import {dataJson} from './echarts/dataJson.js';
+// import {dataJson} from './echarts/dataJson.js';
 
 // import externalVideoBtns from '@/page/lawSupervise/componentCommon/externalVideoBtns.vue';
 import _ from "lodash";
