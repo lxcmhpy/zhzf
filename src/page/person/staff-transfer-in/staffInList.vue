@@ -3,7 +3,7 @@
     <div class="searchPageLayout" id="userBox">
       <div class="searchPage">
         <div class="handlePart">
-          <el-form class="search-form" :inline="true" ref="staffInForm" label-width="70px">
+          <el-form class="search-form" :inline="true" ref="staffInSearchForm" label-width="70px">
             <el-row>
               <el-form-item label="姓名">
                 <el-input v-model="staffInForm.personName"></el-input>
@@ -286,9 +286,9 @@ export default {
     handleDelete(row) {},
     // 重置查询条件
     reset() {
-      let _this = this;
-      _this.$refs["userForm"].resetFields();
-      _this.$refs["staffInForm"].resetFields();
+      this.$refs["staffInSearchForm"].resetFields();
+      this.currentPage = 1 ;
+      this.getStaffinPage();
     },
 
     //新增

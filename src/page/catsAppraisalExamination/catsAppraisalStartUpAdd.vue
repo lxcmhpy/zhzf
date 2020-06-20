@@ -48,7 +48,7 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" @blur="validateScore(scope.row)" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center" width="120" v-if="!isView">
@@ -72,7 +72,7 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" @blur="validateScore(scope.row)" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center" width="120" v-if="!isView">
@@ -96,7 +96,7 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" @blur="validateScore(scope.row)" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center" width="120" v-if="!isView">
@@ -120,7 +120,7 @@
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
               <el-table-column prop="score" label="分数" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.score" placeholder="请输入数值" :readonly="isView"></el-input>
+                  <el-input v-model="scope.row.score" placeholder="请输入数值" @blur="validateScore(scope.row)" :readonly="isView"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center" width="120" v-if="!isView">
@@ -270,6 +270,14 @@ export default {
         }
       });
     },
+    validateScore(row){
+      var re = /^[0-9]([0-9])*$/;
+      if (!re.test(row.score)){
+          row.score=''
+          this.$message({type: "error",message: "请输入整数"});
+          return
+      }
+    },
     saveOrUpdate(formName) {
       let _this = this;
       this.$refs[formName].validate(valid => {
@@ -307,7 +315,11 @@ export default {
             .concat(_this.dataList2)
             .concat(_this.dataList3)
             .concat(_this.dataList4);
-          let errorData =  tableData.filter(item=>{if(item.score==="" || item.score=== undefined){return item}});
+          let errorData =  tableData.filter(item=>{
+            if(item.score==="" || item.score=== undefined){
+              return item
+            }
+          });
           if(errorData.length > 0){
             _this.$message({
               type: "warning",

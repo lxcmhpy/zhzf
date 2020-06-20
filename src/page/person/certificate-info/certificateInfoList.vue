@@ -27,7 +27,7 @@
                         <el-input v-model="formInline.oName"></el-input>
                     </el-form-item>
                  <el-form-item label=" " label-width="13px">
-                        <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo" @click="getPersonList"></el-button>
+                        <el-button title="搜索" class="commonBtn searchBtn" size="medium" icon="iconfont law-sousuo" @click="currentPage = 1;getPersonList()"></el-button>
                         <el-button title="重置" class="commonBtn searchBtn" size="medium" icon="iconfont law-zhongzhi" @click="reset"></el-button>
                     </el-form-item>
                     <el-form-item label=" " label-width="13px" style="float:right">
@@ -258,6 +258,8 @@ export default {
 // 重置查询条件
     reset() {
       this.$refs["userForm"].resetFields();
+      this.currentPage = 1;
+      this.getPersonList();
     },
 
   },

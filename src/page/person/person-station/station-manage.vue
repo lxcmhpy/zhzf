@@ -103,6 +103,8 @@ export default {
     },
     resetLog() {
       this.$refs["stationFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getStationList();
     },
     stationInfo(row, type) {
       //新增

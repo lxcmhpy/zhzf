@@ -159,18 +159,29 @@ export function validateAge(rule, value, callback) {
     callback();
 }
 export function isInteger_8_10 (rule, value, callback) {
-    if (!/^\d{8}$|^\d{10}$/.test(value)) {
+    if (value === '' || value === null) {
+        callback()
+    } else if (!/^\d{8}$|^\d{10}$/.test(value)) {
         callback(new Error('请输入8位或10位数字'))
     } else {
         callback()
     }
 }
 export function isInteger_10(rule, value, callback) {
-    if (!/^\d{10}$/.test(value)) {
+    if (value === '' || value === null) {
+        callback()
+    } else if (!/^\d{10}$/.test(value)) {
         callback(new Error('请输入10位数字'))
     } else {
         callback()
     }
 }
-
-
+export function money(rule, value, callback) {
+    if (value === '' || value === null) {
+        callback()
+    } else if (!/^(\d+(.\d{1,2})?)$/.test(value)) {
+        callback(new Error('请填写正确的金额'))
+    } else {
+        callback()
+    }
+}

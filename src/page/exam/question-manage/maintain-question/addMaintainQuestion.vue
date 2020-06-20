@@ -19,10 +19,7 @@
       element-loading-text="正在获取试题信息"
     >
       <el-row>
-        <el-form-item
-          label="题型"
-          label-width="55px"
-          prop="questionType">
+        <el-form-item label="题型" label-width="55px" prop="questionType">
           <el-select
             v-model="addMaintainQuestionForm.questionType"
             placeholder="选择题型"
@@ -59,7 +56,10 @@
         </el-form-item>
       </el-row>
       <div class="problem-title">
-        <div class="title-cnt w-60" :class="{'discuss': questionTypeName === '简答题' || questionTypeName === '论述题'}">
+        <div
+          class="title-cnt w-60"
+          :class="{'discuss': questionTypeName === '简答题' || questionTypeName === '论述题'}"
+        >
           <el-form-item prop="questionName">
             <el-input
               type="textarea"
@@ -73,14 +73,38 @@
         <div
           v-if="questionTypeName !== '简答题' && questionTypeName !== '论述题'"
           class="title-cnt"
-          :class="{'w-40': questionTypeName !== '简答题' && questionTypeName !== '论述题'}">
+          :class="{'w-40': questionTypeName !== '简答题' && questionTypeName !== '论述题'}"
+        >
           <el-form-item>
+            <div v-if="descImages.length" class="upload-question-img stem">
+              <ul class="el-upload-list el-upload-list--picture-card">
+                <li
+                  v-for="item in descImages"
+                  :key="item.uid"
+                  tabindex="0"
+                  class="el-upload-list__item is-ready"
+                >
+                  <img :src="item.url" class="el-upload-list__item-thumbnail" />
+                  <span class="el-upload-list__item-actions">
+                    <span
+                      class="el-upload-list__item-preview"
+                      @click="handlePictureCardPreview(item.url)"
+                    >
+                      <i class="el-icon-zoom-in"></i>
+                    </span>
+                    <span class="el-upload-list__item-delete" @click="deleteDescImg">
+                      <i class="el-icon-delete"></i>
+                    </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
             <el-upload
+              v-else
               action
               class="upload-question-img stem"
               list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
+              accept=".jpg, .png"
               :auto-upload="false"
               :file-list="descImages"
               :on-change="handleDescImgChange"
@@ -90,7 +114,9 @@
           </el-form-item>
         </div>
       </div>
-      <el-row v-if="questionTypeName !== '' && questionTypeName !== '简答题' && questionTypeName !== '论述题'">
+      <el-row
+        v-if="questionTypeName !== '' && questionTypeName !== '简答题' && questionTypeName !== '论述题'"
+      >
         <!-- 单选||多选||判断题，添加选项 -->
         <el-row>
           <el-form-item label class="form-class">
@@ -98,11 +124,7 @@
             <span>{{ questionTypeDesc }}</span>
           </el-form-item>
         </el-row>
-        <el-table
-          class="option-table"
-          :data="addMaintainQuestionForm.pqoList"
-          key="0"
-          >
+        <el-table class="option-table" :data="addMaintainQuestionForm.pqoList" key="0">
           <el-table-column min-width="12%" prop="optionNum">
             <template slot-scope="scope">
               <el-radio
@@ -115,8 +137,8 @@
               <el-checkbox
                 v-if="questionTypeName === '多选题'"
                 v-model="scope.row.checked"
-                @change="changeSelect(scope.row,'2')"> 答案：{{ addMaintainQuestionForm.pqoList[scope.$index].optionNum }}
-              </el-checkbox>
+                @change="changeSelect(scope.row,'2')"
+              >答案：{{ addMaintainQuestionForm.pqoList[scope.$index].optionNum }}</el-checkbox>
             </template>
           </el-table-column>
           <el-table-column id="ceshiId" min-width="48%" prop="optionName">
@@ -129,15 +151,41 @@
               ></el-input>
             </template>
           </el-table-column>
-          <el-table-column min-width="22%" prop="imgUrl">
-            <template>
+          <el-table-column min-width="22%">
+            <template slot-scope="scope">
+              <div
+                v-if="scope.row.optionPicture"
+                class="upload-question-img stem"
+                :key="scope.$index"
+              >
+                <ul class="el-upload-list el-upload-list--picture-card" style="display:block;">
+                  <li class="el-upload-list__item is-ready">
+                    <img :src="scope.row.optionPicture" class="el-upload-list__item-thumbnail" />
+                    <span class="el-upload-list__item-actions">
+                      <span
+                        class="el-upload-list__item-preview"
+                        @click="handlePictureCardPreview(scope.row.optionPicture)"
+                      >
+                        <i class="el-icon-zoom-in"></i>
+                      </span>
+                      <span
+                        class="el-upload-list__item-delete"
+                        @click="deleteOptionImg(scope.$index)"
+                      >
+                        <i class="el-icon-delete"></i>
+                      </span>
+                    </span>
+                  </li>
+                </ul>
+              </div>
               <el-upload
+                v-if="!scope.row.optionPicture"
                 action
-                class="upload-question-img"
+                class="upload-question-img stem"
                 list-type="picture-card"
+                accept=".jpg, .png"
                 :auto-upload="false"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove"
+                :on-change="(file, fileList) => {handleOptionImgChange(file, fileList, scope.$index)}"
               >
                 <i class="el-icon-plus"></i>
               </el-upload>
@@ -161,12 +209,7 @@
           </el-table-column>
         </el-table>
         <el-row style="margin-bottom: 20px;text-align:center;">
-          <el-button
-            type="button"
-            @click="add"
-            icon="el-icon-plus"
-            style="width:200px;"
-          >添加选项</el-button>
+          <el-button type="button" @click="add" icon="el-icon-plus" style="width:200px;">添加选项</el-button>
         </el-row>
       </el-row>
       <div v-if="questionTypeName === '简答题' || questionTypeName === '论述题'">
@@ -214,6 +257,8 @@
   </el-dialog>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   data() {
     return {
@@ -231,18 +276,26 @@ export default {
         questionAnalysis: "",
         questionType: "",
         questionLevel: "",
-        answer: ''
+        answer: ""
       },
       rules: {
-        questionType: [{ required: true, message: '请选择题型', trigger: 'change' }],
-        questionLevel: [{ required: true, message: '请选择难度', trigger: 'change' }],
-        questionName: [{ required: true, message: '请输入题干', trigger: 'blur' }],
-        questionAnalysis: [{ required: true, message: '请输入答案解析', trigger: 'blur' }],
-        answer: [{ required: true, message: '请输入答案', trigger: 'blur' }]
+        questionType: [
+          { required: true, message: "请选择题型", trigger: "change" }
+        ],
+        questionLevel: [
+          { required: true, message: "请选择难度", trigger: "change" }
+        ],
+        questionName: [
+          { required: true, message: "请输入题干", trigger: "blur" }
+        ],
+        questionAnalysis: [
+          { required: true, message: "请输入答案解析", trigger: "blur" }
+        ],
+        answer: [{ required: true, message: "请输入答案", trigger: "blur" }]
       },
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
-      handelType: '0', //添加 0  修改2  查看3
+      handelType: "0", //添加 0  修改2  查看3
       questionTypeName: "", //题型名称
       questionTypeList: [], //问题类型列表
       levelList: [], //题目难度列表
@@ -250,25 +303,29 @@ export default {
       dialogVisible: false,
       radioChecked: null,
       descImages: [], // 问题描述图片
-      questionTypeMap: ['单选题', '多选题', '判断题', '简答题', '论述题'], // 试题类型集合
-      tableLoading: false
+      questionTypeMap: ["单选题", "多选题", "判断题", "简答题", "论述题"], // 试题类型集合
+      tableLoading: false,
+      optionImages: [] // 问题选项图片
     };
   },
   computed: {
-    questionTypeDesc(){
-      let desc = '';
-      switch(this.questionTypeName){
-        case '单选题':
-          desc = '单选题的选项范围从2到20,并在左侧选择一个为正确答案';
-          break
-        case '多选题':
-          desc = '多选题的选项范围从2到20,并在左侧选择多个为正确答案';
-          break
-        case '判断题':
-          desc = '判断题的选项范围为两个,并在左侧选择一个为正确答案';
-          break
+    questionTypeDesc() {
+      let desc = "";
+      switch (this.questionTypeName) {
+        case "单选题":
+          desc = "单选题的选项范围从2到20,并在左侧选择一个为正确答案";
+          break;
+        case "多选题":
+          desc = "多选题的选项范围从2到20,并在左侧选择多个为正确答案";
+          break;
+        case "判断题":
+          desc = "判断题的选项范围为两个,并在左侧选择一个为正确答案";
+          break;
       }
       return desc;
+    },
+    baseUrl() {
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   created() {
@@ -301,16 +358,68 @@ export default {
         });
       }
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
+    // 图片预览
+    handlePictureCardPreview(fileUrl) {
+      this.dialogImageUrl = fileUrl;
       this.dialogVisible = true;
+    },
+    // 删除题目图片
+    deleteDescImg() {
+      this.descImages.splice(0, 1);
     },
     // 问题描述图片上传
     handleDescImgChange(file, fileList) {
-      this.descImages = fileList;
+      const isGt2M = this.checkImageSize(file);
+      if (isGt2M) {
+        fileList.splice(0, 1);
+        this.descImages.splice(0, 1);
+      } else {
+        fileList.splice(0, fileList.length);
+        this.descImages.splice(0, 1, file);
+      }
+    },
+    // 问题选项图片上传
+    handleOptionImgChange(file, fileList, index) {
+      const isGt2M = this.checkImageSize(file);
+      const fileIndex = this.optionImages.findIndex(
+        item => item.uid === file.uid
+      );
+      const row = JSON.parse(
+        JSON.stringify(this.addMaintainQuestionForm.pqoList[index])
+      );
+      fileList.splice(0, fileList.length);
+      if (isGt2M) {
+        fileList.splice(fileIndex, 1);
+      } else {
+        row.optionPicture = file.url;
+        row["file"] = file;
+        this.$set(this.addMaintainQuestionForm.pqoList, index, row);
+      }
+    },
+    // 删除选项图片
+    deleteOptionImg(index) {
+      const item = this.addMaintainQuestionForm.pqoList[index];
+      if(item.file){
+        if(item.file.status === 'success'){
+          this.deleteImage(item.file.url, 'option', index);
+        }else{
+          this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
+          this.addMaintainQuestionForm.pqoList[index]["file"] = null;
+        }
+      }
+    },
+    // 图片大小校验
+    checkImageSize(img) {
+      const isGt2M = img.size / 1024 / 1024 > 2;
+      if (isGt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 2MB!",
+          type: "warning"
+        });
+        return true;
+      } else {
+        return false;
+      }
     },
     // 选择题型
     changeType(clearPqoList) {
@@ -324,8 +433,8 @@ export default {
         this.radioChecked = null;
         this.addMaintainQuestionForm.pqoList.splice(0, pqoListLen);
       }
-      if(this.questionTypeMap.indexOf(this.questionTypeName) < 3){
-        this.addMaintainQuestionForm.answer = '';
+      if (this.questionTypeMap.indexOf(this.questionTypeName) < 3) {
+        this.addMaintainQuestionForm.answer = "";
       }
     },
     // 查询字典-获取试题类型&试题难度
@@ -421,25 +530,27 @@ export default {
       this.updatChecked();
     },
     // 新增试题表单校验
-    checkForm(){
-      this.$refs.addMaintainQuestionFormRef.validate((valid) => {
+    checkForm() {
+      this.$refs.addMaintainQuestionFormRef.validate(valid => {
         if (valid) {
-          let warningMsg = '';
+          let warningMsg = "";
           // 单选，多选，判断必须添加选项并选择正确答案
-          if(this.questionTypeMap.indexOf(this.questionTypeName) < 3){
-            if(this.addMaintainQuestionForm.pqoList.length === 0){
-              warningMsg = '请添加题目选项';
-            }else{
-              const answer = this.addMaintainQuestionForm.pqoList.filter(item => item.optionKey == 1);
-              if(answer.length === 0){
-                warningMsg = '请选择正确答案';
+          if (this.questionTypeMap.indexOf(this.questionTypeName) < 3) {
+            if (this.addMaintainQuestionForm.pqoList.length === 0) {
+              warningMsg = "请添加题目选项";
+            } else {
+              const answer = this.addMaintainQuestionForm.pqoList.filter(
+                item => item.optionKey == 1
+              );
+              if (answer.length === 0) {
+                warningMsg = "请选择正确答案";
               }
             }
           }
-          if(warningMsg){
-            this.$message({ type: 'warning', message: warningMsg });
+          if (warningMsg) {
+            this.$message({ type: "warning", message: warningMsg });
             return false;
-          }else{
+          } else {
             this.submit();
           }
         } else {
@@ -447,15 +558,8 @@ export default {
         }
       });
     },
-    //提交
-    submit() {
-      const loading = this.$loading({
-        lock: true,
-        text: '正在保存',
-        spinner: 'car-loading',
-        customClass: 'loading-box',
-        background: 'rgba(234,237,244, 0.8)'
-      });
+    // 保存试题信息
+    saveQuestionInfo(loading) {
       let saveData = {
         questionId: this.addMaintainQuestionForm.questionId,
         pqoList: JSON.stringify(this.addMaintainQuestionForm.pqoList),
@@ -467,17 +571,20 @@ export default {
         questionLevel: this.addMaintainQuestionForm.questionLevel,
         answer: this.addMaintainQuestionForm.answer
       };
-      let dispatchType = 'addExamQuestionInfo', successMsg = '添加成功!';
-      if(this.handelType == '1'){
-        dispatchType = 'addExamQuestionInfo';
-        successMsg = '添加成功!';
-      }else if(this.handelType == '2'){
-        dispatchType = 'updateExamQuestionInfo';
-        successMsg = '修改成功!';
+      if(this.addMaintainQuestionForm.questionPicture){
+        this.addMaintainQuestionForm.questionPicture.replace(this.baseUrl, '');
       }
-      console.log(JSON.stringify(saveData));
+      let dispatchType = "addExamQuestionInfo",
+        successMsg = "添加成功!";
+      if (this.handelType == "1") {
+        dispatchType = "addExamQuestionInfo";
+        successMsg = "添加成功!";
+      } else if (this.handelType == "2") {
+        dispatchType = "updateExamQuestionInfo";
+        successMsg = "修改成功!";
+      }
       // 发起ajax请求
-      if(dispatchType){
+      if (dispatchType) {
         this.$store.dispatch(dispatchType, saveData).then(
           res => {
             loading.close();
@@ -492,17 +599,70 @@ export default {
         );
       }
     },
+    // 提交
+    submit() {
+      const loading = this.$loading({
+        lock: true,
+        text: "正在保存",
+        spinner: "car-loading",
+        customClass: "loading-box",
+        background: "rgba(234,237,244, 0.8)"
+      });
+      const formData = new FormData();
+      const changeIndex = [];
+      const hasQuestionPic = this.descImages.length && this.descImages[0].status === 'ready';
+      if (
+        this.addMaintainQuestionForm.pqoList &&
+        this.addMaintainQuestionForm.pqoList.length
+      ) {
+        this.addMaintainQuestionForm.pqoList.forEach((item, index) => {
+          if (item.file && item.file.status === "ready") {
+            formData.append("file", item.file.raw);
+            changeIndex.push(index);
+          }
+          if(item.optionPicture){
+            item.optionPicture = item.optionPicture.replace(this.baseUrl, '');
+          }
+        });
+        if(hasQuestionPic){
+          formData.append("file", this.descImages[0].raw);
+        }
+      }
+      if (changeIndex.length || hasQuestionPic) {
+        this.$store.dispatch("uploadMaterial", formData).then(
+          res => {
+            if (res.code === 200) {
+              changeIndex.forEach((item, index) => {
+                this.addMaintainQuestionForm.pqoList[item].optionPicture = res.data[index].storageId;
+                delete this.addMaintainQuestionForm.pqoList[item].file;
+              })
+            }
+            if(hasQuestionPic){
+              this.addMaintainQuestionForm.questionPicture = res.data[res.data.length - 1].storageId;
+            }
+            this.saveQuestionInfo(loading);
+          },
+          err => {
+            loading.close();
+            this.$message({ type: "error", message: err.msg || "" });
+          }
+        );
+      }else{
+        this.saveQuestionInfo(loading);
+      }
+    },
     showModal(row, type) {
       this.visible = true;
       this.handelType = type;
       this.tableLoading = false;
       this.radioChecked = null;
+      this.descImages.splice(0, this.descImages.length);
       if (type == "1") {
         // 新增
         this.addMaintainQuestionForm.outlineId = row.currentOutlineId;
         this.addMaintainQuestionForm.outlineName = row.selectCurrentTreeName;
         this.dialogTitle = "新增试题";
-      } else if (type == "2" ) {
+      } else if (type == "2") {
         // 修改
         this.tableLoading = true;
         this.dialogTitle = "修改试题";
@@ -515,15 +675,19 @@ export default {
               if (res.data.pqoList && res.data.pqoList.length) {
                 res.data.pqoList.forEach((item, index) => {
                   item.checked = item.optionKey === "1";
-                  if(res.data.questionTypeName === '单选题' || res.data.questionTypeName === '判断题'){
-                    if(item.optionKey === "1"){
+                  if (
+                    res.data.questionTypeName === "单选题" ||
+                    res.data.questionTypeName === "判断题"
+                  ) {
+                    if (item.optionKey === "1") {
                       this.radioChecked = index;
                     }
                   }
                 });
               }
-              for(const key in this.addMaintainQuestionForm){
-                if(key !== 'questionId'){
+              this.setDefaultImage(res.data);
+              for (const key in this.addMaintainQuestionForm) {
+                if (key !== "questionId") {
                   this.addMaintainQuestionForm[key] = res.data[key];
                 }
               }
@@ -537,6 +701,47 @@ export default {
         );
       }
     },
+    // 处理选项图片回显
+    setDefaultImage(data) {
+      if (data.questionPicture) {
+        data.questionPicture = this.baseUrl + data.questionPicture;
+        this.descImages.push({ url: data.questionPicture, status: "success" });
+      }
+      if (data.pqoList && data.pqoList.length) {
+        data.pqoList.forEach(item => {
+          item.optionPicture = item.optionPicture
+            ? this.baseUrl + item.optionPicture
+            : "";
+          item.file = { url: item.optionPicture, status: 'success' }
+        });
+      }
+    },
+    // 删除已上传的图片
+    deleteImage(id, type, index){
+      const loading = this.$loading({
+        lock: true,
+        text: "正在删除",
+        spinner: "car-loading",
+        customClass: "loading-box",
+        background: "rgba(234,237,244, 0.8)"
+      });
+      this.$store.dispatch('deleteQuestionImage', { storageId: id }).then(res => {
+        laoding.close();
+        if(res.code === 200){
+          this.$message({ type: 'success', message: '删除成功' });
+          if(type === 'title'){
+            this.deleteDescImg();
+          }
+          if(type === 'option'){
+            this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
+            this.addMaintainQuestionForm.pqoList[index]["file"] = null;
+          }
+        }
+      }, err => {
+        laoding.close();
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+    },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
@@ -546,7 +751,7 @@ export default {
       for (const key in this.addMaintainQuestionForm) {
         if (key !== "pqoList") {
           this.addMaintainQuestionForm[key] = "";
-        } else if(pqoListLen) {
+        } else if (pqoListLen) {
           this.addMaintainQuestionForm["pqoList"].splice(0, pqoListLen);
         }
       }
@@ -555,26 +760,34 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.add-question-dialog{
-  .problem-title{
-    .title-cnt{
+.add-question-dialog {
+  .problem-title {
+    .title-cnt {
       display: inline-block;
-      &.w-60{
+      &.w-60 {
         padding-right: 14px;
         box-sizing: border-box;
         width: 60%;
       }
-      &.w-40{
+      &.w-40 {
         width: 38%;
       }
-      &.discuss{
+      &.discuss {
         padding-right: 0;
         width: 100%;
       }
-      >>>.el-form-item,
-      >>>.el-form-item__content{
+      >>> .el-form-item,
+      >>> .el-form-item__content {
         width: 100%;
       }
+    }
+  }
+  .el-upload-list {
+    line-height: 0;
+    display: inline-block;
+    .el-upload-list__item {
+      margin-bottom: 0;
+      line-height: 0;
     }
   }
 }
@@ -614,6 +827,12 @@ export default {
     background: none;
   }
   .upload-question-img {
+    .el-upload-list {
+      line-height: inherit;
+      .el-upload-list__item {
+        margin-bottom: 0;
+      }
+    }
     >>> .el-upload--picture-card,
     >>> .el-upload-list__item {
       width: 100%;
@@ -662,7 +881,7 @@ export default {
     width: 200px;
     height: 96px;
   }
-  &.stem{
+  &.stem {
     .el-upload--picture-card {
       width: 228px;
       height: 116px;

@@ -169,8 +169,9 @@ export default {
       this.getInvigilateAllInfo();
     },
     resetLog() {
-      let _this = this;
-      _this.$refs["invigilateFormRef"].resetFields();
+      this.$refs["invigilateFormRef"].resetFields();
+      this.currentPage = 1 ;
+      this.getInvigilateAllInfo();
     },
     closeDialog() {
       let _this = this;

@@ -4,6 +4,7 @@ import {routers} from "./router";
 import iLocalStroage from "@/common/js/localStroage";
 import { personDetailRouter } from './routerExport/routerJson/personRouterJson';
 import store from '@/store/index.js';
+import { showFullScreenLoading, tryHideFullScreenLoading } from "@/common/js/loading";
 const vm = new Vue();
 
 Vue.use(VueRouter);
@@ -19,9 +20,10 @@ const RouterConfig = {
   mode: "hash",
   routes: routers
 };
-let getRouter;
 export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
+    let loadingType =  to.params.loadingType ? to.params.loadingType : 'loadPart';
+    showFullScreenLoading(loadingType);
   let tokenObj = iLocalStroage.getExpired('TokenKey');
   if (tokenObj) {
     //判断是否登录
@@ -61,6 +63,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 router.afterEach(to => {
+  tryHideFullScreenLoading();
   window.scrollTo(0, 0);
 });
 

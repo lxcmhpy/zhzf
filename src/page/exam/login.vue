@@ -3,9 +3,9 @@
     <transition name="form-fade" mode="in-out">
       <section class="form_contianer" v-show="showLogin">
         <div class="leftC">
-          <img src="../../../static/images/img/login/zf_bg.png" alt="">
+          <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
           <div class="leftC_title">
-              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitle}}
+              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitle}}
           </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
@@ -209,11 +209,9 @@ export default {
       })
     }
   },
-  created () {
-    window.sessionStorage.clear();
-  },
   mounted() {
     this.showLogin = true;
+    window.sessionStorage.clear();
     sessionStorage.setItem('LoginSystem', 'examLogin');
     this.getSystemData();
   }
