@@ -11,15 +11,13 @@
           <el-button icon="el-icon-search" type="primary" size="medium" @click="searchListByName"></el-button>
         </div>
       </div>
-      <div v-for="(item,index) in modleList" :key="index" class="card-content">
-        <!-- <div class="card-title" v-if="index==0">{{item.domain}}
-         ({{item.templateList.length}}) -->
-        <!-- {{typeof(item.templateList.length)}} 
-        </div>-->
+      <div v-for="(item,index1) in modleList" :key="item.domain" class="card-content">
         <div class="card-title" style="justify-content: flex-start;">{{item.domain}}
           <span v-if="item.templateList">({{item.templateList.length}})</span>
+          <span v-if="item.templateList&&item.showFlag"  @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-down"></i></span>
+          <span v-if="item.templateList&&!item.showFlag"  @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-up"></i></span>
         </div>
-        <ul class="card-ul">
+        <ul class="card-ul" v-if="item.showFlag">
           <li v-for="(modle,index) in item.templateList" :key="index">
             <span @click="writeRecord(modle)">
               <div class="card-img-content-box">
@@ -49,7 +47,7 @@ import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
 import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
   findRecordModleByNameIdApi, findRecordModleByPersonApi} from "@/api/Record";
-
+import Vue from 'vue'
 export default {
   components: {
     preview,
@@ -61,6 +59,7 @@ export default {
       isHome: true,
       searchModleName: '',
       compData: [],
+      viewFlag: [],
       modleList: [{
         title: '常用记录表单',
         length: 4,
@@ -167,6 +166,9 @@ export default {
           console.log(res)
           if (res.data) {
             this.modleList = res.data
+            this.modleList.forEach(element => {
+              element.showFlag = true
+            });
           }
         },
         error => {
@@ -214,6 +216,14 @@ export default {
           }
         );
     },
+    changeUp(item) {
+      console.log(item)
+      this.modleList[item].showFlag=!this.modleList[item].showFlag
+
+      console.log(this.modleList.slice())
+      this.modleList=this.modleList.slice()//更新视图
+
+    }
   },
   mounted() {
     this.setLawPersonCurrentP()

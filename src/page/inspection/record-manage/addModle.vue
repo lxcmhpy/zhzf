@@ -86,12 +86,12 @@
                       <el-col :span="16">
                         <!-- <el-form :model="field" ref="filedForm"> -->
                         <el-form-item label-width="0" :prop="'fieldList[' + index1 +  '].title'" :rules="{ required: true, message: '请输入字段名称', trigger: 'change' }">
-                          <!-- <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
-                          </el-input> -->
+                          <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
+                          </el-input>
 
-                          <el-select v-model="field.title" filterable allow-create clearable placeholder="请填写字段名称" @change="changeGroup(item)">
+                          <!-- <el-select v-model="field.title" filterable allow-create clearable placeholder="请填写字段名称" @change="changeField">
                             <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField.field"></el-option>
-                          </el-select>
+                          </el-select> -->
 
                         </el-form-item>
                       </el-col>
@@ -800,8 +800,11 @@ export default {
         field.options[0].value = 'yyyy-MM-dd HH:mm:ss'
       }
     },
+    // 选中组
     changeGroup(group) {
+      // debugger
       var defaut = this.commonGroupFieldList.find(item => item.classs === group.classs)
+      console.log(defaut)
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList
@@ -812,6 +815,11 @@ export default {
         defautfieldList.title = '';
         group.fieldList.push(defautfieldList)
       }
+    },
+    changeField(val) {
+      debugger
+      console.log('选中的字段',val)
+    
     },
     handleClose() {
       // debugger
