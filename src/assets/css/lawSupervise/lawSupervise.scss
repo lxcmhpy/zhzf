@@ -11,6 +11,11 @@
     width: 500px;
     height: 300px;
 }
+
+.amap-toolbar{
+    right: 30px !important;
+    bottom: 40px !important;
+}
 .mainBox {
     position: relative;
     // margin: 22px;
@@ -1373,4 +1378,5 @@
     .amap-main-content  {
         height: 92vh;
     }
+
 }
