@@ -71,7 +71,6 @@
                     :show-file-list="false"
                     v-show="scope.row.staffStatus==1"
                     :http-request="(params)=>saveFile(params,scope.row)"
-                    action="https://jsonplaceholder.typicode.com/posts/"
                     multiple
                     :limit="1">
                     <el-button size="small" type="primary">上传照片</el-button>
@@ -88,8 +87,8 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="current"
-              :page-sizes="[this.size, 2*this.size, 3*this.size, 4*this.size]"
-              :page-size=this.size
+              :page-sizes="[20, 40, 60, 80,100]"
+              :page-size="size"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total">
             </el-pagination>
@@ -234,10 +233,8 @@
       download_excel(){
       },
       handleSizeChange(val) {
-        var this_size=this.size;
         this.size=val;
         this.fetchData({});
-        this.size=this_size;
       },
       handleCurrentChange(val) {
         this.current=val;
@@ -264,14 +261,10 @@
           res => {
             console.log(res);
             if(res.code==200){
-              if(res.data === "上传成功"){
-                this.fetchData({});
-                this.$message({type: "success",message: res.data});
-              }else{
-                 this.$message({type: "error",message:res.data});
-              }
+                this.$message({type: "success",message: res.msg});
+                this.fetchData({})
             }else{
-              this.$message({type: "error",message:res.data});
+              this.$message({type: "error",message:res.msg});
             }
           },
           error => {
@@ -343,11 +336,11 @@
       clickBaosong(){
         confirmSubmissionStaff(this.organId).then(res=>{
           if(res.code==200){
-            this.errorMsg(res.msg,"success")
+            this.$message({type: "success",message: res.msg});
             this.findPersonBsStatus();
             this.fetchData({});
           }else{
-            that.errorMsg(res.msg,"error")
+            this.$message({type: "error",message: res.msg});
           }
         });
       }
