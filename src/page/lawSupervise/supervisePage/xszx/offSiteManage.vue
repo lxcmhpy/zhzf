@@ -40,7 +40,7 @@
             <el-form-item label="超限率" prop="overload">
               <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
               <el-select v-model="form.overload" placeholder="请选择">
-                <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.sort"></el-option>
               </el-select>
             </el-form-item>
             <el-collapse-transition>

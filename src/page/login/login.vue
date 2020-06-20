@@ -308,7 +308,10 @@ export default {
       this.$store.dispatch("getMenu").then(
         res => {
             // ...res.data,
-          _this.menuList = [...menuList];
+          _this.menuList = res.data;
+
+          // _this.menuList = [...menuList];
+          console.log()
           _this.$store.commit("SET_MENU", _this.menuList);
           _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
           _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
