@@ -38,8 +38,8 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="createLog">生成日志</el-button>
             </el-form-item>
-            <el-form-item prop="name" style="float:right;display:inline-block" @click="viewMine()">
-              <el-radio v-model="searchForm.name" label="1" @change='changeName()'>只显示我的</el-radio>
+            <el-form-item prop="name" style="float:right;display:inline-block" class="chose-mine">
+              <el-radio v-model="searchForm.name" label="1" @click.native.prevent="changeName()" >只显示我的</el-radio>
             </el-form-item>
           </el-form>
         </div>
@@ -135,6 +135,11 @@ export default {
     },
     changeName() {
       console.log(":", this.searchForm.name)
+      if(this.searchForm.name==''){
+        this.searchForm.name='1'
+      }else{
+        this.searchForm.name=''
+      }
       this.searchForm.createUser = iLocalStroage.gets("userInfo").username;
       this.searchTableData()
 
