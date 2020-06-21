@@ -72,10 +72,9 @@
             </el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
-                <el-tag type="success" v-show="scope.row.bsStatus==1">已报送</el-tag>
                 <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
+                <el-tag type="warning" v-show="scope.row.bsStatus==1 && scope.row.caseStatus==0">未抽取</el-tag>
                 <el-tag type="success" v-show="scope.row.caseStatus==1">已抽取</el-tag>
-                <el-tag type="warning"  v-show="scope.row.caseStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
               <el-table-column label="操作" align="center" width="120" >

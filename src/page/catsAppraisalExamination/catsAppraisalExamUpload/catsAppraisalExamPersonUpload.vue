@@ -55,10 +55,9 @@
             <el-table-column prop="provinceNo" label="现持省内执法证号" align="center"></el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
-                <el-tag type="success" v-show="scope.row.bsStatus==1">已报送</el-tag>
                 <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
+                <el-tag type="warning"  v-show="scope.row.staffStatus==0 && cope.row.bsStatus==1">未抽取</el-tag>
                 <el-tag type="success" v-show="scope.row.staffStatus==1">已抽取</el-tag>
-                <el-tag type="warning"  v-show="scope.row.staffStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
               <el-table-column label="操作" align="center" width="120" >
