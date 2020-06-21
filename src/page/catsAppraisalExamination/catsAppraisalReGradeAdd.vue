@@ -288,8 +288,11 @@ export default {
             res => {
                 _this.$message({type: "success",message: "提交成功!"});
                 _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+                let routerData = {
+                    orgId:_this.form.orgId
+                }
                 _this.$router.push({
-                    name: this.$route.params.url
+                    name: this.$route.params.url, params: routerData 
                 });
             },
             err => {
