@@ -184,6 +184,7 @@ export default {
     showZbDialog () {
         // this.getAllOrgan('root');
         // this.zbVisible = true;
+        this.obj.status='已审核'
          let _this = this;
         new Promise((resolve, reject) => {
             saveAndUpdate(_this.obj).then(
@@ -298,8 +299,10 @@ export default {
     },
     nextRouter() {
         if (this.$route.params.status == '0') {
+            this.obj.status='审核中'
             let _this = this;
             new Promise((resolve, reject) => {
+              debugger
                 saveAndUpdate(_this.obj).then(
                     res => {
                         debugger;
