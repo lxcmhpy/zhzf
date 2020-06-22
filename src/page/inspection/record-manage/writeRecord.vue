@@ -54,7 +54,8 @@ import chooseLawPerson from "./chooseModlePerson.vue";
 import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
-import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findRecordByIdApi } from "@/api/Record";
+import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
+ findRecordByIdApi ,findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: ['psMsg'],
@@ -187,19 +188,36 @@ export default {
     },
     //当前登录账号名
     setLawPersonCurrentP() {
-      this.formData.createUser = iLocalStroage.gets("userInfo").username;
+      this.formData.createUser = iLocalStroage.gets("userInfo").nickName;
     },
     // 修改
     editRecord() {
       // console.log('rule', this.rule)
-      this.$data.$f.resetFields()
-      this.rule.forEach(element => {
-        console.log(element)
-        this.$data.$f.updateRule(element.field, {
-          props: { disabled: false }
-        }, true);
-      });
-      this.addOrEiditFlag = 'add'
+      findRecordModleTimeByIdApi(this.formData.templateId).then(
+        res => {
+          if (res.code == 200) {
+            console.log('row.createTime <= res.data', this.formData.createTime, res.data)
+            if (res.data!=null||this.formData.createTime >= res.data) {
+              // 可修改
+              this.$data.$f.resetFields()
+              this.rule.forEach(element => {
+                console.log(element)
+                this.$data.$f.updateRule(element.field, {
+                  props: { disabled: false }
+                }, true);
+              });
+              this.addOrEiditFlag = 'add'
+            } else {
+              this.$message.error('当前模板已修改，该记录不可修改');
+            }
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
+
     },
     saveRecord() {
       this.formData.status = '保存';
@@ -309,6 +327,7 @@ export default {
     // 复制添加
     copySave() {
       this.addOrEiditFlag = 'add'
+      this.onSubmit
     },
     onSubmit(formData) {
 
@@ -606,24 +625,27 @@ export default {
                   })
                 }
               } else if (item.type == '数字型') {
-                this.rule.push({
-                  type: "InputNumber",
-                  field: item.id || item.field,
-                  title: item.title,
-                  value: item.text || 1,
-                  props: {
-                    precision: 2
-                  },
-                  controls: false,
-                  className: 'modle-number-box',
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'blur'
-                  }],
-
-                })
-              } else if (item.type == '地址型') {
+              this.rule.push({
+              //  type: "InputNumber",
+                type: "input",
+                field: item.id || item.field,
+                title: item.title,
+                value: item.text,
+                controls: false,
+                className: 'modle-number-box',
+                props: {
+                  type: 'textarea',
+                  autosize: { minRows: 1 }
+                  // precision: 2
+                },
+                validate: [{
+                  required: item.required == 'true' ? true : false,
+                  pattern:'^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                  message: '必须输入数字',
+                  trigger: 'blur'
+                }]
+              })
+            } else if (item.type == '地址型') {
                 item.type = 'input';
                 this.rule.push({
                   type: 'input',
@@ -847,18 +869,22 @@ export default {
               }
             } else if (item.type == '数字型') {
               this.rule.push({
-                type: "InputNumber",
+              //  type: "InputNumber",
+                type: "input",
                 field: item.id || item.field,
                 title: item.title,
-                value: item.text || 1,
+                value: item.text,
                 controls: false,
                 className: 'modle-number-box',
                 props: {
-                  precision: 2
+                  type: 'textarea',
+                  autosize: { minRows: 1 }
+                  // precision: 2
                 },
                 validate: [{
                   required: item.required == 'true' ? true : false,
-                  message: '请输入' + item.title,
+                  pattern:'^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                  message: '必须输入数字',
                   trigger: 'blur'
                 }]
               })
