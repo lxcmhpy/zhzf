@@ -10,6 +10,7 @@ const StartRouter = [
   {
     path: "/examLogin",
     name: "examLogin",
+    meta: { loading: false },
     component: () => import("@/page/exam/login.vue")
   },
   {
@@ -21,26 +22,31 @@ const StartRouter = [
       {
         path: "/entrySystem",
         name: "entrySystem",
+        meta: { loading: false },
         component: () => import("@/page/exam/start-exam/entrySystem")
       },
       {
         path: "/invigilator",
         name: "invigilator",
+        meta: { loading: false },
         component: () => import("@/page/exam/start-exam/invigilator")
       },
       {
         path: "/examineeEntry",
         name: "examineeEntry",
+        meta: { loading: false },
         component: () => import("@/page/exam/start-exam/examineeEntry")
       },
       {
         path: "/countDown",
         name: "countDown",
+        meta: { loading: false },
         component: () => import("@/page/exam/start-exam/countDown")
       },
       {
         path: "/startAnswer",
         name: "startAnswer",
+        meta: { loading: false },
         component: () => import("@/page/exam/start-exam/startAnswer")
       },
       {
@@ -52,16 +58,19 @@ const StartRouter = [
           {
             path: "/markExam",
             name: "markExam",
+            meta: { loading: false },
             component: () => import("@/page/exam/start-exam/markExam")
           },
           {
             path: "/waitMark",
             name: "waitMark",
+            meta: { loading: false },
             component: () => import("@/page/exam/start-exam/waitMark")
           },
           {
             path: "/markQuestion",
             name: "markQuestion",
+            meta: { loading: false },
             component: () => import("@/page/exam/start-exam/markQuestion")
           }
         ]
