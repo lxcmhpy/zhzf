@@ -204,7 +204,7 @@
                 :disabled="scope.$index === (addMaintainQuestionForm.pqoList.length - 1)"
                 @click="downRemove(scope.$index)"
               >下移</el-button>
-              <el-button type="text" @click="delet(scope.$index)">删除</el-button>
+              <el-button type="text" @click="delet(scrop.row, scope.$index)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -489,9 +489,13 @@ export default {
       return optionVal[val];
     },
     //删除
-    delet(index) {
+    delet(row, index) {
       this.addMaintainQuestionForm.pqoList.splice(index, 1);
       this.updatChecked();
+      if(row.optionPicture && row.optionPicture.indexOf(this.baseUrl) > -1){
+        const deleteId = row.optionPicture.replace(this.baseUrl, '');
+        this.deleteImage(deleteId, 'option', index);
+      }
     },
     //修改选项
     updatChecked() {
@@ -572,7 +576,7 @@ export default {
         answer: this.addMaintainQuestionForm.answer
       };
       if(this.addMaintainQuestionForm.questionPicture){
-        this.addMaintainQuestionForm.questionPicture.replace(this.baseUrl, '');
+        saveData.questionPicture = this.addMaintainQuestionForm.questionPicture.replace(this.baseUrl, '');
       }
       let dispatchType = "addExamQuestionInfo",
         successMsg = "添加成功!";
@@ -732,7 +736,7 @@ export default {
           if(type === 'title'){
             this.deleteDescImg();
           }
-          if(type === 'option'){
+          if(type === 'option' && this.addMaintainQuestionForm.pqoList[index]){
             this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
             this.addMaintainQuestionForm.pqoList[index]["file"] = null;
           }

@@ -77,7 +77,6 @@ import VueSimpleVerify from 'vue-simple-verify';
 import * as types from "@/store/mutation-types";
 import { getDictListDetailByNameApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
-
 export default {
   components: { VueSimpleVerify },
   data() {
@@ -104,7 +103,7 @@ export default {
       weChatFlag: false,
       resetFlag: false,
       timeOutFlag: "",
-      systemTitle: sessionStorage.getItem('DocumentTitle')
+      systemTitle: null
     };
   },
   methods: {
@@ -216,7 +215,7 @@ export default {
         let res = await getDictListDetailByNameApi('系统标题');
         // this.systemTitleLogin = res.data[0].name;
 
-        window.document.title = res.data[0].name;
+        window.document.title = this.systemTitle;
         //设置省份
         this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
         //是否需要签章
@@ -226,9 +225,9 @@ export default {
   async mounted() {
     this.showLogin = true;
     window.sessionStorage.clear();
-
     sessionStorage.setItem('LoginSystem', 'examLogin');
-    this.$store.commit('set_systemTitle',iLocalStroage.get("SYS_TITLE"));
+    this.systemTitle = localStorage.getItem("SYS_TITLE");
+    this.$store.commit('set_systemTitle', this.systemTitle);
     await this.getSystemData();
   }
 };

@@ -39,12 +39,9 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     //未登录  进入登录页面
-    // debugger;
     if (whiteList.indexOf(to.path) !== -1) {
-        store.commit('CLEAR_ALL_CACHE');
         next();
     } else {
-
         let arrayPath = to.path.split('/');
         if(arrayPath.length > 1 && regularList[arrayPath[1]]&&regularList[arrayPath[1]].test(to.path)) {
             store.commit('CLEAR_ALL_CACHE');
@@ -55,7 +52,7 @@ router.beforeEach((to, from, next) => {
                 // store.commit('CLEAR_ALL_CACHE');
                 next({name: 'examLogin'});
             }else{
-                store.commit('CLEAR_ALL_CACHE');
+                // store.commit('CLEAR_ALL_CACHE');
                 next({name: "login"});
             }
         }

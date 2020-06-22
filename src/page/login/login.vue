@@ -6,7 +6,7 @@
         <div class="leftC">
           <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
           <div class="leftC_title">
-              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitle}}
+              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
           </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
@@ -308,7 +308,10 @@ export default {
       this.$store.dispatch("getMenu").then(
         res => {
             // ...res.data,
-          _this.menuList = [...menuList];
+          _this.menuList = res.data;
+
+          // _this.menuList = [...menuList];
+          console.log()
           _this.$store.commit("SET_MENU", _this.menuList);
           _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
           _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
@@ -401,13 +404,12 @@ export default {
     },
   },
   async mounted() {
+      debugger;
     this.showLogin = true;
-    this.systemTitleLogin = iLocalStroage.get("SYS_TITLE");
+    this.systemTitleLogin = localStorage.getItem("SYS_TITLE");
+    debugger;
     await this.getSystemData();
     // this.test()
-  },
-  async created () {
-
   },
   components: {
       VueSimpleVerify

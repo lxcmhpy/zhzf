@@ -22,8 +22,8 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
             </el-form-item> -->
             <el-form-item v-show="!isSubmit">
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingCase">随机抽取</el-button>
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="submitCase">确认抽取</el-button>
+              <el-button type="primary" v-show="data.length>0" size="medium" icon="el-icon-plus"  @click="randomSamplingCase">随机抽取</el-button>
+              <el-button type="primary" v-show="data.length>0" size="medium" icon="el-icon-plus"  @click="submitCase">确认抽取</el-button>
             </el-form-item>
 
           </el-form>
@@ -94,6 +94,7 @@
         findPykhCaseByPage(this.search).then(res=>{
           if(res.code==200){
             var caseList=[];
+            this.value=[]
             for(var i=0;i<res.data.records.length;i++){
               if(res.data.records[i].caseStatus!=0){
                 this.value.push(i)
@@ -113,6 +114,8 @@
               caseList.forEach((item)=>{
                 item.disabled=true
               })
+            }else{
+              this.isSubmit = false
             }
             this.data=caseList;
           }

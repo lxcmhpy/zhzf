@@ -22,8 +22,8 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
             </el-form-item> -->
             <el-form-item v-show="!isSubmit">
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingStaff">随机抽取</el-button>
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="submitStaff">确认抽取</el-button>
+              <el-button type="primary" v-show="personList.length>0" size="medium" icon="el-icon-plus"  @click="randomSamplingStaff">随机抽取</el-button>
+              <el-button type="primary" v-show="personList.length>0" size="medium" icon="el-icon-plus"  @click="submitStaff">确认抽取</el-button>
             </el-form-item>
 
           </el-form>
@@ -87,6 +87,7 @@
           // console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
             var personlist=[];
+            this.value=[]
             for(var i=0;i<res.data.records.length;i++){
               var maritimeNo=res.data.records[i].maritimeNo==null?'':res.data.records[i].maritimeNo+",";
               var provinceNo=res.data.records[i].provinceNo==null?'':res.data.records[i].provinceNo+",";
@@ -108,6 +109,8 @@
               personlist.forEach((item)=>{
                 item.disabled=true
               })
+            }else{
+              this.isSubmit = false
             }
             this.personList=personlist;
           }

@@ -1,7 +1,7 @@
 <template>
 <div class="com_searchAndpageBoxPadding">
   <div class="searchPageLayout" id="userBox">
-    <div class="searchPage toggleBox">
+    <div class="searchPage">
         <div class="handlePart">
             <el-form :inline="true" ref="userForm"  label-width="80px" :model="formInline">
                 <el-row>  
@@ -166,7 +166,7 @@ export default {
       let _this = this
       let data = {
         personName:_this.formInline.personName,
-        ministerialNo: _this.formInline.ministerialNo,
+        certNo: _this.formInline.ministerialNo,
         branchName: _this.formInline.branchName,
         oName:_this.formInline.oName,
         certStatus:_this.formInline.certStatus,

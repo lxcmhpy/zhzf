@@ -36,10 +36,10 @@
     "EXAM":"http://59.110.216.138:9050"
   },
   "XBW":{
-    "CAPTCHA_HOST": "https://172.16.164.53:8443",
-    "PDF_HOST": "http://172.16.170.54:9332/",
+    "CAPTCHA_HOST": "http://127.0.0.1:9000",
+    "PDF_HOST": "http://39.105.229.204:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
-    "LAW_SUPERVISE_HOST": "https://172.16.164.53:8443",
+    "LAW_SUPERVISE_HOST": "http://127.0.0.1:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API":"http://172.16.170.91:8081"
   },

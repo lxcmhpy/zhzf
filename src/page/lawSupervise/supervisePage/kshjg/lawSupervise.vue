@@ -40,7 +40,8 @@
                 <img :src="'./static/images/img/lawSupervise/icon_head.png'">
                 <div class="titleBox">
                     <div class="nickName">{{curWindow.other.nickName}}</div>
-                    <div class="num">{{curWindow.other.enforceNo}}</div>
+                    <!-- <div class="num">{{curWindow.other.enforceNo}}</div> -->
+                    <div class="num">{{curWindow.other.provincial ? curWindow.other.provincial : curWindow.other.ministerial ? curWindow.other.ministerial : curWindow.other.maritime}}</div>
                 </div>
                 <div class="right">
                     <div class="status">
@@ -992,7 +993,7 @@
         </el-amap-search-box> -->
         <div class="search-box-blue" style="z-index:10;display:flex;">
             <el-input class="w-390"
-                placeholder="输入关键字进行过滤"
+                placeholder="搜人员、查机构"
                 v-model="filterText">
             </el-input>
             <el-button  icon="el-icon-search" @click="searchAllByBtn"></el-button>
@@ -1561,7 +1562,7 @@ export default {
               ]
           }
       ],
-      lawScreenFull: true,
+      lawScreenFull: false,
       videoDoing: null,
       showVideo: false,
       show: true,
@@ -1746,8 +1747,10 @@ export default {
             new Promise((resolve, reject) => {
                 getOrganTree(params).then(
                     res => {
+                      console.log('筛选',res)
                         _this.showTree = false;
                         _this.ryList = res.data;
+
                 })
             })
 
@@ -1842,6 +1845,7 @@ export default {
                         debugger;
                         // _this.showTree = false;
                         let resultList = [];
+                        console.log('执法人员',res)
                         res.data.forEach((v,i)=>{
 
                             let position = v.propertyValue ? v.propertyValue.split(','):['',''];
