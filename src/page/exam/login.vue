@@ -76,8 +76,7 @@
 import VueSimpleVerify from 'vue-simple-verify';
 import * as types from "@/store/mutation-types";
 import { getDictListDetailByNameApi } from "@/api/system";
-import { removeToken } from "@/common/js/auth";
-
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: { VueSimpleVerify },
   data() {
@@ -104,7 +103,7 @@ export default {
       weChatFlag: false,
       resetFlag: false,
       timeOutFlag: "",
-      systemTitle: sessionStorage.getItem('DocumentTitle')
+      systemTitle: null
     };
   },
   methods: {
@@ -196,26 +195,40 @@ export default {
       }, 30000);
     },
     //获取系统标题
-    getSystemData() {
-      if(this.systemTitle){
+//     getSystemData() {
+//       if(this.systemTitle){
+//         window.document.title = this.systemTitle;
+//         return false;
+//       }
+//       getDictListDetailByNameApi('系统标题').then(res => {
+//         sessionStorage.setItem('DocumentTitle', res.data[0].name);
+//         window.document.title = res.data[0].name;
+//         this.systemTitle = res.data[0].name;
+//       }, err => {
+//         console.log(err);
+//       })
+//     }
+//   },
+    //获取系统标题
+    async getSystemData() {
+        // let _this = this;
+        let res = await getDictListDetailByNameApi('系统标题');
+        // this.systemTitleLogin = res.data[0].name;
+
         window.document.title = this.systemTitle;
-        return false;
-      }
-      getDictListDetailByNameApi('系统标题').then(res => {
-        sessionStorage.setItem('DocumentTitle', res.data[0].name);
-        window.document.title = res.data[0].name;
-        this.systemTitle = res.data[0].name;
-      }, err => {
-        console.log(err);
-      })
-    }
+        //设置省份
+        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
+        //是否需要签章
+        this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
+    },
   },
-  mounted() {
+  async mounted() {
     this.showLogin = true;
     window.sessionStorage.clear();
-    removeToken();
     sessionStorage.setItem('LoginSystem', 'examLogin');
-    this.getSystemData();
+    this.systemTitle = localStorage.getItem("SYS_TITLE");
+    this.$store.commit('set_systemTitle', this.systemTitle);
+    await this.getSystemData();
   }
 };
 </script>

@@ -26,141 +26,143 @@ service({
         res => {
         BASEURL = res.data;
         BASEURL.HOME_PAGE = BASEURL['HOME_PAGE_ROUTER_NAME'];
+        BASEURL.SYS_TITLE = BASEURL["SYS_TITLE"];
 
         sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
         iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+        localStorage.setItem("SYS_TITLE", BASEURL.SYS_TITLE);
     },
     error => {
         console.log(error)
     })
-
-
 // request interceptor
 service.interceptors.request.use(
-  config => {
-    if (BASEURL === '' || BASEURL === 'undefined') {
-        BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
-        BASEURL.HOME_PAGE = iLocalStroage.gets("HOME_PAGE_ROUTER_NAME");
-    }
-    if (config.baseUrlType) {
-        let baseObj = BASEURL[BASEURL.CURRENT];
-        config.baseURL = baseObj[config.baseUrlType];
-
-    } else{
-      config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST; // 默认的base_url
-      iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-      sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE);
-    }
-
-    if (config.responseType) {
-      config["responseType"] = config.responseType
-    }
-    // config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
-    config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8"
-    // config["Content-Type"] = config.contentType ? config.contentType : "multipart/form-data;charset=UTF-8"
-
-    //token一天后过期
-    if (config.showloading != false) {
-      let loadingType = config.loadingType ? config.loadingType : '';
-      showFullScreenLoading(loadingType);
-    }
-    if (getToken("TokenKey")) {
-      config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
-    }
-    config.url = config.url + '?time='+new Date().getTime();
-    console.log('config', config)
-    //  config.headers = {
-    //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键
-    // debugger;
-    return config;
-
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
-// respone interceptor
-service.interceptors.response.use(
-  response => {
-    if (response.status == 200) {
-      if (response.data.code == 200) {
-        tryHideFullScreenLoading();
-        return response.data;
-      } else if (
-        response.data.code == 400 || response.data.code == 500) {
-        tryHideFullScreenLoading();
-        return Promise.reject(response.data);
-      } else if (response.data.code == 401 || response.data.code == 403) {   //无权限
-        tryHideFullScreenLoading();
-        alertMessage('无权限进行此操作');
-        return Promise.reject(response.data);
-      }  else if (response.data.code == -1) {   //重新登录
-        tryHideFullScreenLoading();
-        alertMessage('登陆超时，请重新登录'); //账户在其他地方登录，您被迫下线
-        removeToken()
-        return Promise.reject(response.data);
-      } else {
-        // httpErrorStr(response.data.code);
-        // 下载后台返回文件流
-        if(response.config.responseType === "blob"){
-          const fileName = response.headers["content-disposition"].split(";")[1].split("=")[1];
-          return Promise.resolve({ data: response.data, fileName: fileName });
-        }else{
-          tryHideFullScreenLoading();
-          return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
-        }
+    config => {
+      if (BASEURL === '' || BASEURL === 'undefined') {
+          BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
+          BASEURL.HOME_PAGE = localStorage.getItem("HOME_PAGE_ROUTER_NAME");
+          BASEURL.SYS_TITLE = localStorage.getItem("SYS_TITLE");
       }
-    } else {
+      if (config.baseUrlType) {
+          let baseObj = BASEURL[BASEURL.CURRENT];
+          config.baseURL = baseObj[config.baseUrlType];
 
-      return Promise.reject(response);
+      } else{
+        config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST; // 默认的base_url
+        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+        sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE);
+        localStorage.setItem("SYS_TITLE", BASEURL.SYS_TITLE);
+      }
+
+      if (config.responseType) {
+        config["responseType"] = config.responseType
+      }
+      // config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded"
+      config["Content-Type"] = config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8"
+      // config["Content-Type"] = config.contentType ? config.contentType : "multipart/form-data;charset=UTF-8"
+
+      //token一天后过期
+      if (config.showloading != false) {
+        let loadingType = config.loadingType ? config.loadingType : '';
+        showFullScreenLoading(loadingType);
+      }
+      if (getToken("TokenKey")) {
+        config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+      }
+      config.url = config.url + '?time='+new Date().getTime();
+      console.log('config', config)
+      //  config.headers = {
+      //   'Content-Type': config.contentType ? config.contentType : "application/x-www-form-urlencoded;charset=UTF-8" //  注意：设置很关键
+      // debugger;
+      return config;
+
+    },
+    error => {
+      return Promise.reject(error);
     }
-  },
-  error => {
-    console.log(error)
-    httpErrorStr(error);
-    return Promise.reject(error);
-  }
-);
-
-function httpErrorStr(error) {
-    try {
-        console.log('error', error.response)
-        if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
-        alertMessage("networkError"); //networkError
-        } else if (error.toString().indexOf("500") != -1) {
-        alertMessage("系统错误"); //系统错误
-        } else if (error.toString().indexOf("401") != -1 && error.response.data.code == 400000) {
-        alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
-        // removeToken();
-        } else if (error.message == "stopQuest") {
-        return false;
-        } else if (error.response.data&&error.response.data.error == 'unauthorized') {
-        alertMessage('用户名或密码错误')
-        } else if (error.response.status == 400) {
-        alertMessage(error.response.data.error_description)
+  );
+  // respone interceptor
+  service.interceptors.response.use(
+    response => {
+      if (response.status == 200) {
+        if (response.data.code == 200) {
+          tryHideFullScreenLoading();
+          return response.data;
+        } else if (
+          response.data.code == 400 || response.data.code == 500) {
+          tryHideFullScreenLoading();
+          return Promise.reject(response.data);
+        } else if (response.data.code == 401 || response.data.code == 403) {   //无权限
+          tryHideFullScreenLoading();
+          alertMessage('无权限进行此操作');
+          return Promise.reject(response.data);
+        }  else if (response.data.code == -1) {   //重新登录
+          tryHideFullScreenLoading();
+          alertMessage('登陆超时，请重新登录'); //账户在其他地方登录，您被迫下线
+          removeToken()
+          return Promise.reject(response.data);
         } else {
-        alertMessage("请求失败"); //请求失败
+          // httpErrorStr(response.data.code);
+          // 下载后台返回文件流
+          if(response.config.responseType === "blob"){
+            const fileName = response.headers["content-disposition"].split(";")[1].split("=")[1];
+            return Promise.resolve({ data: response.data, fileName: fileName });
+          }else{
+            tryHideFullScreenLoading();
+            return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善
+          }
         }
-    } catch (error) {
-        // getHost();
+      } else {
+
+        return Promise.reject(response);
+      }
+    },
+    error => {
+      console.log(error)
+      httpErrorStr(error);
+      return Promise.reject(error);
     }
+  );
 
-  tryHideFullScreenLoading();
-}
-//弹出提示语
-function alertMessage(msg) {
-  // message.config({
-  //   top: `40px`,
-  //   duration: 3,
-  //   maxCount: 1,
-  // });
-  vue.$message({
-    showClose: true,
-    message: msg,
-    type: 'error'
-  })
+  function httpErrorStr(error) {
+      try {
+          console.log('error', error.response)
+          if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
+          alertMessage("networkError"); //networkError
+          } else if (error.toString().indexOf("500") != -1) {
+          alertMessage("系统错误"); //系统错误
+          } else if (error.toString().indexOf("401") != -1 && error.response.data.code == 400000) {
+          alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
+          // removeToken();
+          } else if (error.message == "stopQuest") {
+          return false;
+          } else if (error.response.data&&error.response.data.error == 'unauthorized') {
+          alertMessage('用户名或密码错误')
+          } else if (error.response.status == 400) {
+          alertMessage(error.response.data.error_description)
+          } else {
+          alertMessage("请求失败"); //请求失败
+          }
+      } catch (error) {
+          // getHost();
+      }
 
-  //message.error(msg)
-}
+    tryHideFullScreenLoading();
+  }
+  //弹出提示语
+  function alertMessage(msg) {
+    // message.config({
+    //   top: `40px`,
+    //   duration: 3,
+    //   maxCount: 1,
+    // });
+    vue.$message({
+      showClose: true,
+      message: msg,
+      type: 'error'
+    })
 
-export default service;
+    //message.error(msg)
+  }
+
+  export default service;

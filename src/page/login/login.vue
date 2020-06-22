@@ -6,7 +6,7 @@
         <div class="leftC">
           <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
           <div class="leftC_title">
-              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitle}}
+              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
           </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
@@ -308,7 +308,10 @@ export default {
       this.$store.dispatch("getMenu").then(
         res => {
             // ...res.data,
-          _this.menuList = [...menuList];
+          _this.menuList = res.data;
+
+          // _this.menuList = [...menuList];
+          console.log()
           _this.$store.commit("SET_MENU", _this.menuList);
           _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
           _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
@@ -391,32 +394,22 @@ export default {
     async getSystemData() {
         // let _this = this;
         let res = await getDictListDetailByNameApi('系统标题');
-        this.systemTitleLogin = res.data[0].name;
-        this.$store.commit('set_systemTitle',res.data[0].name);
+        // this.systemTitleLogin = res.data[0].name;
+        this.$store.commit('set_systemTitle',this.systemTitleLogin);
         window.document.title = res.data[0].name;
         //设置省份
         this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
         //是否需要签章
         this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
-    //     new Promise((resolve, reject) => {
-    //         getDictListDetailByNameApi('系统标题').then(res => {
-    //             console.log('系统标题', res);
-    //             //系统标题
-
-    //             //设置系统首页
-    //             // this.$store.commit('setHomePage', res.data[3].name)
-    //         }, err => {
-    //             console.log(err);
-    //         })
-    //   })
     },
   },
-  mounted() {
+  async mounted() {
+      debugger;
     this.showLogin = true;
-    // this.test()
-  },
-  async created () {
+    this.systemTitleLogin = localStorage.getItem("SYS_TITLE");
+    debugger;
     await this.getSystemData();
+    // this.test()
   },
   components: {
       VueSimpleVerify

@@ -40,7 +40,8 @@
                 <img :src="'./static/images/img/lawSupervise/icon_head.png'">
                 <div class="titleBox">
                     <div class="nickName">{{curWindow.other.nickName}}</div>
-                    <div class="num">{{curWindow.other.enforceNo}}</div>
+                    <!-- <div class="num">{{curWindow.other.enforceNo}}</div> -->
+                    <div class="num">{{curWindow.other.provincial ? curWindow.other.provincial : curWindow.other.ministerial ? curWindow.other.ministerial : curWindow.other.maritime}}</div>
                 </div>
                 <div class="right">
                     <div class="status">
@@ -523,7 +524,8 @@
                                         <div class="lawHoverContent">
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">过检时间：</span>{{gjObj&&gjObj.checkTime?gjObj.checkTime.split(' ')[1]:''}}</p>
-                                                <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p>
+                                                <!-- <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p> -->
+                                                <p><span class="bgCgray">重点监管：</span><span>是</span></p>
                                             </div>
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">历史告警（次）：</span>{{gjObj.lscc}}</p>
@@ -549,7 +551,8 @@
                                                     <span class="bgCgray f12">超限率</span>
                                                 </div>
                                                 <div class="gj-con">
-                                                    <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
+                                                    <!-- <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span> -->
+                                                    <span>{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
                                                      <p><span class="bgCgray">站点：</span>{{row.siteName}}</p>
                                                 </div>
                                                 </div>
@@ -990,7 +993,7 @@
         </el-amap-search-box> -->
         <div class="search-box-blue" style="z-index:10;display:flex;">
             <el-input class="w-390"
-                placeholder="输入关键字进行过滤"
+                placeholder="搜人员、查机构"
                 v-model="filterText">
             </el-input>
             <el-button  icon="el-icon-search" @click="searchAllByBtn"></el-button>
@@ -1559,7 +1562,7 @@ export default {
               ]
           }
       ],
-      lawScreenFull: true,
+      lawScreenFull: false,
       videoDoing: null,
       showVideo: false,
       show: true,
@@ -1744,8 +1747,10 @@ export default {
             new Promise((resolve, reject) => {
                 getOrganTree(params).then(
                     res => {
+                      console.log('筛选',res)
                         _this.showTree = false;
                         _this.ryList = res.data;
+
                 })
             })
 
@@ -1840,6 +1845,7 @@ export default {
                         debugger;
                         // _this.showTree = false;
                         let resultList = [];
+                        console.log('执法人员',res)
                         res.data.forEach((v,i)=>{
 
                             let position = v.propertyValue ? v.propertyValue.split(','):['',''];

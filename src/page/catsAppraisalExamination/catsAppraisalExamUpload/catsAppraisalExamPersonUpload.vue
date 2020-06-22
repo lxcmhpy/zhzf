@@ -9,13 +9,13 @@
               <el-input v-model="search.staffName" clearable placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item label="所属机构">-->
-<!--              <el-input v-model="search.OId" clearable placeholder="请选择"></el-input>-->
+<!--              <el-input v-model="search.oId" clearable placeholder="请选择"></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData(1)">查询</el-button>
             </el-form-item>
               <el-form-item v-if="baosongStatus">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add_openDialog">新增</el-button>
@@ -55,28 +55,32 @@
             <el-table-column prop="provinceNo" label="现持省内执法证号" align="center"></el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
-                <el-tag type="success" v-show="scope.row.bsStatus==1">已报送</el-tag>
                 <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
+                <el-tag type="warning"  v-show="scope.row.staffStatus==0 && cope.row.bsStatus==1">未抽取</el-tag>
                 <el-tag type="success" v-show="scope.row.staffStatus==1">已抽取</el-tag>
-                <el-tag type="warning"  v-show="scope.row.staffStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
-              <el-table-column label="操作" align="center" width="120" v-if="baosongStatus">
+              <el-table-column label="操作" align="center" width="120" >
                 <template  slot-scope="scope">
-                  <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
-                  <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
-                  <el-upload
-                    class="upload-demo"
-                    accept=".jpg, .png"
-                    :show-file-list="false"
-                    v-show="scope.row.staffStatus==1"
-                    :http-request="(params)=>saveFile(params,scope.row)"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    multiple
-                    :limit="1">
-                    <el-button size="small" type="primary">上传照片</el-button>
-                  </el-upload>
-                  <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
+                    <div>
+                        <div v-if="baosongStatus">
+                            <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
+                            <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
+                        </div>
+                        <div v-show="scope.row.caseStatus==1">
+                            <el-upload
+                                class="upload-demo"
+                                accept=".jpg, .png"
+                                :show-file-list="false"
+                                v-show="scope.row.staffStatus==1"
+                                :http-request="(params)=>saveFile(params,scope.row)"
+                                multiple
+                                :limit="1">
+                                <el-button size="small" type="primary">上传照片</el-button>
+                            </el-upload>
+                            <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
+                        </div>
+                  </div>
                 </template>
               </el-table-column>
           </el-table>
@@ -89,7 +93,7 @@
               @current-change="handleCurrentChange"
               :current-page="current"
               :page-sizes="[20, 40, 60, 80,100]"
-              :page-size=this.size
+              :page-size="size"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total">
             </el-pagination>
@@ -160,7 +164,7 @@
         total:0,
         search:{
           staffName:"",
-          OId:""
+          oId:""
         },
         organList:[],
         organId:'',
@@ -168,7 +172,7 @@
         visible:false,
         labelPosition: 'right',
         form:{
-          Oid: '',
+          oId: '',
           enforcementCertificate:'',
           idCard:'',
           maritimeNo:'',
@@ -221,7 +225,7 @@
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
-        data.OId=this.organId;
+        data.oId=this.organId;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
@@ -234,6 +238,7 @@
       download_excel(){
       },
       handleSizeChange(val) {
+        this.current = 1;
         this.size=val;
         this.fetchData({});
       },
@@ -244,13 +249,14 @@
       resetSearch(){
         this.search={
           staffName:"",
-            OId:""
+            oId:""
         }
       },
-      searchData(){
+      searchData(current){
+        this.current = current;
         let data={};
         data.staffName=this.search.staffName;
-        data.OId=this.search.OId;
+        data.oId=this.search.oId;
         this.fetchData(data);
       },
       uploadPerson(param) {
@@ -277,7 +283,7 @@
         this.visible = true;
         this.form = {
           batchId:'',
-          OId: this.organId,
+          oId: this.organId,
           enforcementCertificate: '',
           idCard: '',
           maritimeNo: '',
@@ -323,7 +329,7 @@
       },
       findPersonBsStatus(){
         let data={}
-        data.OId=this.organId;
+        data.oId=this.organId;
         data.bsStatus=1;
         findPykhStaffByPage(data).then(res=>{
           if(res.code==200){
@@ -352,7 +358,7 @@
       console.info("userinfo:",userInfo)
       this.organId = userInfo.organId;
       let data={}
-      // data.OId=this.organId;
+      // data.oId=this.organId;
       this.findPersonBsStatus();
       this.fetchData(data);
 

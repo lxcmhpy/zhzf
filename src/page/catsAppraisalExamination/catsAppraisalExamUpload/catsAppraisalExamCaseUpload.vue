@@ -1,4 +1,4 @@
-<template>
+(<template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox toggleBox">
       <div class="handlePart" style="margin-left: 0px;">
@@ -26,7 +26,7 @@
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData(1)">查询</el-button>
             </el-form-item>
               <el-form-item v-if="baosongStatus">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add">新增</el-button>
@@ -72,28 +72,33 @@
             </el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
-                <el-tag type="success" v-show="scope.row.bsStatus==1">已报送</el-tag>
                 <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
+                <el-tag type="warning" v-show="scope.row.bsStatus==1 && scope.row.caseStatus==0">未抽取</el-tag>
                 <el-tag type="success" v-show="scope.row.caseStatus==1">已抽取</el-tag>
-                <el-tag type="warning"  v-show="scope.row.caseStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
-              <el-table-column label="操作" align="center" width="120" v-if="baosongStatus">
+              <el-table-column label="操作" align="center" width="120" >
                 <template  slot-scope="scope">
-                  <el-button type="text" @click.stop @click="update(scope.row)" v-show="scope.row.caseStatus==0">修改</el-button>
-                  <el-button type="text" @click.stop @click="deleteCase(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
-                  <el-upload
-                    class="upload-demo"
-                    accept=".pdf"
-                    :show-file-list="false"
-                    v-show="scope.row.caseStatus==1"
-                    :http-request="(params)=>saveFile(params,scope.row)"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    multiple
-                    :limit="1">
-                    <el-button size="small" type="primary">上传附件</el-button>
-                  </el-upload>
-                  <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.caseStatus==1 && scope.row.fjStatus==1">查看附件</el-button>
+                    <div>
+                        <div v-if="baosongStatus">
+                            <el-button type="text" @click.stop @click="update(scope.row)" v-show="scope.row.caseStatus==0">修改</el-button>
+                            <el-button type="text" @click.stop @click="deleteCase(scope.row)" v-show="scope.row.caseStatus==0">删除</el-button>
+                        </div>
+                        <div v-show="scope.row.caseStatus==1">
+                            <el-upload
+                                class="upload-demo"
+                                accept=".pdf,.PDF"
+                                :show-file-list="false"
+                                v-show="scope.row.caseStatus==1"
+                                :http-request="(params)=>saveFile(params,scope.row)"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                multiple
+                                :limit="1">
+                                <el-button size="small" type="primary">上传附件</el-button>
+                            </el-upload>
+                            <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.caseStatus==1 && scope.row.fjStatus==1">查看附件</el-button>
+                        </div>
+                  </div>
                 </template>
               </el-table-column>
 
@@ -107,7 +112,7 @@
               @current-change="handleCurrentChange"
               :current-page="current"
               :page-sizes="[20, 40, 60, 80,100]"
-              :page-size=this.size
+              :page-size="size"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total">
             </el-pagination>
@@ -207,7 +212,7 @@
           caseNo:'',
           caseCause:'',
           caseType:'',
-          OId:'',
+          oId:'',
           caseAgency:'',
           caseParty:'',
           enforcementOfficials1:'',
@@ -258,7 +263,7 @@
       fetchData(data){
         data.current=this.current
         data.size=this.size;
-        data.oid=this.organId;
+        data.oId=this.organId;
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){
             this.dataList=res.data.records;
@@ -269,6 +274,7 @@
       },
       //更改每页显示的条数
     handleSizeChange(val) {
+      this.current = 1;
       this.size = val;
       this.fetchData({});
     },
@@ -277,7 +283,8 @@
       this.current = val;
       this.fetchData({});
     },
-      searchData(){
+      searchData(current){
+        this.current = current;
         let data=this.search;
         console.info("searchData:",data)
         this.fetchData(data);
@@ -330,7 +337,7 @@
         let _this =this;
         this.$refs['form'].validate((valid) => {
             if (valid) {
-              _this.form.OId=this.organId
+              _this.form.oId=this.organId
                 saveOrUpdateCaseInfo(_this.form).then(res=>{
                     console.info("保存案件结果：",res)
                     if(res.code==200){
@@ -371,7 +378,7 @@
       },
       findCaseBsStatus(){
         let data={}
-        data.oid=this.organId;
+        data.oId=this.organId;
         data.bsStatus=1;
         findPykhCaseByPage(data).then(res=>{
           if(res.code==200){

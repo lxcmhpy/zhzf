@@ -40,7 +40,7 @@
             <el-form-item label="超限率" prop="overload">
               <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
               <el-select v-model="form.overload" placeholder="请选择">
-                <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.sort"></el-option>
               </el-select>
             </el-form-item>
             <el-collapse-transition>
@@ -143,12 +143,25 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="totalWeight" label="车货总质量（t）" width="140" align="center"></el-table-column>
-            <el-table-column prop="approvedLoad" label="限重（t）" align="center"></el-table-column>
-            <el-table-column prop="overweight" label="超重（t）" width="120" align="center"></el-table-column>
+            <el-table-column prop="totalWeight" label="车货总质量（t）" width="140" align="center">
+              <template slot-scope="scope">
+                <span v-if="scope.row.totalWeight/1000>100" style="color:red">{{scope.row.totalWeight/1000}}</span>
+                <span v-else>{{scope.row.totalWeight/1000}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="approvedLoad" label="限重（t）" align="center">
+              <template slot-scope="scope">
+                {{scope.row.approvedLoad/1000}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="overweight" label="超重（t）" width="120" align="center">
+              <template slot-scope="scope">
+                {{scope.row.overweight/1000}}
+              </template>
+            </el-table-column>
             <el-table-column prop="overload" label="超限率（%）" width="120" align="center">
               <template slot-scope="scope">
-                <span v-if="scope.row.overload>100" style="color:red">{{scope.row.overload}}</span>
+                <span v-if="scope.row.overload/1000>100" style="color:red">{{scope.row.overload}}</span>
                 <span v-else>{{scope.row.overload}}</span>
               </template>
             </el-table-column>
@@ -358,6 +371,20 @@ export default {
     },
     reset(formName) {
       this.$refs[formName].resetFields();
+      let _this=this
+      this.pickerOptions= {
+        
+        onPick: ({ maxDate, minDate }) => {
+          if (minDate) {
+            _this.$set(_this.timeList, 0, minDate);
+          }
+          let max = new Date(maxDate ? maxDate : minDate);
+          max.setHours(23);
+          max.setMinutes(59);
+          max.setSeconds(59);
+          _this.$set(_this.timeList, 1, max);
+        }
+      }
     },
     routerDetail(row) {
       // this.$store.commit('setOffSiteManageId', row.id);

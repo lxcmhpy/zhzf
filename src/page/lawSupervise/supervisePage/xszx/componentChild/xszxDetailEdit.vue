@@ -827,6 +827,8 @@ export default {
             this.visible = true;
         },
         check () {
+            this.checkSearchForm.number = this.obj.vehicleNumber;
+            this.checkSearchForm.color = this.obj.vehicleColor;
             this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'colorList');
             this.checkVisible = true;
         },
