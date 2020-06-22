@@ -85,13 +85,14 @@
                       <!-- {{field}} -->
                       <el-col :span="16">
                         <!-- <el-form :model="field" ref="filedForm"> -->
-                        <el-form-item label-width="0" :prop="'fieldList[' + index1 +  '].title'" :rules="{ required: true, message: '请输入字段名称', trigger: 'change' }">
-                          <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
-                          </el-input>
+                        <el-form-item label-width="0" :prop="'fieldList[' + index1 +  '].info'" :rules="{ required: true, message: '请输入字段名称', trigger: 'change' }">
+                          <!-- <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
+                          </el-input> -->
 
-                          <!-- <el-select v-model="field.title" filterable allow-create clearable placeholder="请填写字段名称" @change="changeField">
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField.field"></el-option>
-                          </el-select> -->
+                          <!-- 改成选择字段 -->
+                          <el-select v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)">
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField"></el-option>
+                          </el-select>
 
                         </el-form-item>
                       </el-col>
@@ -249,7 +250,8 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
-import { saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findAllCommonFieldApi } from "@/api/Record";
+import {  saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
+  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi} from "@/api/Record";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
@@ -412,6 +414,7 @@ export default {
 
       }
       this.findCommonGroupField()
+      this.findCommonField()
       this.getEnforceLawType();
       this.setLawPersonCurrentP();
       this.getAllOrgan('root');
@@ -488,12 +491,30 @@ export default {
             element.fieldList.forEach(item => {
               if (item.options) {
                 item.options = JSON.parse(item.options)
+
               }
+              // 改成选择字段
+              let itemData = JSON.parse(JSON.stringify(item))
+              console.log('itemData', itemData)
+              item.info = itemData.title
+              console.log(item)
             });
           });
           console.log('common', this.commonGroupFieldList)
           // 获取通用字段
-          this.commonFieldList = this.commonGroupFieldList[3].fieldList
+          // this.commonFieldList = this.commonGroupFieldList[3].fieldList
+        },
+        error => {
+
+        })
+    },
+    // 获取通用字段组
+    findCommonField() {
+      findAllCandidateFieldApi().then(
+        res => {
+
+          // 获取通用字段
+          this.commonFieldList = res.data
         },
         error => {
 
@@ -660,10 +681,10 @@ export default {
               })
 
             }
-          }else {
-          this.$message({ message: '字段中文名必填', type: 'warning' });
-          return false;
-        }
+          } else {
+            this.$message({ message: '字段中文名必填', type: 'warning' });
+            return false;
+          }
 
         } else {
           this.$message({ message: '请完善模板内容', type: 'warning' });
@@ -808,6 +829,8 @@ export default {
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList
+        console.log('ggroup.fieldList', group.fieldList)
+
       } else if (!group.fieldList || group.fieldList.length == 0) {
         console.log(group.fieldList)
         group.fieldList = [];
@@ -816,10 +839,26 @@ export default {
         group.fieldList.push(defautfieldList)
       }
     },
-    changeField(val) {
-      debugger
-      console.log('选中的字段',val)
-    
+    changeField(info, field) {
+      // debugger
+      console.log('选中的字段info', info)
+      console.log('选中的字段', field)
+      if (info.id) {
+        // 判断是不是通用字段
+        field.id = field.info.id
+        field.field = field.info.field
+        field.title = field.info.title
+        field.type = field.info.type || '文本型'
+        field.options = JSON.parse(field.info.options)
+        field.sort = field.sort
+        field.remark = field.info.remark
+        field.required = field.info.required
+        field.status = field.info.status
+        field.templateId = field.info.templateId
+      } else {
+        field.title = info
+      }
+
     },
     handleClose() {
       // debugger

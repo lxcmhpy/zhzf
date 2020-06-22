@@ -614,11 +614,14 @@ export default {
                   props: {
                     precision: 2
                   },
+                  controls: false,
+                  className: 'modle-number-box',
                   validate: [{
                     required: item.required == 'true' ? true : false,
                     message: '请输入' + item.title,
                     trigger: 'blur'
-                  }]
+                  }],
+
                 })
               } else if (item.type == '地址型') {
                 item.type = 'input';
@@ -682,6 +685,7 @@ export default {
                   },
                 })
                 if (item.field == 'staff') {
+                  console.log('item', item)
                   this.LawName = item.id;// 执法人员字段名
                 } else if (item.field == 'certificateId') {//执法人员账号字段名
                   this.LawOfficerCard = item.id;
@@ -711,8 +715,25 @@ export default {
                 children: [element.classs],
               }
             )
-          }
+          } else {
+            if (this.rule.length != 0) {
+              // 分割线
+              this.rule.push(
+                {
+                  type: 'div',
+                  name: 'btn',
+                  field: element.classId,
+                  props: {
+                    type: 'primary',
+                    field: 'btn',
+                    loading: true
+                  },
+                  className: 'line',
+                }
+              )
+            }
 
+          }
 
           // 字段
           element.fieldList.forEach(item => {
@@ -830,6 +851,8 @@ export default {
                 field: item.id || item.field,
                 title: item.title,
                 value: item.text || 1,
+                controls: false,
+                className: 'modle-number-box',
                 props: {
                   precision: 2
                 },
@@ -890,7 +913,7 @@ export default {
                 children: [
                   {
                     type: 'i',
-                    class: 'iconfont law-weizhi',
+                    class: 'iconfont law-people',
                     slot: 'suffix',
 
                   }
@@ -929,7 +952,9 @@ export default {
 
       this.alreadyChooseLawPerson.forEach(item => {
         //   //给表单数据赋值
-        staffArr.push(item.lawOfficerName);//执法人员
+        // staffArr.push(item.lawOfficerName);//执法人员
+        staffArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执法人员
+
         certificateIdArr.push(item.selectLawOfficerCard);//执法账号
       });
 
@@ -1046,3 +1071,6 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss">
+/* @import "@/assets/css/caseHandle/index.scss"; */
+</style>
