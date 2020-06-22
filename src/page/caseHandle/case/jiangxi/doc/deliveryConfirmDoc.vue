@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="print_box">
-      <div id="subOutputRank-print" class="print_info">
+      <div id="delivery-print" class="print_info">
         <el-form
           :rules="rules"
           ref="docForm"
@@ -12,7 +12,7 @@
           <div class="doc_topic">执法文书送达地址确认书</div>
           <div
             class="doc_number"
-          >案号：{{docData.dataNumber}}</div>
+          >案号：{{docData.caseNumber}}</div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
@@ -79,16 +79,16 @@
                     收件人
                 </td>
                 <td class="color_DBE4EF">
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <el-form-item prop="receiver" :rules="fieldRules('receiver',propertyFeatures['receiver'])">
                     <el-input
                         type="textarea"
-                        v-model="docData.caseName"
-                        v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                        v-model="docData.receiver"
+                        v-bind:class="{ over_flow:docData.receiver.length>14?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxlength="nameLength"
                         error
                         placeholder="\"
-                        :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                        :disabled="fieldDisabled(propertyFeatures['receiver'])"
                     ></el-input>
                     <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                     </el-form-item>
@@ -98,7 +98,7 @@
                 </td>
                 <td colspan="5" class="color_DBE4EF">
                     <el-form-item prop="withPartyRelation" :rules="fieldRules('withPartyRelation',propertyFeatures['withPartyRelation'])">
-                    <el-checkbox-group v-model="withPartyRelation">
+                    <el-checkbox-group v-model="docData.withPartyRelation">
                         <el-checkbox label="本人">本人</el-checkbox>
                         <el-checkbox label="代理人">代理人</el-checkbox>
                         <el-checkbox label="其他代收人">其他代收人</el-checkbox>
@@ -111,16 +111,16 @@
                     证件类型
                 </td>
                 <td class="color_DBE4EF">
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <el-form-item prop="certificateType" :rules="fieldRules('certificateType',propertyFeatures['certificateType'])">
                     <el-input
                         type="textarea"
-                        v-model="docData.caseName"
-                        v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                        v-model="docData.certificateType"
+                        v-bind:class="{ over_flow:docData.certificateType.length>14?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxlength="nameLength"
                         error
                         placeholder="\"
-                        :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                        :disabled="fieldDisabled(propertyFeatures['certificateType'])"
                     ></el-input>
                     <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                     </el-form-item>
@@ -129,16 +129,16 @@
                     证件号码
                 </td>
                 <td colspan="5" class="color_DBE4EF">
-                   <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                   <el-form-item prop="certificateNumber" :rules="fieldRules('certificateNumber',propertyFeatures['certificateNumber'])">
                     <el-input
                         type="textarea"
-                        v-model="docData.caseName"
-                        v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                        v-model="docData.certificateNumber"
+                        v-bind:class="{ over_flow:docData.certificateNumber.length>14?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxlength="nameLength"
                         error
                         placeholder="\"
-                        :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                        :disabled="fieldDisabled(propertyFeatures['certificateNumber'])"
                     ></el-input>
                     <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                     </el-form-item>
@@ -158,58 +158,58 @@
                             </el-checkbox-group>
                         </el-form-item>
                     </p>
-                    <p><el-checkbox v-model="mobile" label="手机（电子送达必选）："></el-checkbox></p>
-                    <p><el-checkbox v-model="wechat" label="移动微信："></el-checkbox>
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <p><el-checkbox v-model="checkBox1" label="手机（电子送达必选）："></el-checkbox></p>
+                    <p><el-checkbox v-model="checkBox2" label="移动微信："></el-checkbox>
+                    <el-form-item prop="weChat" :rules="fieldRules('weChat',propertyFeatures['weChat'])">
                         <el-input
                             type="textarea"
-                            v-model="docData.caseName"
-                            v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                            v-model="docData.weChat"
+                            v-bind:class="{ over_flow:docData.weChat.length>14?true:false }"
                             :autosize="{ minRows: 1, maxRows: 3}"
                             :maxlength="nameLength"
                             style="width:100px;"
                             placeholder="\"
-                            :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                            :disabled="fieldDisabled(propertyFeatures['weChat'])"
                         ></el-input>
                     </el-form-item>
-                    <el-checkbox v-model="email" label="电子邮箱："></el-checkbox>
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <el-checkbox v-model="checkBox3" label="电子邮箱："></el-checkbox>
+                    <el-form-item prop="email" :rules="fieldRules('email',propertyFeatures['email'])">
                         <el-input
                             type="textarea"
-                            v-model="docData.caseName"
-                            v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                            v-model="docData.email"
+                            v-bind:class="{ over_flow:docData.email.length>14?true:false }"
                             :autosize="{ minRows: 1, maxRows: 3}"
                             :maxlength="nameLength"
-                            style="width:100px;"
+                            style="width:80px;"
                             placeholder="\"
-                            :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                            :disabled="fieldDisabled(propertyFeatures['email'])"
                         ></el-input>
                     </el-form-item>
                     </p>
-                    <p><el-checkbox v-model="wechat" label="传真："></el-checkbox>
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <p><el-checkbox v-model="checkBox4" label="传真："></el-checkbox>
+                    <el-form-item prop="fax" :rules="fieldRules('fax',propertyFeatures['fax'])">
                         <el-input
                             type="textarea"
-                            v-model="docData.caseName"
-                            v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                            v-model="docData.fax"
+                            v-bind:class="{ over_flow:docData.fax.length>14?true:false }"
                             :autosize="{ minRows: 1, maxRows: 3}"
                             :maxlength="nameLength"
                             style="width:100px;"
                             placeholder="\"
-                            :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                            :disabled="fieldDisabled(propertyFeatures['fax'])"
                         ></el-input>
                     </el-form-item>
-                    <el-checkbox v-model="email" label="其他："></el-checkbox>
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <el-checkbox v-model="checkBox5" label="其他："></el-checkbox>
+                    <el-form-item prop="other" :rules="fieldRules('other',propertyFeatures['other'])">
                         <el-input
                             type="textarea"
-                            v-model="docData.caseName"
-                            v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                            v-model="docData.other"
+                            v-bind:class="{ over_flow:docData.other.length>14?true:false }"
                             :autosize="{ minRows: 1, maxRows: 3}"
                             :maxlength="nameLength"
                             style="width:100px;"
                             placeholder="\"
-                            :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                            :disabled="fieldDisabled(propertyFeatures['other'])"
                         ></el-input>
                     </el-form-item>
                     </p>
@@ -222,7 +222,7 @@
                 </td>
                 <td colspan="7" class="color_DBE4EF">
                     <el-form-item> 
-                        <el-checkbox-group v-model="docData.isAcceptElDel">
+                        <el-checkbox-group v-model="docData.deliveryWay">
                             <el-checkbox label="电子送达"></el-checkbox>
                             <el-checkbox label="线下送达（可多选） "></el-checkbox>
                         </el-checkbox-group>
@@ -234,16 +234,16 @@
                     <p>邮寄地址</p>                  
                 </td>
                 <td colspan="7" class="color_DBE4EF">
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <el-form-item prop="postAddress" :rules="fieldRules('postAddress',propertyFeatures['postAddress'])">
                         <el-input
                             type="textarea"
-                            v-model="docData.caseName"
-                            v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                            v-model="docData.postAddress"
+                            v-bind:class="{ over_flow:docData.postAddress.length>14?true:false }"
                             :autosize="{ minRows: 1, maxRows: 3}"
                             :maxlength="nameLength"
                             style="width:100px;"
                             placeholder="\"
-                            :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                            :disabled="fieldDisabled(propertyFeatures['postAddress'])"
                         ></el-input>
                     </el-form-item>
                 </td>
@@ -253,16 +253,16 @@
                     手机号码（必填）
                 </td>
                 <td colspan="3" class="color_DBE4EF">
-                    <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                    <el-form-item prop="mobile" :rules="fieldRules('mobile',propertyFeatures['mobile'])">
                     <el-input
                         type="textarea"
-                        v-model="docData.caseName"
-                        v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                        v-model="docData.mobile"
+                        v-bind:class="{ over_flow:docData.mobile.length>14?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxlength="nameLength"
                         error
                         placeholder="\"
-                        :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                        :disabled="fieldDisabled(propertyFeatures['mobile'])"
                     ></el-input>
                     <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                     </el-form-item>
@@ -271,16 +271,16 @@
                     邮编
                 </td>
                 <td colspan="3" class="color_DBE4EF">
-                   <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+                   <el-form-item prop="zipCode" :rules="fieldRules('zipCode',propertyFeatures['zipCode'])">
                     <el-input
                         type="textarea"
-                        v-model="docData.caseName"
-                        v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
+                        v-model="docData.zipCode"
+                        v-bind:class="{ over_flow:docData.zipCode.length>14?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxlength="nameLength"
                         error
                         placeholder="\"
-                        :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                        :disabled="fieldDisabled(propertyFeatures['zipCode'])"
                     ></el-input>
                     <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                     </el-form-item>
@@ -325,7 +325,7 @@
                 </td>
                 <td colspan="8" class="color_DBE4EF">
                 <el-form-item prop="note">
-                    <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+                    <el-input type="textarea" v-model="docData.staffSign" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
                 </el-form-item>
                 </td>
             </tr>
@@ -368,22 +368,30 @@ export default {
       isOverflow: false,
       isOverLine: false,
       docData: {
-        isAcceptElDel:'',
-        withPartyRelation:'',
-        mobile:'',
-        wechat:'',
-        email:'',
         caseNumber: "",
         caseName:'',
-        president:'',
-        hearOfficer:'',
-        clerk:'',
         party:'',
-        hearingSummary:'',
-        hearingResult:'',
-        presidentSign:'',
+        receiver:'',
+        isAcceptElDel:[],
+        withPartyRelation:[],
+        certificateType:'',
+        certificateNumber:'',
+        checkBox1:'',
+        checkBox2:'',
+        checkBox3:'',
+        checkBox4:'',
+        checkBox5:'',
+        mobile:'',
+        weChat:'',
+        email:'',
+        fax:'',
+        other:'',
+        deliveryWay:[],
+        postAddress:'',
+        zipCode:'',
         adminOpinion:'',
-        adminSign:''
+        adminSign:'',
+        staffSign:'',
       },
       rules: {
         caseName: [
@@ -444,7 +452,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "subOutputRank-print"
+        pageDomId: "delivery-print"
       },
       needDealData: true,
       propertyFeatures: "" //字段属性配置
@@ -545,7 +553,8 @@ export default {
     text-indent: 0px !important;
   }
 }
-#subOutputRank-print {
+#delivery-print {
+   height:1220px;
   .overflow_lins_style .span_bg {
     display: block;
   }

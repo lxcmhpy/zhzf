@@ -30,6 +30,7 @@
         :http-request="saveFile"
         action="https://jsonplaceholder.typicode.com/posts/"
         multiple
+        :on-change="fileSize"
         >
         <el-button size="small" type="primary" @click="hidden" v-show="!caseApproval">上传证据</el-button>
     </el-upload>
@@ -71,7 +72,7 @@ export default {
         userId: ""
       },
       getData:false,
-
+      fileLength:'',
     };
   },
   inject: ["reload"],
@@ -168,7 +169,7 @@ export default {
         console.log("1111111",res);
         
         if (res.code == 200){
-          this.$refs.evidenceUploadSuccessRef.showModal();
+          this.$refs.evidenceUploadSuccessRef.showModal(this.fileLength);
           _this.addVisible = false;
           // _this.currentPage = 1;
           _this.getEviList();
@@ -177,6 +178,9 @@ export default {
         }
       });
     },
+    fileSize(file,fileList){
+      this.fileLength = fileList.length;
+    }
   },
   mounted () {
       
