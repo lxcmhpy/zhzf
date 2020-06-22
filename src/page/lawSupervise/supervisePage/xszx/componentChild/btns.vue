@@ -60,7 +60,7 @@
             </div>
             <!-- </el-form> -->
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+            <el-button type="primary" @click="routerOffSiteManage('无效信息')">确认</el-button>
             <el-button @click="visible = false">取消</el-button>
             </span>
         </el-dialog>
@@ -117,7 +117,7 @@
                 </table>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+                <el-button type="primary" @click="routerOffSiteManage('转办')">确认</el-button>
                 <el-button @click="zbVisible = false">取消</el-button>
             </span>
         </el-dialog>
@@ -185,7 +185,7 @@ export default {
         // this.getAllOrgan('root');
         // this.zbVisible = true;
         this.obj.status='已审核'
-         let _this = this;
+        let _this = this;
         new Promise((resolve, reject) => {
             saveAndUpdate(_this.obj).then(
                 res => {
@@ -274,11 +274,33 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'law_supervise_removeOrPrelong' })
     },
-    routerOffSiteManage () {
-        this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({
-            name: 'law_supervise_offSiteManage'
+    routerOffSiteManage (status) {
+      if(status === '无效信息'){
+        if(this.checkSearchForm.number===''){
+          this.$message({type: "warning",message: "无效类型不能为空!"});
+          return
+        }
+        if(this.checkSearchForm.color===''){
+          this.$message({type: "warning",message: "备注说明不能为空!"});
+          return
+        }
+        this.obj.status=status
+        this.obj.invalidInfo = JSON.stringify(this.checkSearchForm)
+        let _this = this;
+        new Promise((resolve, reject) => {
+            saveAndUpdate(_this.obj).then(
+                res => {
+                  _this.$store.dispatch("deleteTabs", _this.$route.name);
+                  _this.$router.push({
+                      name: 'law_supervise_offSiteManage'
+                  })
+                },
+                error => {
+                    return
+                }
+            )
         })
+      }
     },
     dialogInvalidCue() {
 
