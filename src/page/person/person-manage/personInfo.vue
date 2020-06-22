@@ -411,7 +411,11 @@ export default {
       let _this = this;
       if (param === "0") {
         //详情
-        _this.openPersonDetail(row, "edit");
+        if(row.certStatusName === '审批未通过'){
+          _this.openPersonDetail(row, "view");
+        }else{
+          _this.openPersonDetail(row, "edit");
+        }
       } else {
         localStorage.removeItem("AddPerson");
         _this.openPersonTag("setPersonInfo", "", param);

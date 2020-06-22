@@ -193,6 +193,9 @@ export default {
           this.$store.dispatch("invigilatorSubmitInfo", this.entryForm).then(
             res => {
               // setToken(res.data);
+              if(res.data.indexOf('Bearer') > -1){
+                res.data = res.data.replace('Bearer ', '');
+              }
               setToken("TokenKey", res.data, 110);
               this.$router.push({
                 path: "/invigilator",

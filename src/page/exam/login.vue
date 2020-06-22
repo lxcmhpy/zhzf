@@ -76,6 +76,7 @@
 import VueSimpleVerify from 'vue-simple-verify';
 import * as types from "@/store/mutation-types";
 import { getDictListDetailByNameApi } from "@/api/system";
+import { removeToken } from "@/common/js/auth";
 
 export default {
   components: { VueSimpleVerify },
@@ -212,6 +213,7 @@ export default {
   mounted() {
     this.showLogin = true;
     window.sessionStorage.clear();
+    removeToken();
     sessionStorage.setItem('LoginSystem', 'examLogin');
     this.getSystemData();
   }
