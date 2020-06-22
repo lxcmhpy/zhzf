@@ -212,7 +212,7 @@
                   <p>{{curWindow.other.address}}</p>
                   <div>
                     <p>
-                      {{curWindow.other.createTime}} &nbsp;
+                      {{time | formatDate}} &nbsp;
                       超限{{curWindow.other.cxchl}} &nbsp;
                       黑名单{{curWindow.other.blackList}}
                     <span class="right" @click="routerXs">详情</span>
@@ -634,7 +634,7 @@
                                                 <div class="gj-con">
                                                      <p>{{row.name}}</p>
                                                     <div class="flexBox">
-                                                        <p><span class="bgCgray">告警（次）：</span>{{row.blackList}}</p>&nbsp;&nbsp;&nbsp;
+                                                        <p><span class="bgCgray">告警（次）：</span>{{row.cxchl}}</p>&nbsp;&nbsp;
                                                         <p><span class="bgCgray">过检（次）：</span>{{row.gjzl}}</p>
                                                     </div>
                                                 </div>
@@ -1706,8 +1706,26 @@ export default {
       fxcObj: null,
       expandTree:false,
       userInfo: null,
-      ryList: null
+      ryList: null,
+      time:Date.parse(new Date())
     };
+  },
+  filters: {
+    formatDate: function (value) {
+      let date = new Date(value);
+      let y = date.getFullYear();
+      let MM = date.getMonth() + 1;
+      MM = MM < 10 ? ('0' + MM) : MM;
+      let d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      let h = date.getHours();
+      h = h < 10 ? ('0' + h) : h;
+      let m = date.getMinutes();
+      m = m < 10 ? ('0' + m) : m;
+      let s = date.getSeconds();
+      s = s < 10 ? ('0' + s) : s;
+      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+    }
   },
   methods: {
     filterNode (value, data, node) {
@@ -2285,12 +2303,45 @@ export default {
                         let resultList = [];
                         // that[obj] = res.data.records.splice(0,5);
                         that[obj] = res.data.splice(0,5);
+                        that.pointZFD(code,that.zfdList);
+
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')
                         return
                     })
             })
+    },
+    pointZFD (code, list) {
+      let resultList = [];
+      list.forEach((item, i) => {
+            let position = item.propertyValue ? item.propertyValue.split(','):['',''];
+            let lng = parseFloat(position[0]);
+            let lat = parseFloat(position[1]);
+            // _this.category = type;
+            resultList.push({
+                address: item.address,
+                distance: null,
+                id:item.id,
+                lat: lat,
+                lng: lng,
+                location: {
+                    O: lng,
+                    P: lat,
+                    lat: lat,
+                    lng: lng
+                },
+                name: item.name,
+                shopinfo: '',
+                tel: '',
+                type: code,
+                other: item
+            })
+        }) 
+
+        // _this.allSearchList.push(data);
+        // _this.getZfjgLawSupervise(data, this.category);
+        this.onSearchResult(resultList, 4,  0)
     },
     searchPageAllGJ (code, obj) {
         // 告警车辆
@@ -2354,13 +2405,14 @@ export default {
                 });
 
           } else if (category == 4) {
+                numG = poi.name.substring(0,4);
                 _this.markers.push({
                   position: [poi.lng, poi.lat],
                   other: poi.other,
                   visible: false,
                   template: `<span><img src="/static/images/img/lawSupervise/${
                     _this.categoryList[category + 1].className
-                    }.png"><em style="position:absolute;top:7px;font-style:normal;left:5px;font-size: 12px; color: red;">G${numG++}</em></span>`,
+                    }.png"><em style="position:absolute;top:7px;font-style:normal;left:5px;font-size: 12px; color: red;">${numG}</em></span>`,
                   // icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
                   // content: `<div class="prompt">${ poi.other.username }</div>`,
                   events: {
@@ -2374,9 +2426,8 @@ export default {
                         that.curWindow = that.windows[length + i_index];
                             // that.$set(that, 'curWindow', that.windows[length + i]);
                         if (category == 4) {
-                            that.getBySiteId(
-                            that.curWindow.other.id,
-                            that.curWindow.other
+                            that.getBySiteName(
+                              that.curWindow.other
                             );
                             // debugger;
                         }
@@ -2443,11 +2494,27 @@ export default {
       }
     },
     getBySiteId(id, obj) {
+      debugger
       let _this = this;
       new Promise((resolve, reject) => {
         getBySiteId(id).then(
           res => {
             _this.$set(_this.curWindow.other, 'list', res.data.splice(0,5));
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return;
+          }
+        );
+      });
+    },
+    getBySiteName(obj){
+      debugger
+      let _this = this;
+      new Promise((resolve, reject) => {
+        queryAlarmVehiclePage({current:1,size:5,siteName:obj.name}).then(
+          res => {
+            _this.$set(_this.curWindow.other, 'list', res.data.records);
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
