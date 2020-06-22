@@ -10,7 +10,11 @@
     <el-row>
         <el-col :span="24">
         <el-card :body-style="{ padding: '0px' }">
-            <p v-html="content" />
+            <div class="ql-container ql-snow">
+              <div class="ql-editor">
+                <div v-html="content"></div>
+              </div>
+          </div>
         </el-card>
         </el-col>
     </el-row>
@@ -32,6 +36,9 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+  import 'quill/dist/quill.core.css';
+  import 'quill/dist/quill.snow.css';
+  import 'quill/dist/quill.bubble.css';
   export default {
     components: {
     },

@@ -1028,8 +1028,9 @@
                 </el-tree>
                 <ul v-if="!showTree">
                     <li v-for="(item,index) in ryList" :key="index" style="display:flex;justify-content:space-between;" @click="handleNodeClick(item)">
-                        <span>{{item.nickName}} </span>
-                        <span> {{item.organName}}</span>
+                        <span v-if="isCheck">{{item.nickName}} </span>
+                        <span v-if="isCheck"> {{item.organName}}</span>
+                        <span v-if="!isCheck"> {{item.name}}</span>
                     </li>
                 </ul>
             </div>

@@ -39,7 +39,7 @@
               <el-button type="primary" size="medium" icon="el-icon-search" @click="createLog">生成日志</el-button>
             </el-form-item>
             <el-form-item prop="name" style="float:right;display:inline-block" class="chose-mine">
-              <el-radio v-model="searchForm.name" label="1" @click.native.prevent="changeName()" >只显示我的</el-radio>
+              <el-radio v-model="searchForm.name" label="1" @click.native.prevent="changeName()">只显示我的</el-radio>
             </el-form-item>
           </el-form>
         </div>
@@ -95,8 +95,8 @@ export default {
     getTableData() {
       console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
-        startTime: this.timeList[0]||'',
-        endTime: this.timeList[1]||'',
+        startTime: this.timeList[0] || '',
+        endTime: this.timeList[1] || '',
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
         createUser: this.searchForm.createUser,
@@ -135,12 +135,14 @@ export default {
     },
     changeName() {
       console.log(":", this.searchForm.name)
-      if(this.searchForm.name==''){
-        this.searchForm.name='1'
-      }else{
-        this.searchForm.name=''
+      if (this.searchForm.name == '') {
+        this.searchForm.name = '1'
+        this.searchForm.createUser = iLocalStroage.gets("userInfo").username;
+
+      } else {
+        this.searchForm.name = ''
+        this.searchForm.createUser = ""
       }
-      this.searchForm.createUser = iLocalStroage.gets("userInfo").username;
       this.searchTableData()
 
     },
@@ -189,28 +191,28 @@ export default {
       let _this = this
       let list = []
       console.log('编辑', row)
-      findRecordModleTimeByIdApi(row.templateId).then(
-        res => {
-          if (res.code == 200) {
-            console.log('row.createTime <= res.data', row.createTime, res.data)
-            if (row.createTime >= res.data) {
-              // 写记录
-              // row.addOrEiditFlag = 'edit'
+      // findRecordModleTimeByIdApi(row.templateId).then(
+      //   res => {
+      //     if (res.code == 200) {
+      //       console.log('row.createTime <= res.data', row.createTime, res.data)
+      //       if (row.createTime >= res.data) {
+      //         // 写记录
+      //         // row.addOrEiditFlag = 'edit'
               this.$router.push({
                 name: 'inspection_writeRecordInfo',
                 // params: row
                 query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
               });
-            } else {
-              this.$message.error('当前模板已修改，该记录不可修改');
-            }
-          } else {
-            this.$message.error(res.msg);
-          }
-        },
-        error => {
+      //       } else {
+      //         this.$message.error('当前模板已修改，该记录不可修改');
+      //       }
+      //     } else {
+      //       this.$message.error(res.msg);
+      //     }
+      //   },
+      //   error => {
 
-        })
+      //   })
 
     },
     // 删除
@@ -240,7 +242,7 @@ export default {
       })
     },
     getRecordTitleList() {
-      let data=iLocalStroage.gets("userInfo").organId
+      let data = iLocalStroage.gets("userInfo").organId
       findAllModleNameApi(data).then(
         res => {
           console.log(res)
