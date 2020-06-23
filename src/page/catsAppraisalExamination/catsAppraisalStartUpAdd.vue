@@ -265,6 +265,7 @@ export default {
             selectData.nrxm = item.label;
             selectData.indexThreeId = item.id;
             selectData.assessType = this.activeName;
+            selectData.score = ''
             dataList.push(selectData);
           }
         }
