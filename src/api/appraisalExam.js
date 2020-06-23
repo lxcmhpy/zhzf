@@ -75,10 +75,9 @@ export function addorUpdateDetailZp(data) {
 //删除考核细则
 export function deleteDetailZpById(data) {
     return request({
-        url: "/pykh/pykhToConfigure/deleteDetailZpById",
+        url: "/pykh/pykhToConfigure/deleteDetailZpById/" + data,
         method: "get",
         showloading: false,
-        params: data,
         baseUrlType:'CAPTCHA_HOST',
         cancelToken: setCancelSource()
       })

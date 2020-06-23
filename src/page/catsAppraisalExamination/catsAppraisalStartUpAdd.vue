@@ -263,6 +263,7 @@ export default {
             selectData.indexTwo = item.name2;
             selectData.indexTwoId = item.id2;
             selectData.nrxm = item.label;
+            selectData.score = "";
             selectData.indexThreeId = item.id;
             selectData.assessType = this.activeName;
             dataList.push(selectData);
@@ -271,9 +272,10 @@ export default {
       });
     },
     validateScore(row){
+        debugger;
       var re = /^[0-9]([0-9])*$/;
       if (!re.test(row.score)){
-          row.score=''
+          row.score='';
           this.$message({type: "error",message: "请输入整数"});
           return
       }
@@ -289,7 +291,7 @@ export default {
               message: "请填写案卷评查配置"
             });
             return;
-          } 
+          }
           if(_this.dataList2.length===0){
             _this.$message({
               type: "warning",
@@ -310,7 +312,7 @@ export default {
               message: "请填写现场检查配置"
             });
             return;
-          } 
+          }
           tableData = _this.dataList1
             .concat(_this.dataList2)
             .concat(_this.dataList3)
