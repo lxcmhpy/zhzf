@@ -38,7 +38,7 @@ export default {
       return this.$route.path !== '/startAnswer'
     },
     systemTitle(){
-      return sessionStorage.getItem('DocumentTitle');
+      return localStorage.getItem("SYS_TITLE");
     }
   },
   inject: ["reload"],

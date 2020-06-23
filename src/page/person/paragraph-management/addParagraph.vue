@@ -120,7 +120,7 @@ export default {
     // 获取机构树
     getOidTreeData() {
       let _this = this
-      _this.$store.dispatch("getAllOrgan").then(
+      _this.$store.dispatch("findOrganTreeByCurrUser").then(
         res => {
         _this.tableDataTree = res.data;
       },

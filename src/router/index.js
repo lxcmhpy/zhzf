@@ -23,7 +23,8 @@ const RouterConfig = {
 export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     let loadingType =  to.params.loadingType ? to.params.loadingType : 'loadPart';
-    showFullScreenLoading(loadingType);
+    // 考试系统不需要全局loading效果
+    to.meta.loading !== false && showFullScreenLoading(loadingType);
   let tokenObj = iLocalStroage.getExpired('TokenKey');
   if (tokenObj) {
     //判断是否登录

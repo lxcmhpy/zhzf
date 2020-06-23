@@ -16,7 +16,7 @@ export const mixinPerson={
   methods: {
     searchTable() {//查询当前用户下的所有机构
       let _this = this
-      _this.$store.dispatch("getAllOrgan").then(
+      _this.$store.dispatch("findOrganTreeByCurrUser").then(
         res => {
         _this.tableDataTree = res.data;
       },
