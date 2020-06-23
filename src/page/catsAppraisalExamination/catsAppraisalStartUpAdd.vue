@@ -266,6 +266,7 @@ export default {
             selectData.score = "";
             selectData.indexThreeId = item.id;
             selectData.assessType = this.activeName;
+            selectData.score = ''
             dataList.push(selectData);
           }
         }

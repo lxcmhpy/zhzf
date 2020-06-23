@@ -11,7 +11,7 @@
       <div>未绑定业务领域列表</div>
       <el-table :data="tableData" stripe style="width: 100%" height="500px" @selection-change="selectLink">
         <el-table-column type="selection" align="center"></el-table-column>
-        <el-table-column prop="name" label="环节名称" align="center"></el-table-column>         
+        <el-table-column prop="name" label="业务领域名称" align="center"></el-table-column>         
       </el-table>
     </div>
     <span slot="footer" class="dialog-footer">
