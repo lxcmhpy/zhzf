@@ -45,8 +45,8 @@
             </el-form-item>
             <el-collapse-transition>
               <div :class="{'ransition-box':true}">
-                <el-form-item label="时间段">
-                  <el-date-picker style='width:240px' :picker-options="pickerOptions" v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']">
+                <el-form-item label="过检时间">
+                  <el-date-picker style='width:240px' :picker-options="pickerOptions" unlink-panels v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']">
 
                   </el-date-picker>
                 </el-form-item>
