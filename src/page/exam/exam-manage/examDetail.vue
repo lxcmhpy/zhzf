@@ -85,7 +85,7 @@
             v-loading="tableLoading"
             element-loading-spinner="car-loading"
             element-loading-text="加载中..."
-            :max-height="340"
+            :max-height="380"
           >
             <el-table-column prop="personName" label="姓名" align="left" fixed="left"></el-table-column>
             <el-table-column
@@ -299,6 +299,15 @@ export default {
     &::-webkit-scrollbar{
       height: 12px;
     }
+    &::-webkit-scrollbar-track{
+      height: 12px;
+    }
+  }
+  >>>.el-table__fixed-body-wrapper{
+    bottom: 8px;
+  }
+  >>>.el-table__fixed-right::before, >>>.el-table__fixed::before{
+    display: none;
   }
   .paginationBox {
     margin-top: 10px;

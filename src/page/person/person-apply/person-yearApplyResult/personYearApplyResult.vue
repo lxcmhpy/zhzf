@@ -248,7 +248,7 @@ export default {
         personName: _this.formInline.personName,
         idNo: _this.formInline.idNo,
         ministerialNo: _this.formInline.ministerialNo,
-        idNo: _this.formInline.idNo,
+        oName: _this.formInline.oName,
         branchId: _this.formInline.branchId,
         oid: _this.formInline.oid,
         certStatus: _this.formInline.certStatus,

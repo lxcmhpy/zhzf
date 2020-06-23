@@ -7,7 +7,7 @@
             <el-form-item label="任务名称" prop="jobName">
               <el-input v-model="examDeployForm.jobName"></el-input>
             </el-form-item>
-         
+            <el-form-item label=" " label-width="13px">
               <el-button  title="搜索"
                     class="commonBtn searchBtn"
                     size="medium"
@@ -16,6 +16,7 @@
                     class="commonBtn searchBtn"
                     size="medium"
                     icon="iconfont law-zhongzhi" @click="resetLog">重置</el-button>
+            </el-form-item>
             <el-row>   
               <el-button
                 type="primary"
@@ -35,7 +36,6 @@
                 size="medium"
                 @click="stationInfo('',4)"
               >全部启动</el-button>
-            </el--item>
             </el-row>  
           </el-form>
         </div>

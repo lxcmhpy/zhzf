@@ -32,7 +32,7 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="所属机构" prop="oid">
+              <el-form-item label="所属机构" prop="oName">
                 <!-- <el-select v-model="formInline.oid" placeholder="选择所属机构" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
                 <el-option
                     v-for="value in oidsInfo" :key="value.id" :label="value.name" :value="value.id">
@@ -122,7 +122,8 @@ export default {
         ministerialNo: "", //执法证号
         oName: "", //所属机构
         branchName: "", //执法门类
-        post: ""
+        post: "",
+        branchId: ""
       },
       tableData: [], //表格数据
       defaultExpandedKeys: [], //默认展开的key
@@ -145,7 +146,7 @@ export default {
       let data = {
         personName: _this.formInline.personName,
         ministerialNo: _this.formInline.ministerialNo,
-        branchName: _this.formInline.branchName,
+        branchId: _this.formInline.branchId,
         oName: _this.formInline.oName,
         certStatus: _this.formInline.certStatus,
         personType: _this.formInline.personType,
