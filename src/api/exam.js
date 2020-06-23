@@ -806,7 +806,7 @@ export function getSystemParams(){
 // 删除选型图片
 export function deleteQuestionImage(data){
     return request({
-        url: `bankQuestion/deleteQuestionOrOptionPictureFileInfo`,
+        url: `/exam/bankQuestion/deleteQuestionOrOptionPictureFileInfo`,
         method: "get",
         params: data,
         showloading: false,

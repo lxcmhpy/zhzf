@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <v-loading v-show="loading"></v-loading>
-    <router-view v-if="isRouterAlive"/>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive && isRouterAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive && isRouterAlive"></router-view>
     <audio id="audio_remote"  ref="audio_remote" autoplay="autoplay"> </audio>
     <audio id="ringtone" loop ref="ringtone"  :src="'./static/sounds/ringtone.wav'"> </audio>
     <audio id="ringbacktone" ref="ringbacktone"  loop :src="'./static/sounds/ringbacktone.wav'"> </audio>

@@ -27,6 +27,9 @@
     <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核'" style="right: 370px;">
          {{statusObj[$route.params.status]}}
     </span>
+    <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
+         {{statusObj[$route.params.status]}}
+    </span>
     <span :class="$route.name" v-else>
         <template v-if="$route.name=='law_supervise_invalidCueDetail'">
          无效

@@ -137,7 +137,7 @@ export default {
       console.log(":", this.searchForm.name)
       if (this.searchForm.name == '') {
         this.searchForm.name = '1'
-        this.searchForm.createUser = iLocalStroage.gets("userInfo").username;
+        this.searchForm.createUser = iLocalStroage.gets("userInfo").nickName;
 
       } else {
         this.searchForm.name = ''
