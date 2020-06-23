@@ -53,7 +53,7 @@
       reInstall() {
         this.$set(this, 'storagePath', [])
         this.getFile()
-      },
+      }, 
       getFile() {
         // debugger;
         console.log('this.$route.params',this.$route.params)

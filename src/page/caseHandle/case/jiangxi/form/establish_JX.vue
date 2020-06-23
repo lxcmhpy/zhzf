@@ -401,7 +401,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:'establish-print'
       },
-      huanjieAndDocId: BASIC_DATA_SYS.establish_huanjieAndDocId, //立案登记表的文书id
+      huanjieAndDocId: this.BASIC_DATA_JX.establish_JX_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
       caseSourceText3: "",

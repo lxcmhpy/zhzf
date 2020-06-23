@@ -1299,3 +1299,14 @@ export function queryImgBase64Api(storageId) {
     cancelToken: setCancelSource()
   });
 }
+
+//查询该文书是否需要审批
+export function findDocDataByIdApi(id) {
+  return request({
+    url: "/case/doc/type/findById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
