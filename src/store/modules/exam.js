@@ -719,15 +719,18 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                 loginExam(data).then(
                     res => {
                         if(loginType !== '1'){
+                            let token = '';
                             if(loginType === '0'){
+                                token = res.data;
                                 commit(types.SET_AUTHTOKEN, res.data);
                             }else if(loginType === '2'){
                                 sessionStorage.setItem('ScorerUserInfo', JSON.stringify(res.data.scorerInfo));
-                                if(res.data.token.indexOf('Bearer ') > -1){
-                                    commit(types.SET_AUTHTOKEN, res.data.token.replace('Bearer ', ''));
-                                }else{
-                                    commit(types.SET_AUTHTOKEN, res.data.token);
-                                }
+                                token = res.data.token;
+                            }
+                            if(token.indexOf('Bearer ') > -1){
+                                commit(types.SET_AUTHTOKEN, token.replace('Bearer ', ''));
+                            }else{
+                                commit(types.SET_AUTHTOKEN, token);
                             }
                         }else{
                             // 监考老师已提交个人信息

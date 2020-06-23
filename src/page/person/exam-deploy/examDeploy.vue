@@ -7,7 +7,7 @@
             <el-form-item label="任务名称" prop="jobName">
               <el-input v-model="examDeployForm.jobName"></el-input>
             </el-form-item>
-         
+            <el-form-item label=" " label-width="13px">
               <el-button  title="搜索"
                     class="commonBtn searchBtn"
                     size="medium"
@@ -16,6 +16,7 @@
                     class="commonBtn searchBtn"
                     size="medium"
                     icon="iconfont law-zhongzhi" @click="resetLog">重置</el-button>
+            </el-form-item>
             <el-row>   
               <el-button
                 type="primary"
@@ -35,7 +36,6 @@
                 size="medium"
                 @click="stationInfo('',4)"
               >全部启动</el-button>
-            </el--item>
             </el-row>  
           </el-form>
         </div>
@@ -134,7 +134,7 @@ export default {
   methods: {
     //任务状态
     jobFormat(row, column) {
-      if (row.jobStatus === "") {
+      if (row.jobStatus === "1") {
         return "正常";
       } else if (row.jobStatus === "2") {
         return "暂停";
@@ -144,9 +144,11 @@ export default {
     },
     //执行状态
     excuteFormat(row, column) {
-      if (row.excuteStatus === "1") {
+      if (row.excuteStatus === "0") {
+        return "等待执行";
+      } else if (row.excuteStatus === "1") {
         return "执行中";
-      } else if (row.excuteStatus === "2") {
+      }else if (row.excuteStatus === "2") {
         return "执行结束";
       }
     },

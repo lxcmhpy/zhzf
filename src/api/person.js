@@ -1014,7 +1014,7 @@ export function deleteScheduleJobApi(data){
   });
 }
 //暂停
-export function repauseAllJobApi(data){
+export function pausejobApi(data){
   return  request({
     url:  "/exam/appQuartz/pausejob",
     method:  "get",
@@ -1024,7 +1024,7 @@ export function repauseAllJobApi(data){
   });
 }
 //恢复
-export function pauseAllJobApi(data){
+export function  resumejobApi(data){
   return  request({
     url:  "/exam/appQuartz/resumejob",
     method:  "get",
@@ -1034,7 +1034,7 @@ export function pauseAllJobApi(data){
   });
 }
 //全部暂停
-export function resumejobApi(){
+export function pauseAllJobApi(){
   return  request({
     url:  "/exam/appQuartz/pauseAllJob",
     method:  "get",
@@ -1043,7 +1043,7 @@ export function resumejobApi(){
   });
 }
 //全部恢复
-export function pausejobApi(){
+export function repauseAllJobApi(){
   return  request({
     url:  "/exam/appQuartz/repauseAllJob",
     method:  "get",

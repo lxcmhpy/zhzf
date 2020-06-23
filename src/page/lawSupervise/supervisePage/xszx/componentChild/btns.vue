@@ -27,6 +27,9 @@
     <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核'" style="right: 370px;">
          {{statusObj[$route.params.status]}}
     </span>
+    <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
+         {{statusObj[$route.params.status]}}
+    </span>
     <span :class="$route.name" v-else>
         <template v-if="$route.name=='law_supervise_invalidCueDetail'">
          无效
@@ -60,7 +63,7 @@
             </div>
             <!-- </el-form> -->
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+            <el-button type="primary" @click="routerOffSiteManage('无效信息')">确认</el-button>
             <el-button @click="visible = false">取消</el-button>
             </span>
         </el-dialog>
@@ -117,7 +120,7 @@
                 </table>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+                <el-button type="primary" @click="routerOffSiteManage('转办')">确认</el-button>
                 <el-button @click="zbVisible = false">取消</el-button>
             </span>
         </el-dialog>
@@ -184,7 +187,8 @@ export default {
     showZbDialog () {
         // this.getAllOrgan('root');
         // this.zbVisible = true;
-         let _this = this;
+        this.obj.status='已审核'
+        let _this = this;
         new Promise((resolve, reject) => {
             saveAndUpdate(_this.obj).then(
                 res => {
@@ -273,11 +277,33 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'law_supervise_removeOrPrelong' })
     },
-    routerOffSiteManage () {
-        this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({
-            name: 'law_supervise_offSiteManage'
+    routerOffSiteManage (status) {
+      if(status === '无效信息'){
+        if(this.checkSearchForm.number===''){
+          this.$message({type: "warning",message: "无效类型不能为空!"});
+          return
+        }
+        if(this.checkSearchForm.color===''){
+          this.$message({type: "warning",message: "备注说明不能为空!"});
+          return
+        }
+        this.obj.status=status
+        this.obj.invalidInfo = JSON.stringify(this.checkSearchForm)
+        let _this = this;
+        new Promise((resolve, reject) => {
+            saveAndUpdate(_this.obj).then(
+                res => {
+                  _this.$store.dispatch("deleteTabs", _this.$route.name);
+                  _this.$router.push({
+                      name: 'law_supervise_offSiteManage'
+                  })
+                },
+                error => {
+                    return
+                }
+            )
         })
+      }
     },
     dialogInvalidCue() {
 
@@ -298,8 +324,10 @@ export default {
     },
     nextRouter() {
         if (this.$route.params.status == '0') {
+            this.obj.status='审核中'
             let _this = this;
             new Promise((resolve, reject) => {
+              debugger
                 saveAndUpdate(_this.obj).then(
                     res => {
                         debugger;

@@ -8,8 +8,8 @@
               <el-form-item label="姓名" prop="personName">
                 <el-input v-model="staffOutForm.personName"></el-input>
               </el-form-item>
-              <el-form-item label="执法证号" prop="certNo">
-                <el-input v-model="staffOutForm.certNo"></el-input>
+              <el-form-item label="身份证号" prop="idNo">
+                <el-input v-model="staffOutForm.idNo"></el-input>
               </el-form-item>
               <el-form-item label="调出机构" prop="outOName">
                 <el-input v-model="staffOutForm.outOName"></el-input>
@@ -136,12 +136,13 @@ export default {
       isShow: false,
       staffOutForm: {
         personName: "", //姓名
-        certNo: "", //执法证号
+        idNo: "", //执法证号
         oid: "", //所属机构
         branchName: "", //执法门类
         post: "",
         oName: "",
-        branchName: ""
+        branchName: "",
+        outOName: ""
       },
       tableData: [], //表格数据
       defaultExpandedKeys: [], //默认展开的key
@@ -223,7 +224,7 @@ export default {
         branchId: _this.staffOutForm.branchId,
         outOName: _this.staffOutForm.outOName,
         post: _this.staffOutForm.post,
-        certNo: _this.staffOutForm.certNo,
+        idNo: _this.staffOutForm.idNo,
         personName: _this.staffOutForm.personName,
         current: _this.currentPage,
         size: _this.pageSize

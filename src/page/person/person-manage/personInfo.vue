@@ -23,7 +23,7 @@
               <el-form-item label="执法证号" prop="ministerialNo">
                 <el-input v-model="personForm.ministerialNo"></el-input>
               </el-form-item>
-              <el-form-item style="margin-top:1px;">
+              <el-form-item style="margin-top:1px; margin-left: 15px;">
                 <el-button
                   title="搜索"
                   class="commonBtn searchBtn"
@@ -48,7 +48,7 @@
               </el-form-item>
             </div>
             <div class="item" v-show="isShow">
-              <el-form-item label="所属机构">
+              <el-form-item label="所属机构" prop="oname">
                 <el-input v-model="personForm.oname"></el-input>
               </el-form-item>
               <el-form-item label="执法领域" prop="branchId">
@@ -411,7 +411,11 @@ export default {
       let _this = this;
       if (param === "0") {
         //详情
-        _this.openPersonDetail(row, "edit");
+        if(row.certStatusName === '审批未通过'){
+          _this.openPersonDetail(row, "view");
+        }else{
+          _this.openPersonDetail(row, "edit");
+        }
       } else {
         localStorage.removeItem("AddPerson");
         _this.openPersonTag("setPersonInfo", "", param);

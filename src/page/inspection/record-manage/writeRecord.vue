@@ -54,7 +54,8 @@ import chooseLawPerson from "./chooseModlePerson.vue";
 import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
-import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findRecordByIdApi } from "@/api/Record";
+import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
+ findRecordByIdApi ,findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: ['psMsg'],
@@ -187,19 +188,36 @@ export default {
     },
     //当前登录账号名
     setLawPersonCurrentP() {
-      this.formData.createUser = iLocalStroage.gets("userInfo").username;
+      this.formData.createUser = iLocalStroage.gets("userInfo").nickName;
     },
     // 修改
     editRecord() {
       // console.log('rule', this.rule)
-      this.$data.$f.resetFields()
-      this.rule.forEach(element => {
-        console.log(element)
-        this.$data.$f.updateRule(element.field, {
-          props: { disabled: false }
-        }, true);
-      });
-      this.addOrEiditFlag = 'add'
+      findRecordModleTimeByIdApi(this.formData.templateId).then(
+        res => {
+          if (res.code == 200) {
+            console.log('row.createTime <= res.data', this.formData.createTime, res.data)
+            if (res.data!=null||this.formData.createTime >= res.data) {
+              // 可修改
+              this.$data.$f.resetFields()
+              this.rule.forEach(element => {
+                console.log(element)
+                this.$data.$f.updateRule(element.field, {
+                  props: { disabled: false }
+                }, true);
+              });
+              this.addOrEiditFlag = 'add'
+            } else {
+              this.$message.error('当前模板已修改，该记录不可修改');
+            }
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
+
     },
     saveRecord() {
       this.formData.status = '保存';
@@ -309,6 +327,7 @@ export default {
     // 复制添加
     copySave() {
       this.addOrEiditFlag = 'add'
+      this.onSubmit
     },
     onSubmit(formData) {
 
@@ -606,21 +625,27 @@ export default {
                   })
                 }
               } else if (item.type == '数字型') {
-                this.rule.push({
-                  type: "InputNumber",
-                  field: item.id || item.field,
-                  title: item.title,
-                  value: item.text || 1,
-                  props: {
-                    precision: 2
-                  },
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'blur'
-                  }]
-                })
-              } else if (item.type == '地址型') {
+              this.rule.push({
+              //  type: "InputNumber",
+                type: "input",
+                field: item.id || item.field,
+                title: item.title,
+                value: item.text,
+                controls: false,
+                className: 'modle-number-box',
+                props: {
+                  type: 'textarea',
+                  autosize: { minRows: 1 }
+                  // precision: 2
+                },
+                validate: [{
+                  required: item.required == 'true' ? true : false,
+                  pattern:'^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                  message: '必须输入数字',
+                  trigger: 'blur'
+                }]
+              })
+            } else if (item.type == '地址型') {
                 item.type = 'input';
                 this.rule.push({
                   type: 'input',
@@ -682,6 +707,7 @@ export default {
                   },
                 })
                 if (item.field == 'staff') {
+                  console.log('item', item)
                   this.LawName = item.id;// 执法人员字段名
                 } else if (item.field == 'certificateId') {//执法人员账号字段名
                   this.LawOfficerCard = item.id;
@@ -711,8 +737,25 @@ export default {
                 children: [element.classs],
               }
             )
-          }
+          } else {
+            if (this.rule.length != 0) {
+              // 分割线
+              this.rule.push(
+                {
+                  type: 'div',
+                  name: 'btn',
+                  field: element.classId,
+                  props: {
+                    type: 'primary',
+                    field: 'btn',
+                    loading: true
+                  },
+                  className: 'line',
+                }
+              )
+            }
 
+          }
 
           // 字段
           element.fieldList.forEach(item => {
@@ -826,16 +869,22 @@ export default {
               }
             } else if (item.type == '数字型') {
               this.rule.push({
-                type: "InputNumber",
+              //  type: "InputNumber",
+                type: "input",
                 field: item.id || item.field,
                 title: item.title,
-                value: item.text || 1,
+                value: item.text,
+                controls: false,
+                className: 'modle-number-box',
                 props: {
-                  precision: 2
+                  type: 'textarea',
+                  autosize: { minRows: 1 }
+                  // precision: 2
                 },
                 validate: [{
                   required: item.required == 'true' ? true : false,
-                  message: '请输入' + item.title,
+                  pattern:'^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                  message: '必须输入数字',
                   trigger: 'blur'
                 }]
               })
@@ -890,7 +939,7 @@ export default {
                 children: [
                   {
                     type: 'i',
-                    class: 'iconfont law-weizhi',
+                    class: 'iconfont law-people',
                     slot: 'suffix',
 
                   }
@@ -929,7 +978,9 @@ export default {
 
       this.alreadyChooseLawPerson.forEach(item => {
         //   //给表单数据赋值
-        staffArr.push(item.lawOfficerName);//执法人员
+        // staffArr.push(item.lawOfficerName);//执法人员
+        staffArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执法人员
+
         certificateIdArr.push(item.selectLawOfficerCard);//执法账号
       });
 
@@ -1046,3 +1097,6 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss">
+/* @import "@/assets/css/caseHandle/index.scss"; */
+</style>

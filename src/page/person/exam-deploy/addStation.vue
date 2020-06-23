@@ -130,7 +130,7 @@ export default {
           }
         }, err => { this.$message({ type: 'error', message: err.msg || '' }) });
       }else if(_this.handelType==1){
-        _this.$store.dispatch("updateScheduleJobModul", _this.examDeployForm).then(res => {
+        _this.$store.dispatch("updateScheduleJobModul", data).then(res => {
           _this.$emit("getAddStationPage");
           _this.$message({
             type: "success",

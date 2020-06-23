@@ -130,10 +130,12 @@ export default {
         });
 
         if (_index > -1) {
+          debugger
             if (to.params.tabTitle) {
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;
-                currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
+                //currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
+                currentOpenTab.title = currentOpenTab.params.tabTitle;
                 currentOpenTab.route = currentOpenTab.path;
                 currentOpenTab.name = to.name;
 

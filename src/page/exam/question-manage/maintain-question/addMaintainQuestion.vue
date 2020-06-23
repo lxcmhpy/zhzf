@@ -204,7 +204,7 @@
                 :disabled="scope.$index === (addMaintainQuestionForm.pqoList.length - 1)"
                 @click="downRemove(scope.$index)"
               >下移</el-button>
-              <el-button type="text" @click="delet(scope.$index)">删除</el-button>
+              <el-button type="text" @click="delet(scope.row, scope.$index)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -401,7 +401,8 @@ export default {
       const item = this.addMaintainQuestionForm.pqoList[index];
       if(item.file){
         if(item.file.status === 'success'){
-          this.deleteImage(item.file.url, 'option', index);
+          const imgId = item.file.url.replace(this.baseUrl, '');
+          this.deleteImage(imgId, 'option', index, 'isUpload');
         }else{
           this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
           this.addMaintainQuestionForm.pqoList[index]["file"] = null;
@@ -489,9 +490,13 @@ export default {
       return optionVal[val];
     },
     //删除
-    delet(index) {
+    delet(row, index) {
       this.addMaintainQuestionForm.pqoList.splice(index, 1);
       this.updatChecked();
+      if(row.optionPicture && row.optionPicture.indexOf(this.baseUrl) > -1){
+        const deleteId = row.optionPicture.replace(this.baseUrl, '');
+        this.deleteImage(deleteId, 'option', index, 'upload');
+      }
     },
     //修改选项
     updatChecked() {
@@ -559,7 +564,7 @@ export default {
       });
     },
     // 保存试题信息
-    saveQuestionInfo(loading) {
+    saveQuestionInfo(loading, deleteImg) {
       let saveData = {
         questionId: this.addMaintainQuestionForm.questionId,
         pqoList: JSON.stringify(this.addMaintainQuestionForm.pqoList),
@@ -572,7 +577,7 @@ export default {
         answer: this.addMaintainQuestionForm.answer
       };
       if(this.addMaintainQuestionForm.questionPicture){
-        this.addMaintainQuestionForm.questionPicture.replace(this.baseUrl, '');
+        saveData.questionPicture = this.addMaintainQuestionForm.questionPicture.replace(this.baseUrl, '');
       }
       let dispatchType = "addExamQuestionInfo",
         successMsg = "添加成功!";
@@ -588,9 +593,11 @@ export default {
         this.$store.dispatch(dispatchType, saveData).then(
           res => {
             loading.close();
-            this.$emit("getAllQuestion");
             this.$message({ type: "success", message: successMsg });
-            this.closeDialog();
+            if(!deleteImg){
+              this.$emit("getAllQuestion");
+              this.closeDialog();
+            }
           },
           err => {
             loading.close();
@@ -717,7 +724,7 @@ export default {
       }
     },
     // 删除已上传的图片
-    deleteImage(id, type, index){
+    deleteImage(id, type, index, isUpload){
       const loading = this.$loading({
         lock: true,
         text: "正在删除",
@@ -726,19 +733,24 @@ export default {
         background: "rgba(234,237,244, 0.8)"
       });
       this.$store.dispatch('deleteQuestionImage', { storageId: id }).then(res => {
-        laoding.close();
+        if(!isUpload){ loading.close(); }
         if(res.code === 200){
-          this.$message({ type: 'success', message: '删除成功' });
           if(type === 'title'){
             this.deleteDescImg();
+            this.$message({ type: 'success', message: '删除成功' });
+            return
           }
-          if(type === 'option'){
+          if(type === 'option' && this.addMaintainQuestionForm.pqoList[index]){
             this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
             this.addMaintainQuestionForm.pqoList[index]["file"] = null;
+            this.$message({ type: 'success', message: '删除成功' });
+          }
+          if(isUpload){
+            this.saveQuestionInfo(loading, 'deleteImg');
           }
         }
       }, err => {
-        laoding.close();
+        loading.close();
         this.$message({ type: 'error', message: err.msg || '' });
       });
     },

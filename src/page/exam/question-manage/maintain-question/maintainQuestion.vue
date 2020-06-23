@@ -502,7 +502,7 @@ export default {
   }
 }
 .question-table {
-  height: calc(100% - 180px);
+  height: calc(100% - 194px);
   // min-height: 240px;
   &.noHandle{
     height: calc(100% - 130px);
