@@ -237,12 +237,12 @@
                     <tr>
                       <td>车牌号</td>
                       <td>{{obj.vehicleNumber}}</td>
-                      <td>车辆图片 1</td>
+                      <td colspan="2">车辆图片 1</td>
                     </tr>
                     <tr>
                       <td>轴数</td>
                       <td>{{obj.axleNumber}}</td>
-                      <td rowspan="7">
+                      <td rowspan="7" colspan="2">
                           <!-- xjHost -->
                         <img
                           :src="xjHost + imgList[2]"
@@ -256,11 +256,11 @@
                     </tr>
                     <tr>
                       <td>总重（吨）</td>
-                      <td>{{obj.totalWeight}}</td>
+                      <td>{{obj.totalWeight/1000}}</td>
                     </tr>
                     <tr>
                       <td>超重（吨）</td>
-                      <td>{{obj.overweight}}</td>
+                      <td>{{obj.overweight/1000}}</td>
                     </tr>
                     <tr>
                       <td>超限率（%）</td>
@@ -273,6 +273,12 @@
                     <tr>
                       <td>检测地点</td>
                       <td>{{obj.siteName}}</td>
+                    </tr>
+                    <tr>
+                      <td>车长/车宽/车高(mm)</td>
+                      <td>{{obj.length}}</td>
+                      <td>{{obj.width}}</td>
+                      <td>{{obj.height}}</td>
                     </tr>
                   </table>
 

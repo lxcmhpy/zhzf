@@ -2080,12 +2080,11 @@ export default {
         })
     },
     routerXsDetail (row) {
-        // debugger;
          this.$router.push({
                     name: 'law_supervise_examineDoingDetail',
                     params: {
                         status: '0',
-                        tabTitle: '待审核',
+                        tabTitle: '线索审核',
                         offSiteManageId: row.id
                     }
                 });

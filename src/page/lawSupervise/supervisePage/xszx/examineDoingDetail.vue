@@ -68,7 +68,7 @@ export default {
           value: "检测数据核对"
         },
         {
-          value: "违法超限复合"
+          value: "违法超限复核"
         },
         {
           value: "生成证据包"
