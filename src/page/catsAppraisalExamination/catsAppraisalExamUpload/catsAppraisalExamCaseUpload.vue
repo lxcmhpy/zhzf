@@ -270,12 +270,12 @@
     handleSizeChange(val) {
       this.size = val;
       this.current = 1;
-      this.fetchData();
+      this.fetchData({});
     },
     //更换页码
     handleCurrentChange(val) {
       this.current = val;
-      this.fetchData();
+      this.fetchData({});
     },
       searchData(){
         let data=this.search;
