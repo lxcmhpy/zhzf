@@ -1,7 +1,7 @@
 {
   "CURRENT": "TEST",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
-  "SYS_TITLE": "全国交通运输行政执法综合管理信息系统（二期）",
+  "SYS_TITLE": "",
   "PS": {
     "HOME_PAGE_ROUTER_NAME":"catsAppraisalExamination//评议考核，case_handle_home_index//案件办理law_supervise_lawSupervise//监管",
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",

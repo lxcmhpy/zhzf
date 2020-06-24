@@ -135,7 +135,7 @@
     .tabBtn{
         background: none;
         height:auto;
-        width: 192px;
+        width: 220px;
         padding:0px;
         padding-top: 5px;
         box-sizing: border-box;
@@ -471,7 +471,7 @@
         height: 40px;
         position: absolute;
         margin-left: 0px;
-        width: auto;
+        width: 200px;
         margin-top: -30px;
         background:white;
         right: 50%;
@@ -556,6 +556,10 @@
         }
         span.blueBg {
             background: #4573d0;
+            color: white;
+        }
+        span.greenBg {
+            background: #00adb5;
             color: white;
         }
         .el-icon-location {
