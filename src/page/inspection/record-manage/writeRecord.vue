@@ -192,7 +192,6 @@ export default {
     },
     // 修改
     editRecord() {
-      // console.log('rule', this.rule)
       findRecordModleTimeByIdApi(this.formData.templateId).then(
         res => {
           if (res.code == 200) {
@@ -245,7 +244,7 @@ export default {
         this.formData.createTime = '';
         this.formData.updateTime = '';
         this.formData.type = '记录';
-        console.log('formdata', this.formData)
+        // console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
             // console.log(res)
@@ -327,24 +326,32 @@ export default {
     // 复制添加
     copySave() {
       this.addOrEiditFlag = 'add'
-      this.onSubmit
+      this.formData.id=''
+      this.formData.createTime=''
+      this.formData.updateTime=''
+      // 设置当前账号名
+      this.setLawPersonCurrentP()
+
+      console.log('this.formData',this.formData)
+      debugger
+      this.saveRecord()
     },
     onSubmit(formData) {
-      this.$data.$f.validate((valid)=>{
-  if(valid){
-    //TODO 验证通过
-  }else{
-     if (document.getElementsByClassName('el-form-item__error').length > 0) {
-        this.$notify.error({
-          title: '提示',
-          message: document.getElementsByClassName('el-form-item__error')[0].innerText
-        });
-      }
+      // this.$data.$f.validate((valid) => {
+      //   if (valid) {
+      //     //TODO 验证通过
+      //   } else {
+      //     if (document.getElementsByClassName('el-form-item__error').length > 0) {
+      //       this.$notify.error({
+      //         title: '提示',
+      //         message: document.getElementsByClassName('el-form-item__error')[0].innerText
+      //       });
+      //     }
 
-  }
-   
-})
-     
+      //   }
+
+      // })
+
       console.log("formData", formData)
 
       //TODO 提交表单
@@ -980,16 +987,12 @@ export default {
     },
     //查询执法人员
     getAllUserList(list) {
-      console.log("list", list);
       this.allUserList = list;
     },
     setLawPerson(userlist) {
-      console.log('选择的执法人员', userlist);
       this.alreadyChooseLawPerson = userlist;
-
       let staffArr = [];
       let certificateIdArr = [];
-
       this.alreadyChooseLawPerson.forEach(item => {
         //   //给表单数据赋值
         // staffArr.push(item.lawOfficerName);//执法人员
@@ -1111,6 +1114,4 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
-/* @import "@/assets/css/caseHandle/index.scss"; */
-</style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>

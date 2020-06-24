@@ -6,17 +6,18 @@
     :before-remove="beforeRemoveImg" multiple :limit="3" :on-exceed="handleExceedImg" :file-list="imgList"
     accept="image/*"
     >
-      <!-- <el-button size="small" type="primary">上传图片</el-button> -->
+      <el-button size="small" type="primary">上传图片</el-button>
     </el-upload>
     <p class="border-title">附件</p>
     <!-- {{fileList}} -->
     <el-upload class="upload-demo modle-upload" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" :on-preview="handlePreviewFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :limit="3" :on-exceed="handleExceedFile" :file-list="fileList">
-      <!-- <el-button size="small" type="primary">选取文件</el-button> -->
+      <el-button size="small" type="primary">选取文件</el-button>
     </el-upload>
   </div>
 </template>
 <script>
 import { uploadMaterial, findFileByIdApi } from "@/api/person.js";
+import { upload } from "@/api/upload.js";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: ['recordMsg'],
@@ -47,7 +48,7 @@ export default {
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           res => {
-            console.log('执法人员列表', res)
+            // console.log('执法人员列表', res)
             let currentUserData = {};
             res.data.forEach(item => {
               if (
@@ -63,23 +64,22 @@ export default {
         );
     },
     uploadAllImg() {
-      debugger
-      console.log(this.imgList)
+      // debugger
+      // console.log(this.imgList)
       this.imgListUpload.forEach(element => {
-        console.log('element', element)
-        debugger
+        // console.log('element', element)
+        // debugger
         this.uploadImg(element)
       });
       // this.$refs.upload.submit();
     },
     saveImg(param) {
-      debugger
-      console.log(param);
+      // debugger
       this.imgListUpload.push(param)
     },
     //上传图片
     uploadImg(param) {
-      console.log(param);
+      // console.log(param);
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append("category", '行政检查');
@@ -87,7 +87,8 @@ export default {
       fd.append('status', '图片')//传记录id
       fd.append('caseId', this.recordId)//传记录id
       fd.append('docId', this.recordId)//传记录id
-      uploadMaterial(fd).then(
+      // uploadMaterial(fd).then(
+      upload(fd).then(
         res => {
           console.log(res);
         },
@@ -113,17 +114,14 @@ export default {
     },
     uploadAllFile() {
       this.fileListUpload.forEach(element => {
-        console.log('element', element)
         this.uploadFile(element)
       });
     },
     saveFile(param) {
-      console.log(param);
       this.fileListUpload.push(param)
     },
     //上传附件
     uploadFile(param) {
-      console.log(param);
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append("category", '行政检查');

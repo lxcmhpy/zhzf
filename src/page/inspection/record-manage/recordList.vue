@@ -5,7 +5,7 @@
         <div class="search">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
             <el-form-item label="记录时间" prop='timeList'>
-              <el-date-picker v-model="timeList" value-format="yyyy-MM-dd HH:mm" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+              <el-date-picker v-model="timeList" :clearable="false" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="业务领域" prop='domain'>
@@ -20,14 +20,14 @@
               </el-select>
             </el-form-item>
             <el-form-item label="状态" prop='status'>
-              <el-select v-model="searchForm.status" placeholder="请选择">
+              <el-select v-model="searchForm.status" placeholder="请选择" @change="changStatus">
                 <el-option label="全部" value="全部"></el-option>
                 <el-option label="暂存" value="暂存"></el-option>
                 <el-option label="保存" value="保存"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="记录人" prop='createUser'>
-              <el-input v-model="searchForm.createUser"></el-input>
+            <el-form-item label="记录人" prop='otherUser'>
+              <el-input v-model="searchForm.otherUser"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button>
@@ -82,7 +82,10 @@ export default {
       searchForm: {
         domain: "",
         status: '',
-        createUser: '',
+        status: '',
+        createUser: iLocalStroage.gets("userInfo").nickName,
+        otherUser: '',
+        defaultDisplay:true,
         name: ''
       },
       currentPage: 1, //当前页
@@ -96,14 +99,16 @@ export default {
     getTableData() {
       console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
-        startTime: this.timeList[0].length==2?this.timeList[0]:'',
-        endTime:this.timeList[0].length==2?this.timeList[1]:'',
+        startTime: this.timeList[0],
+        endTime:this.timeList[1],
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
         createUser: this.searchForm.createUser,
+        otherUser: this.searchForm.otherUser==iLocalStroage.gets("userInfo").nickName?'':this.searchForm.otherUser,
         domain: this.searchForm.domain,
         current: this.currentPage,
         size: this.pageSize,
+        defaultDisplay: this.searchForm.defaultDisplay,
         // name: this.dicSearchForm.name
       };
       findRecordListApi(data).then(
@@ -120,6 +125,7 @@ export default {
     // 查询
     searchTableData() {
       this.currentPage = 1;
+      this.searchForm.defaultDisplay=''
       this.getTableData()
     },
     // 查询我的
@@ -138,11 +144,11 @@ export default {
       console.log(":", this.searchForm.name)
       if (this.searchForm.name == '') {
         this.searchForm.name = '1'
-        this.searchForm.createUser = iLocalStroage.gets("userInfo").nickName ;
+        this.searchForm.otherUser = iLocalStroage.gets("userInfo").nickName;
 
       } else {
         this.searchForm.name = ''
-        this.searchForm.createUser = ""
+        this.searchForm.otherUser = ""
       }
       this.searchTableData()
 
@@ -188,7 +194,7 @@ export default {
       if (row.status == '保存') {
         addOrEiditFlag = 'view'
       }
-      debugger
+      // debugger
       let _this = this
       let list = []
       console.log('编辑', row)
@@ -274,13 +280,21 @@ export default {
     },
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
+      this.searchForm.defaultDisplay=true
       this.timeList = []
       // debugger
       this.getTableData()
+    },
+    changStatus(){
+      if(this.searchForm.status=='保存'){
+        this.searchForm.createUser=''
+      }else{
+        this.searchForm.createUser=iLocalStroage.gets("userInfo").nickName
+      }
     }
   },
   mounted() {
-    this.createUserName = iLocalStroage.gets("userInfo").username
+    this.createUserName = iLocalStroage.gets("userInfo").nickName
     this.getTableData();
     this.getEnforceLawType();
     this.getRecordTitleList();

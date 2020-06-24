@@ -634,12 +634,14 @@ export default {
                 console.log('templateAdminId', data.templateAdminIdList)
                 console.log('templateUserIdList', data.templateUserIdList)
                 data.templateAdminIdList.forEach(element => {
-                  data.templateAdminId = data.templateAdminId + ',' + element.id
+                  // 使用userID
+                  data.templateAdminId = data.templateAdminId + ',' + element.userId
                   data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
                 });
                 data.templateUserIdList.forEach(element => {
                   data.templateUser = data.templateUser + ',' + element.lawOfficerName
-                  data.templateUserId = data.templateUserId + ',' + element.id
+                   // 使用userID
+                  data.templateUserId = data.templateUserId + ',' + element.userId
                 });
                 // 未做ie浏览器兼容处理
                 if (data.templateAdminId.substr(0, 1) == ',') {
