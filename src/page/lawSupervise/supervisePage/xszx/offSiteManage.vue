@@ -56,8 +56,6 @@
           <div class="search-btns">
             <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
             <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset('offsiteManageform')"></el-button>
-            <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
-            </el-button>
           </div>
         </div>
         <div class="handlePart" style="margin-left: 0px;">
@@ -161,7 +159,7 @@
             </el-table-column>
             <el-table-column prop="overload" label="超限率（%）" width="120" align="center">
               <template slot-scope="scope">
-                <span v-if="scope.row.overload/1000>100" style="color:red">{{scope.row.overload}}</span>
+                <span v-if="scope.row.overload>100" style="color:red">{{scope.row.overload}}</span>
                 <span v-else>{{scope.row.overload}}</span>
               </template>
             </el-table-column>
@@ -371,6 +369,7 @@ export default {
     },
     reset(formName) {
       this.$refs[formName].resetFields();
+      this.timeList=['', '']
       let _this=this
       this.pickerOptions= {
         
@@ -464,11 +463,11 @@ export default {
       //    if(this.tabActiveValue == )
       debugger;
       switch (data.status) {
-        case undefined: this.routerExamineDoingDetail(data, '0', '待审核'); break;
+        case undefined: this.routerExamineDoingDetail(data, '0', '线索审核'); break;
         case '无效信息': this.routerInvalidCueDetail(data); break;
-        case '审核中': this.routerExamineDoingDetail(data, '1', '审核中'); break;
+        case '审核中': this.routerExamineDoingDetail(data, '1', '线索审核'); break;
         case '已转办': this.routerTransferDetail(data); break;
-        case '已审核': this.routerExamineDetail(data, '3', '已审核'); break;
+        case '已审核': this.routerExamineDetail(data, '3', '线索详情'); break;
       }
     },
     getCountStatus() {
