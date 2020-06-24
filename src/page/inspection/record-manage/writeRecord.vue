@@ -54,8 +54,8 @@ import chooseLawPerson from "./chooseModlePerson.vue";
 import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
-import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
- findRecordByIdApi ,findRecordModleTimeByIdApi} from "@/api/Record";
+import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
+  findRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: ['psMsg'],
@@ -197,7 +197,7 @@ export default {
         res => {
           if (res.code == 200) {
             console.log('row.createTime <= res.data', this.formData.createTime, res.data)
-            if (res.data!=null||this.formData.createTime >= res.data) {
+            if (res.data != null || this.formData.createTime >= res.data) {
               // 可修改
               this.$data.$f.resetFields()
               this.rule.forEach(element => {
@@ -330,7 +330,21 @@ export default {
       this.onSubmit
     },
     onSubmit(formData) {
+      this.$data.$f.validate((valid)=>{
+  if(valid){
+    //TODO 验证通过
+  }else{
+     if (document.getElementsByClassName('el-form-item__error').length > 0) {
+        this.$notify.error({
+          title: '提示',
+          message: document.getElementsByClassName('el-form-item__error')[0].innerText
+        });
+      }
 
+  }
+   
+})
+     
       console.log("formData", formData)
 
       //TODO 提交表单
@@ -446,7 +460,7 @@ export default {
       let personFlag = false
       let partyFlag = false
       console.log('data', data)
-      debugger
+      // debugger
       data.forEach(element => {
         if (element.classs == '个人') {
           personFlag = element;
@@ -625,27 +639,27 @@ export default {
                   })
                 }
               } else if (item.type == '数字型') {
-              this.rule.push({
-              //  type: "InputNumber",
-                type: "input",
-                field: item.id || item.field,
-                title: item.title,
-                value: item.text,
-                controls: false,
-                className: 'modle-number-box',
-                props: {
-                  type: 'textarea',
-                  autosize: { minRows: 1 }
-                  // precision: 2
-                },
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  pattern:'^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
-                  message: '必须输入数字',
-                  trigger: 'blur'
-                }]
-              })
-            } else if (item.type == '地址型') {
+                this.rule.push({
+                  //  type: "InputNumber",
+                  type: "input",
+                  field: item.id || item.field,
+                  title: item.title,
+                  value: item.text,
+                  controls: false,
+                  className: 'modle-number-box',
+                  props: {
+                    type: 'textarea',
+                    autosize: { minRows: 1 }
+                    // precision: 2
+                  },
+                  validate: [{
+                    required: item.required == 'true' ? true : false,
+                    pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                    message: '必须输入数字',
+                    trigger: 'blur'
+                  }]
+                })
+              } else if (item.type == '地址型') {
                 item.type = 'input';
                 this.rule.push({
                   type: 'input',
@@ -869,7 +883,7 @@ export default {
               }
             } else if (item.type == '数字型') {
               this.rule.push({
-              //  type: "InputNumber",
+                //  type: "InputNumber",
                 type: "input",
                 field: item.id || item.field,
                 title: item.title,
@@ -883,7 +897,7 @@ export default {
                 },
                 validate: [{
                   required: item.required == 'true' ? true : false,
-                  pattern:'^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                  pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
                   message: '必须输入数字',
                   trigger: 'blur'
                 }]
