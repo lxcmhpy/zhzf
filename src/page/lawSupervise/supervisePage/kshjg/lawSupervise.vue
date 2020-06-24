@@ -180,7 +180,7 @@
                       {{time | formatDate}} &nbsp;
                       超限{{curWindow.other.cxchl}} &nbsp;
                       黑名单{{curWindow.other.blackList}}
-                    <span class="right" @click="routerXs">详情</span>
+                    <span class="right" @click="routerXsByName(curWindow.other.name)">详情</span>
                     </p>
                   </div>
                 </div>
@@ -1260,10 +1260,24 @@ export default {
             )
         })
     },
-    routerXs () {
-        this.$router.push({
-            name: 'law_supervise_offSiteManage'
-        })
+    // routerXsBySiteName (siteName) {
+    //   this.$router.push({
+    //       name: 'law_supervise_offSiteManage',params:{siteName:siteName}
+    //   })
+    // },
+    routerXs() {
+      this.$router.push({
+          name: 'law_supervise_offSiteManage'
+      })
+    },
+    routerXsByName (name) {
+         this.$router.push({
+                    name: 'law_supervise_offSiteManage',
+                    params: {
+                        siteName: name
+                    }
+                });
+
     },
     routerXsDetail (row) {
         // debugger;
