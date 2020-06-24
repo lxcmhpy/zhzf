@@ -18,7 +18,7 @@ export const personRouterJson = [
           {
             name: "enforcementSection",
             path: "/paragraph-management",
-            meta: { title: "执法号段" },
+            meta: { title: "执法号段", loading: false },
             component: () => import("@/page/person/paragraph-management/enforcementList")
           }
         ],
@@ -33,43 +33,43 @@ export const personRouterJson = [
           {
             name: "person_info",
             path: "/person-manage",
-            meta: { title: "人员信息" },
+            meta: { title: "人员信息", loading: false },
             component: () => import("@/page/person/person-manage/personInfo.vue")
           },
           {
             name: "personAudit",
             path: "/person-audit",
-            meta: { title: "人员审批" },
+            meta: { title: "人员审批", loading: false },
             component: () => import("@/page/person/person-audit/personAudit.vue")
           },
           {
             name: "yearAudit",
             path: "/person-apply",
-            meta: {title: "人员年审" },
+            meta: {title: "人员年审", loading: false },
             component: () => import("@/page/person/person-apply/personApply.vue")
           },
           {
             name: "apply-result",
             path: "/person-yearApplyResult",
-            meta: { title: "年审成绩" },
+            meta: { title: "年审成绩", loading: false },
             component: () => import("@/page/person/person-apply/person-yearApplyResult/personYearApplyResult.vue")
           },
           {
             name: "staff-in",
             path: "/staff-transfer-in",
-            meta: { title: "人员调入" },
+            meta: { title: "人员调入", loading: false },
             component: () => import("@/page/person/staff-transfer-in/staffInList.vue")
           },
           {
             name: "staff-out",
             path: "/staff-transfer-out",
-            meta: { title: "人员调出" },
+            meta: { title: "人员调出", loading: false },
             component: () => import("@/page/person/staff-transfer-out/staffOutList.vue")
           },
           {
             name: "person-appaly",
             path: "/person-yearApply",
-            meta: { title: "人员复审" },
+            meta: { title: "人员复审", loading: false },
             component: () => import("@/page/person/person-apply/person-yearApply/personYearApply.vue")
           }
         ]
@@ -84,31 +84,31 @@ export const personRouterJson = [
           {
             name: "certificateInfo",
             path: "/certificate-info",
-            meta: { title: "证件信息" },
+            meta: { title: "证件信息", loading: false },
             component: () => import("@/page/person/certificate-info/certificateInfoList.vue")
           },
           {
             name: "certificateAward",
             path: "/certificate-award",
-            meta: { title: "颁发证件"},
+            meta: { title: "颁发证件", loading: false },
             component: () => import("@/page/person/certificate-award/certificateAwardList.vue")
           },
           {
             name: "certificateUpdate",
             path: "/certificate-update",
-            meta: {title: "修改证件"},
+            meta: {title: "修改证件", loading: false },
             component: () => import("@/page/person/certificate-update/certificateUpdateList.vue")
           },
           {
             name: "certificateVerification",
             path: "/certificate-verification",
-            meta: { title: "验证证件" },
+            meta: { title: "验证证件", loading: false },
             component: () => import("@/page/person/certificate-verification/certificateVerificationList.vue")
           },
           {
             name: "certificateData",
             path: "/certificate-data",
-            meta: { title: "制证数据" },
+            meta: { title: "制证数据", loading: false },
             component: () => import("@/page/person/certificate-data/certificateDataList.vue")
           }
         ]

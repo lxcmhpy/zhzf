@@ -22,7 +22,6 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
-import { getDictListDetailByNameApi } from "@/api/system";
 export default {
 //   name: "mainLagout",
   data() {
@@ -39,7 +38,7 @@ export default {
       return this.$route.path !== '/startAnswer'
     },
     systemTitle(){
-      return sessionStorage.getItem('DocumentTitle');
+      return localStorage.getItem("SYS_TITLE");
     }
   },
   inject: ["reload"],
@@ -51,19 +50,6 @@ export default {
       }, err => {
         this.$router.push("/examLogin");
       })
-    },
-    //获取系统标题
-    getSystemData() {
-      if(this.systemTitle){
-        window.document.title = this.systemTitle;
-        return;
-      }
-      getDictListDetailByNameApi('系统标题').then(res => {
-        sessionStorage.setItem('DocumentTitle', res.data[0].name);
-        window.document.title = res.data[0].name
-      }, err => {
-        console.log(err);
-      })
     }
   },
   watch: {},
@@ -71,7 +57,6 @@ export default {
   created(){
     // this.$util.initUser(this);
     // this.success = false;
-    this.getSystemData();
   }
 };
 </script>

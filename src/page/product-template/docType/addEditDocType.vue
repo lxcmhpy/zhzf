@@ -62,6 +62,27 @@
         </el-form-item>
       </div>
       <div class="item">
+        <el-form-item label="是否审批" prop="isApproval">
+          <el-select
+            v-model="addDocType.isApproval"
+            @change="selectIsApproval"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="item" v-if="addDocType.isApproval == '0' ? true : false">
+        <el-form-item label="绑定工作流">
+          <el-input v-model="addDocType.activitiId"></el-input>
+        </el-form-item>
+      </div>
+      <div class="item">
         <el-form-item label="排序" prop="sort">
           <el-input v-model="addDocType.sort" disabled></el-input>
         </el-form-item>
@@ -84,6 +105,8 @@ export default {
         name: "",
         linkName: "",
         templateName: "",
+        isApproval: "",
+        activitiId: "",
         remark: "",
         path: "",
         sort: 0
@@ -107,8 +130,15 @@ export default {
             message: "文书说明不能为空",
             trigger: "blur"
           }
-        ]
+        ],
+        isApproval: [
+          { required: true, message: "是否审批不能为空", trigger: "blur" }
+        ],
       },
+      options: [
+        {value: 0,label: "是"},
+        {value: 1,label: "否"}
+      ],
       mainLinkList: [],
       templateList: [],
       dialogTitle: "", //弹出框title
@@ -134,6 +164,8 @@ export default {
         this.addDocType.linkName = data.linkName;
         this.addDocType.templateName = data.templateName;
         this.addDocType.remark = data.remark;
+        this.addDocType.isApproval = data.isApproval;
+        this.addDocType.activitiId = data.activitiId;
         this.addDocType.path = data.path;
         this.addDocType.sort = data.sort;
       }
@@ -142,6 +174,12 @@ export default {
     closeDialog() {
       this.visible = false;
       this.$refs.addDocType.resetFields();
+    },
+    //是否有审批流程
+    selectIsApproval(val) {
+      if (val == "1") {
+        this.addDocType.activitiId = "";
+      }
     },
     //聚焦清除错误信息
     focusName() {

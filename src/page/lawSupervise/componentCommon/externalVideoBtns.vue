@@ -2,6 +2,7 @@
   <div>
     <div class="btns">
       <span class="phoneBtn" @click="call('1')"><i class="el-icon-phone blueC3"  ></i></span>
+      <span  class="phoneBtn"  @click="callIE" ><i class="el-icon-phone blueC3" ></i></span>
       <span  class="phoneBtn"  @click="call('2')"><i class="iconfont law-shipin greenC3" id="btnPhone2" ></i></span>
       <span  class="phoneBtn" ><i class="iconfont law-jiankong"></i></span>
       <span  class="phoneBtn" ><i class="iconfont law-msg-box"></i></span>
@@ -27,6 +28,9 @@ export default {
         // window.PhoneCallModule.sipUnRegister();
         // window.PhoneCallModule.sipRegister();
         this.$emit('updateMakePhoneStatus', this.doing);
+    },
+    callIE(){
+      window.location.href ="alert:E:/HlVoIPSDKSetup/demo.htm"
     },
     call(code) {
         if (this.doing == code) {

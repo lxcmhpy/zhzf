@@ -73,7 +73,7 @@
                 </div>
                 <ul class="list">
                     <li >
-                         <el-carousel direction="vertical" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
+                         <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
                             <el-carousel-item :key="0">
                                 <video width="280px" height="180px" controls>
                                     <source :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_V'" type="video/mp4">
@@ -85,6 +85,11 @@
                         </el-carousel>
                     </li>
                 </ul>
+                <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
+                    <div>
+                        <img width="100%" :src="xjHost+imgIndexUrl">
+                    </div>
+                </el-dialog>
             </div>
         </div>
     <div class="shadow">
@@ -116,14 +121,16 @@ export default {
     props: ['obj'],
     data () {
         return {
+            imgIndexUrl: null,
             imgList: [
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
                 ],
-            acitveCar: 0,
             xjHost: null,
+            dialogIMGVisible: false,
+            acitveCar: 0,
             dialogPDFVisible: false,
             storageStr: '',
             currentUrl: '',
@@ -135,6 +142,10 @@ export default {
         }
     },
     methods: {
+        showImg (index) {
+            this.dialogIMGVisible = true;
+            this.imgIndexUrl = this.imgList[index];
+        },
         setActiveItem () {
             this.acitveCar++;
             if (this.acitveCar == 5) {

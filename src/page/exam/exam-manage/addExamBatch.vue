@@ -101,8 +101,12 @@ export default {
         if(timeHours === 0){
           callback(new Error('考试开始时间格式错误，开始时间不能为00:00:00'));
         }else{
+          const nowDate = new Date().getTime();
+          const beginTime = new Date(value).getTime();
+          if(beginTime - nowDate < 0){
+            callback(new Error('开始时间不能小于当前时间'));
+          }
           if (this.addExamBatchForm.examEnd !== '') {
-            const beginTime = new Date(value).getTime();
             const endTime = new Date(this.addExamBatchForm.examEnd).getTime();
             if(beginTime - endTime > 0){
               callback(new Error('开始时间不能大于结束时间'));

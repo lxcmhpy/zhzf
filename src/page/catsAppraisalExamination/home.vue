@@ -17,9 +17,9 @@
                 <div class="center_content">
                     <span class="noticeIcon"></span>
                     <span class="title fontGray">通知公告</span>
-                    <span class="right">更多内容 ></span>
+                    <!-- <span class="right">更多内容 ></span> -->
                 </div>
-                <ul class="list">
+                <ul class="list" v-infinite-scroll="getNotices">
                     <li :class="{'fontGray':item.isRead =='N'}" v-for="(item,index) in noticeList" :key="index" @click="viewNotice(item)">
                         <div class="c">
                             <em class="circle" v-show="item.isRead=='N'"></em>
@@ -87,10 +87,21 @@
                          </a>
                     </li>
                 </ul>
-                <div>
-                    <img width="380px" height=""
+                <div class="footer-banner shadow">
+                    <!-- <img width="380px" height=""
                         onerror="this.src='./static/images/img/catsAppraisalExamination/zc.jpg'"
-                     :src="'./static/images/img/catsAppraisalExamination/zc.jpg'">
+                     :src="'./static/images/img/catsAppraisalExamination/zc.jpg'"> -->
+                    <img width="57px" height="60px"
+                        onerror="this.src='./static/images/img/catsAppraisalExamination/icon_kefu.png'"
+                        :src="'./static/images/img/catsAppraisalExamination/icon_kefu.png'">
+                    <div class="lxfs">
+                        <h5>技术支持</h5>
+                        <div class="content">
+                            <div>联系电话：010-58278993</div>
+                            <div>电子邮箱：tianpanlong@catsti.com</div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -144,7 +155,9 @@ export default {
             //     icon: 'pic_fenxiyanpan'
             // }
             ],
-            userInfo: null
+            userInfo: null,
+            currentPage:1,
+            pageSize:5
         }
     },
     components: {
@@ -165,15 +178,16 @@ export default {
         },
         //获取公告信息
         getNotices() {
+            debugger;
             let data = {
-                current: this.currentPage,
+                current: this.currentPage++,
                 size: this.pageSize
             };
             let _this = this;
             getNoticeByPageAndUserId(data).then(
                 res => {
                     console.log(res.data.records)
-                    _this.noticeList = res.data.records;
+                    _this.noticeList = [..._this.noticeList,...res.data.records];
                 },
                 err => {
                     console.log(err);

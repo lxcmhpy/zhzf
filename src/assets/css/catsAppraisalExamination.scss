@@ -38,6 +38,29 @@
            .list {
                height: 440px;
            }
+           .footer-banner {
+                padding: 17px;
+                overflow: hidden;
+                img {
+                    margin-top: 10px;
+                }
+                .lxfs {
+                    float:right;
+                    font-size: 14px;
+                    line-height: 25px;
+                    color: #858585;
+
+                    h5 {
+                        font-size: 16px;
+                        line-height: 35px;
+                        font-weight: bolder;
+                        color: #000;
+                    }
+                    .content {
+                        float: right;
+                    }
+                }
+           }
        }
        .leftBox {
            flex: 1;
@@ -55,6 +78,7 @@
             margin-left: 20px;
             margin-bottom: 20px;
             height: 210px;
+            overflow-y: auto;
             li {
                 display: block;
                 line-height: 40px;
@@ -338,6 +362,17 @@
                 margin:0px;
                 margin-right: 1%;
             }
+        }
+        .transfer-list-header-49{
+            li {
+                width:49%;
+            }
+            .first-li{
+                margin-left: -40px;
+            }
+        }
+        .left {
+            float:left;
         }
         .el-transfer-panel__body {
             margin-top: 40px;

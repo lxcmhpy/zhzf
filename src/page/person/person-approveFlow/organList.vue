@@ -152,7 +152,7 @@ export default {
     getAllOrgan(organId) {
       this.paramList=[];
       let _this = this
-      this.$store.dispatch("getAllOrgan").then(
+      this.$store.dispatch("findOrganTreeByCurrUser").then(
         res => {
           _this.defaultExpandedKeys.push(res.data[0].id);
           _this.selectCurrentTreeName = _this.selectCurrentTreeName

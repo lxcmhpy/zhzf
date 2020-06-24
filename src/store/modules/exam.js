@@ -8,7 +8,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
     changeQuestionLock,randomQuestion,randomParagraphQuestion
     ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi,
-    deleteQuestionImage} from "@/api/exam";
+    deleteQuestionImage, batchImportQuestion, downLoadQuestionTemp} from "@/api/exam";
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
@@ -120,6 +120,22 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     deleteQuestionImage({commit}, storageId){
         return new Promise((resolve, reject) => {
             deleteQuestionImage(storageId).then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
+    // 下载试题模板
+    downLoadQuestionTemp({commit}){
+        return new Promise((resolve, reject) => {
+            downLoadQuestionTemp().then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
+    // 批量导入试题
+    batchImportQuestion({commit}, data){
+        return new Promise((resolve, reject) => {
+            batchImportQuestion(data).then(
                 res => {  resolve(res);   },
                 error => { reject(error); })
         })
@@ -719,15 +735,18 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                 loginExam(data).then(
                     res => {
                         if(loginType !== '1'){
+                            let token = '';
                             if(loginType === '0'){
+                                token = res.data;
                                 commit(types.SET_AUTHTOKEN, res.data);
                             }else if(loginType === '2'){
                                 sessionStorage.setItem('ScorerUserInfo', JSON.stringify(res.data.scorerInfo));
-                                if(res.data.token.indexOf('Bearer ') > -1){
-                                    commit(types.SET_AUTHTOKEN, res.data.token.replace('Bearer ', ''));
-                                }else{
-                                    commit(types.SET_AUTHTOKEN, res.data.token);
-                                }
+                                token = res.data.token;
+                            }
+                            if(token.indexOf('Bearer ') > -1){
+                                commit(types.SET_AUTHTOKEN, token.replace('Bearer ', ''));
+                            }else{
+                                commit(types.SET_AUTHTOKEN, token);
                             }
                         }else{
                             // 监考老师已提交个人信息

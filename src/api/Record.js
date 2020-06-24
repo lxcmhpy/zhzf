@@ -80,6 +80,17 @@ export function findAllCommonGroupFieldApi() {
         cancelToken: setCancelSource()
     });
 }
+//查询所有候选字段
+export function findAllCandidateFieldApi() {
+    return request({
+        url: "/xzjc/candidateField/queryAllCandidateField",
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //通过业务领域分组所有模板
 // export function findAllRecordModleApi() {
 //     return request({

@@ -237,12 +237,12 @@
                     <tr>
                       <td>车牌号</td>
                       <td>{{obj.vehicleNumber}}</td>
-                      <td>车辆图片 1</td>
+                      <td colspan="2">车辆图片 1</td>
                     </tr>
                     <tr>
                       <td>轴数</td>
                       <td>{{obj.axleNumber}}</td>
-                      <td rowspan="7">
+                      <td rowspan="7" colspan="2">
                           <!-- xjHost -->
                         <img
                           :src="xjHost + imgList[2]"
@@ -256,11 +256,11 @@
                     </tr>
                     <tr>
                       <td>总重（吨）</td>
-                      <td>{{obj.totalWeight}}</td>
+                      <td>{{obj.totalWeight/1000}}</td>
                     </tr>
                     <tr>
                       <td>超重（吨）</td>
-                      <td>{{obj.overweight}}</td>
+                      <td>{{obj.overweight/1000}}</td>
                     </tr>
                     <tr>
                       <td>超限率（%）</td>
@@ -273,6 +273,12 @@
                     <tr>
                       <td>检测地点</td>
                       <td>{{obj.siteName}}</td>
+                    </tr>
+                    <tr>
+                      <td>车长/车宽/车高(mm)</td>
+                      <td>{{obj.length}}</td>
+                      <td>{{obj.width}}</td>
+                      <td>{{obj.height}}</td>
                     </tr>
                   </table>
 
@@ -376,7 +382,7 @@
           <ul class="list">
             <li>
               <el-carousel
-                direction="vertical"
+                height="200px"
                 @change="setActiveItem"
                 :setActiveItem="setActiveItem"
                 :autoplay="true"
@@ -410,6 +416,11 @@
               </el-carousel>
             </li>
           </ul>
+          <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
+            <div>
+                <img width="100%" :src="xjHost+imgIndexUrl">
+            </div>
+          </el-dialog>
         </div>
       </div>
       <div class="shadow">
@@ -440,14 +451,16 @@ export default {
   props: ["obj"],
   data() {
     return {
+      imgIndexUrl: null,
       imgList: [
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_D",
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_F",
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_L",
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_S"
-      ],
-      acitveCar: 0,
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
+          ],
       xjHost: null,
+      dialogIMGVisible: false,
+      acitveCar: 0,
       dialogPDFVisible: false,
     //   storageStr: "",
       currentUrl: "",
@@ -459,12 +472,16 @@ export default {
     };
   },
   methods: {
-    setActiveItem() {
-      this.acitveCar++;
-      if (this.acitveCar == 5) {
-        this.acitveCar = 0;
-      }
-    }
+        showImg (index) {
+            this.dialogIMGVisible = true;
+            this.imgIndexUrl = this.imgList[index];
+        },
+        setActiveItem() {
+          this.acitveCar++;
+          if (this.acitveCar == 5) {
+            this.acitveCar = 0;
+          }
+        }
   },
   mounted() {
     // http://172.16.170.54:9332/14,16d92a05edcd   old:9,10a727c3ada3

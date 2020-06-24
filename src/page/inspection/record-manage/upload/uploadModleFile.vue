@@ -6,14 +6,12 @@
     :before-remove="beforeRemoveImg" multiple :limit="3" :on-exceed="handleExceedImg" :file-list="imgList"
     accept="image/*"
     >
-      <el-button size="small" type="primary">上传图片</el-button>
-      <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div> -->
+      <!-- <el-button size="small" type="primary">上传图片</el-button> -->
     </el-upload>
     <p class="border-title">附件</p>
     <!-- {{fileList}} -->
     <el-upload class="upload-demo modle-upload" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" :on-preview="handlePreviewFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :limit="3" :on-exceed="handleExceedFile" :file-list="fileList">
-      <el-button size="small" type="primary">选取文件</el-button>
-      <!-- <div slot="tip" class="el-upload__tip">只能上传word/excle/pdf文件</div> -->
+      <!-- <el-button size="small" type="primary">选取文件</el-button> -->
     </el-upload>
   </div>
 </template>
