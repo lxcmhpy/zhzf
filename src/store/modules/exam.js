@@ -8,7 +8,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
     changeQuestionLock,randomQuestion,randomParagraphQuestion
     ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi,
-    deleteQuestionImage} from "@/api/exam";
+    deleteQuestionImage, batchImportQuestion, downLoadQuestionTemp} from "@/api/exam";
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
@@ -120,6 +120,22 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     deleteQuestionImage({commit}, storageId){
         return new Promise((resolve, reject) => {
             deleteQuestionImage(storageId).then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
+    // 下载试题模板
+    downLoadQuestionTemp({commit}){
+        return new Promise((resolve, reject) => {
+            downLoadQuestionTemp().then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
+    // 批量导入试题
+    batchImportQuestion({commit}, data){
+        return new Promise((resolve, reject) => {
+            batchImportQuestion(data).then(
                 res => {  resolve(res);   },
                 error => { reject(error); })
         })

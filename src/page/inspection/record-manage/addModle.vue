@@ -75,7 +75,7 @@
                   <!-- 字段 -->
 
                   <!-- <div> -->
-                  <el-form ref="childForm" v-for="(field,index1) in formData.templateFieldList[index].fieldList" :key="index1" :model="formData.templateFieldList[index]">
+                  <el-form v-else ref="childForm" v-for="(field,index1) in formData.templateFieldList[index].fieldList" :key="index1" :model="formData.templateFieldList[index]">
                     <el-row :gutter="20">
                       <el-col :span="2">
                         <el-form-item label-width="0" prop="required">
