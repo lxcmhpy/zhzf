@@ -716,9 +716,11 @@ export default {
       }
       if (data.pqoList && data.pqoList.length) {
         data.pqoList.forEach(item => {
-          item.optionPicture = item.optionPicture
-            ? this.baseUrl + item.optionPicture
-            : "";
+          if(item.optionPicture){
+            if(item.optionPicture.indexOf(this.baseUrl) === -1){
+              item.optionPicture = this.baseUrl + item.optionPicture
+            }
+          }
           item.file = { url: item.optionPicture, status: 'success' }
         });
       }
