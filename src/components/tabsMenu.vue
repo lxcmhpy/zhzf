@@ -130,7 +130,6 @@ export default {
         });
 
         if (_index > -1) {
-          debugger
             if (to.params.tabTitle) {
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;

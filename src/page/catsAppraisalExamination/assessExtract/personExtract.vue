@@ -35,16 +35,19 @@
                          :button-texts="['', '']" :data="personList"
                          @change="handleChange">
                 <span slot-scope="{ option }" >
-                    <ul class="transfer-list" >
-                        <li><span>:{{ option.staffName }} </span></li>
-                        <li><span>:{{ option.maritimeNo }} </span></li>
+                    <ul class="transfer-list " >
+                        <li><span class="left">{{option.key+1}}</span></li>
+                        <li ><span>{{ option.staffName }} </span></li>
+                        <li><span>{{ option.maritimeNo }} </span></li>
                     </ul>
                 </span>
-                <ul class="transfer-list transfer-list-header-49" slot="left-footer" >
+                <ul class="transfer-list " slot="left-footer" >
+                    <li><span>序号</span></li>
                     <li><span>姓名</span></li>
                     <li><span>证件号</span></li>
                 </ul>
-                <ul class="transfer-list transfer-list-header-49" slot="right-footer" >
+                <ul class="transfer-list " slot="right-footer" >
+                    <li><span>序号</span></li>
                      <li><span>姓名</span></li>
                     <li><span>证件号</span></li>
                 </ul>

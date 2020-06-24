@@ -394,7 +394,7 @@ export default {
     async getSystemData() {
         // let _this = this;
         let res = await getDictListDetailByNameApi('系统标题');
-        // this.systemTitleLogin = res.data[0].name;
+        this.systemTitleLogin = res.data[0].name;
         this.$store.commit('set_systemTitle',this.systemTitleLogin);
         window.document.title = res.data[0].name;
         //设置省份
@@ -404,10 +404,8 @@ export default {
     },
   },
   async mounted() {
-      debugger;
     this.showLogin = true;
-    this.systemTitleLogin = localStorage.getItem("SYS_TITLE");
-    debugger;
+    // this.systemTitleLogin = localStorage.getItem("SYS_TITLE");
     await this.getSystemData();
     // this.test()
   },

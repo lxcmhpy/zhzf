@@ -71,12 +71,12 @@
                 <!-- <span></span> -->
                 <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
               </div>
-               <div class="right">
+               <!-- <div class="right">
                     <div class="status">
                         <i class="iconfont law-mobile-phone"></i>
                     </div>
                     <p>在线</p>
-                </div>
+                </div> -->
               <div class="flexBox">
                 <div class="con">
                   <p>地址：{{curWindow.other.address}}</p>
@@ -91,16 +91,10 @@
               </div>
              <div class="btns">
                 <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
-                <span class="phoneBtn blueBg" @click="callName('李玉明')">李玉明</span>
-                <span  class="phoneBtn blueBg" @click="callName('赵一鸣')">赵一鸣</span>
-                <span  class="phoneBtn" :class="{'lineh': it.nickName.length>3}" v-for="(it,j) in curWindow.other.users" :key="'s'+j">{{it.nickName}}</span>
-                <!-- <span  class="phoneBtn lineh" >迪丽<br>热巴</span>
-                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span>
-                <span class="phoneBtn " >张悦</span>
-                <span  class="phoneBtn" >李晓艺</span>
-                <span  class="phoneBtn lineh" >王淑华</span>
-                <span  class="phoneBtn lineh" >欧阳<br>娜娜</span> -->
-                <span  class="phoneBtn " >···</span>
+                <!-- <span class="phoneBtn greenBg" @click="callName('李玉明')">李玉明</span>
+                <span  class="phoneBtn greenBg" @click="callName('赵一鸣')">赵一鸣</span> -->
+                <span  class="phoneBtn greenBg" @click="callName(it.nickName)" :class="{'lineh': it.nickName.length>5}" v-for="(it,j) in curWindow.other.users" :key="'s'+j">{{it.nickName}}</span>
+                <span  class="phoneBtn blueBg " >···</span>
             </div>
               <!-- <div class="btns">
                 <div class="flexBox">
@@ -313,7 +307,7 @@
             <div v-else-if="curWindow.category == 1">
               <div class="lawWindowTitle">
                 <i class="iconfont law-zfj"></i>
-                 <div class="title">{{curWindow.other.name}}</div>
+                 <div class="title" :title="curWindow.other.name">{{curWindow.other.name}}</div>
                 <span></span>
               </div>
             </div>
@@ -344,7 +338,7 @@
             <div v-else-if="curWindow.category == 5">
               <div class="lawWindowTitle">
                 <i class="iconfont law-zfj"></i>
-                <div class="title">{{curWindow.other.nickName}}</div>
+                <div class="title" :title="curWindow.other.nickName">{{curWindow.other.nickName}}</div>
               </div>
             </div>
             <!-- 6监管车辆 -->
@@ -499,8 +493,8 @@
 <!-- v-show="category == 4" -->
           <div class="amap-main-content" style="padding:0px" >
 
-                    <div class="echarts-box" >
-                        <div class="title" @click="status4 = !status4">
+                    <div class="echarts-box" style="width:auto">
+                        <div class="title" @click="status4 = !status4" style="margin:20px">
                             <img :src="'./static/images/img/lawSupervise/icon_che3.png'">&nbsp;
                             告警车辆
                             <i v-if="status4 == true" class="iconfont law-youyou right"></i>
@@ -509,93 +503,59 @@
 
                         <el-collapse-transition>
                             <div v-show="status4">
-                                 <el-popover
-                                    placement="left"
+                              <ul class="addHoverBg" style="width: 100%;height: auto;">
+                                <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1(row)">
+                                  <el-popover
+                                    placement="left-start"
                                     trigger="hover"
                                     >
-                                    <div class="leftTabelHoverDiv" v-if="gjObj">
+                                    <div class="leftTabelHoverDiv">
                                         <div class="lawHoverTitle">
-                                            <div class="gj-title">{{gjObj.vehicleNumber}}</div>
+                                            <div class="gj-title">{{row.vehicleNumber}}</div>
                                             <div class="cxl" >
-                                                <span class="blueC f18">{{gjObj.overload.toFixed(2)}}%</span><br>
+                                                <span class="blueC f18">{{row.overload.toFixed(2)}}%</span><br>
                                                 <span class="bgCgray f12">超限率</span>
                                             </div>
                                         </div>
                                         <div class="lawHoverContent">
                                             <div class="flexBox">
-                                                <p><span class="bgCgray">过检时间：</span>{{gjObj&&gjObj.checkTime?gjObj.checkTime.split(' ')[1]:''}}</p>
+                                                <p><span class="bgCgray">过检时间：</span>{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</p>
                                                 <!-- <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p> -->
                                                 <p><span class="bgCgray">重点监管：</span><span>是</span></p>
                                             </div>
                                             <div class="flexBox">
-                                                <p><span class="bgCgray">历史告警（次）：</span>{{gjObj.lscc}}</p>
+                                                <p><span class="bgCgray">历史告警（次）：</span>{{row.lscc}}</p>
                                                 <!-- <p><span class="bgCgray">检测（次）：</span>{{gjObj.mobile}}</p>
                                                 <p><span class="bgCgray">状态：</span>{{gjObj.status}}</p> -->
                                             </div>
                                             <div class="flexBox">
-                                                 <p><span class="bgCgray">总重（kg）：</span>{{gjObj.totalWeight}}</p>
-                                                <p><span class="bgCgray">超重（kg）：</span>{{gjObj.overweight}}</p>
+                                                 <p><span class="bgCgray">总重（kg）：</span>{{row.totalWeight}}</p>
+                                                <p><span class="bgCgray">超重（kg）：</span>{{row.overweight}}</p>
                                             </div>
                                             <div class="flexBox">
-                                                <p><span class="bgCgray">站点：</span>{{gjObj.siteName}}</p>
+                                                <p><span class="bgCgray">站点：</span>{{row.siteName}}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div  slot="reference">
-                                    <ul class="addHoverBg" style="width: 100%;height: auto;">
-                                        <li v-for="(row,index) in gjclList" :key="index" @click="positionEvent1(row)" @mouseenter="positionEventEnter(row)">
-                                            <div class="leftTabelHoverDiv" style="padding: 0px;">
-                                                <div class="lawHoverTitle">
-                                                <div class="cxl" >
-                                                    <span class="blueC f18">{{row.overload.toFixed(2)}}%</span><br>
-                                                    <span class="bgCgray f12">超限率</span>
-                                                </div>
-                                                <div class="gj-con">
-                                                    <!-- <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span> -->
-                                                    <span>{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
-                                                     <p><span class="bgCgray">站点：</span>{{row.siteName}}</p>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                          <div class="leftTabelHoverDiv" style="padding: 0 20px;">
+                                              <div class="lawHoverTitle">
+                                              <div class="cxl" >
+                                                  <span class="blueC f18">{{row.overload.toFixed(2)}}%</span><br>
+                                                  <span class="bgCgray f12">超限率</span>
+                                              </div>
+                                              <div class="gj-con">
+                                                  <!-- <span :class="{'redC': index==1,'orangeC':index==2}">{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span> -->
+                                                  <span>{{row.vehicleNumber}}</span><span class="bgCgray" style="float:right">{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</span>
+                                                  <p><span class="bgCgray">站点：</span>{{row.siteName}}</p>
+                                              </div>
+                                              </div>
+                                          </div>
                                     </div>
-                                        <!-- <el-table
-                                        slot="reference"
-                                        v-loading="loading"
-                                            @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
-                                            @cell-mouse-enter="positionEventEnter"
-                                            :data="gjclList"
-                                            style="width: 100%;height: auto;">
-                                            <el-table-column label="时间"  align="center" prop="createTime">
-                                                <template slot-scope="scope">
-                                                    <span >{{scope.row.checkTime?scope.row.checkTime.split(' ')[1]:scope.row.checkTime}}</span>
-                                                </template>
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="vehicleNumber"
-                                                label="车牌号"
-                                                >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="overload"
-                                                label="超载率"
-                                                width="70"
-                                                >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="siteName"
-                                                label="站点"
-                                                >
-                                            </el-table-column>
-                                            <el-table-column
-                                                prop="lscc"
-                                                width="55px"
-                                                label="历史"
-                                                >
-                                            </el-table-column>
-                                        </el-table> -->
-                                 </el-popover>
+                                  </el-popover>
+                                </li>
+                              </ul>
+                                 <div style="text-align: center;"><el-button type="text" @click="routerXs">查看更多</el-button></div>
                             </div>
                         </el-collapse-transition>
 
@@ -993,19 +953,19 @@
         </el-amap-search-box> -->
         <div class="search-box-blue" style="z-index:10;display:flex;">
             <el-input class="w-390"
-                placeholder="搜人员、查机构"
+                :placeholder="placeholder"
                 v-model="filterText">
             </el-input>
             <el-button  icon="el-icon-search" @click="searchAllByBtn"></el-button>
         </div>
         <div class="amap-tool-search" v-show="toolShow" >
-            <el-button size="medium" class="tabBtn" :class="{'isCheck': isCheck}" @click="isCheck = true">
+            <el-button size="medium" class="tabBtn" :class="{'isCheck': isCheck}" @click="searchSwitch(true)">
                 <img :src="'./static/images/img/lawSupervise/icon_renyuan.png'" />
-                <span class="name">人员</span>
+                <span class="name">执法人员</span>
             </el-button>
-             <el-button size="medium" class="tabBtn" :class="{'isCheck': !isCheck}" @click="isCheck = false">
+             <el-button size="medium" class="tabBtn" :class="{'isCheck': !isCheck}" @click="searchSwitch(false)">
                 <img :src="'./static/images/img/lawSupervise/icon_jigou.png'" />
-                <span class="name">机构</span>
+                <span class="name">执法机构</span>
             </el-button>
             <div class="amap-tool-search" style="top:96px;padding: 22px;margin-bottom: 22px;">
                     <!--  -->
@@ -1444,6 +1404,7 @@ export default {
         lunarDate: '',
         status5:true,
         status4:true,
+        placeholder:"搜执法人员、执法机构",
         isCheck: true,
         toolShow: false,
         checked: false,
@@ -1752,6 +1713,10 @@ export default {
         //     }
             return data.label.indexOf(value) > -1;
     },
+    searchSwitch (flag) {
+        this.placeholder = flag ? '搜执法人员':'搜执法机构';
+        this.isCheck = flag;
+    },
     searchAllByBtn () {
         if (this.filterText === "") {
             this.showTree = true
@@ -1842,7 +1807,6 @@ export default {
         this.areaObj = key;
     },
     handleNodeClick (node) {
-        debugger;
         this.markers.splice(0, this.markers.length);
         this.tabList[0].children.forEach((item)=>{
             item.select = false;
@@ -1850,63 +1814,90 @@ export default {
         this.allSearchList.splice(0, this.allSearchList.length);
         let _this = this;
         // this.radioVal = '全选';
-        if (node.icon === 'icon_jc11' && node.label === '执法人员') {
-            let params = {
-                name: '',
-                organId: node.id,
-                type: 0
-            }
-            debugger;
-            new Promise((resolve, reject) => {
-                // getOrganIdApi({id: node.id}).then(
-                getOrganTree(params).then(
-                    res => {
-                        debugger;
-                        // _this.showTree = false;
-                        let resultList = [];
-                        console.log('执法人员',res)
-                        res.data.forEach((v,i)=>{
-
-                            let position = v.propertyValue ? v.propertyValue.split(','):['',''];
-                            let lng = parseFloat(position[0]);
-                            let lat = parseFloat(position[1]);
-                            // let lng = v.longitude?v.longitude: '';
-                            // let lat = v.latitude?v.latitude: '';
-                            resultList.push({
-                                address: v.address,
-                                distance: null,
-                                id: v.id,
-                                lat: lat,
-                                lng: lng,
-                                icon: 'icon_jc11',
-                                // icons: 'ry',
-                                pid: v.organId,
-                                location: {
-                                    O: lng,
-                                    P: lat,
-                                    lat: lat,
-                                    lng: lng
-                                },
-                                name: v.name,
-                                label: v.nickName,
-                                // position: v.propertyValue,
-                                position: [lng, lat],
-                                shopinfo: '',
-                                tel: '',
-                                type: '0',
-                                other: v
-                            })
-                        })
-                         this.category = 0;
-                        _this.onSearchResult(resultList, 0,0);
-                        _this.errorMsg(`总计${res.data.length}条数据`, 'success');
+        if ((this.isCheck && !node.icon) || (node.icon === 'icon_jc11' && node.label === '执法人员')) {
+            let resultList = [];
+            if(!node.icon){
+                let position = node.propertyValue ? node.propertyValue.split(','):['',''];
+                let lng = parseFloat(position[0]);
+                let lat = parseFloat(position[1]);
+                resultList.push({
+                    address: node.address,
+                    distance: null,
+                    id: node.id,
+                    lat: lat,
+                    lng: lng,
+                    icon: 'icon_jc11',
+                    pid: node.organId,
+                    location: {
+                        O: lng,
+                        P: lat,
+                        lat: lat,
+                        lng: lng
+                    },
+                    name: node.name,
+                    label: node.nickName,
+                    position: [lng, lat],
+                    shopinfo: '',
+                    tel: '',
+                    type: '0',
+                    other: node
                 })
-            })
+                _this.onSearchResult(resultList, 0,0);
+                _this.toolShow = true;
+            }else{
+              let params = {
+                  name: '',
+                  organId: node.id,
+                  type: 0
+              }
+              new Promise((resolve, reject) => {
+                  // getOrganIdApi({id: node.id}).then(
+                  getOrganTree(params).then(
+                      res => {
+                          debugger;
+                          // _this.showTree = false;
+                          console.log('执法人员',res)
+                          res.data.forEach((v,i)=>{
 
-
+                              let position = v.propertyValue ? v.propertyValue.split(','):['',''];
+                              let lng = parseFloat(position[0]);
+                              let lat = parseFloat(position[1]);
+                              // let lng = v.longitude?v.longitude: '';
+                              // let lat = v.latitude?v.latitude: '';
+                              resultList.push({
+                                  address: v.address,
+                                  distance: null,
+                                  id: v.id,
+                                  lat: lat,
+                                  lng: lng,
+                                  icon: 'icon_jc11',
+                                  // icons: 'ry',
+                                  pid: v.organId,
+                                  location: {
+                                      O: lng,
+                                      P: lat,
+                                      lat: lat,
+                                      lng: lng
+                                  },
+                                  name: v.name,
+                                  label: v.nickName,
+                                  // position: v.propertyValue,
+                                  position: [lng, lat],
+                                  shopinfo: '',
+                                  tel: '',
+                                  type: '0',
+                                  other: v
+                              })
+                          })
+                          this.category = 0;
+                          _this.onSearchResult(resultList, 0,0);
+                          _this.errorMsg(`总计${res.data.length}条数据`, 'success');
+                          _this.toolShow = true;
+                  })
+              })
+            }
         } else if (node.icon === 'icon_jc1') {
              this.category = 1;
-            debugger;
             new Promise((resolve, reject) => {
                 getOrganDetailApi({id:node.id}).then(
                     res => {
@@ -1945,6 +1936,7 @@ export default {
                             })
                         _this.onSearchResult(resultList, 1,0);
                         _this.errorMsg(`总计1条数据`, 'success');
+                        _this.toolShow = true;
                     })
                 })
 
@@ -1975,6 +1967,7 @@ export default {
             debugger;
             // this.curWindow = resultList[0];
             this.onSearchResult(resultList, 1,0);
+            _this.toolShow = true;
             // this.getOrganDetail(node.id).then(
             //     res => {
             //         // debugger;
@@ -2367,7 +2360,7 @@ export default {
       if (length == 0) {
         this.windows.splice(0,this.windows.length);
       }
-      debugger;
+      // debugger;
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
@@ -2380,6 +2373,7 @@ export default {
           latSum += parseFloat(lat);
           let that = _this;
           if (category == -1) {
+                that.zoom = 16;
                 _this.markers.push({
                 position: [poi.lng, poi.lat],
                 visible: false,
@@ -2405,6 +2399,7 @@ export default {
                 });
 
           } else if (category == 4) {
+                that.zoom = 6;
                 numG = poi.name.substring(0,4);
                 _this.markers.push({
                   position: [poi.lng, poi.lat],
@@ -2437,6 +2432,7 @@ export default {
                   }
                 });
           } else {
+              that.zoom = 16;
                _this.markers.push({
                   position: [poi.lng, poi.lat],
                   other: poi.other,
@@ -2468,6 +2464,14 @@ export default {
                                     });
 
                               })
+                        }else if(category == 1){
+                            new Promise((resolve, reject) => {
+                                  getOrganTree({name: '',organId:that.curWindow.other.id,type: 0}).then(
+                                      res => {
+                                        _this.$set(_this.curWindow.other, 'users', res.data);
+                                    });
+
+                              })
                         }
                         that.curWindow.visible = true;
                       });
@@ -2483,7 +2487,7 @@ export default {
           };
           _this.windows.push(aaa);
         });
-        debugger;
+        // debugger;
         let center = {
           lng: lngSum / pois.length,
           lat: latSum / pois.length
@@ -2689,6 +2693,7 @@ export default {
             });
 
             _this.onSearchResult(resultList, category, _this.windows.length);
+            _this.toolShow = true;
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')

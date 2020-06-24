@@ -39,7 +39,7 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-button type="primary" @click="searchPathLoss" size="small">搜索</el-button>
+            <el-button type="primary" @click="searchPathLossBy" size="small">搜索</el-button>
           </div>
         </div>
       </el-form>
@@ -116,6 +116,8 @@ export default {
     },
     showModal(alreadyAddData) {
       this.visible = true;
+      this.currentPage = 1;
+      this.pageSize = 10;
       this.pathLossSearchForm.roadLcBz = "";
       this.pathLossSearchForm.roadLcType = "";
       this.pathLossSearchForm.roadLcName = "";
@@ -126,9 +128,17 @@ export default {
     closeDialog() {
       this.visible = false;
     },
-    searchPathLoss() {
-      this.tableData = [];
+    searchPathLossBy(){
+      this.currentPage = 1;
+      this.pageSize = 10;
       let data = this.pathLossSearchForm;
+      // data.current = this.currentPage;
+      // data.size = this.pageSize;
+      this.searchPathLoss(data);
+    },
+    searchPathLoss(data={}) {
+      this.tableData = [];
+      // let data = this.pathLossSearchForm;
       data.current = this.currentPage;
       data.size = this.pageSize;
       queryRoadLcDeployApi(data)

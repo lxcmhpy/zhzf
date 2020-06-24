@@ -239,7 +239,7 @@ export default {
         return
       }
       let res = await getDictListDetailByNameApi("系统标题");
-
+      this.systemTitle = res.data[0].name;
       window.document.title = this.systemTitle;
       this.systemTitle = res.data[0].name;
       localStorage.setItem("SYS_TITLE", this.systemTitle);
@@ -255,7 +255,7 @@ export default {
     window.sessionStorage.clear();
     removeToken('TokenKey');
     sessionStorage.setItem("LoginSystem", "examLogin");
-    this.systemTitle = localStorage.getItem("SYS_TITLE");
+    // this.systemTitle = localStorage.getItem("SYS_TITLE");
     await this.getSystemData();
   }
 };

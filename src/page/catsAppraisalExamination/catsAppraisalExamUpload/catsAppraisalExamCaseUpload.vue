@@ -127,7 +127,7 @@
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
             </el-form-item> -->
-            <el-form-item label="案卷编号" >
+            <el-form-item label="案卷编号" prop="caseNo">
               <el-input placeholder="请输入" v-model.trim="form.caseNo" ></el-input>
             </el-form-item>
             <el-form-item label="案由">
@@ -155,7 +155,7 @@
                 <el-option v-for="(item,index) in handleTypeList" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="涉案金额（元）">
+            <el-form-item label="涉案金额（元）" prop="amountInvolved">
               <el-input placeholder="请输入" v-model.trim="form.amountInvolved" ></el-input>
             </el-form-item>
             <el-form-item label="业务领域">
@@ -188,7 +188,7 @@
   import {findPykhCaseByPage,importCase,saveOrUpdateCaseInfo,deleteCaseInfo,StaffAndCaseFile,confirmSubmissionCase } from "@/api/catsAppraisalExamCaseUpload.js";
   import viewNotice from "../noticeManage/viewNotice";
   import iLocalStroage from '@/common/js/localStroage';
-
+  import {money} from '@/common/js/validator';
   export default {
     mixins: [mixinsCommon],
     components: {
@@ -199,6 +199,9 @@
         rules: {
             caseNo: [
                 {required: true, message: "请输入案件编号", trigger: "blur"}
+            ],
+            amountInvolved: [
+                { validator: money, trigger: "blur" }
             ]
         },
         current:1,
