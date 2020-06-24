@@ -38,6 +38,29 @@
            .list {
                height: 440px;
            }
+           .footer-banner {
+                padding: 17px;
+                overflow: hidden;
+                img {
+                    margin-top: 10px;
+                }
+                .lxfs {
+                    float:right;
+                    font-size: 14px;
+                    line-height: 25px;
+                    color: #858585;
+
+                    h5 {
+                        font-size: 16px;
+                        line-height: 35px;
+                        font-weight: bolder;
+                        color: #000;
+                    }
+                    .content {
+                        float: right;
+                    }
+                }
+           }
        }
        .leftBox {
            flex: 1;
