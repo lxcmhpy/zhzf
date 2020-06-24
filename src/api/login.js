@@ -29,7 +29,7 @@ export function loginInApi(params) {
     },
     mimeType: "multipart/form-data",
     processData: false,
-    showloading: false,
+    showloading: true,
     loadingType:'loadFull',
     contentType: false,
     // baseUrlType:  'CAPTCHA_HOST',
