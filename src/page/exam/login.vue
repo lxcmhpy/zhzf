@@ -214,7 +214,7 @@ export default {
             }, 3000);
           }
         } else {
-          return flase;
+          return false;
         }
       });
     },
