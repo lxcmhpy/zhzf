@@ -29,7 +29,7 @@ export function loginInApi(params) {
     },
     mimeType: "multipart/form-data",
     processData: false,
-    showloading: true,
+    showloading: false,
     loadingType:'loadFull',
     contentType: false,
     // baseUrlType:  'CAPTCHA_HOST',
@@ -101,7 +101,7 @@ export function getCurrentUserApi() {
   return request({
     url: "/system/sys/user/findCurrentUser",
     method: "get",
-    showloading: true,
+    showloading: false,
     loadingType:'loadFull',
     cancelToken: setCancelSource()
 
@@ -112,7 +112,16 @@ export function loginOutApi() {
   return request({
     url: "/loginOut",
     method: "post",
-    showloading: true,
+    showloading: false,
     cancelToken: setCancelSource()
   });
+}
+export function getHost () {
+    return request({
+        url: '/static/json/hostUrl/host.json',
+        method: "get",
+        isGetHost: true,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
 }

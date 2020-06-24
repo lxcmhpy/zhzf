@@ -115,7 +115,7 @@ import * as types from "@/store/mutation-types";
 import { getDictListDetailByNameApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
 import { removeToken } from "@/common/js/auth";
-
+import { getHost } from "@/api/login";
 export default {
   components: { VueSimpleVerify },
   data() {
@@ -247,13 +247,17 @@ export default {
       );
     }
   },
-  async mounted() {
-    this.showLogin = true;
+ async created() {
     window.sessionStorage.clear();
     removeToken("TokenKey");
     sessionStorage.setItem("LoginSystem", "examLogin");
     // this.systemTitle = localStorage.getItem("SYS_TITLE");
+    await getHost();
     await this.getSystemData();
+  },
+  mounted() {
+    this.showLogin = true;
+
   }
 };
 </script>

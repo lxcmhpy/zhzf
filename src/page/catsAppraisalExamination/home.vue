@@ -87,10 +87,21 @@
                          </a>
                     </li>
                 </ul>
-                <div>
-                    <img width="380px" height=""
+                <div class="footer-banner shadow">
+                    <!-- <img width="380px" height=""
                         onerror="this.src='./static/images/img/catsAppraisalExamination/zc.jpg'"
-                     :src="'./static/images/img/catsAppraisalExamination/zc.jpg'">
+                     :src="'./static/images/img/catsAppraisalExamination/zc.jpg'"> -->
+                    <img width="57px" height="60px"
+                        onerror="this.src='./static/images/img/catsAppraisalExamination/icon_kefu.png'"
+                        :src="'./static/images/img/catsAppraisalExamination/icon_kefu.png'">
+                    <div class="lxfs">
+                        <h5>技术支持</h5>
+                        <div class="content">
+                            <div>联系电话：010-58278993</div>
+                            <div>电子邮箱：tianpanlong@catsti.com</div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -81,7 +81,6 @@
                 <div class="con">
                   <p>地址：{{curWindow.other.address}}</p>
                   <p>联系人：{{curWindow.other.contactor}}</p>
-                  <!-- <p>{{JSON.stringify(curWindow)}}</p> -->
                   <p>联系方式：{{curWindow.other.telephone}}</p>
                 </div>
                 <div class="status">
@@ -91,10 +90,8 @@
               </div>
              <div class="btns">
                 <div class="flex-title"><img  :src="'./static/images/img/lawSupervise/icon_duiwu.png'">人员在线情况</div>
-                <!-- <span class="phoneBtn greenBg" @click="callName('李玉明')">李玉明</span>
-                <span  class="phoneBtn greenBg" @click="callName('赵一鸣')">赵一鸣</span> -->
-                <span  class="phoneBtn greenBg" @click="callName(it.nickName)" :class="{'lineh': it.nickName.length>5}" v-for="(it,j) in curWindow.other.users" :key="'s'+j">{{it.nickName}}</span>
-                <span  class="phoneBtn blueBg " >···</span>
+                <span  class="phoneBtn greenBg" @click="handleNodeClick(it)" :class="{'lineh': it.nickName.length>5}" v-for="(it,j) in curWindow.other.users" :key="'s'+j">{{it.nickName}}</span>
+                <!-- <span  class="phoneBtn blueBg " >···</span> -->
             </div>
               <!-- <div class="btns">
                 <div class="flexBox">
@@ -140,14 +137,6 @@
               </div> -->
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
                   <!-- <p>{{curWindow.other.mobile}}</p> -->
-
-              <!-- <div class="btns">
-                <i class="iconfont law-mobile"></i>
-                <i class="iconfont law-shipin"></i>
-                <i class="iconfont law-jiankong"></i>
-                <i class="iconfont law-msg-box"></i>
-                <i class="iconfont law-xianlu"></i>
-              </div> -->
             </div>
             <!-- 3执法船舶 -->
             <div v-else-if="curWindow.category == 3">
@@ -167,27 +156,9 @@
                         <p>{{curWindow.other.organName}}</p>
                     </div>
                 </div>
-              <!-- <div class="flexBox">
-                <div class="con">
-                  <i class="iconfont law-ship"></i>
-                  {{curWindow.other.shipNumber}}
-                  <br />
-                  {{curWindow.other.organName}}
-                </div>
-                <div class="status greenC2">
-                  <i class="iconfont law-mobile-phone"></i>
-                  <p>在线</p>
-                </div>
-              </div> -->
+              
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
 
-              <!-- <div class="btns">
-                <i class="iconfont law-mobile"></i>
-                <i class="iconfont law-shipin"></i>
-                <i class="iconfont law-jiankong"></i>
-                <i class="iconfont law-msg-box"></i>
-                <i class="iconfont law-xianlu"></i>
-              </div> -->
             </div>
             <!-- 4非现场治超检测 -->
             <div v-else-if="curWindow.category == 4">
@@ -247,13 +218,6 @@
                 </div>
               </div>
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
-              <!-- <div class="btns">
-                <i class="iconfont law-mobile"></i>
-                <i class="iconfont law-shipin"></i>
-                <i class="iconfont law-jiankong"></i>
-                <i class="iconfont law-msg-box"></i>
-                <i class="iconfont law-xianlu"></i>
-              </div> -->
             </div>
             <!-- 6监管车辆 -->
             <div v-else-if="curWindow.category == 6">
@@ -272,13 +236,6 @@
                 </div>
               </div>
                 <externalVideoBtns :doing="videoDoing"  @updateMakePhoneStatus="updateMakePhoneStatus" :curWindow="curWindow"></externalVideoBtns>
-              <!-- <div class="btns">
-                <i class="iconfont law-mobile"></i>
-                <i class="iconfont law-shipin"></i>
-                <i class="iconfont law-jiankong"></i>
-                <i class="iconfont law-msg-box"></i>
-                <i class="iconfont law-xianlu"></i>
-              </div> -->
             </div>
             <!-- -1搜索地图 -->
             <div v-else-if="curWindow.category == -1">
@@ -290,13 +247,12 @@
                 类型：{{curWindow.other.type}}
               </div>
             </div>
-            <!-- <div v-else></div> -->
 
           </div>
-          <div :class="'lawWindowStyle-po'">
+          <div :class="'lawWindowStyle-po'" :style="{width: pointWidth + 'px' }">
             <!-- 0执法人员 -->
             <div v-if="curWindow.category == 0">
-              <div class="lawWindowTitle">
+              <div class="lawWindowTitle" style="padding:0">
                 <img :src="'./static/images/img/lawSupervise/icon_head.png'">
                 <div class="titleBox">
                     <div class="nickName">{{curWindow.other.nickName}}</div>
@@ -569,270 +525,34 @@
                     </div>
                      <el-collapse-transition>
                         <div v-show="status5">
-                            <!-- <el-popover
-                                title="非现场执法点详情"
-                                placement="left"
-                                trigger="hover"
-                                >
-                                <div class="leftTabelHoverDiv"  v-if="fxcObj">
-                                    <p>站点名称：{{fxcObj.name}}</p>
-                                    <p>超限查处量：{{fxcObj.cxchl}}</p>
-                                    <p>重点监管：{{fxcObj.blackList}}</p>
-                                    <p>过检总量：{{fxcObj.gjzl}}</p>
-                                    <p>状态：{{fxcObj.status}}</p>
-                                    <p>重点监管：<i class="iconfont law-star orangeC"></i></p>
-                                    <p>历史查处：{{fxcObj.lscc}}</p>
-                                </div> -->
-                                <ul style="width: 100%;height: auto;" slot="reference">
-                                        <li v-for="(row,index) in zfdList" :key="index" @click="positionEvent(row, 4)" >
-                                            <div class="leftTabelHoverDiv" style="padding: 0px;">
-                                                <div class="lawHoverTitle">
-                                                <div class="cxl" >
-                                                    <span class="f18 redC" :class="{'greenC': index ===0}">{{index === 0? '正常': '异常'}}</span><br>
-                                                    <span class="bgCgray f12">状态</span>
-                                                </div>
-                                                <div class="gj-con">
-                                                     <p>{{row.name}}</p>
-                                                    <div class="flexBox">
-                                                        <p><span class="bgCgray">告警（次）：</span>{{row.cxchl}}</p>&nbsp;&nbsp;
-                                                        <p><span class="bgCgray">过检（次）：</span>{{row.gjzl}}</p>
-                                                    </div>
-                                                </div>
-                                                </div>
+                            <ul style="width: 100%;height: auto;" slot="reference">
+                                <li v-for="(row,index) in zfdList" :key="index" @click="positionEvent(row, 4)" >
+                                    <div class="leftTabelHoverDiv" style="padding: 0px;">
+                                        <div class="lawHoverTitle">
+                                        <div class="cxl" >
+                                            <span class="f18 redC" :class="{'greenC': index ===0}">{{index === 0? '正常': '异常'}}</span><br>
+                                            <span class="bgCgray f12">状态</span>
+                                        </div>
+                                        <div class="gj-con">
+                                              <p>{{row.name}}</p>
+                                            <div class="flexBox">
+                                                <p><span class="bgCgray">告警（次）：</span>{{row.cxchl}}</p>&nbsp;&nbsp;
+                                                <p><span class="bgCgray">过检（次）：</span>{{row.gjzl}}</p>
                                             </div>
-                                        </li>
-                                    </ul>
-                                <!-- <el-table
-                                slot="reference"
-                                v-loading="loading"
-                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                                    @cell-mouse-enter="positionEventEnter1"
-                                    :data="zfdList"
-                                    style="width: 100%;">
-                                    <el-table-column
-                                        width="150px"
-                                        prop="name"
-                                        label="站点"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="blackList"
-                                        label="告警"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="gjzl"
-                                        label="过检"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="status"
-                                        label="状态"
-                                        width="80px"
-                                        >
-                                        <template>
-                                            <div class="orangeBg circle" ></div>
-                                        </template>
-                                    </el-table-column>
-                                </el-table> -->
-                            <!-- </el-popover> -->
+                                        </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                      </el-collapse-transition>
                 </div>
-            <!-- <el-collapse-transition> -->
-                <!-- <div class="amap-tool" >
-                    <div class="" style="right:0px;" >
-                        <div class="top-title">
-                            <el-button size="medium" class="commonBtn searchBtn" >
-                                <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
-                                非现场治超
-                            </el-button>
-                            <el-button size="medium" class="commonBtn searchBtn" >
-                                <img :src="'./static/images/img/lawSupervise/icon_02.png'" />
-                                入口称重
-                            </el-button>
-                            <el-button size="medium" class="commonBtn searchBtn" >
-                                <img :src="'./static/images/img/lawSupervise/icon_03.png'" />
-                                暂无
-                            </el-button>
-                        </div>
-                        <el-collapse-transition>
-                            <div class="echarts-box" style="width:100%;margin:0px;">
-                                <div>
-                                    <el-table
-                                    v-loading="loading"
-                                        @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                                        :data="zfdList"
-                                        style="width: 100%;">
-                                        <el-table-column
-                                            width="150px"
-                                            prop="name"
-                                            label="站点名称"
-                                            >
-                                        </el-table-column>
-                                        <el-table-column
-                                            width="92px"
-                                            prop="cxchl"
-                                            label="超限查处量"
-                                            >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="blackList"
-                                            label="重点监管"
-                                            >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="gjzl"
-                                            label="过检总量"
-                                            >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="status"
-                                            label="状态"
-                                            width="80px"
-                                            >
-                                            <template>
-                                                <div class="orangeBg circle" ></div>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
-                                </div>
-                            </div>
-                        </el-collapse-transition>
-                    </div>
-                </div> -->
-            <!-- </el-collapse-transition> -->
+            
           </div>
         </el-drawer>
-        <!-- <el-drawer
-            modal-append-to-body
-            size="620px"
-            customClass="amap-drawer w-680"
-            :direction="direction"
-            :wrapperClosable="false"
-            :withHeader="false"
-            :modal="false"
-            :visible.sync="drawer1"
-            >
-            <div class="drawerBtn" @click="drawer1=false">
-                <i class="el-icon-arrow-right"></i>
-            </div>
-            <div class="amap-main-content" style="padding: 0px 22px">
-                <el-collapse-transition>
-                    <div class="echarts-box" v-show="status1">
-                        <em class="title left"><i class="titleflag"></i>非现场执法点</em>
-                        <i class="iconfont law-delete1 right"></i>
-                        <div>
-                            <el-table
-                            v-loading="loading"
-                                @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                                :data="zfdList"
-                                style="width: 100%;">
-                                <el-table-column
-                                    prop="name"
-                                    label="站点名称"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="cxchl"
-                                    label="超限查处量"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="blackList"
-                                    label="重点监管"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="gjzl"
-                                    label="过检总量"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="status"
-                                    label="状态"
-                                    >
-                                    <template>
-                                        <div class="orangeBg circle" ></div>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                    </div>
-                </el-collapse-transition>
-            </div>
-        </el-drawer> -->
+        
       </div>
-
-
-     <!-- <div class="amap-position" :class="'amap-' + direction1 + '-box'">
-            <div class="drawerBtn" @click="updateDrawer1">
-                <i class="el-icon-arrow-right"></i>
-            </div>
-            <el-drawer
-                customClass="amap-drawer"
-                :direction="direction1"
-                :wrapperClosable="false"
-                :withHeader="false"
-                :modal="false"
-                :visible.sync="drawer1"
-                modal-append-to-body
-                >
-                 <el-collapse-transition>
-                    <div class="echarts-box" >
-                        <em class="title left"><i class="titleflag"></i>告警车辆</em>
-                        <i class="iconfont law-delete1 right" @click="status2 = false"></i>
-                        <div class="amap-chart">
-                            <el-table
-                            v-loading="loading"
-                                @row-click="(row, column, event)=>positionEvent1(row, column, event, 6)"
-                                :data="gjclList"
-                                style="width: 100%;height: auto;">
-                                <el-table-column label="过检时间"  align="center" prop="checkTime">
-                                    <template slot-scope="scope">
-                                        <span >{{scope.row.checkTime.split(' ')[0]}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    prop="vehicleNumber"
-                                    label="车牌号"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="overload"
-                                    label="超载率"
-                                    width="70"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="area"
-                                    label="车属地"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    label="重点监管"
-                                    width="80"
-                                    >
-                                    <template>
-                                        <div><i class="iconfont law-star orangeC"></i></div>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                    prop="lscc"
-                                    label="历史查处"
-                                    >
-                                </el-table-column>
-                                <el-table-column
-                                    prop="siteName"
-                                    label="站点名称"
-                                    >
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                    </div>
-                </el-collapse-transition>
-            </el-drawer>
-     </div> -->
+     
       <!-- 底部浮动栏 -->
         <div class="amap-position" :class="'amap-' + direction1 + '-box'" v-if="false">
             <div class="drawerBtn" @click="updateDrawer1">
@@ -851,48 +571,6 @@
                     <i class="el-icon-arrow-right"></i>
                 </div>
                 <div class="amap-main-content" style="padding: 0px 22px">
-                    <!-- <el-collapse-transition>
-                        <div class="echarts-box" v-show="status1">
-                            <em class="title left"><i class="titleflag"></i>非现场执法点</em>
-                            <i class="iconfont law-delete1 right" @click="status1 = false"></i>
-                            <div class="amap-chart">
-                                <el-table
-                                v-loading="loading"
-                                    @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                                    :data="zfdList"
-                                    style="width: 100%;height: 170px;">
-                                    <el-table-column
-                                        prop="name"
-                                        label="站点名称"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="cxchl"
-                                        label="超限查处量"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="blackList"
-                                        label="重点监管"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="gjzl"
-                                        label="过检总量"
-                                        >
-                                    </el-table-column>
-                                    <el-table-column
-                                        prop="status"
-                                        label="状态"
-                                        >
-                                        <template>
-                                            <div class="orangeBg circle" ></div>
-                                        </template>
-                                    </el-table-column>
-                                </el-table>
-                            </div>
-                        </div>
-                    </el-collapse-transition> -->
                     <el-collapse-transition>
                         <div class="echarts-box" v-show="status2">
                             <em class="title left"><i class="titleflag"></i>告警车辆</em>
@@ -996,172 +674,7 @@
             </div>
         </div>
     </div>
-    <!-- <div class="amap-tool" style="left:auto;right: 450px;z-index:5;" >
-        <div class="amap-main-content amap-position-right" style="right:0px;" v-show="categoryStr == '非现场站点'">
-            <div class="top-title">
-                <el-button size="medium" class="commonBtn searchBtn" >
-                    <img :src="'./static/images/img/lawSupervise/icon_01.png'" />
-                    非现场治超
-                </el-button>
-                 <el-button size="medium" class="commonBtn searchBtn" >
-                    <img :src="'./static/images/img/lawSupervise/icon_02.png'" />
-                    入口称重
-                </el-button>
-                 <el-button size="medium" class="commonBtn searchBtn" >
-                    <img :src="'./static/images/img/lawSupervise/icon_03.png'" />
-                    暂无
-                </el-button>
-            </div>
-            <el-collapse-transition>
-                <div class="echarts-box" >
-                    <div>
-                        <el-table
-                        v-loading="loading"
-                            @row-click="(row, column, event)=>positionEvent(row, column, event, 4)"
-                            :data="zfdList"
-                            style="width: 100%;">
-                            <el-table-column
-                                width="150px"
-                                prop="name"
-                                label="站点名称"
-                                >
-                            </el-table-column>
-                            <el-table-column
-                                width="92px"
-                                prop="cxchl"
-                                label="超限查处量"
-                                >
-                            </el-table-column>
-                            <el-table-column
-                                prop="blackList"
-                                label="重点监管"
-                                >
-                            </el-table-column>
-                            <el-table-column
-                                prop="gjzl"
-                                label="过检总量"
-                                >
-                            </el-table-column>
-                            <el-table-column
-                                prop="status"
-                                label="状态"
-                                width="80px"
-                                >
-                                <template>
-                                    <div class="orangeBg circle" ></div>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </div>
-                </div>
-            </el-collapse-transition>
-        </div>
-         <el-popover
-            placement="bottom-start"
-            trigger="click"
-            >
-            <div class="drop-down-menu transition-box" >
-                <el-input class="no-border w160" value="" placeholder="城市名称，回车搜索"></el-input>
-                <el-menu :default-active="activeIndex"  @select="handleSelect" unique-opened :collapse="true">
-                    <el-submenu :index="`${index}`" v-for="(item,index) in areaList" :key="`${index}`">
-                            <template slot="title">{{item.titleName}}</template>
-                            <el-menu-item-group :index="child.titleName" v-for="(child,i) in item.children" :key="i" >{{child.titleName}}</el-menu-item-group>
-                    </el-submenu>
-                </el-menu>
-            </div>
-            <el-button slot="reference">
-                <img :src="'./static/images/img/lawSupervise/area.png'"/>
-                <el-input class="no-border w75" v-model="areaObj" readonly></el-input>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-        </el-popover>
-        <el-popover
-            placement="bottom-start"
-            trigger="click"
-            >
-            <div class="drop-down-menu transition-box">
-                    <ul>
-                    <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
-                        <i :class="subItem.icon"></i>
-                        <p>{{subItem.name}}</p>
-                    </li>
-                </ul>
-            </div>
-            <el-button slot="reference">
-                <img :src="'./static/images/img/lawSupervise/icon_changjing.png'"/>
-                <el-input class="no-border w100" v-model="categoryStr" readonly></el-input>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-        </el-popover>
-        <el-button size="medium" class="commonBtn searchBtn"  @click="lawScreenFull=!lawScreenFull">
-            <img :src="'./static/images/img/lawSupervise/qp.png'" />
-            全屏
-        </el-button>
-    </div> -->
-            <!-- <el-button>
-            <div slot="reference">
-                <img :src="'./static/images/img/lawSupervise/area.png'"/>
-                <el-input class="no-border w75" v-model="areaObj" readonly></el-input>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-            </div>
-            <transition name="el-zoom-in-top" >
-            <div class="drop-down-menu transition-box" v-show="currentTabIndex === 'show0'">
-                <el-input class="no-border w160"  placeholder="城市名称，回车搜索"></el-input>
-                <el-menu :default-active="activeIndex"  @select="handleSelect" unique-opened>
-                    <el-submenu :index="`${index}`" v-for="(item,index) in areaList" :key="`${index}`">
-                            <template slot="title">{{item.titleName}}</template>
-                            <el-menu-item :index="`${index}-${i}`" v-for="(child,i) in item.children" :key="i">{{child.titleName}}</el-menu-item>
-                    </el-submenu>
-                </el-menu>
-            </div>
-            </el-collapse-transition>
-        </el-button> -->
-        <!-- <el-button @mousemove="currentTabIndex = 'show1'" @mouseleave="currentTabIndex = null">
-            <div>
-                <img :src="'./static/images/img/lawSupervise/icon_changjing.png'"/>
-                <el-input class="no-border w100" v-model="categoryStr" readonly></el-input>
-                <i class="el-icon-arrow-down el-icon--right"></i>
-            </div>
-            <transition name="el-zoom-in-top"  >
-                <div class="drop-down-menu transition-box" v-show="currentTabIndex === 'show1'">
-                    <i class="el-icon-caret-top"></i>
-                    <ul>
-                    <li v-for="subItem in tabList[0].children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
-                        <i :class="subItem.icon"></i>
-                        <p>{{subItem.name}}</p>
-                    </li>
-                    </ul>
-                </div>
-            </el-collapse-transition>
-        </el-button> -->
-    <!-- <div class="amap-search">
-      <el-select v-model="styleIndexNumher" placeholder="样式切换">
-        <el-option v-for="(item,index) in styleListNumber" :key="index" :label="item" :value="index"></el-option>
-      </el-select>
-      <el-select v-model="categorySelect" @change="category=categorySelect" placeholder="请选择">
-        <el-option v-for="(item,index) in categoryList" :key="index" :label="item.show" :value="item.code"></el-option>
-      </el-select>
-      <el-amap-search-box class="search-box" ref="searchAmapBox" :search-option="searchOption" :on-search-result="searchAll"></el-amap-search-box>
-    </div> -->
-    <!-- <div class="amap-tool">
-      <el-button v-for="(item,index) in tabList" :key="index" @click="currentTabIndex === index ? currentTabIndex = null : currentTabIndex = index">
-        <img :src="'./static/images/img/lawSupervise/'+item.iconfont+'.png'" />
-        {{item.name}}
-        <i class="el-icon-arrow-down el-icon--right"></i>
-        <transition name="el-zoom-in-top">
-          <div class="drop-down-menu transition-box" v-if="currentTabIndex == index">
-            <i class="el-icon-caret-top"></i>
-            <ul>
-              <li v-for="subItem in item.children" :key="subItem.name" :class="{'select':subItem.select}" @click="searchByTab(subItem)">
-                <i :class="subItem.icon"></i>
-                <p>{{subItem.name}}</p>
-              </li>
-            </ul>
-          </div>
-        </el-collapse-transition>
-      </el-button>
-      <el-button size="medium" class="commonBtn searchBtn" icon="el-icon-copy-document" @click="lawScreenFull=!lawScreenFull">全屏切换</el-button>
-    </div> -->
+    
   </div>
 </template>
 <script>
@@ -1206,193 +719,10 @@ AMap.initAMapApiLoader({
   uiVersion: "1.0.11",
   showLabel: false
 });
-//  AMap.setOption(option = {
-//         bmap: {
-//             center: [116.46, 39.92],
-//             zoom: 10,
-//             roam: true,
-//             mapStyle: {
-//               'styleJson': [
-//                 {
-//                   'featureType': 'water',
-//                   'elementType': 'all',
-//                   'stylers': {
-//                     'color': '#031628'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'land',
-//                   'elementType': 'geometry',
-//                   'stylers': {
-//                     'color': '#000102'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'highway',
-//                   'elementType': 'all',
-//                   'stylers': {
-//                     'visibility': 'off'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'arterial',
-//                   'elementType': 'geometry.fill',
-//                   'stylers': {
-//                     'color': '#000000'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'arterial',
-//                   'elementType': 'geometry.stroke',
-//                   'stylers': {
-//                     'color': '#0b3d51'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'local',
-//                   'elementType': 'geometry',
-//                   'stylers': {
-//                     'color': '#000000'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'railway',
-//                   'elementType': 'geometry.fill',
-//                   'stylers': {
-//                     'color': '#000000'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'railway',
-//                   'elementType': 'geometry.stroke',
-//                   'stylers': {
-//                     'color': '#08304b'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'subway',
-//                   'elementType': 'geometry',
-//                   'stylers': {
-//                     'lightness': -70
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'building',
-//                   'elementType': 'geometry.fill',
-//                   'stylers': {
-//                     'color': '#000000'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'all',
-//                   'elementType': 'labels.text.fill',
-//                   'stylers': {
-//                     'color': '#857f7f'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'all',
-//                   'elementType': 'labels.text.stroke',
-//                   'stylers': {
-//                     'color': '#000000'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'building',
-//                   'elementType': 'geometry',
-//                   'stylers': {
-//                     'color': '#022338'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'green',
-//                   'elementType': 'geometry',
-//                   'stylers': {
-//                     'color': '#062032'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'boundary',
-//                   'elementType': 'all',
-//                   'stylers': {
-//                     'color': '#465b6c'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'manmade',
-//                   'elementType': 'all',
-//                   'stylers': {
-//                     'color': '#022338'
-//                   }
-//                 },
-//                 {
-//                   'featureType': 'label',
-//                   'elementType': 'all',
-//                   'stylers': {
-//                     'visibility': 'off'
-//                   }
-//                 }
-//               ]
-//             }
-//         },
-//         series: [{
-//             type: 'lines',
-//             coordinateSystem: 'bmap',
-//             polyline: true,
-//             data: busLines,
-//             silent: true,
-//             lineStyle: {
-//                 // color: '#c23531',
-//                 // color: 'rgb(200, 35, 45)',
-//                 opacity: 0.2,
-//                 width: 1
-//             },
-//             progressiveThreshold: 500,
-//             progressive: 200
-//         }, {
-//             type: 'lines',
-//             coordinateSystem: 'bmap',
-//             polyline: true,
-//             data: busLines,
-//             lineStyle: {
-//                 width: 0
-//             },
-//             effect: {
-//                 constantSpeed: 20,
-//                 show: true,
-//                 trailLength: 0.1,
-//                 symbolSize: 1.5
-//             },
-//             zlevel: 1
-//         }]
-//     });
+
 let amapManager = new AMap.AMapManager();
 
-// var hStep = 300 / (dataJson.length - 1);
-// var busLines = [].concat.apply([], dataJson.map(function (busLine, idx) {
-//     var prevPt;
-//     var points = [];
-//     for (var i = 0; i < busLine.length; i += 2) {
-//         var pt = [busLine[i], busLine[i + 1]];
-//         if (i > 0) {
-//             pt = [
-//                 prevPt[0] + pt[0],
-//                 prevPt[1] + pt[1]
-//             ];
-//         }
-//         prevPt = pt;
 
-//         points.push([pt[0] / 1e4, pt[1] / 1e4]);
-//     }
-//     return {
-//         coords: points,
-//         lineStyle: {
-//             normal: {
-//                 color: AMap.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
-//             }
-//         }
-//     };
-// }));
 export default {
   // el: '#lawSupervise',
   name: "lawSupervise",
@@ -1407,6 +737,7 @@ export default {
         placeholder:"搜执法人员、执法机构",
         isCheck: true,
         toolShow: false,
+        pointWidth: 200,
         checked: false,
         radioVal: '全选',
         defaultProps: {
@@ -1414,77 +745,6 @@ export default {
           label: 'label'
         },
         data: null,
-        //  [{
-        //   label: '乌鲁木齐路政管理局',
-        //   icon: 'icon_jc1',
-        //   children: [{
-        //       label: '执法人员',
-        //       icon: 'icon_jc11',
-        //       children: [
-
-        //       ]
-        //     },{
-        //       label: '执法车辆',
-        //       icon: 'icon_cl11'
-        //     },{
-        //       label: '执法船舶',
-        //       icon: 'icon_cb11'
-        //     }, {
-        //     label: '后峡路政管理局',
-        //     icon: 'icon_jc1',
-        //     children: [{
-        //       label: '执法人员',
-        //       icon: 'icon_jc11',
-        //       children: [
-        //       ]
-        //     },{
-        //       label: '执法车辆',
-        //       icon: 'icon_cl11'
-        //     },{
-        //       label: '执法船舶',
-        //       icon: 'icon_cb11'
-        //     },{
-        //       label: '燕尔窝路政队',
-        //       icon: 'icon_jc1'
-        //     }]
-        //   }]
-        // }, {
-        //   label: '昌吉路政管理局',
-        //   icon: 'icon_jc1',
-        //   children: [{
-        //     label: '木垒路政管理局',
-        //     icon: 'icon_jc1',
-        //     children: [{
-        //       label: '昌吉局路政大队',
-        //       icon: 'icon_jc1',
-        //     }]
-        //   }, {
-        //     label: '奇台路政管理局',
-        //     icon: 'icon_jc1',
-        //     children: [{
-        //       label: '三级 2-2-1',
-        //       icon: 'icon_jc1',
-        //     }]
-        //   }]
-        // }, {
-        //   label: '石河子路政管理局',
-        //   icon: 'icon_jc1',
-        //   children: [{
-        //     label: '卡子弯道班超限监测站',
-        //     icon: 'icon_jc1',
-        //     children: [{
-        //       label: '三级 3-1-1',
-        //       icon: 'icon_jc1',
-        //     }]
-        //   }, {
-        //     label: '二级 3-2',
-        //     icon: 'icon_jc1',
-        //     children: [{
-        //       label: '三级 3-2-1',
-        //       icon: 'icon_jc1',
-        //     }]
-        //   }]
-        // }],
       areaObj: '全国',
       activeIndex:'',
       areaList: [
@@ -1843,7 +1103,8 @@ export default {
                     other: node
                 })
                 _this.onSearchResult(resultList, 0,0);
-                _this.toolShow = true;
+                // _this.toolShow = true;
+                _this.pointWidth = 150;
             }else{
               let params = {
                   name: '',
@@ -1862,8 +1123,6 @@ export default {
                               let position = v.propertyValue ? v.propertyValue.split(','):['',''];
                               let lng = parseFloat(position[0]);
                               let lat = parseFloat(position[1]);
-                              // let lng = v.longitude?v.longitude: '';
-                              // let lat = v.latitude?v.latitude: '';
                               resultList.push({
                                   address: v.address,
                                   distance: null,
@@ -1892,12 +1151,14 @@ export default {
                           this.category = 0;
                           _this.onSearchResult(resultList, 0,0);
                           _this.errorMsg(`总计${res.data.length}条数据`, 'success');
-                          _this.toolShow = true;
+                          // _this.toolShow = true;
+                          _this.pointWidth = 150;
                   })
               })
             }
         } else if (node.icon === 'icon_jc1') {
              this.category = 1;
+             let len = 0;
             new Promise((resolve, reject) => {
                 getOrganDetailApi({id:node.id}).then(
                     res => {
@@ -1910,6 +1171,7 @@ export default {
                             let lat = parseFloat(position[1]);
                             // let lng = v.longitude?v.longitude: '';
                             // let lat = v.latitude?v.latitude: '';
+                            len = v.name.length > len ? v.name.length : len;
                             resultList.push({
                                 address: v.address,
                                 distance: null,
@@ -1936,7 +1198,8 @@ export default {
                             })
                         _this.onSearchResult(resultList, 1,0);
                         _this.errorMsg(`总计1条数据`, 'success');
-                        _this.toolShow = true;
+                        // _this.toolShow = true;
+                        _this.pointWidth = len * 24;
                     })
                 })
 
@@ -1967,13 +1230,9 @@ export default {
             debugger;
             // this.curWindow = resultList[0];
             this.onSearchResult(resultList, 1,0);
-            _this.toolShow = true;
-            // this.getOrganDetail(node.id).then(
-            //     res => {
-            //         // debugger;
-
-            //     }
-            // )
+            // _this.toolShow = true;
+            _this.pointWidth = 150;
+            
         } else if (node.label === '执法车辆') {
             this.getZfjgLawSupervise({
                 key: '',
@@ -1987,80 +1246,7 @@ export default {
                 type: 3
             }, 3);
         }
-        // if (node.icon === 'icon_jc11' && node.name !== '执法人员') {
-
-        //     let _this = this;
-        //      let resultList = [];
-        //     let position = node.position ? node.position.split(','):['',''];
-        //     let lng = parseFloat(position[0]);
-        //     let lat = parseFloat(position[1]);
-        //     resultList.push({
-        //         address: node.address,
-        //         distance: null,
-        //         id: node.id,
-        //         lat: lat,
-        //         lng: lng,
-        //         icon: 'icon_jc11',
-        //         // icons: 'ry',
-        //         pid: node.organId,
-        //         location: {
-        //             O: lng,
-        //             P: lat,
-        //             lat: lat,
-        //             lng: lng
-        //         },
-        //         name: node.name,
-        //         label: node.nickName,
-        //         position: node.position,
-        //         shopinfo: '',
-        //         tel: '',
-        //         type: '0',
-        //         other: node
-        //     })
-        //     // this.curWindow = resultList[0];
-        //     this.onSearchResult(resultList, 0,0);
-        //     // new Promise((resolve, reject) => {
-        //     //     getUserById(node.id).then(
-        //     //         res => {
-        //     //             debugger;
-
-        //     //         }
-        //     //     )
-        //     // })
-        // } else if (node.position){
-
-        //     let resultList = [];
-        //     let position = node.position ? node.position.split(','):['',''];
-        //     let lng = parseFloat(position[0]);
-        //     let lat = parseFloat(position[1]);
-        //     resultList.push({
-        //         address: node.address,
-        //         distance: null,
-        //         id: node.id,
-        //         lat: lat,
-        //         lng: lng,
-        //         location: {
-        //             O: lng,
-        //             P: lat,
-        //             lat: lat,
-        //             lng: lng
-        //         },
-        //         name: node.name,
-        //         shopinfo: '',
-        //         tel: '',
-        //         type: '-1',
-        //         other: node
-        //     })
-        //     debugger;
-        //     // this.curWindow = resultList[0];
-        //     this.onSearchResult(resultList, 1,0);
-        //     // this.getOrganDetail(node.id).then(
-        //     //     res => {
-        //     //         // debugger;
-
-        //     //     }
-        //     // )
-        // }
+        
     },
     getOrganDetail (id) {
         return new Promise((resolve, reject) => {
@@ -2089,55 +1275,6 @@ export default {
                         offSiteManageId: row.id
                     }
                 });
-        // let status = '0';
-        //   switch (row.status) {
-        //     case '待审核':
-        //         this.$router.push({
-        //             name: 'law_supervise_examineDoingDetail',
-        //             params: {
-        //                 status: '0',
-        //                 tabTitle: '待审核',
-        //                 offSiteManageId: row.id
-        //             }
-        //         });
-        //         break;
-        //     case '无效信息':
-        //         this.$router.push({
-        //             name: 'law_supervise_invalidCueDetail',
-        //             params: {
-        //                 offSiteManageId: row.id
-        //             }
-        //         });
-        //         break;
-        //     case '审核中':
-        //         this.$router.push({
-        //             name: 'law_supervise_examineDoingDetail',
-        //             params: {
-        //                 status: '1',
-        //                 tabTitle: '审核中',
-        //                 offSiteManageId: row.id
-        //             }
-        //         });
-        //         break;
-        //     case '已转办':
-        //         this.$router.push({
-        //             name: 'law_supervise_transferDetail',
-        //             params: {
-        //                 offSiteManageId: row.id
-        //             }
-        //         });
-        //         break;
-        //     case '已审核':
-        //         this.$router.push({
-        //             name: 'law_supervise_examineDoingDetail',
-        //             params: {
-        //                 status: '3',
-        //                 tabTitle: '已审核',
-        //                 offSiteManageId: row.id
-        //             }
-        //         });
-        //         break;
-        // }
 
     },
     positionEvent (row, category) {
@@ -2693,7 +1830,8 @@ export default {
             });
 
             _this.onSearchResult(resultList, category, _this.windows.length);
-            _this.toolShow = true;
+            // _this.toolShow = true;
+            _this.pointWidth = 180;
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -2763,90 +1901,7 @@ export default {
                 }
             )
         })
-
-    //    new Promise((resolve, reject) => {
-    //     getOrganTree(params).then(
-    //       res => {
-    //           debugger;
-    //         let dataArray = res.data;
-    //         // dataArray.position = dataArray.propertyValue;
-    //         dataArray.forEach((item,i)=>{
-    //             item.icon = 'icon_jc1';
-    //             item.position = item.propertyValue;
-    //             addChildren(item);
-    //         })
-    //         // addChildren(dataArray);
-    //         function addChildren(item) {
-    //             item.position = item.propertyValue;
-    //             // item.name = item.label;
-    //             // item.position=item.propertyValue;
-    //             // item.icon = item.icon?item.icon:'icon_jc1';
-    //             // item.pid = item.id;
-    //             if (['执法人员','执法车辆', '执法船舶'].indexOf(item.name) == -1 ) {
-    //                 if (item.users) {
-    //                     item.users.forEach((user,i)=>{
-    //                         user.label = user.nickName;
-    //                         user.icon = 'icon_jc11';
-    //                     })
-    //                 }
-    //                 item.children = item.children ? item.children : [];
-    //                 item.children.splice(0,0,{
-    //                     id: item.id,
-    //                     pid:item.pid,
-    //                     label: '执法人员',
-    //                     icon: 'icon_jc11',
-    //                     children: item.users
-    //                 },{
-    //                     id: item.id,
-    //                     pid:item.pid,
-    //                     label: '执法车辆',
-    //                     icon: 'icon_cl11'
-    //                 },{
-    //                     id: item.id,
-    //                     pid:item.pid,
-    //                     label: '执法船舶',
-    //                     icon: 'icon_cb11'
-    //                 });
-    //                 let len = item.children.length -3;
-    //                 while (len > 0) {
-    //                     item.children.forEach((obj,i)=> {
-    //                         if (i > 2) {
-    //                             addChildren(obj);
-    //                             len--;
-    //                         }
-    //                     })
-    //                 }
-    //             } else if (['执法人员','执法车辆', '执法船舶'].indexOf(item.label) == -1){
-    //             //     // debugger;
-    //             //    item.children = [{
-    //             //          id: item.id,
-    //             //         pid:item.pid,
-    //             //         name: '执法人员',
-    //             //         icon: 'icon_jc11',
-    //             //         children: item.users
-    //             //     },{
-    //             //         id: item.id,
-    //             //         pid:item.pid,
-    //             //         name: '执法车辆',
-    //             //         icon: 'icon_cl11'
-    //             //     },{
-    //             //         id: item.id,
-    //             //         pid:item.pid,
-    //             //         name: '执法船舶',
-    //             //         icon: 'icon_cb11'
-    //             //     }];
-    //             }
-    //             // return item
-    //         }
-    //         _this.data = dataArray;
-    //         debugger;
-    //       },
-    //       error => {
-    //         //  _this.errorMsg(error.toString(), 'error')
-    //         return;
-    //       }
-    //     );
-    //   });
+    
     }
   },
   mounted() {
@@ -2880,69 +1935,7 @@ export default {
         makePhoneStatus (val, oldVal) {
             this.videoDoing = null;
         },
-        // isCheck (val) {
-        //     this.toolShow = true;
-        //     let _that = this;
-        //     _that.$refs.treeFilter.filter(_that.filterText);
-        //     // if (val) {
-        //     //     // 人员
-        //     //     let data = {
-        //     //         key: this.filterText,
-        //     //         type: 0
-        //     //     }
-        //     //     new Promise((resolve, reject) => {
-        //     //         getZfjgLawSupervise(data).then(
-        //     //             res => {
-        //     //                 if(res.data.records && res.data.records.length > 0) {
-        //     //                     console.log(111111);
-        //     //                     res.data.records.forEach((item,i)=>{
-        //     //                         _that.$refs.treeFilter.filter(item);
-        //     //                     })
-        //     //                     _that.$refs.treeFilter.filter(_this.filterText);
-        //     //                 }
-        //     //             }
-        //     //         )
-        //     //     })
-        //     // } else {
-        //     //     // 机构
-        //     //     _that.$refs.treeFilter.filter(_that.filterText);
-        //     // }
-        // },
-        // filterText(val) {
-        //     // debugger;
-        //     if (val == '') {
-        //         return this.$refs.treeFilter.filter("");
-        //     }
-        //     this.toolShow = true;
-        //     let _that = this;
-        //     if (this.isCheck) {
-        //         // _that.$refs.treeFilter.filter(_that.filterText);
-        //         // 人员
-        //         // let data = {
-        //         //     key: val,
-        //         //     type: 0
-        //         // }
-        //         // new Promise((resolve, reject) => {
-        //         //     getZfjgLawSupervise(data).then(
-        //         //         res => {
-        //         //             if(res.data.records && res.data.records.length > 0) {
-        //         //                 console.log(111111);
-        //         //                 _that.$nextTick(()=>{
-        //         //                     res.data.records.forEach((item,i)=>{
-        //         //                         _that.$refs.treeFilter.filter(item);
-        //         //                     })
-        //         //                     _that.$refs.treeFilter.filter(_that.filterText);
-        //         //                 })
-        //         //             }
-        //         //         }
-        //         //     )
-        //         // })
-        //     } else {
-        //         // 机构
-        //     }
-        //     _that.$refs.treeFilter.filter(val);
-
-        // }
+        
     },
     computed: {
         ...mapGetters(["makePhoneStatus", "doing"])
