@@ -76,9 +76,10 @@ service.interceptors.request.use(
   service.interceptors.response.use(
     response => {
         if (response.config.isGetHost) {
+            debugger;
             BASEURL = response.data;
-            iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT].CAPTCHA_HOST);
-            sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE);
+            iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
+            sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE_ROUTER_NAME);
             localStorage.setItem("SYS_TITLE", BASEURL.SYS_TITLE);
             return response.data;
         }
