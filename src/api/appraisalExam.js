@@ -171,7 +171,7 @@ export function getContentApi(id) {
     url: "/pykh/notice/getContent/"+id,
     method: "get",
     showloading: true,
-    loadingType:'loadPart',
+    // loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -182,7 +182,7 @@ export function getNoticeByPageAndUserId(data){
     method: "get",
     params: data,
     showloading: true,
-    loadingType:'loadFull',
+    // loadingType:'loadFull',
     cancelToken: setCancelSource()
   });
 }
