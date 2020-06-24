@@ -136,7 +136,7 @@ import {menuList} from "@/common/data/menu";
 import VueSimpleVerify from 'vue-simple-verify';
 // Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
-  getCurrentUserApi
+  getCurrentUserApi,getHost
 } from "@/api/login";
 import {
   getDictListDetailByNameApi,
@@ -403,11 +403,12 @@ export default {
         this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
     },
   },
-  async mounted() {
-    this.showLogin = true;
-    // this.systemTitleLogin = localStorage.getItem("SYS_TITLE");
+  async created() {
+    await getHost();
     await this.getSystemData();
-    // this.test()
+  },
+   mounted() {
+    this.showLogin = true;
   },
   components: {
       VueSimpleVerify

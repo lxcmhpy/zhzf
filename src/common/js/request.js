@@ -18,23 +18,18 @@ const service = axios.create({
 });
 
 var BASEURL;
-service({
-    url: '/static/json/hostUrl/host.json',
-    method: "get",
-    params: {},
-    }).then(
-        res => {
-        BASEURL = res.data;
-        BASEURL.HOME_PAGE = BASEURL['HOME_PAGE_ROUTER_NAME'];
-        BASEURL.SYS_TITLE = BASEURL["SYS_TITLE"];
-
-        sessionStorage.setItem('HOME_PAGE_ROUTER_NAME',BASEURL.HOME_PAGE);
-        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-        localStorage.setItem("SYS_TITLE", BASEURL.SYS_TITLE);
-    },
-    error => {
-        console.log(error)
-    })
+// service({
+//     url: '/static/json/hostUrl/host.json',
+//     method: "get",
+//     params: {},
+//     }).then(
+//         res => {
+//         console.log("获取baseUrl" + JSON.stringify(res.data));
+//
+//     },
+//     error => {
+//         console.log(error)
+//     })
 // request interceptor
 service.interceptors.request.use(
     config => {
@@ -46,12 +41,8 @@ service.interceptors.request.use(
       if (config.baseUrlType) {
           let baseObj = BASEURL[BASEURL.CURRENT];
           config.baseURL = baseObj[config.baseUrlType];
-
-      } else{
-        config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST; // 默认的base_url
-        iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
-        sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE);
-        localStorage.setItem("SYS_TITLE", BASEURL.SYS_TITLE);
+      } else if (!config.isGetHost){
+         config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST; // 默认的base_url
       }
 
       if (config.responseType) {
@@ -84,6 +75,13 @@ service.interceptors.request.use(
   // respone interceptor
   service.interceptors.response.use(
     response => {
+        if (response.config.isGetHost) {
+            BASEURL = response.data;
+            iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT].CAPTCHA_HOST);
+            sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE);
+            localStorage.setItem("SYS_TITLE", BASEURL.SYS_TITLE);
+            return response.data;
+        }
       if (response.status == 200) {
         if (response.data.code == 200) {
           tryHideFullScreenLoading();

@@ -116,3 +116,12 @@ export function loginOutApi() {
     cancelToken: setCancelSource()
   });
 }
+export function getHost () {
+    return request({
+        url: '/static/json/hostUrl/host.json',
+        method: "get",
+        isGetHost: true,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
