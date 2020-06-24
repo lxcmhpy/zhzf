@@ -382,7 +382,7 @@
           <ul class="list">
             <li>
               <el-carousel
-                direction="vertical"
+                height="200px"
                 @change="setActiveItem"
                 :setActiveItem="setActiveItem"
                 :autoplay="true"
@@ -416,6 +416,11 @@
               </el-carousel>
             </li>
           </ul>
+          <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
+            <div>
+                <img width="100%" :src="xjHost+imgIndexUrl">
+            </div>
+          </el-dialog>
         </div>
       </div>
       <div class="shadow">
@@ -446,14 +451,16 @@ export default {
   props: ["obj"],
   data() {
     return {
+      imgIndexUrl: null,
       imgList: [
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_D",
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_F",
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_L",
-        "/api/ecds/GetCarPicture?work_no=" + this.obj.workNo + "&photo=PHOTO_S"
-      ],
-      acitveCar: 0,
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
+          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
+          ],
       xjHost: null,
+      dialogIMGVisible: false,
+      acitveCar: 0,
       dialogPDFVisible: false,
     //   storageStr: "",
       currentUrl: "",
@@ -465,12 +472,16 @@ export default {
     };
   },
   methods: {
-    setActiveItem() {
-      this.acitveCar++;
-      if (this.acitveCar == 5) {
-        this.acitveCar = 0;
-      }
-    }
+        showImg (index) {
+            this.dialogIMGVisible = true;
+            this.imgIndexUrl = this.imgList[index];
+        },
+        setActiveItem() {
+          this.acitveCar++;
+          if (this.acitveCar == 5) {
+            this.acitveCar = 0;
+          }
+        }
   },
   mounted() {
     // http://172.16.170.54:9332/14,16d92a05edcd   old:9,10a727c3ada3
