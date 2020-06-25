@@ -1205,3 +1205,13 @@ export function deleteRoadLcDeployApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+export function findListByUserIdAndParentId(userId, parenId) {
+    return request({
+        url: "system/sys/permission/findListByUserIdAndParentId/"+userId+"/"+parentId,
+        method: "get",
+        showloading: false,
+        loadingType:'loadPart',
+        cancelToken: setCancelSource()
+    });
+}
