@@ -114,6 +114,17 @@ export function findRecordModleByPersonApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//查询登录人收藏的模板
+export function findUserCollectTemplateApi(data) {
+    return request({
+        url: "/xzjc/template/findUserCollectTemplate/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //通过模板名称查询模板
 export function findRecordlModleByNameApi(data) {
     return request({
@@ -183,7 +194,7 @@ export function findAllModleNameApi(data) {
 //根据条件分页查询
 export function findRecordListApi(data) {
     return request({
-        url: "/xzjc/templateOrder/queryTemplateOrderPage",
+        url: "/xzjc/templateOrder/pcQueryTemplateOrderPage",
         method: "get",
         params: data,
         showloading: true,

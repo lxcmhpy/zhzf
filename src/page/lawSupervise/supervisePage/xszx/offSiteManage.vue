@@ -496,6 +496,9 @@ export default {
     }
   },
   created() {
+    if(this.$route.params.siteName!== undefined){
+      this.form.siteName = this.$route.params.siteName
+    }
     this.search(1);
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
     this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');

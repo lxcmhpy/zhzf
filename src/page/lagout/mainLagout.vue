@@ -59,7 +59,6 @@
                 {{userInfo.nickName}}
                 <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
               </span>
-
             </el-popover>
           </div>
           <div><i class="iconfont law-message"></i></div>
