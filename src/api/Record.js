@@ -228,10 +228,21 @@ export function removeRecordByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
-//根据UUID查找订单记录
+//根据UUID查找订单记录-之前
 export function findRecordByIdApi(data) {
     return request({
         url: "/xzjc/templateOrder/getById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据UUID查找订单记录
+export function findMyRecordByIdApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/myGetById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',

@@ -178,7 +178,7 @@ export default {
       }
       findRecordModleByPersonApi(data).then(
         res => {
-          debugger
+          // debugger
           console.log(res)
           if (res.data) {
             this.modleList = res.data
