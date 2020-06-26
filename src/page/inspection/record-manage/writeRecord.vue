@@ -20,7 +20,7 @@
       <!-- 动态生成表单 -->
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
-      <uploadTmp :recordMsg='recordMsg'></uploadTmp>
+      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
       <!-- 悬浮按钮 -->
@@ -55,7 +55,7 @@ import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
-  findRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
+  findMyRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: ['psMsg'],
@@ -97,6 +97,9 @@ export default {
         }
       },
       recordMsg: '',
+      defautImgList:[],//已上传图片
+      defautFileList:[],//已上传附件
+
       adressName: '',
       // 执法人员
       allUserList: [],
@@ -163,7 +166,7 @@ export default {
     // 查找已有记录-修改
     findRecordDataByld() {
       let _this = this
-      findRecordByIdApi(this.recordId).then(
+      findMyRecordByIdApi(this.recordId).then(
         res => {
           _this.baseData = JSON.parse(res.data.layout)
           let list = JSON.parse(res.data.layout)
@@ -182,6 +185,10 @@ export default {
           _this.defaultRuleData = JSON.parse(JSON.stringify(res.data))
           _this.$set(_this.defaultRuleData, 'templateFieldList', list);
           _this.dealFormData()
+          // 回显文件
+          console.log('huixian',res.data.pictureList,res.data.attachedList)
+          _this.defautImgList=res.data.pictureList
+          _this.defautFileList=res.data.attachedList
         },
         error => {
         })
@@ -218,6 +225,7 @@ export default {
         })
 
     },
+    // 保存
     saveRecord() {
       this.formData.status = '保存';
       // this.onSubmit()
@@ -244,13 +252,18 @@ export default {
         this.formData.createTime = '';
         this.formData.updateTime = '';
         this.formData.type = '记录';
-        // console.log('formdata', this.formData)
+        // this.formData.pictureList = null;
+        // this.formData.attachedList = null;
+        delete(this.formData["pictureList"]);
+        delete(this.formData["attachedList"]);
+        // debugger
+        console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
             // console.log(res)
             if (res.code == 200) {
               this.addOrEiditFlag = 'view'
-              this.recordMsg = res.data;//根据返回id上传文件
+              this.recordMsg =this.formData.id?this.formData.id:res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
@@ -270,6 +283,7 @@ export default {
       })
 
     },
+    // 暂存
     onSaveRecord() {
       // console.log('rule', this.rule)
       this.rule.forEach(element => {
@@ -304,15 +318,19 @@ export default {
         console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
-            // console.log(res)
+                       // console.log(res)
             if (res.code == 200) {
+              this.addOrEiditFlag = 'view'
+              this.recordMsg = res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
               });
-              this.$router.push({
-                name: 'inspection_recordList',
-                // params: item
+              this.rule.forEach(element => {
+                console.log(element)
+                this.$data.$f.updateRule(element.field, {
+                  props: { disabled: true }
+                }, true);
               });
             } else {
               this.$message.error(res.msg);
