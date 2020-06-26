@@ -173,8 +173,8 @@ export default {
             }
         },
         handleCommand () {
-            this.$store.dispatch('deleteAllTabs');
-            this.$router.push("/");
+            // this.$store.dispatch('deleteAllTabs');
+            this.$router.push({name:'login'});
         },
         //获取公告信息
         getNotices() {
