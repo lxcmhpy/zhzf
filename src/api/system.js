@@ -1208,7 +1208,7 @@ export function deleteRoadLcDeployApi(id) {
 
 export function findListByUserIdAndParentId(userId, parenId) {
     return request({
-        url: "system/sys/permission/findListByUserIdAndParentId/"+userId+"/"+parentId,
+        url: "system/sys/permission/findListByUserIdAndParentId/"+userId+"/"+parenId,
         method: "get",
         showloading: false,
         loadingType:'loadPart',

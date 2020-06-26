@@ -33,7 +33,7 @@ var BASEURL;
 // request interceptor
 service.interceptors.request.use(
     config => {
-      if (BASEURL === '' || BASEURL === 'undefined') {
+      if (!BASEURL) {
           BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
           BASEURL.HOME_PAGE = localStorage.getItem("HOME_PAGE_ROUTER_NAME");
           BASEURL.SYS_TITLE = localStorage.getItem("SYS_TITLE");
@@ -42,7 +42,7 @@ service.interceptors.request.use(
           let baseObj = BASEURL[BASEURL.CURRENT];
           config.baseURL = baseObj[config.baseUrlType];
       } else if (!config.isGetHost){
-         config.baseURL = BASEURL[BASEURL.CURRENT].CAPTCHA_HOST; // 默认的base_url
+         config.baseURL = BASEURL.CAPTCHA_HOST; // 默认的base_url
       }
 
       if (config.responseType) {

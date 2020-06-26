@@ -29,7 +29,7 @@
               <el-form-item v-if="baosongStatus">
                 <el-upload
                   class="upload-demo"
-                  action=""
+                  action="https://jsonplaceholder.typicode.com/posts/"
                   :http-request="uploadPerson"
                   :show-file-list="false"
                   accept=".xlsx"
@@ -56,7 +56,7 @@
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
                 <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
-                <el-tag type="warning"  v-show="scope.row.staffStatus==0 && cope.row.bsStatus==1">未抽取</el-tag>
+                <el-tag type="warning"  v-show="scope.row.staffStatus==0 && scope.row.bsStatus==1">未抽取</el-tag>
                 <el-tag type="success" v-show="scope.row.staffStatus==1">已抽取</el-tag>
               </template>
             </el-table-column>
@@ -69,6 +69,7 @@
                         </div>
                         <div v-show="scope.row.caseStatus==1">
                             <el-upload
+                                action="https://jsonplaceholder.typicode.com/posts/"
                                 class="upload-demo"
                                 accept=".jpg, .png"
                                 :show-file-list="false"
@@ -145,7 +146,7 @@
 </template>
 
 <script>
-  import { mixinsCommon } from "@/common/js/mixinsCommon";
+//   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,confirmSubmissionStaff,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import {StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
@@ -153,7 +154,7 @@
   import {validateIDNumber,isInteger_8_10,isInteger_10} from '@/common/js/validator';
 
   export default {
-    mixins: [mixinsCommon],
+    // mixins: [mixinsCommon],
     components: {
       viewNotice
     },
@@ -226,12 +227,13 @@
         data.current=this.current;
         data.size=this.size;
         data.oId=this.organId;
+        let _this = this;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
-            this.dataList=res.data.records;
-            this.total=res.data.total;
-            this.current=res.data.current;
+            _this.dataList=res.data.records;
+            _this.total=res.data.total;
+            _this.current=res.data.current;
           }
         });
       },
