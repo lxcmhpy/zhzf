@@ -40,8 +40,8 @@ export default {
         }
         debugger;
         if (!window.PhoneCallModule.getRegistered()) {
-            let displayName = 'ecds05';
-            let privateIdentity ='100007';
+            let displayName = 'ecds04';
+            let privateIdentity ='100006';
             let password = '1234';
             window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }
@@ -51,7 +51,7 @@ export default {
             // 语音呼叫
             // setTimeout(function(){
             //     // window.PhoneCallModule.sipAudioCall("100006","ecds04");
-                window.PhoneCallModule.sipAudioCall("100008","pad01");
+                window.PhoneCallModule.sipAudioCall("100013","ecds05");
             //     // window.PhoneCallModule.sipAudioCall("100001","app01");
             //     // window.PhoneCallModule.sipAudioCall("100013","app02");
             //     // window.PhoneCallModule.sipAudioCall("100009","pad02");
@@ -63,7 +63,7 @@ export default {
             // window.PhoneCallModule.sipRegister();
             // setTimeout(function(){
             //     // window.PhoneCallModule.sipVideoCall("100006","ecds04");
-                window.PhoneCallModule.sipVideoCall("100008","pad01");
+                window.PhoneCallModule.sipVideoCall("100013","ecds05");
             //     // window.PhoneCallModule.sipVideoCall("100001","app01");
             //     // window.PhoneCallModule.sipVideoCall("100013","app02");
             //     // window.PhoneCallModule.sipVideoCall("100009","pad02");

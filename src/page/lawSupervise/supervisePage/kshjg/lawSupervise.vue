@@ -1926,8 +1926,8 @@ export default {
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
             // window.PhoneCallModule.sipRegister();
-            let displayName = 'ecds05';
-            let privateIdentity ='100007';
+            let displayName = 'ecds04';
+            let privateIdentity ='100006';
             let password = '1234';
             window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }
