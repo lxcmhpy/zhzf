@@ -12,7 +12,6 @@ var vue = new Vue();
 const service = axios.create({
   // "Content-Type": "multipart/form-data;charset=UTF-8",
   "Content-Type": "application/x-www-form-urlencoded",
-  "Content-Security-Policy": "upgrade-insecure-requests",
   // "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
 //   timeout: 15000, // request timeout
 
