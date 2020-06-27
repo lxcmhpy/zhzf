@@ -240,6 +240,7 @@
     },
     methods:{
       saveFile(param, row) {
+          debugger;
         var fd = new FormData();
         fd.append("file", param.file);
         fd.append("userId", iLocalStroage.gets("userInfo").id);
