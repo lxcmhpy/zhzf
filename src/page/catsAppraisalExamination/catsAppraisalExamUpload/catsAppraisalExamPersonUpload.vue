@@ -67,7 +67,7 @@
                             <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
                             <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
                         </div>
-                        <div v-show="scope.row.caseStatus==1">
+                        <div v-show="scope.row.staffStatus==1">
                             <el-upload
                                 action="https://jsonplaceholder.typicode.com/posts/"
                                 class="upload-demo"
@@ -203,12 +203,13 @@
 
     methods: {
       saveFile(param, row) {
+          debugger;
         var fd = new FormData();
         fd.append("file", param.file);
         fd.append("userId", iLocalStroage.gets("userInfo").id);
         fd.append("category", "人员报送");
         fd.append("docId", row.staffId);
-        fd.append("storageId", row.storageId===null?'':row.storageId);
+        fd.append("storageId", row.storageId?row.storageId:'');
         let _this = this
         StaffAndCaseFile(fd).then(res => {
           if (res.code == 200){
