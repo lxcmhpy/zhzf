@@ -138,7 +138,7 @@
         </el-dialog>
 
       </div>
-      <el-dialog title="查看" :visible.sync="dialogVisible" style="width:430px;height:640px;">
+      <el-dialog title="查看" :visible.sync="dialogVisible" width="460px" height="600px" v-show="dialogImageUrl" :before-close="dialogImageUrl==''">
         <img width="413px" height="626px" :src="dialogImageUrl" alt="">
       </el-dialog>
     </div>

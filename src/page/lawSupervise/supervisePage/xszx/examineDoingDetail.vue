@@ -3,11 +3,11 @@
   <div class="main_box">
     <div class="com_searchAndpageBoxPadding">
       <div class="com_searchPage_top com_examin_top">
-        <el-tabs v-model="tabActiveValue" :stretch="true">
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="switchTab">
           <el-tab-pane
             v-for="(item, index) in processStatus"
             :key="index"
-            disabled
+            :disabled="index>status?true:false"
             :name="`${index}`"
           >
             <span slot="label">
@@ -74,7 +74,8 @@ export default {
           value: "生成证据包"
         }
       ],
-      tabActiveValue: null
+      tabActiveValue: null,
+      status:this.$route.params.status
     };
   },
   methods: {
@@ -109,6 +110,17 @@ export default {
             return;
           }
         );
+      });
+    },
+    switchTab () {
+      debugger;
+      this.$router.push({
+        name: 'law_supervise_examineDoingDetail',
+        params: {
+          status: this.tabActiveValue.toString(),
+          tabTitle: '【线索详情】',
+          offSiteManageId: this.$route.params.offSiteManageId
+        }
       });
     },
     init() {

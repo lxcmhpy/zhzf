@@ -307,7 +307,10 @@
           file: null,
           docId: "",
           category: "",
-          userId: ""
+          userId: "",
+          recordPlace:'',
+          userName:'',
+          note:''
         },
         uForm: {},
         addVisible: false,
@@ -455,15 +458,15 @@
         fd.append("evName", this.form.evName);
         fd.append("evType", this.form.evType);
         fd.append("status", this.form.status);
-        fd.append("note", this.form.note);
+        fd.append("note", this.form.note ? this.form.note : '');
         fd.append("thumbnail", this.form.thumbnail);
         console.log('fd.get',fd.get('thumbnail'))
         if (!this.form.fileId) {
           this.form.fileId = ''
         }
         fd.append("fileId", this.form.fileId);
-        fd.append("userName", this.form.userName);
-        fd.append("recordPlace", this.form.recordPlace);
+        fd.append("userName", this.form.userName ? this.form.userName : '');
+        fd.append("recordPlace", this.form.recordPlace ? this.form.recordPlace : '');
         fd.append("recordTime", this.form.recordTime ? this.form.recordTime : '');
         // fd.append("id", this.form.id);
 

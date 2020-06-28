@@ -40,8 +40,8 @@
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="行 业 类 别" prop="hyType" >
-          <el-select v-model="addCaseCauseForm.hyType" style="width:100%" placeholder="请选择行业类别">
+        <el-form-item label="行 业 类 别" prop="hyType">
+          <el-select v-model="addCaseCauseForm.hyTypeId" style="width:100%" placeholder="请选择行业类别">
             <el-option
               v-for="item in hyTypeList"
               :key="item.id"
@@ -55,7 +55,7 @@
             v-model="addCaseCauseForm.hyType"
             style="width:100%"
             placeholder="请选择行业类别"
-            
+            disabled
           ></el-input>
         </el-form-item> -->
       </div>
@@ -178,7 +178,8 @@ export default {
     },
     //新增 修改
     addOrEditCaseCauseSure() {
-        debugger
+        console.log("data222", this.addCaseCauseForm);
+        // debugger
         this.addCaseCauseForm.category = this.selectGet(this.addCaseCauseForm.categoryId);
         if(this.addCaseCauseForm.hyTypeId != "" && this.addCaseCauseForm.hyTypeId != null){
             this.addCaseCauseForm.hyTypeCode = this.addCaseCauseForm.hyTypeId;
@@ -212,6 +213,7 @@ export default {
         obj = this.hyTypeList.find((item)=>{ 
             return item.id === vId;
         });
+        console.log("111",obj);
         return obj.name;
         },
      }

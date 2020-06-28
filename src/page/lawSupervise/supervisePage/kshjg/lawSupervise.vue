@@ -1697,7 +1697,8 @@ export default {
             };
             this.allSearchList.push(data);
             if (this.category == 4) {
-                this.searchPageAllGJ(data, this.category);
+                // this.searchPageAllGJ(data, this.category);
+                this.searchPageAll(4, 'zfdList');
             } else {
                 this.getZfjgLawSupervise(data, this.category);
             }
@@ -1775,7 +1776,7 @@ export default {
       }
     },
     searchAll(pois) {
-
+      debugger;
       this.markers.splice(0, this.markers.length);
       if (this.curWindow) {
         this.curWindow.visible = false;
@@ -1804,7 +1805,6 @@ export default {
         getZfjgLawSupervise(data).then(
           res => {
             // resolve(res);
-            debugger;
             let resultList = [];
             if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
