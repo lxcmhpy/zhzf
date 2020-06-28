@@ -6,12 +6,12 @@
             <div>无效<br />信息</div>
         </el-button>
     </div>
-    <div v-if="['1', '2', '3'].indexOf(tabActiveValue) > -1">
+    <!-- <div v-if="['1', '2', '3'].indexOf(tabActiveValue) > -1">
       <el-button type="button" class="submitBtn blueBtn" @click="prevRouter">
         <i class="iconfont law-xiayibu"></i>
         <div>上一步</div>
       </el-button>
-    </div>
+    </div> -->
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
       <el-button type="button" class="submitBtn blueBtn" @click="nextRouter">
         <i class="iconfont law-xiayibu"></i>
@@ -357,7 +357,7 @@ export default {
         }
       });
     },
-    prevRouter() {
+    /* prevRouter() {
       let prevStatus=parseInt(this.$route.params.status)-1;
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',
@@ -367,7 +367,7 @@ export default {
           offSiteManageId: this.$route.params.offSiteManageId
         }
       });
-    },
+    }, */
     findAllDrawerById (data, obj) {
         let _this = this
         new Promise((resolve, reject) => {
