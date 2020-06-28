@@ -2,8 +2,9 @@
 <!-- 检测数据核对  -->
 <!--审核中、待审核、可编辑-->
 <div class="main_box">
-    <xszxDetailEdit :obj="obj"></xszxDetailEdit>
-    <!-- <div class="shadow">
+    <xszxDetailEdit :obj="obj" v-if="type =='doing'"></xszxDetailEdit>
+    <xszxDetailFirstView :obj="obj" v-else></xszxDetailFirstView>
+    <!-- <div class="shadow">""
         <div class="box w-2">
             <div class="box_title">
                 <span class="titleflag">
@@ -27,10 +28,11 @@
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 import { mapGetters } from "vuex";
 import xszxDetailEdit from '../xszxDetailEdit.vue';
+import xszxDetailFirstView from '../xszxDetailFirstView.vue';
 import {upload} from '@/api/upload.js';
 
 export default {
-    props: ['obj'],
+    props: ['obj','type'],
     data () {
         return {
             processStatus: [{
@@ -52,7 +54,7 @@ export default {
         // ...mapGetters(["offSiteManageId"])
     },
     components: {
-        btns, xszxDetailEdit
+        btns, xszxDetailEdit, xszxDetailFirstView
     }
 }
 </script>
