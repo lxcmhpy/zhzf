@@ -208,6 +208,7 @@
   import {getCaseInfoDetailByPid,updateScore,updateScoreState} from "@/api/appraisalExam.js";
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import viewNotice from "./noticeManage/viewNotice";
+  import iLocalStroage from "@/common/js/localStroage";
   import _ from "lodash";
 export default {
     mixins: [mixinsCommon],

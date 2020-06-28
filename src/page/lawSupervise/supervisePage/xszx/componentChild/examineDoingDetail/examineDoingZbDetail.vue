@@ -28,7 +28,7 @@
                     <span class="title">驾驶员/车主信息</span>
                 </div>
                 <div >
-                    <el-form :model="userObj" ref="userObj" class="userObj" label-width="75px">
+                    <el-form :model="userObj" ref="userObj" class="userObj" label-width="105px">
                         <div class="item">
                             <el-form-item label="姓名">
                                  <el-input width="300px" readonly="readonly" v-model="obj.personName" placeholder="请输入"></el-input>

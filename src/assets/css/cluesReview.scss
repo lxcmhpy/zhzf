@@ -483,6 +483,10 @@
 
         }
     }
+    .shadow .box {
+      margin:0;
+      box-shadow: none;
+    }
 }
 .ransition-box {
     // float:left;

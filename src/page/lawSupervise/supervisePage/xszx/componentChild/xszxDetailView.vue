@@ -325,7 +325,7 @@
             :model="userObj"
             ref="userObj"
             class="userObj"
-            label-width="75px"
+            label-width="105px"
           >
             <div class="item">
               <el-form-item label="姓名">
