@@ -19,6 +19,7 @@
     "@form-create/element-ui": "^1.0.14",
     "axios": "0.18.0",
     "babel-polyfill": "^6.26.0",
+    "compress-webpack-plugin": "^1.0.6",
     "cross-env": "^7.0.2",
     "echarts": "^4.8.0",
     "element-ui": "^2.13.0",
@@ -46,6 +47,7 @@
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.1",
+    "babel-plugin-component": "^1.1.1",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
@@ -56,6 +58,7 @@
     "babel-register": "^6.22.0",
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
+    "compression-webpack-plugin": "^1.1.12",
     "copy-webpack-plugin": "^4.0.1",
     "cross-spawn": "^5.0.1",
     "crypto-js": "^3.1.9-1",
@@ -97,5 +100,12 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": ".postcssrc.js",
+  "repository": {
+    "type": "git",
+    "url": "http://124.192.215.7:8088/catsti/gitlab/zhzf/zhzf.git"
+  },
+  "keywords": [],
+  "license": "ISC"
 }

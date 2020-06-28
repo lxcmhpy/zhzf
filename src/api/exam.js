@@ -392,8 +392,7 @@ export function addPageManageApi(data){
         method: "get",
         params: data,
         showloading: false,
-        cancelToken: setCancelSource(),
-        timeout: 180000
+        cancelToken: setCancelSource()
     })
 }
 
@@ -562,7 +561,6 @@ export function addPageTempleteApi (data){
         method: "post",
         data: vm.$qs.stringify(data),
         showloading: false,
-        timeout: 30000,
         cancelToken: setCancelSource()
     })
 }
@@ -770,7 +768,6 @@ export function randomQuestion(data){
         url: '/exam/pageManage/randomQuestion',
         method: "get",
         params: data,
-        timeout: 30000,
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -781,7 +778,6 @@ export function randomParagraphQuestion(data){
         url: '/exam/pageManage/randomParagraphQuestion',
         method: "get",
         params: data,
-        timeout: 30000,
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -792,7 +788,6 @@ export function saveReplaceQuestion(data){
         url: '/exam/pageManage/saveRandomParagraphQuestion',
         method: "get",
         params: data,
-        timeout: 30000,
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -804,6 +799,37 @@ export function getSystemParams(){
         method: "get",
         showloading: false,
         cancelToken: setCancelSource()
+    })
+}
+// 删除选型图片
+export function deleteQuestionImage(data){
+    return request({
+        url: `/exam/bankQuestion/deleteQuestionOrOptionPictureFileInfo`,
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
+// 下载试题模板
+export function downLoadQuestionTemp(){
+    return request({
+        url: '/exam/excelImport/downQuestion',
+        method:  "get",
+        showloading: false,
+        responseType:'blob',
+        cancelToken:  setCancelSource()
+    })
+}
+// 批量导入试题
+export function batchImportQuestion(data){
+    return request({
+        url: '/exam/excelImport/importQuestion',
+        method:  "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: false,
+        cancelToken:  setCancelSource()
     })
 }
 /******************* 修改试卷End *******************/

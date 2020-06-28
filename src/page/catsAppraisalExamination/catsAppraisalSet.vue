@@ -11,12 +11,12 @@
                 <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @expand-change="load"
                 row-key="id" :expand-row-keys="expandList" current-row-key="id">
                     <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                    <el-table-column type="expand" width="150">
+                    <el-table-column type="expand" width="45">
                         <!-- <template slot="header" >
                             二级
                         </template> -->
                         <template slot-scope="scope">
-                        <div style="padding:0px 35px 35px 35px;min-width:620px;">
+                        <div style="padding:0px 0px 35px 45px;min-width:620px;min-height: 550px;">
                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                 <el-button type="primary" size="medium" @click="addZbConfig(scope.row)">
                                     <i class="iconfont law-submit-o f12"></i> 添加二级考核指标
@@ -25,28 +25,28 @@
                             <div style="border: 1px solid #f4f4f4;" v-if="zbList.length>0">
                                 <el-table class="xzList" :data="zbList" stripe resizable border style="height:100%;"
                                  @expand-change="loadXzList" row-key="id" :expand-row-keys="expandXzList" current-row-key="id">
-                                     <el-table-column type="expand" width="150">
+                                     <el-table-column type="expand" width="45">
                                         <!-- <template slot="header" >
                                             考评细则
                                         </template> -->
                                         <template slot-scope="scope1">
-                                        <div style="padding:0px 35px 35px 35px;min-width:620px;">
+                                        <div style="padding:0px 0px 35px 45px;min-width:620px;min-height: 550px;">
                                             <div class="handlePart" style="margin: 8px 0px 8px 0px;">
                                                 <el-button type="primary" size="medium" @click="addXzConfig(scope1.row)">
                                                     <i class="iconfont law-submit-o f12"></i> 添加考评细则
                                                 </el-button>
                                             </div>
-                                            <div style="border: 1px solid #f4f4f4;" v-if="zbList.length>0">
+                                            <div style="border: 1px solid #f4f4f4;" v-if="xzList.length>0">
                                                 <el-table class="xzList" :data="xzList" stripe resizable border style="height:100%;" >
                                                     <!-- <el-table-column prop="reviewType" label="评查类别" align="center" ></el-table-column> -->
                                                     <el-table-column prop="nrxm" label="考评内容及评分标准" align="center" ></el-table-column>
                                                     <!-- <el-table-column prop="sore" label="分值" align="center" ></el-table-column> -->
                                                     <!-- <el-table-column prop="xsyq" label="评查形式/评查内容和要求" align="center" ></el-table-column> -->
                                                     <!-- <el-table-column prop="xdxz" label="评查要点/评分细则" align="center" ></el-table-column> -->
-                                                    <el-table-column label="操作" align="center" width="250">
+                                                    <el-table-column label="操作" align="center" width="150">
                                                         <template  slot-scope="scope2">
                                                             <el-button type="text" @click.stop @click="updateXzConfig(scope2.$index, scope2.row)">修改</el-button>
-                                                            <el-button type="text" @click.stop @click="deletePykhMetricsById(scope2.$index,scope2.row)">删除</el-button>
+                                                            <el-button type="text" @click.stop @click="deleteDetailZpById(scope1.row,scope2.row)">删除</el-button>
                                                             <!-- <el-button type="text" @click.stop @click="addXzDialog(scope1.row)">配置考评细则</el-button> -->
                                                         </template>
                                                     </el-table-column>
@@ -72,7 +72,7 @@
                                     </el-table-column>
                                     <el-table-column prop="indexTwo" label="二级考核指标" align="center" ></el-table-column>
                                     <!-- <el-table-column prop="assessType" label="考核类别" align="center" width="100"></el-table-column> -->
-                                    <el-table-column label="操作" align="center" width="250">
+                                    <el-table-column label="操作" align="center"  width="150">
                                         <template  slot-scope="scope1">
                                             <el-button type="text" @click.stop @click="updateZbConfig(scope1.$index, scope1.row)">修改</el-button>
                                             <el-button type="text" @click.stop @click="deletePykhMetricsById(scope.row,scope1.row)">删除</el-button>
@@ -99,11 +99,11 @@
                         </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="indexOne" label="一级考核指标" align="center" width="150"></el-table-column>
+                    <el-table-column prop="indexOne" label="一级考核指标" align="center" ></el-table-column>
                     <!-- <el-table-column prop="startTime" label="立案开始时间" align="center"></el-table-column> -->
                     <!-- <el-table-column prop="endTime" label="立案截止时间"  align="center"></el-table-column> -->
-                    <el-table-column prop="oneType" label="指标类型配置" align="center"></el-table-column>
-                    <el-table-column label="操作" align="center" width="120">
+                    <el-table-column prop="oneType" label="指标类型配置" align="center" width="150"></el-table-column>
+                    <el-table-column label="操作" align="center"  width="150">
 
                         <template  slot-scope="scope">
                             <el-button type="text" @click.stop @click="updatePykhConfig(scope.$index, scope.row)">修改</el-button>
@@ -203,8 +203,8 @@
             </div>
         </el-drawer>
         <el-drawer title="考核细则" modal-append-to-body direction="rtl" size="500px" customClass="amap-drawer" :modal="false" :visible.sync="drawer2">
-            <div style="padding:0px 35px 35px 35px;min-width:620px;">
-                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="135px">
+            <div style="padding:0px 0px 35px 45px;min-width:620px;">
+                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="150px">
                 <div v-if="xzObj" style="width:400px">
                     <!-- <div class="item">
                         <el-form-item label="评查类别" prop="indexTwo">
@@ -234,7 +234,7 @@
                 </div>
                  <div class="demo-drawer__footer" style="text-align:center">
                 <el-button type="primary" @click="addorUpdateDetailZp" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
-                <el-button @click="closeDraw1">取 消</el-button>
+                <el-button @click="closeDraw2">取 消</el-button>
             </div>
             </el-form>
                 </div>
@@ -460,6 +460,17 @@ import _ from "lodash";
 			"pykhConfigId": ""
         });
     },
+    closeDraw2 () {
+        this.drawer2 = false;
+        this.$set(this, 'xzObj', {
+            reviewType: '',
+            nrxm:'',
+            sore: '',
+            xsyq: '',
+            xdxz:'',
+            metricsId: ''
+        })
+    },
     rowKey() {
         return this.expandList.length>0?this.expandList[0].id: '';
     },
@@ -488,7 +499,7 @@ import _ from "lodash";
         }
     },
     findPykhMetricsByPage(parentId,currentPage) {
-        // let f = {pykhConfigId:item.id,current:1,size:5};
+        // 二级指标
         this.zbForm.pykhConfigId = parentId;
         this.zbForm.current = currentPage;
         let _this = this;
@@ -498,7 +509,6 @@ import _ from "lodash";
                     _this.zbList.splice(0,_this.zbList.length);
                     _this.zbList = res.data.records;
                     _this.total1 = res.data.total;
-                    // _this.expandList= [item.id];
                 },
                 error => {
                      _this.errorMsg(error.toString(), 'error')
@@ -533,6 +543,7 @@ import _ from "lodash";
     },
     // 查询考核细则
     findPykhZpByPage (parentId, current) {
+        debugger;
         this.xzForm.metricsId = parentId;
         this.xzForm.current = current;
         let _this = this;
@@ -684,12 +695,13 @@ import _ from "lodash";
 
                             if (_this.updateIndex1 === null) {
                                     //添加
-                                    _this.findPykhMetricsByPage(_this.updateIndex1,1);
+                                    _this.findPykhMetricsByPage(_this.zbObj.pykhConfigId,1);
                                 } else {
                                     // 更新
                                     _this.drawer1 = false;
                                     _this.$set(_this.zbList,_this.updateIndex1, _this.zbObj);
                                 }
+                                debugger;
                                  _this.$set(_this, 'zbObj', {
                                         "id": "",
                                         "note": "",
@@ -702,7 +714,7 @@ import _ from "lodash";
                                         "assessType": "",
                                         "assessTypeId": "",
                                         "assessTypeName": "",
-                                        "pykhConfigId": ""
+                                        "pykhConfigId": _this.zbObj.pykhConfigId
                                     });
                                 _this.closeLoading();
                                  _this.errorMsg('保存成功', 'success')
@@ -736,7 +748,7 @@ import _ from "lodash";
                                                         sore: '',
                                                         xsyq: '',
                                                         xdxz:'',
-                                                        metricsId: ''
+                                                        metricsId: _this.xzObj.metricsId
                                                     });
                                 _this.closeLoading();
                                  _this.errorMsg('保存成功', 'success')
@@ -771,7 +783,7 @@ import _ from "lodash";
                 deleteDetailZpById(item.id).then(
                     res => {
                         _this.errorMsg('删除成功', 'success');
-                        _this.addorUpdateDetailZp(row.id, 1);
+                        // _this.addorUpdateDetailZp(row.id, 1);
                     },
                     error => {
                         _this.errorMsg(error.toString(), 'error')
@@ -868,7 +880,7 @@ import _ from "lodash";
                                             oneTypeId: ""
                                         });
                                 _this.closeLoading();
-                                 _this.errorMsg('保存成功', 'success')
+                                 _this.errorMsg('保存成功', 'success');
                             },
                             error => {
                                  _this.errorMsg(error.toString(), 'error')
@@ -878,7 +890,7 @@ import _ from "lodash";
                     })
 
                 } else {
-                    _this.errorMsg("您有必填字段未填写！", 'error')
+                    _this.errorMsg("信息填写错误！", 'error');
                     _this.closeLoading();
                     return false;
                 }

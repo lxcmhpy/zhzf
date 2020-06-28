@@ -7,7 +7,7 @@
             <p class="question-num">{{ question.orderNum }}</p>
             <div class="question-cnt">
               <div class="question-desc">
-                {{ question.questionName }}
+                （{{ question.score }}分）{{ question.questionName }}
               </div>
               <div v-if="question.questionTypeName === '单选题' || question.questionTypeName === '判断题'">
                 <div
@@ -36,7 +36,7 @@
                       :label="item.pqOptionId"
                       @change="changeSelect(item, '2')">{{ `${item.optionNum}：${item.optionName}` }}</el-checkbox>
                     <div v-if="item.optionPicture" class="option-img">
-                      <el-image :src="item.optionPicture"></el-image>
+                      <el-image :src="baseUrl + item.optionPicture"></el-image>
                     </div>
                   </div>
                 </el-checkbox-group>
@@ -57,7 +57,7 @@
         </el-col>
         <el-col v-if="question.questionPicture" :span="8">
           <div class="stem-img">
-            <el-image :src="question.questionPicture"></el-image>
+            <el-image :src="baseUrl + question.questionPicture"></el-image>
             <a class="view-img" @click="viewImage(question.questionPicture)">查看大图</a>
           </div>
         </el-col>
@@ -69,6 +69,8 @@
   </div>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   name: 'pageDetail',
   props: {
@@ -98,20 +100,25 @@ export default {
   created() {
     this.shwoDefaultVal();
   },
-  computed: {},
+  computed: {
+    baseUrl() {
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    }
+  },
   mounted () {},
   methods: {
     // 选中项回显
     shwoDefaultVal(){
       this.answer = null;
-      let answer = null;
+      let answer = [];
       if(this.questionTypeName !== '简答题' && this.questionTypeName !== '论述题'){
-        answer = this.question.answer.split(',');
+        answer = this.question.answer ? this.question.answer.split(',') : [];
       }
       this.defaultChecked.splice(0, this.defaultChecked.length);
       if(this.question.listPo && this.question.listPo.length){
         this.question.listPo.forEach((item, index) => {
-          if(answer.indexOf(item.optionNum) > -1){
+          item.optionKey = '0';
+          if(answer.length && answer.indexOf(item.optionNum) > -1){
             item.checked = true;
             item.optionKey = '1';
             if(this.question.questionTypeName === '单选题' || this.question.questionTypeName === '判断题'){
@@ -126,7 +133,7 @@ export default {
     },
     // 查看大图
     viewImage(src){
-      this.dialogImageUrl = src;
+      this.dialogImageUrl = this.baseUrl + src;
       this.dialogVisible = true;
     },
     // 选择答案

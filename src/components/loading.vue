@@ -19,7 +19,7 @@
       <div class="loadingPart" v-show="loadingType == 'loadPart'">
         <div class="mask"></div>
         <div class="load">
-          <img src="../../static/images/img/car.svg"/>
+          <img :src="'./static/images/img/car.svg'"/>
 				  <p>加载中...</p>
         </div>
       </div>

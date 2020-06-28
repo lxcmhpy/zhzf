@@ -7,11 +7,12 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     getDispatchPersonByRoomIdApi,removeDispatchApi,autoDispatchApi,getPageListApi,disPapersApi,examDetialApi,previewPageApi,exportInvigilatorApi,exportExamPersonApi,exporExamtDetailApi
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
     changeQuestionLock,randomQuestion,randomParagraphQuestion
-    ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi} from "@/api/exam";
+    ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi,
+    deleteQuestionImage, batchImportQuestion, downLoadQuestionTemp} from "@/api/exam";
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
-    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam,editInvigilatorInfo} from '@/api/joinExam';
+    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam,editInvigilatorInfo,examRecordQueryForManangeApi} from '@/api/joinExam';
     import * as types from "../mutation-types";
     
     const exam = {
@@ -111,6 +112,30 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     selectExamQuestionInfo({commit},questionId){
         return new Promise((resolve, reject) => {
             selectExamQuestionInfoApi(questionId).then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
+    // 删除试题选项图片
+    deleteQuestionImage({commit}, storageId){
+        return new Promise((resolve, reject) => {
+            deleteQuestionImage(storageId).then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
+    // 下载试题模板
+    downLoadQuestionTemp({commit}){
+        return new Promise((resolve, reject) => {
+            downLoadQuestionTemp().then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
+    // 批量导入试题
+    batchImportQuestion({commit}, data){
+        return new Promise((resolve, reject) => {
+            batchImportQuestion(data).then(
                 res => {  resolve(res);   },
                 error => { reject(error); })
         })
@@ -710,15 +735,18 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                 loginExam(data).then(
                     res => {
                         if(loginType !== '1'){
+                            let token = '';
                             if(loginType === '0'){
+                                token = res.data;
                                 commit(types.SET_AUTHTOKEN, res.data);
                             }else if(loginType === '2'){
                                 sessionStorage.setItem('ScorerUserInfo', JSON.stringify(res.data.scorerInfo));
-                                if(res.data.token.indexOf('Bearer ') > -1){
-                                    commit(types.SET_AUTHTOKEN, res.data.token.replace('Bearer ', ''));
-                                }else{
-                                    commit(types.SET_AUTHTOKEN, res.data.token);
-                                }
+                                token = res.data.token;
+                            }
+                            if(token.indexOf('Bearer ') > -1){
+                                commit(types.SET_AUTHTOKEN, token.replace('Bearer ', ''));
+                            }else{
+                                commit(types.SET_AUTHTOKEN, token);
                             }
                         }else{
                             // 监考老师已提交个人信息
@@ -828,6 +856,15 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
            examRecordQueryInfo({commit}, data){
             return new Promise((resolve, reject) => {
                 examRecordQueryApi(data).then(
+                    res => { resolve(res); },
+                    err => { reject(err); }
+                )
+            });
+        },
+         //考试记录查询(后台)
+         examRecordQueryForManange({commit}, data){
+            return new Promise((resolve, reject) => {
+                examRecordQueryForManangeApi(data).then(
                     res => { resolve(res); },
                     err => { reject(err); }
                 )

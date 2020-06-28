@@ -10,9 +10,9 @@
       <!-- 强制收卷 -->
       <div v-if="forced">
         <el-row style="height:60px;">
-          <el-form-item label="强制原因:" prop="rollingType">
+          <el-form-item label="强制原因:" prop="operationType">
             <el-select
-              v-model="submitMsg.rollingType"
+              v-model="submitMsg.operationType"
               placeholder
               remote
               @focus="getYear('考试-记录类型','noteTypeList')"
@@ -28,7 +28,7 @@
           </el-form-item>
         </el-row>
         <el-row style="height:60px;">
-          <el-form-item label="备注:" prop="forcedReason">
+          <el-form-item label="备注:" prop="operationDescription">
             <el-input v-model="note" type="textarea" rows style="width:300px"></el-input>
           </el-form-item>
         </el-row>
@@ -56,7 +56,7 @@
         <el-row style="height:60px;">
           <el-form-item label="重置原因:" prop="reviforcedReasonewYear">
             <el-select
-              v-model="forcedReason"
+              v-model="operationDescription"
               placeholder
               remote
               @focus="getYear('年份','getYearList')"
@@ -95,9 +95,9 @@ export default {
       addNotes: false, //添加记录
       resete: false, //重置登录
       submitMsg: {
-        rollingType: "", //记录类型
+        operationType: "", //记录类型
         delayedTime: "", //延迟收卷时间
-        forcedReason: "", //原因
+        operationDescription: "", //原因
         appendTime: "", //发生时间
         invigilatorId: "", //监考老师id
         examId: "", //考试id
@@ -111,7 +111,7 @@ export default {
       dialogTitle: "", //弹出框title
       handelType: 0, //添加 0  修改2
       rules: {
-        rollingType: [{ required: true, message: '请选择强制原因', trigger: 'change' }],
+        operationType: [{ required: true, message: '请选择强制原因', trigger: 'change' }],
         delayedTime: [{ required: true, message: '请填写延迟时间', trigger: 'change' }]
       }
     };
@@ -172,7 +172,7 @@ export default {
             examId: this.submitMsg.examId,
             delayedDescription: this.submitMsg.delayedDescription,
             examperId: this.submitMsg.examperIds,
-            rollingType: this.submitMsg.rollingType,
+            operationType: this.submitMsg.operationType,
             forceReason: this.note,
             roomId: this.submitMsg.roomId
           }

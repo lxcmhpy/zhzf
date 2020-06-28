@@ -578,7 +578,7 @@
                     <li >
                          <!-- <img class="img" :src="'./static/images/img/temp/sp.jpg'" > -->
 
-                         <el-carousel direction="vertical" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
+                         <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
                             <el-carousel-item :key="0">
                                 <video width="280px" height="180px" controls>
                                     <source :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_V'" type="video/mp4">
@@ -827,6 +827,8 @@ export default {
             this.visible = true;
         },
         check () {
+            this.checkSearchForm.number = this.obj.vehicleNumber;
+            this.checkSearchForm.color = this.obj.vehicleColor;
             this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'colorList');
             this.checkVisible = true;
         },

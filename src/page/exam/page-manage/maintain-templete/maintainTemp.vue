@@ -1,13 +1,13 @@
 <template>
   <div class="com_searchAndpageBoxPadding temp">
-    <div class="searchPage toggleBox">
+    <div class="searchPage">
       <div class="handlePart">
-        <el-form :inline="true" :model="templeteForm" label-width="120px;" ref="templeteFormRef">
+        <el-form :inline="true" :model="templeteForm" label-width="80px" ref="templeteFormRef">
           <div>
             <div class="item">
               <el-row>
                 <el-form-item label="模板名称" prop="templeteName" >
-                  <el-input v-model="templeteForm.templeteName" placeholder="模板名称"></el-input>
+                  <el-input v-model="templeteName" placeholder="模板名称"></el-input>
                 </el-form-item>
                 <el-form-item style="margin-left:20px;">
                   <el-button
@@ -71,7 +71,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination-box">
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -214,6 +214,9 @@ export default {
     // 日志重置
     resetLog() {
       this.$refs["templeteFormRef"].resetFields();
+      this.templeteName = '';
+      this.currentPage = 1;
+      this.getTempleteList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -245,11 +248,4 @@ export default {
 <style  lang="scss" scoped>
 @import "@/assets/css/searchPage.scss";
 @import "@/assets/css/personManage.scss";
-.temp{
-  .pagination-box{
-    height: 40px;
-    text-align: center;
-    margin: 15px;
-  }
-}
 </style>

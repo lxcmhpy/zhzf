@@ -103,7 +103,7 @@ export default [
     meta: {
       title: "现场检查评分"
     },
-    component: () => import("@/page/catsAppraisalExamination/catsAppraisalOffLine.vue")
+    component: () => import("@/page/catsAppraisalExamination/catsAppraisalOffLineAdd.vue")
   }, {
     path: "/catsAppraisalGrade",
     name: "catsAppraisalGrade",
@@ -139,5 +139,12 @@ export default [
       title: "本期考核结果"
     },
     component: () => import("@/page/catsAppraisalExamination/catsAppraisalResult.vue")
+  }, {
+    path: "/catsAppraisalPDF",
+    name: "catsAppraisalPDF",
+    meta: {
+      title: "查看PDF"
+    },
+    component: () => import("@/page/catsAppraisalExamination/viewPDF.vue")
   }
 ]

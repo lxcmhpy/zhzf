@@ -1,20 +1,20 @@
 <template>
   <div class="com_searchAndpageBoxPadding page-apply">
-    <div class="searchPage toggleBox">
+    <div class="searchPage">
       <div class="handlePart">
         <el-form
           :inline="true"
           :model="maintainPageForm"
-          label-width="120px;"
+          label-width="80px"
           ref="maintainPageFormRef"
         >
           <div>
             <div class="item">
               <el-row>
-                <el-form-item label="试卷名称" prop="pageName" placeholder="试卷名称">
-                  <el-input v-model="maintainPageForm.pageName"></el-input>
+                <el-form-item label="试卷名称" prop="pageName" >
+                  <el-input v-model="maintainPageForm.pageName" placeholder="试卷名称"></el-input>
                 </el-form-item>
-                <el-form-item label="试卷类型" prop="pageType" style="margin-left:20px;">
+                <!-- <el-form-item label="试卷类型" prop="pageType" style="margin-left:20px;">
                   <el-select
                     v-model="maintainPageForm.pageType"
                     placeholder="试卷类型"
@@ -28,7 +28,7 @@
                       :value="value.id"
                     ></el-option>
                   </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item style="margin-left:20px;">
                   <el-button
                     title="搜索"
@@ -79,7 +79,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination-box">
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -158,6 +158,8 @@ export default {
     // 日志重置
     resetLog() {
       this.$refs["maintainPageFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getPageInfoList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -192,11 +194,6 @@ export default {
 .page-apply {
   .tablePart {
     height: calc(100% - 110px) !important;
-  }
-  .pagination-box {
-    height: 40px;
-    text-align: center;
-    margin: 15px;
   }
 }
 </style>

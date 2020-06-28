@@ -257,6 +257,8 @@ export default {
     // 重置查询条件
     reset() {
       this.$refs["personAduitForm"].resetFields();
+      this.currentPage= 1;
+      this.getApproveList();
     },
     //子组件回调方法
     getOrgList(){

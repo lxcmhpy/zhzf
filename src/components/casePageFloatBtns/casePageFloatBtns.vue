@@ -237,7 +237,7 @@
         this.$router.push({name: "case_handle_viewPDF"})
       },
       showApprovePeopleListBtn() {
-        this.$emit('showApprovePeopleList');
+        this.$emit('showApprovePeopleList'); 
       },
       approvalBtn() {
         this.$emit('showApproval');

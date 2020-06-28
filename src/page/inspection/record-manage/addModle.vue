@@ -72,9 +72,10 @@
                       </el-row>
                     </div>
                   </span>
-
                   <!-- 字段 -->
-                  <div v-else v-for="field in item.fieldList" :key="field.id">
+
+                  <!-- <div> -->
+                  <el-form v-else ref="childForm" v-for="(field,index1) in formData.templateFieldList[index].fieldList" :key="index1" :model="formData.templateFieldList[index]">
                     <el-row :gutter="20">
                       <el-col :span="2">
                         <el-form-item label-width="0" prop="required">
@@ -84,16 +85,16 @@
                       <!-- {{field}} -->
                       <el-col :span="16">
                         <!-- <el-form :model="field" ref="filedForm"> -->
-                        <el-form-item label-width="0" prop="title" :rules="{ required: true, message: '请输入字段名称', trigger: 'blur' }">
-                          <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
-                          </el-input>
-                          <!-- 
-                          <el-select v-model="item.classs" filterable allow-create clearable placeholder="请填写字段名称" @change="changeGroup(item)" >
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
-                          </el-select> -->
+                        <el-form-item label-width="0" :prop="'fieldList[' + index1 +  '].info'" :rules="{ required: true, message: '请输入字段名称', trigger: 'change' }">
+                          <!-- <el-input v-model="field.title" placeholder="请填写字段名称" clearable :style="{width: '100%'}">
+                          </el-input> -->
+
+                          <!-- 改成选择字段 -->
+                          <el-select v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)">
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField"></el-option>
+                          </el-select>
 
                         </el-form-item>
-                        <!-- </el-form> -->
                       </el-col>
                       <el-col :span="6">
                         <el-form-item label-width="0" style="width:calc(100% - 34px)" prop="type">
@@ -160,7 +161,10 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
-                  </div>
+                  </el-form>
+
+                  <!-- </div> -->
+
                 </el-collapse-item>
                 <span class="card-add-ziduan" @click="addField(item,index)" v-if="item.classs!='是否转立案'">
                   <i class="el-icon-circle-plus-outline"></i>
@@ -246,7 +250,8 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
-import { saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findAllCommonFieldApi } from "@/api/Record";
+import {  saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
+  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi} from "@/api/Record";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
@@ -409,6 +414,7 @@ export default {
 
       }
       this.findCommonGroupField()
+      this.findCommonField()
       this.getEnforceLawType();
       this.setLawPersonCurrentP();
       this.getAllOrgan('root');
@@ -485,35 +491,36 @@ export default {
             element.fieldList.forEach(item => {
               if (item.options) {
                 item.options = JSON.parse(item.options)
+
               }
+              // 改成选择字段
+              let itemData = JSON.parse(JSON.stringify(item))
+              console.log('itemData', itemData)
+              item.info = itemData.title
+              console.log(item)
             });
           });
           console.log('common', this.commonGroupFieldList)
-
+          // 获取通用字段
+          // this.commonFieldList = this.commonGroupFieldList[3].fieldList
         },
         error => {
 
         })
     },
-    // 获取通用字段
+    // 获取通用字段组
     findCommonField() {
-      findAllCommonFieldApi().then(
+      findAllCandidateFieldApi().then(
         res => {
-          this.commonFieldList = res.data
-          this.commonFieldList.forEach(element => {
-            element.fieldList.forEach(item => {
-              if (item.options) {
-                item.options = JSON.parse(item.options)
-              }
-            });
-          });
-          console.log('common', this.commonFieldList)
 
+          // 获取通用字段
+          this.commonFieldList = res.data
         },
         error => {
 
         })
     },
+
     // 获取机构下的人员
     getPerson() {
       findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(
@@ -584,82 +591,103 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.formData.templateFieldList, ':', this.defaultTemplateFieldList)
-          let fieldList = JSON.stringify(this.formData.templateFieldList)
-          let defaultFieldList = JSON.stringify(this.defaultTemplateFieldList)
-          console.log(fieldList, ':', defaultFieldList)
-          if (fieldList == defaultFieldList) {
-            this.$message('该请至少添加一个字段！');
+          let canSubmit = true;
+          // 验证字段中文名
+          for (var i = 0; i < this.$refs["childForm"].length; i++) {
+            this.$refs["childForm"][i].validate(isVaild => {
+              if (isVaild) {
+                console.log("ffff");
+              } else {
+                canSubmit = false;
+                return;
+              }
+            });
           }
-          else {
-            this.$confirm('完成当前模板，并发布？', "模板发布", {
-              confirmButtonText: "确认",
-              cancelButtonText: "取消",
-              type: "warning"
-            }).then(() => {
-              console.log('submit')
-              let data = JSON.parse(JSON.stringify(this.formData))
-              data.templateAdminId = '';
-              data.templateUserId = ''
-              let sort = this.globalCont
-              console.log('复制的', data.templateFieldList)
-              data.templateFieldList.forEach(element => {
-                element.fieldList.forEach(item => {
-                  item.sort = sort;
-                  sort++
+          if (canSubmit) {
+            debugger
+            console.log(this.formData.templateFieldList, ':', this.defaultTemplateFieldList)
+            let fieldList = JSON.stringify(this.formData.templateFieldList)
+            let defaultFieldList = JSON.stringify(this.defaultTemplateFieldList)
+            console.log(fieldList, ':', defaultFieldList)
+            if (fieldList == defaultFieldList) {
+              this.$message('该请至少添加一个字段！');
+            }
+            else {
+              this.$confirm('完成当前模板，并发布？', "模板发布", {
+                confirmButtonText: "确认",
+                cancelButtonText: "取消",
+                type: "warning"
+              }).then(() => {
+                console.log('submit')
+                let data = JSON.parse(JSON.stringify(this.formData))
+                data.templateAdminId = '';
+                data.templateUserId = ''
+                let sort = this.globalCont
+                console.log('复制的', data.templateFieldList)
+                data.templateFieldList.forEach(element => {
+                  element.fieldList.forEach(item => {
+                    item.sort = sort;
+                    sort++
+                  });
                 });
-              });
-              data.count = sort;
-              console.log('templateAdminId', data.templateAdminIdList)
-              console.log('templateUserIdList', data.templateUserIdList)
-              data.templateAdminIdList.forEach(element => {
-                data.templateAdminId = data.templateAdminId + ',' + element.id
-                data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
-              });
-              data.templateUserIdList.forEach(element => {
-                data.templateUser = data.templateUser + ',' + element.lawOfficerName
-                data.templateUserId = data.templateUserId + ',' + element.id
-              });
-              // 未做ie浏览器兼容处理
-              if (data.templateAdminId.substr(0, 1) == ',') {
-                data.templateAdminId = data.templateAdminId.substr(1)
-              }
-              if (data.templateAdmin.substr(0, 1) == ',') {
-                data.templateAdmin = data.templateAdmin.substr(1)
-              }
-              if (data.templateUserId.substr(0, 1) == ',') {
-                data.templateUserId = data.templateUserId.substr(1)
-              }
-              if (data.templateUser.substr(0, 1) == ',') {
-                data.templateUser = data.templateUser.substr(1)
-              }
-              data.templateUserIdList = '';
-              data.templateAdminIdList = '';
-              // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
-              data.templateFieldList = JSON.stringify(data.templateFieldList)
-              console.log('提交的字段', data)
-              debugger
-              saveOrUpdateRecordModleApi(data).then(
-                res => {
-                  console.log(res)
-                  if (res.code == 200) {
-                    this.$message({
-                      type: "success",
-                      message: res.msg
-                    });
-                    this.$emit("getAddModle", 'sucess');
-                    this.resetForm('formData')
-                    this.newModleTable = false;
-                  } else {
-                    this.$message.error(res.msg);
-                  }
-                },
-                error => {
+                data.count = sort;
+                console.log('templateAdminId', data.templateAdminIdList)
+                console.log('templateUserIdList', data.templateUserIdList)
+                data.templateAdminIdList.forEach(element => {
+                  // 使用userID
+                  data.templateAdminId = data.templateAdminId + ',' + element.userId
+                  data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
+                });
+                data.templateUserIdList.forEach(element => {
+                  data.templateUser = data.templateUser + ',' + element.lawOfficerName
+                   // 使用userID
+                  data.templateUserId = data.templateUserId + ',' + element.userId
+                });
+                // 未做ie浏览器兼容处理
+                if (data.templateAdminId.substr(0, 1) == ',') {
+                  data.templateAdminId = data.templateAdminId.substr(1)
+                }
+                if (data.templateAdmin.substr(0, 1) == ',') {
+                  data.templateAdmin = data.templateAdmin.substr(1)
+                }
+                if (data.templateUserId.substr(0, 1) == ',') {
+                  data.templateUserId = data.templateUserId.substr(1)
+                }
+                if (data.templateUser.substr(0, 1) == ',') {
+                  data.templateUser = data.templateUser.substr(1)
+                }
+                data.templateUserIdList = '';
+                data.templateAdminIdList = '';
+                // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
+                data.templateFieldList = JSON.stringify(data.templateFieldList)
+                console.log('提交的字段', data)
+                debugger
+                saveOrUpdateRecordModleApi(data).then(
+                  res => {
+                    console.log(res)
+                    if (res.code == 200) {
+                      this.$message({
+                        type: "success",
+                        message: res.msg
+                      });
+                      this.$emit("getAddModle", 'sucess');
+                      this.resetForm('formData')
+                      this.newModleTable = false;
+                    } else {
+                      this.$message.error(res.msg);
+                    }
+                  },
+                  error => {
 
-                })
-            })
+                  })
+              })
 
+            }
+          } else {
+            this.$message({ message: '字段中文名必填', type: 'warning' });
+            return false;
           }
+
         } else {
           this.$message({ message: '请完善模板内容', type: 'warning' });
           return false;
@@ -795,11 +823,16 @@ export default {
         field.options[0].value = 'yyyy-MM-dd HH:mm:ss'
       }
     },
+    // 选中组
     changeGroup(group) {
+      // debugger
       var defaut = this.commonGroupFieldList.find(item => item.classs === group.classs)
+      console.log(defaut)
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList
+        console.log('ggroup.fieldList', group.fieldList)
+
       } else if (!group.fieldList || group.fieldList.length == 0) {
         console.log(group.fieldList)
         group.fieldList = [];
@@ -808,14 +841,35 @@ export default {
         group.fieldList.push(defautfieldList)
       }
     },
+    changeField(info, field) {
+      // debugger
+      console.log('选中的字段info', info)
+      console.log('选中的字段', field)
+      if (info.id) {
+        // 判断是不是通用字段
+        field.id = field.info.id
+        field.field = field.info.field
+        field.title = field.info.title
+        field.type = field.info.type || '文本型'
+        field.options = JSON.parse(field.info.options)
+        field.sort = field.sort
+        field.remark = field.info.remark
+        field.required = field.info.required
+        field.status = field.info.status
+        field.templateId = field.info.templateId
+      } else {
+        field.title = info
+      }
+
+    },
     handleClose() {
-      debugger
+      // debugger
       this.resetForm('formData')
       this.newModleTable = false;
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.formData.title=''
+      this.formData.title = ''
       this.titileText = '';
       this.formData.templateFieldList = [
         {

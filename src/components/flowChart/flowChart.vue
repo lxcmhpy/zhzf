@@ -61,16 +61,21 @@ export default {
     }
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
+  computed: { ...mapGetters(['caseId','province']) },
   methods: {
     async getFlowStatusByCaseId(id) {
       //   console.log(id)
       let _this = this;
-      if(_this.caseFlowData.flowName == "赔补偿流程"){
-        _this.graphData = graphData.compensationGraphData;
-      }else{
-        _this.graphData = graphData.commonGraphData;
+      if(this.province == 'BZ'){  //标准版
+        if(_this.caseFlowData.flowName == "赔补偿流程"){
+          _this.graphData = graphData.compensationGraphData;
+        }else{
+          _this.graphData = graphData.commonGraphData;
+        }
+      }else if(this.province == 'JX'){  //江西
+          _this.graphData = graphData.commonGraphData_JX;
       }
+      
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
           console.log('流程图', res)

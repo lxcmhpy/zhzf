@@ -93,7 +93,7 @@
 <script>
 import { mixinPerson } from "@/common/js/personComm";
 import addExamPerson from "./addExamPerson";
-import { exportInvigilatorApi } from "@/api/exam";
+import { downLoadFile } from '@/api/joinExam';
 
 export default {
   mixins: [mixinPerson],
@@ -127,28 +127,23 @@ export default {
     },
     // 导出人员
     exportInfo() {
-      let _this = this;
       let data = {
-        examId: _this.invigilateForm.examId
+        examId: this.invigilateForm.examId
       };
-      // _this.getPageList("exportInvigilatorInfo",data);
-      _this.$store.dispatch("exportInvigilatorInfo", data).then(
-        res => {
-          console.info(JSON.stringify(res));
-          let url = window.URL.createObjectURL(res.data); //表示一个指定的file对象或Blob对象
-          console.log(url, "看一下这是啥");
-          let a = document.createElement("a");
-          document.body.appendChild(a);
-          a.href = url;
-          a.target = "_blank";
-          a.download = res.fileName; //命名下载名称
-          a.click(); //点击触发下载
-          window.URL.revokeObjectURL(url); //下载完成进行释放
-        },
-        err => {
-          _this.$message({ type: "error", message: err.msg || "" });
-        }
-      );
+      const loading = this.$loading({
+        lock: true,
+        text: '正在导出',
+        spinner: 'car-loading',
+        customClass: 'loading-box',
+        background: 'rgba(234,237,244, 0.8)'
+      });
+      this.$store.dispatch('exportInvigilatorInfo', data).then(res => {
+        loading.close()
+        downLoadFile(res.data, res.fileName);
+      }, err => {
+        loading.close();
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
     },
     getInvigilateAllInfo() {
       //查询监考列表
@@ -174,8 +169,9 @@ export default {
       this.getInvigilateAllInfo();
     },
     resetLog() {
-      let _this = this;
-      _this.$refs["invigilateFormRef"].resetFields();
+      this.$refs["invigilateFormRef"].resetFields();
+      this.currentPage = 1 ;
+      this.getInvigilateAllInfo();
     },
     closeDialog() {
       let _this = this;

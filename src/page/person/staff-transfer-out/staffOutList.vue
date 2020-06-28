@@ -3,15 +3,15 @@
     <div class="searchPageLayout" id="userBox">
       <div class="searchPage">
         <div class="handlePart">
-          <el-form :inline="true" class="search-form" ref="staffOutForm" label-width="70px">
+          <el-form :model="staffOutForm" :inline="true" class="search-form" ref="staffOutForm" label-width="70px">
             <el-row>
-              <el-form-item label="姓名">
+              <el-form-item label="姓名" prop="personName">
                 <el-input v-model="staffOutForm.personName"></el-input>
               </el-form-item>
-              <el-form-item label="执法证号">
-                <el-input v-model="staffOutForm.certNo"></el-input>
+              <el-form-item label="身份证号" prop="idNo">
+                <el-input v-model="staffOutForm.idNo"></el-input>
               </el-form-item>
-              <el-form-item label="调出机构">
+              <el-form-item label="调出机构" prop="outOName">
                 <el-input v-model="staffOutForm.outOName"></el-input>
               </el-form-item>
               <el-form-item label=" " label-width="13px">
@@ -53,6 +53,7 @@
                   placeholder="执法领域"
                   remote
                   @focus="getDepatements('执法门类','branchIdsInfo')"
+                  @change="setSelectVal($event, 'branchId')"
                 >
                   <el-option
                     v-for="value in branchIdsInfo"
@@ -69,6 +70,7 @@
                   placeholder="职务"
                   remote
                   @focus="getDepatements('人员信息-职务','postIdsInfo')"
+                  @change="setSelectVal($event, 'post')"
                 >
                   <el-option
                     v-for="value in postIdsInfo"
@@ -134,12 +136,13 @@ export default {
       isShow: false,
       staffOutForm: {
         personName: "", //姓名
-        certNo: "", //执法证号
+        idNo: "", //执法证号
         oid: "", //所属机构
         branchName: "", //执法门类
         post: "",
         oName: "",
-        branchName: ""
+        branchName: "",
+        outOName: ""
       },
       tableData: [], //表格数据
       defaultExpandedKeys: [], //默认展开的key
@@ -193,23 +196,6 @@ export default {
     //点击下拉框的时候后头获取下拉框数据
     getDepatements(name, codeName) {
       let _this = this;
-      if (_this.branchIdsInfo.length === 0) {
-        _this.$store.dispatch("findAllDrawerByName", name).then(res => {
-          if (res.code === 200) {
-            if (codeName === "branchIdsInfo") {
-              _this.branchIdsInfo = res.data;
-            }
-            if (codeName === "postIdsInfo") {
-              _this.postIdsInfo = res.data;
-            }
-            if (codeName === "oidsInfo") {
-              _this.oidsInfo = res.data;
-            }
-          } else {
-            console.info("没有查询到数据");
-          }
-        });
-      }
       _this.$store.dispatch("findAllDrawerByName", name).then(res => {
         if (res.code === 200) {
           if (codeName === "branchIdsInfo") {
@@ -226,6 +212,11 @@ export default {
         }
       });
     },
+    // 下拉框设置值
+    setSelectVal(e, item){
+      this.staffOutForm[item] = e;
+
+    },
     getStaffOutPage() {
       //查询列表
       let _this = this;
@@ -233,7 +224,7 @@ export default {
         branchId: _this.staffOutForm.branchId,
         outOName: _this.staffOutForm.outOName,
         post: _this.staffOutForm.post,
-        certNo: _this.staffOutForm.certNo,
+        idNo: _this.staffOutForm.idNo,
         personName: _this.staffOutForm.personName,
         current: _this.currentPage,
         size: _this.pageSize
@@ -257,8 +248,10 @@ export default {
 
     reset() {
       // 重置查询条件
-      this.$refs["userForm"].resetFields();
-      this.$refs["staffOutForm"].resetFields();
+      this.$refs["userForm"] && this.$refs["userForm"].resetFields();
+      this.$refs["staffOutForm"] && this.$refs["staffOutForm"].resetFields();
+      this.currentPage = 1;
+      this.getStaffOutPage();
     },
     //获取选中的user
     selectData(val) {

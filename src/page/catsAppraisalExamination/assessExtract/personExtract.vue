@@ -6,23 +6,24 @@
         <div class="search">
           <el-form :label-position="labelPosition" :model="search" ref="form" label-width="160px" :inline="true" >
             <el-form-item label="所属机构">
-              <el-select v-model="search.OId" placeholder="请选择" >
+              <el-select v-model="search.oId" placeholder="请选择"  @change="fetchData" >
                 <el-option v-for="(item,index) in organList" :key="index" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="考核名称">
+            <!-- <el-form-item label="考核名称">
               <el-select v-model="search.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item>
+            </el-form-item> -->
+            <!-- <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="randomSamplingStaff">随机抽取</el-button>
+            </el-form-item> -->
+            <el-form-item v-show="!isSubmit">
+              <el-button type="primary" v-show="personList.length>0" size="medium" icon="el-icon-plus"  @click="randomSamplingStaff">随机抽取</el-button>
+              <el-button type="primary" v-show="personList.length>0" size="medium" icon="el-icon-plus"  @click="submitStaff">确认抽取</el-button>
             </el-form-item>
 
           </el-form>
@@ -31,17 +32,25 @@
         <div class="extractPage">
           <div class="com_extract_top" >
             <el-transfer width="100%" :titles="['人员列表', '已抽取人员']" v-model="value"
-                         :button-texts="['取消', '抽取']" :data="personList"
+                         :button-texts="['', '']" :data="personList"
                          @change="handleChange">
                 <span slot-scope="{ option }" >
-                    <ul class="transfer-list" >
-                        <li><span>姓名:{{ option.staffName }} </span></li>
-                        <li><span>证件号:{{ option.maritimeNo }} </span></li>
+                    <ul class="transfer-list " >
+                        <li><span class="left">{{option.key+1}}</span></li>
+                        <li ><span>{{ option.staffName }} </span></li>
+                        <li><span>{{ option.maritimeNo }} </span></li>
                     </ul>
                 </span>
-<!--              <el-button class="transfer-footer" slot="left-header" size="small" @click="leftClick">操作</el-button>-->
-<!--              <el-button class="transfer-footer" slot="right-header" size="small" @click="rightClick">操作</el-button>-->
-
+                <ul class="transfer-list " slot="left-footer" >
+                    <li><span>序号</span></li>
+                    <li><span>姓名</span></li>
+                    <li><span>证件号</span></li>
+                </ul>
+                <ul class="transfer-list " slot="right-footer" >
+                    <li><span>序号</span></li>
+                     <li><span>姓名</span></li>
+                    <li><span>证件号</span></li>
+                </ul>
             </el-transfer>
           </div>
         </div>
@@ -51,46 +60,60 @@
 </template>
 <script>
   import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhStaffByPage,randomSamplingStaffByPage,findListVoByBatch,findAllDepartment,submitProStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {findPykhStaffByPage,randomSamplingStaffByPage,findListVoByBatch,findAllDepartment,submitProStaff,submitStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {getCurrentBatchId} from "@/api/catsAppraisalStartUp.js";
   import iLocalStroage from '@/common/js/localStroage';
+  import qs from 'qs';
 
   export default {
     data() {
       return {
         value: [],
         search:{
-          OId:"",
-          batchId:""
+          oId:"",
+          batchId:"",
+          current:1,
+          size:1000,
+          bsStatus:"1"
         },
         personList:[],
         organId:"",
         labelPosition: 'right',
         batchList:[],
-        organList:[]
-
+        organList:[],
+        isSubmit:false
       };
     },
     methods:{
-      fetchData(data){
-        data.size=1000;
-        data.current=1;
-        console.info("查询参数：",data)
-        findPykhStaffByPage(data).then(res=>{
-          console.info("根据条件分页查询人员列表:",res);
+      fetchData(){
+        findPykhStaffByPage(this.search).then(res=>{
+          // console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
             var personlist=[];
+            this.value=[]
             for(var i=0;i<res.data.records.length;i++){
               var maritimeNo=res.data.records[i].maritimeNo==null?'':res.data.records[i].maritimeNo+",";
               var provinceNo=res.data.records[i].provinceNo==null?'':res.data.records[i].provinceNo+",";
               var ministerialNo=res.data.records[i].ministerialNo==null?'':res.data.records[i].ministerialNo+",";
+              if(res.data.records[i].staffStatus!=0){
+                this.value.push(i)
+              }
               personlist.push({
                 key: i,
                 label: res.data.records[i].staffName,
                 staffName:res.data.records[i].staffName,
                 maritimeNo: maritimeNo+provinceNo+ministerialNo,
                 staffId:res.data.records[i].staffId,
-                disabled: res.data.records[i].staffStatus==0?false:true
+                //disabled: res.data.records[i].staffStatus==0?false:true
               });
+            }
+            if(this.value.length>0){
+              this.isSubmit = true
+              personlist.forEach((item)=>{
+                item.disabled=true
+              })
+            }else{
+              this.isSubmit = false
             }
             this.personList=personlist;
           }
@@ -98,45 +121,63 @@
         });
       },
       handleChange(value, direction, movedKeys) {
-        console.log(value, direction, movedKeys);
-        var ids=[];
+        /* console.log(value, direction, movedKeys);
+        var ids= [];
         var personList=this.personList;
         console.info("personlist:",personList)
-        // for (var i =0 ;i<personList.length;i++){
-        //   for(var j=0;j<value.length;j++){
-        //     console.info("抽取号：",value[j])
-        //     if(i!=value[j]){
-        //       ids.push(personList[i].staffId);
-        //     }
-        //   }
-        // }
         for(var j=0;j<value.length;j++){
-          // for (var i =0 ;i<personList.length;i++){
-          //   if(i==value[j]){
-          //           ids.push(personList[i].staffId);
-          //   }
-          //   break;
-          // }
+          // ids+="idList="+personList[value[j]].staffId+"&"
           ids.push(personList[value[j]].staffId)
         }
-        console.info("ids:",ids)
+        // console.info("ids:",qs.stringify(ids, { arrayFormat: 'brackets' }))
         var submitProStaffData={};
-        submitProStaffData.idList=ids;
+        submitProStaffData.idList= ids ;
         submitProStaffData.batchId=this.search.batchId;
-        submitProStaff(submitProStaffData,this.search.OId).then(res=>{
-          console.info("抽取结果",res);
+        let _this = this
+        submitStaff(submitProStaffData).then(res=>{
+          if(res.code===200){
+            if(res.data === "操作成功"){
+              _this.$message({type: "success",message: res.data});
+            }else if(res.data === "取消成功"){
+              _this.$message({type: "success",message: res.data});
+              _this.value = []
+            }else{
+              _this.$message({type: "error",message: res.data});
+              _this.value = []
+            }
+          }
+        }); */
+      },
+      submitStaff() {
+        var ids= [];
+        var personList=this.personList;
+        for(var j=0;j<this.value.length;j++){
+          ids.push(personList[this.value[j]].staffId)
+        }
+        if(ids.length===0){
+          this.$message({type: "warning",message: "请先抽取数据"});
+          return
+        }
+        var submitProStaffData={};
+        submitProStaffData.idList= ids ;
+        submitProStaffData.batchId=this.search.batchId;
+        let _this = this
+        submitStaff(submitProStaffData).then(res=>{
+          if(res.code===200){
+            if(res.data === "操作成功"){
+              _this.personList.forEach((item)=>{
+                item.disabled=true
+              })
+              _this.isSubmit=true
+              _this.$message({type: "success",message: res.data});
+            }else if(res.data === "取消成功"){
+              _this.$message({type: "success",message: res.data});
+              _this.value = []
+            }else{
+              _this.$message({type: "error",message: res.data});
+            }
+          }
         });
-      },
-      resetSearch(){
-        this.search={}
-      },
-      searchData(){
-
-        let data={};
-        data.OId=this.search.OId;
-        data.batchId=this.search.batchId;
-        console.info("this.search:",data)
-        this.fetchData(data);
       },
       randomSamplingStaff(){
         if(this.search.batchId=="" || this.search.OId=="" ){
@@ -145,19 +186,26 @@
             type: 'error'
           })
         }else{
-          randomSamplingStaffByPage(this.search.OId,this.search.batchId).then(res=>{
-            console.info("部级随机抽取人员:",res);
+          this.value=[]
+          let _this = this
+          randomSamplingStaffByPage(this.search.oId,this.search.batchId).then(res=>{
+            if(res.code==200){
+              for(var i=0;i<res.data.length;i++){
+                var id = res.data[i].staffId
+                _this.personList.forEach(function(item){
+                    if(item.staffId === id){
+                      _this.value.push(item.key)
+                    }
+                })
+              }
+            }
           })
         }
       },
       getBatch(){
-        let batchData={}
-        let nowDate = new Date();
-        batchData.batchYear=nowDate.getFullYear();
-        findListVoByBatch(batchData).then(res=>{
-          console.info("请求批次结果：",res);
+        getCurrentBatchId().then(res=>{
           if(res.code=200){
-            this.batchList=res.data
+            this.search.batchId=res.data
           }
         });
       },

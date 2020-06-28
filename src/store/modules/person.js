@@ -7,7 +7,8 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
     lossDocApi,withholdApi,unWithholdApi,logoffApi,revokeApi,getYearApi,approveArApi,reApproveArApi,queryRArDataApi,paramListApi,paramUpdateApi,getStaffOutListApi,getLastApproveRecordApi,getCertHistoryPageListApi,
     queryPersonCertApi,getApproveApi,getQueryArDataByPersonIdApi,unLossDocApi,queryByOidApi,queryApproveProcessPageApi,updateApApi,getCertNoApi,changeCertByEndDateApi,examInfoPageListApi,addExamInfoApi
     ,getProvinceCode,deleteExamInfoByIdApi,updateExamInfoApi,deleteTrainInfoByIdApi,updateTrainInfoApi,addTrainInfoApi,trainInfoPageListApi, initAllApprove, personEdabled,uploadMaterial,
-    savePersonMaterial, getAllOrigin, savePersonPhoto,getScheduleJobPageApi,addScheduleJobApi,updateScheduleJobApi,cacheQuestionRedisApi,resumeScheduleJobInfoApi,deleteScheduleJobApi
+    savePersonMaterial, getAllOrigin, savePersonPhoto,getScheduleJobPageApi,addScheduleJobApi,updateScheduleJobApi,cacheQuestionRedisApi,resumeScheduleJobInfoApi,deleteScheduleJobApi,repauseAllJobApi,pauseAllJobApi,
+    resumejobApi,pausejobApi
   } from "@/api/person";
   
   const person = {
@@ -1083,7 +1084,7 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
       }, error => {reject(error)})
     })
   },
-    //考配置查询
+    //任务查询
     getScheduleJobPageModul({commit},data){
         return new Promise((resolve, reject) => {
             getScheduleJobPageApi(data).then(
@@ -1120,7 +1121,7 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
         })
         },
         
-               //考配置修改
+               //考配置删除
                deleteScheduleJobModul({commit},data){
                 return new Promise((resolve, reject) => {
                     deleteScheduleJobApi(data).then(
@@ -1132,10 +1133,10 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
                     })
                 })
                 },
-        //手动配置
-        cacheQuestionRedis({commit},data){
+        //暂停
+        pausejob({commit},data){
             return new Promise((resolve, reject) => {
-                cacheQuestionRedisApi(data).then(
+                pausejobApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1144,10 +1145,10 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
                 })
             })
             },
-             //启用停用
-             resumeScheduleJobInfo({commit},data){
+             //恢复
+             resumejob({commit},data){
             return new Promise((resolve, reject) => {
-                resumeScheduleJobInfoApi(data).then(
+                resumejobApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1156,6 +1157,30 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
                 })
             })
             },
+            //全部暂停
+            pauseAllJob({commit}){
+            return new Promise((resolve, reject) => {
+                pauseAllJobApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },
+         //全部恢复
+         repauseAllJob({commit}){
+            return new Promise((resolve, reject) => {
+                repauseAllJobApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },   
 
   }
   }

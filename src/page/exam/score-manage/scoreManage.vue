@@ -89,13 +89,13 @@
             <el-table-column prop="scorerPhone" label="联系电话" align="center"></el-table-column>
             <el-table-column label="操作" align="center" fixed="right">
               <template slot-scope="scope">
-                <el-button type="text" @click="deleteScore(scope.row)">删除</el-button>
                 <el-button type="text" @click="addExamBatchInfo(scope.row,'1')">修改</el-button>
+                <el-button type="text" @click="deleteScore(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
-        <div class="pagination-box">
+        <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -240,6 +240,8 @@ export default {
     // 日志重置
     resetLog() {
       this.$refs["scoreManageFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getExamBatchList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -305,8 +307,5 @@ export default {
   .m-r-30 {
     margin-right: 30px;
   }
-} .pagination-box{
-    margin-top: 20px;
-    text-align: center;
-  }
+}
 </style>

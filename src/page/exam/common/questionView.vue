@@ -13,28 +13,36 @@
                   class="level-name"
                   :class="`level-${questionLevelNume.indexOf(questionLevel)}`"
                 >{{questionLevel}}</span>
-                {{question.questionName}}</div>
+                {{question.questionName}}
+              </div>
               <div
                 class="question-option"
                 v-for="itemSon in question.optionList"
                 :key="itemSon.optionNum"
               >
-                <!-- 单选&判断 -->
-                <el-radio
-                  v-if="questionTypeTxt === 'radio'"
-                  v-model="answer"
-                  :label="itemSon.optionKey"
-                  disabled
-                >{{itemSon.optionNum}}:{{itemSon.optionName}}</el-radio>
-                <!-- 复选 -->
-                <el-checkbox
-                  v-if="questionTypeTxt === 'checkbox'"
-                  :checked="itemSon.optionKey == '1'? true : false"
-                  disabled
-                >{{itemSon.optionNum}}:{{itemSon.optionName}}</el-checkbox>
-                <div class="option-img" v-if="itemSon.optionPicture">
-                  <el-image :src="itemSon.optionPicture"></el-image>
-                </div>
+                <el-row>
+                  <el-col :span="itemSon.optionPicture ? 16 : 24">
+                    <!-- 单选&判断 -->
+                    <el-radio
+                      v-if="questionTypeTxt === 'radio'"
+                      v-model="answer"
+                      :label="itemSon.optionKey"
+                      disabled
+                    >{{itemSon.optionNum}}:{{itemSon.optionName}}</el-radio>
+                    <!-- 复选 -->
+                    <el-checkbox
+                      v-if="questionTypeTxt === 'checkbox'"
+                      :checked="itemSon.optionKey == '1'? true : false"
+                      disabled
+                    >{{itemSon.optionNum}}:{{itemSon.optionName}}</el-checkbox>
+                  </el-col>
+                  <el-col v-if="itemSon.optionPicture" :span="8">
+                    <div>
+                      <!-- <el-image :src="baseUrl + itemSon.optionPicture"></el-image> -->
+                      <el-image src="../../../../static/images/img/temp/tempImg.jpg"></el-image>
+                    </div>
+                  </el-col>
+                </el-row>
               </div>
               <div v-if="questionTypeTxt === 'essays'" style="width: 100%;">
                 <el-input
@@ -59,8 +67,8 @@
         </el-col>
         <el-col v-if="question.questionPicture" :span="8">
           <div class="stem-img">
-            <el-image :src="question.questionPicture"></el-image>
-            <a class="view-img" @click="viewImage(item.questionPicture)">查看大图</a>
+            <el-image :src="baseUrl + question.questionPicture"></el-image>
+            <a class="view-img" @click="viewImage(question.questionPicture)">查看大图</a>
           </div>
         </el-col>
       </el-row>
@@ -85,12 +93,14 @@
         </div>
       </div>
     </div>
-    <el-dialog title="查看大图" :visible.sync="dialogVisible">
+    <el-dialog title="查看大图" :visible.sync="dialogVisible" append-to-body>
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
   </div>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   name: "questionView",
   props: {
@@ -116,7 +126,7 @@ export default {
     },
     questionLevel: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   data() {
@@ -124,7 +134,7 @@ export default {
       answer: "1",
       dialogImageUrl: "",
       dialogVisible: false,
-      questionLevelNume: ['简单', '一般', '困难']
+      questionLevelNume: ["简单", "一般", "困难"]
     };
   },
   computed: {
@@ -145,13 +155,16 @@ export default {
           break;
       }
       return txt;
+    },
+    baseUrl() {
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   mounted() {},
   methods: {
     // 查看大图
     viewImage(src) {
-      this.dialogImageUrl = src;
+      this.dialogImageUrl = this.baseUrl + src;
       this.dialogVisible = true;
     },
     // 获取正确答案
@@ -168,9 +181,9 @@ export default {
             }
           });
         }
-        if(item.answer){
-          return item.answer
-        }else{
+        if (item.answer) {
+          return item.answer;
+        } else {
           return answer.join(", ");
         }
       } else {
@@ -276,7 +289,7 @@ export default {
   position: relative;
   border: 1px solid #e5e5e5;
   margin-bottom: 20px;
-  &.locked{
+  &.locked {
     border: 1px solid red;
   }
   &.noBorder {
@@ -311,6 +324,18 @@ export default {
         >>> .el-radio,
         >>> .el-checkbox {
           color: #000;
+          width: 100%;
+          .el-radio__input{
+            vertical-align: top;
+          }
+          .el-radio__label{
+            display: inline-block;
+            width: calc(100% - 30px);
+            word-break: break-all;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: break-spaces;
+          }
         }
         >>> .el-radio__input.is-disabled + span.el-radio__label,
         >>> .el-checkbox__input.is-disabled + span.el-checkbox__label {
@@ -359,7 +384,7 @@ export default {
       bottom: 0;
       width: 100%;
       background: rgba(74, 175, 167, 0.85);
-      &.isLocked{
+      &.isLocked {
         background: rgba(224, 32, 32, 0.85);
         text-align: center;
       }

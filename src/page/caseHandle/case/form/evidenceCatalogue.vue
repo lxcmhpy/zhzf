@@ -162,10 +162,13 @@ export default {
       }else{
         this.form.evType = '其他附件'
       }
+      fd.append("evType", this.form.evType); 
+      
 
       let _this = this
       uploadEvdence(fd).then(res => {
         console.log("1111111",res);
+        
         if (res.code == 200){
           this.$refs.evidenceUploadSuccessRef.showModal(this.fileLength);
           _this.addVisible = false;

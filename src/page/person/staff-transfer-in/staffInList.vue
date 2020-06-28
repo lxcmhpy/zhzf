@@ -3,15 +3,15 @@
     <div class="searchPageLayout" id="userBox">
       <div class="searchPage">
         <div class="handlePart">
-          <el-form class="search-form" :inline="true" ref="staffInForm" label-width="70px">
+          <el-form class="search-form" :model="staffInForm" :inline="true" ref="staffInSearchForm" label-width="70px">
             <el-row>
-              <el-form-item label="姓名">
+              <el-form-item label="姓名" prop="personName">
                 <el-input v-model="staffInForm.personName"></el-input>
               </el-form-item>
-              <el-form-item label="执法证号">
-                <el-input v-model="staffInForm.certNo"></el-input>
+              <el-form-item label="身份证号" prop="idNo">
+                <el-input v-model="staffInForm.idNo"></el-input>
               </el-form-item>
-              <el-form-item label="调入机构" prop="oid">
+              <el-form-item label="调入机构" prop="inOName">
                 <el-input v-model="staffInForm.inOName"></el-input>
               </el-form-item>
               <el-form-item label=" " label-width="13px">
@@ -144,7 +144,7 @@ export default {
       isShow: false,
       staffInForm: {
         personName: "", //姓名
-        certNo: "", //执法证号
+        idNo: "", //执法证号
         oid: "", //所属机构
         branchName: "", //执法门类
         post: "",
@@ -258,7 +258,7 @@ export default {
         branchId: _this.staffInForm.branchId,
         inOName: _this.staffInForm.inOName,
         post: _this.staffInForm.post,
-        certNo: _this.staffInForm.certNo,
+        idNo: _this.staffInForm.idNo,
         personName: _this.staffInForm.personName,
         current: _this.currentPage,
         size: _this.pageSize
@@ -286,9 +286,9 @@ export default {
     handleDelete(row) {},
     // 重置查询条件
     reset() {
-      let _this = this;
-      _this.$refs["userForm"].resetFields();
-      _this.$refs["staffInForm"].resetFields();
+      this.$refs["staffInSearchForm"].resetFields();
+      this.currentPage = 1 ;
+      this.getStaffinPage();
     },
 
     //新增

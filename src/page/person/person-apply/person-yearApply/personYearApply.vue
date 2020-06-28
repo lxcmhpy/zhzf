@@ -273,49 +273,12 @@ export default {
     },
     //点击下拉框的时候后头获取下拉框数据
     getDepatements(name, codeName) {
-      if (this.branchIdsInfo.length === 0) {
+      if (this[codeName].length === 0) {
         this.$store.dispatch("findAllDrawerByName", name).then(
           //查询执法领域
           res => {
             if (res.code === 200) {
-              if (codeName === "branchIdsInfo") {
-                this.branchIdsInfo = res.data;
-              }
-              if (codeName === "postList") {
-                this.postList = res.data;
-              }
-              if (codeName === "oidsInfo") {
-                this.oidsInfo = res.data;
-              }
-              if (codeName === "resultList") {
-                this.resultList = res.data;
-              }
-            } else {
-              console.info("没有查询到数据");
-            }
-          }
-        );
-      }
-    },
-    //点击下拉框的时候后头获取下拉框数据
-    getDepatements(name, codeName) {
-      if (this.branchIdsInfo.length === 0) {
-        this.$store.dispatch("findAllDrawerByName", name).then(
-          //查询执法领域
-          res => {
-            if (res.code === 200) {
-              if (codeName === "branchIdsInfo") {
-                this.branchIdsInfo = res.data;
-              }
-              if (codeName === "postList") {
-                this.postList = res.data;
-              }
-              if (codeName === "oidsInfo") {
-                this.oidsInfo = res.data;
-              }
-              if (codeName === "reviewScoreList") {
-                this.reviewScoreList = res.data;
-              }
+              this[codeName] = res.data;
             } else {
               console.info("没有查询到数据");
             }
@@ -384,6 +347,8 @@ export default {
     // 重置查询条件
     reset() {
       this.$refs["userForm"].resetFields();
+      this.currentPage = 1 ;
+      this.getPersonList();
     },
 
     //新增

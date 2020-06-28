@@ -3,7 +3,7 @@
     <el-container id="fullscreenCon">
       <el-header id="mainHeader">
         <div class="main_logo"><img :src="'./static/images/img/main/logo.png'" alt="">
-          <span>{{ systemTitle }}(人员考试子系统)</span>
+          <span>{{ systemTitle }}--人员考试系统</span>
         </div>
         <div v-if="showLogout" class="headerRight">
           <div>
@@ -22,9 +22,8 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
-import { getDictListDetailByNameApi } from "@/api/system";
 export default {
-  name: "mainLagout",
+//   name: "mainLagout",
   data() {
     return {
 
@@ -39,7 +38,7 @@ export default {
       return this.$route.path !== '/startAnswer'
     },
     systemTitle(){
-      return sessionStorage.getItem('DocumentTitle');
+      return localStorage.getItem("SYS_TITLE");
     }
   },
   inject: ["reload"],
@@ -51,25 +50,13 @@ export default {
       }, err => {
         this.$router.push("/examLogin");
       })
-    },
-    //获取系统标题
-    getSystemData() {
-      if(this.systemTitle){
-        window.document.title = this.systemTitle;
-        return;
-      }
-      getDictListDetailByNameApi('系统标题').then(res => {
-        sessionStorage.setItem('DocumentTitle', res.data[0].name);
-        window.document.title = res.data[0].name
-      }, err => {
-        console.log(err);
-      })
     }
   },
   watch: {},
   mounted() {},
   created(){
-    this.getSystemData();
+    // this.$util.initUser(this);
+    // this.success = false;
   }
 };
 </script>

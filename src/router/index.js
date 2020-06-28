@@ -4,6 +4,7 @@ import {routers} from "./router";
 import iLocalStroage from "@/common/js/localStroage";
 import { personDetailRouter } from './routerExport/routerJson/personRouterJson';
 import store from '@/store/index.js';
+import { showFullScreenLoading, tryHideFullScreenLoading } from "@/common/js/loading";
 const vm = new Vue();
 
 Vue.use(VueRouter);
@@ -19,47 +20,49 @@ const RouterConfig = {
   mode: "hash",
   routes: routers
 };
-let getRouter;
 export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
-  let tokenObj = iLocalStroage.getExpired('TokenKey');
-  if (tokenObj) {
-    //判断是否登录
-    if (to.path === "/login") {
-        store.commit('CLEAR_ALL_CACHE');
-        next({name: "login"});
-    } else if (to.path.indexOf('personDetailPage') > -1 && localStorage.getItem('NewRouter') && from.path === '/') {
-      // 人员管理--个人详情动态生成路由刷新
-      personDetailRouter(localStorage.getItem('NewRouter'), router);
-    } else {
-      next();
-    }
-  } else {
-    //未登录  进入登录页面
-    // debugger;
-    if (whiteList.indexOf(to.path) !== -1) {
-        store.commit('CLEAR_ALL_CACHE');
-        next();
-    } else {
-
-        let arrayPath = to.path.split('/');
-        if(arrayPath.length > 1 && regularList[arrayPath[1]]&&regularList[arrayPath[1]].test(to.path)) {
+    // let loadingType =  to.params.loadingType ? to.params.loadingType : 'loadFull';
+    // 考试系统不需要全局loading效果
+    to.meta.loading !== false&& to.params.loadingType && showFullScreenLoading(loadingType);
+    let tokenObj = iLocalStroage.getExpired('TokenKey');
+    if (tokenObj) {
+        //判断是否登录
+        if (to.path === "/login") {
             store.commit('CLEAR_ALL_CACHE');
+            // {name: "login"}
+            next();
+            // next({name: "case_handle_home_index"});
+        } else if (to.path.indexOf('personDetailPage') > -1 && localStorage.getItem('NewRouter') && from.path === '/') {
+        // 人员管理--个人详情动态生成路由刷新
+        personDetailRouter(localStorage.getItem('NewRouter'), router);
+        } else {
+        next();
+        }
+    } else {
+        //未登录  进入登录页面
+        if (whiteList.indexOf(to.path) !== -1) {
             next();
         } else {
-            if(sessionStorage.getItem('LoginSystem')){
-                    // 考试人员子系统
-                // store.commit('CLEAR_ALL_CACHE');
-                next({name: 'examLogin'});
-            }else{
+            let arrayPath = to.path.split('/');
+            if(arrayPath.length > 1 && regularList[arrayPath[1]]&&regularList[arrayPath[1]].test(to.path)) {
                 store.commit('CLEAR_ALL_CACHE');
-                next({name: "login"});
+                next();
+            } else {
+                if(sessionStorage.getItem('LoginSystem')){
+                        // 考试人员子系统
+                    // store.commit('CLEAR_ALL_CACHE');
+                    next({name: 'examLogin'});
+                }else{
+                    // store.commit('CLEAR_ALL_CACHE');
+                    next({name: "login"});
+                }
             }
         }
     }
-  }
 });
 router.afterEach(to => {
+  tryHideFullScreenLoading();
   window.scrollTo(0, 0);
 });
 
