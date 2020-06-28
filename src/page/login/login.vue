@@ -4,9 +4,9 @@
       <section class="form_contianer" v-show="showLogin">
         <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>治超联网监管系统</span></div>-->
         <div class="leftC">
-          <img src="../../../static/images/img/login/zf_bg.png" alt="">
+          <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
           <div class="leftC_title">
-              <img src="../../../static/images/img/login/logo1.png" alt=""> {{systemTitle}}
+              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
           </div>
         </div>
         <div class="rightC" v-if="!resetFlag">
@@ -136,7 +136,7 @@ import {menuList} from "@/common/data/menu";
 import VueSimpleVerify from 'vue-simple-verify';
 // Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
-  getCurrentUserApi
+  getCurrentUserApi,getHost
 } from "@/api/login";
 import {
   getDictListDetailByNameApi,
@@ -189,7 +189,8 @@ export default {
       weChatFlag: false,
       resetFlag: false,
       timeOutFlag: "",
-      menuList: null
+      menuList: null,
+      systemTitleLogin: null
     };
   },
   computed: {...mapGetters(['systemTitle'])},
@@ -259,7 +260,6 @@ export default {
               res => {
                 // 登录成功
                   // 清除定时器
-                //   clearTimeout(_this.timeOutFlag)
 
                   // _this.getCurrentUser();
                   _this.$router.push({
@@ -308,7 +308,10 @@ export default {
       this.$store.dispatch("getMenu").then(
         res => {
             // ...res.data,
-          _this.menuList = [...menuList];
+          _this.menuList = res.data;
+
+          // _this.menuList = [...menuList];
+          console.log()
           _this.$store.commit("SET_MENU", _this.menuList);
           _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
           _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
@@ -319,19 +322,19 @@ export default {
         }
       )
     },
-
     //获取当前登录用户的信息
     getCurrentUser(){
-      getCurrentUserApi().then(res=>{
-        console.log("当前用户信息",res);
-        iLocalStroage.sets('userInfo', res.data);
-        this.getMenu();
-      },err=>{
-        console.log(err);
-      })
+        let _this =this;
+        new Promise((resolve, reject) => {
+            getCurrentUserApi().then(res=>{
+                console.log("当前用户信息",res);
+                iLocalStroage.sets('userInfo', res.data);
+                _this.getMenu();
+            },err=>{
+                console.log(err);
+            })
+       })
     },
-
-
     blueUsername() {
       this.hasUserError = false;
     },
@@ -388,30 +391,30 @@ export default {
     },
 
     //获取系统标题
-    getSystemData() {
-      getDictListDetailByNameApi('系统标题').then(res => {
-        console.log('系统标题', res);
-        //系统标题
-        this.$store.commit('set_systemTitle',res.data[0].name);
+    async getSystemData() {
+        // let _this = this;
+        let res = await getDictListDetailByNameApi('系统标题');
+        this.systemTitleLogin = res.data[0].name;
+        this.$store.commit('set_systemTitle',this.systemTitleLogin);
         window.document.title = res.data[0].name;
         //设置省份
-        this.$store.commit('setProvince',res.data[2].name);
+        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
         //是否需要签章
-        this.$store.commit('setShowQZBtn', res.data[1].name == '是'? true : false)
-        //设置系统首页
-        // this.$store.commit('setHomePage', res.data[3].name)
-      }, err => {
-        console.log(err);
-      })
+        this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
     },
   },
-  mounted() {
+  async created() {
+    await getHost();
+    await this.getSystemData();
+  },
+   mounted() {
     this.showLogin = true;
-    // this.test()
-    this.getSystemData();
   },
   components: {
       VueSimpleVerify
+  },
+  destroyed(){
+       clearTimeout(this.timeOutFlag);
   }
   // created: function () {
   //   this.getCaptcha();

@@ -6,6 +6,12 @@
             <div>无效<br />信息</div>
         </el-button>
     </div>
+    <div v-if="['1', '2', '3'].indexOf(tabActiveValue) > -1">
+      <el-button type="button" class="submitBtn blueBtn" @click="prevRouter">
+        <i class="iconfont law-xiayibu"></i>
+        <div>上一步</div>
+      </el-button>
+    </div>
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
       <el-button type="button" class="submitBtn blueBtn" @click="nextRouter">
         <i class="iconfont law-xiayibu"></i>
@@ -24,7 +30,10 @@
         <div>转立案</div>
       </el-button>
     </div>
-    <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核'" style="right: 370px;">
+    <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核' || statusObj[$route.params.status] === '已审核'" style="right: 370px;">
+         {{statusObj[$route.params.status]}}
+    </span>
+    <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
          {{statusObj[$route.params.status]}}
     </span>
     <span :class="$route.name" v-else>
@@ -60,7 +69,7 @@
             </div>
             <!-- </el-form> -->
             <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+            <el-button type="primary" @click="routerOffSiteManage('无效信息')">确认</el-button>
             <el-button @click="visible = false">取消</el-button>
             </span>
         </el-dialog>
@@ -117,7 +126,7 @@
                 </table>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="routerOffSiteManage">确认</el-button>
+                <el-button type="primary" @click="routerOffSiteManage('转办')">确认</el-button>
                 <el-button @click="zbVisible = false">取消</el-button>
             </span>
         </el-dialog>
@@ -151,7 +160,7 @@ import {mapGetters} from "vuex";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import {findAllDrawerById, saveAndUpdate,transerCase} from '@/api/lawSupervise.js';
 export default {
-  //tabActiveValue: 1检测数据核对,2违法超限复合,3生成证据包
+  //tabActiveValue: 1检测数据核对,2违法超限复核,3生成证据包
   props: ['tabActiveValue', 'obj'],
   data() {
     return {
@@ -184,7 +193,8 @@ export default {
     showZbDialog () {
         // this.getAllOrgan('root');
         // this.zbVisible = true;
-         let _this = this;
+        this.obj.status='已审核'
+        let _this = this;
         new Promise((resolve, reject) => {
             saveAndUpdate(_this.obj).then(
                 res => {
@@ -273,11 +283,33 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: 'law_supervise_removeOrPrelong' })
     },
-    routerOffSiteManage () {
-        this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({
-            name: 'law_supervise_offSiteManage'
+    routerOffSiteManage (status) {
+      if(status === '无效信息'){
+        if(this.checkSearchForm.number===''){
+          this.$message({type: "warning",message: "无效类型不能为空!"});
+          return
+        }
+        if(this.checkSearchForm.color===''){
+          this.$message({type: "warning",message: "备注说明不能为空!"});
+          return
+        }
+        this.obj.status=status
+        this.obj.invalidInfo = JSON.stringify(this.checkSearchForm)
+        let _this = this;
+        new Promise((resolve, reject) => {
+            saveAndUpdate(_this.obj).then(
+                res => {
+                  _this.$store.dispatch("deleteTabs", _this.$route.name);
+                  _this.$router.push({
+                      name: 'law_supervise_offSiteManage'
+                  })
+                },
+                error => {
+                    return
+                }
+            )
         })
+      }
     },
     dialogInvalidCue() {
 
@@ -298,8 +330,10 @@ export default {
     },
     nextRouter() {
         if (this.$route.params.status == '0') {
+            this.obj.status='审核中'
             let _this = this;
             new Promise((resolve, reject) => {
+              debugger
                 saveAndUpdate(_this.obj).then(
                     res => {
                         debugger;
@@ -317,7 +351,19 @@ export default {
         name: 'law_supervise_examineDoingDetail',
         params: {
           status: nextStatus.toString(),
-          tabTitle: '【监管】'+this.statusObj[nextStatus.toString()],
+          //tabTitle: '【监管】'+this.statusObj[nextStatus.toString()],
+          tabTitle:'线索审核',
+          offSiteManageId: this.$route.params.offSiteManageId
+        }
+      });
+    },
+    prevRouter() {
+      let prevStatus=parseInt(this.$route.params.status)-1;
+      this.$router.push({
+        name: 'law_supervise_examineDoingDetail',
+        params: {
+          status: prevStatus.toString(),
+          tabTitle: '【线索详情】'+this.statusObj[prevStatus.toString()],
           offSiteManageId: this.$route.params.offSiteManageId
         }
       });

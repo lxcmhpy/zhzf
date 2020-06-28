@@ -11,15 +11,38 @@
           <el-button icon="el-icon-search" type="primary" size="medium" @click="searchListByName"></el-button>
         </div>
       </div>
-      <div v-for="(item,index) in modleList" :key="index" class="card-content">
-        <!-- <div class="card-title" v-if="index==0">{{item.domain}}
-         ({{item.templateList.length}}) -->
-        <!-- {{typeof(item.templateList.length)}} 
-        </div>-->
-        <div class="card-title" style="justify-content: flex-start;">{{item.domain}}
-          <span v-if="item.templateList">({{item.templateList.length}})</span>
+      <!-- 收藏 -->
+      <div class="card-content">
+        <div class="card-title" style="justify-content: flex-start;" v-if="modleSaveList&&modleSaveList.length>0">常用模板
+          <span v-if="modleSaveList">({{modleSaveList.length}})</span>
+          <span v-if="modleSaveList&&modleSaveListFlag" @click="modleSaveListFlag=!modleSaveListFlag" class="show-icon"><i class="el-icon-arrow-down"></i></span>
+          <span v-if="modleSaveList&&!modleSaveListFlag" @click="modleSaveListFlag=!modleSaveListFlag" class="show-icon"><i class="el-icon-arrow-up"></i></span>
         </div>
-        <ul class="card-ul">
+        <ul class="card-ul" v-if="modleSaveListFlag">
+          <li v-for="(modle,index) in modleSaveList" :key="index">
+            <span @click="writeRecord(modle)">
+              <div class="card-img-content-box">
+                <div class="card-img-content">
+                  <img v-if='modle.icon' :src="'./static/images/img/record/'+modle.icon+'.png'" alt="">
+                  <span v-else style="color: #667589;font-size: 36px;">{{modle.title.charAt(0)}}</span>
+                </div>
+              </div>
+              <div class="card-des">{{modle.title}}</div>
+            </span>
+            <div class="box-card-img-content">
+              <span style="color: blue;font-size: 14px;" @click="editModle(modle)">修改模板</span>
+              <span style="color: blue;font-size: 14px;" @click="delModle(modle)">删除模板</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div v-for="(item,index1) in modleList" :key="item.domain" class="card-content">
+        <div class="card-title" style="justify-content: flex-start;" v-if="item.domain">{{item.domain}}
+          <span v-if="item.templateList">({{item.templateList.length}})</span>
+          <span v-if="item.templateList&&item.showFlag" @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-down"></i></span>
+          <span v-if="item.templateList&&!item.showFlag" @click="changeUp(index1)" class="show-icon"><i class="el-icon-arrow-up"></i></span>
+        </div>
+        <ul class="card-ul" v-if="item.showFlag">
           <li v-for="(modle,index) in item.templateList" :key="index">
             <span @click="writeRecord(modle)">
               <div class="card-img-content-box">
@@ -48,8 +71,8 @@ import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
 import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
-  findRecordModleByNameIdApi, findRecordModleByPersonApi} from "@/api/Record";
-
+  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi} from "@/api/Record";
+import Vue from 'vue'
 export default {
   components: {
     preview,
@@ -61,22 +84,12 @@ export default {
       isHome: true,
       searchModleName: '',
       compData: [],
-      modleList: [{
-        title: '常用记录表单',
-        length: 4,
-        dataList: [{
-          icon: 'icon_yzt',
-          name: '运政通用记录',
-        }, {
-          icon: 'icon_hyj',
-          name: '货运检查记录表',
-        }, {
-          icon: 'icon_kyj',
-          name: '客运检查记录表',
-        }],
-      },
-      ],
-      currentUserLawId: ''
+      viewFlag: [],
+      modleList: [],
+      modleSaveList: [],//收藏列表
+      modleSaveListDefaut: [],//收藏列表
+      currentUserLawId: '',
+      modleSaveListFlag: true
 
     }
   },
@@ -160,13 +173,32 @@ export default {
     searchList() {
       let data = {
         organId: iLocalStroage.gets("userInfo").organId,
-        templateUserId: this.currentUserLawId
+        // templateUserId: this.currentUserLawId
+        templateUserId: iLocalStroage.gets("userInfo").id
       }
       findRecordModleByPersonApi(data).then(
         res => {
+          // debugger
           console.log(res)
           if (res.data) {
             this.modleList = res.data
+            this.modleList.forEach(element => {
+              element.showFlag = true
+            });
+          }
+        },
+        error => {
+          // reject(error);
+        })
+    },
+    searchSaveList() {
+      let data = iLocalStroage.gets("userInfo").id
+      findUserCollectTemplateApi(data).then(
+        res => {
+          console.log(res)
+          if (res.data) {
+            this.modleSaveList = res.data
+            this.modleSaveListDefaut = JSON.parse(JSON.stringify(res.data));
           }
         },
         error => {
@@ -175,14 +207,23 @@ export default {
     },
     searchListByName() {
       if (this.searchModleName == '') {
+        this.modleSaveList = JSON.parse(JSON.stringify(this.modleSaveListDefaut))
         this.searchList()
       } else {
+        this.modleSaveList = []
         findRecordModleByNameIdApi(this.searchModleName).then(
           res => {
             console.log(res)
-            if (res.data) {
+            if (res.code == 200) {
               this.modleList = [{ templateList: [] }];
-              this.modleList[0].templateList = res.data
+              if (res.data.length != 0) {
+                this.modleList[0].templateList = res.data
+                this.modleList.forEach(element => {
+                  element.showFlag = true
+                });
+              } else {
+                this.$message({ message: '暂无内容', type: 'warning' });
+              }
             }
           },
           error => {
@@ -192,31 +233,40 @@ export default {
 
     },
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
-    setLawPersonCurrentP() {
-      let _this = this
-      this.$store
-        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
-        .then(
-          res => {
-            console.log('执法人员列表', res)
-            let currentUserData = {};
-            res.data.forEach(item => {
-              if (
-                item.userId == iLocalStroage.gets("userInfo").id
-              ) {
-                _this.currentUserLawId = item.id;
-                _this.searchList()
-              }
-            });
-          },
-          err => {
-            console.log(err);
-          }
-        );
-    },
+    // setLawPersonCurrentP() {
+    //   let _this = this
+    //   this.$store
+    //     .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+    //     .then(
+    //       res => {
+    //         console.log('执法人员列表', res)
+    //         let currentUserData = {};
+    //         res.data.forEach(item => {
+    //           if (
+    //             item.userId == iLocalStroage.gets("userInfo").id
+    //           ) {
+    //             _this.currentUserLawId = item.id;
+    //             _this.searchList()
+    //           }
+    //         });
+    //       },
+    //       err => {
+    //         console.log(err);
+    //       }
+    //     );
+    // },
+    changeUp(item) {
+      console.log(item)
+      this.modleList[item].showFlag = !this.modleList[item].showFlag
+
+      console.log(this.modleList.slice())
+      this.modleList = this.modleList.slice()//更新视图
+
+    }
   },
   mounted() {
-    this.setLawPersonCurrentP()
+    this.searchList();
+    this.searchSaveList();
   }
 }
 </script>

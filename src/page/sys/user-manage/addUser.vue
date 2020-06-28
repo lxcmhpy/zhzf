@@ -372,7 +372,7 @@ export default {
         this.addUserForm = {
           id: "",
           username: "",
-          password: "",
+          password: "123456",
           mobile: "",
           nickName: "",
           idNumber: "",

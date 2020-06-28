@@ -71,7 +71,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="pagination-box">
+      <div class="paginationBox">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -214,6 +214,9 @@ export default {
     // 日志重置
     resetLog() {
       this.$refs["templeteFormRef"].resetFields();
+      this.templeteName = '';
+      this.currentPage = 1;
+      this.getTempleteList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -245,11 +248,4 @@ export default {
 <style  lang="scss" scoped>
 @import "@/assets/css/searchPage.scss";
 @import "@/assets/css/personManage.scss";
-.temp{
-  .pagination-box{
-    height: 40px;
-    text-align: center;
-    margin: 15px;
-  }
-}
 </style>

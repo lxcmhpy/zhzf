@@ -14,13 +14,13 @@ export const examRouterJson = [
       {
         name: "batchManage",
         path: "/exam-manage",
-        meta: { title: "批次管理" },
+        meta: { title: "批次管理", loading: false },
         component: () => import("@/page/exam/exam-manage/batchManage.vue")
       },
       {
         name: "scoreManage",
         path: "/score-manage",
-        meta: { title: "评分管理" },
+        meta: { title: "评分管理", loading: false },
         component: () => import("@/page/exam/score-manage/scoreManage.vue")
       }
     ]
@@ -37,31 +37,31 @@ export const examRouterJson = [
       {
         name: "maintainPageMenu",
         path: "/maintain-page-menu",
-        meta: { title: "维护试卷" },
+        meta: { title: "维护试卷", loading: false },
         component: () => import("@/page/exam/page-manage/maintain-page-menu/maintainPageMenu.vue")
       },
       {
         name: "maintainPage",
         path: "/maintain-page",
-        meta: { title: "试卷预览" },
+        meta: { title: "试卷预览", loading: false },
         component: () => import("@/page/exam/page-manage/maintain-page/pageView.vue")
       },
       {
         name: "pageApplay",
         path: "/applay-page",
-        meta: { title: "审核试卷" },
+        meta: { title: "审核试卷", loading: false },
         component: () => import("@/page/exam/page-manage/applay-page/pageApplay.vue")
       },
       {
         name: "maintainTemplete",
         path: "/maintain-templete",
-        meta: { title: "维护模板" },
+        meta: { title: "维护模板", loading: false },
         component: () => import("@/page/exam/page-manage/maintain-templete/maintainTemp.vue")
       },
       {
         name: "maintainTemplete",
         path: "/maintain-templete",
-        meta: { title: "维护模板" },
+        meta: { title: "维护模板", loading: false },
         component: () => import("@/page/exam/page-manage/maintain-templete/maintainTemp.vue")
       },
       {
@@ -70,6 +70,7 @@ export const examRouterJson = [
         meta: {
           title: "试卷预览",
           oneTab:true,
+          loading: false
         },
         component: () => import("@/page/exam/page-manage/maintain-page-menu/viewApplayDetail.vue")
       }
@@ -87,13 +88,13 @@ export const examRouterJson = [
       {
         name: "maintainOutline",
         path: "/maintain-outline",
-        meta: { title: "维护大纲" },
+        meta: { title: "维护大纲", loading: false },
         component: () => import("@/page/exam/question-manage/maintain-outline/maintainOutline.vue")
       },
       {
         name: "maintainQuestion",
         path: "/maintain-question",
-        meta: { title: "维护试题" },
+        meta: { title: "维护试题", loading: false },
         component: () => import("@/page/exam/question-manage/maintain-question/maintainQuestion.vue")
       }
     ]

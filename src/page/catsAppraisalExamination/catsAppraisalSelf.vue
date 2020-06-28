@@ -240,8 +240,8 @@ export default {
             }
       },
       commitData(){
-          var re = /^[1-9]([0-9])*$/;
-        let validata = this.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
+          var re = /^[0-9]([0-9])*$/;
+        let validata = this.form.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
         if(validata){
             this.$message({type: "warning",message: "全部评分之后才能提交"});
             return
@@ -265,18 +265,28 @@ export default {
       saveRecord(row,key){
           if(this.oldValue !== row[key]){
               if(key === "twoSore" || key === "oneSore"){
-                var re = /^[1-9]([0-9])*$/;
+                var re = /^[0-9]([0-9])*$/;
                 if (!re.test(row[key])) {
                     row[key]=''
                     this.$message({type: "error",message: "请输入整数"});
                     return
                 }
+                if(parseInt(row[key])>row.score){
+                    row[key]=''
+                    this.$message({type: "error",message: "得分不能高于单项分值"});
+                    return
+                }
               }
             updateScore(row).then(
                 res => {
-
+                    let sum = 0
+                    this.form.pykhScoreDetailsVos.forEach(function(item){
+                         sum += parseInt(item.twoSore===null?'0':item.twoSore)
+                    })
+                    this.form.twosore = sum
                 },
                 err => {
+                    row[key]=''
                     console.log(err);
                 }
             );
@@ -292,61 +302,63 @@ export default {
           let _this = this;
         getPykhOrgInfo({assessType:"自查自评"}).then(
             res => {
-                _this.form = res.data;
-                // let tree = [];
-                let firstIdList = filterId(_this.form.pykhScoreDetailsVos, 'indexOneId');
-
-                // this.form.pykhScoreDetailsVos.forEach((v,i)=>{
-                //     firstIdList.push(v.indexOneId);
-                // })
-                // firstIdList = new Set(firstIdList);
-
-                firstIdList.forEach((v,i)=>{
-                    let obj = {
-                        children: []
-                    }
-                    let index = _.findIndex(_this.form.pykhScoreDetailsVos,(chr)=>{
-                        return chr.indexOneId = v;
-                    })
-                    if (index > -1) {
-                        obj.indexOne = _this.form.pykhScoreDetailsVos[index].indexOne;
-                        obj.indexOneId = _this.form.pykhScoreDetailsVos[index].indexOneId;
-                        // obj.nrxm = _this.form.pykhScoreDetailsVos[index].nrxm;
-                    }
-
-                    let secondList = _.filter(_this.form.pykhScoreDetailsVos, function(o) { return o.indexOneId === v; });
-
-                    let secondIdList = filterId(secondList,'indexTwoId');
-
-
-
-                    secondIdList.forEach((v2,i)=>{
-                        let obj2 = {
-
+                if(res.data){
+                    _this.form = res.data;
+                    // let tree = [];
+                    let firstIdList = filterId(_this.form.pykhScoreDetailsVos, 'indexOneId');
+    
+                    // this.form.pykhScoreDetailsVos.forEach((v,i)=>{
+                    //     firstIdList.push(v.indexOneId);
+                    // })
+                    // firstIdList = new Set(firstIdList);
+    
+                    firstIdList.forEach((v,i)=>{
+                        let obj = {
+                            children: []
                         }
-                        let index2 = _.findIndex(_this.form.pykhScoreDetailsVos,(chr)=>{
-                            return chr.indexTwoId === v2 && chr.indexOneId === v;
+                        let index = _.findIndex(_this.form.pykhScoreDetailsVos,(chr)=>{
+                            return chr.indexOneId = v;
                         })
-                        if (index2 > -1) {
-                            obj2.indexTwo = _this.form.pykhScoreDetailsVos[index2].indexTwo;
-                            obj2.indexTwoId = _this.form.pykhScoreDetailsVos[index2].indexTwoId;
-                            let thirdList = _.filter(_this.form.pykhScoreDetailsVos, function(o) { return o.indexOneId === v&&o.indexTwoId === v2; });
-                            obj2.children = thirdList;
-                            // let thirdIdList = [];
-                            // filterId(thirdIdList,_this.form.pykhScoreDetailsVos, 'indexThirdId');
-                            obj.children.push(obj2);
+                        if (index > -1) {
+                            obj.indexOne = _this.form.pykhScoreDetailsVos[index].indexOne;
+                            obj.indexOneId = _this.form.pykhScoreDetailsVos[index].indexOneId;
+                            // obj.nrxm = _this.form.pykhScoreDetailsVos[index].nrxm;
                         }
-
+    
+                        let secondList = _.filter(_this.form.pykhScoreDetailsVos, function(o) { return o.indexOneId === v; });
+    
+                        let secondIdList = filterId(secondList,'indexTwoId');
+    
+    
+    
+                        secondIdList.forEach((v2,i)=>{
+                            let obj2 = {
+    
+                            }
+                            let index2 = _.findIndex(_this.form.pykhScoreDetailsVos,(chr)=>{
+                                return chr.indexTwoId === v2 && chr.indexOneId === v;
+                            })
+                            if (index2 > -1) {
+                                obj2.indexTwo = _this.form.pykhScoreDetailsVos[index2].indexTwo;
+                                obj2.indexTwoId = _this.form.pykhScoreDetailsVos[index2].indexTwoId;
+                                let thirdList = _.filter(_this.form.pykhScoreDetailsVos, function(o) { return o.indexOneId === v&&o.indexTwoId === v2; });
+                                obj2.children = thirdList;
+                                // let thirdIdList = [];
+                                // filterId(thirdIdList,_this.form.pykhScoreDetailsVos, 'indexThirdId');
+                                obj.children.push(obj2);
+                            }
+    
+                        })
+                        _this.tree.push(obj);
                     })
-                    _this.tree.push(obj);
-                })
-
-                function filterId (oldList ,filedName) {
-                    let newList = [];
-                    oldList.forEach((v,i)=>{
-                        newList.push(v[filedName]);
-                    })
-                    return new Set(newList);
+    
+                    function filterId (oldList ,filedName) {
+                        let newList = [];
+                        oldList.forEach((v,i)=>{
+                            newList.push(v[filedName]);
+                        })
+                        return new Set(newList);
+                    }
                 }
             },
             err => {

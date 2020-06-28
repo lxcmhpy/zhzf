@@ -323,16 +323,16 @@ showModal(data1,oid){
       }
     },
 
-  searchTable() {//查询所属机构
-            let _this = this
-            _this.$store.dispatch("getAllOrgan").then(
-                res => {
-                _this.startActivities = res.data;
-            },
-            err => {
-                console.log(err);
-            });
-        },
+    searchTable() {//查询所属机构
+      let _this = this
+      _this.$store.dispatch("findOrganTreeByCurrUser").then(
+        res => {
+        _this.startActivities = res.data;
+      },
+      err => {
+        console.log(err);
+      });
+    },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.activities = [];

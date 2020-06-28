@@ -82,7 +82,7 @@
                 :key="graph.paragraphId"
                 class="question-class"
               >
-                <div class="title">{{ graph.paragraphTypeName }}</div>
+                <div class="question-title-type">{{ graph.paragraphTypeName }}</div>
                 <div
                   v-if="graph.examResultList && graph.examResultList.length"
                   class="question-wrap"
@@ -593,10 +593,11 @@ export default {
           right: 0;
           padding-right: 20px;
           .question-class {
-            .title {
+            .question-title-type {
               font-size: 16px;
               color: #20232a;
-              margin-bottom: 20px;
+              margin: 20px 0;
+              font-weight: 600;
             }
             .question-wrap {
               display: flex;

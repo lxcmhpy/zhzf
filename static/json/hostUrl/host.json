@@ -1,6 +1,7 @@
 {
   "CURRENT": "JX",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
+  "SYS_TITLE": "",
   "PS": {
     "HOME_PAGE_ROUTER_NAME":"catsAppraisalExamination//评议考核，case_handle_home_index//案件办理law_supervise_lawSupervise//监管",
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
@@ -20,7 +21,8 @@
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
     "CHECK_API":"http://124.192.215.11:8081",
-    "XZJC_HOST":"http://124.192.215.4:9000"
+    "XZJC_HOST":"http://124.192.215.4:9000",
+    "EXAM":"http://59.110.216.138:9050"
   },
   "NW": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -34,10 +36,10 @@
     "EXAM":"http://59.110.216.138:9050"
   },
   "XBW":{
-    "CAPTCHA_HOST": "https://172.16.164.53:8443",
-    "PDF_HOST": "http://172.16.170.54:9332/",
+    "CAPTCHA_HOST": "http://127.0.0.1:9000",
+    "PDF_HOST": "http://39.105.229.204:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
-    "LAW_SUPERVISE_HOST": "https://172.16.164.53:8443",
+    "LAW_SUPERVISE_HOST": "http://127.0.0.1:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API":"http://172.16.170.91:8081"
   },
@@ -51,8 +53,8 @@
     "EXAM":"http://59.110.216.138:9050"
   },
   "SGX": {
-    "CAPTCHA_HOST": "http://172.16.164.94:9000",
-    "PDF_HOST": "http://172.16.170.54:9332/",
+    "CAPTCHA_HOST": "http://192.168.0.104:9000",
+    "PDF_HOST": "http://39.105.229.204:9333/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.164.94:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",

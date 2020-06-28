@@ -59,6 +59,16 @@ export default  [
                 },
                 component: () => import("@/page/inspection/record-manage/viewRecord.vue")
             },
+            {
+                // 历史检查列表
+                path: "/test",
+                name: "inspection_test",
+                meta: {
+                title: "历史检查列表",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/test.vue")
+            },
         ]
     }, 
 ]

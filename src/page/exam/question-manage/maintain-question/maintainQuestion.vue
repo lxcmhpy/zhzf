@@ -84,16 +84,8 @@
                       size="medium"
                       @click="addQuestionInfo('','1')"
                     >新增考题</el-button>
-                    <el-button
-                      style="background-color:#4aafa7;color:white"
-                      size="medium"
-                      @click="batchImport"
-                    >批量导入</el-button>
-                    <el-button
-                      style="background-color:#4aafa7;color:white"
-                      size="medium"
-                      @click="batchStart"
-                    >批量启用</el-button>
+                    <el-button type="info" size="medium" @click="batchImport">批量导入</el-button>
+                    <el-button type="info" size="medium" @click="batchStart">批量启用</el-button>
                   </el-form-item>
                 </el-row>
               </div>
@@ -126,7 +118,10 @@
                   <span class="question-desc">{{scope.row.questionName}}</span>
                 </div>
                 <div>
-                  <el-tooltip :content="`已${scope.row.isUse === '0' ? '启用' : '停用'}`" placement="top">
+                  <el-tooltip
+                    :content="`已${scope.row.isUse === '0' ? '启用' : '停用'}`"
+                    placement="top"
+                  >
                     <el-switch
                       :value="scope.row.isUse"
                       active-color="#13ce66"
@@ -156,7 +151,11 @@
                     style="margin-right: 30px;"
                     @click.stop="updateQuestionInfo(scope.row.questionId, '2')"
                   >修改</el-button>
-                  <el-button v-if="!editable" type="text" @click.stop="deleteQuestionInfo(scope.row.questionId)">删除</el-button>
+                  <el-button
+                    v-if="!editable"
+                    type="text"
+                    @click.stop="deleteQuestionInfo(scope.row.questionId)"
+                  >删除</el-button>
                 </div>
               </div>
             </template>
@@ -177,6 +176,8 @@
       <addMaintainQuestion ref="addMaintainQuestionRef" @getAllQuestion="getSelectOutline"></addMaintainQuestion>
       <!-- 试题预览 -->
       <preViewQuestion ref="preViewQuestion" />
+      <!-- 批量上传 -->
+      <importQuestion ref="importQuestion" @reloadQuestion="getSelectOutline" />
     </div>
   </div>
 </template>
@@ -184,7 +185,8 @@
 import addMaintainQuestion from "./addMaintainQuestion";
 import errorPage from "./../../common/erroPage";
 import outlineList from "@/components/examComponents/outlineList";
-import preViewQuestion from './preViewQuestion';
+import preViewQuestion from "./preViewQuestion";
+import importQuestion from "./importQuestion";
 
 export default {
   data() {
@@ -222,12 +224,13 @@ export default {
     addMaintainQuestion,
     errorPage,
     outlineList,
-    preViewQuestion
+    preViewQuestion,
+    importQuestion
   },
   inject: ["reload"],
   methods: {
     selectDataInfo(val) {
-      this.selectQustionId = val.map(item => item.questionId)
+      this.selectQustionId = val.map(item => item.questionId);
     },
     //获取下拉列表
     getDictInfo(name, codeName) {
@@ -244,23 +247,30 @@ export default {
         );
       }
     },
-    //批量导入
-    batchImport() {},
+    batchImport() {
+      if (this.currentOutlineId === null || this.currentOutlineId === "") {
+        this.$message({ type: "warning", message: "请先选择大纲!" });
+        return;
+      }
+      this.$refs.importQuestion.showModal(this.currentOutlineId);
+    },
     // 批量开启
     batchStart() {
-      if(this.selectQustionId.length === 0){
-        this.$message({ type: 'warning', message: '请选择要启用的试题' });
-      }else{
+      if (this.selectQustionId.length === 0) {
+        this.$message({ type: "warning", message: "请选择要启用的试题" });
+      } else {
         let data = { isUserStr: [] };
         this.selectQustionId.forEach(id => {
           data.isUserStr.push(`${id},0`);
         });
-        this.enableQuestion(data, '批量开启');
+        this.enableQuestion(data, "批量开启");
       }
     },
     // 重置
     resetLog() {
       this.$refs["questionOutlineFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getSelectOutline();
     },
     //新增-修改试题
     addQuestionInfo() {
@@ -275,7 +285,7 @@ export default {
           message: "请选择大纲!"
         });
       } else {
-        this.$refs.addMaintainQuestionRef.showModal(parentNode, '1');
+        this.$refs.addMaintainQuestionRef.showModal(parentNode, "1");
       }
     },
     //修改试题
@@ -396,53 +406,59 @@ export default {
     },
     //修改启用状态
     changeIsUse(event, row) {
-      let statusTxt = event === '0' ? '启用' : '停用';
+      let statusTxt = event === "0" ? "启用" : "停用";
       this.$confirm(`请确认是否${statusTxt}试题？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         iconClass: "custom-question",
         customClass: "custom-confirm"
       })
-      .then(() => {
-        let data = {
-          isUserStr: [`${row.questionId},${event}`]
-        };
-        this.enableQuestion(data, statusTxt);
-      })
-      .catch(() => {});
+        .then(() => {
+          let data = {
+            isUserStr: [`${row.questionId},${event}`]
+          };
+          this.enableQuestion(data, statusTxt);
+        })
+        .catch(() => {});
     },
     // 启用试题
-    enableQuestion(data, status){
+    enableQuestion(data, status) {
       const loading = this.$loading({
         lock: true,
         text: `正在${status}`,
-        spinner: 'car-loading',
-        customClass: 'loading-box',
-        background: 'rgba(234,237,244, 0.8)'
+        spinner: "car-loading",
+        customClass: "loading-box",
+        background: "rgba(234,237,244, 0.8)"
       });
       data.isUserStr = JSON.stringify(data.isUserStr);
-      this.$store.dispatch('changeQuestionIsUse', data).then(res => {
-        loading.close();
-        this.$message({ type: 'success', message: `${status}成功!` });
-        this.getSelectOutline();
-      }, err => {
-        loading.close();
-        this.$message({ type: 'error', message: err.msg || '' });
-      })
+      this.$store.dispatch("changeQuestionIsUse", data).then(
+        res => {
+          loading.close();
+          this.$message({ type: "success", message: `${status}成功!` });
+          this.getSelectOutline();
+        },
+        err => {
+          loading.close();
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
     },
     // 预览试题
-    viewQuestion(row){
+    viewQuestion(row) {
       this.$refs.preViewQuestion.showModal(row);
     },
     // 获取登录用户所属部门
-    getSystemParams(){
-      this.$store.dispatch('getSystemParams').then(res => {
-        if(res.code === 200){
-          this.editable = res.data === 'province';
+    getSystemParams() {
+      this.$store.dispatch("getSystemParams").then(
+        res => {
+          if (res.code === 200) {
+            this.editable = res.data === "province";
+          }
+        },
+        err => {
+          console.log(err);
         }
-      }, err => {
-        console.log(err);
-      })
+      );
     }
   },
   created() {
@@ -498,11 +514,15 @@ export default {
       background: rgba(135, 20, 0, 1);
     }
   }
+  .batch-import {
+    display: inline-block;
+    margin: 0 15px;
+  }
 }
 .question-table {
-  height: calc(100% - 180px);
+  height: calc(100% - 194px);
   // min-height: 240px;
-  &.noHandle{
+  &.noHandle {
     height: calc(100% - 130px);
   }
   >>> .el-table__row {
@@ -513,7 +533,7 @@ export default {
       }
     }
   }
-  >>>.el-table__body-wrapper{
+  >>> .el-table__body-wrapper {
     padding-bottom: 0;
   }
   .question-row-cnt {

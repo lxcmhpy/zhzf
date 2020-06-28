@@ -226,9 +226,14 @@ export default {
        this.docData.picImgEvPath =  storageId;
       queryImgBase64Api(storageId).then(res=>{
         console.log('获取base64',res);
-        this.imgBase64 = res.data;
-        this.docData.sh = selpicData.picData.note;
-        this.changeImgWidHei(storageId);
+        if(res === false){   //生成失败
+          this.$message.error('生成base64码失败！')
+        }else{
+          this.imgBase64 = res.data;
+          this.docData.sh = selpicData.picData.note;
+          this.changeImgWidHei(storageId);
+        }
+        
       }).catch(err=>{console.log(err)})
     },
     //对图片进行处理

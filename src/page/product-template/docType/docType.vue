@@ -30,7 +30,12 @@
         <el-table-column prop="linkName" label="环节名称" align="center"></el-table-column>
         <el-table-column prop="templateName" label="模板名称" align="center"></el-table-column>
         <el-table-column prop="remark" label="文书说明" align="center"></el-table-column>
-        <el-table-column prop="sort" label="排序" align="center"></el-table-column>
+        <el-table-column prop="isApproval" label="是否审批" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.isApproval=='0'">是</span>
+            <span v-else>否</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="editDocType(scope.row)" >编辑</el-button>
@@ -157,25 +162,11 @@ export default {
       this.currentPage = 1;
       this.getDocTypeList()
     },
-    //查询案件类型列表
-    getCaseType(){
-      this.$store.dispatch("getCaseTypeList", 0).then(
-        //查询案件类型列表(启用)
-        res => {
-          if (res.code === 200) {
-            this.caseTypeList = res.data;
-          } else {
-            console.info("没有查询到数据");
-          }
-        }
-      );
-    },
     showIndex(index){
       return (this.currentPage-1)*this.pageSize+index+1;
     }
   },
   mounted() {
-    this.getCaseType();
   },
   created() {
     this.getDocTypeList();

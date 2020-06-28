@@ -387,6 +387,8 @@ export default {
     },
     resetLog() {
       this.$refs["roomDispathFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getNowRoomPerson();
     },
     // 提交
     submit() {},

@@ -10,7 +10,11 @@
     <el-row>
         <el-col :span="24">
         <el-card :body-style="{ padding: '0px' }">
-            <p v-html="content" />
+            <div class="ql-container ql-snow">
+              <div class="ql-editor">
+                <div v-html="content"></div>
+              </div>
+          </div>
         </el-card>
         </el-col>
     </el-row>
@@ -24,7 +28,7 @@
         height="1000px"
         append-to-body
         >
-        <object>
+        <object v-if="storagePath">
             <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="storagePath" type="application/pdf" internalinstanceid="29">
         </object>
   </el-dialog>
@@ -32,6 +36,9 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+  import 'quill/dist/quill.core.css';
+  import 'quill/dist/quill.snow.css';
+  import 'quill/dist/quill.bubble.css';
   export default {
     components: {
     },
@@ -40,7 +47,7 @@ import iLocalStroage from "@/common/js/localStroage";
         content : ``,
         visible : false,
         visible1: false,
-        storagePath: ''
+        storagePath: null
     }
   },
   methods: {

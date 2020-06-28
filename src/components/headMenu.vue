@@ -29,7 +29,7 @@ import _ from "lodash";
     },
     methods: {
       handleSelect(key, indexPath) {
-          debugger;
+          // debugger;
         let keyStr = key.split(this.reg);
         console.log('key',key)
         this.$store.commit("SET_ACTIVE_INDEX_STO", key);
