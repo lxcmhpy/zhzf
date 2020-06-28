@@ -106,7 +106,8 @@ export function getById(type,id) {
     return request({
       url: "/system/sys/drawer/findAllDrawerById/" +data,
       method: "get",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
