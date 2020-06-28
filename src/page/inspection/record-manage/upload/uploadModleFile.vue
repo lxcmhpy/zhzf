@@ -124,6 +124,14 @@ export default {
     },
     handleRemoveImg(file, fileList) {
       console.log(file, fileList);
+      deleteFileByIdApi(file.storageId).then(
+        res => {
+          console.log(res);
+        },
+        error => {
+          console.log(error)
+        }
+      );
     },
     handlePreviewImg(file) {
       console.log(file);

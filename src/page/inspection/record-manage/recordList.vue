@@ -109,6 +109,7 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
         defaultDisplay: this.searchForm.defaultDisplay,
+        organId: iLocalStroage.gets("userInfo").organId,
         // name: this.dicSearchForm.name
       };
       findRecordListApi(data).then(
@@ -250,6 +251,8 @@ export default {
     },
     getRecordTitleList() {
       let data = iLocalStroage.gets("userInfo").organId
+      // debugger
+      console.log(data)
       findAllModleNameApi(data).then(
         res => {
           console.log(res)
