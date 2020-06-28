@@ -783,7 +783,7 @@ import _ from "lodash";
                 deleteDetailZpById(item.id).then(
                     res => {
                         _this.errorMsg('删除成功', 'success');
-                        // _this.addorUpdateDetailZp(row.id, 1);
+                        _this.findPykhZpByPage(row.id,1);
                     },
                     error => {
                         _this.errorMsg(error.toString(), 'error')

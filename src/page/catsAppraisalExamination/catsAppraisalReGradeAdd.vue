@@ -217,6 +217,7 @@
 </template>
 <script>
   import {getCaseInfoDetailByPid,updateScore,updateScoreState} from "@/api/appraisalExam.js";
+  import iLocalStroage from "@/common/js/localStroage";
   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import viewNotice from "./noticeManage/viewNotice";
   import _ from "lodash";
@@ -269,7 +270,8 @@ export default {
         let routerData = {
               id:this.form.storageId
           }
-          this.$router.push({ name: "catsAppraisalPDF", params: routerData });
+          // this.$router.push({ name: "catsAppraisalPDF", params: routerData });
+          window.open(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +this.form.storageId+ '?time='+new Date().getTime(),'_blank')
       },
       commitData(){
         var re = /^[0-9]([0-9])*$/;
@@ -292,7 +294,7 @@ export default {
                     orgId:_this.form.orgId
                 }
                 _this.$router.push({
-                    name: this.$route.params.url, params: routerData 
+                    name: this.$route.params.url, params: routerData
                 });
             },
             err => {

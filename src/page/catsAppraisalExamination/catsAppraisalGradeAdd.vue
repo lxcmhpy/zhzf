@@ -258,7 +258,9 @@ export default {
           let routerData = {
               id:this.form.storageId
           }
-          this.$router.push({ name: "catsAppraisalPDF", params: routerData });
+          window.open(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +this.form.storageId+ '?time='+new Date().getTime(),'_blank');
+          // this.$router.push({ name: "catsAppraisalPDF", params: routerData });
+
         //this.$refs.viewNoticeRef.showPDF(this.form.storageId);
       },
       commitData(){
@@ -282,7 +284,7 @@ export default {
                     orgId:_this.form.orgId
                 }
                 _this.$router.push({
-                    name: this.$route.params.url, params: routerData 
+                    name: this.$route.params.url, params: routerData
                 });
             },
             err => {
@@ -327,8 +329,8 @@ export default {
 
       },
       fetchData(){
-        this.form = this.$route.params
-	    let _this = this
+        this.form = this.$route.params;
+        let _this = this;
         getCaseInfoDetailByPid(this.$route.params.id).then(
             res => {
                 _this.pykhScoreDetailsVos = res.data;

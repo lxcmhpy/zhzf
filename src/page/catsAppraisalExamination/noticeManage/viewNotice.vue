@@ -52,7 +52,7 @@ import iLocalStroage from "@/common/js/localStroage";
   },
   methods: {
       showPDF (id) {
-          this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +id;
+          this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +id + '?time='+new Date().getTime();
           this.visible1 = true;
       },
       showModal(content) {
