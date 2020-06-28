@@ -28,6 +28,7 @@
       <el-upload
         class="upload-demo"
         :http-request="saveFile"
+        :on-change="uploadChange"
         action="https://jsonplaceholder.typicode.com/posts/"
         multiple
         >
@@ -57,6 +58,7 @@ export default {
       visible: false,
       eviList:[],
       evfile:"",
+      fileLength:'',
       form: {
         id: "",
         caseId: "",
@@ -165,7 +167,7 @@ export default {
       uploadEvdence(fd).then(res => {
         console.log("1111111",res);
         if (res.code == 200){
-          this.$refs.evidenceUploadSuccessRef.showModal();
+          this.$refs.evidenceUploadSuccessRef.showModal(this.fileLength);
           _this.addVisible = false;
           // _this.currentPage = 1;
           _this.getEviList();
@@ -174,6 +176,9 @@ export default {
         }
       });
     },
+    uploadChange(file,fileList){
+      this.fileLength = fileList.length;
+    }
   },
   mounted () {
       

@@ -122,7 +122,7 @@
                     <el-button size="small" type="primary">点击上传</el-button>
                     <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
                     <ul>
-                      <li v-for="item in alreadyLoadPayEvidence" :key="item.id">{{item.fileName}}</li>
+                      <li v-for="item in alreadyLoadPayEvidence" :key="item.id" @click.stop="evidenceDetail(item)">{{item.fileName}}</li>
                     </ul>
                   </el-upload>
                 </el-form-item>
@@ -251,6 +251,7 @@
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <addDialog ref="addDialogRef" @getNewData="goAddPdf"></addDialog>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
+    <payDetail ref="payDetailRef"></payDetail>
   </div>
 </template>
 <script>
@@ -258,7 +259,8 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "./PenaltyExecutionFormDocFinish";
 import addDialog from './PenaltyExecutionFormDialog';
-import resetDocDia from '@/page/caseHandle/components/resetDocDia'
+import resetDocDia from '@/page/caseHandle/components/resetDocDia';
+import payDetail from "./payDetail";
 import {
   uploadEvApi,
   findFileByIdApi,
@@ -268,7 +270,8 @@ export default {
   components: {
     checkDocFinish,
     addDialog,
-    resetDocDia
+    resetDocDia,
+    payDetail
   },
   data() {
     var validatePaid = (rule, value, callback) => {
@@ -583,6 +586,11 @@ export default {
           console.log(error)
         }
       );
+    },
+    //显示已上传的缴纳凭证
+    evidenceDetail(file){
+      console.log("123",file);
+      this.$refs.payDetailRef.showModal(file);
     },
     //返回到流程图
     backBtn() {

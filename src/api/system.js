@@ -810,6 +810,7 @@ export function deleteBnslawApi(data) {
 //新增 修改 违法行为
 export function addCaseCauseApi(data) {
   let _data = vm.$qs.stringify(data);
+  console.log("111222",data);
   return request({
     url: "/bnslaw/sys/bnslawCause/addOrUpdateCaseCause",
     method: "post",
