@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "NW",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "PS": {
     "HOME_PAGE_ROUTER_NAME":"catsAppraisalExamination//评议考核，case_handle_home_index//案件办理law_supervise_lawSupervise//监管",
@@ -75,7 +75,7 @@
     "CHECK_API":"http://172.16.170.91:8081"
   },
   "JX": {
-    "CAPTCHA_HOST": "http://124.192.215.6:9000",
+    "CAPTCHA_HOST": "http://172.16.170.50:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",

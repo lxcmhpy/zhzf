@@ -307,7 +307,10 @@
           file: null,
           docId: "",
           category: "",
-          userId: ""
+          userId: "",
+          recordPlace:'',
+          userName:'',
+          note:'',
         },
         uForm: {},
         addVisible: false,
