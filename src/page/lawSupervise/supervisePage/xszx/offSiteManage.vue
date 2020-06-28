@@ -322,34 +322,27 @@ export default {
       let _this = this;
       // debugger;
       if (this.tabActiveValue === '待审核') {
-        new Promise((resolve, reject) => {
-          queryAlarmVehiclePage(_this.form).then(
-            res => {
-              resolve(res)
-              _this.tableData = res.data.records;
-              _this.total = res.data.total;
-            },
-            error => {
-              //  _this.errorMsg(error.toString(), 'error')
-              return
-            }
-          )
-        })
+        queryAlarmVehiclePage(_this.form).then(
+          res => {
+            _this.tableData = res.data.records;
+            _this.total = res.data.total;
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return
+          }
+        )
       } else {
-        new Promise((resolve, reject) => {
-          queryListPage(_this.form).then(
-            res => {
-              resolve(res)
-              _this.tableData = res.data.records;
-              _this.total = res.data.total;
-            },
-            error => {
-              //  _this.errorMsg(error.toString(), 'error')
-              return
-            }
-          )
-        })
-
+        queryListPage(_this.form).then(
+          res => {
+            _this.tableData = res.data.records;
+            _this.total = res.data.total;
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return
+          }
+        )
       }
     },
     findAllDrawerById(data, obj) {

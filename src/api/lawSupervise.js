@@ -45,7 +45,6 @@ export function getCountStatus () {
         url: "/zfjg/superviseVehicle/countStatus",
         method: "get",
         showloading: false,
-        loadingType:'loadPart',
         baseUrlType:  'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()
     });
@@ -97,7 +96,8 @@ export function getById(type,id) {
       url: "/zfjg/superviseVehicle/queryListPage",
       method: "get",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken: setCancelSource()
     });
