@@ -11,7 +11,8 @@ export function findPykhBatchByPage (data) {
   return request({
     url: "/pykh/pykhBatch/findPykhBatchByPage",
     method: "get",
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType:'CAPTCHA_HOST',
     params: data,
     cancelToken: setCancelSource()

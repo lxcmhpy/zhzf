@@ -17,11 +17,10 @@
         <span class="change_title_icon">二维码<i class="iconfont law-erweima" style="font-size:14px;margin-left:4px"></i></span>
 
       </div>
-
       <!-- 动态生成表单 -->
       <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
-      <uploadTmp :recordMsg='recordMsg'></uploadTmp>
+      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
       <!-- 悬浮按钮 -->
@@ -55,7 +54,8 @@ import chooseLawPerson from "./chooseModlePerson.vue";
 import uploadTmp from './upload/uploadModleFile.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
-import { saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi, findRecordByIdApi } from "@/api/Record";
+import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
+  findMyRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: ['psMsg'],
@@ -97,6 +97,9 @@ export default {
         }
       },
       recordMsg: '',
+      defautImgList:[],//已上传图片
+      defautFileList:[],//已上传附件
+
       adressName: '',
       // 执法人员
       allUserList: [],
@@ -163,7 +166,7 @@ export default {
     // 查找已有记录-修改
     findRecordDataByld() {
       let _this = this
-      findRecordByIdApi(this.recordId).then(
+      findMyRecordByIdApi(this.recordId).then(
         res => {
           _this.baseData = JSON.parse(res.data.layout)
           let list = JSON.parse(res.data.layout)
@@ -182,26 +185,47 @@ export default {
           _this.defaultRuleData = JSON.parse(JSON.stringify(res.data))
           _this.$set(_this.defaultRuleData, 'templateFieldList', list);
           _this.dealFormData()
+          // 回显文件
+          console.log('huixian',res.data.pictureList,res.data.attachedList)
+          _this.defautImgList=res.data.pictureList
+          _this.defautFileList=res.data.attachedList
         },
         error => {
         })
     },
     //当前登录账号名
     setLawPersonCurrentP() {
-      this.formData.createUser = iLocalStroage.gets("userInfo").username;
+      this.formData.createUser = iLocalStroage.gets("userInfo").nickName;
     },
     // 修改
     editRecord() {
-      // console.log('rule', this.rule)
-      this.$data.$f.resetFields()
-      this.rule.forEach(element => {
-        console.log(element)
-        this.$data.$f.updateRule(element.field, {
-          props: { disabled: false }
-        }, true);
-      });
-      this.addOrEiditFlag = 'add'
+      findRecordModleTimeByIdApi(this.formData.templateId).then(
+        res => {
+          if (res.code == 200) {
+            console.log('row.createTime <= res.data', this.formData.createTime, res.data)
+            if (res.data != null || this.formData.createTime >= res.data) {
+              // 可修改
+              this.$data.$f.resetFields()
+              this.rule.forEach(element => {
+                console.log(element)
+                this.$data.$f.updateRule(element.field, {
+                  props: { disabled: false }
+                }, true);
+              });
+              this.addOrEiditFlag = 'add'
+            } else {
+              this.$message.error('当前模板已修改，该记录不可修改');
+            }
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
+
     },
+    // 保存
     saveRecord() {
       this.formData.status = '保存';
       // this.onSubmit()
@@ -228,13 +252,18 @@ export default {
         this.formData.createTime = '';
         this.formData.updateTime = '';
         this.formData.type = '记录';
+        // this.formData.pictureList = null;
+        // this.formData.attachedList = null;
+        delete(this.formData["pictureList"]);
+        delete(this.formData["attachedList"]);
+        // debugger
         console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
             // console.log(res)
             if (res.code == 200) {
               this.addOrEiditFlag = 'view'
-              this.recordMsg = res.data;//根据返回id上传文件
+              this.recordMsg =this.formData.id?this.formData.id:res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
@@ -254,6 +283,7 @@ export default {
       })
 
     },
+    // 暂存
     onSaveRecord() {
       // console.log('rule', this.rule)
       this.rule.forEach(element => {
@@ -288,15 +318,19 @@ export default {
         console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
-            // console.log(res)
+                       // console.log(res)
             if (res.code == 200) {
+              this.addOrEiditFlag = 'view'
+              this.recordMsg = res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
               });
-              this.$router.push({
-                name: 'inspection_recordList',
-                // params: item
+              this.rule.forEach(element => {
+                console.log(element)
+                this.$data.$f.updateRule(element.field, {
+                  props: { disabled: true }
+                }, true);
               });
             } else {
               this.$message.error(res.msg);
@@ -310,8 +344,31 @@ export default {
     // 复制添加
     copySave() {
       this.addOrEiditFlag = 'add'
+      this.formData.id=''
+      this.formData.createTime=''
+      this.formData.updateTime=''
+      // 设置当前账号名
+      this.setLawPersonCurrentP()
+
+      console.log('this.formData',this.formData)
+      debugger
+      this.saveRecord()
     },
     onSubmit(formData) {
+      // this.$data.$f.validate((valid) => {
+      //   if (valid) {
+      //     //TODO 验证通过
+      //   } else {
+      //     if (document.getElementsByClassName('el-form-item__error').length > 0) {
+      //       this.$notify.error({
+      //         title: '提示',
+      //         message: document.getElementsByClassName('el-form-item__error')[0].innerText
+      //       });
+      //     }
+
+      //   }
+
+      // })
 
       console.log("formData", formData)
 
@@ -427,6 +484,8 @@ export default {
       // 处理个人和法人
       let personFlag = false
       let partyFlag = false
+      console.log('data', data)
+      // debugger
       data.forEach(element => {
         if (element.classs == '个人') {
           personFlag = element;
@@ -606,16 +665,22 @@ export default {
                 }
               } else if (item.type == '数字型') {
                 this.rule.push({
-                  type: "InputNumber",
+                  //  type: "InputNumber",
+                  type: "input",
                   field: item.id || item.field,
                   title: item.title,
-                  value: item.text || 1,
+                  value: item.text,
+                  controls: false,
+                  className: 'modle-number-box',
                   props: {
-                    precision: 2
+                    type: 'textarea',
+                    autosize: { minRows: 1 }
+                    // precision: 2
                   },
                   validate: [{
                     required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
+                    pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                    message: '必须输入数字',
                     trigger: 'blur'
                   }]
                 })
@@ -681,6 +746,7 @@ export default {
                   },
                 })
                 if (item.field == 'staff') {
+                  console.log('item', item)
                   this.LawName = item.id;// 执法人员字段名
                 } else if (item.field == 'certificateId') {//执法人员账号字段名
                   this.LawOfficerCard = item.id;
@@ -693,22 +759,42 @@ export default {
       }
       data.forEach(element => {
         // console.log(element)
-        if (element.classs && element.classs != '法人' && element.classs != '个人') {
-          // 组
-          this.rule.push(
-            {
-              type: 'p',
-              name: 'btn',
-              field: element.classId,
-              props: {
-                type: 'primary',
-                field: 'btn',
-                loading: true
-              },
-              className: 'border-title',
-              children: [element.classs],
+        if (element.classs != '法人' && element.classs != '个人') {
+          if (element.classs) {
+            // 组
+            this.rule.push(
+              {
+                type: 'p',
+                name: 'btn',
+                field: element.classId,
+                props: {
+                  type: 'primary',
+                  field: 'btn',
+                  loading: true
+                },
+                className: 'border-title',
+                children: [element.classs],
+              }
+            )
+          } else {
+            if (this.rule.length != 0) {
+              // 分割线
+              this.rule.push(
+                {
+                  type: 'div',
+                  name: 'btn',
+                  field: element.classId,
+                  props: {
+                    type: 'primary',
+                    field: 'btn',
+                    loading: true
+                  },
+                  className: 'line',
+                }
+              )
             }
-          )
+
+          }
 
           // 字段
           element.fieldList.forEach(item => {
@@ -822,16 +908,22 @@ export default {
               }
             } else if (item.type == '数字型') {
               this.rule.push({
-                type: "InputNumber",
+                //  type: "InputNumber",
+                type: "input",
                 field: item.id || item.field,
                 title: item.title,
-                value: item.text || 1,
+                value: item.text,
+                controls: false,
+                className: 'modle-number-box',
                 props: {
-                  precision: 2
+                  type: 'textarea',
+                  autosize: { minRows: 1 }
+                  // precision: 2
                 },
                 validate: [{
                   required: item.required == 'true' ? true : false,
-                  message: '请输入' + item.title,
+                  pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+                  message: '必须输入数字',
                   trigger: 'blur'
                 }]
               })
@@ -886,7 +978,7 @@ export default {
                 children: [
                   {
                     type: 'i',
-                    class: 'iconfont law-weizhi',
+                    class: 'iconfont law-people',
                     slot: 'suffix',
 
                   }
@@ -913,19 +1005,17 @@ export default {
     },
     //查询执法人员
     getAllUserList(list) {
-      console.log("list", list);
       this.allUserList = list;
     },
     setLawPerson(userlist) {
-      console.log('选择的执法人员', userlist);
       this.alreadyChooseLawPerson = userlist;
-
       let staffArr = [];
       let certificateIdArr = [];
-
       this.alreadyChooseLawPerson.forEach(item => {
         //   //给表单数据赋值
-        staffArr.push(item.lawOfficerName);//执法人员
+        // staffArr.push(item.lawOfficerName);//执法人员
+        staffArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执法人员
+
         certificateIdArr.push(item.selectLawOfficerCard);//执法账号
       });
 
@@ -993,21 +1083,21 @@ export default {
       }
     },
     // 默认隐藏法人
-    defultPersonParty(){
-       this.personFieldList.forEach(element => {
-          console.log('elmen', element.id)
-          // 避免undefine导致全部隐藏
-          if (element.id) {
-            this.$data.$f.hidden(false, element.id)
-          }
-        });
-        //  隐藏显示法人
-        this.partyFieldList.forEach(element => {
-          console.log('elmen', element)
-          if (element.id) {
-            this.$data.$f.hidden(true, element.id)
-          }
-        });
+    defultPersonParty() {
+      this.personFieldList.forEach(element => {
+        console.log('elmen', element.id)
+        // 避免undefine导致全部隐藏
+        if (element.id) {
+          this.$data.$f.hidden(false, element.id)
+        }
+      });
+      //  隐藏显示法人
+      this.partyFieldList.forEach(element => {
+        console.log('elmen', element)
+        if (element.id) {
+          this.$data.$f.hidden(true, element.id)
+        }
+      });
     }
   },
   mounted() {
@@ -1042,3 +1132,4 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>

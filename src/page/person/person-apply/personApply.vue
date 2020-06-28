@@ -346,6 +346,8 @@ export default {
     // 重置查询条件
     reset() {
       this.$refs["userForm"].resetFields();
+      this.currentPage = 1;
+      this.getPersonList();
     },
 
     getNowYear() {

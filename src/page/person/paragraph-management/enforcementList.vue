@@ -7,7 +7,7 @@
             <el-form-item label="执法机构" prop="oName">
               <el-input v-model="userForm.oName" placeholder></el-input>
             </el-form-item>
-            <el-form-item label label-width="13px">
+            <el-form-item label=" " label-width="13px">
               <el-button
                 title="搜索"
                 class="commonBtn searchBtn"
@@ -188,8 +188,9 @@ export default {
     },
     reset() {
       // 重置查询条件
-      let _this = this;
-      _this.$refs["userFormRef"].resetFields();
+      this.$refs["userFormRef"].resetFields();
+      this.currentPage = 1;
+      this.enfPageList();
     },
     addOrgApply(row, type) {
       //新增or修改

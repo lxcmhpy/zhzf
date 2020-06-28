@@ -11,6 +11,11 @@
     width: 500px;
     height: 300px;
 }
+
+.amap-toolbar{
+    right: 30px !important;
+    bottom: 40px !important;
+}
 .mainBox {
     position: relative;
     // margin: 22px;
@@ -130,7 +135,7 @@
     .tabBtn{
         background: none;
         height:auto;
-        width: 192px;
+        width: 220px;
         padding:0px;
         padding-top: 5px;
         box-sizing: border-box;
@@ -342,6 +347,8 @@
             line-height: 35px;
             text-align: left;
             flex:1;
+            height: 50px;
+            font-size: 18px;
             margin-left: 10px;
         }
         .right {
@@ -466,7 +473,7 @@
         height: 40px;
         position: absolute;
         margin-left: 0px;
-        width: auto;
+        width: 200px;
         margin-top: -30px;
         background:white;
         right: 50%;
@@ -477,8 +484,9 @@
             // line-height: 40px;
             // height: 40px;
             margin: -14px 40px 0px 0px;
-            margin-left: 10px;
+            // margin-left: 10px;
             color: #20232B;
+            padding: 0;
             img,.iconfont {
                 width: 18px;
                 height:18px;
@@ -551,6 +559,10 @@
         }
         span.blueBg {
             background: #4573d0;
+            color: white;
+        }
+        span.greenBg {
+            background: #00adb5;
             color: white;
         }
         .el-icon-location {
@@ -1373,4 +1385,5 @@
     .amap-main-content  {
         height: 92vh;
     }
+
 }

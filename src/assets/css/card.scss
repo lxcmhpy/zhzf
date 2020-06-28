@@ -1,20 +1,23 @@
 @import "./main.scss";
 
 .card-content {
-    height: 208px;
+    height: auto;
     color : #20232B;
+    clear: both;
 }
 
 .card-title {
-    height     : 20px;
-    line-height: 20px;
-    font-size  : 14px;
-    font-weight: 400;
-    clear      : both;
+    margin-bottom: 16px;
+    height       : 20px;
+    line-height  : 20px;
+    font-size    : 14px;
+    font-weight  : 400;
+    clear        : both;
 }
 
 .card-ul {
-    margin: 16px -34px 44px 0;
+    margin: 0 -34px 44px 0;
+
 
     li {
         margin-right : 34px;
@@ -58,13 +61,13 @@
 }
 
 .card-des {
-    height     : 20px;
-    font-size  : 14px;
-    font-weight: 500;
-    line-height: 20px;
-    overflow: hidden;
+    height       : 20px;
+    font-size    : 14px;
+    font-weight  : 500;
+    line-height  : 20px;
+    overflow     : hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space  : nowrap;
 }
 
 .card-title-margin {
@@ -164,9 +167,10 @@
 
     .el-icon-remove,
     .el-icon-remove-outline {
-        margin   : 0px 0px 0px auto;
-        font-size: 16px;
-        color    : #4573D0;
+        margin      : 0px 0px 0px auto;
+        font-size   : 16px;
+        color       : #F56C6C;
+        /* color    : #4573D0; */
 
     }
 
@@ -228,6 +232,7 @@
 }
 
 .card-add-ziduan {
+    margin-left: 9%;
     color      : #4573D0;
     height     : 20px;
     font-size  : 14px;
@@ -409,8 +414,40 @@
     }
 }
 
-.modle-upload{
-    margin-left: 100px;
+.modle-upload {
+    margin-left  : 100px;
     // margin-top: -10px;
-    width: 50%;
+    width        : 50%;
+}
+
+.show-icon {
+    display: inline-block;
+    cursor : pointer;
+}
+
+/* 只显示我的 */
+.chose-mine {
+    .el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) {
+        .el-radio__inner {
+            box-shadow: 0 0 2px 2px #fff;
+        }
+    }
+
+}
+
+/* 模板内的数字形 */
+.modle-number-box {
+
+    .el-input-number__decrease,
+    .el-input-number__increase {
+        display: none !important;
+    }
+
+    .el-input-number {
+        .el-input__inner {
+            padding-left : 0;
+            padding-right: 0;
+            text-align   : left;
+        }
+    }
 }

@@ -201,6 +201,7 @@ export default {
             item.picList = JSON.stringify(picListArr);
         })
         if(canSubmit){
+          console.log('this.docData.evidenceData',this.docData.evidenceData)
             this.com_addDocData(handleType, "docForm");
         }else{
            this.$message('每页的第一张图片必须选择！')
@@ -258,6 +259,10 @@ export default {
         let storageId = selpicData.picData.evPath;
       queryImgBase64Api(storageId).then(res=>{
         console.log('获取base64',res);
+        if(res === false){   //生成失败
+          this.$message.error('生成base64码失败！')
+          return;
+        }
         let  picBase64Key = 'picBase64_'+selpicData.picIndex;
         this.docData.evidenceData[selpicData.pastePage][picBase64Key] = res.data;
         this.changeImgWidHei(storageId,selpicData.pastePage,selpicData.picIndex)
@@ -405,3 +410,5 @@ export default {
     }
 }
 </style>
+
+

@@ -88,7 +88,12 @@
       this.organId = userInfo.organId;
       if(this.organId === '1'){
         this.findAllOrg()
+        if(this.$route.params.orgId !== undefined){
+          this.search.orgId = this.$route.params.orgId
+          this.fetchData()
+        }
       }else{
+        this.search.orgId = this.organId
         this.fetchData()
       }
     }

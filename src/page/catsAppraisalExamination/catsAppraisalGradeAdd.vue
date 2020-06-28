@@ -2,6 +2,7 @@
     <div class="com_searchAndpageBoxPadding">
         <div class="searchAndpageBox toggleBox">
         <div class="handlePart" style="margin-left: 0px;">
+        <viewNotice ref="viewNoticeRef"></viewNotice>
         <div class="search">
           <el-form :inline="true" :model="form" ref="form">
             <el-form-item label="案卷编号">
@@ -19,6 +20,9 @@
             <div v-if="form.pfStatus==='0'">
                 <el-form-item>
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="commitData">提交</el-button>
+                </el-form-item>
+                <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-search" @click="viewFile">查看附件</el-button>
                 </el-form-item>
             </div>
           </el-form>
@@ -203,9 +207,13 @@
 <script>
   import {getCaseInfoDetailByPid,updateScore,updateScoreState} from "@/api/appraisalExam.js";
   import { mixinsCommon } from "@/common/js/mixinsCommon";
+  import viewNotice from "./noticeManage/viewNotice";
   import _ from "lodash";
 export default {
     mixins: [mixinsCommon],
+    components: {
+      viewNotice
+    },
     data () {
         return {
             form:{},
@@ -246,8 +254,15 @@ export default {
                 }
             }
       },
+      viewFile(){
+          let routerData = {
+              id:this.form.storageId
+          }
+          this.$router.push({ name: "catsAppraisalPDF", params: routerData });
+        //this.$refs.viewNoticeRef.showPDF(this.form.storageId);
+      },
       commitData(){
-          var re = /^[1-9]([0-9])*$/;
+          var re = /^[0-9]([0-9])*$/;
         let validata = this.pykhScoreDetailsVos.find(value=>value.oneSore===null || !re.test(value.oneSore))
         if(validata){
             this.$message({type: "warning",message: "全部评分之后才能提交"});
@@ -263,8 +278,11 @@ export default {
             res => {
                 _this.$message({type: "success",message: "提交成功!"});
                 _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
+                let routerData = {
+                    orgId:_this.form.orgId
+                }
                 _this.$router.push({
-                    name: this.$route.params.url
+                    name: this.$route.params.url, params: routerData 
                 });
             },
             err => {
@@ -289,9 +307,14 @@ export default {
               }
             updateScore(row).then(
                 res => {
-                    
+                    let sum = 0
+                    this.pykhScoreDetailsVos.forEach(function(item){
+                         sum += parseInt(item.oneSore===null?'0':item.oneSore)
+                    })
+                    this.form.oneScoreSum = sum
                 },
                 err => {
+                    row[key]=''
                     console.log(err);
                 }
             );

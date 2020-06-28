@@ -1,7 +1,7 @@
 import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,
+  updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,findDocDataByIdApi,
 } from "@/api/caseHandle";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 
@@ -12,6 +12,8 @@ export const mixinGetCaseApiList = {
       canGoNextLink: false,
       submitApproval: false,
       caseFlowData:'', //案件流程数据（哪个信息采集页、哪个流程图）
+      //立案登记表环节id数组
+      establish_caseLinktypeIdArr:[this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId], 
     }
   },
   computed: {
@@ -133,7 +135,7 @@ export const mixinGetCaseApiList = {
                   message: "保存成功"
                 });
                 //立案登记表提交之后调用更新案件信息的接口
-                if (this.caseLinkDataForm.caseLinktypeId == BASIC_DATA_SYS.establish_caseLinktypeId) {
+                if (this.establish_caseLinktypeIdArr.includes(this.caseLinkDataForm.caseLinktypeId)) {
                   let data = {
                     caseName: this.formData.caseName,
                     caseInfo: this.formData.caseSituation,
@@ -145,11 +147,11 @@ export const mixinGetCaseApiList = {
 
                 if (handleType == 1) {
                   //保存成功
-                  if (hasNextBtn) {    //有下一环节按钮
+                  if (hasNextBtn) {    //直接跳转pdf
                     //提交pdf 显示pdf页
                     this.printContent();
                     this.isSaveLink = true;
-                  } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
+                  } else {   //刷新数据
                     this.reload();
                   }
                 } else if (handleType == 2) {
@@ -446,7 +448,7 @@ export const mixinGetCaseApiList = {
       console.log('printContent docDataId', docDataId)
       this.uploadFile('', '', docDataId)
     },
-    uploadFile(file, name, docDataId) {
+    async uploadFile(file, name, docDataId) {
 
       let docId = '';  //文书 id
 
@@ -469,16 +471,33 @@ export const mixinGetCaseApiList = {
 
       //上传pdf之后显示pdf
       console.log('upload docDataId', docDataId);
-      if (docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId) {
-        this.$store.commit('setApprovalState', 'approvalBefore')
-      } else {
-        this.$store.commit('setApprovalState', '')
+      //查询是否需要审批
+      let nowCaseDocdata = '';
+      try{
+        nowCaseDocdata = await findDocDataByIdApi(docId);
+      }catch(err){
+        this.$message('查询是否需要审批失败')
       }
+      
+      console.log('nowCaseDocdata',nowCaseDocdata);
+
+      if(Number(nowCaseDocdata.data.isApproval) == 0){ //需要审批
+        this.$store.commit('setApprovalState', 'approvalBefore')
+        console.log('需要审批');
+      }else{  //不需要审批
+        this.$store.commit('setApprovalState', '')
+        console.log('不需要审批');
+      }
+
+
+      // if (docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId) {
+      //   this.$store.commit('setApprovalState', 'approvalBefore')
+      // } else {
+      //   this.$store.commit('setApprovalState', '')
+      // }
       let routerData = {
         docId: docId,
-        // approvalOver: this.approvalOver ? true : false,
         caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-        // docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : docDataId
         docDataId: this.caseDocDataForm ? docDataId : ''
 
       }
@@ -734,6 +753,16 @@ export const mixinGetCaseApiList = {
       }
       console.log('routeName',routeName)
       return routeName;
+    },
+    //查询文书是否需要审批
+    async findDocIsNeedApproval(id){
+      return findDocDataByIdApi(id);
+      // return findDocDataByIdApi(id).then(res=>{
+      //   console.log('查询文书是否需要审批',res);
+      //   // return res.data;
+      // }).catch(err=>{
+      //   console.log(err)
+      // })
     }
 
 

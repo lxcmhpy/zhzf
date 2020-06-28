@@ -85,7 +85,7 @@
             v-loading="tableLoading"
             element-loading-spinner="car-loading"
             element-loading-text="加载中..."
-            :max-height="340"
+            :max-height="380"
           >
             <el-table-column prop="personName" label="姓名" align="left" fixed="left"></el-table-column>
             <el-table-column
@@ -196,22 +196,8 @@ export default {
         //查询执法领域
         res => {
           if (res.code === 200) {
-            if (codeName === "branchIdsInfo") {
-              this.branchIdsInfo = res.data;
-              this.branchIdsInfo.unshift({ id: "", name: "全部" });
-            }
-            if (codeName === "stationIdsInfo") {
-              this.stationIdsInfo = res.data;
-              this.stationIdsInfo.unshift({ id: "", name: "全部" });
-            }
-            if (codeName === "oidsInfo") {
-              this.oidsInfo = res.data;
-              this.oidsInfo.unshift({ id: "", name: "全部" });
-            }
-            if (codeName === "stationStatusInfo") {
-              this.stationStatusInfo = res.data;
-              this.stationStatusInfo.unshift({ id: "", name: "全部" });
-            }
+            this[codeName] = res.data;
+            this[codeName].unshift({ id: "", name: "全部" });
           } else {
             console.info("没有查询到数据");
           }
@@ -284,8 +270,9 @@ export default {
       this.getPageAllInfo();
     },
     resetLog() {
-      let _this = this;
-      _this.$refs["examPersonFormRef"].resetFields();
+      this.$refs["examPersonFormRef"].resetFields();
+      this.currentPage = 1;
+      this.getPageAllInfo();
     },
     closeDialog() {
       let _this = this;
@@ -312,6 +299,15 @@ export default {
     &::-webkit-scrollbar{
       height: 12px;
     }
+    &::-webkit-scrollbar-track{
+      height: 12px;
+    }
+  }
+  >>>.el-table__fixed-body-wrapper{
+    bottom: 8px;
+  }
+  >>>.el-table__fixed-right::before, >>>.el-table__fixed::before{
+    display: none;
   }
   .paginationBox {
     margin-top: 10px;

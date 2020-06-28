@@ -973,20 +973,20 @@ export function getAllOrigin(){
   });
 }
 
-//查询考试配置
+//任务配置查询配置
 export function getScheduleJobPageApi(data){
   return  request({
-    url:  "/exam/scheduleJob/getScheduleJobPage",
+    url:  "/exam/appQuartz/queryAppQuartzPage",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource(),
   });
 }
-//新增考试配置
+//新增任务
 export function addScheduleJobApi(data){
   return  request({
-    url:  "/exam/scheduleJob/addScheduleJob",
+    url:  "/exam/appQuartz/addAppQuartz",
     method:  "get",
     params: data,
     showloading: false,
@@ -996,7 +996,7 @@ export function addScheduleJobApi(data){
 //修改考试配置
 export function updateScheduleJobApi(data){
   return  request({
-    url:  "/exam/scheduleJob/updateScheduleJob",
+    url:  "/exam/appQuartz/updateAppQuartz",
     method:  "get",
     params: data,
     showloading: false,
@@ -1006,29 +1006,47 @@ export function updateScheduleJobApi(data){
 //删除考试配置
 export function deleteScheduleJobApi(data){
   return  request({
-    url:  "/exam/scheduleJob/deleteScheduleJobInfo",
+    url:  "/exam/appQuartz/deleteAppQuartzById",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource(),
   });
 }
-//手动配置
-export function cacheQuestionRedisApi(data){
+//暂停
+export function pausejobApi(data){
   return  request({
-    url:  "/exam/cacheQuestionRedis/getCacheQuestionToRedis",
+    url:  "/exam/appQuartz/pausejob",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource(),
   });
 }
-//启用停用
-export function resumeScheduleJobInfoApi(data){
+//恢复
+export function  resumejobApi(data){
   return  request({
-    url:  "/exam/className/resumeScheduleJobInfo",
+    url:  "/exam/appQuartz/resumejob",
     method:  "get",
     params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//全部暂停
+export function pauseAllJobApi(){
+  return  request({
+    url:  "/exam/appQuartz/pauseAllJob",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//全部恢复
+export function repauseAllJobApi(){
+  return  request({
+    url:  "/exam/appQuartz/repauseAllJob",
+    method:  "get",
     showloading: false,
     cancelToken:  setCancelSource(),
   });

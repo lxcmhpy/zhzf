@@ -196,6 +196,8 @@ export default {
     },
     resetLog() {
       this.$refs["addExamPersonFormRef"].resetFields();
+      this.currentPage = 1;
+      this.selectPersonList();
     },
     closeDialog() {
       let _this = this;

@@ -35,7 +35,7 @@
         <div class="exam-info" style="margin-left: 0;">
           <div class="handlePart">
             <el-form :inline="true" :model="searchForm" ref="searchForm">
-              <el-form-item prop="idNo">
+              <el-form-item prop="personName">
                 <el-input
                   v-model="searchForm.personName"
                   placeholder="请输入姓名或身份证号"
@@ -329,6 +329,8 @@ export default {
     resetSearchForm() {
       this.searchForm.personName = "";
       this.searchForm.status = "";
+      this.currentPage = 1;
+      this.getExamPerson();
     },
     // 根据考生状态查询
     searchByStatus(val) {

@@ -240,8 +240,8 @@ export default {
             }
       },
       commitData(){
-        var re = /^[1-9]([0-9])*$/;
-        let validata = this.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
+        var re = /^[0-9]([0-9])*$/;
+        let validata = this.form.pykhScoreDetailsVos.find(value=>value.twoSore===null || !re.test(value.twoSore))
         if(validata){
             this.$message({type: "warning",message: "全部评分之后才能提交"});
             return
@@ -282,9 +282,14 @@ export default {
             }
             updateScore(row).then(
                 res => {
-                    
+                    let sum = 0
+                    this.form.pykhScoreDetailsVos.forEach(function(item){
+                         sum += parseInt(item.twoSore===null?'0':item.twoSore)
+                    })
+                    this.form.twosore = sum
                 },
                 err => {
+                    row[key]=''
                     console.log(err);
                 }
             );

@@ -9,33 +9,36 @@
               <el-input v-model="search.staffName" clearable placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item label="所属机构">-->
-<!--              <el-input v-model="search.OId" clearable placeholder="请选择"></el-input>-->
+<!--              <el-input v-model="search.oId" clearable placeholder="请选择"></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="resetSearch">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="searchData(1)">查询</el-button>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add_openDialog">新增</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-link href="./static/excel/人员表.xlsx">
-                <el-button type="primary" size="medium" icon="el-icon-plus" >模板下载</el-button>
-              </el-link>
+              <el-form-item v-if="baosongStatus">
+                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="add_openDialog">新增</el-button>
+              </el-form-item>
+              <el-form-item v-if="baosongStatus">
+                <el-link href="./static/excel/人员表.xlsx">
+                  <el-button type="primary" size="medium" icon="el-icon-plus" >模板下载</el-button>
+                </el-link>
 
-            </el-form-item>
-            <el-form-item>
-              <el-upload
-                class="upload-demo"
-                action=""
-                :http-request="uploadPerson"
-                :show-file-list="false"
-                accept=".xlsx"
-              >
-                <el-button type="primary" size="medium" icon="el-icon-plus">批量导入</el-button>
-              </el-upload>
+              </el-form-item>
+              <el-form-item v-if="baosongStatus">
+                <el-upload
+                  class="upload-demo"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :http-request="uploadPerson"
+                  :show-file-list="false"
+                  accept=".xlsx"
+                >
+                  <el-button type="primary" size="medium" icon="el-icon-plus">批量导入</el-button>
+                </el-upload>
+              </el-form-item>
+            <el-form-item v-if="baosongStatus">
+              <el-button type="primary" size="medium" @click="clickBaosong">报送</el-button>
             </el-form-item>
 
           </el-form>
@@ -52,27 +55,35 @@
             <el-table-column prop="provinceNo" label="现持省内执法证号" align="center"></el-table-column>
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
+                <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
+                <el-tag type="warning"  v-show="scope.row.staffStatus==0 && scope.row.bsStatus==1">未抽取</el-tag>
                 <el-tag type="success" v-show="scope.row.staffStatus==1">已抽取</el-tag>
-                <el-tag type="warning"  v-show="scope.row.staffStatus==0">未抽取</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="120">
-              <template  slot-scope="scope">
-                <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
-                <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
-                <el-upload
-                  class="upload-demo"
-                  accept=".jpg, .png"
-                  v-show="scope.row.staffStatus==1"
-                  :http-request="saveFile"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  multiple
-                  :limit="1">
-                  <el-button size="small" type="primary">上传照片</el-button>
-                </el-upload>
-                <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
-              </template>
-            </el-table-column>
+              <el-table-column label="操作" align="center" width="120" >
+                <template  slot-scope="scope">
+                    <div>
+                        <div v-if="baosongStatus">
+                            <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
+                            <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
+                        </div>
+                        <div v-show="scope.row.staffStatus==1">
+                            <el-upload
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                class="upload-demo"
+                                accept=".jpg, .png"
+                                :show-file-list="false"
+                                v-show="scope.row.staffStatus==1"
+                                :http-request="(params)=>saveFile(params,scope.row)"
+                                multiple
+                                :limit="1">
+                                <el-button size="small" type="primary">上传照片</el-button>
+                            </el-upload>
+                            <el-button type="text" @click.stop @click="view(scope.row)" v-show="scope.row.staffStatus==1 && scope.row.fjStatus==1">查看照片</el-button>
+                        </div>
+                  </div>
+                </template>
+              </el-table-column>
           </el-table>
         </div>
 
@@ -82,8 +93,8 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="current"
-              :page-sizes="[this.size, 2*this.size, 3*this.size, 4*this.size]"
-              :page-size=this.size
+              :page-sizes="[20, 40, 60, 80,100]"
+              :page-size="size"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total">
             </el-pagination>
@@ -92,30 +103,30 @@
         </div>
 
         <el-dialog :visible.sync="visible" title="人员报送" width="480px" >
-          <el-form :label-position="labelPosition" :model="form" ref="form" label-width="160px">
+          <el-form :label-position="labelPosition" :model="form" :rules="rules" ref="formRY" label-width="160px">
             <!-- <el-form-item label="选择检查名称">
               <el-select v-model="form.batchId" placeholder="请选择" >
                 <el-option v-for="(item,index) in batchList" :key="index" :label="item.batchName" :value="item.id"></el-option>
               </el-select>
             </el-form-item> -->
-            <el-form-item label="姓名" prop="operator" >
+            <el-form-item label="姓名" prop="staffName">
               <el-input placeholder="请输入姓名" v-model.trim="form.staffName" ></el-input>
             </el-form-item>
 <!--            <el-form-item label="执法证号" prop="operator" >-->
 <!--              <el-input placeholder="请输入执法证号" v-model.trim="form.enforcementCertificate" ></el-input>-->
 <!--            </el-form-item>-->
-            <el-form-item label="身份证号" prop="operator" >
+            <el-form-item label="身份证号" prop="idCard" >
               <el-input placeholder="请输入身份证号" v-model.trim="form.idCard" ></el-input>
             </el-form-item>
 
-            <el-form-item label="现持海事执法证号" prop="operator" >
+            <el-form-item label="现持海事执法证号" prop="maritimeNo" >
               <el-input placeholder="请输入现持海事执法证号" v-model.trim="form.maritimeNo" ></el-input>
             </el-form-item>
 
-            <el-form-item label="现持部级执法证号" prop="operator" >
+            <el-form-item label="现持部级执法证号" prop="ministerialNo" >
               <el-input placeholder="请输入现持部级执法证号" v-model.trim="form.ministerialNo" ></el-input>
             </el-form-item>
-            <el-form-item label="现持省内执法证号" prop="operator" >
+            <el-form-item label="现持省内执法证号" >
               <el-input placeholder="请输入现持省内执法证号" v-model.trim="form.provinceNo" ></el-input>
             </el-form-item>
           </el-form>
@@ -127,21 +138,23 @@
         </el-dialog>
 
       </div>
-      <el-dialog title="查看" :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt="">
+      <el-dialog title="查看" :visible.sync="dialogVisible" style="width:430px;height:640px;">
+        <img width="413px" height="626px" :src="dialogImageUrl" alt="">
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-  import { mixinsCommon } from "@/common/js/mixinsCommon";
-  import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,findListVoByBatch,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+//   import { mixinsCommon } from "@/common/js/mixinsCommon";
+  import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,confirmSubmissionStaff,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
+  import {StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
-  import viewNotice from "../noticeManage/viewNotice"; 
+  import viewNotice from "../noticeManage/viewNotice";
+  import {validateIDNumber,isInteger_8_10,isInteger_10} from '@/common/js/validator';
 
   export default {
-    mixins: [mixinsCommon],
+    // mixins: [mixinsCommon],
     components: {
       viewNotice
     },
@@ -152,7 +165,7 @@
         total:0,
         search:{
           staffName:"",
-          OId:""
+          oId:""
         },
         organList:[],
         organId:'',
@@ -160,7 +173,7 @@
         visible:false,
         labelPosition: 'right',
         form:{
-          Oid: '',
+          oId: '',
           enforcementCertificate:'',
           idCard:'',
           maritimeNo:'',
@@ -168,17 +181,43 @@
           provinceNo:'',
           staffName:''
         },
+        baosongStatus:true,
         dialogImageUrl:'',
         dialogVisible: false,
         uploadHeaders: {
           'Authorization': ''
         },
+        rules: {
+            staffName: [
+                {required: true, message: "请输入姓名", trigger: "blur"}
+            ],
+            idCard: [
+                { required: true, message: "身份证号不能为空", trigger: "blur" },
+                { validator: validateIDNumber, trigger: "blur" }
+            ],
+            ministerialNo:[{ validator: isInteger_8_10, trigger: "blur" }],
+            maritimeNo: [{ validator: isInteger_10, trigger: "blur" }],
+        }
       }
     },
 
     methods: {
-      saveFile(param) {
-        console.log(param);
+      saveFile(param, row) {
+        var fd = new FormData();
+        fd.append("file", param.file);
+        fd.append("userId", iLocalStroage.gets("userInfo").id);
+        fd.append("category", "人员报送");
+        fd.append("docId", row.staffId);
+        fd.append("storageId", row.storageId?row.storageId:'');
+        let _this = this
+        StaffAndCaseFile(fd).then(res => {
+          if (res.code == 200){
+            row.storageId = res.data
+            row.fjStatus = '1'
+          }else{
+            _this.$message.error('出现异常，添加失败！');
+          }
+        });
       },
       view(row){
         this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId;
@@ -187,23 +226,23 @@
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
-        data.OId=this.organId;
+        data.oId=this.organId;
+        let _this = this;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
-            this.dataList=res.data.records;
-            this.total=res.data.total;
-            this.current=res.data.current;
+            _this.dataList=res.data.records;
+            _this.total=res.data.total;
+            _this.current=res.data.current;
           }
         });
       },
       download_excel(){
       },
       handleSizeChange(val) {
-        var this_size=this.size;
+        this.current = 1;
         this.size=val;
         this.fetchData({});
-        this.size=this_size;
       },
       handleCurrentChange(val) {
         this.current=val;
@@ -212,30 +251,29 @@
       resetSearch(){
         this.search={
           staffName:"",
-            OId:""
+            oId:""
         }
       },
-      searchData(){
+      searchData(current){
+        this.current = current;
         let data={};
         data.staffName=this.search.staffName;
-        data.OId=this.search.OId;
+        data.oId=this.search.oId;
         this.fetchData(data);
       },
       uploadPerson(param) {
         console.log(param);
         var fd = new FormData();
         fd.append("file", param.file);
-        fd.append("OId",this.organId)
+        fd.append("oId",this.organId)
         importPerson(fd).then(
           res => {
             console.log(res);
             if(res.code==200){
-              if(res.data === "上传成功"){
-                this.fetchData({});
-                this.$message({type: "success",message: res.data});
-              }else{
-                 this.$message({type: "error",message:res.data});
-              }
+                this.$message({type: "success",message: res.msg});
+                this.fetchData({})
+            }else{
+              this.$message({type: "error",message:res.msg});
             }
           },
           error => {
@@ -247,7 +285,7 @@
         this.visible = true;
         this.form = {
           batchId:'',
-          OId: this.organId,
+          oId: this.organId,
           enforcementCertificate: '',
           idCard: '',
           maritimeNo: '',
@@ -261,12 +299,21 @@
         this.visible=true;
       },
       addOrUpdatePykhStaff(){
-        addOrUpdatePykhStaff(this.form).then(res=>{
-          console.info("保存报送人员结果：",res)
-          if(res.code==200){
-            this.visible=false;
-            this.fetchData({});
-          }
+          let _this =this;
+          this.$refs['formRY'].validate((valid) => {
+              if (valid) {
+                    addOrUpdatePykhStaff(this.form).then(res=>{
+                        console.info("保存报送人员结果：",res)
+                        if(res.code==200){
+                            this.visible=false;
+                            this.fetchData({});
+                        }
+                    })
+               } else {
+                    _this.errorMsg("信息填写错误！", 'error');
+                    _this.closeLoading();
+                    return false;
+                }
         })
       },
       deleteStaff(data){
@@ -277,16 +324,44 @@
           if(res.code==200){
             that.errorMsg(res.msg,"success")
             this.fetchData({});
+          }else{
+            that.errorMsg(res.msg,"error")
+          }
+        });
+      },
+      findPersonBsStatus(){
+        let data={}
+        data.oId=this.organId;
+        data.bsStatus=1;
+        findPykhStaffByPage(data).then(res=>{
+          if(res.code==200){
+            if(res.data.total>0){
+              this.baosongStatus=false;
+            }
+          }
+        });
+
+      },
+      clickBaosong(){
+        confirmSubmissionStaff(this.organId).then(res=>{
+          if(res.code==200){
+            this.$message({type: "success",message: res.msg});
+            this.findPersonBsStatus();
+            this.fetchData({});
+          }else{
+            this.$message({type: "error",message: res.msg});
           }
         });
       }
+
     },
     mounted () {
       let userInfo = iLocalStroage.gets("userInfo");
       console.info("userinfo:",userInfo)
       this.organId = userInfo.organId;
       let data={}
-      // data.OId=this.organId;
+      // data.oId=this.organId;
+      this.findPersonBsStatus();
       this.fetchData(data);
 
       // findAllDepartment(this.organId).then(res=>{

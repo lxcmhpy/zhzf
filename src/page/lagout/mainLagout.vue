@@ -59,7 +59,6 @@
                 {{userInfo.nickName}}
                 <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
               </span>
-
             </el-popover>
           </div>
           <div><i class="iconfont law-message"></i></div>
@@ -133,6 +132,7 @@ export default {
     loginOut() {
     //   Cookies.remove("TokenKey");
       // this.$store.state.openTab = [];
+      this.$store.commit('CLEAR_ALL_CACHE');
       this.$store.dispatch('deleteAllTabs');
       this.$router.push({name:'login'});
     },
@@ -159,7 +159,11 @@ export default {
       }
       getDictListDetailByNameApi('系统标题').then(res => {
         this.$store.commit('set_systemTitle',res.data[0].name);
-        window.document.title = res.data[0].name
+        window.document.title = res.data[0].name;
+        //设置省份
+        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
+        //是否需要签章
+        this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
       }, err => {
         console.log(err);
       })
@@ -167,12 +171,15 @@ export default {
     initUser (){
         if(!iLocalStroage.gets('userInfo') ||  !this.$store.state.system.menu){
             console.log('获取信息')
-            getCurrentUserApi().then(res=>{
-                iLocalStroage.sets('userInfo', res.data);
-                this.userInfo = res.data;
-                this.initMenu();
-            },err=>{
-            console.log(err);
+            let _this =this;
+            new Promise((resolve, reject) => {
+                getCurrentUserApi().then(res=>{
+                    iLocalStroage.sets('userInfo', res.data);
+                    _this.userInfo = res.data;
+                    _this.initMenu();
+                },err=>{
+                    console.log(err);
+                })
             })
         }else{
         }
@@ -180,32 +187,27 @@ export default {
     initMenu (){
         let _this = this;
         console.log('util获取菜单')
-        getMenuApi().then(
-            res => {
-                // ,
-                let menuListNew = [...res.data, ...menuList];
-                _this.$store.commit("SET_MENU", menuListNew);
-            //   _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
-            //   _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
-                let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
-                _this.$store.commit("SET_ACTIVE_INDEX_STO", routerName);
-                _this.$store.commit('set_Head_Active_Nav',routerName);
-                // _this.$store.dispatch("deleteAllTabs");
-                // _this.$store.dispatch("addTabs", {
-                //     route: routerName,
-                //     name: routerName,
-                //     title:'首页',
-                //     headActiveNav: routerName
-                // });
-                _this.getSystemData();
-            //   _this.$router.push({ name: "law_supervise_lawSupervise" });
-                _this.$router.push({ name: routerName});
-            // callback();
-            },
-            err => {
-            console.log(err);
-            }
-        )
+        new Promise((resolve, reject) => {
+            getMenuApi().then(
+                res => {
+                    // ,
+                    // let menuListNew = [...res.data, ...menuList];
+                    // _this.menuList = [...menuList];
+                    _this.menuList = res.data; 
+                    _this.$store.commit("SET_MENU", _this.menuList);
+                //   _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
+                //   _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
+                    let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
+                    _this.$store.commit("SET_ACTIVE_INDEX_STO", routerName);
+                    _this.$store.commit('set_Head_Active_Nav',routerName);
+                    _this.getSystemData();
+                    _this.$router.push({ name: routerName});
+                },
+                err => {
+                console.log(err);
+                }
+            )
+        })
     }
   },
   watch: {
@@ -216,8 +218,6 @@ export default {
   mounted() {
     this.selectedHeadMenu = this.headActiveNav;
     this.userInfo = iLocalStroage.gets('userInfo');
-    // ???
-     this.$store.commit('setShowQZBtn', true);
   },
   created(){
     //判断有没有menu

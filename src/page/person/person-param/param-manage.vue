@@ -104,6 +104,8 @@ export default {
     },
     resetLog() {
       this.$refs["updateParamPageRef"].resetFields();
+      this.currentPage = 1;
+      this.getParamList();
     },
     paramInfo(row) {
       //新增

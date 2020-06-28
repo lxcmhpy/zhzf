@@ -198,7 +198,8 @@ export function queryAlarmVehiclePage (data) {
     return request({
         url: "/zfjg/alarmVehicle/queryAlarmVehiclePage",
         method: "get",
-        showloading: false,
+        showloading: true,
+        loadingType:'loadPart',
         baseUrlType:  'LAW_SUPERVISE_HOST',
         params: data,
         cancelToken: setCancelSource()

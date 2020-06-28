@@ -80,6 +80,17 @@ export function findAllCommonGroupFieldApi() {
         cancelToken: setCancelSource()
     });
 }
+//查询所有候选字段
+export function findAllCandidateFieldApi() {
+    return request({
+        url: "/xzjc/candidateField/queryAllCandidateField",
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //通过业务领域分组所有模板
 // export function findAllRecordModleApi() {
 //     return request({
@@ -97,6 +108,17 @@ export function findRecordModleByPersonApi(data) {
         url: "/xzjc/template/pcQueryByOrganIdAndUserId",
         method: "get",
         params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//查询登录人收藏的模板
+export function findUserCollectTemplateApi(data) {
+    return request({
+        url: "/xzjc/template/findUserCollectTemplate/"+data,
+        method: "get",
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',
@@ -172,7 +194,7 @@ export function findAllModleNameApi(data) {
 //根据条件分页查询
 export function findRecordListApi(data) {
     return request({
-        url: "/xzjc/templateOrder/queryTemplateOrderPage",
+        url: "/xzjc/templateOrder/pcQueryTemplateOrderPage",
         method: "get",
         params: data,
         showloading: true,
@@ -206,10 +228,21 @@ export function removeRecordByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
-//根据UUID查找订单记录
+//根据UUID查找订单记录-之前
 export function findRecordByIdApi(data) {
     return request({
         url: "/xzjc/templateOrder/getById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据UUID查找订单记录
+export function findMyRecordByIdApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/myGetById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',

@@ -58,7 +58,6 @@
         </div>
       </div>
       <addOutline ref="addOrganRef" @getAllOrgan2="getAllOutline"></addOutline>
-      <!--<updateOrgan ref="updateOrganRef" @getAllOrgan2="getAllOutline"></updateOrgan>-->
     </div>
   </div>
 </template>
@@ -169,7 +168,6 @@ export default {
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
-      // this.currentPage = 1;
       this.getSelectOutline();
     },
     //更换页码
@@ -179,6 +177,10 @@ export default {
     },
     //新增大纲
     addOutline() {
+      if(this.currentOutlineId.length === 0){
+        this.$message('请选择父级大纲');
+        return false;
+      }
       let parentNode = {
         parentName: this.selectCurrentTreeName,
         parentId: this.currentOutlineId
