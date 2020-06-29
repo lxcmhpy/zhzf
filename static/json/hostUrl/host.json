@@ -1,6 +1,6 @@
 {
-  "CURRENT": "ZHW",
-  "HOME_PAGE_ROUTER_NAME": "catsAppraisalExamination",
+  "CURRENT": "NW",
+  "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
     "HOME_PAGE_ROUTER_NAME":"catsAppraisalExamination//评议考核，case_handle_home_index//案件办理law_supervise_lawSupervise//监管",

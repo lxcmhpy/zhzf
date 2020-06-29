@@ -358,22 +358,30 @@ export default {
         this.formData.updateTime = '';
         this.formData.type = '记录';
         this.formData.organId = iLocalStroage.gets("userInfo").organId
+        delete (this.formData["pictureList"]);
+        delete (this.formData["attachedList"]);
         console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
             // console.log(res)
             if (res.code == 200) {
               this.addOrEiditFlag = 'view'
-              this.recordMsg = res.data;//根据返回id上传文件
+              // this.recordMsg = res.data;//根据返回id上传文件
+              this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
               this.$message({
                 type: "success",
                 message: res.msg
               });
-              this.rule.forEach(element => {
-                console.log(element)
-                this.$data.$f.updateRule(element.field, {
-                  props: { disabled: true }
-                }, true);
+              // this.rule.forEach(element => {
+              //   console.log(element)
+              //   this.$data.$f.updateRule(element.field, {
+              //     props: { disabled: true }
+              //   }, true);
+              // });
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$router.push({
+                name: 'inspection_recordList',
+                // params: item
               });
             } else {
               this.$message.error(res.msg);
@@ -398,21 +406,6 @@ export default {
       this.saveRecord()
     },
     onSubmit(formData) {
-      // this.$data.$f.validate((valid) => {
-      //   if (valid) {
-      //     //TODO 验证通过
-      //   } else {
-      //     if (document.getElementsByClassName('el-form-item__error').length > 0) {
-      //       this.$notify.error({
-      //         title: '提示',
-      //         message: document.getElementsByClassName('el-form-item__error')[0].innerText
-      //       });
-      //     }
-
-      //   }
-
-      // })
-
       console.log("formData", formData)
 
       //TODO 提交表单
@@ -440,6 +433,8 @@ export default {
         this.formData.updateTime = '';
         this.formData.type = '记录';
         this.formData.organId = iLocalStroage.gets("userInfo").organId
+        delete (this.formData["pictureList"]);
+        delete (this.formData["attachedList"]);
         console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
@@ -590,211 +585,17 @@ export default {
         }
 
         )
-
+        // 当事人信息和企业组织信息字段放前面
         data.forEach(element => {
 
           if (element.classs == this.partyName || element.classs == this.personName) {
             // 字段
             this.dealFieldData(element)
-            // element.fieldList.forEach(item => {
-            //   // console.log(item)
-            //   if (item.type == '文本型') {
-            //     item.type = 'input';
-            //     this.rule.push({
-            //       type: 'input',
-            //       field: item.id || item.field,//id用于传值，field用于预览
-            //       title: item.title,
-            //       props: {
-            //         type: 'textarea',
-            //         placeholder: item.remark,
-            //         disable: true,
-            //         autosize: { minRows: 1 }
-            //       },
-            //       value: item.text,
-            //       validate: [{
-            //         required: item.required == 'true' ? true : false,
-            //         message: '请输入' + item.title,
-            //         trigger: 'blur'
-            //       }]
-            //     })
-            //   } else if (item.type == '抽屉型') {
-            //     item.options.forEach(option => {
-            //       option.label = option.value
-            //     });
-            //     this.rule.push({
-            //       type: "select",
-            //       field: item.id || item.field,
-            //       title: item.title,
-            //       options: item.options,
-            //       validate: [{
-            //         required: item.required == 'true' ? true : false,
-            //         message: '请输入' + item.title,
-            //         trigger: 'blur'
-            //       }],
-            //       props: {
-            //         disable: true
-            //       },
-            //     })
-            //   } else if (item.type == '单选型') {
-            //     item.options.forEach(option => {
-            //       option.label = option.value
-            //     });
-            //     this.rule.push({
-            //       type: "radio",
-            //       field: item.id || item.field,
-            //       title: item.title,
-            //       options: item.options,
-            //       value: item.text,
-            //       validate: [{
-            //         required: item.required == 'true' ? true : false,
-            //         message: '请选择' + (item.title || ''),
-            //         trigger: 'blur'
-            //       }],
-            //       props: {
-            //         disable: true
-            //       },
-            //     })
-            //   } else if (item.type == '复选型') {
-            //     item.options.forEach(option => {
-            //       option.label = option.value
-            //     });
-            //     this.rule.push({
-            //       type: "checkbox",
-            //       field: item.id || item.field,
-            //       title: item.title,
-            //       options: item.options,
-            //       value: item.text ? item.text.split(',') : [],
-            //       validate: [{
-            //         required: item.required == 'true' ? true : false,
-            //         message: '请选择' + item.title,
-            //         trigger: 'blur'
-            //       }]
-            //     })
-            //   } else if (item.type == '日期型') {
-            //     if (item.options[0].value == 'HH:mm') {
-            //       this.rule.push({
-            //         type: "TimePicker",
-            //         field: item.id || item.field,
-            //         title: item.title,
-            //         value: item.text || [new Date()],
-            //         props: {
-            //           format: item.options[0].value,
-            //           placeholder: item.remark
-            //         },
-            //         validate: [{
-            //           required: item.required == 'true' ? true : false,
-            //           message: '请输入' + item.title,
-            //           trigger: 'blur'
-            //         }]
-            //       })
-            //     } else {
-            //       this.rule.push({
-            //         type: "DatePicker",
-            //         field: item.id || item.field,
-            //         title: item.title,
-            //         value: item.text || [new Date()],
-            //         props: {
-            //           format: item.options[0].value,
-            //           placeholder: item.remark,
-            //           type: 'datetime'
-            //         },
-            //         validate: [{
-            //           required: item.required == 'true' ? true : false,
-            //           message: '请输入' + item.title,
-            //           trigger: 'blur'
-            //         }]
-            //       })
-            //     }
-            //   } else if (item.type == '数字型') {
-            //     this.rule.push({
-            //       //  type: "InputNumber",
-            //       type: "input",
-            //       field: item.id || item.field,
-            //       title: item.title,
-            //       value: item.text,
-            //       controls: false,
-            //       className: 'modle-number-box',
-            //       props: {
-            //         type: 'textarea',
-            //         autosize: { minRows: 1 }
-            //         // precision: 2
-            //       },
-            //       validate: [{
-            //         required: item.required == 'true' ? true : false,
-            //         pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
-            //         message: '必须输入数字',
-            //         trigger: 'blur'
-            //       }]
-            //     })
-            //   } else if (item.type == '地址型') {
-            //     item.type = 'input';
-            //     this.rule.push({
-            //       type: 'input',
-            //       field: item.id || item.field,//id用于传值，field用于预览
-            //       // title: item.title,
-            //       title: item.title,
-            //       props: {
-            //         type: 'text',
-            //         placeholder: item.remark,
-            //         disable: true
-            //       },
-            //       value: item.text,
-            //       validate: [{
-            //         required: item.required == 'true' ? true : false,
-            //         message: '请输入' + item.title,
-            //         trigger: 'chang'
-            //       }],
-            //       children: [
-            //         {
-            //           type: 'i',
-            //           class: 'iconfont law-weizhi',
-            //           slot: 'suffix',
-
-            //         }
-            //       ],
-            //       inject: true,
-            //       on: {
-            //         'focus': this.changeAdress
-            //       },
-            //     })
-            //   } else if (item.type == '引用型') {
-            //     item.type = 'input';
-            //     this.rule.push({
-            //       type: 'input',
-            //       field: item.id || item.field,//id用于传值，field用于预览
-            //       title: item.title,
-            //       props: {
-            //         type: 'text',
-            //         placeholder: item.remark,
-            //         disable: true
-            //       },
-            //       value: item.text,
-            //       validate: [{
-            //         required: item.required == 'true' ? true : false,
-            //         message: '请输入' + item.title,
-            //         trigger: 'chang'
-            //       }],
-            //       children: [
-            //         {
-            //           type: 'i',
-            //           class: 'iconfont law-weizhi',
-            //           slot: 'suffix',
-
-            //         }
-            //       ],
-            //       inject: true,
-            //       on: {
-            //         'focus': this.changeLaw
-            //       },
-            //     })
-            //     if (item.field == 'staff') {
-            //       console.log('item', item)
-            //       this.LawName = item.id;// 执企业组织信息员字段名
-            //     } else if (item.field == 'certificateId') {//执企业组织信息员账号字段名
-            //       this.LawOfficerCard = item.id;
-            //     }
-            //   }
-            // });
+          }
+        });
+        // 其他字段
+        data.forEach(element => {
+          if (element.classs == this.partyName || element.classs == this.personName) {
           } else {
             if (element.classs) {
               // 组
@@ -833,8 +634,9 @@ export default {
             }
             this.dealFieldData(element)
           }
-
         });
+        console.log('this.rule', this.rule)
+        debugger
       } else {
         data.forEach(element => {
           if (element.classs) {

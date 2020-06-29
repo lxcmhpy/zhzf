@@ -13,8 +13,8 @@
       </div>
       <!-- 收藏 -->
       <div class="card-content">
-        <div class="card-title" style="justify-content: flex-start;" v-if="modleSaveList&&modleSaveList.length>0">常用模板
-          <span v-if="modleSaveList">({{modleSaveList.length}})</span>
+        <div class="card-title" style="justify-content: flex-start;" v-if="showSave">常用模板
+          <span v-if="modleSaveList">({{modleSaveList.length||0}})</span>
           <span v-if="modleSaveList&&modleSaveListFlag" @click="modleSaveListFlag=!modleSaveListFlag" class="show-icon"><i class="el-icon-arrow-down"></i></span>
           <span v-if="modleSaveList&&!modleSaveListFlag" @click="modleSaveListFlag=!modleSaveListFlag" class="show-icon"><i class="el-icon-arrow-up"></i></span>
         </div>
@@ -89,7 +89,8 @@ export default {
       modleSaveList: [],//收藏列表
       modleSaveListDefaut: [],//收藏列表
       currentUserLawId: '',
-      modleSaveListFlag: true
+      modleSaveListFlag: true,
+      showSave:true
 
     }
   },
@@ -207,11 +208,18 @@ export default {
     },
     searchListByName() {
       if (this.searchModleName == '') {
+        this.showSave = true;
         this.modleSaveList = JSON.parse(JSON.stringify(this.modleSaveListDefaut))
         this.searchList()
       } else {
+        this.showSave = false
         this.modleSaveList = []
-        findRecordModleByNameIdApi(this.searchModleName).then(
+        let data = {
+          title: this.searchModleName,
+          templateUserId: iLocalStroage.gets("userInfo").id,
+          organId: iLocalStroage.gets("userInfo").organId,
+        }
+        findRecordModleByNameIdApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {

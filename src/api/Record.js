@@ -172,8 +172,9 @@ export function findRecordModleTimeByIdApi(data) {
 //通过模板名称查询模板
 export function findRecordModleByNameIdApi(data) {
     return request({
-        url: "/xzjc/template/findByTemplateName/"+data,
+        url: "/xzjc/template/findByTemplateName",
         method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',

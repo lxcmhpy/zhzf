@@ -72,6 +72,7 @@
 <script>
 import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi, findAllModleNameApi } from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
+import {deleteFileByCaseAndHuanjieApi} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -85,7 +86,7 @@ export default {
         status: '',
         createUser: iLocalStroage.gets("userInfo").nickName,
         otherUser: '',
-        defaultDisplay:true,
+        defaultDisplay: true,
         name: ''
       },
       currentPage: 1, //当前页
@@ -100,11 +101,11 @@ export default {
       console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
         startTime: this.timeList[0],
-        endTime:this.timeList[1],
+        endTime: this.timeList[1],
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
         createUser: this.searchForm.createUser,
-        otherUser: this.searchForm.otherUser==iLocalStroage.gets("userInfo").nickName?'':this.searchForm.otherUser,
+        otherUser: this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? '' : this.searchForm.otherUser,
         domain: this.searchForm.domain,
         current: this.currentPage,
         size: this.pageSize,
@@ -126,7 +127,7 @@ export default {
     // 查询
     searchTableData() {
       this.currentPage = 1;
-      this.searchForm.defaultDisplay=''
+      this.searchForm.defaultDisplay = ''
       this.getTableData()
     },
     // 查询我的
@@ -206,11 +207,11 @@ export default {
       //       if (row.createTime >= res.data) {
       //         // 写记录
       //         // row.addOrEiditFlag = 'edit'
-              this.$router.push({
-                name: 'inspection_writeRecordInfo',
-                // params: row
-                query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
-              });
+      this.$router.push({
+        name: 'inspection_writeRecordInfo',
+        // params: row
+        query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
+      });
       //       } else {
       //         this.$message.error('当前模板已修改，该记录不可修改');
       //       }
@@ -236,6 +237,8 @@ export default {
           res => {
             console.log(res)
             if (res.code == 200) {
+              this.deleteAllFile(id)
+
               this.$message({
                 type: "success",
                 message: res.msg
@@ -247,6 +250,20 @@ export default {
             // reject(error);
           })
 
+      })
+    },
+    // 删除附件
+    deleteAllFile(id) {
+      console.log('删除全部');
+      debugger
+      let data = {
+        caseId: id,
+        docId: id
+      }
+      deleteFileByCaseAndHuanjieApi(data).then(res => {
+        console.log('删除全部', res);
+      }, err => {
+        console.log(err)
       })
     },
     getRecordTitleList() {
@@ -283,16 +300,16 @@ export default {
     },
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
-      this.searchForm.defaultDisplay=true
+      this.searchForm.defaultDisplay = true
       this.timeList = []
       // debugger
       this.getTableData()
     },
-    changStatus(){
-      if(this.searchForm.status=='保存'){
-        this.searchForm.createUser=''
-      }else{
-        this.searchForm.createUser=iLocalStroage.gets("userInfo").nickName
+    changStatus() {
+      if (this.searchForm.status == '保存') {
+        this.searchForm.createUser = ''
+      } else {
+        this.searchForm.createUser = iLocalStroage.gets("userInfo").nickName
       }
     }
   },
