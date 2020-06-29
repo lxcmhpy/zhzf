@@ -10,7 +10,7 @@ export function getZfjgLawSupervise(data) {
     url: "/zfjg/list",
     method: "get",
     params:data,
-    showloading: true,
+    showloading: false,
     // loadingType:'loadFull',
     loadingType:'loadPart',
     baseUrlType:  'LAW_SUPERVISE_HOST',
@@ -22,7 +22,7 @@ export function getBySiteId(sitedId) {
     return request({
       url: "/zfjg/superviseVehicle/findBySiteId/" + sitedId,
       method: "get",
-      showloading: true,
+      showloading: false,
       loadingType:'loadPart',
       baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken: setCancelSource()
@@ -33,7 +33,7 @@ export function findWeighingRecord(name) {
     return request({
       url: "/zfjg/superviseVehicle/findWeighingRecord/" + name,
       method: "get",
-      showloading: true,
+      showloading: false,
       loadingType:'loadPart',
       baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken: setCancelSource()
@@ -53,7 +53,7 @@ export function getById(type,id) {
     return request({
       url: "/zfjg/findById/" + type+ '/'+id,
       method: "get",
-      showloading: true,
+      showloading: false,
       loadingType:'loadPart',
       baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken: setCancelSource()
@@ -96,7 +96,7 @@ export function getById(type,id) {
       url: "/zfjg/superviseVehicle/queryListPage",
       method: "get",
       params: data,
-      showloading: true,
+      showloading: false,
       loadingType:'loadPart',
       baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken: setCancelSource()
@@ -106,7 +106,7 @@ export function getById(type,id) {
     return request({
       url: "/system/sys/drawer/findAllDrawerById/" +data,
       method: "get",
-      showloading: true,
+      showloading: false,
       loadingType:'loadPart',
       baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
@@ -199,7 +199,7 @@ export function queryAlarmVehiclePage (data) {
     return request({
         url: "/zfjg/alarmVehicle/queryAlarmVehiclePage",
         method: "get",
-        showloading: true,
+        showloading: false,
         loadingType:'loadPart',
         baseUrlType:  'LAW_SUPERVISE_HOST',
         params: data,

@@ -739,7 +739,7 @@ import _ from "lodash";
                                     _this.findPykhZpByPage(_this.xzObj.metricsId,1);
                                 } else {
                                     // 更新
-                                    _this.drawer1 = false;
+                                    _this.drawer2 = false;
                                     _this.$set(_this.xzList,_this.updateIndex2, _this.xzObj);
                                 }
                                  _this.$set(_this, 'xzObj', {
