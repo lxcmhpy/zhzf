@@ -328,7 +328,7 @@ export function saveOrUpdateLinkApi(data) {
 export function approvalPdfApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/linkData/handleApprove",
+    url: "/case/doc/data/handleApproveDoc",
     method: "post",
     data: vm.$qs.stringify(data),
     showloading: true,
@@ -1119,7 +1119,7 @@ export function updateDocStatusApi(id) {
 //获取当前环节是几级审批
 export function getCurrentApproveApi(id) {
   return request({
-    url: "/case/doc/caseBasicInfo/getCurrentApproveAndApproveAmount/" + id,
+    url: "/case/doc/data/getCurrentApproveAndApproveAmount/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',

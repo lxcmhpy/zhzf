@@ -476,7 +476,7 @@ export const mixinGetCaseApiList = {
       try{
         nowCaseDocdata = await findDocDataByIdApi(docId);
       }catch(err){
-        this.$message('查询是否需要审批失败')
+        this.$message('查询是否需要审批失败!')
       }
       
       console.log('nowCaseDocdata',nowCaseDocdata);

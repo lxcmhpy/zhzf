@@ -93,28 +93,16 @@ export default {
     },
     //点击进入案件详情
     clickCase(row){
+      console.log('列表数据row',row)
       this.$store.commit("setCaseId", row.id);
       //设置案件状态为审批中
       this.$store.commit("setCaseApproval", true);
       let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
       this.$store.commit('setApprovalState', 'approvaling')
-
-      let docId = "";
-      switch (row.currentLinkId) {
-        case this.BASIC_DATA_SYS.establish_caseLinktypeId:
-          docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
-          break;
-        case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:
-          docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
-          break;
-        case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:
-          docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
-          break;
-      }
-      this.$router.push({ name: 'case_handle_myPDF', params: { docId: docId } })
-
-      
+      //设置文书数据的id
+      this.$store.commit('setDocDataId', row.docId);
+      this.$router.push({ name: 'case_handle_myPDF', params: { docId: row.docTypeId } }) 
     }
   },
   created() {
