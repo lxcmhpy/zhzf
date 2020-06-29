@@ -147,7 +147,6 @@ export default {
       if (this.searchForm.name == '') {
         this.searchForm.name = '1'
         this.searchForm.otherUser = iLocalStroage.gets("userInfo").nickName;
-
       } else {
         this.searchForm.name = ''
         this.searchForm.otherUser = ""
