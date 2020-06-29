@@ -343,6 +343,7 @@
                 </el-button>
             </el-popover>
             <el-popover
+                ref="checkPopover"
                 placement="bottom-start"
                 trigger="click"
                 >
@@ -1696,12 +1697,8 @@ export default {
             type: item.code
             };
             this.allSearchList.push(data);
-            if (this.category == 4) {
-                // this.searchPageAllGJ(data, this.category);
-                this.searchPageAll(4, 'zfdList');
-            } else {
+            
                 this.getZfjgLawSupervise(data, this.category);
-            }
         } else {
             let _this = this;
             let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -1735,7 +1732,6 @@ export default {
         if (this.curWindow) {
           this.curWindow.visible = false;
         }
-        this.category = item.code;
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
         //   area: "东城区",
@@ -1746,7 +1742,8 @@ export default {
         };
         this.allSearchList.push(data);
          if (this.category == 4) {
-                this.searchPageAllGJ(data, this.category);
+           this.updateDrawer1();
+                // this.searchPageAllGJ(data, this.category);
         } else {
             this.getZfjgLawSupervise(data, this.category);
         }
@@ -1765,15 +1762,7 @@ export default {
           });
         }
       }
-
-      if (this.category == '4') {
-        //   this.drawer1 = false;
-        //   this.drawer = false;
-          this.updateDrawer1();
-      } else {
-          this.updateDrawer();
-
-      }
+      
     },
     searchAll(pois) {
       debugger;
@@ -1823,6 +1812,7 @@ export default {
             let position = item.propertyValue.split(",");
               let lng = parseFloat(position[0]);
               let lat = parseFloat(position[1]);
+              item.nickName = item.nickName?item.nickName:item.name;
               resultList.push({
                 address: item.address,
                 distance: null,
