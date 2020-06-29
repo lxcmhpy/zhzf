@@ -631,23 +631,8 @@
                     </span>
                 </div>
                 <ul class="list" style="width: 278px;height:175px;margin-left: 0px">
-                    <!-- <li>
-                        <div class="demo-image__preview">
-                            <el-image
-                            class="img"
-                                style="width: 100px; height: 100px"
-                                :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
-                                >
-                            </el-image>
-                        </div>
-                    </li> -->
-                    <!-- <li @click="dialogPDFVisible = true">
-                       <img  class="img" :src="'./static/images/img/lawSupervise/temp/link_01.jpg'" >
-                       <i class="iconfont law-pdf1" ></i>
-                    </li> -->
                     <li>
-                        <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="false" indicator-position="outside" :interval="5000">
+                        <el-carousel ref="carousel" height="200px" @click.native="dialogZJCLVisible = true" indicator-position="outside" >
                             <el-carousel-item  v-for="(item,index) in fileList" :key="(index +1).toString()">
                                 <img v-if="item.status == '图片'" width="280px" height="180px" :src="pHost+'/'+item.storageId">
                                 <div v-else style="text-align: center;padding: 25px;">
@@ -658,6 +643,27 @@
                         </el-carousel>
                     </li>
                 </ul>
+                <el-dialog title="操作" :visible.sync="dialogZJCLVisible" width="400px" class='mini-dialog-title' append-to-body>
+                    <span>是否要删除此文件?</span>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button @click="dialogZJCLVisible = false">取消</el-button>
+                        <el-button type="primary" @click="delZJCL">确定</el-button>
+                    </span>
+                </el-dialog>
+                <!-- <el-dialog :visible.sync="dialogZJCLVisible" append-to-body width="40%">
+                    <el-button icon="el-icon-download" @click="downZJCL">下载</el-button>
+                    <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="delVisible">
+                        <p>确定删除此文件?</p>
+                        <div style="text-align: right; margin: 0">
+                            <el-button size="mini" type="text" @click="delVisible = false">cancel</el-button>
+                            <el-button type="primary" size="mini" @click="delZJCL">confirm</el-button>
+                        </div>
+                        <el-button type="danger" slot="reference" icon="el-icon-close">删除</el-button>
+                    </el-popover>
+                </el-dialog> -->
             </div>
         </div>
           <div class="shadow">
@@ -801,7 +807,9 @@ export default {
                 caseId: null,
                 category: '执法监管'
             },
-            pHost: null
+            pHost: null,
+            dialogZJCLVisible: false,
+            // delVisible: false
         }
     },
     methods:{
@@ -835,6 +843,23 @@ export default {
             );
             // debugger;
             // this.formUpload.file = params.file
+        },
+        //下载证据材料
+        downZJCL () {
+            let activeIndex = this.$refs.carousel.activeIndex;
+            let f = this.fileList[activeIndex];
+        },
+        //删除证据材料
+        delZJCL () {
+            this.dialogZJCLVisible = false;
+            let activeIndex = this.$refs.carousel.activeIndex;
+            let f = this.fileList[activeIndex];
+            deleteFileByIdApi(f.storageId).then(res => {
+                console.log(res);
+                this.fileList.splice(activeIndex,1);
+            }, err => {
+                console.log(err)
+            })
         },
         //关闭弹窗的时候清除数据
         setActiveItem () {
