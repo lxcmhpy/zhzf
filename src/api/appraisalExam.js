@@ -273,7 +273,7 @@ export function clickNotice(id){
   return request({
     url: "/pykh/notice/clickNotice/"+id,
     method: "get",
-    showloading: true,
+    showloading: false,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
