@@ -343,9 +343,8 @@
                 </el-button>
             </el-popover>
             <el-popover
-                ref="checkPopover"
                 placement="bottom-start"
-                trigger="click"
+                v-model="popoverVisible"
                 >
                 <div class="drop-down-menu transition-box">
                         <ul>
@@ -929,7 +928,8 @@ export default {
       expandTree:false,
       userInfo: null,
       ryList: null,
-      time:Date.parse(new Date())
+      time:Date.parse(new Date()),
+      popoverVisible:false
     };
   },
   filters: {
@@ -1743,6 +1743,7 @@ export default {
         this.allSearchList.push(data);
          if (this.category == 4) {
            this.updateDrawer1();
+           this.popoverVisible=false;
                 // this.searchPageAllGJ(data, this.category);
         } else {
             this.getZfjgLawSupervise(data, this.category);
