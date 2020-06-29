@@ -625,7 +625,7 @@ import _ from "lodash";
 
         },
         async addZbConfig (row) {
-            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+            // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
             // this.assessTypeObj = this.khlbList.data?this.khlbList.data[0]: [];
             this.$set(this, 'zbObj', {
                 "id": "",
@@ -831,15 +831,15 @@ import _ from "lodash";
         },
         async updateZbConfig (index, row) {
             // this.zbObj = row;
-            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+            // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
              this.$set(this, 'zbObj', row);
             this.drawer1 = true;
             this.updateIndex1 = index;
         },
         async updateXzConfig (index, row) {
             // this.zbObj = row;
-            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
-             this.$set(this, 'zbObj', row);
+            // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+             this.$set(this, 'xzObj', row);
             this.drawer2 = true;
             this.updateIndex2 = index;
         },
