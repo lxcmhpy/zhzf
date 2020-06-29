@@ -619,6 +619,16 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">补充证据材料</span>
+                    <span class="right f12">
+                    <el-upload
+                        class="upload-demo"
+                        action=""
+                        :http-request="saveFile"
+                        :file-list="fileList"
+                        :show-file-list="false">
+                        <el-button size="mini" type="primary" icon="el-icon-plus" title="添加"></el-button>
+                    </el-upload>
+                    </span>
                 </div>
                 <ul class="list" style="width: 278px;height:175px;margin-left: 0px">
                     <!-- <li>
@@ -637,21 +647,15 @@
                        <i class="iconfont law-pdf1" ></i>
                     </li> -->
                     <li>
-                        <el-upload
-                             class="avatar-uploader uploadFile"
-                             drag
-                             :http-request="saveFile"
-                             list-type="picture-card"
-                             :file-list="fileList"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :limit="1"
-                            multiple
-                        >
-                            <i class="el-icon-picture">
-                                <span style="color: gray;font-size:12px;"><br>上传证据</span>
-                            </i>
-
-                        </el-upload>
+                        <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="false" indicator-position="outside" :interval="5000">
+                            <el-carousel-item  v-for="(item,index) in fileList" :key="(index +1).toString()">
+                                <img v-if="item.status == '图片'" width="280px" height="180px" :src="pHost+'/'+item.storageId">
+                                <div v-else style="text-align: center;padding: 25px;">
+                                    <div><i class="el-icon-document" style="font-size:45px;"></i></div>
+                                    <div style="margin: 15px;line-height: 25px">{{item.fileName}}</div>
+                                </div>
+                            </el-carousel-item>
+                        </el-carousel>
                     </li>
                 </ul>
             </div>
@@ -684,6 +688,7 @@ import echarts from 'echarts';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
 import {findAllDrawerById} from '@/api/lawSupervise.js';
+import { upload,getFile, getFileByCaseId,deleteFileByIdApi } from "@/api/upload.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
 Vue.use(AMap);
@@ -795,7 +800,8 @@ export default {
             formUpload: {
                 caseId: null,
                 category: '执法监管'
-            }
+            },
+            pHost: null
         }
     },
     methods:{
@@ -803,8 +809,32 @@ export default {
             this.dialogIMGVisible = true;
             this.imgIndexUrl = this.imgList[index];
         },
-        saveFile (params) {
-            this.formUpload.file = params.file
+        saveFile (param) {
+            var testmsg=/^image\/(jpeg|png|jpg)$/.test(param.file.type)
+            let type = "图片";
+            if (!testmsg) {
+                type = "附件";
+            }
+            this.index = this.fileList.length+1;
+            var fd = new FormData()
+            fd.append("file", param.file);
+            fd.append("category", '执法监管');
+            fd.append("fileName", param.file.name);
+            fd.append('status', type)//传记录id
+            fd.append('caseId', this.obj.id)//传记录id
+            fd.append('docId', this.obj.id + this.index.toString())//传记录id
+            // uploadMaterial(fd).then(
+            upload(fd).then(
+                res => {
+                    this.fileList.push(res.data[0]);
+                    console.log(res);
+                },
+                error => {
+                    console.log(error)
+                }
+            );
+            // debugger;
+            // this.formUpload.file = params.file
         },
         //关闭弹窗的时候清除数据
         setActiveItem () {
@@ -854,11 +884,27 @@ export default {
             this.obj.vehicleNumber = this.checkSearchForm.number;
             this.obj.vehicleColor = this.checkSearchForm.color;
             this.visible = false;
-        }
+        },
+        //通过案件ID和文书ID查询附件
+        findFileList() {
+            let data = {
+                caseId: this.obj.id
+            }
+            getFileByCaseId(data).then(
+                res => {
+                    this.fileList = res.data;
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+        },
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
+        this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
+        this.findFileList();
     }
 }
 </script>
