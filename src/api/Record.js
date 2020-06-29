@@ -44,6 +44,18 @@ export function removeMoleByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//根据userId和templateId删除收藏关系表数据
+export function removeMoleCollectByIdApi(data) {
+    return request({
+        url: "/xzjc/collect/unbind",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 
 //根据条件分页查询通用字段
 export function findCommonFieldApi(data) {
