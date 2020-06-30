@@ -76,6 +76,10 @@
         <li @click="goSpotAdmPunishDecision_JX">当场行政处罚决定书-江西</li>
         <li @click="goPunishDecision_JX">行政处罚决定书-江西</li>
         <li @click="goCaseInvestigReport_JX">案件调查报告</li>
+        <br>
+        <li @click="goCaseDoc_JX">案件调查</li>
+        <li @click="goPunishDecisionForm_JX">处罚决定</li>
+        <li @click="goPartyRightsForm_JX">当事人权利</li>
       </ul>
     </div>
     <div>
@@ -395,6 +399,15 @@ export default {
     },
     goCaseInvestigReport_JX(){
       this.$router.push({ name: 'case_handle_caseInvestigReport_JX' });
+    },
+    goCaseDoc_JX(){
+      this.$router.push({ name: 'case_handle_caseDoc_JX' });
+    },
+    goPunishDecisionForm_JX(){
+      this.$router.push({ name: 'case_handle_punishDecisionForm_JX' });
+    },
+    goPartyRightsForm_JX(){
+      this.$router.push({ name: 'case_handle_partyRightsForm_JX' });
     },
     goEnforceApplication(){
       this.$router.push({ name: 'case_handle_enforceApplicationDoc' });
