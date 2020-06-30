@@ -58,7 +58,7 @@ let flowGraphData = {
             
             {id:"temp2_3",source: "2_1",target:"temp2_3",linkID: 'temp2_3',name:"",position:{x: 2, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
             {id:"temp2_4",source: "temp2_3",target:"temp2_4",linkID: 'temp2_4',name:"",position:{x: 4, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
-            {id:"2_5",source: "2_5",target:"10",linkID: '2_5',name:"",position:{x: 4, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
+            {id:"2_5",source: "temp2_4",target:"10",linkID: '2_5',name:"",position:{x: 4, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
             
 
             {id:"3",source: "3",target:"4_1",linkID: BASIC_DATA_JX.caseInvestig_JX_caseLinktypeId,name:"调查报告",linkName:'case_handle_caseInvestigReport_JX',docId:BASIC_DATA_JX.caseInvestig_JX_huanjieAndDocId,position:{x: 2, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_04'}},
@@ -67,7 +67,7 @@ let flowGraphData = {
             {id:"temp3_3",source: 'temp3_2',target:"4_2",linkID: 'temp3_3',name:"",position:{x: 3, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             {id:"temp3_4",source: 'temp3_1',target:"temp3_4",linkID: 'temp3_4',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-            {id:"temp3_5",source: 'temp3_4',target:"10",linkID: 'temp3_5',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            // {id:"temp3_5",source: 'temp3_4',target:"10",linkID: 'temp3_5',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
 
             // {id:"temp3_3",source: '3',target:"10",linkID: 'temp3_2',name:"",position:{x: 3, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             // {id:"temp3_4",source: 'temp3_3',target:"10",linkID: 'temp3_2',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
@@ -104,8 +104,8 @@ let flowGraphData = {
             {id:"9",source: "temp7_2_1",target:"8",linkID: BASIC_DATA_JX.importCaseDiss_JX_caseLinktypeId,name:"重大案件\n环节",linkName:'case_handle_importantCaseTeamDissDoc_JX',docId:BASIC_DATA_JX.importCaseDiss_JX_huanjieAndDocId,position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
             {id:"9_1",source: '9_1',target:"6",linkID: '9_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
-            {id:"10",source: "temp7_2_1",target:"8",linkID: BASIC_DATA_JX.transfei_JX_caseLinktypeId,name:"移交移送",linkName:'',position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
-            {id:"10_1",source: '10',target:"8",linkID: '10_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            {id:"10",source: "2_5",target:"8",linkID: BASIC_DATA_JX.transfei_JX_caseLinktypeId,name:"移交移送",linkName:'',position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
+            // {id:"10_1",source: '10',target:"8",linkID: '10_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             {id:"11",source: "11",target:"temp11_1",linkID: BASIC_DATA_JX.courtPunishExecute_JX_caseLinktypeId,name:"申请法院\n强制执行",linkName:'case_handle_enforceApplicationDoc',docId:BASIC_DATA_JX.courtPunishExecute_JX_huanjieAndDocId,position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
             {id:"temp11_1",source: '11',target:"temp11_1",linkID: 'temp11_1',name:"",position:{x: 3, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
