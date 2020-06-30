@@ -300,7 +300,7 @@ export default {
           label: '640000'
         },
         {
-          value: '新疆维吾尔族自治区',
+          value: '新疆维吾尔自治区',
           label: '650000'
         },
         {

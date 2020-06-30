@@ -14,9 +14,10 @@ let vm = new Vue();
 export function yehuCheckApi(data) {
     console.log(data);
     return request({
-        url: "/cy/yuz/yh?licenseCode=" + data.licenseCode + "&ownerName=" + data.ownerName + "&provinceCode=" + data.provinceCode,
+        url: "/cy/yuz/yh",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -25,9 +26,10 @@ export function yehuCheckApi(data) {
 export function crewCheckApiIdcard(data) {
     console.log(data);
     return request({
-        url: "/cy/ship/shipInfoSrzSfz?idCardNo=" + data.idCardNo,
+        url: "/cy/ship/shipInfoSrzSfz",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -36,9 +38,10 @@ export function crewCheckApiIdcard(data) {
 export function crewCheckApiCertificates(data) {
     console.log(data);
     return request({
-        url: "/cy/ship/shipInfoZsh?certNo=" + data.certNo,
+        url: "/cy/ship/shipInfoZsh",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -49,9 +52,10 @@ export function crewCheckApiCertificates(data) {
 export function crewCheckApiCbjczl(data) {
     console.log(data);
     return request({
-        url: "/cy/ship/shipInfo?shipId=" + data.shipId,
+        url: "/cy/ship/shipInfo",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -60,9 +64,10 @@ export function crewCheckApiCbjczl(data) {
 export function crewCheckApiGjysjyzgz(data) {
     console.log(data);
     return request({
-        url: "/cy/ship/gjDjzsbh?zsbh=" + data.zsbh,
+        url: "/cy/ship/gjDjzsbh",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -72,9 +77,10 @@ export function crewCheckApiGjysjyzgz(data) {
 export function crewCheckApiKyxlbsp(data) {
     console.log(data);
     return request({
-        url: "/cy/yuz/lxbsp?plateColorCode=" + data.plateColorCode + "&vehicleNo=" + data.vehicleNo,
+        url: "/cy/yuz/lxbsp",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -84,9 +90,10 @@ export function crewCheckApiKyxlbsp(data) {
 export function dlyscyryCheckApi(data) {
     console.log(data);
     return request({
-        url: "/cy/yuz/cyyy?certificateCode=" + data.certificateCode + "&staffName=" + data.staffName + "&provinceCode=" + data.provinceCode,
+        url: "/cy/yuz/cyyy",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -96,9 +103,10 @@ export function dlyscyryCheckApi(data) {
 export function yyclCheckApi(data) {
     console.log(data);
     return request({
-        url: "/cy/yuz/car?vehicleNo=" + data.VehicleNo + "&transCertificateCode=" + data.TransCertificateCode + "&vin=" + data.Vin,
+        url: "/cy/yuz/car",
         method: "GET",
         showloading: false,
+        params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
@@ -107,10 +115,14 @@ export function yyclCheckApi(data) {
 //营运车辆查验（通过车牌号码和车牌颜色查验，可批量）
 export function vehicleCheckApi(data) {
     console.log(data);
+    let param={
+      json:data
+    };
     return request({
-        url: "/cy/yuz/vehicle?json=" + data,
+        url: "/cy/yuz/vehicle",
         method: "GET",
         showloading: false,
+        params: param,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
     });
