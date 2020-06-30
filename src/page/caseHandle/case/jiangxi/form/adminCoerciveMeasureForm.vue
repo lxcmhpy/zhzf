@@ -1,10 +1,6 @@
 <!-------长软------->
 <template>
-  <div
-    class="print_box printNumbers_box"
-    id="adminCoerciveMeasureForm-print"
-    style="width:790px; margin:0 auto;"
-  >
+  <div class="print_box printNumbers_box" style="width:790px; margin:0 auto;">
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
       <div class="print_info">
         <div class="doc_topic">行政强制措施</div>
@@ -202,84 +198,80 @@
             </td>
           </tr>
         </table>
-        <div class="content_box">
-          <div class="content">
-            <div class="table_form">
-              <br />
-              <br />
-              <h2>文书列表</h2>
-              <br />
-              <el-table :data="docTableDatas" stripe border style="width: 100%">
-                <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-                <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
-                <el-table-column prop="status" label="状态" align="center">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.status == '1' || scope.row.status == '2'">完成</span>
-                    <span v-if="scope.row.status == '0'">暂存</span>
-                    <span
-                      v-if="scope.row.status != '1' && scope.row.status != '0'  && scope.row.status != '2'"
-                    >-</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" align="center">
-                  <template slot-scope="scope">
-                    <!-- 已完成 -->
-                    <span
-                      v-if="scope.row.status == '1' || scope.row.status == '2'"
-                      class="tableHandelcase"
-                      @click="viewDocPdf(scope.row)"
-                    >查看</span>
-                    <!-- 未完成 暂存 -->
-                    <span v-if="scope.row.status == '0'" class="tableHandelcase">
-                      <span @click="viewDoc(scope.row)">编辑</span>
-                      <span @click="delDocDataByDocId(scope.row)">清空</span>
-                    </span>
-                    <!-- 无状态 -->
-                    <span
-                      v-if="scope.row.status != '1' && scope.row.status != '0' && scope.row.status != '2'"
-                      class="tableHandelcase"
-                      @click="viewDoc(scope.row)"
-                    >添加</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-          <!-- 悬浮按钮 -->
-          <div class="float-btns btn-height63">
-            <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
-              <svg
-                t="1577515608465"
-                class="icon"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                p-id="2285"
-                width="24"
-                height="24"
-              >
-                <path
-                  d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z"
-                  fill="#FFFFFF"
-                  p-id="2286"
-                />
-              </svg>
-              <br />提交
-            </el-button>
-
-            <el-button
-              type="primary"
-              @click="submitCaseDoc(1)"
-              v-if="!this.$route.params.isComplete"
+        <br />
+        <br />
+        <h2>文书列表</h2>
+        <br />
+        <el-table
+          class="evidencetable"
+          :data="docTableDatas"
+          border="1"
+          cellspacing="0"
+          style="width: 100%"
+        >
+          <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+          <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
+          <el-table-column prop="status" label="状态" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.status == '1' || scope.row.status == '2'">完成</span>
+              <span v-if="scope.row.status == '0'">暂存</span>
+              <span
+                v-if="scope.row.status != '1' && scope.row.status != '0'  && scope.row.status != '2'"
+              >-</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <!-- 已完成 -->
+              <span
+                v-if="scope.row.status == '1' || scope.row.status == '2'"
+                class="tableHandelcase"
+                @click="viewDocPdf(scope.row)"
+              >查看</span>
+              <!-- 未完成 暂存 -->
+              <span v-if="scope.row.status == '0'" class="tableHandelcase">
+                <span @click="viewDoc(scope.row)">编辑</span>
+                <span @click="delDocDataByDocId(scope.row)">清空</span>
+              </span>
+              <!-- 无状态 -->
+              <span
+                v-if="scope.row.status != '1' && scope.row.status != '0' && scope.row.status != '2'"
+                class="tableHandelcase"
+                @click="viewDoc(scope.row)"
+              >添加</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 悬浮按钮 -->
+        <div class="float-btns btn-height63">
+          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete">
+            <svg
+              t="1577515608465"
+              class="icon"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="2285"
+              width="24"
+              height="24"
             >
-              <i class="iconfont law-save"></i>
-              <br />保存
-            </el-button>
-            <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
-              <i class="iconfont law-back"></i>
-              <br />返回
-            </el-button>
-          </div>
+              <path
+                d="M79.398558 436.464938c-25.231035 12.766337-56.032441 2.671394-68.800584-22.557835-12.775368-25.222004-2.682231-56.025216 22.548804-68.798778 244.424411-123.749296 539.711873-85.083624 744.047314 97.423694 33.059177-37.018403 66.118353-74.034999 99.179336-111.042564 26.072732-29.199292 74.302319-15.865804 81.689744 22.574091 20.740782 107.953934 41.486982 215.915094 62.229569 323.867222 5.884653 30.620785-18.981527 58.454577-50.071928 56.06134-109.610235-8.480185-219.211438-16.95134-328.812642-25.422494-39.021496-3.010963-57.692354-49.437946-31.610591-78.633625 33.060983-37.007565 66.116547-74.025968 99.175724-111.03534-172.88741-154.431492-422.746726-187.152906-629.574746-82.435711z"
+                fill="#FFFFFF"
+                p-id="2286"
+              />
+            </svg>
+            <br />提交
+          </el-button>
+
+          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete">
+            <i class="iconfont law-save"></i>
+            <br />保存
+          </el-button>
+          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
+            <i class="iconfont law-back"></i>
+            <br />返回
+          </el-button>
         </div>
         <el-form-item prop="resLength" style="visibility:hidden">
           <el-input v-model="formData.resLength"></el-input>
@@ -357,13 +349,6 @@
         </div>
       </div>
     </el-dialog>
-    <casePageFloatBtns
-      :pageDomId="'adminCoerciveMeasureForm-print'"
-      :formOrDocData="formOrDocData"
-      @submitData="submitData"
-      @saveData="saveData"
-      @backHuanjie="submitData"
-    ></casePageFloatBtns>
   </div>
 </template>
 <script>
@@ -413,16 +398,6 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
-        afsj: "",
-        caseCauseName: "",
-        punishLaw: "",
-        detainGoods: "",
-        enforceMeasure: "",
-        measureStartDate: "",
-        measureEndDate: "",
-        reconsiderationOrgan: "",
-        lawsuitOrgan: "",
-        makeDate: "2019",
         resList: [],
         resLength: 0
       },
@@ -430,7 +405,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.adminCoerciveMeasureForm_caseLinktypeId, //表单类型IDer
+        caseLinktypeId: "c9493b367f429c2b55eea4bbb3627e36", //this.BASIC_DATA_SYS.adminCoerciveMeasureForm_caseLinktypeId, //表单类型IDer
         //表单数据
         formData: "",
         status: ""
@@ -476,10 +451,10 @@ export default {
       adressLength: 23,
       maxLength: 23,
       formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: "adminCoerciveMeasureForm-print"
+        showBtn: [false, true, true, false, false, false, false, false, false] //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
       },
       addVisible: false,
+      addLoading: false,
       tableDatas: [],
       options: [
         {
@@ -587,6 +562,49 @@ export default {
         });
       }
     },
+    //提交
+    continueHandle() {
+      if (this.isSaveLink) {
+        let caseData = {
+          caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+          caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
+        };
+        let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+        let allFinish = true;
+        console.log("canGotoNext", this.docTableDatas);
+        for (let i = 0; i < this.docTableDatas.length; i++) {
+          if (
+            this.docTableDatas[i].isRequired === 0 &&
+            Number(this.docTableDatas[i].status) == 0
+          ) {
+            canGotoNext = false;
+            break;
+          }
+          if (
+            this.docTableDatas[i].isRequired !== 0 &&
+            this.docTableDatas[i].status === 0
+          ) {
+            allFinish = false;
+            break;
+          }
+        }
+        console.log("canGotoNext", canGotoNext);
+        console.log("allFinish", allFinish);
+        // if (canGotoNext) {
+        //   if(allFinish){
+        //     this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,1);
+        //   }
+        //   else{
+        //     this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,2);
+        //   }
+        // } else {
+        //   this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,3);
+        // }
+      }
+      // else{
+      //   this.$refs.saveFormDiaRef.showModal();
+      // }
+    },
     //删除一行证据
     deleteRes(row) {
       for (let i = 0; i < this.tableDatas.length; i++) {
@@ -627,10 +645,60 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: this.BASIC_DATA_SYS.adminCoerciveMeasureForm_caseLinktypeId     //环节ID
+        linkTypeId: "c9493b367f429c2b55eea4bbb3627e36" //this.BASIC_DATA_SYS.adminCoerciveMeasureForm_caseLinktypeId     //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },
+    //保存表单数据
+    submitCaseDoc(handleType) {
+      this.com_submitCaseForm(handleType, "docForm", false);
+    },
+    //提交
+    submitForm() {
+      let params = {
+        caseId: this.caseId,
+        caseLinktypeId: this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
+      };
+      submitRelieveApi(params).then(
+        res => {
+          console.log("提交解除或延长表单", res);
+          this.$store.dispatch("deleteTabs", this.$route.name);
+          this.$router.push({
+            name: "case_handle_flowChart"
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    //清空文书
+    delDocDataByDocId(data) {
+      console.log("清空文书", data);
+      this.$refs.resetDocDiaRef.showModal(data);
+    },
+    //查看文书
+    viewDoc(row) {
+      if (this.isSaveLink) {
+        this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
+      }
+      // else {
+      //   this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
+      // }
+    },
+    //预览pdf
+    viewDocPdf(row) {
+      let routerData = {
+        hasApprovalBtn: false,
+        docId: row.docId,
+        approvalOver: false,
+        hasBack: true,
+        status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
+        docDataId: row.docDataId
+      };
+      this.$store.dispatch("deleteTabs", this.$route.name);
+      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+    }
   },
   mounted() {},
   created() {
@@ -642,15 +710,8 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-
 .print_box .print_info .evidencetable tr td {
   white-space: inherit;
   text-align-last: center;
-}
-.evdence-form {
-  .el-icon-circle-close {
-    color: #7b7b7b !important;
-  }
 }
 </style>

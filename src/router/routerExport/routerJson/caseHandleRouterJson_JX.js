@@ -272,5 +272,15 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/payStageDoc_JX.vue")
   },
+  //行政强制措施
+  {
+    path: "/adminCoerciveMeasureForm",
+    name: "case_handle_adminCoerciveMeasureForm",
+    meta: {
+      title: "行政强制措施",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/adminCoerciveMeasureForm.vue")
+  },
 ]
 

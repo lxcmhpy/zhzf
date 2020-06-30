@@ -54,7 +54,7 @@ let flowGraphData = {
             {id:"temp1_2",source: 'temp1_1',target:"temp1_2",linkID: 'temp1_2',name:"",position:{x: 3, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             {id:"temp1_2_1",source: 'temp1_2',target:"2_2",linkID: 'temp1_2_1',name:"",position:{x: 2, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             {id:"2_1",source: "2_1",target:"3",linkID: BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,name:"案件调查",linkName:'case_handle_caseDoc',position:{x: 2, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-            {id:"2_2",source: "2_2",target:"2_1",linkID: BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId,name:"行政强制\n措施",linkName:'case_handle_adminCoerciveMeasure',position:{x: 3, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
+            {id:"2_2",source: "2_2",target:"2_1",linkID: BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId,name:"行政强制\n措施",linkName:'case_handle_adminCoerciveMeasureForm',position:{x: 3, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
             
             {id:"temp2_3",source: "2_1",target:"temp2_3",linkID: 'temp2_3',name:"",position:{x: 2, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
             {id:"temp2_4",source: "temp2_3",target:"temp2_4",linkID: 'temp2_4',name:"",position:{x: 4, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
