@@ -625,7 +625,7 @@ import _ from "lodash";
 
         },
         async addZbConfig (row) {
-            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+            // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
             // this.assessTypeObj = this.khlbList.data?this.khlbList.data[0]: [];
             this.$set(this, 'zbObj', {
                 "id": "",
@@ -739,7 +739,7 @@ import _ from "lodash";
                                     _this.findPykhZpByPage(_this.xzObj.metricsId,1);
                                 } else {
                                     // 更新
-                                    _this.drawer1 = false;
+                                    _this.drawer2 = false;
                                     _this.$set(_this.xzList,_this.updateIndex2, _this.xzObj);
                                 }
                                  _this.$set(_this, 'xzObj', {
@@ -783,7 +783,7 @@ import _ from "lodash";
                 deleteDetailZpById(item.id).then(
                     res => {
                         _this.errorMsg('删除成功', 'success');
-                        // _this.addorUpdateDetailZp(row.id, 1);
+                        _this.findPykhZpByPage(row.id,1);
                     },
                     error => {
                         _this.errorMsg(error.toString(), 'error')
@@ -831,15 +831,15 @@ import _ from "lodash";
         },
         async updateZbConfig (index, row) {
             // this.zbObj = row;
-            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+            // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
              this.$set(this, 'zbObj', row);
             this.drawer1 = true;
             this.updateIndex1 = index;
         },
         async updateXzConfig (index, row) {
             // this.zbObj = row;
-            this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
-             this.$set(this, 'zbObj', row);
+            // this.khlbList = await this.$store.dispatch("getDictListDetailTb", PYKH_DATA.khlb);
+             this.$set(this, 'xzObj', row);
             this.drawer2 = true;
             this.updateIndex2 = index;
         },

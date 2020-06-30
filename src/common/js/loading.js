@@ -3,7 +3,6 @@ import store from "@/store";
 let needLoadingRequestCount = 0
 
 export function showFullScreenLoading(type) {
-    // debugger;
     if (needLoadingRequestCount === 0) {
         startLoading(type)
     }
@@ -11,7 +10,6 @@ export function showFullScreenLoading(type) {
 }
 
 export function tryHideFullScreenLoading() {
-    // debugger;
   if (needLoadingRequestCount <= 0) return
     needLoadingRequestCount--
   if (needLoadingRequestCount === 0) {

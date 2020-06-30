@@ -25,7 +25,8 @@ export default {
     };
   },
   components: {
-    "v-loading": loading, dialogPhoneVideo
+    "v-loading": loading,
+     dialogPhoneVideo
   },
   computed: {
     ...mapGetters(["loading",'systemTitle'])
@@ -44,7 +45,7 @@ export default {
         _this.isRouterAlive = true;
       });
     },
-    
+
   }
 };
 </script>

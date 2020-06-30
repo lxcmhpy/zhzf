@@ -3,7 +3,7 @@
     <!-- <el-row class="title" :gutter="20">
       <el-col>清空</el-col>
     </el-row> -->
-    <p>上传了{{}}个证据，请前往证据目录查看</p>
+    <p>上传了{{this.fileSize}}个证据，请前往证据目录查看</p>
     <br><br>
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" @click="checkEvidence">确定</el-button>
@@ -29,7 +29,8 @@ export default {
     //     caseLinktypeId:''
     //   },
       //通过文书ID删除文书
-      id:""
+      id:"",
+      fileSize:'',
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -38,11 +39,12 @@ export default {
   inject: ['reload'],
   methods: {
     //新增
-    showModal() {
+    showModal(data) {
       //显示弹框
     //   console.log(data);
     //   this.id = data.docDataId;
       this.visible = true;
+      this.fileSize = data;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

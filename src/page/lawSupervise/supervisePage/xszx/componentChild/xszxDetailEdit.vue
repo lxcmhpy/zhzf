@@ -555,7 +555,17 @@
         </el-dialog>
         <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
             <div>
-                <img width="100%" :src="xjHost+imgIndexUrl">
+                <el-row>
+                  <el-col :span="1" style="margin-top: 200px;">
+                  <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
+                  </el-col>
+                  <el-col :span="22">
+                    <img width="100%" :src="xjHost+imgIndexUrl">
+                  </el-col>
+                  <el-col :span="1" style="margin-top: 200px;">
+                    <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
+                  </el-col>
+                </el-row>
             </div>
         </el-dialog>
         <el-dialog :visible.sync="dialogIMGVisible1" append-to-body width="90%">
@@ -619,41 +629,51 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">补充证据材料</span>
+                    <span class="right f12">
+                    <el-upload
+                        class="upload-demo"
+                        action=""
+                        :http-request="saveFile"
+                        :file-list="fileList"
+                        :show-file-list="false">
+                        <el-button size="mini" type="primary" icon="el-icon-plus" title="添加"></el-button>
+                    </el-upload>
+                    </span>
                 </div>
                 <ul class="list" style="width: 278px;height:175px;margin-left: 0px">
-                    <!-- <li>
-                        <div class="demo-image__preview">
-                            <el-image
-                            class="img"
-                                style="width: 100px; height: 100px"
-                                :src="'./static/images/img/temp/sp.jpg'"
-                                :preview-src-list="['./static/images/img/temp/sp.jpg','./static/images/img/temp/sp.jpg']"
-                                >
-                            </el-image>
-                        </div>
-                    </li> -->
-                    <!-- <li @click="dialogPDFVisible = true">
-                       <img  class="img" :src="'./static/images/img/lawSupervise/temp/link_01.jpg'" >
-                       <i class="iconfont law-pdf1" ></i>
-                    </li> -->
                     <li>
-                        <el-upload
-                             class="avatar-uploader uploadFile"
-                             drag
-                             :http-request="saveFile"
-                             list-type="picture-card"
-                             :file-list="fileList"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :limit="1"
-                            multiple
-                        >
-                            <i class="el-icon-picture">
-                                <span style="color: gray;font-size:12px;"><br>上传证据</span>
-                            </i>
-
-                        </el-upload>
+                        <el-carousel ref="carousel" height="200px" @click.native="dialogZJCLVisible = true" indicator-position="outside" >
+                            <el-carousel-item  v-for="(item,index) in fileList" :key="(index +1).toString()">
+                                <img v-if="item.status == '图片'" width="280px" height="180px" :src="pHost+'/'+item.storageId">
+                                <div v-else style="text-align: center;padding: 25px;">
+                                    <div><i class="el-icon-document" style="font-size:45px;"></i></div>
+                                    <div style="margin: 15px;line-height: 25px">{{item.fileName}}</div>
+                                </div>
+                            </el-carousel-item>
+                        </el-carousel>
                     </li>
                 </ul>
+                <el-dialog title="操作" :visible.sync="dialogZJCLVisible" width="400px" class='mini-dialog-title' append-to-body>
+                    <span>是否要删除此文件?</span>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button @click="dialogZJCLVisible = false">取消</el-button>
+                        <el-button type="primary" @click="delZJCL">确定</el-button>
+                    </span>
+                </el-dialog>
+                <!-- <el-dialog :visible.sync="dialogZJCLVisible" append-to-body width="40%">
+                    <el-button icon="el-icon-download" @click="downZJCL">下载</el-button>
+                    <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="delVisible">
+                        <p>确定删除此文件?</p>
+                        <div style="text-align: right; margin: 0">
+                            <el-button size="mini" type="text" @click="delVisible = false">cancel</el-button>
+                            <el-button type="primary" size="mini" @click="delZJCL">confirm</el-button>
+                        </div>
+                        <el-button type="danger" slot="reference" icon="el-icon-close">删除</el-button>
+                    </el-popover>
+                </el-dialog> -->
             </div>
         </div>
           <div class="shadow">
@@ -684,6 +704,7 @@ import echarts from 'echarts';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
 import {findAllDrawerById} from '@/api/lawSupervise.js';
+import { upload,getFile, getFileByCaseId,deleteFileByIdApi } from "@/api/upload.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
 Vue.use(AMap);
@@ -795,7 +816,10 @@ export default {
             formUpload: {
                 caseId: null,
                 category: '执法监管'
-            }
+            },
+            pHost: null,
+            dialogZJCLVisible: false,
+            // delVisible: false
         }
     },
     methods:{
@@ -803,8 +827,49 @@ export default {
             this.dialogIMGVisible = true;
             this.imgIndexUrl = this.imgList[index];
         },
-        saveFile (params) {
-            this.formUpload.file = params.file
+        saveFile (param) {
+            var testmsg=/^image\/(jpeg|png|jpg)$/.test(param.file.type)
+            let type = "图片";
+            if (!testmsg) {
+                type = "附件";
+            }
+            this.index = this.fileList.length+1;
+            var fd = new FormData()
+            fd.append("file", param.file);
+            fd.append("category", '执法监管');
+            fd.append("fileName", param.file.name);
+            fd.append('status', type)//传记录id
+            fd.append('caseId', this.obj.id)//传记录id
+            fd.append('docId', this.obj.id + this.index.toString())//传记录id
+            // uploadMaterial(fd).then(
+            upload(fd).then(
+                res => {
+                    this.fileList.push(res.data[0]);
+                    console.log(res);
+                },
+                error => {
+                    console.log(error)
+                }
+            );
+            // debugger;
+            // this.formUpload.file = params.file
+        },
+        //下载证据材料
+        downZJCL () {
+            let activeIndex = this.$refs.carousel.activeIndex;
+            let f = this.fileList[activeIndex];
+        },
+        //删除证据材料
+        delZJCL () {
+            this.dialogZJCLVisible = false;
+            let activeIndex = this.$refs.carousel.activeIndex;
+            let f = this.fileList[activeIndex];
+            deleteFileByIdApi(f.storageId).then(res => {
+                console.log(res);
+                this.fileList.splice(activeIndex,1);
+            }, err => {
+                console.log(err)
+            })
         },
         //关闭弹窗的时候清除数据
         setActiveItem () {
@@ -812,6 +877,22 @@ export default {
             if (this.acitveCar == 5) {
                 this.acitveCar = 0;
             }
+        },
+        preview(){
+          let index = this.imgList.findIndex(item=>item == this.imgIndexUrl);
+          let n = index - 1;
+          if(index == 0){
+            n = this.imgList.length-1;
+          }
+          this.imgIndexUrl = this.imgList[n];
+        },
+        next(){
+          let index = this.imgList.findIndex(item=>item == this.imgIndexUrl);
+          let n = index + 1;
+          if(index == this.imgList.length-1){
+            n = 0
+          }
+          this.imgIndexUrl = this.imgList[n];
         },
         closeDialog() {
             this.visible = false;
@@ -854,11 +935,27 @@ export default {
             this.obj.vehicleNumber = this.checkSearchForm.number;
             this.obj.vehicleColor = this.checkSearchForm.color;
             this.visible = false;
-        }
+        },
+        //通过案件ID和文书ID查询附件
+        findFileList() {
+            let data = {
+                caseId: this.obj.id
+            }
+            getFileByCaseId(data).then(
+                res => {
+                    this.fileList = res.data;
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+        },
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
+        this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
+        this.findFileList();
     }
 }
 </script>

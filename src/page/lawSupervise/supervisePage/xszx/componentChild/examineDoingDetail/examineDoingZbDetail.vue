@@ -28,7 +28,7 @@
                     <span class="title">驾驶员/车主信息</span>
                 </div>
                 <div >
-                    <el-form :model="userObj" ref="userObj" class="userObj" label-width="75px">
+                    <el-form :model="userObj" ref="userObj" class="userObj" label-width="105px">
                         <div class="item">
                             <el-form-item label="姓名">
                                  <el-input width="300px" readonly="readonly" v-model="obj.personName" placeholder="请输入"></el-input>
@@ -87,7 +87,17 @@
                 </ul>
                 <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
                     <div>
-                        <img width="100%" :src="xjHost+imgIndexUrl">
+                        <el-row>
+                            <el-col :span="1" style="margin-top: 200px;">
+                            <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
+                            </el-col>
+                            <el-col :span="22">
+                                <img width="100%" :src="xjHost+imgIndexUrl">
+                            </el-col>
+                            <el-col :span="1" style="margin-top: 200px;">
+                                <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-dialog>
             </div>
@@ -145,6 +155,22 @@ export default {
         showImg (index) {
             this.dialogIMGVisible = true;
             this.imgIndexUrl = this.imgList[index];
+        },
+        preview(){
+          let index = this.imgList.findIndex(item=>item == this.imgIndexUrl);
+          let n = index - 1;
+          if(index == 0){
+            n = this.imgList.length-1;
+          }
+          this.imgIndexUrl = this.imgList[n];
+        },
+        next(){
+          let index = this.imgList.findIndex(item=>item == this.imgIndexUrl);
+          let n = index + 1;
+          if(index == this.imgList.length-1){
+            n = 0
+          }
+          this.imgIndexUrl = this.imgList[n];
         },
         setActiveItem () {
             this.acitveCar++;

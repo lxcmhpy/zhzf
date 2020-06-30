@@ -313,7 +313,7 @@ export default {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
-    search(val) {
+    search(val,isCreate) {
 
       this.form.checkStartTime = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd HH:mm:ss') : this.timeList[0];
       this.form.checkEndTime = typeof this.timeList[1] == 'object' ? this.timeList[1].format('yyyy-MM-dd HH:mm:ss') : this.timeList[1];
@@ -322,34 +322,30 @@ export default {
       let _this = this;
       // debugger;
       if (this.tabActiveValue === '待审核') {
-        new Promise((resolve, reject) => {
-          queryAlarmVehiclePage(_this.form).then(
-            res => {
-              resolve(res)
-              _this.tableData = res.data.records;
-              _this.total = res.data.total;
-            },
-            error => {
-              //  _this.errorMsg(error.toString(), 'error')
-              return
+        queryAlarmVehiclePage(_this.form).then(
+          res => {
+            if(isCreate){
+              _this.getCountStatus()
             }
-          )
-        })
+            _this.tableData = res.data.records;
+            _this.total = res.data.total;
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return
+          }
+        )
       } else {
-        new Promise((resolve, reject) => {
-          queryListPage(_this.form).then(
-            res => {
-              resolve(res)
-              _this.tableData = res.data.records;
-              _this.total = res.data.total;
-            },
-            error => {
-              //  _this.errorMsg(error.toString(), 'error')
-              return
-            }
-          )
-        })
-
+        queryListPage(_this.form).then(
+          res => {
+            _this.tableData = res.data.records;
+            _this.total = res.data.total;
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return
+          }
+        )
       }
     },
     findAllDrawerById(data, obj) {
@@ -499,10 +495,9 @@ export default {
     if(this.$route.params.siteName!== undefined){
       this.form.siteName = this.$route.params.siteName
     }
-    this.search(1);
+    this.search(1,true);
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
     this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
-    this.getCountStatus()
   },
   mounted() {
 

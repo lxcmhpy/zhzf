@@ -344,7 +344,7 @@
             </el-popover>
             <el-popover
                 placement="bottom-start"
-                trigger="click"
+                v-model="popoverVisible"
                 >
                 <div class="drop-down-menu transition-box">
                         <ul>
@@ -928,7 +928,8 @@ export default {
       expandTree:false,
       userInfo: null,
       ryList: null,
-      time:Date.parse(new Date())
+      time:Date.parse(new Date()),
+      popoverVisible:false
     };
   },
   filters: {
@@ -1017,7 +1018,7 @@ export default {
         if (!window.PhoneCallModule.getRegistered()) {
             // window.PhoneCallModule.sipRegister();
             let displayName = 'ecds05';
-            let privateIdentity ='100007';
+            let privateIdentity ='100006';
             let password = '1234';
             window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
 
@@ -1041,24 +1042,36 @@ export default {
         this.fxcObj = row;
     },
     isCheckAll () {
-        // debugger;
+        debugger;
         let _this = this;
         if (this.radioVal == '全选') {
             this.radioVal = '取消全选';
             this.tabList[0].children.forEach((item)=>{
-            // debugger;
-                if(!item.select) {
-                    _this.checkAll(item);
-               }
+              if(!item.select) {
+                  item.select = !item.select;
+                  _this.category = item.code;
+                  _this.categoryStr = item.name;
+                  if (_this.curWindow) {
+                  _this.curWindow.visible = false;
+                  }
+                  _this.category = item.code;
+                  let data = {
+                    key: "",
+                    type: item.code
+                  };
+                  _this.allSearchList.push(data);
+                  _this.getZfjgLawSupervise(data, _this.category);
+              }
             })
+           
         } else {
             this.radioVal = '全选';
             this.tabList[0].children.forEach((item)=>{
-            // debugger;
-                if(item.select) {
-                    _this.checkAll(item);
-                }
+              item.select = !item.select;
             })
+            _this.allSearchList.splice(0, _this.allSearchList.length);
+                    _this.markers.splice(0, _this.markers.length);
+                    _this.windows.splice(0, _this.windows.length);
         }
 
     },
@@ -1409,7 +1422,7 @@ export default {
         this.drawer = true;
         this.updateDrawer()
     },
-    updateDrawer1 () {
+    updateDrawer1 (flag) {
         // debugger;
         // if (this.category == 4) {
         //     this.drawer1 = true;
@@ -1419,13 +1432,13 @@ export default {
         //  this.drawer1 = !this.drawer1 ;
          this.drawer = true;
         // this.getRealTimeDataByLawSupervise();
-        this.searchPageAll(4, 'zfdList');
+        this.searchPageAll(4, 'zfdList', flag);
         this.searchPageAllGJ(6, 'gjclList');
         this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
 
     },
-    searchPageAll (code, obj) {
+    searchPageAll (code, obj, flag) {
         // this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
@@ -1447,7 +1460,7 @@ export default {
                         let resultList = [];
                         // that[obj] = res.data.records.splice(0,5);
                         that[obj] = res.data.splice(0,5);
-                        that.pointZFD(code,that.zfdList);
+                        that.pointZFD(code,that.zfdList,flag);
 
                     },
                     error => {
@@ -1456,7 +1469,7 @@ export default {
                     })
             })
     },
-    pointZFD (code, list) {
+    pointZFD (code, list, flag) {
       let resultList = [];
       list.forEach((item, i) => {
             let position = item.propertyValue ? item.propertyValue.split(','):['',''];
@@ -1485,7 +1498,12 @@ export default {
 
         // _this.allSearchList.push(data);
         // _this.getZfjgLawSupervise(data, this.category);
-        this.onSearchResult(resultList, 4,  0)
+        if(flag){
+          this.onSearchResult(resultList, 4,  this.windows.length);
+        }else{
+          this.onSearchResult(resultList, 4,  0);
+        }
+          
     },
     searchPageAllGJ (code, obj) {
         // 告警车辆
@@ -1678,7 +1696,7 @@ export default {
         );
       });
     },
-    checkAll (item) {
+    /* checkAll (item) {
         item.select = !item.select;
          this.category = item.code;
         this.categoryStr = item.name;
@@ -1696,11 +1714,8 @@ export default {
             type: item.code
             };
             this.allSearchList.push(data);
-            if (this.category == 4) {
-                this.searchPageAllGJ(data, this.category);
-            } else {
+            
                 this.getZfjgLawSupervise(data, this.category);
-            }
         } else {
             let _this = this;
             let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -1715,7 +1730,7 @@ export default {
             });
             }
         }
-    },
+    }, */
     searchByTab(item) {
         debugger;
         if (this.allSearchList.length == 0) {
@@ -1734,7 +1749,6 @@ export default {
         if (this.curWindow) {
           this.curWindow.visible = false;
         }
-        this.category = item.code;
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
         //   area: "东城区",
@@ -1745,7 +1759,9 @@ export default {
         };
         this.allSearchList.push(data);
          if (this.category == 4) {
-                this.searchPageAllGJ(data, this.category);
+           this.updateDrawer1(1);
+           this.popoverVisible=false;
+                // this.searchPageAllGJ(data, this.category);
         } else {
             this.getZfjgLawSupervise(data, this.category);
         }
@@ -1764,18 +1780,10 @@ export default {
           });
         }
       }
-
-      if (this.category == '4') {
-        //   this.drawer1 = false;
-        //   this.drawer = false;
-          this.updateDrawer1();
-      } else {
-          this.updateDrawer();
-
-      }
+      
     },
     searchAll(pois) {
-
+      debugger;
       this.markers.splice(0, this.markers.length);
       if (this.curWindow) {
         this.curWindow.visible = false;
@@ -1804,7 +1812,6 @@ export default {
         getZfjgLawSupervise(data).then(
           res => {
             // resolve(res);
-            debugger;
             let resultList = [];
             if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
@@ -1823,6 +1830,7 @@ export default {
             let position = item.propertyValue.split(",");
               let lng = parseFloat(position[0]);
               let lat = parseFloat(position[1]);
+              item.nickName = item.nickName?item.nickName:item.name;
               resultList.push({
                 address: item.address,
                 distance: null,
@@ -1926,8 +1934,8 @@ export default {
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
             // window.PhoneCallModule.sipRegister();
-            let displayName = 'ecds05';
-            let privateIdentity ='100007';
+            let displayName = 'ecds04';
+            let privateIdentity ='100006';
             let password = '1234';
             window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }

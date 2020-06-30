@@ -240,13 +240,14 @@
     },
     methods:{
       saveFile(param, row) {
+          debugger;
         var fd = new FormData();
         fd.append("file", param.file);
         fd.append("userId", iLocalStroage.gets("userInfo").id);
         fd.append("category", "案件报送");
         fd.append("caseId", row.caseId);
-        fd.append("storageId", row.storageId===null?'':row.storageId);
-        let _this = this
+        fd.append("storageId", row.storageId?row.storageId:'');
+        let _this = this;
         StaffAndCaseFile(fd).then(res => {
           if (res.code == 200){
             row.storageId = res.data

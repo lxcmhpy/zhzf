@@ -254,6 +254,7 @@ export default {
         let _this = this
         updateScoreState(data).then(
             res => {
+                _this.form.pfStatus = null;
                 _this.$message({type: "success",message: "提交成功!"});
                 _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
             },
@@ -306,12 +307,12 @@ export default {
                     _this.form = res.data;
                     // let tree = [];
                     let firstIdList = filterId(_this.form.pykhScoreDetailsVos, 'indexOneId');
-    
+
                     // this.form.pykhScoreDetailsVos.forEach((v,i)=>{
                     //     firstIdList.push(v.indexOneId);
                     // })
                     // firstIdList = new Set(firstIdList);
-    
+
                     firstIdList.forEach((v,i)=>{
                         let obj = {
                             children: []
@@ -324,16 +325,16 @@ export default {
                             obj.indexOneId = _this.form.pykhScoreDetailsVos[index].indexOneId;
                             // obj.nrxm = _this.form.pykhScoreDetailsVos[index].nrxm;
                         }
-    
+
                         let secondList = _.filter(_this.form.pykhScoreDetailsVos, function(o) { return o.indexOneId === v; });
-    
+
                         let secondIdList = filterId(secondList,'indexTwoId');
-    
-    
-    
+
+
+
                         secondIdList.forEach((v2,i)=>{
                             let obj2 = {
-    
+
                             }
                             let index2 = _.findIndex(_this.form.pykhScoreDetailsVos,(chr)=>{
                                 return chr.indexTwoId === v2 && chr.indexOneId === v;
@@ -347,16 +348,18 @@ export default {
                                 // filterId(thirdIdList,_this.form.pykhScoreDetailsVos, 'indexThirdId');
                                 obj.children.push(obj2);
                             }
-    
+
                         })
                         _this.tree.push(obj);
                     })
-    
+
                     function filterId (oldList ,filedName) {
                         let newList = [];
-                        oldList.forEach((v,i)=>{
-                            newList.push(v[filedName]);
-                        })
+                        if (oldList) {
+                          oldList.forEach((v,i)=>{
+                              newList.push(v[filedName]);
+                          })
+                        }
                         return new Set(newList);
                     }
                 }

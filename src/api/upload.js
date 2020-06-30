@@ -27,6 +27,19 @@ export function getFile(data) {
   });
 }
 
+export function getFileByCaseId(data) {
+  return  request({
+    url:  "/case/sys/file/findByCaseId/"+ data.caseId,
+    method:  "GET",
+    params: data,
+    // contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+    // responseType: 'blob'
+  });
+}
+
 // 上传证据
 export  function  uploadEvApi(data)  {
   console.log("789",data);

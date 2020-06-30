@@ -36,8 +36,21 @@ export function findMoleByIdApi(data) {
 //根据UUID删除模板
 export function removeMoleByIdApi(data) {
     return request({
-        url: "/xzjc/template/myRemoveById/" + data,
+        url: "/xzjc/template/myRemoveById",
         method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据userId和templateId删除收藏关系表数据
+export function removeMoleCollectByIdApi(data) {
+    return request({
+        url: "/xzjc/collect/unbind",
+        method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',
@@ -172,8 +185,9 @@ export function findRecordModleTimeByIdApi(data) {
 //通过模板名称查询模板
 export function findRecordModleByNameIdApi(data) {
     return request({
-        url: "/xzjc/template/findByTemplateName/"+data,
+        url: "/xzjc/template/findByTemplateName",
         method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',

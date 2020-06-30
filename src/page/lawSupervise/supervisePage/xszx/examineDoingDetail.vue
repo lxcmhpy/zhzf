@@ -3,11 +3,11 @@
   <div class="main_box">
     <div class="com_searchAndpageBoxPadding">
       <div class="com_searchPage_top com_examin_top">
-        <el-tabs v-model="tabActiveValue" :stretch="true">
+        <el-tabs v-model="tabActiveValue" :stretch="true" @tab-click="switchTab">
           <el-tab-pane
             v-for="(item, index) in processStatus"
             :key="index"
-            disabled
+            :disabled="index>status?true:false"
             :name="`${index}`"
           >
             <span slot="label">
@@ -23,6 +23,7 @@
         <component
           v-if="obj"
           :obj="obj"
+          :type="type"
           v-bind:is="examineDoingDetailChildren[tabActiveValue]"
         ></component>
       </div>
@@ -74,7 +75,9 @@ export default {
           value: "生成证据包"
         }
       ],
-      tabActiveValue: null
+      tabActiveValue: null,
+      status:this.$route.params.status,
+      type:"doing"
     };
   },
   methods: {
@@ -99,7 +102,6 @@ export default {
       new Promise((resolve, reject) => {
         findAlarmVehicleById(id).then(
           res => {
-            debugger;
             // resolve(res);
             _this.obj = res.data;
             // obj.list = res.data
@@ -109,6 +111,17 @@ export default {
             return;
           }
         );
+      });
+    },
+    switchTab () {
+      this.type = "done";
+      this.$router.push({
+        name: 'law_supervise_examineDoingDetail',
+        params: {
+          status: this.tabActiveValue.toString(),
+          tabTitle: '【线索详情】',
+          offSiteManageId: this.$route.params.offSiteManageId
+        }
       });
     },
     init() {
