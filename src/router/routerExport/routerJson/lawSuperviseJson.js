@@ -126,5 +126,12 @@ export default  [
           title: "监管车辆列表",
         },
         component: () => import("@/page/lawSupervise/supervisePage/zdjg/keyVehicleManage.vue")
+    }, {
+        path: "/deviceManage",
+        name: "law_supervise_deviceManage",
+        meta: {
+          title: "设备资源管理",
+        },
+        component: () => import("@/page/lawSupervise/supervisePage/device/deviceManage.vue")
     }
 ]
