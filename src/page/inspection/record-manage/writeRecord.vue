@@ -102,18 +102,15 @@ export default {
       recordMsg: '',
       defautImgList: [],//已上传图片
       defautFileList: [],//已上传附件
-
       adressName: '',
       // 执企业组织信息员
       allUserList: [],
-      LawOfficerCard: '',
-      LawName: '',
+      LawName: '',//存储执法人员字段名
       alreadyChooseLawPerson: [],
-      alreadyChooseLawPersonID: [],
+      alreadyChooseLawPersonId: [],
       allUserListId: [],
-      LawOfficerCardId: '',
-      LawNameId: '',
-      lawPersonListId: "",
+      LawOfficerCard: '',//存储执法人员带id的字段名
+      // lawPersonListId: "",
       // 当事人信息和企业组织信息组合
       personPartyFlag: false,
       personFieldList: [],
@@ -214,6 +211,9 @@ export default {
         this.$message.error('无修改权限');
         return
       }
+      this.editMethod()
+    },
+    editMethod() {
       // 判断模板是否已修改
       findRecordModleTimeByIdApi(this.formData.templateId).then(
         res => {
@@ -278,6 +278,7 @@ export default {
         }
       })
     },
+    // 提交方法
     submitMethod() {
       console.log("formData", this.formData)
       let submitData = JSON.parse(JSON.stringify(this.baseData))
@@ -299,7 +300,7 @@ export default {
       });
       submitData = JSON.stringify(submitData)
       console.log('submitData', submitData)
-      debugger
+      // debugger
       this.formData.layout = submitData
       this.formData.templateFieldList = '';
       this.formData.createTime = '';
@@ -406,68 +407,21 @@ export default {
       })
 
     },
-    // 复制添加
+    // 复制添加-可修改-创建人换成登录账号-附件删除，id清空
     copySave() {
       this.addOrEiditFlag = 'add'
       this.formData.id = ''
       this.formData.createTime = ''
       this.formData.updateTime = ''
+      this.defautFileList = []
+      this.defautImgList = []
       // 设置当前账号名
       this.setLawPersonCurrentP()
-      this.saveRecord()
+      // this.saveRecord()
+      this.editMethod()
     },
     onSubmit(formData) {
       console.log("formData", formData)
-
-      // //TODO 提交表单
-      // this.$data.$f.submit((formData, $f) => {
-      //   // alert(JSON.stringify(formData));
-      //   let submitData = JSON.parse(JSON.stringify(this.baseData))
-      //   let submitList = []
-      //   submitData.forEach(element => {
-      //     element.fieldList.forEach(item => {
-      //       let textName = item.id
-      //       // console.log('变量', item.field, ':', formData['' + textName + ''])
-      //       item.text = formData['' + textName + '']
-      //       // console.log('tyupe',typeof (item.text))
-      //       if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
-      //         item.text = item.text.join(',')
-      //       }
-      //     });
-
-      //   });
-      //   submitData = JSON.stringify(submitData)
-
-      //   this.formData.layout = submitData
-      //   this.formData.templateFieldList = '';
-      //   this.formData.createTime = '';
-      //   this.formData.updateTime = '';
-      //   this.formData.type = '记录';
-      //   this.formData.organId = iLocalStroage.gets("userInfo").organId
-      //   delete (this.formData["pictureList"]);
-      //   delete (this.formData["attachedList"]);
-      //   console.log('formdata', this.formData)
-      //   saveOrUpdateRecordApi(this.formData).then(
-      //     res => {
-      //       // console.log(res)
-      //       if (res.code == 200) {
-      //         this.$message({
-      //           type: "success",
-      //           message: res.msg
-      //         });
-      //         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      //         this.$router.push({
-      //           name: 'inspection_writeRecord',
-      //           // params: item
-      //         });
-      //       } else {
-      //         this.$message.error(res.msg);
-      //       }
-      //     },
-      //     error => {
-      //     })
-      // })
-
     },
     clickPover() {
       this.isChangeModle = true
@@ -554,7 +508,7 @@ export default {
             // 显示当事人信息
             this.defultPerson()
           }
-          debugger
+          // debugger
         }
         if (element.classId == this.partyName) {
           partyFlag = element;
@@ -895,7 +849,7 @@ export default {
             ],
             inject: true,
             on: {
-              'focus': this.changeLaw
+              'focus': item.field == 'staff' ? this.changeLaw : this.changeLawId
             },
           })
           if (item.field == 'staff') {
@@ -924,26 +878,34 @@ export default {
     getAllUserList(list) {
       this.allUserList = list;
     },
-    //查询执企业组织信息员 带id
-    getAllUserListId(list) {
-      this.allUserListId = list;
-    },
     setLawPerson(userlist) {
+      // debugger
       this.alreadyChooseLawPerson = userlist;
       let staffArr = [];
-      let certificateIdArr = [];
       this.alreadyChooseLawPerson.forEach(item => {
         //   //给表单数据赋值
         // staffArr.push(item.lawOfficerName);//执企业组织信息员
         staffArr.push(item.lawOfficerName);//执企业组织信息员
 
+      });
+
+      this.$data.$f.setValue(this.LawName, staffArr.join(','));
+
+    },
+    //查询执企业组织信息员 带id
+    getAllUserListId(list) {
+      this.allUserListId = list;
+    },
+    setLawPersonId(userlist) {
+      // debugger
+      this.alreadyChooseLawPersonId = userlist;
+      let certificateIdArr = [];
+      this.alreadyChooseLawPersonId.forEach(item => {
+        //   //给表单数据赋值
         // certificateIdArr.push(item.selectLawOfficerCard);//执法账号
         certificateIdArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执企业组织信息员
       });
-
-
       this.$data.$f.setValue(this.LawOfficerCard, certificateIdArr.join(','));
-      this.$data.$f.setValue(this.LawName, staffArr.join(','));
 
     },
     //获取坐标
@@ -964,8 +926,18 @@ export default {
     changeLaw(inject) {
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
+      // debugger
+
       //选择执企业组织信息员
-      this.$refs.chooseLawPersonRef.showModal(this.lawPersonListId, this.alreadyChooseLawPerson);
+      this.$refs.chooseLawPersonRef.showModal(this.alreadyChooseLawPerson);
+    },
+    // 获取执企业组织信息员和账号-带id
+    changeLawId(inject) {
+      // debugger
+      console.log(`blur: ${inject.self.title}`);
+      console.log(`blur: ${inject.self.field}`);
+      //选择执企业组织信息员
+      this.$refs.chooseLawPersonIdRef.showModal(this.alreadyChooseLawPersonId);
     },
     // 选择当事人类型
     changePersonParty(inject) {
