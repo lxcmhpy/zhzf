@@ -279,10 +279,9 @@
       </el-form>
     </div>
     <casePageFloatBtns
+      :pageDomId="removeEvidenceRegApprovalForm_print"
       :formOrDocData="formOrDocData"
-      @submitData="submitData"
       @saveData="saveData"
-      @backHuanjie="submitData"
     ></casePageFloatBtns>
   </div>
 </template>
@@ -336,14 +335,10 @@ export default {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
         caseDoctypeId: this.$route.params.docId, //文书类型ID
-        //文书数据
         docData: "",
         status: "", //提交状态
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
-      name: "",
-      illegalFactsEvidence: "",
-      value1: "",
       rules: {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
@@ -435,12 +430,6 @@ export default {
     saveData(handleType) {
       // this.printContent()
       this.com_addDocData(handleType, "docForm");
-    },
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
     },
     //是否是完成状态
     isOverStatus() {
