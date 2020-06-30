@@ -2,9 +2,10 @@ import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,findDocDataByIdApi,
+  updateLinkInfoByCaseIdAndLinkTypeIdApi,
 } from "@/api/caseHandle";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
-
+import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
 export const mixinGetCaseApiList = {
   data() {
     return {
@@ -201,18 +202,21 @@ export const mixinGetCaseApiList = {
         caseLinktypeId: caseLinktypeId
       };
       console.log(data);
-      this.$store.dispatch("submitPdf", data).then(
-        res => {
-          console.log("更改流程图中的状态", res);
-          this.$store.dispatch("deleteTabs", this.$route.name);
-          this.$router.push({
-            name: 'case_handle_flowChart'
-          });
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      this.$router.push({
+        name: 'case_handle_flowChart'
+      });
+      // this.$store.dispatch("submitPdf", data).then(
+      //   res => {
+      //     console.log("更改流程图中的状态", res);
+      //     this.$store.dispatch("deleteTabs", this.$route.name);
+      //     this.$router.push({
+      //       name: 'case_handle_flowChart'
+      //     });
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   }
+      // );
     },
     //根据环节ID转路由name 跳转
     // com_getCaseRouteName(caseLinkId) {
@@ -398,7 +402,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatas = res.data;
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
-          if (params.linkTypeId == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||params.linkTypeId == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId) { //调查类文书和分期延期缴纳、强制执行
+          if (params.linkTypeId == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||params.linkTypeId == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
         },
@@ -597,6 +601,16 @@ export const mixinGetCaseApiList = {
           this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
         }
       } else if (data.curLinkState == 'unLock') {
+        let updataLinkData = {
+          caseId:this.caseId,
+          linkTypeId:data.linkID
+        }
+        updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData).then(res=>{
+          console.log('res更改流程图状态',res)
+        })
+
+
+
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());

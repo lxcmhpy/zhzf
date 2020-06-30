@@ -41,7 +41,7 @@
 </template>
 <script>
   import {
-    submitPdfApi, submitPdfByPersonApi
+     submitPdfByPersonApi,handleTJApproveDocApi,
   } from "@/api/caseHandle";
 
   export default {
@@ -103,7 +103,7 @@
         // }
         // this.caseInfo.handlePerson = JSON.stringify(a)
         console.log('传的参数', this.caseInfo)
-        submitPdfApi(this.caseInfo).then(
+        handleTJApproveDocApi(this.caseInfo).then(
           res => {
             console.log("pdf提交", res);
             _this.$message({

@@ -34,6 +34,7 @@
     "vue-concise-slider": "^3.4.4",
     "vue-cropper": "^0.5.2",
     "vue-loader": "^13.7.3",
+    "vue-pdf": "^4.1.0",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
     "vue-simple-verify": "^1.0.8",

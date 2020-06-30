@@ -272,7 +272,30 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/payStageDoc_JX.vue")
   },
-  //行政强制措施
+  {
+    path: "/caseDoc_JX",
+    name: "case_handle_caseDoc_JX",
+    meta: {
+      title: "案件调查-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/caseDoc_JX")
+  },
+  {
+    path: "/punishDecisionForm_JX",
+    name: "case_handle_punishDecisionForm_JX",
+    meta: {
+      title: "处罚决定-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/punishDecisionForm_JX")
+  },
+  {
+    path: "/partyRightsForm_JX",
+    name: "case_handle_partyRightsForm_JX",
+    meta: {
+      title: "当事人权利-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/partyRightsForm_JX")
+  },
   {
     path: "/adminCoerciveMeasureForm",
     name: "case_handle_adminCoerciveMeasureForm",

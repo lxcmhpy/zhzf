@@ -1,9 +1,9 @@
 <template>
   <div class="print_box" style="width:790px;margin:0 auto;">
     <!-- <div class="print_info"> -->
-    <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
+    <!-- <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
            style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item"
-           type="application/pdf" internalinstanceid="29">
+           type="application/pdf" internalinstanceid="29"> -->
     <!-- </div>  -->
     <casePageFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData"
                        @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall"
@@ -11,6 +11,9 @@
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
+    
+    <el-button @click="$refs.pdf[0].print()">打印</el-button>
+    <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf>
   </div>
 </template>
 <script>
@@ -23,8 +26,9 @@
   import {mapGetters} from "vuex";
 
   import {
-    updateDocStatusApi,getCurrentApproveApi,
+    updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,
   } from "@/api/caseHandle";
+  import pdf from 'vue-pdf'
   export default {
     data() {
       return {
@@ -34,6 +38,8 @@
           pageDomId: "",
         },
         docFinishQZ:false, //环节下文书是否已完成签章
+        pdfUrl:'',
+        numPages:0,
       };
     },
     mixins: [mixinGetCaseApiList],
@@ -41,9 +47,9 @@
       showApprovePeople,
       approvalDialog,
       casePageFloatBtns,
-    //   pdf
+      pdf
     },
-    computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId'])},
+    computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId','caseLinktypeId'])},
     methods: {
       print() {
         for (var i = 0; i < this.storagePath.length; i++) {
@@ -82,7 +88,9 @@
             }
             //单份文书取一个
             if (_that.storagePath.length == 0) {
-              _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
+              // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
+              this.getFileStream(res[0].storageId)
+
             }
           },
           err => {
@@ -116,7 +124,10 @@
       showApprovePeopleList() {
         let data = {
           caseId: this.caseId,
+          caseLinktypeId:this.caseLinktypeId,
+          docId:''
         }
+        console.log('提交审批需要的数据',data)
         this.$refs.showApprovePeopleRef.showModal(data);
       },
       //审批完成 重新获取pdf
@@ -161,7 +172,48 @@
           }
           this.$refs.approvalDialogRef.showModal(caseData);
         }).catch(err=>{console.log(err)})
-      }
+      },
+      //根据stroagId请求文件流
+      getFileStream(storageId){
+        
+        getFileStreamByStorageIdApi(storageId).then(res=>{
+        // getFileStreamByStorageIdApi('12,13ac7d04e13f').then(res=>{
+
+          console.log(res);
+          this.getObjectURL(res);
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      // 将返回的流数据转换为url
+      getObjectURL(file) {
+        let url = null;
+        if (window.createObjectURL != undefined) { // basic
+          url = window.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+          try {
+            url = window.webkitURL.createObjectURL(file);
+          } catch (error) {
+
+          }
+        } else if (window.URL != undefined) { // mozilla(firefox)
+          try {
+            url = window.URL.createObjectURL(file);
+          } catch (error) {
+
+          }
+        }
+        console.log(url);    
+        var loadingTask = pdf.createLoadingTask(url)  
+        loadingTask.promise.then(pdf => {
+          console.log('pdf.numPages',pdf.numPages)
+          console.log('pdf.pdfUrl',loadingTask)
+          this.pdfUrl =loadingTask;
+          this.numPages = pdf.numPages;
+        }).catch((err) => {
+          this.$message('pdf加载失败')
+        })
+      },
 
     },
     mounted() {

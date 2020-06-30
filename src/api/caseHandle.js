@@ -311,6 +311,18 @@ export function submitPdfApi(data) {
   });
 }
 
+
+//pdf页的提交
+export function handleTJApproveDocApi(data) {
+  return request({
+    url: "/case/doc/data/handleTJApproveDoc",
+    method: "post",
+    data: vm.$qs.stringify(data),
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //修改文书状态
 export function saveOrUpdateLinkApi(data) {
   return request({
@@ -1308,6 +1320,29 @@ export function queryImgBase64Api(storageId) {
 export function findDocDataByIdApi(id) {
   return request({
     url: "/case/doc/type/findById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取文件流
+export function getFileStreamByStorageIdApi(storageId) {
+  return request({
+    url: "/case/sys/file/getFileStreamByStorageId/"+storageId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    responseType:'blob',
+    cancelToken: setCancelSource()
+  });
+}
+
+//点击流程图(已解锁状态的)时 更改流程图各环节状态
+export function updateLinkInfoByCaseIdAndLinkTypeIdApi(data) {
+  return request({
+    url: "/case/doc/caseBasicInfo/updateLinkInfoByCaseIdAndLinkTypeId/"+data.caseId+'/'+data.linkTypeId,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
