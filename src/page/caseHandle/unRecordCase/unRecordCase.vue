@@ -162,6 +162,8 @@ export default {
       console.log(row);
       let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
+      
+      
       //暂存案件跳转信息采集
       if(row.state == 0){
         this.$store.commit("setCaseId", row.id);
@@ -192,14 +194,16 @@ export default {
          //立案登记表已保存未提交审批时 跳转pdf页面
          
           this.$store.dispatch("getFile", {
-            docId: this.BASIC_DATA_SYS.establish_huanjieAndDocId,
+            docId: this.BASIC_DATA_JX.establish_JX_huanjieAndDocId,
             caseId: row.id,
           }).then(res=>{
             console.log('查询环节是否生成了pdf',res);
             this.$store.commit("setCaseId", row.id);
             if(res && res.length >0){
-              this.$store.commit('setApprovalState', 'approvalBefore')
-              this.$router.push({ name: 'case_handle_myPDF', params: { docId: this.BASIC_DATA_SYS.establish_huanjieAndDocId } })
+              this.$store.commit('setApprovalState', 'approvalBefore');
+              //设置环节id，提交审批时需要用到
+              this.$store.commit("setCaseLinktypeId", '');
+              this.$router.push({ name: 'case_handle_myPDF', params: { docId: this.BASIC_DATA_JX.establish_JX_huanjieAndDocId, } })
             }else{
                 //设置案件状态不为审批中
                 this.$store.commit("setCaseApproval", false);

@@ -105,9 +105,16 @@ service.interceptors.request.use(
         } else {
           // httpErrorStr(response.data.code);
           // 下载后台返回文件流
+          console.log('response',response)
           if(response.config.responseType === "blob"){
-            const fileName = response.headers["content-disposition"].split(";")[1].split("=")[1];
-            return Promise.resolve({ data: response.data, fileName: fileName });
+            if(response.headers["content-disposition"]){
+              const fileName = response.headers["content-disposition"].split(";")[1].split("=")[1];
+              return Promise.resolve({ data: response.data, fileName: fileName });
+            }else{
+              tryHideFullScreenLoading();
+              return Promise.resolve(response.data);
+            }
+            
           }else{
             tryHideFullScreenLoading();
             return Promise.resolve(response.data);   //获取验证码图片需要返回，先这样写，之后完善

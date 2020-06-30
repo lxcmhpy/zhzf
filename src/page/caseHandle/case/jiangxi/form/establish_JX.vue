@@ -5,7 +5,7 @@
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">JX立案登记表</div>
-        <div class="doc_number">赣（{{formData.caseNumber.substring(3,7)}}）交立案〔{{formData.caseNumber.substring(8,13)}}〕号</div>
+        <div class="doc_number">赣（{{formData.caseNumber.substring(2,6)}}）交立案〔{{formData.caseNumber.substring(7,12)}}〕号</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>
@@ -430,6 +430,7 @@ export default {
   methods: {
     setData() {
       console.log('setData');
+      this.$store.commit("setCaseLinktypeId",this.BASIC_DATA_JX.establish_JX_caseLinktypeId);
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(
         this.caseLinkDataForm.caseBasicinfoId,
