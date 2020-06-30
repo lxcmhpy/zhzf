@@ -22,6 +22,7 @@
       </form-create>
       <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
+      <chooseLawPerson ref="chooseLawPersonIdRef" @setLawPer="setLawPersonId" @userList="getAllUserListId"></chooseLawPerson>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
       <!-- 悬浮按钮 -->
       <div class="float-btns btn-height63">
@@ -49,6 +50,7 @@
 import writeRecordHome from "./modleList.vue";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag.vue";
 import chooseLawPerson from "./chooseModlePerson.vue";
+import chooseLawPersonId from "./chooseModlePerson.vue";
 // import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 
 import uploadTmp from './upload/uploadModleFile.vue'
@@ -107,6 +109,10 @@ export default {
       LawOfficerCard: '',
       LawName: '',
       alreadyChooseLawPerson: [],
+      alreadyChooseLawPersonID: [],
+      allUserListId: [],
+      LawOfficerCardId: '',
+      LawNameId: '',
       lawPersonListId: "",
       // 当事人信息和企业组织信息组合
       personPartyFlag: false,
@@ -122,6 +128,7 @@ export default {
     uploadTmp,
     mapDiag,
     chooseLawPerson,
+    chooseLawPersonId
   },
   methods: {
     // 查找模板-添加
@@ -277,11 +284,11 @@ export default {
       let submitList = []
       submitData.forEach(element => {
         element.fieldList.forEach(item => {
-          console.log('item.id',item.id)
+          console.log('item.id', item.id)
           let textName = item.id
           // item.text = this.formData['' + textName + '']
-          item.text =this.$data.$f.getValue(textName)
-          if (item.text && typeof(item.text) != 'string' && typeof(item.text) != 'number') {
+          item.text = this.$data.$f.getValue(textName)
+          if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
             item.text = item.text.join(',')
             console.log('item.1', item)
 
@@ -347,7 +354,7 @@ export default {
             let textName = item.id
             // console.log('变量', item.field, ':', formData['' + textName + ''])
             // item.text = formData['' + textName + '']
-            item.text =this.$data.$f.getValue(textName)
+            item.text = this.$data.$f.getValue(textName)
             // console.log('tyupe',typeof (item.text))
             if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
               item.text = item.text.join(',')
@@ -917,6 +924,10 @@ export default {
     getAllUserList(list) {
       this.allUserList = list;
     },
+    //查询执企业组织信息员 带id
+    getAllUserListId(list) {
+      this.allUserListId = list;
+    },
     setLawPerson(userlist) {
       this.alreadyChooseLawPerson = userlist;
       let staffArr = [];
@@ -924,10 +935,12 @@ export default {
       this.alreadyChooseLawPerson.forEach(item => {
         //   //给表单数据赋值
         // staffArr.push(item.lawOfficerName);//执企业组织信息员
-        staffArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执企业组织信息员
+        staffArr.push(item.lawOfficerName);//执企业组织信息员
 
-        certificateIdArr.push(item.selectLawOfficerCard);//执法账号
+        // certificateIdArr.push(item.selectLawOfficerCard);//执法账号
+        certificateIdArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执企业组织信息员
       });
+
 
       this.$data.$f.setValue(this.LawOfficerCard, certificateIdArr.join(','));
       this.$data.$f.setValue(this.LawName, staffArr.join(','));

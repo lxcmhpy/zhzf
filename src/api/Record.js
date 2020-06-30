@@ -36,8 +36,9 @@ export function findMoleByIdApi(data) {
 //根据UUID删除模板
 export function removeMoleByIdApi(data) {
     return request({
-        url: "/xzjc/template/myRemoveById/" + data,
+        url: "/xzjc/template/myRemoveById",
         method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',

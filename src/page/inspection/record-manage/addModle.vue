@@ -90,6 +90,7 @@
                           </el-input> -->
 
                           <!-- 改成选择字段 -->
+                          <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
                           <el-select v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)">
                             <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField"></el-option>
                           </el-select>
@@ -402,10 +403,10 @@ export default {
           { required: true, message: '请选择适用范围', trigger: 'blur' }
         ],
         templateUserIdList: [
-          { required: true, message: '请选择指定人员', trigger: 'blur' }
+          { required: true, message: '请选择指定人员', trigger: 'change' }
         ],
         templateOrgan: [
-          { required: true, message: '请选择指定机构', trigger: 'blur' }
+          { required: true, message: '请选择指定机构', trigger: 'change' }
         ],
       }
     }
@@ -635,10 +636,10 @@ export default {
                 }
                 data.templateUserIdList = '';
                 data.templateAdminIdList = '';
+                data.templateUserId = data.scopeOfUse == '指定人员使用' ? data.templateUserId : '';
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 data.templateFieldList = JSON.stringify(data.templateFieldList)
                 console.log('提交的字段', data)
-                debugger
                 saveOrUpdateRecordModleApi(data).then(
                   res => {
                     if (res.code == 200) {
@@ -813,22 +814,31 @@ export default {
       }
     },
     changeField(info, field) {
-      if (info.id) {
-        // 判断是不是通用字段
-        field.id = field.info.id
-        field.field = field.info.field
-        field.title = field.info.title
-        field.type = field.info.type || '文本型'
-        field.options = JSON.parse(field.info.options)
-        field.sort = field.sort
-        field.remark = field.info.remark
-        field.required = field.info.required
-        field.status = field.info.status
-        field.templateId = field.info.templateId
+      // info-新选，field-之前的信息
+      console.log('info', info)
+      console.log('field', field)
+      // debugger
+      // 如果是通用字段，只改名
+      if (field.status == 0 && !info.id) {
+        this.$set(field, 'title', info)
       } else {
-        field.title = info
+        if (info.status == 0) {
+          // 判断是通用字段-直改名
+          // field.title = info
+          this.$set(field, 'title', info)
+          field.id = field.info.id
+          field.field = field.info.field
+          field.type = field.info.type || '文本型'
+          field.options = JSON.parse(field.info.options)
+          field.sort = field.sort
+          field.remark = field.info.remark
+          field.required = field.info.required
+          field.status = field.info.status
+          field.templateId = field.info.templateId
+        } else {
+          this.$set(field, 'title', info)
+        }
       }
-
     },
     handleClose() {
       // debugger

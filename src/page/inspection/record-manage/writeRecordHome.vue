@@ -143,35 +143,26 @@ export default {
         type: "warning"
       }).then(() => {
         console.log('删除', item.id)
-        let data={
-          templateId:item.id,
-          userId:iLocalStroage.gets("userInfo").id
+        let data = {
+          id: item.id,
+          userId: iLocalStroage.gets("userInfo").id
         }
-        removeMoleCollectByIdApi(data).then(
+
+        removeMoleByIdApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
-              removeMoleByIdApi(item.id).then(
-                res => {
-                  console.log(res)
-                  if (res.code == 200) {
-                    this.$message({
-                      type: "success",
-                      message: res.msg
-                    });
-                    this.searchList()
-                    this.searchSaveList();
-                  }
-                },
-                error => {
-                  // reject(error);
-                })
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.searchList()
+              this.searchSaveList();
             }
           },
           error => {
             // reject(error);
           })
-
 
       })
 
