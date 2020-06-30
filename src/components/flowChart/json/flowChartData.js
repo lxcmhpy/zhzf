@@ -50,12 +50,13 @@ let flowGraphData = {
     commonGraphData_JX :{
         nodes:[
             {id:"1",source: '1',target:"2_1",linkID: BASIC_DATA_JX.establish_JX_caseLinktypeId,name:"立案登记",linkName:'case_handle_establish_JX',docId:BASIC_DATA_JX.establish_JX_huanjieAndDocId,position:{x: 2, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
-            {id:"temp1_1",source: '1',target:"temp1_1",linkID: 'temp1_1',name:"",position:{x: 2, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            // {id:"temp1_1",source: '1',target:"temp1_1",linkID: 'temp1_1',name:"",position:{x: 2, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             {id:"temp1_2",source: 'temp1_1',target:"temp1_2",linkID: 'temp1_2',name:"",position:{x: 3, y: 1.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-            {id:"temp1_2_1",source: 'temp1_2',target:"2_2",linkID: 'temp1_2_1',name:"",position:{x: 2, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            // {id:"temp1_2_1",source: 'temp1_2',target:"2_2",linkID: 'temp1_2_1',name:"",position:{x: 2, y: 1},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             {id:"2_1",source: "2_1",target:"3",linkID: BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,name:"案件调查",linkName:'case_handle_caseDoc_JX',position:{x: 2, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
-            {id:"2_2",source: "2_2",target:"2_1",linkID: BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId,name:"行政强制\n措施",linkName:'case_handle_adminCoerciveMeasure',position:{x: 3, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
+            // {id:"2_2",source: "2_2",target:"2_1",linkID: BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId,name:"行政强制\n措施",linkName:'case_handle_adminCoerciveMeasure',position:{x: 3, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_02'}},
             
+            // {id:"temp2_3_1",source: "2_1",target:"temp2_3_1",linkID: 'temp2_3_1',name:"",position:{x: 2, y: 2},itemStyleColor: "",attributes:{modularity_class:'hide'}},
             {id:"temp2_3",source: "2_1",target:"temp2_3",linkID: 'temp2_3',name:"",position:{x: 2, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
             {id:"temp2_4",source: "temp2_3",target:"temp2_4",linkID: 'temp2_4',name:"",position:{x: 4, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
             {id:"2_5",source: "2_5",target:"10",linkID: '2_5',name:"",position:{x: 4, y: 2.5},itemStyleColor: "",attributes:{modularity_class:'hide'}},
@@ -66,8 +67,8 @@ let flowGraphData = {
             {id:"temp3_2",source: 'temp3_1',target:"temp3_2",linkID: 'temp3_2',name:"",position:{x: 3, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             {id:"temp3_3",source: 'temp3_2',target:"4_2",linkID: 'temp3_3',name:"",position:{x: 3, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
-            {id:"temp3_4",source: 'temp3_1',target:"temp3_4",linkID: 'temp3_4',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-            {id:"temp3_5",source: 'temp3_4',target:"10",linkID: 'temp3_5',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            // {id:"temp3_4",source: 'temp3_1',target:"temp3_4",linkID: 'temp3_4',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            // {id:"temp3_5",source: 'temp3_4',target:"10",linkID: 'temp3_5',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
 
             // {id:"temp3_3",source: '3',target:"10",linkID: 'temp3_2',name:"",position:{x: 3, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             // {id:"temp3_4",source: 'temp3_3',target:"10",linkID: 'temp3_2',name:"",position:{x: 4, y: 3.5},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
