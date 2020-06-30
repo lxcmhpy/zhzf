@@ -167,8 +167,8 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-form-item label="设备类型" prop="deviceTYpe">
-                  <el-select v-model="addForm.deviceType" placeholder="请选择设备类型" style="width: 100%;" :disabled="this.formReadOnly">
+                <el-form-item label="设备类型" prop="deviceType">
+                  <el-select v-model="addForm.deviceType" placeholder="请选择设备类型" style="width: 100%;" :disabled="this.formReadOnly" @change="changeDeviceType">
                     <el-option
                       v-for="item in typeData"
                       :key="item.id"
@@ -191,7 +191,7 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-form-item label="设备有效期">
+                <el-form-item label="设备有效期" prop="deviceDate">
                   <el-date-picker
                     :readonly="this.formReadOnly"
                     v-model="deviceDate"
@@ -234,16 +234,34 @@
             </div>
             <div class="part">
               <p class="titleP">其他材料</p>
-              <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
-              </el-upload>
-              <el-dialog :visible.sync="dialogVisible" size="tiny">
-                <img width="100%" :src="dialogImageUrl" alt="">
-              </el-dialog>
+              <el-form-item label="设备照片">
+                <el-upload
+                  action="#"
+                  accept=".jpg, .png"
+                  list-type="picture-card"
+                  :on-preview="handlePictureCardPreview"
+                  :http-request="saveFile"
+                  :file-list="imageList"
+                  :disabled="formReadOnly"
+                  :on-remove="deleteFile">
+                  <i class="el-icon-plus"></i>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="相关附件">
+                <el-upload
+                  class="upload-demo"
+                  action="#"
+                  accept=".pdf,.PDF"
+                  :http-request="saveFile"
+                  :on-preview="handlePDFPreview"
+                  multiple
+                  :on-remove="deleteFile"
+                  :limit="3"
+                  :disabled="formReadOnly"
+                  :file-list="attachList">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </el-form-item>
             </div>
           </el-form>
           <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
@@ -253,6 +271,19 @@
             </el-button>
           </div>
         </el-dialog>
+        <el-dialog :visible.sync="dialogImageVisible" size="tiny">
+          <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+        <el-dialog
+          :visible.sync="dialogPDFVisible"
+          width="1000px"
+          height="1000px"
+          append-to-body
+          >
+          <object>
+              <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPDFUrl" type="application/pdf" internalinstanceid="29">
+          </object>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -260,6 +291,7 @@
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
 import { organTreeByCurrUser,queryDeviceListPage,findDeviceById,saveOrUpdateDevice,deleteDeviceById} from "@/api/lawSupervise.js";
+import { upload,getFile, getFileByCaseId,deleteFileByIdApi } from "@/api/upload.js";
 import iLocalStroage from '@/common/js/localStroage';
   export default {
     watch: {
@@ -269,8 +301,13 @@ import iLocalStroage from '@/common/js/localStroage';
     },
     data() {
       return {
+        imageList: [],
+        attachList: [],
+        deviceDate:['',''],
         dialogImageUrl: '',
-        dialogVisible: false,
+        dialogImageVisible: false,
+        dialogPDFUrl: '',
+        dialogPDFVisible: false,
         visible:false,
         formReadOnly:false,
         hasAddress:true,
@@ -287,11 +324,19 @@ import iLocalStroage from '@/common/js/localStroage';
         addForm:{
         },
         rules: {
-            caseNo: [
-                {required: true, message: "请输入案件编号", trigger: "blur"}
+            organId: [
+                {required: true, message: "请输入所属机构", trigger: "blur"}
+            ],
+            deviceType: [
+                {required: true, message: "请输入设备类型", trigger: "blur"}
+            ],
+            name: [
+                {required: true, message: "请输入设备名称", trigger: "blur"}
+            ],
+            deviceDate:[
+              { type: 'array', required: true,  trigger: 'blur,change',validator:this.validateDate}
             ]
         },
-        deviceDate:['',''],
         getOrganList:[],
         searchType: [{value: 1, label: '本机构'}, {value: 0, label: '本机构及子机构'}],
         filterText: "",
@@ -316,12 +361,64 @@ import iLocalStroage from '@/common/js/localStroage';
     components: {
     },
     methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+      //删除附件
+      validateDate(rule, value, callback) {
+        debugger
+        if(this.deviceDate && this.deviceDate.length==2 && this.deviceDate[0]!==''){
+          callback();
+        }else{
+          callback(new Error("请选择设备有效期"));
+        }
+      },
+      deleteFile(file, fileList){
+        deleteFileByIdApi(file.storageId).then(res=>{
+          fileList.splice(fileList.findIndex(item => item.storageId === file.storageId), 1)
+        },err=>{
+          console.log(err)
+        })
+      },
+      saveFile (param) {
+        var testmsg=/^image\/(jpeg|png|jpg)$/.test(param.file.type)
+        let type = "图片";
+        if (!testmsg) {
+            type = "附件";
+        }
+        var fd = new FormData()
+        fd.append("file", param.file);
+        fd.append("category", '执法监管');
+        fd.append("fileName", param.file.name);
+        fd.append('status', type)//传记录id
+        fd.append('caseId', this.addForm.id?this.addForm.id:new Date().getTime())//传记录id
+        fd.append('docId', this.addForm.id?this.addForm.id:new Date().getTime())//传记录id
+        let _this = this
+        upload(fd).then(
+            res => {
+              if(type=="图片"){
+                _this.imageList.push({
+                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
+                  storageId:res.data[0].storageId,
+                  name:res.data[0].fileName
+                });
+              }else{
+                 _this.attachList.push({
+                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
+                  storageId:res.data[0].storageId,
+                  name:res.data[0].fileName
+                });
+              }
+            },
+            error => {
+                console.log(error)
+            }
+        );
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
+        this.dialogImageVisible = true;
+      },
+      handlePDFPreview(file){
+        this.dialogPDFUrl = file.url;
+        this.dialogPDFVisible = true;
       },
       changeOrgan(id){
         let orgData = this.getOrganList.filter(p=>p.id===id)
@@ -330,6 +427,9 @@ import iLocalStroage from '@/common/js/localStroage';
           this.addForm.telephone = orgData[0].telephone
           this.addForm.organName = orgData[0].name
         }
+      },
+      changeDeviceType(id){
+        this.hideAddress(id)
       },
       formatDeviceType (row) {
         let data = this.typeData.filter(p=>p.id==row.deviceType)
@@ -345,6 +445,15 @@ import iLocalStroage from '@/common/js/localStroage';
             _this.addForm.propertyValue=_this.addForm.property1+','+_this.addForm.property2
             _this.addForm.startDate = _this.deviceDate[0]
             _this.addForm.endDate = _this.deviceDate[1]
+            let storageIds = []
+            _this.imageList.forEach(item=>{
+              storageIds.push(item.storageId)
+            })
+            _this.attachList.forEach(item=>{
+              storageIds.push(item.storageId)
+            })
+            _this.addForm.storageIds = storageIds
+            _this.addForm.fileList=[]
             saveOrUpdateDevice(_this.addForm).then(
                 res => {
                   _this.$message({
@@ -432,11 +541,12 @@ import iLocalStroage from '@/common/js/localStroage';
           .then(() => {
             deleteDeviceById(row.id,row.deviceType).then(
               res => {
-                _this.$message({
-                  type: "success",
-                  message: "删除成功!"
-                });
-                _this.getDataList(1)
+                if(res.data==true){
+                  _this.$message({type: "success",message: "删除成功!"});
+                  _this.getDataList(1)
+                }else{
+                   _this.$message({type: "error",message: "删除失败!"});
+                }
               },
               err => {
                 console.log(err);
@@ -451,6 +561,9 @@ import iLocalStroage from '@/common/js/localStroage';
         this.visible=true
         this.formReadOnly = false
         this.addForm = {status:0,organId:this.currentOrganId,deviceType:this.selectDeviceType}
+        this.imageList=[]
+        this.attachList=[]
+        this.deviceDate=['','']
         if(this.currentOrganId !== ''){
           let orgData = this.getOrganList.filter(p=>p.id===this.currentOrganId)
           if(orgData){
@@ -459,16 +572,28 @@ import iLocalStroage from '@/common/js/localStroage';
             this.addForm.organName = orgData[0].name
           }
         }
+        this.hideAddress(this.selectDeviceType)
+      },
+      hideAddress(data){
+        if(data=='' || data=='01'){
+          this.hasAddress = true
+        }else{
+          this.hasAddress = false
+        }
       },
       // 表格编辑
       handleEdit(index, row) {
         this.findDeviceById(row)
         this.formReadOnly = false
+        this.imageList=[]
+        this.attachList=[]
       },
       //查看详情
       showDataDetail(row){
         this.findDeviceById(row)
         this.formReadOnly = true
+        this.imageList=[]
+        this.attachList=[]
       },
       findDeviceById(row){
         let _this = this
@@ -480,9 +605,33 @@ import iLocalStroage from '@/common/js/localStroage';
             let lat = parseFloat(position[1]);
             _this.addForm.property1=lng
             _this.addForm.property2=lat
-            _this.deviceDate[0]=res.data.startDate
-            _this.deviceDate[1]=res.data.endDate
+            let deviceDate = ['','']
+            deviceDate[0]=res.data.startDate+' 00:00:00'
+            deviceDate[1]=res.data.endDate+' 00:00:00'
+            _this.deviceDate=deviceDate
+            if(res.data.fileList){
+              res.data.fileList.forEach(item=>{
+              if(item.status=='图片'){
+                _this.imageList.push({
+                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
+                  storageId:item.storageId,
+                  name:item.name
+                })
+              }else{
+                _this.attachList.push({
+                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
+                  storageId:item.storageId,
+                  name:item.name
+                })
+              }
+            })
+            }
             _this.visible=true
+            if(_this.addForm.deviceType=='01'){
+              _this.hasAddress = true
+            }else{
+              _this.hasAddress = false
+            }
           },
           err => {
             console.log(err);
