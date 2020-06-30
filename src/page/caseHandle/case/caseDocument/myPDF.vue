@@ -43,7 +43,7 @@
       casePageFloatBtns,
     //   pdf
     },
-    computed: {...mapGetters(['caseId', 'docId','approvalState'])},
+    computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId'])},
     methods: {
       print() {
         for (var i = 0; i < this.storagePath.length; i++) {
@@ -151,7 +151,8 @@
 
       //获取当前是几级审批
       findCurrentApproval(){
-        getCurrentApproveApi(this.caseId).then(res=>{
+        console.log('文书数据idthis.docDataId',this.docDataId)
+        getCurrentApproveApi(this.docDataId).then(res=>{
           console.log('几级审批',res);
           let caseData={
             caseId:this.caseId,

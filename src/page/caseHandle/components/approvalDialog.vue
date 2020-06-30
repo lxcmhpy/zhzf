@@ -59,7 +59,7 @@
     },
     inject: ["reload"],
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId', 'docId','showQZBtn'])},
+    computed: {...mapGetters(['caseId', 'docId','showQZBtn','docDataId'])},
     methods: {
       showModal(data) {
         console.log(data);
@@ -80,9 +80,10 @@
       },
       //审批
       approvalSure() {
-        // console.log(this.data);
+        console.log('this.docDataId',this.docDataId);
         let params = {
-          caseId: this.caseData.caseId,
+          // caseId: this.caseData.caseId,
+          docId:this.docDataId,
           executeHandle: this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
           // caseLinktypeId: this.caseData.caseLinktypeId,
           approveOpinions: this.approvalForm.approveOpinions,

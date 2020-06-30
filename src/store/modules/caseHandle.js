@@ -14,6 +14,7 @@ const caseHandle = {
     state:{
         caseId:'' ,  //案件id
         docId: '',
+        docDataId:'', //文书数据id
         caseApproval:'', //案件是否为审批状态
         clickArchiveCatalogue:'', //当前点击的归档卷宗目录
         archiveCatalogueList:[], //归档卷宗目录
@@ -21,7 +22,7 @@ const caseHandle = {
         inforCollectionType:'',
         showQZBtn:'',  //是否显示签章按钮
         province:'', //当前系统部署在哪个省
-
+        
     },
     mutations:{
         //设置caseId
@@ -30,6 +31,9 @@ const caseHandle = {
         },
         setDocId(state,data) {
             state.docId = data
+        },
+        setDocDataId(state,data) {
+            state.docDataId = data
         },
         setCaseApproval(state,data){
             iLocalStroage.set('caseApproval',data)
@@ -53,7 +57,8 @@ const caseHandle = {
         //设置部署省份
         setProvince(state,data){
             state.province = data;
-        }
+        },
+        
     },
     actions:{
         //获取执法门类
