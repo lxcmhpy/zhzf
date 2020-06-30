@@ -13,8 +13,8 @@
       </div>
       <!-- 收藏 -->
       <div class="card-content">
-        <div class="card-title" style="justify-content: flex-start;" v-if="modleSaveList&&modleSaveList.length>0">常用模板
-          <span v-if="modleSaveList">({{modleSaveList.length}})</span>
+        <div class="card-title" style="justify-content: flex-start;" v-if="showSave">常用模板
+          <span v-if="modleSaveList">({{modleSaveList.length||0}})</span>
           <span v-if="modleSaveList&&modleSaveListFlag" @click="modleSaveListFlag=!modleSaveListFlag" class="show-icon"><i class="el-icon-arrow-down"></i></span>
           <span v-if="modleSaveList&&!modleSaveListFlag" @click="modleSaveListFlag=!modleSaveListFlag" class="show-icon"><i class="el-icon-arrow-up"></i></span>
         </div>
@@ -29,10 +29,10 @@
               </div>
               <div class="card-des">{{modle.title}}</div>
             </span>
-            <div class="box-card-img-content">
+            <!-- <div class="box-card-img-content">
               <span style="color: blue;font-size: 14px;" @click="editModle(modle)">修改模板</span>
               <span style="color: blue;font-size: 14px;" @click="delModle(modle)">删除模板</span>
-            </div>
+            </div> -->
           </li>
         </ul>
       </div>
@@ -71,7 +71,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
 import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
-  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi} from "@/api/Record";
+  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi, removeMoleCollectByIdApi} from "@/api/Record";
 import Vue from 'vue'
 export default {
   components: {
@@ -89,7 +89,8 @@ export default {
       modleSaveList: [],//收藏列表
       modleSaveListDefaut: [],//收藏列表
       currentUserLawId: '',
-      modleSaveListFlag: true
+      modleSaveListFlag: true,
+      showSave: true
 
     }
   },
@@ -142,20 +143,35 @@ export default {
         type: "warning"
       }).then(() => {
         console.log('删除', item.id)
-        removeMoleByIdApi(item.id).then(
+        let data={
+          templateId:item.id,
+          userId:iLocalStroage.gets("userInfo").id
+        }
+        removeMoleCollectByIdApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.searchList()
+              removeMoleByIdApi(item.id).then(
+                res => {
+                  console.log(res)
+                  if (res.code == 200) {
+                    this.$message({
+                      type: "success",
+                      message: res.msg
+                    });
+                    this.searchList()
+                    this.searchSaveList();
+                  }
+                },
+                error => {
+                  // reject(error);
+                })
             }
           },
           error => {
             // reject(error);
           })
+
 
       })
 
@@ -207,11 +223,18 @@ export default {
     },
     searchListByName() {
       if (this.searchModleName == '') {
+        this.showSave = true;
         this.modleSaveList = JSON.parse(JSON.stringify(this.modleSaveListDefaut))
         this.searchList()
       } else {
+        this.showSave = false
         this.modleSaveList = []
-        findRecordModleByNameIdApi(this.searchModleName).then(
+        let data = {
+          title: this.searchModleName,
+          templateUserId: iLocalStroage.gets("userInfo").id,
+          organId: iLocalStroage.gets("userInfo").organId,
+        }
+        findRecordModleByNameIdApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {

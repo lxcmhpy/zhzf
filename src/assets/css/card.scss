@@ -16,7 +16,7 @@
 }
 
 .card-ul {
-    margin: 0 -34px 44px 0;
+    margin: 0 -34px 0 0;
 
 
     li {
@@ -31,6 +31,9 @@
         text-align   : center;
         overflow     : hidden;
         position     : relative;
+        &:last-child {
+            margin-bottom: 44px;
+        }
     }
 
     li:hover {
