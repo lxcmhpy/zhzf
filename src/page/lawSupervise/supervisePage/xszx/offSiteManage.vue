@@ -25,7 +25,7 @@
             src="http://172.16.170.54:9332/9,105b6779dca4#palette='white|white'#" type="application/pdf" internalinstanceid="29">
         </object> -->
         <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
-          <el-form :inline="true" :model="form" label-width="80px" ref="offsiteManageform">
+          <el-form :inline="true" :model="form" label-width="70px" ref="offsiteManageform">
             <el-form-item label="检测站点" prop="siteName">
               <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
             </el-form-item>
@@ -43,17 +43,17 @@
                 <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.sort"></el-option>
               </el-select>
             </el-form-item>
-            <el-collapse-transition>
-              <div :class="{'ransition-box':true}">
+            <!-- <el-collapse-transition>
+              <div :class="{'ransition-box':true}"> -->
                 <el-form-item label="过检时间">
                   <el-date-picker style='width:240px' :picker-options="pickerOptions" unlink-panels v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']">
 
                   </el-date-picker>
                 </el-form-item>
-              </div>
-            </el-collapse-transition>
+              <!-- </div>
+            </el-collapse-transition> -->
           </el-form>
-          <div class="search-btns">
+          <div style="width:120px;line-height: 42px;">
             <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
             <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset('offsiteManageform')"></el-button>
           </div>
