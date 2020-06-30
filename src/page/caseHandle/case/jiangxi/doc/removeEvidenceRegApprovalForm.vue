@@ -279,11 +279,11 @@
       </el-form>
     </div>
     <casePageFloatBtns
-        :formOrDocData="formOrDocData"
-        @submitData="submitData"
-        @saveData="saveData"
-        @backHuanjie="submitData"
-      ></casePageFloatBtns>
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+      @saveData="saveData"
+      @backHuanjie="submitData"
+    ></casePageFloatBtns>
   </div>
 </template>
 <script>
@@ -332,13 +332,14 @@ export default {
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: {
+      caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.removeEvidenceRegApprovalForm_JX_caseDocTypeId, //表单类型IDer
-        //表单数据
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        //文书数据
         docData: "",
-        status: ""
+        status: "", //提交状态
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       name: "",
       illegalFactsEvidence: "",
@@ -421,47 +422,47 @@ export default {
   },
   methods: {
     //根据案件ID和文书Id获取数据
-      getDocDataByCaseIdAndDocId() {
-        this.caseDocDataForm.caseBasicinfoId = this.caseId;
-        let data = {
-          caseId: this.caseId,
-          docId: this.$route.params.docId
-        };
-        console.log(data);
-        this.com_getDocDataByCaseIdAndDocId(data);
-      },
-      //保存文书信息
-      saveData(handleType) {
-        // this.printContent()
-        this.com_addDocData(handleType, "docForm");
-      },
-      submitData(handleType) {
-        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-        this.$router.push({
-          name: this.$route.params.url
-        });
-      },
-      //是否是完成状态
-      isOverStatus() {
-        if (this.$route.params.docStatus == "1") {
-          this.formOrDocData.showBtn = [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true
-          ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        }
-      },
+    getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
+    },
+    //保存文书信息
+    saveData(handleType) {
+      // this.printContent()
+      this.com_addDocData(handleType, "docForm");
+    },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == "1") {
+        this.formOrDocData.showBtn = [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+    }
   },
-  mounted() {  
-      this.getDocDataByCaseIdAndDocId();
-      this.isOverStatus();
+  mounted() {
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
   }
 };
 </script>
