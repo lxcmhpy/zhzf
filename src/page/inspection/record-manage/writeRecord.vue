@@ -191,6 +191,7 @@ export default {
           console.log('huixian', res.data.pictureList, res.data.attachedList)
           _this.defautImgList = res.data.pictureList
           _this.defautFileList = res.data.attachedList
+
         },
         error => {
         })
@@ -202,7 +203,6 @@ export default {
     // 修改
     editRecord() {
       console.log(this.formData)
-      // debugger
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
         return
@@ -237,7 +237,6 @@ export default {
     // 保存
     saveRecord() {
       this.formData.status = '保存';
-      // this.onSubmit()
       this.$data.$f.validate((valid, object) => {
         if (valid) {
           // alert(JSON.stringify(formData));
@@ -278,28 +277,32 @@ export default {
       let submitList = []
       submitData.forEach(element => {
         element.fieldList.forEach(item => {
+          console.log('item.id',item.id)
           let textName = item.id
-          item.text = this.formData['' + textName + '']
-          // console.log('tyupe',typeof (item.text))
-          if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
+          // item.text = this.formData['' + textName + '']
+          item.text =this.$data.$f.getValue(textName)
+          if (item.text && typeof(item.text) != 'string' && typeof(item.text) != 'number') {
             item.text = item.text.join(',')
+            console.log('item.1', item)
+
           }
+          console.log('item.', item)
         });
 
       });
       submitData = JSON.stringify(submitData)
-
+      console.log('submitData', submitData)
+      debugger
       this.formData.layout = submitData
       this.formData.templateFieldList = '';
       this.formData.createTime = '';
       this.formData.updateTime = '';
       this.formData.type = '记录';
       this.formData.organId = iLocalStroage.gets("userInfo").organId;
-      // this.formData.pictureList = null;
-      // this.formData.attachedList = null;
+      // 当事人信息和企业信息选项的值
+      this.formData.objectType = this.$data.$f.getValue('personOrParty')
       delete (this.formData["pictureList"]);
       delete (this.formData["attachedList"]);
-      // debugger
       console.log('formdata', this.formData)
       saveOrUpdateRecordApi(this.formData).then(
         res => {
@@ -343,7 +346,8 @@ export default {
           element.fieldList.forEach(item => {
             let textName = item.id
             // console.log('变量', item.field, ':', formData['' + textName + ''])
-            item.text = formData['' + textName + '']
+            // item.text = formData['' + textName + '']
+            item.text =this.$data.$f.getValue(textName)
             // console.log('tyupe',typeof (item.text))
             if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
               item.text = item.text.join(',')
@@ -358,6 +362,8 @@ export default {
         this.formData.updateTime = '';
         this.formData.type = '记录';
         this.formData.organId = iLocalStroage.gets("userInfo").organId
+        // 当事人信息和企业信息选项的值
+        this.formData.objectType = this.$data.$f.getValue('personOrParty')
         delete (this.formData["pictureList"]);
         delete (this.formData["attachedList"]);
         console.log('formdata', this.formData)
@@ -367,8 +373,6 @@ export default {
             if (res.code == 200) {
               this.addOrEiditFlag = 'view'
               // this.recordMsg = res.data;//根据返回id上传文件
-              console.log(this.recordMsg)
-              debugger
               this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
               console.log(this.recordMsg)
               this.$message({
@@ -403,62 +407,59 @@ export default {
       this.formData.updateTime = ''
       // 设置当前账号名
       this.setLawPersonCurrentP()
-
-      console.log('this.formData', this.formData)
-      debugger
       this.saveRecord()
     },
     onSubmit(formData) {
       console.log("formData", formData)
 
-      //TODO 提交表单
-      this.$data.$f.submit((formData, $f) => {
-        // alert(JSON.stringify(formData));
-        let submitData = JSON.parse(JSON.stringify(this.baseData))
-        let submitList = []
-        submitData.forEach(element => {
-          element.fieldList.forEach(item => {
-            let textName = item.id
-            // console.log('变量', item.field, ':', formData['' + textName + ''])
-            item.text = formData['' + textName + '']
-            // console.log('tyupe',typeof (item.text))
-            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
-              item.text = item.text.join(',')
-            }
-          });
+      // //TODO 提交表单
+      // this.$data.$f.submit((formData, $f) => {
+      //   // alert(JSON.stringify(formData));
+      //   let submitData = JSON.parse(JSON.stringify(this.baseData))
+      //   let submitList = []
+      //   submitData.forEach(element => {
+      //     element.fieldList.forEach(item => {
+      //       let textName = item.id
+      //       // console.log('变量', item.field, ':', formData['' + textName + ''])
+      //       item.text = formData['' + textName + '']
+      //       // console.log('tyupe',typeof (item.text))
+      //       if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
+      //         item.text = item.text.join(',')
+      //       }
+      //     });
 
-        });
-        submitData = JSON.stringify(submitData)
+      //   });
+      //   submitData = JSON.stringify(submitData)
 
-        this.formData.layout = submitData
-        this.formData.templateFieldList = '';
-        this.formData.createTime = '';
-        this.formData.updateTime = '';
-        this.formData.type = '记录';
-        this.formData.organId = iLocalStroage.gets("userInfo").organId
-        delete (this.formData["pictureList"]);
-        delete (this.formData["attachedList"]);
-        console.log('formdata', this.formData)
-        saveOrUpdateRecordApi(this.formData).then(
-          res => {
-            // console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-              this.$router.push({
-                name: 'inspection_writeRecord',
-                // params: item
-              });
-            } else {
-              this.$message.error(res.msg);
-            }
-          },
-          error => {
-          })
-      })
+      //   this.formData.layout = submitData
+      //   this.formData.templateFieldList = '';
+      //   this.formData.createTime = '';
+      //   this.formData.updateTime = '';
+      //   this.formData.type = '记录';
+      //   this.formData.organId = iLocalStroage.gets("userInfo").organId
+      //   delete (this.formData["pictureList"]);
+      //   delete (this.formData["attachedList"]);
+      //   console.log('formdata', this.formData)
+      //   saveOrUpdateRecordApi(this.formData).then(
+      //     res => {
+      //       // console.log(res)
+      //       if (res.code == 200) {
+      //         this.$message({
+      //           type: "success",
+      //           message: res.msg
+      //         });
+      //         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      //         this.$router.push({
+      //           name: 'inspection_writeRecord',
+      //           // params: item
+      //         });
+      //       } else {
+      //         this.$message.error(res.msg);
+      //       }
+      //     },
+      //     error => {
+      //     })
+      // })
 
     },
     clickPover() {
@@ -498,7 +499,7 @@ export default {
       this.options = {
         // submitBtn: false,
         onSubmit: (formData) => {
-          alert(JSON.stringify(formData));
+          // alert(JSON.stringify(formData));
         },
         global: {
           '*': {
@@ -539,6 +540,14 @@ export default {
             this.personFieldList.push(item)
           });
           console.log('this.personFieldList', this.personFieldList)
+          // 回显选中的当事人企业
+          if (_this.formData.objectType == '1') {
+            this.defultParty()
+          } else {
+            // 显示当事人信息
+            this.defultPerson()
+          }
+          debugger
         }
         if (element.classId == this.partyName) {
           partyFlag = element;
@@ -556,24 +565,23 @@ export default {
       // 当事人信息和企业组织信息放前面
       if (this.personPartyFlag) {
         // 组
-        this.rule.push(
-          {
-            type: 'p',
-            name: 'btn',
-            props: {
-              type: 'primary',
-              field: 'btn',
-              loading: true
-            },
-            className: 'border-title',
-            children: ['检查对象'],
-          }, {
+        this.rule.push({
+          type: 'p',
+          name: 'btn',
+          props: {
+            type: 'primary',
+            field: 'btn',
+            loading: true
+          },
+          className: 'border-title',
+          children: ['检查对象'],
+        }, {
           type: "radio",
           field: 'personOrParty',
           title: '当事人类型',
           options: [{ value: "0", label: "当事人信息" },
           { value: "1", label: "企业组织信息" },],
-          value: '0',
+          value: this.formData.objectType || '0',
           // validate: [{
           //   required: item.required == 'true' ? true : false,
           //   message: '请选择' + (item.title || ''),
@@ -586,9 +594,7 @@ export default {
           on: {
             'change': this.changePersonParty
           },
-        }
-
-        )
+        })
         // 当事人信息和企业组织信息字段放前面
         data.forEach(element => {
 
@@ -681,8 +687,6 @@ export default {
           this.dealFieldData(element)
         })
       }
-
-
     },
     dealFieldData(element) {
       // 字段
@@ -897,8 +901,15 @@ export default {
       this.$nextTick(() => {
         this.isEdit()
         if (this.personPartyFlag) {
+          console.log('this.personFieldList', this.personFieldList)
           this.defaultPersonFieldList = JSON.parse(JSON.stringify(this.personFieldList))
-          this.defultPersonParty()
+          // 默认展示当事人信息和企业组织信息
+          // this.personFieldList = JSON.parse(JSON.stringify(this.defaultPersonFieldList))
+          if (this.formData.objectType && this.formData.objectType == '1') {
+            this.defultParty()
+          } else {
+            this.defultPerson()
+          }
         }
       });
     },
@@ -947,39 +958,16 @@ export default {
     changePersonParty(inject) {
       this.personFieldList = JSON.parse(JSON.stringify(this.defaultPersonFieldList))
       if (inject.self.value == '1') {
-        // 隐藏当事人信息
-        this.personFieldList.forEach(element => {
-          // console.log('elmen1', element)
-          // 避免undefine导致全部隐藏
-          if (element.id || element.field) {
-            this.$data.$f.hidden(true, element.id || element.field)
-          }
-          this.$data.$f.updateRule(element.id, {
-            validate: [
-              { required: false, message: element.title + '必填', trigger: 'change' },
-            ]
-          })
-        });
-        // 显示企业组织信息
-        this.partyFieldList.forEach(element => {
-          // console.log('elmen2', element)
-          if (element.id || element.field) {
-            this.$data.$f.hidden(false, element.id || element.field)
-          }
-          this.$data.$f.updateRule(element.id, {
-            validate: [
-              { required: element.required === "true" ? true : false, message: element.title + '必填', trigger: 'change' },
-            ]
-          })
-        });
+        this.defultParty()
       }
       // 显示当事人信息
       if (inject.self.value == '0') {
-        this.defultPersonParty()
+        this.defultPerson()
       }
     },
     // 默认隐藏企业组织信息
-    defultPersonParty() {
+    defultPerson() {
+      console.log('personFieldList2', this.personFieldList)
       this.personFieldList.forEach(element => {
         // console.log('elmen5', element.id)
         // 避免undefine导致全部隐藏
@@ -1005,6 +993,34 @@ export default {
         })
       });
     },
+    // 隐藏个人组织信息
+    defultParty() {
+      // 隐藏当事人信息
+      this.personFieldList.forEach(element => {
+        // console.log('elmen1', element)
+        // 避免undefine导致全部隐藏
+        if (element.id || element.field) {
+          this.$data.$f.hidden(true, element.id || element.field)
+        }
+        this.$data.$f.updateRule(element.id, {
+          validate: [
+            { required: false, message: element.title + '必填', trigger: 'change' },
+          ]
+        })
+      });
+      // 显示企业组织信息
+      this.partyFieldList.forEach(element => {
+        // console.log('elmen2', element)
+        if (element.id || element.field) {
+          this.$data.$f.hidden(false, element.id || element.field)
+        }
+        this.$data.$f.updateRule(element.id, {
+          validate: [
+            { required: element.required === "true" ? true : false, message: element.title + '必填', trigger: 'change' },
+          ]
+        })
+      });
+    },
     // 随机生成id 用于预览
     random() {
       return Math.random().toString(16)
@@ -1017,7 +1033,6 @@ export default {
       if (this.$route.query.addOrEiditFlag == 'add') {
         this.modleId = this.$route.query.id
         this.findDataByld()
-
       } else
         if (this.$route.query.addOrEiditFlag == 'edit') {
           this.recordId = this.$route.query.id;
@@ -1029,14 +1044,12 @@ export default {
           this.recordId = this.$route.query.id;
           this.findRecordDataByld()
         }
-
     }
     if (this.psMsg) {
       this.defaultRuleData = this.psMsg
       this.formData.title = this.psMsg.title
       this.dealFormData()
     }
-
   }
 }
 </script>
