@@ -1759,7 +1759,7 @@ export default {
         };
         this.allSearchList.push(data);
          if (this.category == 4) {
-           this.updateDrawer1();
+           this.updateDrawer1(1);
            this.popoverVisible=false;
                 // this.searchPageAllGJ(data, this.category);
         } else {
