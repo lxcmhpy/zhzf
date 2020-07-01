@@ -27,13 +27,13 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <!--<el-col :span="10">
           <el-form-item label="公路等级:">
             <el-select v-model="addOrUpdateRouteForm.routeGrade" placeholder="请选择">
               <el-option v-for="item in gradeList" :key="item.name" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col>-->
       </el-row>
       <el-row>
         <el-col :span="10">
@@ -107,7 +107,7 @@
                     routeName: "",
                     routeMileage: "",
                     routeLevel:"",
-                    routeGrade: "",
+                    // routeGrade: "",
                     startingPoint: "",
                     enddingPoint: "",
                     startingPileNumberK: "",
@@ -126,7 +126,7 @@
                 handelType: 0, //添加 0  修改2
                 editRouteId:'',
                 levelList:[], //公路行政级别列表
-                gradeList:[],//公路等级列表
+                // gradeList:[],//公路等级列表
             };
         },
         inject: ["reload"],
@@ -143,10 +143,10 @@
                 }
             },
             showModal(type, data) {
-                getDictListDetailByNameApi("公路等级").then(res=>{
+                /*getDictListDetailByNameApi("公路等级").then(res=>{
                     console.log(res)
                     _this.gradeList = res.data;
-                })
+                })*/
 
                 getDictListDetailByNameApi("公路行政级别").then(res=>{
                     console.log(res)
@@ -162,7 +162,7 @@
                     this.addOrUpdateRouteForm.routeName = "";
                     this.addOrUpdateRouteForm.routeMileage = "";
                     this.addOrUpdateRouteForm.routeLevel = "";
-                    this.addOrUpdateRouteForm.routeGrade = "";
+                    // this.addOrUpdateRouteForm.routeGrade = "";
                     this.addOrUpdateRouteForm.startingPoint = "";
                     this.addOrUpdateRouteForm.enddingPoint = "";
                     this.addOrUpdateRouteForm.startingPileNumberK = "";
@@ -182,7 +182,7 @@
                     this.addOrUpdateRouteForm.routeName = data.routeName;
                     this.addOrUpdateRouteForm.routeMileage = data.routeMileage;
                     this.addOrUpdateRouteForm.routeLevel = data.routeLevel;
-                    this.addOrUpdateRouteForm.routeGrade = data.routeGrade;
+                    // this.addOrUpdateRouteForm.routeGrade = data.routeGrade;
                     this.addOrUpdateRouteForm.startingPoint = data.startingPoint;
                     this.addOrUpdateRouteForm.enddingPoint = data.enddingPoint;
                     this.addOrUpdateRouteForm.startingPileNumberK = data.startingPileNumberK;
