@@ -112,7 +112,7 @@ export default {
         endTime: this.timeList[1],
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
-        createUser: this.searchForm.createUser,
+        createUser: this.searchForm.name=='1'?iLocalStroage.gets("userInfo").nickName:'',
         // 查询条件只有保存时，不传id
         userId: this.searchForm.status == '保存'&& this.searchForm.title==''&&this.searchForm.domain==''&&this.searchForm.otherUser==''&&this.timeList.length==0? '':iLocalStroage.gets("userInfo").id,
         otherUser: this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? '' : this.searchForm.otherUser,

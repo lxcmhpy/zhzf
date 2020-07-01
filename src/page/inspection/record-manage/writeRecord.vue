@@ -371,7 +371,7 @@ export default {
         this.formData.updateTime = '';
         this.formData.type = '记录';
         this.formData.organId = iLocalStroage.gets("userInfo").organId
-        this.formData.userId = iLocalStroage.gets("userInfo").userId
+        this.formData.userId = iLocalStroage.gets("userInfo").id
         // 当事人信息和企业信息选项的值
         this.formData.objectType = this.$data.$f.getValue('personOrParty')
         delete (this.formData["pictureList"]);
