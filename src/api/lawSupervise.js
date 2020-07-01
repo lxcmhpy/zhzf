@@ -270,3 +270,35 @@ export function deleteDeviceById (id,typeCode) {
       cancelToken: setCancelSource()
     })
 }
+// 文件上传
+export  function  upload(data)  {
+  return  request({
+    url:  "/zfjg/sys/file/uploadCommon",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
+//根据主键ID删除附件
+export function deleteFileByIdApi(fileId) {
+  return  request({
+    url:  "/zfjg/sys/file/delete/"+fileId,
+    method:  "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
+
+export function findImageByCaseId(id) {
+  return  request({
+    url:  "/zfjg/sys/file/findImageByCaseId/"+id,
+    method:  "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
