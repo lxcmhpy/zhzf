@@ -113,19 +113,19 @@ export default {
   },
   watch: {
     $route(to, from) {
-        // debugger;
+        debugger;
       //判断路由是否已经打开
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
         let flag = false;
         let _this = this;
-        let tabsCode = this.getTabName(to.name);
+        // let tabsCode = this.getTabName(to.name);
 
         let _index = _.findIndex(this.openTab,(chr) => {
             //信息查验不走if
-            if (chr.isCase && !to.meta.isNotCase) {
-              return chr.title == tabsCode + _this.caseHandle.caseNumber;
-            }
+            // if (chr.isCase && !to.meta.isNotCase) {
+            //   return chr.title == tabsCode + _this.caseHandle.caseNumber;
+            // }
             return chr.name === to.name;
         });
 
@@ -133,7 +133,7 @@ export default {
             if (to.params.tabTitle) {
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;
-                //currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
+                // currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
                 currentOpenTab.title = currentOpenTab.params.tabTitle;
                 currentOpenTab.route = currentOpenTab.path;
                 currentOpenTab.name = to.name;
