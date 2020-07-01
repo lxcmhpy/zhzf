@@ -85,13 +85,9 @@ export default {
     getTabName (code) {
       console.log('activeIndexStr',this.activeIndexStr)
         let tabsCode = this.activeIndexStr;
-        // if (code.indexOf('case_handle_') > -1) {
-        //     tabsCode = this.tabsNameList['case_handle_'];
-        // } else if (code.indexOf('law_supervise_') > -1) {
-        //     tabsCode = this.tabsNameList['law_supervise_'];
-        // } else if (code.indexOf('law_center_') > -1) {
-        //     tabsCode = this.tabsNameList['law_center_'];
-        // }
+        if (code.indexOf('case_handle_') > -1) {
+            tabsCode = this.tabsNameList['case_handle_'];
+        }
         return tabsCode;
     },
     init () {
@@ -119,13 +115,13 @@ export default {
       //未打开的，将其放入队列里
         let flag = false;
         let _this = this;
-        // let tabsCode = this.getTabName(to.name);
+        let tabsCode = this.getTabName(to.name);
 
         let _index = _.findIndex(this.openTab,(chr) => {
             //信息查验不走if
-            // if (chr.isCase && !to.meta.isNotCase) {
-            //   return chr.title == tabsCode + _this.caseHandle.caseNumber;
-            // }
+            if (chr.isCase && !to.meta.isNotCase) {
+              return chr.title == tabsCode + _this.caseHandle.caseNumber;
+            }
             return chr.name === to.name;
         });
 
