@@ -67,7 +67,7 @@
             <div v-else-if="curWindow.category == 1">
               <div class="lawWindowTitle">
                 <i class="iconfont law-zfj"></i>
-                 <div class="title">{{curWindow.other.name}}</div>
+                 <div class="title" style="color: #fff;">{{curWindow.other.name}}</div>
                 <!-- <span></span> -->
                 <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
               </div>
@@ -112,7 +112,7 @@
             <div v-else-if="curWindow.category == 2">
                 <div class="lawWindowTitle">
                     <i class="iconfont law-car"></i>
-                    <div class="title">{{curWindow.other.vehicleNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
+                    <div class="title" style="color: #fff;">{{curWindow.other.vehicleNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
 
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
 
@@ -147,7 +147,7 @@
               </div>-->
               <div class="lawWindowTitle">
                     <i class="iconfont law-ship"></i>
-                    <div class="title">{{curWindow.other.shipNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
+                    <div class="title" style="color: #fff;">{{curWindow.other.shipNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
                     <span></span>
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
                 </div>
@@ -630,7 +630,7 @@
         <!-- <el-amap-search-box class="search-box-blue" :search-option="searchOption" :on-search-result="searchAll" >
         </el-amap-search-box> -->
         <div class="search-box-blue" style="z-index:10;display:flex;">
-            <el-input class="w-390"
+            <el-input class="w-390" clearable
                 :placeholder="placeholder"
                 v-model="filterText">
             </el-input>
