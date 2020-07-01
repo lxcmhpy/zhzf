@@ -580,6 +580,7 @@ export const mixinGetCaseApiList = {
     flowShowPdfOrForm(data, flowChartData, caseIsApprovaling) {
       console.log(data);
       console.log('flowChartData', flowChartData);
+      debugger;
       let completeLinkArr = flowChartData.completeLink.split(',');
 
       //只是环节
@@ -587,7 +588,7 @@ export const mixinGetCaseApiList = {
       if (data.linkID == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.partyRights_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.noPenalty_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId) {
         isHuanjieDoc = true;
       }
-      this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
+      // this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
       // let data2 = this.com_getCaseRouteName(data.linkID);
       let data2 ={
         nextLink: data.linkName || '',
