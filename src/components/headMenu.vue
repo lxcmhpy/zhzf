@@ -25,7 +25,7 @@ import _ from "lodash";
       };
     },
     computed: {
-        ...mapGetters(["headActiveNav", 'menu', 'activeIndexSto'])
+        ...mapGetters(["headActiveNav", 'menu'])
     },
     methods: {
       handleSelect(key, indexPath) {
@@ -53,8 +53,6 @@ import _ from "lodash";
         this.headMenuList = this.menu;
         // debugger;
         this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
-        //  this.$store.commit("SET_ACTIVE_INDEX_STO", this.headActiveNav);
-        // this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexSto);
         this.$emit("selectHeadMenu",  this.headActiveNav);
     },
     watch:{

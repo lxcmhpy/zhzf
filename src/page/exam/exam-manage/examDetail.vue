@@ -73,7 +73,7 @@
           </div>
           <el-row>
             <el-form-item>
-              <el-button type="primary" size="medium" @click="batchExportPrint()">批量打印准考证</el-button>
+              <el-button type="primary" size="medium" @click="exportExcel('3')">批量打印准考证</el-button>
               <el-button type="primary" size="medium" @click="exportExcel('1')">导出考场核对表</el-button>
               <el-button type="primary" size="medium" @click="exportExcel('2')">导出成绩</el-button>
             </el-form-item>
@@ -212,10 +212,6 @@ export default {
       //考场记录
       this.$refs.roomNotesCompRef.showModal("1",row);
     },
-    // 批量打印准考证
-    batchExportPrint() {
-      console.log('批量打印准考证');
-    },
     // 导出文件
     exportExcel(type) {
       let data = { examId: this.examPersonForm.examId };
@@ -224,6 +220,8 @@ export default {
         dispatch = 'exportExamPersonInfo'; // 导出考场核对表
       }else if(type == '2'){
         dispatch = 'exporExamtDetailInfo'; // 导出成绩
+      }else if(type == '3'){
+        dispatch = 'exportExamCard'; // 批量导出准考证
       }
       const loading = this.$loading({
         lock: true,

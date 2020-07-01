@@ -45,7 +45,6 @@ export function getCountStatus () {
         url: "/zfjg/superviseVehicle/countStatus",
         method: "get",
         showloading: false,
-        loadingType:'loadPart',
         baseUrlType:  'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()
     });
@@ -97,7 +96,8 @@ export function getById(type,id) {
       url: "/zfjg/superviseVehicle/queryListPage",
       method: "get",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken: setCancelSource()
     });
@@ -106,7 +106,8 @@ export function getById(type,id) {
     return request({
       url: "/system/sys/drawer/findAllDrawerById/" +data,
       method: "get",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
@@ -225,4 +226,47 @@ export function transerCase (id) {
         // params: data,
         cancelToken: setCancelSource()
       })
+}
+
+export function queryDeviceListPage(data) {
+  return request({
+    url: "/zfjg/lawDevice/queryLawDevicePage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function findDeviceById (id,typeCode) {
+  return request({
+    url: "/zfjg/lawDevice/findById/" +id+"/"+typeCode,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function saveOrUpdateDevice (data) {
+  return request({
+      url: "/zfjg/lawDevice/saveOrUpdate",
+      method: "post",
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:  'LAW_SUPERVISE_HOST',
+      data:  vm.$qs.stringify(data),
+      cancelToken: setCancelSource()
+    })
+}
+export function deleteDeviceById (id,typeCode) {
+  return request({
+      url: "/zfjg/lawDevice/deleteById/" +id+"/"+typeCode,
+      method: "get",
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:'CAPTCHA_HOST',
+      cancelToken: setCancelSource()
+    })
 }

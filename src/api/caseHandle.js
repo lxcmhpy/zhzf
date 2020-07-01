@@ -581,9 +581,13 @@ export function getDocListApi(data) {
 
 //查询案件类型列表(不分页)
 export function getCaseTypeListApi(status) {
+  let data = {
+    status : status,
+  }
   return request({
-    url: "/case/caseTemplate/caseType/findCaseTypeByStatus?status="+status,
+    url: "/case/caseTemplate/caseType/findCaseTypeByStatus",
     method: "get",
+    params: data,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()

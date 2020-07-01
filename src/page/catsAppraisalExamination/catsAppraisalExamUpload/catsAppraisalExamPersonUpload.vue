@@ -138,7 +138,7 @@
         </el-dialog>
 
       </div>
-      <el-dialog title="查看" :visible.sync="dialogVisible" width="460px" height="600px" v-show="dialogImageUrl" :before-close="dialogImageUrl==''">
+      <el-dialog title="查看" :visible.sync="dialogVisible" width="460px" height="600px" v-if="dialogImageUrl" :before-close="beforeClose">
         <img width="413px" height="626px" :src="dialogImageUrl" alt="">
       </el-dialog>
     </div>
@@ -202,7 +202,12 @@
     },
 
     methods: {
+      beforeClose () {
+        this.dialogImageUrl = '';
+        this.dialogVisible = true;
+      },
       saveFile(param, row) {
+        // debugger;
         var fd = new FormData();
         fd.append("file", param.file);
         fd.append("userId", iLocalStroage.gets("userInfo").id);
@@ -212,15 +217,16 @@
         let _this = this
         StaffAndCaseFile(fd).then(res => {
           if (res.code == 200){
-            row.storageId = res.data
-            row.fjStatus = '1'
+            row.storageId = res.data;
+            row.fjStatus = '1';
+            _this.$message.error('上传成功！');
           }else{
             _this.$message.error('出现异常，添加失败！');
           }
         });
       },
       view(row){
-        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId;
+        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId + '?time='+new Date().getTime();
         this.dialogVisible = true;
       },
       fetchData(data){

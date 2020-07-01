@@ -19,7 +19,7 @@ export default {
   props: ['recordMsg', 'defautImgList', 'defautFileList'],
   watch: {
     recordMsg(val, oldVal) {
-      // debugger
+      debugger
       console.log('监听', this.recordMsg, 'val', val)
       this.recordId = this.recordMsg
       this.uploadAllImg()
@@ -59,7 +59,7 @@ export default {
       imgListUpload: [],
       fileListUpload: [],
       currentUserLawId: '',
-      recordId: ''
+      recordId: '',
     };
   },
   methods: {
@@ -124,6 +124,19 @@ export default {
     },
     handleRemoveImg(file, fileList) {
       console.log(file, fileList);
+      if (file.storageId) {
+        deleteFileByIdApi(file.storageId).then(
+          res => {
+            console.log(res);
+          },
+          error => {
+            console.log(error)
+          }
+        );
+      }else{
+        return;
+      }
+
     },
     handlePreviewImg(file) {
       console.log(file);

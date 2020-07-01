@@ -72,6 +72,7 @@
 <script>
 import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi, findAllModleNameApi } from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
+import { deleteFileByCaseAndHuanjieApi } from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -82,10 +83,18 @@ export default {
       searchForm: {
         domain: "",
         status: '',
+        createUser: iLocalStroage.gets("userInfo").nickName,
+        otherUser: '',
+        title: '',
+        defaultDisplay: true,
+        name: ''
+      },
+      defautSearchForm: {
+        domain: "",
         status: '',
         createUser: iLocalStroage.gets("userInfo").nickName,
         otherUser: '',
-        defaultDisplay:true,
+        defaultDisplay: true,
         name: ''
       },
       currentPage: 1, //当前页
@@ -100,15 +109,18 @@ export default {
       console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
         startTime: this.timeList[0],
-        endTime:this.timeList[1],
+        endTime: this.timeList[1],
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
-        createUser: this.searchForm.createUser,
-        otherUser: this.searchForm.otherUser==iLocalStroage.gets("userInfo").nickName?'':this.searchForm.otherUser,
+        createUser: this.searchForm.name=='1'?iLocalStroage.gets("userInfo").nickName:'',
+        // 查询条件只有保存时，不传id
+        userId: this.searchForm.status == '保存'&& this.searchForm.title==''&&this.searchForm.domain==''&&this.searchForm.otherUser==''&&this.timeList.length==0? '':iLocalStroage.gets("userInfo").id,
+        otherUser: this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? '' : this.searchForm.otherUser,
         domain: this.searchForm.domain,
         current: this.currentPage,
         size: this.pageSize,
         defaultDisplay: this.searchForm.defaultDisplay,
+        organId: iLocalStroage.gets("userInfo").organId,
         // name: this.dicSearchForm.name
       };
       findRecordListApi(data).then(
@@ -125,7 +137,17 @@ export default {
     // 查询
     searchTableData() {
       this.currentPage = 1;
-      this.searchForm.defaultDisplay=''
+      // 如果修改查询条件，则默认查询
+      console.log('this.searchForm == this.defautSearchForm', this.searchForm, this.defautSearchForm)
+      console.log('this.timeList',this.timeList)
+      if (this.searchForm.otherUser || this.searchForm.status || this.searchForm.domain  || this.searchForm.title||this.timeList.length!=0) {
+        // debugger
+        this.searchForm.defaultDisplay = ''
+
+      } else {
+        this.searchForm.defaultDisplay = true
+
+      }
       this.getTableData()
     },
     // 查询我的
@@ -143,12 +165,11 @@ export default {
     changeName() {
       console.log(":", this.searchForm.name)
       if (this.searchForm.name == '') {
-        this.searchForm.name = '1'
+        this.searchForm.name = '1';
         this.searchForm.otherUser = iLocalStroage.gets("userInfo").nickName;
-
       } else {
-        this.searchForm.name = ''
-        this.searchForm.otherUser = ""
+        this.searchForm.name = '';
+        this.searchForm.otherUser = "";
       }
       this.searchTableData()
 
@@ -205,11 +226,11 @@ export default {
       //       if (row.createTime >= res.data) {
       //         // 写记录
       //         // row.addOrEiditFlag = 'edit'
-              this.$router.push({
-                name: 'inspection_writeRecordInfo',
-                // params: row
-                query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
-              });
+      this.$router.push({
+        name: 'inspection_writeRecordInfo',
+        // params: row
+        query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
+      });
       //       } else {
       //         this.$message.error('当前模板已修改，该记录不可修改');
       //       }
@@ -235,6 +256,8 @@ export default {
           res => {
             console.log(res)
             if (res.code == 200) {
+              this.deleteAllFile(id)
+
               this.$message({
                 type: "success",
                 message: res.msg
@@ -248,8 +271,24 @@ export default {
 
       })
     },
+    // 删除附件
+    deleteAllFile(id) {
+      console.log('删除全部');
+      debugger
+      let data = {
+        caseId: id,
+        docId: id
+      }
+      deleteFileByCaseAndHuanjieApi(data).then(res => {
+        console.log('删除全部', res);
+      }, err => {
+        console.log(err)
+      })
+    },
     getRecordTitleList() {
       let data = iLocalStroage.gets("userInfo").organId
+      // debugger
+      console.log(data)
       findAllModleNameApi(data).then(
         res => {
           console.log(res)
@@ -280,16 +319,16 @@ export default {
     },
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
-      this.searchForm.defaultDisplay=true
+      this.searchForm.defaultDisplay = true
       this.timeList = []
       // debugger
       this.getTableData()
     },
-    changStatus(){
-      if(this.searchForm.status=='保存'){
-        this.searchForm.createUser=''
-      }else{
-        this.searchForm.createUser=iLocalStroage.gets("userInfo").nickName
+    changStatus() {
+      if (this.searchForm.status == '保存') {
+        this.searchForm.createUser = ''
+      } else {
+        this.searchForm.createUser = iLocalStroage.gets("userInfo").nickName
       }
     }
   },

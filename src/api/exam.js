@@ -280,6 +280,29 @@ export function exporExamtDetailApi(data){
         cancelToken: setCancelSource()
     })
 }
+// 批量导出准考证 { examId }
+export function exportExamCard(data){
+    return request({
+        responseType:'blob',
+        url: "/exam/examManage/printExamCard",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
+// 导出个人准考证
+export function exportPersonCard(data){
+    return request({
+        responseType:'blob',
+        url: "/exam/examManage/printExamPersonCard",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
+
 //查询考试批次下拉框列表
 export function getExamManageScheduleApi(){ 
     return request({

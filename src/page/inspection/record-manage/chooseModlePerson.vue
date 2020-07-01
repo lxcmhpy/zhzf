@@ -82,10 +82,10 @@ export default {
       })
 
     },
-    showModal(alreadyChooseLawPersonId, inforCollectLawPerson) {
+    showModal(inforCollectLawPerson) {
       this.visible = true;
-      //   this.checkedUserId = alreadyChooseLawPersonId;
-      this.searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson);
+      this.searchLawPerson(inforCollectLawPerson);
+
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -123,7 +123,7 @@ export default {
     handleCheckedUserChange(val) {
       console.log(val);
       console.log(this.checkedUserId);
-
+      // debugger
       let _this = this
       if (val) {
         this.checkedUser = [];
@@ -132,7 +132,6 @@ export default {
             if (item == item2.id) {
               //更新tag
               _this.checkedUser.push(item2);
-
               return;
             }
           });
@@ -167,7 +166,7 @@ export default {
       this.$emit("userList", this.userList);
     },
     //查询执法人员
-    searchLawPerson(alreadyChooseLawPersonId, inforCollectLawPerson) {
+    searchLawPerson(inforCollectLawPerson) {
       let _this = this
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
@@ -188,7 +187,7 @@ export default {
               let hasChangeCard = false;
               let inforCollectLawPerson2 = '';
               inforCollectLawPerson.forEach(inforCollectLawPersonItem => {
-                console.log('inforCollectLawPersonItem', inforCollectLawPersonItem)
+                // console.log('inforCollectLawPersonItem', inforCollectLawPersonItem)
                 //刚进入信息采集页面后获取执法人员数据，当前用户没有设置过selectLawOfficerCard ,需要设置一下
                 inforCollectLawPersonItem.selectLawOfficerCard = !inforCollectLawPersonItem.selectLawOfficerCard ? inforCollectLawPersonItem.lawOfficerCards : inforCollectLawPersonItem.selectLawOfficerCard;
                 if (item.id == inforCollectLawPersonItem.id) {
@@ -217,7 +216,7 @@ export default {
             if (this.alreadyChooseLawPerson) {
               this.checkedUser = this.alreadyChooseLawPerson;
             }
-            _this.handleCheckedUserChange(alreadyChooseLawPersonId);
+            _this.handleCheckedUserChange(this.checkedUserId);
           },
           err => {
             console.log(err);

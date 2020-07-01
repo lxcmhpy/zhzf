@@ -2,7 +2,6 @@
   <div>
     <div class="btns">
       <span class="phoneBtn" @click="call('1')"><i class="el-icon-phone blueC3"  ></i></span>
-      <span  class="phoneBtn"  @click="callIE" ><i class="el-icon-phone blueC3" ></i></span>
       <span  class="phoneBtn"  @click="call('2')"><i class="iconfont law-shipin greenC3" id="btnPhone2" ></i></span>
       <span  class="phoneBtn" ><i class="iconfont law-jiankong"></i></span>
       <span  class="phoneBtn" ><i class="iconfont law-msg-box"></i></span>
@@ -38,7 +37,6 @@ export default {
             this.handUp();
             return
         }
-        debugger;
         if (!window.PhoneCallModule.getRegistered()) {
             let displayName = 'ecds04';
             let privateIdentity ='100006';

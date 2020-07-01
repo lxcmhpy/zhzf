@@ -23,6 +23,7 @@
         <component
           v-if="obj"
           :obj="obj"
+          :type="type"
           v-bind:is="examineDoingDetailChildren[tabActiveValue]"
         ></component>
       </div>
@@ -75,7 +76,8 @@ export default {
         }
       ],
       tabActiveValue: null,
-      status:this.$route.params.status
+      status:this.$route.params.status,
+      type:"doing"
     };
   },
   methods: {
@@ -100,7 +102,6 @@ export default {
       new Promise((resolve, reject) => {
         findAlarmVehicleById(id).then(
           res => {
-            debugger;
             // resolve(res);
             _this.obj = res.data;
             // obj.list = res.data
@@ -113,7 +114,7 @@ export default {
       });
     },
     switchTab () {
-      debugger;
+      this.type = "done";
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',
         params: {
