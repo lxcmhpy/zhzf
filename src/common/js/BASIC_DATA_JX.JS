@@ -8,6 +8,8 @@ export const BASIC_DATA_JX = {
     caseDoc_JX_caseLinktypeId:'0e36b3ec81cff5d675eec9687c339de2',
     //行政强制措施 环节id caseLinktypeId
     adminCoerciveMeasure_JX_caseLinktypeId:'c9493b367f429c2b55eea4bbb3627e36',
+    //解除（延长）行政强制措施 环节id caseLinktypeId
+    removeOrPrelong_JX_caseLinktypeId:'0521fdf305674d1a51759887431e48ff',
     //案件调查报告 环节id caseLinktypeId
     caseInvestig_JX_caseLinktypeId:'0eb11095af8afa6db6dd1662af989316',
     //案件调查报告 文书id

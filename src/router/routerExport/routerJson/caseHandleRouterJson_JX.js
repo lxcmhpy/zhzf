@@ -297,13 +297,13 @@ export default [
     component: () => import("@/page/caseHandle/case/jiangxi/form/partyRightsForm_JX")
   },
   {
-    path: "/adminCoerciveMeasureForm",
-    name: "case_handle_adminCoerciveMeasureForm",
+    path: "/adminCoerciveMeasure_JX",
+    name: "case_handle_adminCoerciveMeasure_JX",
     meta: {
       title: "行政强制措施",
       oneTab: true,
     },
-    component: () => import("@/page/caseHandle/case/jiangxi/form/adminCoerciveMeasureForm.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/form/adminCoerciveMeasure_JX.vue")
   },
 ]
 
