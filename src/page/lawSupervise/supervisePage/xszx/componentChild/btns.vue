@@ -36,13 +36,11 @@
     <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
          {{statusObj[$route.params.status]}}
     </span>
-    <span :class="$route.name" v-else>
-        <template v-if="$route.name=='law_supervise_invalidCueDetail'">
+    <span :class="$route.name" v-else-if="$route.name=='law_supervise_invalidCueDetail'" style="right: 370px;">
          无效
-        </template>
-         <template v-else>
+    </span>
+    <span :class="$route.name" v-else>
          {{statusObj[$route.params.status]}}
-        </template>
     </span>
 
     <div>
