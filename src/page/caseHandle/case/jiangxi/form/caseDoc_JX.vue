@@ -534,24 +534,29 @@ export default {
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
       };
       let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+      let approvalPass = true;  //文书审批都通过了
       for (let i = 0; i < this.docTableDatas.length; i++) {
         if (
           this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)
         ) {
           canGotoNext = false;
           break;
+        }else if(this.docTableDatas[i].docProcessStatus == '审批中'){
+            //有审批中的环节
+            approvalPass = false;
+            break;
         }
       }
-      if (canGotoNext) {
+      if (canGotoNext && approvalPass) {
         this.com_goToNextLinkTu(
           this.caseId,
           this.caseLinkDataForm.caseLinktypeId
         );
-      } else {
+      } else if(!canGotoNext){
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+      }else if(!approvalPass){
+        this.$message('有文书正在审批中！')
       }
-
-      // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 进入文书
     enterDoc(row) {
@@ -595,12 +600,20 @@ export default {
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
-        approvalOver: false,
+        approvalOver: false, 
         hasBack: true,
         status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
         docDataId:row.docDataId
       };
-      this.$store.dispatch("deleteTabs", this.$route.name);
+      // this.$store.dispatch("deleteTabs", this.$route.name);
+      if(row.docProcessStatus == '待审批'){
+        this.$store.commit('setApprovalState', 'approvalBefore');
+        this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId);
+        this.$store.commit("setDocDataId", row.docDataId);
+        this.$store.commit("setDocId", row.docId);
+      }else if(row.docProcessStatus == '审批中'){
+        this.$store.commit('setApprovalState', 'submitApproval');
+      }
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
     //通过案件id和表单类型Id查询已绑定文书

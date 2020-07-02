@@ -302,7 +302,7 @@ export function delLinkDocByIdApi(id) {
 //pdf页的提交
 export function submitPdfApi(data) {
   return request({
-    url: "/case/doc/linkData/jumpNextLink",
+    url: "/case/doc/linkData/jumpNextLink2",
     method: "post",
     data: vm.$qs.stringify(data),
     showloading: true,
@@ -385,9 +385,9 @@ export function setFlowStatusAPi(data) {
 }
 
 //查询审批角色列表
-export function getApprovePeopleApi(caseBasicInfoId) {
+export function getApprovePeopleApi(data) {
   return request({
-    url: "/case/doc/linkData/findApproveRole/" + caseBasicInfoId,
+    url: "/case/doc/linkData/findApproveRole2/" + data.caseBasicInfoId +'/'+data.docTypeId,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',

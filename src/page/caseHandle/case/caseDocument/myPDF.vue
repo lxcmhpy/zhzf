@@ -122,13 +122,14 @@
         }
       },
       showApprovePeopleList() {
-        let data = {
-          caseId: this.caseId,
-          caseLinktypeId:this.caseLinktypeId,
-          docId:''
-        }
-        console.log('提交审批需要的数据',data)
-        this.$refs.showApprovePeopleRef.showModal(data);
+        // let data = {
+        //   caseId: this.caseId,
+        //   caseLinktypeId:this.caseLinktypeId,
+        //   docId:this.docDataId
+        // }
+        // console.log('提交审批需要的数据',data)
+        // this.$refs.showApprovePeopleRef.showModal(data);
+        this.$refs.showApprovePeopleRef.showModal();
       },
       //审批完成 重新获取pdf
       approvalOver() {

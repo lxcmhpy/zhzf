@@ -43,6 +43,7 @@
   import {
      submitPdfByPersonApi,handleTJApproveDocApi,
   } from "@/api/caseHandle";
+  import {mapGetters} from "vuex";
 
   export default {
     data() {
@@ -53,10 +54,11 @@
       };
     },
     inject: ["reload"],
+    computed: {...mapGetters(['caseId','docId','docDataId','caseLinktypeId'])},
     methods: {
       showModal(data) {
         this.visible = true;
-        this.caseInfo = data;
+        // this.caseInfo = data;
         this.getApprovePeople();
       },
       //关闭弹窗的时候清除数据
@@ -65,8 +67,15 @@
       },
       //获取审核人员
       getApprovePeople() {
-        let _this = this
-        this.$store.dispatch("getApprovePeople", this.caseInfo.caseId).then(
+        let _this = this;
+        let data = {
+          caseBasicInfoId: this.caseId,
+          // caseLinktypeId:this.caseLinktypeId,
+          docTypeId:this.docId
+          // docId:this.docDataId
+        }
+        console.log('获取审批人员传参',data);
+        this.$store.dispatch("getApprovePeople", data).then(
           res => {
             let data = res.data;
             data.splice(0, 1);
@@ -93,17 +102,22 @@
 
         //   }
         let _this = this
-        let a = {
-          approve1: "987964a3772e74aecc173479473f5cf3",
-          approve2: "13475aa147aa5766e574b07ddb2b768d"
-        }
+        // let a = {
+        //   approve1: "987964a3772e74aecc173479473f5cf3",
+        //   approve2: "13475aa147aa5766e574b07ddb2b768d"
+        // }
         // let data = {
         //   caseId:_this.caseId,
         //   handlePerson:JSON.stringify(a)
         // }
         // this.caseInfo.handlePerson = JSON.stringify(a)
-        console.log('传的参数', this.caseInfo)
-        handleTJApproveDocApi(this.caseInfo).then(
+        let data = {
+          caseId: this.caseId,
+          caseLinktypeId:this.caseLinktypeId,
+          docId:this.docDataId
+        }
+        console.log('提交审批传的参数', data)
+        handleTJApproveDocApi(data).then(
           res => {
             console.log("pdf提交", res);
             _this.$message({
@@ -111,10 +125,15 @@
               message: "提交成功"
             });
             _this.$store.dispatch("deleteTabs", _this.$route.name);
-            _this.$store.commit("setCaseId", _this.caseInfo.caseId);
-            _this.$router.push({
-              name: "case_handle_flowChart"
-            });
+            // _this.$store.commit("setCaseId", _this.caseInfo.caseId);
+            if(this.docDataId){ //环节下的文书提交审批后
+              _this.$router.go(-1)
+            }else{    //单环节文书提交审批后
+              _this.$router.push({
+                name: "case_handle_flowChart"
+              });
+            }
+            
           },
           err => {
             console.log(err);
