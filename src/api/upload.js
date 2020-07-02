@@ -88,5 +88,16 @@ export function deleteFileByIdApi(fileId) {
     cancelToken:  setCancelSource(),
   });
 }
+//文件上传公共接口-case
+export function uploadCommon(data) {
+  return  request({
+    url:  "/case/sys/file/uploadCommon",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
 
 

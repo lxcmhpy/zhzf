@@ -240,7 +240,7 @@
                   accept=".jpg, .png"
                   list-type="picture-card"
                   :on-preview="handlePictureCardPreview"
-                  :http-request="saveFile"
+                  :http-request="saveImageFile"
                   :file-list="imageList"
                   :disabled="formReadOnly"
                   :on-remove="deleteFile">
@@ -252,7 +252,7 @@
                   class="upload-demo"
                   action="#"
                   accept=".pdf,.PDF"
-                  :http-request="saveFile"
+                  :http-request="saveAttachFile"
                   :on-preview="handlePDFPreview"
                   multiple
                   :on-remove="deleteFile"
@@ -290,8 +290,7 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
-import { organTreeByCurrUser,queryDeviceListPage,findDeviceById,saveOrUpdateDevice,deleteDeviceById} from "@/api/lawSupervise.js";
-import { upload,getFile, getFileByCaseId,deleteFileByIdApi } from "@/api/upload.js";
+import { organTreeByCurrUser,queryDeviceListPage,findDeviceById,saveOrUpdateDevice,deleteDeviceById,upload,deleteFileByIdApi} from "@/api/lawSupervise.js";
 import iLocalStroage from '@/common/js/localStroage';
   export default {
     watch: {
@@ -372,24 +371,25 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       deleteFile(file, fileList){
         deleteFileByIdApi(file.storageId).then(res=>{
-          fileList.splice(fileList.findIndex(item => item.storageId === file.storageId), 1)
+          //fileList.splice(fileList.findIndex(item => item.storageId === file.storageId), 1)
         },err=>{
           console.log(err)
         })
       },
-      saveFile (param) {
-        var testmsg=/^image\/(jpeg|png|jpg)$/.test(param.file.type)
-        let type = "图片";
-        if (!testmsg) {
-            type = "附件";
-        }
+      saveAttachFile(param){
+        this.saveFile(param,'附件')
+      },
+      saveImageFile(param){
+        this.saveFile(param,'图片')
+      },
+      saveFile (param,type) {
         var fd = new FormData()
         fd.append("file", param.file);
         fd.append("category", '执法监管');
         fd.append("fileName", param.file.name);
         fd.append('status', type)//传记录id
-        fd.append('caseId', this.addForm.id?this.addForm.id:new Date().getTime())//传记录id
-        fd.append('docId', this.addForm.id?this.addForm.id:new Date().getTime())//传记录id
+        fd.append('caseId', param.file.name+new Date().getTime())//传记录id
+        fd.append('docId', param.file.name+new Date().getTime())//传记录id
         let _this = this
         upload(fd).then(
             res => {
@@ -606,8 +606,10 @@ import iLocalStroage from '@/common/js/localStroage';
             _this.addForm.property1=lng
             _this.addForm.property2=lat
             let deviceDate = ['','']
-            deviceDate[0]=res.data.startDate+' 00:00:00'
-            deviceDate[1]=res.data.endDate+' 00:00:00'
+            if(res.data.startDate){
+              deviceDate[0]=res.data.startDate+' 00:00:00'
+              deviceDate[1]=res.data.endDate+' 00:00:00'
+            }
             _this.deviceDate=deviceDate
             if(res.data.fileList){
               res.data.fileList.forEach(item=>{
