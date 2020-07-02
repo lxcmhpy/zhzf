@@ -133,5 +133,13 @@ export default  [
           title: "设备资源管理",
         },
         component: () => import("@/page/lawSupervise/supervisePage/device/deviceManage.vue")
+    }, {
+        path: "/deviceTypeManage",
+        name: "law_supervise_deviceTypeManage",
+        meta: {
+          title: "设备类型管理",
+        },
+        component: () => import("@/page/lawSupervise/supervisePage/devicetype/deviceTypeManage.vue")
     }
+    
 ]
