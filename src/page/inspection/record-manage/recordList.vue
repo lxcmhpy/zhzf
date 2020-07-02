@@ -105,20 +105,23 @@ export default {
     }
   },
   methods: {
+    // 查询列表时
     getTableData() {
       console.log('time,creatUser', this.timeList, this.searchForm.createUser)
       let data = {
         startTime: this.timeList[0],
         endTime: this.timeList[1],
         title: this.searchForm.title,
-        status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
-        createUser: this.searchForm.name == '1'||this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? iLocalStroage.gets("userInfo").nickName : '',
-        // 查询条件只有保存时，不传id
+        status: this.searchForm.status == '全部' ? '' : this.searchForm.status,//查询全部的时候不传值
+        createUser: this.searchForm.name == '1'||this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? iLocalStroage.gets("userInfo").nickName : '',//只选择我的和记录人为本人时传值
+        // 查询条件只有保存时，不传userId
         userId: this.searchForm.status == '保存' && this.searchForm.title == '' && this.searchForm.domain == '' && this.searchForm.otherUser == '' && this.timeList.length == 0 ? '' : iLocalStroage.gets("userInfo").id,
+        // 选中只选择我的时，不传值
         otherUser: this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? '' : this.searchForm.otherUser,
         domain: this.searchForm.domain,
         current: this.currentPage,
         size: this.pageSize,
+        // 无查询条件未改变时defaultDisplay不传值
         defaultDisplay: this.searchForm.defaultDisplay,
         organId: iLocalStroage.gets("userInfo").organId,
         // name: this.dicSearchForm.name
