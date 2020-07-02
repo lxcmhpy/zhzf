@@ -241,7 +241,7 @@
 
     </el-form>
 
-    <casePageFloatBtns :pageDomId="'caseInvest-print'" :formOrDocData="formOrDocData" @saveData="saveData" @showApproval="showApproval"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'caseInvest-print'" :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
     <!--  显示证据材料 -->
     <investigRpEvidence ref="investigRpEvidenceRef" @sendToReportEmit="receiverEviden"></investigRpEvidence>
     <!-- 提交审批 -->
@@ -304,7 +304,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        caseLinktypeId: this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId,
+        caseLinktypeId: this.BASIC_DATA_JX.caseInvestig_JX_caseLinktypeId, 
         //文书数据
         formData: "",
         status: ""
@@ -379,7 +379,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "caseInvest-print"
       },
-      huanjieAndDocId: this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId, //案件调查报告的文书id
+      huanjieAndDocId: this.BASIC_DATA_JX.caseInvestig_JX_huanjieAndDocId, //案件调查报告的文书id
       approvalOver: false, //审核完成
       nameLength: 10,
       sexLength: 2,
@@ -417,28 +417,8 @@ export default {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "caseInvestiForm", true);
     },
-    //审批弹窗
-    showApproval() {
-      //判断是一级审批还是二级审批还是三级(经办机构负责人审批、法制审查、部门负责人审批)
-      console.log(this.formData);
-      let approvePeo = this.formData.approvePeo ? this.formData.approvePeo : "";
-      let secondApprovePeo = this.formData.secondApprovePeo
-        ? this.formData.secondApprovePeo
-        : "";
-
-      let caseData = {
-        caseId: this.caseId,
-        caseLinktypeId: this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId,
-        firstApproval: approvePeo,
-        secondApproval: secondApprovePeo,
-        approvalNumber: 3 //3次审批
-      };
-      this.$refs.approvalDialogRef.showModal(caseData);
-    },
-    // 暂存
-    save() { },
-    // 添加
-    addDoc() { },
+   
+   
     // 大写
     capital() {
       this.punishMoneyCapital = "";

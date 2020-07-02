@@ -202,21 +202,21 @@ export const mixinGetCaseApiList = {
         caseLinktypeId: caseLinktypeId
       };
       console.log(data);
-      this.$router.push({
-        name: 'case_handle_flowChart'
-      });
-      // this.$store.dispatch("submitPdf", data).then(
-      //   res => {
-      //     console.log("更改流程图中的状态", res);
-      //     this.$store.dispatch("deleteTabs", this.$route.name);
-      //     this.$router.push({
-      //       name: 'case_handle_flowChart'
-      //     });
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   }
-      // );
+      // this.$router.push({
+      //   name: 'case_handle_flowChart'
+      // });
+      this.$store.dispatch("submitPdf", data).then(
+        res => {
+          console.log("更改流程图中的状态", res);
+          // this.$store.dispatch("deleteTabs", this.$route.name);
+          this.$router.push({
+            name: 'case_handle_flowChart'
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //根据环节ID转路由name 跳转
     // com_getCaseRouteName(caseLinkId) {
@@ -577,10 +577,9 @@ export const mixinGetCaseApiList = {
       );
     },
     //判断流程图跳转pdf文书还是表单
-    flowShowPdfOrForm(data, flowChartData, caseIsApprovaling) {
+    async flowShowPdfOrForm(data, flowChartData, caseIsApprovaling) {
       console.log(data);
       console.log('flowChartData', flowChartData);
-      debugger;
       let completeLinkArr = flowChartData.completeLink.split(',');
 
       //只是环节
@@ -637,17 +636,39 @@ export const mixinGetCaseApiList = {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
-        //有审批的环节
-        if (data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
+        //判断该环节是否需要审批
+        let nowCaseDocdata = '';
+        try{
+          nowCaseDocdata = await findDocDataByIdApi(data.docId);
+        }catch(err){
+          this.$message('查询是否需要审批失败!')
+        }
+        console.log('nowCaseDocdata',nowCaseDocdata);
+        if(Number(nowCaseDocdata.data.isApproval) == 0){ //需要审批
+          this.$store.commit('setApprovalState', 'approvalBefore')
+          console.log('需要审批');
           if (caseIsApprovaling) {
             this.$store.commit('setApprovalState', 'submitApproval')
           } else {
             this.$store.commit('setApprovalState', 'approvalBefore')
           }
           this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
-        } else {
+        }else{  //不需要审批
+          this.$store.commit('setApprovalState', '')
+          console.log('不需要审批');
           this.searchHuanjiePdf(data2, data.linkID);
         }
+
+        // if (data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
+        //   if (caseIsApprovaling) {
+        //     this.$store.commit('setApprovalState', 'submitApproval')
+        //   } else {
+        //     this.$store.commit('setApprovalState', 'approvalBefore')
+        //   }
+        //   this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
+        // } else {
+        //   this.searchHuanjiePdf(data2, data.linkID);
+        // }
 
       }
     },
