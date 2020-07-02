@@ -165,7 +165,7 @@
             </el-table-column>
             <el-table-column prop="isKEY" label="重点监管" align="center">
               <template slot-scope="scope">
-                {{scope.row.isKEY=='是'?scope.row.isKEY:'-'}}
+                {{scope.row.isKEY=='是'?scope.row.isKEY:'/'}}
               </template>
             </el-table-column>
           </el-table>

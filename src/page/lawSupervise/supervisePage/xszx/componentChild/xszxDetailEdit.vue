@@ -456,7 +456,7 @@
                         <td class="color_ff w-1">车辆类型</td>
                         <td>{{obj.vehicleType}}</td>
                         <td class="color_ff w-1">重点监管</td>
-                        <td>{{obj.key?obj.key:'否'}}</td>
+                        <td>{{obj.key?obj.key:'/'}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">车速（km/h）</td>
