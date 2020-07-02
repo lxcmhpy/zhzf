@@ -544,7 +544,7 @@
                             <td class="color_ff w-1">所属执法机构</td>
                             <td>{{obj.organName?obj.organName:'/'}}</td>
                             <td class="color_ff w-1">处理状态</td>
-                            <td>审核中</td>
+                            <td>待审核</td>
                         </tr>
                     </table>
                 </div>
