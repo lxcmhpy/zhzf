@@ -18,9 +18,9 @@
 
       </div>
       <!-- 动态生成表单 -->
-      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
+      <form-create :class="isCopyStyle?'copy-style-text':''" v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
-      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList'></uploadTmp>
+      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList' :addOrEiditFlag='addOrEiditFlag'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
       <chooseLawPerson ref="chooseLawPersonIdRef" @setLawPer="setLawPersonId" @userList="getAllUserListId"></chooseLawPerson>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
@@ -117,6 +117,7 @@ export default {
       partyFieldList: [],
       personName: 'f28b429f7d8b4191a8623f49033f24b1',//当事人信息id
       partyName: '3bd508078f284ae799fd891fa526b463',//企业组织信息
+      isCopyStyle: false,//
     }
   },
   components: {
@@ -291,8 +292,6 @@ export default {
           item.text = this.$data.$f.getValue(textName)
           if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
             item.text = item.text.join(',')
-            console.log('item.1', item)
-
           }
           console.log('item.', item)
         });
@@ -335,6 +334,8 @@ export default {
         },
         error => {
         })
+
+      this.isCopyStyle = false;//变颜色
     },
     // 暂存
     onSaveRecord() {
@@ -383,8 +384,13 @@ export default {
             if (res.code == 200) {
               this.addOrEiditFlag = 'view'
               // this.recordMsg = res.data;//根据返回id上传文件
+              console.log('this.recordMsg1', this.recordMsg)
+              // this.recordMsg = ''
               this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
-              console.log(this.recordMsg)
+              this.recordMsg = JSON.parse(JSON.stringify(this.recordMsg))//处罚视图更新，监听
+              // this.$set('this.recordMsg', this.formData.id ? this.formData.id : res.data)
+              // this.$set(this,'recordMsg', this.formData.id ? this.formData.id : res.data)
+              console.log('this.recordMsg2', this.recordMsg)
               this.$message({
                 type: "success",
                 message: res.msg
@@ -411,6 +417,7 @@ export default {
     },
     // 复制添加-可修改-创建人换成登录账号-附件删除，id清空
     copySave() {
+      this.isCopyStyle = true;//变颜色
       this.addOrEiditFlag = 'add'
       this.formData.id = ''
       this.formData.createTime = ''
@@ -419,8 +426,8 @@ export default {
       this.defautImgList = []
       // 设置当前账号名
       this.setLawPersonCurrentP()
-      // this.saveRecord()
-      this.editMethod()
+      this.onSaveRecord()//暂存一份
+      this.editMethod()//可修改
     },
     onSubmit(formData) {
       console.log("formData", formData)

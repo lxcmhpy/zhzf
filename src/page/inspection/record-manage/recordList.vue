@@ -27,7 +27,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="记录人" prop='otherUser'>
-              <el-input v-model="searchForm.otherUser"></el-input>
+              <el-input v-model="searchForm.otherUser" @change="changeOtherUser"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button>
@@ -112,9 +112,9 @@ export default {
         endTime: this.timeList[1],
         title: this.searchForm.title,
         status: this.searchForm.status == '全部' ? '' : this.searchForm.status,
-        createUser: this.searchForm.name=='1'?iLocalStroage.gets("userInfo").nickName:'',
+        createUser: this.searchForm.name == '1'||this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? iLocalStroage.gets("userInfo").nickName : '',
         // 查询条件只有保存时，不传id
-        userId: this.searchForm.status == '保存'&& this.searchForm.title==''&&this.searchForm.domain==''&&this.searchForm.otherUser==''&&this.timeList.length==0? '':iLocalStroage.gets("userInfo").id,
+        userId: this.searchForm.status == '保存' && this.searchForm.title == '' && this.searchForm.domain == '' && this.searchForm.otherUser == '' && this.timeList.length == 0 ? '' : iLocalStroage.gets("userInfo").id,
         otherUser: this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? '' : this.searchForm.otherUser,
         domain: this.searchForm.domain,
         current: this.currentPage,
@@ -139,8 +139,8 @@ export default {
       this.currentPage = 1;
       // 如果修改查询条件，则默认查询
       console.log('this.searchForm == this.defautSearchForm', this.searchForm, this.defautSearchForm)
-      console.log('this.timeList',this.timeList)
-      if (this.searchForm.otherUser || this.searchForm.status || this.searchForm.domain  || this.searchForm.title||this.timeList.length!=0) {
+      console.log('this.timeList', this.timeList)
+      if (this.searchForm.otherUser || this.searchForm.status || this.searchForm.domain || this.searchForm.title || this.timeList.length != 0) {
         // debugger
         this.searchForm.defaultDisplay = ''
 
@@ -165,13 +165,27 @@ export default {
     changeName() {
       console.log(":", this.searchForm.name)
       if (this.searchForm.name == '') {
+        // 选中只显示我的、
         this.searchForm.name = '1';
-        this.searchForm.otherUser = iLocalStroage.gets("userInfo").nickName;
+        this.searchForm.createUser = iLocalStroage.gets("userInfo").nickName;
+        this.searchForm.defaultDisplay = ''
       } else {
         this.searchForm.name = '';
-        this.searchForm.otherUser = "";
+        this.searchForm.defaultDisplay = true
+        this.searchForm.createUser = '';
+
       }
-      this.searchTableData()
+      this.searchForm.otherUser = "";
+      this.currentPage = 1;
+      // 判断保存
+      if (this.searchForm.status == '保存') {
+        this.searchForm.defaultDisplay = true
+        this.searchTableData()
+        // return
+      } else {
+        this.getTableData()
+
+      }
 
     },
     //更改每页显示的条数
@@ -329,6 +343,31 @@ export default {
         this.searchForm.createUser = ''
       } else {
         this.searchForm.createUser = iLocalStroage.gets("userInfo").nickName
+      }
+    },
+    changeOtherUser() {
+      if (this.searchForm.name == '1') {
+
+        this.$set(this.searchForm, 'name', '')
+        this.searchForm.name = '';
+        this.searchForm.createUser = this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName ? iLocalStroage.gets("userInfo").nickName : '';
+        this.currentPage = 1;
+        console.log('        this.searchForm.createUser =', this.searchForm.otherUser)
+        if (this.searchForm.otherUser == '' || this.searchForm.otherUser == iLocalStroage.gets("userInfo").nickName) {
+          this.searchForm.defaultDisplay = true
+        } else {
+          this.searchForm.defaultDisplay = ''
+        }
+        // 判断保存
+        if (this.searchForm.status == '保存') {
+          this.searchForm.defaultDisplay = true
+          this.searchTableData()
+          // return
+        } else {
+          this.getTableData()
+
+        }
+
       }
     }
   },

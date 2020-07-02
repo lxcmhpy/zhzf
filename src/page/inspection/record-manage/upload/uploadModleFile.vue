@@ -1,54 +1,68 @@
 <template>
   <div>
     <p class="border-title">图片</p>
-    <el-upload ref="upload" class="upload-demo modle-upload" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveImg" :on-progress='imgProgress' :on-preview="handlePreviewImg" :on-remove="handleRemoveImg" :before-remove="beforeRemoveImg" multiple :limit="3" :on-exceed="handleExceedImg" :file-list="imgList" accept="image/*">
-      <el-button size="small" type="primary">上传图片</el-button>
+    <el-upload ref="upload" :disabled="addOrEiditFlag=='view'?true:false" class="upload-demo modle-upload" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveImg" :on-progress='imgProgress' :on-preview="handlePreviewImg" :on-remove="handleRemoveImg" :before-remove="beforeRemoveImg" multiple :limit="3" :on-exceed="handleExceedImg" :file-list="imgList" accept="image/*">
+      <el-button size="small" type="primary" :style="addOrEiditFlag=='view'?' color: #fff;background-color: #909399;border-color: #909399;':''">上传图片</el-button>
     </el-upload>
     <p class="border-title">附件</p>
     <!-- {{fileList}} -->
-    <el-upload class="upload-demo modle-upload" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" :on-preview="handlePreviewFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :limit="3" :on-exceed="handleExceedFile" :file-list="fileList">
-      <el-button size="small" type="primary">选取文件</el-button>
+    <el-upload :disabled="addOrEiditFlag=='view'?true:false" class="upload-demo modle-upload" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" :on-preview="handlePreviewFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :limit="3" :on-exceed="handleExceedFile" :file-list="fileList">
+      <el-button size="small" type="primary" :style="addOrEiditFlag=='view'?' color: #fff;background-color: #909399;border-color: #909399;':''">选取文件</el-button>
     </el-upload>
   </div>
 </template>
 <script>
 import { uploadMaterial, findFileByIdApi } from "@/api/person.js";
-import { upload, deleteFileByIdApi } from "@/api/upload.js";
+import { upload, deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
-  props: ['recordMsg', 'defautImgList', 'defautFileList'],
+  props: ['recordMsg', 'defautImgList', 'defautFileList', 'addOrEiditFlag'],
   watch: {
-    recordMsg(val, oldVal) {
-      debugger
-      console.log('监听', this.recordMsg, 'val', val)
-      this.recordId = this.recordMsg
-      this.uploadAllImg()
-      this.uploadAllFile()
-    },
-    defautImgList(val, oldVal) {
-      // debugger
-      // console.log('监听uploadList', this.defautImgList, 'val', val)
-      if (val) {
-        let _this = this
+    recordMsg: {
+      handler(val, oldVal) {
         // debugger
-        _this.imgList = this.defautImgList
-        if (_this.imgList && _this.imgList.length > 0) {
-          _this.dealFile(_this.imgList)
+        console.log('监听', this.recordMsg, 'val', val)
+        this.recordId = this.recordMsg
+        this.uploadAllImg()
+        this.uploadAllFile()
+      },
+      deep: true
+    },
+    defautImgList: {
+      handler(val, oldVal) {
+        // debugger
+        console.log('监听uploadList', this.defautImgList, 'val', val)
+        if (val) {
+          let _this = this
+          // debugger
+          _this.imgList = this.defautImgList
+          if (_this.imgList && _this.imgList.length > 0) {
+            _this.dealFile(_this.imgList)
+          }
         }
-      }
+      },
+      deep: true
     },
-    defautFileList(val, oldVal) {
-      // debugger
-      // console.log('监听uploadList', this.defautFileList, 'val', val)
-      if (val) {
-        let _this = this
+    defautFileList: {
+      handler(val, oldVal) {
         // debugger
-        _this.fileList = this.defautFileList
-        if (_this.fileList && _this.fileList.length > 0) {
-          _this.dealFile(_this.fileList)
+        // console.log('监听uploadList', this.defautFileList, 'val', val)
+        if (val) {
+          let _this = this
+          // debugger
+          _this.fileList = this.defautFileList
+          if (_this.fileList && _this.fileList.length > 0) {
+            _this.dealFile(_this.fileList)
 
+          }
         }
-      }
+      },
+      deep: true
+
+    },
+    addOrEiditFlag(val, oldVal) {
+      // debugger
+      console.log('监听addOrEiditFlag', this.addOrEiditFlag, 'val', val)
 
     },
   },
@@ -108,9 +122,9 @@ export default {
       fd.append("fileName", param.file.name);
       fd.append('status', '图片')//传记录id
       fd.append('caseId', this.recordId)//传记录id
-      fd.append('docId', this.recordId)//传记录id
-      // uploadMaterial(fd).then(
-      upload(fd).then(
+      // fd.append('docId', this.recordId)//传记录id
+      uploadCommon(fd).then(
+        // upload(fd).then(
         res => {
           console.log(res);
         },
@@ -133,7 +147,7 @@ export default {
             console.log(error)
           }
         );
-      }else{
+      } else {
         return;
       }
 
@@ -165,8 +179,9 @@ export default {
       fd.append("fileName", param.file.name);
       fd.append('status', '附件')//传记录id
       fd.append('caseId', this.recordId)//传记录id
-      fd.append('docId', this.recordId)//传记录id
-      upload(fd).then(
+      // fd.append('docId', this.recordId)//传记录id
+      uploadCommon(fd).then(
+        // upload(fd).then(
         res => {
           console.log(res);
         },
