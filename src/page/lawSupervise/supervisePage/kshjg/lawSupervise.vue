@@ -163,7 +163,11 @@
             <!-- 4非现场治超检测 -->
             <div v-else-if="curWindow.category == 4">
               <div>
-                  <img width="100%" :src="'./static/images/img/lawSupervise/jg_bg.png'">
+                  <el-carousel ref="carousel" height="135px" indicator-position="outside" >
+                            <el-carousel-item v-for="(item,index) in curWindow.other.imageList" :key="(index +1).toString()">
+                                <img  width="100%" height="135px" :src="pHost+'/'+item.storageId">
+                            </el-carousel-item>
+                        </el-carousel>
               </div>
               <div class="lawWindowTitle">
                 {{curWindow.other.name}}
@@ -685,7 +689,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage,findImageByCaseId} from "@/api/lawSupervise.js";
 import {getOrganDetailApi,getOrganIdApi}  from "@/api/system.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
@@ -929,7 +933,8 @@ export default {
       userInfo: null,
       ryList: null,
       time:Date.parse(new Date()),
-      popoverVisible:false
+      popoverVisible:false,
+      pHost:''
     };
   },
   filters: {
@@ -1593,6 +1598,9 @@ export default {
                             that.getBySiteName(
                               that.curWindow.other
                             );
+                            that.getImageBySiteId(
+                              that.curWindow.other
+                            );
                             // debugger;
                         }
                         that.curWindow.visible = true;
@@ -1688,6 +1696,21 @@ export default {
         queryAlarmVehiclePage({current:1,size:5,siteName:obj.name}).then(
           res => {
             _this.$set(_this.curWindow.other, 'list', res.data.records);
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return;
+          }
+        );
+      });
+    },
+    getImageBySiteId(obj){
+      debugger
+      let _this = this;
+      new Promise((resolve, reject) => {
+        findImageByCaseId(obj.id).then(
+          res => {
+            _this.$set(_this.curWindow.other, 'imageList', res.data);
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -1947,6 +1970,7 @@ export default {
   created () {
     // this.searchPageAll(6, 'gjclList');
     this.searchPageAllGJ(6, 'gjclList');
+    this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {

@@ -75,7 +75,7 @@ import { mapGetters } from "vuex";
             }
           }
         }
-        
+
 //      console.log('currentSlideMenu',this.currentSlideMenu)
       }
     },
@@ -88,7 +88,7 @@ import { mapGetters } from "vuex";
     created() {
     },
     computed: {
-        ...mapGetters(['menu', 'activeIndexSto', 'headActiveNav'])
+        ...mapGetters(['menu','headActiveNav'])
     },
     watch: {
       selectedHeadMenu: function (val, oldVal) {
