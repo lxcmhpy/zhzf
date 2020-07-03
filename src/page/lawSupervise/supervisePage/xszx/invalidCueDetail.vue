@@ -106,7 +106,7 @@
                             <td class="color_ff w-1">检测设备编号</td>
                             <td>{{obj.checkEquipment?obj.checkEquipment:'/'}}</td>
                             <td class="color_ff w-1">设备状态</td>
-                            <td>{{obj.status?obj.status:'/'}}</td>
+                            <td>{{obj.siteStatus==0?'正常':'异常'}}</td>
                         </tr>
                         <tr>
                             <td class="color_ff w-1">检测位置</td>
@@ -258,7 +258,7 @@
 <script>
 import Vue from "vue";
 import iLocalStroage from '@/common/js/localStroage';
-import {getDetailById} from '@/api/lawSupervise.js';
+import {getDetailById,getSiteById} from '@/api/lawSupervise.js';
 import {getFileByCaseId} from "@/api/upload.js";
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 export default {
@@ -321,12 +321,26 @@ export default {
                 }
             )
         },
+        getSiteById(id){
+            let _this = this;
+            getSiteById(id).then(
+                res => {
+                    _this.obj.siteStatus = res.data.status
+                    _this.obj.checkLocation = res.data.address
+                    _this.obj.organName = res.data.organName
+                },
+                error => {
+                    return
+                }
+            )
+        },
         getDetailById (id) {
             let _this = this;
             new Promise((resolve, reject) => {
                 getDetailById(id).then(
                     res => {
                         _this.obj = res.data;
+                        _this.getSiteById(_this.obj.siteId)
                         if(_this.obj.invalidInfo){
                             let invalid = JSON.parse(_this.obj.invalidInfo)
                             _this.remarks = invalid.color
