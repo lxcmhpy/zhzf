@@ -165,7 +165,7 @@
             </el-table-column>
             <el-table-column prop="isKEY" label="重点监管" align="center">
               <template slot-scope="scope">
-                {{scope.row.isKEY=='是'?scope.row.isKEY:'-'}}
+                {{scope.row.isKEY=='是'?scope.row.isKEY:'/'}}
               </template>
             </el-table-column>
           </el-table>
@@ -324,9 +324,9 @@ export default {
       if (this.tabActiveValue === '待审核') {
         queryAlarmVehiclePage(_this.form).then(
           res => {
-            if(isCreate){
+            /* if(isCreate){
               _this.getCountStatus()
-            }
+            } */
             _this.tableData = res.data.records;
             _this.total = res.data.total;
           },

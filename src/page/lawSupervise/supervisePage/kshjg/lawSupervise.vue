@@ -4,7 +4,7 @@
     <el-carousel :interval="8000" indicator-position="none" height="28px" v-if="gjclList" style="position:absolute;top:0px;line-height:28px;width:100%;font-size:12px;color:#20232B">
         <el-carousel-item v-for="(row,index) in gjclList" :key="index.toString()">
             <div style="background:#F9DAAC;padding-left:17px;">
-                <div class="lawHoverTitle" @click="updateDrawer1" >
+                <div class="lawHoverTitle" @click="updateDrawer1()" >
                         <span><i class="el-icon-info red"></i>&nbsp;&nbsp;</span>
                         <span class="bgCgray">{{row&&row.checkTime?row.checkTime:''}}  </span>
                         <span class="redC">{{row.vehicleNumber}}  </span>
@@ -67,7 +67,7 @@
             <div v-else-if="curWindow.category == 1">
               <div class="lawWindowTitle">
                 <i class="iconfont law-zfj"></i>
-                 <div class="title" style="color: #fff;">{{curWindow.other.name}}</div>
+                 <div class="title" style="color: #fff;font-weight: 200;">{{curWindow.other.name}}</div>
                 <!-- <span></span> -->
                 <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
               </div>
@@ -112,7 +112,7 @@
             <div v-else-if="curWindow.category == 2">
                 <div class="lawWindowTitle">
                     <i class="iconfont law-car"></i>
-                    <div class="title" style="color: #fff;">{{curWindow.other.vehicleNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
+                    <div class="title" style="color: #fff;font-weight: 200;">{{curWindow.other.vehicleNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
 
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
 
@@ -147,7 +147,7 @@
               </div>-->
               <div class="lawWindowTitle">
                     <i class="iconfont law-ship"></i>
-                    <div class="title" style="color: #fff;">{{curWindow.other.shipNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
+                    <div class="title" style="color: #fff;font-weight: 200;">{{curWindow.other.shipNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
                     <span></span>
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
                 </div>
@@ -163,7 +163,11 @@
             <!-- 4非现场治超检测 -->
             <div v-else-if="curWindow.category == 4">
               <div>
-                  <img width="100%" :src="'./static/images/img/lawSupervise/jg_bg.png'">
+                  <el-carousel ref="carousel" height="135px" indicator-position="outside" >
+                            <el-carousel-item v-for="(item,index) in curWindow.other.imageList" :key="(index +1).toString()">
+                                <img  width="100%" height="135px" :src="pHost+'/'+item.storageId">
+                            </el-carousel-item>
+                        </el-carousel>
               </div>
               <div class="lawWindowTitle">
                 {{curWindow.other.name}}
@@ -194,7 +198,7 @@
                   <el-table-column width="66" align="center" prop="area" label="车属地"></el-table-column>
                   <el-table-column width="78" align="center" label="重点监管">
                     <template>
-                      <span>是</span>
+                      <span>否</span>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -477,7 +481,7 @@
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">过检时间：</span>{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</p>
                                                 <!-- <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p> -->
-                                                <p><span class="bgCgray">重点监管：</span><span>是</span></p>
+                                                <p><span class="bgCgray">重点监管：</span><span>否</span></p>
                                             </div>
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">历史告警（次）：</span>{{row.lscc}}</p>
@@ -555,7 +559,7 @@
      
       <!-- 底部浮动栏 -->
         <div class="amap-position" :class="'amap-' + direction1 + '-box'" v-if="false">
-            <div class="drawerBtn" @click="updateDrawer1">
+            <div class="drawerBtn" @click="updateDrawer1()">
                 <i class="el-icon-arrow-right"></i>
             </div>
             <el-drawer
@@ -685,7 +689,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage,findImageByCaseId} from "@/api/lawSupervise.js";
 import {getOrganDetailApi,getOrganIdApi}  from "@/api/system.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
@@ -929,7 +933,8 @@ export default {
       userInfo: null,
       ryList: null,
       time:Date.parse(new Date()),
-      popoverVisible:false
+      popoverVisible:false,
+      pHost:''
     };
   },
   filters: {
@@ -1117,7 +1122,7 @@ export default {
                 })
                 _this.onSearchResult(resultList, 0,0);
                 // _this.toolShow = true;
-                _this.pointWidth = 150;
+                // _this.pointWidth = 150;
             }else{
               let params = {
                   name: '',
@@ -1165,7 +1170,7 @@ export default {
                           _this.onSearchResult(resultList, 0,0);
                           _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                           // _this.toolShow = true;
-                          _this.pointWidth = 150;
+                          // _this.pointWidth = 150;
                   })
               })
             }
@@ -1212,7 +1217,7 @@ export default {
                         _this.onSearchResult(resultList, 1,0);
                         _this.errorMsg(`总计1条数据`, 'success');
                         // _this.toolShow = true;
-                        _this.pointWidth = len * 24;
+                        // _this.pointWidth = len * 24;
                     })
                 })
 
@@ -1244,7 +1249,7 @@ export default {
             // this.curWindow = resultList[0];
             this.onSearchResult(resultList, 1,0);
             // _this.toolShow = true;
-            _this.pointWidth = 150;
+            // _this.pointWidth = 150;
             
         } else if (node.label === '执法车辆') {
             this.getZfjgLawSupervise({
@@ -1305,11 +1310,10 @@ export default {
 
     },
     positionEvent (row, category) {
-        // debugger;
         this.category == 4;
         // this.curWindow.category = 4;
         // debugger;
-        // this.markers.splice(0, this.markers.length);
+        this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
         }
@@ -1430,7 +1434,7 @@ export default {
         //     this.drawer1 = false;
         // }
         //  this.drawer1 = !this.drawer1 ;
-         this.drawer = true;
+         
         // this.getRealTimeDataByLawSupervise();
         this.searchPageAll(4, 'zfdList', flag);
         this.searchPageAllGJ(6, 'gjclList');
@@ -1500,7 +1504,9 @@ export default {
         // _this.getZfjgLawSupervise(data, this.category);
         if(flag){
           this.onSearchResult(resultList, 4,  this.windows.length);
+          this.drawer = false;
         }else{
+          this.drawer = true;
           this.onSearchResult(resultList, 4,  0);
         }
           
@@ -1533,13 +1539,18 @@ export default {
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
+      let leng = 0;
       if (pois.length > 0) {
         let _this = this;
         // let windows = []
         pois.forEach((poi, i) => {
           let { lng, lat } = poi;
-          lngSum += parseFloat(lng);
-          latSum += parseFloat(lat);
+          if(lng && lat) {
+            leng++;
+            lngSum += parseFloat(lng);
+            latSum += parseFloat(lat);
+          }
+          
           let that = _this;
           if (category == -1) {
                 that.zoom = 16;
@@ -1553,16 +1564,17 @@ export default {
                     1}</span></div>`,
                 events: {
                     click() {
-                    that.windows.forEach(window => {
-                        window.visible = false;
-                    });
-                    // that.$set(that, 'curWindow', that.windows[i]);
-                    let i_index = i;
-                    console.log(that.curWindow);
-                    that.$nextTick(() => {
-                        that.curWindow = that.windows[i_index];
-                        that.curWindow.visible = true;
-                    });
+                       _this.pointWidth = 180;
+                      that.windows.forEach(window => {
+                          window.visible = false;
+                      });
+                      // that.$set(that, 'curWindow', that.windows[i]);
+                      let i_index = i;
+                      console.log(that.curWindow);
+                      that.$nextTick(() => {
+                          that.curWindow = that.windows[i_index];
+                          that.curWindow.visible = true;
+                      });
                     }
                 }
                 });
@@ -1581,6 +1593,7 @@ export default {
                   // content: `<div class="prompt">${ poi.other.username }</div>`,
                   events: {
                     click() {
+                       _this.pointWidth = 150;
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
@@ -1591,6 +1604,9 @@ export default {
                             // that.$set(that, 'curWindow', that.windows[length + i]);
                         if (category == 4) {
                             that.getBySiteName(
+                              that.curWindow.other
+                            );
+                            that.getImageBySiteId(
                               that.curWindow.other
                             );
                             // debugger;
@@ -1613,6 +1629,7 @@ export default {
                   // content: `<div class="prompt">${ poi.other.username }</div>`,
                   events: {
                     click() {
+                      that.pointWidth = 180;
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
@@ -1626,6 +1643,7 @@ export default {
                             that.curWindow.other
                             );
                         } else if(category == 0) {
+                              _this.pointWidth = 150;
                               new Promise((resolve, reject) => {
                                   getOrganIdApi({id: that.curWindow.other.id}).then(
                                       res => {
@@ -1634,6 +1652,7 @@ export default {
 
                               })
                         }else if(category == 1){
+                            _this.pointWidth = that.curWindow.other.name.length * 24;
                             new Promise((resolve, reject) => {
                                   getOrganTree({name: '',organId:that.curWindow.other.id,type: 0}).then(
                                       res => {
@@ -1658,8 +1677,8 @@ export default {
         });
         // debugger;
         let center = {
-          lng: lngSum / pois.length,
-          lat: latSum / pois.length
+          lng: lngSum / leng,
+          lat: latSum / leng
         };
         console.log(this.curWindow);
         // this.windows = [...this.windows, ...windows];
@@ -1688,6 +1707,21 @@ export default {
         queryAlarmVehiclePage({current:1,size:5,siteName:obj.name}).then(
           res => {
             _this.$set(_this.curWindow.other, 'list', res.data.records);
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return;
+          }
+        );
+      });
+    },
+    getImageBySiteId(obj){
+      debugger
+      let _this = this;
+      new Promise((resolve, reject) => {
+        findImageByCaseId(obj.id).then(
+          res => {
+            _this.$set(_this.curWindow.other, 'imageList', res.data);
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -1853,7 +1887,7 @@ export default {
 
             _this.onSearchResult(resultList, category, _this.windows.length);
             // _this.toolShow = true;
-            _this.pointWidth = 180;
+            // _this.pointWidth = 180;
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -1947,21 +1981,22 @@ export default {
   created () {
     // this.searchPageAll(6, 'gjclList');
     this.searchPageAllGJ(6, 'gjclList');
+    this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
     // echarts,
     externalVideoBtns
   },
-   watch: {
-        makePhoneStatus (val, oldVal) {
-            this.videoDoing = null;
-        },
-        
-    },
-    computed: {
-        ...mapGetters(["makePhoneStatus", "doing"])
-    }
+  watch: {
+      makePhoneStatus (val, oldVal) {
+          this.videoDoing = null;
+      },
+      
+  },
+  computed: {
+      ...mapGetters(["makePhoneStatus", "doing"])
+  }
 };
 </script>
 

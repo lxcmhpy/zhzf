@@ -18,13 +18,13 @@
 
       </div>
       <!-- 动态生成表单 -->
-      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
+      <form-create :class="isCopyStyle?'copy-style-text':''" v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
-      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList'></uploadTmp>
+      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList' :addOrEiditFlag='addOrEiditFlag'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
       <chooseLawPerson ref="chooseLawPersonIdRef" @setLawPer="setLawPersonId" @userList="getAllUserListId"></chooseLawPerson>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
-      <!-- 悬浮按钮 -->
+      <!-- 悬浮按钮-操作 -->
       <div class="float-btns btn-height63">
         <el-button type="success" @click="editRecord()" v-if="addOrEiditFlag=='view'">
           <i class="iconfont law-icon_zancun1"></i>
@@ -43,6 +43,9 @@
           <br />复制<br />添加
         </el-button>
       </div>
+      <!-- 悬浮按钮-拓展 -->
+      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData"></floatBtns>
+
     </div>
   </div>
 </template>
@@ -54,6 +57,7 @@ import chooseLawPersonId from "./chooseModlePerson.vue";
 // import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 
 import uploadTmp from './upload/uploadModleFile.vue'
+import floatBtns from './floatBtn.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
@@ -117,6 +121,13 @@ export default {
       partyFieldList: [],
       personName: 'f28b429f7d8b4191a8623f49033f24b1',//当事人信息id
       partyName: '3bd508078f284ae799fd891fa526b463',//企业组织信息
+      isCopyStyle: false,//
+      formOrDocData: {
+        showBtn: [false, false, false], //文书填报、相关记录、操作记录
+        pageDomId: 'deliverCertificate-print',
+      },
+      // 是否转立案字段名
+      isTransferName: '',
     }
   },
   components: {
@@ -125,7 +136,8 @@ export default {
     uploadTmp,
     mapDiag,
     chooseLawPerson,
-    chooseLawPersonId
+    chooseLawPersonId,
+    floatBtns
   },
   methods: {
     // 查找模板-添加
@@ -219,7 +231,7 @@ export default {
         res => {
           if (res.code == 200) {
             console.log('row.createTime <= res.data', this.formData.createTime, res.data)
-            if (res.data != null || this.formData.createTime >= res.data) {
+            if (res.data != null || this.formData.createTime > res.data) {
               // 可修改
               this.$data.$f.resetFields()
               this.rule.forEach(element => {
@@ -230,7 +242,7 @@ export default {
               });
               this.addOrEiditFlag = 'add'
             } else {
-              this.$message.error('当前模板已修改，该记录不可修改');
+              this.$message.error('当前模板已修改或不存在，该记录不可修改');
             }
           } else {
             this.$message.error(res.msg);
@@ -291,8 +303,6 @@ export default {
           item.text = this.$data.$f.getValue(textName)
           if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
             item.text = item.text.join(',')
-            console.log('item.1', item)
-
           }
           console.log('item.', item)
         });
@@ -300,7 +310,6 @@ export default {
       });
       submitData = JSON.stringify(submitData)
       console.log('submitData', submitData)
-      // debugger
       this.formData.layout = submitData
       this.formData.templateFieldList = '';
       this.formData.createTime = '';
@@ -335,9 +344,10 @@ export default {
         },
         error => {
         })
+      this.isCopyStyle = false;//变颜色
     },
     // 暂存
-    onSaveRecord() {
+    onSaveRecord(noRouter) {
       // console.log('rule', this.rule)
       this.rule.forEach(element => {
         // 去掉验证
@@ -381,10 +391,14 @@ export default {
           res => {
             // console.log(res)
             if (res.code == 200) {
-              this.addOrEiditFlag = 'view'
               // this.recordMsg = res.data;//根据返回id上传文件
+              console.log('this.recordMsg1', this.recordMsg)
+              // this.recordMsg = ''
               this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
-              console.log(this.recordMsg)
+              this.recordMsg = JSON.parse(JSON.stringify(this.recordMsg))//处罚视图更新，监听
+              // this.$set('this.recordMsg', this.formData.id ? this.formData.id : res.data)
+              // this.$set(this,'recordMsg', this.formData.id ? this.formData.id : res.data)
+              console.log('this.recordMsg2', this.recordMsg)
               this.$message({
                 type: "success",
                 message: res.msg
@@ -395,11 +409,18 @@ export default {
               //     props: { disabled: true }
               //   }, true);
               // });
-              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-              this.$router.push({
-                name: 'inspection_recordList',
-                // params: item
-              });
+              this.recordId = res.data;
+              if (!noRouter) {
+                // this.addOrEiditFlag = 'view';
+                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                this.$router.push({
+                  name: 'inspection_recordList',
+                  // params: item
+                });
+              } else {
+                this.findRecordDataByld()
+              }
+
             } else {
               this.$message.error(res.msg);
             }
@@ -411,16 +432,28 @@ export default {
     },
     // 复制添加-可修改-创建人换成登录账号-附件删除，id清空
     copySave() {
-      this.addOrEiditFlag = 'add'
-      this.formData.id = ''
-      this.formData.createTime = ''
-      this.formData.updateTime = ''
-      this.defautFileList = []
-      this.defautImgList = []
-      // 设置当前账号名
-      this.setLawPersonCurrentP()
-      // this.saveRecord()
-      this.editMethod()
+      this.$confirm('复制当前记录表单内容，重新创建表单？', "复制当前记录表单", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.isCopyStyle = true;//变颜色
+        debugger
+        this.addOrEiditFlag = 'add'
+        this.formData.id = ''
+        this.formData.createTime = ''
+        this.formData.updateTime = ''
+        this.defautFileList = []
+        this.defautImgList = []
+        // 设置当前账号名
+        this.setLawPersonCurrentP()
+        this.onSaveRecord(true)//暂存一份
+        // 更新数据
+
+        this.editMethod()//可修改
+
+      })
+
     },
     onSubmit(formData) {
       console.log("formData", formData)
@@ -440,14 +473,14 @@ export default {
       console.log('rule', this.rule)
       this.$data.$f.resetFields()
       if (this.$route.query.id) {
-        if (this.$route.query.addOrEiditFlag == 'edit') {
+        if (this.$route.query.addOrEiditFlag == 'edit'&&!this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
               props: { disabled: true }
             }, true);
           });
-        } else if (this.$route.query.addOrEiditFlag == 'view') {
+        } else if (this.$route.query.addOrEiditFlag == 'view'&&!this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
@@ -491,8 +524,6 @@ export default {
       // 处理当事人信息和企业组织信息
       let personFlag = false
       let partyFlag = false
-      console.log('data', data)
-      // debugger
       data.forEach(element => {
         if (element.classId == this.personName) {
           personFlag = element;
@@ -510,7 +541,6 @@ export default {
             // 显示当事人信息
             this.defultPerson()
           }
-          // debugger
         }
         if (element.classId == this.partyName) {
           partyFlag = element;
@@ -609,7 +639,6 @@ export default {
           }
         });
         console.log('this.rule', this.rule)
-        // debugger
       } else {
         data.forEach(element => {
           if (element.classs) {
@@ -701,6 +730,11 @@ export default {
           item.options.forEach(option => {
             option.label = option.value
           });
+          // 是否转立案
+          if (item.field == 'isTransfer') {
+            // 存储是否转立案字段名
+            this.isTransferName = item.id
+          }
           this.rule.push({
             type: "radio",
             field: item.id || item.field,
@@ -881,7 +915,6 @@ export default {
       this.allUserList = list;
     },
     setLawPerson(userlist) {
-      // debugger
       this.alreadyChooseLawPerson = userlist;
       let staffArr = [];
       this.alreadyChooseLawPerson.forEach(item => {
@@ -899,7 +932,6 @@ export default {
       this.allUserListId = list;
     },
     setLawPersonId(userlist) {
-      // debugger
       this.alreadyChooseLawPersonId = userlist;
       let certificateIdArr = [];
       this.alreadyChooseLawPersonId.forEach(item => {
@@ -928,14 +960,12 @@ export default {
     changeLaw(inject) {
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
-      // debugger
 
       //选择执企业组织信息员
       this.$refs.chooseLawPersonRef.showModal(this.alreadyChooseLawPerson);
     },
     // 获取执企业组织信息员和账号-带id
     changeLawId(inject) {
-      // debugger
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
       //选择执企业组织信息员
@@ -1011,7 +1041,13 @@ export default {
     // 随机生成id 用于预览
     random() {
       return Math.random().toString(16)
-    }
+    },
+    saveFileData() {
+
+    },
+    submitFileData() {
+
+    },
   },
   mounted() {
     console.log('id', this.$route.query.id)
@@ -1043,3 +1079,11 @@ export default {
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
+<style lang="scss" src="@/assets/css/documentForm.scss"></style>
+<style lang="scss">
+.copy-style-text{
+  .el-textarea__inner{
+    color: #F56C6C;
+  }
+}
+</style>

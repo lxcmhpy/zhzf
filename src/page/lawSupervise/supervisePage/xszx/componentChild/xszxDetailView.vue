@@ -244,7 +244,7 @@
                       <td>{{obj.axleNumber}}</td>
                       <td rowspan="7" colspan="2">
                           <!-- xjHost -->
-                        <img
+                        <img width="320"
                           :src="xjHost + imgList[2]"
                           alt=""
                         />
@@ -276,9 +276,9 @@
                     </tr>
                     <tr>
                       <td>车长/车宽/车高(mm)</td>
-                      <td>{{obj.length}}</td>
-                      <td>{{obj.width}}</td>
-                      <td>{{obj.height}}</td>
+                      <td>{{obj.length==0?'/':obj.length}}</td>
+                      <td>{{obj.width==0?'/':obj.width}}</td>
+                      <td>{{obj.height==0?'/':obj.height}}</td>
                     </tr>
                   </table>
 

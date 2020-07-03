@@ -458,7 +458,7 @@
                             <td class="color_ff w-1">车辆类型</td>
                             <td>{{obj.vehicleType}}</td>
                             <td class="color_ff w-1">重点监管</td>
-                            <td>{{obj.key}}</td>
+                            <td>{{obj.key?obj.key:'/'}}</td>
                         </tr>
                         <tr>
                             <td class="color_ff w-1">车速（km/h）</td>
@@ -491,26 +491,27 @@
                         <tr>
                             <td class="color_ff w-1">轴型</td>
                             <td >{{obj.axleType}}</td>
-                            <td class="color_ff w-1">总重（KG）</td>
-                            <td>{{obj.totalWeight}}</td>
+                            <td class="color_ff w-1">总重（t）</td>
+                            <td>{{obj.totalWeight/1000}}</td>
                         </tr>
                         <tr>
-                            <td class="color_ff w-1">限重（KG）</td>
-                            <td>{{obj.approvedLoad}}</td>
-                            <td class="color_ff w-1">超重（KG）</td>
-                            <td>{{obj.overweight}}</td>
+                            <td class="color_ff w-1">限重（t）</td>
+                            <td>{{obj.approvedLoad/1000}}</td>
+                            <td class="color_ff w-1">超重（t）</td>
+                            <td>{{obj.overweight/1000}}</td>
                         </tr>
                         <tr>
                             <td class="color_ff w-1">超限率（%）</td>
-                            <td>{{obj.overload}}%</td>
-                            <td class="color_ff w-1">车长（mm）</td>
-                            <td>{{obj.length}}</td>
+                            <td v-if="obj.overload>100" style="color:red">{{obj.overload}}%</td>
+                            <td v-else>{{obj.overload}}%</td>
+                            <td class="color_ff w-1">车长（M）</td>
+                            <td>{{obj.length==0?'/':obj.length}}</td>
                     </tr>
                         <tr>
-                            <td class="color_ff w-1">车宽（mm）</td>
-                            <td>{{obj.width}}</td>
-                            <td class="color_ff w-1">车高（mm）</td>
-                            <td>{{obj.height}}</td>
+                            <td class="color_ff w-1">车宽（M）</td>
+                            <td>{{obj.width==0?'/':obj.width}}</td>
+                            <td class="color_ff w-1">车高（M）</td>
+                            <td>{{obj.height==0?'/':obj.height}}</td>
                         </tr>
                     </table>
                 </div>
@@ -529,21 +530,21 @@
                         </tr>
                         <tr>
                             <td class="color_ff w-1">检测设备编号</td>
-                            <td>{{obj.checkEquipment}}</td>
+                            <td>{{obj.checkEquipment?obj.checkEquipment:'/'}}</td>
                             <td class="color_ff w-1">设备状态</td>
-                            <td>{{obj.status}}</td>
+                            <td>{{siteInfo.siteStatus==0?'正常':'异常'}}</td>
                         </tr>
                         <tr>
                             <td class="color_ff w-1">检测位置</td>
-                            <td>{{obj.checkLocation}}</td>
+                            <td>{{siteInfo.checkLocation?siteInfo.checkLocation:'/'}}</td>
                             <td class="color_ff w-1">车道号</td>
                             <td>{{obj.lane}}</td>
                         </tr>
                         <tr>
                             <td class="color_ff w-1">所属执法机构</td>
-                            <td>{{obj.organName}}</td>
+                            <td>{{siteInfo.organName?siteInfo.organName:'/'}}</td>
                             <td class="color_ff w-1">处理状态</td>
-                            <td>{{obj.status}}</td>
+                            <td>待审核</td>
                         </tr>
                     </table>
                 </div>
@@ -675,7 +676,8 @@ import echarts from 'echarts';
 // import 'echarts/lib/chart/graph';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
-import {findAllDrawerById} from '@/api/lawSupervise.js';
+import {findAllDrawerById,getSiteById} from '@/api/lawSupervise.js';
+import {getFileByCaseId} from "@/api/upload.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
 Vue.use(AMap);
@@ -705,6 +707,7 @@ export default {
     data () {
         let self = this;
         return {
+            siteInfo:{},
             fileList: [],
             imgIndexUrl: null,
             imgList: [
@@ -878,12 +881,26 @@ export default {
                 }
             )
         },
+        getSiteById(){
+            let _this = this;
+            getSiteById(this.obj.siteId).then(
+                res => {
+                    _this.siteInfo.siteStatus = res.data.status
+                    _this.siteInfo.checkLocation = res.data.address
+                    _this.siteInfo.organName = res.data.organName
+                },
+                error => {
+                    return
+                }
+            )
+        }
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
         this.findFileList();
+        this.getSiteById()
     }
 }
 </script>

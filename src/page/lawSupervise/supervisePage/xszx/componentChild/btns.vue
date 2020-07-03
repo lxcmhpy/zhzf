@@ -36,13 +36,11 @@
     <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
          {{statusObj[$route.params.status]}}
     </span>
-    <span :class="$route.name" v-else>
-        <template v-if="$route.name=='law_supervise_invalidCueDetail'">
+    <span :class="$route.name" v-else-if="$route.name=='law_supervise_invalidCueDetail'" style="right: 370px;">
          无效
-        </template>
-         <template v-else>
+    </span>
+    <span :class="$route.name" v-else>
          {{statusObj[$route.params.status]}}
-        </template>
     </span>
 
     <div>
@@ -289,10 +287,10 @@ export default {
           this.$message({type: "warning",message: "无效类型不能为空!"});
           return
         }
-        if(this.checkSearchForm.color===''){
+        /* if(this.checkSearchForm.color===''){
           this.$message({type: "warning",message: "备注说明不能为空!"});
           return
-        }
+        } */
         this.obj.status=status
         this.obj.invalidInfo = JSON.stringify(this.checkSearchForm)
         let _this = this;
