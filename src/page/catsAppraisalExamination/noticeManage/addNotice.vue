@@ -4,7 +4,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="80%"
+    width="1100px"
   >
     <el-form :model="addNoticeForm" :rules="rules" ref="addNoticeForm" label-width="80px">
       <input hidden v-model="addNoticeForm.id" />
@@ -170,7 +170,7 @@
           }else{
             _this.$message.error('出现异常，添加失败！');
           }
-        });   
+        });
       },
       onEditorReady(editor) { // 准备编辑器
       },
