@@ -220,7 +220,7 @@ export default {
         res => {
           if (res.code == 200) {
             console.log('row.createTime <= res.data', this.formData.createTime, res.data)
-            if (res.data != null || this.formData.createTime >= res.data) {
+            if (res.data != null || this.formData.createTime > res.data) {
               // 可修改
               this.$data.$f.resetFields()
               this.rule.forEach(element => {
@@ -231,7 +231,7 @@ export default {
               });
               this.addOrEiditFlag = 'add'
             } else {
-              this.$message.error('当前模板已修改，该记录不可修改');
+              this.$message.error('当前模板已修改或不存在，该记录不可修改');
             }
           } else {
             this.$message.error(res.msg);
