@@ -8,7 +8,8 @@
   }
 
   #mainHeader {
-    overflow  : hidden;
+    // overflow  : hidden;
+    display:flex;
     height    : 54px;
     background: #20232B;
     color     : #fff;
@@ -30,15 +31,19 @@
       span {
         font-size     : 20px;
         vertical-align: middle;
+        white-space: nowrap;
       }
     }
 
     .headMenu {
-      float      : left;
+      // float      : left;
+      overflow-x: auto;
+      overflow-y: hidden;
       margin-left: 10%;
 
       .el-menu {
         background: #20232B;
+        display: flex;
       }
 
       .el-menu--horizontal {
@@ -56,6 +61,9 @@
           background: #20232B;
         }
       }
+    }
+    .headMenu::-webkit-scrollbar {
+      height: 0px;
     }
 
     @media screen and (max-width: 1400px) {
