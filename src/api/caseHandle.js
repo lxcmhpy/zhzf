@@ -1144,7 +1144,7 @@ export function queryFlowBycaseTypeApi(id) {
   });
 }
 
-//根据案件id获取案件流程 
+//根据案件id获取案件流程
 export function queryFlowBycaseIdApi(id) {
   return request({
     url: "/case/caseTemplate/flow/queryFlowBycaseId/" + id,
@@ -1165,7 +1165,7 @@ export function getCatalogListApi(data) {
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
-  }); 
+  });
 }
 
 //添加或修改卷宗目录
@@ -1299,6 +1299,25 @@ export function queryImgBase64Api(storageId) {
     url: "/case/sys/file/getBase64ByStorageId/"+storageId,
     method: "get",
     showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过storageId获取文件base64码
+export function queryResizeImageApi(storageId) {
+  let param ={
+    height:300,
+    maxSize:1024,
+    storageId:storageId,
+    width:400
+  }
+  let data=vm.$qs.stringify(param);
+  return request({
+    url: "/case/sys/file/resizeImage",
+    method: "post",
+    showloading: true,
+    data: data,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   });
