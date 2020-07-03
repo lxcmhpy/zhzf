@@ -1310,11 +1310,10 @@ export default {
 
     },
     positionEvent (row, category) {
-        // debugger;
         this.category == 4;
         // this.curWindow.category = 4;
         // debugger;
-        // this.markers.splice(0, this.markers.length);
+        this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
         }
