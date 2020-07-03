@@ -110,10 +110,17 @@ export  function  getCurrentAndNextOrganApi(data)  {
   });
 }
 
-
-
-
-
+//获取本机构及下级机构
+export  function  queryLawOfficerListByorganIds(data)  {
+  return  request({
+    url:  "/case/caseTemplate/lawOfficer/queryLawOfficerListByorganIds",
+    method:  "post",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource()
+  });
+}
 
 //用户管理      获取用户列表
 export  function  getUserListApi(data)  {

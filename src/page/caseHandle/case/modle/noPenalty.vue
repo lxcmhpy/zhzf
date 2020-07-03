@@ -44,7 +44,7 @@
 
                   </el-upload>
                   <ul class="el-upload-list el-upload-list--text">
-                    <li v-for="item in fileListArr" :key="item.id" class="el-upload-list__item is-ready">
+                    <li v-for="item in fileListArr" :key="item.id" class="el-upload-list__item is-ready" @click.stop="evidenceDetail(item)">
                       <i class="el-icon-document"></i>
                       <span>{{item.fileName}}</span><span @click="deleteFile(item)">
                         <i class="el-icon-close" style="float:right"></i>
@@ -86,6 +86,7 @@
           </el-button>
         </div>
       </div>
+      <payDetail ref="payDetailRef"></payDetail>
   </div>
 </template>
 <script>
@@ -94,7 +95,7 @@ import { mapGetters } from "vuex";
 import checkDocFinish from '../../components/checkDocFinish'
 import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
 import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
-
+import payDetail from "@/page/caseHandle/case/form/payDetail";
 import { findByCondition,deleteDocByIdApi,deleteFileByCaseAndHuanjieApi,
     } from "@/api/caseHandle";
 import {
@@ -105,6 +106,9 @@ import {
   uploadEvdence
 } from "@/api/upload";
 export default {
+  components: {
+    payDetail
+  },
   data() {
     return {
       formData: {
@@ -311,6 +315,11 @@ export default {
       },err=>{
          console.log(err)
       })
+    },
+    //显示已上传的缴纳凭证
+    evidenceDetail(file){
+      console.log("123",file);
+      this.$refs.payDetailRef.showModal(file);
     },
   },
   

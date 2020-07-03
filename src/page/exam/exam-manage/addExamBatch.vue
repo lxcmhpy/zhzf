@@ -105,13 +105,14 @@ export default {
           const beginTime = new Date(value).getTime();
           if(beginTime - nowDate < 0){
             callback(new Error('开始时间不能小于当前时间'));
+            return
           }
           if (this.addExamBatchForm.examEnd !== '') {
             const endTime = new Date(this.addExamBatchForm.examEnd).getTime();
             if(beginTime - endTime > 0){
               callback(new Error('开始时间不能大于结束时间'));
             }else{
-              this.$refs.addExamBatchFormRef.clearValidate('examEnd');
+              this.$refs.addExamBatchFormRef.validateField('examEnd');
             }
           }
           callback();
@@ -126,13 +127,23 @@ export default {
         if(timeHours === 0){
           callback(new Error('考试结束时间格式错误，结束时间不能为00:00:00'));
         }else{
+          const beginTime = new Date(this.addExamBatchForm.examBegin).getTime();
+          const beginHour = new Date(this.addExamBatchForm.examBegin).getHours();
+          const nowDate = new Date().getTime();
+          const endTime = new Date(value).getTime();
+          if(endTime - nowDate < 0){
+            callback(new Error('结束时间不能小于当前时间'));
+            return
+          }
           if (this.addExamBatchForm.examBegin !== '') {
-            const beginTime = new Date(this.addExamBatchForm.examBegin).getTime();
-            const endTime = new Date(value).getTime();
             if(beginTime - endTime > 0){
               callback(new Error('结束时间不能小于开始时间'));
             }else{
-              this.$refs.addExamBatchFormRef.clearValidate('examBegin');
+              if(beginHour > 0 && beginTime - nowDate > 0){
+                this.$refs.addExamBatchFormRef.clearValidate('examBegin');
+              }else{
+                this.$refs.addExamBatchFormRef.validateField('examBegin');
+              }
             }
           }
           callback();

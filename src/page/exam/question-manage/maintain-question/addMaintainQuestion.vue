@@ -237,7 +237,7 @@
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item class="question-analy" prop="questionAnalysis">
+        <el-form-item class="question-analy">
           <el-input
             type="textarea"
             :rows="4"

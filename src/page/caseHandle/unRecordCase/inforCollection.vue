@@ -2,12 +2,12 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
-        <a :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
-        <a :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
-        <a :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
+        <a href="#" :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
+        <a href="#" :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
+        <a href="#" :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
+        <a href="#" :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
         <!-- <a :class="activeA[3]? 'activeA' :''" @click="jump(4)">超限信息</a> -->
-        <a :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
+        <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
       </div>
     </div>
     <el-form :model="inforForm" :rules="rules" ref="inforForm" class="caseInfoForm" label-width="100px"

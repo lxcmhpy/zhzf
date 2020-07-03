@@ -197,7 +197,7 @@
               <div class="el-form-item__content">
                 <el-radio label="指定人员使用"></el-radio>
                 <el-form-item v-if="formData.scopeOfUse=='指定人员使用'" class="lawPersonBox card-user-box" :prop="formData.scopeOfUse=='指定人员使用'?'templateUserIdList':'pacholor'">
-                  <el-select ref="templateUserIdList" value-key="id" v-model="formData.templateUserIdList" multiple filterable @remove-tag="removeUsertag" @change="changeUser">
+                  <el-select ref="templateUserIdList" value-key="userId" v-model="formData.templateUserIdList" multiple filterable @remove-tag="removeUsertag" @change="changeUser">
                     <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
                     <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
                   </el-select>
@@ -222,14 +222,13 @@
                     <el-input slot="reference" v-model="formData.templateOrgan" placeholder="请输入选项" clearable style="width:100%">
                     </el-input>
                   </el-popover>
-
                 </el-form-item>
               </div>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="模板管理者">
             <el-form-item class="lawPersonBox card-user-box-big" style="width:100%">
-              <el-select ref="templateAdminIdList" value-key="id" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag">
+              <el-select ref="templateAdminIdList" value-key="userId" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag">
                 <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
                 <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
@@ -441,6 +440,9 @@ export default {
               if (item.options) {
                 item.options = JSON.parse(item.options)
               }
+              // 处理回显字段info
+              let itemData = JSON.parse(JSON.stringify(item))
+              item.info = itemData.title
             });
           });
           findRecordModleByIdApi(this.editId).then(
@@ -454,11 +456,11 @@ export default {
                 // _this.formData.templateAdminIdList = _this.formData.templateAdminId.split(",")
                 _this.formData.templateUserIdList = [];
                 _this.formData.templateAdminIdList = [];
-                if (_this.formData.templateUser) {
+                if (_this.formData.templateUser && _this.formData.templateUserId) {
                   let user = _this.formData.templateUser.split(",")
                   let userId = _this.formData.templateUserId.split(",")
                   user.forEach((element, index) => {
-                    _this.formData.templateUserIdList.push({ id: userId[index], lawOfficerName: element })
+                    _this.formData.templateUserIdList.push({ userId: userId[index], lawOfficerName: element })
                   });
                 }
                 let admin = _this.formData.templateAdmin.split(",")
@@ -466,7 +468,7 @@ export default {
 
 
                 admin.forEach((element, index) => {
-                  _this.formData.templateAdminIdList.push({ id: adminId[index], lawOfficerName: element })
+                  _this.formData.templateAdminIdList.push({ userId: adminId[index], lawOfficerName: element })
                 });
                 // 修改-无图标时
                 if (_this.formData.icon == '' || _this.formData.icon == null) {
@@ -480,9 +482,7 @@ export default {
             })
         },
         error => {
-
         })
-
     },
     // 获取通用字段组
     findCommonGroupField() {
@@ -628,11 +628,13 @@ export default {
                 if (data.templateAdmin.substr(0, 1) == ',') {
                   data.templateAdmin = data.templateAdmin.substr(1)
                 }
-                if (data.templateUserId.substr(0, 1) == ',') {
-                  data.templateUserId = data.templateUserId.substr(1)
-                }
-                if (data.templateUser.substr(0, 1) == ',') {
-                  data.templateUser = data.templateUser.substr(1)
+                if (data.scopeOfUse == '指定人员使用') {
+                  if (data.templateUserId.substr(0, 1) == ',') {
+                    data.templateUserId = data.templateUserId.substr(1)
+                  }
+                  if (data.templateUser.substr(0, 1) == ',') {
+                    data.templateUser = data.templateUser.substr(1)
+                  }
                 }
                 data.templateUserIdList = '';
                 data.templateAdminIdList = '';

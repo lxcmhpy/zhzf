@@ -354,3 +354,13 @@ export function findDeviceTypeNewCode () {
     cancelToken: setCancelSource()
   });
 }
+export function getSiteById(id) {
+  return request({
+    url: "/zfjg/lawSite/findById/" + id,
+    method: "get",
+    showloading: false,
+  //   loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}

@@ -234,7 +234,7 @@ export function saveOrUpdateRecordApi(data) {
 //根据UUID删除记录
 export function removeRecordByIdApi(data) {
     return request({
-        url: "/xzjc/templateOrder/removeById/" + data,
+        url: "/xzjc/templateOrder/myRemoveById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
