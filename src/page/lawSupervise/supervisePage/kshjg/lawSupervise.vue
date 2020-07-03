@@ -1989,15 +1989,15 @@ export default {
     // echarts,
     externalVideoBtns
   },
-   watch: {
-        makePhoneStatus (val, oldVal) {
-            this.videoDoing = null;
-        },
-        
-    },
-    computed: {
-        ...mapGetters(["makePhoneStatus", "doing"])
-    }
+  watch: {
+      makePhoneStatus (val, oldVal) {
+          this.videoDoing = null;
+      },
+      
+  },
+  computed: {
+      ...mapGetters(["makePhoneStatus", "doing"])
+  }
 };
 </script>
 
