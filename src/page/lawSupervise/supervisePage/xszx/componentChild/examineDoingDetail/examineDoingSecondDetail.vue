@@ -13,14 +13,14 @@
                 <el-table-column type="index" width="55px" label="序号" align="center"></el-table-column>
                 <el-table-column prop="checkTime" label="检测时间" align="center"></el-table-column>
                 <el-table-column prop="siteName" label="检测站点" align="center"></el-table-column>
-                <el-table-column label="etc" align="center"  width="55px">
+                <el-table-column label="ETC" align="center"  width="55px">
                     <template slot-scope="scope">
                         {{scope.row.etc=='是'?scope.row.etc:'否'}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="approvedLoad" width="160px" label="最大允许总质量" align="center"></el-table-column>
+                <el-table-column prop="approvedLoad" width="160px" label="OBU最大允许总质量" align="center"></el-table-column>
                 <el-table-column prop="totalWeight"  label="车货总质量" align="center"></el-table-column>
-                <el-table-column prop="overweight" width="55px" label="超限(t)" align="center">
+                <el-table-column prop="overweight" width="80px" label="超限(t)" align="center">
                     <template slot-scope="scope">
                         {{scope.row.overweight/1000}}
                     </template>
