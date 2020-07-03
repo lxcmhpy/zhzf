@@ -51,6 +51,10 @@ export default {
 
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
         this.$store.commit("set_Head_Active_Nav", route.headActiveNav);
+        //切换可视化监管不刷新
+        if(this.$route.name.indexOf('law_supervise_lawSupervise') > -1){
+          this.$route.meta.keepAlive = true;
+        }
         this.$router.push(({ name: 'reloadPage',params: route}));
 
 
@@ -61,6 +65,10 @@ export default {
       let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
       if (targetName == routerName) {
         return;
+      }
+      //关闭可视化监管，重新打开需要刷新
+      if(targetName.indexOf('law_supervise_lawSupervise') > -1 && this.$route.meta.keepAlive){
+        this.$route.meta.keepAlive = false;
       }
       this.$store.dispatch("deleteTabs", targetName);
       if (this.activeIndexSto === targetName) {

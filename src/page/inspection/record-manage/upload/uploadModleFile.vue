@@ -122,7 +122,7 @@ export default {
       fd.append("fileName", param.file.name);
       fd.append('status', '图片')//传记录id
       fd.append('caseId', this.recordId)//传记录id
-      // fd.append('docId', this.recordId)//传记录id
+      fd.append('docId', this.recordId)//传记录id
       uploadCommon(fd).then(
         // upload(fd).then(
         res => {
@@ -179,7 +179,7 @@ export default {
       fd.append("fileName", param.file.name);
       fd.append('status', '附件')//传记录id
       fd.append('caseId', this.recordId)//传记录id
-      // fd.append('docId', this.recordId)//传记录id
+      fd.append('docId', this.recordId)//传记录id
       uploadCommon(fd).then(
         // upload(fd).then(
         res => {

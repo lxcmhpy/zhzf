@@ -244,7 +244,7 @@
                       <td>{{obj.axleNumber}}</td>
                       <td rowspan="7" colspan="2">
                           <!-- xjHost -->
-                        <img
+                        <img width="320"
                           :src="xjHost + imgList[2]"
                           alt=""
                         />

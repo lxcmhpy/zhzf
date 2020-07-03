@@ -531,7 +531,7 @@
                         <td class="color_ff w-1">检测设备编号</td>
                         <td>{{obj.checkEquipment?obj.checkEquipment:'/'}}</td>
                         <td class="color_ff w-1">设备状态</td>
-                        <td>{{obj.status?obj.status:'/'}}</td>
+                        <td>{{obj.siteStatus==0?'正常':'异常'}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">检测位置</td>
@@ -705,7 +705,7 @@ import echarts from 'echarts';
 // import 'echarts/lib/chart/graph';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
-import {findAllDrawerById} from '@/api/lawSupervise.js';
+import {findAllDrawerById,getSiteById} from '@/api/lawSupervise.js';
 import { upload,getFile, getFileByCaseId,deleteFileByIdApi } from "@/api/upload.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
@@ -952,12 +952,26 @@ export default {
                 }
             )
         },
+        getSiteById(){
+            let _this = this;
+            getSiteById(this.obj.siteId).then(
+                res => {
+                    _this.obj.siteStatus = res.data.status
+                    _this.obj.checkLocation = res.data.address
+                    _this.obj.organName = res.data.organName
+                },
+                error => {
+                    return
+                }
+            )
+        }
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
         this.findFileList();
+        this.getSiteById()
     }
 }
 </script>
