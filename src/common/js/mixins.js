@@ -2,8 +2,9 @@ import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,findDocDataByIdApi,
-  updateLinkInfoByCaseIdAndLinkTypeIdApi,
+  updateLinkInfoByCaseIdAndLinkTypeIdApi,findApprovingDocApi,
 } from "@/api/caseHandle";
+import { getFile } from "@/api/upload";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
 export const mixinGetCaseApiList = {
@@ -485,7 +486,7 @@ export const mixinGetCaseApiList = {
       
       console.log('nowCaseDocdata',nowCaseDocdata);
 
-      if(Number(nowCaseDocdata.data.isApproval) == 0){ //需要审批
+      if(nowCaseDocdata.data.isApproval === '0'){ //需要审批
         this.$store.commit('setApprovalState', 'approvalBefore')
         console.log('需要审批');
       }else{  //不需要审批
@@ -637,27 +638,29 @@ export const mixinGetCaseApiList = {
           return;
         }
         //判断该环节是否需要审批
-        let nowCaseDocdata = '';
-        try{
-          nowCaseDocdata = await findDocDataByIdApi(data.docId);
-        }catch(err){
-          this.$message('查询是否需要审批失败!')
-        }
-        console.log('nowCaseDocdata',nowCaseDocdata);
-        if(Number(nowCaseDocdata.data.isApproval) == 0){ //需要审批
-          this.$store.commit('setApprovalState', 'approvalBefore')
-          console.log('需要审批');
-          if (caseIsApprovaling) {
-            this.$store.commit('setApprovalState', 'submitApproval')
-          } else {
-            this.$store.commit('setApprovalState', 'approvalBefore')
-          }
-          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
-        }else{  //不需要审批
-          this.$store.commit('setApprovalState', '')
-          console.log('不需要审批');
-          this.searchHuanjiePdf(data2, data.linkID);
-        }
+        // let nowCaseDocdata = '';
+        // try{
+        //   nowCaseDocdata = await findDocDataByIdApi(data.docId);
+        // }catch(err){
+        //   this.$message('查询是否需要审批失败!')
+        // }
+        // console.log('nowCaseDocdata',nowCaseDocdata);
+        // if(nowCaseDocdata.data.isApproval === '0'){ //需要审批
+        //   this.$store.commit('setApprovalState', 'approvalBefore')
+        //   console.log('需要审批');
+        //   if (caseIsApprovaling) {
+        //     this.$store.commit('setApprovalState', 'submitApproval')
+        //   } else {
+        //     this.$store.commit('setApprovalState', 'approvalBefore')
+        //   }
+        //   // this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
+        //   this.searchHuanjiePdf(data2, data.linkID);
+        // }else{  //不需要审批
+        //   this.$store.commit('setApprovalState', '')
+        //   console.log('不需要审批');
+        //   this.searchHuanjiePdf(data2, data.linkID);
+        // }
+        this.searchHuanjiePdf(data2, data.linkID);
 
         // if (data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
         //   if (caseIsApprovaling) {
@@ -698,19 +701,55 @@ export const mixinGetCaseApiList = {
       })
     },
     //查询环节是否生成了pdf
-    searchHuanjiePdf(data, linkID) {
-      this.$store.dispatch("getFile", {
-        docId: data.docId,
-        caseId: this.caseId,
-      }).then(res => {
+    async searchHuanjiePdf(data, linkID) {
+      let res = '';
+      res = await getFile({docId: data.docId,caseId: this.caseId,});
+
+      // this.$store.dispatch("getFile", {
+      //   docId: data.docId,
+      //   caseId: this.caseId,
+      // }).then(res => {
         console.log('查询环节是否生成了pdf', res);
-        if (res && res.length > 0) {
+      
+        if (res.data.length > 0) {
+        
+          let nowCaseDocdata = '';
+          try{
+            nowCaseDocdata = await findDocDataByIdApi(data.docId);
+          }catch(err){
+            this.$message('查询是否需要审批失败!')
+          }
+          console.log('nowCaseDocdata',nowCaseDocdata);
+          if(nowCaseDocdata.data.isApproval === '0'){ //需要审批
+            this.$store.commit('setApprovalState', 'approvalBefore')
+            console.log('需要审批');
+            //查询是否在审批中
+            let searchApprovalData = {
+              caseBasicInfoId:this.caseId,
+              caseLinktypeId:linkID
+            }
+            let caseIsApprovalingResult = await findApprovingDocApi(searchApprovalData);
+            console.log('caseIsApprovalingResult',caseIsApprovalingResult);
+            if (caseIsApprovalingResult.data) {  //审批中
+              this.$store.commit('setApprovalState', 'submitApproval')
+            } else {
+              this.$store.commit('setApprovalState', 'approvalBefore')
+            }
+            // this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
+            // this.searchHuanjiePdf(data2, data.linkID);
+          }else{  //不需要审批
+            this.$store.commit('setApprovalState', '')
+            console.log('不需要审批');
+            // this.searchHuanjiePdf(data2, data.linkID);
+          }
+
+
           this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
         } else {
           this.$router.push({ name: data.nextLink })
         }
-      })
-        .catch(err => { console.log(err) })
+      // })
+      //   .catch(err => { console.log(err) })
     },
     //查询文书或表单是否禁用及必填等
     searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {

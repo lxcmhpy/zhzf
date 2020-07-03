@@ -263,7 +263,7 @@ import {
   uploadEvApi,
   findFileByIdApi,
 } from "@/api/upload";
-import { findIsOrderApi } from "@/api/caseHandle";
+import { findIsOrderApi,queryFlowBycaseIdApi } from "@/api/caseHandle";
 export default {
   components: {
     checkDocFinish,
@@ -306,7 +306,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, //表单类型IDer
+        caseLinktypeId: '', //表单类型IDer
         //表单数据
         formData: "",
         status: ""
@@ -713,20 +713,30 @@ export default {
         this.docTableDatas.push(this.docTableDatasSave[1])
       }
     },
+    async initData(){
+      //查询是哪个流程
+      let currentFlow = await queryFlowBycaseIdApi(this.caseId);
+      console.log('currentFlow',currentFlow);
+      if(currentFlow.data.flowName == '江西流程'){
+        this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId
+      }else{
+        this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId
+      }
+      //获取表单数据
+      this.setFormData();
+      //通过案件id和表单类型Id查询已绑定文书
+      this.getDocListByCaseIdAndFormId();
+    }
   },
 
 
   mounted() {
     // this.getCaseBasicInfo();
-    this.findIsOrder()
+    this.findIsOrder() 
 
   },
   created() {
-    //获取表单数据
-    this.setFormData();
-    //通过案件id和表单类型Id查询已绑定文书
-    this.getDocListByCaseIdAndFormId();
-    // this.findFileList();
+    this.initData();
   },
   watch: {
     //代缴金额为0时,执行情况为已完成
