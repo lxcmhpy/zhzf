@@ -219,79 +219,7 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    //根据环节ID转路由name 跳转
-    // com_getCaseRouteName(caseLinkId) {
-    //   let data = {
-    //     nextLink: '',
-    //     docId: ''
-    //   }
-    //   switch (caseLinkId) {
-    //     case this.BASIC_DATA_SYS.establish_caseLinktypeId:   //立案登记
-    //       data.nextLink = "case_handle_establish";
-    //       data.docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.caseDoc_caseLinktypeId: //调查类文书
-    //     case this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId:
-    //       data.nextLink = "case_handle_caseDoc";
-    //       break;
-    //     case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
-    //       data.nextLink = "case_handle_compensationNotice";
-    //       data.docId = this.BASIC_DATA_SYS.compensationNote_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId:  //赔补偿当事人权利环节
-    //       data.nextLink = "case_handle_compensationPartyRights";
-    //       break;
-    //     case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
-    //       data.nextLink = "case_handle_adminCoerciveMeasure";
-    //       data.docId = this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:   //调查报告
-    //       data.nextLink = "case_handle_caseInvestig";
-    //       data.docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
-    //       break;
-    //     case "a36b59bd27ff4b6fe96e1b06390d204e":   //案件审核
-    //       data.nextLink = "";
-    //       break;
-    //     case this.BASIC_DATA_SYS.illegalActionForm_caseLinktypeId:   //违法行为通知
-    //       data.nextLink = "case_handle_illegalActionForm";
-    //       data.docId = this.BASIC_DATA_SYS.illegalActionForm_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId:   //责令改正
-    //       data.nextLink = "case_handle_forceCorrect";
-    //       data.docId = this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId;
-    //       break;
-    //     case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
-    //       data.nextLink = "";
-    //       break;
-    //     case this.BASIC_DATA_SYS.noPenalty_caseLinktypeId:   //不予处罚
-    //       data.nextLink = "case_handle_noPenalty";
-    //       break;
-    //     case this.BASIC_DATA_SYS.partyRights_caseLinktypeId:   //当事人权利
-    //       data.nextLink = "case_handle_partyRights";
-    //       break;
-    //     case this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId:   //处罚决定
-    //       data.nextLink = "case_handle_punishDecisionDoc";
-    //       data.docId = this.BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId:   //决定执行
-    //       data.nextLink = "case_handle_penaltyExecution";
-    //       break;
-    //     case this.BASIC_DATA_SYS.forceExecute_caseLinktypeId:   //强制执行
-    //       data.nextLink = "case_handle_forceExecute";
-    //       break;
-    //     case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:   //结案登记
-    //       data.nextLink = "case_handle_finishCaseReport";
-    //       data.docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
-    //       break;
-    //     case "2c9029ee6cac9281016cacab478e0007":   //归档
-    //       data.nextLink = "";
-    //       break;
-    //     case this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId:   //收缴赔补偿款 环节id 
-    //       data.nextLink = "case_handle_payCompensation";
-    //       break;
-    //   }
-    //   return data;
-    // },
+    
     //根据案件ID和文书Id获取数据   文书数据
     com_getDocDataByCaseIdAndDocId(params) {
       let data = {
@@ -355,6 +283,8 @@ export const mixinGetCaseApiList = {
                 }
                 console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+                //保存后提交审批需要id
+                this.$store.commit("setDocDataId", res.data.id);
                 //提交成功后提交pdf到服务器，后打开pdf
                 this.printContent(res.data.id);
               },
@@ -413,22 +343,35 @@ export const mixinGetCaseApiList = {
       );
     },
     //查看或新增环节下的文书
-    com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
+    async com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
       console.log("新增文书",row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
-        this.$router.push({
-          name: row.path,
-          params: {
-            id: row.id,
-            docId: row.docId,
-            url: this.$route.name,
-            linkTypeId: caseLinkTypeId,
-            addMoreData: JSON.stringify(addMoreData),
-            docDataId: row.docDataId
-          }
-        });
+        //查询是否在审批中
+        let searchApprovalData = {
+          caseBasicInfoId:this.caseId,
+          caseLinktypeId:caseLinkTypeId
+        }
+        let caseIsApprovalingResult = await findApprovingDocApi(searchApprovalData);
+        console.log('caseIsApprovalingResult',caseIsApprovalingResult);
+        if (caseIsApprovalingResult.data) {  //审批中
+          this.$message('有正在审批中的文书,请审批通过后再试！');
+        } else {
+          this.$router.push({
+            name: row.path,
+            params: {
+              id: row.id,
+              docId: row.docId,
+              url: this.$route.name,
+              linkTypeId: caseLinkTypeId,
+              addMoreData: JSON.stringify(addMoreData),
+              docDataId: row.docDataId
+            }
+          });
+        }
+
+        
       } else {
         this.$message('请先保存该环节表单');
       }
@@ -829,19 +772,6 @@ export const mixinGetCaseApiList = {
       console.log('routeName',routeName)
       return routeName;
     },
-    //查询文书是否需要审批
-    async findDocIsNeedApproval(id){
-      return findDocDataByIdApi(id);
-      // return findDocDataByIdApi(id).then(res=>{
-      //   console.log('查询文书是否需要审批',res);
-      //   // return res.data;
-      // }).catch(err=>{
-      //   console.log(err)
-      // })
-    }
-
-
-
 
   },
   created() {

@@ -8,7 +8,7 @@
     <caseListSearch ref="caseListSearch" @showSomeSearch="showSomeSearch"  @searchCase="getMyApprovalCase" :caseState="'myApproval'"></caseListSearch>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
-        <el-table-column prop="applyDate" label="申请时间" align="center" width="200"></el-table-column>
+        <el-table-column prop="docApplyDate" label="申请时间" align="center" width="200"></el-table-column>
         <el-table-column label="案号" align="center" width="200">
             <template slot-scope="scope">
                 <span>{{scope.row.caseNumber ? scope.row.caseNumber : scope.row.tempNo}}</span>
@@ -24,7 +24,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
-        <el-table-column prop="applicant" label="申请人" align="center" width="100"></el-table-column>
+        <el-table-column prop="docApplicant" label="申请人" align="center" width="100"></el-table-column>
         <el-table-column prop="currentLinkName" label="当前环节" align="center" width="100"></el-table-column>
       </el-table>
     </div>
