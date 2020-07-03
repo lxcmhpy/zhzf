@@ -286,8 +286,6 @@ export default {
           res => {
             console.log(res)
             if (res.code == 200) {
-              this.deleteAllFile(id)
-
               this.$message({
                 type: "success",
                 message: res.msg
@@ -301,20 +299,7 @@ export default {
 
       })
     },
-    // 删除附件
-    deleteAllFile(id) {
-      console.log('删除全部');
-      debugger
-      let data = {
-        caseId: id,
-        docId: id
-      }
-      deleteFileByCaseAndHuanjieApi(data).then(res => {
-        console.log('删除全部', res);
-      }, err => {
-        console.log(err)
-      })
-    },
+
     getRecordTitleList() {
       let data = iLocalStroage.gets("userInfo").organId
       // debugger
