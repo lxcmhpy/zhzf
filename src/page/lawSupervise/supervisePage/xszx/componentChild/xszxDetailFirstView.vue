@@ -532,17 +532,17 @@
                             <td class="color_ff w-1">检测设备编号</td>
                             <td>{{obj.checkEquipment?obj.checkEquipment:'/'}}</td>
                             <td class="color_ff w-1">设备状态</td>
-                            <td>{{obj.status?obj.status:'/'}}</td>
+                            <td>{{siteInfo.siteStatus==0?'正常':'异常'}}</td>
                         </tr>
                         <tr>
                             <td class="color_ff w-1">检测位置</td>
-                            <td>{{obj.checkLocation?obj.checkLocation:'/'}}</td>
+                            <td>{{siteInfo.checkLocation?siteInfo.checkLocation:'/'}}</td>
                             <td class="color_ff w-1">车道号</td>
                             <td>{{obj.lane}}</td>
                         </tr>
                         <tr>
                             <td class="color_ff w-1">所属执法机构</td>
-                            <td>{{obj.organName?obj.organName:'/'}}</td>
+                            <td>{{siteInfo.organName?siteInfo.organName:'/'}}</td>
                             <td class="color_ff w-1">处理状态</td>
                             <td>待审核</td>
                         </tr>
@@ -676,7 +676,8 @@ import echarts from 'echarts';
 // import 'echarts/lib/chart/graph';
 import AMap from 'vue-amap';
 import { AMapManager } from 'vue-amap';
-import {findAllDrawerById} from '@/api/lawSupervise.js';
+import {findAllDrawerById,getSiteById} from '@/api/lawSupervise.js';
+import {getFileByCaseId} from "@/api/upload.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
 Vue.use(AMap);
@@ -706,6 +707,7 @@ export default {
     data () {
         let self = this;
         return {
+            siteInfo:{},
             fileList: [],
             imgIndexUrl: null,
             imgList: [
@@ -879,12 +881,26 @@ export default {
                 }
             )
         },
+        getSiteById(){
+            let _this = this;
+            getSiteById(this.obj.siteId).then(
+                res => {
+                    _this.siteInfo.siteStatus = res.data.status
+                    _this.siteInfo.checkLocation = res.data.address
+                    _this.siteInfo.organName = res.data.organName
+                },
+                error => {
+                    return
+                }
+            )
+        }
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
         this.findFileList();
+        this.getSiteById()
     }
 }
 </script>
