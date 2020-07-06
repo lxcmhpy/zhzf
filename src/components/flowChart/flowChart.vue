@@ -9,6 +9,7 @@
         </el-tooltip>
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
+        <el-button type="primary" size="medium" v-if="showAdminCoerciveMeasureBtn" @click="goToAdminCoerciveMeasure">行政强制措施</el-button>
       </div>
       <div style="overflow-y:auto;">
         <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
@@ -58,6 +59,7 @@ export default {
       measureDate: "",
       alReadyFinishCoerciveM: false, //解除（延长）强制措施已完成
       measureDateEndTime: '', //解除（延长）强制措施截止时间
+      showAdminCoerciveMeasureBtn:false,
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -66,17 +68,26 @@ export default {
     async getFlowStatusByCaseId(id) {
       //   console.log(id)
       let _this = this;
-      if(this.province == 'BZ'){  //标准版
-        if(_this.caseFlowData.flowName == "赔补偿流程"){
-          _this.graphData = graphData.compensationGraphData;
-        }else{
-          _this.graphData = graphData.commonGraphData;
-        }
-      }else if(this.province == 'JX'){  //江西
-          _this.graphData = graphData.commonGraphData_JX;
+      let currentFlow = await queryFlowBycaseIdApi(this.caseId);
+      if(currentFlow.data.flowName == '处罚流程'){
+         _this.graphData = graphData.commonGraphData;
+      }else if(currentFlow.data.flowName == '赔补偿流程'){
+         _this.graphData = graphData.compensationGraphData;
+      }else if(currentFlow.data.flowName == '江西流程'){
+         _this.graphData = graphData.commonGraphData_JX;
+        _this.showAdminCoerciveMeasureBtn = true;
       }
-      console.log('_this.province',_this.province);
-      console.log('_this.graphData',_this.graphData);
+      // if(this.province == 'BZ'){  //标准版
+      //   if(_this.caseFlowData.flowName == "赔补偿流程"){
+      //     _this.graphData = graphData.compensationGraphData;
+      //   }else{
+      //     _this.graphData = graphData.commonGraphData;
+      //   }
+      // }else if(this.province == 'JX'){  //江西
+      //     _this.graphData = graphData.commonGraphData_JX;
+      // }
+      // console.log('_this.province',_this.province);
+      // console.log('_this.graphData',_this.graphData);
       
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
@@ -582,24 +593,8 @@ export default {
         this.updateNextLinkByNotTempArray(graphDataTemp, firstNodes[0], curNode)
       }
     },
-    queryFlowBycaseId(){
-      queryFlowBycaseIdApi(this.caseId)
-        .then(res => {
-          console.log("res", res);
-          this.caseFlowData = res.data;
-          this.getFlowStatusByCaseId(this.caseId);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     async mountedInit() {
-      this.queryFlowBycaseId();
-      // this.queryFlowBycaseId(this.getFlowStatusByCaseId(this.caseId));
-      // this.getFlowStatusByCaseId(this.caseId);
-      // this.updateLinkData()
-      // this.updateGraphData()
-      // this.drawFlowChart()
+      this.getFlowStatusByCaseId(this.caseId);
     },
     //解除或延长强制措施跳转
     showRemoveOrExtend() {
@@ -690,6 +685,10 @@ export default {
         }
       )
 
+    },
+    //跳转行政强制措施
+    goToAdminCoerciveMeasure(){
+      this.$router.push({name:'case_handle_adminCoerciveMeasure_JX'})
     }
   },
   created() {

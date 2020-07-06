@@ -98,8 +98,9 @@ let flowGraphData = {
             // {id:"10_1",source: '10',target:"8",linkID: '10_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             {id:"11",source: "11",target:"temp11_1",linkID: BASIC_DATA_JX.courtPunishExecute_JX_caseLinktypeId,name:"申请法院\n强制执行",linkName:'case_handle_enforceApplicationDoc',docId:BASIC_DATA_JX.courtPunishExecute_JX_huanjieAndDocId,position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
+            //申请法院强制执行->结案登记
             {id:"temp11_1",source: '11',target:"temp11_1",linkID: 'temp11_1',name:"",position:{x: 3, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-            // {id:"11_2",source: 'temp11_1',target:"8",linkID: 'temp11_2',name:"",position:{x: 3, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            {id:"temp11_2",source: 'temp11_1',target:"8",linkID: 'temp11_2',name:"",position:{x: 3, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             // {id:"temp11_1",source: "11",target:"8",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"申请法院\n强制执行",linkName:'case_handle_finishCaseReport',docId:BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId,position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
 
