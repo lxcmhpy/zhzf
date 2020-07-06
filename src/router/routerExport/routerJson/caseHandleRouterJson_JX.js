@@ -305,5 +305,23 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/form/adminCoerciveMeasure_JX.vue")
   },
+  {
+    path: "/coerciveMeasureDoc_JX",
+    name: "case_handle_coerciveMeasureDoc_JX",
+    meta: {
+      title: "解除（延长）行政强制措施",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/coerciveMeasureDoc_JX.vue")
+  },
+  {
+    path: "/transfer_JX",
+    name: "case_handle_transfer_JX",
+    meta: {
+      title: "移交移送",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/transfer_JX.vue")
+  },
 ]
 

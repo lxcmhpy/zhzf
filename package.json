@@ -19,6 +19,7 @@
     "@form-create/element-ui": "^1.0.14",
     "axios": "0.18.0",
     "babel-polyfill": "^6.26.0",
+    "babel-runtime": "^6.26.0",
     "compress-webpack-plugin": "^1.0.6",
     "cross-env": "^7.0.2",
     "echarts": "^4.8.0",
