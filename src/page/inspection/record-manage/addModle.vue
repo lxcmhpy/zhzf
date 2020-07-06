@@ -408,7 +408,7 @@ export default {
           { required: true, message: '请选择指定机构', trigger: 'change' }
         ],
       },
-      fieldDisabledTitle:''
+      fieldDisabledTitle: ''
     }
   },
   methods: {
@@ -517,7 +517,7 @@ export default {
           this.commonFieldList = res.data
 
           this.commonFieldList.forEach(element => {
-            element.fieldDisabled=false
+            element.fieldDisabled = false
           });
         },
         error => {
@@ -613,6 +613,10 @@ export default {
                   element.fieldList.forEach(item => {
                     item.sort = sort;
                     sort++
+                    if (typeof (item.title) == 'object') {
+                      item.title = item.title.title
+                      // debugger
+                    }
                   });
                 });
                 data.count = sort;
@@ -848,7 +852,7 @@ export default {
       }
 
       // 选中后禁用
-      console.log('this.commonFieldList',this.commonFieldList)
+      console.log('this.commonFieldList', this.commonFieldList)
       // console.log('find',this.commonFieldList.find(field))
       // 判断新选中的和之前的是不是同一个
       // this.commonFieldList.forEach(element => {

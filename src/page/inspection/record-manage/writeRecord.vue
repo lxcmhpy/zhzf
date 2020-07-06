@@ -697,7 +697,7 @@ export default {
         console.log('item',item,typeof(item.title))
         if(typeof(item.title)=='object'){
           item.title=item.title.title
-          debugger
+          // debugger
         }
         // debugger
         if (item.type == '文本型') {
