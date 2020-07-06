@@ -203,16 +203,16 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="案件基本情况" class="line-height13" prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
+                <el-form-item label="案件基本情况" class="line-height13" prop="caseSituation" :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])">
                   <el-input
                     type="textarea"
                     class="height106"
-                    ref="socialCreditCode"
+                    ref="caseSituation"
                     clearable
-                    v-model="formData.socialCreditCode"
+                    v-model="formData.caseSituation"
                     size="small"
                     placeholder="请输入"
-                    :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
+                    :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -412,6 +412,7 @@ export default {
         partyManager: "",
         partyUnitTel: "",
         socialCreditCode: "",
+        caseSituation: "",
         vehicleShipId: "",
         vehicleShipType: "",
         relationWithCase:"",
@@ -477,6 +478,9 @@ export default {
         ],
         socialCreditCode: [
           { required: true, message: "统一社会信用代码不能为空", trigger: "blur" }
+        ],
+        caseSituation: [
+          { required: true, message: "案件基本情况不能为空", trigger: "blur" }
         ],
 
       },

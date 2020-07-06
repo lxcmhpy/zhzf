@@ -230,34 +230,7 @@
               stripe
               border
               style="width: 100%"
-              :row-class-name="getRowClass"
             >
-              <el-table-column type="expand" expand-change>
-                <template>
-                  <ul class="moreDocList">
-                    <li v-for="(item,index) in allAskDocList" :key="index">
-                      <div>{{item.note}}</div>
-                      <div>
-                        <span v-if="item.status == '1' || item.status == '2'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>
-                      </div>
-                      <div>
-                        <span v-if="item.status == '1' || item.status == '2'" class="tableHandelcase">
-                          <!-- 已完成 -->
-                          <i class="iconfont law-eye" @click="viewDocPdf(item)"></i>
-                          <!-- <i class="iconfont law-print"></i> -->
-                        </span>
-                        <span v-if="item.status == '0'" class="tableHandelcase">
-                          <!-- 未完成 -->
-                          <i class="iconfont law-edit" @click="viewDoc(item)"></i>
-                          <i class="iconfont law-delete" @click="delDocDataByDocId(item)"></i>
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
-                </template>
-              </el-table-column>
-
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
