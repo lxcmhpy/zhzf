@@ -76,6 +76,14 @@ export default [
               title: "表单及文书配置"
             },
             component: () => import("@/page/sys/pdf-manage/pdfManage.vue")
+          },
+          {
+            name: "lawOfficer-manage",
+            path: "/lawOfficer-manage",
+            meta: {
+              title: "执法人员"
+            },
+            component: () => import("@/page/sys/lawOfficer-manage/lawOfficer.vue")
           }
         ]
       },

@@ -82,6 +82,15 @@
         </el-col>
       </el-row>
       <el-row>
+        <el-col :span="10">
+          <el-form-item label="公路等级:">
+            <el-select v-model="addOrUpdateSectionForm.routeGrade" placeholder="请选择">
+              <el-option v-for="item in gradeList" :key="item.name" :label="item.name" :value="item.name"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
         <el-col>
           <el-form-item label="备注说明:">
             <el-input style="width: 445px" v-model="addOrUpdateSectionForm.sectionNote"></el-input>
@@ -97,6 +106,7 @@
 </template>
 <script>
   import iLocalStroage from "@/common/js/localStroage";
+  import {getDictListDetailByNameApi, }from "@/api/system";
     export default {
         data() {
             return {
@@ -108,6 +118,7 @@
                     lanesNumber: "",
                     startingPoint: "",
                     enddingPoint: "",
+                    routeGrade: "",
                     startingPileK: "",
                     startingPileM: "",
                     enddingPileK: "",
@@ -126,6 +137,7 @@
                 handelType: 0, //添加 0  修改2
                 editSectionId:'',
                 organList:[], //机构列表
+                gradeList:[],//公路等级列表
             };
         },
         inject: ["reload"],
@@ -142,6 +154,10 @@
                 }
             },
             showModal(type, data) {
+                getDictListDetailByNameApi("公路等级").then(res=>{
+                    console.log(res)
+                    _this.gradeList = res.data;
+                })
                 let organId = iLocalStroage.gets('userInfo').organId;
                 let _this = this;
                 this.$store.dispatch("getCurrentAndNextOrgan",organId).then(
@@ -170,6 +186,7 @@
                     _this.addOrUpdateSectionForm.enddingPileK = "";
                     _this.addOrUpdateSectionForm.enddingPileM = "";
                     _this.addOrUpdateSectionForm.sectionNote = "";
+                    _this.addOrUpdateSectionForm.routeGrade = "";
                     _this.editSectionId = "";
                     _this.$refs["addOrUpdateSectionForm"].resetFields();
                     this.$nextTick(()=>{
@@ -191,6 +208,7 @@
                     _this.addOrUpdateSectionForm.enddingPileK = data.enddingPileK;
                     _this.addOrUpdateSectionForm.enddingPileM = data.enddingPileM;
                     _this.addOrUpdateSectionForm.sectionNote = data.sectionNote;
+                    _this.addOrUpdateSectionForm.routeGrade = data.routeGrade;
                     _this.editSectionId = data.id;
                 }
             },

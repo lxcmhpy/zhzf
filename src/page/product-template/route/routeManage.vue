@@ -25,7 +25,7 @@
           <el-table-column prop="routeName" label="路线编号" align="center"></el-table-column>
           <el-table-column prop="routeMileage" label="里程" align="center"></el-table-column>
           <el-table-column prop="routeLevel" label="公路行政级别" align="center"></el-table-column>
-          <el-table-column prop="routeGrade" label="公路等级" align="center"></el-table-column>
+          <!--<el-table-column prop="routeGrade" label="公路等级" align="center"></el-table-column>-->
           <el-table-column prop="startingPoint" label="起始地点" align="center"></el-table-column>
           <el-table-column prop="enddingPoint" label="结束地点" align="center"></el-table-column>
           <el-table-column label="起点桩号" align="center">
@@ -86,6 +86,7 @@
           <el-table-column prop="organName" label="管理机构名称" align="center"></el-table-column>
           <el-table-column prop="routeName" label="所属路线" align="center"></el-table-column>
           <el-table-column prop="sectionName" label="路段名称" align="center"></el-table-column>
+          <el-table-column prop="routeGrade" label="公路等级" align="center"></el-table-column>
           <el-table-column label="起点桩号" align="center">
             <el-table-column prop="startingPileK" label="K" width="80" align="center"></el-table-column>
             <el-table-column prop="startingPileM" label="M" width="80" align="center"></el-table-column>
