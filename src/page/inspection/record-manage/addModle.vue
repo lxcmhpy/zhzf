@@ -92,7 +92,7 @@
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
                           <el-select v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)">
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField"></el-option>
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
                           </el-select>
 
                         </el-form-item>
@@ -407,7 +407,8 @@ export default {
         templateOrgan: [
           { required: true, message: '请选择指定机构', trigger: 'change' }
         ],
-      }
+      },
+      fieldDisabledTitle:''
     }
   },
   methods: {
@@ -514,6 +515,10 @@ export default {
 
           // 获取通用字段
           this.commonFieldList = res.data
+
+          this.commonFieldList.forEach(element => {
+            element.fieldDisabled=false
+          });
         },
         error => {
 
@@ -841,6 +846,19 @@ export default {
           this.$set(field, 'title', info)
         }
       }
+
+      // 选中后禁用
+      console.log('this.commonFieldList',this.commonFieldList)
+      // console.log('find',this.commonFieldList.find(field))
+      // 判断新选中的和之前的是不是同一个
+      this.commonFieldList.forEach(element => {
+        if(element.field==field.field){
+          console.log('elment.title',element.title)
+          element.fieldDisabled=!element.fieldDisabled
+        }
+      });
+      // 存储上次选中的项
+      // this.fieldDisabledTitle=info.field
     },
     handleClose() {
       // debugger
