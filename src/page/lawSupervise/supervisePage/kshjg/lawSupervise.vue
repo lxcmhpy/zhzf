@@ -350,7 +350,7 @@
                 placement="bottom-start"
                 v-model="popoverVisible"
                 >
-                <div class="drop-down-menu transition-box">
+                <div class="drop-down-menu">
                         <ul>
                             <li>
                                 <span >
