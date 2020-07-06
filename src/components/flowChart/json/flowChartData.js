@@ -94,7 +94,7 @@ let flowGraphData = {
             {id:"9",source: "9",target:"6",linkID: BASIC_DATA_JX.importCaseDiss_JX_caseLinktypeId,name:"重大案件\n环节",linkName:'case_handle_importantCaseTeamDissDoc_JX',docId:BASIC_DATA_JX.importCaseDiss_JX_huanjieAndDocId,position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
             {id:"9_1",source: '9_1',target:"6",linkID: '9_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
-            {id:"10",source: "10",target:"8",linkID: BASIC_DATA_JX.transfei_JX_caseLinktypeId,name:"移交移送",linkName:'',position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
+            {id:"10",source: "10",target:"8",linkID: BASIC_DATA_JX.transfei_JX_caseLinktypeId,name:"移交移送",linkName:'case_handle_transfer_JX',position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
             // {id:"10_1",source: '10',target:"8",linkID: '10_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             {id:"11",source: "11",target:"temp11_1",linkID: BASIC_DATA_JX.courtPunishExecute_JX_caseLinktypeId,name:"申请法院\n强制执行",linkName:'case_handle_enforceApplicationDoc',docId:BASIC_DATA_JX.courtPunishExecute_JX_huanjieAndDocId,position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
