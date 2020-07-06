@@ -100,7 +100,6 @@ export default {
         );
     },
     uploadAllImg() {
-      // debugger
       // console.log(this.imgList)
       this.imgListUpload.forEach(element => {
         // console.log('element', element)
@@ -208,6 +207,13 @@ export default {
         item.url = item.storagePath
         item.name = item.fileName
       });
+    },
+    // 暂存方法-更新
+    temporySaveMethod(recordMsg) {
+      console.log('监听', recordMsg)
+      this.recordId = recordMsg
+      this.uploadAllImg()
+      this.uploadAllFile()
     }
   },
   mounted() {

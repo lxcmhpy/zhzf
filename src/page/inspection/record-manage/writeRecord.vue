@@ -20,7 +20,7 @@
       <!-- 动态生成表单 -->
       <form-create :class="isCopyStyle?'copy-style-text':''" v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
-      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList' :addOrEiditFlag='addOrEiditFlag'></uploadTmp>
+      <uploadTmp ref="uploadRef" :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList' :addOrEiditFlag='addOrEiditFlag'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
       <chooseLawPerson ref="chooseLawPersonIdRef" @setLawPer="setLawPersonId" @userList="getAllUserListId"></chooseLawPerson>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
@@ -394,13 +394,8 @@ export default {
             // console.log(res)
             if (res.code == 200) {
               // this.recordMsg = res.data;//根据返回id上传文件
-              console.log('this.recordMsg1', this.recordMsg)
-              // this.recordMsg = ''
               this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
-              this.recordMsg = JSON.parse(JSON.stringify(this.recordMsg))//处罚视图更新，监听
-              // this.$set('this.recordMsg', this.formData.id ? this.formData.id : res.data)
-              // this.$set(this,'recordMsg', this.formData.id ? this.formData.id : res.data)
-              console.log('this.recordMsg2', this.recordMsg)
+              this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
               this.$message({
                 type: "success",
                 message: res.msg
