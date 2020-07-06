@@ -95,7 +95,7 @@ import checkDocFinish from '../../components/checkDocFinish'
 import partyRightsEvidence from '@/page/caseHandle/components/partyRightsEvidence'
 import editEvidenceName from '@/page/caseHandle/components/editEvidenceName'
 
-import { findByCondition,deleteDocByIdApi,deleteFileByCaseAndHuanjieApi,
+import { findByCondition,deleteDocByIdApi,deleteFileByCaseAndHuanjieApi,queryFlowBycaseIdApi,
     } from "@/api/caseHandle";
 import {
   uploadEvApi,
@@ -121,7 +121,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.noPenalty_caseLinktypeId, //不予处罚的表单ID
+        caseLinktypeId: '', //不予处罚的表单ID
         //表单数据
         formData: "",
         status: ""
@@ -312,13 +312,25 @@ export default {
          console.log(err)
       })
     },
+    async initData(){
+      //查询是哪个流程
+      let currentFlow = await queryFlowBycaseIdApi(this.caseId);
+      console.log('currentFlow',currentFlow);
+      if(currentFlow.data.flowName == '江西流程'){
+        this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_JX.noPenalty_JX_caseLinktypeId
+      }else{
+        this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_SYS.noPenalty_caseLinktypeId
+      }
+      //获取表单数据
+      this.setFormData();
+      this.findFileList();
+    }
   },
   
   mounted() {
   },
   created() {
-    this.setFormData();
-    this.findFileList();
+    this.initData();
   },
   beforeRouteLeave(to, from, next) {
     // if(!this.isSave){
