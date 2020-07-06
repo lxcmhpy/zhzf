@@ -302,7 +302,7 @@
                   <span v-if="scope.row.status == '1' || scope.row.status == '2'">
                     <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
                     <template v-if="scope.row.docProcessStatus=='审批中'">审批中</template>
-                    <template v-if="scope.row.docProcessStatus==''">已完成</template>
+                    <template v-if="scope.row.docProcessStatus==''|| scope.row.docProcessStatus=='已完成'">已完成</template>
                   </span>
                   <!-- <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span> -->
                   <span v-if="scope.row.status == '0'">未完成</span>
@@ -618,6 +618,8 @@ export default {
         this.$store.commit("setDocId", row.docId);
       }else if(row.docProcessStatus == '审批中'){
         this.$store.commit('setApprovalState', 'submitApproval');
+      }else{
+         this.$store.commit('setApprovalState', '');
       }
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
@@ -646,6 +648,15 @@ export default {
       this.allAskDocList = [];
       // askDocListNum:0,
       // askDocListFinishNum:0,
+      
+      //获取询问笔录的文书类型id
+      let xunwenDocTypeId = '';
+      for(let i=0;i<this.docTableDatasCopy.length;i++){
+        if (this.docTableDatasCopy[i].name == "询问笔录") {
+          xunwenDocTypeId = this.docTableDatasCopy[i].docId;
+          break;
+        }
+      }
 
       this.docTableDatas.push({
         name: "询问笔录",
@@ -653,7 +664,7 @@ export default {
         openRow: true,
         // url: "case_handle_othermodle",
         path: "case_handle_othermodle",
-        docId: "2c9029ca5b71686d015b71a86ead0032"
+        docId: xunwenDocTypeId
       });
       let askDocListFinishNum = 0;
       this.docTableDatasCopy.forEach(item => {

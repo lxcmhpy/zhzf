@@ -162,9 +162,9 @@ export default {
         animationDurationUpdate: 1500,
         animationEasingUpdate: 'quinticInOut',
         grid: {
-          left: '1%',
+          left: '0%',
           top: '2%',
-          right: '1%',
+          right: '0%',
           bottom: '40',
           containLabel: true,
         },
