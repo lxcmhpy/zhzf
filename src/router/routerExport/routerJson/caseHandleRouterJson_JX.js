@@ -134,7 +134,7 @@ export default [
     meta: {
       title: "重大案件集体讨论记录——江西"
     },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/importantCaseTeamDissDoc_JX.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/form/importantCaseTeamDissDoc_JX.vue")
   },
   {
     path: "/illegalActionForm_JX",
