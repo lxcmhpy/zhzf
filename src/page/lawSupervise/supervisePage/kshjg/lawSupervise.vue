@@ -4,7 +4,7 @@
     <el-carousel :interval="8000" indicator-position="none" height="28px" v-if="gjclList" style="position:absolute;top:0px;line-height:28px;width:100%;font-size:12px;color:#20232B">
         <el-carousel-item v-for="(row,index) in gjclList" :key="index.toString()">
             <div style="background:#F9DAAC;padding-left:17px;">
-                <div class="lawHoverTitle" @click="updateDrawer1" >
+                <div class="lawHoverTitle" @click="updateDrawer1()" >
                         <span><i class="el-icon-info red"></i>&nbsp;&nbsp;</span>
                         <span class="bgCgray">{{row&&row.checkTime?row.checkTime:''}}  </span>
                         <span class="redC">{{row.vehicleNumber}}  </span>
@@ -67,7 +67,7 @@
             <div v-else-if="curWindow.category == 1">
               <div class="lawWindowTitle">
                 <i class="iconfont law-zfj"></i>
-                 <div class="title">{{curWindow.other.name}}</div>
+                 <div class="title" style="color: #fff;font-weight: 200;">{{curWindow.other.name}}</div>
                 <!-- <span></span> -->
                 <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
               </div>
@@ -112,7 +112,7 @@
             <div v-else-if="curWindow.category == 2">
                 <div class="lawWindowTitle">
                     <i class="iconfont law-car"></i>
-                    <div class="title">{{curWindow.other.vehicleNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
+                    <div class="title" style="color: #fff;font-weight: 200;">{{curWindow.other.vehicleNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
 
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
 
@@ -147,7 +147,7 @@
               </div>-->
               <div class="lawWindowTitle">
                     <i class="iconfont law-ship"></i>
-                    <div class="title">{{curWindow.other.shipNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
+                    <div class="title" style="color: #fff;font-weight: 200;">{{curWindow.other.shipNumber}}<span class="right" style="margin-top:0px;">在线</span></div>
                     <span></span>
                     <!-- <div class="right">{{curWindow.other.enforceNo}}</div> -->
                 </div>
@@ -163,7 +163,11 @@
             <!-- 4非现场治超检测 -->
             <div v-else-if="curWindow.category == 4">
               <div>
-                  <img width="100%" :src="'./static/images/img/lawSupervise/jg_bg.png'">
+                  <el-carousel ref="carousel" height="135px" indicator-position="outside" >
+                            <el-carousel-item v-for="(item,index) in curWindow.other.imageList" :key="(index +1).toString()">
+                                <img  width="100%" height="135px" :src="pHost+'/'+item.storageId">
+                            </el-carousel-item>
+                        </el-carousel>
               </div>
               <div class="lawWindowTitle">
                 {{curWindow.other.name}}
@@ -180,7 +184,7 @@
                       {{time | formatDate}} &nbsp;
                       超限{{curWindow.other.cxchl}} &nbsp;
                       黑名单{{curWindow.other.blackList}}
-                    <span class="right" @click="routerXs">详情</span>
+                    <span class="right" @click="routerXsByName(curWindow.other.name)">详情</span>
                     </p>
                   </div>
                 </div>
@@ -194,7 +198,7 @@
                   <el-table-column width="66" align="center" prop="area" label="车属地"></el-table-column>
                   <el-table-column width="78" align="center" label="重点监管">
                     <template>
-                      <span>是</span>
+                      <span>否</span>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -344,7 +348,7 @@
             </el-popover>
             <el-popover
                 placement="bottom-start"
-                trigger="click"
+                v-model="popoverVisible"
                 >
                 <div class="drop-down-menu transition-box">
                         <ul>
@@ -477,7 +481,7 @@
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">过检时间：</span>{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</p>
                                                 <!-- <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p> -->
-                                                <p><span class="bgCgray">重点监管：</span><span>是</span></p>
+                                                <p><span class="bgCgray">重点监管：</span><span>否</span></p>
                                             </div>
                                             <div class="flexBox">
                                                 <p><span class="bgCgray">历史告警（次）：</span>{{row.lscc}}</p>
@@ -555,7 +559,7 @@
      
       <!-- 底部浮动栏 -->
         <div class="amap-position" :class="'amap-' + direction1 + '-box'" v-if="false">
-            <div class="drawerBtn" @click="updateDrawer1">
+            <div class="drawerBtn" @click="updateDrawer1()">
                 <i class="el-icon-arrow-right"></i>
             </div>
             <el-drawer
@@ -630,7 +634,7 @@
         <!-- <el-amap-search-box class="search-box-blue" :search-option="searchOption" :on-search-result="searchAll" >
         </el-amap-search-box> -->
         <div class="search-box-blue" style="z-index:10;display:flex;">
-            <el-input class="w-390"
+            <el-input class="w-390" clearable
                 :placeholder="placeholder"
                 v-model="filterText">
             </el-input>
@@ -685,7 +689,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage} from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage,findImageByCaseId} from "@/api/lawSupervise.js";
 import {getOrganDetailApi,getOrganIdApi}  from "@/api/system.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
@@ -928,7 +932,9 @@ export default {
       expandTree:false,
       userInfo: null,
       ryList: null,
-      time:Date.parse(new Date())
+      time:Date.parse(new Date()),
+      popoverVisible:false,
+      pHost:''
     };
   },
   filters: {
@@ -1017,7 +1023,7 @@ export default {
         if (!window.PhoneCallModule.getRegistered()) {
             // window.PhoneCallModule.sipRegister();
             let displayName = 'ecds05';
-            let privateIdentity ='100007';
+            let privateIdentity ='100006';
             let password = '1234';
             window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
 
@@ -1041,24 +1047,36 @@ export default {
         this.fxcObj = row;
     },
     isCheckAll () {
-        // debugger;
+        debugger;
         let _this = this;
         if (this.radioVal == '全选') {
             this.radioVal = '取消全选';
             this.tabList[0].children.forEach((item)=>{
-            // debugger;
-                if(!item.select) {
-                    _this.checkAll(item);
-               }
+              if(!item.select) {
+                  item.select = !item.select;
+                  _this.category = item.code;
+                  _this.categoryStr = item.name;
+                  if (_this.curWindow) {
+                  _this.curWindow.visible = false;
+                  }
+                  _this.category = item.code;
+                  let data = {
+                    key: "",
+                    type: item.code
+                  };
+                  _this.allSearchList.push(data);
+                  _this.getZfjgLawSupervise(data, _this.category);
+              }
             })
+           
         } else {
             this.radioVal = '全选';
             this.tabList[0].children.forEach((item)=>{
-            // debugger;
-                if(item.select) {
-                    _this.checkAll(item);
-                }
+              item.select = !item.select;
             })
+            _this.allSearchList.splice(0, _this.allSearchList.length);
+                    _this.markers.splice(0, _this.markers.length);
+                    _this.windows.splice(0, _this.windows.length);
         }
 
     },
@@ -1104,7 +1122,7 @@ export default {
                 })
                 _this.onSearchResult(resultList, 0,0);
                 // _this.toolShow = true;
-                _this.pointWidth = 150;
+                // _this.pointWidth = 150;
             }else{
               let params = {
                   name: '',
@@ -1152,7 +1170,7 @@ export default {
                           _this.onSearchResult(resultList, 0,0);
                           _this.errorMsg(`总计${res.data.length}条数据`, 'success');
                           // _this.toolShow = true;
-                          _this.pointWidth = 150;
+                          // _this.pointWidth = 150;
                   })
               })
             }
@@ -1199,7 +1217,7 @@ export default {
                         _this.onSearchResult(resultList, 1,0);
                         _this.errorMsg(`总计1条数据`, 'success');
                         // _this.toolShow = true;
-                        _this.pointWidth = len * 24;
+                        // _this.pointWidth = len * 24;
                     })
                 })
 
@@ -1231,7 +1249,7 @@ export default {
             // this.curWindow = resultList[0];
             this.onSearchResult(resultList, 1,0);
             // _this.toolShow = true;
-            _this.pointWidth = 150;
+            // _this.pointWidth = 150;
             
         } else if (node.label === '执法车辆') {
             this.getZfjgLawSupervise({
@@ -1260,10 +1278,24 @@ export default {
             )
         })
     },
-    routerXs () {
-        this.$router.push({
-            name: 'law_supervise_offSiteManage'
-        })
+    // routerXsBySiteName (siteName) {
+    //   this.$router.push({
+    //       name: 'law_supervise_offSiteManage',params:{siteName:siteName}
+    //   })
+    // },
+    routerXs() {
+      this.$router.push({
+          name: 'law_supervise_offSiteManage'
+      })
+    },
+    routerXsByName (name) {
+         this.$router.push({
+                    name: 'law_supervise_offSiteManage',
+                    params: {
+                        siteName: name
+                    }
+                });
+
     },
     routerXsDetail (row) {
         // debugger;
@@ -1278,11 +1310,10 @@ export default {
 
     },
     positionEvent (row, category) {
-        // debugger;
         this.category == 4;
         // this.curWindow.category = 4;
         // debugger;
-        // this.markers.splice(0, this.markers.length);
+        this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
         }
@@ -1395,7 +1426,7 @@ export default {
         this.drawer = true;
         this.updateDrawer()
     },
-    updateDrawer1 () {
+    updateDrawer1 (flag) {
         // debugger;
         // if (this.category == 4) {
         //     this.drawer1 = true;
@@ -1403,15 +1434,15 @@ export default {
         //     this.drawer1 = false;
         // }
         //  this.drawer1 = !this.drawer1 ;
-         this.drawer = true;
+         
         // this.getRealTimeDataByLawSupervise();
-        this.searchPageAll(4, 'zfdList');
+        this.searchPageAll(4, 'zfdList', flag);
         this.searchPageAllGJ(6, 'gjclList');
         this.category = 4;
         // this.searchByTab(this.tabList[1].children[0]);
 
     },
-    searchPageAll (code, obj) {
+    searchPageAll (code, obj, flag) {
         // this.markers.splice(0, this.markers.length);
         if (this.curWindow) {
             this.curWindow.visible = false;
@@ -1433,7 +1464,7 @@ export default {
                         let resultList = [];
                         // that[obj] = res.data.records.splice(0,5);
                         that[obj] = res.data.splice(0,5);
-                        that.pointZFD(code,that.zfdList);
+                        that.pointZFD(code,that.zfdList,flag);
 
                     },
                     error => {
@@ -1442,7 +1473,7 @@ export default {
                     })
             })
     },
-    pointZFD (code, list) {
+    pointZFD (code, list, flag) {
       let resultList = [];
       list.forEach((item, i) => {
             let position = item.propertyValue ? item.propertyValue.split(','):['',''];
@@ -1471,7 +1502,14 @@ export default {
 
         // _this.allSearchList.push(data);
         // _this.getZfjgLawSupervise(data, this.category);
-        this.onSearchResult(resultList, 4,  0)
+        if(flag){
+          this.onSearchResult(resultList, 4,  this.windows.length);
+          this.drawer = false;
+        }else{
+          this.drawer = true;
+          this.onSearchResult(resultList, 4,  0);
+        }
+          
     },
     searchPageAllGJ (code, obj) {
         // 告警车辆
@@ -1501,13 +1539,18 @@ export default {
       let latSum = 0;
       let lngSum = 0;
       let numG = 100;
+      let leng = 0;
       if (pois.length > 0) {
         let _this = this;
         // let windows = []
         pois.forEach((poi, i) => {
           let { lng, lat } = poi;
-          lngSum += parseFloat(lng);
-          latSum += parseFloat(lat);
+          if(lng && lat) {
+            leng++;
+            lngSum += parseFloat(lng);
+            latSum += parseFloat(lat);
+          }
+          
           let that = _this;
           if (category == -1) {
                 that.zoom = 16;
@@ -1521,16 +1564,17 @@ export default {
                     1}</span></div>`,
                 events: {
                     click() {
-                    that.windows.forEach(window => {
-                        window.visible = false;
-                    });
-                    // that.$set(that, 'curWindow', that.windows[i]);
-                    let i_index = i;
-                    console.log(that.curWindow);
-                    that.$nextTick(() => {
-                        that.curWindow = that.windows[i_index];
-                        that.curWindow.visible = true;
-                    });
+                       _this.pointWidth = 180;
+                      that.windows.forEach(window => {
+                          window.visible = false;
+                      });
+                      // that.$set(that, 'curWindow', that.windows[i]);
+                      let i_index = i;
+                      console.log(that.curWindow);
+                      that.$nextTick(() => {
+                          that.curWindow = that.windows[i_index];
+                          that.curWindow.visible = true;
+                      });
                     }
                 }
                 });
@@ -1549,6 +1593,7 @@ export default {
                   // content: `<div class="prompt">${ poi.other.username }</div>`,
                   events: {
                     click() {
+                       _this.pointWidth = 150;
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
@@ -1559,6 +1604,9 @@ export default {
                             // that.$set(that, 'curWindow', that.windows[length + i]);
                         if (category == 4) {
                             that.getBySiteName(
+                              that.curWindow.other
+                            );
+                            that.getImageBySiteId(
                               that.curWindow.other
                             );
                             // debugger;
@@ -1581,6 +1629,7 @@ export default {
                   // content: `<div class="prompt">${ poi.other.username }</div>`,
                   events: {
                     click() {
+                      that.pointWidth = 180;
                       that.windows.forEach(window => {
                         window.visible = false;
                       });
@@ -1594,6 +1643,7 @@ export default {
                             that.curWindow.other
                             );
                         } else if(category == 0) {
+                              _this.pointWidth = 150;
                               new Promise((resolve, reject) => {
                                   getOrganIdApi({id: that.curWindow.other.id}).then(
                                       res => {
@@ -1602,6 +1652,7 @@ export default {
 
                               })
                         }else if(category == 1){
+                            _this.pointWidth = that.curWindow.other.name.length * 24;
                             new Promise((resolve, reject) => {
                                   getOrganTree({name: '',organId:that.curWindow.other.id,type: 0}).then(
                                       res => {
@@ -1626,8 +1677,8 @@ export default {
         });
         // debugger;
         let center = {
-          lng: lngSum / pois.length,
-          lat: latSum / pois.length
+          lng: lngSum / leng,
+          lat: latSum / leng
         };
         console.log(this.curWindow);
         // this.windows = [...this.windows, ...windows];
@@ -1664,7 +1715,22 @@ export default {
         );
       });
     },
-    checkAll (item) {
+    getImageBySiteId(obj){
+      debugger
+      let _this = this;
+      new Promise((resolve, reject) => {
+        findImageByCaseId(obj.id).then(
+          res => {
+            _this.$set(_this.curWindow.other, 'imageList', res.data);
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return;
+          }
+        );
+      });
+    },
+    /* checkAll (item) {
         item.select = !item.select;
          this.category = item.code;
         this.categoryStr = item.name;
@@ -1682,11 +1748,8 @@ export default {
             type: item.code
             };
             this.allSearchList.push(data);
-            if (this.category == 4) {
-                this.searchPageAllGJ(data, this.category);
-            } else {
+            
                 this.getZfjgLawSupervise(data, this.category);
-            }
         } else {
             let _this = this;
             let _index = _.findIndex(this.allSearchList, function (chr) {
@@ -1701,7 +1764,7 @@ export default {
             });
             }
         }
-    },
+    }, */
     searchByTab(item) {
         debugger;
         if (this.allSearchList.length == 0) {
@@ -1720,7 +1783,6 @@ export default {
         if (this.curWindow) {
           this.curWindow.visible = false;
         }
-        this.category = item.code;
         let data = {
           // area: this.currentAddressObj.province + this.currentAddressObj.district,
         //   area: "东城区",
@@ -1731,7 +1793,9 @@ export default {
         };
         this.allSearchList.push(data);
          if (this.category == 4) {
-                this.searchPageAllGJ(data, this.category);
+           this.updateDrawer1(1);
+           this.popoverVisible=false;
+                // this.searchPageAllGJ(data, this.category);
         } else {
             this.getZfjgLawSupervise(data, this.category);
         }
@@ -1750,18 +1814,10 @@ export default {
           });
         }
       }
-
-      if (this.category == '4') {
-        //   this.drawer1 = false;
-        //   this.drawer = false;
-          this.updateDrawer1();
-      } else {
-          this.updateDrawer();
-
-      }
+      
     },
     searchAll(pois) {
-
+      debugger;
       this.markers.splice(0, this.markers.length);
       if (this.curWindow) {
         this.curWindow.visible = false;
@@ -1790,7 +1846,6 @@ export default {
         getZfjgLawSupervise(data).then(
           res => {
             // resolve(res);
-            debugger;
             let resultList = [];
             if (res.data && res.data.length == 0) {
               _this.errorMsg("暂无数据", "error");
@@ -1809,6 +1864,7 @@ export default {
             let position = item.propertyValue.split(",");
               let lng = parseFloat(position[0]);
               let lat = parseFloat(position[1]);
+              item.nickName = item.nickName?item.nickName:item.name;
               resultList.push({
                 address: item.address,
                 distance: null,
@@ -1831,7 +1887,7 @@ export default {
 
             _this.onSearchResult(resultList, category, _this.windows.length);
             // _this.toolShow = true;
-            _this.pointWidth = 180;
+            // _this.pointWidth = 180;
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -1912,8 +1968,8 @@ export default {
          window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
             // window.PhoneCallModule.sipRegister();
-            let displayName = 'ecds05';
-            let privateIdentity ='100007';
+            let displayName = 'ecds04';
+            let privateIdentity ='100006';
             let password = '1234';
             window.PhoneCallModule.sipRegister(displayName,privateIdentity,password);
         }
@@ -1925,21 +1981,22 @@ export default {
   created () {
     // this.searchPageAll(6, 'gjclList');
     this.searchPageAllGJ(6, 'gjclList');
+    this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {
     // echarts,
     externalVideoBtns
   },
-   watch: {
-        makePhoneStatus (val, oldVal) {
-            this.videoDoing = null;
-        },
-        
-    },
-    computed: {
-        ...mapGetters(["makePhoneStatus", "doing"])
-    }
+  watch: {
+      makePhoneStatus (val, oldVal) {
+          this.videoDoing = null;
+      },
+      
+  },
+  computed: {
+      ...mapGetters(["makePhoneStatus", "doing"])
+  }
 };
 </script>
 

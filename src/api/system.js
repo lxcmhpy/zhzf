@@ -110,10 +110,17 @@ export  function  getCurrentAndNextOrganApi(data)  {
   });
 }
 
-
-
-
-
+//获取本机构及下级机构
+export  function  queryLawOfficerListByorganIds(data)  {
+  return  request({
+    url:  "/case/caseTemplate/lawOfficer/queryLawOfficerListByorganIds",
+    method:  "post",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource()
+  });
+}
 
 //用户管理      获取用户列表
 export  function  getUserListApi(data)  {
@@ -810,6 +817,7 @@ export function deleteBnslawApi(data) {
 //新增 修改 违法行为
 export function addCaseCauseApi(data) {
   let _data = vm.$qs.stringify(data);
+  console.log("111222",data);
   return request({
     url: "/bnslaw/sys/bnslawCause/addOrUpdateCaseCause",
     method: "post",
@@ -1204,4 +1212,14 @@ export function deleteRoadLcDeployApi(id) {
     loadingType:'loadPart',
     cancelToken: setCancelSource()
   });
+}
+
+export function findListByUserIdAndParentId(userId, parenId) {
+    return request({
+        url: "system/sys/permission/findListByUserIdAndParentId/"+userId+"/"+parenId,
+        method: "get",
+        showloading: false,
+        loadingType:'loadPart',
+        cancelToken: setCancelSource()
+    });
 }

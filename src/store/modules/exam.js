@@ -8,7 +8,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
     changeQuestionLock,randomQuestion,randomParagraphQuestion
     ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi,
-    deleteQuestionImage, batchImportQuestion, downLoadQuestionTemp} from "@/api/exam";
+    deleteQuestionImage, batchImportQuestion, downLoadQuestionTemp, exportExamCard, exportPersonCard} from "@/api/exam";
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
@@ -269,6 +269,22 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
           exporExamtDetailInfo({commit},data){
             return new Promise((resolve, reject) => {
                 exporExamtDetailApi(data).then(
+                    res => {  resolve(res);   },
+                    error => { reject(error); })
+            })
+        },
+        // 批量导出准考证
+        exportExamCard({commit}, data){
+            return new Promise((resolve, reject) => {
+                exportExamCard(data).then(
+                    res => {  resolve(res);   },
+                    error => { reject(error); })
+            })
+        },
+        // 单个导出准考证
+        exportPersonCard({commit}, data){
+            return new Promise((resolve, reject) => {
+                exportPersonCard(data).then(
                     res => {  resolve(res);   },
                     error => { reject(error); })
             })

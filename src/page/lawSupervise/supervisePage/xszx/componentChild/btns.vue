@@ -1,17 +1,17 @@
 <template>
   <div class="superviseBtns">
-    <div v-if="tabActiveValue == '0'">
+    <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
         <el-button type="button" class="submitBtn grayBtn" @click="showInvalidCue" >
             <i class="el-icon-warning-outline"></i>
             <div>无效<br />信息</div>
         </el-button>
     </div>
-    <div v-if="['1', '2', '3'].indexOf(tabActiveValue) > -1">
+    <!-- <div v-if="['1', '2', '3'].indexOf(tabActiveValue) > -1">
       <el-button type="button" class="submitBtn blueBtn" @click="prevRouter">
         <i class="iconfont law-xiayibu"></i>
         <div>上一步</div>
       </el-button>
-    </div>
+    </div> -->
     <div v-if="['0', '1'].indexOf(tabActiveValue) > -1">
       <el-button type="button" class="submitBtn blueBtn" @click="nextRouter">
         <i class="iconfont law-xiayibu"></i>
@@ -36,13 +36,11 @@
     <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
          {{statusObj[$route.params.status]}}
     </span>
-    <span :class="$route.name" v-else>
-        <template v-if="$route.name=='law_supervise_invalidCueDetail'">
+    <span :class="$route.name" v-else-if="$route.name=='law_supervise_invalidCueDetail'" style="right: 370px;">
          无效
-        </template>
-         <template v-else>
+    </span>
+    <span :class="$route.name" v-else>
          {{statusObj[$route.params.status]}}
-        </template>
     </span>
 
     <div>
@@ -289,10 +287,10 @@ export default {
           this.$message({type: "warning",message: "无效类型不能为空!"});
           return
         }
-        if(this.checkSearchForm.color===''){
+        /* if(this.checkSearchForm.color===''){
           this.$message({type: "warning",message: "备注说明不能为空!"});
           return
-        }
+        } */
         this.obj.status=status
         this.obj.invalidInfo = JSON.stringify(this.checkSearchForm)
         let _this = this;
@@ -357,7 +355,7 @@ export default {
         }
       });
     },
-    prevRouter() {
+    /* prevRouter() {
       let prevStatus=parseInt(this.$route.params.status)-1;
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',
@@ -367,7 +365,7 @@ export default {
           offSiteManageId: this.$route.params.offSiteManageId
         }
       });
-    },
+    }, */
     findAllDrawerById (data, obj) {
         let _this = this
         new Promise((resolve, reject) => {

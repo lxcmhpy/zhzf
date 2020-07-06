@@ -25,7 +25,7 @@
             src="http://172.16.170.54:9332/9,105b6779dca4#palette='white|white'#" type="application/pdf" internalinstanceid="29">
         </object> -->
         <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
-          <el-form :inline="true" :model="form" label-width="80px" ref="offsiteManageform">
+          <el-form :inline="true" :model="form" label-width="70px" ref="offsiteManageform">
             <el-form-item label="检测站点" prop="siteName">
               <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
             </el-form-item>
@@ -43,17 +43,17 @@
                 <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.sort"></el-option>
               </el-select>
             </el-form-item>
-            <el-collapse-transition>
-              <div :class="{'ransition-box':true}">
+            <!-- <el-collapse-transition>
+              <div :class="{'ransition-box':true}"> -->
                 <el-form-item label="过检时间">
                   <el-date-picker style='width:240px' :picker-options="pickerOptions" unlink-panels v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']">
 
                   </el-date-picker>
                 </el-form-item>
-              </div>
-            </el-collapse-transition>
+              <!-- </div>
+            </el-collapse-transition> -->
           </el-form>
-          <div class="search-btns">
+          <div style="width:120px;line-height: 42px;">
             <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
             <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset('offsiteManageform')"></el-button>
           </div>
@@ -165,7 +165,7 @@
             </el-table-column>
             <el-table-column prop="isKEY" label="重点监管" align="center">
               <template slot-scope="scope">
-                {{scope.row.isKEY=='是'?scope.row.isKEY:'-'}}
+                {{scope.row.isKEY=='是'?scope.row.isKEY:'/'}}
               </template>
             </el-table-column>
           </el-table>
@@ -313,7 +313,7 @@ export default {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
-    search(val) {
+    search(val,isCreate) {
 
       this.form.checkStartTime = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd HH:mm:ss') : this.timeList[0];
       this.form.checkEndTime = typeof this.timeList[1] == 'object' ? this.timeList[1].format('yyyy-MM-dd HH:mm:ss') : this.timeList[1];
@@ -322,34 +322,30 @@ export default {
       let _this = this;
       // debugger;
       if (this.tabActiveValue === '待审核') {
-        new Promise((resolve, reject) => {
-          queryAlarmVehiclePage(_this.form).then(
-            res => {
-              resolve(res)
-              _this.tableData = res.data.records;
-              _this.total = res.data.total;
-            },
-            error => {
-              //  _this.errorMsg(error.toString(), 'error')
-              return
-            }
-          )
-        })
+        queryAlarmVehiclePage(_this.form).then(
+          res => {
+            /* if(isCreate){
+              _this.getCountStatus()
+            } */
+            _this.tableData = res.data.records;
+            _this.total = res.data.total;
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return
+          }
+        )
       } else {
-        new Promise((resolve, reject) => {
-          queryListPage(_this.form).then(
-            res => {
-              resolve(res)
-              _this.tableData = res.data.records;
-              _this.total = res.data.total;
-            },
-            error => {
-              //  _this.errorMsg(error.toString(), 'error')
-              return
-            }
-          )
-        })
-
+        queryListPage(_this.form).then(
+          res => {
+            _this.tableData = res.data.records;
+            _this.total = res.data.total;
+          },
+          error => {
+            //  _this.errorMsg(error.toString(), 'error')
+            return
+          }
+        )
       }
     },
     findAllDrawerById(data, obj) {
@@ -496,10 +492,12 @@ export default {
     }
   },
   created() {
-    this.search(1);
+    if(this.$route.params.siteName!== undefined){
+      this.form.siteName = this.$route.params.siteName
+    }
+    this.search(1,true);
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
     this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'vehicleColorList');
-    this.getCountStatus()
   },
   mounted() {
 

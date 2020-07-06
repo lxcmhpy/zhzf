@@ -75,12 +75,12 @@ import { mapGetters } from "vuex";
             }
           }
         }
-        
+
 //      console.log('currentSlideMenu',this.currentSlideMenu)
       }
     },
     mounted() {
-        // debugger;
+        debugger;
         this.allMenuList=this.menu;
         // console.log('mounted this.allMenuList',this.allMenuList)
         this.getSlideMenu(this.headActiveNav); //默认加载案件办理的二级菜单
@@ -88,11 +88,15 @@ import { mapGetters } from "vuex";
     created() {
     },
     computed: {
-        ...mapGetters(['menu', 'activeIndexSto', 'headActiveNav'])
+        ...mapGetters(['menu','headActiveNav'])
+    },
+    activated(){
+      this.allMenuList=this.menu;
+      this.getSlideMenu(this.headActiveNav);
     },
     watch: {
       selectedHeadMenu: function (val, oldVal) {
-          // debugger;
+          debugger;
           this.getSlideMenu(val);
       },
       //监听menu

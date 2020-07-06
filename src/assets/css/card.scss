@@ -3,6 +3,7 @@
 .card-content {
     height: auto;
     color : #20232B;
+    clear: both;
 }
 
 .card-title {
@@ -15,7 +16,8 @@
 }
 
 .card-ul {
-    margin: 0 -34px 44px 0;
+    margin: 0 -34px 0 0;
+
 
     li {
         margin-right : 34px;
@@ -29,6 +31,9 @@
         text-align   : center;
         overflow     : hidden;
         position     : relative;
+        &:last-child {
+            margin-bottom: 44px;
+        }
     }
 
     li:hover {
@@ -447,5 +452,11 @@
             padding-right: 0;
             text-align   : left;
         }
+    }
+}
+/* 复制添加后的样式 */
+.copy-style-text{
+    .el-input__inner{
+        color: #F56C6C;
     }
 }

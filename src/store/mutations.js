@@ -58,17 +58,17 @@ const mutations = {
   },
   // 删除tab
   [types.DELETE_TABS](state, name) {
-    let index = 0;
-    for (let option of state.openTab) {
-      if (option.name === name) {
-        break;
-      }
-      index++;
-    }
-    if (index !== 0) {
-        state.openTab.splice(index, 1);
-    }
-    // state.activeIndexSto = state.openTab[state.openTab.length - 1].name;
+    // let index = 0;
+    // for (let option of state.openTab) {
+    //   if (option.name === name) {
+    //     break;
+    //   }
+    //   index++;
+    // }
+    // if (index !== 0) {
+    //     state.openTab.splice(index, 1);
+    // }
+    state.openTab.splice(name.split('#')[1], 1);
 
   },
   // 替换tab
@@ -79,8 +79,6 @@ const mutations = {
   //删除所有的tabs
   [types.DELETE_ALLTABS](state) {
     // state.openTab = [{route: "/index",name: "law_supervise_lawSupervise",title: "可视化监管",headActiveNav:"lawSupervise-menu-law_supervise_lawSupervise"}];
-    // routerName
-    debugger;
     state.openTab.splice(0,state.openTab.length);
   },
   // 设置当前激活的tab
@@ -152,7 +150,7 @@ const mutations = {
   [types.SET_LISTPAGE](state,page){
     state.listPage = page;
   },
-  
+
 };
 
 export default mutations;

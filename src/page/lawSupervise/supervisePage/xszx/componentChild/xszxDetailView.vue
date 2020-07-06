@@ -244,7 +244,7 @@
                       <td>{{obj.axleNumber}}</td>
                       <td rowspan="7" colspan="2">
                           <!-- xjHost -->
-                        <img
+                        <img width="320"
                           :src="xjHost + imgList[2]"
                           alt=""
                         />
@@ -276,9 +276,9 @@
                     </tr>
                     <tr>
                       <td>车长/车宽/车高(mm)</td>
-                      <td>{{obj.length}}</td>
-                      <td>{{obj.width}}</td>
-                      <td>{{obj.height}}</td>
+                      <td>{{obj.length==0?'/':obj.length}}</td>
+                      <td>{{obj.width==0?'/':obj.width}}</td>
+                      <td>{{obj.height==0?'/':obj.height}}</td>
                     </tr>
                   </table>
 
@@ -325,7 +325,7 @@
             :model="userObj"
             ref="userObj"
             class="userObj"
-            label-width="75px"
+            label-width="105px"
           >
             <div class="item">
               <el-form-item label="姓名">
@@ -418,7 +418,17 @@
           </ul>
           <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
             <div>
-                <img width="100%" :src="xjHost+imgIndexUrl">
+                <el-row>
+                  <el-col :span="1" style="margin-top: 200px;">
+                  <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
+                  </el-col>
+                  <el-col :span="22">
+                    <img width="100%" :src="xjHost+imgIndexUrl">
+                  </el-col>
+                  <el-col :span="1" style="margin-top: 200px;">
+                    <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
+                  </el-col>
+                </el-row>
             </div>
           </el-dialog>
         </div>
@@ -481,7 +491,23 @@ export default {
           if (this.acitveCar == 5) {
             this.acitveCar = 0;
           }
-        }
+        },
+        preview(){
+          let index = this.imgList.findIndex(item=>item == this.imgIndexUrl);
+          let n = index - 1;
+          if(index == 0){
+            n = this.imgList.length-1;
+          }
+          this.imgIndexUrl = this.imgList[n];
+        },
+        next(){
+          let index = this.imgList.findIndex(item=>item == this.imgIndexUrl);
+          let n = index + 1;
+          if(index == this.imgList.length-1){
+            n = 0
+          }
+          this.imgIndexUrl = this.imgList[n];
+        },
   },
   mounted() {
     // http://172.16.170.54:9332/14,16d92a05edcd   old:9,10a727c3ada3

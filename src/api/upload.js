@@ -27,6 +27,19 @@ export function getFile(data) {
   });
 }
 
+export function getFileByCaseId(data) {
+  return  request({
+    url:  "/case/sys/file/findByCaseId/"+ data.caseId,
+    method:  "GET",
+    params: data,
+    // contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+    // responseType: 'blob'
+  });
+}
+
 // 上传证据
 export  function  uploadEvApi(data)  {
   console.log("789",data);
@@ -72,6 +85,17 @@ export function deleteFileByIdApi(fileId) {
     method:  "GET",
     showloading: true,
     loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
+//文件上传公共接口-case
+export function uploadCommon(data) {
+  return  request({
+    url:  "/case/sys/file/uploadCommon",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: false,
     cancelToken:  setCancelSource(),
   });
 }

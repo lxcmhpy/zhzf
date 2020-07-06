@@ -45,7 +45,6 @@ export function getCountStatus () {
         url: "/zfjg/superviseVehicle/countStatus",
         method: "get",
         showloading: false,
-        loadingType:'loadPart',
         baseUrlType:  'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()
     });
@@ -97,7 +96,8 @@ export function getById(type,id) {
       url: "/zfjg/superviseVehicle/queryListPage",
       method: "get",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken: setCancelSource()
     });
@@ -106,7 +106,8 @@ export function getById(type,id) {
     return request({
       url: "/system/sys/drawer/findAllDrawerById/" +data,
       method: "get",
-      showloading: false,
+      showloading: true,
+      loadingType:'loadPart',
       baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
@@ -225,4 +226,141 @@ export function transerCase (id) {
         // params: data,
         cancelToken: setCancelSource()
       })
+}
+
+export function queryDeviceListPage(data) {
+  return request({
+    url: "/zfjg/lawDevice/queryLawDevicePage",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function findDeviceById (id,typeCode) {
+  return request({
+    url: "/zfjg/lawDevice/findById/" +id+"/"+typeCode,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function saveOrUpdateDevice (data) {
+  return request({
+      url: "/zfjg/lawDevice/saveOrUpdate",
+      method: "post",
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:  'LAW_SUPERVISE_HOST',
+      data:  vm.$qs.stringify(data),
+      cancelToken: setCancelSource()
+    })
+}
+export function deleteDeviceById (id,typeCode) {
+  return request({
+      url: "/zfjg/lawDevice/deleteById/" +id+"/"+typeCode,
+      method: "get",
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:'CAPTCHA_HOST',
+      cancelToken: setCancelSource()
+    })
+}
+// 文件上传
+export  function  upload(data)  {
+  return  request({
+    url:  "/zfjg/sys/file/uploadCommon",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
+//根据主键ID删除附件
+export function deleteFileByIdApi(fileId) {
+  return  request({
+    url:  "/zfjg/sys/file/delete/"+fileId,
+    method:  "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
+
+export function findImageByCaseId(id) {
+  return  request({
+    url:  "/zfjg/sys/file/findImageByCaseId/"+id,
+    method:  "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
+export function queryDeviceTypeAll(data) {
+  return request({
+    url: "/zfjg/lawDeviceType/queryDeviceTypeAll",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function saveOrUpdateDeviceType (data) {
+  return request({
+      url: "/zfjg/lawDeviceType/saveOrUpdate",
+      method: "post",
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:  'LAW_SUPERVISE_HOST',
+      data:  vm.$qs.stringify(data),
+      cancelToken: setCancelSource()
+    })
+}
+export function findDeviceTypeById (id) {
+  return request({
+    url: "/zfjg/lawDeviceType/findById/" +id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function findDeviceTypeByName (name) {
+  return request({
+    url: "/zfjg/lawDeviceType/findByName/" +name,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function findDeviceTypeNewCode () {
+  return request({
+    url: "/zfjg/lawDeviceType/findNewCode",
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+export function getSiteById(id) {
+  return request({
+    url: "/zfjg/lawSite/findById/" + id,
+    method: "get",
+    showloading: false,
+  //   loadingType:'loadPart',
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
 }

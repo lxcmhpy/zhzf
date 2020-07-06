@@ -8,7 +8,7 @@
       @tab-click="tabClick"
       @tab-remove="tabRemove"
     >
-      <el-tab-pane :key="item.name" v-for="item in openTab" :label="item.title" :name="item.name"></el-tab-pane>
+      <el-tab-pane :key="`${item.name+'#'+index}`" v-for="(item,index) in openTab" :label="item.title" :name="`${item.name+'#'+index}`"></el-tab-pane>
 
     </el-tabs>
 
@@ -43,15 +43,18 @@ export default {
         let name = route.isCase ? route.name.split('-and-')[0] :route.name;
         // debugger;
         route.menuUrl = name;
-        this.activeIndexStr = route.name;
+        this.activeIndexStr = route.name +'#'+ tab.index;
         //cxx 点击系统管理菜单后再回到案件tab，需设置一下caseNumber
         if(!this.caseHandle.caseNumber){
           this.$store.commit("setCaseNumber",route.params && route.params.tabTitle || route.title);
         }
 
-        console.log('this.activeIndexStr',this.activeIndexStr);
         this.$store.commit("SET_ACTIVE_INDEX_STO",  this.activeIndexStr);
         this.$store.commit("set_Head_Active_Nav", route.headActiveNav);
+        //切换可视化监管不刷新
+        if(this.$route.name.indexOf('law_supervise_lawSupervise') > -1){
+          this.$route.meta.keepAlive = true;
+        }
         this.$router.push(({ name: 'reloadPage',params: route}));
 
 
@@ -63,36 +66,29 @@ export default {
       if (targetName == routerName) {
         return;
       }
+      //关闭可视化监管，重新打开需要刷新
+      if(targetName.indexOf('law_supervise_lawSupervise') > -1 && this.$route.meta.keepAlive){
+        this.$route.meta.keepAlive = false;
+      }
       this.$store.dispatch("deleteTabs", targetName);
       if (this.activeIndexSto === targetName) {
         // 设置当前激活的路由
         if (this.openTab && this.openTab.length >= 1) {
-            this.$store.commit("SET_ACTIVE_INDEX_STO", this.openTab[this.openTab.length - 1].name);
-            let route = this.openTab[this.openTab.length - 1];
-            route.menuUrl = this.activeIndexSto.indexOf('-and-') > -1 ? this.activeIndexSto.split('-and-')[0] : this.activeIndexSto;
-        //   this.$router.push({
-        //       name: this.activeIndexSto.indexOf('-and-') > -1 ? this.activeIndexSto.split('-and-')[0] : this.activeIndexSto,
-        //         params: this.openTab[this.openTab.length - 1].params
-        //     });
+            let lastIndex = this.openTab.length - 1;
+            this.$store.commit("SET_ACTIVE_INDEX_STO", this.openTab[lastIndex].name + '#' + lastIndex);
+            let route = this.openTab[lastIndex];
+            route.menuUrl = this.openTab[lastIndex].name;
             this.$router.push(({ name: 'reloadPage',params: route}));
         } else {
-        //   this.$router.push({ name: "case_handle_home_index" });
 
             this.$router.push({ name: routerName });
         }
+      } else {
+        debugger;
+        let targetNameIndex = targetName.split('#')[1];
+        let activeArray = this.activeIndexSto.split('#');
+        this.$store.commit("SET_ACTIVE_INDEX_STO", targetNameIndex > activeArray[1] ? this.activeIndexSto : activeArray[0]+'#'+(parseInt(activeArray[1])-1));
       }
-    },
-    getTabName (code) {
-      console.log('activeIndexStr',this.activeIndexStr)
-        let tabsCode = this.activeIndexStr;
-        // if (code.indexOf('case_handle_') > -1) {
-        //     tabsCode = this.tabsNameList['case_handle_'];
-        // } else if (code.indexOf('law_supervise_') > -1) {
-        //     tabsCode = this.tabsNameList['law_supervise_'];
-        // } else if (code.indexOf('law_center_') > -1) {
-        //     tabsCode = this.tabsNameList['law_center_'];
-        // }
-        return tabsCode;
     },
     init () {
         let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
@@ -113,18 +109,15 @@ export default {
   },
   watch: {
     $route(to, from) {
-        // debugger;
       //判断路由是否已经打开
       //已经打开的 ，将其置为active
       //未打开的，将其放入队列里
         let flag = false;
         let _this = this;
-        let tabsCode = this.getTabName(to.name);
-
         let _index = _.findIndex(this.openTab,(chr) => {
             //信息查验不走if
             if (chr.isCase && !to.meta.isNotCase) {
-              return chr.title == tabsCode + _this.caseHandle.caseNumber;
+              return chr.title == _this.caseHandle.caseNumber;
             }
             return chr.name === to.name;
         });
@@ -133,7 +126,7 @@ export default {
             if (to.params.tabTitle) {
                 let currentOpenTab = this.openTab[_index];
                 currentOpenTab.params = to.params;
-                //currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
+                // currentOpenTab.title = this.getTabName(to.name) + currentOpenTab.params.tabTitle;
                 currentOpenTab.title = currentOpenTab.params.tabTitle;
                 currentOpenTab.route = currentOpenTab.path;
                 currentOpenTab.name = to.name;
@@ -163,8 +156,7 @@ export default {
               }
             }
             this.$store.commit("set_Head_Active_Nav", this.openTab[_index].headActiveNav);
-            this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name);
-            // this.$store.commit("changeOneTabName", this.openTab[_index].name);
+            this.$store.commit("SET_ACTIVE_INDEX_STO",this.openTab[_index].name + '#' + _index);
         } else {
             let tabTitle = "";
             let isCase = false;
@@ -177,7 +169,6 @@ export default {
                 }else{
                   tabTitle = this.caseHandle.caseNumber;
                   isCase = true;
-                //   name = to.name + '-and-' + this.caseHandle.caseNumber;
                 }
 
             } else {
@@ -189,16 +180,17 @@ export default {
                 isCase = false;
             }
             name = name? name : to.name;
+            this.$store.commit("SET_ACTIVE_INDEX_STO", name+'#'+this.openTab.length);
+
             this.$store.dispatch("addTabs", {
                 route: to.path,
                 name: name,
-                // title: tabsCode+tabTitle,
                 title: tabTitle,
                 isCase: isCase,
                 params: to.params,
                 headActiveNav: this.headActiveNav
             });
-            this.$store.commit("SET_ACTIVE_INDEX_STO", name);
+
         }
     },
     activeIndexSto(val,oldVal) {

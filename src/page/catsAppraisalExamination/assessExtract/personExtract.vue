@@ -36,19 +36,19 @@
                          @change="handleChange">
                 <span slot-scope="{ option }" >
                     <ul class="transfer-list " >
-                        <li><span class="left">{{option.key+1}}</span></li>
-                        <li ><span>{{ option.staffName }} </span></li>
+                        <li style="flex:0.1"><span class="left">{{option.key+1}}</span></li>
+                        <li style="flex:0.5"><span>{{ option.staffName }} </span></li>
                         <li><span>{{ option.maritimeNo }} </span></li>
                     </ul>
                 </span>
                 <ul class="transfer-list " slot="left-footer" >
-                    <li><span>序号</span></li>
-                    <li><span>姓名</span></li>
+                    <li style="flex:0.2"><span>序号</span></li>
+                    <li style="flex:0.5"><span>姓名</span></li>
                     <li><span>证件号</span></li>
                 </ul>
                 <ul class="transfer-list " slot="right-footer" >
-                    <li><span>序号</span></li>
-                     <li><span>姓名</span></li>
+                    <li style="flex:0.2"><span>序号</span></li>
+                     <li style="flex:0.5"><span>姓名</span></li>
                     <li><span>证件号</span></li>
                 </ul>
             </el-transfer>
@@ -92,9 +92,13 @@
             var personlist=[];
             this.value=[]
             for(var i=0;i<res.data.records.length;i++){
-              var maritimeNo=res.data.records[i].maritimeNo==null?'':res.data.records[i].maritimeNo+",";
-              var provinceNo=res.data.records[i].provinceNo==null?'':res.data.records[i].provinceNo+",";
-              var ministerialNo=res.data.records[i].ministerialNo==null?'':res.data.records[i].ministerialNo+",";
+              let code = [];
+              res.data.records[i].maritimeNo?code.push(res.data.records[i].maritimeNo): null;
+              res.data.records[i].provinceNo?code.push(res.data.records[i].provinceNo):null;
+              res.data.records[i].ministerialNo?code.push(res.data.records[i].ministerialNo):null;
+              // var maritimeNo=res.data.records[i].maritimeNo==null?'':res.data.records[i].maritimeNo+",";
+              // var provinceNo=res.data.records[i].provinceNo==null?'':res.data.records[i].provinceNo+",";
+              // var ministerialNo=res.data.records[i].ministerialNo==null?'':res.data.records[i].ministerialNo+",";
               if(res.data.records[i].staffStatus!=0){
                 this.value.push(i)
               }
@@ -102,7 +106,7 @@
                 key: i,
                 label: res.data.records[i].staffName,
                 staffName:res.data.records[i].staffName,
-                maritimeNo: maritimeNo+provinceNo+ministerialNo,
+                maritimeNo: code.join(','),
                 staffId:res.data.records[i].staffId,
                 //disabled: res.data.records[i].staffStatus==0?false:true
               });

@@ -29,7 +29,7 @@
               <el-form-item v-if="baosongStatus">
                 <el-upload
                   class="upload-demo"
-                  action=""
+                  action="https://jsonplaceholder.typicode.com/posts/"
                   :http-request="uploadPerson"
                   :show-file-list="false"
                   accept=".xlsx"
@@ -56,7 +56,7 @@
             <el-table-column  label="状态" align="center">
               <template slot-scope="scope">
                 <el-tag type="warning" v-show="scope.row.bsStatus==0">未报送</el-tag>
-                <el-tag type="warning"  v-show="scope.row.staffStatus==0 && cope.row.bsStatus==1">未抽取</el-tag>
+                <el-tag type="warning"  v-show="scope.row.staffStatus==0 && scope.row.bsStatus==1">未抽取</el-tag>
                 <el-tag type="success" v-show="scope.row.staffStatus==1">已抽取</el-tag>
               </template>
             </el-table-column>
@@ -67,8 +67,9 @@
                             <el-button type="text" @click.stop @click="update_openDialog(scope.row)" v-show="scope.row.staffStatus==0">修改</el-button>
                             <el-button type="text" @click.stop @click="deleteStaff(scope.row)" v-show="scope.row.staffStatus==0">删除</el-button>
                         </div>
-                        <div v-show="scope.row.caseStatus==1">
+                        <div v-show="scope.row.staffStatus==1">
                             <el-upload
+                                action="https://jsonplaceholder.typicode.com/posts/"
                                 class="upload-demo"
                                 accept=".jpg, .png"
                                 :show-file-list="false"
@@ -137,7 +138,7 @@
         </el-dialog>
 
       </div>
-      <el-dialog title="查看" :visible.sync="dialogVisible" style="width:430px;height:640px;">
+      <el-dialog title="查看" :visible.sync="dialogVisible" width="460px" height="600px" v-if="dialogImageUrl" :before-close="beforeClose">
         <img width="413px" height="626px" :src="dialogImageUrl" alt="">
       </el-dialog>
     </div>
@@ -145,7 +146,7 @@
 </template>
 
 <script>
-  import { mixinsCommon } from "@/common/js/mixinsCommon";
+//   import { mixinsCommon } from "@/common/js/mixinsCommon";
   import {findPykhStaffByPage,importPerson,addOrUpdatePykhStaff,findAllDepartment,confirmSubmissionStaff,deletePykhStaff} from "@/api/catsAppraisalExamPersonUpload.js";
   import {StaffAndCaseFile } from "@/api/catsAppraisalExamCaseUpload.js";
   import iLocalStroage from '@/common/js/localStroage';
@@ -153,7 +154,7 @@
   import {validateIDNumber,isInteger_8_10,isInteger_10} from '@/common/js/validator';
 
   export default {
-    mixins: [mixinsCommon],
+    // mixins: [mixinsCommon],
     components: {
       viewNotice
     },
@@ -201,37 +202,44 @@
     },
 
     methods: {
+      beforeClose () {
+        this.dialogImageUrl = '';
+        this.dialogVisible = true;
+      },
       saveFile(param, row) {
+        // debugger;
         var fd = new FormData();
         fd.append("file", param.file);
         fd.append("userId", iLocalStroage.gets("userInfo").id);
         fd.append("category", "人员报送");
         fd.append("docId", row.staffId);
-        fd.append("storageId", row.storageId===null?'':row.storageId);
+        fd.append("storageId", row.storageId?row.storageId:'');
         let _this = this
         StaffAndCaseFile(fd).then(res => {
           if (res.code == 200){
-            row.storageId = res.data
-            row.fjStatus = '1'
+            row.storageId = res.data;
+            row.fjStatus = '1';
+            _this.$message.error('上传成功！');
           }else{
             _this.$message.error('出现异常，添加失败！');
           }
         });
       },
       view(row){
-        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId;
+        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +row.storageId + '?time='+new Date().getTime();
         this.dialogVisible = true;
       },
       fetchData(data){
         data.current=this.current;
         data.size=this.size;
         data.oId=this.organId;
+        let _this = this;
         findPykhStaffByPage(data).then(res=>{
           console.info("根据条件分页查询人员列表:",res);
           if(res.code==200){
-            this.dataList=res.data.records;
-            this.total=res.data.total;
-            this.current=res.data.current;
+            _this.dataList=res.data.records;
+            _this.total=res.data.total;
+            _this.current=res.data.current;
           }
         });
       },

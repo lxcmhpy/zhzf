@@ -60,8 +60,8 @@
             <el-table-column prop="caseType" label="案卷类型" align="center"></el-table-column>
             <el-table-column prop="caseAgency" label="办案/执法机构" align="center"></el-table-column>
             <el-table-column prop="casesMajor" label="是否是重大案件" align="center"></el-table-column>
-            <el-table-column prop="enforcementOfficials1" label="执法人员1" align="center"></el-table-column>
-            <el-table-column prop="enforcementOfficials2" label="执法人员2" align="center"></el-table-column>
+            <!-- <el-table-column prop="enforcementOfficials1" label="执法人员1" align="center"></el-table-column>
+            <el-table-column prop="enforcementOfficials2" label="执法人员2" align="center"></el-table-column> -->
             <el-table-column prop="caseCause" label="案由" align="center">
               <template slot-scope="scope">
                 <el-tooltip class="item" effect="dark" :content="scope.row.caseCause" placement="top-start" >
@@ -240,13 +240,14 @@
     },
     methods:{
       saveFile(param, row) {
+          debugger;
         var fd = new FormData();
         fd.append("file", param.file);
         fd.append("userId", iLocalStroage.gets("userInfo").id);
         fd.append("category", "案件报送");
         fd.append("caseId", row.caseId);
-        fd.append("storageId", row.storageId===null?'':row.storageId);
-        let _this = this
+        fd.append("storageId", row.storageId?row.storageId:'');
+        let _this = this;
         StaffAndCaseFile(fd).then(res => {
           if (res.code == 200){
             row.storageId = res.data

@@ -136,7 +136,8 @@ export default {
             xtList: [{
                 name: '法律法规系统',
                 icon: 'pic_falvfagui',
-                url: 'http://law.mot.gov.cn/index.action'
+                url: 'http://law.mot.gov.cn/index.action',
+                openType: 'windowOpen'
             },{
                 name: '信息查验系统',
                 icon: 'oic_xinxichayan',
@@ -144,7 +145,8 @@ export default {
             },{
                 name: '人员考试系统',
                 icon: 'pic_renyuan',
-                url: ''
+                url: 'batchManage',
+                openType: 'router'
             },{
                 name: '执法办案系统(测试)',
                 icon: 'pic_zhifabanan',
@@ -165,16 +167,30 @@ export default {
     },
     methods: {
         otherUrl (item) {
-            if (item.url) {
-                this.$message({type: "success",message: "页面已打开，请在新窗口中查看。"});
-                window.open(item.url);
-            } else {
-                 this.$message({type: "success",message: "此功能正在紧急开发中..."});
+            switch (item.openType) {
+              case 'windowOpen':
+                  this.$message({type: "success",message: "页面已打开，请在新窗口中查看。"});
+                  window.open(item.url);
+                  break;
+              case 'router':
+                  this.$router.push({
+                    name: item.url
+                  })
+                  break;
+              default:
+                this.$message({type: "success",message: "此功能正在紧急开发中..."});
+
             }
+            // if (item.url) {
+            //     this.$message({type: "success",message: "页面已打开，请在新窗口中查看。"});
+            //     window.open(item.url);
+            // } else {
+            //      this.$message({type: "success",message: "此功能正在紧急开发中..."});
+            // }
         },
         handleCommand () {
-            this.$store.dispatch('deleteAllTabs');
-            this.$router.push("/");
+            // this.$store.dispatch('deleteAllTabs');
+            this.$router.push({name:'login'});
         },
         //获取公告信息
         getNotices() {
@@ -207,12 +223,13 @@ export default {
         },
         //查看公告信息
         viewNotice(row) {
+          debugger;
             if(row.noticeType==="附件"){
                 let routerData = {
                     storageId: row.storageId
                 };
                 // this.$router.push({ name: "case_handle_viewPDF", params: routerData });
-                this.$refs.viewNoticeRef.showPDF(row.storageId);
+                this.$refs.viewNoticeRef.showPDF(row.storageId, row.title);
                 if(row.isRead==='N'){
                     clickNotice(row.id).then(
                         res => {
@@ -235,7 +252,7 @@ export default {
                                 }
                             )
                         }
-                        _that.$refs.viewNoticeRef.showModal(res.data);
+                        _that.$refs.viewNoticeRef.showModal(res.data, row.title);
                     },
                     err => {
                         console.log(err);

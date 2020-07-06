@@ -18,12 +18,13 @@
 
       </div>
       <!-- 动态生成表单 -->
-      <form-create v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
+      <form-create :class="isCopyStyle?'copy-style-text':''" v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
-      <uploadTmp :recordMsg='recordMsg'></uploadTmp>
+      <uploadTmp :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList' :addOrEiditFlag='addOrEiditFlag'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
+      <chooseLawPerson ref="chooseLawPersonIdRef" @setLawPer="setLawPersonId" @userList="getAllUserListId"></chooseLawPerson>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
-      <!-- 悬浮按钮 -->
+      <!-- 悬浮按钮-操作 -->
       <div class="float-btns btn-height63">
         <el-button type="success" @click="editRecord()" v-if="addOrEiditFlag=='view'">
           <i class="iconfont law-icon_zancun1"></i>
@@ -42,6 +43,9 @@
           <br />复制<br />添加
         </el-button>
       </div>
+      <!-- 悬浮按钮-拓展 -->
+      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData"></floatBtns>
+
     </div>
   </div>
 </template>
@@ -49,13 +53,15 @@
 import writeRecordHome from "./modleList.vue";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag.vue";
 import chooseLawPerson from "./chooseModlePerson.vue";
+import chooseLawPersonId from "./chooseModlePerson.vue";
 // import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 
 import uploadTmp from './upload/uploadModleFile.vue'
+import floatBtns from './floatBtn.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
-  findRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
+  findMyRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: ['psMsg'],
@@ -65,7 +71,8 @@ export default {
       if (this.psMsg) {
         this.defaultRuleData = this.psMsg
         this.formData.title = this.psMsg.title
-        this.dealFormData()
+        this.personPartyFlag = false
+        this.dealFormData(true)
       }
     },
   },
@@ -97,18 +104,32 @@ export default {
         }
       },
       recordMsg: '',
+      defautImgList: [],//已上传图片
+      defautFileList: [],//已上传附件
       adressName: '',
-      // 执法人员
+      // 执企业组织信息员
       allUserList: [],
-      LawOfficerCard: '',
-      LawName: '',
+      LawName: '',//存储执法人员字段名
       alreadyChooseLawPerson: [],
-      lawPersonListId: "",
-      // 个人和法人组合
+      alreadyChooseLawPersonId: [],
+      allUserListId: [],
+      LawOfficerCard: '',//存储执法人员带id的字段名
+      // lawPersonListId: "",
+      // 当事人信息和企业组织信息组合
       personPartyFlag: false,
       personFieldList: [],
       partyFieldList: [],
-
+      personName: 'f28b429f7d8b4191a8623f49033f24b1',//当事人信息id
+      partyName: '3bd508078f284ae799fd891fa526b463',//企业组织信息
+      isCopyStyle: false,//
+      formOrDocData: {
+        showBtn: [false, false, false], //文书填报、相关记录、操作记录
+        pageDomId: 'deliverCertificate-print',
+      },
+      // 是否转立案字段名
+      isTransferName: '',
+      viewFlag: false,
+      globalId: '563',
     }
   },
   components: {
@@ -117,6 +138,8 @@ export default {
     uploadTmp,
     mapDiag,
     chooseLawPerson,
+    chooseLawPersonId,
+    floatBtns
   },
   methods: {
     // 查找模板-添加
@@ -163,7 +186,7 @@ export default {
     // 查找已有记录-修改
     findRecordDataByld() {
       let _this = this
-      findRecordByIdApi(this.recordId).then(
+      findMyRecordByIdApi(this.recordId).then(
         res => {
           _this.baseData = JSON.parse(res.data.layout)
           let list = JSON.parse(res.data.layout)
@@ -182,6 +205,11 @@ export default {
           _this.defaultRuleData = JSON.parse(JSON.stringify(res.data))
           _this.$set(_this.defaultRuleData, 'templateFieldList', list);
           _this.dealFormData()
+          // 回显文件
+          console.log('huixian', res.data.pictureList, res.data.attachedList)
+          _this.defautImgList = res.data.pictureList
+          _this.defautFileList = res.data.attachedList
+
         },
         error => {
         })
@@ -192,12 +220,20 @@ export default {
     },
     // 修改
     editRecord() {
-      // console.log('rule', this.rule)
+      console.log(this.formData)
+      if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
+        this.$message.error('无修改权限');
+        return
+      }
+      this.editMethod()
+    },
+    editMethod() {
+      // 判断模板是否已修改
       findRecordModleTimeByIdApi(this.formData.templateId).then(
         res => {
           if (res.code == 200) {
             console.log('row.createTime <= res.data', this.formData.createTime, res.data)
-            if (res.data != null || this.formData.createTime >= res.data) {
+            if (res.data != null || this.formData.createTime > res.data) {
               // 可修改
               this.$data.$f.resetFields()
               this.rule.forEach(element => {
@@ -208,7 +244,7 @@ export default {
               });
               this.addOrEiditFlag = 'add'
             } else {
-              this.$message.error('当前模板已修改，该记录不可修改');
+              this.$message.error('当前模板已修改或不存在，该记录不可修改');
             }
           } else {
             this.$message.error(res.msg);
@@ -219,61 +255,104 @@ export default {
         })
 
     },
+    // 保存
     saveRecord() {
       this.formData.status = '保存';
-      // this.onSubmit()
-      this.$data.$f.submit((formData, $f) => {
-        // alert(JSON.stringify(formData));
-        console.log("formData", formData)
-        let submitData = JSON.parse(JSON.stringify(this.baseData))
-        let submitList = []
-        submitData.forEach(element => {
-          element.fieldList.forEach(item => {
-            let textName = item.id
-            item.text = formData['' + textName + '']
-            // console.log('tyupe',typeof (item.text))
-            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
-              item.text = item.text.join(',')
-            }
-          });
+      this.$data.$f.validate((valid, object) => {
+        if (valid) {
+          // alert(JSON.stringify(formData));
+          this.submitMethod()
+        } else {
+          // 验证不通过，定位
+          setTimeout(() => {
+            var isError = document.getElementsByClassName("is-error");
+            console.log('isError', isError)
+            if (isError[0].querySelector('textarea')) {
+              isError[0].querySelector('textarea').focus();
 
-        });
-        submitData = JSON.stringify(submitData)
-
-        this.formData.layout = submitData
-        this.formData.templateFieldList = '';
-        this.formData.createTime = '';
-        this.formData.updateTime = '';
-        this.formData.type = '记录';
-        console.log('formdata', this.formData)
-        saveOrUpdateRecordApi(this.formData).then(
-          res => {
-            // console.log(res)
-            if (res.code == 200) {
-              this.addOrEiditFlag = 'view'
-              this.recordMsg = res.data;//根据返回id上传文件
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.rule.forEach(element => {
-                console.log(element)
-                this.$data.$f.updateRule(element.field, {
-                  props: { disabled: true }
-                }, true);
-              });
-            } else {
-              this.$message.error(res.msg);
+            } else if (isError[0].querySelector('input')) {
+              isError[0].querySelector('input').focus();
             }
-          },
-          error => {
-          })
+            for (const i in object) {
+              let dom = this.$refs[i]
+              // 这里是针对遍历的情况（多个输入框），取值为数组
+              if (Object.prototype.toString.call(dom) !== '[object Object]') {
+                dom = dom[0]
+              }
+              dom.$el.scrollIntoView({ // 滚动到指定节点
+                // 值有start,center,end，nearest，当前显示在视图区域中间
+                block: 'center',
+                // 值有auto、instant,smooth，缓动动画（当前是慢速的）
+                behavior: 'smooth'
+              })
+              break // 因为我们只需要检测一项,所以就可以跳出循环了
+            }
+          }, 1)
+          return false;
+        }
       })
-
     },
-    onSaveRecord() {
+    // 提交方法
+    submitMethod() {
+      console.log("formData", this.formData)
+      let submitData = JSON.parse(JSON.stringify(this.baseData))
+      let submitList = []
+      submitData.forEach(element => {
+        element.fieldList.forEach(item => {
+          console.log('item.id', item.id)
+          let textName = item.id
+          // item.text = this.formData['' + textName + '']
+          item.text = this.$data.$f.getValue(textName)
+          if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
+            item.text = item.text.join(',')
+          }
+          console.log('item.', item)
+        });
+
+      });
+      submitData = JSON.stringify(submitData)
+      console.log('submitData', submitData)
+      this.formData.layout = submitData
+      this.formData.templateFieldList = '';
+      this.formData.createTime = '';
+      this.formData.updateTime = '';
+      this.formData.type = '记录';
+      this.formData.organId = iLocalStroage.gets("userInfo").organId;
+      this.formData.userId = iLocalStroage.gets("userInfo").id;
+      // 当事人信息和企业信息选项的值
+      this.formData.objectType = this.$data.$f.getValue('personOrParty')
+      delete (this.formData["pictureList"]);
+      delete (this.formData["attachedList"]);
+      console.log('formdata', this.formData)
+      saveOrUpdateRecordApi(this.formData).then(
+        res => {
+          // console.log(res)
+          if (res.code == 200) {
+            this.addOrEiditFlag = 'view'
+            this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
+            this.rule.forEach(element => {
+              console.log(element)
+              this.$data.$f.updateRule(element.field, {
+                props: { disabled: true }
+              }, true);
+            });
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+        })
+      this.isCopyStyle = false;//变颜色
+    },
+    // 暂存
+    onSaveRecord(noRouter) {
       // console.log('rule', this.rule)
       this.rule.forEach(element => {
+        // 去掉验证
         if (element.validate[0]) {
           element.validate[0].required = false
         }
@@ -288,7 +367,8 @@ export default {
           element.fieldList.forEach(item => {
             let textName = item.id
             // console.log('变量', item.field, ':', formData['' + textName + ''])
-            item.text = formData['' + textName + '']
+            // item.text = formData['' + textName + '']
+            item.text = this.$data.$f.getValue(textName)
             // console.log('tyupe',typeof (item.text))
             if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
               item.text = item.text.join(',')
@@ -302,19 +382,47 @@ export default {
         this.formData.createTime = '';
         this.formData.updateTime = '';
         this.formData.type = '记录';
+        this.formData.organId = iLocalStroage.gets("userInfo").organId
+        this.formData.userId = iLocalStroage.gets("userInfo").id
+        // 当事人信息和企业信息选项的值
+        this.formData.objectType = this.$data.$f.getValue('personOrParty')
+        delete (this.formData["pictureList"]);
+        delete (this.formData["attachedList"]);
         console.log('formdata', this.formData)
         saveOrUpdateRecordApi(this.formData).then(
           res => {
             // console.log(res)
             if (res.code == 200) {
+              // this.recordMsg = res.data;//根据返回id上传文件
+              console.log('this.recordMsg1', this.recordMsg)
+              // this.recordMsg = ''
+              this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
+              this.recordMsg = JSON.parse(JSON.stringify(this.recordMsg))//处罚视图更新，监听
+              // this.$set('this.recordMsg', this.formData.id ? this.formData.id : res.data)
+              // this.$set(this,'recordMsg', this.formData.id ? this.formData.id : res.data)
+              console.log('this.recordMsg2', this.recordMsg)
               this.$message({
                 type: "success",
                 message: res.msg
               });
-              this.$router.push({
-                name: 'inspection_recordList',
-                // params: item
-              });
+              // this.rule.forEach(element => {
+              //   console.log(element)
+              //   this.$data.$f.updateRule(element.field, {
+              //     props: { disabled: true }
+              //   }, true);
+              // });
+              this.recordId = res.data;
+              if (!noRouter) {
+                // this.addOrEiditFlag = 'view';
+                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                this.$router.push({
+                  name: 'inspection_recordList',
+                  // params: item
+                });
+              } else {
+                this.findRecordDataByld()
+              }
+
             } else {
               this.$message.error(res.msg);
             }
@@ -324,75 +432,33 @@ export default {
       })
 
     },
-    // 复制添加
+    // 复制添加-可修改-创建人换成登录账号-附件删除，id清空
     copySave() {
-      this.addOrEiditFlag = 'add'
-      this.onSubmit
+      this.$confirm('复制当前记录表单内容，重新创建表单？', "复制当前记录表单", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.isCopyStyle = true;//变颜色
+        debugger
+        this.addOrEiditFlag = 'add'
+        this.formData.id = ''
+        this.formData.createTime = ''
+        this.formData.updateTime = ''
+        this.defautFileList = []
+        this.defautImgList = []
+        // 设置当前账号名
+        this.setLawPersonCurrentP()
+        this.onSaveRecord(true)//暂存一份
+        // 更新数据
+
+        this.editMethod()//可修改
+
+      })
+
     },
     onSubmit(formData) {
-      this.$data.$f.validate((valid)=>{
-  if(valid){
-    //TODO 验证通过
-  }else{
-     if (document.getElementsByClassName('el-form-item__error').length > 0) {
-        this.$notify.error({
-          title: '提示',
-          message: document.getElementsByClassName('el-form-item__error')[0].innerText
-        });
-      }
-
-  }
-   
-})
-     
       console.log("formData", formData)
-
-      //TODO 提交表单
-      this.$data.$f.submit((formData, $f) => {
-        // alert(JSON.stringify(formData));
-        let submitData = JSON.parse(JSON.stringify(this.baseData))
-        let submitList = []
-        submitData.forEach(element => {
-          element.fieldList.forEach(item => {
-            let textName = item.id
-            // console.log('变量', item.field, ':', formData['' + textName + ''])
-            item.text = formData['' + textName + '']
-            // console.log('tyupe',typeof (item.text))
-            if (item.text && typeof (item.text) != 'string' && typeof (item.text) != 'number') {
-              item.text = item.text.join(',')
-            }
-          });
-
-        });
-        submitData = JSON.stringify(submitData)
-
-        this.formData.layout = submitData
-        this.formData.templateFieldList = '';
-        this.formData.createTime = '';
-        this.formData.updateTime = '';
-        this.formData.type = '记录';
-        console.log('formdata', this.formData)
-        saveOrUpdateRecordApi(this.formData).then(
-          res => {
-            // console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-              this.$router.push({
-                name: 'inspection_writeRecord',
-                // params: item
-              });
-            } else {
-              this.$message.error(res.msg);
-            }
-          },
-          error => {
-          })
-      })
-
     },
     clickPover() {
       this.isChangeModle = true
@@ -409,14 +475,14 @@ export default {
       console.log('rule', this.rule)
       this.$data.$f.resetFields()
       if (this.$route.query.id) {
-        if (this.$route.query.addOrEiditFlag == 'edit') {
+        if (this.$route.query.addOrEiditFlag == 'edit' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
               props: { disabled: true }
             }, true);
           });
-        } else if (this.$route.query.addOrEiditFlag == 'view') {
+        } else if (this.$route.query.addOrEiditFlag == 'view' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
@@ -431,7 +497,7 @@ export default {
       this.options = {
         // submitBtn: false,
         onSubmit: (formData) => {
-          alert(JSON.stringify(formData));
+          // alert(JSON.stringify(formData));
         },
         global: {
           '*': {
@@ -448,67 +514,69 @@ export default {
       this.modleId = data.id
       this.findDataByld()
       this.isChangeModle = false
+      this.personPartyFlag = false
     },
     // 匹配数据格式
-    dealFormData() {
+    dealFormData(viewFlag) {
       this.rule = []
       let data = JSON.parse(JSON.stringify(this.defaultRuleData.templateFieldList))
       // console.log('ruleData', data)
       let ruleData = []
       let _this = this
-      // 处理个人和法人
+      // 处理当事人信息和企业组织信息
       let personFlag = false
       let partyFlag = false
-      console.log('data', data)
-      // debugger
       data.forEach(element => {
-        if (element.classs == '个人') {
+        if (element.classId == this.personName) {
           personFlag = element;
           console.log('personFlag', personFlag)
           // 存储字段名和type
           console.log(element.fieldList)
-          debugger
           element.fieldList.forEach(item => {
-            this.personFieldList.push({ id: item.id }, { type: item.type })
+            this.personFieldList.push(item)
           });
           console.log('this.personFieldList', this.personFieldList)
+          // 回显选中的当事人企业
+          if (_this.formData.objectType == '1') {
+            this.defultParty()
+          } else {
+            // 显示当事人信息
+            this.defultPerson()
+          }
         }
-        if (element.classs == '法人') {
+        if (element.classId == this.partyName) {
           partyFlag = element;
           console.log('partyFlag', partyFlag)
           element.fieldList.forEach(item => {
-            this.partyFieldList.push({ id: item.id }, { type: item.type })
-
+            this.partyFieldList.push(item)
           });
-
-        }
-        if (partyFlag && personFlag) {
-          this.personPartyFlag = true;
-
         }
       });
+      if (partyFlag && personFlag) {
+        this.personPartyFlag = true;
+        console.log(this.personPartyFlag)
+      }
       // 处理数据格式
-      // 个人和法人放前面
+      // 当事人信息和企业组织信息放前面
       if (this.personPartyFlag) {
         // 组
-        this.rule.push(
-          {
-            type: 'p',
-            name: 'btn',
-            props: {
-              type: 'primary',
-              field: 'btn',
-              loading: true
-            },
-            className: 'border-title',
-            children: ['检查对象'],
-          }, {
+        this.rule.push({
+          type: 'p',
+          name: 'btn',
+          props: {
+            type: 'primary',
+            field: 'btn',
+            loading: true
+          },
+          className: 'border-title',
+          children: ['检查对象'],
+        }, {
           type: "radio",
           field: 'personOrParty',
           title: '当事人类型',
-          options: [{ value: "0", label: "个人" },
-          { value: "1", label: "法人" },],
-          value: '0',
+          options: [{ value: "0", label: "当事人信息" },
+          { value: "1", label: "企业组织信息" },],
+          value: this.formData.objectType || '0',
           // validate: [{
           //   required: item.required == 'true' ? true : false,
           //   message: '请选择' + (item.title || ''),
@@ -521,220 +589,60 @@ export default {
           on: {
             'change': this.changePersonParty
           },
-        }
-
-        )
+        })
+        // 当事人信息和企业组织信息字段放前面
         data.forEach(element => {
 
-          // console.log(element)
-          if (element.classs == '法人' || element.classs == '个人') {
+          if (element.classId == this.partyName || element.classId == this.personName) {
             // 字段
-            element.fieldList.forEach(item => {
-              // console.log(item)
-              if (item.type == '文本型') {
-                item.type = 'input';
-                this.rule.push({
-                  type: 'input',
-                  field: item.id || item.field,//id用于传值，field用于预览
-                  title: item.title,
-                  props: {
-                    type: 'textarea',
-                    placeholder: item.remark,
-                    disable: true,
-                    autosize: { minRows: 1 }
-                  },
-                  value: item.text,
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'blur'
-                  }]
-                })
-              } else if (item.type == '抽屉型') {
-                item.options.forEach(option => {
-                  option.label = option.value
-                });
-                this.rule.push({
-                  type: "select",
-                  field: item.id || item.field,
-                  title: item.title,
-                  options: item.options,
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'blur'
-                  }],
-                  props: {
-                    disable: true
-                  },
-                })
-              } else if (item.type == '单选型') {
-                item.options.forEach(option => {
-                  option.label = option.value
-                });
-                this.rule.push({
-                  type: "radio",
-                  field: item.id || item.field,
-                  title: item.title,
-                  options: item.options,
-                  value: item.text,
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请选择' + (item.title || ''),
-                    trigger: 'blur'
-                  }],
-                  props: {
-                    disable: true
-                  },
-                })
-              } else if (item.type == '复选型') {
-                item.options.forEach(option => {
-                  option.label = option.value
-                });
-                this.rule.push({
-                  type: "checkbox",
-                  field: item.id || item.field,
-                  title: item.title,
-                  options: item.options,
-                  value: item.text ? item.text.split(',') : [],
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请选择' + item.title,
-                    trigger: 'blur'
-                  }]
-                })
-              } else if (item.type == '日期型') {
-                if (item.options[0].value == 'HH:mm') {
-                  this.rule.push({
-                    type: "TimePicker",
-                    field: item.id || item.field,
-                    title: item.title,
-                    value: item.text || [new Date()],
-                    props: {
-                      format: item.options[0].value,
-                      placeholder: item.remark
-                    },
-                    validate: [{
-                      required: item.required == 'true' ? true : false,
-                      message: '请输入' + item.title,
-                      trigger: 'blur'
-                    }]
-                  })
-                } else {
-                  this.rule.push({
-                    type: "DatePicker",
-                    field: item.id || item.field,
-                    title: item.title,
-                    value: item.text || [new Date()],
-                    props: {
-                      format: item.options[0].value,
-                      placeholder: item.remark,
-                      type: 'datetime'
-                    },
-                    validate: [{
-                      required: item.required == 'true' ? true : false,
-                      message: '请输入' + item.title,
-                      trigger: 'blur'
-                    }]
-                  })
-                }
-              } else if (item.type == '数字型') {
-                this.rule.push({
-                  //  type: "InputNumber",
-                  type: "input",
-                  field: item.id || item.field,
-                  title: item.title,
-                  value: item.text,
-                  controls: false,
-                  className: 'modle-number-box',
-                  props: {
-                    type: 'textarea',
-                    autosize: { minRows: 1 }
-                    // precision: 2
-                  },
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
-                    message: '必须输入数字',
-                    trigger: 'blur'
-                  }]
-                })
-              } else if (item.type == '地址型') {
-                item.type = 'input';
-                this.rule.push({
-                  type: 'input',
-                  field: item.id || item.field,//id用于传值，field用于预览
-                  // title: item.title,
-                  title: item.title,
-                  props: {
-                    type: 'text',
-                    placeholder: item.remark,
-                    disable: true
-                  },
-                  value: item.text,
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'chang'
-                  }],
-                  children: [
-                    {
-                      type: 'i',
-                      class: 'iconfont law-weizhi',
-                      slot: 'suffix',
-
-                    }
-                  ],
-                  inject: true,
-                  on: {
-                    'focus': this.changeAdress
-                  },
-                })
-              } else if (item.type == '引用型') {
-                item.type = 'input';
-                this.rule.push({
-                  type: 'input',
-                  field: item.id || item.field,//id用于传值，field用于预览
-                  title: item.title,
-                  props: {
-                    type: 'text',
-                    placeholder: item.remark,
-                    disable: true
-                  },
-                  value: item.text,
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'chang'
-                  }],
-                  children: [
-                    {
-                      type: 'i',
-                      class: 'iconfont law-weizhi',
-                      slot: 'suffix',
-
-                    }
-                  ],
-                  inject: true,
-                  on: {
-                    'focus': this.changeLaw
-                  },
-                })
-                if (item.field == 'staff') {
-                  console.log('item', item)
-                  this.LawName = item.id;// 执法人员字段名
-                } else if (item.field == 'certificateId') {//执法人员账号字段名
-                  this.LawOfficerCard = item.id;
-                }
-              }
-            });
+            this.dealFieldData(element)
           }
-
         });
-      }
-      data.forEach(element => {
-        // console.log(element)
-        if (element.classs != '法人' && element.classs != '个人') {
+        // 其他字段
+        data.forEach(element => {
+          if (element.classId == this.partyName || element.classId == this.personName) {
+          } else {
+            if (element.classs) {
+              // 组
+              this.rule.push(
+                {
+                  type: 'p',
+                  name: 'btn',
+                  field: element.classId,
+                  props: {
+                    type: 'primary',
+                    field: 'btn',
+                    loading: true
+                  },
+                  className: 'border-title',
+                  children: [element.classs],
+                }
+              )
+            } else {
+              if (this.rule.length != 0) {
+                // 分割线
+                this.rule.push(
+                  {
+                    type: 'div',
+                    name: 'btn',
+                    field: element.classId,
+                    props: {
+                      type: 'primary',
+                      field: 'btn',
+                      loading: true
+                    },
+                    className: 'line',
+                  }
+                )
+              }
+
+            }
+            this.dealFieldData(element)
+          }
+        });
+        console.log('this.rule', this.rule)
+      } else {
+        data.forEach(element => {
           if (element.classs) {
             // 组
             this.rule.push(
@@ -768,238 +676,281 @@ export default {
                 }
               )
             }
-
           }
 
-          // 字段
-          element.fieldList.forEach(item => {
-            // console.log(item)
-            if (item.type == '文本型') {
-              item.type = 'input';
-              this.rule.push({
-                type: 'input',
-                field: item.id || item.field,//id用于传值，field用于预览
-                title: item.title,
-                props: {
-                  type: 'textarea',
-                  placeholder: item.remark,
-                  disable: true,
-                  autosize: { minRows: 1 }
-                },
-                value: item.text,
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  message: '请输入' + item.title,
-                  trigger: 'blur'
-                }]
-              })
-            } else if (item.type == '抽屉型') {
-              item.options.forEach(option => {
-                option.label = option.value
-              });
-              this.rule.push({
-                type: "select",
-                field: item.id || item.field,
-                title: item.title,
-                options: item.options,
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  message: '请输入' + item.title,
-                  trigger: 'blur'
-                }],
-                props: {
-                  disable: true
-                },
-              })
-            } else if (item.type == '单选型') {
-              item.options.forEach(option => {
-                option.label = option.value
-              });
-              this.rule.push({
-                type: "radio",
-                field: item.id || item.field,
-                title: item.title,
-                options: item.options,
-                value: item.text,
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  message: '请选择' + (item.title || ''),
-                  trigger: 'blur'
-                }],
-                props: {
-                  disable: true
-                },
-              })
-            } else if (item.type == '复选型') {
-              item.options.forEach(option => {
-                option.label = option.value
-              });
-              this.rule.push({
-                type: "checkbox",
-                field: item.id || item.field,
-                title: item.title,
-                options: item.options,
-                value: item.text ? item.text.split(',') : [],
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  message: '请选择' + item.title,
-                  trigger: 'blur'
-                }]
-              })
-            } else if (item.type == '日期型') {
-              if (item.options[0].value == 'HH:mm') {
-                this.rule.push({
-                  type: "TimePicker",
-                  field: item.id || item.field,
-                  title: item.title,
-                  value: item.text || [new Date()],
-                  props: {
-                    format: item.options[0].value,
-                    placeholder: item.remark
-                  },
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'blur'
-                  }]
-                })
-              } else {
-                this.rule.push({
-                  type: "DatePicker",
-                  field: item.id || item.field,
-                  title: item.title,
-                  value: item.text || [new Date()],
-                  props: {
-                    format: item.options[0].value,
-                    placeholder: item.remark,
-                    type: 'datetime'
-                  },
-                  validate: [{
-                    required: item.required == 'true' ? true : false,
-                    message: '请输入' + item.title,
-                    trigger: 'blur'
-                  }]
-                })
-              }
-            } else if (item.type == '数字型') {
-              this.rule.push({
-                //  type: "InputNumber",
-                type: "input",
-                field: item.id || item.field,
-                title: item.title,
-                value: item.text,
-                controls: false,
-                className: 'modle-number-box',
-                props: {
-                  type: 'textarea',
-                  autosize: { minRows: 1 }
-                  // precision: 2
-                },
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
-                  message: '必须输入数字',
-                  trigger: 'blur'
-                }]
-              })
-            } else if (item.type == '地址型') {
-              item.type = 'input';
-              this.rule.push({
-                type: 'input',
-                field: item.id || item.field,//id用于传值，field用于预览
-                // title: item.title,
-                title: item.title,
-                props: {
-                  type: 'text',
-                  placeholder: item.remark,
-                  disable: true
-                },
-                value: item.text,
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  message: '请输入' + item.title,
-                  trigger: 'chang'
-                }],
-                children: [
-                  {
-                    type: 'i',
-                    class: 'iconfont law-weizhi',
-                    slot: 'suffix',
+          this.dealFieldData(element,viewFlag)
+        })
+      }
+    },
+    dealFieldData(element,viewFlag) {
+      console.log('viewFlag',viewFlag)
+      // 字段
+      element.fieldList.forEach(item => {
 
-                  }
-                ],
-                inject: true,
-                on: {
-                  'focus': this.changeAdress
-                },
-              })
-            } else if (item.type == '引用型') {
-              item.type = 'input';
-              this.rule.push({
-                type: 'input',
-                field: item.id || item.field,//id用于传值，field用于预览
-                title: item.title,
-                props: {
-                  type: 'text',
-                  placeholder: item.remark,
-                  disable: true
-                },
-                value: item.text,
-                validate: [{
-                  required: item.required == 'true' ? true : false,
-                  message: '请输入' + item.title,
-                  trigger: 'chang'
-                }],
-                children: [
-                  {
-                    type: 'i',
-                    class: 'iconfont law-people',
-                    slot: 'suffix',
-
-                  }
-                ],
-                inject: true,
-                on: {
-                  'focus': this.changeLaw
-                },
-              })
-              if (item.field == 'staff') {
-                this.LawName = item.id;// 执法人员字段名
-              } else if (item.field == 'certificateId') {//执法人员账号字段名
-                this.LawOfficerCard = item.id;
-              }
-            }
-          });
+        // 用于预览，避免重复
+        if (viewFlag) {
+          item.id = this.globalId.toString()
+          this.globalId++
+          console.log('id', item.id)
+          // debugger
         }
-        this.$nextTick(() => {
-          this.isEdit()
-          this.defultPersonParty()
-        });
+        console.log('item',item,typeof(item.title))
+        if(typeof(item.title)=='object'){
+          item.title=item.title.title
+          // debugger
+        }
+        // debugger
+        if (item.type == '文本型') {
+          item.type = 'input';
+          this.rule.push({
+            type: 'input',
+            field: item.id || item.field,//id用于传值，field用于预览
+            title: item.title,
+            props: {
+              type: 'textarea',
+              placeholder: item.remark,
+              disable: true,
+              autosize: { minRows: 1 }
+            },
+            value: item.text,
+            validate: [{
+              required: item.required == 'true' ? true : false,
+              message: '请输入' + item.title,
+              trigger: 'blur'
+            }]
+          })
+        } else if (item.type == '抽屉型') {
+          item.options.forEach(option => {
+            option.label = option.value
+          });
+          this.rule.push({
+            type: "select",
+            field: item.id || item.field,
+            title: item.title,
+            options: item.options,
+            validate: [{
+              required: item.required == 'true' ? true : false,
+              message: '请输入' + item.title,
+              trigger: 'blur'
+            }],
+            props: {
+              disable: true
+            },
+          })
+        } else if (item.type == '单选型') {
+          item.options.forEach(option => {
+            option.label = option.value
+          });
+          // 是否转立案
+          if (item.field == 'isTransfer') {
+            // 存储是否转立案字段名
+            this.isTransferName = item.id
+          }
+          this.rule.push({
+            type: "radio",
+            field: item.id || item.field,
+            title: item.title,
+            options: item.options,
+            value: item.text,
+            validate: [{
+              required: item.required == 'true' ? true : false,
+              message: '请选择' + (item.title || ''),
+              trigger: 'blur'
+            }],
+            props: {
+              disable: true
+            },
+          })
+        } else if (item.type == '复选型') {
+          item.options.forEach(option => {
+            option.label = option.value
+          });
+          this.rule.push({
+            type: "checkbox",
+            field: item.id || item.field,
+            title: item.title,
+            options: item.options,
+            value: item.text ? item.text.split(',') : [],
+            validate: [{
+              required: item.required == 'true' ? true : false,
+              message: '请选择' + item.title,
+              trigger: 'blur'
+            }]
+          })
+        } else if (item.type == '日期型') {
+          // 通用字段默认带入时间
+          let timeValue = item.status === 0 ? item.text || [new Date()] : item.text || []
+          if (item.options[0].value == 'HH:mm') {
+            this.rule.push({
+              type: "TimePicker",
+              field: item.id || item.field,
+              title: item.title,
+              value: timeValue,
+              props: {
+                format: item.options[0].value,
+                placeholder: item.remark
+              },
+              validate: [{
+                required: item.required == 'true' ? true : false,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }]
+            })
+          } else {
+            console.log('data', item.text)
+            // 通用字段默认带入时间
+            let timeValue = item.status === 0 ? item.text || [new Date()] : item.text || []
+            this.rule.push({
+              type: "DatePicker",
+              field: item.id || item.field,
+              title: item.title,
+              value: timeValue,
+              props: {
+                format: item.options[0].value,
+                placeholder: item.remark,
+                type: 'datetime'
+              },
+              validate: [{
+                required: item.required == 'true' ? true : false,
+                message: '请输入' + item.title,
+                trigger: 'blur'
+              }]
+            })
+          }
+        } else if (item.type == '数字型') {
+          this.rule.push({
+            //  type: "InputNumber",
+            type: "input",
+            field: item.id || item.field,
+            title: item.title,
+            value: item.text,
+            controls: false,
+            className: 'modle-number-box',
+            props: {
+              type: 'textarea',
+              autosize: { minRows: 1 }
+              // precision: 2
+            },
+            validate: [{
+              required: item.required == 'true' ? true : false,
+              pattern: '^(\\-|\\+)?\\d+(\\.\\d+)?$',//正则校验数字
+              message: '必须输入数字',
+              trigger: 'blur'
+            }]
+          })
+        } else if (item.type == '地址型') {
+          item.type = 'input';
+          this.rule.push({
+            type: 'input',
+            field: item.id || item.field,//id用于传值，field用于预览
+            // title: item.title,
+            title: item.title,
+            props: {
+              type: 'text',
+              placeholder: item.remark,
+              disable: true
+            },
+            value: item.text,
+            validate: [{
+              required: item.required == 'true' ? true : false,
+              message: '请输入' + item.title,
+              trigger: 'chang'
+            }],
+            children: [
+              {
+                type: 'i',
+                class: 'iconfont law-weizhi',
+                slot: 'suffix',
 
+              }
+            ],
+            inject: true,
+            on: {
+              'focus': this.changeAdress
+            },
+          })
+        } else if (item.type == '引用型') {
+          item.type = 'input';
+          this.rule.push({
+            type: 'input',
+            field: item.id || item.field,//id用于传值，field用于预览
+            title: item.title,
+            props: {
+              type: 'text',
+              placeholder: item.remark,
+              disable: true
+            },
+            value: item.text,
+            validate: [{
+              required: item.required == 'true' ? true : false,
+              message: '请输入' + item.title,
+              trigger: 'chang'
+            }],
+            children: [
+              {
+                type: 'i',
+                class: 'iconfont law-people',
+                slot: 'suffix',
+
+              }
+            ],
+            inject: true,
+            on: {
+              'focus': item.field == 'staff' ? this.changeLaw : this.changeLawId
+            },
+          })
+          if (item.field == 'staff') {
+            this.LawName = item.id;// 执企业组织信息员字段名
+          } else if (item.field == 'certificateId') {//执企业组织信息员账号字段名
+            this.LawOfficerCard = item.id;
+          }
+        }
+      });
+      this.$nextTick(() => {
+        this.isEdit()
+        if (this.personPartyFlag) {
+          console.log('this.personFieldList', this.personFieldList)
+          this.defaultPersonFieldList = JSON.parse(JSON.stringify(this.personFieldList))
+          // 默认展示当事人信息和企业组织信息
+          // this.personFieldList = JSON.parse(JSON.stringify(this.defaultPersonFieldList))
+          if (this.formData.objectType && this.formData.objectType == '1') {
+            this.defultParty()
+          } else {
+            this.defultPerson()
+          }
+        }
       });
     },
-    //查询执法人员
+    //查询执企业组织信息员
     getAllUserList(list) {
-      console.log("list", list);
       this.allUserList = list;
     },
     setLawPerson(userlist) {
-      console.log('选择的执法人员', userlist);
       this.alreadyChooseLawPerson = userlist;
-
       let staffArr = [];
-      let certificateIdArr = [];
-
       this.alreadyChooseLawPerson.forEach(item => {
         //   //给表单数据赋值
-        // staffArr.push(item.lawOfficerName);//执法人员
-        staffArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执法人员
+        // staffArr.push(item.lawOfficerName);//执企业组织信息员
+        staffArr.push(item.lawOfficerName);//执企业组织信息员
 
-        certificateIdArr.push(item.selectLawOfficerCard);//执法账号
       });
 
-      this.$data.$f.setValue(this.LawOfficerCard, certificateIdArr.join(','));
       this.$data.$f.setValue(this.LawName, staffArr.join(','));
+
+    },
+    //查询执企业组织信息员 带id
+    getAllUserListId(list) {
+      this.allUserListId = list;
+    },
+    setLawPersonId(userlist) {
+      this.alreadyChooseLawPersonId = userlist;
+      let certificateIdArr = [];
+      this.alreadyChooseLawPersonId.forEach(item => {
+        //   //给表单数据赋值
+        // certificateIdArr.push(item.selectLawOfficerCard);//执法账号
+        certificateIdArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执企业组织信息员
+      });
+      this.$data.$f.setValue(this.LawOfficerCard, certificateIdArr.join(','));
 
     },
     //获取坐标
@@ -1016,68 +967,99 @@ export default {
       this.$refs.mapDiagRef.showModal();
       this.adressName = inject.self.field;// 地址字段名
     },
-    // 获取执法人员和账号
+    // 获取执企业组织信息员和账号
     changeLaw(inject) {
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
-      //选择执法人员
-      this.$refs.chooseLawPersonRef.showModal(this.lawPersonListId, this.alreadyChooseLawPerson);
+
+      //选择执企业组织信息员
+      this.$refs.chooseLawPersonRef.showModal(this.alreadyChooseLawPerson);
+    },
+    // 获取执企业组织信息员和账号-带id
+    changeLawId(inject) {
+      console.log(`blur: ${inject.self.title}`);
+      console.log(`blur: ${inject.self.field}`);
+      //选择执企业组织信息员
+      this.$refs.chooseLawPersonIdRef.showModal(this.alreadyChooseLawPersonId);
     },
     // 选择当事人类型
     changePersonParty(inject) {
+      this.personFieldList = JSON.parse(JSON.stringify(this.defaultPersonFieldList))
       if (inject.self.value == '1') {
-        // 隐藏个人
-        this.personFieldList.forEach(element => {
-          console.log('elmen', element.id)
-          // 避免undefine导致全部隐藏
-          if (element.id) {
-            this.$data.$f.hidden(true, element.id)
-          }
-        });
-        // 显示法人
-        this.partyFieldList.forEach(element => {
-          console.log('elmen', element)
-          if (element.id) {
-            this.$data.$f.hidden(false, element.id)
-          }
-        });
+        this.defultParty()
       }
-      // 显示个人
+      // 显示当事人信息
       if (inject.self.value == '0') {
-        // 显示个人
-        this.personFieldList.forEach(element => {
-          console.log('elmen', element.id)
-          // 避免undefine导致全部隐藏
-          if (element.id) {
-            this.$data.$f.hidden(false, element.id)
-          }
-        });
-        //  隐藏显示法人
-        this.partyFieldList.forEach(element => {
-          console.log('elmen', element)
-          if (element.id) {
-            this.$data.$f.hidden(true, element.id)
-          }
-        });
+        this.defultPerson()
       }
     },
-    // 默认隐藏法人
-    defultPersonParty() {
+    // 默认隐藏企业组织信息
+    defultPerson() {
+      console.log('personFieldList2', this.personFieldList)
       this.personFieldList.forEach(element => {
-        console.log('elmen', element.id)
+        // console.log('elmen5', element.id)
         // 避免undefine导致全部隐藏
-        if (element.id) {
-          this.$data.$f.hidden(false, element.id)
+        if (element.id || element.field) {
+          this.$data.$f.hidden(false, element.id || element.field)
         }
+        this.$data.$f.updateRule(element.id, {
+          validate: [
+            { required: element.required === "true" ? true : false, message: element.title + '必填', trigger: 'change' },
+          ]
+        })
       });
-      //  隐藏显示法人
+      //  隐藏显示企业组织信息，去掉验证
       this.partyFieldList.forEach(element => {
-        console.log('elmen', element)
-        if (element.id) {
-          this.$data.$f.hidden(true, element.id)
+        // console.log('elmen6', element)
+        if (element.id || element.field) {
+          this.$data.$f.hidden(true, element.id || element.field)
         }
+        this.$data.$f.updateRule(element.id, {
+          validate: [
+            { required: false, message: element.title + '必填', trigger: 'change' },
+          ]
+        })
       });
-    }
+    },
+    // 隐藏个人组织信息
+    defultParty() {
+      // 隐藏当事人信息
+      this.personFieldList.forEach(element => {
+        // console.log('elmen1', element)
+        // 避免undefine导致全部隐藏
+        if (element.id || element.field) {
+          this.$data.$f.hidden(true, element.id || element.field)
+        }
+        this.$data.$f.updateRule(element.id, {
+          validate: [
+            { required: false, message: element.title + '必填', trigger: 'change' },
+          ]
+        })
+      });
+      // 显示企业组织信息
+      this.partyFieldList.forEach(element => {
+        // console.log('elmen2', element)
+        if (element.id || element.field) {
+          this.$data.$f.hidden(false, element.id || element.field)
+        }
+        this.$data.$f.updateRule(element.id, {
+          validate: [
+            { required: element.required === "true" ? true : false, message: element.title + '必填', trigger: 'change' },
+          ]
+        })
+      });
+    },
+    // 随机生成id 用于预览
+    random() {
+      let a = Math.random().toString(16)
+      return a.substring(a.length - 10)
+    },
+    saveFileData() {
+
+    },
+    submitFileData() {
+
+    },
   },
   mounted() {
     console.log('id', this.$route.query.id)
@@ -1086,7 +1068,6 @@ export default {
       if (this.$route.query.addOrEiditFlag == 'add') {
         this.modleId = this.$route.query.id
         this.findDataByld()
-
       } else
         if (this.$route.query.addOrEiditFlag == 'edit') {
           this.recordId = this.$route.query.id;
@@ -1098,19 +1079,23 @@ export default {
           this.recordId = this.$route.query.id;
           this.findRecordDataByld()
         }
-
     }
     if (this.psMsg) {
       this.defaultRuleData = this.psMsg
       this.formData.title = this.psMsg.title
       this.dealFormData()
     }
-
   }
 }
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
-/* @import "@/assets/css/caseHandle/index.scss"; */
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
+<style lang="scss" src="@/assets/css/documentForm.scss"></style>
+<style lang="scss">
+.copy-style-text {
+  .el-textarea__inner {
+    color: #f56c6c;
+  }
+}
 </style>

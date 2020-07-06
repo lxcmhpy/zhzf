@@ -38,14 +38,14 @@
                 </el-form-item>
                 <div class="forgetPass">
                   <el-collapse-transition>
-                    <div v-show="errorPwd" class="error">{{errorPwd}}</div>
+                    <div v-show="errorPwd" class="error-pwd">{{errorPwd}}</div>
                   </el-collapse-transition>
                 </div>
                 <el-form-item class="codeInputBox">
                   <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
-                    <div v-show="errorMessage" class="error">{{errorMessage}}</div>
+                    <div v-show="errorMessage" class="error-pwd">{{errorMessage}}</div>
                 </div>
 
                 <div>

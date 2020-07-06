@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="单价(元)" prop="roadLcPrice">
-           <el-input v-model="addOrUpdateRoadLcDeployForm.roadLcPrice" v-on:input="value=onlyNum(addOrUpdateRoadLcDeployForm.roadLcPrice)"></el-input>
+           <el-input v-model="addOrUpdateRoadLcDeployForm.roadLcPrice" v-on:blur="value=onlyNum(addOrUpdateRoadLcDeployForm.roadLcPrice)"></el-input>
         </el-form-item>
         <el-form-item label="单位" prop="roadLcUnit">
            <el-select v-model="addOrUpdateRoadLcDeployForm.roadLcUnit" placeholder="请选择">
@@ -79,7 +79,15 @@ export default {
       }
     },
     onlyNum(value){
-      this.addOrUpdateRoadLcDeployForm.roadLcPrice = value.replace(/\D/g,'')
+        var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+        if (!reg.test(value)) {
+            this.$message({
+                type: "info",
+                message: "请输入最多两位小数的价格！"
+            });
+            this.addOrUpdateRoadLcDeployForm.roadLcPrice = "";
+        }
+      //this.addOrUpdateRoadLcDeployForm.roadLcPrice = value.replace(/\D/g,'')
     },
     //选中所属标准，加载类型
     initRoadLcType2(type){

@@ -36,8 +36,21 @@ export function findMoleByIdApi(data) {
 //根据UUID删除模板
 export function removeMoleByIdApi(data) {
     return request({
-        url: "/xzjc/template/myRemoveById/" + data,
+        url: "/xzjc/template/myRemoveById",
         method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据userId和templateId删除收藏关系表数据
+export function removeMoleCollectByIdApi(data) {
+    return request({
+        url: "/xzjc/collect/unbind",
+        method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',
@@ -114,6 +127,17 @@ export function findRecordModleByPersonApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//查询登录人收藏的模板
+export function findUserCollectTemplateApi(data) {
+    return request({
+        url: "/xzjc/template/findUserCollectTemplate/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //通过模板名称查询模板
 export function findRecordlModleByNameApi(data) {
     return request({
@@ -161,8 +185,9 @@ export function findRecordModleTimeByIdApi(data) {
 //通过模板名称查询模板
 export function findRecordModleByNameIdApi(data) {
     return request({
-        url: "/xzjc/template/findByTemplateName/"+data,
+        url: "/xzjc/template/findByTemplateName",
         method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',
@@ -183,7 +208,7 @@ export function findAllModleNameApi(data) {
 //根据条件分页查询
 export function findRecordListApi(data) {
     return request({
-        url: "/xzjc/templateOrder/queryTemplateOrderPage",
+        url: "/xzjc/templateOrder/pcQueryTemplateOrderPage",
         method: "get",
         params: data,
         showloading: true,
@@ -209,7 +234,18 @@ export function saveOrUpdateRecordApi(data) {
 //根据UUID删除记录
 export function removeRecordByIdApi(data) {
     return request({
-        url: "/xzjc/templateOrder/removeById/" + data,
+        url: "/xzjc/templateOrder/myRemoveById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据UUID查找订单记录-之前
+export function findRecordByIdApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/getById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
@@ -218,9 +254,9 @@ export function removeRecordByIdApi(data) {
     });
 }
 //根据UUID查找订单记录
-export function findRecordByIdApi(data) {
+export function findMyRecordByIdApi(data) {
     return request({
-        url: "/xzjc/templateOrder/getById/" + data,
+        url: "/xzjc/templateOrder/myGetById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',

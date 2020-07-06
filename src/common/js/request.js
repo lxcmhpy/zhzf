@@ -33,9 +33,12 @@ var BASEURL;
 // request interceptor
 service.interceptors.request.use(
     config => {
-      if (BASEURL === '' || BASEURL === 'undefined') {
-          BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
-          BASEURL.HOME_PAGE = localStorage.getItem("HOME_PAGE_ROUTER_NAME");
+      if (!BASEURL) {
+          BASEURL={
+              CURRENT: 'TEMP'
+          };
+          BASEURL[BASEURL.CURRENT] = iLocalStroage.gets("CURRENT_BASE_URL");
+          BASEURL.HOME_PAGE_ROUTER_NAME = localStorage.getItem("HOME_PAGE_ROUTER_NAME");
           BASEURL.SYS_TITLE = localStorage.getItem("SYS_TITLE");
       }
       if (config.baseUrlType) {
@@ -76,7 +79,6 @@ service.interceptors.request.use(
   service.interceptors.response.use(
     response => {
         if (response.config.isGetHost) {
-            debugger;
             BASEURL = response.data;
             iLocalStroage.sets("CURRENT_BASE_URL", BASEURL[BASEURL.CURRENT]);
             sessionStorage.setItem("HOME_PAGE_ROUTER_NAME", BASEURL.HOME_PAGE_ROUTER_NAME);

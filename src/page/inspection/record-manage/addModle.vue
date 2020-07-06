@@ -90,8 +90,9 @@
                           </el-input> -->
 
                           <!-- 改成选择字段 -->
+                          <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
                           <el-select v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)">
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField"></el-option>
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
                           </el-select>
 
                         </el-form-item>
@@ -195,8 +196,8 @@
             <el-radio-group v-model="formData.scopeOfUse" style="width:100%" class="card-select">
               <div class="el-form-item__content">
                 <el-radio label="指定人员使用"></el-radio>
-                <el-form-item v-if="formData.scopeOfUse=='指定人员使用'" class="lawPersonBox card-user-box">
-                  <el-select ref="templateUserIdList" value-key="id" v-model="formData.templateUserIdList" multiple filterable @remove-tag="removeUsertag" @change="changeUser">
+                <el-form-item v-if="formData.scopeOfUse=='指定人员使用'" class="lawPersonBox card-user-box" :prop="formData.scopeOfUse=='指定人员使用'?'templateUserIdList':'pacholor'">
+                  <el-select ref="templateUserIdList" value-key="userId" v-model="formData.templateUserIdList" multiple filterable @remove-tag="removeUsertag" @change="changeUser">
                     <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
                     <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
                   </el-select>
@@ -204,7 +205,7 @@
               </div>
               <div class="el-form-item__content">
                 <el-radio label="机构内使用"></el-radio>
-                <el-form-item v-if="formData.scopeOfUse=='机构内使用'" class="lawPersonBox card-user-box">
+                <el-form-item v-if="formData.scopeOfUse=='机构内使用'" class="lawPersonBox card-user-box" :prop="formData.scopeOfUse=='机构内使用'?'templateOrgan':'pacholor'">
                   <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
                     <div class="departOrUserTree" style="width:600px">
                       <div class="treeBox">
@@ -221,14 +222,13 @@
                     <el-input slot="reference" v-model="formData.templateOrgan" placeholder="请输入选项" clearable style="width:100%">
                     </el-input>
                   </el-popover>
-
                 </el-form-item>
               </div>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="模板管理者">
             <el-form-item class="lawPersonBox card-user-box-big" style="width:100%">
-              <el-select ref="templateAdminIdList" value-key="id" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag">
+              <el-select ref="templateAdminIdList" value-key="userId" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag">
                 <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
                 <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
@@ -331,7 +331,7 @@ export default {
             // value: ,
             sort: 0,//新加-前端定义
             classs: '',
-            classsId: '',
+            classId: '',
             fieldList: [
               {
                 id: '',//字段id-修改
@@ -372,7 +372,7 @@ export default {
           // value: ,
           sort: 0,//新加-前端定义
           classs: '',
-          classsId: '',
+          classId: '',
           fieldList: [
             {
               id: '',//字段id-修改
@@ -401,7 +401,14 @@ export default {
         scopeOfUse: [
           { required: true, message: '请选择适用范围', trigger: 'blur' }
         ],
-      }
+        templateUserIdList: [
+          { required: true, message: '请选择指定人员', trigger: 'change' }
+        ],
+        templateOrgan: [
+          { required: true, message: '请选择指定机构', trigger: 'change' }
+        ],
+      },
+      fieldDisabledTitle: ''
     }
   },
   methods: {
@@ -411,7 +418,6 @@ export default {
         this.findDataByld()
         this.drawerTitle = '修改模板'
         this.globalCont = editdata.count + 1;
-
       }
       this.findCommonGroupField()
       this.findCommonField()
@@ -435,6 +441,9 @@ export default {
               if (item.options) {
                 item.options = JSON.parse(item.options)
               }
+              // 处理回显字段info
+              let itemData = JSON.parse(JSON.stringify(item))
+              item.info = itemData.title
             });
           });
           findRecordModleByIdApi(this.editId).then(
@@ -448,12 +457,11 @@ export default {
                 // _this.formData.templateAdminIdList = _this.formData.templateAdminId.split(",")
                 _this.formData.templateUserIdList = [];
                 _this.formData.templateAdminIdList = [];
-                if (_this.formData.templateUser) {
+                if (_this.formData.templateUser && _this.formData.templateUserId) {
                   let user = _this.formData.templateUser.split(",")
                   let userId = _this.formData.templateUserId.split(",")
                   user.forEach((element, index) => {
-                    console.log('index', index)
-                    _this.formData.templateUserIdList.push({ id: userId[index], lawOfficerName: element })
+                    _this.formData.templateUserIdList.push({ userId: userId[index], lawOfficerName: element })
                   });
                 }
                 let admin = _this.formData.templateAdmin.split(",")
@@ -461,11 +469,8 @@ export default {
 
 
                 admin.forEach((element, index) => {
-                  _this.formData.templateAdminIdList.push({ id: adminId[index], lawOfficerName: element })
+                  _this.formData.templateAdminIdList.push({ userId: adminId[index], lawOfficerName: element })
                 });
-
-                console.log('_this.formData.templateUserIdList', _this.formData.templateUserIdList)
-                console.log('_this.formData.templateAdminIdList', _this.formData.templateAdminIdList)
                 // 修改-无图标时
                 if (_this.formData.icon == '' || _this.formData.icon == null) {
                   _this.titileText = _this.formData.title.charAt(0)
@@ -478,9 +483,7 @@ export default {
             })
         },
         error => {
-
         })
-
     },
     // 获取通用字段组
     findCommonGroupField() {
@@ -495,12 +498,9 @@ export default {
               }
               // 改成选择字段
               let itemData = JSON.parse(JSON.stringify(item))
-              console.log('itemData', itemData)
               item.info = itemData.title
-              console.log(item)
             });
           });
-          console.log('common', this.commonGroupFieldList)
           // 获取通用字段
           // this.commonFieldList = this.commonGroupFieldList[3].fieldList
         },
@@ -515,6 +515,10 @@ export default {
 
           // 获取通用字段
           this.commonFieldList = res.data
+
+          this.commonFieldList.forEach(element => {
+            element.fieldDisabled = false
+          });
         },
         error => {
 
@@ -533,23 +537,19 @@ export default {
     },
     addGroup() {
       let indexSort = this.formData.templateFieldList.length
-      this.formData.templateFieldList.push({ sort: this.globalContGroup, classs: '', fieldList: [] })
+      this.formData.templateFieldList.push({ sort: this.globalContGroup, classs: '', fieldList: [], classId: '' })
       // debugger
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalContGroup
-
+      console.log('push', pushDataList)
+      debugger
       this.formData.templateFieldList[indexSort].fieldList.push(pushDataList)
       this.activeNames.push(this.globalContGroup)
-      console.log('activetiname', this.activeNames)
       this.globalContGroup++
       this.globalCont++;
     },
 
     addField(item, index) {
-      console.log('item', item)
-      console.log('push前', item.fieldList)
-
-      console.log('field index', item)
       if (this.activeNames.indexOf(item.sort) == -1) {
         this.activeNames.push(item.sort)
       }
@@ -557,22 +557,13 @@ export default {
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalCont;
       this.globalCont++
-      console.log('pushDataList', pushDataList)
       // let length = item.fieldList.length
       item.fieldList.push(pushDataList);
-
       this.formData.templateFieldList[index].fieldList.sort()
-      // let a = [...item.fieldList,pushDataList];
-      // this.formData.templateFieldList[index].fieldList =a;
-      // item.fieldList.length++
-      // this.$set('item.fieldList', length, pushDataList)
-      console.log('push后', item.fieldList)
     },
     delField(field, fieldList) {
-      console.log(field)
       if (fieldList.length > 1) {
         var index = fieldList.indexOf(field)
-        console.log(index)
         if (index !== -1) {
           fieldList.splice(index, 1)
         }
@@ -596,7 +587,6 @@ export default {
           for (var i = 0; i < this.$refs["childForm"].length; i++) {
             this.$refs["childForm"][i].validate(isVaild => {
               if (isVaild) {
-                console.log("ffff");
               } else {
                 canSubmit = false;
                 return;
@@ -604,11 +594,8 @@ export default {
             });
           }
           if (canSubmit) {
-            debugger
-            console.log(this.formData.templateFieldList, ':', this.defaultTemplateFieldList)
             let fieldList = JSON.stringify(this.formData.templateFieldList)
             let defaultFieldList = JSON.stringify(this.defaultTemplateFieldList)
-            console.log(fieldList, ':', defaultFieldList)
             if (fieldList == defaultFieldList) {
               this.$message('该请至少添加一个字段！');
             }
@@ -618,28 +605,30 @@ export default {
                 cancelButtonText: "取消",
                 type: "warning"
               }).then(() => {
-                console.log('submit')
                 let data = JSON.parse(JSON.stringify(this.formData))
                 data.templateAdminId = '';
                 data.templateUserId = ''
                 let sort = this.globalCont
-                console.log('复制的', data.templateFieldList)
                 data.templateFieldList.forEach(element => {
                   element.fieldList.forEach(item => {
                     item.sort = sort;
                     sort++
+                    if (typeof (item.title) == 'object') {
+                      item.title = item.title.title
+                      // debugger
+                    }
                   });
                 });
                 data.count = sort;
-                console.log('templateAdminId', data.templateAdminIdList)
-                console.log('templateUserIdList', data.templateUserIdList)
                 data.templateAdminIdList.forEach(element => {
-                  data.templateAdminId = data.templateAdminId + ',' + element.id
+                  // 使用userID
+                  data.templateAdminId = data.templateAdminId + ',' + element.userId
                   data.templateAdmin = data.templateAdmin + ',' + element.lawOfficerName
                 });
                 data.templateUserIdList.forEach(element => {
                   data.templateUser = data.templateUser + ',' + element.lawOfficerName
-                  data.templateUserId = data.templateUserId + ',' + element.id
+                  // 使用userID
+                  data.templateUserId = data.templateUserId + ',' + element.userId
                 });
                 // 未做ie浏览器兼容处理
                 if (data.templateAdminId.substr(0, 1) == ',') {
@@ -648,21 +637,22 @@ export default {
                 if (data.templateAdmin.substr(0, 1) == ',') {
                   data.templateAdmin = data.templateAdmin.substr(1)
                 }
-                if (data.templateUserId.substr(0, 1) == ',') {
-                  data.templateUserId = data.templateUserId.substr(1)
-                }
-                if (data.templateUser.substr(0, 1) == ',') {
-                  data.templateUser = data.templateUser.substr(1)
+                if (data.scopeOfUse == '指定人员使用') {
+                  if (data.templateUserId.substr(0, 1) == ',') {
+                    data.templateUserId = data.templateUserId.substr(1)
+                  }
+                  if (data.templateUser.substr(0, 1) == ',') {
+                    data.templateUser = data.templateUser.substr(1)
+                  }
                 }
                 data.templateUserIdList = '';
                 data.templateAdminIdList = '';
+                data.templateUserId = data.scopeOfUse == '指定人员使用' ? data.templateUserId : '';
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 data.templateFieldList = JSON.stringify(data.templateFieldList)
                 console.log('提交的字段', data)
-                debugger
                 saveOrUpdateRecordModleApi(data).then(
                   res => {
-                    console.log(res)
                     if (res.code == 200) {
                       this.$message({
                         type: "success",
@@ -701,7 +691,6 @@ export default {
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           res => {
-            console.log('执法人员列表', res)
             _this.userList = res.data;
             let currentUserData = {};
             _this.formData.templateUserIdList = [];
@@ -719,7 +708,6 @@ export default {
             });
           },
           err => {
-            console.log(err);
           }
         );
     },
@@ -757,7 +745,6 @@ export default {
           }
         },
         err => {
-          console.log(err);
         }
       );
     },
@@ -781,10 +768,8 @@ export default {
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
           _this.lawCateList = res.data;
-          // console.log('列表121', _this.lawCateList)
         },
         err => {
-          console.log(err);
         }
       );
     },
@@ -815,7 +800,6 @@ export default {
     },
     // form类型
     changeFieldType(field) {
-      console.log('change', field)
       if (field.type == '日期型') {
         //   // 默认日期类型
         field.options[0].value = 'yyyy-MM-dd HH:mm:ss'
@@ -829,10 +813,11 @@ export default {
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList
-        console.log('ggroup.fieldList', group.fieldList)
-
+        group.classId = defaut.classId
+        console.log('classId', defaut.classId)
+        console.log('ggroup.fieldList', group)
+        console.log('formData', this.formData)
       } else if (!group.fieldList || group.fieldList.length == 0) {
-        console.log(group.fieldList)
         group.fieldList = [];
         let defautfieldList = JSON.parse(JSON.stringify(this.defautfieldList))
         defautfieldList.title = '';
@@ -840,25 +825,44 @@ export default {
       }
     },
     changeField(info, field) {
+      // info-新选，field-之前的信息
+      console.log('info', info)
+      console.log('field', field)
       // debugger
-      console.log('选中的字段info', info)
-      console.log('选中的字段', field)
-      if (info.id) {
-        // 判断是不是通用字段
-        field.id = field.info.id
-        field.field = field.info.field
-        field.title = field.info.title
-        field.type = field.info.type || '文本型'
-        field.options = JSON.parse(field.info.options)
-        field.sort = field.sort
-        field.remark = field.info.remark
-        field.required = field.info.required
-        field.status = field.info.status
-        field.templateId = field.info.templateId
+      // 如果是通用字段，只改名
+      if (field.status == 0 && !info.id) {
+        this.$set(field, 'title', info)
       } else {
-        field.title = info
+        if (info.status == 0) {
+          // 判断是通用字段-直改名
+          // field.title = info
+          this.$set(field, 'title', info)
+          field.id = field.info.id
+          field.field = field.info.field
+          field.type = field.info.type || '文本型'
+          field.options = JSON.parse(field.info.options)
+          field.sort = field.sort
+          field.remark = field.info.remark
+          field.required = field.info.required
+          field.status = field.info.status
+          field.templateId = field.info.templateId
+        } else {
+          this.$set(field, 'title', info)
+        }
       }
 
+      // 选中后禁用
+      console.log('this.commonFieldList', this.commonFieldList)
+      // console.log('find',this.commonFieldList.find(field))
+      // 判断新选中的和之前的是不是同一个
+      // this.commonFieldList.forEach(element => {
+      //   if(element.field==field.field){
+      //     console.log('elment.title',element.title)
+      //     element.fieldDisabled=!element.fieldDisabled
+      //   }
+      // });
+      // 存储上次选中的项
+      // this.fieldDisabledTitle=info.field
     },
     handleClose() {
       // debugger
@@ -874,7 +878,7 @@ export default {
           // value: ,
           sort: 0,//新加-前端定义
           classs: '',
-          classsId: '',
+          classId: '',
           fieldList: [
             {
               id: '',//字段id-修改

@@ -4,60 +4,60 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="35%"
+    width="50%"
   >
     <el-form :model="addOrUpdateRouteForm" :rules="rules" ref="addOrUpdateRouteForm" label-width="120px">
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="路线编号:">
-            <el-input style="width: 180px" v-model="addOrUpdateRouteForm.routeName"></el-input>
+            <el-input style="width: 160px" v-model="addOrUpdateRouteForm.routeName"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="里程:" >
-            <el-input style="width: 180px" v-model="addOrUpdateRouteForm.routeMileage"></el-input>
+            <el-input style="width: 160px" v-model="addOrUpdateRouteForm.routeMileage"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="公路行政级别:">
-            <el-select v-model="addOrUpdateRouteForm.routeLevel" placeholder="请选择">
+            <el-select style="width:160px"  v-model="addOrUpdateRouteForm.routeLevel" placeholder="请选择">
               <el-option v-for="item in levelList" :key="item.name" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <!--<el-col :span="12">
           <el-form-item label="公路等级:">
-            <el-select v-model="addOrUpdateRouteForm.routeGrade" placeholder="请选择">
+            <el-select style="width:160px" v-model="addOrUpdateRouteForm.routeGrade" placeholder="请选择">
               <el-option v-for="item in gradeList" :key="item.name" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col>-->
       </el-row>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="起始地点:">
-            <el-input style="width: 180px" v-model="addOrUpdateRouteForm.startingPoint"></el-input>
+            <el-input style="width: 160px" v-model="addOrUpdateRouteForm.startingPoint"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="结束地点:">
-            <el-input style="width: 180px" v-model="addOrUpdateRouteForm.enddingPoint"></el-input>
+            <el-input style="width: 160px" v-model="addOrUpdateRouteForm.enddingPoint"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="起始桩号:">
             <el-col class="line" :span="1">k</el-col>
-            <el-col  :span="10">
+            <el-col :span="4">
               <el-form-item prop="startingPileNumberK" label-width="0">
                 <el-input v-model="addOrUpdateRouteForm.startingPileNumberK" v-on:input="value=onlyNum(addOrUpdateRouteForm.startingPileNumberK,1)"></el-input>
               </el-form-item>
             </el-col>
             <el-col class="line" :span="2">+</el-col>
-            <el-col :span="10">
+            <el-col :span="4">
               <el-form-item prop="startingPileNumberM" label-width="0">
               <el-input v-model="addOrUpdateRouteForm.startingPileNumberM" v-on:input="value=onlyNum(addOrUpdateRouteForm.startingPileNumberM,2)"></el-input>
               </el-form-item>
@@ -65,16 +65,16 @@
             <el-col class="line" :span="1">m</el-col>
           </el-form-item>
         </el-col>
-       <el-col :span="10">
+       <el-col :span="12">
           <el-form-item label="结束桩号:">
-            <el-col class="line" :span="1">k</el-col>
-            <el-col :span="10">
+            <el-col class="line" :span="1">k </el-col>
+            <el-col :span="4">
               <el-form-item prop="enddingPileNumberK" label-width="0">
                 <el-input v-model="addOrUpdateRouteForm.enddingPileNumberK" v-on:input="value=onlyNum(addOrUpdateRouteForm.enddingPileNumberK,3)"></el-input>
               </el-form-item>
             </el-col>
-            <el-col class="line" :span="2">+</el-col>
-            <el-col :span="10">
+            <el-col class="line" :span="2">+ </el-col>
+            <el-col :span="4">
               <el-form-item prop="enddingPileNumberM" label-width="0">
                 <el-input v-model="addOrUpdateRouteForm.enddingPileNumberM" v-on:input="value=onlyNum(addOrUpdateRouteForm.enddingPileNumberM,4)"></el-input>
               </el-form-item>
@@ -84,9 +84,9 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col>
+        <el-col :span="24">
           <el-form-item label="备注(路线名称):">
-            <el-input style="width: 445px" v-model="addOrUpdateRouteForm.routeNote"></el-input>
+            <el-input style="width: 521px" v-model="addOrUpdateRouteForm.routeNote"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -107,7 +107,7 @@
                     routeName: "",
                     routeMileage: "",
                     routeLevel:"",
-                    routeGrade: "",
+                    // routeGrade: "",
                     startingPoint: "",
                     enddingPoint: "",
                     startingPileNumberK: "",
@@ -126,7 +126,7 @@
                 handelType: 0, //添加 0  修改2
                 editRouteId:'',
                 levelList:[], //公路行政级别列表
-                gradeList:[],//公路等级列表
+                // gradeList:[],//公路等级列表
             };
         },
         inject: ["reload"],
@@ -143,10 +143,10 @@
                 }
             },
             showModal(type, data) {
-                getDictListDetailByNameApi("公路等级").then(res=>{
+                /*getDictListDetailByNameApi("公路等级").then(res=>{
                     console.log(res)
                     _this.gradeList = res.data;
-                })
+                })*/
 
                 getDictListDetailByNameApi("公路行政级别").then(res=>{
                     console.log(res)
@@ -162,7 +162,7 @@
                     this.addOrUpdateRouteForm.routeName = "";
                     this.addOrUpdateRouteForm.routeMileage = "";
                     this.addOrUpdateRouteForm.routeLevel = "";
-                    this.addOrUpdateRouteForm.routeGrade = "";
+                    // this.addOrUpdateRouteForm.routeGrade = "";
                     this.addOrUpdateRouteForm.startingPoint = "";
                     this.addOrUpdateRouteForm.enddingPoint = "";
                     this.addOrUpdateRouteForm.startingPileNumberK = "";
@@ -182,7 +182,7 @@
                     this.addOrUpdateRouteForm.routeName = data.routeName;
                     this.addOrUpdateRouteForm.routeMileage = data.routeMileage;
                     this.addOrUpdateRouteForm.routeLevel = data.routeLevel;
-                    this.addOrUpdateRouteForm.routeGrade = data.routeGrade;
+                    // this.addOrUpdateRouteForm.routeGrade = data.routeGrade;
                     this.addOrUpdateRouteForm.startingPoint = data.startingPoint;
                     this.addOrUpdateRouteForm.enddingPoint = data.enddingPoint;
                     this.addOrUpdateRouteForm.startingPileNumberK = data.startingPileNumberK;

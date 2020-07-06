@@ -69,6 +69,16 @@ export default  [
                 },
                 component: () => import("@/page/inspection/record-manage/test.vue")
             },
+            {
+                // 文书-责令改正违法行为通知书
+                path: "/correctNotice",
+                name: "inspection_correctNotice",
+                meta: {
+                title: "责令改正违法行为通知书",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/file/correctNotice.vue")
+            },
         ]
     }, 
 ]
