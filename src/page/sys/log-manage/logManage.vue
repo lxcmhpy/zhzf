@@ -71,7 +71,7 @@
     <div class="tablePart">
       <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
         <!-- <el-table-column type="selection" width="55" align="center"></el-table-column>-->
-        <el-table-column prop="organ" label="机构名称" align="center"></el-table-column>
+        <el-table-column prop="organName" label="机构名称" align="center"></el-table-column>
         <el-table-column prop="ip" label="IP地址" align="center"></el-table-column>
         <el-table-column prop="type" label="功能名称" align="center"></el-table-column>
         <el-table-column prop="operation" label="操作名称" align="center"></el-table-column>
@@ -110,7 +110,8 @@ export default {
         username: "",
         startTime: "",
         endTime: "",
-        dateArray: ""
+        dateArray: "",
+        organName:""
       },
       logType:[{
             value: null,
@@ -157,7 +158,8 @@ export default {
         startTime: this.logForm.dateArray? this.logForm.dateArray[0] : '',
         endTime: this.logForm.dateArray? this.logForm.dateArray[1] : '',
         current: this.currentPage,
-        size: this.pageSize
+        size: this.pageSize,
+        organName: this.logForm.organName,
       };
       let _this = this
       this.$store.dispatch("getloglist", data).then(res => {
