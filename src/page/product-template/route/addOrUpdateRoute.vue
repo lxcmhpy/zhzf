@@ -4,7 +4,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="35%"
+    width="50%"
   >
     <el-form :model="addOrUpdateRouteForm" :rules="rules" ref="addOrUpdateRouteForm" label-width="120px">
       <el-row>

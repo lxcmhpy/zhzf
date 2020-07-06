@@ -1349,3 +1349,14 @@ export function updateLinkInfoByCaseIdAndLinkTypeIdApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//根据案件id和环节id判断环节下是否有审批中的文书 
+export function findApprovingDocApi(data) {
+  return request({
+    url: "/case/doc/linkData/findApprovingDoc/"+data.caseBasicInfoId+'/'+data.caseLinktypeId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

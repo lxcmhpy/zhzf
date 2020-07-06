@@ -127,7 +127,7 @@
             _this.$store.dispatch("deleteTabs", _this.$route.name);
             // _this.$store.commit("setCaseId", _this.caseInfo.caseId);
             if(this.docDataId){ //环节下的文书提交审批后
-              _this.$router.go(-1)
+              _this.$router.go(-2)
             }else{    //单环节文书提交审批后
               _this.$router.push({
                 name: "case_handle_flowChart"

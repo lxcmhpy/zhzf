@@ -3,7 +3,7 @@
     <div class="print_info indent_style" id="illegalAction_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">违法行为通知书</div>
-        <div class="doc_number">赣（{{docData.caseNumberYear}}）交违通〔{{docData.caseNumberNo}}〕号</div>
+        <div class="doc_number">{{formData.caseNumber}}</div>
         <p class="side_right_indent">
           当事人（个人姓名或单位名称）：
           <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])" style="width: 250px;">
@@ -238,7 +238,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.illegalActionForm_caseLinktypeId, //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_JX.illegalActionForm_JX_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -261,7 +261,7 @@ export default {
         pageDomId: "illegalAction_print",
         isHuanjie: true
       },
-      huanjieAndDocId: this.BASIC_DATA_SYS.illegalActionForm_huanjieAndDocId, //违法行为通知书的文书id
+      huanjieAndDocId: this.BASIC_DATA_JX.illegalActionForm_JX_huanjieAndDocId, //违法行为通知书的文书id
       needDealData:true,
       propertyFeatures:'', //字段属性配置
 
