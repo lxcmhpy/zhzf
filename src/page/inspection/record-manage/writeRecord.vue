@@ -72,7 +72,7 @@ export default {
         this.defaultRuleData = this.psMsg
         this.formData.title = this.psMsg.title
         this.personPartyFlag = false
-        this.dealFormData()
+        this.dealFormData(true)
       }
     },
   },
@@ -128,6 +128,8 @@ export default {
       },
       // 是否转立案字段名
       isTransferName: '',
+      viewFlag: false,
+      globalId: '563',
     }
   },
   components: {
@@ -473,14 +475,14 @@ export default {
       console.log('rule', this.rule)
       this.$data.$f.resetFields()
       if (this.$route.query.id) {
-        if (this.$route.query.addOrEiditFlag == 'edit'&&!this.isCopyStyle) {
+        if (this.$route.query.addOrEiditFlag == 'edit' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
               props: { disabled: true }
             }, true);
           });
-        } else if (this.$route.query.addOrEiditFlag == 'view'&&!this.isCopyStyle) {
+        } else if (this.$route.query.addOrEiditFlag == 'view' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
@@ -515,7 +517,7 @@ export default {
       this.personPartyFlag = false
     },
     // 匹配数据格式
-    dealFormData() {
+    dealFormData(viewFlag) {
       this.rule = []
       let data = JSON.parse(JSON.stringify(this.defaultRuleData.templateFieldList))
       // console.log('ruleData', data)
@@ -676,19 +678,28 @@ export default {
             }
           }
 
-          this.dealFieldData(element)
+          this.dealFieldData(element,viewFlag)
         })
       }
     },
-    dealFieldData(element) {
+    dealFieldData(element,viewFlag) {
+      console.log('viewFlag',viewFlag)
       // 字段
       element.fieldList.forEach(item => {
 
         // 用于预览，避免重复
-        if (!item.id) {
-          item.id = this.random()
+        if (viewFlag) {
+          item.id = this.globalId.toString()
+          this.globalId++
           console.log('id', item.id)
+          // debugger
         }
+        console.log('item',item,typeof(item.title))
+        if(typeof(item.title)=='object'){
+          item.title=item.title.title
+          debugger
+        }
+        // debugger
         if (item.type == '文本型') {
           item.type = 'input';
           this.rule.push({
@@ -1040,7 +1051,8 @@ export default {
     },
     // 随机生成id 用于预览
     random() {
-      return Math.random().toString(16)
+      let a = Math.random().toString(16)
+      return a.substring(a.length - 10)
     },
     saveFileData() {
 
@@ -1081,9 +1093,9 @@ export default {
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
 <style lang="scss">
-.copy-style-text{
-  .el-textarea__inner{
-    color: #F56C6C;
+.copy-style-text {
+  .el-textarea__inner {
+    color: #f56c6c;
   }
 }
 </style>

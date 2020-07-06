@@ -48,12 +48,12 @@
           :total="totalPage"
         ></el-pagination>
     </div>
-    <!-- <addEditDocType ref="addEditDocRef"></addEditDocType> -->
-    <!-- <showDictKey ref="showDictKeyRef"></showDictKey> -->
+    <userList ref="userListRef"></userList>
   </div>
 </div>
 </template>
 <script>
+ import userList from "./userList";
 import { queryLawOfficerListByorganIds} from "@/api/system";
 import iLocalStroage from '@/common/js/localStroage';
 export default {
@@ -71,7 +71,7 @@ export default {
     };
   },
   components: {
-    
+    userList
   },
   inject:['reload'],
   methods: {
@@ -121,12 +121,9 @@ export default {
         })
         .catch(() => {});
     },
-    //添加
-    addDocType(){
-      let data={
-            leng:this.total
-        }
-      this.$refs.addEditDocRef.showModal(0,data);
+    //编辑
+    saveUser(row){
+      this.$refs.userListRef.showModal(row);
     },
     //重置
     resetSearch(){
