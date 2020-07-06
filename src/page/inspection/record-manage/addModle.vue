@@ -851,12 +851,12 @@ export default {
       console.log('this.commonFieldList',this.commonFieldList)
       // console.log('find',this.commonFieldList.find(field))
       // 判断新选中的和之前的是不是同一个
-      this.commonFieldList.forEach(element => {
-        if(element.field==field.field){
-          console.log('elment.title',element.title)
-          element.fieldDisabled=!element.fieldDisabled
-        }
-      });
+      // this.commonFieldList.forEach(element => {
+      //   if(element.field==field.field){
+      //     console.log('elment.title',element.title)
+      //     element.fieldDisabled=!element.fieldDisabled
+      //   }
+      // });
       // 存储上次选中的项
       // this.fieldDisabledTitle=info.field
     },
