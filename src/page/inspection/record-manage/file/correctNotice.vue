@@ -1,12 +1,12 @@
 <template>
   <div class="box">
-    <div class="content_box">
+    <div class="content_box" style="box-shadow:none">
       <div class="content">
         <div class="content_title">责令改正违法行为通知书</div>
         <el-form ref="caseDocDataForm">
           <el-input ref="id" type="hidden"></el-input>
         </el-form>
-        <el-form :inline="true" ref="formData" :model="formData" label-width="135px" :rules="rules">
+        <el-form ref="formData" :model="formData" label-width="135px" :rules="rules">
           <div class="border_blue"></div>
           <div class="content_form">
             <el-form-item label="当事人姓名：" prop="caseNumber">
@@ -25,28 +25,39 @@
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
             <el-form-item label="责令要求：">
-              <el-input id="width600px" ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+              <el-radio v-model="radio" label="1" style="width:150px">立即予以改正</el-radio>
+              <el-input id="width600px" ref="punishDecision" clearable style="width:calc(100% - 200px)" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+
+              <el-radio v-model="radio" label="2" style="width:150px">限期改正或整改完毕</el-radio>
+              <el-input id="width600px" ref="punishDecision" clearable style="width:calc(100% - 200px)" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+
             </el-form-item>
           </div>
           <div class="border_blue"></div>
           <div class="content_form">
             <el-form-item label="行政复议机构：">
-              <el-input id="width600px" ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+              <el-select v-model="formData.punishDecision" placeholder="请选择">
+                <el-option v-for="item in xzfyList" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
 
             <el-form-item label="行政诉讼机构：">
-              <el-input id="width600px" ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
+              <el-select v-model="formData.punishDecision" placeholder="请选择">
+                <el-option v-for="item in xzssList" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </div>
         </el-form>
       </div>
       <div class="float-btns">
         <el-button type="success" @click="addIllegalAction(0)">
-           <i class="iconfont law-icon_zancun1"></i>
+          <i class="iconfont law-icon_zancun1"></i>
           <br />暂存
         </el-button>
         <el-button type="primary" @click="addIllegalAction(1)">
-           <i class="iconfont law-icon_baocun1"></i>
+          <i class="iconfont law-icon_baocun1"></i>
           <br />保存
         </el-button>
       </div>
@@ -69,7 +80,9 @@ export default {
         partyZipCode: "",
         // contactPerson:"",
         partyTel: "",
-        checkBoxList: ""
+        checkBoxList: "",
+        xzfyList: [],
+        xzssList: []
       },
       rules: {
         party: [
