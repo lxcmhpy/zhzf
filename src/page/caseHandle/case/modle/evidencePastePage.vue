@@ -1,8 +1,8 @@
 <template>
   <div class="print_box" id="evidencePastePageBox">
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-     <div style="position:relation" v-for="(item,index) in docData.evidenceData" :key="index">   
-   
+     <div style="position:relation" v-for="(item,index) in docData.evidenceData" :key="index">
+
     <div class="print_info">
         <el-button class="deletePageBtn" type="primary" v-show="index!=0" @click="deletePage(index)">删除本页</el-button>
         <div class="doc_topic">证据粘贴页</div>
@@ -16,7 +16,7 @@
                     <img :src="item.pic1" alt="" :width="imgWidthArr[index][0]" :height="imgHeightArr[index][0]">
                     <div class="imgBoxBtn"><el-button size="mini" @click="chooseImg(index,1,item.picSrc1)">选择照片</el-button><el-button size="mini" @click="deleteImg(index,1)" >删除</el-button></div>
                 </div>
-                
+
             </el-col>
             <el-col :span="6" class="noteBox">
                 <el-form-item  :prop="'evidenceData.' + index + '.note1'" :rules="[{ required: true, message: '请输入文字说明', trigger: 'blur' }]">
@@ -36,7 +36,7 @@
                     <img :src="item.pic2" alt="" :width="imgWidthArr[index][1]" :height="imgHeightArr[index][1]">
                     <div class="imgBoxBtn"><el-button size="mini" @click="chooseImg(index,2,item.picSrc2)">选择照片</el-button><el-button size="mini" @click="deleteImg(index,2)">删除</el-button></div>
                 </div>
-                
+
             </el-col>
             <el-col :span="6" class="noteBox">
                 <el-input
@@ -48,7 +48,7 @@
                     </el-input>
             </el-col>
         </el-row>
-        
+
         <p class="p_begin">
             拍摄时间：
           <span>
@@ -82,10 +82,10 @@
             当事人或代理人签名：
             <span class="write_line" style="width:300px"></span>
           </el-col>
-        </el-row>   
-    </div>    
+        </el-row>
     </div>
-       <div style="text-align:center"><el-button type="primary" @click="addPage">添加一页</el-button></div> 
+    </div>
+       <div style="text-align:center"><el-button type="primary" @click="addPage">添加一页</el-button></div>
     </el-form>
 
     <!-- 悬浮按钮 -->
@@ -95,7 +95,7 @@
       @saveData="saveData"
       @backHuanjie="submitData"
     ></casePageFloatBtns>
-   
+
     <chooseOrUploadEvidence ref="chooseOrUploadEvidenceRef" @choosePic="showChoosePic"></chooseOrUploadEvidence>
   </div>
 </template>
@@ -107,7 +107,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import iLocalStroage from "@/common/js/localStroage";
 import chooseOrUploadEvidence from "@/page/caseHandle/case/form/chooseOrUploadEvidence.vue";
 import {
-  queryImgBase64Api,findCaseAllBindPropertyApi,
+  queryImgBase64Api,findCaseAllBindPropertyApi,queryResizeImageApi
 } from "@/api/caseHandle";
 export default {
   components: {
@@ -115,8 +115,8 @@ export default {
     chooseOrUploadEvidence,
   },
   mixins: [mixinGetCaseApiList],
-  computed: { 
-    ...mapGetters(["caseId"]) 
+  computed: {
+    ...mapGetters(["caseId"])
   },
   data() {
     return {
@@ -146,7 +146,7 @@ export default {
         ],
         note1: [
           { required: true, message: "请输入备注", trigger: "blur" }
-        ] 
+        ]
       },
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
@@ -175,7 +175,7 @@ export default {
       };
       this.com_getDocDataByCaseIdAndDocId(data);
     },
-    
+
     //提交
     submitData(handleType) {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -225,7 +225,7 @@ export default {
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    
+
     chooseImg(index,picIndex,picSrc){
         let selectAllPicPath = [];
         this.docData.evidenceData.forEach(item=>{
@@ -257,7 +257,8 @@ export default {
    },
     getBase64(selpicData){
         let storageId = selpicData.picData.evPath;
-      queryImgBase64Api(storageId).then(res=>{
+      // queryImgBase64Api(storageId).then(res=>{
+      queryResizeImageApi(storageId).then(res=>{
         console.log('获取base64',res);
         if(res === false){   //生成失败
           this.$message.error('生成base64码失败！')
@@ -266,7 +267,7 @@ export default {
         let  picBase64Key = 'picBase64_'+selpicData.picIndex;
         this.docData.evidenceData[selpicData.pastePage][picBase64Key] = res.data;
         this.changeImgWidHei(storageId,selpicData.pastePage,selpicData.picIndex)
-        
+
         //图片evPath赋值 为了在证据弹窗中设置选中或禁止选择
         let picSrcKey = 'picSrc'+ selpicData.picIndex;
         this.docData.evidenceData[selpicData.pastePage][picSrcKey] = storageId;
@@ -276,10 +277,10 @@ export default {
         // this.chooseImgSrc = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
       }).catch(err=>{console.log(err)})
     },
-   
+
     //添加一页
     addPage(){
-        let data = { pic1:'', pic2:'', picSrc1:'', picSrc2:'',picBase64_1:'',picBase64_2:'', 
+        let data = { pic1:'', pic2:'', picSrc1:'', picSrc2:'',picBase64_1:'',picBase64_2:'',
         pTime:'' , pPla:this.docData.evidenceData[0].pPla, pPeo:this.docData.evidenceData[0].pPeo,note1:'', note2:'',picList:''}
         this.docData.evidenceData.push(data);
         this.imgWidthArr.push(['','']);
@@ -309,7 +310,7 @@ export default {
     },
     getDataAfter(){
       //处理图片
-        this.docData.evidenceData.forEach((item,index)=>{     
+        this.docData.evidenceData.forEach((item,index)=>{
           if(index>0){
             this.imgWidthArr.push(['','']);
             this.imgHeightArr.push(['','']);
@@ -322,7 +323,7 @@ export default {
         if(this.caseDocDataForm.status == ''){
            this.docData.evidenceData[0].pPla = this.pPlaFromInfor
         }
-       
+
     },
     //对图片进行处理
     changeImgWidHei(storageId,pastePage,picIndex){
@@ -333,12 +334,12 @@ export default {
         temImg.onload = function(e) {
           //赋值给图片地址
           _this.getScaling(temImg.width,temImg.height,pastePage,picIndex);
-         
+
       console.log(' temImg.width', temImg.width);
-     
+
           _this.$set(_this.imgWidthArr[pastePage], picIndex-1, (temImg.width / _this.scalingArr[pastePage][picIndex-1]).toFixed(1))
           _this.$set(_this.imgHeightArr[pastePage], picIndex-1, (temImg.height / _this.scalingArr[pastePage][picIndex-1]).toFixed(1))
-          
+
           console.log(pastePage,picIndex-1);
           console.log(' _this.imgWidthArr', _this.imgWidthArr)
           let picKey = 'pic'+ picIndex;
@@ -358,7 +359,7 @@ export default {
       }
       console.log('getScaling',this.scalingArr[pastePage][picIndex-1])
     },
-   
+
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
@@ -398,7 +399,7 @@ export default {
             bottom: 10px;
         }
     }
-    
+
     .overflow_lins_textarea {
       & > textarea {
         text-indent: 5em;
