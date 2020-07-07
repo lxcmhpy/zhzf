@@ -637,55 +637,35 @@ export default {
     },
     //提交
     continueHandle() {
-      if (this.isSaveLink) {
-        let caseData = {
-          caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
-          caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
-        };
-        let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-        let allFinish = true;
-        console.log("canGotoNext", this.docTableDatas);
-        for (let i = 0; i < this.docTableDatas.length; i++) {
-          if (
-            this.docTableDatas[i].isRequired === 0 &&
-            Number(this.docTableDatas[i].status) == 0
-          ) {
-            canGotoNext = false;
+      console.log(this.docTableDatas)
+      let caseData = {
+        caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
+      };
+      let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+      let approvalPass = true;  //文书审批都通过了
+      for (let i = 0; i < this.docTableDatas.length; i++) {
+        if (
+          this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)
+        ) {
+          canGotoNext = false;
+          break;
+        }else if(this.docTableDatas[i].docProcessStatus == '审批中'){
+            //有审批中的环节
+            approvalPass = false;
             break;
-          }
-          if (
-            this.docTableDatas[i].isRequired !== 0 &&
-            this.docTableDatas[i].status === 0
-          ) {
-            allFinish = false;
-            break;
-          }
         }
-        console.log("canGotoNext", canGotoNext);
-        console.log("allFinish", allFinish);
-        if (canGotoNext) {
-          if (allFinish) {
-            this.$refs.checkDocAllFinishRef.showModal(
-              this.docTableDatas,
-              caseData,
-              1
-            );
-          } else {
-            this.$refs.checkDocAllFinishRef.showModal(
-              this.docTableDatas,
-              caseData,
-              2
-            );
-          }
-        } else {
-          this.$refs.checkDocAllFinishRef.showModal(
-            this.docTableDatas,
-            caseData,
-            3
-          );
-        }
-      } else {
-        this.$refs.saveFormDiaRef.showModal();
+      }
+      if (canGotoNext && approvalPass) {
+        this.com_goToNextLinkTu(
+          this.caseId,
+          this.caseLinkDataForm.caseLinktypeId
+        );
+        // this.$router.push({name:'case_handle_flowChart'})  
+      } else if(!canGotoNext){
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+      }else if(!approvalPass){
+        this.$message('有文书正在审批中！')
       }
     },
     //提交
