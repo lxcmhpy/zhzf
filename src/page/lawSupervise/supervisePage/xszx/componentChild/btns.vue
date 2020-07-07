@@ -350,7 +350,7 @@ export default {
         params: {
           status: nextStatus.toString(),
           //tabTitle: '【监管】'+this.statusObj[nextStatus.toString()],
-          tabTitle:'线索审核',
+          tabTitle:'线索详情',
           offSiteManageId: this.$route.params.offSiteManageId
         }
       });

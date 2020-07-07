@@ -459,9 +459,9 @@ export default {
       //    if(this.tabActiveValue == )
       debugger;
       switch (data.status) {
-        case undefined: this.routerExamineDoingDetail(data, '0', '线索审核'); break;
+        case undefined: this.routerExamineDoingDetail(data, '0', '线索详情'); break;
         case '无效信息': this.routerInvalidCueDetail(data); break;
-        case '审核中': this.routerExamineDoingDetail(data, '1', '线索审核'); break;
+        case '审核中': this.routerExamineDoingDetail(data, '1', '线索详情'); break;
         case '已转办': this.routerTransferDetail(data); break;
         case '已审核': this.routerExamineDetail(data, '3', '线索详情'); break;
       }

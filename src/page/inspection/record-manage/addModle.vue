@@ -614,7 +614,11 @@ export default {
                     item.sort = sort;
                     sort++
                     if (typeof (item.title) == 'object') {
+                      console.log(item)
+                      if(item.title){
                       item.title = item.title.title
+
+                      }
                       // debugger
                     }
                   });
