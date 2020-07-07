@@ -280,9 +280,9 @@
               </el-table-column>
               <el-table-column label="操作" align="center" >
                 <template slot-scope="scope" class="docListHandleClass">
-                  <div v-if="scope.row.openRow">
-                    <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
-                  </div>
+<!--                  <div v-if="scope.row.openRow">-->
+<!--                    <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>-->
+<!--                  </div>-->
                   <div v-if="!scope.row.openRow">
                     <!-- 已完成 -->
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
@@ -334,7 +334,8 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-    <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
+    <checkDocAllFinish ref="checkDocAllFinishRef"  @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId" ></checkDocAllFinish>
+    <saveFormDia ref="saveFormDiaRef"></saveFormDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
@@ -383,6 +384,7 @@ export default {
         partyUnitTel: "",
         socialCreditCode: "",
       },
+      isSaveLink: '',
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
@@ -465,7 +467,7 @@ export default {
     },
     //提交
     continueHandle() {
-      if(this.isSaveLink){
+      // if(this.isSaveLink){
         let caseData = {
           caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
           caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
@@ -491,10 +493,17 @@ export default {
         } else {
           this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,3);
         }
-      }else{
-        this.$refs.saveFormDiaRef.showModal();
-      }
+      // }else{
+      //   this.$refs.saveFormDiaRef.showModal();
+      // }
 
+    },
+    getDataAfter() {
+        if (this.formData.party) {
+            this.isParty = true;
+        } else {
+            this.isParty = false;
+        }
     },
     // 进入文书
     enterDoc(row) {
@@ -513,11 +522,12 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if(this.isSaveLink){
-        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId)
-      }else{
-        this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
-      }
+      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
+      // if(this.isSaveLink){
+      //   this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId)
+      // }else{
+      //   this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
+      // }
     },
     //预览pdf
     viewDocPdf(row) {
@@ -526,7 +536,7 @@ export default {
         docId: row.docId,
         approvalOver: false,
         hasBack: true,
-        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交 
+        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
         docDataId:row.docDataId
       }
       this.$store.dispatch("deleteTabs", this.$route.name);
