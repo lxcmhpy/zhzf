@@ -45,6 +45,7 @@
       </div>
       <!-- 悬浮按钮-拓展 -->
       <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData"></floatBtns>
+      <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
 
     </div>
   </div>
@@ -57,7 +58,8 @@ import chooseLawPersonId from "./chooseModlePerson.vue";
 // import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 
 import uploadTmp from './upload/uploadModleFile.vue'
-import floatBtns from './floatBtn.vue'
+import floatBtns from './writeRecordCompoments/floatBtn.vue'
+import documentSideMenu from './writeRecordCompoments/documentSideMenu.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
@@ -139,7 +141,8 @@ export default {
     mapDiag,
     chooseLawPerson,
     chooseLawPersonId,
-    floatBtns
+    floatBtns,
+    documentSideMenu,//文书列表
   },
   methods: {
     // 查找模板-添加
@@ -513,6 +516,10 @@ export default {
     },
     // 匹配数据格式
     dealFormData(viewFlag) {
+      // 左侧操作按钮
+      // this.formOrDocData.showBtn = [this.formData.documentFill == '是' ? true : false, this.formData.releventRecords ? true : false, this.formData.operateRecords == '是' ? true : false], //文书填报、相关记录、操作记录
+      // this.formOrDocData.showBtn =[true,true,true]
+
       this.rule = []
       let data = JSON.parse(JSON.stringify(this.defaultRuleData.templateFieldList))
       // console.log('ruleData', data)
@@ -673,12 +680,12 @@ export default {
             }
           }
 
-          this.dealFieldData(element,viewFlag)
+          this.dealFieldData(element, viewFlag)
         })
       }
     },
-    dealFieldData(element,viewFlag) {
-      console.log('viewFlag',viewFlag)
+    dealFieldData(element, viewFlag) {
+      console.log('viewFlag', viewFlag)
       // 字段
       element.fieldList.forEach(item => {
 
@@ -689,10 +696,10 @@ export default {
           console.log('id', item.id)
           // debugger
         }
-        console.log('item',item,typeof(item.title))
-        if(typeof(item.title)=='object'){
-          if(item.title){
-          item.title=item.title.title
+        console.log('item', item, typeof (item.title))
+        if (typeof (item.title) == 'object') {
+          if (item.title) {
+            item.title = item.title.title
           }
           // debugger
         }

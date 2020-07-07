@@ -3,7 +3,7 @@
 .card-content {
     height: auto;
     color : #20232B;
-    clear: both;
+    clear : both;
 }
 
 .card-title {
@@ -31,6 +31,7 @@
         text-align   : center;
         overflow     : hidden;
         position     : relative;
+
         &:last-child {
             margin-bottom: 44px;
         }
@@ -454,9 +455,20 @@
         }
     }
 }
+
 /* 复制添加后的样式 */
-.copy-style-text{
-    .el-input__inner{
+.copy-style-text {
+    .el-input__inner {
         color: #F56C6C;
+    }
+}
+
+.modle-radio {
+    .el-radio-group {
+        width: 100%;
+
+        .el-radio {
+            width: 40%
+        }
     }
 }

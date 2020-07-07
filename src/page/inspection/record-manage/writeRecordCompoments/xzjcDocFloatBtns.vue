@@ -4,17 +4,44 @@
   <div class="float-btns" style="bottom:250px">
 
     <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
-      文书填报
+      <i class="iconfont law-approval"></i>
+      <br />签章
+    </el-button>
+    <!-- </a> -->
+    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
+      <i class="iconfont law-upload"></i>
+      <br />提交
     </el-button>
     <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[10]">
-      相关记录
+      <i class="iconfont law-save"></i>
+      <br />归档
     </el-button>
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
-      操作记录
+    <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
+      <i class="iconfont law-save"></i>
+      <br />保存
     </el-button>
+    <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[2]">
+      <i class="iconfont law-save"></i>
+      <br />暂存
+    </el-button>
+    <el-button type="primary" @click="showApprovePeopleListBtn" v-if="formOrDocData.showBtn[6]">
+      <i class="iconfont law-submit-o"></i>
+      <br />提交<br />审批
+    </el-button>
+    <el-button type="primary" @click="approvalBtn" v-if="formOrDocData.showBtn[7]">
+      <i class="iconfont law-edit"></i>
+      <br />审批
+    </el-button>
+    <el-button type="primary" @click="backHuanjieBtn" v-if="formOrDocData.showBtn[9]">
+      <i class="iconfont law-back"></i>
+      <br />返回
+    </el-button>
+    <img src="" id="show">
   </div>
 </template>
+<!--<script src="@/common/js/MultBrowser-1.0.2.js"></script>-->
 <script>
+
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
@@ -157,10 +184,10 @@ export default {
     },
     submitDataBtn(handleType) {
       //判断是环节的提交还是文书的提交
-      this.$emit('submitFileData', handleType);
+      this.$emit('submitData', handleType);
     },
     saveDataBtn(handleType) {
-      this.$emit('saveFileData', handleType);
+      this.$emit('saveData', handleType);
       // //当前环节为文书时
       // if(this.formOrDocData.isHuanjie){
       //   this.com_submitCaseForm(handleType, this.formOrDocData.formRef, this.formOrDocData.nextShowPdf);
@@ -220,7 +247,8 @@ export default {
     }
   },
   mounted() {
-
+    //   this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='
+    //     + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '13,10a8b0e21ded'
   }
 }
 </script>

@@ -175,6 +175,28 @@
               </div>
             </el-collapse>
           </div>
+          <!-- 拓展功能 -->
+          <p class="border-title card-title-margin">拓展功能</p>
+          <el-form-item label="文书填报" class="modle-radio">
+            <el-radio-group v-model="formData.documentFill" @change="changeFile()">
+              <el-radio label="是" value='是' style="width:5%"></el-radio>
+              <el-button type="primary" style="width:15%;margin-right:20%" @click="dialogTableVisible=true" :disabled="formData.documentFill=='是'?false:true">选择文书</el-button>
+              <el-radio label="否" value='否'></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="相关记录" class="modle-radio">
+            <el-radio-group v-model="formData.releventRecords">
+              <el-radio label="当事人" value='当事人'></el-radio>
+              <el-radio label="车辆" value='车辆'></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="操作记录" class="modle-radio">
+            <el-radio-group v-model="formData.operateRecords">
+              <el-radio label="是" value='是'></el-radio>
+              <el-radio label="否" value='否'></el-radio>
+            </el-radio-group>
+          </el-form-item>
+
           <p class="border-title card-title-margin">应用权限</p>
           <el-form-item label="模板图标">
             <el-popover placement="right" ref="popoverRef" title="选择图标" width="200" trigger="click" content="选择图标">
@@ -190,7 +212,6 @@
                 </div>
               </li>
             </el-popover>
-
           </el-form-item>
           <el-form-item label="适用范围" prop="scopeOfUse">
             <el-radio-group v-model="formData.scopeOfUse" style="width:100%" class="card-select">
@@ -243,6 +264,12 @@
       </div>
     </el-drawer>
     <preview ref="previewRef" @fieldList="getAllFieldList"></preview>
+    <el-dialog title="选择文书" :visible.sync="dialogTableVisible" width="400px">
+      <el-table ref="multipleTable" :data="fileList" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column property="docName" label="文书"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -349,7 +376,11 @@ export default {
             ],
 
           }],
-        count: 0
+        count: 0,
+        operateRecords: '',
+        releventRecords: '',
+        documentFill: '',
+        documentNames: '',
       },
       commonGroupFieldList: [],
       commonFieldList: [],
@@ -408,7 +439,10 @@ export default {
           { required: true, message: '请选择指定机构', trigger: 'change' }
         ],
       },
-      fieldDisabledTitle: ''
+      fieldDisabledTitle: '',
+      dialogTableVisible: false,
+      fileList: [{ id: '123', docName: '责令改正违法行为通知书', path: '' }, { id: '456', docName: 'XXX', path: '' }],
+      multipleSelection: []
     }
   },
   methods: {
@@ -615,8 +649,8 @@ export default {
                     sort++
                     if (typeof (item.title) == 'object') {
                       console.log(item)
-                      if(item.title){
-                      item.title = item.title.title
+                      if (item.title) {
+                        item.title = item.title.title
 
                       }
                       // debugger
@@ -903,6 +937,17 @@ export default {
     },
     changeUser(val) {
       console.log(val)
+    },
+    changeFile(val) {
+      // 选择文书填报
+      console.log('选择', this.formData.documentFill)
+      if (this.formData.documentFill == '是') {
+        this.dialogTableVisible = true
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log('this.multipleSelection', this.multipleSelection)
     }
   },
   mounted() {

@@ -1,180 +1,312 @@
 <template>
-  <div class="box">
-    <div class="content_box" style="box-shadow:none">
-      <div class="content">
-        <div class="content_title">责令改正违法行为通知书</div>
-        <el-form ref="caseDocDataForm">
-          <el-input ref="id" type="hidden"></el-input>
-        </el-form>
-        <el-form ref="formData" :model="formData" label-width="135px" :rules="rules">
-          <div class="border_blue"></div>
-          <div class="content_form">
-            <el-form-item label="当事人姓名：" prop="caseNumber">
-              <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" placeholder="请输入"></el-input>
-            </el-form-item>
-
-            <el-form-item prop="party" label="违法事实：">
-              <el-input id="width600px" ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入"></el-input>
-            </el-form-item>
-
-            <el-form-item label="处罚依据：">
-              <el-input id="width600px" ref="punishLaw" clearable class="w-120" v-model="formData.punishLaw" size="small" placeholder="请输入"></el-input>
-            </el-form-item>
-
-          </div>
-          <div class="border_blue"></div>
-          <div class="content_form bottom_form">
-            <el-form-item label="责令要求：">
-              <el-radio v-model="radio" label="1" style="width:150px">立即予以改正</el-radio>
-              <el-input id="width600px" ref="punishDecision" clearable style="width:calc(100% - 200px)" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
-
-              <el-radio v-model="radio" label="2" style="width:150px">限期改正或整改完毕</el-radio>
-              <el-input id="width600px" ref="punishDecision" clearable style="width:calc(100% - 200px)" v-model="formData.punishDecision" size="small" placeholder="请输入"></el-input>
-
+  <div class="print_box" id="btnB">
+    <div class="print_info" id="forceCorrect-print">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData" :class="isPdf">
+        <div class="doc_topic">责令改正违法行为通知书</div>
+        <!-- <div class="doc_number">案号：{{formData.caseNumber}}</div> -->
+        <p class="partyBox">
+          当事人（个人姓名或单位名称）
+          <span class="width_file">
+            <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
+              <el-input :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" v-model="formData.party" v-bind:class="{ over_flow:formData.party.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+            </el-form-item> ：
+          </span>
+        </p>
+        <!-- 多行样式 -->
+        <p>经调查，你（单位）存在下列违法事实：</p>
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+              <el-input :disabled="fieldDisabled(propertyFeatures['caseName'])" class="overflow_lins_textarea" type="textarea" v-model="formData.caseName" rows="3" maxlength="75"></el-input>
+              <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
+              <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
           </div>
-          <div class="border_blue"></div>
-          <div class="content_form">
-            <el-form-item label="行政复议机构：">
-              <el-select v-model="formData.punishDecision" placeholder="请选择">
-                <el-option v-for="item in xzfyList" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
+        </div>
+
+        <p>
+          根据
+          <span contenteditable="true">
+            <el-form-item prop="punishLaw" style="width:300px" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
+              <el-input type="textarea" v-model="formData.punishLaw" v-bind:class="{ over_flow:formData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['punishLaw'])"></el-input>
+            </el-form-item>
+          </span>的规定，现责令你（单位）
+        </p>
+        <el-form-item prop="correctWay" :rules="fieldRules('correctWay',propertyFeatures['correctWay'])">
+          <el-radio-group v-model="formData.correctWay" @change="changeCorrectWay">
+            <p>
+              <el-radio label="1">立即予以改正。</el-radio>
+            </p>
+            <p>
+              <el-radio label="2">
+                <span>在</span>
+                <span class="p_datapick">
+                  <el-form-item v-if="!lineStyleFlag" :prop="formData.correctWay == 2 ?'correctTime' : 'placeholder'" style="margin-top:-6px">
+                    <el-date-picker v-model="formData.correctTime" type="date" :disabled=" formData.correctWay == 1 ?true : false" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+                  </el-form-item>
+                </span>
+                <span>前改正或者整改完毕。</span>
+              </el-radio>
+            </p>
+          </el-radio-group>
+        </el-form-item>
+        <p>
+          如不服本决定，可以在六十日内依法向
+          <span>
+            <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
+              <!-- <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' ></el-input> -->
+              <el-select v-model="formData.reconsiderationOrgan" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
+                <el-option v-for="(item,index) in reconsiderationOptions" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-
-            <el-form-item label="行政诉讼机构：">
-              <el-select v-model="formData.punishDecision" placeholder="请选择">
-                <el-option v-for="item in xzssList" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
+          </span>申请行政复议，或者在六个月内依法向
+          <span>
+            <el-form-item prop="litigationOrgan" :rules="fieldRules('litigationOrgan',propertyFeatures['litigationOrgan'])">
+              <!-- <el-input v-model="formData.litigationOrgan" :maxLength='maxLength' ></el-input> -->
+              <el-select v-model="formData.litigationOrgan" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['litigationOrgan'])">
+                <el-option v-for="(item,index) in enforcementOptions" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-          </div>
-        </el-form>
-      </div>
-      <div class="float-btns">
-        <el-button type="success" @click="addIllegalAction(0)">
-          <i class="iconfont law-icon_zancun1"></i>
-          <br />暂存
-        </el-button>
-        <el-button type="primary" @click="addIllegalAction(1)">
-          <i class="iconfont law-icon_baocun1"></i>
-          <br />保存
-        </el-button>
-      </div>
+          </span>人民法院提起行政诉讼。
+        </p>
+        <br />
+        <br />
+        <el-row :gutter="20">
+          <el-col :span="12">
+            当事人或其代理人签名：
+            <span class="write_line width250"></span>
+          </el-col>
+          <el-col :span="12">
+            执法人员签名：
+            <span class="write_line width250"></span>
+          </el-col>
+        </el-row>
+        <br />
+        <br />
+        <div class="pdf_seal">
+          <span>交通运输执法部门(印章)</span>
+          <br />
+          <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-date-picker class="big_error" v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+        </div>
+      </el-form>
     </div>
+    <xzjcDocFloatBtns :pageDomId="'forceCorrect-print'" :formOrDocData="formOrDocData" @saveData="saveData"></xzjcDocFloatBtns>
+    <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
+    </el-alert>-->
   </div>
 </template>
-
 <script>
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import { mapGetters } from "vuex";
+import xzjcDocFloatBtns from "../writeRecordCompoments/xzjcDocFloatBtns.vue";
+import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
+  components: {
+    xzjcDocFloatBtns
+  },
+  mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(["caseId"]) },
   data() {
+    var validateBycorrectWay = (rule, value, callback) => {
+      console.log('数值', this.formData.correctWay[0])
+      if (this.formData.correctWay[0] == '2' && !value) {
+        return callback(new Error("责令改正日期不能为空"));
+      }
+      callback();
+    };
     return {
+      overFlowEditList: [{}],
+      isOverflow: false,
+      isOverLine: false,
       formData: {
-        caseNumber: "",
         party: "",
-        caseCauseNameCopy: "",
-        illegalBasis: "",
-        punishLaw: "",
-        punishDecision: "",
+        partyIdNo: "",
         partyAddress: "",
-        partyZipCode: "",
-        // contactPerson:"",
         partyTel: "",
-        checkBoxList: "",
-        xzfyList: [],
-        xzssList: []
+        partyName: "",
+        partyUnitAddress: "",
+        partyUnitTel: "",
+        partyManager: "",
+        punishLaw: "",
+        illegalLaw: "",
+        tempPunishAmount: "",
+        socialCreditCode: "",
+        illegalFactsEvidence: "",
+        reconsiderationOrgan: "",
+        test: "",
+        correctWay: [],
+        correctTime: "",
+        // correctWay1:"",
+        // correctWay2:"",
+        litigationOrgan: "",
+        makeDate: "",
+        caseName: '',
       },
-      rules: {
-        party: [
-          { required: true, message: "当事人姓名必须填写", trigger: "blur" }
-        ]
-      },
-      caseDocDataForm: {
-        id: "",
+      reconsiderationOptions: [], //行政复议机构
+      enforcementOptions: [], //行政诉讼机构
+      handleType: 0, //0  暂存     1 提交
+      caseLinkDataForm: {
+        id: "", //修改的时候用
+        // caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
         caseBasicinfoId: "",
-        caseDoctypeId: "",
-        //文书数据
-        docData: "",
+        caseLinktypeId: this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId, //表单类型ID
+        //表单数据
+        formData: "",
         status: ""
       },
-      handelType: 0 //0 提交  1 暂存  2  修改
+      name: "",
+      rules: {
+        party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
+        caseName: [
+          { required: true, message: '违法事实不能为空', trigger: 'blur' },
+        ],
+        punishLaw: [
+          { required: true, message: "法律条款不能为空", trigger: "blur" }
+        ],
+        reconsiderationOrgan: [
+          { required: true, message: "复议机构不能为空", trigger: "blur" }
+        ],
+        litigationOrgan: [
+          { required: true, message: "诉讼机构不能为空", trigger: "blur" }
+        ],
+        correctWay: [
+          { required: true, message: "责令改正方式不能为空", trigger: "change" }
+        ],
+        correctTime: [
+          { validator: validateBycorrectWay, trigger: "blur" }
+        ]
+      },
+      nameLength: 23,
+      adressLength: 23,
+      maxLengthOverLine: 122,
+      maxLength: 23,
+      lineStyleFlag: false,
+      formOrDocData: {
+        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        pageDomId: "forceCorrect-print"
+      },
+      isPdf: "",
+      huanjieAndDocId: this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, //责令改正违法行为通知书的文书id
+      isParty: true, //当事人类型为个人
+      propertyFeatures: '', //字段属性配置
     };
   },
   methods: {
-    //获取案件信息
-    getCaseBasicInfo() {
-      let data = {
-        id: "2c902ae66ae2acc4016ae376f6f1007f"
-      };
-      this.$store.dispatch("getCaseBasicInfo", data).then(
-        res => {
-          console.log("获取案件详情", res);
-          this.formData = res.data;
-        },
-        err => {
-          console.log(err);
-        }
+    // 多行编辑
+    overFlowEdit() {
+      this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
+    },
+    setData() {
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
+        false
       );
     },
-    //聚焦清除错误信息
-    focusName() {
-      this.errorName = false;
+    // 提交表单
+    saveData(handleType) {
+      //参数  提交类型 、
+      // this.printContent();
+      console.log("日期", this.formData.correctWay)
+      this.com_submitCaseForm(handleType, "docForm", true);
     },
-    //保存违法行为通知书(提交生成pdf之后不可以修改，暂存之后可以修改)
-    addIllegalAction(handelType) {
-      this.caseDocDataForm.caseBasicinfoId = "12345666666666";
-      this.caseDocDataForm.caseDoctypeId = "1234";
-      this.caseDocDataForm.docData = JSON.stringify(this.formData);
-      if (handelType == 0) {
-        this.caseDocDataForm.status = 0;
-      } else {
-        this.caseDocDataForm.status = 1;
+    // 打印
+    print() {
+      console.log("打印!");
+    },
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == "1") {
+        this.formOrDocData.showBtn = [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-      this.$refs["formData"].validate(valid => {
-        if (valid) {
-          this.$store.dispatch("addDocData", this.caseDocDataForm).then(
-            res => {
-              console.log("保存文书", res);
-              // this.$emit("getAllOrgan2", this.addDepartmentForm.oid);
-              this.$message({
-                type: "success",
-                message: "保存成功"
-              });
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        }
-      });
     },
-    getDocDataByCaseIdAndDocId() {
-      let data = {
-        caseId: "12345666666666",
-        docId: "1234"
-      };
-      this.$store.dispatch("getDocDataByCaseIdAndDocId", data).then(
+    //根据用户的组织机构ID获取复议机构和诉讼机构
+    getOrganDetailOptions() {
+      //获取机构详情
+      let params = { id: iLocalStroage.gets("userInfo").organId };
+      let _this = this
+      this.$store.dispatch("getOrganDetail", params).then(
         res => {
-          console.log("获取文书详情", res);
-          //如果为空，则加载案件信息
-          if (res.data.length == 0) {
-            this.getCaseBasicInfo();
-          } else {
-            console.log(res.data[0]);
-            this.caseDocDataForm.id = res.data[0].id;
-            this.formData = JSON.parse(res.data[0].docData);
+          console.log("机构", res);
+          let organData = res.data;
+          //复议机构
+          if (organData.reconsiderationOrgan1) {
+            _this.reconsiderationOptions.push(organData.reconsiderationOrgan1)
           }
+          if (organData.reconsiderationOrgan2) {
+            _this.reconsiderationOptions.push(organData.reconsiderationOrgan2)
+          }
+          //诉说机构
+          if (organData.enforcementOrgan1) {
+            _this.enforcementOptions.push(organData.enforcementOrgan1)
+          }
+          if (organData.enforcementOrgan2) {
+            _this.enforcementOptions.push(organData.enforcementOrgan2)
+          }
+          //默认显示
+          _this.formData.reconsiderationOrgan = _this.reconsiderationOptions[0];
+          _this.formData.litigationOrgan = _this.enforcementOptions[0];
+
         },
         err => {
           console.log(err);
         }
       );
-    }
+
+    },
+    changeCorrectWay(val) {
+      if (val == '1') {
+        this.formData.correctTime = '';
+      }
+    },
+  },
+
+  mounted() {
+    this.setData();
+    this.getOrganDetailOptions();
   },
   created() {
-    //加载文书信息
-    // this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
   }
 };
 </script>
-<style lang="scss" src="@/assets/css/documentForm.scss"></style>
+<style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
+<style lang="scss">
+/* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+#forceCorrect-print {
+  .partyBox {
+    text-indent: 0;
+  }
+  label.el-radio {
+    margin-left: 2em;
+  }
+  .el-radio__label {
+    font-size: 16px;
+    color: #000;
+  }
+  .is-error .el-radio-group {
+    background: #f7c9cb;
+  }
+  .overflow_lins_style .overflow_lins span.overflow_lins_textarea {
+    text-indent: 0;
+  }
+}
+</style>
