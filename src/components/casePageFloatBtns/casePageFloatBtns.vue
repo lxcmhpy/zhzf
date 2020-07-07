@@ -166,7 +166,7 @@
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
-          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0]
+          var ActivexURL = path + "/static/js/iWebPDFEditorJx.html?pdfPath=" + _this.storagePath[0]
           console.log(ActivexURL);
           _this.makeSealStr = ActivexURL;
           window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
