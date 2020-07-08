@@ -103,13 +103,13 @@
             </el-select>
           </el-form-item>
           <el-form-item label="名称" prop="bindId" v-if="setForm.resourceType=='2'">
-            <el-select v-model="setForm.bindId" style='width:240px' @change="changeResourceName">
+            <el-select filterable v-model="setForm.bindId" style='width:240px' @change="changeResourceName">
               <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.id" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="名称" prop="bindId" v-if="setForm.resourceType=='3'">
-            <el-select v-model="setForm.bindId" style='width:240px' @change="changeResourceName">
+            <el-select filterable v-model="setForm.bindId" style='width:240px' @change="changeResourceName">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id" :disabled="item.name==pdfForm.bindName"></el-option>
             </el-select>
           </el-form-item>

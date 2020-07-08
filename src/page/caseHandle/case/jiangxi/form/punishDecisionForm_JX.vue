@@ -66,11 +66,6 @@
                 <el-form-item label="年龄" prop="partyAge" :rules="fieldRules('partyAge',propertyFeatures['partyAge'],'',isParty)">
                   <el-input ref="partyAge" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAge'])" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="与案件关系" prop="relationWithCase" :rules="fieldRules('relationWithCase',propertyFeatures['relationWithCase'],'',isParty)">
-                    <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="!isParty || fieldDisabled(propertyFeatures['relationWithCase'])">
-                      <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
-                    </el-select>
-                 </el-form-item> -->
               </div>
             </div>
             <div class="row" v-if="isParty">
@@ -91,10 +86,6 @@
                 <el-form-item label="所在单位" prop="partyUnitPosition" :rules="fieldRules('partyUnitPosition',propertyFeatures['partyUnitPosition'],'',isParty)">
                   <el-input ref="partyUnitPosition" :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitPosition'])" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="单位及职务" prop="partyUnitPositionAndCom" :rules="fieldRules('partyUnitPositionAndCom',propertyFeatures['partyUnitPositionAndCom'],'',isParty)">
-                     <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入"
-                     :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitPositionAndCom'])"></el-input>
-                 </el-form-item> -->
               </div>
             </div>
             <div class="row" v-if="isParty">
@@ -150,23 +141,9 @@
                 </el-form-item>
               </div>
             </div>
-            <!-- <div class="row">
-              <div class="col">
-                <el-form-item label="案发日期" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['afsj'])" style="width: 40%" v-model="formData.afsj" type="date" format="yyyy-MM-dd" placeholder=" -- ">
-                  </el-date-picker>
-                </el-form-item>
-              </div>
-            </div> -->
             <div class="row">
               <div class="col">
                 <el-form-item label="是否处罚减免">
-                  <!-- <el-row>
-                    <el-col :span="4">
-                      <el-checkbox label="是" v-model="formData.isImportant"
-                                   @change="changeImportant"></el-checkbox>
-                    </el-col>
-                  </el-row> -->
                   <el-checkbox-group v-model="formData.isCuting" :max="1">
                     <el-checkbox label="是" value="0"></el-checkbox>
                     <el-checkbox label="否" value="1"></el-checkbox>
@@ -203,21 +180,6 @@
                 </el-form-item>
               </div>
             </div>
-            <!-- <div class="row">
-              <div style="display:inline-block;width: 40%">
-                <el-form-item  prop="measureStartDate" label="措施起止期限" :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])">
-                    <el-date-picker :disabled="fieldDisabled(propertyFeatures['measureStartDate'])"  v-model="formData.measureStartDate" @change="startTime" type="date" format="yyyy-MM-dd" placeholder=" -- ">
-                    </el-date-picker>
-                </el-form-item>
-              </div>
-              <div style="display:inline-block;width: 5%;padding-top: 12px;text-align: center;">至</div>
-              <div style="display:inline-block;width: 30%">
-                <el-form-item  prop="measureEndDate" label-width="0px" :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])">
-                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['measureEndDate'])"  v-model="formData.measureEndDate" type="date" format="yyyy-MM-dd" placeholder=" -- ">
-                    </el-date-picker>
-                </el-form-item>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -524,11 +486,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if(this.isSaveLink){
-        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId)
-      }else{
-        this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
-      }
+      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     //预览pdf
     viewDocPdf(row) {

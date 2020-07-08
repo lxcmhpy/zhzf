@@ -253,10 +253,7 @@
               </el-table-column>
               <el-table-column label="操作" align="center" >
                 <template slot-scope="scope" class="docListHandleClass">
-                  <!-- <div v-if="scope.row.openRow">
-                    <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
-                  </div> -->
-                  <!-- <div v-if="!scope.row.openRow"> -->
+                  <div>
                     <!-- 已完成 -->
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
@@ -266,7 +263,7 @@
                     </span>
                     <!-- 无状态 -->
                     <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
-                  <!-- </div> -->
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -307,7 +304,6 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-    <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
@@ -316,7 +312,6 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
-import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
 import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import iLocalStroage from "@/common/js/localStroage";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
@@ -329,7 +324,6 @@ import {
 export default {
   components: {
     checkDocFinish,
-    chooseAskPeopleDia,
     resetDocDia,
     caseSlideMenu
   },
@@ -436,39 +430,37 @@ export default {
     submitCaseDoc(handleType) {
       this.com_submitCaseForm(handleType, 'caseDocForm', false);
     },
-    //提交
+    //下一环节
     continueHandle() {
-      // if(this.isSaveLink){
-        let caseData = {
-          caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
-          caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
-        }
-        let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-        let allFinish = true;
-        console.log("canGotoNext",this.docTableDatas)
-        for (let i = 0; i < this.docTableDatas.length; i++) {
-          if (this.docTableDatas[i].isRequired === 0 && Number(this.docTableDatas[i].status) == 0 ) {
-            canGotoNext = false
+      console.log(this.docTableDatas)
+      let caseData = {
+        caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+        caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
+      };
+      let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+      let approvalPass = true;  //文书审批都通过了
+      for (let i = 0; i < this.docTableDatas.length; i++) {
+        if (
+          this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)
+        ) {
+          canGotoNext = false;
+          break;
+        }else if(this.docTableDatas[i].docProcessStatus == '审批中'){
+            //有审批中的环节
+            approvalPass = false;
             break;
-          }
-          if (this.docTableDatas[i].isRequired !== 0 && this.docTableDatas[i].status === 0) {
-            allFinish = false
-            break;
-          }
         }
-        console.log("canGotoNext",canGotoNext)
-        console.log("allFinish",allFinish)
-        if (canGotoNext) {
-          this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
-
-        } else {
-          // this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,3);
-           this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
-        }
-      // }else{
-      //   this.$refs.caseDocForm.showModal();
-      // }
-
+      }
+      if (canGotoNext && approvalPass) {
+        this.com_goToNextLinkTu(
+          this.caseId,
+          this.caseLinkDataForm.caseLinktypeId
+        );
+      } else if(!canGotoNext){
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+      }else if(!approvalPass){
+        this.$message('有文书正在审批中！')
+      }
     },
     // 进入文书
     enterDoc(row) {
@@ -487,12 +479,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      this.com_viewDoc();
-      // if(this.isSaveLink){
-      //   this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId)
-      // }else{
-      //   this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
-      // }
+      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     //预览pdf
     viewDocPdf(row) {
@@ -509,7 +496,6 @@ export default {
     },
     //清空文书
     delDocDataByDocId(data){
-      console.log("清空文书",data);
       this.$refs.resetDocDiaRef.showModal(data);
     },
     //通过案件id和表单类型Id查询已绑定文书
