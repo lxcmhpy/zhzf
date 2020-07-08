@@ -74,23 +74,21 @@
           caseId: this.caseId,
         }).then(
           res => {
-            console.log('地址1',res)
-            //多份文书按照docDataId取地址
-            for (var i = 0; i < res.length; i++) {
-              // if(i==0) {
-              //   _that.storagePath.push(JSON.parse(iLocalStroage.gets("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
-              // }
-              if (this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId) {
-                console.log('res[i].storageId', res[i].storageId);
-                _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
-                break;
-              }
-            }
+            console.log('地址1',res);
             //单份文书取一个
-            if (_that.storagePath.length == 0) {
-              // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
+            if (res.length == 1) {
+              _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
               this.getFileStream(res[0].storageId)
-
+            }else{
+              //多份文书按照docDataId取地址
+              for (var i = 0; i < res.length; i++) {
+                if (this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId) {
+                  console.log('res[i].storageId', res[i].storageId);
+                  this.getFileStream(res[i].storageId)
+                  _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
+                  break;
+                }
+              }
             }
           },
           err => {

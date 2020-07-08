@@ -527,34 +527,32 @@ export const mixinGetCaseApiList = {
       console.log(data);
       console.log('flowChartData', flowChartData);
       let completeLinkArr = flowChartData.completeLink.split(',');
-
-      //只是环节
-      let isHuanjieDoc = false;
-      if (data.linkID == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.partyRights_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.noPenalty_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId) {
-        isHuanjieDoc = true;
-      }
-      // this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
-      // let data2 = this.com_getCaseRouteName(data.linkID);
       let data2 ={
         nextLink: data.linkName || '',
         docId: data.docId || ''
       }
       this.$store.commit('setDocId', data.docId);
       if (data.curLinkState == "complete") {    //已完成文书显示pdf  审核中也显示pdf
-        if (!isHuanjieDoc) {
-          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
-        } else {
-          this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
-        }
+        //只是环节文书
+        let isHuanjieDoc = false;
+        //可以通过判断是否生成了pdf判断是单文书表单还是单纯的表单
+        let fielRes = await getFile({docId: data.docId,caseId: this.caseId,});
+        console.log('查询环节是否生成了pdf', fielRes);
+        if (fielRes.data.length > 0) isHuanjieDoc = true;
+        //跳转pdf或表单
+        if (isHuanjieDoc)  this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
+        else this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
       } else if (data.curLinkState == 'unLock') {
         let updataLinkData = {
           caseId:this.caseId,
           linkTypeId:data.linkID
         }
-        updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData).then(res=>{
-          console.log('res更改流程图状态',res)
-        })
-
+        //更改流程图状态
+        try{
+          await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
+        }catch(err){
+          this.$message('更改流程图状态失败！')
+        }
 
 
         //行政强制措施即将到期,从零点开始提示
@@ -582,41 +580,7 @@ export const mixinGetCaseApiList = {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
-        //判断该环节是否需要审批
-        // let nowCaseDocdata = '';
-        // try{
-        //   nowCaseDocdata = await findDocDataByIdApi(data.docId);
-        // }catch(err){
-        //   this.$message('查询是否需要审批失败!')
-        // }
-        // console.log('nowCaseDocdata',nowCaseDocdata);
-        // if(nowCaseDocdata.data.isApproval === '0'){ //需要审批
-        //   this.$store.commit('setApprovalState', 'approvalBefore')
-        //   console.log('需要审批');
-        //   if (caseIsApprovaling) {
-        //     this.$store.commit('setApprovalState', 'submitApproval')
-        //   } else {
-        //     this.$store.commit('setApprovalState', 'approvalBefore')
-        //   }
-        //   // this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
-        //   this.searchHuanjiePdf(data2, data.linkID);
-        // }else{  //不需要审批
-        //   this.$store.commit('setApprovalState', '')
-        //   console.log('不需要审批');
-        //   this.searchHuanjiePdf(data2, data.linkID);
-        // }
         this.searchHuanjiePdf(data2, data.linkID);
-
-        // if (data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
-        //   if (caseIsApprovaling) {
-        //     this.$store.commit('setApprovalState', 'submitApproval')
-        //   } else {
-        //     this.$store.commit('setApprovalState', 'approvalBefore')
-        //   }
-        //   this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
-        // } else {
-        //   this.searchHuanjiePdf(data2, data.linkID);
-        // }
 
       }
     },
@@ -648,13 +612,12 @@ export const mixinGetCaseApiList = {
     //查询环节是否生成了pdf
     async searchHuanjiePdf(data, linkID) {
       let res = '';
-      res = await getFile({docId: data.docId,caseId: this.caseId,});
-
-      // this.$store.dispatch("getFile", {
-      //   docId: data.docId,
-      //   caseId: this.caseId,
-      // }).then(res => {
-        console.log('查询环节是否生成了pdf', res);
+      try{
+        res = await getFile({docId: data.docId,caseId: this.caseId,});
+      }catch(err){
+        this.$message('查询环节是否生成了pdf失败!')
+      }
+      console.log('查询环节是否生成了pdf', res);
       
         if (res.data.length > 0) {
         
@@ -680,21 +643,15 @@ export const mixinGetCaseApiList = {
             } else {
               this.$store.commit('setApprovalState', 'approvalBefore')
             }
-            // this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
-            // this.searchHuanjiePdf(data2, data.linkID);
           }else{  //不需要审批
             this.$store.commit('setApprovalState', '')
             console.log('不需要审批');
-            // this.searchHuanjiePdf(data2, data.linkID);
           }
-
-
           this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
         } else {
           this.$router.push({ name: data.nextLink })
         }
-      // })
-      //   .catch(err => { console.log(err) })
+    
     },
     //查询文书或表单是否禁用及必填等
     searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {

@@ -163,7 +163,7 @@
                     v-model="formData.partyAddress"
                     size="small"
                     placeholder="请输入"
-                    :disabled="isParty || fieldDisabled(propertyFeatures['partyAddress'])"
+                    :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -175,7 +175,7 @@
                 >
                   <el-input
                     ref="partyZipCode"
-                    :disabled="isParty || fieldDisabled(propertyFeatures['partyZipCode'])"
+                    :disabled="!isParty || fieldDisabled(propertyFeatures['partyZipCode'])"
                     clearable
                     class="w-120"
                     v-model="formData.partyZipCode"
@@ -283,18 +283,18 @@
                 <el-form-item
                   label="案件基本情况"
                   class="line-height13"
-                  prop="socialCreditCode"
-                  :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
+                  prop="caseSituation"
+                  :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])"
                 >
                   <el-input
                     type="textarea"
                     class="height106"
-                    ref="socialCreditCode"
+                    ref="caseSituation"
                     clearable
-                    v-model="formData.socialCreditCode"
+                    v-model="formData.caseSituation"
                     size="small"
                     placeholder="请输入"
-                    :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
+                    :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -312,6 +312,9 @@
                 <el-table-column prop="amount" label="数量" align="center" width="50"></el-table-column>
                 <el-table-column prop="resNote" label="备注" align="center"></el-table-column>
               </el-table>
+              <el-form-item prop="resLength" style="visibility:hidden">
+                <el-input v-model="formData.resLength"></el-input>
+              </el-form-item>
             </div>
             <el-row :gutter="20">
               <el-col :span="16">
@@ -514,6 +517,7 @@ export default {
       validateIDNumber: validateIDNumber,
       formData: {
         caseNumber: "",
+        caseCauseName:"",
         caseName: "",
         party: "",
         partyIdNo: "",
@@ -524,14 +528,17 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
+        partyZipCode:'',
         resList: [],
-        resLength: 0
+        resLength: 0,
+        partySex:'',
+        partyAddress:'',
+        partyZipCode:''
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        caseLinktypeId: this.BASIC_DATA_JX
-          .adminCoerciveMeasure_JX_caseLinktypeId, //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -598,7 +605,10 @@ export default {
         ],
         socialCreditCode: [
           { required: true, message: "统一社会信用代码", trigger: "blur" }
-        ]
+        ],
+        resLength: [
+            {validator: validateEvidencLength, trigger: "blur"}
+        ],
       },
       isParty: true, //当事人类型为个人
       originalData: "",
@@ -705,11 +715,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if (this.isSaveLink) {
-        this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
-      } else {
-        this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
-      }
+      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     //预览pdf
     viewDocPdf(row) {
