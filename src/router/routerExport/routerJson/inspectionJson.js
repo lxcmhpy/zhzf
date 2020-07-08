@@ -89,6 +89,17 @@ export default  [
                 },
                 component: () => import("@/page/inspection/record-manage/file/fileList.vue")
             },
+            // 文书
+            {
+                // 文书-列表
+                path: "/xzjcForceCorrect",
+                name: "inspection_forceCorrect",
+                meta: {
+                title: "责令改正违法行为通知书",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/file/correctNotice.vue")
+            },
         ]
     }, 
 ]

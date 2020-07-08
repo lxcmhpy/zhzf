@@ -264,3 +264,14 @@ export function findMyRecordByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//获取文书名称列表
+export function getDocumentNameList() {
+    return request({
+        url: "/xzjc/documentName/getDocumentNameList",
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

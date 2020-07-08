@@ -517,7 +517,7 @@ export default {
     // 匹配数据格式
     dealFormData(viewFlag) {
       // 左侧操作按钮
-      // this.formOrDocData.showBtn = [this.formData.documentFill == '是' ? true : false, this.formData.releventRecords ? true : false, this.formData.operateRecords == '是' ? true : false], //文书填报、相关记录、操作记录
+      this.formOrDocData.showBtn = [this.formData.documentFill == '是' ? true : false, this.formData.releventRecords ? true : false, this.formData.operateRecords == '是' ? true : false], //文书填报、相关记录、操作记录
       // this.formOrDocData.showBtn =[true,true,true]
 
       this.rule = []

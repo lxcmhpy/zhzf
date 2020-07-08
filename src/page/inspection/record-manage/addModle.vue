@@ -91,7 +91,7 @@
 
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
-                          <el-select v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)">
+                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)" ref="test" :id='field.field'>
                             <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
                           </el-select>
 
@@ -177,20 +177,20 @@
           </div>
           <!-- 拓展功能 -->
           <p class="border-title card-title-margin">拓展功能</p>
-          <el-form-item label="文书填报" class="modle-radio">
+          <el-form-item label="文书填报" class="modle-radio" prop="documentFill">
             <el-radio-group v-model="formData.documentFill" @change="changeFile()">
               <el-radio label="是" value='是' style="width:5%"></el-radio>
               <el-button type="primary" style="width:15%;margin-right:20%" @click="dialogTableVisible=true" :disabled="formData.documentFill=='是'?false:true">选择文书</el-button>
               <el-radio label="否" value='否'></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="相关记录" class="modle-radio">
+          <el-form-item label="相关记录" class="modle-radio" prop="releventRecords">
             <el-radio-group v-model="formData.releventRecords">
               <el-radio label="当事人" value='当事人'></el-radio>
               <el-radio label="车辆" value='车辆'></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="操作记录" class="modle-radio">
+          <el-form-item label="操作记录" class="modle-radio" prop="operateRecords">
             <el-radio-group v-model="formData.operateRecords">
               <el-radio label="是" value='是'></el-radio>
               <el-radio label="否" value='否'></el-radio>
@@ -267,8 +267,12 @@
     <el-dialog title="选择文书" :visible.sync="dialogTableVisible" width="400px">
       <el-table ref="multipleTable" :data="fileList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column property="docName" label="文书"></el-table-column>
+        <el-table-column prop="docName" label="文书" align="center">
+        </el-table-column>
       </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -278,7 +282,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
 import {  saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
-  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi} from "@/api/Record";
+  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi, getDocumentNameList} from "@/api/Record";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
@@ -381,6 +385,8 @@ export default {
         releventRecords: '',
         documentFill: '',
         documentNames: '',
+        vehicleShipIdFlag: false,//车辆字段
+        partyFlag: false,//当事人字段
       },
       commonGroupFieldList: [],
       commonFieldList: [],
@@ -439,10 +445,10 @@ export default {
           { required: true, message: '请选择指定机构', trigger: 'change' }
         ],
       },
-      fieldDisabledTitle: '',
       dialogTableVisible: false,
-      fileList: [{ id: '123', docName: '责令改正违法行为通知书', path: '' }, { id: '456', docName: 'XXX', path: '' }],
-      multipleSelection: []
+      fileList: [],
+      multipleSelection: [],
+      selectFieldList: []
     }
   },
   methods: {
@@ -614,6 +620,8 @@ export default {
       }
     },
     submitForm(formName) {
+      this.vehicleShipIdFlag = false
+      this.partyFlag = false
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let canSubmit = true;
@@ -647,6 +655,7 @@ export default {
                   element.fieldList.forEach(item => {
                     item.sort = sort;
                     sort++
+                    // 处理title
                     if (typeof (item.title) == 'object') {
                       console.log(item)
                       if (item.title) {
@@ -654,6 +663,13 @@ export default {
 
                       }
                       // debugger
+
+                    }
+                    if (item.field == 'vehicleShipId') {
+                      this.vehicleShipIdFlag = true
+                    }
+                    if (item.field == 'party') {
+                      this.partyFlag = true
                     }
                   });
                 });
@@ -686,26 +702,34 @@ export default {
                 data.templateUserIdList = '';
                 data.templateAdminIdList = '';
                 data.templateUserId = data.scopeOfUse == '指定人员使用' ? data.templateUserId : '';
+                // 文书
+                data.documentNames = this.multipleSelection.join(',')
+                console.log('data.documentNames', data.documentNames)
+                debugger
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 data.templateFieldList = JSON.stringify(data.templateFieldList)
                 console.log('提交的字段', data)
-                saveOrUpdateRecordModleApi(data).then(
-                  res => {
-                    if (res.code == 200) {
-                      this.$message({
-                        type: "success",
-                        message: res.msg
-                      });
-                      this.$emit("getAddModle", 'sucess');
-                      this.resetForm('formData')
-                      this.newModleTable = false;
-                    } else {
-                      this.$message.error(res.msg);
-                    }
-                  },
-                  error => {
+                // 提醒未添加字段
+                if (this.noticeMsg()) {
+                  saveOrUpdateRecordModleApi(data).then(
+                    res => {
+                      if (res.code == 200) {
+                        this.$message({
+                          type: "success",
+                          message: res.msg
+                        });
+                        this.$emit("getAddModle", 'sucess');
+                        this.resetForm('formData')
+                        this.newModleTable = false;
+                      } else {
+                        this.$message.error(res.msg);
+                      }
+                    },
+                    error => {
 
-                  })
+                    })
+                }
+
               })
 
             }
@@ -894,13 +918,32 @@ export default {
       // console.log('find',this.commonFieldList.find(field))
       // 判断新选中的和之前的是不是同一个
       // this.commonFieldList.forEach(element => {
-      //   if(element.field==field.field){
-      //     console.log('elment.title',element.title)
-      //     element.fieldDisabled=!element.fieldDisabled
+      //   if (element.field == field.field) {
+      //     console.log('elment.title', element.title)
+      //     element.fieldDisabled = !element.fieldDisabled
       //   }
       // });
-      // 存储上次选中的项
-      // this.fieldDisabledTitle=info.field
+      // 判断之前有没有选过
+      console.log(document.getElementsByName('filedNameFlag'))
+      let selectedList = document.getElementsByName('filedNameFlag')
+      let selectedListField = []
+      // 存储已选择id
+      selectedList.forEach(element => {
+        console.log(element.id)
+        selectedListField.push(element.id)
+      });
+      console.log('selectedListField', selectedListField)
+
+      // 比对
+      selectedListField.forEach(element => {
+
+      });
+      // this.commonFieldList.forEach(element => {
+      //   if (element.field == field.field) {
+      //     console.log('elment.title', element.title)
+      //     element.fieldDisabled = !element.fieldDisabled
+      //   }
+      // });
     },
     handleClose() {
       // debugger
@@ -911,6 +954,7 @@ export default {
       this.$refs[formName].resetFields();
       this.formData.title = ''
       this.titileText = '';
+      this.multipleSelection = []
       this.formData.templateFieldList = [
         {
           // value: ,
@@ -943,11 +987,59 @@ export default {
       console.log('选择', this.formData.documentFill)
       if (this.formData.documentFill == '是') {
         this.dialogTableVisible = true
+        this.getFileList()
       }
     },
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      this.multipleSelection = []
+      val.forEach(element => {
+        console.log(element)
+        this.multipleSelection.push(element.id)
+      });
       console.log('this.multipleSelection', this.multipleSelection)
+    },
+    noticeMsg() {
+      console.log('1', this.vehicleShipIdFlag)
+      console.log('2', this.partyFlag)
+      console.log('2', this.formData.releventRecords)
+      if (this.formData.releventRecords == '当事人' && !this.partyFlag) {
+        // 当事人字段没有
+        this.$confirm('当前模板没有当事人字段，是否继续发布？', "模板发布", {
+          confirmButtonText: "确认",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          return true
+        })
+      } else {
+        if (this.formData.releventRecords == '车辆' && !this.vehicleShipIdFlag) {
+          // 车辆字段没有
+          this.$confirm('当前模板没有车辆字段，是否继续发布？', "模板发布", {
+            confirmButtonText: "确认",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(() => {
+            return true
+          })
+        } else {
+          return true;
+        }
+      }
+    },
+    // 获取文书名称列表
+    getFileList() {
+      getDocumentNameList().then(
+        res => {
+          if (res.code == 200) {
+            this.fileList = res.data
+            debugger
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
     }
   },
   mounted() {

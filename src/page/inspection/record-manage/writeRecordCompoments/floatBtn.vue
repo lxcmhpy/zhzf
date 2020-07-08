@@ -104,7 +104,7 @@ export default {
       switch (index) {
         case 1: this.$refs.documentSideMenuRef.closeDialog(); break;
         case 2: this.$refs.relativeRecordRef.closeDialog(); break;
-        // case 3: this.$refs.operationRecordRef.closeDialog(); break;
+        case 3: this.$refs.operationRecordRef.closeDialog(); break;
         default: break;
       }
     }

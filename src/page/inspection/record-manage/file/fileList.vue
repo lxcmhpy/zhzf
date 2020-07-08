@@ -3,7 +3,7 @@
     <div class="searchAndpageBox" style="overflow: hidden;">
       <!-- <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle" v-if="isHome">新增模板</el-button> -->
       <div class="search-input-right-box" style="margin-bottom:24px">
-        模板名称
+        文书名称
         <span class="search-input-right">
           <el-input v-model="searchModleName"></el-input>
         </span>
@@ -18,8 +18,14 @@
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
-              <el-button @click="editRecord(scope.row)" type="text">查看</el-button>
-              <el-button type="text" @click="delModle(scope.row.id)">删除</el-button>
+              <span v-if="scope.row.status=='完成'">
+                <el-button @click="editRecord(scope.row)" type="text">查看</el-button>
+                <el-button type="text" @click="delModle(scope.row.id)">删除</el-button>
+              </span>
+              <span v-else>
+                <el-button @click="editRecord(scope.row)" type="text">编辑</el-button>
+                <el-button type="text" @click="delModle(scope.row.id)">上传</el-button>
+              </span>
             </template>
           </el-table-column>
         </el-table>
@@ -104,7 +110,7 @@ export default {
     // 删除模板
     delModle(item) {
       console.log('选中的模板', item)
-      this.$confirm('确认删除当前记录文书？', "提示", {
+      this.$confirm('确认删除当前记录文书？', "删除记录文书", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
