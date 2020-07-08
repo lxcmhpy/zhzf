@@ -307,8 +307,6 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-    <checkDocAllFinish ref="checkDocAllFinishRef"  @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId" ></checkDocAllFinish>
-    <saveFormDia ref="saveFormDiaRef"></saveFormDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
@@ -317,8 +315,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
-import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
-import resetDocDia from '@/page/caseHandle/components/resetDocDia'
+import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import iLocalStroage from "@/common/js/localStroage";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
@@ -330,7 +327,6 @@ import {
 export default {
   components: {
     checkDocFinish,
-    chooseAskPeopleDia,
     resetDocDia,
     caseSlideMenu
   },
@@ -418,7 +414,6 @@ export default {
       // nextBtnDisab: true
       isParty: true, //当事人类型为个人
       originalData: "",
-      needDealData:true,
       propertyFeatures:'', //字段属性配置
 
     };
@@ -464,19 +459,12 @@ export default {
           this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
 
         } else {
-          this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,3);
+          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
         }
       // }else{
       //   this.$refs.saveFormDiaRef.showModal();
       // }
 
-    },
-    getDataAfter() {
-        if (this.formData.party) {
-            this.isParty = true;
-        } else {
-            this.isParty = false;
-        }
     },
     // 进入文书
     enterDoc(row) {
@@ -496,11 +484,6 @@ export default {
     //查看文书
     viewDoc(row) {
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
-      // if(this.isSaveLink){
-      //   this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId)
-      // }else{
-      //   this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
-      // }
     },
     //预览pdf
     viewDocPdf(row) {

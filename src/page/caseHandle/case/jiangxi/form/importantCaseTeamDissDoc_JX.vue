@@ -25,12 +25,16 @@
             </el-form-item>
           </span> 至
           <span>
-            <el-form-item prop="discussionEndTime" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px" :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])">
-              <el-date-picker v-model="formData.discussionEndTime" type="datetime"
-                format="yyyy-MM-dd HH:mm"
-                value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">
-              </el-date-picker>
-              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="formData.discussionEndTime"></el-input>
+            <el-form-item prop="
+" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px" :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])">
+<!--              <el-date-picker v-model="formData.discussionEndTime" type="datetime"-->
+<!--                format="yyyy-MM-dd HH:mm"-->
+<!--                value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">-->
+<!--              </el-date-picker>-->
+              <el-time-picker placeholder="时 分" v-model="formData.discussionEndTime"
+                format="HH时mm分" value-format="HH:mm" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">
+              </el-time-picker>
+              <el-input class="replaceTime" placeholder=" 时 分" v-model="formData.discussionEndTime"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -41,7 +45,7 @@
               <el-input v-model="formData.discussionPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"></el-input>
             </el-form-item>
           </span>
-        </p> 
+        </p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="discussionReason" :rules="fieldRules('discussionReason',propertyFeatures['discussionReason'])">
@@ -107,7 +111,7 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="caseInformation" :rules="fieldRules('caseInformation',propertyFeatures['caseInformation'])">
-              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="formData.caseInformation" rows="3" maxLength='90'
+              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="formData.caseInformation" rows="3" maxLength='150'
               :disabled="fieldDisabled(propertyFeatures['caseInformation'])"></el-input>
               <span class="overflow_describe" style="text-indent:0em;">案件承办人汇报案件情况：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
@@ -119,7 +123,7 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="discussionOpinionAndReason" :rules="fieldRules('discussionOpinionAndReason',propertyFeatures['discussionOpinionAndReason'])">
-              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="formData.discussionOpinionAndReason" rows="3" maxLength='90'
+              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="formData.discussionOpinionAndReason" rows="3" maxLength='150'
               :disabled="fieldDisabled(propertyFeatures['discussionOpinionAndReason'])"></el-input>
               <span class="overflow_describe" style="text-indent:0em;">参见讨论人员意见和理由：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
@@ -132,7 +136,7 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="conclussionOpinion" :rules="fieldRules('conclussionOpinion',propertyFeatures['conclussionOpinion'])">
-              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="formData.conclussionOpinion" rows="3" maxLength='90'
+              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="formData.conclussionOpinion" rows="3" maxLength='150'
               :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"></el-input>
               <span class="overflow_describe" style="text-indent:0em;">结论性意见：</span>
               <span class="span_bg"  style="margin-top: 8px;">&nbsp;</span>
@@ -151,7 +155,7 @@
       </el-form>
     </div>
     <casePageFloatBtns :pageDomId="'importantCaseTeamDissDoc-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-    
+
   </div>
 </template>
 <script>
@@ -212,7 +216,7 @@ export default {
         caseLinktypeId: this.BASIC_DATA_JX.importCaseDiss_JX_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
-        status: "",      
+        status: "",
       },
       rules: {
         caseName: [

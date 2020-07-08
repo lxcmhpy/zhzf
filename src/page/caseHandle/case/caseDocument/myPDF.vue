@@ -11,7 +11,7 @@
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
-    
+
     <el-button @click="$refs.pdf[0].print()">打印</el-button>
     <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf>
   </div>
@@ -59,7 +59,7 @@
       reInstall() {
         this.$set(this, 'storagePath', [])
         this.getFile()
-      }, 
+      },
       getFile() {
         // debugger;
         console.log('this.$route.params',this.$route.params)
@@ -76,22 +76,23 @@
           res => {
             console.log('地址1',res)
             //多份文书按照docDataId取地址
-            for (var i = 0; i < res.length; i++) {
-              // if(i==0) {
-              //   _that.storagePath.push(JSON.parse(iLocalStroage.gets("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
-              // }
-              if (this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId) {
-                console.log('res[i].storageId', res[i].storageId);
-                _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
-                break;
-              }
-            }
-            //单份文书取一个
-            if (_that.storagePath.length == 0) {
-              // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
-              this.getFileStream(res[0].storageId)
-
-            }
+            // for (var i = 0; i < res.length; i++) {
+            //   // if(i==0) {
+            //   //   _that.storagePath.push(JSON.parse(iLocalStroage.gets("CURRENT_BASE_URL")).PDF_HOST+res[i].storageId)
+            //   // }
+            //   if (this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId) {
+            //     console.log('res[i].storageId', res[i].storageId);
+            //     _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
+            //     break;
+            //   }
+            // }
+            // //单份文书取一个
+            // if (_that.storagePath.length == 0) {
+            //   // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
+            //   this.getFileStream(res[0].storageId)
+            //
+            // }
+              this.getFileStream(res[0].storageId);
           },
           err => {
             console.log(err);
@@ -104,7 +105,7 @@
         if(this.approvalState == 'approvaling'){
           //审核人员进入 只有审核按钮
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, true, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-         
+
         }else if(this.approvalState == 'approvalOver'){
           //审核人员审核完成 只有打印按钮
           this.formOrDocData.showBtn = [false, false, false, true, false, true, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
@@ -176,7 +177,7 @@
       },
       //根据stroagId请求文件流
       getFileStream(storageId){
-        
+
         getFileStreamByStorageIdApi(storageId).then(res=>{
         // getFileStreamByStorageIdApi('12,13ac7d04e13f').then(res=>{
 
@@ -204,8 +205,8 @@
 
           }
         }
-        console.log(url);    
-        var loadingTask = pdf.createLoadingTask(url)  
+        console.log(url);
+        var loadingTask = pdf.createLoadingTask(url)
         loadingTask.promise.then(pdf => {
           console.log('pdf.numPages',pdf.numPages)
           console.log('pdf.pdfUrl',loadingTask)
