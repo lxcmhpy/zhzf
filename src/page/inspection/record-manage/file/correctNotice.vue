@@ -188,13 +188,14 @@ export default {
       maxLength: 23,
       lineStyleFlag: false,
       formOrDocData: {
-        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        showBtn: [true, false, false, true, false, false], //提交、保存、撤销、暂存、删除、签章
         pageDomId: "forceCorrect-print"
       },
       isPdf: "",
       huanjieAndDocId: this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, //责令改正违法行为通知书的文书id
       isParty: true, //当事人类型为个人
       propertyFeatures: '', //字段属性配置
+      isNeedDealSubmitData:false
     };
   },
   methods: {

@@ -1,9 +1,9 @@
 <template v-if="caseInfo">
   <div>
-    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true">
+    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true" style="top:60px;right:60px;">
       <template slot="title">
         <div class="catalogueTitle">
-          文书列表
+          操作记录列表
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>

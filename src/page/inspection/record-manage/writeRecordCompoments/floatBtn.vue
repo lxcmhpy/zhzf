@@ -1,24 +1,29 @@
 <template>
 
   <!-- 悬浮按钮 -->
-  <div class="float-btns" style="top:200px">
+  <div class="float-btns" style="top:105px;right:5px;">
 
-    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[0] && showQZBtn">
-      文书<br/>填报
-    </el-button>
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[1]">
-      相关<br/>记录
-    </el-button>
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[2]">
-      操作<br/>记录
-    </el-button>
+    <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc">
+      文书<br />填报
+    </li>
+    <li v-if="formOrDocData.showBtn[1]" @mouseenter="changeActive(2)" @mouseout="removeActive(2)" class='el-button el-button--primary' style="padding:10px 0">
+      相关<br />记录
+    </li>
+    <li v-if="formOrDocData.showBtn[2]" @mouseenter="changeActive(3)" @mouseout="removeActive(3)" class='el-button el-button--primary' style="padding:10px 0">
+      操作<br />记录
+    </li>
+    <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
+    <relativeRecord ref="relativeRecordRef"></relativeRecord>
+    <operationRecord ref="operationRecordRef"></operationRecord>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
-
+import documentSideMenu from './documentSideMenu.vue'
+import operationRecord from './operationRecord.vue'
+import relativeRecord from './relativeRecord.vue'
 export default {
   data() {
     return {
@@ -26,6 +31,11 @@ export default {
       makeSealStr: '',
       // showQZBtn:false,  //是否显示签章按钮
     }
+  },
+  components: {
+    documentSideMenu,
+    relativeRecord,
+    operationRecord
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
@@ -51,123 +61,14 @@ export default {
         }
       );
     },
-    // 盖章
-    makeSeal() {
-      let _this = this;
-
-      let fileName = _this.storagePath[0].split("/");
-      let fileId = fileName[fileName.length - 1];
-
-      let websocket = null;
-      //判断当前浏览器是否支持WebSocket
-      if ('WebSocket' in window) {
-        let _url = "ws://124.192.215.4:8083/socket/" + fileId
-        websocket = new WebSocket(_url);
-      } else {
-        alert('Not support websocket')
-      }
-
-      //连接发生错误的回调方法
-      websocket.onerror = function () {
-        setMessageInnerHTML("error");
-      };
-
-      //连接成功建立的回调方法
-      websocket.onopen = function (event) {
-        setMessageInnerHTML("open");
-      }
-
-      //接收到消息的回调方法
-      websocket.onmessage = function (event) {
-        setMessageInnerHTML(event.data);
-      }
-
-      //连接关闭的回调方法
-      websocket.onclose = function () {
-        setMessageInnerHTML("close");
-      }
-
-      //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-      window.onbeforeunload = function () {
-        websocket.close();
-      }
-
-      //将消息显示在网页上
-      function setMessageInnerHTML(innerHTML) {
-        console.log(innerHTML);
-        if (innerHTML === '1') {
-          _this.$emit('reInstall');
-        }
-
-      }
-
-      //关闭连接
-      function closeWebSocket() {
-        websocket.close();
-      }
-
-      //   signature.openURL('oeder');
-      // let ActivexURL = "http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6"
-      // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
-
-      openURL();
-
-      function callBackBrowserURL(error, id) {
-        if (error == 0) {  //调用成功
-          MultBrowser.waitStatus(id, "2", callBackWaitStatus);
-        }
-      }
-
-      function callBackWaitStatus(id, error, status, msg) {
-        if (error == 0) {
-          if (status == "0") {
-            //超时
-            //alert("我啥也不做");
-          }
-          else {
-            //成功
-            alert(status + "---" + msg);  //通过这里的数据进行刷新调用方页面等操作
-          }
-          //继续循环监听
-          MultBrowser.waitStatus(id, "2", callBackWaitStatus);
-        }
-      }
-
-      function openURL() {
-        var pdfPath = getParam("paramName");
-        var test = window.location.href;
-        var string = test.split("/");
-        var path = string[0] + "//" + string[2] + "/";
-        // path +
-        var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0]
-        console.log(ActivexURL);
-        _this.makeSealStr = ActivexURL;
-        window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
-      }
-
-      function getParam(paramName) {
-        let paramValue = "";
-        let isFound = !1;
-        if (window.location.search.indexOf("?") == 0 && window.location.search.indexOf("=") > 1) {
-          arrSource = unescape(window.location.search).substring(1, window.location.search.length).split("="), i = 0;
-          paramValue = arrSource[1];
-        }
-        return paramValue == "" && (paramValue = null), paramValue;
-      }
-    },
-    submitDataBtn(handleType) {
-      //判断是环节的提交还是文书的提交
-      this.$emit('submitFileData', handleType);
-    },
-    saveDataBtn(handleType) {
-      this.$emit('saveFileData', handleType);
-      // //当前环节为文书时
-      // if(this.formOrDocData.isHuanjie){
-      //   this.com_submitCaseForm(handleType, this.formOrDocData.formRef, this.formOrDocData.nextShowPdf);
-      // }else{
-      //   //文书保存
-      //   this.com_addDocData(handleType, this.formOrDocData.formRef);
-      // }
+    // 文书列表
+    writeDoc() {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: 'inspection_inspectionFiles',
+        // params: item
+        query: { id: this.$route.query.id }
+      });
     },
     getFile() {
       this.$store.dispatch("getFile", {
@@ -182,41 +83,30 @@ export default {
         }
       );
     },
-    //保存文书信息
-    //  addDocData(handleType){
-    //   let _this = this
-    //   this.com_addDocData(handleType,'docForm').then(
-    //     res => {
-    //       _this.$message({
-    //         type: "success",
-    //         message: "保存成功",
-    //       });
-    //       _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
-    //       _this.$router.push({
-    //         name: 'caseDoc',
-
-    //         params: {
-
-    //         }
-    //       });
-    //     },
-    //     err => {
-    //       console.log(err);
-    //     }
-    //   );
-    // },
     // 跳转到pdf页面
     viewPDF() {
       this.$router.push({ name: "case_handle_viewPDF" })
     },
-    showApprovePeopleListBtn() {
-      this.$emit('showApprovePeopleList');
+    // 鼠标移入
+    changeActive(index) {
+      // $event.currentTarget.className = "active";
+      console.log('移入', index)
+      switch (index) {
+        case 1: this.$refs.documentSideMenuRef.showModal(); break;
+        case 2: this.$refs.relativeRecordRef.showModal(); break;
+        case 3: this.$refs.operationRecordRef.showModal(); break;
+        default: break;
+      }
     },
-    approvalBtn() {
-      this.$emit('showApproval');
-    },
-    backHuanjieBtn() {
-      this.$emit('backHuanjie');
+    removeActive(index) {
+      // $event.currentTarget.className = "";
+      console.log('移出', index)
+      switch (index) {
+        case 1: this.$refs.documentSideMenuRef.closeDialog(); break;
+        case 2: this.$refs.relativeRecordRef.closeDialog(); break;
+        // case 3: this.$refs.operationRecordRef.closeDialog(); break;
+        default: break;
+      }
     }
   },
   mounted() {

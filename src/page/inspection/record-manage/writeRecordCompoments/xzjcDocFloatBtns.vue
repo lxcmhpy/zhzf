@@ -2,46 +2,33 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px">
-
-    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
-      <i class="iconfont law-approval"></i>
-      <br />签章
-    </el-button>
-    <!-- </a> -->
     <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
       <i class="iconfont law-upload"></i>
       <br />提交
-    </el-button>
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[10]">
-      <i class="iconfont law-save"></i>
-      <br />归档
     </el-button>
     <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
       <i class="iconfont law-save"></i>
       <br />保存
     </el-button>
-    <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[2]">
+    <el-button type="primary" @click="cancleSub(0)" v-if="formOrDocData.showBtn[2]">
+      <i class="iconfont law-save"></i>
+      <br />撤销
+    </el-button>
+    <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[3]">
       <i class="iconfont law-save"></i>
       <br />暂存
     </el-button>
-    <el-button type="primary" @click="showApprovePeopleListBtn" v-if="formOrDocData.showBtn[6]">
-      <i class="iconfont law-submit-o"></i>
-      <br />提交<br />审批
+    <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[4]">
+      <i class="iconfont law-save"></i>
+      <br />删除
     </el-button>
-    <el-button type="primary" @click="approvalBtn" v-if="formOrDocData.showBtn[7]">
-      <i class="iconfont law-edit"></i>
-      <br />审批
+    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
+      <i class="iconfont law-approval"></i>
+      <br />签章
     </el-button>
-    <el-button type="primary" @click="backHuanjieBtn" v-if="formOrDocData.showBtn[9]">
-      <i class="iconfont law-back"></i>
-      <br />返回
-    </el-button>
-    <img src="" id="show">
   </div>
 </template>
-<!--<script src="@/common/js/MultBrowser-1.0.2.js"></script>-->
 <script>
-
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
@@ -184,17 +171,23 @@ export default {
     },
     submitDataBtn(handleType) {
       //判断是环节的提交还是文书的提交
-      this.$emit('submitData', handleType);
+      // this.$emit('submitData', handleType);
+
+      // 隐藏提交、暂存按钮，显示保存签章按钮
+      this.$set(this.formOrDocData.showBtn, 3, false)
+      this.$set(this.formOrDocData.showBtn, 0, false)
+      this.$set(this.formOrDocData.showBtn, 5, true)
+      this.$set(this.formOrDocData.showBtn, 1, true)
     },
     saveDataBtn(handleType) {
-      this.$emit('saveData', handleType);
-      // //当前环节为文书时
-      // if(this.formOrDocData.isHuanjie){
-      //   this.com_submitCaseForm(handleType, this.formOrDocData.formRef, this.formOrDocData.nextShowPdf);
-      // }else{
-      //   //文书保存
-      //   this.com_addDocData(handleType, this.formOrDocData.formRef);
-      // }
+      // this.$emit('saveData', handleType);
+      if (handleType == 1) {
+        // 隐藏保存、签章按钮，显示撤销、删除按钮
+        this.$set(this.formOrDocData.showBtn, 5, false)
+        this.$set(this.formOrDocData.showBtn, 1, false)
+        this.$set(this.formOrDocData.showBtn, 2, true)
+        this.$set(this.formOrDocData.showBtn, 4, true)
+      }
     },
     getFile() {
       this.$store.dispatch("getFile", {
@@ -244,6 +237,17 @@ export default {
     },
     backHuanjieBtn() {
       this.$emit('backHuanjie');
+    },
+    cancleSub() {
+      // 撤销
+      this.$confirm('是否撤销当前文书（签章作废）？', "撤销记录文书", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        console.log('删除')
+
+      })
     }
   },
   mounted() {
