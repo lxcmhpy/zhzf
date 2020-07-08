@@ -323,5 +323,15 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/form/transfer_JX.vue")
   },
+  //行政强制措施决定书
+  {
+    path: "/adminCoerciveMeasureDoc",
+    name: "case_handle_adminCoerciveMeasureDoc_JX",
+    meta: {
+      title: "行政强制措施决定书",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureDoc_JX.vue")
+  },
 ]
 

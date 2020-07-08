@@ -10,12 +10,12 @@
             </el-select>
           </el-form-item>
           <el-form-item label="名称" prop="typeId" v-if="pdfForm.bindType=='2'">
-            <el-select v-model="pdfForm.typeId">
+            <el-select v-model="pdfForm.typeId" filterable>
               <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="名称" prop="typeId" v-if="pdfForm.bindType=='3'">
-            <el-select v-model="pdfForm.typeId">
+            <el-select v-model="pdfForm.typeId" filterable>
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>

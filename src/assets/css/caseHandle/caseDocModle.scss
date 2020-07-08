@@ -1592,3 +1592,7 @@
     font-size  : 12px;
     line-height: 15px;
 }
+
+.print_box .print_info .hasRequireRedBg .is-required .el-input__inner, .print_box .print_info .hasRequireRedBg .is-required .el-input__inner:focus, .print_box .print_info .hasRequireRedBg .is-required .el-textarea__inner, .print_box .print_info .hasRequireRedBg .is-required .el-textarea__inner:focus{
+    background: #f7c9cb !important;
+}

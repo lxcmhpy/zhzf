@@ -299,7 +299,7 @@ export function delLinkDocByIdApi(id) {
   });
 }
 
-//pdf页的提交
+//pdf页点击提交或点击下一环节 
 export function submitPdfApi(data) {
   return request({
     url: "/case/doc/linkData/jumpNextLink2",

@@ -253,10 +253,10 @@
               </el-table-column>
               <el-table-column label="操作" align="center" >
                 <template slot-scope="scope" class="docListHandleClass">
-<!--                  <div v-if="scope.row.openRow">-->
-<!--                    <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>-->
-<!--                  </div>-->
-                  <div v-if="!scope.row.openRow">
+                  <!-- <div v-if="scope.row.openRow">
+                    <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
+                  </div> -->
+                  <!-- <div v-if="!scope.row.openRow"> -->
                     <!-- 已完成 -->
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
@@ -266,7 +266,7 @@
                     </span>
                     <!-- 无状态 -->
                     <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
-                  </div>
+                  <!-- </div> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -459,10 +459,11 @@ export default {
           this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
 
         } else {
-          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+          // this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,3);
+           this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
         }
       // }else{
-      //   this.$refs.saveFormDiaRef.showModal();
+      //   this.$refs.caseDocForm.showModal();
       // }
 
     },
@@ -483,7 +484,12 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
+      this.com_viewDoc();
+      // if(this.isSaveLink){
+      //   this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId)
+      // }else{
+      //   this.$refs.saveFormDiaRef.showModal(this.saveOrSub);
+      // }
     },
     //预览pdf
     viewDocPdf(row) {

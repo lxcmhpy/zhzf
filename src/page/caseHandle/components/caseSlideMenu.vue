@@ -164,22 +164,27 @@ export default {
       //控制卷宗目录 (归档页面可用)
       this.disabledArchiveCatalogue = data.caseStatus !== "待归档" ;
       //控制案件总览 （提交完立案审批之后可用）方法: 当前环节为立案登记且caseStatus不等于待审批
+      //立案登记数组
+      let establish_caseLinktypeIdArr = [this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId];
       if(data.caseStatus == "未立案"){
           this.disabledCaseInfo = true;
       }else{ 
-          if(data.doingLink.includes(this.BASIC_DATA_SYS.establish_caseLinktypeId)){
-            this.disabledCaseInfo = false;
+          console.log(this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.doingLink.split(',')));
+          if(this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.doingLink.split(','))){
+             this.disabledCaseInfo = false;
           }else{
-            if(data.completeLink.includes(this.BASIC_DATA_SYS.establish_caseLinktypeId)){ //已完成
+            // if(data.completeLink.includes(this.BASIC_DATA_SYS.establish_caseLinktypeId)){ //已完成
+            console.log(this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.completeLink.split(',')));
+            if(this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.completeLink.split(','))){
               this.disabledCaseInfo = false;
             }else{
               this.disabledCaseInfo = true;
             }
-          }     
+          } 
       }
      
       //文书列表、送达回证（两级立案审批通过后可用）方法：判断已完成有没有立案
-      this.disabledBeforeEstablish = !data.completeLink.includes(this.BASIC_DATA_SYS.establish_caseLinktypeId);
+      this.disabledBeforeEstablish = !this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.completeLink.split(','));
       //控制案件流程 （信息采集保存后可用 方法：状态是不是1
       this.disabledFlow = !data.state
       console.log('控制案件总览', this.disabledCaseInfo)
@@ -187,11 +192,18 @@ export default {
     //根据案件类型判断进入哪个信息采集页
     findInforCollectPageName(){
       queryFlowBycaseIdApi(this.caseId).then(res=>{
-          console.log('res111222',res);
           this.infoPage = res.data.basicInfoPage;
-          console.log('this.infoPage', this.infoPage);
       }).catch(err=>{console.log(err)})
     },
+    //判断一个数组中的值是否在另一个数组中
+    hasDataInOtherArr(arr1,arr2){
+      let hasVal = false;
+      arr1.forEach(item1 => {
+        if(arr2.includes(item1)){ hasVal = true; return;}
+      });
+      console.log('hasVal',hasVal)
+      return hasVal;
+    }
 
   },
   mounted(){
