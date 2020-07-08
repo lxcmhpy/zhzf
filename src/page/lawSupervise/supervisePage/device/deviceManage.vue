@@ -24,6 +24,7 @@
         </div>
       </div>
       <div class="searchPage toggleBox">
+         <p>{{selectOrganName}}</p>
         <div class="handlePart">
           <el-form :inline="true" ref="deviceForm" :model="formInline" label-width="70px">
             <el-form-item label="查询范围">
@@ -355,7 +356,8 @@ import iLocalStroage from '@/common/js/localStroage';
         currentPage: 1, //当前页
         pageSize: 10, //pagesize
         totalPage: 0, //总数
-        selectDataIdList: [] //选中的记录
+        selectDataIdList: [], //选中的记录
+        selectOrganName:''
       };
     },
     components: {
@@ -485,6 +487,7 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       //点击树事件
       handleNodeClick(data) {
+        this.selectOrganName=data.pLabel
         console.log(data);
         this.tableData = [];
         if(data.type){
@@ -679,7 +682,7 @@ import iLocalStroage from '@/common/js/localStroage';
                       id:item1.code,pid:item.id,pLabel:item.label,label:item1.name,icon:item1.icon,type:1
                     })
                   })
-                  let len = item.children.length -3;
+                  let len = item.children.length -_this.typeData.length;
                   while (len > 0) {
                       item.children.forEach((obj,i)=> {
                           if (i > 2) {
