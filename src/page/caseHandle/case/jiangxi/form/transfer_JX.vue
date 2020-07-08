@@ -410,7 +410,7 @@ export default {
       // nextBtnDisab: true
       isParty: true, //当事人类型为个人
       originalData: "",
-      needDealData:true,
+      needDealData:false,
       propertyFeatures:'', //字段属性配置
 
     };
@@ -423,6 +423,7 @@ export default {
   methods: {
     //加载表单信息
     setFormData() {
+      console.log("个人企业",this.isParty)
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
     },
