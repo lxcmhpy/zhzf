@@ -78,7 +78,8 @@
           1、强制执行
           <span>
             <el-form-item prop="executeMatter" style="width: 360px;" :rules="fieldRules('executeMatter',propertyFeatures['executeMatter'])">
-              <el-input v-model="formData.executeMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['executeMatter'])"></el-input>
+<!--              <el-input v-model="formData.executeMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['executeMatter'])"></el-input>-->
+              <el-input :disabled="fieldDisabled(propertyFeatures['executeMatter'])" type="textarea" ref="executeMatter" clearable class="w-120" v-model="formData.executeMatter" size="small"></el-input>
             </el-form-item>
           </span>事项。
         </p>
@@ -86,7 +87,8 @@
           2、其他事项：
           <span>
             <el-form-item prop="otherMatter" style="width: 360px;" :rules="fieldRules('otherMatter',propertyFeatures['otherMatter'])">
-              <el-input v-model="formData.otherMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['otherMatter'])"></el-input>
+<!--              <el-input v-model="formData.otherMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['otherMatter'])"></el-input>-->
+              <el-input :disabled="fieldDisabled(propertyFeatures['otherMatter'])" type="textarea" ref="otherMatter" clearable class="w-120" v-model="formData.otherMatter" size="small"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -97,7 +99,8 @@
           因被申请人
           <span>
             <el-form-item prop="caseName" style="width: 200px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="formData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+<!--              <el-input v-model="formData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>-->
+              <el-input :disabled="fieldDisabled(propertyFeatures['caseName'])" type="textarea" ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
             </el-form-item>
           </span>一案，申请人于
           <span>
