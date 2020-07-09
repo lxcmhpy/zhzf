@@ -701,24 +701,9 @@
 </template>
 <script>
 import Vue from "vue";
-import echarts from 'echarts';
-// import 'echarts/lib/chart/graph';
-import AMap from 'vue-amap';
-import { AMapManager } from 'vue-amap';
-import {findAllDrawerById,getSiteById} from '@/api/lawSupervise.js';
-import { upload,getFile, getFileByCaseId,deleteFileByIdApi } from "@/api/upload.js";
+import {findAllDrawerById,getSiteById,getFileByCaseId,deleteFileByIdApi,upload} from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
-Vue.use(AMap);
-AMap.initAMapApiLoader({
-  key: '2fab5dfd6958addd56c89e58df8cbb37',
-  plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType',
-    'PolyEditor', 'AMap.CircleEditor', 'lazyAMapApiLoaderInstance', 'Geolocation', 'Marker', 'Icon'],
-  v: '1.4.4',
-  uiVersion: '1.0.11',
-  showLabel: false
-});
-let amapManager = new AMap.AMapManager();
 //   <el-carousel-item :key="1">
 //                                 <img width="280px" height="180px" @click="showImg('PHOTO_D')"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_D'">
 //                             </el-carousel-item>
@@ -766,53 +751,7 @@ export default {
                 status: '1',
                 applyTime: '1',
             },
-            center: [116.397428, 39.90923],
-            zoom: 16,
-            amapManager,
-            events: {
-                init(map) {
-                // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
-                // const marker = new SimpleMarker({
-                // iconStyle: 'red',
-                // map: [],
-                // position: map.getCenter()
-                // });
-                // });
-                }
-            },
             colorList: [],
-            plugin: [{
-                pName: 'ToolBar',
-                position: 'RB'
-            }, {
-                pName: 'Scale',
-                position: 'RB'
-            }, {
-                pName: 'Geolocation',
-                position: 'RB',
-                events: {
-                init(o) {
-                    // o 是高德地图定位插件实例
-                    o.getCurrentPosition((status, result) => {
-                    if (result && result.position) {
-                        self.currentAddressObj = result.addressComponent;
-                        self.lng = result.position.lng;
-                        self.lat = result.position.lat;
-                        self.center = [self.lng, self.lat];
-                        self.loaded = true;
-                        self.$nextTick();
-                    }
-                    });
-                }
-                }
-            },
-            {
-                pName: 'PlaceSearch',
-                renderStyle: 'default',
-                events: {
-                },
-            }
-            ],
             acitveCar: 0,
             dialogIMGVisible1: false,
             formUpload: {
@@ -841,8 +780,8 @@ export default {
             fd.append("category", '执法监管');
             fd.append("fileName", param.file.name);
             fd.append('status', type)//传记录id
-            fd.append('caseId', this.obj.id)//传记录id
-            fd.append('docId', this.obj.id + this.index.toString())//传记录id
+            fd.append('caseId', this.obj.workNo)//传记录id
+            fd.append('docId', this.obj.workNo + this.index.toString())//传记录id
             // uploadMaterial(fd).then(
             upload(fd).then(
                 res => {
@@ -939,19 +878,6 @@ export default {
             this.visible = false;
         },
         //通过案件ID和文书ID查询附件
-        findFileList() {
-            let data = {
-                caseId: this.obj.id
-            }
-            getFileByCaseId(data).then(
-                res => {
-                    this.fileList = res.data;
-                },
-                error => {
-                    console.log(error);
-                }
-            )
-        },
         getSiteById(){
             let _this = this;
             getSiteById(this.obj.siteId).then(
@@ -970,7 +896,6 @@ export default {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
-        this.findFileList();
         this.getSiteById()
     }
 }
