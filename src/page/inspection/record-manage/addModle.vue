@@ -91,8 +91,8 @@
 
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
-                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)" ref="test" :id='field.field'>
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
+                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)" @visible-change='changeDisabledStatus(field)' ref="test" :id='field.info?field.info.field:""'>
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title+commonField.fieldDisabled" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
                           </el-select>
 
                         </el-form-item>
@@ -888,8 +888,8 @@ export default {
     },
     changeField(info, field) {
       // info-新选，field-之前的信息
-      console.log('info', info)
-      console.log('field', field)
+      // console.log('info', info)
+      // console.log('field', field)
       // debugger
       // 如果是通用字段，只改名
       if (field.status == 0 && !info.id) {
@@ -913,8 +913,8 @@ export default {
         }
       }
 
-      // 选中后禁用
-      console.log('this.commonFieldList', this.commonFieldList)
+
+      // console.log('change！！！！！this.commonFieldList', this.commonFieldList)
       // console.log('find',this.commonFieldList.find(field))
       // 判断新选中的和之前的是不是同一个
       // this.commonFieldList.forEach(element => {
@@ -923,26 +923,42 @@ export default {
       //     element.fieldDisabled = !element.fieldDisabled
       //   }
       // });
+
+
+    },
+    changeDisabledStatus(field) {
+      console.log('121212dfadf')
+      // 选中后禁用
       // 判断之前有没有选过
-      console.log(document.getElementsByName('filedNameFlag'))
-      let selectedList = document.getElementsByName('filedNameFlag')
-      let selectedListField = []
-      // 存储已选择id
-      selectedList.forEach(element => {
-        console.log(element.id)
-        selectedListField.push(element.id)
-      });
-      console.log('selectedListField', selectedListField)
+      // this.$nextTick(() => {
+        // console.log(document.getElementsByName('filedNameFlag')[0].value)
+        let selectedList = document.getElementsByName('filedNameFlag')
+        console.log('selectedList', selectedList)
+        let selectedListField = []
+        // 存储已选择id
+        selectedList.forEach(element => {
+          console.log('对比的element', element.id)
+          if (element.id) {
+            selectedListField.push(element.id)
+          }
+        });
+        // console.log('selectedListField', selectedListField)
 
-      // 比对
-      selectedListField.forEach(element => {
+        // 比对,置为不可选
+        this.commonFieldList.forEach(element => {
+          element.fieldDisabled = false
+        });
+        selectedListField.forEach(item => {
+          this.commonFieldList.forEach(element => {
+            if (element.field == item) {
+              console.log('elment.title', element.title)
+              // element.fieldDisabled = true
+              this.$set(element, 'fieldDisabled', true)
+            }
+          });
+          console.log('this.commonFieldList', this.commonFieldList)
+        });
 
-      });
-      // this.commonFieldList.forEach(element => {
-      //   if (element.field == field.field) {
-      //     console.log('elment.title', element.title)
-      //     element.fieldDisabled = !element.fieldDisabled
-      //   }
       // });
     },
     handleClose() {

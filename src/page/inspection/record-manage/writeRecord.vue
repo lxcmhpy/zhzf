@@ -126,7 +126,7 @@ export default {
       isCopyStyle: false,//
       formOrDocData: {
         showBtn: [false, false, false], //文书填报、相关记录、操作记录
-        pageDomId: 'deliverCertificate-print',
+        pageDomId: '',
       },
       // 是否转立案字段名
       isTransferName: '',
@@ -322,6 +322,9 @@ export default {
       this.formData.type = '记录';
       this.formData.organId = iLocalStroage.gets("userInfo").organId;
       this.formData.userId = iLocalStroage.gets("userInfo").id;
+
+      //文书带入值信息
+      this.formData.party='111' 
       // 当事人信息和企业信息选项的值
       this.formData.objectType = this.$data.$f.getValue('personOrParty')
       delete (this.formData["pictureList"]);
@@ -343,6 +346,8 @@ export default {
                 props: { disabled: true }
               }, true);
             });
+            this.formOrDocData.pageDomId = res.data
+
           } else {
             this.$message.error(res.msg);
           }
@@ -518,9 +523,9 @@ export default {
     dealFormData(viewFlag) {
       // 左侧操作按钮
       this.formOrDocData.showBtn = [this.formData.documentFill == '是' ? true : false, this.formData.releventRecords ? true : false, this.formData.operateRecords == '是' ? true : false], //文书填报、相关记录、操作记录
-      // this.formOrDocData.showBtn =[true,true,true]
+        // this.formOrDocData.showBtn =[true,true,true]
 
-      this.rule = []
+        this.rule = []
       let data = JSON.parse(JSON.stringify(this.defaultRuleData.templateFieldList))
       // console.log('ruleData', data)
       let ruleData = []

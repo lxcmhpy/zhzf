@@ -2,7 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="top:105px;right:5px;">
-
+    {{!formOrDocData.pageDomId}}
     <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc">
       文书<br />填报
     </li>
@@ -63,12 +63,15 @@ export default {
     },
     // 文书列表
     writeDoc() {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: 'inspection_inspectionFiles',
-        // params: item
-        query: { id: this.$route.query.id }
-      });
+      if (this.formOrDocData.pageDomId) {
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: 'inspection_inspectionFiles',
+          // params: item
+          query: { id: this.formOrDocData.pageDomId || this.$route.query.id }
+        });
+      }
+
     },
     getFile() {
       this.$store.dispatch("getFile", {
@@ -92,7 +95,7 @@ export default {
       // $event.currentTarget.className = "active";
       console.log('移入', index)
       switch (index) {
-        case 1: this.$refs.documentSideMenuRef.showModal(); break;
+        case 1: this.$refs.documentSideMenuRef.showModal(this.formOrDocData.pageDomId); break;
         case 2: this.$refs.relativeRecordRef.showModal(); break;
         case 3: this.$refs.operationRecordRef.showModal(); break;
         default: break;

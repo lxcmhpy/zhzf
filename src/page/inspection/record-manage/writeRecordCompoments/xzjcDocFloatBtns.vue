@@ -172,12 +172,12 @@ export default {
     submitDataBtn(handleType) {
       //判断是环节的提交还是文书的提交
       // this.$emit('submitData', handleType);
-
       // 隐藏提交、暂存按钮，显示保存签章按钮
       this.$set(this.formOrDocData.showBtn, 3, false)
       this.$set(this.formOrDocData.showBtn, 0, false)
       this.$set(this.formOrDocData.showBtn, 5, true)
       this.$set(this.formOrDocData.showBtn, 1, true)
+       this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {
       // this.$emit('saveData', handleType);

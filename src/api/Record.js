@@ -275,3 +275,61 @@ export function getDocumentNameList() {
         cancelToken: setCancelSource()
     });
 }
+//查找当前记录相关文书
+export function getDocListById(data) {
+    return request({
+        url: "/xzjc/document/getDocListById/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//添加或修改文书表
+export function saveOrUpdateDocument(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url:"/xzjc/document/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//添加或修改文书表
+export function getDocumentById(data) {
+    return request({
+        url:"/xzjc/document/getById/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据文书名称模糊查询文书
+export function getDocListByName(data) {
+    return request({
+        url:"/xzjc/document/getDocListByName",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//查询当前模板相关文书
+export function getTemplateDocList(data) {
+    return request({
+        url:"/xzjc/template/getTemplateDocList/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

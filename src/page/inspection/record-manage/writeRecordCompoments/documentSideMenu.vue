@@ -12,6 +12,7 @@
           <el-checkbox v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
             <span class="name">{{index + 1}}</span>
             <span class="name">{{item.docName}}</span>
+            <span class="name" style="margin-left:20px;color:bule">{{item.status?item.status:'未完成'}}</span>
           </el-checkbox>
         </el-checkbox-group>
       </div>
@@ -24,7 +25,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { findByCaseBasicInfoIdApi, findByCaseIdAndDocIdApi, findVoByDocCaseIdApi } from "@/api/caseHandle";
+import { getTemplateDocList } from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -48,11 +49,11 @@ export default {
   // props: ["caseInfo"],
   computed: { ...mapGetters(["caseId"]) },
   methods: {
-    showModal() {
+    showModal(pageDomId) {
       //      console.log('show');
 
       this.visible = true;
-      if (!this.getData) this.getByMlCaseId();
+      if (!this.getData) this.getByMlCaseId(pageDomId);
 
 
     },
@@ -61,10 +62,10 @@ export default {
       this.visible = false;
     },
     //获取已完成文书列表
-    getByMlCaseId() {
+    getByMlCaseId(pageDomId) {
       this.getData = true;
       let _this = this
-      findVoByDocCaseIdApi(this.caseId).then(
+      getTemplateDocList(pageDomId||this.$route.query.id).then(
         res => {
           console.log(res);
           _this.caseList = res.data;

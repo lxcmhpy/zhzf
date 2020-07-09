@@ -28,7 +28,8 @@ export default  [
                 title: "写记录",
                 oneTab:true,
                 },
-                component: () => import("@/page/inspection/record-manage/writeRecord.vue")
+                component: () => import("@/page/inspection/record-manage/writeRecord.vue"),
+                props: (route) => ({ query: route.query.q })
             },
             {
                 // 写记录
@@ -38,7 +39,8 @@ export default  [
                 title: "写记录",
                 oneTab:true,
                 },
-                component: () => import("@/page/inspection/record-manage/writeRecord.vue")
+                component: () => import("@/page/inspection/record-manage/writeRecord.vue"),
+                props: (route) => ({ query: route.query.q })
             },
             {
                 path: "/recordList",

@@ -12,14 +12,14 @@
       <div class="tablePart" style="clear: both;">
         <el-table :data="modleList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
-          <el-table-column prop="createTime" label="记录文书" align="center"></el-table-column>
-          <el-table-column prop="domain" label="保存日期" align="center"></el-table-column>
+          <el-table-column prop="docName" label="记录文书" align="center"></el-table-column>
+          <el-table-column prop="createTime" label="保存日期" align="center"></el-table-column>
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
               <span v-if="scope.row.status=='完成'">
-                <el-button @click="editRecord(scope.row)" type="text">查看</el-button>
+                <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
                 <el-button type="text" @click="delModle(scope.row.id)">删除</el-button>
               </span>
               <span v-else>
@@ -30,17 +30,16 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="paginationBox">
+      <!-- <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
-import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
-  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi} from "@/api/Record";
+import { getDocListById } from "@/api/Record";
 import Vue from 'vue'
 export default {
 
@@ -88,14 +87,14 @@ export default {
       }, 100);
     },
     // 选择模板
-    writeRecord(item) {
+    editRecord(item) {
       // 写记录
-      // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      // this.$router.push({
-      //   name: 'inspection_writeRecordInfo',
-      //   // params: item
-      //   query: { id: item.id, addOrEiditFlag: 'add' }
-      // });
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: item.path,
+        // params: item
+        query: { id: item.id, addOrEiditFlag: 'add' }
+      });
 
 
       // 写记录
@@ -145,12 +144,8 @@ export default {
       this.$refs[formName].resetFields();
     },
     searchList() {
-      let data = {
-        organId: iLocalStroage.gets("userInfo").organId,
-        // templateUserId: this.currentUserLawId
-        templateUserId: iLocalStroage.gets("userInfo").id
-      }
-      findRecordModleByPersonApi(data).then(
+      let data = this.$route.query.id
+      getDocListById(data).then(
         res => {
           // debugger
           console.log(res)
@@ -240,7 +235,7 @@ export default {
   },
   mounted() {
     this.searchList();
-    this.searchSaveList();
+    // this.searchSaveList();
   }
 }
 </script>

@@ -8,7 +8,7 @@
           当事人（个人姓名或单位名称）
           <span class="width_file">
             <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-              <el-input :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" v-model="formData.party" v-bind:class="{ over_flow:formData.party.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+              <el-input :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" v-model="formData.party" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
             </el-form-item> ：
           </span>
         </p>
@@ -16,8 +16,8 @@
         <p>经调查，你（单位）存在下列违法事实：</p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input :disabled="fieldDisabled(propertyFeatures['caseName'])" class="overflow_lins_textarea" type="textarea" v-model="formData.caseName" rows="3" maxlength="75"></el-input>
+            <el-form-item prop="illegalFact" :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])">
+              <el-input :disabled="fieldDisabled(propertyFeatures['illegalFact'])" class="overflow_lins_textarea" type="textarea" v-model="formData.illegalFact" rows="3" maxlength="75"></el-input>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
@@ -28,7 +28,7 @@
           根据
           <span contenteditable="true">
             <el-form-item prop="punishLaw" style="width:300px" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
-              <el-input type="textarea" v-model="formData.punishLaw" v-bind:class="{ over_flow:formData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['punishLaw'])"></el-input>
+              <el-input type="textarea" v-model="formData.punishLaw" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['punishLaw'])"></el-input>
             </el-form-item>
           </span>的规定，现责令你（单位）
         </p>
@@ -101,6 +101,7 @@
   </div>
 </template>
 <script>
+import { saveOrUpdateDocument, getDocumentById, findMyRecordByIdApi } from "@/api/Record";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import xzjcDocFloatBtns from "../writeRecordCompoments/xzjcDocFloatBtns.vue";
@@ -114,8 +115,8 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   data() {
     var validateBycorrectWay = (rule, value, callback) => {
-      console.log('数值', this.formData.correctWay[0])
-      if (this.formData.correctWay[0] == '2' && !value) {
+      console.log('数值', this.formData.correctWay)
+      if (this.formData.correctWay == '2' && !value) {
         return callback(new Error("责令改正日期不能为空"));
       }
       callback();
@@ -124,23 +125,24 @@ export default {
       overFlowEditList: [{}],
       isOverflow: false,
       isOverLine: false,
+      docData: '',
       formData: {
         party: "",
-        partyIdNo: "",
-        partyAddress: "",
-        partyTel: "",
+        // partyIdNo: "",
+        // partyAddress: "",
+        // partyTel: "",
         partyName: "",
-        partyUnitAddress: "",
-        partyUnitTel: "",
-        partyManager: "",
+        // partyUnitAddress: "",
+        // partyUnitTel: "",
+        // partyManager: "",
         punishLaw: "",
         illegalLaw: "",
-        tempPunishAmount: "",
-        socialCreditCode: "",
-        illegalFactsEvidence: "",
-        reconsiderationOrgan: "",
-        test: "",
-        correctWay: [],
+        // tempPunishAmount: "",
+        // socialCreditCode: "",
+        // illegalFactsEvidence: "",
+        // reconsiderationOrgan: "",
+        // test: "",
+        correctWay: '',
         correctTime: "",
         // correctWay1:"",
         // correctWay2:"",
@@ -195,7 +197,7 @@ export default {
       huanjieAndDocId: this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, //责令改正违法行为通知书的文书id
       isParty: true, //当事人类型为个人
       propertyFeatures: '', //字段属性配置
-      isNeedDealSubmitData:false
+      isNeedDealSubmitData: false
     };
   },
   methods: {
@@ -204,19 +206,51 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
+      getDocumentById(this.$route.query.id).then(
+        res => {
+          if (res.code == 200) {
+            this.docData = res.data
+            this.formData=JSON.parse(this.docData.docContent)
+            this.formData.party=this.docData.party
+            console.log('this.formData', this.formData)
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
     },
     // 提交表单
     saveData(handleType) {
       //参数  提交类型 、
       // this.printContent();
-      console.log("日期", this.formData.correctWay)
-      this.com_submitCaseForm(handleType, "docForm", true);
+      this.formData.status = '未完成'
+      // this.formData.updateTime = this.formData.updateTime = new Date()
+      // this.docData.orderId = this.$route.query.id
+      // this.docData.templateId = this.$route.query.id
+      console.log(this.formData)
+      console.log(this.docData)
+      debugger
+      this.docData.docContent = JSON.stringify(this.formData)
+      console.log("参数", this.docData)
+      saveOrUpdateDocument(this.docData).then(
+        res => {
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
+            // this.$emit("getAddModle", 'sucess');
+            // this.resetForm('formData')
+            // this.newModleTable = false;
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
     },
     // 打印
     print() {
