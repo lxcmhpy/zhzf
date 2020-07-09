@@ -26,15 +26,15 @@
           </span> 至
           <span>
             <el-form-item prop="
-" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px" :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])">
+" class="pdf_datapick" style="width:220px" :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])">
 <!--              <el-date-picker v-model="formData.discussionEndTime" type="datetime"-->
 <!--                format="yyyy-MM-dd HH:mm"-->
 <!--                value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">-->
 <!--              </el-date-picker>-->
-              <el-time-picker placeholder="时 分" v-model="formData.discussionEndTime"
-                format="HH时mm分" value-format="HH:mm" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">
+              <el-time-picker placeholder="  时 分" v-model="formData.discussionEndTime"
+                format="HH:mm" value-format="HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">
               </el-time-picker>
-              <el-input class="replaceTime" placeholder=" 时 分" v-model="formData.discussionEndTime"></el-input>
+<!--              <el-input class="replaceTime" placeholder=" 时 分" v-model="formData.discussionEndTime"></el-input>-->
             </el-form-item>
           </span>
         </p>
