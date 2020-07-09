@@ -30,17 +30,14 @@
         <div>转立案</div>
       </el-button>
     </div>
-    <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核' || statusObj[$route.params.status] === '已审核'" style="right: 370px;">
-         {{statusObj[$route.params.status]}}
-    </span>
-    <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
-         {{statusObj[$route.params.status]}}
+    <span :class="$route.name" v-if="$route.params.status === '0' || $route.params.status === '2' || $route.params.status === '3'" style="right: 370px;">
+         {{this.obj.status}}
     </span>
     <span :class="$route.name" v-else-if="$route.name=='law_supervise_invalidCueDetail'" style="right: 370px;">
          无效
     </span>
     <span :class="$route.name" v-else>
-         {{statusObj[$route.params.status]}}
+         {{this.obj.status}}
     </span>
 
     <div>

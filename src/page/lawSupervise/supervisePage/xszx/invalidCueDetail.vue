@@ -258,8 +258,7 @@
 <script>
 import Vue from "vue";
 import iLocalStroage from '@/common/js/localStroage';
-import {getDetailById,getSiteById} from '@/api/lawSupervise.js';
-import {getFileByCaseId} from "@/api/upload.js";
+import {getDetailById,getSiteById,getFileByCaseId} from '@/api/lawSupervise.js';
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
 export default {
     data () {
