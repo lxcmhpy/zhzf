@@ -432,10 +432,10 @@ export default {
           { required: true, message: "保存时长不能为空", trigger: "blur" }
         ],
         startDate: [
-          { required: true, message: "开始日期不能为空", trigger: "blur" }
+          { required: true, message: "开始日期不能为空", trigger: "change" }
         ],
         endDate: [
-          { required: true, message: "结束日期不能为空", trigger: "blur" }
+          { required: true, message: "结束日期不能为空", trigger: "change" }
         ],
       },
       nameLength: 23,

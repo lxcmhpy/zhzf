@@ -269,7 +269,7 @@
                 <p>签名：{{docData.secondApprovePeo}}</p>
                 <p>
                   <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
-                  <span v-else>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;月&nbsp;日</span>
+                  <span v-else>年 月 日</span>
                 </p>
               </div>
             </td>

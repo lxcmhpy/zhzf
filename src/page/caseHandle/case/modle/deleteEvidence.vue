@@ -110,6 +110,7 @@ export default {
         partyManager: "",
         punishLaw: "",
         illegalLaw: "",
+        caseNumberCopy: "",
         tempPunishAmount: "",
         socialCreditCode: "",
         illegalFactsEvidence: "",
