@@ -239,7 +239,9 @@
   import checkDocFinish from "./PenaltyExecutionFormDocFinish";
   import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia';
   import resetDocDia from '@/page/caseHandle/components/resetDocDia';
-  import iLocalStroage from "@/common/js/localStroage"
+  import iLocalStroage from "@/common/js/localStroage"; 
+  import {queryFlowBycaseIdApi } from "@/api/caseHandle";
+
   export default {
     components: {
       checkDocFinish,
@@ -295,7 +297,7 @@
         caseLinkDataForm: {
           id: "", //修改的时候用
           caseBasicinfoId: "", //案件id
-          caseLinktypeId: this.BASIC_DATA_SYS.forceExecute_caseLinktypeId, //表单类型IDer
+          caseLinktypeId:'', //表单类型IDer
           //表单数据
           formData: "",
           status: ""
@@ -493,7 +495,7 @@
       //通过案件id和表单类型Id查询已绑定文书
       getDocListByCaseIdAndFormId() {
         let data = {
-          linkTypeId: this.BASIC_DATA_SYS.forceExecute_caseLinktypeId //环节ID
+          linkTypeId: this.caseLinkDataForm.caseLinktypeId //环节ID
         };
         this.com_getDocListByCaseIdAndFormId(data);
       },
@@ -578,6 +580,20 @@
         this.allDocCount = this.allAskDocList.length
         console.log('this.docTableDatas', this.docTableDatas)
         console.log('this.allAskDocList', this.allAskDocList)
+      },
+      async initData(){
+        //查询是哪个流程
+        let currentFlow = await queryFlowBycaseIdApi(this.caseId);
+        console.log('currentFlow',currentFlow);
+        if(currentFlow.data.flowName == '江西流程'){
+          this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId
+        }else{
+          this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_SYS.forceExecute_caseLinktypeId
+        }
+        //获取表单数据
+        this.setFormData();
+        //通过案件id和表单类型Id查询已绑定文书
+        this.getDocListByCaseIdAndFormId();
       }
     },
 
@@ -585,10 +601,7 @@
       // this.getCaseBasicInfo();
     },
     created() {
-      //获取表单数据
-      this.setFormData();
-      //通过案件id和表单类型Id查询已绑定文书
-      this.getDocListByCaseIdAndFormId();
+       this.initData();
     },
     watch:{
       //代缴金额为0时,执行情况为已完成

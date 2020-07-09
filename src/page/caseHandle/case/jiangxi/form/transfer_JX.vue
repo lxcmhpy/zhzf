@@ -3,7 +3,7 @@
     <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px">
       <div class="content_box">
         <div class="content">
-          <div class="content_title">调查类文书</div>
+          <div class="content_title">移交移送</div>
           <div class="border_blue"></div>
           <div class="content_form">
             <div class="row">
@@ -30,6 +30,26 @@
                     v-model="formData.caseCauseName"
                     size="small"
                     :disabled="fieldDisabled(propertyFeatures['caseCauseName'])"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <el-form-item label="被移送单位名称" prop="companyName" :rules="fieldRules('companyName',propertyFeatures['companyName'])">
+                  <el-input ref="companyName" :disabled="fieldDisabled(propertyFeatures['companyName'])" clearable class="w-120" v-model="formData.companyName" size="small" placeholder="请输入" ></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item label="联系电话" prop="companyTel" :rules="fieldRules('companyTel',propertyFeatures['companyTel'],validatePhone)">
+                  <el-input
+                    ref="companyTel"
+                    clearable
+                    class="w-120"
+                    v-model="formData.companyTel"
+                    size="small"
+                    placeholder="请输入"
+                    :disabled="fieldDisabled(propertyFeatures['companyTel'])"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -75,15 +95,9 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <!-- <el-form-item label="年龄" prop="partyAge">
-                  <el-input ref="partyAge" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入" :disabled="originalData.partyAge ? true : false"></el-input>
-                </el-form-item> -->
-                <el-form-item label="与案件关系" prop="relationWithCase" :rules="fieldRules('relationWithCase',propertyFeatures['relationWithCase'],'',isParty)">
-                <!-- <el-form-item label="与案件关系" prop="relationWithCase"> -->
-                    <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="!isParty || fieldDisabled(propertyFeatures['relationWithCase'])">
-                      <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
-                    </el-select>
-                 </el-form-item>
+                <el-form-item label="年龄" prop="partyAge" :rules="fieldRules('partyAge',propertyFeatures['partyAge'],'',isParty)">
+                  <el-input ref="partyAge" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAge'])" clearable class="w-120" type="number" v-model="formData.partyAge" size="small" placeholder="请输入"></el-input>
+                </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
@@ -101,13 +115,9 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <!-- <el-form-item label="所在单位">
-                  <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
-                </el-form-item> -->
-                <el-form-item label="单位及职务" prop="partyUnitPositionAndCom" :rules="fieldRules('partyUnitPositionAndCom',propertyFeatures['partyUnitPositionAndCom'],'',isParty)">
-                     <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入"
-                     :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitPositionAndCom'])"></el-input>
-                 </el-form-item>
+                <el-form-item label="所在单位" prop="partyUnitPosition" :rules="fieldRules('partyUnitPosition',propertyFeatures['partyUnitPosition'],'',isParty)">
+                  <el-input ref="partyUnitPosition" :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitPosition'])" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" ></el-input>
+                </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isParty">
@@ -124,11 +134,11 @@
                   ></el-input>
                 </el-form-item>
               </div>
-              <!-- <div class="col">
-                <el-form-item label="邮编" prop="partyZipCode">
-                  <el-input ref="partyZipCode" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入" :disabled="originalData.partyZipCode ? true : false"></el-input>
+              <div class="col">
+                <el-form-item label="邮编" prop="partyZipCode" :rules="fieldRules('partyZipCode',propertyFeatures['partyZipCode'],'',isParty)">
+                  <el-input ref="partyZipCode" :disabled="isParty || fieldDisabled(propertyFeatures['partyZipCode'])" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
-              </div> -->
+              </div>
             </div>
 
             <div class="row" v-if="!isParty">
@@ -202,73 +212,25 @@
                 </el-form-item>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item label="车牌号码" prop="vehicleShipId" :rules="fieldRules('vehicleShipId',propertyFeatures['vehicleShipId'])">
-                  <el-input
-                    ref="vehicleShipId"
-                    clearable
-                    class="w-120"
-                    v-model="formData.vehicleShipId"
-                    size="small"
-                    placeholder="请输入"
-                    :disabled="fieldDisabled(propertyFeatures['vehicleShipId'])"
-                  ></el-input>
-                </el-form-item>
-              </div>
-              <div class="col">
-                <el-form-item label="车辆类型" prop="vehicleShipType" :rules="fieldRules('vehicleShipType',propertyFeatures['vehicleShipType'])">
-                  <!-- <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input> -->
-                  <el-select v-model="formData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
-                    <el-option
-                      v-for="item in allVehicleShipType"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <div class="content_box">
         <div class="content">
+          <el-row :gutter="20">
+            <el-col :span="16">
+              <div class="second_title">
+                文书列表
+              </div>
+            </el-col>
+          </el-row>
           <div class="table_form">
             <el-table
               :data="docTableDatas"
               stripe
               border
               style="width: 100%"
-              :row-class-name="getRowClass"
             >
-              <el-table-column type="expand" expand-change>
-                <template>
-                  <ul class="moreDocList">
-                    <li v-for="(item,index) in allAskDocList" :key="index">
-                      <div>{{item.note}}</div>
-                      <div>
-                        <span v-if="item.status == '1' || item.status == '2'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>
-                      </div>
-                      <div>
-                        <span v-if="item.status == '1' || item.status == '2'" class="tableHandelcase">
-                          <!-- 已完成 -->
-                          <i class="iconfont law-eye" @click="viewDocPdf(item)"></i>
-                          <!-- <i class="iconfont law-print"></i> -->
-                        </span>
-                        <span v-if="item.status == '0'" class="tableHandelcase">
-                          <!-- 未完成 -->
-                          <i class="iconfont law-edit" @click="viewDoc(item)"></i>
-                          <i class="iconfont law-delete" @click="delDocDataByDocId(item)"></i>
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
-                </template>
-              </el-table-column>
-
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
@@ -277,22 +239,21 @@
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
-                <template slot-scope="scope" v-show="scope.row.name != '询问笔录'">
+                  <template slot-scope="scope">
                   <span v-if="scope.row.status == '1' || scope.row.status == '2'">
-                    <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
-                    <template v-else>已完成</template>
+                    完成
                   </span>
-                  <span v-if="scope.row.status == '0'">未完成</span>
-                  <span v-if="scope.row.status == ''">-</span>
+                  <span v-if="scope.row.status == '0'">
+                    暂存
+                  </span>
+                  <span v-if="scope.row.status != '1' && scope.row.status != '0'  && scope.row.status != '2'">
+                    -
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center" >
                 <template slot-scope="scope" class="docListHandleClass">
-                  <div v-if="scope.row.openRow">
-                    <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
-                  </div>
-                  <div v-if="!scope.row.openRow">
-                    
+                  <div>
                     <!-- 已完成 -->
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
@@ -343,7 +304,6 @@
       </div>
     </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
-    <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
@@ -352,11 +312,10 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
-import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia";
-import resetDocDia from '@/page/caseHandle/components/resetDocDia'
+import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import iLocalStroage from "@/common/js/localStroage";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
-
+import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
 import {
   validateIDNumber,
   validatePhone,
@@ -365,7 +324,6 @@ import {
 export default {
   components: {
     checkDocFinish,
-    chooseAskPeopleDia,
     resetDocDia,
     caseSlideMenu
   },
@@ -376,12 +334,14 @@ export default {
       formData: {
         caseNumber: "",
         caseCauseName: "",
+        companyName: "",
+        companyTel: "",
         party: "",
         partySex: "",
         partyIdNo: "",
         partyAge: "",
         partyTel: "",
-        partyUnitPositionAndCom: "",
+        partyUnitPosition:"",
         partyAddress: "",
         partyZipCode: "",
         partyName: "",
@@ -389,17 +349,13 @@ export default {
         partyManager: "",
         partyUnitTel: "",
         socialCreditCode: "",
-        vehicleShipId: "",
-        vehicleShipType: "",
-        relationWithCase:"",
       },
+      isSaveLink: '',
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        // caseLinktypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, //表单类型ID
-        caseLinktypeId:'', ////表单类型ID
-        //表单数据
-        formData: "",
+        caseLinktypeId: this.BASIC_DATA_JX.transfei_JX_caseLinktypeId, ////表单类型ID
+        formData: "", //表单数据
         status: ""
       },
       handleType: 0,
@@ -411,6 +367,13 @@ export default {
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" }
         ],
+        companyName: [
+          { required: true, message: "被移送单位名称不能为空", trigger: "change" }
+        ],
+        companyTel: [
+          { required: true, message: "移送单位联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ],
         party: [
           { required: true, message: "姓名不能为空", trigger: "blur" }
         ],
@@ -421,24 +384,12 @@ export default {
           { required: true, message: "身份证号不能为空", trigger: "blur" },
           { validator: validateIDNumber, trigger: "blur" }
         ],
-        relationWithCase: [
-          { required: true, message: "与案件关系不能为空", trigger: "change" }
-        ],
         partyTel: [
           { required: true, message: "联系电话不能为空", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
-        partyUnitPositionAndCom: [
-          { required: true, message: "单位及职务不能为空", trigger: "blur" }
-        ],
         partyAddress: [
           { required: true, message: "联系地址不能为空", trigger: "blur" }
-        ],
-        vehicleShipId: [
-          { required: true, message: "车牌号码不能为空", trigger: "blur" }
-        ],
-        vehicleShipType: [
-          { required: true, message: "车辆类型不能为空", trigger: "change" }
         ],
         partyName: [
           { required: true, message: "单位不能为空", trigger: "blur" }
@@ -460,31 +411,7 @@ export default {
       // nextBtnDisab: true
       isParty: true, //当事人类型为个人
       originalData: "",
-      allVehicleShipType: [
-        { value: "1", label: "中小客车" },
-        { value: "2", label: "大客车" },
-        { value: "3", label: "小型货车" },
-        { value: "4", label: "中型货车" },
-        { value: "5", label: "大型货车" },
-        { value: "6", label: "特大型货车" },
-        { value: "7", label: "集装箱车" },
-        { value: "8", label: "摩托车" },
-        { value: "9", label: "拖拉机" }
-      ],
-      allRelationWithCase: [
-        //与案件关系下拉框
-        { value: "0", label: "当事人" },
-        { value: "1", label: "驾驶人" },
-        { value: "2", label: "实际所有者" },
-        { value: "3", label: "证人" },
-        { value: "4", label: "承运人" },
-        { value: "5", label: "代理人" }
-      ],
-      docTableDatasCopy: [],
-      allAskDocList: [], //询问笔录
-      askDocListNum:0,  //询问笔录次数
-      askDocListFinishNum:0,//已完成询问笔录次数
-      needDealData:true,
+      needDealData:false,
       propertyFeatures:'', //字段属性配置
 
     };
@@ -498,15 +425,11 @@ export default {
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
+      this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      this.com_submitCaseForm(handleType, "caseDocForm", false);
+      this.com_submitCaseForm(handleType, 'caseDocForm', false);
     },
     //下一环节
     continueHandle() {
@@ -516,29 +439,34 @@ export default {
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
       };
       let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+      let approvalPass = true;  //文书审批都通过了
       for (let i = 0; i < this.docTableDatas.length; i++) {
         if (
           this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)
         ) {
           canGotoNext = false;
           break;
+        }else if(this.docTableDatas[i].docProcessStatus == '审批中'){
+            //有审批中的环节
+            approvalPass = false;
+            break;
         }
       }
-      if (canGotoNext) {
+      if (canGotoNext && approvalPass) {
         this.com_goToNextLinkTu(
           this.caseId,
           this.caseLinkDataForm.caseLinktypeId
         );
-      } else {
+      } else if(!canGotoNext){
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+      }else if(!approvalPass){
+        this.$message('有文书正在审批中！')
       }
-
-      // this.com_goToNextLinkTu(this.caseLinkDataForm.caseLinktypeId);
     },
     // 进入文书
     enterDoc(row) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      console.log("row", row);
+      this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      console.log('row', row)
       this.$router.push({
         name: row.path,
         params: {
@@ -546,34 +474,16 @@ export default {
           //案件ID
           caseBasicinfoId: this.caseBasicinfoId,
           docId: row.docId,
-          url: this.$route.name
+          url: this.$route.name,
         }
       });
     },
     //查看文书
     viewDoc(row) {
-      //为询问笔录时弹出选择框
-      // if (row.docId == "2c9029ca5b71686d015b71a86ead0032") {
-      //   this.$refs.chooseAskPeopleDiaRef.showModal(row, this.isSaveLink);
-      // } else {
-      //   this.com_viewDoc(row);
-      // }
-      console.log("查看");
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
-    },
-    addMoreDoc(row) {
-      console.log("添加",row);
-      iLocalStroage.removeItem("currentDocDataId");
-      this.$refs.chooseAskPeopleDiaRef.showModal(row,this.caseLinkDataForm.caseLinktypeId, this.isSaveLink);
-    },
-    //清空文书
-    delDocDataByDocId(data){
-      console.log("清空文书",data);
-      this.$refs.resetDocDiaRef.showModal(data);
     },
     //预览pdf
     viewDocPdf(row) {
-      console.log('row',row)
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -581,15 +491,18 @@ export default {
         hasBack: true,
         status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
         docDataId:row.docDataId
-      };
+      }
       this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      this.$router.push({ name: 'case_handle_myPDF', params: routerData })
+    },
+    //清空文书
+    delDocDataByDocId(data){
+      this.$refs.resetDocDiaRef.showModal(data);
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        // linkTypeId: this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
-        linkTypeId: this.caseLinkDataForm.caseLinktypeId
+        linkTypeId: this.caseLinkDataForm.caseLinktypeId    //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },
@@ -598,65 +511,10 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
     },
-    getRowClass: function(row, index) {
-      if (row.row.openRow) {
-        return "";
-      } else {
-        return "myhide-expand";
-      }
-    },
-    setMoreDocTableTitle() {
-      this.docTableDatas = [];
-      this.allAskDocList = [];
-      // askDocListNum:0,
-      // askDocListFinishNum:0,
-
-      this.docTableDatas.push({
-        name: "询问笔录",
-        status: "询问",
-        openRow: true,
-        // url: "case_handle_othermodle",
-        path: "case_handle_othermodle",
-        docId: "2c9029ca5b71686d015b71a86ead0032"
-      });
-      let askDocListFinishNum = 0;
-      this.docTableDatasCopy.forEach(item => {
-        if (item.name != "询问笔录") {
-          this.docTableDatas.push(item);
-        } else {
-          if(item.status === 0 || item.status === 1 || item.status === 2)
-          this.allAskDocList.push(item);
-
-          if(item.status === 1 || item.status === 2) askDocListFinishNum++
-        }
-      });
-      if(this.allAskDocList.length>0){
-        let askDocAllNumAndFinishTitle = '询问笔录'+'（'+ askDocListFinishNum +'/'+this.allAskDocList.length+')';
-        this.docTableDatas[0].name = askDocAllNumAndFinishTitle;
-      }
-
-
-      console.log("this.docTableDatas", this.docTableDatas);
-      console.log("this.allAskDocList", this.allAskDocList);
-    },
-    getDataAfter(){
-      if(`${this.formData.partyUnitPosition}`=='' &&`${this.formData.occupation}` ==''){
-          this.formData.partyUnitPositionAndCom = "无";
-      }else{
-          this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
-      }
-    },
-    async initData(){
-      await this.queryFlowBycaseId();
-      //动态环节id
-      this.caseLinkDataForm.caseLinktypeId = this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
-      this.setFormData();
-      //通过案件id和表单类型Id查询已绑定文书
-      this.getDocListByCaseIdAndFormId();
-    }
   },
   created() {
-    this.initData() 
+    this.setFormData();
+    this.getDocListByCaseIdAndFormId();
   }
 };
 </script>

@@ -1402,11 +1402,11 @@
               this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
               this.openTab[replaceIndex].route = '/establish';
             }
-
+            
+            //跳转立案登记
               _this.$router.push({
-                name: "case_handle_establish"
-              });
-              
+                name: this.getCaseNextRoute('立案登记')
+              }); 
             },
             err => {
 

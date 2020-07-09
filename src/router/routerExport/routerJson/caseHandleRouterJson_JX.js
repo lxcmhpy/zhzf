@@ -18,7 +18,7 @@ export default [
   },
   {
     path: "/establish_JX",
-    name: "case_handle_establish_JX",
+    name: "case_handle_establish_JX", 
     meta: {
       title: "立案登记表——江西"
     },
@@ -76,7 +76,7 @@ export default [
     path: "/sceneNotesDoc_JX",
     name: "case_handle_sceneNotesDoc_JX",
     meta: {
-      title: "立案登记表——江西"
+      title: "现场笔录——江西"
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/sceneNotesDoc_JX.vue")
   },
@@ -134,7 +134,7 @@ export default [
     meta: {
       title: "重大案件集体讨论记录——江西"
     },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/importantCaseTeamDissDoc_JX.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/form/importantCaseTeamDissDoc_JX.vue")
   },
   {
     path: "/illegalActionForm_JX",
@@ -196,7 +196,7 @@ export default [
     path: "/majorAdminLawEnforceAudit",
     name: "case_handle_majorAdminLawEnforceAudit",
     meta: {
-      title: "中止（终结、恢复）行政强制执行审批表"
+      title: "重大行政执法决定法制审核表"
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/majorAdminLawEnforceAudit.vue")
   },
@@ -263,6 +263,75 @@ export default [
       title: "案件调查报告-江西"
     },
     component: () => import("@/page/caseHandle/case/jiangxi/form/caseInvestigReport_JX.vue")
+  },
+  {
+    path: "/payStageDoc_JX",
+    name: "case_handle_payStageDoc_JX",
+    meta: {
+      title: "分期（延期）缴纳罚款通知书-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/payStageDoc_JX.vue")
+  },
+  {
+    path: "/caseDoc_JX",
+    name: "case_handle_caseDoc_JX",
+    meta: {
+      title: "案件调查-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/caseDoc_JX")
+  },
+  {
+    path: "/punishDecisionForm_JX",
+    name: "case_handle_punishDecisionForm_JX",
+    meta: {
+      title: "处罚决定-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/punishDecisionForm_JX")
+  },
+  {
+    path: "/partyRightsForm_JX",
+    name: "case_handle_partyRightsForm_JX",
+    meta: {
+      title: "当事人权利-江西"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/partyRightsForm_JX")
+  },
+  {
+    path: "/adminCoerciveMeasure_JX",
+    name: "case_handle_adminCoerciveMeasure_JX",
+    meta: {
+      title: "行政强制措施",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/adminCoerciveMeasure_JX.vue")
+  },
+  {
+    path: "/coerciveMeasureDoc_JX",
+    name: "case_handle_coerciveMeasureDoc_JX",
+    meta: {
+      title: "解除（延长）行政强制措施",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/coerciveMeasureDoc_JX.vue")
+  },
+  {
+    path: "/transfer_JX",
+    name: "case_handle_transfer_JX",
+    meta: {
+      title: "移交移送",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/transfer_JX.vue")
+  },
+  //行政强制措施决定书
+  {
+    path: "/adminCoerciveMeasureDoc",
+    name: "case_handle_adminCoerciveMeasureDoc_JX",
+    meta: {
+      title: "行政强制措施决定书",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureDoc_JX.vue")
   },
 ]
 

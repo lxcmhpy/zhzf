@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="print_box">
+    <div class="print_box" id="adminCoerciveMeasureNoteBox">
       <div id="subOutputRank-print" class="print_info">
         <el-form
           :rules="rules"
@@ -10,7 +10,8 @@
           :model="docData"
         >
           <div class="doc_topic height76">行政强制措施现场笔录</div>
-          <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交强现录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
+          <!-- <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交强现录〔{{docData.caseNumber.substring(8,13)}}〕号</div> -->
+          <div class="doc_number">案号：{{docData.caseNumber}}</div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
@@ -205,7 +206,7 @@
             </tr>
             <tr>
               <td rowspan="11">主要内容</td>
-              <td colspan="7" class="illegalFactsTip">
+              <td colspan="7" class="hasRequireRedBg">
                <div class="overflow_lins_style" id="noteDesCon">
                   <div class="overflow_lins">
                     <el-form-item prop="illegalFacts" :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])">
@@ -255,7 +256,7 @@
                 <br>的强制措施，期限为
                  <span>
                   <el-form-item prop="measureStartDate" :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])" style="width: 150px" class="pdf_datapick">
-                    <el-date-picker v-model="docData.measureStartDate" style="width: 220px" @change="startTime"
+                    <el-date-picker v-model="docData.measureStartDate" @change="startTime" style="width: 150px"
                                     type="date" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" placeholder="  年  月  日" :disabled="fieldDisabled(propertyFeatures['measureStartDate'])">
                     </el-date-picker>
                   </el-form-item>
@@ -271,9 +272,7 @@
                 <span>
                   <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])" style="width: 230px">
                     <el-select v-model="docData.reconsiderationOrgan" style="width: 230px" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
-                      <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label"
-                                 :value="item.label">
-                      </el-option>
+                      <el-option v-for="(item,index) in reconsiderationOrganList" :key="index" :value="item" :label="item"></el-option> 
                     </el-select>
                   </el-form-item>
                 </span>申请
@@ -281,9 +280,7 @@
                 <span>
                   <el-form-item prop="lawsuitOrgan" :rules="fieldRules('lawsuitOrgan',propertyFeatures['lawsuitOrgan'])" style="width: 230px">
                     <el-select v-model="docData.lawsuitOrgan" style="width: 230px" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['lawsuitOrgan'])">
-                      <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label"
-                                 :value="item.label">
-                      </el-option>
+                      <el-option v-for="(item,index) in enforcementOrganList" :key="index" :value="item" :label="item"></el-option>   
                     </el-select>
                   </el-form-item>
                 </span>人民法<br>院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。
@@ -297,7 +294,7 @@
                     <el-checkbox-group v-model="docData.defendState" :max="1" :disabled="fieldDisabled(propertyFeatures['defendState'])">
                         <el-checkbox label="0">不需要</el-checkbox>
                         <el-checkbox label="1">需要
-                            <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])">
+                            <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])" id="defendReasonItem" style="line-height:17px">
                                 <el-input type='textarea' v-model="docData.defendReason"
                                         :autosize="{ minRows: 1, maxRows: 3}" :maxLength='50'
                                         :disabled="fieldDisabled(propertyFeatures['defendReason'])"></el-input>
@@ -371,7 +368,7 @@
     findCaseAllBindPropertyApi,
   } from "@/api/caseHandle";
 
-
+import iLocalStroage from "@/common/js/localStroage";
   // 验证规则
   import {validatePhone, validateIDNumber} from "@/common/js/validator";
 
@@ -524,6 +521,9 @@ export default {
         ],
         readState: [
           { required: true, message: "请选择是否看过上述笔录", trigger: "change" }
+        ],
+        detainGoods: [
+          { required: true, message: "请填写财务", trigger: "change" }
         ]
 
       },
@@ -601,8 +601,8 @@ export default {
         label: '扣押'
         }
       ],
-      reconsiderationOptions: [],
-      enforcementOptions: [],
+      reconsiderationOrganList:[], //复议机构列表
+      enforcementOrganList:[], //诉讼机构列表
       needDealData: true,
       propertyFeatures: '', //字段属性配置
       laWOptions: [
@@ -720,6 +720,15 @@ export default {
         this.daiRuscenePeopeTel = dailiData.tel ? true : false;
         this.daiRuscenePeopeAddress = dailiData.adress ? true : false;
         this.setDataForScenePelple(true, dailiData);
+
+        //带入财务信息
+        let detainGoods = [];
+      
+        let detainGoodsArr = JSON.parse(this.docData.detainGoods)
+        for(let item of detainGoodsArr){
+          detainGoods.push(item.resName+''+item.amount);
+        }
+        this.docData.detainGoods = detainGoods.join(',');
       },
       //修改人员
       changeStaff1(val) {
@@ -800,47 +809,34 @@ export default {
       },
       //根据用户的组织机构ID获取复议机构和诉讼机构
       getOrganDetailOptions() {
-        let orgId = JSON.parse(window.localStorage.userInfo).id;
-        console.log('orgId=' + orgId);
-        let data = {
-          id: orgId
-        };
-        let _this = this
-        getOrganIdApi(data).then(
-          res => {
-            let orgData = {
-              id: res.data.organId
-            };
-
-            getOrganDetailApi(orgData).then(
-              orgRes => {
-                _this.reconsiderationOptions = [
-                  {
-                    value: 'reconsiderationOrgan1',
-                    label: orgRes.data.reconsiderationOrgan1
-                  },
-                  {
-                    value: 'reconsiderationOrgan2',
-                    label: orgRes.data.reconsiderationOrgan2
-                  }
-                ]
-                select : 'reconsiderationOrgan1';
-                _this.enforcementOptions = [
-                  {
-                    value: 'enforcementOrgan1',
-                    label: orgRes.data.enforcementOrgan1
-                  },
-                  {
-                    value: 'enforcementOrgan2',
-                    label: orgRes.data.enforcementOrgan2
-                  }
-                ];
-                // _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
-                // _this.formData.lawsuitOrgan = 'enforcementOrgan1';
-                _this.docData.reconsiderationOrgan = '复议机构1';
-                _this.docData.lawsuitOrgan = '诉讼机构1';
-              });
-          });
+        //获取机构详情
+      let params = { id: iLocalStroage.gets("userInfo").organId };
+       let _this = this
+      this.$store.dispatch("getOrganDetail", params).then(
+        res => {
+          console.log("机构", res);
+          let organData = res.data;
+          // _this.formData.bank = organData.bank||'';
+          // _this.formData.account = organData.account||'';
+          //复议机构
+          if(organData.reconsiderationOrgan1){
+             _this.reconsiderationOrganList.push(organData.reconsiderationOrgan1)
+          }
+          if(organData.reconsiderationOrgan2){
+             _this.reconsiderationOrganList.push(organData.reconsiderationOrgan2)
+          }
+          //诉说机构
+          if(organData.enforcementOrgan1){
+             _this.enforcementOrganList.push(organData.enforcementOrgan1)
+          }
+          if(organData.enforcementOrgan2){
+             _this.enforcementOrganList.push(organData.enforcementOrgan2)
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
 
       },
       startTime() {
@@ -869,7 +865,7 @@ export default {
       text-indent: 0px !important;
     }
   }
-  #subOutputRank-print {
+  #adminCoerciveMeasureNoteBox{
     .overflow_lins_style .span_bg {
       display: block;
     }
@@ -919,6 +915,12 @@ export default {
       }
       .height76{
         height:76px;
+      }
+    }
+    #defendReasonItem{
+      line-height: 17px;height:17px;
+      .el-form-item__content{
+        height: 100%;
       }
     }
     

@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" id="evidencePastePageBox">
+  <div class="print_box" id="audioEvidenceRecordBox">
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
       <div style="position:relation" v-for="(item,index) in docData.evidenceData" :key="index">
         <div class="print_info">
@@ -13,12 +13,7 @@
           <div class="doc_number"></div>
           <el-row :gutter="19" class="nianBox" width="90%">
             <div class="imgBox" ref="imgBoxRef2">
-              <img
-                :src="item.pic1"
-                alt
-                width="90%"
-                :height="imgHeightArr[index][0]"
-              />
+              <img :src="item.pic1" alt width="90%" :height="imgHeightArr[index][0]" />
               <div class="imgBoxBtn">
                 <el-button size="mini" @click="chooseImg(index,1,item.picSrc1)">选择照片</el-button>
                 <el-button size="mini" @click="deleteImg(index,1)">删除</el-button>
@@ -28,26 +23,78 @@
           <table class="print_table" border="1" bordercolor="black" width="100%">
             <tr>
               <td rowspan="2" colspan="2">
-                <span style="float:left;">证明事项：</span>
+                <p class="p_begin">
+                  证明事项：
+                  <span>
+                    <el-form-item :prop="'evidenceData.' + index + '.pOpinion'" style="width:75%">
+                      <el-input
+                        type="textarea"
+                        v-model="item.pOpinion"
+                        :autosize="{ minRows: 1, maxRows: 3}"
+                        maxlength="50"
+                      ></el-input>
+                    </el-form-item>
+                  </span>
+                </p>
               </td>
             </tr>
             <tr></tr>
             <tr>
-              <td align="left" width = "60%">
-                <span style="float:left;">采集时间：&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;月&nbsp;&nbsp;日&nbsp;&nbsp;时&nbsp;&nbsp;分</span>
+              <td align="left" width="60%">
+                <p class="p_begin">
+                  采集时间：
+                  <span>
+                    <el-form-item>
+                      <el-date-picker
+                        v-model="item.pTime"
+                        style="width:240px"
+                        type="datetime"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        placeholder="   年  月  日  时 分 秒"
+                      ></el-date-picker>
+                    </el-form-item>
+                  </span>
+                </p>
               </td>
               <td align="left">
-                <span style="float:left;">采集人：</span>
+                <p class="p_begin">
+                  采集人：
+                  <span>
+                    <el-form-item style="width:180px">
+                      <el-select v-model="item.pPeo">
+                        <el-option
+                          v-for="(item,index) in staffList"
+                          :key="index"
+                          :value="item"
+                          :label="item"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </span>
+                </p>
               </td>
             </tr>
             <tr>
               <td align="left" colspan="2">
-               <span style="float:left;"> 采集地点：</span>
+                <p class="p_begin">
+                  采集地点：
+                  <span>
+                    <el-form-item :prop="'evidenceData.' + index + '.pPla'" style="width:75%">
+                      <el-input
+                        type="textarea"
+                        v-model="item.pPla"
+                        :autosize="{ minRows: 1, maxRows: 3}"
+                        maxlength="50"
+                      ></el-input>
+                    </el-form-item>
+                  </span>
+                </p>
               </td>
             </tr>
             <tr>
               <td align="left" colspan="2">
-                <span style="float:left;">证据类型：
+                <span>
+                  证据类型：
                   <el-checkbox>原物</el-checkbox>
                   <el-checkbox>复制件</el-checkbox>
                   <el-checkbox>其他</el-checkbox>
@@ -56,9 +103,10 @@
             </tr>
             <tr>
               <td align="left" colspan="2">
-                <span style="float:left;">证据存储介质：
+                <span>
+                  证据存储介质：
                   <el-checkbox>U盘</el-checkbox>
-                  <el-checkbox>关盘</el-checkbox>
+                  <el-checkbox>光盘</el-checkbox>
                   <el-checkbox>移动硬盘</el-checkbox>
                   <el-checkbox>其他</el-checkbox>
                 </span>
@@ -66,20 +114,37 @@
             </tr>
             <tr>
               <td align="left" colspan="2">
-                <span style="float:left;"> 
-                  执法人员：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  执法证号：&nbsp;&nbsp;&nbsp;&nbsp; ；
-                  执法证号：&nbsp;&nbsp;&nbsp;&nbsp; ；
-                </span>
+                <p class="p_begin">
+                  <span>
+                    执法人员：{{docData.staff}}
+                    &nbsp;&nbsp;
+                    执法证号：{{docData.certificateId}}；
+                  </span>
+                </p>
               </td>
             </tr>
             <tr>
               <td align="left" rowspan="2" colspan="2">
-                <span style="float:left;">现场人员意见：</span>
-                <br/>
-                <span style="float:right;">签名：&nbsp;&nbsp;&nbsp;</span>
-                <br/>
-                <span style="float:right;">日期：&nbsp;&nbsp;&nbsp;</span>
+                <p class="p_begin">
+                  现场人员意见：
+                  <span>
+                    <el-form-item :prop="'evidenceData.' + index + '.pOpinion'" style="width:75%">
+                      <el-input
+                        type="textarea"
+                        v-model="item.pOpinion"
+                        :autosize="{ minRows: 1, maxRows: 3}"
+                        maxlength="50"
+                      ></el-input>
+                    </el-form-item>
+                  </span>
+                </p>
+                <div class="pdf_seal">
+                  <p>签名：{{docData.approvePeo}}</p>
+                  <p>
+                    <span v-if="docData.approveTime">{{docData.approveTime}}</span>
+                    <span v-else>年 月 日</span>
+                  </p>
+                </div>
               </td>
             </tr>
             <tr></tr>
@@ -124,6 +189,8 @@ export default {
   data() {
     return {
       docData: {
+        staff: "",
+        certificateId: "",
         pPla: "",
         evidenceData: [
           {
@@ -331,7 +398,7 @@ export default {
           this.staffList = data2.staff.split(",");
         },
         err => {
-          console.length(err);
+          console.log(err);
         }
       );
     },
@@ -402,7 +469,7 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-#evidencePastePageBox {
+#audioEvidenceRecordBox {
   .print_info {
     position: relative;
     margin-bottom: 20px;
@@ -410,6 +477,11 @@ export default {
       position: absolute;
       right: 10px;
       top: 10px;
+    }
+    & tr {
+      & td {
+        text-align-last: left;
+      }
     }
   }
   .nianBox {
@@ -427,10 +499,6 @@ export default {
       right: 10px;
       bottom: 10px;
     }
-  }
-  .noteBox {
-    height: 350px;
-    border: 1px solid #cccccc;
   }
 }
 </style>

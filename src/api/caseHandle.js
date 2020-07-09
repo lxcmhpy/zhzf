@@ -299,10 +299,10 @@ export function delLinkDocByIdApi(id) {
   });
 }
 
-//pdf页的提交
+//pdf页点击提交或点击下一环节 
 export function submitPdfApi(data) {
   return request({
-    url: "/case/doc/linkData/jumpNextLink",
+    url: "/case/doc/linkData/jumpNextLink2",
     method: "post",
     data: vm.$qs.stringify(data),
     showloading: true,
@@ -311,6 +311,18 @@ export function submitPdfApi(data) {
   });
 }
 
+
+//pdf页的提交
+export function handleTJApproveDocApi(data) {
+  return request({
+    url: "/case/doc/data/handleTJApproveDoc",
+    method: "post",
+    data: vm.$qs.stringify(data),
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
 //修改文书状态
 export function saveOrUpdateLinkApi(data) {
   return request({
@@ -328,7 +340,7 @@ export function saveOrUpdateLinkApi(data) {
 export function approvalPdfApi(data) {
   console.log(data);
   return request({
-    url: "/case/doc/linkData/handleApprove",
+    url: "/case/doc/data/handleApproveDoc",
     method: "post",
     data: vm.$qs.stringify(data),
     showloading: true,
@@ -373,9 +385,9 @@ export function setFlowStatusAPi(data) {
 }
 
 //查询审批角色列表
-export function getApprovePeopleApi(caseBasicInfoId) {
+export function getApprovePeopleApi(data) {
   return request({
-    url: "/case/doc/linkData/findApproveRole/" + caseBasicInfoId,
+    url: "/case/doc/linkData/findApproveRole2/" + data.caseBasicInfoId +'/'+data.docTypeId,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
@@ -1124,7 +1136,7 @@ export function updateDocStatusApi(id) {
 //获取当前环节是几级审批
 export function getCurrentApproveApi(id) {
   return request({
-    url: "/case/doc/caseBasicInfo/getCurrentApproveAndApproveAmount/" + id,
+    url: "/case/doc/data/getCurrentApproveAndApproveAmount/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
@@ -1323,3 +1335,59 @@ export function queryResizeImageApi(storageId) {
     cancelToken: setCancelSource()
   });
 }
+
+//查询该文书是否需要审批
+export function findDocDataByIdApi(id) {
+  return request({
+    url: "/case/doc/type/findById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//获取文件流
+export function getFileStreamByStorageIdApi(storageId) {
+  return request({
+    url: "/case/sys/file/getFileStreamByStorageId/"+storageId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    responseType:'blob',
+    cancelToken: setCancelSource()
+  });
+}
+
+//点击流程图(已解锁状态的)时 更改流程图各环节状态
+export function updateLinkInfoByCaseIdAndLinkTypeIdApi(data) {
+  return request({
+    url: "/case/doc/caseBasicInfo/updateLinkInfoByCaseIdAndLinkTypeId/"+data.caseId+'/'+data.linkTypeId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据案件id和环节id判断环节下是否有审批中的文书 
+export function findApprovingDocApi(data) {
+  return request({
+    url: "/case/doc/linkData/findApprovingDoc/"+data.caseBasicInfoId+'/'+data.caseLinktypeId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据id查询环节信息 
+export function getLinkTypeInfoByIdApi(id) {
+  return request({
+    url: "/case/caseTemplate/linkType/findById/"+id,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+

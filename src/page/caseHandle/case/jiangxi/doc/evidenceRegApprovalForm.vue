@@ -1,10 +1,9 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="evidenceRegApprovalForm_print">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">证据登记保存审批表</div>
-        <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <!-- <div class="doc_cause">案由：{{formData.caseName}}</div> -->
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table class="print_table prolong_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td rowspan="6">
@@ -21,14 +20,14 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.party"
-                  v-bind:class="{ over_flow:formData.party.length>14?true:false }"
+                  v-model="docData.party"
+                  v-bind:class="{ over_flow:docData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                   placeholder="\"
                 ></el-input>
-                <!-- <el-input v-model="formData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
               </el-form-item>
             </td>
             <td colspan="2">身份证件号</td>
@@ -39,7 +38,7 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.partyIdNo"
+                  v-model="docData.partyIdNo"
                   :maxLength="18"
                   placeholder="\"
                   :autosize="{ minRows: 1, maxRows: 3}"
@@ -57,8 +56,8 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.partyAddress"
-                  v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
+                  v-model="docData.partyAddress"
+                  v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   maxlength="30"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
@@ -73,7 +72,7 @@
                 :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)"
               >
                 <el-input
-                  v-model="formData.partyTel"
+                  v-model="docData.partyTel"
                   maxlength="11"
                   placeholder="\"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
@@ -90,7 +89,7 @@
                 :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)"
               >
                 <el-input
-                  v-model="formData.partyName"
+                  v-model="docData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
                   placeholder="\"
@@ -106,7 +105,7 @@
                 :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)"
               >
                 <el-input
-                  v-model="formData.partyUnitAddress"
+                  v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
                   placeholder="\"
@@ -122,7 +121,7 @@
                 :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)"
               >
                 <el-input
-                  v-model="formData.partyUnitTel"
+                  v-model="docData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
@@ -137,7 +136,7 @@
                 :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
               >
                 <el-input
-                  v-model="formData.partyManager"
+                  v-model="docData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
                   placeholder="\"
@@ -153,7 +152,7 @@
                 :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
               >
                 <el-input
-                  v-model="formData.socialCreditCode"
+                  v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
                   placeholder="\"
@@ -174,8 +173,8 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.basicSituation"
-                  v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
+                  v-model="docData.basicSituation"
+                  v-bind:class="{ over_flow:docData.basicSituation && docData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
@@ -196,8 +195,8 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.reason"
-                  v-bind:class="{ over_flow:formData.reason && formData.reason.length>14?true:false }"
+                  v-model="docData.reason"
+                  v-bind:class="{ over_flow:docData.reason && docData.reason.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
@@ -219,8 +218,8 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.detainGoods"
-                  v-bind:class="{ over_flow:formData.detainGoods && formData.detainGoods.length>14?true:false }"
+                  v-model="docData.detainGoods"
+                  v-bind:class="{ over_flow:docData.detainGoods && docData.detainGoods.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
@@ -234,10 +233,9 @@
                 :rules="fieldRules('days',propertyFeatures['days'])"
               >
                 <el-input
-                  type="number"
-                  v-model="formData.days"
+                  v-model="docData.days"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['days'])"
+                  disabled
                 ></el-input>
               </el-form-item>
                 日（自
@@ -249,8 +247,8 @@
                     class="pdf_datapick"
                   >
                     <el-date-picker
-                      v-model="formData.startDate"
-                      @change="startTime"
+                      v-model="docData.startDate"
+                      @change="starttime"
                       type="date"
                       format="yyyy年MM月dd日"
                       value-format="yyyy-MM-dd"
@@ -268,7 +266,8 @@
                     class="pdf_datapick"
                   >
                     <el-date-picker
-                      v-model="formData.endDate"
+                      v-model="docData.endDate"
+                      @change="endtime"
                       type="date"
                       format="yyyy年MM月dd日"
                       value-format="yyyy-MM-dd"
@@ -280,9 +279,9 @@
                 ）。
               </p> 
               <div class="pdf_seal">
-                <p>签名：{{formData.approvePeo}}</p>
+                <p>签名：{{docData.approvePeo}}</p>
                 <p>
-                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
+                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -294,11 +293,11 @@
               <p>承办机构意见</p>
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
-              {{formData.secondApproveOpinions}}
+              {{docData.secondApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{formData.secondApprovePeo}}</p>
+                <p>签名：{{docData.secondApprovePeo}}</p>
                 <p>
-                  <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
+                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -310,11 +309,11 @@
               <p>行政机关负责人意见</p>
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
-              {{formData.threeApproveOpinions}}
+              {{docData.threeApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{formData.threeApprovePeo}}</p>
+                <p>签名：{{docData.threeApprovePeo}}</p>
                 <p>
-                  <span v-if="formData.threeApproveTime">{{formData.threeApproveTime}}</span>
+                  <span v-if="docData.threeApproveTime">{{docData.threeApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -347,7 +346,7 @@ export default {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
       isOverflow: false,
-      formData: {
+      docData: {
         caseNumber: "",
         caseName: "",
         party: "",
@@ -378,17 +377,14 @@ export default {
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: {
+      caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, //表单类型IDer
-        //表单数据
-        formData: "",
-        status: ""
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        docData: "",
+        status: "", //提交状态
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
-      name: "",
-      illegalFactsEvidence: "",
-      value1: "",
       rules: {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
@@ -436,10 +432,10 @@ export default {
           { required: true, message: "保存时长不能为空", trigger: "blur" }
         ],
         startDate: [
-          { required: true, message: "开始日期不能为空", trigger: "blur" }
+          { required: true, message: "开始日期不能为空", trigger: "change" }
         ],
         endDate: [
-          { required: true, message: "结束日期不能为空", trigger: "blur" }
+          { required: true, message: "结束日期不能为空", trigger: "change" }
         ],
       },
       nameLength: 23,
@@ -467,53 +463,61 @@ export default {
     };
   },
   methods: {
-    //加载表单信息
-    setFormData() {
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId("","",
-        //this.caseLinkDataForm.caseBasicinfoId,
-        //this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
+    starttime(){
+      if (this.docData.endDate){
+        if(this.docData.startDate > this.docData.endDate){
+          this.$message({
+            message: '开始时间不能大于结束时间',
+            type: 'warning'
+          });
+          this.docData.startDate = '';
+          this.docData.days = '';
+        }else{
+          this.docData.days = new Date(this.docData.endDate) - new Date(this.docData.startDate);
+          this.docData.days = Math.abs(this.docData.days)
+          this.docData.days = this.docData.days / (24 * 3600 * 1000);
+          this.docData.days = Math.floor(this.docData.days) ;
+          this.$set(this.docData, 'days',  this.docData.days);
+        }
+      }
     },
-    saveData(handleType) {
-      //参数  提交类型 、formRef
-      this.com_submitCaseForm(handleType, "docForm", true);
+    endtime(){
+      if (this.docData.startDate){
+        if(this.docData.startDate > this.docData.endDate){
+          this.$message({
+            message: '结束时间不能小于开始时间',
+            type: 'warning'
+          });
+          this.docData.endDate = '';
+          this.docData.days = '';
+        }else{
+          this.docData.days = new Date(this.docData.endDate) - new Date(this.docData.startDate);
+          this.docData.days = Math.abs(this.docData.days)
+          this.docData.days = this.docData.days / (24 * 3600 * 1000);
+          this.docData.days = Math.floor(this.docData.days) ;
+          this.$set(this.docData, 'days',  this.docData.days);
+
+        }
+      }
     },
-    //根据案件ID和文书Id获取数据
+  //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        //caseId: this.caseId, //流程里的案件id
-        caseId: "297708bcd8e80872febb61577329194f", //先写死
-        docId: "5cad5b54eb97a15250672a4c397cee56"
+        caseId: this.caseId,
+        docId: this.$route.params.docId
       };
+      console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
     },
-    // 盖章
-    makeSeal() {
-      console.log("盖章!");
+    //保存文书信息
+    saveData(handleType) {
+      // this.printContent()
+      this.com_addDocData(handleType, "docForm");
     },
-    // 打印
-    print() {
-      console.log("打印!");
-    },
-    // 下划线版本
-    changeLineStyle() {
-      this.lineStyleFlag = true;
-    },
-    goToPfd() {
-      //提交pdf 显示pdf页
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.approvalOver = true;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        true
-      );
-    },
-    isApproval() {
-      //只有审核按钮
-      if (this.$route.params.isApproval) {
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == "1") {
         this.formOrDocData.showBtn = [
           false,
           false,
@@ -522,16 +526,16 @@ export default {
           false,
           false,
           false,
-          true,
           false,
-          false
+          false,
+          true
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     }
   },
-  created() {
-    this.setFormData();
-    this.isApproval();
+  mounted() {
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
   }
 };
 </script>

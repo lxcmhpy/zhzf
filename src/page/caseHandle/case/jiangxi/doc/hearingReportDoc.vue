@@ -29,7 +29,6 @@
                     placeholder="\"
                     :disabled="fieldDisabled(propertyFeatures['caseName'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                 </el-form-item>
               </td>
             </tr>
@@ -41,11 +40,10 @@
                   :rules="fieldRules(' president',propertyFeatures['president'])"
                 >
                   <el-input
-                    type="textarea"
-                    clearable
-                    class="w-120"
+                    v-bind:class="{ over_flow:docData.president.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="adressLength"
                     v-model="docData.president"
-                    size="small"
                     placeholder="请输入"
                     :disabled="fieldDisabled(propertyFeatures['president'])"
                   ></el-input>
@@ -58,11 +56,10 @@
                   :rules="fieldRules('hearOfficer',propertyFeatures['hearOfficer'])"
                 >
                   <el-input
-                    type="textarea"
-                    clearable
-                    class="w-120"
                     v-model="docData.hearOfficer"
-                    size="small"
+                    v-bind:class="{ over_flow:docData.hearOfficer.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="adressLength"
                     placeholder="请输入"
                     :disabled="fieldDisabled(propertyFeatures['hearOfficer'])"
                   ></el-input>
@@ -75,12 +72,11 @@
                   :rules="fieldRules('clerk',propertyFeatures['clerk'])"
                 >
                   <el-input
-                    type="textarea"
                     v-model="docData.clerk"
                     v-bind:class="{ over_flow:docData.clerk.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
-                    placeholder="\"
+                    placeholder="请输入"
                     :disabled="fieldDisabled(propertyFeatures['clerk'])"
                   ></el-input>
                 </el-form-item>
@@ -91,7 +87,6 @@
               <td colspan="7" class="color_DBE4EF">
                 <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
                   <el-input
-                    type="textarea"
                     v-model="docData.party"
                     v-bind:class="{ over_flow:docData.party.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"

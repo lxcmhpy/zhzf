@@ -85,13 +85,8 @@
               @change="changeStaff1"
               :disabled="fieldDisabled(propertyFeatures['staff1'])"
             >
-              <el-option
-                v-for="(item,index) in staffList"
-                :key="index"
-                :value="item"
-                :label="item"
-                :disabled="docData.staff2==item"
-              ></el-option>
+              <el-option v-for="item in staffList" :key="item.id" :label="item.name" :value="item">
+                </el-option>
             </el-select>
           </el-form-item>单位及职务：
           <el-form-item
@@ -132,16 +127,12 @@
             <el-select
               v-model="docData.staff2"
               :maxLength="maxLength"
-              @change="changeStaff1"
+              @change="changeStaff2"
               :disabled="fieldDisabled(propertyFeatures['staff2'])"
             >
-              <el-option
-                v-for="(item,index) in staffList"
-                :key="index"
-                :value="item"
-                :label="item"
-                :disabled="docData.staff2==item"
-              ></el-option>
+              
+              <el-option v-for="item in staffList_" :key="item.id" :label="item.name" :value="item">
+                </el-option>
             </el-select>
           </el-form-item>单位及职务：
           <el-form-item
@@ -176,29 +167,29 @@
           被检查单位负责人姓名：
           <span>
             <el-form-item
-              prop="checked"
+              prop="party"
               style="width:173px"
-              :rules="fieldRules('checked',propertyFeatures['checked'])"
+              :rules="fieldRules('party',propertyFeatures['party'])"
             >
               <el-input
-                v-model="docData.checked"
+                v-model="docData.party"
                 maxlength="6"
-                :disabled="fieldDisabled(propertyFeatures['checked'])"
+                :disabled="fieldDisabled(propertyFeatures['party'])"
               ></el-input>
             </el-form-item>
           </span>
           性别：
           <span>
             <el-form-item
-              prop="checkedSex"
+              prop="partySex"
               style="width:70px"
-              :rules="fieldRules('checkedSex',propertyFeatures['checkedSex'])"
+              :rules="fieldRules('partySex',propertyFeatures['partySex'])"
             >
               <el-select
-                v-model="docData.checkedSex"
+                v-model="docData.partySex"
                 :maxLength="maxLength"
                 placeholder
-                :disabled="fieldDisabled(propertyFeatures['checkedSex'])"
+                :disabled="fieldDisabled(propertyFeatures['partySex'])"
               >
                 <el-option
                   v-for="item in options"
@@ -212,14 +203,14 @@
           年龄：
           <span>
             <el-form-item
-              prop="checckedAge"
+              prop="partyAge"
               style="width:70px"
-              :rules="fieldRules('checckedAge',propertyFeatures['checckedAge'])"
+              :rules="fieldRules('partyAge',propertyFeatures['partyAge'])"
             >
               <el-input
-                v-model="docData.checckedAge"
+                v-model="docData.partyAge"
                 :maxLength="maxLength"
-                :disabled="fieldDisabled(propertyFeatures['checckedAge'])"
+                :disabled="fieldDisabled(propertyFeatures['partyAge'])"
               ></el-input>
             </el-form-item>
           </span>
@@ -229,13 +220,13 @@
           <span>
             <el-form-item
               style="width:212px"
-              prop="checkedIdNo"
-              :rules="fieldRules('checkedIdNo',propertyFeatures['checkedIdNo'])"
+              prop="partyIdNo"
+              :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'])"
             >
               <el-input
-                v-model="docData.checkedIdNo"
+                v-model="docData.partyIdNo"
                 :maxLength="maxLength"
-                :disabled="fieldDisabled(propertyFeatures['checkedIdNo'])"
+                :disabled="fieldDisabled(propertyFeatures['partyIdNo'])"
               ></el-input>
             </el-form-item>
           </span>
@@ -243,13 +234,13 @@
           <span>
             <el-form-item
               style="width:211px"
-              prop="checkedUnitAndPosition"
-              :rules="fieldRules('checkedUnitAndPosition',propertyFeatures['checkedUnitAndPosition'])"
+              prop="partyUnitAndPosition"
+              :rules="fieldRules('partyUnitAndPosition',propertyFeatures['partyUnitAndPosition'])"
             >
               <el-input
-                v-model="docData.checkedUnitAndPosition"
+                v-model="docData.partyUnitAndPosition"
                 :maxLength="maxLength"
-                :disabled="fieldDisabled(propertyFeatures['checkedUnitAndPosition'])"
+                :disabled="fieldDisabled(propertyFeatures['partyUnitAndPosition'])"
               ></el-input>
             </el-form-item>
           </span>
@@ -258,14 +249,14 @@
           联系电话：
           <span>
             <el-form-item
-              prop="checkedTel"
+              prop="partyTel"
               style="width:132px"
-              :rules="fieldRules('checkedTel',propertyFeatures['checkedTel'],validatePhone)"
+              :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone)"
             >
               <el-input
-                v-model="docData.checkedTel"
+                v-model="docData.partyTel"
                 :maxLength="maxLength"
-                :disabled="fieldDisabled(propertyFeatures['checkedTel'])"
+                :disabled="fieldDisabled(propertyFeatures['partyTel'])"
               ></el-input>
             </el-form-item>
           </span>
@@ -353,12 +344,12 @@ export default {
         staffUnitAndPosition2: "",
         certificateId1: "",
         certificateId2: "",
-        checked: "",
-        checkedSex: "",
+        party: "",
+        partySex: "",
         checkedAge: "",
-        checkedIdNo: "",
-        checkedUnitAndPosition: "",
-        checkedTel: "",
+        partyIdNo: "",
+        partyUnitAndPosition: "",
+        partyTel: "",
         inspectRecord: ""
       },
       handleType: 0, //0  暂存     1 提交
@@ -372,7 +363,54 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId
       },
       rules: {
-        caseNumber: [{ required: true, message: "请输入案号", trigger: "blur" }]
+        caseNumber: [{ required: true, message: "请输入案号", trigger: "blur" }],
+        party: [
+          { required: true, message: '姓名不能为空', trigger: 'blur' },
+        ],
+        partyAddress: [
+          { required: true, message: '地址不能为空', trigger: 'blur' },
+        ],
+        partyIdNo: [
+          { required: true, message: '身份证号码不能为空', trigger: 'blur' },
+          { validator:validateIDNumber , trigger: "blur"}
+        ],
+        partyTel: [
+          { required: true, message: '联系电话不能为空', trigger: 'blur' },
+          { validator:validatePhone , trigger: "blur" }
+        ],
+         inspectStartTime: [
+          { required: true, message: '检查开始时间不能为空', trigger: 'blur' },
+        ],
+        inspectEndTime: [
+          { required: true, message: '检查结束时间不能为空', trigger: 'blur' },
+        ],
+        staff1: [
+          { required: true, message: '检查人不能为空', trigger: 'blur' },
+        ],
+        staffUnitAndPosition1: [
+          { required: true, message: '单位及职务不能为空', trigger: 'blur' },
+        ],
+         certificateId1: [
+          { required: true, message: '执法证号不能为空', trigger: 'blur' },
+        ],
+        staff2: [
+          { required: true, message: '检查人不能为空', trigger: 'blur' },
+        ],
+        staffUnitAndPosition2: [
+          { required: true, message: '单位及职务不能为空', trigger: 'blur' },
+        ],
+         certificateId2: [
+          { required: true, message: '执法证号不能为空', trigger: 'blur' },
+        ],
+        inspectPlace: [
+          { required: true, message: '检查地点不能为空', trigger: 'blur' },
+        ],
+         inspectContent: [
+          { required: true, message: '检查内容不能为空', trigger: 'blur' },
+        ],
+        inspectRecord: [
+          { required: true, message: '检查结果不能为空', trigger: 'blur' },
+        ],
       },
       options: [
         {
@@ -410,9 +448,18 @@ export default {
       this.com_getDocDataByCaseIdAndDocId(data);
     },
     getDataAfter() {
-      this.staffList = this.docData.staff.split(",");
-      this.docData.staff1 = this.docData.staff.split(",")[0];
-      this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
+      let staffList = this.docData.staff.split(",");
+      let staffIdList = this.docData.certificateId.split(',');
+      for (let i = 0; i < staffList.length; i++) {
+          this.staffList[i] = {
+            name: staffList[i],
+            id: staffIdList[i]
+          }
+        }
+      this.docData.staff1 = this.staffList[0].name;
+      this.docData.certificateId1 = this.staffList[0].id;
+      this.staffList_ = JSON.parse(JSON.stringify(this.staffList))
+      this.staffList_.splice(0, 1)
       let dailiData = {};
       console.log("this.docData", this.docData);
       if (this.docData.partyType == "1") {
@@ -430,7 +477,6 @@ export default {
       } else if (this.docData.partyType == "2") {
         //当事人类型为企业
         dailiData = JSON.parse(this.docData.agentPartyEcertId)[0];
-        console.log("代理人信息", dailiData);
       }
     },
     //保存文书信息
@@ -481,12 +527,13 @@ export default {
       this.staffList_.splice(this.staffList.indexOf(val), 1);
       if (this.docData.staff1 === this.docData.staff2) {
         this.docData.staff2 = "";
-        this.docData.staffId2 = "";
+        this.docData.certificateId2 = "";
       }
     },
     changeStaff2(val) {
+      console.log("ceshishu居",val)
       this.docData.staff2 = val.name;
-      this.docData.staffId2 = val.id;
+      this.docData.certificateId2 = val.id;
     },
     //获取执法人员
     getLawOfficer() {

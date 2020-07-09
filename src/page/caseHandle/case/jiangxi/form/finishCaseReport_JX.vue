@@ -425,7 +425,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, //表单类型IDer
+        caseLinktypeId: this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId, //表单类型IDer
         //表单数据
         formData: "",
         status: ""
@@ -503,7 +503,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "finishCase_print"
       },
-      huanjieAndDocId: this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, //结案报告的文书id
+      huanjieAndDocId: this.BASIC_DATA_JX.finishCaseReport_JX_huanjieAndDocId, //结案报告的文书id
       approvalOver: false, //审核完成
       propertyFeatures: ""
     };

@@ -3,7 +3,13 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px" :disabled="canGoNextLink">
+    <el-form
+      ref="penaltyExecutionForm"
+      :model="formData"
+      :rules="rules"
+      label-width="105px"
+      :disabled="canGoNextLink"
+    >
       <!-- <div class="header-case">
         <div class="header_left">
           <div class="triangle"></div>
@@ -18,40 +24,107 @@
           <div class="content_form">
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseNumber" label="案号" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
-                  <el-input ref="caseNumber" clearable class="w-120" v-model="formData.caseNumber" size="small" :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
+                <el-form-item
+                  prop="caseNumber"
+                  label="案号"
+                  :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])"
+                >
+                  <el-input
+                    ref="caseNumber"
+                    clearable
+                    class="w-120"
+                    v-model="formData.caseNumber"
+                    size="small"
+                    :disabled="fieldDisabled(propertyFeatures['caseNumber'])"
+                  ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="punishType" label="处罚类型" :rules="fieldRules('punishType',propertyFeatures['punishType'])">
-                  <el-input ref="punishType" clearable class="w-120" v-model="formData.punishType" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['punishType'])"></el-input>
+                <el-form-item
+                  prop="punishType"
+                  label="处罚类型"
+                  :rules="fieldRules('punishType',propertyFeatures['punishType'])"
+                >
+                  <el-input
+                    ref="punishType"
+                    clearable
+                    class="w-120"
+                    v-model="formData.punishType"
+                    size="small"
+                    placeholder="-"
+                    :disabled="fieldDisabled(propertyFeatures['punishType'])"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="caseName" label="案由" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                  <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+                <el-form-item
+                  prop="caseName"
+                  label="案由"
+                  :rules="fieldRules('caseName',propertyFeatures['caseName'])"
+                >
+                  <el-input
+                    ref="caseName"
+                    clearable
+                    class="w-120"
+                    v-model="formData.caseName"
+                    size="small"
+                    :disabled="fieldDisabled(propertyFeatures['caseName'])"
+                  ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="punishTerm" label="处罚期限" :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])">
+                <el-form-item
+                  prop="punishTerm"
+                  label="处罚期限"
+                  :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])"
+                >
                   <!-- <el-input ref="punishTerm" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-input> -->
-                  <el-date-picker class="w-120" value-format="yyyy-MM-dd HH:mm" v-model="formData.punishTerm" type="date" placeholder="选择日期" :disabled="fieldDisabled(propertyFeatures['punishTerm'])"></el-date-picker>
+                  <el-date-picker
+                    class="w-120"
+                    value-format="yyyy-MM-dd HH:mm"
+                    v-model="formData.punishTerm"
+                    type="date"
+                    placeholder="选择日期"
+                    :disabled="fieldDisabled(propertyFeatures['punishTerm'])"
+                  ></el-date-picker>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="punishDecision" label="处罚决定" :rules="fieldRules('punishDecision',propertyFeatures['punishDecision'])">
-                  <el-input ref="punishDecision" clearable class="w-120" v-model="formData.punishDecision" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['punishDecision'])"></el-input>
+                <el-form-item
+                  prop="punishDecision"
+                  label="处罚决定"
+                  :rules="fieldRules('punishDecision',propertyFeatures['punishDecision'])"
+                >
+                  <el-input
+                    ref="punishDecision"
+                    clearable
+                    class="w-120"
+                    v-model="formData.punishDecision"
+                    size="small"
+                    placeholder="-"
+                    :disabled="fieldDisabled(propertyFeatures['punishDecision'])"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="处罚金额" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
-                  <el-input clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
+                <el-form-item
+                  label="处罚金额"
+                  :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])"
+                >
+                  <el-input
+                    clearable
+                    class="w-120"
+                    v-model.number="formData.tempPunishAmount"
+                    size="small"
+                    placeholder="-"
+                    :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -61,24 +134,50 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="执行方式">
-                  <el-radio-group v-model="formData.performWay" @change="changePayWay" :rules="fieldRules('performWay',propertyFeatures['performWay'])">
+                  <el-radio-group
+                    v-model="formData.performWay"
+                    @change="changePayWay"
+                    :rules="fieldRules('performWay',propertyFeatures['performWay'])"
+                  >
                     <el-radio :label="'线下缴费'">线下缴费</el-radio>
                     <el-radio :label="'电子缴纳'">电子缴纳</el-radio>
                   </el-radio-group>
-                  <el-checkbox v-model="formData.correct" style="magin-left:20px"></el-checkbox> 责令改正
+                  <el-checkbox v-model="formData.correct" style="magin-left:20px"></el-checkbox>责令改正
                   <!-- <el-input ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input clearable class="w-120" v-model.number="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
+                <el-form-item
+                  prop="paidAmount"
+                  label="已缴金额"
+                  :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])"
+                >
+                  <el-input
+                    clearable
+                    class="w-120"
+                    v-model.number="formData.paidAmount"
+                    size="small"
+                    placeholder="-"
+                    :disabled="fieldDisabled(propertyFeatures['paidAmount'])"
+                  ></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item prop="toPayAmount" label="待缴金额" :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])">
-                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input>
+                <el-form-item
+                  prop="toPayAmount"
+                  label="待缴金额"
+                  :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])"
+                >
+                  <el-input
+                    clearable
+                    class="w-120"
+                    size="small"
+                    v-model.number="formData.toPayAmount"
+                    placeholder="-"
+                    :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -86,41 +185,54 @@
               <div class="col">
                 <el-form-item prop="performance" label="执行情况">
                   <el-select v-model="formData.performance" @change="changePerformance">
-                    <el-option label="未完成" value="未完成"></el-option>
+                    <!-- <el-option label="未完成" value="未完成"></el-option>
                     <el-option label="已完成" value="已完成"></el-option>
-                    <el-option label="催告" value="催告"></el-option>
+                    <el-option label="催告" value="催告"></el-option> -->
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
                   </el-select>
                   <!-- <el-input ref="performance" clearable class="w-120" v-model="formData.performance" size="small" placeholder="请输入"></el-input> -->
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="checkbox">
-                  <el-checkbox v-model="formData.stepPay" @change='changeStepPay'></el-checkbox> 分期（延期）缴纳
+                  <el-checkbox v-model="formData.stepPay" @change="changeStepPay"></el-checkbox>分期（延期）缴纳
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="note" label="备注" :rules="fieldRules('note',propertyFeatures['note'])">
-                  <el-input ref="note" clearable class="w-120" v-model="formData.note" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['note'])"></el-input>
-                </el-form-item>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <el-form-item prop="payEvidence" label="缴纳凭证">
-                  <!-- <el-input
-                    type="file"
-                    ref="payEvidence"
+                <el-form-item
+                  prop="note"
+                  label="备注"
+                  :rules="fieldRules('note',propertyFeatures['note'])"
+                >
+                  <el-input
+                    ref="note"
                     clearable
                     class="w-120"
-                    v-model="formData.payEvidence"
+                    v-model="formData.note"
                     size="small"
                     placeholder="请输入"
-                  ></el-input> -->
-                  <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadPaymentVoucher" :show-file-list="false">
+                    :disabled="fieldDisabled(propertyFeatures['note'])"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row" v-if="!isOnlinePay">
+              <div class="col">
+                <el-form-item prop="payEvidence" label="缴纳凭证">
+                  <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :http-request="uploadPaymentVoucher"
+                    :show-file-list="false"
+                  >
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
                     <ul>
                       <li v-for="item in alreadyLoadPayEvidence" :key="item.id" @click.stop="evidenceDetail(item)">{{item.fileName}}</li>
                     </ul>
@@ -131,21 +243,38 @@
             <div class="row" v-if="isOnlinePay">
               <div class="col">
                 <el-form-item label="缴纳金额">
-                  <el-input clearable class="w-120" v-model="formData.payAmount" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    clearable
+                    class="w-120"
+                    v-model="formData.payAmount"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isOnlinePay">
               <div class="col">
                 <el-form-item label="收款人">
-                  <el-input clearable class="w-120" v-model="formData.payee" size="small" placeholder="请输入"></el-input>
+                  <el-input
+                    clearable
+                    class="w-120"
+                    v-model="formData.payee"
+                    size="small"
+                    placeholder="请输入"
+                  ></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="isOnlinePay">
               <div class="col">
                 <el-form-item label="缴费时间">
-                  <el-date-picker v-model="formData.paymentTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+                  <el-date-picker
+                    v-model="formData.paymentTime"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm"
+                    value-format="yyyy-MM-dd HH:mm"
+                  ></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -155,7 +284,14 @@
       <div class="content_box">
         <div class="content">
           <div class="table_form">
-            <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
+            <el-table
+              :data="docTableDatas"
+              stripe
+              border
+              style="width: 100%"
+              max-height="250"
+              :row-class-name="getRowClass"
+            >
               <!-- 折叠 -->
               <el-table-column type="expand" expand-change v-if="allAskDocList.length>0">
                 <template>
@@ -168,7 +304,11 @@
                       </div>
                       <div>
                         <!-- 已完成 -->
-                        <span v-if="item.status == '1' || item.status == '2'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span>
+                        <span
+                          v-if="item.status == '1' || item.status == '2'"
+                          class="tableHandelcase"
+                          @click="viewDocPdf(item)"
+                        >查看</span>
 
                         <span v-if="item.status == '0'" class="tableHandelcase">
                           <!-- 未完成 -->
@@ -176,7 +316,11 @@
                           <span @click="delDocDataByDocId(item)">清空</span>
                         </span>
                         <!-- 无状态 -->
-                        <span v-if="item.status === ''" class="tableHandelcase" @click="viewDoc(item)">添加</span>
+                        <span
+                          v-if="item.status === ''"
+                          class="tableHandelcase"
+                          @click="viewDoc(item)"
+                        >添加</span>
                       </div>
                     </li>
                   </ul>
@@ -188,10 +332,9 @@
                 <template slot-scope="scope">
                   <span style="color:red">*</span>
                   {{scope.row.name}}
-                  <span v-if="scope.row.name=='分期（延期）缴纳罚款通知书'">
-                    （{{finishDocCount}}/{{allDocCount}}）
-                  </span>
-
+                  <span
+                    v-if="scope.row.name=='分期（延期）缴纳罚款通知书'"
+                  >（{{finishDocCount}}/{{allDocCount}}）</span>
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
@@ -209,47 +352,83 @@
                   </span>
                   <span v-if="!scope.row.openRow">
                     <!-- 已完成 -->
-                    <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
+                    <span
+                      v-if="scope.row.status == '1' || scope.row.status == '2'"
+                      class="tableHandelcase"
+                      @click="viewDocPdf(scope.row)"
+                    >查看</span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>
                       <span @click="delDocDataByDocId(scope.row)">清空</span>
                     </span>
                     <!-- 无状态 -->
-                    <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
+                    <span
+                      v-if="scope.row.status === ''"
+                      class="tableHandelcase"
+                      @click="viewDoc(scope.row)"
+                    >添加</span>
                   </span>
                 </template>
               </el-table-column>
             </el-table>
           </div>
         </div>
-       
       </div>
     </el-form>
-     <!-- 悬浮按钮 -->
-        <div class="float-btns btn-height63" style="height:auto">
-          <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete">
-            <svg t="1577414377979" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1726" width="16" height="16">
-              <path d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z" p-id="1727" fill="#FFFFFF" />
-            </svg>
-            <br />下一
-            <br />环节
-          </el-button>
-          <el-button type="primary" @click="submitCaseDoc(1)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
-            <i class="iconfont law-save"></i>
-            <br />保存
-          </el-button>
-          <el-button type="success" @click="submitCaseDoc(0)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
-            <i class="iconfont law-save"></i>
-            <br />暂存
-          </el-button>
-          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
-            <i class="iconfont law-back"></i>
-            <br />返回
-          </el-button>
-        </div>
+    <!-- 悬浮按钮 -->
+    <div class="float-btns btn-height63" style="height:auto">
+      <el-button
+        type="primary"
+        @click="continueHandle"
+        :disabled="!canGoNextLink"
+        v-if="!this.$route.params.isComplete"
+      >
+        <svg
+          t="1577414377979"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="1726"
+          width="16"
+          height="16"
+        >
+          <path
+            d="M414.273133 1024a19.76097 19.76097 0 0 1-19.741211-20.488101l8.762126-237.513979a19.749115 19.749115 0 0 1 4.202738-11.471084l503.439415-641.372015-822.359463 475.187017 249.409882 129.274208c9.688823 5.021748 13.47267 16.947289 8.450922 26.635125-5.023724 9.687835-16.946301 13.471682-26.635125 8.449934L38.362218 606.82539a19.758006 19.758006 0 1 1-0.793324-34.650361l932.344942-538.738859a19.759982 19.759982 0 0 1 29.505118 19.454706l-109.172395 912.697585a19.758994 19.758994 0 0 1-28.848132 15.124522L609.347756 847.568976l-181.518965 171.052626a19.754055 19.754055 0 0 1-13.555658 5.378398z m28.276109-250.126145l-6.748685 182.935685 156.731307-147.692555a19.76097 19.76097 0 0 1 22.780144-3.091294l239.112482 126.310359L950.834551 126.32913 442.549242 773.873855z"
+            p-id="1727"
+            fill="#FFFFFF"
+          />
+        </svg>
+        <br />下一
+        <br />环节
+      </el-button>
+      <el-button
+        type="primary"
+        @click="submitCaseDoc(1)"
+        :disabled="canGoNextLink"
+        v-if="!this.$route.params.isComplete"
+      >
+        <i class="iconfont law-save"></i>
+        <br />保存
+      </el-button>
+      <el-button
+        type="success"
+        @click="submitCaseDoc(0)"
+        :disabled="canGoNextLink"
+        v-if="!this.$route.params.isComplete"
+      >
+        <i class="iconfont law-save"></i>
+        <br />暂存
+      </el-button>
+      <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
+        <i class="iconfont law-back"></i>
+        <br />返回
+      </el-button>
+    </div>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <addDialog ref="addDialogRef" @getNewData="goAddPdf"></addDialog>
+
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <payDetail ref="payDetailRef"></payDetail>
   </div>
@@ -265,7 +444,7 @@ import {
   uploadEvApi,
   findFileByIdApi,
 } from "@/api/upload";
-import { findIsOrderApi } from "@/api/caseHandle";
+import { findIsOrderApi,queryFlowBycaseIdApi } from "@/api/caseHandle";
 export default {
   components: {
     checkDocFinish,
@@ -275,11 +454,15 @@ export default {
   },
   data() {
     var validatePaid = (rule, value, callback) => {
-      if (value && typeof (value) != 'number') {
-        callback(new Error('必须为数字!'));
+      console.log("类型",typeof(value))
+      if (value && typeof(value) != "number") {
+        callback(new Error("必须为数字!"));
       }
-      if (value && (value < 0 || value > Number(this.formData.tempPunishAmount))) {
-        callback(new Error('不得小于0或大于处罚金额!'));
+      if (
+        value &&
+        (value < 0 || value > Number(this.formData.tempPunishAmount))
+      ) {
+        callback(new Error("不得小于0或大于处罚金额!"));
       } else {
         callback();
       }
@@ -301,7 +484,7 @@ export default {
         note: "",
         payEvidence: "", //缴费凭证id
         payee: "",
-        paymentTime: "",
+        paymentTime: ""
       },
       alreadyLoadPayEvidence: [], //已上传的缴费凭证
       //提交方式
@@ -309,13 +492,15 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, //表单类型IDer
+        caseLinktypeId: "", //表单类型IDer
         //表单数据
         formData: "",
         status: ""
       },
       docTableDatas: [],
-      docTableDatasSave: [],
+      docTableDatasShow: [],
+      docTableDatasOther: [],
+      options: [],
       rules: {
         caseNumber: [
           { required: true, message: "案号不能为空", trigger: "blur" }
@@ -335,32 +520,26 @@ export default {
         tempPunishAmount: [
           { required: true, message: "处罚金额不能为空", trigger: "blur" }
         ],
-        paidAmount: [
-          { validator: validatePaid, trigger: 'blur' }
-        ],
-        toPayAmount: [
-          { validator: validatePaid, trigger: 'blur' }
-        ],
+        paidAmount: [{ validator: validatePaid, trigger: "blur" }],
+        toPayAmount: [{ validator: validatePaid, trigger: "blur" }],
         performWay: [
           { required: true, message: "执行方式必须选择", trigger: "blur" }
         ],
-        note: [
-          { required: true, message: "备注必须填写", trigger: "blur" }
-        ],
+        note: [{ required: true, message: "备注必须填写", trigger: "blur" }]
       },
-      isOnlinePay: false, //是否为电子缴纳
+      isOnlinePay: true, //是否为电子缴纳
       needDealData: true,
       docTableDatasCopy: [],
-      allAskDocList: [],  //分期延期
+      allAskDocList: [], //分期延期
       unfinishFlag: [],
       isfinishFlag: true,
-      finishDocCount: 0,//完成文书数
+      finishDocCount: 0, //完成文书数
       allDocCount: 0,
-      propertyFeatures:''
+      propertyFeatures: ""
     };
   },
   computed: {
-    ...mapGetters(["caseId"]),
+    ...mapGetters(["caseId"])
   },
   mixins: [mixinGetCaseApiList],
   methods: {
@@ -375,7 +554,7 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      console.log("分期", this.formData.stepPay)
+      console.log("分期", this.formData.stepPay);
       // console.log(this.formData)
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
@@ -386,29 +565,30 @@ export default {
       if (this.formData.stepPay) {
         // 分期延期缴纳通知书必做
         // console.log(this.allAskDocList)
-        let flag = true
+        let flag = true;
         if (this.allAskDocList.length == 0) {
           // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
           flag = false;
           return false;
-        }
-        else {
+        } else {
           this.allAskDocList.forEach(element => {
-            if (element.name == '分期（延期）缴纳罚款通知书【2016】') {
-              console.log('element.name', element.status)
+            if (element.name == "分期（延期）缴纳罚款通知书【2016】") {
+              console.log("element.name", element.status);
               // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
               // console.log('lement.status,element.status', element.status)
               if (element.status == 0) {
                 // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
                 // console.log('执行')
-                let caseData = {}
-                this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                let caseData = {};
+                this.$refs.checkDocFinishRef.showModal(
+                  this.docTableDatas,
+                  caseData,
+                  this.unfinishFlag
+                );
                 flag = false;
                 return false;
               }
-            }
-            else
-              return flag;
+            } else return flag;
           });
         }
 
@@ -417,57 +597,66 @@ export default {
     },
     isComplete2() {
       this.unfinishFlag = [];
-      console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
-      if (this.formData.performance == '催告') {
+      console.log(
+        "分期延期:",
+        this.formData.stepPay,
+        "，催告：",
+        this.formData.performance
+      );
+      if (this.formData.performance == "催告") {
         // 催告书必做
         let flag2 = true;
-        console.log(this.docTableDatas)
+        console.log(this.docTableDatas);
         this.docTableDatas.forEach(element => {
-          if (element.name == '催告书') {
+          if (element.name == "催告书") {
             if (element.status == 0) {
               // this.unfinishFlag = [' 催告书'];
               // console.log('this.unfinishFlag', this.unfinishFlag)
-              let caseData = {}
-              this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+              let caseData = {};
+              this.$refs.checkDocFinishRef.showModal(
+                this.docTableDatas,
+                caseData,
+                this.unfinishFlag
+              );
 
               flag2 = false;
               return flag2;
-            }
-            else
-              return flag2;
-          }
-          else
-            return flag2;
+            } else return flag2;
+          } else return flag2;
         });
         return flag2;
       }
     },
     //下一环节
     continueHandle() {
-      this.unfinishFlag = []
-      let unfinishFlag = []
+      this.unfinishFlag = [];
+      let unfinishFlag = [];
       if (this.isComplete() == false) {
-        unfinishFlag.push('分期（延期）缴纳罚款通知书')
+        unfinishFlag.push("分期（延期）缴纳罚款通知书");
       }
       if (this.isComplete2() == false) {
-        unfinishFlag.push('催告书')
+        unfinishFlag.push("催告书");
       }
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
       };
-      if ((this.isComplete() != false) && (this.isComplete2() != false)) {
-
-        this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
-      }
-      else {
-        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
+      if (this.isComplete() != false && this.isComplete2() != false) {
+        this.com_goToNextLinkTu(
+          this.caseId,
+          this.caseLinkDataForm.caseLinktypeId
+        );
+      } else {
+        this.$refs.checkDocFinishRef.showModal(
+          this.docTableDatas,
+          caseData,
+          unfinishFlag
+        );
       }
     },
     // 进入文书
     enterDoc(row) {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      // console.log("row", row);
       this.$router.push({
         name: row.url,
         params: {
@@ -481,14 +670,15 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note == '') {
-        console.log("弹窗")
+      if (
+        row.name.indexOf("分期（延期）缴纳罚款通知书") == false &&
+        row.note == ""
+      ) {
+        console.log("弹窗");
         this.$refs.addDialogRef.showModal(row, this.isSaveLink);
+      } else {
+        this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
       }
-      else {
-        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
-      }
-
     },
     //清空文书
     delDocDataByDocId(data) {
@@ -498,7 +688,7 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        linkTypeId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId //环节ID
+        linkTypeId: this.caseLinkDataForm.caseLinktypeId //环节ID
       };
       this.com_getDocListByCaseIdAndFormId(data);
     },
@@ -510,49 +700,49 @@ export default {
         approvalOver: false,
         hasBack: true,
         docDataId: row.docDataId,
-        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
+        status: row.status //status状态 0 暂存 1保存未提交  2 保存并提交
       };
-      console.log('routerData,routerData', routerData)
+      console.log("routerData,routerData", routerData);
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
     //执行方式
     changePayWay(val) {
-      console.log(val);
-      if (val == '电子缴纳') {
+      if (val == "电子缴纳") {
         //电子缴纳
-        this.isOnlinePay = true;
-      } else {
         this.isOnlinePay = false;
+      } else {
+        this.isOnlinePay = true;
       }
     },
     getDataAfter() {
-      console.log('this.formData.tempPunishAmount', this.formData.tempPunishAmount)
       if (this.formData.tempPunishAmount) {
-        this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
+        this.formData.paidAmount = this.formData.paidAmount
+          ? this.formData.paidAmount
+          : 0;
       }
-      this.formData.performWay = this.formData.performWay ? this.formData.performWay : "线下缴费";
-      this.isOnlinePay = this.formData.performWay == "线下缴费" ? false : true;
+      this.formData.performWay = this.formData.performWay
+        ? this.formData.performWay
+        : "线下缴费";
+      this.isOnlinePay = this.formData.performWay == "线下缴费" ? true : false;
       //显示已上传的缴费凭证
-      // this.alreadyLoadPayEvidence = this.formData.payEvidence  ? this.formData.payEvidence.split(',') : [];
       if (this.formData.payEvidence) {
-        let payEvidenceArr = this.formData.payEvidence.split(',');
+        let payEvidenceArr = this.formData.payEvidence.split(",");
         payEvidenceArr.forEach(item => {
           this.findPaymentVoucher(item, false);
-        })
+        });
       }
-      this.changeStepPay()
-      this.changePerformance()
-
+      this.changeStepPay();
+      this.changePerformance();
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     },
     //上传缴费凭证
     uploadPaymentVoucher(param) {
       console.log(param);
-      var fd = new FormData()
+      var fd = new FormData();
       fd.append("file", param.file);
-      fd.append('caseId', this.caseId)
-      fd.append('docId', this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId);
+      fd.append("caseId", this.caseId);
+      fd.append("docId", this.caseLinkDataForm.caseLinktypeId);
       uploadEvApi(fd).then(
         res => {
           console.log(res);
@@ -561,7 +751,7 @@ export default {
           // this.formData.payEvidence.push(res.data);
         },
         error => {
-          console.log(error)
+          console.log(error);
         }
       );
     },
@@ -573,17 +763,17 @@ export default {
           this.alreadyLoadPayEvidence.push(res.data);
           if (isAdd) {
             if (this.formData.payEvidence) {
-              let payEvidenceArr = this.formData.payEvidence.split(',');
+              let payEvidenceArr = this.formData.payEvidence.split(",");
               payEvidenceArr.push(id);
-              this.formData.payEvidence = payEvidenceArr.join(',');
+              this.formData.payEvidence = payEvidenceArr.join(",");
             } else {
               this.formData.payEvidence = id;
             }
           }
-          console.log('this.formData.payEvidence', this.formData.payEvidence);
+          console.log("this.formData.payEvidence", this.formData.payEvidence);
         },
         error => {
-          console.log(error)
+          console.log(error);
         }
       );
     },
@@ -609,10 +799,8 @@ export default {
       );
       // this.setMoreDocTableTitle()
     },
-    getRowClass: function (row, index) {
-      console.log("row!!!!!!!!!!!!", row);
+    getRowClass: function(row, index) {
       if (row.row.openRow) {
-        console.log("显示");
         return "";
       } else {
         return "myhide-expand";
@@ -621,138 +809,158 @@ export default {
     setMoreDocTableTitle() {
       this.docTableDatas = [];
       this.allAskDocList = [];
-      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, path: "case_handle_payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
-
+      let a = 0;
       this.docTableDatasCopy.forEach(item => {
-        console.log('名字啊啊啊', item.name)
-        if (item.name != '分期（延期）缴纳罚款通知书【2016】') {
-          this.docTableDatas.push(item);
+        if (item.name.indexOf("分期（延期）缴纳")== -1) {
+          this.docTableDatasShow.push(item);
         } else {
-          if (item.note != '') {
+          this.docTableDatasOther.push(item)
+          if (item.note != "") {
             this.allAskDocList.push(item);
-
           }
         }
-      })
+      });
       this.allAskDocList.forEach(element => {
-        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && (element.status == '1'||element.status == '2')) {
+        if (
+          (element.name == "分期（延期）缴纳罚款通知书【2016】" ||
+            element.name == "分期（延期）缴纳罚款通知书") &&
+          (element.status == "1" || element.status == "2")
+        ) {
           this.finishDocCount += 1;
         }
       });
-      this.allDocCount = this.allAskDocList.length
-      // console.log('this.docTableDatas', this.docTableDatas)
-      // console.log('this.allAskDocList', this.allAskDocList)
-
-      this.docTableDatasSave = this.docTableDatas
-      this.docTableDatas = []
-      this.changeStepPay()
-      this.changePerformance()
+      this.allDocCount = this.allAskDocList.length;
+      this.docTableDatas = [];
+      this.changeStepPay();
+      this.changePerformance();
     },
     //通过案件ID和文书ID查询附件
     findFileList() {
       let data = {
         caseId: this.caseId,
-        docId: this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId
-      }
-      console.log(data);
+        docId: this.caseLinkDataForm.caseLinktypeId
+      };
       getFile(data).then(
         res => {
           console.log("附件列表", res);
           // this.fileListArr = res.data;
-
         },
         error => {
           console.log(error);
         }
-      )
+      );
     },
     //通过案件id获取询问笔录被询问人及其与案件关系
     findIsOrder() {
       let data = {
         caseBasicInfoId: this.caseId
-      }
-      findIsOrderApi(data).then(res => {
-        console.log('责令更正啊啊啊', res);
-        this.formData.correct = res.data
-        // this.peopleTypeList = res.data;
-        // this.peopleTypeList.forEach(item => {
-        //   item.relation = this.switchRelate(item.relation);
-        //   item.all = item.name+ '-' +item.relation
-        // });
-        // this.peopleTypeList.push({name:'',relation:'none',all:'以上均不是'})
-        // console.log('peopleTypeList',this.peopleTypeList);
-        // //设置默认值
-        // this.formData.peopleType = this.peopleTypeList[0].relation;
-        // this.formData.peopleAndRelationType = this.peopleTypeList[0].all;
-        // this.findAskNum(this.peopleTypeList[0].name);
-      }, err => {
-        console.log(err)
-      })
-    },
-    // // 是否已完成缴费
-    isFinish() {
-      //   if (this.formData.toPayAmount == 0) {
-      //     this.formData.performance = '已完成'
-      //   }
+      };
+      findIsOrderApi(data).then(
+        res => {
+          this.formData.correct = res.data;
+          // this.peopleTypeList = res.data;
+          // this.peopleTypeList.forEach(item => {
+          //   item.relation = this.switchRelate(item.relation);
+          //   item.all = item.name+ '-' +item.relation
+          // });
+          // this.peopleTypeList.push({name:'',relation:'none',all:'以上均不是'})
+          // console.log('peopleTypeList',this.peopleTypeList);
+          // //设置默认值
+          // this.formData.peopleType = this.peopleTypeList[0].relation;
+          // this.formData.peopleAndRelationType = this.peopleTypeList[0].all;
+          // this.findAskNum(this.peopleTypeList[0].name);
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     // 分期延期缴纳
     changeStepPay() {
-      console.log('分期延期缴纳')
-      this.docTableDatas = []
+      this.docTableDatas = [];
       if (this.formData.stepPay == true) {
-        this.docTableDatas.push(this.docTableDatasSave[0])
+        this.docTableDatas=this.docTableDatasOther;
       }
-      console.log('this.docTableDatas', this.docTableDatas)
-      if (this.formData.performance == '催告') {
-        this.docTableDatas.push(this.docTableDatasSave[1])
+      if (this.formData.performance == "催告") {
+        this.docTableDatas=this.docTableDatasShow;
       }
-
     },
     // 催告
     changePerformance() {
-      console.log('催告', this.formData.performance)
-      this.docTableDatas = []
-
-      console.log('this.docTableDatas', this.docTableDatas)
+      this.docTableDatas = [];
       if (this.formData.stepPay == true) {
-        this.docTableDatas.push(this.docTableDatasSave[0])
+        this.docTableDatas=this.docTableDatasOther;
       }
-      if (this.formData.performance == '催告') {
-        this.docTableDatas.push(this.docTableDatasSave[1])
+      if (this.formData.performance == "催告") {
+        this.docTableDatas=this.docTableDatasShow;
       }
     },
+    async initData() {
+      //查询是哪个流程
+      let currentFlow = await queryFlowBycaseIdApi(this.caseId);
+      if (currentFlow.data.flowName == "江西流程") {
+        this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId;
+        this.options = [
+          {
+            lable: "未完成",
+            value: "未完成"
+          },
+          {
+            lable: "已完成",
+            value: "已完成"
+          }
+        ];
+      } else {
+        this.caseLinkDataForm.caseLinktypeId = this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId;
+        this.options = [
+          {
+            lable: "未完成",
+            value: "未完成"
+          },
+          {
+            lable: "已完成",
+            value: "已完成"
+          },
+          {
+            lable: "催告",
+            value: "催告"
+          }
+        ];
+      }
+      //获取表单数据
+      this.setFormData();
+      //通过案件id和表单类型Id查询已绑定文书
+      this.getDocListByCaseIdAndFormId();
+    }
   },
-
 
   mounted() {
     // this.getCaseBasicInfo();
-    this.findIsOrder()
-
+    this.findIsOrder();
   },
   created() {
-    //获取表单数据
-    this.setFormData();
-    //通过案件id和表单类型Id查询已绑定文书
-    this.getDocListByCaseIdAndFormId();
-    // this.findFileList();
+    this.initData();
   },
   watch: {
     //代缴金额为0时,执行情况为已完成
-    'formData.paidAmount'(val) {
-      console.log(val);
-      this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
-      if(this.formData.toPayAmount='NAN'){
-        this.formData.toPayAmount=''
+    "formData.paidAmount"(val) {
+      this.formData.toPayAmount =
+        Number(this.formData.tempPunishAmount) -
+        Number(this.formData.paidAmount);
+      if ((this.formData.toPayAmount = "NAN")) {
+        this.formData.toPayAmount = "";
       }
     },
-    'formData.toPayAmount'(val) {
-      console.log('aaaaaaaaa', val);
+    "formData.toPayAmount"(val) {
+      this.formData.toPayAmount =
+        Number(this.formData.tempPunishAmount) -
+        Number(this.formData.paidAmount);
       if (!val) {
-        this.formData.performance = '已完成';
+        this.formData.performance = "已完成";
       } else {
         // this.formData.performance = '未完成';
-        if (this.formData.performance != '催告') {
-          this.formData.performance = '未完成';
+        if (this.formData.performance != "催告") {
+          this.formData.performance = "未完成";
         }
       }
     }

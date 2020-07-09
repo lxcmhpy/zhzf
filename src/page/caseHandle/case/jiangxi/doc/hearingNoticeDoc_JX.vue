@@ -33,7 +33,15 @@
             <el-form-item prop="hearingPlace" style="width:379px" :rules="fieldRules('hearingPlace',propertyFeatures['hearingPlace'])">
               <el-input v-model="docData.hearingPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['hearingPlace'])"></el-input>
             </el-form-item>
-          </span>（公开、不公开）举行听证会议，请准时出席。
+          </span>（
+          <span class="single_check">
+            <el-form-item prop="radio" :rules="fieldRules('radio',propertyFeatures['radio'])">
+              <el-radio-group v-model="docData.radio">
+                  <el-radio  label="1">公开</el-radio>
+                  <el-radio  label="2">不公开</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </span>）举行听证会议，请准时出席。
         </p>
         <p class="p_begin">
           听证主持人姓名：
@@ -246,7 +254,7 @@
             {required: true, message: '请输入机构邮编', trigger: 'blur'},
           ],
           radio: [
-            {required: true, message: '请选择公开方式', trigger: 'blur'},
+            {required: true, message: '请选择公开方式', trigger: 'change'},
           ],
         },
         nameLength: 23,

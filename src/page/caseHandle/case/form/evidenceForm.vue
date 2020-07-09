@@ -310,7 +310,7 @@
           userId: "",
           recordPlace:'',
           userName:'',
-          note:''
+          note:'',
         },
         uForm: {},
         addVisible: false,
