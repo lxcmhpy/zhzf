@@ -8,7 +8,6 @@
       <div class="print_info">
         <div class="doc_topic">行政强制执行审批表</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <!-- <div class="doc_cause">案由：{{docData.caseName}}</div> -->
         <table
           class="print_table prolong_table"
           border="1"
@@ -20,7 +19,20 @@
             <td>
               <p>案由</p>
             </td>
-            <td colspan="7" class="color_DBE4EF">{{docData.caseName}}</td>
+            <td colspan="7" class="color_DBE4EF">
+              <el-form-item
+                prop="caseName"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.caseName"
+                  v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                  disabled
+                ></el-input>
+              </el-form-item>
+            </td>
           </tr>
           <tr>
             <td>
@@ -28,18 +40,7 @@
             </td>
             <td colspan="7" class="color_DBE4EF">
               {{docData.decisionNumber}}
-              <!-- <span>
-                <el-form-item prop="decisionNumber">
-                  <el-input
-                    type="textarea"
-                    v-model="docData.decisionNumber"
-                    v-bind:class="{ over_flow:docData.decisionNumber.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="50"
-                    placeholder="\"
-                  ></el-input>
-                </el-form-item>
-              </span>-->
+
             </td>
           </tr>
           <tr>
@@ -391,14 +392,6 @@
                   <span v-else>年 月 日</span>
                 </p>
               </div>
-              <!-- {{docData.secondApproveOpinions}}
-              <div class="pdf_seal">
-                <p>签名：{{docData.secondApprovePeo}}</p>
-                <p>
-                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>-->
             </td>
           </tr>
           <tr></tr>
@@ -415,14 +408,6 @@
                   <span v-else>年 月 日</span>
                 </p>
               </div>
-              <!-- {{docData.threeApproveOpinions}}
-              <div class="pdf_seal">
-                <p>签名：{{docData.threeApprovePeo}}</p>
-                <p>
-                  <span v-if="docData.threeApproveTime">{{docData.threeApproveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>-->
             </td>
           </tr>
           <tr></tr>

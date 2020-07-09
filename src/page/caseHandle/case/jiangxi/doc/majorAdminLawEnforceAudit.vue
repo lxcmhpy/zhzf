@@ -15,7 +15,20 @@
             <td colspan="2">
               <p>案由</p>
             </td>
-            <td colspan="8" class="color_DBE4EF">{{docData.caseName}}</td>
+            <td colspan="8" class="color_DBE4EF">
+              <el-form-item
+                prop="caseName"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.caseName"
+                  v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                  disabled
+                ></el-input>
+              </el-form-item>
+            </td>
           </tr>
           <tr>
             <td rowspan="2" colspan="2">
@@ -23,17 +36,17 @@
             </td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item
-                prop="illegalFacts"
-                :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])"
+                prop="illegalFact"
+                :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.illegalFacts"
-                  v-bind:class="{ over_flow:docData.illegalFacts && docData.illegalFacts.length>14?true:false }"
+                  v-model="docData.illegalFact"
+                  v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
+                  :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -339,7 +352,7 @@ export default {
       isOverflow: false,
       docData: {
         caseName: "",
-        illegalFacts: "",
+        illegalFact: "",
         transactor: "",
         telephone: "",
         legalAgency: "",
@@ -373,7 +386,7 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
-        illegalFacts: [
+        illegalFact: [
           { required: true, message: "基本违法事实不能为空", trigger: "blur" }
         ],
         transactor: [

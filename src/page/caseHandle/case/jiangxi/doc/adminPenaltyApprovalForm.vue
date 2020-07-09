@@ -15,7 +15,20 @@
             <td>
               <p>案由</p>
             </td>
-            <td colspan="9" class="color_DBE4EF">{{docData.caseName}}</td>
+            <td colspan="9" class="color_DBE4EF">
+              <el-form-item
+                prop="caseName"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.caseName"
+                  v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                  disabled
+                ></el-input>
+              </el-form-item>
+            </td>
           </tr>
           <tr>
             <td rowspan="6">
@@ -50,6 +63,7 @@
                 <el-input
                   type="textarea"
                   v-model="docData.partyIdNo"
+                  v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }"
                   :maxLength="18"
                   placeholder="\"
                   :autosize="{ minRows: 1, maxRows: 3}"
@@ -101,6 +115,7 @@
               >
                 <el-input
                   v-model="docData.partyName"
+                  v-bind:class="{ over_flow:docData.partyName.length>14?true:false }"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
                   placeholder="\"
@@ -117,6 +132,7 @@
               >
                 <el-input
                   v-model="docData.partyUnitAddress"
+                  v-bind:class="{ over_flow:docData.partyUnitAddress.length>14?true:false }"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
                   placeholder="\"
@@ -177,17 +193,17 @@
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
               <el-form-item
-                prop="basicSituation"
-                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
+                prop="caseSituation"
+                :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.basicSituation"
-                  v-bind:class="{ over_flow:docData.basicSituation && docData.basicSituation.length>14?true:false }"
+                  v-model="docData.caseSituation"
+                  v-bind:class="{ over_flow:docData.caseSituation && docData.caseSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
+                  :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -198,7 +214,18 @@
               <p>承办人意见</p>
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
-              {{docData.approveOpinions}}
+              <!-- {{docData.approveOpinions}} -->
+              <el-form-item
+                prop="approveOpinions"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.approveOpinions"
+                  v-bind:class="{ over_flow:docData.approveOpinions && docData.approveOpinions.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                ></el-input>
+              </el-form-item>
               <div class="pdf_seal">
                 <p>签名：{{docData.approvePeo}}</p>
                 <p>
@@ -296,7 +323,7 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
-        basicSituation: "",
+        caseSituation: "",
         measureStartDate: "",
         measureEndDate: "",
         approveOpinions: "",
@@ -364,7 +391,7 @@ export default {
             trigger: "blur"
           }
         ],
-        basicSituation: [
+        caseSituation: [
           { required: true, message: "基本情况不能为空", trigger: "blur" }
         ]
       },
