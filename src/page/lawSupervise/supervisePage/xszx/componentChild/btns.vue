@@ -157,6 +157,8 @@
 import {mapGetters} from "vuex";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import {findAllDrawerById, saveAndUpdate,transerCase} from '@/api/lawSupervise.js';
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   //tabActiveValue: 1检测数据核对,2违法超限复核,3生成证据包
   props: ['tabActiveValue', 'obj'],
@@ -187,6 +189,7 @@ export default {
       visiblePopover: false
     };
   },
+  mixins: [mixinGetCaseApiList],
   methods: {
     showZbDialog () {
         // this.getAllOrgan('root');
@@ -213,12 +216,18 @@ export default {
                     debugger;
                     _this.zlaVisible = true;
                     // _this.$store.commit('setCaseId','f205736182a36d9fd0574fa75eb30a30');
-                    _this.$store.commit('setCaseId',res.data.id);
+                    /* _this.$store.commit('setCaseId',res.data.id);
                     _this.$store.commit('setCaseApproval',false);
                     // _this.$store.commit('setCaseNumber','吐临〔2020〕第00320号');;
                      _this.$store.commit('setCaseNumber',res.data.caseNumber);
                     _this.$router.push({
                         name: 'case_handle_establish'
+                    }); */
+                    _this.$store.commit("setCaseId",res.data.id);
+                    _this.$store.commit("setCaseNumber",res.data.tempNo);
+                    iLocalStroage.set("stageCaseId",res.data.id);
+                    _this.$router.replace({
+                      name: 'case_handle_inforCollect',
                     });
                 },
                 error => {

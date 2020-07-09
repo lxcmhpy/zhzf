@@ -749,7 +749,7 @@ export default {
           label: 'label'
         },
         data: null,
-      areaObj: '全国',
+      areaObj: '',
       activeIndex:'',
       areaList: [
           {
@@ -909,6 +909,7 @@ export default {
                   self.lat = result.position.lat;
                   self.center = [self.lng, self.lat];
                   self.loaded = true;
+                  self.areaObj = self.currentAddressObj.city
                   self.$nextTick();
                 }
               });
