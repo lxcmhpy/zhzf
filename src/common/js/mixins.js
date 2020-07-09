@@ -205,9 +205,6 @@ export const mixinGetCaseApiList = {
         caseLinktypeId: caseLinktypeId
       };
       console.log(data);
-      // this.$router.push({
-      //   name: 'case_handle_flowChart'
-      // });
       this.$store.dispatch("submitPdf", data).then(
         res => {
           console.log("更改流程图中的状态", res);
@@ -399,9 +396,7 @@ export const mixinGetCaseApiList = {
       this.uploadFile('', '', docDataId)
     },
     async uploadFile(file, name, docDataId) {
-
       let docId = '';  //文书 id
-
       if (this.caseDocDataForm != undefined) {
         // 只是文书
         docId = this.caseDocDataForm.caseDoctypeId;
@@ -413,7 +408,6 @@ export const mixinGetCaseApiList = {
         //即是环节也是文书
         docId = this.huanjieAndDocId;
       }
-
       let caseLinktypeId = ""; //环节id
       if (this.caseLinkDataForm) {
         caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
@@ -438,13 +432,6 @@ export const mixinGetCaseApiList = {
         this.$store.commit('setApprovalState', '')
         console.log('不需要审批');
       }
-
-
-      // if (docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId) {
-      //   this.$store.commit('setApprovalState', 'approvalBefore')
-      // } else {
-      //   this.$store.commit('setApprovalState', '')
-      // }
       let routerData = {
         docId: docId,
         caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
