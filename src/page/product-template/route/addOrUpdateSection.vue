@@ -4,58 +4,58 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="35%"
+    width="50%"
   >
     <el-form :model="addOrUpdateSectionForm" :rules="rules" ref="addOrUpdateSectionForm" label-width="120px">
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="管理机构名称:">
-            <el-select v-model="addOrUpdateSectionForm.organId" placeholder="请选择">
+            <el-select style="width: 180px" v-model="addOrUpdateSectionForm.organId" placeholder="请选择">
               <el-option v-for="item in organList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="所属路线:" >
             <el-input style="width: 180px" v-model="addOrUpdateSectionForm.routeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="路段名称:">
             <el-input style="width: 180px" v-model="addOrUpdateSectionForm.sectionName"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="车道数量:">
             <el-input style="width: 180px" v-model="addOrUpdateSectionForm.lanesNumber"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="起始地点:">
             <el-input style="width: 180px" v-model="addOrUpdateSectionForm.startingPoint"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="结束地点:">
             <el-input style="width: 180px" v-model="addOrUpdateSectionForm.enddingPoint"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="起始桩号:">
             <el-col class="line" :span="1">k</el-col>
-            <el-col  :span="10">
+            <el-col  :span="4">
               <el-form-item prop="startingPileK" label-width="0">
                 <el-input v-model="addOrUpdateSectionForm.startingPileK" v-on:input="value=onlyNum(addOrUpdateSectionForm.startingPileK,1)"></el-input>
               </el-form-item>
             </el-col>
             <el-col class="line" :span="2">+</el-col>
-            <el-col :span="10">
+            <el-col :span="4">
               <el-form-item prop="startingPileM" label-width="0">
               <el-input v-model="addOrUpdateSectionForm.startingPileM" v-on:input="value=onlyNum(addOrUpdateSectionForm.startingPileM,2)"></el-input>
               </el-form-item>
@@ -63,16 +63,16 @@
             <el-col class="line" :span="1">m</el-col>
           </el-form-item>
         </el-col>
-       <el-col :span="10">
+       <el-col :span="12">
           <el-form-item label="结束桩号:">
             <el-col class="line" :span="1">k</el-col>
-            <el-col :span="10">
+            <el-col :span="4">
               <el-form-item prop="enddingPileK" label-width="0">
                 <el-input v-model="addOrUpdateSectionForm.enddingPileK" v-on:input="value=onlyNum(addOrUpdateSectionForm.enddingPileK,3)"></el-input>
               </el-form-item>
             </el-col>
             <el-col class="line" :span="2">+</el-col>
-            <el-col :span="10">
+            <el-col :span="4">
               <el-form-item prop="enddingPileM" label-width="0">
                 <el-input v-model="addOrUpdateSectionForm.enddingPileM" v-on:input="value=onlyNum(addOrUpdateSectionForm.enddingPileM,4)"></el-input>
               </el-form-item>
@@ -82,9 +82,9 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="公路等级:">
-            <el-select v-model="addOrUpdateSectionForm.routeGrade" placeholder="请选择">
+            <el-select style="width: 180px" v-model="addOrUpdateSectionForm.routeGrade" placeholder="请选择">
               <el-option v-for="item in gradeList" :key="item.name" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
@@ -93,7 +93,7 @@
       <el-row>
         <el-col>
           <el-form-item label="备注说明:">
-            <el-input style="width: 445px" v-model="addOrUpdateSectionForm.sectionNote"></el-input>
+            <el-input style="width: 540px" v-model="addOrUpdateSectionForm.sectionNote"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
