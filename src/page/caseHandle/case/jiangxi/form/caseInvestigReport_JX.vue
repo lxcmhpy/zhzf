@@ -41,7 +41,7 @@
             <td>身份证件号</td>
             <td class="color_DBE4EF" colspan="4">
               <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
-                <el-input v-model="formData.partyIdNo" v-bind:class="{ over_flow:formData.partyIdNo && formData.partyIdNo.length>14?true:false }" maxlength="3" placeholder="\" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"></el-input>
+                <el-input v-model="formData.partyIdNo" v-bind:class="{ over_flow:formData.partyIdNo && formData.partyIdNo.length>14?true:false }"  placeholder="\" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"></el-input>
               </el-form-item>
             </td>            
           </tr>
