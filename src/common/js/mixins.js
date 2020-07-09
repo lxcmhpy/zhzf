@@ -332,7 +332,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatas = res.data;
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
-          if (params.linkTypeId == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||params.linkTypeId == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId) { //调查类文书和分期延期缴纳、强制执行
+          if (params.linkTypeId == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||params.linkTypeId == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId || params.linkTypeId ==this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
         },
