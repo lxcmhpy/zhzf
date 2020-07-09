@@ -685,7 +685,7 @@ import iLocalStroage from '@/common/js/localStroage';
                   let len = item.children.length -_this.typeData.length;
                   while (len > 0) {
                       item.children.forEach((obj,i)=> {
-                          if (i > 2) {
+                          if (i > _this.typeData.length-1) {
                               obj.icon='icon_jc1'
                               obj.pLabel = obj.label
                               addChildren(obj);

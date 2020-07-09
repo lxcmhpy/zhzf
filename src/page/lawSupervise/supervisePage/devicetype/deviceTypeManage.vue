@@ -96,22 +96,6 @@ import iLocalStroage from '@/common/js/localStroage';
       }
     },
     data() {
-      var validateNameRepeat = (rule, value, callback) => {
-        let _this = this;
-        findDeviceTypeByName(value).then(
-          res => {
-            if(res.data && res.data.id != _this.addForm.id){
-              callback(new Error('该名称已存在'));
-            }else {
-              callback();
-            }
-              
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      };
       return {
         visible:false,
         formReadOnly:false,
@@ -126,7 +110,6 @@ import iLocalStroage from '@/common/js/localStroage';
             ],
             name: [
                 {required: true, message: "请输入设备类型名称", trigger: "blur"},
-                { validator: validateNameRepeat, trigger: "blur" }
             ]
         },
         tableData: [], //表格数据
@@ -139,19 +122,33 @@ import iLocalStroage from '@/common/js/localStroage';
         let _this = this
         this.$refs[formName].validate(valid => {
           if (valid) {
-            saveOrUpdateDeviceType(_this.addForm).then(
-                res => {
-                  _this.$message({
-                    type: "success",
-                    message:"保存成功!"
+            findDeviceTypeByName(_this.addForm.name).then(
+              res => {
+                if(res.data && res.data.id != _this.addForm.id){
+                   _this.$message({
+                    type: "error",
+                    message:"该名称已存在!"
                   });
-                  _this.visible = false;
-                  _this.getDataList(1);
-                },
-                err => {
-                  console.log(err);
+                }else {
+                  saveOrUpdateDeviceType(_this.addForm).then(
+                    res => {
+                      _this.$message({
+                        type: "success",
+                        message:"保存成功!"
+                      });
+                      _this.visible = false;
+                      _this.getDataList(1);
+                    },
+                    err => {
+                      console.log(err);
+                    }
+                  );
                 }
-              );
+              },
+              err => {
+                console.log(err);
+              }
+            );
           }
         });
       },
