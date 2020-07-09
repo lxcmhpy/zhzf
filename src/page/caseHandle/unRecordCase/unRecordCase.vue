@@ -173,17 +173,6 @@ export default {
           name: this.caseFlowData.basicInfoPage,
         });
         return;
-           
-      //   queryFlowBycaseIdApi(row.id).then(res=>{
-      //     console.log('res111222',res);
-      //     this.infoPage = res.data.basicInfoPage;
-      //     console.log('this.infoPage', this.infoPage);
-      //     this.$router.replace({
-      //       name: this.infoPage,
-      //     });
-      //   return;
-      // }).catch(err=>{console.log(err)})
-        
       }
      
 
@@ -192,9 +181,24 @@ export default {
         this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
       } else {
          //立案登记表已保存未提交审批时 跳转pdf页面
-         
+         let docTypeId,linkId = '';
+         try{
+            this.currentFlow = await queryFlowBycaseIdApi(this.caseId);
+          }catch(err){
+            this.$message('获取案件流程失败！')
+          }
+          if(this.currentFlow.data.flowName == '处罚流程'){
+            docTypeId = this.BASIC_DATA.establish_huanjieAndDocId;
+            linkId = this.BASIC_DATA.establish_caseLinktypeId;
+          }else if(this.currentFlow.data.flowName == '赔补偿流程'){
+            docTypeId = this.BASIC_DATA.establish_huanjieAndDocId;
+            linkId = this.BASIC_DATA.establish_caseLinktypeId;
+          }else if(this.currentFlow.data.flowName == '江西流程'){
+            docTypeId = this.BASIC_DATA_JX.establish_JX_huanjieAndDocId;
+            linkId = this.BASIC_DATA_JX.establish_JX_caseLinktypeId;
+          }
           this.$store.dispatch("getFile", {
-            docId: this.BASIC_DATA_JX.establish_JX_huanjieAndDocId,
+            docId: docTypeId,
             caseId: row.id,
           }).then(res=>{
             console.log('查询环节是否生成了pdf',res);
@@ -202,8 +206,8 @@ export default {
             if(res && res.length >0){
               this.$store.commit('setApprovalState', 'approvalBefore');
               //设置环节id，提交审批时需要用到
-              this.$store.commit("setCaseLinktypeId", '');
-              this.$router.push({ name: 'case_handle_myPDF', params: { docId: this.BASIC_DATA_JX.establish_JX_huanjieAndDocId, } })
+              this.$store.commit("setCaseLinktypeId",linkId );
+              this.$router.push({ name: 'case_handle_myPDF', params: { docId: docTypeId, } })
             }else{
                 //设置案件状态不为审批中
                 this.$store.commit("setCaseApproval", false);

@@ -1,7 +1,7 @@
 
 <template>
   <div class="print_box">
-    <div class="print_info" id="importantCaseTeamDissDoc-print">
+    <div class="print_info" id="forceExecuteDoc-print">
       <el-form :rules="rules" ref="enforceApplicationForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">强制执行申请书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
@@ -36,7 +36,7 @@
               <el-input v-model="formData.applicantTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['applicantTel'])"></el-input>
             </el-form-item>
           </span>
-        </p> 
+        </p>
         <!-- <br> -->
         <p class="p_begin">
           被申请人：
@@ -69,16 +69,17 @@
               <el-input v-model="formData.respondentTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondentTel'])"></el-input>
             </el-form-item>
           </span>
-        </p> 
+        </p>
         <!-- <br>  -->
         <p class="p_begin">
           <span style="font-size:20px;font-weight: 600;">请求事项：</span>
-        </p>       
+        </p>
         <p>
           1、强制执行
           <span>
             <el-form-item prop="executeMatter" style="width: 360px;" :rules="fieldRules('executeMatter',propertyFeatures['executeMatter'])">
-              <el-input v-model="formData.executeMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['executeMatter'])"></el-input>
+<!--              <el-input v-model="formData.executeMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['executeMatter'])"></el-input>-->
+              <el-input :disabled="fieldDisabled(propertyFeatures['executeMatter'])" type="textarea" ref="executeMatter" clearable class="w-120" v-model="formData.executeMatter" size="small"></el-input>
             </el-form-item>
           </span>事项。
         </p>
@@ -86,18 +87,20 @@
           2、其他事项：
           <span>
             <el-form-item prop="otherMatter" style="width: 360px;" :rules="fieldRules('otherMatter',propertyFeatures['otherMatter'])">
-              <el-input v-model="formData.otherMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['otherMatter'])"></el-input>
+<!--              <el-input v-model="formData.otherMatter" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['otherMatter'])"></el-input>-->
+              <el-input :disabled="fieldDisabled(propertyFeatures['otherMatter'])" type="textarea" ref="otherMatter" clearable class="w-120" v-model="formData.otherMatter" size="small"></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           <span style="font-size:20px;font-weight: 600;">事实与理由：</span>
-        </p> 
+        </p>
         <p>
           因被申请人
           <span>
             <el-form-item prop="caseName" style="width: 200px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="formData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+<!--              <el-input v-model="formData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>-->
+              <el-input :disabled="fieldDisabled(propertyFeatures['caseName'])" type="textarea" ref="caseName" clearable class="w-120" v-model="formData.caseName" size="small"></el-input>
             </el-form-item>
           </span>一案，申请人于
           <span>
@@ -126,8 +129,8 @@
               <el-date-picker v-model="formData.reformTime" :disabled="fieldDisabled(propertyFeatures['reformTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
-          </span>前主动履行规定义务，被申请人逾期仍未履行。          
-        </p> 
+          </span>前主动履行规定义务，被申请人逾期仍未履行。
+        </p>
         <p>
           <el-checkbox v-model="formData.checkLaw1"></el-checkbox> 鉴于上述情况，根据《中华人民共和国行政强制法》第五十三条的规定，特申请贵院依法强制执行。
         </p>
@@ -137,14 +140,14 @@
         <!-- <br> -->
         <p>
           此致
-        </p> 
+        </p>
         <p>
           <span>
             <el-form-item prop="courtName" style="width: 200px;" :rules="fieldRules('courtName',propertyFeatures['courtName'])">
               <el-input v-model="formData.courtName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['courtName'])"></el-input>
             </el-form-item>
           </span>人民法院
-        </p> 
+        </p>
         <p class="p_begin">
           <span>附件：</span>
         </p>
@@ -162,7 +165,7 @@
         </p>
         <p class="p_begin">
          5.法律、行政法规规定的其他材料。
-        </p> 
+        </p>
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span>
           <br />
@@ -178,11 +181,11 @@
         </div>
         <div class="notice clear">
           <span>(本文书一式两份：一份存根，一份呈交人民法院。)</span>
-        </div>  
+        </div>
       </el-form>
     </div>
     <casePageFloatBtns :pageDomId="'caseInvest-print'" :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
-    
+
 
   </div>
 </template>
@@ -190,6 +193,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import iLocalStroage from "@/common/js/localStroage";
 // 验证规则
   import {validatePhone, validateIDNumber} from "@/common/js/validator";
 export default {
@@ -222,7 +226,7 @@ export default {
         checkLaw1:'',
         checkLaw2:'',
         courtName:'',
-        
+
         makeDate:''
       },
       handleType: 0, //0  暂存     1 提交
@@ -329,13 +333,32 @@ export default {
   },
   created() {
     this.setFormData();
+  },
+  getDataAfter(){
+      debugger
+      //获取机构详情
+      let params = { id: iLocalStroage.gets("userInfo").organId };
+      let _this = this
+      this.$store.dispatch("getOrganDetail", params).then(
+          res => {
+              console.log("机构", res);
+              let organData = res.data;
+              _this.formData.applicant = organData.contactor||'';
+              _this.formData.applicantManager = organData.account||'';
+              _this.applicantAddress=organData.address||'';
+              _this.applicantTel=organData.telephone||'';
+          },
+          err => {
+              console.log(err);
+          }
+      );
   }
 }
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-#importantCaseTeamDissDoc-print{
+#forceExecuteDoc-print{
    height:1220px;
   .dataTimeReplaceBox{
     position: relative;
@@ -349,7 +372,7 @@ export default {
       position:absolute;
       top:0;
       left:10px;
-    }    
+    }
   }
 }
 </style>

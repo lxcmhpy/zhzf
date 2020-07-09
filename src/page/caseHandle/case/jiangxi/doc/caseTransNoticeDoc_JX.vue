@@ -30,7 +30,16 @@
           </span>将
           <span>
             <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
+<!--              <el-input v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>-->
+              <el-input
+                type="textarea"
+                v-model="docData.caseName"
+                v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
+                :autosize="{ minRows: 1, maxRows: 2}"
+                :maxLength="maxLengthOverLine"
+                style="width:250px;"
+                :disabled="fieldDisabled(propertyFeatures['caseName'])"
+              ></el-input>
             </el-form-item>
           </span>案件依法移送
           <span>
@@ -91,9 +100,10 @@ export default {
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.BASIC_DATA_SYS.assistInvestigation_caseDocTypeId,    //文书类型ID
+        caseDoctypeId: this.BASIC_DATA_JX.caseTransNoticeDoc_JX_caseDocTypeId,    //文书类型ID
         //文书数据
         docData: "",
+        linkTypeId: this.$route.params.caseLinkTypeId, //所属环节的id
         status: "",   //提交状态
       },
       name: '',

@@ -15,7 +15,6 @@
             v-for="tag in item.approveUserVo"
             closable
             :disable-transitions="false"
-            @close="deleteOne(index,tag)"
           >{{tag.userName}}
           </el-tag>
         </div>
@@ -41,7 +40,7 @@
 </template>
 <script>
   import {
-     submitPdfByPersonApi,handleTJApproveDocApi,
+     submitPdfByPersonApi,handleTJApproveDocApi,getLinkTypeInfoByIdApi,
   } from "@/api/caseHandle";
   import {mapGetters} from "vuex";
 
@@ -70,18 +69,13 @@
         let _this = this;
         let data = {
           caseBasicInfoId: this.caseId,
-          // caseLinktypeId:this.caseLinktypeId,
           docTypeId:this.docId
-          // docId:this.docDataId
         }
         console.log('获取审批人员传参',data);
         this.$store.dispatch("getApprovePeople", data).then(
           res => {
             let data = res.data;
             data.splice(0, 1);
-            // let swap = data[1];
-            // data[1] = data[2];
-            // data[2] = swap;
             _this.approvalPeopleList = data;
           },
           err => {
@@ -89,60 +83,43 @@
           }
         );
       },
-      deleteOne(index, tag) {
-        this.approvalPeopleList[index].approveUserVo.splice(this.approvalPeopleList[index].approveUserVo.indexOf(tag), 1);
-      },
-      deleteTwo(tag) {
-        // this.secondApprovePeople.splice(this.secondApprovePeople.indexOf(tag), 1);
-      },
-      submitPdf() {
-        // let data={
-        //   caseId:this.caseInfo.caseId,
-        //   caseLinktypeId:this.caseInfo.caseLinktypeId,
 
-        //   }
+      async submitPdf() {
         let _this = this
-        // let a = {
-        //   approve1: "987964a3772e74aecc173479473f5cf3",
-        //   approve2: "13475aa147aa5766e574b07ddb2b768d"
-        // }
-        // let data = {
-        //   caseId:_this.caseId,
-        //   handlePerson:JSON.stringify(a)
-        // }
-        // this.caseInfo.handlePerson = JSON.stringify(a)
+        let huanjieData='';
+        try{
+          //判断是单文书环节还是文书
+          huanjieData = await getLinkTypeInfoByIdApi(this.caseLinktypeId);
+        }catch(err){
+          _this.$message('判断环节是否生成pdf失败');
+        }
+        console.log('判断环节是否生成pdf',huanjieData)
         let data = {
           caseId: this.caseId,
           caseLinktypeId:this.caseLinktypeId,
-          docId:this.docDataId
+          //单文书环节生成pdf后拿不到docDataId需要给它置空，此时前2个参数必须有值
+          docId: huanjieData.data.isPdf == 0 ? '' : this.docDataId
         }
         console.log('提交审批传的参数', data)
-        handleTJApproveDocApi(data).then(
-          res => {
-            console.log("pdf提交", res);
-            _this.$message({
+        try{
+          await handleTJApproveDocApi(data)
+          _this.$message({
               type: "success",
               message: "提交成功"
-            });
-            _this.$store.dispatch("deleteTabs", _this.$route.name);
-            // _this.$store.commit("setCaseId", _this.caseInfo.caseId);
-            if(this.docDataId){ //环节下的文书提交审批后
-              _this.$router.go(-2)
-            }else{    //单环节文书提交审批后
-              _this.$router.push({
+           });
+        }catch(err){
+          _this.$message('提交失败');
+        }
+        
+        if(huanjieData.data.isPdf == 0){ //环节生成pdf
+           _this.$router.push({
                 name: "case_handle_flowChart"
-              });
-            }
-            
-          },
-          err => {
-            console.log(err);
-          }
-        );
+          });
+        }else{  //1 环节不生成pdf
+          _this.$router.go(-2)
+        }
       }
     }
   };
 </script>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
-/* @import "@/assets/css/caseHandle/index.scss"; */
-</style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>

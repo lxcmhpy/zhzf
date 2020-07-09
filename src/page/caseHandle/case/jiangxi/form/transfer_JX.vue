@@ -312,7 +312,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
-import resetDocDia from '@/page/caseHandle/components/resetDocDia'
+import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import iLocalStroage from "@/common/js/localStroage";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
@@ -350,6 +350,7 @@ export default {
         partyUnitTel: "",
         socialCreditCode: "",
       },
+      isSaveLink: '',
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
@@ -423,7 +424,6 @@ export default {
   methods: {
     //加载表单信息
     setFormData() {
-      console.log("个人企业",this.isParty)
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(this.caseLinkDataForm.caseBasicinfoId, this.caseLinkDataForm.caseLinktypeId, false);
     },
@@ -489,7 +489,7 @@ export default {
         docId: row.docId,
         approvalOver: false,
         hasBack: true,
-        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交 
+        status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
         docDataId:row.docDataId
       }
       this.$store.dispatch("deleteTabs", this.$route.name);

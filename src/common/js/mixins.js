@@ -532,6 +532,7 @@ export const mixinGetCaseApiList = {
         docId: data.docId || ''
       }
       this.$store.commit('setDocId', data.docId);
+      this.$store.commit("setCaseLinktypeId", data.linkID);
       if (data.curLinkState == "complete") {    //已完成文书显示pdf  审核中也显示pdf
         //只是环节文书
         let isHuanjieDoc = false;
@@ -716,6 +717,7 @@ export const mixinGetCaseApiList = {
           console.log(err);
         });
     },
+    
     //获取要跳转的路由
     getCaseNextRoute(name){
       let routeName = '';

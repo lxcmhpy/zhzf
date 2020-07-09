@@ -60,6 +60,7 @@ export default {
       alReadyFinishCoerciveM: false, //解除（延长）强制措施已完成
       measureDateEndTime: '', //解除（延长）强制措施截止时间
       showAdminCoerciveMeasureBtn:false,
+      currentFlow:'',
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -68,19 +69,18 @@ export default {
     async getFlowStatusByCaseId(id) {
       //   console.log(id)
       let _this = this;
-      let currentFlow = '';
+      // let currentFlow = '';
       try{
-        currentFlow = await queryFlowBycaseIdApi(this.caseId);
+        this.currentFlow = await queryFlowBycaseIdApi(this.caseId);
       }catch(err){
         this.$message('获取案件流程失败！')
       }
-      if(currentFlow.data.flowName == '处罚流程'){
+      if(this.currentFlow.data.flowName == '处罚流程'){
          _this.graphData = graphData.commonGraphData;
-      }else if(currentFlow.data.flowName == '赔补偿流程'){
+      }else if(this.currentFlow.data.flowName == '赔补偿流程'){
          _this.graphData = graphData.compensationGraphData;
-      }else if(currentFlow.data.flowName == '江西流程'){
+      }else if(this.currentFlow.data.flowName == '江西流程'){
          _this.graphData = graphData.commonGraphData_JX;
-        _this.showAdminCoerciveMeasureBtn = true;
       }
       // if(this.province == 'BZ'){  //标准版
       //   if(_this.caseFlowData.flowName == "赔补偿流程"){
@@ -104,6 +104,10 @@ export default {
           _this.drawFlowChart()
           //是否显示解除（延长）强制措施按钮
           _this.showRemoveOrExtendBtn(res.data.completeLink);
+          //是否显示行政强制措施按钮
+          if(this.currentFlow.data.flowName == '江西流程'){
+            _this.showAdminCoerciveMeasureBtnByFlow(res.data);
+          }
           //显示强制时间
           _this.getMeasuerTime();
 
@@ -603,26 +607,20 @@ export default {
     },
     //解除或延长强制措施跳转
     showRemoveOrExtend() {
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: 'case_handle_removeOrPrelong' })
+      if(this.currentFlow.data.flowName == '处罚流程'){
+        this.$router.push({ name: 'case_handle_removeOrPrelong' }) 
+      }else if(this.currentFlow.data.flowName == '江西流程'){
+        this.$router.push({ name: 'case_handle_coerciveMeasureDoc_JX' }) 
+      }
     },
     //显示解除或延长强制措施按钮
     showRemoveOrExtendBtn(link) {
       let linkArr = link.split(',');
       //行政强制措施数组
       let adminCoerciveMeasure_caseLinktypeIdArr = [this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId,this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId]
-      // if (linkArr.indexOf(this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId) == -1)
-      //   this.showREBtn = false
-      // else
-      //   this.showREBtn = true
-      
-      // for(let item of adminCoerciveMeasure_caseLinktypeIdArr){
-      //   console.log(item)
-      //   if(linkArr.includes(item)){
-      //     this.showREBtn = true;
-      //     break;
-      //   }
-      // }
+      //解除行政强制措施数组
+      let removeOrPrelong_caseLinktypeIdArr = [this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId,this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId]
+      //是否显示解除行政强制措施按钮
       adminCoerciveMeasure_caseLinktypeIdArr.forEach((item,index)=>{
         if(linkArr.includes(item)){
           this.showREBtn = true;
@@ -632,13 +630,38 @@ export default {
           this.showREBtn = false;
         }
       })
-      
+      //是否显示已解除按钮
+      removeOrPrelong_caseLinktypeIdArr.forEach(item=>{
+        if(linkArr.includes(item)){
+          this.alReadyFinishCoerciveM = true;
+          return
+        }
+      })
 
-      // if (linkArr.indexOf(this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId) == -1)
-      //   this.alReadyFinishCoerciveM = false
-      // else
-      //   this.alReadyFinishCoerciveM = true
-
+    },
+    //显示行政强制措施按钮
+    showAdminCoerciveMeasureBtnByFlow(link){
+      //已完成中有未立案  没有结案登记
+      let completeLink = link.completeLink.split(',');
+      let doingLink = link.doingLink.split(',');
+      //立案登记数组
+      let establish_caseLinktypeIdArr = [this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId];
+      //结案报告数组
+      let finishCaseReport_caseLinktypeIdArr = [this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId];
+      let hasEstablish,hasFinishCaseReport= false;
+      establish_caseLinktypeIdArr.forEach(item=>{
+        if(completeLink.includes(item)){
+          hasEstablish = true;
+          return
+        }
+      })
+      finishCaseReport_caseLinktypeIdArr.forEach(item=>{
+        if(completeLink.includes(item) || doingLink.includes(item)){
+          hasFinishCaseReport = true;
+          return
+        }
+      })
+      if(hasEstablish && !hasFinishCaseReport) this.showAdminCoerciveMeasureBtn = true;
     },
     //获取强制措施时间
     getMeasuerTime() {

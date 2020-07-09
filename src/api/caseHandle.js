@@ -1360,3 +1360,13 @@ export function findApprovingDocApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//根据id查询环节信息 
+export function getLinkTypeInfoByIdApi(id) {
+  return request({
+    url: "/case/caseTemplate/linkType/findById/"+id,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
