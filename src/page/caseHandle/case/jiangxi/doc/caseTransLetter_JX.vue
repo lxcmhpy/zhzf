@@ -6,7 +6,7 @@
         <div class="doc_topic">案件移送函</div>
         <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交移函〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <p class="side_right_indent">
-            
+
             <el-form-item prop="transUnit" :rules="fieldRules('transUnit',propertyFeatures['transUnit'])" style="width: 250px;">
             <el-input
               type="textarea"
@@ -35,17 +35,35 @@
             </el-form-item>
           </span>一案进行调查，在调查中发现
           <el-form-item prop="illegalFacts" :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])">
-              <el-input v-model="docData.illegalFacts" :disabled="fieldDisabled(propertyFeatures['illegalFacts'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
+<!--              <el-input v-model="docData.illegalFacts" :disabled="fieldDisabled(propertyFeatures['illegalFacts'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>-->
+            <el-input
+              type="textarea"
+              v-model="docData.illegalFacts"
+              v-bind:class="{ over_flow:docData.illegalFacts && docData.illegalFacts.length>14?true:false }"
+              :autosize="{ minRows: 1, maxRows: 2}"
+              :maxLength="maxLengthOverLine"
+              style="width:250px;"
+              :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
+            ></el-input>
             </el-form-item>,此案超出本单位管辖范围。现依据
           <span>
             <el-form-item prop="punishLaw" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
-              <el-input v-model="docData.punishLaw" :disabled="fieldDisabled(propertyFeatures['punishLaw'])" :maxLength='maxLength' placeholder="\"></el-input>
+<!--              <el-input v-model="docData.punishLaw" :disabled="fieldDisabled(propertyFeatures['punishLaw'])" :maxLength='maxLength' placeholder="\"></el-input>-->
+              <el-input
+                type="textarea"
+                v-model="docData.punishLaw"
+                v-bind:class="{ over_flow:docData.punishLaw && docData.punishLaw.length>14?true:false }"
+                :autosize="{ minRows: 1, maxRows: 2}"
+                :maxLength="maxLengthOverLine"
+                style="width:250px;"
+                :disabled="fieldDisabled(propertyFeatures['punishLaw'])"
+              ></el-input>
             </el-form-item>
           </span>的规定，将该案移送你单位处理。
         </p>
         <p>
         <el-row>
-          <el-col :span="12">            
+          <el-col :span="12">
               本单位联系人：
               <el-form-item prop="organContactor" :rules="fieldRules('organContactor',propertyFeatures['organContactor'])" style="width: 160px;">
                 <el-input
@@ -57,9 +75,9 @@
                   :disabled="fieldDisabled(propertyFeatures['organContactor'])"
                 ></el-input>
               </el-form-item>
-              <u v-if="lineStyleFlag">{{docData.organContactor}}</u>            
+              <u v-if="lineStyleFlag">{{docData.organContactor}}</u>
           </el-col>
-          <el-col :span="12">            
+          <el-col :span="12">
               联系电话：
               <el-form-item prop="organTel" :rules="fieldRules('organTel',propertyFeatures['organTel'])" style="width: 180px;">
                 <el-input
@@ -79,15 +97,15 @@
           附：
         </p>
         <p class="side_right_indent">
-            1、附件有关材料<el-form-item prop="appendEviAmount" :rules="fieldRules('appendEviAmount',propertyFeatures['appendEviAmount'])" style="width: 50px;">
+            1、附件有关材料<el-form-item prop="amount" :rules="fieldRules('amount',propertyFeatures['amount'])" style="width: 50px;">
             <el-input
               type="textarea"
-              v-model="docData.appendEviAmount"
-              v-bind:class="{ over_flow:docData.appendEviAmount && docData.appendEviAmount.length>14?true:false }"
+              v-model="docData.amount"
+              v-bind:class="{ over_flow:docData.amount && docData.amount.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
               :maxLength="maxLength"
               style="width:50px;"
-              :disabled="fieldDisabled(propertyFeatures['appendEviAmount'])"
+              :disabled="fieldDisabled(propertyFeatures['amount'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
           </el-form-item>份：
@@ -99,7 +117,7 @@
               v-model="docData.appendEvi1"
               v-bind:class="{ over_flow:docData.appendEvi1 && docData.appendEvi1.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
-              :maxLength="maxLength"
+              :maxLength="maxLengthOverLine"
               :disabled="fieldDisabled(propertyFeatures['appendEvi1'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
@@ -112,7 +130,7 @@
               v-model="docData.appendEvi2"
               v-bind:class="{ over_flow:docData.appendEvi2 && docData.appendEvi2.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
-              :maxLength="maxLength"
+              :maxLength="maxLengthOverLine"
               :disabled="fieldDisabled(propertyFeatures['appendEvi2'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
@@ -128,7 +146,7 @@
               v-model="docData.involvedGoods1"
               v-bind:class="{ over_flow:docData.involvedGoods1 && docData.involvedGoods1.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
-              :maxLength="maxLength"
+              :maxLength="maxLengthOverLine"
               :disabled="fieldDisabled(propertyFeatures['involvedGoods1'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
@@ -141,7 +159,7 @@
               v-model="docData.involvedGoods2"
               v-bind:class="{ over_flow:docData.involvedGoods2 && docData.involvedGoods2.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 2}"
-              :maxLength="maxLength"
+              :maxLength="maxLengthOverLine"
               :disabled="fieldDisabled(propertyFeatures['involvedGoods2'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
@@ -191,7 +209,7 @@ export default {
         organContactor:'',
         organTel:'',
         transUnitTel: '',
-        appendEviAmount:'',
+        amount:'',
         appendEvi1:'',
         appendEvi2:'',
         involvedGoods1:'',
@@ -203,9 +221,10 @@ export default {
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.BASIC_DATA_SYS.assistInvestigation_caseDocTypeId,    //文书类型ID
+        caseDoctypeId: this.BASIC_DATA_JX.caseTransLetter_JX_caseDocTypeId,    //文书类型ID
         //文书数据
         docData: "",
+        linkTypeId: this.$route.params.caseLinkTypeId, //所属环节的id
         status: "",   //提交状态
       },
       name: '',
@@ -223,6 +242,16 @@ export default {
         transUnit: [
           { required: true, message: '移送单位必须填写', trigger: 'blur' },
         ],
+        illegalFacts: [
+          { required: true, message: '调查内容必须填写', trigger: 'blur' },
+        ],
+        punishLaw: [
+          { required: true, message: '相关规定必须填写', trigger: 'blur' },
+        ],
+        organContactor: [
+          { required: true, message: '移送机构联系人必须填写', trigger: 'blur' },
+        ],
+
         // transUnitTel: [
         //   { required: true, message: '移送单位联系电话必须填写', trigger: 'blur' },
         //   { validator: validatePhone, trigger: "blur" }

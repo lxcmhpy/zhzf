@@ -413,6 +413,7 @@ export default {
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
+      console.log('询问笔录数据',data)
       //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
       console.log('询问笔录',addMoreData.askData)

@@ -27,13 +27,13 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <!--<el-col :span="12">
+        <el-col :span="12">
           <el-form-item label="公路等级:">
             <el-select style="width:160px" v-model="addOrUpdateRouteForm.routeGrade" placeholder="请选择">
               <el-option v-for="item in gradeList" :key="item.name" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>-->
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">

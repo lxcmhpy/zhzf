@@ -41,7 +41,7 @@
 </template>
 <script>
 import {
-  getAllFlowApi, 
+  getAllFlowApi,
 } from "@/api/system";
 export default {
   data() {
@@ -62,7 +62,7 @@ export default {
       },
       dialogTitle: "", //弹出框title
       handelType: 0, //添加 0  修改2
-      editRoleId:'',
+      editCaseTypeId:'',
       processList:[] //流程列表
     };
   },
@@ -73,7 +73,6 @@ export default {
       let _this = this;
       getAllFlowApi({flowStatus: 0}).then(res=>{
         console.log(res)
-        debugger
          _this.processList = res.data.records;
       })
       // this.$store.dispatch("getAllFlow",{flowStatus: 0}).then(
@@ -105,7 +104,7 @@ export default {
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
-    
+
       this.$refs["addOrUpdateCaseTypeForm"].resetFields();
       console.log('111',this.$refs["addOrUpdateCaseTypeForm"].resetFields());
       this.visible = false;
@@ -119,8 +118,8 @@ export default {
         if (valid) {
           if (_this.handelType) {
             //修改
-            _this.addOrUpdateCaseTypeForm.id= this.editCaseTypeId;
-            _this.addOrUpdateCaseTypeForm.bindProcess= this.bindProcess;
+            _this.addOrUpdateCaseTypeForm.id= _this.editCaseTypeId;
+            _this.addOrUpdateCaseTypeForm.bindProcess= _this.addOrUpdateCaseTypeForm.bindProcessName;
             console.log("要修改的案件类型",_this.addOrUpdateCaseTypeForm);
             _this.$store.dispatch("addOrUpdateCaseType", _this.addOrUpdateCaseTypeForm).then(
               res => {

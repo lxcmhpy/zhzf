@@ -15,7 +15,6 @@
             v-for="tag in item.approveUserVo"
             closable
             :disable-transitions="false"
-            @close="deleteOne(index,tag)"
           >{{tag.userName}}
           </el-tag>
         </div>
@@ -41,8 +40,9 @@
 </template>
 <script>
   import {
-    submitPdfApi, submitPdfByPersonApi
+     submitPdfByPersonApi,handleTJApproveDocApi,getLinkTypeInfoByIdApi,
   } from "@/api/caseHandle";
+  import {mapGetters} from "vuex";
 
   export default {
     data() {
@@ -53,10 +53,11 @@
       };
     },
     inject: ["reload"],
+    computed: {...mapGetters(['caseId','docId','docDataId','caseLinktypeId'])},
     methods: {
       showModal(data) {
         this.visible = true;
-        this.caseInfo = data;
+        // this.caseInfo = data;
         this.getApprovePeople();
       },
       //关闭弹窗的时候清除数据
@@ -65,14 +66,16 @@
       },
       //获取审核人员
       getApprovePeople() {
-        let _this = this
-        this.$store.dispatch("getApprovePeople", this.caseInfo.caseId).then(
+        let _this = this;
+        let data = {
+          caseBasicInfoId: this.caseId,
+          docTypeId:this.docId
+        }
+        console.log('获取审批人员传参',data);
+        this.$store.dispatch("getApprovePeople", data).then(
           res => {
             let data = res.data;
             data.splice(0, 1);
-            // let swap = data[1];
-            // data[1] = data[2];
-            // data[2] = swap;
             _this.approvalPeopleList = data;
           },
           err => {
@@ -80,50 +83,43 @@
           }
         );
       },
-      deleteOne(index, tag) {
-        this.approvalPeopleList[index].approveUserVo.splice(this.approvalPeopleList[index].approveUserVo.indexOf(tag), 1);
-      },
-      deleteTwo(tag) {
-        // this.secondApprovePeople.splice(this.secondApprovePeople.indexOf(tag), 1);
-      },
-      submitPdf() {
-        // let data={
-        //   caseId:this.caseInfo.caseId,
-        //   caseLinktypeId:this.caseInfo.caseLinktypeId,
 
-        //   }
+      async submitPdf() {
         let _this = this
-        let a = {
-          approve1: "987964a3772e74aecc173479473f5cf3",
-          approve2: "13475aa147aa5766e574b07ddb2b768d"
+        let huanjieData='';
+        try{
+          //判断是单文书环节还是文书
+          huanjieData = await getLinkTypeInfoByIdApi(this.caseLinktypeId);
+        }catch(err){
+          _this.$message('判断环节是否生成pdf失败');
         }
-        // let data = {
-        //   caseId:_this.caseId,
-        //   handlePerson:JSON.stringify(a)
-        // }
-        // this.caseInfo.handlePerson = JSON.stringify(a)
-        console.log('传的参数', this.caseInfo)
-        submitPdfApi(this.caseInfo).then(
-          res => {
-            console.log("pdf提交", res);
-            _this.$message({
+        console.log('判断环节是否生成pdf',huanjieData)
+        let data = {
+          caseId: this.caseId,
+          caseLinktypeId:this.caseLinktypeId,
+          //单文书环节生成pdf后拿不到docDataId需要给它置空，此时前2个参数必须有值
+          docId: huanjieData.data.isPdf == 0 ? '' : this.docDataId
+        }
+        console.log('提交审批传的参数', data)
+        try{
+          await handleTJApproveDocApi(data)
+          _this.$message({
               type: "success",
               message: "提交成功"
-            });
-            _this.$store.dispatch("deleteTabs", _this.$route.name);
-            _this.$store.commit("setCaseId", _this.caseInfo.caseId);
-            _this.$router.push({
-              name: "case_handle_flowChart"
-            });
-          },
-          err => {
-            console.log(err);
-          }
-        );
+           });
+        }catch(err){
+          _this.$message('提交失败');
+        }
+        
+        if(huanjieData.data.isPdf == 0){ //环节生成pdf
+           _this.$router.push({
+                name: "case_handle_flowChart"
+          });
+        }else{  //1 环节不生成pdf
+          _this.$router.go(-2)
+        }
       }
     }
   };
 </script>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
-/* @import "@/assets/css/caseHandle/index.scss"; */
-</style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>

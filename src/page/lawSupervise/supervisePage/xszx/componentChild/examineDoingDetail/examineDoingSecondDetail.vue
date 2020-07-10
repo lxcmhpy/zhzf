@@ -63,7 +63,6 @@ export default {
             new Promise((resolve, reject) => {
                 findWeighingRecord(vehicleNumber).then(
                     res => {
-                        debugger;
                         // resolve(res);
                         _this.tableData = res.data;
                         // obj.list = res.data
@@ -80,7 +79,6 @@ export default {
         this.cxVisible = true;
         // '新J35718'
         let aa = this.obj;
-        debugger;
         this.findWeighingRecord(this.obj.vehicleNumber);
     }
 

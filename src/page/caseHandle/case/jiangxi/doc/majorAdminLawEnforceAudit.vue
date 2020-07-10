@@ -1,9 +1,9 @@
 <template>
   <div class="print_box">
     <div class="print_info" style="height: 1200px" id="majorAdminLawEnforceAudit_print">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">重大行政执法决定法制审核表</div>
-        <div class="doc_number">案号：{{formData.caseNumber}}</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table
           class="print_table prolong_table"
           border="1"
@@ -15,7 +15,20 @@
             <td colspan="2">
               <p>案由</p>
             </td>
-            <td colspan="8" class="color_DBE4EF">{{formData.caseName}}</td>
+            <td colspan="8" class="color_DBE4EF">
+              <el-form-item
+                prop="caseName"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.caseName"
+                  v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                  disabled
+                ></el-input>
+              </el-form-item>
+            </td>
           </tr>
           <tr>
             <td rowspan="2" colspan="2">
@@ -23,17 +36,17 @@
             </td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item
-                prop="illegalFacts"
-                :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])"
+                prop="illegalFact"
+                :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.illegalFacts"
-                  v-bind:class="{ over_flow:formData.illegalFacts && formData.illegalFacts.length>14?true:false }"
+                  v-model="docData.illegalFact"
+                  v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
+                  :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -49,8 +62,8 @@
                 :rules="fieldRules('transactor',propertyFeatures['transactor'])"
               >
                 <el-input
-                  v-model="formData.transactor"
-                  v-bind:class="{ over_flow:formData.transactor && formData.transactor.length>14?true:false }"
+                  v-model="docData.transactor"
+                  v-bind:class="{ over_flow:docData.transactor && docData.transactor.length>14?true:false }"
                   :maxlength="nameLength"
                   placeholder="\"
                   :disabled="fieldDisabled(propertyFeatures['transactor'])"
@@ -66,7 +79,7 @@
                 :rules="fieldRules('telephone',propertyFeatures['telephone'],validatePhone)"
               >
                 <el-input
-                  v-model="formData.telephone"
+                  v-model="docData.telephone"
                   maxlength="11"
                   placeholder="\"
                   :disabled="fieldDisabled(propertyFeatures['telephone'])"
@@ -85,8 +98,8 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="formData.closeResult"
-                  v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
+                  v-model="docData.closeResult"
+                  v-bind:class="{ over_flow:docData.closeResult && docData.closeResult.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
@@ -102,9 +115,9 @@
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <p>&nbsp;&nbsp;该案件拟处理意见属重大行政执法决定，特提请法制机构进行法制审核。</p>
               <div class="pdf_seal" style="width:280px">
-                <p>承办机构负责人（签章）：{{formData.secondApprovePeo}}</p>
+                <p>承办机构负责人（签章）：{{docData.secondApprovePeo}}</p>
                 <p>
-                  <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
+                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
@@ -124,7 +137,7 @@
                 :rules="fieldRules('legalAgency',propertyFeatures['legalAgency'])"
               >
                 <!-- <el-checkbox-group
-                  v-model="formData.legalAgency"
+                  v-model="docData.legalAgency"
                   :max="1"
                  
                   :disabled="fieldDisabled(propertyFeatures['legalAgency'])"
@@ -132,7 +145,7 @@
                   <el-checkbox label="是">是</el-checkbox>
                   <el-checkbox label="否">否</el-checkbox>
                 </el-checkbox-group>-->
-                <el-radio-group v-model="formData.legalAgency">
+                <el-radio-group v-model="docData.legalAgency">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -148,7 +161,7 @@
                 prop="enforcePeople"
                 :rules="fieldRules('enforcePeople',propertyFeatures['enforcePeople'])"
               >
-                <el-radio-group v-model="formData.enforcePeople">
+                <el-radio-group v-model="docData.enforcePeople">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -164,7 +177,7 @@
                 prop="lawProcedure"
                 :rules="fieldRules('lawProcedure',propertyFeatures['lawProcedure'])"
               >
-                <el-radio-group v-model="formData.lawProcedure">
+                <el-radio-group v-model="docData.lawProcedure">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -180,7 +193,7 @@
                 prop="caseFacts"
                 :rules="fieldRules('caseFacts',propertyFeatures['caseFacts'])"
               >
-                <el-radio-group v-model="formData.caseFacts">
+                <el-radio-group v-model="docData.caseFacts">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -196,7 +209,7 @@
                 prop="lawRegulations"
                 :rules="fieldRules('lawRegulations',propertyFeatures['lawRegulations'])"
               >
-                <el-radio-group v-model="formData.lawRegulations">
+                <el-radio-group v-model="docData.lawRegulations">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -212,7 +225,7 @@
                 prop="StatutoryAuth"
                 :rules="fieldRules('StatutoryAuth',propertyFeatures['StatutoryAuth'])"
               >
-                <el-radio-group v-model="formData.StatutoryAuth">
+                <el-radio-group v-model="docData.StatutoryAuth">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -228,7 +241,7 @@
                 prop="docSpecification"
                 :rules="fieldRules('docSpecification',propertyFeatures['docSpecification'])"
               >
-                <el-radio-group v-model="formData.docSpecification">
+                <el-radio-group v-model="docData.docSpecification">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -244,7 +257,7 @@
                 prop="selfRights"
                 :rules="fieldRules('selfRights',propertyFeatures['selfRights'])"
               >
-                <el-radio-group v-model="formData.selfRights">
+                <el-radio-group v-model="docData.selfRights">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -260,7 +273,7 @@
                 prop="suspicionCrime"
                 :rules="fieldRules('suspicionCrime',propertyFeatures['suspicionCrime'])"
               >
-                <el-radio-group v-model="formData.suspicionCrime">
+                <el-radio-group v-model="docData.suspicionCrime">
                   <el-radio label="0">是</el-radio>
                   <el-radio label="1">否</el-radio>
                 </el-radio-group>
@@ -278,7 +291,7 @@
                     <el-input
                       class="text_indent11 overflow_lins_textarea"
                       type="textarea"
-                      v-model="formData.auditConclusion"
+                      v-model="docData.auditConclusion"
                       rows="4"
                       maxlength="400"
                       placeholder="\"
@@ -293,9 +306,9 @@
                 </div>
               </div>
               <div class="pdf_seal" style="width:280px">
-                <p>法制审核机构负责人（签章）：{{formData.secondApprovePeo}}</p>
+                <p>法制审核机构负责人（签章）：{{docData.secondApprovePeo}}</p>
                 <p>
-                  <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
+                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
@@ -337,9 +350,9 @@ export default {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
       isOverflow: false,
-      formData: {
+      docData: {
         caseName: "",
-        illegalFacts: "",
+        illegalFact: "",
         transactor: "",
         telephone: "",
         legalAgency: "",
@@ -364,19 +377,16 @@ export default {
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: {
+      caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, //表单类型IDer
-        //表单数据
-        formData: "",
-        status: ""
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        docData: "",
+        status: "", //提交状态
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
-      name: "",
-      illegalFactsEvidence: "",
-      value1: "",
       rules: {
-        illegalFacts: [
+        illegalFact: [
           { required: true, message: "基本违法事实不能为空", trigger: "blur" }
         ],
         transactor: [
@@ -442,55 +452,24 @@ export default {
     };
   },
   methods: {
-    //加载表单信息
-    setFormData() {
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        "",
-        "",
-        //this.caseLinkDataForm.caseBasicinfoId,
-        //this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
-    },
-    saveData(handleType) {
-      //参数  提交类型 、formRef
-      this.com_submitCaseForm(handleType, "docForm", true);
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
-        //caseId: this.caseId, //流程里的案件id
-        caseId: "297708bcd8e80872febb61577329194f", //先写死
-        docId: "5cad5b54eb97a15250672a4c397cee56"
+        caseId: this.caseId,
+        docId: this.$route.params.docId
       };
+      console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
     },
-    // 盖章
-    makeSeal() {
-      console.log("盖章!");
+    //保存文书信息
+    saveData(handleType) {
+      // this.printContent()
+      this.com_addDocData(handleType, "docForm");
     },
-    // 打印
-    print() {
-      console.log("打印!");
-    },
-    // 下划线版本
-    changeLineStyle() {
-      this.lineStyleFlag = true;
-    },
-    goToPfd() {
-      //提交pdf 显示pdf页
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.approvalOver = true;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        true
-      );
-    },
-    isApproval() {
-      //只有审核按钮
-      if (this.$route.params.isApproval) {
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == "1") {
         this.formOrDocData.showBtn = [
           false,
           false,
@@ -499,16 +478,16 @@ export default {
           false,
           false,
           false,
-          true,
           false,
-          false
+          false,
+          true
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     }
   },
-  created() {
-    this.setFormData();
-    this.isApproval();
+  mounted() {
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
   }
 };
 </script>

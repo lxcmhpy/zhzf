@@ -14,6 +14,8 @@ const getters = {
   //案件办理
   caseId:state => state.caseHandle.caseId,
   docId: state => state.caseHandle.docId,
+  docDataId: state => state.caseHandle.docDataId,
+  caseLinktypeId: state => state.caseHandle.caseLinktypeId,
   caseApproval: state => state.caseHandle.caseApproval,
   clickArchiveCatalogue:state => state.caseHandle.clickArchiveCatalogue,
   archiveCatalogueList:state => state.caseHandle.archiveCatalogueList,

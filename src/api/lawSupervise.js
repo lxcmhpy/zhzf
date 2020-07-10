@@ -364,3 +364,16 @@ export function getSiteById(id) {
     cancelToken: setCancelSource()
   });
 }
+
+export function getFileByCaseId(data) {
+  return  request({
+    url:  "/zfjg/sys/file/findByCaseId/"+ data.caseId,
+    method:  "GET",
+    params: data,
+    // contentType: 'multipart/form-data;',
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+    // responseType: 'blob'
+  });
+}

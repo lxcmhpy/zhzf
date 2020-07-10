@@ -30,17 +30,14 @@
         <div>转立案</div>
       </el-button>
     </div>
-    <span :class="$route.name" v-if="statusObj[$route.params.status] === '待审核' || statusObj[$route.params.status] === '已审核'" style="right: 370px;">
-         {{statusObj[$route.params.status]}}
-    </span>
-    <span :class="$route.name" v-else-if="$route.params.status === '2'" style="right: 370px;">
-         {{statusObj[$route.params.status]}}
+    <span :class="$route.name" v-if="$route.params.status === '0' || $route.params.status === '2' || $route.params.status === '3'" style="right: 370px;">
+         {{this.obj.status?this.obj.status:'待审核'}}
     </span>
     <span :class="$route.name" v-else-if="$route.name=='law_supervise_invalidCueDetail'" style="right: 370px;">
          无效
     </span>
     <span :class="$route.name" v-else>
-         {{statusObj[$route.params.status]}}
+         {{this.obj.status}}
     </span>
 
     <div>
@@ -336,23 +333,26 @@ export default {
       // });
     },
     nextRouter() {
-        if (this.$route.params.status == '0') {
-            this.obj.status='审核中'
-            let _this = this;
-            new Promise((resolve, reject) => {
-              debugger
-                saveAndUpdate(_this.obj).then(
-                    res => {
-                        debugger;
-                    },
-                    error => {
-                            return
-                    }
-                )
-            })
-            // return
+      if (this.$route.params.status == '0') {
+        if(this.obj.status){
+          this.pushNext()
+        }else{
+          this.obj.status='审核中'
+          let _this = this;
+          saveAndUpdate(_this.obj).then(
+              res => {
+                _this.pushNext()
+              },
+              error => {
+                      return
+              }
+          )
         }
-
+      }else{
+        this.pushNext()
+      }
+    },
+    pushNext(){
       let nextStatus=parseInt(this.$route.params.status)+1
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',

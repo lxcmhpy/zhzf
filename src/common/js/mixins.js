@@ -1,10 +1,12 @@
 import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,
+  updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,findDocDataByIdApi,
+  updateLinkInfoByCaseIdAndLinkTypeIdApi,findApprovingDocApi,
 } from "@/api/caseHandle";
+import { getFile } from "@/api/upload";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
-
+import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
 export const mixinGetCaseApiList = {
   data() {
     return {
@@ -12,10 +14,12 @@ export const mixinGetCaseApiList = {
       canGoNextLink: false,
       submitApproval: false,
       caseFlowData:'', //案件流程数据（哪个信息采集页、哪个流程图）
+      //立案登记表环节id数组
+      establish_caseLinktypeIdArr:[this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId], 
     }
   },
   computed: {
-    ...mapGetters(['caseId']),
+    ...mapGetters(['caseId','province']),
     // 是否禁用
     fieldDisabled(fieldProperty) {
       return function (fieldProperty) {
@@ -81,6 +85,8 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
           console.log("获取表单详情", res.data);
+        this.$store.commit("setCaseLinktypeId", caseLinktypeId);
+          
           //如果为空，则加载案件信息
           if (res.data == "") {
             this.com_getCaseBasicInfo(caseId, caseLinktypeId);
@@ -133,7 +139,7 @@ export const mixinGetCaseApiList = {
                   message: "保存成功"
                 });
                 //立案登记表提交之后调用更新案件信息的接口
-                if (this.caseLinkDataForm.caseLinktypeId == BASIC_DATA_SYS.establish_caseLinktypeId) {
+                if (this.establish_caseLinktypeIdArr.includes(this.caseLinkDataForm.caseLinktypeId)) {
                   let data = {
                     caseName: this.formData.caseName,
                     caseInfo: this.formData.caseSituation,
@@ -145,11 +151,11 @@ export const mixinGetCaseApiList = {
 
                 if (handleType == 1) {
                   //保存成功
-                  if (hasNextBtn) {    //有下一环节按钮
+                  if (hasNextBtn) {    //直接跳转pdf
                     //提交pdf 显示pdf页
                     this.printContent();
                     this.isSaveLink = true;
-                  } else {   //表单下无文书 无下一环节按钮  直接跳转流程图
+                  } else {   //刷新数据
                     this.reload();
                   }
                 } else if (handleType == 2) {
@@ -202,7 +208,7 @@ export const mixinGetCaseApiList = {
       this.$store.dispatch("submitPdf", data).then(
         res => {
           console.log("更改流程图中的状态", res);
-          this.$store.dispatch("deleteTabs", this.$route.name);
+          // this.$store.dispatch("deleteTabs", this.$route.name);
           this.$router.push({
             name: 'case_handle_flowChart'
           });
@@ -212,79 +218,7 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    //根据环节ID转路由name 跳转
-    // com_getCaseRouteName(caseLinkId) {
-    //   let data = {
-    //     nextLink: '',
-    //     docId: ''
-    //   }
-    //   switch (caseLinkId) {
-    //     case this.BASIC_DATA_SYS.establish_caseLinktypeId:   //立案登记
-    //       data.nextLink = "case_handle_establish";
-    //       data.docId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.caseDoc_caseLinktypeId: //调查类文书
-    //     case this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId:
-    //       data.nextLink = "case_handle_caseDoc";
-    //       break;
-    //     case this.BASIC_DATA_SYS.compensationNote_caseDoctypeId:
-    //       data.nextLink = "case_handle_compensationNotice";
-    //       data.docId = this.BASIC_DATA_SYS.compensationNote_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId:  //赔补偿当事人权利环节
-    //       data.nextLink = "case_handle_compensationPartyRights";
-    //       break;
-    //     case this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId:   //行政强制措施
-    //       data.nextLink = "case_handle_adminCoerciveMeasure";
-    //       data.docId = this.BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId:   //调查报告
-    //       data.nextLink = "case_handle_caseInvestig";
-    //       data.docId = this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId;
-    //       break;
-    //     case "a36b59bd27ff4b6fe96e1b06390d204e":   //案件审核
-    //       data.nextLink = "";
-    //       break;
-    //     case this.BASIC_DATA_SYS.illegalActionForm_caseLinktypeId:   //违法行为通知
-    //       data.nextLink = "case_handle_illegalActionForm";
-    //       data.docId = this.BASIC_DATA_SYS.illegalActionForm_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId:   //责令改正
-    //       data.nextLink = "case_handle_forceCorrect";
-    //       data.docId = this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId;
-    //       break;
-    //     case "a36b59bd27ff4b6fe96e1b06390d204f":   //移交移送
-    //       data.nextLink = "";
-    //       break;
-    //     case this.BASIC_DATA_SYS.noPenalty_caseLinktypeId:   //不予处罚
-    //       data.nextLink = "case_handle_noPenalty";
-    //       break;
-    //     case this.BASIC_DATA_SYS.partyRights_caseLinktypeId:   //当事人权利
-    //       data.nextLink = "case_handle_partyRights";
-    //       break;
-    //     case this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId:   //处罚决定
-    //       data.nextLink = "case_handle_punishDecisionDoc";
-    //       data.docId = this.BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId;
-    //       break;
-    //     case this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId:   //决定执行
-    //       data.nextLink = "case_handle_penaltyExecution";
-    //       break;
-    //     case this.BASIC_DATA_SYS.forceExecute_caseLinktypeId:   //强制执行
-    //       data.nextLink = "case_handle_forceExecute";
-    //       break;
-    //     case this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId:   //结案登记
-    //       data.nextLink = "case_handle_finishCaseReport";
-    //       data.docId = this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId;
-    //       break;
-    //     case "2c9029ee6cac9281016cacab478e0007":   //归档
-    //       data.nextLink = "";
-    //       break;
-    //     case this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId:   //收缴赔补偿款 环节id 
-    //       data.nextLink = "case_handle_payCompensation";
-    //       break;
-    //   }
-    //   return data;
-    // },
+    
     //根据案件ID和文书Id获取数据   文书数据
     com_getDocDataByCaseIdAndDocId(params) {
       let data = {
@@ -348,6 +282,8 @@ export const mixinGetCaseApiList = {
                 }
                 console.log('this.caseDocDataForm.docDataId', this.caseDocDataForm.docDataId)
                 this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+                //保存后提交审批需要id
+                this.$store.commit("setDocDataId", res.data.id);
                 //提交成功后提交pdf到服务器，后打开pdf
                 this.printContent(res.data.id);
               },
@@ -396,7 +332,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatas = res.data;
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
-          if (params.linkTypeId == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||params.linkTypeId == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId) { //调查类文书和分期延期缴纳、强制执行
+          if (params.linkTypeId == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||params.linkTypeId == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId || params.linkTypeId == this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId || params.linkTypeId ==this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
         },
@@ -406,22 +342,35 @@ export const mixinGetCaseApiList = {
       );
     },
     //查看或新增环节下的文书
-    com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
+    async com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
       console.log("新增文书",row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
-        this.$router.push({
-          name: row.path,
-          params: {
-            id: row.id,
-            docId: row.docId,
-            url: this.$route.name,
-            linkTypeId: caseLinkTypeId,
-            addMoreData: JSON.stringify(addMoreData),
-            docDataId: row.docDataId
-          }
-        });
+        //查询是否在审批中
+        let searchApprovalData = {
+          caseBasicInfoId:this.caseId,
+          caseLinktypeId:caseLinkTypeId
+        }
+        let caseIsApprovalingResult = await findApprovingDocApi(searchApprovalData);
+        console.log('caseIsApprovalingResult',caseIsApprovalingResult);
+        if (caseIsApprovalingResult.data) {  //审批中
+          this.$message('有正在审批中的文书,请审批通过后再试！');
+        } else {
+          this.$router.push({
+            name: row.path,
+            params: {
+              id: row.id,
+              docId: row.docId,
+              url: this.$route.name,
+              linkTypeId: caseLinkTypeId,
+              addMoreData: JSON.stringify(addMoreData),
+              docDataId: row.docDataId
+            }
+          });
+        }
+
+        
       } else {
         this.$message('请先保存该环节表单');
       }
@@ -446,10 +395,8 @@ export const mixinGetCaseApiList = {
       console.log('printContent docDataId', docDataId)
       this.uploadFile('', '', docDataId)
     },
-    uploadFile(file, name, docDataId) {
-
+    async uploadFile(file, name, docDataId) {
       let docId = '';  //文书 id
-
       if (this.caseDocDataForm != undefined) {
         // 只是文书
         docId = this.caseDocDataForm.caseDoctypeId;
@@ -461,7 +408,6 @@ export const mixinGetCaseApiList = {
         //即是环节也是文书
         docId = this.huanjieAndDocId;
       }
-
       let caseLinktypeId = ""; //环节id
       if (this.caseLinkDataForm) {
         caseLinktypeId = this.caseLinkDataForm.caseLinktypeId
@@ -469,16 +415,26 @@ export const mixinGetCaseApiList = {
 
       //上传pdf之后显示pdf
       console.log('upload docDataId', docDataId);
-      if (docId == this.BASIC_DATA_SYS.establish_huanjieAndDocId || docId == this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId || docId == this.BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId) {
+      //查询是否需要审批
+      let nowCaseDocdata = '';
+      try{
+        nowCaseDocdata = await findDocDataByIdApi(docId);
+      }catch(err){
+        this.$message('查询是否需要审批失败!')
+      }
+      
+      console.log('nowCaseDocdata',nowCaseDocdata);
+
+      if(nowCaseDocdata.data.isApproval === '0'){ //需要审批
         this.$store.commit('setApprovalState', 'approvalBefore')
-      } else {
+        console.log('需要审批');
+      }else{  //不需要审批
         this.$store.commit('setApprovalState', '')
+        console.log('不需要审批');
       }
       let routerData = {
         docId: docId,
-        // approvalOver: this.approvalOver ? true : false,
         caseLinktypeId: caseLinktypeId, //环节id 立案登记、调查报告 结案报告 提交审批时需要
-        // docDataId: (this.caseDocDataForm && this.caseDocDataForm.docDataId != undefined && this.caseDocDataForm.docDataId) ? this.caseDocDataForm.docDataId : docDataId
         docDataId: this.caseDocDataForm ? docDataId : ''
 
       }
@@ -554,30 +510,39 @@ export const mixinGetCaseApiList = {
       );
     },
     //判断流程图跳转pdf文书还是表单
-    flowShowPdfOrForm(data, flowChartData, caseIsApprovaling) {
+    async flowShowPdfOrForm(data, flowChartData, caseIsApprovaling) {
       console.log(data);
       console.log('flowChartData', flowChartData);
       let completeLinkArr = flowChartData.completeLink.split(',');
-
-      //只是环节
-      let isHuanjieDoc = false;
-      if (data.linkID == this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.caseDoc_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.partyRights_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.noPenalty_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.forceExecute_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId ||data.linkID == this.BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId) {
-        isHuanjieDoc = true;
-      }
-      this.$store.dispatch('deleteTabs', 'case_handle_flowChart');
-      // let data2 = this.com_getCaseRouteName(data.linkID);
       let data2 ={
         nextLink: data.linkName || '',
         docId: data.docId || ''
       }
       this.$store.commit('setDocId', data.docId);
+      this.$store.commit("setCaseLinktypeId", data.linkID);
       if (data.curLinkState == "complete") {    //已完成文书显示pdf  审核中也显示pdf
-        if (!isHuanjieDoc) {
-          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
-        } else {
-          this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
-        }
+        //只是环节文书
+        let isHuanjieDoc = false;
+        //可以通过判断是否生成了pdf判断是单文书表单还是单纯的表单
+        let fielRes = await getFile({docId: data.docId,caseId: this.caseId,});
+        console.log('查询环节是否生成了pdf', fielRes);
+        if (fielRes.data.length > 0) isHuanjieDoc = true;
+        //跳转pdf或表单
+        if (isHuanjieDoc)  this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
+        else this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
       } else if (data.curLinkState == 'unLock') {
+        let updataLinkData = {
+          caseId:this.caseId,
+          linkTypeId:data.linkID
+        }
+        //更改流程图状态
+        try{
+          await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
+        }catch(err){
+          this.$message('更改流程图状态失败！')
+        }
+
+
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
@@ -603,17 +568,7 @@ export const mixinGetCaseApiList = {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
-        //有审批的环节
-        if (data.linkID == BASIC_DATA_SYS.establish_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.caseInvestig_caseLinktypeId || data.linkID == this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
-          if (caseIsApprovaling) {
-            this.$store.commit('setApprovalState', 'submitApproval')
-          } else {
-            this.$store.commit('setApprovalState', 'approvalBefore')
-          }
-          this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId } })
-        } else {
-          this.searchHuanjiePdf(data2, data.linkID);
-        }
+        this.searchHuanjiePdf(data2, data.linkID);
 
       }
     },
@@ -643,19 +598,48 @@ export const mixinGetCaseApiList = {
       })
     },
     //查询环节是否生成了pdf
-    searchHuanjiePdf(data, linkID) {
-      this.$store.dispatch("getFile", {
-        docId: data.docId,
-        caseId: this.caseId,
-      }).then(res => {
-        console.log('查询环节是否生成了pdf', res);
-        if (res && res.length > 0) {
+    async searchHuanjiePdf(data, linkID) {
+      let res = '';
+      try{
+        res = await getFile({docId: data.docId,caseId: this.caseId,});
+      }catch(err){
+        this.$message('查询环节是否生成了pdf失败!')
+      }
+      console.log('查询环节是否生成了pdf', res);
+      
+        if (res.data.length > 0) {
+        
+          let nowCaseDocdata = '';
+          try{
+            nowCaseDocdata = await findDocDataByIdApi(data.docId);
+          }catch(err){
+            this.$message('查询是否需要审批失败!')
+          }
+          console.log('nowCaseDocdata',nowCaseDocdata);
+          if(nowCaseDocdata.data.isApproval === '0'){ //需要审批
+            this.$store.commit('setApprovalState', 'approvalBefore')
+            console.log('需要审批');
+            //查询是否在审批中
+            let searchApprovalData = {
+              caseBasicInfoId:this.caseId,
+              caseLinktypeId:linkID
+            }
+            let caseIsApprovalingResult = await findApprovingDocApi(searchApprovalData);
+            console.log('caseIsApprovalingResult',caseIsApprovalingResult);
+            if (caseIsApprovalingResult.data) {  //审批中
+              this.$store.commit('setApprovalState', 'submitApproval')
+            } else {
+              this.$store.commit('setApprovalState', 'approvalBefore')
+            }
+          }else{  //不需要审批
+            this.$store.commit('setApprovalState', '')
+            console.log('不需要审批');
+          }
           this.$router.push({ name: 'case_handle_myPDF', params: { docId: data.docId, caseLinktypeId: linkID } })
         } else {
           this.$router.push({ name: data.nextLink })
         }
-      })
-        .catch(err => { console.log(err) })
+    
     },
     //查询文书或表单是否禁用及必填等
     searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {
@@ -679,7 +663,7 @@ export const mixinGetCaseApiList = {
             }
           } else {
             for (var key in data) {
-              this.formData[key] = data[key].val;
+              this.formData[key] = data[key].val ? data[key].val : this.formData[key];
             }
             console.log('this.formData', this.formData);
           }
@@ -691,7 +675,7 @@ export const mixinGetCaseApiList = {
             this.docData = JSON.parse(savedData.docData);
           } else {
             for (var key in data) {
-              this.docData[key] = data[key].val || '';
+              this.docData[key] = data[key].val ? data[key].val : this.docData[key];
             }
           }
         }
@@ -719,10 +703,23 @@ export const mixinGetCaseApiList = {
         .catch(err => {
           console.log(err);
         });
-    }
-
-
-
+    },
+    
+    //获取要跳转的路由
+    getCaseNextRoute(name){
+      let routeName = '';
+      let provinceCode = '';
+      if(this.province == 'BZ'){
+        provinceCode = '';
+      }else if(this.province == 'JX'){
+        provinceCode = "_JX"
+      }
+      switch (name){
+        case '立案登记': routeName = 'case_handle_establish' + provinceCode; break;  
+      }
+      console.log('routeName',routeName)
+      return routeName;
+    },
 
   },
   created() {

@@ -12,7 +12,7 @@
         <div class="doc_topic">责令改正违法行为通知书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <p class="partyBox">
-          当事人（个人姓名或单位名称）
+          当事人（监护人）
           <span class="width_file">
             <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
               <el-input
@@ -248,7 +248,7 @@ export default {
         id: "", //修改的时候用
         // caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
         caseBasicinfoId: "",
-        caseLinktypeId: this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId, //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_JX.forceCorrect_JX_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -285,9 +285,10 @@ export default {
         pageDomId: "forceCorrect-print"
       },
       isPdf: "",
-      huanjieAndDocId: this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, //责令改正违法行为通知书的文书id
+      huanjieAndDocId: this.BASIC_DATA_JX.forceCorrect_JX_huanjieAndDocId, //责令改正违法行为通知书的文书id
       isParty: true, //当事人类型为个人
       propertyFeatures:'', //字段属性配置
+      needDealData: true,
     };
   },
   methods: {
@@ -366,6 +367,11 @@ export default {
       this.formData.correctTime = '';
       }
     },
+    getDataAfter(){
+      if(this.caseLinkDataForm.id==''){
+          this.formData.correctWay=[];
+      }
+    }
   },
 
   mounted() {

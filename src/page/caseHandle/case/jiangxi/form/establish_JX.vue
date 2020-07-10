@@ -4,8 +4,8 @@
     <el-button type="primary"  id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
-        <div class="doc_topic">立案登记表</div>
-        <div class="doc_number">赣（{{formData.caseNumber.substring(3,7)}}）交立案〔{{formData.caseNumber.substring(8,13)}}〕号</div>
+        <div class="doc_topic">JX立案登记表</div>
+        <div class="doc_number">赣（{{formData.caseNumber.substring(2,6)}}）交立案〔{{formData.caseNumber.substring(7,12)}}〕号</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>
@@ -318,7 +318,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: BASIC_DATA_SYS.establish_caseLinktypeId, //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_JX.establish_JX_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: "",      
@@ -401,7 +401,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId:'establish-print'
       },
-      huanjieAndDocId: BASIC_DATA_SYS.establish_huanjieAndDocId, //立案登记表的文书id
+      huanjieAndDocId: this.BASIC_DATA_JX.establish_JX_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
       caseSourceText3: "",
@@ -430,6 +430,7 @@ export default {
   methods: {
     setData() {
       console.log('setData');
+      this.$store.commit("setCaseLinktypeId",this.BASIC_DATA_JX.establish_JX_caseLinktypeId);
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(
         this.caseLinkDataForm.caseBasicinfoId,
@@ -473,7 +474,7 @@ export default {
       let data = {
         id: this.caseId
       };
-      this.$store.dispatch("getCaseBasicInfo", data)
+      this.$store.dispatch("getCaseBasicInfo", data) 
       .then(
         res => {
           console.log('获取案件信息', res);
