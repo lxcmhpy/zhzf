@@ -538,7 +538,7 @@ export default {
         resLength: 0,
         partySex:'',
         partyAddress:'',
-        partyZipCode:''
+        caseSituation: ''
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -613,6 +613,9 @@ export default {
         ],
         resLength: [
             {validator: validateEvidencLength, trigger: "blur"}
+        ],
+        caseSituation: [
+          { required: true, message: "案件基本情况不能为空", trigger: "blur" }
         ],
       },
       isParty: true, //当事人类型为个人
