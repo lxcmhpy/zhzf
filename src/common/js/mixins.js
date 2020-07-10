@@ -663,7 +663,7 @@ export const mixinGetCaseApiList = {
             }
           } else {
             for (var key in data) {
-              this.formData[key] = data[key].val;
+              this.formData[key] = data[key].val ? data[key].val : this.formData[key];
             }
             console.log('this.formData', this.formData);
           }
@@ -675,7 +675,7 @@ export const mixinGetCaseApiList = {
             this.docData = JSON.parse(savedData.docData);
           } else {
             for (var key in data) {
-              this.docData[key] = data[key].val || '';
+              this.docData[key] = data[key].val ? data[key].val : this.docData[key];
             }
           }
         }
