@@ -515,7 +515,7 @@
                             <td class="color_ff w-1">所属执法机构</td>
                             <td>{{siteInfo.organName?siteInfo.organName:'/'}}</td>
                             <td class="color_ff w-1">处理状态</td>
-                            <td>待审核</td>
+                            <td>{{obj.status?obj.status:'待审核'}}</td>
                         </tr>
                     </table>
                 </div>
