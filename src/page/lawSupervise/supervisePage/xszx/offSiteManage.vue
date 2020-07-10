@@ -33,10 +33,11 @@
               <el-select v-model="form.vehicleColor" placeholder="请选择">
                 <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item label=" " label-width="0px" prop="vehicleNumber">
               <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
             </el-form-item>
+            <!-- <el-form-item label=" " label-width="0px" prop="vehicleNumber">
+              
+            </el-form-item> -->
             <el-form-item label="超限率" prop="overload">
               <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
               <el-select v-model="form.overload" placeholder="请选择">

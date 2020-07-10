@@ -26,7 +26,7 @@
           </span>
         </p>
         <!-- 多行样式 -->
-        <p>经调查，你（单位）存在下列违法事实：</p>
+        <p>经调查，你（单位）（监护人）存在下列违法事实：</p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
@@ -64,9 +64,22 @@
           </span>的规定，现责令你（单位）
         </p>
         <el-form-item prop="correctWay" :rules="fieldRules('correctWay',propertyFeatures['correctWay'])">
-          <el-checkbox-group v-model="formData.correctWay" @change="changeCorrectWay">
+          <el-checkbox-group :max="1" v-model="formData.correctWay" @change="changeCorrectWay">
             <p>&nbsp;&nbsp;
-              <el-checkbox label="1">立即予以改正。</el-checkbox>
+              <el-checkbox label="1"> <span>立即予以</span>
+                <!--<span contenteditable="true">
+                    <el-form-item prop="behavior" style="width:300px;margin-top:-8px;" :rules="fieldRules('behavior',propertyFeatures['behavior'])">
+                      <el-input
+                        type="textarea"
+                        v-model="formData.behavior"
+                        :disabled=" formData.correctWay != 1 ? false : true"
+                        v-bind:class="{ over_flow:formData.behavior.length>12?true:false }"
+                        :autosize="{ minRows: 1, maxRows: 3}"
+                        :maxLength="maxLength"
+                      ></el-input>
+                    </el-form-item>
+                  </span>-->
+              </el-checkbox>
             </p>
             <p>&nbsp;&nbsp;
               <el-checkbox label="2">
@@ -76,7 +89,7 @@
                     <el-date-picker
                       v-model="formData.correctTime"
                       type="date"
-                      :disabled=" formData.correctWay == 1 ?true : false"
+                      :disabled="formData.correctWay != 2 ? true:false"
                       format="yyyy年MM月dd日"
                       placeholder="    年  月  日"
                        value-format="yyyy-MM-dd"
@@ -89,7 +102,7 @@
                       <el-input
                         type="textarea"
                         v-model="formData.correctMeasure"
-                        :disabled=" formData.correctWay == 1 ?true : false"
+                        :disabled=" formData.correctWay != 2 ?true:false"
                         v-bind:class="{ over_flow:formData.correctMeasure.length>12?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxLength="maxLength"
@@ -105,10 +118,11 @@
                       <el-input
                         type="textarea"
                         v-model="formData.otherMeasure"
+                        :disabled=" formData.correctWay != 3 ?true:false"
                         v-bind:class="{ over_flow:formData.otherMeasure.length>12?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxLength="maxLength"
-                        :disabled="fieldDisabled(propertyFeatures['otherMeasure'])"
+
                       ></el-input>
                     </el-form-item>
                   </span>
@@ -239,7 +253,8 @@ export default {
         makeDate: "",
         caseName:'',
         correctMeasure:'',
-        otherMeasure:''
+        otherMeasure:'',
+        behavior:''
       },
       reconsiderationOptions: [], //行政复议机构
       enforcementOptions: [], //行政诉讼机构
