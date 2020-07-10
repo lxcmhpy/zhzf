@@ -89,7 +89,7 @@
                     <el-date-picker
                       v-model="formData.correctTime"
                       type="date"
-                      :disabled="formData.correctWay != 2 ? false : true"
+                      :disabled="formData.correctWay != 2 ? true:false"
                       format="yyyy年MM月dd日"
                       placeholder="    年  月  日"
                        value-format="yyyy-MM-dd"
@@ -102,7 +102,7 @@
                       <el-input
                         type="textarea"
                         v-model="formData.correctMeasure"
-                        :disabled=" formData.correctWay != 2 ?false : true"
+                        :disabled=" formData.correctWay != 2 ?true:false"
                         v-bind:class="{ over_flow:formData.correctMeasure.length>12?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxLength="maxLength"
@@ -118,7 +118,7 @@
                       <el-input
                         type="textarea"
                         v-model="formData.otherMeasure"
-                        :disabled=" formData.correctWay != 3 ?false : true"
+                        :disabled=" formData.correctWay != 3 ?true:false"
                         v-bind:class="{ over_flow:formData.otherMeasure.length>12?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxLength="maxLength"
