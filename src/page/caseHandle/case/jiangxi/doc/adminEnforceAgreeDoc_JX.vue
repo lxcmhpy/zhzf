@@ -18,9 +18,9 @@
               <el-input v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>做出了编号为：
-          <el-form-item prop="caseNumber" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
-              <el-input v-model="docData.caseNumber" :disabled="fieldDisabled(propertyFeatures['caseNumber'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
-            </el-form-item>的行政强制执行协议书，根据《中华人民共和国行政强
+          <el-form-item prop="caseNumber1" :rules="fieldRules('caseNumber1',propertyFeatures['caseNumber1'])">
+              <el-input v-model="docData.caseNumber1" :disabled="fieldDisabled(propertyFeatures['caseNumber1'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
+            </el-form-item>的行政强制执行决定书，根据《中华人民共和国行政强
             制法》第四十二条的规定，在不损害公共利益和他人合法利益的情况下，与当事人
           <span>
             <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])" style="width: 180px;">
@@ -46,7 +46,7 @@
               :disabled="fieldDisabled(propertyFeatures['partyIdNo'])"
             ></el-input>
           </el-form-item>达成以下执行协议：
-        </p>        
+        </p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="agreeMent1" :rules="fieldRules('agreeMent1',propertyFeatures['agreeMent1'])">
@@ -59,7 +59,7 @@
                 :disabled="fieldDisabled(propertyFeatures['investQagreeMent1uestion'])"
               ></el-input>
               <span class="overflow_describe">1、</span>
-              <span class="span_bg span_bg_top">&nbsp;</span> 
+              <span class="span_bg span_bg_top">&nbsp;</span>
               <span
                 v-for="item in overFlowEditList"
                 :key="item.id"
@@ -80,7 +80,7 @@
                 :disabled="fieldDisabled(propertyFeatures['agreeMent2'])"
               ></el-input>
               <span class="overflow_describe">2、</span>
-              <span class="span_bg span_bg_top">&nbsp;</span> 
+              <span class="span_bg span_bg_top">&nbsp;</span>
               <span
                 v-for="item in overFlowEditList"
                 :key="item.id"
@@ -88,7 +88,7 @@
               >&nbsp;</span>
             </el-form-item>
           </div>
-        </div>       
+        </div>
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
@@ -129,13 +129,14 @@ export default {
         agreeMent1:'',
         agreeMent2:'',
         makeDate: '',
+        caseNumber1: ''
       },
       lineStyleFlag: false,
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.BASIC_DATA_SYS.assistInvestigation_caseDocTypeId,    //文书类型ID
+        caseDoctypeId: this.BASIC_DATA_JX.adminEnforceAgreeDoc_JX_caseDocTypeId,    //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
@@ -155,6 +156,15 @@ export default {
         ],
         caseNumber: [
           { required: true, message: '案件编号必须填写', trigger: 'blur' },
+        ],
+        party: [
+            { required: true, message: '当事人必须填写', trigger: 'blur' },
+        ],
+        partyIdNo: [
+            { required: true, message: '身份证号必须填写', trigger: 'blur' },
+        ],
+        agreeMent1: [
+            { required: true, message: '协议内容必须填写', trigger: 'blur' },
         ],
       },
       nameLength: 23,

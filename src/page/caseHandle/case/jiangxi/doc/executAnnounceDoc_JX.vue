@@ -27,9 +27,6 @@
               <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>。
-        </p>
-
-        <p>
           依据《中华人民共和国行政强制法》第四十四条的规定，现责令当事人
           <span>
             <el-form-item prop="party">
