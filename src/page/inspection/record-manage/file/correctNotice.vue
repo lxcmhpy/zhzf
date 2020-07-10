@@ -107,6 +107,7 @@ import { mapGetters } from "vuex";
 import xzjcDocFloatBtns from "../writeRecordCompoments/xzjcDocFloatBtns.vue";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
+import { approvalPdfApi } from "@/api/caseHandle";
 export default {
   components: {
     xzjcDocFloatBtns
@@ -206,12 +207,20 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
-      getDocumentById(this.$route.query.id).then(
+      getDocumentById(this.$route.params.id).then(
         res => {
           if (res.code == 200) {
             this.docData = res.data
-            this.formData=JSON.parse(this.docData.docContent)
-            this.formData.party=this.docData.party
+            if (this.docData.docContent) {
+              this.formData = JSON.parse(this.docData.docContent)
+            }
+            if (!this.formData.party) {
+              console.log('this.formData.party', this.formData.party)
+              console.log('this.docData.party', this.docData.party)
+              debugger
+              this.formData.party = this.docData.party
+
+            }
             console.log('this.formData', this.formData)
           } else {
             this.$message.error(res.msg);
@@ -227,8 +236,8 @@ export default {
       // this.printContent();
       this.formData.status = '未完成'
       // this.formData.updateTime = this.formData.updateTime = new Date()
-      // this.docData.orderId = this.$route.query.id
-      // this.docData.templateId = this.$route.query.id
+      // this.docData.orderId = this.$route.params.id
+      // this.docData.templateId = this.$route.params.id
       console.log(this.formData)
       console.log(this.docData)
       debugger
@@ -244,6 +253,18 @@ export default {
             // this.$emit("getAddModle", 'sucess');
             // this.resetForm('formData')
             // this.newModleTable = false;
+            // 保存到pdf服务器
+            this.$router.push({
+              name: "case_handle_myPDF",
+              params: { docId: docId, isApproval: true }
+            });
+            if (handleType == 1) {
+              // 隐藏保存、签章按钮，显示撤销、删除按钮
+              this.$set(this.formOrDocData.showBtn, 5, false)
+              this.$set(this.formOrDocData.showBtn, 1, false)
+              this.$set(this.formOrDocData.showBtn, 2, true)
+              this.$set(this.formOrDocData.showBtn, 4, true)
+            }
           } else {
             this.$message.error(res.msg);
           }

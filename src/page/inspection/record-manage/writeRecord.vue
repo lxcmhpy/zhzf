@@ -132,6 +132,7 @@ export default {
       isTransferName: '',
       viewFlag: false,
       globalId: '563',
+      savePartyNameId: '',//存储当事人字段的id(字段名)
     }
   },
   components: {
@@ -323,8 +324,11 @@ export default {
       this.formData.organId = iLocalStroage.gets("userInfo").organId;
       this.formData.userId = iLocalStroage.gets("userInfo").id;
 
-      //文书带入值信息
-      this.formData.party='111' 
+      //文书带入当事人字段信息
+      // this.formData.party = '111'
+      this.formData.party = this.$data.$f.getValue(this.savePartyNameId)
+      console.log(this.formData.party)
+      debugger
       // 当事人信息和企业信息选项的值
       this.formData.objectType = this.$data.$f.getValue('personOrParty')
       delete (this.formData["pictureList"]);
@@ -477,15 +481,15 @@ export default {
     isEdit() {
       console.log('rule', this.rule)
       this.$data.$f.resetFields()
-      if (this.$route.query.id) {
-        if (this.$route.query.addOrEiditFlag == 'edit' && !this.isCopyStyle) {
+      if (this.$route.params.id) {
+        if (this.$route.params.addOrEiditFlag == 'edit' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
               props: { disabled: true }
             }, true);
           });
-        } else if (this.$route.query.addOrEiditFlag == 'view' && !this.isCopyStyle) {
+        } else if (this.$route.params.addOrEiditFlag == 'view' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
@@ -914,6 +918,10 @@ export default {
             this.LawOfficerCard = item.id;
           }
         }
+
+        if (item.field == 'party') {
+          this.savePartyNameId = item.id;// 执企业组织信息员字段名
+        }
       });
       this.$nextTick(() => {
         this.isEdit()
@@ -1071,21 +1079,21 @@ export default {
     },
   },
   mounted() {
-    console.log('id', this.$route.query.id)
-    this.addOrEiditFlag = this.$route.query.addOrEiditFlag
-    if (this.$route.query.id) {
-      if (this.$route.query.addOrEiditFlag == 'add') {
-        this.modleId = this.$route.query.id
+    console.log('id', this.$route.params.id)
+    this.addOrEiditFlag = this.$route.params.addOrEiditFlag
+    if (this.$route.params.id) {
+      if (this.$route.params.addOrEiditFlag == 'add') {
+        this.modleId = this.$route.params.id
         this.findDataByld()
       } else
-        if (this.$route.query.addOrEiditFlag == 'edit') {
-          this.recordId = this.$route.query.id;
+        if (this.$route.params.addOrEiditFlag == 'edit') {
+          this.recordId = this.$route.params.id;
           this.findRecordDataByld()
-        } else if (this.$route.query.addOrEiditFlag == 'view') {
-          this.recordId = this.$route.query.id;
+        } else if (this.$route.params.addOrEiditFlag == 'view') {
+          this.recordId = this.$route.params.id;
           this.viewRecord()
-        } else if (this.$route.query.addOrEiditFlag == 'temporary') {
-          this.recordId = this.$route.query.id;
+        } else if (this.$route.params.addOrEiditFlag == 'temporary') {
+          this.recordId = this.$route.params.id;
           this.findRecordDataByld()
         }
     }
