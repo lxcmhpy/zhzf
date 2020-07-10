@@ -22,26 +22,26 @@ export default  [
             },
             {
                 // 写记录
-                path: "/writeRecordInfo",
+                path: "/writeRecordInfo/id=:id&addOrEiditFlag=:addOrEiditFlag",
                 name: "inspection_writeRecordInfo",
                 meta: {
                 title: "写记录",
-                oneTab:true,
+                // oneTab:true,
                 },
                 component: () => import("@/page/inspection/record-manage/writeRecord.vue"),
-                props: (route) => ({ query: route.query.q })
+                // props: (route) => ({ query: route.query.q })
             },
-            {
-                // 写记录
-                path: "/writeRecordInfos",
-                name: "inspection_writeRecordInfos",
-                meta: {
-                title: "写记录",
-                oneTab:true,
-                },
-                component: () => import("@/page/inspection/record-manage/writeRecord.vue"),
-                props: (route) => ({ query: route.query.q })
-            },
+            // {
+            //     // 写记录
+            //     path: "/writeRecordInfos",
+            //     name: "inspection_writeRecordInfos",
+            //     meta: {
+            //     title: "写记录",
+            //     oneTab:true,
+            //     },
+            //     component: () => import("@/page/inspection/record-manage/writeRecord.vue"),
+            //     props: (route) => ({ query: route.query.q })
+            // },
             {
                 path: "/recordList",
                 name: "inspection_recordList",
@@ -83,7 +83,7 @@ export default  [
             },
             {
                 // 文书-列表
-                path: "/inspectionFiles",
+                path: "/inspectionFiles/id=:id",
                 name: "inspection_inspectionFiles",
                 meta: {
                 title: "文书列表",
