@@ -32,6 +32,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
+import {changeFileStatus} from "@/api/Record";
 
 export default {
   data() {
@@ -154,8 +155,10 @@ export default {
         var string = test.split("/");
         var path = string[0] + "//" + string[2] + "/";
         // path +
-        // var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0]
-        var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=http://172.16.170.54:9332/14,1e646f991823"
+        console.log('_this.storagePath', _this.storagePath)
+        debugger
+        var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath
+        // var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=http://172.16.170.54:9332/14,205ca69bdf11"
         console.log(ActivexURL);
         _this.makeSealStr = ActivexURL;
         window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
@@ -182,14 +185,38 @@ export default {
       this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {
-      this.$emit('saveData', handleType);
-      // if (handleType == 1) {
-      //   // 隐藏保存、签章按钮，显示撤销、删除按钮
-      //   this.$set(this.formOrDocData.showBtn, 5, false)
-      //   this.$set(this.formOrDocData.showBtn, 1, false)
-      //   this.$set(this.formOrDocData.showBtn, 2, true)
-      //   this.$set(this.formOrDocData.showBtn, 4, true)
-      // }
+      // debugger
+      if (handleType == 1) {
+        // 保存
+        // 隐藏保存、签章按钮，显示撤销、删除按钮
+        // this.$emit('saveDataStatus', handleType);
+        debugger
+        console.log(this.$route.params)
+        // 保存-修改状态
+        changeFileStatus(this.$route.params.docId).then(
+          res => {
+            if (res.code == 200) {
+              if (handleType == 1) {
+                this.storagePath = res.data.storagePath
+                // 隐藏保存、签章按钮，显示撤销、删除按钮
+                this.$set(this.formOrDocData.showBtn, 5, false)
+                this.$set(this.formOrDocData.showBtn, 1, false)
+                this.$set(this.formOrDocData.showBtn, 2, true)
+                this.$set(this.formOrDocData.showBtn, 4, true)
+
+              }
+            } else {
+              this.$message.error(res.msg);
+            }
+          },
+          error => {
+
+          })
+        // this.$set(this.formOrDocData.showBtn, 5, false)
+        // this.$set(this.formOrDocData.showBtn, 1, false)
+        // this.$set(this.formOrDocData.showBtn, 2, true)
+        // this.$set(this.formOrDocData.showBtn, 4, true)
+      }
     },
     getFile() {
       this.$store.dispatch("getFile", {

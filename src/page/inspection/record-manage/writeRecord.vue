@@ -34,7 +34,7 @@
           <i class="iconfont law-icon_zancun1"></i>
           <br />暂存
         </el-button>
-        <el-button type="primary" @click="saveRecord()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
+        <el-button type="primary" @click="openFileDialog()" v-if="addOrEiditFlag=='add'||addOrEiditFlag=='temporary'">
           <i class="iconfont law-icon_baocun1"></i>
           <br />保存
         </el-button>
@@ -48,6 +48,20 @@
       <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
 
     </div>
+    <el-dialog title="提示" :visible.sync="fileVisible" width="30%">
+      <el-form ref="fileForm" :model="fileForm" label-width="80px" :rules="fileRules">
+        <el-form-item prop="fileSaveType">
+          <el-radio-group v-model="fileForm.fileSaveType">
+            <el-radio :value='1' label="完成记录表单，立即保存" style="width:100%;margin-bottom:20px"></el-radio>
+            <el-radio value='2' label="完成记录表单，继续进行文书填报" style="width:100%"></el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="fileVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveRecordFileType('fileForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -133,6 +147,15 @@ export default {
       viewFlag: false,
       globalId: '563',
       savePartyNameId: '',//存储当事人字段的id(字段名)
+      fileVisible: false,
+      fileForm: {
+        fileSaveType: ''
+      },
+      fileRules: {
+        fileSaveType: [
+          { required: true, message: '请选择', trigger: 'blur' }
+        ]
+      }
     }
   },
   components: {
@@ -259,13 +282,28 @@ export default {
         })
 
     },
+    openFileDialog() {
+      this.fileVisible = true
+    },
+    saveRecordFileType(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log(this.fileForm.fileSaveType)
+          this.fileVisible = false
+          this.saveRecord(this.fileForm.fileSaveType)
+        } else {
+
+          return false;
+        }
+      });
+    },
     // 保存
-    saveRecord() {
+    saveRecord(fileSaveType) {
       this.formData.status = '保存';
       this.$data.$f.validate((valid, object) => {
         if (valid) {
           // alert(JSON.stringify(formData));
-          this.submitMethod()
+          this.submitMethod(fileSaveType)
         } else {
           // 验证不通过，定位
           setTimeout(() => {
@@ -297,7 +335,7 @@ export default {
       })
     },
     // 提交方法
-    submitMethod() {
+    submitMethod(fileSaveType) {
       console.log("formData", this.formData)
       let submitData = JSON.parse(JSON.stringify(this.baseData))
       let submitList = []
@@ -328,7 +366,7 @@ export default {
       // this.formData.party = '111'
       this.formData.party = this.$data.$f.getValue(this.savePartyNameId)
       console.log(this.formData.party)
-      debugger
+      // debugger
       // 当事人信息和企业信息选项的值
       this.formData.objectType = this.$data.$f.getValue('personOrParty')
       delete (this.formData["pictureList"]);
@@ -351,6 +389,14 @@ export default {
               }, true);
             });
             this.formOrDocData.pageDomId = res.data
+
+            // 判断跳转1还是继续作文书2
+            if (fileSaveType == '完成记录表单，立即保存') {
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$router.push({
+                name: 'inspection_recordList',
+              });
+            }
 
           } else {
             this.$message.error(res.msg);
@@ -447,7 +493,7 @@ export default {
         type: "warning"
       }).then(() => {
         this.isCopyStyle = true;//变颜色
-        debugger
+        // debugger
         this.addOrEiditFlag = 'add'
         this.formData.id = ''
         this.formData.createTime = ''
@@ -522,6 +568,15 @@ export default {
       this.findDataByld()
       this.isChangeModle = false
       this.personPartyFlag = false
+
+      let params = this.$router.history.current.params;
+      let path = this.$router.history.current.path;
+      //对象的拷贝-替换地址栏id
+      let newParams = JSON.parse(JSON.stringify(params));
+      newParams.id = data.id;
+      newParams.addOrEiditFlag = 'add';
+
+      this.$router.push({ path, params: newQuery });
     },
     // 匹配数据格式
     dealFormData(viewFlag) {

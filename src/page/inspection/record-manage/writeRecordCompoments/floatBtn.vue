@@ -63,14 +63,20 @@ export default {
     },
     // 文书列表
     writeDoc() {
-      console.log('点击',this.formOrDocData.pageDomId)
-      if (this.formOrDocData.pageDomId||this.$route.params.addOrEiditFlag!='add') {
+      console.log('点击', this.formOrDocData.pageDomId)
+      if (this.formOrDocData.pageDomId || this.$route.params.addOrEiditFlag != 'add') {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: 'inspection_inspectionFiles',
           params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
           // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
         });
+      } else {
+        this.$confirm('请先保存记录', "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => { })
       }
 
     },

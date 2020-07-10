@@ -333,3 +333,16 @@ export function getTemplateDocList(data) {
         cancelToken: setCancelSource()
     });
 }
+//修改文书状态
+export function changeFileStatus(data) {
+    // data = vm.$qs.stringify(data);
+    return request({
+        url:"/xzjc/document/updateDocStatus/"+data,
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

@@ -16,8 +16,8 @@
         <p>经调查，你（单位）存在下列违法事实：</p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="illegalFact" :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])">
-              <el-input :disabled="fieldDisabled(propertyFeatures['illegalFact'])" class="overflow_lins_textarea" type="textarea" v-model="formData.illegalFact" rows="3" maxlength="75"></el-input>
+            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+              <el-input :disabled="fieldDisabled(propertyFeatures['caseName'])" class="overflow_lins_textarea" type="textarea" v-model="formData.caseName" rows="3" maxlength="75"></el-input>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
@@ -95,19 +95,20 @@
         </div>
       </el-form>
     </div>
-    <xzjcDocFloatBtns :pageDomId="'forceCorrect-print'" :formOrDocData="formOrDocData" @saveData="saveData"></xzjcDocFloatBtns>
+    <xzjcDocFloatBtns :pageDomId="'forceCorrect-print'" :formOrDocData="formOrDocData" @saveData="saveData" @saveDataStatus='saveDataStatus'></xzjcDocFloatBtns>
     <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
     </el-alert>-->
   </div>
 </template>
 <script>
-import { saveOrUpdateDocument, getDocumentById, findMyRecordByIdApi } from "@/api/Record";
+import { saveOrUpdateDocument, getDocumentById, findMyRecordByIdApi ,changeFileStatus} from "@/api/Record";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import xzjcDocFloatBtns from "../writeRecordCompoments/xzjcDocFloatBtns.vue";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
 import { approvalPdfApi } from "@/api/caseHandle";
+import recordListVue from '../recordList.vue';
 export default {
   components: {
     xzjcDocFloatBtns
@@ -138,6 +139,7 @@ export default {
         // partyManager: "",
         punishLaw: "",
         illegalLaw: "",
+        illegalFact: "",//必须保留此字段
         // tempPunishAmount: "",
         // socialCreditCode: "",
         // illegalFactsEvidence: "",
@@ -207,28 +209,31 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
-      getDocumentById(this.$route.params.id).then(
-        res => {
-          if (res.code == 200) {
-            this.docData = res.data
-            if (this.docData.docContent) {
-              this.formData = JSON.parse(this.docData.docContent)
-            }
-            if (!this.formData.party) {
-              console.log('this.formData.party', this.formData.party)
-              console.log('this.docData.party', this.docData.party)
-              debugger
-              this.formData.party = this.docData.party
+      if (this.$route.params.id) {
+        getDocumentById(this.$route.params.id).then(
+          res => {
+            if (res.code == 200) {
+              this.docData = res.data
+              if (this.docData.docContent) {
+                this.formData = JSON.parse(this.docData.docContent)
+              }
+              if (!this.formData.party) {
+                console.log('this.formData.party', this.formData.party)
+                console.log('this.docData.party', this.docData.party)
+                debugger
+                this.formData.party = this.docData.party
 
+              }
+              console.log('this.formData', this.formData)
+            } else {
+              this.$message.error(res.msg);
             }
-            console.log('this.formData', this.formData)
-          } else {
-            this.$message.error(res.msg);
-          }
-        },
-        error => {
+          },
+          error => {
 
-        })
+          })
+
+      }
     },
     // 提交表单
     saveData(handleType) {
@@ -254,16 +259,43 @@ export default {
             // this.resetForm('formData')
             // this.newModleTable = false;
             // 保存到pdf服务器
+            debugger
             this.$router.push({
-              name: "case_handle_myPDF",
-              params: { docId: docId, isApproval: true }
+              name: "inspection_myPDF",
+              params: { docId: this.$route.params.id, isApproval: true }
             });
             if (handleType == 1) {
+              this.storagePath = res.data.storagePath
+              // 隐藏保存、签章按钮，显示撤销、删除按钮
+              // this.$set(this.formOrDocData.showBtn, 5, false)
+              // this.$set(this.formOrDocData.showBtn, 1, false)
+              // this.$set(this.formOrDocData.showBtn, 2, true)
+              // this.$set(this.formOrDocData.showBtn, 4, true)
+
+            }
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
+    },
+    saveDataStatus(handleType) {
+      console.log(this.$route.params)
+      debugger
+      // 保存-修改状态
+      changeFileStatus(this.$route.params.id).then(
+        res => {
+          if (res.code == 200) {
+            if (handleType == 1) {
+              this.storagePath = res.data.storagePath
               // 隐藏保存、签章按钮，显示撤销、删除按钮
               this.$set(this.formOrDocData.showBtn, 5, false)
               this.$set(this.formOrDocData.showBtn, 1, false)
               this.$set(this.formOrDocData.showBtn, 2, true)
               this.$set(this.formOrDocData.showBtn, 4, true)
+
             }
           } else {
             this.$message.error(res.msg);
