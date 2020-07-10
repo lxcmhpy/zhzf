@@ -474,7 +474,7 @@ export default {
       let data = {
         id: this.caseId
       };
-      this.$store.dispatch("getCaseBasicInfo", data)
+      this.$store.dispatch("getCaseBasicInfo", data) 
       .then(
         res => {
           console.log('获取案件信息', res);
