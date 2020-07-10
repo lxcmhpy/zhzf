@@ -65,8 +65,8 @@ export default {
     getByMlCaseId(pageDomId) {
       this.getData = true;
       let _this = this
-      if (this.$route.query.addOrEiditFlag!='add') {
-        getDocListById(pageDomId||this.$route.query.id).then(
+      if (this.$route.params.addOrEiditFlag!='add') {
+        getDocListById(pageDomId||this.$route.params.id).then(
           res => {
             console.log(res);
             _this.caseList = res.data;
@@ -76,7 +76,7 @@ export default {
           }
         );
       } else {
-        getTemplateDocList(this.$route.query.id).then(
+        getTemplateDocList(this.$route.params.id).then(
           res => {
             console.log(res);
             _this.caseList = res.data;

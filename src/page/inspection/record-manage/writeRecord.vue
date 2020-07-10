@@ -132,6 +132,7 @@ export default {
       isTransferName: '',
       viewFlag: false,
       globalId: '563',
+      savePartyNameId: '',//存储当事人字段的id(字段名)
     }
   },
   components: {
@@ -323,8 +324,11 @@ export default {
       this.formData.organId = iLocalStroage.gets("userInfo").organId;
       this.formData.userId = iLocalStroage.gets("userInfo").id;
 
-      //文书带入值信息
-      this.formData.party='111' 
+      //文书带入当事人字段信息
+      // this.formData.party = '111'
+      this.formData.party = this.$data.$f.getValue(this.savePartyNameId)
+      console.log(this.formData.party)
+      debugger
       // 当事人信息和企业信息选项的值
       this.formData.objectType = this.$data.$f.getValue('personOrParty')
       delete (this.formData["pictureList"]);
@@ -913,6 +917,10 @@ export default {
           } else if (item.field == 'certificateId') {//执企业组织信息员账号字段名
             this.LawOfficerCard = item.id;
           }
+        }
+
+        if (item.field == 'party') {
+          this.savePartyNameId = item.id;// 执企业组织信息员字段名
         }
       });
       this.$nextTick(() => {
