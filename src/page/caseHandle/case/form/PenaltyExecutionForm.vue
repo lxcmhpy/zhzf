@@ -187,7 +187,7 @@
                   <el-select v-model="formData.performance" @change="changePerformance">
                     <!-- <el-option label="未完成" value="未完成"></el-option>
                     <el-option label="已完成" value="已完成"></el-option>
-                    <el-option label="催告" value="催告"></el-option> -->
+                    <el-option label="催告" value="催告"></el-option>-->
                     <el-option
                       v-for="item in options"
                       :key="item.value"
@@ -242,11 +242,11 @@
             </div>
             <div class="row" v-if="isOnlinePay">
               <div class="col">
-                <el-form-item label="缴纳金额">
+                <el-form-item label="缴纳金额" prop="payAmount">
                   <el-input
                     clearable
                     class="w-120"
-                    v-model="formData.payAmount"
+                    v-model.number="formData.payAmount"
                     size="small"
                     placeholder="请输入"
                   ></el-input>
@@ -290,44 +290,13 @@
               border
               style="width: 100%"
               max-height="250"
-              :row-class-name="getRowClass"
+              row-key="id"
+              default-expand-all
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
             >
-              <!-- 折叠 -->
-              <el-table-column type="expand" expand-change v-if="allAskDocList.length>0">
-                <template>
-                  <ul class="moreDocList">
-                    <li v-for="(item,index) in allAskDocList" :key="index">
-                      <div>{{item.note}}</div>
-                      <div>
-                        <span v-if="item.status == '1' || item.status == '2'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>
-                      </div>
-                      <div>
-                        <!-- 已完成 -->
-                        <span
-                          v-if="item.status == '1' || item.status == '2'"
-                          class="tableHandelcase"
-                          @click="viewDocPdf(item)"
-                        >查看</span>
-
-                        <span v-if="item.status == '0'" class="tableHandelcase">
-                          <!-- 未完成 -->
-                          <span @click="viewDoc(item)">编辑</span>
-                          <span @click="delDocDataByDocId(item)">清空</span>
-                        </span>
-                        <!-- 无状态 -->
-                        <span
-                          v-if="item.status === ''"
-                          class="tableHandelcase"
-                          @click="viewDoc(item)"
-                        >添加</span>
-                      </div>
-                    </li>
-                  </ul>
-                </template>
-              </el-table-column>
-
               <el-table-column type="index" label="序号" align="center"></el-table-column>
+              <el-table-column prop="id" label="材料名称" align="center">
+              </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
                   <span style="color:red">*</span>
@@ -346,11 +315,7 @@
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <span class="tableHandelcase" v-if="scope.row.openRow">
-                    <!-- <i class="iconfont law-add" @click="viewDoc(scope.row)"></i> -->
-                    <span @click="viewDoc(scope.row)">添加</span>
-                  </span>
-                  <span v-if="!scope.row.openRow">
+                  <span>
                     <!-- 已完成 -->
                     <span
                       v-if="scope.row.status == '1' || scope.row.status == '2'"
@@ -450,8 +415,8 @@ export default {
   },
   data() {
     var validatePaid = (rule, value, callback) => {
-      console.log("类型",typeof(value))
-      if (value && typeof(value) != "number") {
+      console.log("类型", typeof value);
+      if (value && typeof value != "number") {
         callback(new Error("必须为数字!"));
       }
       if (
@@ -479,6 +444,7 @@ export default {
         stepPay: "",
         note: "",
         payEvidence: "", //缴费凭证id
+        payAmount: 0,
         payee: "",
         paymentTime: ""
       },
@@ -517,6 +483,7 @@ export default {
           { required: true, message: "处罚金额不能为空", trigger: "blur" }
         ],
         paidAmount: [{ validator: validatePaid, trigger: "blur" }],
+        payAmount: [{ validator: validatePaid, trigger: "blur" }],
         toPayAmount: [{ validator: validatePaid, trigger: "blur" }],
         performWay: [
           { required: true, message: "执行方式必须选择", trigger: "blur" }
@@ -551,54 +518,39 @@ export default {
     //保存表单数据
     submitCaseDoc(handleType) {
       console.log("分期", this.formData.stepPay);
-      // console.log(this.formData)
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
     // 判断文书是否完成
     isComplete() {
-      // this.unfinishFlag = [];
-      // console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
       if (this.formData.stepPay) {
         // 分期延期缴纳通知书必做
-        // console.log(this.allAskDocList)
         let flag = true;
-        if (this.allAskDocList.length == 0) {
-          // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
-          flag = false;
-          return false;
-        } else {
-          this.allAskDocList.forEach(element => {
-            if (element.name == "分期（延期）缴纳罚款通知书【2016】") {
-              console.log("element.name", element.status);
-              // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
-              // console.log('lement.status,element.status', element.status)
-              if (element.status == 0) {
-                // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
-                // console.log('执行')
-                let caseData = {};
-                this.$refs.checkDocFinishRef.showModal(
-                  this.docTableDatas,
-                  caseData,
-                  this.unfinishFlag
-                );
-                flag = false;
-                return false;
-              }
-            } else return flag;
-          });
-        }
+        // if (this.allAskDocList.length == 0) {
+        //   flag = false;
+        //   return false;
+        // } else {
+        //   this.allAskDocList.forEach(element => {
+        //     if (element.name.indexOf("分期（延期）缴纳") == 0) {
+        //       console.log("element.name", element.status);
+        //       if (element.status == 0) {
+        //         let caseData = {};
+        //         this.$refs.checkDocFinishRef.showModal(
+        //           this.docTableDatas,
+        //           caseData,
+        //           this.unfinishFlag
+        //         );
+        //         flag = false;
+        //         return false;
+        //       }
+        //     } else return flag;
+        //   });
+        // }
 
         return flag;
       }
     },
     isComplete2() {
       this.unfinishFlag = [];
-      console.log(
-        "分期延期:",
-        this.formData.stepPay,
-        "，催告：",
-        this.formData.performance
-      );
       if (this.formData.performance == "催告") {
         // 催告书必做
         let flag2 = true;
@@ -606,8 +558,6 @@ export default {
         this.docTableDatas.forEach(element => {
           if (element.name == "催告书") {
             if (element.status == 0) {
-              // this.unfinishFlag = [' 催告书'];
-              // console.log('this.unfinishFlag', this.unfinishFlag)
               let caseData = {};
               this.$refs.checkDocFinishRef.showModal(
                 this.docTableDatas,
@@ -666,10 +616,7 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if (
-        row.name.indexOf("分期（延期）缴纳罚款通知书") == false &&
-        row.note == ""
-      ) {
+      if (row.name.indexOf("分期（延期）缴纳罚款") == false && row.note == "") {
         console.log("弹窗");
         this.$refs.addDialogRef.showModal(row, this.isSaveLink);
       } else {
@@ -706,6 +653,7 @@ export default {
     changePayWay(val) {
       if (val == "电子缴纳") {
         //电子缴纳
+        this.formData.payAmount = 0;
         this.isOnlinePay = false;
       } else {
         this.isOnlinePay = true;
@@ -715,6 +663,9 @@ export default {
       if (this.formData.tempPunishAmount) {
         this.formData.paidAmount = this.formData.paidAmount
           ? this.formData.paidAmount
+          : 0;
+        this.formData.payAmount = this.formData.payAmount
+          ? this.formData.payAmount
           : 0;
       }
       this.formData.performWay = this.formData.performWay
@@ -788,9 +739,9 @@ export default {
         this.caseLinkDataForm.caseLinktypeId,
         true
       );
-      // this.setMoreDocTableTitle()
     },
     getRowClass: function(row, index) {
+      console.log("row数据", row, index);
       if (row.row.openRow) {
         return "";
       } else {
@@ -799,28 +750,41 @@ export default {
     },
     setMoreDocTableTitle() {
       this.docTableDatas = [];
-      this.allAskDocList = [];
-      let a = 0;
+      // this.allAskDocList = [];
+      let childrenArr =[];
+      // let a = 0;
       this.docTableDatasCopy.forEach(item => {
-        if (item.name.indexOf("分期（延期）缴纳")== -1) {
+        if (item.name.indexOf("分期（延期）缴纳") == -1) {
           this.docTableDatasShow.push(item);
         } else {
-          this.docTableDatasOther.push(item)
+          this.docTableDatasOther.push(item);
           if (item.note != "") {
-            this.allAskDocList.push(item);
+            // this.allAskDocList.push(item);
+            this.docTableDatasOther.forEach((itema, index, arr) => {
+              debugger;
+              if (item.docId == itema.docId) {
+                childrenArr.push = [item]
+              }
+              // if(childrenArr.length>0){
+              //   this.docTableDatasOther[index].children= childrenArr;
+              // }
+            });
           }
         }
       });
-      this.allAskDocList.forEach(element => {
-        if (
-          (element.name == "分期（延期）缴纳罚款通知书【2016】" ||
-            element.name == "分期（延期）缴纳罚款通知书") &&
-          (element.status == "1" || element.status == "2")
-        ) {
-          this.finishDocCount += 1;
-        }
-      });
-      this.allDocCount = this.allAskDocList.length;
+      console.log("11111111",array,a)
+      
+      console.log("22222222",this.docTableDatasOther)
+      // this.allAskDocList.forEach(element => {
+      //   if (
+      //     (element.name == "分期（延期）缴纳罚款通知书【2016】" ||
+      //       element.name == "分期（延期）缴纳罚款通知书") &&
+      //     (element.status == "1" || element.status == "2")
+      //   ) {
+      //     this.finishDocCount += 1;
+      //   }
+      // });
+      // this.allDocCount = this.allAskDocList.length;
       this.docTableDatas = [];
       this.changeStepPay();
       this.changePerformance();
@@ -870,20 +834,20 @@ export default {
     changeStepPay() {
       this.docTableDatas = [];
       if (this.formData.stepPay == true) {
-        this.docTableDatas=this.docTableDatasOther;
+        this.docTableDatas = this.docTableDatasOther;
       }
       if (this.formData.performance == "催告") {
-        this.docTableDatas=this.docTableDatasShow;
+        this.docTableDatas = this.docTableDatasShow;
       }
     },
     // 催告
     changePerformance() {
       this.docTableDatas = [];
       if (this.formData.stepPay == true) {
-        this.docTableDatas=this.docTableDatasOther;
+        this.docTableDatas = this.docTableDatasOther;
       }
       if (this.formData.performance == "催告") {
-        this.docTableDatas=this.docTableDatasShow;
+        this.docTableDatas = this.docTableDatasShow;
       }
     },
     async initData() {
@@ -935,9 +899,11 @@ export default {
   watch: {
     //代缴金额为0时,执行情况为已完成
     "formData.paidAmount"(val) {
-      this.formData.toPayAmount =
-        Number(this.formData.tempPunishAmount) -
-        Number(this.formData.paidAmount);
+      if ((this.formData.toPayAmount = "NAN")) {
+        this.formData.toPayAmount = "";
+      }
+    },
+    "formData.payAmount"(val) {
       if ((this.formData.toPayAmount = "NAN")) {
         this.formData.toPayAmount = "";
       }
@@ -945,7 +911,11 @@ export default {
     "formData.toPayAmount"(val) {
       this.formData.toPayAmount =
         Number(this.formData.tempPunishAmount) -
-        Number(this.formData.paidAmount);
+        Number(this.formData.paidAmount) -
+        Number(this.formData.payAmount);
+      if (this.formData.toPayAmount < 0) {
+        this.$message({ message: "代缴金额不得小于0!", type: "error" });
+      }
       if (!val) {
         this.formData.performance = "已完成";
       } else {
