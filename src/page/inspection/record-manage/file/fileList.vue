@@ -95,8 +95,6 @@ export default {
         // params: item
         query: { id: item.id, addOrEiditFlag: 'add' }
       });
-
-
       // 写记录
       this.$emit('changeModleId', item);
 

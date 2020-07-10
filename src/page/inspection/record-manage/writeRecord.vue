@@ -477,15 +477,15 @@ export default {
     isEdit() {
       console.log('rule', this.rule)
       this.$data.$f.resetFields()
-      if (this.$route.query.id) {
-        if (this.$route.query.addOrEiditFlag == 'edit' && !this.isCopyStyle) {
+      if (this.$route.params.id) {
+        if (this.$route.params.addOrEiditFlag == 'edit' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
               props: { disabled: true }
             }, true);
           });
-        } else if (this.$route.query.addOrEiditFlag == 'view' && !this.isCopyStyle) {
+        } else if (this.$route.params.addOrEiditFlag == 'view' && !this.isCopyStyle) {
           this.rule.forEach(element => {
             // console.log(element)
             this.$data.$f.updateRule(element.field, {
@@ -1071,21 +1071,21 @@ export default {
     },
   },
   mounted() {
-    console.log('id', this.$route.query.id)
-    this.addOrEiditFlag = this.$route.query.addOrEiditFlag
-    if (this.$route.query.id) {
-      if (this.$route.query.addOrEiditFlag == 'add') {
-        this.modleId = this.$route.query.id
+    console.log('id', this.$route.params.id)
+    this.addOrEiditFlag = this.$route.params.addOrEiditFlag
+    if (this.$route.params.id) {
+      if (this.$route.params.addOrEiditFlag == 'add') {
+        this.modleId = this.$route.params.id
         this.findDataByld()
       } else
-        if (this.$route.query.addOrEiditFlag == 'edit') {
-          this.recordId = this.$route.query.id;
+        if (this.$route.params.addOrEiditFlag == 'edit') {
+          this.recordId = this.$route.params.id;
           this.findRecordDataByld()
-        } else if (this.$route.query.addOrEiditFlag == 'view') {
-          this.recordId = this.$route.query.id;
+        } else if (this.$route.params.addOrEiditFlag == 'view') {
+          this.recordId = this.$route.params.id;
           this.viewRecord()
-        } else if (this.$route.query.addOrEiditFlag == 'temporary') {
-          this.recordId = this.$route.query.id;
+        } else if (this.$route.params.addOrEiditFlag == 'temporary') {
+          this.recordId = this.$route.params.id;
           this.findRecordDataByld()
         }
     }

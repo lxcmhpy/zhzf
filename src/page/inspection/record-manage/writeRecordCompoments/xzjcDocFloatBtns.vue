@@ -69,7 +69,8 @@ export default {
     makeSeal() {
       let _this = this;
 
-      let fileName = _this.storagePath[0].split("/");
+      // let fileName = _this.storagePath[0].split("/");
+      let fileName = 'zelinggaizheng';
       let fileId = fileName[fileName.length - 1];
 
       let websocket = null;
@@ -153,7 +154,8 @@ export default {
         var string = test.split("/");
         var path = string[0] + "//" + string[2] + "/";
         // path +
-        var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0]
+        // var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0]
+        var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=http://172.16.170.54:9332/14,1e646f991823"
         console.log(ActivexURL);
         _this.makeSealStr = ActivexURL;
         window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
@@ -177,17 +179,17 @@ export default {
       this.$set(this.formOrDocData.showBtn, 0, false)
       this.$set(this.formOrDocData.showBtn, 5, true)
       this.$set(this.formOrDocData.showBtn, 1, true)
-       this.$emit('saveData', handleType);
+      this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {
-      // this.$emit('saveData', handleType);
-      if (handleType == 1) {
-        // 隐藏保存、签章按钮，显示撤销、删除按钮
-        this.$set(this.formOrDocData.showBtn, 5, false)
-        this.$set(this.formOrDocData.showBtn, 1, false)
-        this.$set(this.formOrDocData.showBtn, 2, true)
-        this.$set(this.formOrDocData.showBtn, 4, true)
-      }
+      this.$emit('saveData', handleType);
+      // if (handleType == 1) {
+      //   // 隐藏保存、签章按钮，显示撤销、删除按钮
+      //   this.$set(this.formOrDocData.showBtn, 5, false)
+      //   this.$set(this.formOrDocData.showBtn, 1, false)
+      //   this.$set(this.formOrDocData.showBtn, 2, true)
+      //   this.$set(this.formOrDocData.showBtn, 4, true)
+      // }
     },
     getFile() {
       this.$store.dispatch("getFile", {
