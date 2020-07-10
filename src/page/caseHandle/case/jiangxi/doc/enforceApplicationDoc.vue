@@ -57,8 +57,8 @@
         <p class="p_begin">
           联系地址：
           <span>
-            <el-form-item prop="respondentAddess" style="width: 538px;" :rules="fieldRules('respondentAddess',propertyFeatures['respondentAddess'])">
-              <el-input v-model="formData.respondentAddess" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondentAddess'])"></el-input>
+            <el-form-item prop="respondentAddress" style="width: 538px;" :rules="fieldRules('respondentAddress',propertyFeatures['respondentAddress'])">
+              <el-input v-model="formData.respondentAddress" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['respondentAddress'])"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -329,30 +329,30 @@ export default {
       //参数  提交类型 、formRef
       this.com_submitCaseForm(handleType, "enforceApplicationForm", true);
     },
+    getDataAfter(){
+
+        //获取机构详情
+        let params = { id: iLocalStroage.gets("userInfo").organId };
+        let _this = this
+        this.$store.dispatch("getOrganDetail", params).then(
+            res => {
+                console.log("机构", res);
+                let organData = res.data;
+                _this.formData.applicant = organData.contactor||'';
+                // _this.formData.applicantManager = organData.account||'';
+                _this.formData.applicantAddress=organData.address||'';
+                _this.formData.applicantTel=organData.telephone||'';
+            },
+            err => {
+                console.log(err);
+            }
+        );
+    }
 
   },
   created() {
     this.setFormData();
   },
-  getDataAfter(){
-      debugger
-      //获取机构详情
-      let params = { id: iLocalStroage.gets("userInfo").organId };
-      let _this = this
-      this.$store.dispatch("getOrganDetail", params).then(
-          res => {
-              console.log("机构", res);
-              let organData = res.data;
-              _this.formData.applicant = organData.contactor||'';
-              _this.formData.applicantManager = organData.account||'';
-              _this.applicantAddress=organData.address||'';
-              _this.applicantTel=organData.telephone||'';
-          },
-          err => {
-              console.log(err);
-          }
-      );
-  }
 }
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
