@@ -92,8 +92,8 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: item.path,
-        // params: item
-        query: { id: item.id, addOrEiditFlag: 'add' }
+        params:  { id: item.id, addOrEiditFlag: 'add' }
+        // query: { id: item.id, addOrEiditFlag: 'add' }
       });
       // 写记录
       this.$emit('changeModleId', item);
@@ -142,7 +142,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     searchList() {
-      let data = this.$route.query.id
+      let data = this.$route.params.id
       getDocListById(data).then(
         res => {
           // debugger

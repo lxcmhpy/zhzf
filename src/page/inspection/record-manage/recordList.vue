@@ -258,8 +258,8 @@ export default {
       //         // row.addOrEiditFlag = 'edit'
       this.$router.push({
         name: 'inspection_writeRecordInfo',
-        // params: row
-        query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
+        params: { id: row.id, addOrEiditFlag: addOrEiditFlag }
+        // query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
       });
       //       } else {
       //         this.$message.error('当前模板已修改，该记录不可修改');

@@ -84,7 +84,7 @@ export default  [
             {
                 // 文书-列表
                 path: "/inspectionFiles",
-                name: "inspection_inspectionFiles",
+                name: "inspection_inspectionFiles/:id",
                 meta: {
                 title: "文书列表",
                 oneTab:true,

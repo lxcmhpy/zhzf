@@ -2,7 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="top:105px;right:5px;">
-    {{!formOrDocData.pageDomId}}
+    <!-- {{!formOrDocData.pageDomId}} -->
     <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc">
       文书<br />填报
     </li>
@@ -64,12 +64,12 @@ export default {
     // 文书列表
     writeDoc() {
       console.log('点击',this.formOrDocData.pageDomId)
-      if (this.formOrDocData.pageDomId||this.$route.query.addOrEiditFlag!='add') {
+      if (this.formOrDocData.pageDomId||this.$route.params.addOrEiditFlag!='add') {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: 'inspection_inspectionFiles',
-          // params: item
-          query: { id: this.formOrDocData.pageDomId || this.$route.query.id }
+          params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+          // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
         });
       }
 

@@ -207,7 +207,7 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
-      getDocumentById(this.$route.query.id).then(
+      getDocumentById(this.$route.params.id).then(
         res => {
           if (res.code == 200) {
             this.docData = res.data
@@ -236,8 +236,8 @@ export default {
       // this.printContent();
       this.formData.status = '未完成'
       // this.formData.updateTime = this.formData.updateTime = new Date()
-      // this.docData.orderId = this.$route.query.id
-      // this.docData.templateId = this.$route.query.id
+      // this.docData.orderId = this.$route.params.id
+      // this.docData.templateId = this.$route.params.id
       console.log(this.formData)
       console.log(this.docData)
       debugger
