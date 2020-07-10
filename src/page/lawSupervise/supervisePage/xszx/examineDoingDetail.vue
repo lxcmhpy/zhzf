@@ -7,7 +7,7 @@
           <el-tab-pane
             v-for="(item, index) in processStatus"
             :key="index"
-            :disabled="index>status?true:false"
+            :disabled="index>statusObj[obj&&obj.status?obj.status:'待审核']?true:false"
             :name="`${index}`"
           >
             <span slot="label">
@@ -63,6 +63,11 @@ export default {
         "examineDoingThirdDetail",
         "examineDoingZbDetail"
       ],
+      statusObj: {
+        '待审核': 0,
+        '审核中': 1,
+        '已审核': 2
+      },
       obj: null,
       processStatus: [
         {
@@ -99,19 +104,14 @@ export default {
     },
     findAlarmVehicleById(id) {
       let _this = this;
-      new Promise((resolve, reject) => {
-        findAlarmVehicleById(id).then(
-          res => {
-            // resolve(res);
-            _this.obj = res.data;
-            // obj.list = res.data
-          },
-          error => {
-            //  _this.errorMsg(error.toString(), 'error')
-            return;
-          }
-        );
-      });
+      findAlarmVehicleById(id).then(
+        res => {
+          _this.obj = res.data;
+        },
+        error => {
+          return;
+        }
+      );
     },
     switchTab () {
       this.type = "done";
@@ -127,7 +127,9 @@ export default {
     init() {
       this.tabActiveValue = this.$route.params.status;
       if (this.tabActiveValue == "0") {
-        this.findAlarmVehicleById(this.$route.params.offSiteManageId);
+        if(this.obj==null){
+          this.findAlarmVehicleById(this.$route.params.offSiteManageId);
+        }
       } else {
         this.getDetailById(this.$route.params.offSiteManageId);
       }
@@ -140,9 +142,7 @@ export default {
     // ...mapGetters(["offSiteManageId"])
   },
   watch: {
-    $route(to, from) {
-      this.init();
-    }
+    '$route':'init'
   },
   components: {
     btns,

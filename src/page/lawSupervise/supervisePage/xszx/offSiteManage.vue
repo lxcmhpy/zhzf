@@ -418,7 +418,6 @@ export default {
       })
     },
     routerExamineDetail(row, status, tabTitle) {
-      debugger;
       // this.$store.commit('setOffSiteManageId', item.id);
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',
@@ -431,7 +430,6 @@ export default {
     },
     routerExamineDoingDetail(row, status, tabTitle) {
       // this.$store.commit('setOffSiteManageId', item.id);
-      debugger;
       this.$router.push({
         name: 'law_supervise_examineDoingDetail',
         params: {
@@ -457,7 +455,6 @@ export default {
     },
     handleNodeClick(data) {
       //    if(this.tabActiveValue == )
-      debugger;
       switch (data.status) {
         case undefined: this.routerExamineDoingDetail(data, '0', '线索详情'); break;
         case '无效信息': this.routerInvalidCueDetail(data); break;

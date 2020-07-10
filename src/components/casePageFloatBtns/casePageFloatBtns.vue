@@ -160,16 +160,26 @@
           }
         }
 
-        function openURL() {
+        function openURL(){
           var pdfPath = getParam("paramName");
           var test = window.location.href;
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
-          var ActivexURL = path + "/static/js/iWebPDFEditorJx.html?pdfPath=" + _this.storagePath[0]
-          console.log(ActivexURL);
-          _this.makeSealStr = ActivexURL;
-          window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+          queryFlowBycaseIdApi(this.caseId).then(res=>{
+            console.log(res)
+            var ActivexURL = ''
+            if(res.data.flowName == '江西流程'){
+              ActivexURL = path + "/static/js/iWebPDFEditorJx.html?pdfPath=" + _this.storagePath[0]
+            }else{
+              ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath[0]
+            }
+            console.log(ActivexURL);
+            _this.makeSealStr = ActivexURL;
+            window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+          }).catch(err=>{this.$message('获取流程失败');console.log('err')})
+          
+          
         }
 
         function getParam(paramName) {

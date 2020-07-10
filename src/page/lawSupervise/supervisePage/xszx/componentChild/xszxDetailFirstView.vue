@@ -9,37 +9,8 @@
                         </span>
                         <span class="title">称重检测数据</span>
                         <span class="right btns">
-                        <span class="blueC" @click="updateHp"><img :src="'./static/images/img/lawSupervise/icon_cheliang1.png'">号牌更正</span>&nbsp;&nbsp;
                         <span  class="greenC2" @click="check"><img :src="'./static/images/img/lawSupervise/icon_chepai.png'">车辆查验</span>
                     </span>
-                    <el-dialog class='mini-dialog-title' title="号牌更正" :visible.sync="visible" :show-close='false'
-                    :close-on-click-modal="false" width="460px" append-to-body>
-                        <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="120px">
-                            <div>
-                                <div class="item">
-                                <el-form-item label="图像识别车牌">
-                                    {{checkSearchForm.number}}
-                                    <!-- <el-input v-model="checkSearchForm.number"></el-input> -->
-                                </el-form-item>
-                                </div>
-                                <div class="item">
-                                <el-form-item label="车牌颜色">
-                                    {{checkSearchForm.color}}
-                                    <!-- <el-input v-model="checkSearchForm.color"></el-input> -->
-                                </el-form-item>
-                                </div>
-                                <div class="item">
-                                <el-form-item label="ETC识别车牌">
-                                    {{checkSearchForm.etc}}
-                                    <!-- <el-input v-model="checkSearchForm.etc" readonly="readonly"></el-input> -->
-                                </el-form-item>
-                                </div>
-                            </div>
-                        </el-form>
-                        <span slot="footer" class="dialog-footer">
-                            <el-button @click="visible = false">关闭</el-button>
-                        </span>
-                    </el-dialog>
                      <el-drawer
                      class="el-drawer-title-noborder"
                             title="车辆查验"
@@ -544,7 +515,7 @@
                             <td class="color_ff w-1">所属执法机构</td>
                             <td>{{siteInfo.organName?siteInfo.organName:'/'}}</td>
                             <td class="color_ff w-1">处理状态</td>
-                            <td>待审核</td>
+                            <td>{{obj.status?obj.status:'待审核'}}</td>
                         </tr>
                     </table>
                 </div>
@@ -672,24 +643,10 @@
 </template>
 <script>
 import Vue from "vue";
-import echarts from 'echarts';
-// import 'echarts/lib/chart/graph';
-import AMap from 'vue-amap';
-import { AMapManager } from 'vue-amap';
 import {findAllDrawerById,getSiteById} from '@/api/lawSupervise.js';
-import {getFileByCaseId} from "@/api/upload.js";
+import {getFileByCaseId} from "@/api/lawSupervise.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
-Vue.use(AMap);
-AMap.initAMapApiLoader({
-  key: '2fab5dfd6958addd56c89e58df8cbb37',
-  plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType',
-    'PolyEditor', 'AMap.CircleEditor', 'lazyAMapApiLoaderInstance', 'Geolocation', 'Marker', 'Icon'],
-  v: '1.4.4',
-  uiVersion: '1.0.11',
-  showLabel: false
-});
-let amapManager = new AMap.AMapManager();
 //   <el-carousel-item :key="1">
 //                                 <img width="280px" height="180px" @click="showImg('PHOTO_D')"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_D'">
 //                             </el-carousel-item>
@@ -738,53 +695,7 @@ export default {
                 status: '1',
                 applyTime: '1',
             },
-            center: [116.397428, 39.90923],
-            zoom: 16,
-            amapManager,
-            events: {
-                init(map) {
-                // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
-                // const marker = new SimpleMarker({
-                // iconStyle: 'red',
-                // map: [],
-                // position: map.getCenter()
-                // });
-                // });
-                }
-            },
             colorList: [],
-            plugin: [{
-                pName: 'ToolBar',
-                position: 'RB'
-            }, {
-                pName: 'Scale',
-                position: 'RB'
-            }, {
-                pName: 'Geolocation',
-                position: 'RB',
-                events: {
-                init(o) {
-                    // o 是高德地图定位插件实例
-                    o.getCurrentPosition((status, result) => {
-                    if (result && result.position) {
-                        self.currentAddressObj = result.addressComponent;
-                        self.lng = result.position.lng;
-                        self.lat = result.position.lat;
-                        self.center = [self.lng, self.lat];
-                        self.loaded = true;
-                        self.$nextTick();
-                    }
-                    });
-                }
-                }
-            },
-            {
-                pName: 'PlaceSearch',
-                renderStyle: 'default',
-                events: {
-                },
-            }
-            ],
             acitveCar: 0,
             dialogIMGVisible1: false,
             formUpload: {
@@ -815,9 +726,6 @@ export default {
           }
           this.imgIndexUrl = this.imgList[n];
         },
-        saveFile (params) {
-            this.formUpload.file = params.file
-        },
         //关闭弹窗的时候清除数据
         setActiveItem () {
              this.acitveCar++;
@@ -827,16 +735,6 @@ export default {
         },
         closeDialog() {
             this.visible = false;
-        },
-        gotoCoerciveMeasureDoc() {
-            this.$store.dispatch("deleteTabs", this.$route.name);
-            this.$router.push({ name: 'law_supervise_removeOrPrelong' });
-        },
-        updateHp () {
-            this.checkSearchForm.number = this.obj.vehicleNumber;
-            this.checkSearchForm.color = this.obj.vehicleColor;
-            this.checkSearchForm.etc = this.obj.etcVehicleNumber;
-            this.visible = true;
         },
         check () {
             this.checkSearchForm.number = this.obj.vehicleNumber;
@@ -862,15 +760,10 @@ export default {
                 )
             })
         },
-        saveHp () {
-            this.obj.vehicleNumber = this.checkSearchForm.number;
-            this.obj.vehicleColor = this.checkSearchForm.color;
-            this.visible = false;
-        },
         //通过案件ID和文书ID查询附件
         findFileList() {
             let data = {
-                caseId: this.obj.id
+                caseId: this.obj.workNo
             }
             getFileByCaseId(data).then(
                 res => {
