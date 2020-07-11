@@ -43,7 +43,7 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-dialog title="设备详情"
+        <el-dialog :title="title"
           custom-class="leftDialog"
           :visible.sync="visible"
           top="0"
@@ -113,6 +113,7 @@ import iLocalStroage from '@/common/js/localStroage';
             ]
         },
         tableData: [], //表格数据
+        title:"新增设备类型"
       };
     },
     components: {
@@ -172,6 +173,7 @@ import iLocalStroage from '@/common/js/localStroage';
       addData() {
         this.addForm = {};
         let _this = this;
+        this.title="新增设备类型"
         findDeviceTypeNewCode().then(
           res => {
             _this.addForm.code = res.data
@@ -185,11 +187,13 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       // 表格编辑
       handleEdit(index, row) {
+        this.title="修改设备类型"
         this.findDeviceTypeById(row)
         this.formReadOnly = false
       },
       //查看详情
       showDataDetail(row){
+        this.title="设备类型"
         this.findDeviceTypeById(row)
         this.formReadOnly = true
       },

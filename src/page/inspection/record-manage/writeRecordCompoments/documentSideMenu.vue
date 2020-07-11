@@ -25,7 +25,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { getTemplateDocList } from "@/api/Record";
+import { getTemplateDocList,getDocListById } from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -61,33 +61,34 @@ export default {
     closeDialog() {
       this.visible = false;
     },
-    //获取已完成文书列表
+    //获取文书列表
     getByMlCaseId(pageDomId) {
       this.getData = true;
       let _this = this
-      getTemplateDocList(pageDomId||this.$route.query.id).then(
-        res => {
-          console.log(res);
-          _this.caseList = res.data;
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      if (this.$route.params.addOrEiditFlag!='add') {
+        getDocListById(pageDomId||this.$route.params.id).then(
+          res => {
+            console.log(res);
+            _this.caseList = res.data;
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      } else {
+        getTemplateDocList(this.$route.params.id).then(
+          res => {
+            console.log(res);
+            _this.caseList = res.data;
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+
     },
-    // getByMlCaseId() {
-    //   let _this = this
-    //   findByCaseBasicInfoIdApi(this.caseId).then(
-    //     res => {
-    //         debugger
-    //       console.log(res);
-    //       _this.caseList = res.data;
-    //     },
-    //     error => {
-    //       console.log(error);
-    //     }
-    //   );
-    // },
+
     routerArchiveCatalogueDetail() {
       let _thats = this
       this.docSrc = this.host + this.checkedDocId[0];
