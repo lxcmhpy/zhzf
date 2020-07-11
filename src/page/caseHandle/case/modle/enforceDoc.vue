@@ -232,14 +232,14 @@ export default {
    methods: {
 
     //根据案件ID和文书Id获取数据
-     getDocDataByCaseIdAndDocId() {
-       this.caseDocDataForm.caseBasicinfoId = this.caseId;
-       let data = {
-         caseId: this.caseId,
-         docId: this.$route.params.docId
-       };
-       this.com_getDocDataByCaseIdAndDocId(data)
-     },
+    //  getDocDataByCaseIdAndDocId() {
+    //    this.caseDocDataForm.caseBasicinfoId = this.caseId;
+    //    let data = {
+    //      caseId: this.caseId,
+    //      docId: this.$route.params.docId
+    //    };
+    //    this.com_getDocDataByCaseIdAndDocId(data)
+    //  },
 
     //保存文书信息
     addDocData(handleType) {
@@ -322,9 +322,25 @@ export default {
     };
 
     //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-    if (this.$route.params.handelType == 'isAddMore') {
+    let addMoreData = JSON.parse(this.$route.params.addMoreData);
+    
+    if (addMoreData.handelType == 'isAddMore') {
       console.log('多份文书', this.$route.params.handelType)
       this.com_getCaseBasicInfo(data.caseId, data.docId);
+      if (addMoreData.approvalForm.executeHandle == 0) {
+        // 拒绝
+        this.checknames.push("1")
+        this.caseDocDataForm.note = "中止行政强制执行通知书";
+      }else if(addMoreData.approvalForm.executeHandle == 1){
+        this.checknames.push("2")
+        this.caseDocDataForm.note = "终结行政强制执行通知书";
+      }else if(addMoreData.approvalForm.executeHandle == 2){
+        this.checknames.push("3")
+        this.caseDocDataForm.note = "恢复行政强制执行通知书";
+      }else if(addMoreData.approvalForm.executeHandle == 3){
+        this.checknames.push("4")
+        this.caseDocDataForm.note = "恢复行政强制执行通知书";
+      }
     } else {
       // this.getDocDetailById(this.$route.params.docDataId)
       let currentDocDataId = iLocalStroage.get("currentDocDataId");
@@ -334,50 +350,6 @@ export default {
         this.getDocDetailById(this.$route.params.docDataId)
       }
     }
-    // var flag=this.$route.params.status;
-    // console.log("11110",flag);
-    //   if (this.$route.params.status == '0') {
-    //     // 中止
-    //     this.checknames.push("1")
-    //     this.caseDocDataForm.note = "中止行政强制执行通知书";
-    //   }
-    //   else {
-    //     if (this.$route.params.status == '1') {
-    //       // 终结
-    //       this.checknames.push("2")
-    //       this.caseDocDataForm.note = "终结行政强制执行通知书";
-
-    //     }
-    //     if (this.$route.params.status == '2') {
-    //       // 恢复
-    //       this.checknames.push("3")
-    //       this.caseDocDataForm.note = "恢复行政强制执行通知书";
-
-    //     }
-    //     if (this.$route.params.status == '3') {
-    //       // 恢复
-    //       this.checknames.push("4")
-    //       this.caseDocDataForm.note = "恢复行政强制执行通知书";
-
-    //     }
-    // }
-    // this.click()
-
-    if (this.$route.params.approvalForm.executeHandle == 0) {
-      // 拒绝
-      this.checknames.push("1")
-      this.caseDocDataForm.note = "中止行政强制执行通知书";
-    }else if(this.$route.params.approvalForm.executeHandle == 1){
-      this.checknames.push("2")
-      this.caseDocDataForm.note = "终结行政强制执行通知书";
-    }else if(this.$route.params.approvalForm.executeHandle == 2){
-        this.checknames.push("3")
-      this.caseDocDataForm.note = "恢复行政强制执行通知书";
-    }else if(this.$route.params.approvalForm.executeHandle == 3){
-        this.checknames.push("4")
-      this.caseDocDataForm.note = "恢复行政强制执行通知书";
-    }
-
 
 
     this.click()
