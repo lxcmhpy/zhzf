@@ -543,31 +543,6 @@ export default {
       };
       this.$refs.approvalDialogRef.showModal(caseData);
     },
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: "297708bcd8e80872febb61577329194f", //先写死
-        docId: "5cad5b54eb97a15250672a4c397cee56"
-      };
-      this.com_getDocDataByCaseIdAndDocId(data);
-    },
-    // 盖章
-    makeSeal() {
-      console.log("盖章!");
-    },
-    // 打印
-    print() {
-      console.log("打印!");
-    },
-    // 下划线版本
-    changeLineStyle() {
-      this.lineStyleFlag = true;
-    },
-    // 下划线版本
-    edit() {
-      this.lineStyleFlag = false;
-    },
     goToPfd() {
       //提交pdf 显示pdf页
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;

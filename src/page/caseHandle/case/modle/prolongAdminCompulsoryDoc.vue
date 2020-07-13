@@ -183,7 +183,7 @@ export default {
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id--从流程进入删掉，先写死测试用
-        caseDoctypeId: "2c902934699a6ef801699a7426750001", //表单类型IDer
+        caseDoctypeId: this.$route.params.docId, //表单类型IDer
         //表单数据
         docData: "",
         status: "",
@@ -229,8 +229,7 @@ export default {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId, //流程里的案件id
-        // caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: "2c902934699a6ef801699a7426750001"
+        docId: this.caseDocDataForm.caseDoctypeId
       };
       this.com_getDocDataByCaseIdAndDocId(data);
     },

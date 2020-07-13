@@ -109,7 +109,7 @@
                   prop="withPartyRelation"
                   :rules="fieldRules('withPartyRelation',propertyFeatures['withPartyRelation'])"
                 >
-                  <el-checkbox-group :max="1" v-model="docData.withPartyRelation" @change="test">
+                  <el-checkbox-group :max="1" v-model="docData.withPartyRelation">
                     <el-checkbox label="本人"></el-checkbox>
                     <el-checkbox label="代理人"></el-checkbox>
                     <el-checkbox label="其他代收人"></el-checkbox>
@@ -542,9 +542,6 @@ export default {
     casePageFloatBtns
   },
   methods: {
-    test(val){
-     console.log("val",val)
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
