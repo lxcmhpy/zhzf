@@ -58,7 +58,7 @@
                                                     :value="item.name"
                                                     ></el-option>
                                                 </el-select>
-                                                <el-button slot="append" style="width:100px" icon="el-icon-search"></el-button>
+                                                <el-button slot="append" style="width:100px" icon="el-icon-search" @click="checkVehicle"></el-button>
                                             </el-input>
                                         </div>
                                         <div class="banner">
@@ -876,11 +876,10 @@ export default {
             })
         },
         checkVehicle(){
-            debugger
             let json=[];
-            let colorData = this.colorList.filter(p=>p.name==this.obj.vehicleColor)
+            let colorData = this.colorList.filter(p=>p.name==this.checkSearchForm.color)
             let param={
-                vehicleNo:this.obj.vehicleNumber,
+                vehicleNo:this.checkSearchForm.number,
                 plateColor:colorData[0].notes
             };
             json.push(param);
@@ -913,6 +912,7 @@ export default {
                                                     _this.ownerInfo = res.data[0]
                                                 }else{
                                                     _this.errorMsg('未查到企业信息', 'error')
+                                                    _this.ownerInfo = {}
                                                 }
                                             },
                                             err => {
@@ -921,6 +921,8 @@ export default {
                                         )
                                     }else{
                                         _this.errorMsg('未查到数据', 'error')
+                                        _this.carInfo = {}
+                                        _this.ownerInfo = {}
                                     }
                                 },
                                 err => {
@@ -930,6 +932,9 @@ export default {
                         }
                     }else{
                         _this.errorMsg('未查到数据', 'error')
+                        _this.vehicleInfo = {}
+                        _this.carInfo = {}
+                        _this.ownerInfo = {}
                     }
                 },
                 err => {
