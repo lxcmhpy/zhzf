@@ -119,13 +119,14 @@ export default {
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: '297708bcd8e80872febb61577329194f', //案件id--从流程进入删掉，先写死测试用
-        caseLinktypeId: this.BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId, //表单类型IDer
-        //表单数据
-        docData: "",
-        status: ""
-      },
+          id: "", //修改的时候用
+          caseBasicinfoId: "", //案件ID
+          caseDoctypeId: this.$route.params.docId, //文书类型ID
+          //文书数据
+          docData: "",
+          status: "", //提交状态
+          linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
+        },
       name: '',
       rules: {
         party: [
@@ -216,10 +217,9 @@ export default {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       let data = {
-        // caseId: this.caseId, //流程里的案件id
-        caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '5cad5b54eb97a15250672a4c397cee56'
-      };
+          caseId: this.caseId,
+          docId: this.$route.params.docId
+        };
       this.com_getDocDataByCaseIdAndDocId(data);
 
     },
