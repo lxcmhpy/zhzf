@@ -331,13 +331,23 @@
                 trigger="click"
                 >
                 <div class="drop-down-menu transition-box" >
-                    <el-input class="no-border w160" value="" placeholder="城市名称，回车搜索"></el-input>
+                  <el-cascader
+                    ref="areaCascader"
+                    :options="areaList"
+                    @active-item-change="handleSelect"
+                    @change="handleChange"
+                    :props="areaProps"
+                    expand-trigger="hover"
+                    filterable
+                    change-on-select
+                  ></el-cascader>
+                    <!-- <el-input class="no-border w160" value="" placeholder="城市名称，回车搜索"></el-input>
                     <el-menu :default-active="activeIndex"  @select="handleSelect" unique-opened :collapse="true">
                         <el-submenu :index="`${index}`" v-for="(item,index) in areaList" :key="`${index}`">
                                 <template slot="title">{{item.titleName}}</template>
                                 <el-menu-item-group :index="child.titleName" v-for="(child,i) in item.children" :key="i" >{{child.titleName}}</el-menu-item-group>
                         </el-submenu>
-                    </el-menu>
+                    </el-menu> -->
                 </div>
                 <el-button slot="reference">
                     <img :src="'./static/images/img/lawSupervise/area.png'"/>
@@ -689,7 +699,7 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage,findImageByCaseId} from "@/api/lawSupervise.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById,organTreeByCurrUser,queryAlarmVehiclePage,findImageByCaseId,getCountry} from "@/api/lawSupervise.js";
 import {getOrganDetailApi,getOrganIdApi}  from "@/api/system.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
@@ -752,42 +762,11 @@ export default {
       areaObj: '',
       activeIndex:'',
       areaList: [
-          {
-              titleName: '北京市',
-              children: [
-                  {
-                      titleName: '东城区'
-                  },{
-                      titleName: '西城区'
-                  },{
-                      titleName: '海淀区'
-                  },{
-                      titleName: '朝阳区'
-                  },{
-                      titleName: '丰台区'
-                  },{
-                      titleName: '石景山区'
-                  }
-              ]
-          }, {
-              titleName: '天津',
-              children: [
-                  {
-                      titleName: '南开区'
-                  },{
-                      titleName: '红桥区'
-                  },{
-                      titleName: '北辰区'
-                  },{
-                      titleName: '河北区'
-                  },{
-                      titleName: '和平区'
-                  },{
-                      titleName: '东丽区'
-                  }
-              ]
-          }
       ],
+      areaProps: {
+        label: 'name',
+        value:'adCode'
+      },
       lawScreenFull: false,
       videoDoing: null,
       showVideo: false,
@@ -911,6 +890,7 @@ export default {
                   self.loaded = true;
                   self.areaObj = self.currentAddressObj.city
                   self.$nextTick();
+                  self.getCountry('0',self.currentAddressObj.city)
                 }
               });
             }
@@ -956,6 +936,23 @@ export default {
     }
   },
   methods: {
+    getCountry (pCode,city) {
+      let params = pCode;
+      if(city){
+        params+='/'+city
+      }
+      let _this = this
+      getCountry(params).then(
+          res => {
+            console.log('筛选',res)
+            res.data.forEach(p=>{
+              if(p.childrenCount>0){
+                p.children=[]
+              }
+            })
+            _this.areaList = res.data
+      })
+    },
     filterNode (value, data, node) {
         let _this =this;
 
@@ -1081,9 +1078,41 @@ export default {
         }
 
     },
-    handleSelect (key, keyPath) {
-        // debugger;
-        this.areaObj = key;
+    handleChange(node){
+      let data = this.$refs['areaCascader'].getCheckedNodes()[0].data;
+      this.currentAddressObj = data;
+      let position=data.center? data.center.split(','):['',''];
+      this.lng=parseFloat(position[0]);
+      this.lat=parseFloat(position[1]);
+      this.center = [this.lng, this.lat];
+      this.loaded = true;
+      this.areaObj = data.name;
+      if(data.grade==='country'){
+        this.zoom = 5
+      }else if(data.grade==='province'){
+        this.zoom = 7
+      }else if(data.grade==='city'){
+        this.zoom = 11
+      }else if(data.grade==='district'){
+        this.zoom = 13
+      }
+      this.$nextTick();
+      this.$refs.areaCascader.dropDownVisible = false;  
+    },
+    handleSelect (node) {
+      let data = this.$refs['areaCascader'].panel.getNodeByValue(node[node.length-1]).data;
+      if(data.children.length==0){
+        getCountry(data.adCode).then(
+          res => {
+            res.data.forEach(p=>{
+              if(p.childrenCount>0){
+                p.children=[]
+              }
+            })
+            data.children = res.data
+          }
+        )
+      }
     },
     personClick(node,resultList) {
       let position=node.propertyValue? node.propertyValue.split(','):['',''];

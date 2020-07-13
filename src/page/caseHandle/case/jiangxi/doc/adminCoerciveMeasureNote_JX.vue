@@ -459,7 +459,8 @@ export default {
         reconsiderationOrgan: '',
         lawsuitOrgan: '',
         defendState:'',
-        defendReason:''
+        defendReason:'',
+        partyUnitPosition: ''
       },
       rules: {
         afdd: [{ required: true, message: '执法地点不能为空', trigger: "blur" }],
