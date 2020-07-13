@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchPageLayout" id="userBox">
       <div class="departOrUserTree">
-        <p>机构列表</p>
+        <p>设备资源列表</p>
         <el-input placeholder="输入机构名" v-model="filterText">
           <el-button slot="append" size="mini" icon="el-icon-search"></el-button>
         </el-input>
@@ -128,7 +128,7 @@
             :total="totalPage"
           ></el-pagination>
         </div>
-        <el-dialog title="设备详情"
+        <el-dialog :title="title"
           custom-class="leftDialog"
           :visible.sync="visible"
           top="0"
@@ -244,7 +244,7 @@
                   :http-request="saveImageFile"
                   :file-list="imageList"
                   :disabled="formReadOnly"
-                  :on-remove="deleteFile">
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')">
                   <i class="el-icon-plus"></i>
                 </el-upload>
               </el-form-item>
@@ -256,7 +256,7 @@
                   :http-request="saveAttachFile"
                   :on-preview="handlePDFPreview"
                   multiple
-                  :on-remove="deleteFile"
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'附件')"
                   :limit="3"
                   :disabled="formReadOnly"
                   :file-list="attachList">
@@ -333,9 +333,9 @@ import iLocalStroage from '@/common/js/localStroage';
             name: [
                 {required: true, message: "请输入设备名称", trigger: "blur"}
             ],
-            deviceDate:[
+            /* deviceDate:[
               { type: 'array', required: true,  trigger: 'blur,change',validator:this.validateDate}
-            ]
+            ] */
         },
         getOrganList:[],
         searchType: [{value: 1, label: '本机构'}, {value: 0, label: '本机构及子机构'}],
@@ -357,23 +357,30 @@ import iLocalStroage from '@/common/js/localStroage';
         pageSize: 10, //pagesize
         totalPage: 0, //总数
         selectDataIdList: [], //选中的记录
-        selectOrganName:''
+        selectOrganName:'',
+        title:'新增设备'
       };
     },
     components: {
     },
     methods: {
-      //删除附件
-      validateDate(rule, value, callback) {
+      /* validateDate(rule, value, callback) {
         debugger
         if(this.deviceDate && this.deviceDate.length==2 && this.deviceDate[0]!==''){
           callback();
         }else{
           callback(new Error("请选择设备有效期"));
         }
-      },
-      deleteFile(file, fileList){
+      }, */
+      //删除附件
+      deleteFile(file, fileList,type){
+        let _this = this
         deleteFileByIdApi(file.storageId).then(res=>{
+           if(type=="图片"){
+             _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
+           }else{
+            _this.attachList.splice(_this.attachList.findIndex(item => item.storageId === file.storageId), 1)
+           }
           //fileList.splice(fileList.findIndex(item => item.storageId === file.storageId), 1)
         },err=>{
           console.log(err)
@@ -446,8 +453,10 @@ import iLocalStroage from '@/common/js/localStroage';
         this.$refs[formName].validate(valid => {
           if (valid) {
             _this.addForm.propertyValue=_this.addForm.property1+','+_this.addForm.property2
-            _this.addForm.startDate = _this.deviceDate[0]
-            _this.addForm.endDate = _this.deviceDate[1]
+            if(_this.deviceDate[0]){
+              _this.addForm.startDate = _this.deviceDate[0]
+              _this.addForm.endDate = _this.deviceDate[1]
+            }
             let storageIds = []
             _this.imageList.forEach(item=>{
               storageIds.push(item.storageId)
@@ -568,6 +577,7 @@ import iLocalStroage from '@/common/js/localStroage';
         this.imageList=[]
         this.attachList=[]
         this.deviceDate=['','']
+        this.title='新增设备'
         if(this.currentOrganId !== ''){
           let orgData = this.getOrganList.filter(p=>p.id===this.currentOrganId)
           if(orgData){
@@ -579,14 +589,15 @@ import iLocalStroage from '@/common/js/localStroage';
         this.hideAddress(this.selectDeviceType)
       },
       hideAddress(data){
-        if(data=='' || data=='01'){
-          this.hasAddress = true
-        }else{
+        if(data=='02' || data=='03'){
           this.hasAddress = false
+        }else{
+          this.hasAddress = true
         }
       },
       // 表格编辑
       handleEdit(index, row) {
+        this.title='修改设备'
         this.findDeviceById(row)
         this.formReadOnly = false
         this.imageList=[]
@@ -594,6 +605,7 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       //查看详情
       showDataDetail(row){
+        this.title='设备详情'
         this.findDeviceById(row)
         this.formReadOnly = true
         this.imageList=[]

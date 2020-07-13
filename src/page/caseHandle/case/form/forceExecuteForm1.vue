@@ -90,83 +90,91 @@
       <div class="content_box">
         <div class="content">
           <div class="table_form">
-           <el-table
-              :data="docTableDatas"
-              stripe
-              border
-              style="width: 100%"
-              :row-class-name="getRowClass"
-            >
-              <el-table-column type="expand" expand-change>
-                <template slot-scope="props">
-                  <ul class="moreDocList">
-                    <li
-                      v-for="(item,index) in props.row.path =='case_handle_remindLetterDoc_JX' ? remindLetterDocList : props.row.path =='case_handle_abortEndRecoverApprovalForm' ? abortEndRecoverApprovalFormList : enforceDocList"
-                      :key="index"
-                    >
+            <!-- <el-table :data="docTableDatas" stripe border style="width: 100%">
+              <el-table-column type="index" label="序号" align="center" width="100px">
+              </el-table-column>
+              <el-table-column prop="name" label="材料名称" align="center">
+              </el-table-column>
+              <el-table-column prop="status" label="状态" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status == '1'">
+                    已完成
+                  </span>
+                  <span v-if="scope.row.status == '0'">
+                    未完成
+                  </span>
+                  <span v-if="scope.row.status == ''">
+                    -
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status == '1'" class="tableHandelcase">
+
+                    <i  class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
+                    <i  class="iconfont law-print"></i>
+                  </span>
+                  <span v-if="scope.row.status == '0'" class="tableHandelcase">
+
+                    <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
+                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
+                  </span>
+                  <span v-if="scope.row.status === ''" class="tableHandelcase">
+
+                    <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
+                  </span>
+                </template>
+              </el-table-column>
+            </el-table> -->
+            <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
+              <!-- 折叠 -->
+              <el-table-column type="expand" expand-change v-if="allAskDocList.length>0">
+                <template>
+                  <ul class="moreDocList1">
+                    <li v-for="(item,index) in allAskDocList" :key="index">
+                      <div>{{index+1+"）"}}</div>
                       <div>{{item.note}}</div>
                       <div>
-                        <!-- <span v-if="item.status == '1' || item.status == '2'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>-->
-
-                        <!-- <template slot-scope="scope"> -->
-
-                        <span v-if="item.status == '1' || item.status == '2'">
-                          <template v-if="item.docProcessStatus=='待审批'">待审批</template>
-                          <template v-if="item.docProcessStatus=='审批中'">审批中</template>
-                          <template
-                            v-if="item.docProcessStatus==''|| item.docProcessStatus=='已完成'"
-                          >已完成</template>
-                        </span>
-                        <!-- <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span> -->
-                        <span v-if="item.status == '0'">未完成</span>
-                        <span v-if="item.status === ''">-</span>
-                        <!-- </template> -->
+                        <span v-if="item.status == '1' || item.status == '2'">完成</span>
+                        <span v-if="item.status == '0'">暂存</span>
                       </div>
                       <div>
-                        <span
-                          v-if="item.status == '1' || item.status == '2'"
-                          class="tableHandelcase"
-                          @click="viewDocPdf(item)"
-                        >查看</span>
+                        <!-- 已完成 -->
+                        <!-- <span v-if="item.status == '1'" class="tableHandelcase" @click="viewDocPdf(item)">查看</span> -->
+                        <span v-if="item.status == '1' || item.status == '2'" class="tableHandelcase">
+                          <!-- 已完成 -->
+                          <span @click="viewDocPdf(item)">查看</span>
+                          <span @click="viewDocPdf(item)">打印</span>
+                        </span>
                         <span v-if="item.status == '0'" class="tableHandelcase">
+                          <!-- 未完成 -->
                           <span @click="viewDoc(item)">编辑</span>
                           <span @click="delDocDataByDocId(item)">清空</span>
                         </span>
-                        <span
-                          v-if="item.status === ''"
-                          class="tableHandelcase"
-                          @click="viewDoc(item)"
-                        >添加</span>
+                        <!-- 无状态 -->
+                        <span v-if="item.status === ''" class="tableHandelcase" @click="viewDoc(item)">添加</span>
                       </div>
                     </li>
                   </ul>
                 </template>
               </el-table-column>
 
-              <el-table-column type="index" label="序号" align="center"></el-table-column>
+              <el-table-column type="index" label="序号" align="center" width="50px"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
-                <template slot-scope="scope">
-                  <span style="color:red" v-if="scope.row.isRequired == 0">*</span>
+                 <template slot-scope="scope">
+                  <span style="color:red">*</span>
                   {{scope.row.name}}
-                  <!-- 催告书-->
-                  <span
-                    v-if="scope.row.docId== BASIC_DATA_JX.remindLetterDoc_JX_caseDocTypeId"
-                  >（{{finishRemindLetterCount}}/{{allRemindLetterCount}}）</span>
-                  <!-- "中止（终结、恢复）行政强制执行审批表" -->
-                  <span
-                    v-if="scope.row.docId== BASIC_DATA_JX.abortEndRecoverApprovalForm_JX_caseDocTypeId"
-                  >（{{finishAbortEndRecoverApprovalCount}}/{{allAbortEndRecoverApprovalCount}}）</span>
-                   <span
-                    v-if="scope.row.docId== BASIC_DATA_JX.enforceDoc_JX_caseDocTypeId"
-                  >（{{finishEnforceDocListCount}}/{{allEnforceDocListCount}}）</span>
+                  <span v-if="scope.row.name=='中止（终结、恢复）行政强制执行通知书'">
+                    （{{finishDocCount}}/{{allDocCount}}）
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span>
-                  <span v-if="scope.row.status == '0'">未完成</span>
-                  <span v-if="scope.row.status == ''"></span>
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">完成</span>
+                  <span v-if="scope.row.status == '0'">暂存</span>
+                  <span v-if="scope.row.status == ''">-</span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
@@ -177,27 +185,23 @@
                   </span>
                   <span v-if="!scope.row.openRow">
                     <!-- 已完成 -->
-                    <span
-                      v-if="scope.row.status == '1' || scope.row.status == '2'"
-                      class="tableHandelcase"
-                      @click="viewDocPdf(scope.row)"
-                    >查看</span>
+                    <!-- <span v-if="scope.row.status == '1'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span> -->
+                    <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase">
+                      <!-- 已完成 -->
+                      <span @click="viewDocPdf(scope.row)">查看</span>
+                      <span @click="viewDocPdf(scope.row)">打印</span>
+                    </span>
                     <!-- 未完成 暂存 -->
                     <span v-if="scope.row.status == '0'" class="tableHandelcase">
                       <span @click="viewDoc(scope.row)">编辑</span>
                       <span @click="delDocDataByDocId(scope.row)">清空</span>
                     </span>
                     <!-- 无状态 -->
-                    <span
-                      v-if="scope.row.status === ''"
-                      class="tableHandelcase"
-                      @click="viewDoc(scope.row)"
-                    >添加</span>
+                    <span v-if="scope.row.status === ''" class="tableHandelcase" @click="viewDoc(scope.row)">添加</span>
                   </span>
                 </template>
               </el-table-column>
             </el-table>
-  
           </div>
         </div>
         <!-- 悬浮按钮 -->
@@ -232,7 +236,7 @@
   import { mixinGetCaseApiList } from "@/common/js/mixins";
   import { mapGetters } from "vuex";
   // import checkDocFinish from "../../components/checkDocFinish";
-  import checkDocFinish from "@/page/caseHandle/components/checkDocFinish2.vue";
+  import checkDocFinish from "./PenaltyExecutionFormDocFinish";
   import chooseHandleTypeDia from '@/page/caseHandle/components/chooseHandleTypeDia';
   import resetDocDia from '@/page/caseHandle/components/resetDocDia';
   import iLocalStroage from "@/common/js/localStroage"; 
@@ -329,22 +333,12 @@
         isOnlinePay: false, //是否为电子缴纳
         needDealData:true,
         docTableDatasCopy: [],
-        // allAskDocList: [] ,//中止（终结、恢复）行政强制执行通知书
-        // unfinishFlag: '',
-        // isfinishFlag: true,
-        // finishDocCount: 0,//完成文书数
-        // allDocCount: 0,
-        propertyFeatures:'',
-        remindLetterDocList :[],
-        abortEndRecoverApprovalFormList:[],
-        enforceDocList:[],
-        finishRemindLetterCount :0,
-        finishAbortEndRecoverApprovalCount:0,
-        finishEnforceDocListCount:0,
-        allRemindLetterCount:0,
-        allAbortEndRecoverApprovalCount:0,
-        allEnforceDocListCount:0,
-        unfinshDocArr:[],
+        allAskDocList: [] ,//中止（终结、恢复）行政强制执行通知书
+        unfinishFlag: '',
+        isfinishFlag: true,
+        finishDocCount: 0,//完成文书数
+        allDocCount: 0,
+        propertyFeatures:''
       };
     },
     computed: {
@@ -381,59 +375,90 @@
         this.com_submitCaseForm(handleType, "forceExecuteForm", false);
       },
 
-  
+      // 判断文书是否完成
+      isComplete() {
+        debugger
+        // this.unfinishFlag = '';
+//        console.log('强制类型:', this.formData.forceType)
+        if (this.formData.forceType==='强制执行') {
+          // 强制执行书必做
+           debugger
+//          console.log(this.docTableDatas)
+          let flag = true
+          this.docTableDatas.forEach(element => {
+            if (element.name == '行政强制执行决定书【2016】') {
+               debugger
+              // this.unfinishFlag = '行政强制执行决定书';
+//              console.log('lement.status,element.status', element.status)
+              if (element.status == 0) {
+                 debugger
+                // this.unfinishFlag = '行政强制执行决定书';
+//                console.log('执行')
+                let caseData = {}
+                this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                flag = false;
+                return false;
+              }
+            }
+            else
+              return flag;
+            });
+             return flag;
+        }
+      },
 
+      isComplete2(){
+        debugger
+        // this.unfinishFlag = '';
+//        console.log('强制类型:', this.formData.forceType)
+        if (this.formData.forceType==='代履行') {
+          // 代履行必做
+          let flag2 = true;
+//          console.log(this.docTableDatas)
+          this.docTableDatas.forEach(element => {
+            if (element.name == '代履行决定书【2016】') {
+               debugger
+              if (element.status == 0) {
+                 debugger
+                // this.unfinishFlag = '代履行决定书';
+//                console.log('this.unfinishFlag', this.unfinishFlag)
+                let caseData = {}
+                this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                flag2 = false;
+                return flag2;
+              }
+              else
+                return flag2;
+            }
+            else
+              return flag2;
+          });
+          return flag2;
+        }
+      },
 
        //下一环节
       continueHandle() {
-        console.log(this.docTableDatas)
+        this.unfinishFlag = []
+       let unfinishFlag = []
+      if (this.isComplete() == false) {
+        unfinishFlag.push('行政强制执行决定书')
+      }
+      if (this.isComplete2() == false) {
+        unfinishFlag.push('代履行决定书')
+      }
         let caseData = {
           caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
           caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
         };
-        let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-        let approvalPass = true;  //文书审批都通过了
-        for (let i = 0; i < this.docTableDatas.length; i++) {
-          if(this.docTableDatas[i].openRow){  //可展开的多文书
-            // let currentMoreDoc = this.docTableDatasCopy.find(item=>item.docId == this.docTableDatas[i].docId);
-            // let currentMoreDocRequire= moreDoc.isRequired;
-            let currentMoreDoc = this.docTableDatasCopy.filter(item=>item.docId == this.docTableDatas[i].docId);
-            console.log('morcurrentMoreDoceDoc',currentMoreDoc);
-            if(this.docTableDatas[i].isRequired === 0){
-              for(let item of currentMoreDoc){
-                if(Number(item.status) == 0){
-                  canGotoNext = false; break;
-                }
-              }
-            }else{
-              for(let item of currentMoreDoc){
-                if(item.docProcessStatus == '审批中'){
-                  approvalPass = false; break;
-                }
-              }
-            }
-          }else{  //单文书
-            if (this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)) {
-              canGotoNext = false;
-              break;
-            }else if(this.docTableDatas[i].docProcessStatus == '审批中'){
-              //有审批中的环节
-              approvalPass = false;
-              break;
-            }
-          }
+        if ((this.isComplete() != false) && (this.isComplete2() != false)) {
+
+          this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
         }
-        if (canGotoNext && approvalPass) {
-          console.log('下一环节')
-          // this.com_goToNextLinkTu(
-          //   this.caseId,
-          //   this.caseLinkDataForm.caseLinktypeId
-          // );
-        } else if(!canGotoNext){
-          this.getUnfinishDoc();
-          this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
-        }else if(!approvalPass){
-          this.$message('有文书正在审批中！')
+        else {
+          // let unfinishFlag = this.unfinishFlag || ""
+          // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
+          this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
         }
       },
 
@@ -455,17 +480,12 @@
 
       //查看文书
       viewDoc(row) {
-        iLocalStroage.removeItem("currentDocDataId");
-        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
+          this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       },
       addMoreDoc(row) {
        console.log("添加",row);
         iLocalStroage.removeItem("currentDocDataId");
-        if(row.name=='催告书'){
-          this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
-        }else{
-          this.$refs.chooseHandleTypeDiaRef.showModal(row, this.caseLinkDataForm.caseLinktypeId,this.isSaveLink);
-        }
+        this.$refs.chooseHandleTypeDiaRef.showModal(row, this.isSaveLink);
       },
       //清空文书
       delDocDataByDocId(data){
@@ -480,33 +500,21 @@
         this.com_getDocListByCaseIdAndFormId(data);
       },
 
-      //预览pdf
-    viewDocPdf(row) {
-      let routerData = {
-        hasApprovalBtn: false,
-        docId: row.docId,
-        approvalOver: false,
-        hasBack: true,
-        docDataId: row.docDataId,
-        status: row.status //status状态 0 暂存 1保存未提交  2 保存并提交
-      };
-      console.log("routerData,routerData", routerData);
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      if (row.docProcessStatus == "待审批") {
-        this.$store.commit("setApprovalState", "approvalBefore");
-        this.$store.commit(
-          "setCaseLinktypeId",
-          this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId
-        );
-        this.$store.commit("setDocDataId", row.docDataId);
-        this.$store.commit("setDocId", row.docId);
-      } else if (row.docProcessStatus == "审批中") {
-        this.$store.commit("setApprovalState", "submitApproval");
-      } else {
-        this.$store.commit("setApprovalState", "");
-      }
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
-    },
+       //预览pdf
+      viewDocPdf(row) {
+//        console.log('row',row)
+        let routerData = {
+          hasApprovalBtn: false,
+          docId: row.docId,
+          approvalOver: false,
+          hasBack: true,
+          docDataId:row.docDataId,
+          status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
+
+        };
+        this.$store.dispatch("deleteTabs", this.$route.name);
+        this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      },
 
       getDataAfter(){
         this.formData.forceType = this.formData.forceType ? this.formData.forceType : '强制执行';
@@ -546,144 +554,33 @@
 
 
       setMoreDocTableTitle() {
-        console.log('setMoreDocTableTitle')
-      this.docTableDatas = [];
-      this.remindLetterDocList = [];
-      this.abortEndRecoverApprovalFormList = [];
-      this.enforceDocList = [];
-      //查找是否为必填
-      // 催告书
-      let remindLetterDocRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.remindLetterDoc_JX_caseDocTypeId).isRequired;
-      //中止审批表
-      let abortEndRecoverApprovalForm_JXRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.abortEndRecoverApprovalForm_JX_caseDocTypeId).isRequired;
-      //中止（终结、恢复）行政强制执行通知书
-      let enforceDoc_JXRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.enforceDoc_JX_caseDocTypeId).isRequired;
+        debugger
+//        console.log("djhafiufh执行方法")
+        this.docTableDatas = [];
+        this.allAskDocList = [];
+        this.docTableDatas.push({ name: '中止（终结、恢复）行政强制执行通知书', status: '中止', openRow: true, path: "case_handle_enforceDoc", docId: "2c902908696a1fc501696a754e3b0002" , note: '' });
 
-      // if (this.formData.stepPay) {
-        this.docTableDatas.push({
-          name: "催告书",
-          status: "询问",
-          openRow: true,
-          path: "case_handle_remindLetterDoc_JX",
-          docId: this.BASIC_DATA_JX.remindLetterDoc_JX_caseDocTypeId,
-          note: "",
-          isRequired:remindLetterDocRequire
-        });
-        this.docTableDatas.push({
-          name: "中止（终结、恢复）行政强制执行审批表",
-          status: "询问",
-          openRow: true,
-          path: "case_handle_abortEndRecoverApprovalForm",
-          docId: this.BASIC_DATA_JX.abortEndRecoverApprovalForm_JX_caseDocTypeId,
-          note: "",
-          isRequired:abortEndRecoverApprovalForm_JXRequire
-        });
-        this.docTableDatas.push({
-          name: "中止（终结、恢复）行政强制执行通知书",
-          status: "询问",
-          openRow: true,
-          path: "case_handle_enforceDoc",
-          docId: this.BASIC_DATA_JX.enforceDoc_JX_caseDocTypeId,
-          note: "",
-          isRequired:enforceDoc_JXRequire
-        });
         this.docTableDatasCopy.forEach(item => {
-          if (item.docId == this.BASIC_DATA_JX.remindLetterDoc_JX_caseDocTypeId) {
-            if (item.note != "") {
-              //防止把可展开的push进来
-              this.remindLetterDocList.push(item);
-            }
-          } else if (item.docId == this.BASIC_DATA_JX.abortEndRecoverApprovalForm_JX_caseDocTypeId) {
-            if (item.note != "") {
-              this.abortEndRecoverApprovalFormList.push(item);
-            }
-          }else if (item.docId == this.BASIC_DATA_JX.enforceDoc_JX_caseDocTypeId) {
-            if (item.note != "") {
-              this.enforceDocList.push(item);
-            }
-          } else {
+          console.log('名字啊啊啊', item.name)
+          if (item.name != '中止（终结、恢复）行政强制执行通知书') {
             this.docTableDatas.push(item);
-          }
-        });
-        this.remindLetterDocList.forEach(element => {
-          if (element.status == "1" || element.status == "2") {
-            this.finishRemindLetterCount += 1;
-          }
-        });
-        this.abortEndRecoverApprovalFormList.forEach(element => {
-          if (element.status == "1" || element.status == "2") {
-            this.finishAbortEndRecoverApprovalCount += 1;
-          }
-        });
-        this.enforceDocList.forEach(element => {
-          if (element.status == "1" || element.status == "2") {
-            this.finishEnforceDocListCount += 1;
-          }
-        });
-        this.allRemindLetterCount = this.remindLetterDocList.length;
-        this.allAbortEndRecoverApprovalCount = this.abortEndRecoverApprovalFormList.length;
-        this.allEnforceDocListCount = this.enforceDocList.length;
+          } else {
+            if (item.note != '') {
+            this.allAskDocList.push(item);
 
-      // }
-
-      console.log("this.docTableDatas", this.docTableDatas);
-      console.log("this.remindLetterDocList", this.remindLetterDocList);
-
-      console.log("this.abortEndRecoverApprovalFormList", this.abortEndRecoverApprovalFormList);
-      console.log("this.enforceDocList", this.enforceDocList);
-    },
-    //获取本环节必填但是未完成的文书
-    getUnfinishDoc(){
-      this.unfinshDocArr = [];
-      //判断是否为多文书
-      for(let item of this.docTableDatas){
-        if(item.openRow){
-          if(item.isRequired === 0){
-            if(item.docId == this.BASIC_DATA_JX.remindLetterDoc_JX_caseDocTypeId){
-              if(this.remindLetterDocList.length>0){
-                for(let stageDoc of this.remindLetterDocList){
-                  if(Number(stageDoc.status) == 0){
-                    this.unfinshDocArr.push(item);
-                    break;
-                  }
-                }
-              }else{
-                this.unfinshDocArr.push(item);
-              }
             }
-            if(item.docId == this.BASIC_DATA_JX.abortEndRecoverApprovalForm_JX_caseDocTypeId){
-              if(this.abortEndRecoverApprovalFormList.length>0){
-                for(let stageDoc of this.abortEndRecoverApprovalFormList){
-                  if(Number(stageDoc.status) == 0){
-                    this.unfinshDocArr.push(item);
-                    break;
-                  }
-                }
-              }else{
-                this.unfinshDocArr.push(item);
-              }
-            }
-            if(item.docId == this.BASIC_DATA_JX.enforceDoc_JX_caseDocTypeId){
-              if(this.enforceDocList.length>0){
-                for(let stageDoc of this.enforceDocList){
-                  if(Number(stageDoc.status) == 0){
-                    this.unfinshDocArr.push(item);
-                    break;
-                  }
-                }
-              }else{
-                this.unfinshDocArr.push(item);
-              }
-            }
-            
           }
-          
-        }else{
-          if(item.isRequired === 0 && Number(item.status) == 0) this.unfinshDocArr.push(item);
-        }
-        console.log('this.unfinshDocArr',this.unfinshDocArr)
-      }
-    },
+        });
+        this.finishDocCount = 0;
+        this.allAskDocList.forEach(element => {
+          if (element.name == '中止（终结、恢复）行政强制执行通知书' && (element.status == '1'||element.status == '2')) {
+            this.finishDocCount += 1;
+          }
+        });
+        this.allDocCount = this.allAskDocList.length
+        console.log('this.docTableDatas', this.docTableDatas)
+        console.log('this.allAskDocList', this.allAskDocList)
+      },
       async initData(){
         //查询是哪个流程
         let currentFlow = await queryFlowBycaseIdApi(this.caseId);
