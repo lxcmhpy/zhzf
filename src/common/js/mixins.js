@@ -333,7 +333,7 @@ export const mixinGetCaseApiList = {
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
           //多文书列表
-          let moreDoc = [this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId,this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId,this.BASIC_DATA_SYS.forceExecute_caseLinktypeId,this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId,this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId];
+          let moreDoc = [this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId,this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId,this.BASIC_DATA_SYS.forceExecute_caseLinktypeId,this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId,this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId];
           if (moreDoc.includes(params.linkTypeId)) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
@@ -345,6 +345,7 @@ export const mixinGetCaseApiList = {
     },
     //查看或新增环节下的文书
     async com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
+      console.log('addMoreData minis',addMoreData)
       console.log("新增文书",row);
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
@@ -542,12 +543,7 @@ export const mixinGetCaseApiList = {
           caseId:this.caseId,
           linkTypeId:data.linkID
         }
-        //更改流程图状态
-        try{
-          await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
-        }catch(err){
-          this.$message('更改流程图状态失败！')
-        }
+        
 
 
         //行政强制措施即将到期,从零点开始提示
@@ -558,12 +554,27 @@ export const mixinGetCaseApiList = {
           return;
         }
         // 行政强制措施即将到期，请前往解除行政强制措施
-        if (data.linkID != this.BASIC_DATA_SYS.forceExecute_caseLinktypeId && data.linkID != this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId) {
+        let beforeFinishLink = [this.BASIC_DATA_SYS.forceExecute_caseLinktypeId,this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId];
+        if(!beforeFinishLink.includes(data.linkID)){
+          //更改流程图状态
+          try{
+            await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
+          }catch(err){
+            this.$message('更改流程图状态失败！')
+          }
           this.$router.push({ name: data2.nextLink })
         } else {
-          if (completeLinkArr.indexOf(this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId) >= 0 && completeLinkArr.indexOf(this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId) == -1) {
+          if ((completeLinkArr.indexOf(this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId) >= 0 && completeLinkArr.indexOf(this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId) == -1)
+            || (completeLinkArr.indexOf(this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId) >= 0 && completeLinkArr.indexOf(this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId) == -1)
+          ) {
             this.$refs.pleaseRemoveMDiaRef.showModal();
           } else {
+            //更改流程图状态
+            try{
+              await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
+            }catch(err){
+              this.$message('更改流程图状态失败！')
+            }
             this.$router.push({ name: data2.nextLink })
           }
         }
@@ -684,6 +695,7 @@ export const mixinGetCaseApiList = {
             for (var key in data) {
               this.docData[key] = data[key].val ? data[key].val : this.docData[key];
             }
+            console.log('this.docData', this.docData);
           }
         }
         if (this.needDealData) {

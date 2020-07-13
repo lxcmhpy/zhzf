@@ -17,6 +17,10 @@
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
+import {
+   queryFlowBycaseIdApi
+} from "@/api/caseHandle";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -26,6 +30,7 @@ export default {
   },
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
+  computed: {...mapGetters(['caseId'])},
   methods: {
     showModal(data) {
       console.log(data);
@@ -35,9 +40,21 @@ export default {
     closeDialog() {
       this.visible = false;
     },
-    gotoCoerciveMeasureDoc(){
+    async gotoCoerciveMeasureDoc(){
         this.$store.dispatch("deleteTabs", this.$route.name);
-        this.$router.push({name:'case_handle_removeOrPrelong'})
+        let currentFlow = '';
+        try{
+          currentFlow = await queryFlowBycaseIdApi(this.caseId);
+          if(currentFlow.data.flowName == '江西流程'){
+            this.$router.push({name:'case_handle_coerciveMeasureDoc_JX'})
+          }else{
+            this.$router.push({name:'case_handle_removeOrPrelong'})
+          }
+        }catch(err){
+          this.$message('获取案件流程失败！')
+        }
+        
+        
     }
   },
   mounted() {}
