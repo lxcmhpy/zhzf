@@ -13,6 +13,8 @@ export const BASIC_DATA_SYS = {
     cxl: '28bc01c6fb9ddd92db25ab764e605c90',
     // 车牌颜色
     vehicleColor: '388c5ac24cde480df1a54bc97829a481',
+    // 车辆查验颜色代码
+    vehicleCheckColor:'efae9ce1bd95b7698ce57f668d264fae',
     // 无效信息类型
     invalidCode:'a0a2d83376fe7695f76fbba69545c056',
     // 监管机构根节点id

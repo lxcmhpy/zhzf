@@ -227,7 +227,7 @@
                   :rules="fieldRules('defendState',propertyFeatures['defendState'])"
                 >
                   <p>
-                    <el-checkbox @change="test" v-model="one">同意延期缴纳罚款。</el-checkbox>
+                    <el-checkbox  value="1" v-model="checknames">同意延期缴纳罚款。</el-checkbox>
                     <span>
                       延长至
                       <el-date-picker
@@ -241,7 +241,7 @@
                     </span>
                   </p>
                   <p>
-                    <el-checkbox @change="test2" v-model="two">同意分期缴纳罚款。</el-checkbox>第
+                    <el-checkbox value="2" v-model="checknames">同意分期缴纳罚款。</el-checkbox>第
                     <el-input
                       v-model="docData.stageNum"
                       type="textarea"
@@ -277,7 +277,7 @@
                     ></el-input>元（大写）。
                   </p>
                   <p>
-                    <el-checkbox  @change="test3" v-model="three"></el-checkbox>  由于当事人的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意分期（延期）缴纳罚款。
+                    <el-checkbox  v-model="three"></el-checkbox>  由于当事人的申请不符合《中华人民共和国行政处罚法》第五十二条的规定，不同意分期（延期）缴纳罚款。
                   </p>
                 </el-form-item>
               </div>
@@ -358,6 +358,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     casePageFloatBtns
@@ -400,6 +401,7 @@ export default {
         threeApprovePeo: "",
         threeApproveTime: "",
         notes: "",
+        checknames: []
       },
       one:false,
       two:false,
@@ -412,6 +414,8 @@ export default {
         caseDoctypeId: this.$route.params.docId, //文书类型ID
         docData: "",
         status: "", //提交状态
+        note:"分期（延期）缴纳罚款审批表",//文书名字
+        docDataId:"", //多份文书的id
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
@@ -499,25 +503,64 @@ export default {
         pageDomId: "stageDelayApprovalForm_print"
       },
       approvalOver: false, //审核完成
-      propertyFeatures: ""
+      propertyFeatures: "",
+       checknames: []
     };
   },
   methods: {
     //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      let data = {
-        caseId: this.caseId,
-        docId: this.$route.params.docId
-      };
-      console.log(data);
-      this.com_getDocDataByCaseIdAndDocId(data);
-    },
-    //保存文书信息
-    saveData(handleType) {
-      // this.printContent()
-      this.com_addDocData(handleType, "docForm");
-    },
+      getDocDataByCaseIdAndDocId() {
+        this.caseDocDataForm.caseBasicinfoId = this.caseId;
+//        console.log("this.caseId,this.caseId", this.caseId)
+//        console.log("this.caseId,this.caseId", this.caseDocDataForm.caseBasicinfoId)
+        let data = {
+          caseId: this.caseId,
+          docId: this.$route.params.docId
+        };
+        // this.com_getDocDataByCaseIdAndDocId(data)
+
+        //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+        let addMoreData = JSON.parse(this.$route.params.addMoreData);
+
+        if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
+          //设置询问笔录名称
+         console.log('添加')
+          // this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
+          this.com_getCaseBasicInfo(data.caseId, data.docId);
+          if(addMoreData.approvalForm.executeHandle === '0'){  
+            this.checknames.push("3")
+            this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
+          }
+          else {
+            if (addMoreData.approvalForm.executeType === 1) {
+              // 分期
+              this.checknames.push("2")
+              this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
+
+            }
+            if (addMoreData.approvalForm.executeType === 0) {
+              // 延期
+              this.checknames.push("1")
+              this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
+
+            }
+        }
+      } else {
+         console.log('修改')
+          let currentDocDataId = iLocalStroage.get("currentDocDataId");
+          if (currentDocDataId) {
+            this.getDocDetailById(currentDocDataId)
+          } else {
+            this.getDocDetailById(this.$route.params.docDataId)
+          }
+        }
+
+      },
+      //保存文书信息
+      saveData(handleType) {
+        this.docData.checknames = JSON.parse(JSON.stringify(this.checknames))
+        this.com_addDocData(handleType, 'docForm');
+      },
     //是否是完成状态
     isOverStatus() {
       if (this.$route.params.docStatus == "1") {

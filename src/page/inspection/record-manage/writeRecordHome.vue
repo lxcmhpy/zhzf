@@ -66,6 +66,7 @@
   </div>
 </template>
 <script>
+
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
@@ -73,12 +74,15 @@ import addModle from "./addModle.vue";
 import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
   findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi, removeMoleCollectByIdApi} from "@/api/Record";
 import Vue from 'vue'
+import { mapGetters } from "vuex";
 export default {
   components: {
     preview,
     addModle
   },
-
+  computed: {
+    ...mapGetters(["orderId", "addOrEiditFlag"])
+  },
   data() {
     return {
       isHome: true,
@@ -126,8 +130,17 @@ export default {
       this.$router.push({
         name: 'inspection_writeRecordInfo',
         // params: item
-        query: { id: item.id, addOrEiditFlag: 'add' }
+        // query: { id: item.id, addOrEiditFlag: 'add' }
+        params: {
+          id: item.id,
+          addOrEiditFlag: 'add'
+        }
       });
+      // this.$store.commit("orderId", 11);
+      // console.log(this.addOrEiditFlag)
+      // this.$store.dispatch("addOrEiditFlag", 'edit');
+      // debugger
+
     },
     // 修改模板
     editModle(item) {

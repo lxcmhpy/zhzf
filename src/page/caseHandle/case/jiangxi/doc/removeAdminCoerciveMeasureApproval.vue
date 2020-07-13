@@ -169,17 +169,17 @@
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
               <el-form-item
-                prop="basicSituation"
-                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
+                prop="caseSituation"
+                :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.basicSituation"
-                  v-bind:class="{ over_flow:docData.basicSituation && docData.basicSituation.length>14?true:false }"
+                  v-model="docData.caseSituation"
+                  v-bind:class="{ over_flow:docData.caseSituation && docData.caseSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
+                  :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -318,7 +318,6 @@ export default {
       // isOverLine: false,
       docData: {
         caseNumber: "",
-        caseName: "",
         party: "",
         partyIdNo: "",
         partyAddress: "",
@@ -328,11 +327,9 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
-        basicSituation: "",
-        measureStartDate: "",
-        measureEndDate: "",
-        notes: "",
-        checkBox:[],
+        partyAddress:'',
+        caseSituation: '',
+        checkBox: [],
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
@@ -345,6 +342,7 @@ export default {
         fourApproveOpinions: "",
         fourApprovePeo: "",
         fourApproveTime: "",
+        notes: ""
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
@@ -398,9 +396,9 @@ export default {
             trigger: "blur"
           }
         ],
-        basicSituation: [
+        caseSituation: [
           { required: true, message: "基本情况不能为空", trigger: "blur" }
-        ],
+        ]
       },
       nameLength: 23,
       adressLength: 23,

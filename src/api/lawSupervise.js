@@ -10,9 +10,8 @@ export function getZfjgLawSupervise(data) {
     url: "/zfjg/list",
     method: "get",
     params:data,
-    showloading: true,
+    showloading: false,
     // loadingType:'loadFull',
-    loadingType:'loadPart',
     baseUrlType:  'LAW_SUPERVISE_HOST',
     cancelToken: setCancelSource()
   });

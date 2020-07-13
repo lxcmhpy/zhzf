@@ -235,8 +235,9 @@
     function SaveWebFile() {
       var fileName = getParam(0).split("/");
       var fileId = fileName[fileName.length - 1];
-      //var url = "http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"+fileId;
-      var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/" + fileId;
+      var url = "http://172.16.170.50:9000/case/sys/file/uploadDocDzqz/"+fileId;
+      // var url = "http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"+fileId;
+      // var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/" + fileId;
       //var url = "http://127.0.0.1:9003/sys/file/uploadDocDzqz/"+fileId;
       //if(PDFReader.GetSignCount(0, 0, "") == 0){
       //	alert("请先进行签章操作，在保存！");

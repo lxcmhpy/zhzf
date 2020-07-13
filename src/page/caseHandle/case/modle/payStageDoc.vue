@@ -237,7 +237,7 @@
         disabledThree: true,
         isChange: false,
         propertyFeatures: '',
-        isparty: true,
+        isParty: true,
       }
     },
 
@@ -458,8 +458,9 @@
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
+      let addMoreData = JSON.parse(this.$route.params.addMoreData);
       //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-      if (this.$route.params.handelType === 'isAddMore') {
+      if(addMoreData.handelType == 'isAddMore'){
 //        console.log('多份文书', this.$route.params.handelType)
         this.com_getCaseBasicInfo(data.caseId, data.docId)
       } else {
@@ -467,20 +468,20 @@
       }
 
 //      console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
-      if (this.$route.params.approvalForm.executeHandle === '0') {
+      if(addMoreData.approvalForm.executeHandle === '0'){  
         // 拒绝
 //        console.log('拒绝')
         this.checknames.push("3")
         this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
       }
       else {
-        if (this.$route.params.approvalForm.executeType === 1) {
+        if (addMoreData.approvalForm.executeType === 1) {
           // 分期
           this.checknames.push("2")
           this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
 
         }
-        if (this.$route.params.approvalForm.executeType === 0) {
+        if (addMoreData.approvalForm.executeType === 0) {
           // 延期
           this.checknames.push("1")
           this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";

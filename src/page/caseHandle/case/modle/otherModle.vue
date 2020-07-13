@@ -309,7 +309,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
-        note:"",//文书名字
+        note:"",//文书名字 
         docDataId:"", //多份文书的id
         linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },

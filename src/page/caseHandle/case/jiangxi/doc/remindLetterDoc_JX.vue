@@ -103,16 +103,16 @@
           你（单位）逾期仍不履行的，本机关将依法采取以下措施：
         </p>
         <p>
-          <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。
+          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。
+          <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.申请人民法院强制执行。
+          <input type="checkbox" name="measure" value="5" v-model="checknames" @change="click">3.申请人民法院强制执行。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">4.依法代履行或者委托第三人：
+          <input type="checkbox" name="measure" value="6" v-model="checknames" @change="click">4.依法代履行或者委托第三人：
           <span>
             <el-form-item :prop="wtInfoDisabled?'':'wtInfo'">
               <el-input v-model="docData.wtInfo" v-bind:disabled="wtInfoDisabled" :maxLength='maxLength'></el-input>
@@ -120,7 +120,7 @@
           </span>代履行。
         </p>
         <p>
-          <input type="checkbox"  name="measure" value="5" v-model="checknames" @change="click">5.其他强制执行方式：
+          <input type="checkbox"  name="measure" value="7" v-model="checknames" @change="click">5.其他强制执行方式：
           <span>
             <el-form-item :prop="otherRemindWayDisabled?'':'otherRemindWay'">
               <el-input v-model="docData.otherRemindWay" v-bind:disabled="otherRemindWayDisabled" :maxLength='maxLength'></el-input>
@@ -187,12 +187,11 @@ export default {
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: '', //案件id--从流程进入删掉，先写死测试用
-        caseDoctypeId: "2c9029cf698f9e6c01698fd9e9000002", //表单类型IDer
-        //表单数据
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
         docData: "",
-        status: "",
-        linkTypeId: this.$route.params.caseLinkTypeId //环节ID
+        status: "", //提交状态
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       name: '',
       inputInfo: '',
@@ -266,8 +265,7 @@ export default {
     getDocDataByCaseIdAndDocId() {
       let data = {
         caseId: this.caseId, //流程里的案件id
-        // caseId: '297708bcd8e80872febb61577329194f', //先写死
-        docId: '2c9029cf698f9e6c01698fd9e9000002'
+        docId: this.caseDocDataForm.caseDoctypeId
       };
       this.com_getDocDataByCaseIdAndDocId(data);
 
@@ -312,10 +310,10 @@ export default {
       if(this.checknames.length > 1){
         this.checknames.shift();
       }
-      if(this.checknames == '4'){
+      if(this.checknames == '6'){
         this.wtInfoDisabled = false;
         this.otherRemindWayDisabled = true;
-      }else if(this.checknames == '5'){
+      }else if(this.checknames == '7'){
         this.wtInfoDisabled = true;
         this.otherRemindWayDisabled = false;
       }else{

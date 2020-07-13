@@ -184,7 +184,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="performance" label="执行情况">
-                  <el-select v-model="formData.performance">
+                  <el-select v-model="formData.performance" @change="changePerformance">
                     <!-- <el-option label="未完成" value="未完成"></el-option>
                     <el-option label="已完成" value="已完成"></el-option>
                     <el-option label="催告" value="催告"></el-option>-->
@@ -234,11 +234,7 @@
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
                     <ul>
-                      <li
-                        v-for="item in alreadyLoadPayEvidence"
-                        :key="item.id"
-                        @click.stop="evidenceDetail(item)"
-                      >{{item.fileName}}</li>
+                      <li v-for="item in alreadyLoadPayEvidence" :key="item.id" @click.stop="evidenceDetail(item)">{{item.fileName}}</li>
                     </ul>
                   </el-upload>
                 </el-form-item>
@@ -293,68 +289,21 @@
               stripe
               border
               style="width: 100%"
-              :row-class-name="getRowClass"
+              max-height="250"
+              row-key="id"
+              default-expand-all
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
             >
-              <el-table-column type="expand" expand-change>
-                <template slot-scope="props">
-                  <ul class="moreDocList">
-                    <li
-                      v-for="(item,index) in props.row.path =='case_handle_payStage' ? allAskDocList : allApprovalDocList"
-                      :key="index"
-                    >
-                      <div>{{item.note}}</div>
-                      <div>
-                        <!-- <span v-if="item.status == '1' || item.status == '2'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>-->
-
-                        <!-- <template slot-scope="scope"> -->
-
-                        <span v-if="item.status == '1' || item.status == '2'">
-                          <template v-if="item.docProcessStatus=='待审批'">待审批</template>
-                          <template v-if="item.docProcessStatus=='审批中'">审批中</template>
-                          <template
-                            v-if="item.docProcessStatus==''|| item.docProcessStatus=='已完成'"
-                          >已完成</template>
-                        </span>
-                        <!-- <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span> -->
-                        <span v-if="item.status == '0'">未完成</span>
-                        <span v-if="item.status === ''">-</span>
-                        <!-- </template> -->
-                      </div>
-                      <div>
-                        <span
-                          v-if="item.status == '1' || item.status == '2'"
-                          class="tableHandelcase"
-                          @click="viewDocPdf(item)"
-                        >查看</span>
-                        <span v-if="item.status == '0'" class="tableHandelcase">
-                          <span @click="viewDoc(item)">编辑</span>
-                          <span @click="delDocDataByDocId(item)">清空</span>
-                        </span>
-                        <span
-                          v-if="item.status === ''"
-                          class="tableHandelcase"
-                          @click="viewDoc(item)"
-                        >添加</span>
-                      </div>
-                    </li>
-                  </ul>
-                </template>
-              </el-table-column>
-
               <el-table-column type="index" label="序号" align="center"></el-table-column>
+              <el-table-column prop="id" label="材料名称" align="center">
+              </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
-                  <span style="color:red" v-if="scope.row.isRequired == 0">*</span>
+                  <span style="color:red">*</span>
                   {{scope.row.name}}
-                  <!-- 分期（延期）缴纳罚款通知书 -->
                   <span
-                    v-if="scope.row.docId== BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId"
+                    v-if="scope.row.name=='分期（延期）缴纳罚款通知书'"
                   >（{{finishDocCount}}/{{allDocCount}}）</span>
-                  <!-- 分期（延期）缴纳罚款审批表 -->
-                  <span
-                    v-if="scope.row.docId== BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId"
-                  >（{{finishDelayApprovalDocCount}}/{{allDelayApprovalDocCount}}）</span>
                 </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
@@ -366,11 +315,7 @@
               </el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <span class="tableHandelcase" v-if="scope.row.openRow">
-                    <!-- <i class="iconfont law-add" @click="viewDoc(scope.row)"></i> -->
-                    <span @click="addMoreDoc(scope.row)">添加</span>
-                  </span>
-                  <span v-if="!scope.row.openRow">
+                  <span>
                     <!-- 已完成 -->
                     <span
                       v-if="scope.row.status == '1' || scope.row.status == '2'"
@@ -449,24 +394,22 @@
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <addDialog ref="addDialogRef" @getNewData="goAddPdf"></addDialog>
 
-    <resetDocDia
-      ref="resetDocDiaRef"
-      @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"
-    ></resetDocDia>
+    <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
     <payDetail ref="payDetailRef"></payDetail>
   </div>
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-// import checkDocFinish from "./PenaltyExecutionFormDocFinish";
-import checkDocFinish from "@/page/caseHandle/components/checkDocFinish2.vue";
-import addDialog from "./PenaltyExecutionFormDialog";
-import resetDocDia from "@/page/caseHandle/components/resetDocDia";
+import checkDocFinish from "./PenaltyExecutionFormDocFinish";
+import addDialog from './PenaltyExecutionFormDialog';
+import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import payDetail from "./payDetail";
-import { uploadEvApi, findFileByIdApi } from "@/api/upload";
-import { findIsOrderApi, queryFlowBycaseIdApi } from "@/api/caseHandle";
-import iLocalStroage from "@/common/js/localStroage";
+import {
+  uploadEvApi,
+  findFileByIdApi,
+} from "@/api/upload";
+import { findIsOrderApi,queryFlowBycaseIdApi } from "@/api/caseHandle";
 export default {
   components: {
     checkDocFinish,
@@ -555,15 +498,11 @@ export default {
       needDealData: true,
       docTableDatasCopy: [],
       allAskDocList: [], //分期延期
-      allApprovalDocList: [], //分期延期审批表
       unfinishFlag: [],
       isfinishFlag: true,
       finishDocCount: 0, //完成文书数
       allDocCount: 0,
-      propertyFeatures: "",
-      finishDelayApprovalDocCount: 0,
-      allDelayApprovalDocCount: 0,
-      unfinshDocArr : [], //未完成文书列表
+      propertyFeatures: ""
     };
   },
   computed: {
@@ -572,7 +511,7 @@ export default {
   mixins: [mixinGetCaseApiList],
   methods: {
     //加载表单信息
-     setFormData() {
+    setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(
         this.caseLinkDataForm.caseBasicinfoId,
@@ -585,93 +524,85 @@ export default {
       console.log("分期", this.formData.stepPay);
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
-    
+    // 判断文书是否完成
+    isComplete() {
+      if (this.formData.stepPay) {
+        // 分期延期缴纳通知书必做
+        let flag = true;
+        // if (this.allAskDocList.length == 0) {
+        //   flag = false;
+        //   return false;
+        // } else {
+        //   this.allAskDocList.forEach(element => {
+        //     if (element.name.indexOf("分期（延期）缴纳") == 0) {
+        //       console.log("element.name", element.status);
+        //       if (element.status == 0) {
+        //         let caseData = {};
+        //         this.$refs.checkDocFinishRef.showModal(
+        //           this.docTableDatas,
+        //           caseData,
+        //           this.unfinishFlag
+        //         );
+        //         flag = false;
+        //         return false;
+        //       }
+        //     } else return flag;
+        //   });
+        // }
 
+        return flag;
+      }
+    },
+    isComplete2() {
+      this.unfinishFlag = [];
+      if (this.formData.performance == "催告") {
+        // 催告书必做
+        let flag2 = true;
+        console.log(this.docTableDatas);
+        this.docTableDatas.forEach(element => {
+          if (element.name == "催告书") {
+            if (element.status == 0) {
+              let caseData = {};
+              this.$refs.checkDocFinishRef.showModal(
+                this.docTableDatas,
+                caseData,
+                this.unfinishFlag
+              );
+
+              flag2 = false;
+              return flag2;
+            } else return flag2;
+          } else return flag2;
+        });
+        return flag2;
+      }
+    },
     //下一环节
     continueHandle() {
-      console.log(this.docTableDatas)
+      this.unfinishFlag = [];
+      let unfinishFlag = [];
+      if (this.isComplete() == false) {
+        unfinishFlag.push("分期（延期）缴纳罚款通知书");
+      }
+      if (this.isComplete2() == false) {
+        unfinishFlag.push("催告书");
+      }
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
       };
-      let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-      let approvalPass = true;  //文书审批都通过了
-      for (let i = 0; i < this.docTableDatas.length; i++) {
-        if(this.docTableDatas[i].openRow){  //可展开的多文书
-          // let currentMoreDoc = this.docTableDatasCopy.find(item=>item.docId == this.docTableDatas[i].docId);
-          // let currentMoreDocRequire= moreDoc.isRequired;
-          let currentMoreDoc = this.docTableDatasCopy.filter(item=>item.docId == this.docTableDatas[i].docId);
-          console.log('morcurrentMoreDoceDoc',currentMoreDoc);
-          if(this.docTableDatas[i].isRequired === 0){
-            for(let item of currentMoreDoc){
-              if(Number(item.status) == 0){
-                canGotoNext = false; break;
-              }
-            }
-          }else{
-            for(let item of currentMoreDoc){
-              if(item.docProcessStatus == '审批中'){
-                approvalPass = false; break;
-              }
-            }
-          }
-        }else{  //单文书
-          if (this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)) {
-            canGotoNext = false;
-            break;
-          }else if(this.docTableDatas[i].docProcessStatus == '审批中'){
-            //有审批中的环节
-            approvalPass = false;
-            break;
-          }
-        }
-      }
-      if (canGotoNext && approvalPass) {
-        console.log('下一环节')
+      if (this.isComplete() != false && this.isComplete2() != false) {
         this.com_goToNextLinkTu(
           this.caseId,
           this.caseLinkDataForm.caseLinktypeId
         );
-      } else if(!canGotoNext){
-        this.getUnfinishDoc();
-        this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
-      }else if(!approvalPass){
-        this.$message('有文书正在审批中！')
+      } else {
+        this.$refs.checkDocFinishRef.showModal(
+          this.docTableDatas,
+          caseData,
+          unfinishFlag
+        );
       }
-
-
-
-
-
-
-
-
-
-
-      // this.unfinishFlag = [];
-      // let unfinishFlag = [];
-      // if (this.isComplete() == false) {
-      //   unfinishFlag.push("分期（延期）缴纳罚款通知书");
-      // }
-      // if (this.isComplete2() == false) {
-      //   unfinishFlag.push("催告书");
-      // }
-      // let caseData = {
-      //   caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
-      //   caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
-      // };
-      // if (this.isComplete() != false && this.isComplete2() != false) {
-      //   this.com_goToNextLinkTu(
-      //     this.caseId,
-      //     this.caseLinkDataForm.caseLinktypeId
-      //   );
-      // } else {
-      //   this.$refs.checkDocFinishRef.showModal(
-      //     this.docTableDatas,
-      //     caseData,
-      //     unfinishFlag
-      //   );
-      // }
     },
     // 进入文书
     enterDoc(row) {
@@ -689,23 +620,12 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      // if (row.name.indexOf("分期（延期）缴纳罚款") == false && row.note == "") {
-      //   console.log("弹窗");
-      //   this.$refs.addDialogRef.showModal(row, this.isSaveLink);
-      // } else {
-      //   this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
-      // }
-      iLocalStroage.removeItem("currentDocDataId");
-      this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
-    },
-    //添加多份文书
-    addMoreDoc(row) {
-      iLocalStroage.removeItem("currentDocDataId");
-      this.$refs.addDialogRef.showModal(
-        row,
-        this.caseLinkDataForm.caseLinktypeId,
-        this.isSaveLink
-      );
+      if (row.name.indexOf("分期（延期）缴纳罚款") == false && row.note == "") {
+        console.log("弹窗");
+        this.$refs.addDialogRef.showModal(row, this.isSaveLink);
+      } else {
+        this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
+      }
     },
     //清空文书
     delDocDataByDocId(data) {
@@ -731,19 +651,6 @@ export default {
       };
       console.log("routerData,routerData", routerData);
       this.$store.dispatch("deleteTabs", this.$route.name);
-      if (row.docProcessStatus == "待审批") {
-        this.$store.commit("setApprovalState", "approvalBefore");
-        this.$store.commit(
-          "setCaseLinktypeId",
-          this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId
-        );
-        this.$store.commit("setDocDataId", row.docDataId);
-        this.$store.commit("setDocId", row.docId);
-      } else if (row.docProcessStatus == "审批中") {
-        this.$store.commit("setApprovalState", "submitApproval");
-      } else {
-        this.$store.commit("setApprovalState", "");
-      }
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
     //执行方式
@@ -776,6 +683,9 @@ export default {
           this.findPaymentVoucher(item, false);
         });
       }
+      this.changeStepPay();
+      this.changePerformance();
+      //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     },
     //上传缴费凭证
     uploadPaymentVoucher(param) {
@@ -819,8 +729,8 @@ export default {
       );
     },
     //显示已上传的缴纳凭证
-    evidenceDetail(file) {
-      console.log("123", file);
+    evidenceDetail(file){
+      console.log("123",file);
       this.$refs.payDetailRef.showModal(file);
     },
     //返回到流程图
@@ -849,72 +759,45 @@ export default {
     },
     setMoreDocTableTitle() {
       this.docTableDatas = [];
-      this.allAskDocList = [];
-      this.allApprovalDocList = [];
-      //查找是否为必填
-      let stageDelayApprovalFormRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId).isRequired;
-      let payStageDoc_JXRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId).isRequired;
-      if (this.formData.stepPay) {
-        //选分期延期
-        this.docTableDatas.push({
-          name: "分期（延期）缴纳罚款审批表",
-          status: "询问",
-          openRow: true,
-          path: "case_handle_stageDelayApprovalForm",
-          docId: this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId,
-          note: "",
-          isRequired:stageDelayApprovalFormRequire
-        });
-        this.docTableDatas.push({
-          name: "分期（延期）缴纳罚款通知书",
-          status: "询问",
-          openRow: true,
-          path: "case_handle_payStage",
-          docId: this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId,
-          note: "",
-          isRequired:payStageDoc_JXRequire
-        });
-        this.docTableDatasCopy.forEach(item => {
-          if (item.docId == this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId) {
-            if (item.note != "") {
-              //防止把可展开的push进来
-              this.allApprovalDocList.push(item);
-            }
-          } else if (item.docId == this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId) {
-            if (item.note != "") {
-              this.allAskDocList.push(item);
-            }
-          } else {
-            this.docTableDatas.push(item);
+      // this.allAskDocList = [];
+      let childrenArr =[];
+      // let a = 0;
+      this.docTableDatasCopy.forEach(item => {
+        if (item.name.indexOf("分期（延期）缴纳") == -1) {
+          this.docTableDatasShow.push(item);
+        } else {
+          this.docTableDatasOther.push(item);
+          if (item.note != "") {
+            // this.allAskDocList.push(item);
+            this.docTableDatasOther.forEach((itema, index, arr) => {
+              debugger;
+              if (item.docId == itema.docId) {
+                childrenArr.push = [item]
+              }
+              // if(childrenArr.length>0){
+              //   this.docTableDatasOther[index].children= childrenArr;
+              // }
+            });
           }
-        });
-        this.allAskDocList.forEach(element => {
-          if (element.docId == this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId && (element.status == "1" || element.status == "2")) {
-            this.finishDocCount += 1;
-          }
-        });
-        this.allApprovalDocList.forEach(element => {
-          if (element.docId == this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId && (element.status == "1" || element.status == "2")) {
-            this.finishDelayApprovalDocCount += 1;
-          }
-        });
-        this.allDocCount = this.allAskDocList.length;
-        this.allDelayApprovalDocCount = this.allApprovalDocList.length;
-      }else{
-        this.docTableDatas = this.docTableDatasCopy.filter(item => {
-          return (
-            item.docId != this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId &&
-            item.docId !=
-              this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId
-          );
-        });
-      }
-
-      console.log("this.docTableDatas", this.docTableDatas);
-      console.log("this.allAskDocList", this.allAskDocList);
-      console.log("this.allApprovalDocList", this.allApprovalDocList);
+        }
+      });
+      console.log("11111111",array,a)
+      
+      console.log("22222222",this.docTableDatasOther)
+      // this.allAskDocList.forEach(element => {
+      //   if (
+      //     (element.name == "分期（延期）缴纳罚款通知书【2016】" ||
+      //       element.name == "分期（延期）缴纳罚款通知书") &&
+      //     (element.status == "1" || element.status == "2")
+      //   ) {
+      //     this.finishDocCount += 1;
+      //   }
+      // });
+      // this.allDocCount = this.allAskDocList.length;
+      this.docTableDatas = [];
+      this.changeStepPay();
+      this.changePerformance();
     },
-
     //通过案件ID和文书ID查询附件
     findFileList() {
       let data = {
@@ -958,7 +841,23 @@ export default {
     },
     // 分期延期缴纳
     changeStepPay() {
-      this.setMoreDocTableTitle();
+      this.docTableDatas = [];
+      if (this.formData.stepPay == true) {
+        this.docTableDatas = this.docTableDatasOther;
+      }
+      if (this.formData.performance == "催告") {
+        this.docTableDatas = this.docTableDatasShow;
+      }
+    },
+    // 催告
+    changePerformance() {
+      this.docTableDatas = [];
+      if (this.formData.stepPay == true) {
+        this.docTableDatas = this.docTableDatasOther;
+      }
+      if (this.formData.performance == "催告") {
+        this.docTableDatas = this.docTableDatasShow;
+      }
     },
     async initData() {
       //查询是哪个流程
@@ -996,47 +895,8 @@ export default {
       this.setFormData();
       //通过案件id和表单类型Id查询已绑定文书
       this.getDocListByCaseIdAndFormId();
-    },
-    //获取本环节必填但是未完成的文书
-    getUnfinishDoc(){
-      this.unfinshDocArr = [];
-      //判断是否为多文书
-      for(let item of this.docTableDatas){
-        if(item.openRow){
-          if(item.isRequired === 0){
-            if(item.docId == this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId){
-              if(this.allAskDocList.length>0){
-                for(let stageDoc of this.allAskDocList){
-                  if(Number(stageDoc.status) == 0){
-                    this.unfinshDocArr.push(item);
-                    break;
-                  }
-                }
-              }else{
-                this.unfinshDocArr.push(item);
-              }
-            }
-            if(item.docId == this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId){
-              if(this.allApprovalDocList.length>0){
-                for(let stageDoc of this.allApprovalDocList){
-                  if(Number(stageDoc.status) == 0){
-                    this.unfinshDocArr.push(item);
-                    break;
-                  }
-                }
-              }else{
-                this.unfinshDocArr.push(item);
-              }
-            }
-          }
-        }else{
-          if(item.isRequired === 0 && Number(item.status) == 0) this.unfinshDocArr.push(item);
-        }
-        console.log('this.unfinshDocArr',this.unfinshDocArr)
-      }
     }
   },
-  
 
   mounted() {
     // this.getCaseBasicInfo();
@@ -1073,9 +933,6 @@ export default {
           this.formData.performance = "未完成";
         }
       }
-    },
-    'formData.stepPay'(val){
-      this.setMoreDocTableTitle();
     }
   }
 };

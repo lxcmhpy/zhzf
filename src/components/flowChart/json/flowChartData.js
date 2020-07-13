@@ -84,18 +84,15 @@ let flowGraphData = {
             
             {id:"6",source: '6',target:"7_1",linkID: BASIC_DATA_JX.punishDecisionDoc_JX_caseLinktypeId,name:"处罚决定",linkName:'case_handle_punishDecisionForm_JX',position:{x: 2, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
             {id:"7_1",source: '7_1',target:"7_2",linkID: BASIC_DATA_JX.punishExecute_JX_caseLinktypeId,name:"处罚执行",linkName:'case_handle_penaltyExecution',position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_12'}},
-            // {id:"temp7_1_2",source: 'temp7_1_1',target:"temp7_1_2",linkID: 'temp7_1_2',name:"",position:{x: 2, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             {id:"7_2",source: '7_2',target:"11",linkID: BASIC_DATA_JX.forceExecute_JX_caseLinktypeId,name:"强制执行",linkName:'case_handle_forceExecute',position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
-            {id:"temp7_1_1",source: '7_1',target:"temp7_1_1",linkID: 'temp7_1_1',name:"",position:{x: 2, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-            {id:"temp7_2_1",source: 'temp7_1_1',target:"temp7_2_1",linkID: 'temp7_2_1',name:"",position:{x: 4, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
-            // {id:"temp7_2_2",source: 'temp7_2_1',target:"8",linkID: 'temp7_2_2',name:"",position:{x: 4, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            {id:"temp7_3",source: '7_1',target:"temp7_3",linkID: 'temp7_3',name:"",position:{x: 2, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
+            {id:"temp7_4",source: 'temp7_3',target:"8",linkID: 'temp7_4',name:"",position:{x: 4, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             {id:"8",source: "8",target:"12",linkID: BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId,name:"结案登记",linkName:'case_handle_finishCaseReport_JX',docId:BASIC_DATA_JX.finishCaseReport_JX_huanjieAndDocId,position:{x: 4, y: 9},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
             {id:"9",source: "9",target:"6",linkID: BASIC_DATA_JX.importCaseDiss_JX_caseLinktypeId,name:"重大案件\n环节",linkName:'case_handle_importantCaseTeamDissDoc_JX',docId:BASIC_DATA_JX.importCaseDiss_JX_huanjieAndDocId,position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
             {id:"9_1",source: '9_1',target:"6",linkID: '9_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             {id:"10",source: "10",target:"8",linkID: BASIC_DATA_JX.transfei_JX_caseLinktypeId,name:"移交移送",linkName:'case_handle_transfer_JX',position:{x: 4, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
-            // {id:"10_1",source: '10',target:"8",linkID: '10_1',name:"",position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             
             {id:"11",source: "11",target:"temp11_1",linkID: BASIC_DATA_JX.courtPunishExecute_JX_caseLinktypeId,name:"申请法院\n强制执行",linkName:'case_handle_enforceApplicationDoc',docId:BASIC_DATA_JX.courtPunishExecute_JX_huanjieAndDocId,position:{x: 3, y: 8},itemStyleColor: "",attributes:{modularity_class:'lct_14'}},
             //申请法院强制执行->结案登记
