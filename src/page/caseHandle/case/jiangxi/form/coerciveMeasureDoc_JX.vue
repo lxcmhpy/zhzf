@@ -330,7 +330,6 @@
                     v-model="formData.measureStartDate"
                     size="small"
                     style="width:240px"
-                    @change="startTime"
                     type="date"
                     format="yyyy-MM-dd"
                     placeholder="    年    月    日"
@@ -566,6 +565,7 @@ export default {
       },
       isParty: true, //当事人类型为个人
       originalData: "",
+      needDealData: true,
       propertyFeatures: "" //字段属性配置
     };
   },
@@ -575,17 +575,22 @@ export default {
   mixins: [mixinGetCaseApiList],
   inject: ["reload"],
   methods: {
-    startTime() {
-      if (this.formData.measureStartDate) {
-        this.$set(
-          this.formData,
-          "measureEndDate",
-          new Date(
-            this.formData.measureStartDate.getTime() + 29 * 24 * 3600 * 1000
-          )
-        );
-      }
+    //对原始数据做一下处理
+    getDataAfter() {
+      if(typeof(this.formData.resList) == 'string')
+      this.formData.resList = JSON.parse(this.formData.resList);
     },
+    // startTime() {
+    //   if (this.formData.measureStartDate) {
+    //     this.$set(
+    //       this.formData,
+    //       "measureEndDate",
+    //       new Date(
+    //         this.formData.measureStartDate.getTime() + 29 * 24 * 3600 * 1000
+    //       )
+    //     );
+    //   }
+    // },
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;

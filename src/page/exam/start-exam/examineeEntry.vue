@@ -34,7 +34,7 @@
                 <span class="count-down">{{ timeInfo.hours }}</span>
                 <span class="count-down">{{ timeInfo.minutes }}</span>
               </div>
-              <div class="entry-tip">* 考生可提前30分钟进入相应考试，等待考试开启</div>
+              <div class="entry-tip">* 考生可提前30分钟进入相应考试</div>
               <div class="exam-list">
                 <!-- 考试列表 -->
                 <div
@@ -68,6 +68,14 @@
     <div v-if="startCountDown" class="count-contain">
       <el-card class="box-card count-card">
         <p class="name">{{ selectedExam.examName }}</p>
+        <div class="exam-instructions">
+          <p class="ins-title">考生须知</p>
+          <p class="ins-text">1、考试开始时间未到时，会提前30分钟倒计时，“开始答题”为灰色不可点击，考试开始时，“开始答题”变亮，点击进入答题界面。 </p>
+          <p class="ins-text">2、考试时间为90分钟。进入答题界面后，系统自动倒计时，90分钟内完成答题可点击“提交答卷”提前交卷，超过90分钟系统会自动提交答卷。试卷一旦提交，系统自动评分，将不能再次考试。 </p>
+          <p class="ins-text">3、考试过程中不要点击浏览器“刷新”按钮，否则答题信息丢失并无法再次登录系统进行考试。 </p>
+          <p class="ins-text">4、开始考试后，如出现设备问题无法作答，请联系监考人员处理。</p>
+          <p class="ins-text">5、严格遵守考试纪律。在考场内须保持安静，不准吸烟，不准喧哗，不准交头接耳、左顾右盼、打手势、做暗号，不准夹带、旁窥、抄袭或有意让他人抄袭。 </p>
+        </div>
         <div v-if="startCount" class="time">
           <span>{{ countDownList }}后可进入</span>
         </div>
@@ -124,7 +132,6 @@ export default {
           if (res) {
             this.currentSysTime = res;
             this.differenceTime = res - new Date().getTime();
-            console.log(this.differenceTime);
             this.currentTimeCount(res);
           }
         },
@@ -482,13 +489,37 @@ export default {
   background-position-x: right;
   background-size: 58%;
   .count-card {
-    width: 40%;
+    width: 60%;
+    height: 76%;
     margin: 4% auto 0;
+    box-shadow: none;
+    border: none;
+    background: none;
+    >>>.el-card__body{
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .exam-instructions{
+      height: calc(100% - 182px);
+      margin-bottom: 20px;
+      overflow-y: scroll;
+      color: #7b7b7b;
+      font-size: 14px;
+      line-height: 22px;
+      .ins-title{
+        font-size: 18px;
+        margin-bottom: 20px;
+        line-height: 24px;
+      }
+      .ins-text{
+        margin-bottom: 16px;
+      }
+    }
     .name {
       font-size: 32px;
       font-weight: 600;
       color: rgba(32, 35, 42, 1);
-      margin: 80px auto 40px;
+      margin: 30px auto 40px;
       text-align: center;
     }
     .time {

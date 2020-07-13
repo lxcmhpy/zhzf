@@ -174,17 +174,17 @@
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
               <el-form-item
-                prop="basicSituation"
-                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
+                prop="caseSituation"
+                :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.basicSituation"
-                  v-bind:class="{ over_flow:docData.basicSituation && docData.basicSituation.length>14?true:false }"
+                  v-model="docData.caseSituation"
+                  v-bind:class="{ over_flow:docData.caseSituation && docData.caseSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
+                  :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -221,42 +221,43 @@
                 自
                 <span>
                   <el-form-item
-                    prop="measureStartDate"
-                    :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])"
+                    prop="prolongStartDate"
+                    :rules="fieldRules('prolongStartDate',propertyFeatures['prolongStartDate'])"
                     style="width: 150px"
                     class="pdf_datapick"
                   >
                     <el-date-picker
-                      v-model="docData.measureStartDate"
-                      @change="startTime"
+                      v-model="docData.prolongStartDate"
+                      @change="starttime"
                       type="date"
                       format="yyyy年MM月dd日"
                       value-format="yyyy-MM-dd"
                       placeholder="  年  月  日"
-                      :disabled="fieldDisabled(propertyFeatures['measureStartDate'])"
+                      :disabled="fieldDisabled(propertyFeatures['prolongStartDate'])"
                     ></el-date-picker>
                   </el-form-item>
                 </span>
                 <span>至</span>
                 <span>
                   <el-form-item
-                    prop="measureEndDate"
-                    :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])"
+                    prop="prolongEndDate"
+                    :rules="fieldRules('prolongEndDate',propertyFeatures['prolongEndDate'])"
                     style="width: 150px"
                     class="pdf_datapick"
                   >
                     <el-date-picker
-                      v-model="docData.measureEndDate"
+                      v-model="docData.prolongEndDate"
+                      @change="endtime"
                       type="date"
                       format="yyyy年MM月dd日"
                       value-format="yyyy-MM-dd"
                       placeholder="  年  月  日"
-                      :disabled="fieldDisabled(propertyFeatures['measureEndDate'])"
+                      :disabled="fieldDisabled(propertyFeatures['prolongEndDate'])"
                     ></el-date-picker>
                   </el-form-item>
                 </span>
                 共
-                <el-input style="width:10%" type="number" v-model="docData.days"></el-input>日
+                <el-input style="width:10%" type="number" disabled v-model="docData.days"></el-input>日
               </p>
               <p>
                 {{docData.approveOpinions}}
@@ -362,7 +363,7 @@ export default {
     var validateIfDate = (rule, value, callback) => {
       var diff =
         new Date(value).getTime() -
-        new Date(this.docData.measureStartDate).getTime();
+        new Date(this.docData.prolongStartDate).getTime();
       var days = diff / 24 / 60 / 60 / 1000;
       console.log("差几天", days);
       if (days > 30) {
@@ -380,7 +381,6 @@ export default {
       // isOverLine: false,
       docData: {
         caseNumber: "",
-        caseName: "",
         party: "",
         partyIdNo: "",
         partyAddress: "",
@@ -390,10 +390,11 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
-        basicSituation: "",
-        measureStartDate: "",
-        measureEndDate: "",
-        notes: "",
+        partyAddress:'',
+        caseSituation: '',
+        prolongStartDate: "",
+        prolongEndDate: "",
+        days:"",
         checkBox: [],
         approveOpinions: "",
         approvePeo: "",
@@ -406,7 +407,8 @@ export default {
         threeApproveTime: "",
         fourApproveOpinions: "",
         fourApprovePeo: "",
-        fourApproveTime: ""
+        fourApproveTime: "",
+        notes: ""
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
@@ -460,17 +462,17 @@ export default {
             trigger: "blur"
           }
         ],
-        basicSituation: [
+        caseSituation: [
           { required: true, message: "基本情况不能为空", trigger: "blur" }
         ],
-        measureStartDate: [
+        prolongStartDate: [
           {
             required: true,
             message: "延长强制措施开始时间不能为空",
             trigger: "blur"
           }
         ],
-        measureEndDate: [
+        prolongEndDate: [
           {
             required: true,
             message: "延长强制措施结束时间不能为空",
@@ -504,6 +506,45 @@ export default {
     };
   },
   methods: {
+    starttime(){
+      if (this.docData.prolongStartDate){
+        if(this.docData.prolongStartDate > this.docData.prolongEndDate && this.docData.prolongEndDate){
+          this.$message({
+            message: '开始时间不能大于结束时间',
+            type: 'warning'
+          });
+          this.docData.prolongStartDate = '';
+          this.docData.days = '';
+        }else{
+          this.docData.days = new Date(this.docData.prolongEndDate) - new Date(this.docData.prolongStartDate);
+          this.docData.days = Math.abs(this.docData.days)
+          // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
+          this.docData.days = this.docData.days / (24 * 3600 * 1000);
+          // 取整
+          this.docData.days = Math.floor(this.docData.days) ;
+          this.$set(this.docData, 'days',  this.docData.days);
+        }
+      }
+    },
+    endtime(){
+      if (this.docData.prolongStartDate){
+        if(this.docData.prolongStartDate > this.docData.prolongEndDate){
+          this.$message({
+            message: '结束时间不能小于开始时间',
+            type: 'warning'
+          });
+          this.docData.prolongEndDate = '';
+          this.docData.days = '';
+        }else{
+          this.docData.days = new Date(this.docData.prolongEndDate) - new Date(this.docData.prolongStartDate);
+          this.docData.days = Math.abs(this.docData.days)
+          this.docData.days = this.docData.days / (24 * 3600 * 1000);
+          this.docData.days = Math.floor(this.docData.days) ;
+          this.$set(this.docData, 'days',  this.docData.days);
+
+        }
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -540,6 +581,7 @@ export default {
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
+    this.starttime();
   }
 };
 </script>

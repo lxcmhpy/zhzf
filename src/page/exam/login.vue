@@ -13,9 +13,9 @@
           <div class="form_box">
             <div style="display: inline-block;">
               <span class="sys-title">人员考试系统</span>
-              <span v-if="check === '0'" class="title checkText">参考考生</span>
+              <!-- <span v-if="check === '0'" class="title checkText">参考考生</span>
               <span v-if="check === '1'" class="title checkText">监考老师</span>
-              <span v-if="check === '2'" class="title checkText">评卷人</span>
+              <span v-if="check === '2'" class="title checkText">评卷人</span> -->
               <div class="formC1">
                 <el-form :model="loginForm" :rules="rules" ref="loginForm" class="demo-ruleForm">
                   <el-form-item prop="loginName">
@@ -94,12 +94,12 @@
                 :class="check === '1'  ? 'active' : '' "
                 @click="changeType('1')"
               >监考入口</span>
-              <i class="split">|</i>
+              <!-- <i class="split">|</i>
               <span
                 class="entry-type"
                 :class="check === '2'  ? 'active' : '' "
                 @click="changeType('2')"
-              >评卷入口</span>
+              >评卷入口</span> -->
             </center>
           </div>
         </div>
@@ -301,6 +301,7 @@ export default {
   }
   .formC1 {
     width: 460px;
+    margin-top: 30px;
   }
 }
 .sys-title {
