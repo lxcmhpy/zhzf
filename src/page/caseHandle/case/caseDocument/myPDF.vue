@@ -174,7 +174,8 @@
       },
       //根据stroagId请求文件流
       getFileStream(storageId){
-        
+        //设置地址
+        this.$store.commit("setDocPdfStorageId", storageId);
         getFileStreamByStorageIdApi(storageId).then(res=>{
         // getFileStreamByStorageIdApi('12,13ac7d04e13f').then(res=>{
 

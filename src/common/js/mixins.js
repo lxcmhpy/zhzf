@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi,queryFlowBycaseIdApi,findDocDataByIdApi,
-  updateLinkInfoByCaseIdAndLinkTypeIdApi,findApprovingDocApi,
+  updateLinkInfoByCaseIdAndLinkTypeIdApi,findApprovingDocApi,getLinkTypeInfoByIdApi,
 } from "@/api/caseHandle";
 import { getFile } from "@/api/upload";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
@@ -527,8 +527,13 @@ export const mixinGetCaseApiList = {
         let isHuanjieDoc = false;
         //可以通过判断是否生成了pdf判断是单文书表单还是单纯的表单
         let fielRes = await getFile({docId: data.docId,caseId: this.caseId,});
-        console.log('查询环节是否生成了pdf', fielRes);
-        if (fielRes.data.length > 0) isHuanjieDoc = true;
+
+        //判断是单文书环节还是文书
+        let huanjieData = await getLinkTypeInfoByIdApi(data.linkID);
+
+        console.log('查询环节是否生成了pdf', huanjieData);
+        if(huanjieData.data.isPdf == 0) isHuanjieDoc = true;
+       
         //跳转pdf或表单
         if (isHuanjieDoc)  this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
         else this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
