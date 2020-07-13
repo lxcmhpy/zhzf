@@ -376,3 +376,12 @@ export function getFileByCaseId(data) {
     // responseType: 'blob'
   });
 }
+export function getCountry(data) {
+  return request({
+    url: "/zfjg/country/listByPcode/" + data,
+    method: "get",
+    showloading: false,
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
