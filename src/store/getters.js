@@ -23,6 +23,7 @@ const getters = {
   approvalState:state => state.caseHandle.approvalState,
   showQZBtn:state => state.caseHandle.showQZBtn,
   province: state => state.caseHandle.province,
+  docPdfStorageId:state => state.caseHandle.docPdfStorageId,
 
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,

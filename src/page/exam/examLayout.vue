@@ -66,8 +66,10 @@ export default {
 <style lang="scss" scoped>
 .logout-btn{
   cursor: pointer;
+  color: #fff;
   >i{
     margin-right: 6px;
+    font-size: 18px;
   }
   &:hover{
     color: #4573D0;

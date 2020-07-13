@@ -6,7 +6,7 @@
           <div class="stem-info">
             <p class="question-num">{{ question.orderNum }}</p>
             <div class="question-cnt">
-              <div class="question-desc">
+              <div class="question-desc" :style="fontStyle">
                 （{{ question.score }}分）{{ question.questionName }}
               </div>
               <div v-if="question.questionTypeName === '单选题' || question.questionTypeName === '判断题'">
@@ -16,8 +16,15 @@
                   class="question-option">
                   <div
                     class="answer-radio"
+                    :style="{fontSize: fontSize + 'px'}"
                     @click="answer = index;changeSelect(item,'1')">
-                    <i class="radio-icon" :class="{'el-icon-success': answer === index}"></i>
+                    <i
+                      class="radio-icon"
+                      :class="{'el-icon-success': answer === index}"
+                      :style="{
+                        'fontSize': fontSize > 18 ? fontSize + 'px' : '18px',
+                        width: fontSize > 18 ? fontSize + 'px' : '18px',
+                        height: fontSize > 18 ? fontSize + 'px' : '18px'}"></i>
                     <span>{{ `${item.optionNum}：${item.optionName}` }}</span>
                   </div>
                   <div v-if="item.optionPicture" class="option-img">
@@ -34,6 +41,7 @@
                     <el-checkbox
                       class="checkbox-option"
                       :label="item.pqOptionId"
+                      :style="{fontSize: fontSize + 'px'}"
                       @change="changeSelect(item, '2')">{{ `${item.optionNum}：${item.optionName}` }}</el-checkbox>
                     <div v-if="item.optionPicture" class="option-img">
                       <el-image :src="baseUrl + item.optionPicture"></el-image>
@@ -41,7 +49,6 @@
                   </div>
                 </el-checkbox-group>
               </div>
-
               <div v-if="question.questionTypeName === '简答题' || question.questionTypeName === '论述题'" style="width: 100%;">
                 <el-input
                   type="textarea"
@@ -82,6 +89,10 @@ export default {
       type: Object,
       default: () => {},
       required: true
+    },
+    fontSize: {
+      type: Number,
+      default: 16
     }
   },
   data() {
@@ -103,6 +114,9 @@ export default {
   computed: {
     baseUrl() {
       return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    },
+    fontStyle(){
+      return { 'fontSize': this.fontSize + 'px', 'lineHeight': (this.fontSize + 6) + 'px' }
     }
   },
   mounted () {},
@@ -200,7 +214,7 @@ export default {
       margin-left: 10px;
       .question-desc{
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         color: rgba(32,35,43,1);
         line-height: 22px;
         margin-bottom: 10px;
@@ -238,6 +252,9 @@ export default {
               border: none;
             }
           }
+          >span{
+            font-weight: 600 !important;
+          }
         }
         >>>.el-checkbox{
           width: 100%;
@@ -251,8 +268,9 @@ export default {
             }
           }
           .el-checkbox__label{
-            font-size: 16px;
+            font-size: inherit !important;
             color: #20232B;
+            font-weight: 600;
           }
         }
       }
