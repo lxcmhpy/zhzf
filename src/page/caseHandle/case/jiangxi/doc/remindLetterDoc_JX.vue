@@ -3,7 +3,7 @@
    <div class="print_box">
     <div class="print_info" id="remindLetter_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
-        <div class="doc_topic">催告书</div>
+        <div class="doc_topic">催告书</div> 
         <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交催〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <p>
           当事人（个人姓名或单位名称）
@@ -153,7 +153,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-
+import iLocalStroage from "@/common/js/localStroage"; 
 export default {
   components: {
     casePageFloatBtns
@@ -250,25 +250,31 @@ export default {
     }
   },
  methods: {
-    onSubmit(formName) {
-      console.log('submit!');
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId, //流程里的案件id
-        docId: this.caseDocDataForm.caseDoctypeId
+        docId: this.$route.params.docId
       };
-      this.com_getDocDataByCaseIdAndDocId(data);
-
+      // this.com_getDocDataByCaseIdAndDocId(data);
+      //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+      let addMoreData = JSON.parse(this.$route.params.addMoreData);
+      if (addMoreData.handelType == 'isAddMore') {
+        console.log('多份文书', this.$route.params.handelType)
+        this.com_getCaseBasicInfo(data.caseId, data.docId);
+        //文书名称
+        this.caseDocDataForm.note = '催告书 (第'+addMoreData.addNum+'份)';
+      } else {
+        console.log('修改')
+        // this.getDocDetailById(this.$route.params.docDataId)
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        if(currentDocDataId){
+          this.getDocDetailById(currentDocDataId)
+        }else{
+          this.getDocDetailById(this.$route.params.docDataId)
+        }
+      }
     },
     //保存文书信息
     addDocData(handleType) {
@@ -327,7 +333,6 @@ export default {
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
-    this.caseDocDataForm.caseBasicinfoId=this.caseId
   },
   created() {
     this.isOverStatus();

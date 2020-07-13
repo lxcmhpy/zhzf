@@ -429,10 +429,10 @@
         }
         if (canGotoNext && approvalPass) {
           console.log('下一环节')
-          // this.com_goToNextLinkTu(
-          //   this.caseId,
-          //   this.caseLinkDataForm.caseLinktypeId
-          // );
+          this.com_goToNextLinkTu(
+            this.caseId,
+            this.caseLinkDataForm.caseLinktypeId
+          );
         } else if(!canGotoNext){
           this.getUnfinishDoc();
           this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
@@ -466,7 +466,12 @@
        console.log("添加",row);
         iLocalStroage.removeItem("currentDocDataId");
         if(row.name=='催告书'){
-          this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
+          // this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
+          let addMoreData ={
+            handelType:'isAddMore',
+            addNum: ++this.allRemindLetterCount //第几份催告书
+          }
+          this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId,addMoreData); 
         }else{
           this.$refs.chooseHandleTypeDiaRef.showModal(row, this.caseLinkDataForm.caseLinktypeId,this.isSaveLink);
         }

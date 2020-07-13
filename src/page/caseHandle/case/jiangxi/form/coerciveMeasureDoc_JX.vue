@@ -518,7 +518,8 @@ export default {
         afsj: "",
         measureStartDate: "",
         measureEndDate: "",
-        resList: []
+        resList: [],
+        caseCauseName:"",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
