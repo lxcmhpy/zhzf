@@ -23,6 +23,7 @@ const caseHandle = {
         inforCollectionType:'',
         showQZBtn:'',  //是否显示签章按钮
         province:'', //当前系统部署在哪个省
+        docPdfStorageId:'',//文书pdf地址id
         
     },
     mutations:{
@@ -64,6 +65,9 @@ const caseHandle = {
         //设置部署省份
         setProvince(state,data){
             state.province = data;
+        },
+        setDocPdfStorageId(state,data){
+            state.docPdfStorageId = data;
         },
         
     },

@@ -9,6 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+
 /*---------添加以下2句，引入https和fs---------*/
 const https = require('https')
 const fs = require('fs')
@@ -60,6 +61,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     // ca: fs.readFileSync(require('./cert/ceshiclient.p12'))
   },
   plugins: [
+    
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
