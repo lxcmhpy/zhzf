@@ -208,17 +208,17 @@
             </td>
             <td rowspan="2" colspan="7" class="color_DBE4EF">
               <el-form-item
-                prop="basicSituation"
-                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
+                prop="caseSituation"
+                :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.basicSituation"
-                  v-bind:class="{ over_flow:docData.basicSituation && docData.basicSituation.length>14?true:false }"
+                  v-model="docData.caseSituation"
+                  v-bind:class="{ over_flow:docData.caseSituation && docData.caseSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
+                  :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -362,16 +362,16 @@
                     :disabled="fieldDisabled(propertyFeatures['checkBox'])"
                   >
                     <p>
-                      <el-checkbox label="加处罚款">加处罚款</el-checkbox>
+                      <el-checkbox label="1">加处罚款</el-checkbox>
                     </p>
                     <p>
-                      <el-checkbox label="排除妨碍、恢复原状">排除妨碍、恢复原状</el-checkbox>
+                      <el-checkbox label="2">排除妨碍、恢复原状</el-checkbox>
                     </p>
                     <p>
-                      <el-checkbox label="代履行">代履行</el-checkbox>
+                      <el-checkbox label="3">代履行</el-checkbox>
                     </p>
                     <p>
-                      <el-checkbox label="其他强制执行方式">其他强制执行方式</el-checkbox>
+                      <el-checkbox label="4">其他强制执行方式</el-checkbox>
                     </p>
                   </el-checkbox-group>
                 </el-form-item>
@@ -486,7 +486,7 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
-        basicSituation: "",
+        caseSituation: "",
         details: "",
         reliefSituation: "",
         checkBox: [],
@@ -562,7 +562,7 @@ export default {
             trigger: "blur"
           }
         ],
-        basicSituation: [
+        caseSituation: [
           { required: true, message: "基本情况不能为空", trigger: "blur" }
         ],
         details: [
