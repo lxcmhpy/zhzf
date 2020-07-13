@@ -530,6 +530,7 @@ export default {
         partyTel: "",
         partyName: "",
         partyUnitAddress: "",
+        partyUnitPosition: "",
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
@@ -590,6 +591,9 @@ export default {
         ],
         partyAddress: [
           { required: true, message: "联系地址不能为空", trigger: "blur" }
+        ],
+        partyUnitPosition: [
+          { required: true, message: "所在单位不能为空", trigger: "blur" }
         ],
         partyTel: [
           { required: true, message: "联系电话不能为空", trigger: "blur" },

@@ -4,7 +4,6 @@
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">中止（终结、恢复）行政强制执行审批表</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
-        <!-- <div class="doc_cause">案由：{{docData.caseName}}</div> -->
         <table
           class="print_table prolong_table"
           border="1"
@@ -46,6 +45,7 @@
                 <el-input
                   type="textarea"
                   v-model="docData.partyIdNo"
+                  v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }"
                   :maxLength="18"
                   placeholder="\"
                   :autosize="{ minRows: 1, maxRows: 3}"
@@ -173,17 +173,17 @@
             </td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="caseSituation"
+                :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.closeResult"
-                  v-bind:class="{ over_flow:docData.closeResult && docData.closeResult.length>14?true:false }"
+                  v-model="docData.caseSituation"
+                  v-bind:class="{ over_flow:docData.caseSituation && docData.caseSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="\"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -217,12 +217,16 @@
                   :rules="fieldRules('checkBox',propertyFeatures['checkBox'])"
                 >
                   <el-checkbox-group
+                    :max="1"
                     v-model="docData.checkBox"
                     :disabled="fieldDisabled(propertyFeatures['checkBox'])"
                   >
                     <el-checkbox label="1">根据《中华人民共和国行政强制法》第三十九条，中止执行</el-checkbox>
+                    <br>
                     <el-checkbox label="2">根据《中华人民共和国行政强制法》第四十条，终结执行</el-checkbox>
+                    <br>
                     <el-checkbox label="3">根据《中华人民共和国行政强制法》第三十九条第二款，恢复执行</el-checkbox>
+                    <br>
                     <el-checkbox label="4">根据《中华人民共和国行政强制法》第四十二条条第二款，恢复执行</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
@@ -328,7 +332,7 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
-        basicSituation: "",
+        caseSituation: "",
         reason: "",
         checkBox: [],
         approveOpinions: "",
@@ -394,8 +398,11 @@ export default {
             trigger: "blur"
           }
         ],
-        basicSituation: [
+        caseSituation: [
           { required: true, message: "基本情况不能为空", trigger: "blur" }
+        ],
+        checkBox: [
+          { required: true, message: "强制执行决定不能为空", trigger: "change" }
         ],
         reason: [
           {
