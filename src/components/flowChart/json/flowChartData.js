@@ -83,8 +83,8 @@ let flowGraphData = {
             
             
             {id:"6",source: '6',target:"7_1",linkID: BASIC_DATA_JX.punishDecisionDoc_JX_caseLinktypeId,name:"处罚决定",linkName:'case_handle_punishDecisionForm_JX',position:{x: 2, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
-            {id:"7_1",source: '7_1',target:"7_2",linkID: BASIC_DATA_JX.punishExecute_JX_caseLinktypeId,name:"处罚执行",linkName:'case_handle_penaltyExecution',position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_12'}},
-            {id:"7_2",source: '7_2',target:"11",linkID: BASIC_DATA_JX.forceExecute_JX_caseLinktypeId,name:"强制执行",linkName:'case_handle_forceExecute',position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
+            {id:"7_1",source: '7_1',target:"7_2",linkID: BASIC_DATA_JX.punishExecute_JX_caseLinktypeId,name:"处罚执行",linkName:'case_handle_penaltyExecution_JX',position:{x: 2, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_12'}},
+            {id:"7_2",source: '7_2',target:"11",linkID: BASIC_DATA_JX.forceExecute_JX_caseLinktypeId,name:"强制执行",linkName:'case_handle_forceExecute_JX',position:{x: 3, y: 7},itemStyleColor: "",attributes:{modularity_class:'lct_13'}},
             {id:"temp7_3",source: '7_1',target:"temp7_3",linkID: 'temp7_3',name:"",position:{x: 2, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             {id:"temp7_4",source: 'temp7_3',target:"8",linkID: 'temp7_4',name:"",position:{x: 4, y: 9},itemStyleColor: "",attributes:{modularity_class: 'hide'}},
             

@@ -495,7 +495,6 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       handleType: "", // 0 暂存  1  提交
-      dictId: "2dc1e0a3a8ce225c292259da39294847",
       options: [],
       nameLength: 23,
       adressLength: 23,
