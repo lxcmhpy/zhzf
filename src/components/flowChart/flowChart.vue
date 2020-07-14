@@ -617,9 +617,12 @@ export default {
     showRemoveOrExtendBtn(link) {
       let linkArr = link.split(',');
       //行政强制措施数组
-      let adminCoerciveMeasure_caseLinktypeIdArr = [this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId,this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId]
+      // let adminCoerciveMeasure_caseLinktypeIdArr = [this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId,this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId]
+      let adminCoerciveMeasure_caseLinktypeIdArr = this.BASIC_DATA_JX.getAdminCoerciveMeasure_caseLinktypeIdArr();
+      
       //解除行政强制措施数组
-      let removeOrPrelong_caseLinktypeIdArr = [this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId,this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId]
+      // let removeOrPrelong_caseLinktypeIdArr = [this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId,this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId]
+      let removeOrPrelong_caseLinktypeIdArr = this.BASIC_DATA_JX.getRemoveOrPrelong_caseLinktypeIdArr();
       //是否显示解除行政强制措施按钮
       adminCoerciveMeasure_caseLinktypeIdArr.forEach((item,index)=>{
         if(linkArr.includes(item)){
@@ -644,10 +647,30 @@ export default {
       //已完成中有未立案  没有结案登记
       let completeLink = link.completeLink.split(',');
       let doingLink = link.doingLink.split(',');
+      
+      let adminCoerciveMeasure_caseLinktypeIdArr = this.BASIC_DATA_JX.getAdminCoerciveMeasure_caseLinktypeIdArr();
+      let adminCoerciveMeasureCompleteFlag = false;
+      
+      console.log('adminCoerciveMeasure_caseLinktypeIdArr',adminCoerciveMeasure_caseLinktypeIdArr)
+      adminCoerciveMeasure_caseLinktypeIdArr.forEach(item=>{
+        if(completeLink.includes(item)){
+          adminCoerciveMeasureCompleteFlag = true;
+          return
+        }
+      })
+      //如果行政强制已完成 则 显示
+      if(adminCoerciveMeasureCompleteFlag){
+        this.showAdminCoerciveMeasureBtn = true;
+        return;
+      } 
+
       //立案登记数组
-      let establish_caseLinktypeIdArr = [this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId];
+      // let establish_caseLinktypeIdArr = [this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId];
+      let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
       //结案报告数组
-      let finishCaseReport_caseLinktypeIdArr = [this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId];
+      // let finishCaseReport_caseLinktypeIdArr = [this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId];
+      let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
+      
       let hasEstablish,hasFinishCaseReport= false;
       establish_caseLinktypeIdArr.forEach(item=>{
         if(completeLink.includes(item)){
@@ -661,6 +684,7 @@ export default {
           return
         }
       })
+
       if(hasEstablish && !hasFinishCaseReport) this.showAdminCoerciveMeasureBtn = true;
     },
     //获取强制措施时间

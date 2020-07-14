@@ -1,3 +1,5 @@
+import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+
 export const BASIC_DATA_JX = {
     //环节ID
     //立案登记 环节id caseLinktypeId
@@ -130,4 +132,22 @@ export const BASIC_DATA_JX = {
     caseTransNoticeDoc_JX_caseDocTypeId: '34bd2eeaf625f5cab254b0af5a9eccc3',
     //解除证据登记保存审批表
     removeEvidenceRegApprovalForm_JX_caseDocTypeId: 'e68821f21875c7dda472b378b3eaee31',
+
+
+    //立案登记数组
+    getEstablish_caseLinktypeIdArr : function(){
+        return [BASIC_DATA_SYS.establish_caseLinktypeId,this.establish_JX_caseLinktypeId]
+    },
+    //行政强制措施数组
+    getAdminCoerciveMeasure_caseLinktypeIdArr : function(){
+        return [BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId,this.adminCoerciveMeasure_JX_caseLinktypeId]
+    } ,
+    //解除行政强制措施数组
+    getRemoveOrPrelong_caseLinktypeIdArr :function(){
+       return  [BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId,this.removeOrPrelong_JX_caseLinktypeId]
+    },
+    //结案报告数组
+    getFinishCaseReport_caseLinktypeIdArr : function(){
+        return [BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.finishCaseReport_JX_caseLinktypeId]
+    },
 }
