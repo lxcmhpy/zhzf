@@ -1419,7 +1419,7 @@ export default {
                     name: 'law_supervise_examineDoingDetail',
                     params: {
                         status: '0',
-                        tabTitle: '待审核',
+                        tabTitle: '线索详情',
                         offSiteManageId: row.id
                     }
                 });
