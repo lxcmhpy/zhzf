@@ -1404,9 +1404,11 @@
             }
             
             //跳转立案登记
-              _this.$router.push({
-                name: this.getCaseNextRoute('立案登记')
-              }); 
+             this.getCaseNextRoute('立案登记').then(res=>{
+                  this.$router.push({
+                    name: res
+                  });
+              })
             },
             err => {
 
