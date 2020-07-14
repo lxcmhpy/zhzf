@@ -329,8 +329,9 @@
             <el-popover
                 placement="bottom-start"
                 trigger="click"
+                @hide="hidePopover"
                 >
-                <div class="drop-down-menu transition-box" >
+                <div class="drop-down-menu" >
                   <el-cascader
                     ref="areaCascader"
                     :options="areaList"
@@ -1097,7 +1098,10 @@ export default {
         this.zoom = 13
       }
       this.$nextTick();
-      this.$refs.areaCascader.dropDownVisible = false;  
+      this.$refs.areaCascader.dropDownVisible = false;
+    },
+    hidePopover(){
+      this.$refs.areaCascader.dropDownVisible = false;
     },
     handleSelect (node) {
       let data = this.$refs['areaCascader'].panel.getNodeByValue(node[node.length-1]).data;
@@ -1419,7 +1423,7 @@ export default {
                     name: 'law_supervise_examineDoingDetail',
                     params: {
                         status: '0',
-                        tabTitle: '待审核',
+                        tabTitle: '线索详情',
                         offSiteManageId: row.id
                     }
                 });

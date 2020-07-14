@@ -203,7 +203,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import iLocalStroage from "@/common/js/localStroage";
 import chooseOrUploadEvidence from "@/page/caseHandle/case/form/chooseOrUploadEvidence.vue";
 import {
-  queryImgBase64Api,
+  queryResizeImageApi,
   findCaseAllBindPropertyApi
 } from "@/api/caseHandle";
 export default {
@@ -355,7 +355,7 @@ export default {
     getBase64(selpicData) {
       debugger
       let storageId = selpicData.picData.evPath;
-      queryImgBase64Api(storageId)
+      queryResizeImageApi(storageId) 
         .then(res => {
           debugger
           console.log("获取base64", res);

@@ -5,7 +5,12 @@
 
       <div class="tablePart">
         <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @current-change="clickCase">
-          <el-table-column prop="tempNo" label="案号" align="center" width="200"></el-table-column>
+          <el-table-column label="案号" align="center" width="200">
+            <template slot-scope="scope">
+              <span v-if="scope.row.caseNumber">{{scope.row.caseNumber}}</span>
+              <span v-else>{{scope.row.tempNo}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="150"></el-table-column>
           <el-table-column prop="name" label="当事人/单位" align="center" width="200"></el-table-column>
           <el-table-column prop="caseCauseName" label="违法行为" align="center">

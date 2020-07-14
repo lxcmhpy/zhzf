@@ -558,7 +558,7 @@ export const mixinGetCaseApiList = {
         if(!beforeFinishLink.includes(data.linkID)){
           //更改流程图状态
           try{
-            await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
+            await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
           }catch(err){
             this.$message('更改流程图状态失败！')
           }
@@ -725,19 +725,30 @@ export const mixinGetCaseApiList = {
     },
     
     //获取要跳转的路由
-    getCaseNextRoute(name){
-      let routeName = '';
-      let provinceCode = '';
-      if(this.province == 'BZ'){
-        provinceCode = '';
-      }else if(this.province == 'JX'){
-        provinceCode = "_JX"
+    async getCaseNextRoute(name){
+      let currentFlow,flowName,routeName = '';
+      try{
+        currentFlow = await queryFlowBycaseIdApi(this.caseId);
+      }catch(err){
+        this.$message('获取案件流程失败！')
       }
-      switch (name){
-        case '立案登记': routeName = 'case_handle_establish' + provinceCode; break;  
+      flowName = currentFlow.data.flowName;
+      if(flowName == '处罚流程'){
+        if(name == '立案登记'){
+          routeName = 'case_handle_establish'
+        }
+      }else if(flowName == '江西流程'){
+        if(name == '立案登记'){
+          routeName = 'case_handle_establish_JX'
+        }
+      }else if(flowName == '江西流程'){
+        if(name == '立案登记'){
+          routeName = 'case_handle_establish'
+        }
       }
       console.log('routeName',routeName)
       return routeName;
+      
     },
 
   },

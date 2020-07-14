@@ -31,7 +31,7 @@
           </span>对
           <span>
             <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" style="width:250px;" type="textarea" :maxLength='maxLength' placeholder="\"></el-input>
             </el-form-item>
           </span>一案进行调查，在调查中发现
           <el-form-item prop="illegalFacts" :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])">
@@ -208,7 +208,6 @@ export default {
         serviceTime: '',
         organContactor:'',
         organTel:'',
-        transUnitTel: '',
         amount:'',
         appendEvi1:'',
         appendEvi2:'',
@@ -249,13 +248,30 @@ export default {
           { required: true, message: '相关规定必须填写', trigger: 'blur' },
         ],
         organContactor: [
-          { required: true, message: '移送机构联系人必须填写', trigger: 'blur' },
+          { required: true, message: '本机构联系人必须填写', trigger: 'blur' },
         ],
-
-        // transUnitTel: [
-        //   { required: true, message: '移送单位联系电话必须填写', trigger: 'blur' },
-        //   { validator: validatePhone, trigger: "blur" }
-        // ],
+        amount: [
+          { required: true, message: '附件材料数必须填写', trigger: 'blur' },
+        ],
+        appendEvi1: [
+          { required: true, message: '附件材料1必须填写', trigger: 'blur' },
+        ],
+        appendEvi2: [
+          { required: true, message: '附件材料2必须填写', trigger: 'blur' },
+        ],
+        involvedGoods1: [
+          { required: true, message: '物品清单1必须填写', trigger: 'blur' },
+        ],
+        involvedGoods2: [
+          { required: true, message: '物品清单2必须填写', trigger: 'blur' },
+        ],
+        makeDate: [
+          { required: true, message: '文书制作日期必须填写', trigger: 'blur' },
+        ],
+        organTel: [
+          { required: true, message: '联系电话必须填写', trigger: 'blur' },
+          { validator: validatePhone, trigger: "blur" }
+        ],
       },
       nameLength: 23,
       adressLength: 23,

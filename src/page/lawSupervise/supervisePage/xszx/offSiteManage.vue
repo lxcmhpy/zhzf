@@ -130,7 +130,7 @@
         <div class="tablePart">
           <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @row-click="handleNodeClick">
             <el-table-column type="selection" width="55" align="center"></el-table-column>
-            <el-table-column prop="checkTime" label="检测时间" align="center" width="100"></el-table-column>
+            <el-table-column prop="checkTime" sortable label="检测时间" align="center" width="105"></el-table-column>
             <el-table-column prop="siteName" label="检测站点名称" align="center"></el-table-column>
             <el-table-column prop="lane" label="车道" width="50" align="center"></el-table-column>
             <el-table-column label="车牌号" align="center" width="120">
@@ -142,29 +142,29 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="totalWeight" label="车货总质量（t）" width="140" align="center">
+            <el-table-column prop="totalWeight" sortable label="车货总质量（t）" width="150" align="center">
               <template slot-scope="scope">
                 <span v-if="scope.row.totalWeight/1000>100" style="color:red">{{scope.row.totalWeight/1000}}</span>
                 <span v-else>{{scope.row.totalWeight/1000}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="approvedLoad" label="限重（t）" align="center">
+            <el-table-column prop="approvedLoad" sortable label="限重（t）" width="120" align="center">
               <template slot-scope="scope">
                 {{scope.row.approvedLoad/1000}}
               </template>
             </el-table-column>
-            <el-table-column prop="overweight" label="超重（t）" width="120" align="center">
+            <el-table-column prop="overweight" sortable label="超重（t）" width="120" align="center">
               <template slot-scope="scope">
                 {{scope.row.overweight/1000}}
               </template>
             </el-table-column>
-            <el-table-column prop="overload" label="超限率（%）" width="120" align="center">
+            <el-table-column prop="overload" sortable label="超限率（%）" width="130" align="center">
               <template slot-scope="scope">
                 <span v-if="scope.row.overload>100" style="color:red">{{scope.row.overload}}</span>
                 <span v-else>{{scope.row.overload}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="isKEY" label="重点监管" align="center">
+            <el-table-column prop="isKEY" label="重点监管" width="120" align="center">
               <template slot-scope="scope">
                 {{scope.row.isKEY=='是'?scope.row.isKEY:'/'}}
               </template>

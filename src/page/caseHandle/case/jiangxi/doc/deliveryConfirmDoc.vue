@@ -104,7 +104,7 @@
                 </el-form-item>
               </td>
               <td>与当事人关系</td>
-              <td colspan="5" class="color_DBE4EF">
+              <td colspan="5" class="color_DBE4EF" id="checkStyle">
                 <el-form-item
                   prop="withPartyRelation"
                   :rules="fieldRules('withPartyRelation',propertyFeatures['withPartyRelation'])"
@@ -627,6 +627,11 @@ export default {
     line-height: 25px !important;
     // margin-top:-4px !important;
     text-indent: 0px !important;
+  }
+}
+#checkStyle {
+  .el-checkbox {
+    margin-right: 0px;
   }
 }
 #delivery-print {

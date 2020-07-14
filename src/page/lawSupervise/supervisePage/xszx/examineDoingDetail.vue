@@ -119,7 +119,7 @@ export default {
         name: 'law_supervise_examineDoingDetail',
         params: {
           status: this.tabActiveValue.toString(),
-          tabTitle: '【线索详情】',
+          tabTitle: '线索详情',
           offSiteManageId: this.$route.params.offSiteManageId
         }
       });
