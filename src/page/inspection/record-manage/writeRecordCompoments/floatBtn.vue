@@ -63,6 +63,10 @@ export default {
     },
     // 文书列表
     writeDoc() {
+      //  if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
+      //   this.$message.error('无修改权限');
+      //   return
+      // }
       console.log('点击', this.formOrDocData.pageDomId)
       if (this.formOrDocData.pageDomId || this.$route.params.addOrEiditFlag != 'add') {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签

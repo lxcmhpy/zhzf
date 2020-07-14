@@ -6,24 +6,25 @@
            type="application/pdf" internalinstanceid="29"> -->
     <!-- </div>  -->
     <xzjcDocFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall" @showApprovePeopleList="showApprovePeopleList" @showApproval="findCurrentApproval"></xzjcDocFloatBtns>
-
+    <!-- {{pdfShowUrl}} -->
     <!-- <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople> -->
     <!-- <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog> -->
 
-    <el-button @click="$refs.pdf[0].print()">打印</el-button>
-    <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf>
+    <!-- <el-button @click="$refs.pdf[0].print()">打印</el-button> -->
+    <!-- <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf> -->
+    <div class="div-float">
+      <!-- <embed width="790px" height="1119px" :src="pdfShowUrl" > -->
+      <iframe style="width:780px;height:1119px" :src="pdfShowUrl" width="800" height="600"></iframe>
+    </div>
+    <el-button type="primary" style="width: 70px;height: 40px;position: fixed;top: 115px;left: 240px;" @click="back">返回</el-button>
   </div>
 </template>
 <script>
 
 import iLocalStroage from "@/common/js/localStroage";
-import { mixinGetCaseApiList } from "@/common/js/mixins";
-// import xzjcDocFloatBtns from '@/components/xzjcDocFloatBtns/xzjcDocFloatBtns.vue'
 import xzjcDocFloatBtns from "../writeRecordCompoments/xzjcDocFloatBtns.vue";
-//   import showApprovePeople from "../../components/showApprovePeople";
-//   import approvalDialog from "../../components/approvalDialog";
 import { mapGetters } from "vuex";
-
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import {
   updateDocStatusApi, getCurrentApproveApi, getFileStreamByStorageIdApi,
 } from "@/api/caseHandle";
@@ -43,7 +44,7 @@ export default {
       numPages: 0,
     };
   },
-  mixins: [mixinGetCaseApiList],
+  // mixins: [mixinGetCaseApiList],
   components: {
     //   showApprovePeople,
     //   approvalDialog,
@@ -52,27 +53,42 @@ export default {
   },
   computed: { ...mapGetters(['caseId', 'docId', 'approvalState', 'docDataId', 'caseLinktypeId']) },
   methods: {
-
     print() {
       for (var i = 0; i < this.storagePath.length; i++) {
         // new PDFObject({ url: this.storagePath[i] }).embed();
       }
     },
-    reInstall() {
+    reInstall(val) {
+      console.log('reinstall')
       this.$set(this, 'storagePath', [])
+      debugger
       this.getFile()
+
+
     },
     getFile() {
       console.log('this.$route.params', this.$route.params)
-      if (this.$route.params && this.$route.params.docId) {
-        // this.$store.commit('setDocId', this.$route.params.docId)
+      if (this.$route.params && this.$route.params.id) {
+        // this.$store.commit('setid', this.$route.params.id)
         let _that = this
-        getDocumentById(this.$route.params.docId).then(
+        getDocumentById(this.$route.params.id).then(
           res => {
             if (res.code == 200) {
               // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.pdfPath)
               _that.storagePath = res.data.pdfPath
-              this.getFileStream(res.data.storageId)
+              _that.pdfShowUrl = res.data.pdfPath || res.data.picPath
+              // 外网专用，发布需要修改
+              // if(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST)
+              _that.pdfShowUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.pdfStorageId || res.data.picStorageId
+              _that.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.pdfStorageId
+              // debugger
+              console.log('_that.storagePath', _that.storagePath)
+              console.log('_that.storagePath222', this.$route.params.storagePath)
+              if (res.data.pdfStorageId) {
+                this.getFileStream(res.data.pdfStorageId)
+              } else {
+                this.formOrDocData.showBtn = [false, false, true, false, true, false] //提交、保存、撤销、暂存、删除、签章
+              }
               // this.getFileStream('13,205a17b3c499')
             } else {
               this.$message.error(res.msg);
@@ -83,29 +99,12 @@ export default {
           })
 
       }
-      // debugger;
-
       // this.$store.dispatch("getFile", {
-      //   docId: this.docId,
-      //   caseId: this.caseId,
+      //   docId: '5cad5b54eb97a15250672a4c397cee56',
+      //   caseId: '297708bcd8e80872febb61577329194f'
       // }).then(
       //   res => {
-      //     console.log('地址1',res);
-      //     //单份文书取一个
-      //     if (res.length == 1) {
-      //       _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
-      //       this.getFileStream(res[0].storageId)
-      //     }else{
-      //       //多份文书按照docDataId取地址
-      //       for (var i = 0; i < res.length; i++) {
-      //         if (this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId) {
-      //           console.log('res[i].storageId', res[i].storageId);
-      //           this.getFileStream(res[i].storageId)
-      //           _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
-      //           break;
-      //         }
-      //       }
-      //     }
+      //     console.log(res[0].storagePath)
       //   },
       //   err => {
       //     console.log(err);
@@ -222,6 +221,15 @@ export default {
         this.$message('pdf加载失败')
       })
     },
+    back() {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      // this.$router.go(-1);//返回上一层
+      this.$router.push({
+        name: 'inspection_inspectionFiles',
+        // params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+        // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+      });
+    },
 
   },
   mounted() {
@@ -240,5 +248,16 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
 /*  @import "@/assets/css/caseHandle/caseDocModle.scss"; */
+</style>
+<style lang="scss" >
+.div-float {
+  width: 790px;
+  height: 1117px;
+  position: fixed;
+  top: 93px;
+  left: auto;
+  right: auto;
+  // background: pink;
+}
 </style>
 

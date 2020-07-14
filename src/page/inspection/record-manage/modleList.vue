@@ -211,9 +211,8 @@ export default {
 
         this.modleSaveList = []
         let data = {
-          title: this.searchModleName,
-          templateUserId: iLocalStroage.gets("userInfo").id,
-          organId: iLocalStroage.gets("userInfo").organId,
+          docName: this.searchModleName,
+          organId: this.$route.params.id,
         }
         findRecordModleByNameIdApi(data).then(
           res => {

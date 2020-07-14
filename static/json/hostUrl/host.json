@@ -89,7 +89,7 @@
   },
   "JX": {
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
-    "PDF_HOST": "http://124.192.215.10:9332/",
+    "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
@@ -104,6 +104,6 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://124.192.215.4:9000"
+    "XZJC_HOST":"http://124.192.215.6:9000"
   }
 }

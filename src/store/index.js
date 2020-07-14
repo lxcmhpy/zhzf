@@ -22,6 +22,9 @@ import phoneVideo from './modules/phoneVideo';
 // 考试管理
 import exam from './modules/exam';
 
+// 行政检查
+import inspection from './modules/inspection';
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -72,7 +75,8 @@ const store = new Vuex.Store({
         checkInfo,
         supervise,
         phoneVideo,
-        exam
+        exam,
+        inspection
     },
     plugins: [createPersistedState({
         storage: window.sessionStorage,
@@ -83,6 +87,7 @@ const store = new Vuex.Store({
                 openTab: val.openTab,
                 phoneVideo: val.phoneVideo,
                 system: val.system,
+                inspection:val.inspection
             }
         }
     })]
