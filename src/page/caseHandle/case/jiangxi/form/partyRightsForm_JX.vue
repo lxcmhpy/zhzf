@@ -50,7 +50,7 @@
                 <el-form-item label="当事人权利">
                   <el-row>
                     <el-col :span="12">
-                      <el-form-item label="是否进行听证" prop = "isHearing">
+                      <el-form-item label="是否进行听证" prop = "isHearing" label-width="131px;">
                         <el-checkbox-group
                           v-model="formData.isHearing"
                           @change="changeHearing"
@@ -62,7 +62,7 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                      <el-form-item label="是否重大案件" prop="isImportant">
+                      <el-form-item label="是否重大案件" prop="isImportant" label-width="131px;">
                         <el-checkbox-group
                           v-model="formData.isImportant"
                           @change="changeImportant"

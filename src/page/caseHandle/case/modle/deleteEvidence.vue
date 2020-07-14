@@ -13,7 +13,7 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p>
           当事人（个人姓名或单位名称）
-          <span class="width_file">
+          <span >
             <el-form-item prop="party">
               <el-input
                 type="textarea"
@@ -116,7 +116,6 @@ export default {
         saveDate: '',
         caseNumberCopy: '',
         relieveDate: '',
-
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -157,6 +156,7 @@ export default {
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
           caseId: this.caseId,
           docId: this.$route.params.docId

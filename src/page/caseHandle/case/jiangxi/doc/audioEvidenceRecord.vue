@@ -6,7 +6,7 @@
           <el-button
             class="deletePageBtn"
             type="primary"
-            v-show="index!=0"
+            v-show="docData.evidenceData.length>1"
             @click="deletePage(index)"
           >删除本页</el-button>
           <div class="doc_topic">视听资料（电子数据）证据记录单</div>
@@ -184,7 +184,7 @@
         <el-button type="primary" @click="addPage">添加一页</el-button>
       </div>
     </el-form>
-
+    
     <!-- 悬浮按钮 -->
     <casePageFloatBtns
       :pageDomId="'audioEvidenceRecord_print'"

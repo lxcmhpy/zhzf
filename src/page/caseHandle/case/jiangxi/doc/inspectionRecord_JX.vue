@@ -1,7 +1,7 @@
 
 <template>
   <div class="print_box">
-    <div class="print_info" id="hearingRecordDoc_print">
+    <div class="print_info" id="inspectionRecord_JX_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">检查记录</div>
         <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交检录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
@@ -305,7 +305,7 @@
     </div>
     <!-- 悬浮按钮 -->
     <casePageFloatBtns
-      :pageDomId="'hearingRecordDoc_print'"
+      :pageDomId="'inspectionRecord_JX_print'"
       :formOrDocData="formOrDocData"
       @submitData="submitData"
       @saveData="saveData"
@@ -429,7 +429,7 @@ export default {
       lineStyleFlag: false,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: "hearingRecordDoc_print"
+        pageDomId: "inspectionRecord_JX_print"
       },
       staffList: [],
       staffList_: [],
@@ -563,10 +563,10 @@ export default {
 <style lang="scss">
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 
-#hearingRecordDoc_print {
+#inspectionRecord_JX_print {
   .overflow_lins_textarea {
     & > textarea {
-      text-indent: 5em;
+      text-indent: 20em;
     }
   }
 }
