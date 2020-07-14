@@ -12,7 +12,7 @@
         <div class="doc_topic">责令改正违法行为通知书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <p class="partyBox">
-          当事人（监护人）
+          当事人
           <span class="width_file">
             <el-form-item
               prop="party"
@@ -29,7 +29,7 @@
           </span>
         </p>
         <!-- 多行样式 -->
-        <p>经调查，你（单位）（监护人）存在下列违法事实：</p>
+        <p>经调查，你（单位）（被监护人）存在下列违法事实：</p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item
