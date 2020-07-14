@@ -380,7 +380,11 @@
                 <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
                 <el-table-column prop="status" label="状态" align="center">
                   <template slot-scope="scope">
-                    <span v-if="scope.row.status == '1' || scope.row.status == '2'">完成</span>
+                    <span v-if="scope.row.status == '1' || scope.row.status == '2'">
+                      <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
+                      <template v-if="scope.row.docProcessStatus=='审批中'">审批中</template>
+                      <template v-if="scope.row.docProcessStatus==''|| scope.row.docProcessStatus=='已完成'">已完成</template>
+                    </span>
                     <span v-if="scope.row.status == '0'">暂存</span>
                     <span
                       v-if="scope.row.status != '1' && scope.row.status != '0'  && scope.row.status != '2'"
@@ -514,7 +518,8 @@ export default {
         afsj: "",
         measureStartDate: "",
         measureEndDate: "",
-        resList: []
+        resList: [],
+        caseCauseName:"",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用

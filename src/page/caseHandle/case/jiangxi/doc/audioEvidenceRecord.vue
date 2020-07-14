@@ -13,8 +13,8 @@
           <div class="doc_number"></div>
           <el-row :gutter="19" class="nianBox" width="90%">
             <div class="imgBox" ref="imgBoxRef2">
-              <img :src="item.pic1" alt width="90%" :height="imgHeightArr[index][0]" />
-              <div class="imgBoxBtn">
+              <img :src="item.pic1" alt width="100%" :height="imgHeightArr[index][0]" />
+              <div class="imgBoxBtn" style="">
                 <el-button size="mini" @click="chooseImg(index,1,item.picSrc1)">选择照片</el-button>
                 <el-button size="mini" @click="deleteImg(index,1)">删除</el-button>
               </div>
@@ -353,9 +353,11 @@ export default {
       this.getBase64(selpicData);
     },
     getBase64(selpicData) {
+      debugger
       let storageId = selpicData.picData.evPath;
       queryImgBase64Api(storageId)
         .then(res => {
+          debugger
           console.log("获取base64", res);
           let picBase64Key = "picBase64_" + selpicData.picIndex;
           this.docData.evidenceData[selpicData.pastePage][picBase64Key] =

@@ -109,7 +109,7 @@
                   prop="withPartyRelation"
                   :rules="fieldRules('withPartyRelation',propertyFeatures['withPartyRelation'])"
                 >
-                  <el-checkbox-group :max="1" v-model="docData.withPartyRelation" @change="test">
+                  <el-checkbox-group :max="1" v-model="docData.withPartyRelation">
                     <el-checkbox label="本人"></el-checkbox>
                     <el-checkbox label="代理人"></el-checkbox>
                     <el-checkbox label="其他代收人"></el-checkbox>
@@ -495,7 +495,6 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       handleType: "", // 0 暂存  1  提交
-      dictId: "2dc1e0a3a8ce225c292259da39294847",
       options: [],
       nameLength: 23,
       adressLength: 23,
@@ -543,9 +542,6 @@ export default {
     casePageFloatBtns
   },
   methods: {
-    test(val){
-     console.log("val",val)
-    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
