@@ -329,8 +329,9 @@
             <el-popover
                 placement="bottom-start"
                 trigger="click"
+                @hide="hidePopover"
                 >
-                <div class="drop-down-menu transition-box" >
+                <div class="drop-down-menu" >
                   <el-cascader
                     ref="areaCascader"
                     :options="areaList"
@@ -1097,7 +1098,10 @@ export default {
         this.zoom = 13
       }
       this.$nextTick();
-      this.$refs.areaCascader.dropDownVisible = false;  
+      this.$refs.areaCascader.dropDownVisible = false;
+    },
+    hidePopover(){
+      this.$refs.areaCascader.dropDownVisible = false;
     },
     handleSelect (node) {
       let data = this.$refs['areaCascader'].panel.getNodeByValue(node[node.length-1]).data;
