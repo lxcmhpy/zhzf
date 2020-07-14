@@ -214,10 +214,9 @@ export default {
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append('caseId', this.caseId)
-      fd.append('objectId', this.BASIC_DATA_SYS.noPenalty_caseLinktypeId);
+      fd.append('objectId', this.caseLinkDataForm.caseLinktypeId);
       fd.append("evName", param.file.name);
       fd.append("evType", param.file.type);
-      console.log("111",this.BASIC_DATA_SYS.noPenalty_caseLinktypeId)
       uploadEvdence(fd).then(
         res => {
           console.log(res);
@@ -263,7 +262,7 @@ export default {
     findFileList(){
       let data =  {
         caseId: this.caseId,
-        docId :this.BASIC_DATA_SYS.noPenalty_caseLinktypeId
+        docId : this.caseLinkDataForm.caseLinktypeId
       }
       console.log(data);
       getFile(data).then(

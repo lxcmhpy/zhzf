@@ -10,9 +10,8 @@ export function getZfjgLawSupervise(data) {
     url: "/zfjg/list",
     method: "get",
     params:data,
-    showloading: true,
+    showloading: false,
     // loadingType:'loadFull',
-    loadingType:'loadPart',
     baseUrlType:  'LAW_SUPERVISE_HOST',
     cancelToken: setCancelSource()
   });
@@ -375,5 +374,14 @@ export function getFileByCaseId(data) {
     loadingType:'loadPart',
     cancelToken:  setCancelSource(),
     // responseType: 'blob'
+  });
+}
+export function getCountry(data) {
+  return request({
+    url: "/zfjg/country/listByPcode/" + data,
+    method: "get",
+    showloading: false,
+    baseUrlType:  'LAW_SUPERVISE_HOST',
+    cancelToken: setCancelSource()
   });
 }

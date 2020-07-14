@@ -7,38 +7,35 @@
         <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交公告〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <p>
           <span>
-            <el-form-item prop="caseName">
-              <el-input v-model="docData.caseName"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+              <el-input v-model="docData.caseName" type="textarea" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
-            <el-form-item prop="serviceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="serviceTime" class="pdf_datapick" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
+              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['serviceTime'])">
               </el-date-picker>
             </el-form-item>
           </span>依法作出了
           <span>
-            <el-form-item prop="punishContent">
-              <el-input v-model="docData.punishContent" :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="punishContent" :rules="fieldRules('punishContent',propertyFeatures['punishContent'])">
+              <el-input v-model="docData.punishContent" type="textarea" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['punishContent'])"></el-input>
             </el-form-item>
           </span>的决定，决定书案号为
           <span>
-            <el-form-item prop="caseNumberCopy">
-              <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
+              <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength'  type="textarea" placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
             </el-form-item>
           </span>。
-        </p>
-
-        <p>
           依据《中华人民共和国行政强制法》第四十四条的规定，现责令当事人
           <span>
-            <el-form-item prop="party">
-              <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="\"></el-input>
+            <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+              <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>立即停止违法行为并于
           <span>
-            <el-form-item prop="forceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-form-item prop="forceTime" class="pdf_datapick" :rules="fieldRules('forceTime',propertyFeatures['forceTime'])">
+              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['forceTime'])">
               </el-date-picker>
             </el-form-item>
           </span>前自行拆除违法的建筑物、构筑物、设施等。
@@ -52,8 +49,8 @@
 
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span><br>
-          <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+          <el-form-item prop="makeDate" class="pdf_datapick" >
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd"  :disabled="fieldDisabled(propertyFeatures['makeDate'])">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -130,26 +127,40 @@ export default {
         status: "",   //提交状态
       },
       name: '',
+      rules: {
+          caseNumber: [{required: true, message: "案号不能为空", trigger: "blur"}],
+          caseName: [
+              {required: true, message: '违法事实不能为空', trigger: 'blur'},
+          ],
+          serviceTime: [
+              {required: true, message: "做出决定时间不能为空", trigger: "blur"}
+          ],
+          punishContent: [
+              {required: true, message: "处罚决定不能为空", trigger: "blur"}
+          ],
+          caseNumberCopy: [
+              {required: true, message: "决定书案号不能为空", trigger: "blur"}
+          ],
+          party: [
+              {required: true, message: "当事人不能为空", trigger: "change"}
+          ],
+          forceTime: [
+              {required: true, message: "拆除时间不能为空", trigger: "change"}
+          ],
+      },
       inputInfo: '',
       inputInfos: '',
       illegalFactsEvidence: '',
       value1: '',
-      rules: {
-        serviceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-        forceTime: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
-      },
       nameLength: 23,
       adressLength: 23,
-      maxLength: 23,
+      maxLength: 50,
       maxLengthOverLine: 122,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'executAnnounceDoc_print',
-      }
+      },
+      propertyFeatures: '', //字段属性配置
     }
   },
  methods: {

@@ -14,7 +14,10 @@
         <p class="partyBox">
           当事人（监护人）
           <span class="width_file">
-            <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
+            <el-form-item
+              prop="party"
+              :rules="fieldRules('party',propertyFeatures['party'],'',isParty)"
+            >
               <el-input
                 :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                 v-model="formData.party"
@@ -22,14 +25,17 @@
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
               ></el-input>
-            </el-form-item> ：
+            </el-form-item>：
           </span>
         </p>
         <!-- 多行样式 -->
-        <p>经调查，你（单位）存在下列违法事实：</p>
+        <p>经调查，你（单位）（监护人）存在下列违法事实：</p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+            <el-form-item
+              prop="caseName"
+              :rules="fieldRules('caseName',propertyFeatures['caseName'])"
+            >
               <el-input
                 :disabled="fieldDisabled(propertyFeatures['caseName'])"
                 class="overflow_lins_textarea"
@@ -38,12 +44,8 @@
                 rows="3"
                 maxlength="75"
               ></el-input>
-              <span class="span_bg span_bg_top" >&nbsp;</span>
-              <span
-                v-for="item in overFlowEditList"
-                :key="item.id"
-                class="span_bg"
-              >&nbsp;</span>
+              <span class="span_bg span_bg_top">&nbsp;</span>
+              <span v-for="item in overFlowEditList" :key="item.id" class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
         </div>
@@ -51,7 +53,11 @@
         <p>
           根据
           <span contenteditable="true">
-            <el-form-item prop="punishLaw" style="width:300px" :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])">
+            <el-form-item
+              prop="punishLaw"
+              style="width:300px"
+              :rules="fieldRules('punishLaw',propertyFeatures['punishLaw'])"
+            >
               <el-input
                 type="textarea"
                 v-model="formData.punishLaw"
@@ -63,33 +69,63 @@
             </el-form-item>
           </span>的规定，现责令你（单位）
         </p>
-        <el-form-item prop="correctWay" :rules="fieldRules('correctWay',propertyFeatures['correctWay'])">
-          <el-checkbox-group v-model="formData.correctWay" @change="changeCorrectWay">
-            <p>&nbsp;&nbsp;
-              <el-checkbox label="1">立即予以改正。</el-checkbox>
+        <el-form-item
+          prop="correctWay"
+          :rules="fieldRules('correctWay',propertyFeatures['correctWay'])"
+        >
+          <el-checkbox-group :max="1" v-model="formData.correctWay" @change="changeCorrectWay">
+            <p>
+              &nbsp;&nbsp;
+              <el-checkbox label="1">
+                <span>立即予以</span>
+                <el-form-item
+                  prop="amendMeasure"
+                  style="width:300px;margin-top:-8px;"
+                  :rules="fieldRules('amendMeasure',propertyFeatures['amendMeasure'])"
+                >
+                  <el-input
+                    type="textarea"
+                    v-model="formData.amendMeasure"
+                    :disabled=" formData.correctWay != 1 ?true:false"
+                    v-bind:class="{ over_flow:formData.amendMeasure.length>12?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxLength="maxLength"
+                  ></el-input>
+                </el-form-item>
+              </el-checkbox>
             </p>
-            <p>&nbsp;&nbsp;
+            <p>
+              &nbsp;&nbsp;
               <el-checkbox label="2">
                 <span>在</span>
                 <span class="p_datapick">
-                  <el-form-item v-if="!lineStyleFlag" :prop="formData.correctWay == 2 ?'correctTime' : 'placeholder'" style="margin-top:-6px">
+                  <el-form-item
+                    v-if="!lineStyleFlag"
+                    :prop="formData.correctWay == 2 ?'correctTime' : 'placeholder'"
+                    style="margin-top:-6px"
+                  >
                     <el-date-picker
                       v-model="formData.correctTime"
                       type="date"
-                      :disabled=" formData.correctWay == 1 ?true : false"
+                      :disabled="formData.correctWay != 2 ? true:false"
                       format="yyyy年MM月dd日"
                       placeholder="    年  月  日"
-                       value-format="yyyy-MM-dd"
+                      value-format="yyyy-MM-dd"
                     ></el-date-picker>
                   </el-form-item>
                 </span>
-                <span>前
+                <span>
+                  前
                   <span contenteditable="true">
-                    <el-form-item prop="correctMeasure" style="width:300px;margin-top:-8px;" :rules="fieldRules('correctMeasure',propertyFeatures['correctMeasure'])">
+                    <el-form-item
+                      prop="correctMeasure"
+                      style="width:300px;margin-top:-8px;"
+                      :rules="fieldRules('correctMeasure',propertyFeatures['correctMeasure'])"
+                    >
                       <el-input
                         type="textarea"
                         v-model="formData.correctMeasure"
-                        :disabled=" formData.correctWay == 1 ?true : false"
+                        :disabled=" formData.correctWay != 2 ?true:false"
                         v-bind:class="{ over_flow:formData.correctMeasure.length>12?true:false }"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         :maxLength="maxLength"
@@ -99,27 +135,37 @@
                 </span>
               </el-checkbox>
             </p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-checkbox label="3">其他：<span contenteditable="true">
-                    <el-form-item prop="otherMeasure" style="width:300px;margin-top:-8px;" :rules="fieldRules('otherMeasure',propertyFeatures['otherMeasure'])">
-                      <el-input
-                        type="textarea"
-                        v-model="formData.otherMeasure"
-                        v-bind:class="{ over_flow:formData.otherMeasure.length>12?true:false }"
-                        :autosize="{ minRows: 1, maxRows: 3}"
-                        :maxLength="maxLength"
-                        :disabled="fieldDisabled(propertyFeatures['otherMeasure'])"
-                      ></el-input>
-                    </el-form-item>
-                  </span>
-                </el-checkbox>
+            <p>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <el-checkbox label="3">
+                其他：
+                <span contenteditable="true">
+                  <el-form-item
+                    prop="otherMeasure"
+                    style="width:300px;margin-top:-8px;"
+                    :rules="fieldRules('otherMeasure',propertyFeatures['otherMeasure'])"
+                  >
+                    <el-input
+                      type="textarea"
+                      v-model="formData.otherMeasure"
+                      :disabled=" formData.correctWay != 3 ?true:false"
+                      v-bind:class="{ over_flow:formData.otherMeasure.length>12?true:false }"
+                      :autosize="{ minRows: 1, maxRows: 3}"
+                      :maxLength="maxLength"
+                    ></el-input>
+                  </el-form-item>
+                </span>
+              </el-checkbox>
             </p>
           </el-checkbox-group>
         </el-form-item>
         <p>
           如不服本决定，可以在六十日内依法向
           <span>
-            <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
+            <el-form-item
+              prop="reconsiderationOrgan"
+              :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])"
+            >
               <!-- <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' ></el-input> -->
               <el-select
                 v-model="formData.reconsiderationOrgan"
@@ -136,9 +182,16 @@
             </el-form-item>
           </span>申请行政复议，或者在六个月内依法向
           <span>
-            <el-form-item prop="litigationOrgan" :rules="fieldRules('litigationOrgan',propertyFeatures['litigationOrgan'])">
+            <el-form-item
+              prop="litigationOrgan"
+              :rules="fieldRules('litigationOrgan',propertyFeatures['litigationOrgan'])"
+            >
               <!-- <el-input v-model="formData.litigationOrgan" :maxLength='maxLength' ></el-input> -->
-              <el-select v-model="formData.litigationOrgan" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['litigationOrgan'])">
+              <el-select
+                v-model="formData.litigationOrgan"
+                :maxLength="maxLength"
+                :disabled="fieldDisabled(propertyFeatures['litigationOrgan'])"
+              >
                 <el-option
                   v-for="(item,index) in enforcementOptions"
                   :key="index"
@@ -164,7 +217,7 @@
         <br />
         <br />
         <div class="pdf_seal">
-          <span >交通运输执法部门(印章)</span>
+          <span>交通运输执法部门(印章)</span>
           <br />
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker
@@ -173,7 +226,7 @@
               type="date"
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
-               value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
         </div>
@@ -205,8 +258,8 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   data() {
     var validateBycorrectWay = (rule, value, callback) => {
-      console.log('数值',this.formData.correctWay[0])
-      if (this.formData.correctWay[0] == '2' && !value)  {
+      console.log("数值", this.formData.correctWay[0]);
+      if (this.formData.correctWay[0] == "2" && !value) {
         return callback(new Error("责令改正日期不能为空"));
       }
       callback();
@@ -232,14 +285,16 @@ export default {
         reconsiderationOrgan: "",
         test: "",
         correctWay: [],
-        correctTime:"",
+        correctTime: "",
         // correctWay1:"",
         // correctWay2:"",
         litigationOrgan: "",
         makeDate: "",
-        caseName:'',
-        correctMeasure:'',
-        otherMeasure:''
+        caseName: "",
+        amendMeasure: "",
+        correctMeasure: "",
+        otherMeasure: "",
+        behavior: ""
       },
       reconsiderationOptions: [], //行政复议机构
       enforcementOptions: [], //行政诉讼机构
@@ -257,7 +312,7 @@ export default {
       rules: {
         party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
         caseName: [
-          { required: true, message: '违法事实不能为空', trigger: 'blur' },
+          { required: true, message: "违法事实不能为空", trigger: "blur" }
         ],
         punishLaw: [
           { required: true, message: "法律条款不能为空", trigger: "blur" }
@@ -271,9 +326,7 @@ export default {
         correctWay: [
           { required: true, message: "责令改正方式不能为空", trigger: "change" }
         ],
-        correctTime: [
-          { validator: validateBycorrectWay, trigger: "blur" }
-        ]
+        correctTime: [{ validator: validateBycorrectWay, trigger: "blur" }]
       },
       nameLength: 23,
       adressLength: 23,
@@ -287,8 +340,8 @@ export default {
       isPdf: "",
       huanjieAndDocId: this.BASIC_DATA_JX.forceCorrect_JX_huanjieAndDocId, //责令改正违法行为通知书的文书id
       isParty: true, //当事人类型为个人
-      propertyFeatures:'', //字段属性配置
-      needDealData: true,
+      propertyFeatures: "", //字段属性配置
+      needDealData: true
     };
   },
   methods: {
@@ -304,10 +357,10 @@ export default {
     saveData(handleType) {
       //参数  提交类型 、
       // this.printContent();
-      console.log("日期",this.formData.correctWay)
+      console.log("日期", this.formData.correctWay);
       this.com_submitCaseForm(handleType, "docForm", true);
     },
-     // 打印
+    // 打印
     print() {
       console.log("打印!");
     },
@@ -332,44 +385,43 @@ export default {
     getOrganDetailOptions() {
       //获取机构详情
       let params = { id: iLocalStroage.gets("userInfo").organId };
-       let _this = this
+      let _this = this;
       this.$store.dispatch("getOrganDetail", params).then(
         res => {
           console.log("机构", res);
           let organData = res.data;
           //复议机构
-          if(organData.reconsiderationOrgan1){
-             _this.reconsiderationOptions.push(organData.reconsiderationOrgan1)
+          if (organData.reconsiderationOrgan1) {
+            _this.reconsiderationOptions.push(organData.reconsiderationOrgan1);
           }
-          if(organData.reconsiderationOrgan2){
-             _this.reconsiderationOptions.push(organData.reconsiderationOrgan2)
+          if (organData.reconsiderationOrgan2) {
+            _this.reconsiderationOptions.push(organData.reconsiderationOrgan2);
           }
           //诉说机构
-          if(organData.enforcementOrgan1){
-             _this.enforcementOptions.push(organData.enforcementOrgan1)
+          if (organData.enforcementOrgan1) {
+            _this.enforcementOptions.push(organData.enforcementOrgan1);
           }
-          if(organData.enforcementOrgan2){
-             _this.enforcementOptions.push(organData.enforcementOrgan2)
+          if (organData.enforcementOrgan2) {
+            _this.enforcementOptions.push(organData.enforcementOrgan2);
           }
           //默认显示
           _this.formData.reconsiderationOrgan = _this.reconsiderationOptions[0];
           _this.formData.litigationOrgan = _this.enforcementOptions[0];
-
         },
         err => {
           console.log(err);
         }
       );
-
     },
-    changeCorrectWay(val){
-      if(val == '1'){
-      this.formData.correctTime = '';
-      }
+    changeCorrectWay(val) {
+        this.formData.amendMeasure = "";
+        this.formData.correctTime = "";
+        this.formData.correctMeasure = "";
+        this.formData.otherMeasure = "";
     },
-    getDataAfter(){
-      if(this.caseLinkDataForm.id==''){
-          this.formData.correctWay=[];
+    getDataAfter() {
+      if (this.caseLinkDataForm.id == "") {
+        this.formData.correctWay = [];
       }
     }
   },
@@ -397,10 +449,10 @@ export default {
     font-size: 16px;
     color: #000;
   }
-  .is-error .el-radio-group{
+  .is-error .el-radio-group {
     background: #f7c9cb;
   }
-  .overflow_lins_style .overflow_lins span.overflow_lins_textarea{
+  .overflow_lins_style .overflow_lins span.overflow_lins_textarea {
     text-indent: 0;
   }
 }

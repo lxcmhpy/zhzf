@@ -24,7 +24,7 @@
               </span>
               <span v-else>
                 <el-button @click="editRecord(scope.row)" type="text">编辑</el-button>
-                <el-button type="text" @click="delModle(scope.row.id)">上传</el-button>
+                <el-button type="text" @click="upload(scope.row.id)">上传</el-button>
               </span>
             </template>
           </el-table-column>
@@ -92,11 +92,9 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: item.path,
-        // params: item
-        query: { id: item.id, addOrEiditFlag: 'add' }
+        params: { id: item.id, addOrEiditFlag: 'add' }
+        // query: { id: item.id, addOrEiditFlag: 'add' }
       });
-
-
       // 写记录
       this.$emit('changeModleId', item);
 
@@ -133,6 +131,9 @@ export default {
       })
 
     },
+    upload() {
+
+    },
     // 预览
     preview() {
       this.$refs.previewRef.showModal(this.compData);
@@ -144,7 +145,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     searchList() {
-      let data = this.$route.query.id
+      let data = this.$route.params.id
       getDocListById(data).then(
         res => {
           // debugger

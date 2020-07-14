@@ -121,7 +121,8 @@ export function vehicleCheckApi(data) {
     return request({
         url: "/cy/yuz/vehicle",
         method: "GET",
-        showloading: false,
+        showloading: true,
+        loadingType:'loadPart',
         params: param,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()

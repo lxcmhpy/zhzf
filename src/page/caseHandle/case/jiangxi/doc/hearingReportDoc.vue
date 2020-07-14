@@ -12,7 +12,7 @@
           <div class="doc_topic">听证报告书</div>
           <div
             class="doc_number"
-          >案号：{{docData.dataNumber}}</div>
+          >案号：{{docData.caseNumber}}</div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>

@@ -314,7 +314,7 @@ export default {
       margin-left: 10px;
       .question-desc {
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         color: rgba(32, 35, 43, 1);
         line-height: 22px;
         margin-bottom: 10px;
@@ -325,6 +325,8 @@ export default {
         >>> .el-checkbox {
           color: #000;
           width: 100%;
+          font-size: 16px;
+          font-weight: bold !important;
           .el-radio__input{
             vertical-align: top;
           }

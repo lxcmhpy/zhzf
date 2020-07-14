@@ -175,7 +175,15 @@
           </span>。
         </p>
         <p>
-          <el-checkbox v-model="docData.checkBox1"></el-checkbox>因你（单位）逾期且无正当理由未履行，本机关决定将于
+          <el-checkbox v-model="docData.checkBox1"></el-checkbox>因你（单位）逾期且无正当理由未履行，依据
+          <span>
+            <el-form-item prop="punishmentBasis"  class="width120" :rules="fieldRules('punishmentBasis',propertyFeatures['punishmentBasis'])">
+              <el-input type="textarea" v-model="docData.punishmentBasis"
+                        v-bind:class="{ over_flow:docData.punishmentBasis.length>14?true:false }"
+                        :autosize="{ minRows: 1, maxRows: 3}"
+                        :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishmentBasis'])"></el-input>
+            </el-form-item>
+          </span>的规定，本机关决定将于
           <span>
             <el-form-item prop="forceTime" class="pdf_datapick" :rules="fieldRules('forceTime',propertyFeatures['forceTime'])">
               <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['forceTime'])">
@@ -191,33 +199,24 @@
               ></el-input>
             </el-form-item>
           </span>（强制执行方式）。
-          <span>
-            <el-form-item prop="punishmentBasis"  class="width120" :rules="fieldRules('punishmentBasis',propertyFeatures['punishmentBasis'])">
-              <el-input type="textarea" v-model="docData.punishmentBasis"
-              v-bind:class="{ over_flow:docData.punishmentBasis.length>14?true:false }"
-              :autosize="{ minRows: 1, maxRows: 3}"
-              :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishmentBasis'])"></el-input>
-            </el-form-item>
-          </span>的规定，本机关将立即于
-          
-          
+
         </p>
         <p>
           <el-checkbox v-model="docData.checkBox2"></el-checkbox>经本机关催告后，你（单位）在催告期间有转移或隐匿财物迹象，依据
           <span>
-            <el-form-item prop="punishmentBasis"  class="width120" :rules="fieldRules('punishmentBasis',propertyFeatures['punishmentBasis'])">
-              <el-input type="textarea" v-model="docData.punishmentBasis"
-              v-bind:class="{ over_flow:docData.punishmentBasis.length>14?true:false }"
+            <el-form-item prop="punishmentBasis1"  class="width120" :rules="fieldRules('punishmentBasis1',propertyFeatures['punishmentBasis1'])">
+              <el-input type="textarea" v-model="docData.punishmentBasis1"
+              v-bind:class="{ over_flow:docData.punishmentBasis1.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
-              :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishmentBasis'])"></el-input>
+              :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['punishmentBasis1'])"></el-input>
             </el-form-item>
-          </span>的规定，本机关将立即于
-          <span>
+          </span>的规定，本机关将立即
+         <!-- <span>
             <el-form-item prop="forceTime1" class="pdf_datapick" :rules="fieldRules('forceTime1',propertyFeatures['forceTime1'])">
               <el-date-picker v-model="docData.forceTime1" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['forceTime1'])">
               </el-date-picker>
             </el-form-item>
-          </span>强制执行：
+          </span>-->强制执行：
           <span>
             <el-form-item prop="measureAction1"  class="width235" :rules="fieldRules('measureAction1',propertyFeatures['measureAction1'])">
               <el-input type="textarea" v-model="docData.measureAction1"  :maxLength='maxLength'
@@ -227,9 +226,9 @@
               ></el-input>
             </el-form-item>
           </span>（强制执行方式）。
-          
-          
-          
+
+
+
         </p>
         <p>
           如不服本决定，可以在收到本决定书之日起六十日内向<span>
@@ -263,7 +262,7 @@
         </div>
       </el-form>
     </div>
-   
+
     <!-- 悬浮按钮 -->
     <casePageFloatBtns :pageDomId="'enforceDecideDoc-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
 
@@ -301,6 +300,7 @@ export default {
         punishContent: '',
         caseNumberCopy: '',
         punishmentBasis: '',
+        punishmentBasis1: '',
         forceTime: '',
         measureAction: '',
         reconsiderationOrgan: '',
@@ -366,10 +366,16 @@ export default {
         punishmentBasis: [
           { required: true, message: '处罚依据必须输入', trigger: 'blur' },
         ],
+        punishmentBasis1: [
+          { required: true, message: '处罚依据必须输入', trigger: 'blur' },
+        ],
         forceTime: [
           { required: true, message: '强制执行时间必须填写', trigger: 'blur' },
         ],
         measureAction: [
+          { required: true, message: '强制执行方式必须填写', trigger: 'blur' },
+        ],
+        measureAction1: [
           { required: true, message: '强制执行方式必须填写', trigger: 'blur' },
         ],
         reconsiderationOrgan: [

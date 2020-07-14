@@ -333,5 +333,25 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/adminCoerciveMeasureDoc_JX.vue")
   },
+  //处罚执行
+  {
+    path: "/penaltyExecution_JX",
+    name: "case_handle_penaltyExecution_JX",
+    meta: {
+      title: "处罚执行",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/PenaltyExecutionForm_JX.vue")
+  },
+  //强制执行
+  {
+    path: "/forceExecute_JX",
+    name: "case_handle_forceExecute_JX",
+    meta: {
+      title: "强制执行",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/form/forceExecuteForm_JX.vue")
+  },
 ]
 

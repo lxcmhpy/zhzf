@@ -21,13 +21,13 @@
           </el-radio-group>
         </div>
        <el-form-item label="车牌号码">
-          <el-input style="width:300px;padding-left:30px;" v-model="checkData.VehicleNo" placeholder="请输入车辆（挂车）号牌"></el-input>
+          <el-input style="width:300px;padding-left:30px;" v-model="checkData.vehicleNo" placeholder="请输入车辆（挂车）号牌"></el-input>
         </el-form-item>
         <el-form-item label="道路运输证号" v-if="checkType==1">
-          <el-input style="width:300px;padding-left:10px;" v-model="checkData.TransCertificateCode" placeholder="请输入道路运输证号"></el-input>
+          <el-input style="width:300px;padding-left:10px;" v-model="checkData.transCertificateCode" placeholder="请输入道路运输证号"></el-input>
         </el-form-item>
         <el-form-item label="VIN号" v-if="checkType==2">
-          <el-input style="width:300px;padding-left:30px;" v-model="checkData.Vin" placeholder="请输入VIN号"></el-input>
+          <el-input style="width:300px;padding-left:30px;" v-model="checkData.vin" placeholder="请输入VIN号"></el-input>
         </el-form-item>
         <el-form-item label="车牌颜色" v-if="checkType==3">
           <el-select style="width:300px;padding-left:10px;padding-right:20px;" v-model="checkData.plateColor" placeholder="请选择车牌颜色">
@@ -92,9 +92,9 @@ export default {
 // ProvinceCode:110000
     return {
       checkData: {
-        VehicleNo: '',
-        TransCertificateCode: '',
-        Vin: '',
+        vehicleNo: '',
+        transCertificateCode: '',
+        vin: '',
         plateColor:''
       },
       sfList:[],
@@ -131,7 +131,7 @@ export default {
             debugger
             let json=[];
             let param={
-                vehicleNo:this.checkData.VehicleNo,
+                vehicleNo:this.checkData.vehicleNo,
                 plateColor:this.checkData.plateColor
             };
             json.push(param);
@@ -202,9 +202,9 @@ export default {
     },
     // 清空数据
     clearData() {
-      this.checkData.VehicleNo = '';
-      this.checkData.TransCertificateCode = '';
-      this.checkData.Vin = '';
+      this.checkData.vehicleNo = '';
+      this.checkData.transCertificateCode = '';
+      this.checkData.vin = '';
     },
     //查看
     commercialVehicleSee(index, row) {

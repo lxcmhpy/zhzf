@@ -162,8 +162,8 @@
                 :rules="fieldRules('enforcePeople',propertyFeatures['enforcePeople'])"
               >
                 <el-radio-group v-model="docData.enforcePeople">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="1">是</el-radio>
+                  <el-radio label="2">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -178,8 +178,8 @@
                 :rules="fieldRules('lawProcedure',propertyFeatures['lawProcedure'])"
               >
                 <el-radio-group v-model="docData.lawProcedure">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="3">是</el-radio>
+                  <el-radio label="4">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -194,8 +194,8 @@
                 :rules="fieldRules('caseFacts',propertyFeatures['caseFacts'])"
               >
                 <el-radio-group v-model="docData.caseFacts">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="5">是</el-radio>
+                  <el-radio label="6">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -210,8 +210,8 @@
                 :rules="fieldRules('lawRegulations',propertyFeatures['lawRegulations'])"
               >
                 <el-radio-group v-model="docData.lawRegulations">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="7">是</el-radio>
+                  <el-radio label="8">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -226,8 +226,8 @@
                 :rules="fieldRules('StatutoryAuth',propertyFeatures['StatutoryAuth'])"
               >
                 <el-radio-group v-model="docData.StatutoryAuth">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="9">是</el-radio>
+                  <el-radio label="10">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -242,8 +242,8 @@
                 :rules="fieldRules('docSpecification',propertyFeatures['docSpecification'])"
               >
                 <el-radio-group v-model="docData.docSpecification">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="1">是</el-radio>
+                  <el-radio label="12">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -258,8 +258,8 @@
                 :rules="fieldRules('selfRights',propertyFeatures['selfRights'])"
               >
                 <el-radio-group v-model="docData.selfRights">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="13">是</el-radio>
+                  <el-radio label="14">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -274,8 +274,8 @@
                 :rules="fieldRules('suspicionCrime',propertyFeatures['suspicionCrime'])"
               >
                 <el-radio-group v-model="docData.suspicionCrime">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="15">是</el-radio>
+                  <el-radio label="16">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -285,17 +285,17 @@
               <div class="overflow_lins_style" id="noteDesCon">
                 <div class="overflow_lins">
                   <el-form-item
-                    prop="auditConclusion"
-                    :rules="fieldRules('auditConclusion',propertyFeatures['auditConclusion'])"
+                    prop="threeApproveOpinions"
+                    :rules="fieldRules('threeApproveOpinions',propertyFeatures['threeApproveOpinions'])"
                   >
                     <el-input
                       class="text_indent11 overflow_lins_textarea"
                       type="textarea"
-                      v-model="docData.auditConclusion"
+                      v-model="docData.threeApproveOpinions"
                       rows="4"
                       maxlength="400"
                       placeholder="\"
-                      :disabled="fieldDisabled(propertyFeatures['auditConclusion'])"
+                      :disabled="fieldDisabled(propertyFeatures['threeApproveOpinions'])"
                     ></el-input>
                     <span class="overflow_describe_JX" style="padding-bottom:-6px;text-indent:0 !important">有关事项说明及审核结论：</span>
                     <span class="span_bg span_bg_top">&nbsp;</span>
@@ -306,9 +306,9 @@
                 </div>
               </div>
               <div class="pdf_seal" style="width:280px">
-                <p>法制审核机构负责人（签章）：{{docData.secondApprovePeo}}</p>
+                <p>法制审核机构负责人（签章）：{{docData.threeApprovePeo}}</p>
                 <p>
-                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
+                  <span v-if="docData.threeApproveTime">{{docData.threeApproveTime}}</span>
                   <span v-else>年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
@@ -365,9 +365,6 @@ export default {
         selfRights: "",
         suspicionCrime: "",
         auditConclusion: "",
-        approveOpinions: "",
-        approvePeo: "",
-        approveTime: "",
         secondApproveOpinions: "",
         secondApprovePeo: "",
         secondApproveTime: "",
@@ -422,9 +419,6 @@ export default {
         ],
         suspicionCrime: [
           { required: true, message: "是否涉嫌犯罪不能为空", trigger: "blur" }
-        ],
-        auditConclusion: [
-          { required: true, message: "审核结论不能为空", trigger: "blur" }
         ]
       },
       nameLength: 23,

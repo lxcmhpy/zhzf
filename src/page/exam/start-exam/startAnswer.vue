@@ -1,24 +1,54 @@
 <template>
   <div class="entry-exam">
     <el-row class="invigilator-wrap">
-      <el-col :span="17" class="row-col">
+      <el-col :span="18" class="row-col">
         <div v-if="questionData && questionData.firstQuestion" class="exam-info question">
           <div class="header">
-            <span>{{ questionData.firstQuestion.questionTypeName }}</span>
+            <div>
+              <span>{{ questionData.firstQuestion.questionTypeName }}</span>
+              <div class="set-font-panel">
+                <el-input v-model="questionFontSize" @focus="fontSizeFocus" @blur="setFontSize">
+                  <template slot="prepend">
+                    <div class="set-font-btn" @click="reduceFontsize">A-</div>
+                  </template>
+                  <template slot="append">
+                    <div class="set-font-btn" @click="addFontsize">A+</div>
+                  </template>
+                </el-input>
+              </div>
+            </div>
+            <div class="time-info">
+              <img src="../../../../static/images/img/exam/clocks.png" width="22px" alt />
+              <span class="time-prompt">距离考试结束</span>
+              <!-- <span class="count-down">{{ countTime.minutes }}</span>
+              <span class="count-unit" style="margin-right:8px;">分</span>
+              <span class="count-down">{{ countTime.second }}</span>
+              <span class="count-unit">秒</span> -->
+              <span class="count-down">{{ countTime.minutes }}:{{ countTime.second }}</span>
+            </div>
           </div>
           <div class="question-box">
             <questionItem
               ref="questionItem"
               :question="questionData.firstQuestion"
+              :fontSize="fontSizeClone"
               @setQuestionStatus="setQuestionStatus"
             />
           </div>
           <div class="select-btn">
-            <div v-if="!currentGraph.labelStatue" class="sign-btn sign" @click="markedQuestion(true)">
+            <div
+              v-if="!currentGraph.labelStatue"
+              class="sign-btn sign"
+              @click="markedQuestion(true)"
+            >
               <i class="icon-sign"></i>
               <span style="margin-left:45px;">标记该题</span>
             </div>
-            <div v-if="currentGraph.labelStatue" class="sign-btn marked" @click="markedQuestion(false)">
+            <div
+              v-if="currentGraph.labelStatue"
+              class="sign-btn marked"
+              @click="markedQuestion(false)"
+            >
               <i class="icon-marked"></i>
               <span style="margin-left:50px;">已标记</span>
             </div>
@@ -35,18 +65,10 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="7" class="row-col">
+      <el-col :span="6" class="row-col">
         <div class="exam-info" style="padding: 20px 0; margin-left: 0;">
           <div class="answer-statistics">
-            <div class="time-info">
-              <img src="../../../../static/images/img/exam/clocks.png" alt />
-              <span class="time-prompt">距离考试结束</span>
-              <span class="count-down">{{ countTime.minutes }}</span>
-              <span class="count-unit" style="margin-right:8px;">分</span>
-              <span class="count-down">{{ countTime.second }}</span>
-              <span class="count-unit">秒</span>
-            </div>
-            <div v-if="examPerInfo.personInfo" class="time-info pserson-info">
+            <div v-if="examPerInfo.personInfo" class="answer-info pserson-info">
               <div class="examinee-photo">
                 <img
                   v-if="examPerInfo.personInfo.photoUrl"
@@ -61,8 +83,8 @@
                 <p class="componey">{{ examPerInfo.personInfo.oname }}</p>
               </div>
             </div>
-            <div class="time-info exam-desc">
-              <p v-if="examPerInfo.examInfo" class="exam-name">{{ examPerInfo.examInfo.examName }}</p>
+            <div class="answer-info exam-desc">
+              <!-- <p v-if="examPerInfo.examInfo" class="exam-name">{{ examPerInfo.examInfo.examName }}</p> -->
               <p class="exam-answer">答题卡</p>
               <div class="status-box">
                 <span class="status">
@@ -83,20 +105,19 @@
                 class="question-class"
               >
                 <div class="question-title-type">{{ graph.paragraphTypeName }}</div>
-                <div
-                  v-if="graph.examResultList && graph.examResultList.length"
-                  class="question-wrap"
-                >
-                  <a
-                    v-for="num in graph.examResultList"
-                    class="item"
-                    :key="num.resultId"
-                    :class="{
+                <div v-if="graph.examResultList && graph.examResultList.length">
+                  <div class="question-wrap">
+                    <a
+                      v-for="num in graph.examResultList"
+                      class="item"
+                      :key="num.resultId"
+                      :class="{
                       'sign': num.labelStatue,
                       'finish': num.answer && !num.labelStatue,
                       'current': num.resultId == questionData.firstQuestion.resultId}"
-                    @click="currentGraph = num ;nextQuestion('', num.orderNo)"
-                  >{{ num.orderNum }}</a>
+                      @click="currentGraph = num ;nextQuestion('', num.orderNo)"
+                    >{{ num.orderNum }}</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,7 +155,9 @@ export default {
       nextDisabled: false,
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
       currentSysTime: new Date().getTime(),
-      currentGraph: {}
+      currentGraph: {},
+      questionFontSize: 16,
+      fontSizeClone: 16
     };
   },
   computed: {
@@ -150,6 +173,37 @@ export default {
     this.getQuestionInfo();
   },
   methods: {
+    // 控制字体大小
+    reduceFontsize(){
+      this.questionFontSize -= 1;
+      this.questionFontSize = this.questionFontSize < 16 ? 16 : this.questionFontSize;
+      this.fontSizeClone = this.questionFontSize - 0;
+    },
+    addFontsize(){
+      this.questionFontSize += 1;
+      this.questionFontSize = this.questionFontSize - 0 > 30 ? 30 : this.questionFontSize;
+      this.fontSizeClone = this.questionFontSize - 0;
+    },
+    fontSizeFocus(){
+      this.fontSizeClone = this.questionFontSize - 0;
+    },
+    setFontSize(){
+      const currentVal = this.questionFontSize - 0;
+      if(typeof currentVal !== 'number' || isNaN(currentVal)){
+        this.questionFontSize = this.fontSizeClone;
+      }else{
+        this.questionFontSize = Math.round(this.questionFontSize);
+        this.fontSizeClone = this.questionFontSize;
+      }
+      if(this.questionFontSize > 32){
+        this.questionFontSize = 32;
+        this.fontSizeClone = 32;
+      }
+      if(this.questionFontSize < 16){
+        this.questionFontSize = 16;
+        this.fontSizeClone = 16;
+      }
+    },
     // 获取系统当前时间
     getSystemTime() {
       this.$store.dispatch("getSystemDate").then(
@@ -420,7 +474,7 @@ export default {
       this.$store.dispatch("getexamResultSubmit", submitData).then(
         res => {
           loading.close();
-          this.quitExam("提交成功，预祝您考试顺利！");
+          this.quitExam("交卷成功，您的得分是", res.data.data);
         },
         err => {
           loading.close();
@@ -434,12 +488,18 @@ export default {
       );
     },
     // 获取题目失败或被强制收卷跳转页面
-    quitExam(msg) {
-      this.$confirm(msg, "提示", {
+    quitExam(msg, score) {
+      let messageHtml = msg;
+      if(score !== undefined){
+        messageHtml =  `<div style="text-align:center;"><p style="font-weight:560;">${msg}</p>
+          <p style="font-size: 58px;font-weight:600;;color:#17C062; margin-top:30px;">${score}</p></div>`;
+      }
+      this.$confirm(messageHtml, "提示", {
         confirmButtonText: "确定",
-        iconClass: "iconfont law-success",
+        iconClass: score !== undefined ? '' : "iconfont law-success",
         customClass: "custom-confirm",
-        showCancelButton: false
+        showCancelButton: false,
+        dangerouslyUseHTMLString: true
       })
         .then(() => {
           sessionStorage.removeItem("ExamUserInfo");
@@ -502,36 +562,17 @@ export default {
         bottom: 0;
         right: 0;
         left: 0;
-        .time-info {
+        .answer-info {
           display: flex;
           align-items: center;
           justify-content: center;
           margin: 10px 0;
           padding-bottom: 20px;
           border-bottom: 1px solid #cbcbcc;
-          .time-prompt {
-            font-size: 18px;
-            font-weight: 560;
-            color: #20232a;
-            margin: 0 20px;
-          }
-          .count-down {
-            display: inline-block;
-            width: 36px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            color: #fff;
-            background: rgba(247, 158, 15, 1);
-            box-shadow: 0px 1px 3px 0px rgba(101, 70, 20, 0.2);
-            border-radius: 2px;
-            margin-right: 8px;
-          }
         }
         .pserson-info {
           display: flex;
           align-items: center;
-          margin-top: 20px;
           justify-content: inherit;
           padding-left: 30px;
           .exam-person {
@@ -547,11 +588,13 @@ export default {
           }
         }
         .exam-desc {
-          display: block;
-          padding: 0 20px 6px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin: 24px;
+          border-bottom: none;
           .exam-name,
           .exam-answer {
-            margin: 20px 0 10px;
             text-align: center;
             font-size: 16px;
             font-weight: 600;
@@ -574,7 +617,9 @@ export default {
                   border: 1px solid #999;
                 }
                 &.sign {
+                  // border: 1px solid #e61111;
                   border: 1px solid #e61111;
+                  background: #e61111;
                 }
                 &.finish {
                   border: 1px solid #4573d0;
@@ -587,8 +632,8 @@ export default {
         .question-total {
           position: absolute;
           overflow-y: scroll;
-          top: 400px;
-          bottom: 68px;
+          top: 260px;
+          bottom: 80px;
           left: 20px;
           right: 0;
           padding-right: 20px;
@@ -602,7 +647,7 @@ export default {
             .question-wrap {
               display: flex;
               flex-wrap: wrap;
-              // justify-content: space-around;
+              padding: 2px;
               > .item {
                 display: inline-block;
                 width: 34px;
@@ -612,18 +657,22 @@ export default {
                 background: rgba(255, 255, 255, 1);
                 border-radius: 2px;
                 border: 1px solid rgba(217, 217, 217, 1);
-                margin: 0 12px 10px 0;
+                margin-left: -1px;
+                margin-top: -1px;
                 cursor: pointer;
                 &:hover {
                   background: #ebebeb;
                 }
                 &.current {
                   color: #4573d0;
-                  border: 1px solid #4573d0;
+                  font-weight: bold;
+                  // border: 1px solid #4573d0;
                 }
                 &.sign {
-                  color: #e61111;
-                  border: 1px solid #e61111;
+                  // color: #e61111;
+                  // border: 1px solid #e61111;
+                  color: #fff;
+                  background: #e61111;
                 }
                 &.finish {
                   color: #fff;
@@ -655,10 +704,45 @@ export default {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          .sign-question {
-            color: #7b7b7b;
-            &.marked {
-              color: #e61111;
+          .time-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .time-prompt {
+              font-size: 16px;
+              color: #7b7b7b;
+              margin: 0 10px;
+            }
+            .count-down {
+              display: inline-block;
+              height: 30px;
+              line-height: 30px;
+              font-size: 16px;
+              color: #FA8000;
+              font-weight: bold;
+              // background: rgba(247, 158, 15, 1);
+              // box-shadow: 0px 1px 3px 0px rgba(101, 70, 20, 0.2);
+              // border-radius: 2px;
+              // margin-right: 8px;
+            }
+          }
+          .set-font-panel{
+            display: inline-block;
+            margin-left: 20px;
+            >>>.el-input-group__prepend,
+            >>>.el-input-group__append{
+              padding: 0 16px;
+              cursor: pointer;
+              color: #7B7B7B;
+              font-size: 16px;
+              outline: none;
+              &:hover{
+                background: #F9F9F9;
+              }
+            }
+            >>>.el-input__inner{
+              width: 60px;
+              text-align: center;
             }
           }
         }
@@ -718,14 +802,14 @@ export default {
               background-size: 100%;
               color: #e61111;
             }
-            &.sign:hover{
-              background: rgba(221,221,221, 0.2);
+            &.sign:hover {
+              background: rgba(221, 221, 221, 0.2);
             }
-            &.marked{
+            &.marked {
               color: #e61111;
               border: 1px solid #e61111;
-              &:hover{
-                background: rgba(230,17,17, 0.1);
+              &:hover {
+                background: rgba(230, 17, 17, 0.1);
               }
             }
           }

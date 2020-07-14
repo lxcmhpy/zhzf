@@ -164,7 +164,11 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span>
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">
+                    <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
+                    <template v-if="scope.row.docProcessStatus=='审批中'">审批中</template>
+                    <template v-if="scope.row.docProcessStatus==''|| scope.row.docProcessStatus=='已完成'">已完成</template>
+                  </span>
                   <span v-if="scope.row.status == '0'">未完成</span>
                   <span v-if="scope.row.status == ''"></span>
                 </template>
@@ -425,10 +429,10 @@
         }
         if (canGotoNext && approvalPass) {
           console.log('下一环节')
-          // this.com_goToNextLinkTu(
-          //   this.caseId,
-          //   this.caseLinkDataForm.caseLinktypeId
-          // );
+          this.com_goToNextLinkTu(
+            this.caseId,
+            this.caseLinkDataForm.caseLinktypeId
+          );
         } else if(!canGotoNext){
           this.getUnfinishDoc();
           this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
@@ -462,7 +466,12 @@
        console.log("添加",row);
         iLocalStroage.removeItem("currentDocDataId");
         if(row.name=='催告书'){
-          this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
+          // this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
+          let addMoreData ={
+            handelType:'isAddMore',
+            addNum: ++this.allRemindLetterCount //第几份催告书
+          }
+          this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId,addMoreData); 
         }else{
           this.$refs.chooseHandleTypeDiaRef.showModal(row, this.caseLinkDataForm.caseLinktypeId,this.isSaveLink);
         }

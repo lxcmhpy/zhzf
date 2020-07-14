@@ -69,7 +69,7 @@
       </div>
     </div>
     <!-- 绑定值 -->
-    <el-dialog title="绑定值" :visible.sync="dialogVisible" width="800px" :before-close="handleBeforeCloseSet">
+    <el-dialog title="绑定值" :visible.sync="dialogVisible" width="880px" :before-close="handleBeforeCloseSet">
       <div class="handlePart">
 
         <el-form :inline="true" :model="setForm" label-width="80px" ref="setFormRef" :rules="bindSearchRule">
@@ -78,7 +78,6 @@
               <span style="width:150px;height:40px;display: inline-block;;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
                 {{setForm.bindProperty}}
               </span>
-
             </el-form-item>
             <el-form-item label="所属类型" prop="bindType">
               <el-select v-model="pdfForm.bindType" @change="changeBindType(pdfForm.bindType)" disabled style="width:80px">

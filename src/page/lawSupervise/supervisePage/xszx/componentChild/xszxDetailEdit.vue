@@ -58,7 +58,7 @@
                                                     :value="item.name"
                                                     ></el-option>
                                                 </el-select>
-                                                <el-button slot="append" style="width:100px" icon="el-icon-search"></el-button>
+                                                <el-button slot="append" style="width:100px" icon="el-icon-search" @click="checkVehicle"></el-button>
                                             </el-input>
                                         </div>
                                         <div class="banner">
@@ -86,37 +86,37 @@
                                                 <table>
                                                 <tr>
                                                     <td class="table-bg">车牌号</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.VehicleNo}}</td>
                                                     <td class="table-bg">车牌颜色</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.PlateColorCode}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">车辆类型</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.VehicleTypeCode}}</td>
                                                     <td class="table-bg"></td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">车辆营运状态</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.OperatingStatus}}</td>
                                                     <td class="table-bg"></td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">道路运输证号</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.TransCertificateCode}}</td>
                                                     <td class="table-bg">发证机构</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.LicenseIssueOrgan}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">有效期起</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.CertificateBeginDate}}</td>
                                                     <td class="table-bg">有效期止</td>
-                                                    <td></td>
+                                                    <td>{{carInfo.CertificateExpireDate}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">经营范围</td>
-                                                    <td colspan="3"></td>
+                                                    <td colspan="3">{{carInfo.BusinessScopeCode_owner}}</td>
                                                 </tr>
                                                 </table>
                                             </div>
@@ -127,37 +127,37 @@
                                                 <table>
                                                 <tr>
                                                     <td class="table-bg">经营业户名称</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.OwnerName}}</td>
                                                     <td class="table-bg">企业组织机构代码</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.OrganizationCode}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">经营业户所在地行政区划代码</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.ProvinceCode}}</td>
                                                     <td class="table-bg">负责人姓名</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.PrincipalName}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">经营许可证号</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.LicenseCode}}</td>
                                                     <td class="table-bg">发证机关</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.LicenseIssueOrgan}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">经济类型</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.EconType}}</td>
                                                     <td class="table-bg">经营范围</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.BusinessScopeCode}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">有效期起</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.ValidBeginDate}}</td>
                                                     <td class="table-bg">有效期止</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.ExpireDate}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="table-bg">经营状态</td>
-                                                    <td></td>
+                                                    <td>{{ownerInfo.OperatingStatus}}</td>
                                                     <td class="table-bg"></td>
                                                     <td></td>
                                                 </tr>
@@ -761,6 +761,9 @@ export default {
             pHost: null,
             dialogZJCLVisible: false,
             // delVisible: false
+            carInfo:{},
+            vehicleInfo:{},
+            ownerInfo:{}
         }
     },
     methods:{
@@ -851,7 +854,7 @@ export default {
         check () {
             this.checkSearchForm.number = this.obj.vehicleNumber;
             this.checkSearchForm.color = this.obj.vehicleColor;
-            this.findAllDrawerById(BASIC_DATA_SYS.vehicleColor, 'colorList');
+            this.checkVehicle()
             this.checkVisible = true;
         },
         handleClick(tab, event) {
@@ -871,6 +874,79 @@ export default {
                     }
                 )
             })
+        },
+        checkVehicle(){
+            let json=[];
+            let colorData = this.colorList.filter(p=>p.name==this.checkSearchForm.color)
+            let param={
+                vehicleNo:this.checkSearchForm.number,
+                plateColor:colorData[0].notes
+            };
+            json.push(param);
+            let _this = this
+            this.$store.dispatch("vehicleCheck", JSON.stringify(json)).then(
+                res => {
+                    console.log('返回', res);
+                    if(res.data){
+                        let tableData=[];
+                        for(let index in res.data){
+                            let result = {};
+                            let jsonObj=res.data[index];
+                            for(let key in jsonObj){
+                                let keyval = jsonObj[key];
+                                key = key.replace(key[0],key[0].toUpperCase());
+                                result[key] = keyval;
+                            }
+                            _this.vehicleInfo = result
+                            _this.$store.dispatch("yyclCheck", {vehicleNo: result.VehicleNo,transCertificateCode: result.TransCertificateCode,vin:''}).then(
+                                res => {
+                                    console.log('返回', res)
+                                    if(res.data){
+                                        _this.carInfo = res.data[0]
+                                        _this.$store.dispatch("yehuCheck",{provinceCode:_this.vehicleInfo.ProvinceCode,
+                                            ownerName:_this.carInfo.OwnerName,
+                                            licenseCode:_this.carInfo.LicenseCode}).then(
+                                            res => {
+                                                console.log('返回', res)
+                                                if(res.data){
+                                                    _this.ownerInfo = res.data[0]
+                                                }else{
+                                                    _this.errorMsg('未查到企业信息', 'error')
+                                                    _this.ownerInfo = {}
+                                                }
+                                            },
+                                            err => {
+                                                console.log(err);
+                                            }
+                                        )
+                                    }else{
+                                        _this.errorMsg('未查到数据', 'error')
+                                        _this.carInfo = {}
+                                        _this.ownerInfo = {}
+                                    }
+                                },
+                                err => {
+                                    console.log(err);
+                                }
+                            );
+                        }
+                    }else{
+                        _this.errorMsg('未查到数据', 'error')
+                        _this.vehicleInfo = {}
+                        _this.carInfo = {}
+                        _this.ownerInfo = {}
+                    }
+                },
+                err => {
+                    console.log(err);
+                }
+            );
+        },
+        errorMsg(message,type){
+            this.$message({
+                type: type,
+                message:message
+            });
         },
         saveHp () {
             this.obj.vehicleNumber = this.checkSearchForm.number;
@@ -897,6 +973,7 @@ export default {
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
         this.getSiteById()
+        this.findAllDrawerById(BASIC_DATA_SYS.vehicleCheckColor, 'colorList');
     }
 }
 </script>

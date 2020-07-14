@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" id="audioEvidenceRecordBox">
+  <div class="print_box" id="audioEvidenceRecord_print">
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
       <div style="position:relation" v-for="(item,index) in docData.evidenceData" :key="index">
         <div class="print_info">
@@ -13,8 +13,8 @@
           <div class="doc_number"></div>
           <el-row :gutter="19" class="nianBox" width="90%">
             <div class="imgBox" ref="imgBoxRef2">
-              <img :src="item.pic1" alt width="90%" :height="imgHeightArr[index][0]" />
-              <div class="imgBoxBtn">
+              <img :src="item.pic1" alt width="100%" :height="imgHeightArr[index][0]" />
+              <div class="imgBoxBtn" style="">
                 <el-button size="mini" @click="chooseImg(index,1,item.picSrc1)">选择照片</el-button>
                 <el-button size="mini" @click="deleteImg(index,1)">删除</el-button>
               </div>
@@ -26,10 +26,13 @@
                 <p class="p_begin">
                   证明事项：
                   <span>
-                    <el-form-item :prop="'evidenceData.' + index + '.pOpinion'" style="width:75%">
+                    <el-form-item
+                      :prop="'evidenceData.' + index + '.certification'"
+                      style="width:75%"
+                    >
                       <el-input
                         type="textarea"
-                        v-model="item.pOpinion"
+                        v-model="item.certification"
                         :autosize="{ minRows: 1, maxRows: 3}"
                         maxlength="50"
                       ></el-input>
@@ -93,23 +96,49 @@
             </tr>
             <tr>
               <td align="left" colspan="2">
-                <span>
+                <p class="p_begin">
                   证据类型：
-                  <el-checkbox>原物</el-checkbox>
-                  <el-checkbox>复制件</el-checkbox>
-                  <el-checkbox>其他</el-checkbox>
-                </span>
+                  <span>
+                    <el-form-item
+                      prop="eviType"
+                      :rules="fieldRules('eviType',propertyFeatures['eviType'])"
+                    >
+                      <el-checkbox-group
+                        :max="1"
+                        v-model="item.eviType"
+                        :disabled="fieldDisabled(propertyFeatures['eviType'])"
+                      >
+                        <el-checkbox label="1">原物</el-checkbox>
+                        <el-checkbox label="2">复制件</el-checkbox>
+                        <el-checkbox label="3">其他</el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </span>
+                </p>
               </td>
             </tr>
             <tr>
               <td align="left" colspan="2">
-                <span>
+                <p class="p_begin">
                   证据存储介质：
-                  <el-checkbox>U盘</el-checkbox>
-                  <el-checkbox>光盘</el-checkbox>
-                  <el-checkbox>移动硬盘</el-checkbox>
-                  <el-checkbox>其他</el-checkbox>
-                </span>
+                  <span>
+                    <el-form-item
+                      prop="eviMedium"
+                      :rules="fieldRules('eviMedium',propertyFeatures['eviMedium'])"
+                    >
+                      <el-checkbox-group
+                        :max="1"
+                        v-model="item.eviMedium"
+                        :disabled="fieldDisabled(propertyFeatures['eviMedium'])"
+                      >
+                        <el-checkbox label="4">U盘</el-checkbox>
+                        <el-checkbox label="5">光盘</el-checkbox>
+                        <el-checkbox label="6">移动硬盘</el-checkbox>
+                        <el-checkbox label="7">其他</el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </span>
+                </p>
               </td>
             </tr>
             <tr>
@@ -158,7 +187,7 @@
 
     <!-- 悬浮按钮 -->
     <casePageFloatBtns
-      :pageDomId="'reportRecordDoc_print'"
+      :pageDomId="'audioEvidenceRecord_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
       @backHuanjie="submitData"
@@ -195,16 +224,16 @@ export default {
         evidenceData: [
           {
             pic1: "",
-            pic2: "",
+            certification: "",
+            eviType: [],
+            eviMedium: [],
+            pOpinion: "",
             picSrc1: "",
-            picSrc2: "",
             picBase64_1: "",
-            picBase64_2: "",
             pTime: "",
             pPla: "",
             pPeo: "",
-            note1: "",
-            note2: "",
+            pOpinion: "",
             picList: ""
           }
         ]
@@ -214,9 +243,9 @@ export default {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
         caseDoctypeId: this.$route.params.docId, //文书类型ID
-        //表单数据
         docData: "",
-        status: ""
+        status: "", //提交状态
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         sh: [{ required: true, message: "请输入示意图简述", trigger: "blur" }],
@@ -224,7 +253,7 @@ export default {
       },
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
-        pageDomId: "hearingRecordDoc_print"
+        pageDomId: "audioEvidenceRecord_print"
       },
       propertyFeatures: "",
       chooseImgSrc: "",
@@ -259,24 +288,19 @@ export default {
     //保存文书信息
     saveData(handleType) {
       let picTuresIndex = 0;
-
       let canSubmit = true;
       if (handleType == 1) {
         this.docData.evidenceData.forEach((item, index) => {
           if (!item.picBase64_1) {
-            this.$message("每页的第一张图片必须选择！");
+            this.$message("必须选择图片！");
             canSubmit = false;
           }
         });
       }
 
       this.docData.evidenceData.forEach((item, index) => {
-        let picListArr = [
-          { "pictures-1": item.picBase64_1 },
-          { "pictures-2": item.picBase64_2 }
-        ];
+        let picListArr = [{ "pictures-1": item.picBase64_1 }];
         item.picList = JSON.stringify(picListArr);
-        picListArr.push(keyValue2);
       });
       if (canSubmit) {
         this.com_addDocData(handleType, "docForm");
@@ -304,7 +328,6 @@ export default {
       let selectAllPicPath = [];
       this.docData.evidenceData.forEach(item => {
         selectAllPicPath.push(item.picSrc1);
-        selectAllPicPath.push(item.picSrc2);
       });
       let data = {
         pageType: "evidencePastePage",
@@ -330,9 +353,11 @@ export default {
       this.getBase64(selpicData);
     },
     getBase64(selpicData) {
+      debugger
       let storageId = selpicData.picData.evPath;
       queryImgBase64Api(storageId)
         .then(res => {
+          debugger
           console.log("获取base64", res);
           let picBase64Key = "picBase64_" + selpicData.picIndex;
           this.docData.evidenceData[selpicData.pastePage][picBase64Key] =
@@ -362,16 +387,15 @@ export default {
     addPage() {
       let data = {
         pic1: "",
-        pic2: "",
         picSrc1: "",
-        picSrc2: "",
         picBase64_1: "",
-        picBase64_2: "",
         pTime: this.docData.evidenceData[0].pTime,
         pPla: this.docData.evidenceData[0].pPla,
         pPeo: this.docData.evidenceData[0].pPeo,
-        note1: "",
-        note2: "",
+        certification: "",
+        eviType: this.docData.evidenceData[0].eviType,
+        eviMedium: this.docData.evidenceData[0].eviMedium,
+        pOpinion: "",
         picList: ""
       };
       this.docData.evidenceData.push(data);
@@ -410,7 +434,6 @@ export default {
           this.scalingArr.push([1, 1]);
         }
         this.changeImgWidHei(item.picSrc1, index, 1);
-        this.changeImgWidHei(item.picSrc2, index, 2);
       });
       this.imgWidthArr[1][1] = 400;
     },
@@ -469,7 +492,7 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-#audioEvidenceRecordBox {
+#audioEvidenceRecord_print {
   .print_info {
     position: relative;
     margin-bottom: 20px;

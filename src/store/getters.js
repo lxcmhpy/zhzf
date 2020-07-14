@@ -23,6 +23,7 @@ const getters = {
   approvalState:state => state.caseHandle.approvalState,
   showQZBtn:state => state.caseHandle.showQZBtn,
   province: state => state.caseHandle.province,
+  docPdfStorageId:state => state.caseHandle.docPdfStorageId,
 
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,
@@ -37,5 +38,6 @@ const getters = {
   // 系统管理
   btnlawId:state => state.system.btnlawId, //当前法规id
   systemTitle:state => state.system.systemTitle, //系统标题
+
 };
 export default getters;

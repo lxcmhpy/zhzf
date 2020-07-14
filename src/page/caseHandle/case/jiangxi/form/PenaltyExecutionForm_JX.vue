@@ -359,7 +359,11 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span>
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">
+                    <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
+                    <template v-if="scope.row.docProcessStatus=='审批中'">审批中</template>
+                    <template v-if="scope.row.docProcessStatus==''|| scope.row.docProcessStatus=='已完成'">已完成</template>
+                  </span>
                   <span v-if="scope.row.status == '0'">未完成</span>
                   <span v-if="scope.row.status == ''"></span>
                 </template>
@@ -461,9 +465,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 // import checkDocFinish from "./PenaltyExecutionFormDocFinish";
 import checkDocFinish from "@/page/caseHandle/components/checkDocFinish2.vue";
-import addDialog from "./PenaltyExecutionFormDialog";
+import addDialog from "@/page/caseHandle/case/form/PenaltyExecutionFormDialog";
 import resetDocDia from "@/page/caseHandle/components/resetDocDia";
-import payDetail from "./payDetail";
+import payDetail from "@/page/caseHandle/case/form/payDetail";
 import { uploadEvApi, findFileByIdApi } from "@/api/upload";
 import { findIsOrderApi, queryFlowBycaseIdApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
