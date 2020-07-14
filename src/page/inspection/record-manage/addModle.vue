@@ -385,6 +385,7 @@ export default {
         releventRecords: '',
         documentFill: '',
         documentNames: '',
+        documentNameIds: '',
         vehicleShipIdFlag: false,//车辆字段
         partyFlag: false,//当事人字段
       },
@@ -448,6 +449,7 @@ export default {
       dialogTableVisible: false,
       fileList: [],
       multipleSelection: [],
+      multipleSelectionId: [],
       selectFieldList: []
     }
   },
@@ -703,7 +705,8 @@ export default {
                 data.templateAdminIdList = '';
                 data.templateUserId = data.scopeOfUse == '指定人员使用' ? data.templateUserId : '';
                 // 文书
-                data.documentNames = this.multipleSelection.join(',')
+                data.documentNameIds = this.multipleSelection.join(',')
+                data.documentNames = this.multipleSelectionId.join(',')
                 console.log('data.documentNames', data.documentNames)
                 debugger
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
@@ -970,7 +973,8 @@ export default {
       this.$refs[formName].resetFields();
       this.formData.title = ''
       this.titileText = '';
-      this.multipleSelection = []
+      this.multipleSelection = [];
+      this.multipleSelectionId = [];
       this.formData.templateFieldList = [
         {
           // value: ,
@@ -1007,10 +1011,12 @@ export default {
       }
     },
     handleSelectionChange(val) {
-      this.multipleSelection = []
+      this.multipleSelection = [];
+      this.multipleSelectionId = [];
       val.forEach(element => {
         console.log(element)
-        this.multipleSelection.push(element.id)
+        this.multipleSelectionId.push(element.id)
+        this.multipleSelection.push(element.docName)
       });
       console.log('this.multipleSelection', this.multipleSelection)
     },
