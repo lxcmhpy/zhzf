@@ -90,12 +90,12 @@
           </el-date-picker>
           </el-form-item> -->
           <el-form-item prop="getEvidenceTime" class="dataTimeReplaceBox" style="width:215px" :rules="fieldRules('getEvidenceTime',propertyFeatures['getEvidenceTime'])"> 
-             <el-date-picker v-model="docData.getEvidenceTime" type="datetime"  format="yyyy-MM-dd HH:mm" value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['getEvidenceTime'])"></el-date-picker>
+             <el-date-picker v-model="docData.getEvidenceTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTime'])"></el-date-picker>
             <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.getEvidenceTime"></el-input>
           </el-form-item>
           <span>至</span>
           <el-form-item prop="getEvidenceTimeEnd" class="dataTimeReplaceBox" style="width:215px" :rules="fieldRules('getEvidenceTimeEnd',propertyFeatures['getEvidenceTimeEnd'])">
-             <el-date-picker v-model="docData.getEvidenceTimeEnd" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['getEvidenceTimeEnd'])"></el-date-picker>
+             <el-date-picker v-model="docData.getEvidenceTimeEnd" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTimeEnd'])"></el-date-picker>
             <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.getEvidenceTimeEnd"></el-input>
 
           </el-form-item>
@@ -296,6 +296,8 @@ export default {
     };
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
+      console.log(value)
+
       console.log(Date.parse(value),Date.parse(this.docData.getEvidenceTimeEnd))
       if(Date.parse(this.docData.getEvidenceTime)>Date.parse(this.docData.getEvidenceTimeEnd)){
         this.$message({

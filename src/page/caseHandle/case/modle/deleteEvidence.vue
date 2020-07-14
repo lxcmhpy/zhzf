@@ -13,7 +13,7 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p>
           当事人（个人姓名或单位名称）
-          <span class="width_file">
+          <span >
             <el-form-item prop="party">
               <el-input
                 type="textarea"

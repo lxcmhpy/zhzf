@@ -310,6 +310,21 @@
     mixins: [mixinGetCaseApiList],
     computed: {...mapGetters(['caseId'])},
     data() {
+      //验证开始时间
+    var validateStartTime = (rule, value, callback) => {
+      console.log(Date.parse(value),Date.parse(this.docData.hearingEndTime))
+      if(Date.parse(this.docData.hearingStartTime)>Date.parse(this.docData.hearingEndTime)){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于结束时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于结束时间"));
+      }
+      callback();
+    };
       return {
         validatePhone:validatePhone,
         validateIDNumber :validateIDNumber,
@@ -373,9 +388,11 @@
           ],
           hearingStartTime: [
             {required: true, message: '请输入听证开始时间', trigger: 'blur'},
+            { validator:validateStartTime , trigger: "blur" }
           ],
           hearingEndTime: [
             {required: true, message: '请输入听证结束时间', trigger: 'blur'},
+            { validator:validateStartTime , trigger: "blur" }
           ],
           persidingHearer: [
             {required: true, message: '请输入主持人姓名', trigger: 'blur'},
