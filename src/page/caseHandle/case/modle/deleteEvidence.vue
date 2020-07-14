@@ -116,7 +116,6 @@ export default {
         saveDate: '',
         caseNumberCopy: '',
         relieveDate: '',
-
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -157,6 +156,7 @@ export default {
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
           caseId: this.caseId,
           docId: this.$route.params.docId

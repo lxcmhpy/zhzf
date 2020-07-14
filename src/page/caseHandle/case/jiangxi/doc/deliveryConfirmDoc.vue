@@ -110,9 +110,9 @@
                   :rules="fieldRules('withPartyRelation',propertyFeatures['withPartyRelation'])"
                 >
                   <el-checkbox-group :max="1" v-model="docData.withPartyRelation">
-                    <el-checkbox label="本人"></el-checkbox>
-                    <el-checkbox label="代理人"></el-checkbox>
-                    <el-checkbox label="其他代收人"></el-checkbox>
+                    <el-checkbox label="1">本人</el-checkbox>
+                    <el-checkbox label="2">代理人</el-checkbox>
+                    <el-checkbox label="3">其他代收人</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
               </td>
@@ -167,18 +167,18 @@
                 <p>
                   <el-form-item label="是否接受电子送达：">
                     <el-checkbox-group :max="1" v-model="docData.isAcceptElDel">
-                      <el-checkbox label="是"></el-checkbox>
-                      <el-checkbox label="否"></el-checkbox>
+                      <el-checkbox label="4">是</el-checkbox>
+                      <el-checkbox label="5">否</el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
                 </p>
                 <el-form-item>
                   <el-checkbox-group v-model="docData.eleDeliveryType">
                     <p>
-                      <el-checkbox label="手机（电子送达必选）："></el-checkbox>
+                      <el-checkbox label="6">手机（电子送达必选）：</el-checkbox>
                     </p>
                     <p>
-                      <el-checkbox label="移动微信："></el-checkbox>
+                      <el-checkbox label="7">移动微信：</el-checkbox>
                       <el-form-item
                         prop="weChat"
                         :rules="fieldRules('weChat',propertyFeatures['weChat'])"
@@ -194,7 +194,7 @@
                           :disabled="fieldDisabled(propertyFeatures['weChat'])"
                         ></el-input>
                       </el-form-item>
-                      <el-checkbox label="电子邮箱："></el-checkbox>
+                      <el-checkbox label="8">电子邮箱：</el-checkbox>
                       <el-form-item
                         prop="email"
                         :rules="fieldRules('email',propertyFeatures['email'])"
@@ -212,7 +212,7 @@
                       </el-form-item>
                     </p>
                     <p>
-                      <el-checkbox label="传真："></el-checkbox>
+                      <el-checkbox label="9">传真：</el-checkbox>
                       <el-form-item prop="fax" :rules="fieldRules('fax',propertyFeatures['fax'])">
                         <el-input
                           type="textarea"
@@ -225,7 +225,7 @@
                           :disabled="fieldDisabled(propertyFeatures['fax'])"
                         ></el-input>
                       </el-form-item>
-                      <el-checkbox label="其他："></el-checkbox>
+                      <el-checkbox label="10">其他：</el-checkbox>
                       <el-form-item
                         prop="other"
                         :rules="fieldRules('other',propertyFeatures['other'])"
@@ -253,9 +253,9 @@
               </td>
               <td colspan="7" class="color_DBE4EF">
                 <el-form-item>
-                  <el-checkbox-group v-model="docData.deliveryWay">
-                    <el-checkbox label="电子送达"></el-checkbox>
-                    <el-checkbox label="线下送达（可多选） "></el-checkbox>
+                  <el-checkbox-group v-model="docData.deliveryWay" @change="test">
+                    <el-checkbox label="11">电子送达</el-checkbox>
+                    <el-checkbox label="12">线下送达（可多选）</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
               </td>
@@ -602,7 +602,13 @@ export default {
       if (this.docData.deliveryWay == '') {
         this.docData.deliveryWay =[];
       }
+      console.log('this.docData.deliveryWay',this.docData.deliveryWay)
     },
+    test(val){
+      alert(val)
+      console.log('aaa',val)
+      // alert(this.docData.deliveryWay)
+    }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
