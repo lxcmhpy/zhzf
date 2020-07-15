@@ -78,7 +78,7 @@ export default  [
             path: '/examineDoingDetail/:status/:offSiteManageId',
             name: 'law_supervise_examineDoingDetail',
             meta: {
-                title: '待审核'
+                title: '线索审核'
             },
             component: () => import("@/page/lawSupervise/supervisePage/xszx/examineDoingDetail.vue")
         },

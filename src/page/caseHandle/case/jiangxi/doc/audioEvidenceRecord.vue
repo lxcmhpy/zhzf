@@ -6,7 +6,7 @@
           <el-button
             class="deletePageBtn"
             type="primary"
-            v-show="index!=0"
+            v-show="docData.evidenceData.length>1"
             @click="deletePage(index)"
           >删除本页</el-button>
           <div class="doc_topic">视听资料（电子数据）证据记录单</div>
@@ -184,7 +184,7 @@
         <el-button type="primary" @click="addPage">添加一页</el-button>
       </div>
     </el-form>
-
+    
     <!-- 悬浮按钮 -->
     <casePageFloatBtns
       :pageDomId="'audioEvidenceRecord_print'"
@@ -203,7 +203,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import iLocalStroage from "@/common/js/localStroage";
 import chooseOrUploadEvidence from "@/page/caseHandle/case/form/chooseOrUploadEvidence.vue";
 import {
-  queryImgBase64Api,
+  queryResizeImageApi,
   findCaseAllBindPropertyApi
 } from "@/api/caseHandle";
 export default {
@@ -355,7 +355,7 @@ export default {
     getBase64(selpicData) {
       debugger
       let storageId = selpicData.picData.evPath;
-      queryImgBase64Api(storageId)
+      queryResizeImageApi(storageId) 
         .then(res => {
           debugger
           console.log("获取base64", res);

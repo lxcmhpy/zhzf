@@ -80,9 +80,6 @@ export default {
     preview,
     addModle
   },
-  computed: {
-    ...mapGetters(["orderId", "addOrEiditFlag"])
-  },
   data() {
     return {
       isHome: true,
@@ -136,10 +133,8 @@ export default {
           addOrEiditFlag: 'add'
         }
       });
-      // this.$store.commit("orderId", 11);
-      // console.log(this.addOrEiditFlag)
-      // this.$store.dispatch("addOrEiditFlag", 'edit');
-      // debugger
+
+      // this.$store.commit("set_inspection_orderId", item.id);
 
     },
     // 修改模板

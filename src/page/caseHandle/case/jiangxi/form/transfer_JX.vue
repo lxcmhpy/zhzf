@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="133px">
       <div class="content_box">
         <div class="content">
           <div class="content_title">移交移送</div>

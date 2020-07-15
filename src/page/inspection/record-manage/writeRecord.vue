@@ -79,6 +79,7 @@ import Vue from 'vue'
 import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
   findMyRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
+import { mapGetters } from "vuex";
 export default {
   props: ['psMsg'],
   watch: {
@@ -157,6 +158,9 @@ export default {
         ]
       }
     }
+  },
+  computed: {
+    ...mapGetters(["inspectionOrderId"])
   },
   components: {
     writeRecordHome: writeRecordHome,
@@ -396,6 +400,9 @@ export default {
               this.$router.push({
                 name: 'inspection_recordList',
               });
+            } else {
+              this.$store.commit("set_inspection_orderId", res.data);
+
             }
 
           } else {
@@ -474,6 +481,8 @@ export default {
                 });
               } else {
                 this.findRecordDataByld()
+                // this.$store.commit("set_inspection_orderId", res.data.id)
+
               }
 
             } else {
@@ -1142,13 +1151,15 @@ export default {
         this.findDataByld()
       } else
         if (this.$route.params.addOrEiditFlag == 'edit') {
-          this.recordId = this.$route.params.id;
+          this.recordId = this.inspectionOrderId;
+          this.$store.commit("set_inspection_orderId", this.$route.params.id);
           this.findRecordDataByld()
         } else if (this.$route.params.addOrEiditFlag == 'view') {
-          this.recordId = this.$route.params.id;
+          this.recordId = this.inspectionOrderId;
+          this.$store.commit("set_inspection_orderId", this.$route.params.id);
           this.viewRecord()
         } else if (this.$route.params.addOrEiditFlag == 'temporary') {
-          this.recordId = this.$route.params.id;
+          this.recordId = this.inspectionOrderId;
           this.findRecordDataByld()
         }
     }

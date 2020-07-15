@@ -10,20 +10,35 @@
             <el-form-item label="所属年份" prop="batchYear">
               <el-input placeholder="请输入所属年份" v-model="batchForm.batchYear" :readonly="true"></el-input>
             </el-form-item>
-            <el-form-item label="案件基数(省)" prop="khjs">
-              <el-input placeholder="请输入案件基数" v-model="batchForm.khjs" :readonly="isView"></el-input>
+            <el-form-item label="案件基数" prop="ajBsjs">
+              <el-input placeholder="请输入案件基数" v-model="batchForm.ajBsjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="抽取基数(省)" prop="cqjs">
-              <el-input placeholder="请输入抽取基数" v-model="batchForm.cqjs" :readonly="isView"></el-input>
+            <el-form-item label="结案时间" prop="ajJaDate">
+              <el-date-picker v-model="ajJaDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :readonly="isView"></el-date-picker>
             </el-form-item>
-            <el-form-item label="人员基数(省)" prop="personNum">
-              <el-input placeholder="请输入人员基数" v-model="batchForm.personNum" :readonly="isView"></el-input>
+            <el-form-item label="案卷抽取基数" prop="ajCqjs">
+              <el-input placeholder="请输入抽取基数" v-model="batchForm.ajCqjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员抽取数(省)" prop="personCq">
-              <el-input placeholder="请输入人员抽取数" v-model="batchForm.personCq" :readonly="isView"></el-input>
+            <el-form-item label="行政处罚" prop="ajCfBsjs">
+              <el-input  v-model="batchForm.ajCfBsjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="人员考试数(省)" prop="personKs">
-              <el-input placeholder="请输入人员考试数" v-model="batchForm.personKs" :readonly="isView"></el-input>
+             <el-form-item label="抽取" prop="ajCfCqjs">
+              <el-input v-model="batchForm.ajCfCqjs" :readonly="isView"></el-input>
+            </el-form-item>
+            <el-form-item label="行政强制" prop="ajQzBsjs">
+              <el-input  v-model="batchForm.ajQzBsjs" :readonly="isView"></el-input>
+            </el-form-item>
+             <el-form-item label="抽取" prop="ajQzCqjs">
+              <el-input v-model="batchForm.ajQzCqjs" :readonly="isView"></el-input>
+            </el-form-item>
+            <el-form-item label="执法人员基数" prop="ryBsjs">
+              <el-input v-model="batchForm.ryBsjs" :readonly="isView"></el-input>
+            </el-form-item>
+            <el-form-item label="各级执法机构领导班子成员比例不低于" prop="ryZjProtion">
+              <el-input v-model="batchForm.ryZjProtion" :readonly="isView"></el-input>
+            </el-form-item>
+            <el-form-item label="抽取考试人员基数" prop="ryCqjs">
+              <el-input v-model="batchForm.ryCqjs" :readonly="isView"></el-input>
             </el-form-item>
           </el-form>
           <div :hidden="isView">
@@ -171,36 +186,47 @@ export default {
       activeName: "案卷评查",
       isView: false,
       batchForm: {
-        batchName: "",
-        batchYear: "",
-        khjs: "",
-        cqjs: "",
-        personNum: "",
-        personCq: "",
-        personKs: ""
       },
       rules: {
         batchName: [
           { required: true, message: "请输入检查名称", trigger: "blur" }
         ],
-        khjs: [
-          { required: true, message: "请输入案件基数", trigger: "blur" },
+        ajBsjs: [
+          { required: true, message: "请输入案卷基数", trigger: "blur" },
           { validator:numType , trigger: "blur"}
         ],
-        cqjs: [
-          { required: true, message: "请输入案件/抽取基数", trigger: "blur" },
+        ajCqjs: [
+          { required: true, message: "请输入案卷抽取基数", trigger: "blur" },
           { validator:numType , trigger: "blur"}
         ],
-        personNum: [
-          { required: true, message: "请输入人员基数", trigger: "blur" },
+
+        ajCfBsjs: [
+          { required: true, message: "请输入行政处罚案卷基数", trigger: "blur" },
           { validator:numType , trigger: "blur"}
         ],
-        personCq: [
-          { required: true, message: "请输入人员抽取数", trigger: "blur" },
+        ajCfCqjs: [
+          { required: true, message: "请输入行政处罚案卷抽取基数", trigger: "blur" },
           { validator:numType , trigger: "blur"}
         ],
-        personKs: [
-          { required: true, message: "请输入人员考试数", trigger: "blur" },
+        ajQzBsjs: [
+          { required: true, message: "请输入行政强制案卷基数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
+        ],
+        ajQzCqjs: [
+          { required: true, message: "请输入行政强制案卷抽取基数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
+        ],
+
+        ryBsjs: [
+          { required: true, message: "请输入执法人员基数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
+        ],
+        ryCqjs: [
+          { required: true, message: "请输入执法人员抽取基数", trigger: "blur" },
+          { validator:numType , trigger: "blur"}
+        ],
+        ryZjProtion: [
+          { required: true, message: "请输入领导班子成员比例", trigger: "blur" },
           { validator:numType , trigger: "blur"}
         ]
       },
