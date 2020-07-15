@@ -2,7 +2,7 @@
   <div class="print_box" id="btnB">
     <div class="print_info" id="forceCorrect-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData" :class="isPdf">
-        <div class="doc_topic">责令改正违法行为通知书</div>{{formData.party}}
+        <div class="doc_topic">责令改正违法行为通知书</div>
         <!-- <div class="doc_number">案号：{{formData.caseNumber}}</div> -->
         <p class="partyBox">
           当事人（个人姓名或单位名称）
@@ -244,11 +244,7 @@ export default {
       //参数  提交类型 、
       // this.printContent();
       this.formData.status = '未完成'
-      // this.formData.updateTime = this.formData.updateTime = new Date()
-      // this.docData.orderId = this.$route.params.id
-      // this.docData.templateId = this.$route.params.id
-      console.log(this.formData)
-      console.log(this.docData)
+
       // debugger
       this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
       // this.docData.docContent = JSON.stringify(this.formData)
@@ -264,8 +260,6 @@ export default {
               message: '操作成功'
             });
             // this.$emit("getAddModle", 'sucess');
-            // this.resetForm('formData')
-            // this.newModleTable = false;
             // 保存到pdf服务器
             debugger
             // res.data.storagePath='http://124.192.215.10:9332/14,209459bcf86c'
@@ -277,11 +271,10 @@ export default {
             if (handleType == 1) {
               this.storagePath = res.data.storagePath
               // 隐藏保存、签章按钮，显示撤销、删除按钮
-              // this.$set(this.formOrDocData.showBtn, 5, false)
-              // this.$set(this.formOrDocData.showBtn, 1, false)
-              // this.$set(this.formOrDocData.showBtn, 2, true)
-              // this.$set(this.formOrDocData.showBtn, 4, true)
-
+              this.$set(this.formOrDocData.showBtn, 5, false)
+              this.$set(this.formOrDocData.showBtn, 1, false)
+              this.$set(this.formOrDocData.showBtn, 2, true)
+              this.$set(this.formOrDocData.showBtn, 4, true)
             }
           } else {
             this.$message.error(res.msg);

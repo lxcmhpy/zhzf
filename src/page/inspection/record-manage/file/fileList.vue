@@ -14,9 +14,9 @@
           <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
           <el-table-column prop="docName" label="记录文书" align="center"></el-table-column>
           <el-table-column prop="updateTime" label="保存日期" align="center">
-             <template slot-scope="scope">
-              {{scope.row.updateTime.substring(0,5)}}
-             </template>
+            <template slot-scope="scope">
+              {{scope.row.updateTime.substring(0,10)}}
+            </template>
           </el-table-column>
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
@@ -101,17 +101,23 @@ export default {
     // 选择模板
     editRecord(item) {
       // 写文书
-      this.$store.commit("set_inspection_fileId", item.id)
-
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: item.path,
-        params: { id: item.id, addOrEiditFlag: 'add' }
-        // query: { id: item.id, addOrEiditFlag: 'add' }
-      });
-      // 写记录
-      this.$emit('changeModleId', item);
-
+      if (item.pdfStorageId) {
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: "inspection_myPDF",
+          params: { id: item.id, storagePath: item.pdfStorageId }
+        });
+      } else {
+        this.$store.commit("set_inspection_fileId", item.id)
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: item.path,
+          params: { id: item.id, addOrEiditFlag: 'add' }
+          // query: { id: item.id, addOrEiditFlag: 'add' }
+        });
+        // 写表单
+        this.$emit('changeModleId', item);
+      }
     },
     // 查看模板
     viewRecord(item) {
@@ -317,7 +323,7 @@ export default {
       this.$router.push({
         name: 'inspection_writeRecordInfo',
         params: {
-          id: this.$route.params.id,
+          id: this.inspectionOrderId,
           addOrEiditFlag: 'view'
         }
         // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }

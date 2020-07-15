@@ -4,7 +4,8 @@
   <div class="float-btns" style="top:105px;right:5px;">
     <!-- {{isEdit&&addOrEiditFlag=='add'||!formOrDocData.pageDomId}} -->
     <!-- {{fileEiditFlag}} -->
-    <li :style="!fileEiditFlag?' color: #fff;background-color: #909399;border-color: #909399;':''" v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc">
+    <li  @click="writeDoc()" :style="!fileEiditFlag?' color: #fff;background-color: #909399;border-color: #909399;':''" v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0">
+    <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc"> -->
       文书<br />填报
     </li>
     <li v-if="formOrDocData.showBtn[1]" @mouseenter="changeActive(2)" @mouseout="removeActive(2)" class='el-button el-button--primary' style="padding:10px 0">
@@ -70,29 +71,25 @@ export default {
     },
     // 文书列表
     writeDoc() {
-      //  if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
-      //   this.$message.error('无修改权限');
-      //   return
-      // }
+      // debugger
       // if (this.addOrEiditFlag == 'add' || !this.formOrDocData.pageDomId) {
       // } else {
-      console.log('点击', this.formOrDocData.pageDomId)
+      console.log('点击')
       if (this.fileEiditFlag) {
-        if (this.formOrDocData.pageDomId || this.$route.params.addOrEiditFlag != 'add') {
-          this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-          this.$router.push({
-            name: 'inspection_inspectionFiles',
-            params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
-            // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
-          });
-        } else {
-          this.$confirm('请先保存记录', "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => { })
-        }
+        // if (this.formOrDocData.pageDomId || this.$route.params.addOrEiditFlag != 'add') {
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: 'inspection_inspectionFiles',
+          params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+        });
+      } else {
+        this.$confirm('请先保存记录', "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => { })
       }
+      // }
       // }
 
     },

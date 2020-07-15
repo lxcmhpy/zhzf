@@ -237,7 +237,8 @@ export default {
     },
     // 修改
     editRecord(row) {
-      this.$store.commit("set_inspection_fileId", row.id)
+      this.$store.commit("set_inspection_orderId", row.id)
+      debugger
       console.log(row)
       let addOrEiditFlag
       if (row.status == '暂存') {

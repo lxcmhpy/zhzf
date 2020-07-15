@@ -52,8 +52,8 @@
       <el-form ref="fileForm" :model="fileForm" label-width="80px" :rules="fileRules">
         <el-form-item prop="fileSaveType">
           <el-radio-group v-model="fileForm.fileSaveType">
-            <el-radio :value='1' label="完成记录表单，立即保存" style="width:100%;margin-bottom:20px"></el-radio>
-            <el-radio value='2' label="完成记录表单，继续进行文书填报" style="width:100%"></el-radio>
+            <el-radio :value='1' label="完成记录表单，立即保存" style="width:80%;margin-bottom:20px"></el-radio>
+            <el-radio value='2' label="完成记录表单，继续进行文书填报" style="width:80%"></el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -243,6 +243,8 @@ export default {
           console.log('huixian', res.data.pictureList, res.data.attachedList)
           _this.defautImgList = res.data.pictureList
           _this.defautFileList = res.data.attachedList
+          // 设置文件按钮是否可用
+          _this.fileEiditFlag = res.data.status == '保存' ? true : false
 
         },
         error => {
@@ -254,7 +256,7 @@ export default {
     },
     // 修改
     editRecord() {
-      console.log('this.formData',this.formData)
+      console.log('this.formData', this.formData)
       debugger
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
@@ -284,7 +286,7 @@ export default {
                 }, true);
               });
               this.addOrEiditFlag = 'add'
-              this.fileEiditFlag = true
+              // this.fileEiditFlag = true
             } else {
               this.$message.error('当前模板已修改或不存在，该记录不可修改');
             }
@@ -392,7 +394,7 @@ export default {
           // console.log(res)
           if (res.code == 200) {
             this.addOrEiditFlag = 'view'
-            this.fileEiditFlag = true
+            this.fileEiditFlag = res.data.status == '保存' ? true : false
             this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
             this.$message({
               type: "success",
@@ -414,6 +416,8 @@ export default {
               });
             } else {
               this.$store.commit("set_inspection_orderId", res.data);
+              this.fileEiditFlag = true
+              debugger
 
             }
 
