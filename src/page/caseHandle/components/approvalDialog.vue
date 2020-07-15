@@ -41,6 +41,7 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import iLocalStroage from "@/common/js/localStroage";
   import {mapGetters} from "vuex";
+  import {approvalPdfQzJxApi } from '@/api/caseHandle.js'
   export default {
     data() {
       return {
@@ -144,7 +145,7 @@
                 date: time,
                 number: step,
               }
-              this.$store.dispatch("approvalPdfQz", data).then(
+              approvalPdfQzJxApi(data).then(
                 res => {
                   console.log(res);
                   _this.$message({
@@ -152,15 +153,26 @@
                     message: "审批通过"
                   });
                   _this.$store.commit('setApprovalState', 'approvalOver')
-
                   _this.$emit("getNewData");
-                  
                   _this.visible = false;
-                },
-                err => {
-                  console.log(err);
-                }
-              );
+                }).catch(err=>{this.$message('审核失败！')});
+              // this.$store.dispatch("approvalPdfQz", data).then(
+              //   res => {
+              //     console.log(res);
+              //     _this.$message({
+              //       type: "success",
+              //       message: "审批通过"
+              //     });
+              //     _this.$store.commit('setApprovalState', 'approvalOver')
+
+              //     _this.$emit("getNewData");
+                  
+              //     _this.visible = false;
+              //   },
+              //   err => {
+              //     console.log(err);
+              //   }
+              // );
             }else{   //无签章功能
               _this.$message({
                     type: "success",

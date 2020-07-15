@@ -249,8 +249,8 @@
     function SaveWebFile() {
       var fileName = getParam(0).split("/");
       var fileId = fileName[fileName.length - 1];
-      var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/" + fileId;
-      // var url = "http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/" + fileId;
+      // var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/" + fileId;
+      var url = "http://172.16.170.50:9000/case/sys/file/uploadDocDzqz/" + fileId;
       PDFReader.SaveFile(3, url, "");
       alert("保存成功");
       WebNewRequest(fileId);
@@ -259,8 +259,8 @@
     function WebNewRequest(fileId) {
       $.ajax({
         type: "GET",
-        url: "http://124.192.215.4:8083/socket/socket1/" + fileId + "/1",
-        //  url: "http://172.16.170.96:8083/socket/socket1/" + fileId + "/1",
+        // url: "http://124.192.215.4:8083/socket/socket1/" + fileId + "/1",
+         url: "http://172.16.170.96:8083/socket/socket1/" + fileId + "/1",
         dataType: "json",
         data: {},
         success: function (data) {
