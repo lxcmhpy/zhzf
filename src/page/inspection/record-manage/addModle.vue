@@ -710,7 +710,7 @@ export default {
                 // data.templateUser
                 if (data.templateUser.substr(0, 1) == ',') { data.templateUser = data.templateUser.substr(1); }
                 console.log('data.documentNames', data.documentNames)
-                debugger
+                // debugger
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 data.templateFieldList = JSON.stringify(data.templateFieldList)
                 console.log('提交的字段', data)

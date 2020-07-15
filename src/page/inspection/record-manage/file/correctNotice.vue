@@ -2,7 +2,7 @@
   <div class="print_box" id="btnB">
     <div class="print_info" id="forceCorrect-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData" :class="isPdf">
-        <div class="doc_topic">责令改正违法行为通知书</div>
+        <div class="doc_topic">责令改正违法行为通知书</div>{{formData.party}}
         <!-- <div class="doc_number">案号：{{formData.caseNumber}}</div> -->
         <p class="partyBox">
           当事人（个人姓名或单位名称）
@@ -115,7 +115,7 @@ export default {
     xzjcDocFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["inspectionOrderId","inspectionFileId"]) },
+  computed: { ...mapGetters(["inspectionOrderId", "inspectionFileId"]) },
   data() {
     var validateBycorrectWay = (rule, value, callback) => {
       console.log('数值', this.formData.correctWay)
@@ -218,14 +218,16 @@ export default {
               this.docData = res.data
               if (this.docData.docContent) {
                 this.formData = JSON.parse(this.docData.docContent)
-              }
-              if (!this.formData.party) {
-                console.log('this.formData.party', this.formData.party)
-                console.log('this.docData.party', this.docData.party)
-                debugger
-                this.formData.party = this.docData.party
+                if (!this.formData.docContent.party) {
 
+                  debugger
+                  this.formData.party = this.docData.party || ''
+                  console.log('this.formData.party', this.formData.party)
+                  console.log('this.docData.party', this.docData.party)
+
+                }
               }
+
               console.log('this.formData', this.formData)
             } else {
               this.$message.error(res.msg);
@@ -248,7 +250,7 @@ export default {
       console.log(this.formData)
       console.log(this.docData)
       // debugger
-      this.$set(this.docData,'docContent',JSON.stringify(this.formData))
+      this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
       // this.docData.docContent = JSON.stringify(this.formData)
       console.log("参数", this.docData)
       // this.docData.createTime=''

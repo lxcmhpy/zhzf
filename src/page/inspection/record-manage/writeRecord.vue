@@ -44,7 +44,7 @@
         </el-button>
       </div>
       <!-- 悬浮按钮-拓展 -->
-      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :addOrEiditFlag='addOrEiditFlag'></floatBtns>
+      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :fileEiditFlag='fileEiditFlag'></floatBtns>
       <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
 
     </div>
@@ -99,6 +99,7 @@ export default {
     return {
       defaultRuleData: [],
       addOrEiditFlag: '',
+      fileEiditFlag: '',
       visiblePopover: false,
       upAndDown: false,
       isWrite: true,
@@ -283,6 +284,7 @@ export default {
                 }, true);
               });
               this.addOrEiditFlag = 'add'
+              this.fileEiditFlag = true
             } else {
               this.$message.error('当前模板已修改或不存在，该记录不可修改');
             }
@@ -390,6 +392,7 @@ export default {
           // console.log(res)
           if (res.code == 200) {
             this.addOrEiditFlag = 'view'
+            this.fileEiditFlag = true
             this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
             this.$message({
               type: "success",
@@ -517,6 +520,7 @@ export default {
         this.isCopyStyle = true;//变颜色
         // debugger
         this.addOrEiditFlag = 'add'
+        this.fileEiditFlag = false
         this.formData.id = ''
         this.formData.createTime = ''
         this.formData.updateTime = ''
@@ -1158,6 +1162,7 @@ export default {
   mounted() {
     console.log('id', this.$route.params.id)
     this.addOrEiditFlag = this.$route.params.addOrEiditFlag
+    this.fileEiditFlag = false
     if (this.$route.params.id) {
       if (this.$route.params.addOrEiditFlag == 'add') {
         this.modleId = this.$route.params.id

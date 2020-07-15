@@ -13,7 +13,11 @@
         <el-table :data="modleList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
           <el-table-column prop="docName" label="记录文书" align="center"></el-table-column>
-          <el-table-column prop="updateTime" label="保存日期" align="center"></el-table-column>
+          <el-table-column prop="updateTime" label="保存日期" align="center">
+             <template slot-scope="scope">
+              {{scope.row.updateTime.substring(0,5)}}
+             </template>
+          </el-table-column>
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
