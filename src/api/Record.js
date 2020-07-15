@@ -362,7 +362,7 @@ export function updatePicPath(data) {
 // 撤销文书操作
 export function documentRevoke(data) {
     return request({
-        url:"/xzjc/document/revoke?id="+data,
+        url:"/xzjc/document/revoke/"+data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',

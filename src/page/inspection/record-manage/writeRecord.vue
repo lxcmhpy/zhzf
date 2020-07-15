@@ -44,7 +44,7 @@
         </el-button>
       </div>
       <!-- 悬浮按钮-拓展 -->
-      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData"></floatBtns>
+      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :addOrEiditFlag='addOrEiditFlag'></floatBtns>
       <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
 
     </div>
@@ -80,6 +80,8 @@ import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldBy
   findMyRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
+
+import merge from 'webpack-merge';
 export default {
   props: ['psMsg'],
   watch: {
@@ -251,12 +253,19 @@ export default {
     },
     // 修改
     editRecord() {
-      console.log(this.formData)
+      console.log('this.formData',this.formData)
+      debugger
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
-        return
+      } else {
+        this.$confirm('修改将会导致已完成文书作废，是否继续？', "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.editMethod()
+        })
       }
-      this.editMethod()
     },
     editMethod() {
       // 判断模板是否已修改
@@ -472,6 +481,10 @@ export default {
               //   }, true);
               // });
               this.recordId = res.data;
+              this.formOrDocData.pageDomId = res.data
+              this.$router.push({
+                params: merge(this.$route.params, { 'id': res.data })
+              })
               if (!noRouter) {
                 // this.addOrEiditFlag = 'view';
                 this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签

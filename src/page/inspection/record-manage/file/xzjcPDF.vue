@@ -42,6 +42,7 @@ export default {
       docFinishQZ: false, //环节下文书是否已完成签章
       pdfUrl: '',
       numPages: 0,
+      pdfShowUrl:''
     };
   },
   // mixins: [mixinGetCaseApiList],

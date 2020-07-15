@@ -251,6 +251,9 @@ export default {
       this.$set(this.docData,'docContent',JSON.stringify(this.formData))
       // this.docData.docContent = JSON.stringify(this.formData)
       console.log("参数", this.docData)
+      // this.docData.createTime=''
+      // this.docData.updateTime=''
+      debugger
       saveOrUpdateDocument(this.docData).then(
         res => {
           if (res.code == 200) {
