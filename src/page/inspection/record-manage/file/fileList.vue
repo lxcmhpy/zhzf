@@ -337,6 +337,8 @@ export default {
     console.log(this.$route.params.edit)
     debugger
     if(this.$route.params.edit){
+      this.editFlag=true
+    }else{
       this.editFlag=false
     }
   }
