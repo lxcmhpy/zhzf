@@ -44,7 +44,7 @@
         </el-button>
       </div>
       <!-- 悬浮按钮-拓展 -->
-      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData"></floatBtns>
+      <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :fileEiditFlag='fileEiditFlag'></floatBtns>
       <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
 
     </div>
@@ -52,8 +52,8 @@
       <el-form ref="fileForm" :model="fileForm" label-width="80px" :rules="fileRules">
         <el-form-item prop="fileSaveType">
           <el-radio-group v-model="fileForm.fileSaveType">
-            <el-radio :value='1' label="完成记录表单，立即保存" style="width:100%;margin-bottom:20px"></el-radio>
-            <el-radio value='2' label="完成记录表单，继续进行文书填报" style="width:100%"></el-radio>
+            <el-radio :value='1' label="完成记录表单，立即保存" style="width:80%;margin-bottom:20px"></el-radio>
+            <el-radio value='2' label="完成记录表单，继续进行文书填报" style="width:80%"></el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -77,8 +77,11 @@ import documentSideMenu from './writeRecordCompoments/documentSideMenu.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
-  findMyRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
+  findMyRecordByIdApi, findRecordModleTimeByIdApi, delDocumentModifyOrderById} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
+import { mapGetters } from "vuex";
+
+import merge from 'webpack-merge';
 export default {
   props: ['psMsg'],
   watch: {
@@ -96,6 +99,7 @@ export default {
     return {
       defaultRuleData: [],
       addOrEiditFlag: '',
+      fileEiditFlag: '',
       visiblePopover: false,
       upAndDown: false,
       isWrite: true,
@@ -157,6 +161,9 @@ export default {
         ]
       }
     }
+  },
+  computed: {
+    ...mapGetters(["inspectionOrderId"])
   },
   components: {
     writeRecordHome: writeRecordHome,
@@ -236,6 +243,8 @@ export default {
           console.log('huixian', res.data.pictureList, res.data.attachedList)
           _this.defautImgList = res.data.pictureList
           _this.defautFileList = res.data.attachedList
+          // 设置文件按钮是否可用
+          _this.fileEiditFlag = res.data.status == '保存' ? true : false
 
         },
         error => {
@@ -247,12 +256,35 @@ export default {
     },
     // 修改
     editRecord() {
-      console.log(this.formData)
+      console.log('this.formData', this.formData)
+      debugger
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
-        return
+      } else {
+        this.$confirm('修改将会导致已完成文书作废，是否继续？', "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.delFinishFile()
+        })
       }
-      this.editMethod()
+    },
+    // 删除已完成文书
+    delFinishFile() {
+      debugger
+      delDocumentModifyOrderById(this.$route.params.id).then(
+        res => {
+          if (res.code == 200) {
+            this.editMethod()
+            // 更新侧边栏
+            this.formOrDocData.pageDomId=this.$route.params.id
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+        })
     },
     editMethod() {
       // 判断模板是否已修改
@@ -270,6 +302,7 @@ export default {
                 }, true);
               });
               this.addOrEiditFlag = 'add'
+              // this.fileEiditFlag = true
             } else {
               this.$message.error('当前模板已修改或不存在，该记录不可修改');
             }
@@ -377,6 +410,7 @@ export default {
           // console.log(res)
           if (res.code == 200) {
             this.addOrEiditFlag = 'view'
+            this.fileEiditFlag = res.data.status == '保存' ? true : false
             this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
             this.$message({
               type: "success",
@@ -396,6 +430,11 @@ export default {
               this.$router.push({
                 name: 'inspection_recordList',
               });
+            } else {
+              this.$store.commit("set_inspection_orderId", res.data);
+              this.fileEiditFlag = true
+              debugger
+
             }
 
           } else {
@@ -465,6 +504,10 @@ export default {
               //   }, true);
               // });
               this.recordId = res.data;
+              this.formOrDocData.pageDomId = res.data
+              this.$router.push({
+                params: merge(this.$route.params, { 'id': res.data })
+              })
               if (!noRouter) {
                 // this.addOrEiditFlag = 'view';
                 this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -474,6 +517,8 @@ export default {
                 });
               } else {
                 this.findRecordDataByld()
+                // this.$store.commit("set_inspection_orderId", res.data.id)
+
               }
 
             } else {
@@ -495,6 +540,7 @@ export default {
         this.isCopyStyle = true;//变颜色
         // debugger
         this.addOrEiditFlag = 'add'
+        this.fileEiditFlag = false
         this.formData.id = ''
         this.formData.createTime = ''
         this.formData.updateTime = ''
@@ -1136,19 +1182,22 @@ export default {
   mounted() {
     console.log('id', this.$route.params.id)
     this.addOrEiditFlag = this.$route.params.addOrEiditFlag
+    this.fileEiditFlag = false
     if (this.$route.params.id) {
       if (this.$route.params.addOrEiditFlag == 'add') {
         this.modleId = this.$route.params.id
         this.findDataByld()
       } else
         if (this.$route.params.addOrEiditFlag == 'edit') {
-          this.recordId = this.$route.params.id;
+          this.recordId = this.inspectionOrderId;
+          this.$store.commit("set_inspection_orderId", this.$route.params.id);
           this.findRecordDataByld()
         } else if (this.$route.params.addOrEiditFlag == 'view') {
-          this.recordId = this.$route.params.id;
+          this.recordId = this.inspectionOrderId;
+          this.$store.commit("set_inspection_orderId", this.$route.params.id);
           this.viewRecord()
         } else if (this.$route.params.addOrEiditFlag == 'temporary') {
-          this.recordId = this.$route.params.id;
+          this.recordId = this.inspectionOrderId;
           this.findRecordDataByld()
         }
     }

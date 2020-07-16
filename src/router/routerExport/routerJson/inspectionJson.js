@@ -105,7 +105,7 @@ export default  [
             // pdf
             {
                 // 文书-列表
-                path: "/inspectionMyPDF",
+                path: "/inspectionMyPDF/id=:id&storagePath:storagePath",
                 name: "inspection_myPDF",
                 meta: {
                 title: "责令改正违法行为通知书",

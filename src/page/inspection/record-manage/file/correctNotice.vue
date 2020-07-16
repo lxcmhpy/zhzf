@@ -95,13 +95,14 @@
         </div>
       </el-form>
     </div>
+    <el-button type="primary" style="    width: 70px;    height: 40px;position: fixed;    top: 115px;left: 240px;" @click="backList">返回</el-button>
     <xzjcDocFloatBtns :pageDomId="'forceCorrect-print'" :formOrDocData="formOrDocData" @saveData="saveData" @saveDataStatus='saveDataStatus'></xzjcDocFloatBtns>
     <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
     </el-alert>-->
   </div>
 </template>
 <script>
-import { saveOrUpdateDocument, getDocumentById, findMyRecordByIdApi ,changeFileStatus} from "@/api/Record";
+import { saveOrUpdateDocument, getDocumentById, findMyRecordByIdApi, changeFileStatus } from "@/api/Record";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import xzjcDocFloatBtns from "../writeRecordCompoments/xzjcDocFloatBtns.vue";
@@ -114,7 +115,7 @@ export default {
     xzjcDocFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { ...mapGetters(["inspectionOrderId", "inspectionFileId"]) },
   data() {
     var validateBycorrectWay = (rule, value, callback) => {
       console.log('数值', this.formData.correctWay)
@@ -209,21 +210,24 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
-      if (this.$route.params.id) {
-        getDocumentById(this.$route.params.id).then(
+      debugger
+      if (this.inspectionFileId) {
+        getDocumentById(this.inspectionFileId).then(
           res => {
             if (res.code == 200) {
               this.docData = res.data
               if (this.docData.docContent) {
                 this.formData = JSON.parse(this.docData.docContent)
-              }
-              if (!this.formData.party) {
-                console.log('this.formData.party', this.formData.party)
-                console.log('this.docData.party', this.docData.party)
-                debugger
-                this.formData.party = this.docData.party
+                if (!this.formData.docContent.party) {
 
+                  debugger
+                  this.formData.party = this.docData.party || ''
+                  console.log('this.formData.party', this.formData.party)
+                  console.log('this.docData.party', this.docData.party)
+
+                }
               }
+
               console.log('this.formData', this.formData)
             } else {
               this.$message.error(res.msg);
@@ -240,38 +244,37 @@ export default {
       //参数  提交类型 、
       // this.printContent();
       this.formData.status = '未完成'
-      // this.formData.updateTime = this.formData.updateTime = new Date()
-      // this.docData.orderId = this.$route.params.id
-      // this.docData.templateId = this.$route.params.id
-      console.log(this.formData)
-      console.log(this.docData)
-      debugger
-      this.docData.docContent = JSON.stringify(this.formData)
+
+      // debugger
+      this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
+      // this.docData.docContent = JSON.stringify(this.formData)
       console.log("参数", this.docData)
+      // this.docData.createTime=''
+      // this.docData.updateTime=''
+      debugger
       saveOrUpdateDocument(this.docData).then(
         res => {
           if (res.code == 200) {
             this.$message({
               type: "success",
-              message: res.msg
+              message: '操作成功'
             });
             // this.$emit("getAddModle", 'sucess');
-            // this.resetForm('formData')
-            // this.newModleTable = false;
             // 保存到pdf服务器
             debugger
+            // res.data.storagePath='http://124.192.215.10:9332/14,209459bcf86c'
+            this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
             this.$router.push({
               name: "inspection_myPDF",
-              params: { docId: this.$route.params.id, isApproval: true }
+              params: { docId: this.inspectionFileId, storagePath: res.data.storagePath }
             });
             if (handleType == 1) {
               this.storagePath = res.data.storagePath
               // 隐藏保存、签章按钮，显示撤销、删除按钮
-              // this.$set(this.formOrDocData.showBtn, 5, false)
-              // this.$set(this.formOrDocData.showBtn, 1, false)
-              // this.$set(this.formOrDocData.showBtn, 2, true)
-              // this.$set(this.formOrDocData.showBtn, 4, true)
-
+              this.$set(this.formOrDocData.showBtn, 5, false)
+              this.$set(this.formOrDocData.showBtn, 1, false)
+              this.$set(this.formOrDocData.showBtn, 2, true)
+              this.$set(this.formOrDocData.showBtn, 4, true)
             }
           } else {
             this.$message.error(res.msg);
@@ -285,7 +288,7 @@ export default {
       console.log(this.$route.params)
       debugger
       // 保存-修改状态
-      changeFileStatus(this.$route.params.id).then(
+      changeFileStatus(this.inspectionFileId).then(
         res => {
           if (res.code == 200) {
             if (handleType == 1) {
@@ -365,6 +368,14 @@ export default {
         this.formData.correctTime = '';
       }
     },
+    backList() {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: 'inspection_inspectionFiles',
+        params: { id: this.inspectionOrderId }
+        // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+      });
+    }
   },
 
   mounted() {

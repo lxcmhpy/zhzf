@@ -39,5 +39,11 @@ const getters = {
   btnlawId:state => state.system.btnlawId, //当前法规id
   systemTitle:state => state.system.systemTitle, //系统标题
 
+  
+  // 行政检查
+  inspectionOrderId:state => state.inspection.inspectionOrderId, //行政检查记录id
+  inspectionFileId:state => state.inspection.inspectionFileId, //行政检查文书id
+  inspectionTempleteId:state => state.inspection.inspectionTempleteId, //行政检查模板id
+
 };
 export default getters;

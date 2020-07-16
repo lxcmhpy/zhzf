@@ -117,6 +117,7 @@ export default {
         let message = '该案件正在移送中，移送完成后才可与继续办理'
         this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
       } else {
+         this.$store.commit("setCaseId", row.id);
          //立案登记表已保存未提交审批时 跳转pdf页面
          let docTypeId,linkId,currentFlow = '';
          try{
@@ -139,7 +140,6 @@ export default {
             caseId: row.id,
           }).then(res=>{
             console.log('查询环节是否生成了pdf',res);
-            this.$store.commit("setCaseId", row.id);
             if(res && res.length >0){
               this.$store.commit('setApprovalState', 'approvalBefore');
               //设置环节id，提交审批时需要用到

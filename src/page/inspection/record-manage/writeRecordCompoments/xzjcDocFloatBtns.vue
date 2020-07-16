@@ -18,7 +18,7 @@
       <i class="iconfont law-save"></i>
       <br />暂存
     </el-button>
-    <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[4]">
+    <el-button type="primary" @click="delDataBtn(0)" v-if="formOrDocData.showBtn[4]">
       <i class="iconfont law-save"></i>
       <br />删除
     </el-button>
@@ -32,7 +32,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
-import {changeFileStatus} from "@/api/Record";
+import { changeFileStatus, documentRevoke, delDocumentById } from "@/api/Record";
 
 export default {
   data() {
@@ -44,7 +44,7 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn']) },
+  computed: { ...mapGetters(['inspectionFileId', 'docId', 'showQZBtn']) },
   methods: {
     //   打印方法
     async printContent() {
@@ -78,6 +78,7 @@ export default {
       //判断当前浏览器是否支持WebSocket
       if ('WebSocket' in window) {
         let _url = "ws://124.192.215.4:8083/socket/" + fileId
+        // let _url = "ws://172.16.170.44:8083/socket/" + fileId
         websocket = new WebSocket(_url);
       } else {
         alert('Not support websocket')
@@ -95,6 +96,8 @@ export default {
 
       //接收到消息的回调方法
       websocket.onmessage = function (event) {
+        console.log('收到消息', event)
+        debugger
         setMessageInnerHTML(event.data);
       }
 
@@ -110,9 +113,13 @@ export default {
 
       //将消息显示在网页上
       function setMessageInnerHTML(innerHTML) {
-        console.log(innerHTML);
-        if (innerHTML === '1') {
-          _this.$emit('reInstall');
+        console.log('innerHTML', innerHTML);
+
+        if (innerHTML === '0' || innerHTML === 'close') {
+          // if (!innerHTML) {
+          // alert(innerHTML)
+          console.log('emit')
+          _this.$emit('reInstall', '1');
         }
 
       }
@@ -131,6 +138,8 @@ export default {
       function callBackBrowserURL(error, id) {
         if (error == 0) {  //调用成功
           MultBrowser.waitStatus(id, "2", callBackWaitStatus);
+        }else{
+          console.log(error,'error')
         }
       }
 
@@ -155,6 +164,8 @@ export default {
         var string = test.split("/");
         var path = string[0] + "//" + string[2] + "/";
         // path +
+        // _this.storagePath = 'http://172.16.170.54:9332/8,2067302d4168'
+        // _this.storagePath = 'http://124.192.215.10:9332/14,20cb17801f2b'
         console.log('_this.storagePath', _this.storagePath)
         debugger
         var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath
@@ -178,24 +189,29 @@ export default {
       //判断是环节的提交还是文书的提交
       // this.$emit('submitData', handleType);
       // 隐藏提交、暂存按钮，显示保存签章按钮
-      this.$set(this.formOrDocData.showBtn, 3, false)
-      this.$set(this.formOrDocData.showBtn, 0, false)
-      this.$set(this.formOrDocData.showBtn, 5, true)
-      this.$set(this.formOrDocData.showBtn, 1, true)
+      // this.$set(this.formOrDocData.showBtn, 3, false)
+      // this.$set(this.formOrDocData.showBtn, 0, false)
+      // this.$set(this.formOrDocData.showBtn, 5, true)
+      // this.$set(this.formOrDocData.showBtn, 1, true)
       this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {
       // debugger
-      if (handleType == 1) {
+      // 需完善
+      if (handleType == 1 || handleType == 0) {
         // 保存
         // 隐藏保存、签章按钮，显示撤销、删除按钮
         // this.$emit('saveDataStatus', handleType);
-        debugger
+        // debugger
         console.log(this.$route.params)
         // 保存-修改状态
-        changeFileStatus(this.$route.params.docId).then(
+        changeFileStatus(this.$route.params.id||this.inspectionFileId).then(
           res => {
             if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
               if (handleType == 1) {
                 this.storagePath = res.data.storagePath
                 // 隐藏保存、签章按钮，显示撤销、删除按钮
@@ -230,6 +246,29 @@ export default {
           console.log(err);
         }
       );
+    },
+    delDataBtn() {
+      delDocumentById(this.$route.params.docId).then(
+        res => {
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: res.msg,
+            });
+            this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+            this.$router.push({
+              name: 'inspection_inspectionFiles',
+              // params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+              // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+            });
+
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
     },
     //保存文书信息
     //  addDocData(handleType){
@@ -274,6 +313,33 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
+
+        // 保存-修改状态
+        documentRevoke(this.inspectionFileId).then(
+          res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg,
+              });
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$router.push({
+                name: 'inspection_correctNotice',
+                // params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+                // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+              });
+            } else {
+              this.$message.error(res.msg);
+            }
+          },
+          error => {
+
+          })
+
+        this.$set(this.formOrDocData.showBtn, 2, false)
+        this.$set(this.formOrDocData.showBtn, 4, false)
+        this.$set(this.formOrDocData.showBtn, 5, true)
+        this.$set(this.formOrDocData.showBtn, 1, true)
         console.log('删除')
 
       })
