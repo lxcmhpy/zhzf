@@ -253,7 +253,7 @@
               </td>
               <td colspan="7" class="color_DBE4EF">
                 <el-form-item>
-                  <el-checkbox-group v-model="docData.deliveryWay" @change="test">
+                  <el-checkbox-group v-model="docData.deliveryWay">
                     <el-checkbox label="11">电子送达</el-checkbox>
                     <el-checkbox label="12">线下送达（可多选）</el-checkbox>
                   </el-checkbox-group>
@@ -604,11 +604,6 @@ export default {
       }
       console.log('this.docData.deliveryWay',this.docData.deliveryWay)
     },
-    test(val){
-      alert(val)
-      console.log('aaa',val)
-      // alert(this.docData.deliveryWay)
-    }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
