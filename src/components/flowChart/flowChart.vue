@@ -624,22 +624,41 @@ export default {
       // let removeOrPrelong_caseLinktypeIdArr = [this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId,this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId]
       let removeOrPrelong_caseLinktypeIdArr = this.BASIC_DATA_JX.getRemoveOrPrelong_caseLinktypeIdArr();
       //是否显示解除行政强制措施按钮
-      adminCoerciveMeasure_caseLinktypeIdArr.forEach((item,index)=>{
+      console.log('adminCoerciveMeasure_caseLinktypeIdArr',adminCoerciveMeasure_caseLinktypeIdArr)
+      console.log('linkArr',linkArr)
+      
+      for(let item of adminCoerciveMeasure_caseLinktypeIdArr){
         if(linkArr.includes(item)){
           this.showREBtn = true;
-          return;
+          break;
         }
-        if(index == adminCoerciveMeasure_caseLinktypeIdArr.length-1 && !linkArr.includes(item)){
-          this.showREBtn = false;
-        }
-      })
+        // if(index == adminCoerciveMeasure_caseLinktypeIdArr.length-1 && !linkArr.includes(item)){
+        //   this.showREBtn = false;
+        // }
+      }
+      // adminCoerciveMeasure_caseLinktypeIdArr.forEach((item,index)=>{
+      //   console.log('linkArr.includes(item)',linkArr.includes(item))
+      //   if(linkArr.includes(item)){
+      //     this.showREBtn = true;
+      //     return;
+      //   }
+      //   if(index == adminCoerciveMeasure_caseLinktypeIdArr.length-1 && !linkArr.includes(item)){
+      //     this.showREBtn = false;
+      //   }
+      // })
       //是否显示已解除按钮
-      removeOrPrelong_caseLinktypeIdArr.forEach(item=>{
+      for(let item of removeOrPrelong_caseLinktypeIdArr){
         if(linkArr.includes(item)){
           this.alReadyFinishCoerciveM = true;
-          return
+          break;
         }
-      })
+      }
+      // removeOrPrelong_caseLinktypeIdArr.forEach(item=>{
+      //   if(linkArr.includes(item)){
+      //     this.alReadyFinishCoerciveM = true;
+      //     return
+      //   }
+      // })
 
     },
     //显示行政强制措施按钮
@@ -652,17 +671,25 @@ export default {
       let adminCoerciveMeasureCompleteFlag = false;
       
       console.log('adminCoerciveMeasure_caseLinktypeIdArr',adminCoerciveMeasure_caseLinktypeIdArr)
-      adminCoerciveMeasure_caseLinktypeIdArr.forEach(item=>{
+      
+      for(let item of adminCoerciveMeasure_caseLinktypeIdArr){
         if(completeLink.includes(item)){
-          adminCoerciveMeasureCompleteFlag = true;
-          return
+          this.showAdminCoerciveMeasureBtn = true;
+          break;
         }
-      })
+      }
+
+      // adminCoerciveMeasure_caseLinktypeIdArr.forEach(item=>{
+      //   if(completeLink.includes(item)){
+      //     adminCoerciveMeasureCompleteFlag = true;
+      //     return
+      //   }
+      // })
       //如果行政强制已完成 则 显示
-      if(adminCoerciveMeasureCompleteFlag){
-        this.showAdminCoerciveMeasureBtn = true;
-        return;
-      } 
+      // if(adminCoerciveMeasureCompleteFlag){
+      //   this.showAdminCoerciveMeasureBtn = true;
+      //   return;
+      // } 
 
       //立案登记数组
       // let establish_caseLinktypeIdArr = [this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId];
@@ -672,18 +699,30 @@ export default {
       let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
       
       let hasEstablish,hasFinishCaseReport= false;
-      establish_caseLinktypeIdArr.forEach(item=>{
+      for(let item of establish_caseLinktypeIdArr){
         if(completeLink.includes(item)){
           hasEstablish = true;
-          return
+          break;
         }
-      })
-      finishCaseReport_caseLinktypeIdArr.forEach(item=>{
+      }
+      for(let item of finishCaseReport_caseLinktypeIdArr){
         if(completeLink.includes(item) || doingLink.includes(item)){
           hasFinishCaseReport = true;
-          return
+          break;
         }
-      })
+      }
+      // establish_caseLinktypeIdArr.forEach(item=>{
+      //   if(completeLink.includes(item)){
+      //     hasEstablish = true;
+      //     return
+      //   }
+      // })
+      // finishCaseReport_caseLinktypeIdArr.forEach(item=>{
+      //   if(completeLink.includes(item) || doingLink.includes(item)){
+      //     hasFinishCaseReport = true;
+      //     return
+      //   }
+      // })
 
       if(hasEstablish && !hasFinishCaseReport) this.showAdminCoerciveMeasureBtn = true;
     },
