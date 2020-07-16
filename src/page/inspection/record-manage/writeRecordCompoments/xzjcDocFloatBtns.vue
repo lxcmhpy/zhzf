@@ -2,7 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px">
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
+    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]&&inspectionFileEdit">
       <i class="iconfont law-upload"></i>
       <br />提交
     </el-button>
@@ -10,7 +10,7 @@
       <i class="iconfont law-save"></i>
       <br />保存
     </el-button>
-    <el-button type="primary" @click="cancleSub(0)" v-if="formOrDocData.showBtn[2]">
+    <el-button type="primary" @click="cancleSub(0)" v-if="formOrDocData.showBtn[2]&&inspectionFileEdit">
       <i class="iconfont law-save"></i>
       <br />撤销
     </el-button>
@@ -18,11 +18,11 @@
       <i class="iconfont law-save"></i>
       <br />暂存
     </el-button>
-    <el-button type="primary" @click="delDataBtn(0)" v-if="formOrDocData.showBtn[4]">
+    <el-button type="primary" @click="delDataBtn(0)" v-if="formOrDocData.showBtn[4]&&inspectionFileEdit">
       <i class="iconfont law-save"></i>
       <br />删除
     </el-button>
-    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
+    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn &&inspectionFileEdit">
       <i class="iconfont law-approval"></i>
       <br />签章
     </el-button>
@@ -44,7 +44,7 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['inspectionFileId', 'docId', 'showQZBtn']) },
+  computed: { ...mapGetters(['inspectionFileId', 'docId', 'showQZBtn','inspectionFileEdit']) },
   methods: {
     //   打印方法
     async printContent() {

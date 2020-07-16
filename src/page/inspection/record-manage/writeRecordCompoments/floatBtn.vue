@@ -2,7 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="top:105px;right:5px;">
-    <li  @click="writeDoc()" :style="!fileEiditFlag?' color: #fff;background-color: #909399;border-color: #909399;':''" v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0">
+    <li @click="writeDoc()" :style="!fileEiditFlag?' color: #fff;background-color: #909399;border-color: #909399;':''" v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0">
     <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc"> -->
       文书<br />填报
     </li>

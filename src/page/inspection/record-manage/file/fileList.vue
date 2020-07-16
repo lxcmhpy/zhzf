@@ -24,12 +24,12 @@
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
               <span v-if="scope.row.status=='完成'">
                 <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-                <el-button :disabled="editFlag" type="text" @click="delModle(scope.row.id)">删除</el-button>
+                <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button>
               </span>
               <span v-else>
-                <el-button :disabled="editFlag" @click="editRecord(scope.row)" type="text">编辑</el-button>
+                <el-button :disabled="!inspectionFileEdit" @click="editRecord(scope.row)" type="text">编辑</el-button>
                 <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-                  <el-button :disabled="editFlag" type="text">上传</el-button>
+                  <el-button :disabled="!inspectionFileEdit" type="text">上传</el-button>
                 </el-upload>
               </span>
             </template>
@@ -72,7 +72,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["inspectionOrderId"])
+    ...mapGetters(["inspectionOrderId","inspectionFileEdit"])
   },
   methods: {
     addNewModle() {
@@ -334,13 +334,6 @@ export default {
   mounted() {
     this.searchList();
     // this.searchSaveList();
-    console.log(this.$route.params.edit)
-    debugger
-    if(this.$route.params.edit){
-      this.editFlag=true
-    }else{
-      this.editFlag=false
-    }
   }
 }
 </script>
