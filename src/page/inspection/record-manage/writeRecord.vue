@@ -77,7 +77,7 @@ import documentSideMenu from './writeRecordCompoments/documentSideMenu.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
 import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
-  findMyRecordByIdApi, findRecordModleTimeByIdApi} from "@/api/Record";
+  findMyRecordByIdApi, findRecordModleTimeByIdApi, delDocumentModifyOrderById} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 
@@ -266,9 +266,25 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          this.editMethod()
+          this.delFinishFile()
         })
       }
+    },
+    // 删除已完成文书
+    delFinishFile() {
+      debugger
+      delDocumentModifyOrderById(this.$route.params.id).then(
+        res => {
+          if (res.code == 200) {
+            this.editMethod()
+            // 更新侧边栏
+            this.formOrDocData.pageDomId=this.$route.params.id
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+        })
     },
     editMethod() {
       // 判断模板是否已修改

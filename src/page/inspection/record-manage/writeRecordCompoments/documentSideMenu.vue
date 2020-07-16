@@ -50,12 +50,8 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   methods: {
     showModal(pageDomId) {
-      //      console.log('show');
-
       this.visible = true;
       if (!this.getData) this.getByMlCaseId(pageDomId);
-
-
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

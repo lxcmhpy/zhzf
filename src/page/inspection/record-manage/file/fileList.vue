@@ -24,12 +24,12 @@
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
               <span v-if="scope.row.status=='完成'">
                 <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-                <el-button type="text" @click="delModle(scope.row.id)">删除</el-button>
+                <el-button :disabled="editFlag" type="text" @click="delModle(scope.row.id)">删除</el-button>
               </span>
               <span v-else>
-                <el-button @click="editRecord(scope.row)" type="text">编辑</el-button>
+                <el-button :disabled="editFlag" @click="editRecord(scope.row)" type="text">编辑</el-button>
                 <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-                  <el-button type="text">上传</el-button>
+                  <el-button :disabled="editFlag" type="text">上传</el-button>
                 </el-upload>
               </span>
             </template>
@@ -67,7 +67,8 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
-      fileList: []
+      fileList: [],
+      editFlag:true
     }
   },
   computed: {
@@ -333,6 +334,11 @@ export default {
   mounted() {
     this.searchList();
     // this.searchSaveList();
+    console.log(this.$route.params.edit)
+    debugger
+    if(this.$route.params.edit){
+      this.editFlag=false
+    }
   }
 }
 </script>
