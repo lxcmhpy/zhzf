@@ -181,7 +181,7 @@ export default {
     },
     mounted () {
         // http://172.16.170.54:9332/14,16d92a05edcd   old:9,10a727c3ada3
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
+        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + this.obj.storageId;
         // debugger;
         // this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
         this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;

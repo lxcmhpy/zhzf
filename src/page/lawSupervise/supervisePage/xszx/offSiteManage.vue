@@ -366,6 +366,7 @@ export default {
     },
     reset(formName) {
       this.$refs[formName].resetFields();
+      this.form.vehicleNumber=''
       this.timeList=['', '']
       let _this=this
       this.pickerOptions= {
@@ -492,6 +493,9 @@ export default {
   created() {
     if(this.$route.params.siteName!== undefined){
       this.form.siteName = this.$route.params.siteName
+    }
+    if(this.$route.params.tabActiveValue!== undefined){
+      this.tabActiveValue = this.$route.params.tabActiveValue
     }
     this.search(1,true);
     this.findAllDrawerById(BASIC_DATA_SYS.cxl, 'cxlList');
