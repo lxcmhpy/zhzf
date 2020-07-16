@@ -362,7 +362,7 @@ export function updatePicPath(data) {
 // 撤销文书操作
 export function documentRevoke(data) {
     return request({
-        url:"/xzjc/document/revoke?id="+data,
+        url:"/xzjc/document/revoke/"+data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
@@ -375,6 +375,18 @@ export function delDocumentById(data) {
     return request({
         url:"/xzjc/document/myRemoveById/"+data,
         method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType:  'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 修改记录的文书保存情况
+export function delDocumentModifyOrderById(data) {    
+    // data = vm.$qs.stringify(data);
+    return request({
+        url:"/xzjc/templateOrder/modifyOrderById/"+data,
+        method: "post",
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType:  'XZJC_HOST',

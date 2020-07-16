@@ -255,24 +255,25 @@
             <td>序号</td>
             <td colspan="2">证据名称</td>
             <td colspan="2">规格</td>
-            <td colspan="2">数量</td>
+            <td colspan="1">数量</td>
+            <td colspan="2">备注</td>
           </tr>
           <tr @click="showEvidence" v-for="(item,index) in formData.evidenceList" :key="index">
             <td>{{item.name ? index+1 : ''}}</td>
             <td colspan="2">{{item.name ? item.name : ''}}</td>
             <td colspan="2">{{item.des ? item.des : ''}}</td>
-            <td colspan="2">{{item.num ? item.num : ''}}</td>
+            <td colspan="1">{{item.num ? item.num : ''}}</td>
+            <td colspan="2">{{item.num ? item.note : ''}}</td>
           </tr>
           <tr style="height:180px">
-            <td rowspan="6" width="49">
-              <p>经办</p>
-              <p>人处</p>
-              <p>理意</p>
+            <td width="49">
+              <p>承办</p>
+              <p>人意</p>
               <p>见</p>
             </td>
-            <td rowspan="6" colspan="7" class="aprotd">
+            <td colspan="8" class="aprotd">
               <!-- <p class="approveDiv">{{formData.lawOfficeOpinions}}</p> -->
-              <el-form-item prop="closeResult">
+              <el-form-item prop="lawOfficeOpinions">
                 <el-input
                   type="textarea"
                   v-model="formData.lawOfficeOpinions"
@@ -282,9 +283,8 @@
               </el-form-item>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;">
                 <p>
-                  执法人员签名：
-                  <span class="apro">{{formData.lawOfficeName||' '}}</span>、
-                  <span class="apro">{{formData.lawOfficeName1||' '}}</span>
+                  签名：
+                  <span class="apro">{{formData.lawOfficeName||' '}}</span>
                 </p>
                 <p style="text-align: right;">
                   <el-form-item prop="lawOfficeApprovalTime" class="pdf_datapick">
@@ -307,29 +307,10 @@
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr style="height:310px">
             <td>
-              <p>经办</p>
+              <p>承办</p>
               <p>机构</p>
               <p>审核</p>
-              <p>人意</p>
-              <p>见</p>
-            </td>
-            <td colspan="8" class="aprotd">
-              <p class="approveDiv">{{formData.approveOpinions}}</p>
-              <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <!-- <p>签名：<span class="apro">{{formData.approvePeo||' '}}</span></p> -->
-                <p>签名：</p>
-                <p>{{formData.approveTime||' 年 月 日 '}}</p>
-              </div>
-            </td>
-          </tr>
-          <tr style="height:310px">
-            <td>
-              <p>经办</p>
-              <p>机构</p>
-              <p>负责</p>
-              <p>人审</p>
-              <p>核意</p>
-              <p>见</p>
+              <p>意见</p>
             </td>
             <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
@@ -342,18 +323,19 @@
           </tr>
           <tr style="height:310px">
             <td width="49">
-              <p>部门</p>
+              <p>行政</p>
+              <p>机关</p>
               <p>负责</p>
               <p>人审</p>
               <p>批意</p>
               <p>见</p>
             </td>
-            <td colspan="7" class="aprotd">
-              <p class="approveDiv">{{formData.thirdApproveOpinions}}</p>
+            <td colspan="8" class="aprotd">
+              <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <!-- <p>签名：<span class="apro">{{formData.thirdApprovePeo||' '}}</span></p> -->
+                <!-- <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p> -->
                 <p>签名：</p>
-                <p>{{formData.thirdApproveTime||' 年 月 日 '}}</p>
+                <p>{{formData.secondApproveTime||' 年 月 日 '}}</p>
               </div>
             </td>
           </tr>
@@ -387,14 +369,11 @@
     <!-- 审批 -->
     <approvalDialog ref="approvalDialogRef" @getNewData="goToPfd"></approvalDialog>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
-    <!-- 执法人员意见弹窗 -->
-    <showLawOfficerOpion ref="showLawOfficerOpionRef" @sendLawOfficeOpionEmit="getLawOfficeOpion"></showLawOfficerOpion>
   </div>
 </template>
 <script>
 import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
 import approvalDialog from "@/page/caseHandle/components/approvalDialog";
-import showLawOfficerOpion from "@/page/caseHandle/components/showLawOfficerOpion";
 import investigRpEvidence from "@/page/caseHandle/components/investigRpEvidence";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
@@ -429,13 +408,12 @@ export default {
         secondApproveOpinions: "",
         secondApprovePeo: "",
         secondApproveTime: "",
-        thirdApproveOpinions: "",
-        thirdApprovePeo: "",
-        thirdApproveTime: "",
+        // thirdApproveOpinions: "",
+        // thirdApprovePeo: "",
+        // thirdApproveTime: "",
         evidenceList: [], //证据材料
         lawOfficeOpinions: "",
         lawOfficeName: "",
-        lawOfficeName1: "",
         lawOfficeApprovalTime: "",
         note: ""
       },
@@ -540,8 +518,7 @@ export default {
     approvalDialog,
     casePageFloatBtns,
     investigRpEvidence,
-    caseSlideMenu,
-    showLawOfficerOpion
+    caseSlideMenu
   },
   methods: {
     //加载表单信息
@@ -595,13 +572,6 @@ export default {
       if (!this.disableWhenApproval)
         this.$refs.showLawOfficerOpionRef.showModal();
     },
-    getLawOfficeOpion(lawOfficeOpionData) {
-      console.log(lawOfficeOpionData);
-      this.formData.lawOfficeOpinions = lawOfficeOpionData.lawOfficeOpinions;
-      this.formData.lawOfficeName = iLocalStroage.gets("userInfo").username;
-      this.formData.lawOfficeApprovalTime =
-        lawOfficeOpionData.lawOfficeApprovalTime;
-    },
     //证据列表弹窗传来的证据
     receiverEviden(data) {
       console.log("data", data);
@@ -612,13 +582,12 @@ export default {
       console.log(this.formData);
       if (!this.formData.evidenceList.length) {
         this.formData.evidenceList = [
-          { name: "", num: "", des: "" },
-          { name: "", num: "", des: "" },
-          { name: "", num: "", des: "" },
-          { name: "", num: "", des: "" }
+          { name: "", num: "", des: "", note: ""},
+          { name: "", num: "", des: "", note: "" },
+          { name: "", num: "", des: "", note: "" },
+          { name: "", num: "", des: "", note: "" }
         ];
       }
-      console.log("123456", this.formData.evidenceList);
     }
   },
   created() {

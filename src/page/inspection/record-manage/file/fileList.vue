@@ -13,19 +13,23 @@
         <el-table :data="modleList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
           <el-table-column prop="docName" label="记录文书" align="center"></el-table-column>
-          <el-table-column prop="updateTime" label="保存日期" align="center"></el-table-column>
+          <el-table-column prop="updateTime" label="保存日期" align="center">
+            <template slot-scope="scope">
+              {{scope.row.updateTime.substring(0,10)}}
+            </template>
+          </el-table-column>
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
               <span v-if="scope.row.status=='完成'">
                 <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-                <el-button type="text" @click="delModle(scope.row.id)">删除</el-button>
+                <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button>
               </span>
               <span v-else>
-                <el-button @click="editRecord(scope.row)" type="text">编辑</el-button>
+                <el-button :disabled="!inspectionFileEdit" @click="editRecord(scope.row)" type="text">编辑</el-button>
                 <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-                  <el-button type="text">上传</el-button>
+                  <el-button :disabled="!inspectionFileEdit" type="text">上传</el-button>
                 </el-upload>
               </span>
             </template>
@@ -63,11 +67,12 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
-      fileList: []
+      fileList: [],
+      editFlag:true
     }
   },
   computed: {
-    ...mapGetters(["inspectionOrderId"])
+    ...mapGetters(["inspectionOrderId","inspectionFileEdit"])
   },
   methods: {
     addNewModle() {
@@ -97,17 +102,23 @@ export default {
     // 选择模板
     editRecord(item) {
       // 写文书
-      this.$store.commit("set_inspection_fileId", item.id)
-
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: item.path,
-        params: { id: item.id, addOrEiditFlag: 'add' }
-        // query: { id: item.id, addOrEiditFlag: 'add' }
-      });
-      // 写记录
-      this.$emit('changeModleId', item);
-
+      if (item.pdfStorageId) {
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: "inspection_myPDF",
+          params: { id: item.id, storagePath: item.pdfStorageId }
+        });
+      } else {
+        this.$store.commit("set_inspection_fileId", item.id)
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: item.path,
+          params: { id: item.id, addOrEiditFlag: 'add' }
+          // query: { id: item.id, addOrEiditFlag: 'add' }
+        });
+        // 写表单
+        this.$emit('changeModleId', item);
+      }
     },
     // 查看模板
     viewRecord(item) {
@@ -313,7 +324,7 @@ export default {
       this.$router.push({
         name: 'inspection_writeRecordInfo',
         params: {
-          id: this.$route.params.id,
+          id: this.inspectionOrderId,
           addOrEiditFlag: 'view'
         }
         // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }

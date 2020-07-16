@@ -2,7 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px">
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
+    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]&&inspectionFileEdit">
       <i class="iconfont law-upload"></i>
       <br />提交
     </el-button>
@@ -10,7 +10,7 @@
       <i class="iconfont law-save"></i>
       <br />保存
     </el-button>
-    <el-button type="primary" @click="cancleSub(0)" v-if="formOrDocData.showBtn[2]">
+    <el-button type="primary" @click="cancleSub(0)" v-if="formOrDocData.showBtn[2]&&inspectionFileEdit">
       <i class="iconfont law-save"></i>
       <br />撤销
     </el-button>
@@ -18,11 +18,11 @@
       <i class="iconfont law-save"></i>
       <br />暂存
     </el-button>
-    <el-button type="primary" @click="delDataBtn(0)" v-if="formOrDocData.showBtn[4]">
+    <el-button type="primary" @click="delDataBtn(0)" v-if="formOrDocData.showBtn[4]&&inspectionFileEdit">
       <i class="iconfont law-save"></i>
       <br />删除
     </el-button>
-    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
+    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn &&inspectionFileEdit">
       <i class="iconfont law-approval"></i>
       <br />签章
     </el-button>
@@ -44,7 +44,7 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['inspectionFileId', 'docId', 'showQZBtn']) },
+  computed: { ...mapGetters(['inspectionFileId', 'docId', 'showQZBtn','inspectionFileEdit']) },
   methods: {
     //   打印方法
     async printContent() {
@@ -77,8 +77,8 @@ export default {
       let websocket = null;
       //判断当前浏览器是否支持WebSocket
       if ('WebSocket' in window) {
-        // let _url = "ws://124.192.215.4:8083/socket/" + fileId
-        let _url = "ws://172.16.170.44:8083/socket/" + fileId
+        let _url = "ws://124.192.215.4:8083/socket/" + fileId
+        // let _url = "ws://172.16.170.44:8083/socket/" + fileId
         websocket = new WebSocket(_url);
       } else {
         alert('Not support websocket')
@@ -189,10 +189,10 @@ export default {
       //判断是环节的提交还是文书的提交
       // this.$emit('submitData', handleType);
       // 隐藏提交、暂存按钮，显示保存签章按钮
-      this.$set(this.formOrDocData.showBtn, 3, false)
-      this.$set(this.formOrDocData.showBtn, 0, false)
-      this.$set(this.formOrDocData.showBtn, 5, true)
-      this.$set(this.formOrDocData.showBtn, 1, true)
+      // this.$set(this.formOrDocData.showBtn, 3, false)
+      // this.$set(this.formOrDocData.showBtn, 0, false)
+      // this.$set(this.formOrDocData.showBtn, 5, true)
+      // this.$set(this.formOrDocData.showBtn, 1, true)
       this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {
