@@ -2,8 +2,9 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="top:105px;right:5px;">
-    <!-- {{!formOrDocData.pageDomId}} -->
-    <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc">
+    <!-- {{isEdit&&addOrEiditFlag=='add'||!formOrDocData.pageDomId}} -->
+    <li  @click="writeDoc()" :style="!fileEiditFlag?' color: #fff;background-color: #909399;border-color: #909399;':''" v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0">
+    <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc"> -->
       文书<br />填报
     </li>
     <li v-if="formOrDocData.showBtn[1]" @mouseenter="changeActive(2)" @mouseout="removeActive(2)" class='el-button el-button--primary' style="padding:10px 0">
@@ -37,7 +38,13 @@ export default {
     relativeRecord,
     operationRecord
   },
-  props: ['formOrDocData', 'storagePath'],
+  props: ['formOrDocData', 'storagePath', 'fileEiditFlag'],
+  watch: {
+    fileEiditFlag(val, oldVal) {
+      // debugger
+      console.log('fileEiditFlag', this.fileEiditFlag, 'val', val)
+    },
+  },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn']) },
   methods: {
@@ -63,17 +70,16 @@ export default {
     },
     // 文书列表
     writeDoc() {
-      //  if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
-      //   this.$message.error('无修改权限');
-      //   return
-      // }
-      console.log('点击', this.formOrDocData.pageDomId)
-      if (this.formOrDocData.pageDomId || this.$route.params.addOrEiditFlag != 'add') {
+      // debugger
+      // if (this.addOrEiditFlag == 'add' || !this.formOrDocData.pageDomId) {
+      // } else {
+      console.log('点击')
+      if (this.fileEiditFlag) {
+        // if (this.formOrDocData.pageDomId || this.$route.params.addOrEiditFlag != 'add') {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: 'inspection_inspectionFiles',
-          params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
-          // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+          params: { id: this.formOrDocData.pageDomId || this.$route.params.id ,edit:this.formOrDocData.pageDomId?false:true }
         });
       } else {
         this.$confirm('请先保存记录', "提示", {
@@ -82,6 +88,8 @@ export default {
           type: "warning"
         }).then(() => { })
       }
+      // }
+      // }
 
     },
     getFile() {
@@ -104,7 +112,7 @@ export default {
     // 鼠标移入
     changeActive(index) {
       // $event.currentTarget.className = "active";
-      console.log('移入', index)
+      console.log('移入', index,this.formOrDocData.pageDomId)
       switch (index) {
         case 1: this.$refs.documentSideMenuRef.showModal(this.formOrDocData.pageDomId); break;
         case 2: this.$refs.relativeRecordRef.showModal(); break;

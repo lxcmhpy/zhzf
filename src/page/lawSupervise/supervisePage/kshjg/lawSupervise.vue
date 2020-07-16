@@ -390,7 +390,7 @@
             placement="bottom-start"
             trigger="click"
             >
-                <div class="drop-down-menu transition-box">
+                <div class="drop-down-menu">
                     <ul>
                         <li v-for="(item,index) in styleListNumber" :class="{'select':styleIndexNumher==index}" :key="index" @click="styleIndexNumher=index">
                             <p>{{item}}</p>

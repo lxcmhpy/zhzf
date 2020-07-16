@@ -77,8 +77,8 @@ export default {
       let websocket = null;
       //判断当前浏览器是否支持WebSocket
       if ('WebSocket' in window) {
-        // let _url = "ws://124.192.215.4:8083/socket/" + fileId
-        let _url = "ws://172.16.170.44:8083/socket/" + fileId
+        let _url = "ws://124.192.215.4:8083/socket/" + fileId
+        // let _url = "ws://172.16.170.44:8083/socket/" + fileId
         websocket = new WebSocket(_url);
       } else {
         alert('Not support websocket')
@@ -189,10 +189,10 @@ export default {
       //判断是环节的提交还是文书的提交
       // this.$emit('submitData', handleType);
       // 隐藏提交、暂存按钮，显示保存签章按钮
-      this.$set(this.formOrDocData.showBtn, 3, false)
-      this.$set(this.formOrDocData.showBtn, 0, false)
-      this.$set(this.formOrDocData.showBtn, 5, true)
-      this.$set(this.formOrDocData.showBtn, 1, true)
+      // this.$set(this.formOrDocData.showBtn, 3, false)
+      // this.$set(this.formOrDocData.showBtn, 0, false)
+      // this.$set(this.formOrDocData.showBtn, 5, true)
+      // this.$set(this.formOrDocData.showBtn, 1, true)
       this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {

@@ -361,6 +361,19 @@ export function approvalPdfQzApi(data) {
   });
 }
 
+//审批签章(江西)
+export function approvalPdfQzJxApi(data) {
+  return request({
+    url: "/case/sys/file/dzqzShJx",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+
 //获取下一环节
 export function getNextLinkAPi(caseBasicInfoId) {
   return request({

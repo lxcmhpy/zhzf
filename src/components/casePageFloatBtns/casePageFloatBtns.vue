@@ -45,11 +45,11 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
   import iLocalStroage from '@/common/js/localStroage';
+ import {queryFlowBycaseIdApi} from "@/api/caseHandle";
 
   export default {
     data() {
       return {
-        // docId
         makeSealStr: '',
         // showQZBtn:false,  //是否显示签章按钮
       }
@@ -166,7 +166,8 @@
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
           // path +
-          queryFlowBycaseIdApi(this.caseId).then(res=>{
+
+          queryFlowBycaseIdApi(_this.caseId).then(res=>{
             console.log(res)
             var ActivexURL = ''
             if(res.data.flowName == '江西流程'){

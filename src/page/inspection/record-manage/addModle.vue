@@ -707,8 +707,10 @@ export default {
                 // 文书
                 data.documentNameIds = this.multipleSelection.join(',')
                 data.documentNames = this.multipleSelectionId.join(',')
+                // data.templateUser
+                if (data.templateUser.substr(0, 1) == ',') { data.templateUser = data.templateUser.substr(1); }
                 console.log('data.documentNames', data.documentNames)
-                debugger
+                // debugger
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 data.templateFieldList = JSON.stringify(data.templateFieldList)
                 console.log('提交的字段', data)
@@ -934,33 +936,33 @@ export default {
       // 选中后禁用
       // 判断之前有没有选过
       // this.$nextTick(() => {
-        // console.log(document.getElementsByName('filedNameFlag')[0].value)
-        // let selectedList = document.getElementsByName('filedNameFlag')
-        // console.log('selectedList', selectedList)
-        // let selectedListField = []
-        // // 存储已选择id
-        // selectedList.forEach(element => {
-        //   console.log('对比的element', element.id)
-        //   if (element.id) {
-        //     selectedListField.push(element.id)
-        //   }
-        // });
-        // // console.log('selectedListField', selectedListField)
+      // console.log(document.getElementsByName('filedNameFlag')[0].value)
+      // let selectedList = document.getElementsByName('filedNameFlag')
+      // console.log('selectedList', selectedList)
+      // let selectedListField = []
+      // // 存储已选择id
+      // selectedList.forEach(element => {
+      //   console.log('对比的element', element.id)
+      //   if (element.id) {
+      //     selectedListField.push(element.id)
+      //   }
+      // });
+      // // console.log('selectedListField', selectedListField)
 
-        // // 比对,置为不可选
-        // this.commonFieldList.forEach(element => {
-        //   element.fieldDisabled = false
-        // });
-        // selectedListField.forEach(item => {
-        //   this.commonFieldList.forEach(element => {
-        //     if (element.field == item) {
-        //       console.log('elment.title', element.title)
-        //       // element.fieldDisabled = true
-        //       this.$set(element, 'fieldDisabled', true)
-        //     }
-        //   });
-        //   console.log('this.commonFieldList', this.commonFieldList)
-        // });
+      // // 比对,置为不可选
+      // this.commonFieldList.forEach(element => {
+      //   element.fieldDisabled = false
+      // });
+      // selectedListField.forEach(item => {
+      //   this.commonFieldList.forEach(element => {
+      //     if (element.field == item) {
+      //       console.log('elment.title', element.title)
+      //       // element.fieldDisabled = true
+      //       this.$set(element, 'fieldDisabled', true)
+      //     }
+      //   });
+      //   console.log('this.commonFieldList', this.commonFieldList)
+      // });
 
       // });
     },
