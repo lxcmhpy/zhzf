@@ -5,7 +5,8 @@
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
-        <div class="doc_number">赣（{{formData.caseNumber.substring(2,6)}}）交立案〔{{formData.caseNumber.substring(7,12)}}〕号</div>
+        <!-- <div class="doc_number">赣（{{formData.caseNumber.substring(2,6)}}）交立案〔{{formData.caseNumber.substring(7,12)}}〕号</div> -->
+        <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>

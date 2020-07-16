@@ -12,7 +12,7 @@
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
     
-    <el-button @click="$refs.pdf[0].print()">打印</el-button>
+    <!-- <el-button @click="$refs.pdf[0].print()">打印</el-button> -->
     <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf>
   </div>
 </template>
