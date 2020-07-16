@@ -102,7 +102,7 @@ export default {
     // 选择模板
     editRecord(item) {
       // 写文书
-      if (item.pdfStorageId) {
+      if (item.pdfStorageId&&item.status!='暂存') {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: "inspection_myPDF",
