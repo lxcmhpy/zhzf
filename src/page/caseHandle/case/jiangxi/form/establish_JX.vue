@@ -212,8 +212,7 @@
             <td colspan="3" class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
               <div style="word-break:break-all">{{formData.approveOpinions}}</div>
               <div class="pdf_seal">
-                <!-- <p>签名：{{formData.approvePeo}}</p> -->
-                <p>签名：</p>
+                <p>签名：{{formData.approvePeo}}</p>
                 <p>
                   <span v-if="formData.approveTime">{{formData.approveTime}}</span>
                   <span v-else>年 月 日</span>
@@ -230,10 +229,8 @@
              
             </td>
             <td colspan="8" class="color_DBE4EF table_seal"  style="white-space: pre-wrap;word-break:break-all">
-              {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
-                <!-- <p>签名：{{formData.secondApprovePeo}}</p> -->
-                <p>签名：</p>
+                <p>签名：{{formData.secondApproveOpinions}}</p>
                 <p>
                   <span v-if="formData.secondApproveTime">{{formData.secondApproveTime}}</span>
                   <span v-else>年 月 日</span>
