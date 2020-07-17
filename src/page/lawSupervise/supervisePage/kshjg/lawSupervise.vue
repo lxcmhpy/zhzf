@@ -893,6 +893,11 @@ export default {
                   self.areaObj = self.currentAddressObj.city
                   self.$nextTick();
                   self.getCountry('0',self.currentAddressObj.city)
+                }else{
+                  self.$message({
+                    type: "error",
+                    message:result.message
+                  });
                 }
               });
             }
