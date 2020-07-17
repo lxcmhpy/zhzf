@@ -269,13 +269,8 @@ export default {
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
       } else {
-        this.$confirm('修改将会导致已完成文书作废，是否继续？', "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.delFinishFile()
-        })
+        debugger
+        this.editMethod()
       }
     },
     // 删除已完成文书
@@ -283,9 +278,20 @@ export default {
       delDocumentModifyOrderById(this.$route.params.id).then(
         res => {
           if (res.code == 200) {
-            this.editMethod()
+
             // 更新侧边栏
-            this.formOrDocData.pageDomId = this.$route.params.id
+            this.formOrDocData.pageDomId = this.$route.params.id;
+            let oldFormData = this.$data.$f.formData()
+            // 重置
+            this.$data.$f.resetFields()
+            this.rule.forEach(element => {
+              this.$data.$f.updateRule(element.field, {
+                props: { disabled: false }
+              }, true);
+              let textName = element.field
+              this.$data.$f.setValue(element.field, oldFormData['' + textName + '']);
+            });
+            this.addOrEiditFlag = 'add'
           } else {
             this.$message.error(res.msg);
           }
@@ -302,19 +308,13 @@ export default {
             if (res.data != null || this.formData.createTime > res.data) {
               // 可修改
               // 保存之前字段的值
-              let oldFormData = this.$data.$f.formData()
-              // 重置
-              this.$data.$f.resetFields()
-
-              this.rule.forEach(element => {
-                this.$data.$f.updateRule(element.field, {
-                  props: { disabled: false }
-                }, true);
-                let textName = element.field
-                this.$data.$f.setValue(element.field, oldFormData['' + textName + '']);
-              });
-              this.addOrEiditFlag = 'add'
-              // this.fileEiditFlag = true
+              this.$confirm('修改将会导致已完成文书作废，是否继续？', "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              }).then(() => {
+                this.delFinishFile()
+              })
             } else {
               this.$message.error('当前模板已修改或不存在，该记录不可修改');
             }
@@ -409,7 +409,7 @@ export default {
 
       //文书带入当事人字段信息
       // this.formData.party = '111'
-      this.formData.party = this.$data.$f.getValue(this.savePartyNameId)||''
+      this.formData.party = this.$data.$f.getValue(this.savePartyNameId) || ''
       console.log(this.formData.party)
       // debugger
       // 当事人信息和企业信息选项的值
