@@ -347,6 +347,7 @@ export const mixinGetCaseApiList = {
     async com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
       console.log('addMoreData minis',addMoreData)
       console.log("新增文书",row);
+      console.log('this.isSaveLink',this.isSaveLink)
       if (this.isSaveLink) {
         this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
         console.log('row:', row)
@@ -741,7 +742,7 @@ export const mixinGetCaseApiList = {
         if(name == '立案登记'){
           routeName = 'case_handle_establish_JX'
         }
-      }else if(flowName == '江西流程'){
+      }else if(flowName == '赔补偿流程'){
         if(name == '立案登记'){
           routeName = 'case_handle_establish'
         }

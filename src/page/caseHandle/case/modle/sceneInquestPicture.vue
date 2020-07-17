@@ -68,7 +68,7 @@
               :maxLength="23"
               :disabled="fieldDisabled(propertyFeatures['note'])"
             ></el-input>
-          </el-form-item>
+          </el-form-item> 
           <!-- </span> -->
         </p>
       </el-form>
@@ -93,7 +93,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import iLocalStroage from "@/common/js/localStroage";
 import chooseOrUploadEvidence from "@/page/caseHandle/case/form/chooseOrUploadEvidence.vue";
 import {
-  queryImgBase64Api,
+  queryResizeImageApi,
 } from "@/api/caseHandle";
 export default {
   components: {
@@ -224,7 +224,7 @@ export default {
     getBase64(selpicData){
         let storageId = selpicData.picData.evPath;
        this.docData.picImgEvPath =  storageId;
-      queryImgBase64Api(storageId).then(res=>{
+      queryResizeImageApi(storageId).then(res=>{
         console.log('获取base64',res);
         if(res === false){   //生成失败
           this.$message.error('生成base64码失败！')
