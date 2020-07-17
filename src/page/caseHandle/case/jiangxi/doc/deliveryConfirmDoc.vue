@@ -248,7 +248,7 @@
             </tr>
             <tr>
               <td>
-                <p>电子文书</p>
+                <p>执法文书</p>
                 <p>送达方式</p>
               </td>
               <td colspan="7" class="color_DBE4EF">

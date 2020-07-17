@@ -144,9 +144,9 @@
           <tr>
             <td>名称</td>
             <td class="color_DBE4EF" colspan="2">
-              <el-form-item
+              <el-form-item 
                 prop="partyName"
-                :rules="fieldRules('partyName',propertyFeatures['partyName'],'',isParty)"
+                :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)"
               >
                 <el-input
                   type="textarea"
@@ -163,7 +163,7 @@
             <td colspan="3" class="color_DBE4EF">
               <el-form-item
                 prop="partyManager"
-                :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',isParty)"
+                :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
               >
                 <el-input
                   type="textarea"
