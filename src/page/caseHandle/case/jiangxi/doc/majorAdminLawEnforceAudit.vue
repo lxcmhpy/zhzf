@@ -139,15 +139,15 @@
                 <!-- <el-checkbox-group
                   v-model="docData.legalAgency"
                   :max="1"
-                 
+
                   :disabled="fieldDisabled(propertyFeatures['legalAgency'])"
                 >
                   <el-checkbox label="是">是</el-checkbox>
                   <el-checkbox label="否">否</el-checkbox>
                 </el-checkbox-group>-->
                 <el-radio-group v-model="docData.legalAgency">
-                  <el-radio label="0">是</el-radio>
-                  <el-radio label="1">否</el-radio>
+                  <el-radio label="1">是</el-radio>
+                  <el-radio label="2">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -162,8 +162,8 @@
                 :rules="fieldRules('enforcePeople',propertyFeatures['enforcePeople'])"
               >
                 <el-radio-group v-model="docData.enforcePeople">
-                  <el-radio label="1">是</el-radio>
-                  <el-radio label="2">否</el-radio>
+                  <el-radio label="3">是</el-radio>
+                  <el-radio label="4">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -178,8 +178,8 @@
                 :rules="fieldRules('lawProcedure',propertyFeatures['lawProcedure'])"
               >
                 <el-radio-group v-model="docData.lawProcedure">
-                  <el-radio label="3">是</el-radio>
-                  <el-radio label="4">否</el-radio>
+                  <el-radio label="5">是</el-radio>
+                  <el-radio label="6">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -194,8 +194,8 @@
                 :rules="fieldRules('caseFacts',propertyFeatures['caseFacts'])"
               >
                 <el-radio-group v-model="docData.caseFacts">
-                  <el-radio label="5">是</el-radio>
-                  <el-radio label="6">否</el-radio>
+                  <el-radio label="7">是</el-radio>
+                  <el-radio label="8">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -210,8 +210,8 @@
                 :rules="fieldRules('lawRegulations',propertyFeatures['lawRegulations'])"
               >
                 <el-radio-group v-model="docData.lawRegulations">
-                  <el-radio label="7">是</el-radio>
-                  <el-radio label="8">否</el-radio>
+                  <el-radio label="9">是</el-radio>
+                  <el-radio label="10">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -226,8 +226,8 @@
                 :rules="fieldRules('StatutoryAuth',propertyFeatures['StatutoryAuth'])"
               >
                 <el-radio-group v-model="docData.StatutoryAuth">
-                  <el-radio label="9">是</el-radio>
-                  <el-radio label="10">否</el-radio>
+                  <el-radio label="11">是</el-radio>
+                  <el-radio label="12">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -242,8 +242,8 @@
                 :rules="fieldRules('docSpecification',propertyFeatures['docSpecification'])"
               >
                 <el-radio-group v-model="docData.docSpecification">
-                  <el-radio label="1">是</el-radio>
-                  <el-radio label="12">否</el-radio>
+                  <el-radio label="13">是</el-radio>
+                  <el-radio label="14">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -258,8 +258,8 @@
                 :rules="fieldRules('selfRights',propertyFeatures['selfRights'])"
               >
                 <el-radio-group v-model="docData.selfRights">
-                  <el-radio label="13">是</el-radio>
-                  <el-radio label="14">否</el-radio>
+                  <el-radio label="15">是</el-radio>
+                  <el-radio label="16">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
@@ -274,8 +274,8 @@
                 :rules="fieldRules('suspicionCrime',propertyFeatures['suspicionCrime'])"
               >
                 <el-radio-group v-model="docData.suspicionCrime">
-                  <el-radio label="15">是</el-radio>
-                  <el-radio label="16">否</el-radio>
+                  <el-radio label="17">是</el-radio>
+                  <el-radio label="18">否</el-radio>
                 </el-radio-group>
               </el-form-item>
             </td>
