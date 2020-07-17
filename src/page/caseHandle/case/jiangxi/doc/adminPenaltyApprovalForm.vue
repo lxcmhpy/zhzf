@@ -257,11 +257,11 @@
               <p>法制审核机构意见</p>
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
-              {{docData.threeApproveOpinions}}
+              {{docData.fourApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.threeApprovePeo}}</p>
+                <p>签名：{{docData.fourApprovePeo}}</p>
                 <p>
-                  <span v-if="docData.threeApproveTime">{{docData.threeApproveTime}}</span>
+                  <span v-if="docData.fourApproveTime">{{docData.fourApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
