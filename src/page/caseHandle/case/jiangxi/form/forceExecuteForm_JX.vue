@@ -619,6 +619,10 @@
             this.finishRemindLetterCount += 1;
           }
         });
+        //催告书排序
+        this.remindLetterDocList.sort(function(a,b){ 
+            return Date.parse(a.createTime)-Date.parse(b.createTime) 
+        })
         this.abortEndRecoverApprovalFormList.forEach(element => {
           if (element.status == "1" || element.status == "2") {
             this.finishAbortEndRecoverApprovalCount += 1;
