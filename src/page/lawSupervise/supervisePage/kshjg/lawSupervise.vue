@@ -894,9 +894,24 @@ export default {
                   self.$nextTick();
                   self.getCountry('0',self.currentAddressObj.city)
                 }else{
-                  self.$message({
-                    type: "error",
-                    message:result.message
+                  o.getCityInfo((status, result) => {
+                    if (result && result.city) {
+                      self.currentAddressObj = result;
+                      self.lng = result.center[0];
+                      self.lat = result.center[1];
+                      self.center = result.center;
+                      self.loaded = true;
+                      self.areaObj = self.currentAddressObj.city
+                      self.$nextTick();
+                      self.getCountry('0',self.currentAddressObj.city)
+                      self.zoom = 11
+                    }else{
+                      self.getCountry('0','')
+                      self.$message({
+                        type: "error",
+                        message:result.message
+                      });
+                    }
                   });
                 }
               });
