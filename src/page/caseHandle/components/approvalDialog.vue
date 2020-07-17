@@ -41,7 +41,6 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import iLocalStroage from "@/common/js/localStroage";
   import {mapGetters} from "vuex";
-  import {approvalPdfQzJxApi } from '@/api/caseHandle.js'
   export default {
     data() {
       return {
@@ -114,7 +113,8 @@
 
 
         console.log(params);
-        let _this = this
+        let _this = this;
+        _this.visible = false;
         this.$store.dispatch("approvalPdf", params).then(
           res => {
             console.log(res);
@@ -145,7 +145,7 @@
                 date: time,
                 number: step,
               }
-              approvalPdfQzJxApi(data).then(
+              this.$store.dispatch("approvalPdfQz", data).then(
                 res => {
                   console.log(res);
                   _this.$message({
@@ -153,26 +153,15 @@
                     message: "审批通过"
                   });
                   _this.$store.commit('setApprovalState', 'approvalOver')
-                  _this.$emit("getNewData");
-                  _this.visible = false;
-                }).catch(err=>{this.$message('审核失败！')});
-              // this.$store.dispatch("approvalPdfQz", data).then(
-              //   res => {
-              //     console.log(res);
-              //     _this.$message({
-              //       type: "success",
-              //       message: "审批通过"
-              //     });
-              //     _this.$store.commit('setApprovalState', 'approvalOver')
 
-              //     _this.$emit("getNewData");
+                  _this.$emit("getNewData");
                   
-              //     _this.visible = false;
-              //   },
-              //   err => {
-              //     console.log(err);
-              //   }
-              // );
+                  
+                },
+                err => {
+                  console.log(err);
+                }
+              );
             }else{   //无签章功能
               _this.$message({
                     type: "success",
@@ -182,7 +171,7 @@
 
                   _this.$emit("getNewData");
                   
-                  _this.visible = false;
+                  // _this.visible = false;
               }
           },
           err => {

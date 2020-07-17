@@ -4,7 +4,7 @@
     <div class="print_info" id="inspectionRecord_JX_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">检查记录</div>
-        <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交检录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
+        <div class="doc_number"></div>
         <p class="p_begin">
           检查时间：
           <span class="listen_data">
@@ -333,7 +333,6 @@ export default {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
       docData: {
-        caseNumber: "",
         inspectStartTime: "",
         inspectEndTime: "",
         inspectPlace: "",
@@ -363,7 +362,6 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId
       },
       rules: {
-        caseNumber: [{ required: true, message: "请输入案号", trigger: "blur" }],
         party: [
           { required: true, message: '姓名不能为空', trigger: 'blur' },
         ],

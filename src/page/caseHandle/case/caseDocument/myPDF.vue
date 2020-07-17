@@ -12,7 +12,7 @@
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
     
-    <iframe class="print_info" :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0"></iframe>
+    <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
     <!-- 该方法不能显示签章 -->
     <!-- <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf> -->
   </div>
@@ -29,7 +29,7 @@
   import {
     updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,
   } from "@/api/caseHandle";
-  import pdf from 'vue-pdf'
+
   export default {
     data() {
       return {
@@ -48,7 +48,6 @@
       showApprovePeople,
       approvalDialog,
       casePageFloatBtns,
-      pdf
     },
     computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId','caseLinktypeId'])},
     methods: {
@@ -148,7 +147,7 @@
               this.$router.go(-1);
             }else{
               console.log('退回信息采集')
-               this.$router.go(-2);
+               this.$router.go(-3);
             }
 
           }).catch(err=>{console.log(err)})
@@ -157,7 +156,7 @@
       },
       backHuanjie() {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-        this.$router.go(-1);
+        this.$router.go(-2);
       },
 
       //获取当前是几级审批
