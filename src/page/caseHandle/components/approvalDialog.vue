@@ -114,7 +114,8 @@
 
 
         console.log(params);
-        let _this = this
+        let _this = this;
+         _this.visible = false;
         this.$store.dispatch("approvalPdf", params).then(
           res => {
             console.log(res);
@@ -154,7 +155,7 @@
                   });
                   _this.$store.commit('setApprovalState', 'approvalOver')
                   _this.$emit("getNewData");
-                  _this.visible = false;
+                  // _this.visible = false;
                 }).catch(err=>{this.$message('审核失败！')});
               // this.$store.dispatch("approvalPdfQz", data).then(
               //   res => {
@@ -182,7 +183,7 @@
 
                   _this.$emit("getNewData");
                   
-                  _this.visible = false;
+                  // _this.visible = false;
               }
           },
           err => {
