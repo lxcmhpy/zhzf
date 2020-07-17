@@ -159,7 +159,9 @@ export default {
         fileSaveType: [
           { required: true, message: '请选择', trigger: 'blur' }
         ]
-      }
+      },
+      partyNameTitle: '',
+      parsonNameTitle: '',
     }
   },
   computed: {
@@ -646,6 +648,8 @@ export default {
       let partyFlag = false
       data.forEach(element => {
         if (element.classId == this.personName) {
+          // 存名字
+          this.parsonNameTitle = element.classs
           personFlag = element;
           console.log('personFlag', personFlag)
           // 存储字段名和type
@@ -663,6 +667,7 @@ export default {
           }
         }
         if (element.classId == this.partyName) {
+          this.partyNameTitle = element.classs
           partyFlag = element;
           console.log('partyFlag', partyFlag)
           element.fieldList.forEach(item => {
@@ -692,8 +697,8 @@ export default {
           type: "radio",
           field: 'personOrParty',
           title: '当事人类型',
-          options: [{ value: "0", label: "当事人信息" },
-          { value: "1", label: "企业组织信息" },],
+          options: [{ value: "0", label: this.parsonNameTitle },
+          { value: "1", label: this.partyNameTitle }],
           value: this.formData.objectType || '0',
           // validate: [{
           //   required: item.required == 'true' ? true : false,
@@ -709,12 +714,16 @@ export default {
           },
         })
         // 当事人信息和企业组织信息字段放前面
-        data.forEach(element => {
 
-          if (element.classId == this.partyName || element.classId == this.personName) {
+        data.forEach(element => {
+          if (element.classId == this.personName) {
+            this.dealFieldData(element)
+          }
+          if (element.classId == this.partyName) {
             // 字段
             this.dealFieldData(element)
           }
+
         });
         // 其他字段
         data.forEach(element => {

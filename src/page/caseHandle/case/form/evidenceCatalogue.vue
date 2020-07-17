@@ -21,6 +21,7 @@
               <template slot-scope="scope">
           　　　　<img v-if="scope.row.evType=='图片'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"/>
           　　　　<video v-if="scope.row.evType=='视频'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"></video>
+          <iframe v-if="scope.row.evName=='非现场执法电子证据单.pdf'" class="print_info" :src="host+scope.row.evPath" frameborder="0"></iframe>
           　　</template>
             </el-table-column>
         </el-table>
