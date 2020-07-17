@@ -409,7 +409,7 @@ export default {
 
       //文书带入当事人字段信息
       // this.formData.party = '111'
-      this.formData.party = this.$data.$f.getValue(this.savePartyNameId)
+      this.formData.party = this.$data.$f.getValue(this.savePartyNameId)||''
       console.log(this.formData.party)
       // debugger
       // 当事人信息和企业信息选项的值

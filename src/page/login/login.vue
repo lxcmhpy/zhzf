@@ -6,10 +6,10 @@
         <div class="leftC">
           <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
           <div class="leftC_title">
-              <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
+            <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
           </div>
         </div>
-        <div class="rightC" v-if="!resetFlag">
+        <div class="rightC" v-if="!resetFlag&&!editFlag">
           <div class="form_box">
             <span class="title" :class="check  ? 'checkText' : '' " @click="changeType(1)">账号密码</span>
             <span class="title" :class="!check  ? 'checkText' : '' " @click="changeType(2)">二维码</span>
@@ -45,7 +45,7 @@
                   <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
-                    <div v-show="errorMessage" class="error-pwd">{{errorMessage}}</div>
+                  <div v-show="errorMessage" class="error-pwd">{{errorMessage}}</div>
                 </div>
 
                 <div>
@@ -81,6 +81,7 @@
             </center>
           </div>
         </div>
+        <!-- 重置密码 -->
         <div class="rightC" v-if="resetFlag">
           <div class="form_box">
             <span class="back">
@@ -88,7 +89,6 @@
             </span>
             <span class="title">密码重置申请</span>
             <div class="formC1" v-if="check">
-
               <el-form :model="resetForm" :rules="resetRules" ref="resetForm" class="demo-ruleForm">
                 <el-form-item prop="username">
                   <el-input placeholder="账号名" v-model="resetForm.username">
@@ -105,6 +105,49 @@
 
                 <div>
                   <el-button type="primary" @click="resetPwd('resetForm')">申请重置密码</el-button>
+                </div>
+              </el-form>
+            </div>
+          </div>
+          <div class="footer">
+            <center>
+              <span class="blue">使用教程</span>
+              |
+              <span class="blue">帮助中心</span>
+            </center>
+          </div>
+        </div>
+        <!-- 修改密码 -->
+        <div class="rightC" v-if="editFlag">
+          <div class="form_box">
+            <span class="back">
+              <el-button icon="el-icon-arrow-left" size="mini" @click="editChange(false)"></el-button>
+            </span>
+            <span class="title">修改密码</span>
+            <div class="formC1" v-if="check">
+              <el-form :model="editForm" label-width="80px" :rules="eidtRules" ref="eidtForm" class="demo-ruleForm">
+                <el-form-item prop="username" label="账号名">
+                  <el-input v-model="editForm.username">
+                  </el-input>
+                </el-form-item>
+                <el-form-item prop="password" label="原密码">
+                  <el-input type="password" v-model="editForm.password">
+                  </el-input>
+                </el-form-item>
+                <el-form-item prop="repetPassword" label="重复密码" style="display: none;">
+                  <el-input type="password" v-model="editForm.repetPassword">
+                  </el-input>
+                </el-form-item>
+                <!--<el-form-item prop="repetPassword" label="新密码">
+                  <el-input type="password" v-model="editForm.repetPassword">
+                  </el-input>
+                </el-form-item> -->
+                <el-form-item prop="newPassword" label="新密码">
+                  <el-input type="password" v-model="editForm.newPassword">
+                  </el-input>
+                </el-form-item>
+                <div>
+                  <el-button type="primary" @click="editPwd('eidtForm')">修改密码</el-button>
                 </div>
 
               </el-form>
@@ -131,15 +174,15 @@ import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import { drawCodeImage } from "@/api/login";
 import * as types from "@/store/mutation-types";
-import {menuList} from "@/common/data/menu";
+import { menuList } from "@/common/data/menu";
 // 滑动验证
 import VueSimpleVerify from 'vue-simple-verify';
 // Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
-  getCurrentUserApi,getHost
+  getCurrentUserApi, getHost
 } from "@/api/login";
 import {
-  getDictListDetailByNameApi,
+  getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi
 } from "@/api/system";
 export default {
   data() {
@@ -157,6 +200,12 @@ export default {
         nickName: "",
         enforceNo: ''
       },
+      editForm: {
+        username: "",
+        password: "",
+        newPassword: '',
+        repetPassword: '',
+      },
       rules: {
         username: [
           { required: true, message: ' ', trigger: 'blur' }
@@ -166,18 +215,38 @@ export default {
         ],
         code: [
           { required: true, message: '请完成验证', trigger: 'blur' }
-        ]
+        ],
+
       },
       resetRules: {
         username: [
           { required: true, message: '请输入账号名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: ' ', trigger: 'blur' }
         ],
         nickName: [
           { required: true, message: '请输入执法人员名称', trigger: 'blur' }
         ],
         enforceNo: [
           { required: true, message: '请输入执法证件号', trigger: 'blur' }
-        ]
+        ],
+      },
+      eidtRules: {
+        username: [
+          { required: true, message: '请输入账号名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入原密码', trigger: 'blur' }
+        ],
+        newPassword: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
+        ],
+        repetPassword: [
+          { required: true, message: '请重复输入新密码', trigger: 'blur' },
+          { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
+        ],
       },
       hasUserError: false,
       haspasswordError: false,
@@ -188,12 +257,13 @@ export default {
       success: false,
       weChatFlag: false,
       resetFlag: false,
+      editFlag: false,
       timeOutFlag: "",
       menuList: null,
       systemTitleLogin: null
     };
   },
-  computed: {...mapGetters(['systemTitle'])},
+  computed: { ...mapGetters(['systemTitle']) },
   methods: {
 
     //获取验证码
@@ -245,7 +315,6 @@ export default {
     },
     //登录
     submitLogin(formName) {
-        debugger;
       let _this = this
       // this.$store.commit(types.SET_AUTHTOKEN, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoiTWFkZSBCeSBDQVRTSUMiLCJ1c2VyX25hbWUiOiJ7XCJhdmF0YXJcIjpcImh0dHBzOi8vaS5sb2xpLm5ldC8yMDE5LzA0LzI4LzVjYzVhNzFhNmUzYjYucG5nXCIsXCJkZXBhcnRtZW50SWRcIjpcIjJcIixcImlkXCI6XCI2ODIyNjU2MzM4ODYyMDhcIixcIm1vYmlsZVwiOlwiMTg3ODIwNTkwMzhcIixcIm5pY2tOYW1lXCI6XCJnZmhkZ2huZmdqXCIsXCJvcmdhbklkXCI6XCIxXCIsXCJwYXNzd29yZFwiOlwiJDJhJDEwJHNzR0YuT0dQMTJDcldGMlJUVWNOZGUwZzUxSGgwckc2eTlHZTVGejZDd25rRWhreHV6Um95XCIsXCJwYXNzd29yZFN0YXR1c1wiOjAsXCJzZXhcIjpcIueUt1wiLFwic3RhdHVzXCI6MCxcInR5cGVcIjoxLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9Iiwic2NvcGUiOlsic2VydmVyIl0sImV4cCI6MTU4MzkzMzIyMCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdLCJqdGkiOiIwNjQzOWRkOC0yZWQ3LTQzNzUtODgzZC04ZTI3ODJhNjBmNWIiLCJjbGllbnRfaWQiOiJjYXRzaWMifQ.Btlg5kx2xQY7xCbHuODly-hNICluoD-SbrA0S7lHBEE'); //token
       // _this.getMenu();
@@ -259,21 +328,22 @@ export default {
             _this.$store.dispatch("loginIn", values).then(
               res => {
                 // 登录成功
-                  // 清除定时器
+                // 清除定时器
 
-                  // _this.getCurrentUser();
-                  _this.$router.push({
-                      name: 'home'
-                  })
+                _this.getCurrentUser();
+                // 判断是否第一次登录
+                // _this.$router.push({
+                //   name: 'home'
+                // })
                 //   _this.$util.initUser(_this);
-                  _this.success = false;
+                _this.success = false;
                 //   this.$store.commit('setShowQZBtn', true)
 
-                  //设置默认openTab
+                //设置默认openTab
                 //   this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
-                  //设置是否签章
+                //设置是否签章
 
-                  // this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
+                // this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
 
               },
               // error => {
@@ -307,14 +377,14 @@ export default {
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
-            // ...res.data,
+          // ...res.data,
           _this.menuList = res.data;
 
           // _this.menuList = [...menuList];
           console.log()
           _this.$store.commit("SET_MENU", _this.menuList);
           _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
-          _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
+          _this.$store.commit('set_Head_Active_Nav', "lawSupervise-menu-law_supervise_lawSupervise");
           _this.$router.push({ name: "law_supervise_lawSupervise" });
         },
         err => {
@@ -323,17 +393,30 @@ export default {
       )
     },
     //获取当前登录用户的信息
-    getCurrentUser(){
-        let _this =this;
-        new Promise((resolve, reject) => {
-            getCurrentUserApi().then(res=>{
-                console.log("当前用户信息",res);
-                iLocalStroage.sets('userInfo', res.data);
-                _this.getMenu();
-            },err=>{
-                console.log(err);
+    getCurrentUser() {
+      let _this = this;
+      new Promise((resolve, reject) => {
+        getCurrentUserApi().then(res => {
+          console.log("当前用户信息", res);
+          debugger
+
+          if (res.data.passwordStatus == '0') {
+            // 判断是否修改过密码
+            this.$message({ message: '当前账号首次登录，请重新设置密码', type: 'warning' });
+            this.editFlag = true
+            this.editForm.username = this.loginForm.username
+            this.editForm.password = this.loginForm.password
+          } else {
+            this.$router.push({
+              name: 'home'
             })
-       })
+            iLocalStroage.sets('userInfo', res.data);
+            _this.getMenu();
+          }
+        }, err => {
+          console.log(err);
+        })
+      })
     },
     blueUsername() {
       this.hasUserError = false;
@@ -365,13 +448,13 @@ export default {
     resetChange(flag) {
       this.resetFlag = flag;
     },
-    //修改密码
+    //重置密码
     resetPwd(resetForm) {
       let _this = this
       this.$refs[resetForm].validate((valid) => {
         if (valid) {
           console.log(_this.resetForm)
-          // 修改密码
+          // 重置密码
           _this.$store.dispatch("resetPassword", _this.resetForm).then(
             res => {
               _this.$message({
@@ -389,32 +472,73 @@ export default {
         }
       });
     },
+    // 忘记密码
+    editChange(flag) {
+      this.editFlag = flag;
+    },
+    // 修改密码
+    editPwd(editForm) {
+      this.$refs[editForm].validate((valid) => {
+        if (valid) {
+          // if (this.editForm.newPassword == this.editForm.repetPassword) {
+          hasUsernameLoginApi(this.editForm.username).then(
+            res => {
+              debugger
+              let data = {
+                id: res.id,
+                newPassword: this.editForm.newPassword,
+                oldPassword: this.editForm.password
+              }
+              updatePassWordApi(data).then(
+                res => {
+                  if (res.code == 200) {
+                    this.$message({
+                      type: "success",
+                      message: res.msg
+                    });
+                    this.editFlag=false
+                  } else {
+                    this.$message.error(res.msg);
+                  }
+                },
+                error => {
+                  this.$message.error(res.msg);
+                })
+            },
+            error => {
 
+            })
+          // } else {
+          //   this.$message.error('两次输入密码不一致');
+          // }
+        }      })
+
+    },
     //获取系统标题
     async getSystemData() {
-        // let _this = this;
-        let res = await getDictListDetailByNameApi('系统标题');
-        this.systemTitleLogin = res.data[0].name;
-        this.$store.commit('set_systemTitle',this.systemTitleLogin);
-        window.document.title = res.data[0].name;
-        //设置省份
-        this.$store.commit('setProvince',res.data[2]&&res.data[2].name?res.data[2].name:'');
-        //是否需要签章
-        this.$store.commit('setShowQZBtn', res.data[1]&&res.data[1].name == '是'? true : false)
+      // let _this = this;
+      let res = await getDictListDetailByNameApi('系统标题');
+      this.systemTitleLogin = res.data[0].name;
+      this.$store.commit('set_systemTitle', this.systemTitleLogin);
+      window.document.title = res.data[0].name;
+      //设置省份
+      this.$store.commit('setProvince', res.data[2] && res.data[2].name ? res.data[2].name : '');
+      //是否需要签章
+      this.$store.commit('setShowQZBtn', res.data[1] && res.data[1].name == '是' ? true : false)
     },
   },
   async created() {
     await getHost();
     await this.getSystemData();
   },
-   mounted() {
+  mounted() {
     this.showLogin = true;
   },
   components: {
-      VueSimpleVerify
+    VueSimpleVerify
   },
-  destroyed(){
-       clearTimeout(this.timeOutFlag);
+  destroyed() {
+    clearTimeout(this.timeOutFlag);
   }
   // created: function () {
   //   this.getCaptcha();
