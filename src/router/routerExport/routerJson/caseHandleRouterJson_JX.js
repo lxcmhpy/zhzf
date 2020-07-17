@@ -353,5 +353,14 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/form/forceExecuteForm_JX.vue")
   },
+  {
+    path: "/othermodle_JX",
+    name: "case_handle_othermodle_JX",
+    meta: {
+      title: "询问笔录",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/otherModle_JX.vue")
+  },
 ]
 

@@ -206,7 +206,7 @@
             </el-date-picker>
           </el-form-item>
         </div>
-        <div class="pager_input quzheng">备注：
+        <div v-if="isShow" class="pager_input quzheng">备注：
           <el-form-item>
             <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.note" rows="3" maxLength='30' placeholder="\"></el-input>
           </el-form-item>
@@ -274,12 +274,12 @@
 <script>
 import overflowInput from "@/page/caseHandle/case/modle/overflowInput.vue";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
-
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { getOrganDetailApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
+import { queryFlowBycaseIdApi } from "@/api/caseHandle";
 export default {
   components: {
     casePageFloatBtns
@@ -412,6 +412,7 @@ export default {
         pageDomId: 'obtanEvidence_print',
       },
       isPdf: '',
+      isShow: true,
       isParty: true, //当事人类型为个人
       needDealData:true,
       addVisible: false,
@@ -523,10 +524,22 @@ export default {
         }
     
     },
+    async initData(){
+      //查询是哪个流程
+      let currentFlow = await queryFlowBycaseIdApi(this.caseId);
+      if(currentFlow.data.flowName == '江西流程'){
+        this.isShow = false;
+      }else{
+        this.isShow = true;
+      }
+      //获取表单数据
+      this.getDocDataByCaseIdAndDocId();
+      this.isOverStatus();
+    }
   },
-  mounted() {
-    this.getDocDataByCaseIdAndDocId();
-    this.isOverStatus();
+  mounted() {},
+  created() {
+    this.initData();
   },
 }
 </script>

@@ -214,18 +214,33 @@
               <p>承办人意见</p>
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
-              <!-- {{docData.approveOpinions}} -->
               <el-form-item
-                prop="approveOpinions"
+                prop="peoOpinions"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.approveOpinions"
-                  v-bind:class="{ over_flow:docData.approveOpinions && docData.approveOpinions.length>14?true:false }"
+                  v-model="docData.peoOpinions"
+                  v-bind:class="{ over_flow:docData.peoOpinions && docData.peoOpinions.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                 ></el-input>
               </el-form-item>
+              <div class="pdf_seal">
+                <p>签名：{{docData.people}}</p>
+                <p>
+                  <span v-if="docData.approveTime">{{docData.peoTime}}</span>
+                  <span v-else>年 月 日</span>
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr>
+            <td rowspan="2">
+              <p>承办机构意见</p>
+            </td>
+            <td rowspan="2" colspan="9" class="color_DBE4EF">
+              {{docData.approveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{docData.approvePeo}}</p>
                 <p>
@@ -238,7 +253,7 @@
           <tr></tr>
           <tr>
             <td rowspan="2">
-              <p>承办机构意见</p>
+              <p>法制审核机构意见</p>
             </td>
             <td rowspan="2" colspan="9" class="color_DBE4EF">
               {{docData.secondApproveOpinions}}
@@ -246,22 +261,6 @@
                 <p>签名：{{docData.secondApprovePeo}}</p>
                 <p>
                   <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr>
-            <td rowspan="2">
-              <p>法制审核机构意见</p>
-            </td>
-            <td rowspan="2" colspan="9" class="color_DBE4EF">
-              {{docData.fourApproveOpinions}}
-              <div class="pdf_seal">
-                <p>签名：{{docData.fourApprovePeo}}</p>
-                <p>
-                  <span v-if="docData.fourApproveTime">{{docData.fourApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -326,6 +325,9 @@ export default {
         caseSituation: "",
         measureStartDate: "",
         measureEndDate: "",
+        peoOpinions: "",
+        people: "",
+        peoTime: "",
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
@@ -334,10 +336,7 @@ export default {
         secondApproveTime: "",
         threeApproveOpinions: "",
         threeApprovePeo: "",
-        threeApproveTime: "",
-        fourApproveOpinions: "",
-        fourApprovePeo: "",
-        fourApproveTime: ""
+        threeApproveTime: ""
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交

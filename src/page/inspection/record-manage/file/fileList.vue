@@ -15,7 +15,7 @@
           <el-table-column prop="docName" label="记录文书" align="center"></el-table-column>
           <el-table-column prop="updateTime" label="保存日期" align="center">
             <template slot-scope="scope">
-              {{scope.row.updateTime.substring(0,10)}}
+              {{scope.row.updateTime?scope.row.updateTime.substring(0,10):''}}
             </template>
           </el-table-column>
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
@@ -260,22 +260,18 @@ export default {
 
         this.modleSaveList = []
         let data = {
-          title: this.searchModleName,
-          templateUserId: iLocalStroage.gets("userInfo").id,
-          organId: iLocalStroage.gets("userInfo").organId,
+          docName: this.searchModleName,
+          orderId: this.inspectionOrderId,
         }
         getDocListByName(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
-              this.modleList = [{ templateList: [] }];
+              this.modleList = res.data||[]
               if (res.data.length != 0) {
-                this.modleList[0].templateList = res.data
-                this.modleList.forEach(element => {
-                  element.showFlag = true
-                });
+
               } else {
-                this.$message({ message: '暂无内容', type: 'warning' });
+                // this.$message({ message: '暂无内容', type: 'warning' });
               }
             }
           },
