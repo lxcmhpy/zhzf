@@ -71,7 +71,7 @@
           </div>
           <label v-if="afddFlag" class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label-width="0">
+            <el-form-item v-if="afddFlag" label-width="20px">
               <el-select v-model="inforForm.routeId" placeholder="本机构路线编号" filterable allow-create>
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
@@ -94,12 +94,12 @@
             </el-form-item>
           </div>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label="K">
+            <el-form-item v-if="afddFlag" label="K" label-width="20px">
               <el-input v-model="inforForm.kilometre" placeholder="公里数"></el-input>
             </el-form-item>
           </div>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label="+" label-width="30px">
+            <el-form-item v-if="afddFlag" label="+" label-width="20px">
               <el-input v-model="inforForm.metre" placeholder="米数" style="vertical-align: middle;">
                 <template slot="append">m</template>
               </el-input>
