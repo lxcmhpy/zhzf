@@ -19,7 +19,8 @@
         <el-table bordercolor="black" width="100%" cellspacing="0" :data="eviList">
             <el-table-column prop="evPath" align="center">
               <template slot-scope="scope">
-          　　　　<img :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"/>
+          　　　　<img v-if="scope.row.evType=='图片'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"/>
+          　　　　<video v-if="scope.row.evType=='视频'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"></video>
           　　</template>
             </el-table-column>
         </el-table>
@@ -114,6 +115,7 @@ export default {
         let _this = this
         this.$store.dispatch("getEvidence", data).then(res => {
             _this.eviList = res.data.records;
+            debugger
             console.log("111",_this.eviList);
             this.$emit("getEvidenceEmit");
         });
