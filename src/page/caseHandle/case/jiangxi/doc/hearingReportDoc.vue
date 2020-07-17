@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="print_box">
-      <div id="subOutputRank-print" class="print_info">
+      <div id="hearingReportDoc-print" class="print_info">
         <el-form
           :rules="rules"
           ref="docForm"
@@ -204,7 +204,6 @@
         @saveData="saveData"
         @backHuanjie="submitData"
       ></casePageFloatBtns>
-      <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
     </div>
   </div>
 </template>
@@ -305,7 +304,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "subOutputRank-print"
+        pageDomId: "hearingReportDoc-print"
       },
       needDealData: true,
       propertyFeatures: "" //字段属性配置
@@ -313,20 +312,6 @@ export default {
   },
   computed: {
     ...mapGetters(["caseId"]),
-    defaultStartTime() {
-      let a = new Date();
-      return a.getHours() + ":" + a.getMinutes() + ":" + "00";
-    },
-    enforceEndTimeRange() {
-      console.log();
-      let b = "10:00:00";
-      if (this.enforceStartTime) {
-        // alert(111);
-        b = this.enforceStartTime.split(" ")[1];
-      }
-
-      return b + " - 23:59:59";
-    }
   },
   mixins: [mixinGetCaseApiList],
   inject: ["reload"],
@@ -347,7 +332,6 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      // this.printContent()
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -373,159 +357,15 @@ export default {
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    // 多行编辑
-    overFlowEdit() {
-      // this.$refs.overflowInputRef.showModal(0, "");
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.docData.illegalFactsEvidence = edit;
-    },
-    getDataAfter() {
-      this.staffList = this.docData.staff.split(",");
-      this.docData.staff1 = this.docData.staff.split(",")[0];
-      this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
-      if (this.staffList.length == 2) {
-        this.docData.staff2 = this.docData.staff.split(",")[1];
-        this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
-      }
-      this.docData.readState =
-        this.docData.readState == "" ? [] : this.docData.readState;
-      let dailiData = {};
-      if (this.docData.partyType == "1") {
-        //当事人类型为个人
-        dailiData = {
-          name: this.docData.party,
-          sex: this.docData.partySex,
-          zhengjianNumber: this.docData.partyIdNo,
-          relationWithCase: "当事人",
-          company: this.docData.partyUnitPosition,
-          position: this.docData.partyUnitPosition,
-          tel: this.docData.partyTel,
-          adress: this.docData.partyAddress
-        };
-        this.originalDocData = JSON.parse(JSON.stringify(dailiData));
-      } else if (this.docData.partyType == "2") {
-        //当事人类型为企业
-        dailiData = JSON.parse(this.docData.agentPartyEcertId)[0];
-        console.log("代理人信息", dailiData);
-        this.originalDocData = JSON.parse(JSON.stringify(dailiData));
-      }
-      //标识 1 有自动带入信息：当姓名的内容修改时，清空自动带入的其他指标内容；2 若无自动带入信息，则修改姓名时，其他指标不清空
-      this.daiRuscenePeopelSex = dailiData.sex !== "" ? true : false;
-      this.daiRuscenePeopelIdNo = dailiData.zhengjianNumber ? true : false;
-      this.daiRuscenePeopeRelation = dailiData.relationWithCase ? true : false;
-      this.daiRuscenePeopeUnitPosition =
-        dailiData.company || dailiData.position ? true : false;
-      this.daiRuscenePeopeTel = dailiData.tel ? true : false;
-      this.daiRuscenePeopeAddress = dailiData.adress ? true : false;
-      this.setDataForScenePelple(true, dailiData);
-    },
-    //修改人员
-    changeStaff1(val) {
-      let staffIndex = this.docData.staff.split(",").indexOf(val);
-      this.docData.certificateId1 = this.docData.certificateId.split(",")[
-        staffIndex
-      ];
-    },
-    changeStaff2(val) {
-      let staffIndex = this.docData.staff.split(",").indexOf(val);
-      this.docData.certificateId2 = this.docData.certificateId.split(",")[
-        staffIndex
-      ];
-      console.log(staffIndex);
-    },
-    changeRelationWithCase(val) {
-      console.log(val, this.originalDocData);
-      let dailiData = this.originalDocData;
-      if (val == "当事人") {
-        this.docData.scenePeopelName = dailiData.name;
-        this.docData.scenePeopelSex = Number(dailiData.sex);
-        this.docData.scenePeopelIdNo = dailiData.zhengjianNumber;
-        this.docData.scenePeopeRelation = dailiData.relationWithCase;
-        this.docData.scenePeopeUnitPosition = dailiData.company;
-        this.docData.scenePeopeAddress = dailiData.adress;
-        this.docData.scenePeopeTel = dailiData.tel;
-      } else {
-        //不为当事人时指标不清空
-        this.docData.scenePeopelName = "";
-        this.docData.scenePeopelSex = "";
-        this.docData.scenePeopelIdNo = "";
-        this.docData.scenePeopeRelation = "";
-        this.docData.scenePeopeUnitPosition = "";
-        this.docData.scenePeopeAddress = "";
-        this.docData.scenePeopeTel = "";
-      }
-    },
-    //当姓名的内容修改时，清空自动带入的其他指标内容
-    changeScenePeopelName(val) {
-      console.log(val);
-      if (val == this.originalDocData.name) {
-        this.setDataForScenePelple(true, this.originalDocData);
-      } else {
-        this.setDataForScenePelple(false);
-      }
-    },
-    //现场人员信息赋值
-    setDataForScenePelple(flag, dailiData = {}) {
-      if (flag) {
-        this.docData.scenePeopelName = dailiData.name;
-        this.docData.scenePeopelSex = Number(dailiData.sex);
-        this.docData.scenePeopelIdNo = dailiData.zhengjianNumber;
-        this.docData.scenePeopeRelation = dailiData.relationWithCase;
-        this.docData.scenePeopeUnitPosition = dailiData.company;
-        this.docData.scenePeopeAddress = dailiData.adress;
-        this.docData.scenePeopeTel = dailiData.tel;
-      } else {
-        //1 有自动带入信息：当姓名的内容修改时，清空自动带入的其他指标内容；2 若无自动带入信息，则修改姓名时，其他指标不清空
-        this.docData.scenePeopelSex = this.daiRuscenePeopelSex
-          ? ""
-          : this.docData.scenePeopelSex;
-        this.docData.scenePeopelIdNo = this.daiRuscenePeopelIdNo
-          ? ""
-          : this.docData.scenePeopelIdNo;
-        this.docData.scenePeopeRelation = this.daiRuscenePeopeRelation
-          ? ""
-          : this.docData.scenePeopeRelation;
-        this.docData.scenePeopeUnitPosition = this.daiRuscenePeopeUnitPosition
-          ? ""
-          : this.docData.scenePeopeUnitPosition;
-        this.docData.scenePeopeAddress = this.daiRuscenePeopeAddress
-          ? ""
-          : this.docData.scenePeopeAddress;
-        this.docData.scenePeopeTel = this.daiRuscenePeopeTel
-          ? ""
-          : this.docData.scenePeopeTel;
-      }
-    },
-    //获取执法人员
-    getLawOfficer() {
-      let data = {
-        caseBasicInfoId: this.caseId,
-        typeId: this.$route.params.docId
-      };
-      findCaseAllBindPropertyApi(data).then(
-        res => {
-          console.log(res);
-          let data2 = JSON.parse(res.data.propertyData);
-          this.staffList = data2.staff.split(",");
-        },
-        err => {
-          console.length(err);
-        }
-      );
-    }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
-    this.getLawOfficer();
   }
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/*  @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 
 .espacle {
   textarea {
@@ -535,14 +375,11 @@ export default {
     text-indent: 0px !important;
   }
 }
-
-// #subOutputRank-print .el-date-editor--datetime{
-//   width: 200px;
-// }
-#subOutputRank-print {
+#hearingReportDoc-print {
   .overflow_lins_style .span_bg {
     display: block;
   }
+  .overflow_lins_textarea
   .overflow_lins_style .overflow_lins .overflow_lins_textarea {
     width: calc(100% - 10px);
     top: 0;
@@ -576,11 +413,12 @@ export default {
     .overflow_lins_textarea {
       padding-top: 4px;
       textarea {
-        line-height: 24px !important;
+        text-indent: 29em;
+        line-height: 25px !important;
       }
     }
     span.overflow_lins_textarea {
-      line-height: 24px;
+      line-height: 25px;
     }
     .span_bg {
       box-sizing: border-box;
