@@ -24,12 +24,12 @@
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
               <span v-if="scope.row.status=='完成'">
                 <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-                <el-button :disabled="editFlag" type="text" @click="delModle(scope.row.id)">删除</el-button>
+                <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button>
               </span>
               <span v-else>
-                <el-button :disabled="editFlag" @click="editRecord(scope.row)" type="text">编辑</el-button>
+                <el-button :disabled="!inspectionFileEdit" @click="editRecord(scope.row)" type="text">编辑</el-button>
                 <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-                  <el-button :disabled="editFlag" type="text">上传</el-button>
+                  <el-button :disabled="!inspectionFileEdit" type="text">上传</el-button>
                 </el-upload>
               </span>
             </template>
@@ -68,11 +68,11 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       fileList: [],
-      editFlag:true
+      editFlag: true
     }
   },
   computed: {
-    ...mapGetters(["inspectionOrderId"])
+    ...mapGetters(["inspectionOrderId", "inspectionFileEdit"])
   },
   methods: {
     addNewModle() {
@@ -102,7 +102,7 @@ export default {
     // 选择模板
     editRecord(item) {
       // 写文书
-      if (item.pdfStorageId) {
+      if (item.pdfStorageId && item.status != '暂存') {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: "inspection_myPDF",
@@ -123,11 +123,11 @@ export default {
     // 查看模板
     viewRecord(item) {
       this.$store.commit("set_inspection_fileId", item.id)
-
+      debugger
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: "inspection_myPDF",
-        params: { id: item.id, storagePath: item.pdfStorageId }
+        params: { id: item.id, storagePath: item.pdfStorageId || item.picStorageId }
       });
 
     },
@@ -334,11 +334,6 @@ export default {
   mounted() {
     this.searchList();
     // this.searchSaveList();
-    console.log(this.$route.params.edit)
-    debugger
-    if(this.$route.params.edit){
-      this.editFlag=false
-    }
   }
 }
 </script>

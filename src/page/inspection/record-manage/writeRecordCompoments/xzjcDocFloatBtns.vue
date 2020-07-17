@@ -2,27 +2,27 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px">
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]">
-      <i class="iconfont law-upload"></i>
-      <br />提交
+    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]&&inspectionFileEdit">
+      <i class="iconfont law-save"></i>
+      <br />保存
     </el-button>
     <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
       <i class="iconfont law-save"></i>
       <br />保存
     </el-button>
-    <el-button type="primary" @click="cancleSub(0)" v-if="formOrDocData.showBtn[2]">
+    <el-button type="primary" @click="cancleSub(0)" v-if="formOrDocData.showBtn[2]&&inspectionFileEdit">
       <i class="iconfont law-save"></i>
       <br />撤销
     </el-button>
-    <el-button type="primary" @click="saveDataBtn(0)" v-if="formOrDocData.showBtn[3]">
+    <el-button type="primary" @click="submitDataBtn(0)" v-if="formOrDocData.showBtn[3]">
       <i class="iconfont law-save"></i>
       <br />暂存
     </el-button>
-    <el-button type="primary" @click="delDataBtn(0)" v-if="formOrDocData.showBtn[4]">
+    <el-button type="primary" @click="delDataBtn(0)" v-if="formOrDocData.showBtn[4]&&inspectionFileEdit">
       <i class="iconfont law-save"></i>
       <br />删除
     </el-button>
-    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
+    <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn &&inspectionFileEdit">
       <i class="iconfont law-approval"></i>
       <br />签章
     </el-button>
@@ -44,7 +44,7 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['inspectionFileId', 'docId', 'showQZBtn']) },
+  computed: { ...mapGetters(['inspectionFileId', 'docId', 'showQZBtn','inspectionFileEdit']) },
   methods: {
     //   打印方法
     async printContent() {
@@ -196,8 +196,7 @@ export default {
       this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {
-      // debugger
-      // 需完善
+      debugger
       if (handleType == 1 || handleType == 0) {
         // 保存
         // 隐藏保存、签章按钮，显示撤销、删除按钮
@@ -248,7 +247,8 @@ export default {
       );
     },
     delDataBtn() {
-      delDocumentById(this.$route.params.docId).then(
+      debugger
+      delDocumentById(this.inspectionFileId).then(
         res => {
           if (res.code == 200) {
             this.$message({
@@ -258,7 +258,7 @@ export default {
             this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
             this.$router.push({
               name: 'inspection_inspectionFiles',
-              // params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+              params: { id: this.inspectionOrderId }
               // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
             });
 

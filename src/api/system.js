@@ -1223,3 +1223,28 @@ export function findListByUserIdAndParentId(userId, parenId) {
         cancelToken: setCancelSource()
     });
 }
+
+//修改密码
+export  function updatePassWordApi(data)  {
+  data = vm.$qs.stringify(data);
+  return  request({
+    url:  "/system/sys/user/updatePassword",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType: 'loadMain',
+    baseUrlType:  'XZJC_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
+//验证用户名是否重复-首页用
+export  function  hasUsernameLoginApi(name)  {
+  return request({
+    url: "/system/sys/user/findExistByUserName/" + name,
+    method: "get",
+    showloading: true,
+    loadingType:'loadMain',
+    cancelToken: setCancelSource()
+  });
+}

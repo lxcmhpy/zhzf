@@ -12,8 +12,9 @@
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
     
-    <el-button @click="$refs.pdf[0].print()">打印</el-button>
-    <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf>
+    <iframe class="print_info" :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0"></iframe>
+    <!-- 该方法不能显示签章 -->
+    <!-- <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf> -->
   </div>
 </template>
 <script>
@@ -204,15 +205,8 @@
           }
         }
         console.log(url);    
-        var loadingTask = pdf.createLoadingTask(url)  
-        loadingTask.promise.then(pdf => {
-          console.log('pdf.numPages',pdf.numPages)
-          console.log('pdf.pdfUrl',loadingTask)
-          this.pdfUrl =loadingTask;
-          this.numPages = pdf.numPages;
-        }).catch((err) => {
-          this.$message('pdf加载失败')
-        })
+        this.pdfUrl =url;
+    
       },
 
     },

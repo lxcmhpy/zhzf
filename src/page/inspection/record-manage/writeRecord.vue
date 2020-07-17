@@ -245,7 +245,13 @@ export default {
           _this.defautFileList = res.data.attachedList
           // 设置文件按钮是否可用
           _this.fileEiditFlag = res.data.status == '保存' ? true : false
-
+          debugger
+          if (res.data.createUser == iLocalStroage.gets("userInfo").nickName) {
+            this.$store.commit("set_inspection_fileEdit", _this.fileEiditFlag);
+          } else {
+            debugger
+            this.$store.commit("set_inspection_fileEdit", false);
+          }
         },
         error => {
         })
@@ -257,7 +263,7 @@ export default {
     // 修改
     editRecord() {
       console.log('this.formData', this.formData)
-      debugger
+      // debugger
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
       } else {
@@ -272,13 +278,12 @@ export default {
     },
     // 删除已完成文书
     delFinishFile() {
-      debugger
       delDocumentModifyOrderById(this.$route.params.id).then(
         res => {
           if (res.code == 200) {
             this.editMethod()
             // 更新侧边栏
-            this.formOrDocData.pageDomId=this.$route.params.id
+            this.formOrDocData.pageDomId = this.$route.params.id
           } else {
             this.$message.error(res.msg);
           }
@@ -294,12 +299,17 @@ export default {
             console.log('row.createTime <= res.data', this.formData.createTime, res.data)
             if (res.data != null || this.formData.createTime > res.data) {
               // 可修改
+              // 保存之前字段的值
+              let oldFormData = this.$data.$f.formData()
+              // 重置
               this.$data.$f.resetFields()
+
               this.rule.forEach(element => {
-                console.log(element)
                 this.$data.$f.updateRule(element.field, {
                   props: { disabled: false }
                 }, true);
+                let textName = element.field
+                this.$data.$f.setValue(element.field, oldFormData['' + textName + '']);
               });
               this.addOrEiditFlag = 'add'
               // this.fileEiditFlag = true
@@ -410,7 +420,6 @@ export default {
           // console.log(res)
           if (res.code == 200) {
             this.addOrEiditFlag = 'view'
-            this.fileEiditFlag = res.data.status == '保存' ? true : false
             this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
             this.$message({
               type: "success",
@@ -433,10 +442,8 @@ export default {
             } else {
               this.$store.commit("set_inspection_orderId", res.data);
               this.fileEiditFlag = true
-              debugger
-
+              this.$store.commit("set_inspection_fileEdit", true);
             }
-
           } else {
             this.$message.error(res.msg);
           }
@@ -471,7 +478,6 @@ export default {
               item.text = item.text.join(',')
             }
           });
-
         });
         submitData = JSON.stringify(submitData)
         this.formData.layout = submitData

@@ -30,6 +30,10 @@
             }
         }
     }
+    .el-tree>.el-tree-node {
+        min-width: 100%;
+        display: inline-block;
+    }
     .el-tree{
         background: #F5F7FB;
         font-size: 12px;

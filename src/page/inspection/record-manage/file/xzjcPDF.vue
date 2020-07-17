@@ -1,5 +1,6 @@
 <template>
   <div class="print_box" style="width:790px;margin:0 auto;">
+    <!-- {{storagePath}} -->
     <!-- <div class="print_info"> -->
     <!-- <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
            style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item"
@@ -42,7 +43,7 @@ export default {
       docFinishQZ: false, //环节下文书是否已完成签章
       pdfUrl: '',
       numPages: 0,
-      pdfShowUrl:''
+      pdfShowUrl: ''
     };
   },
   // mixins: [mixinGetCaseApiList],
@@ -76,17 +77,17 @@ export default {
           res => {
             if (res.code == 200) {
               // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.pdfPath)
-              _that.storagePath = res.data.pdfPath
+              _that.storagePath = res.data.pdfPath || res.data.picPath
               _that.pdfShowUrl = res.data.pdfPath || res.data.picPath
               // 外网专用，发布需要修改
               // if(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST)
-              _that.pdfShowUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.pdfStorageId || res.data.picStorageId
-              _that.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.pdfStorageId
-              // debugger
+              _that.pdfShowUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + (res.data.pdfStorageId || res.data.picStorageId)
+              _that.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + (res.data.pdfStorageId || res.data.picStorageId)
+              debugger
               console.log('_that.storagePath', _that.storagePath)
               console.log('_that.storagePath222', this.$route.params.storagePath)
               if (res.data.pdfStorageId) {
-                this.getFileStream(res.data.pdfStorageId)
+                // this.getFileStream(res.data.pdfStorageId)
               } else {
                 this.formOrDocData.showBtn = [false, false, true, false, true, false] //提交、保存、撤销、暂存、删除、签章
               }

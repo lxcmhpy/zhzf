@@ -8,6 +8,7 @@
         </el-input>
         <div class="treeBox">
           <el-tree
+            highlight-current
             class="filter-tree"
             :data="organData"
             :props="defaultProps"
@@ -135,9 +136,9 @@
           width="40%"
           @close="closeDialog"
           :close-on-click-modal="false">
-          <el-form 
-            :model="addForm" 
-            ref="addForm" 
+          <el-form
+            :model="addForm"
+            ref="addForm"
             :rules="rules"
             label-width="100px"
             class="addOrganClass" >
@@ -198,8 +199,8 @@
                     v-model="deviceDate"
                     unlink-panels
                     type="daterange"
-                    value-format="yyyy-MM-dd HH:mm:ss" 
-                    format="yyyy-MM-dd" 
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    format="yyyy-MM-dd"
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期">
@@ -208,8 +209,8 @@
               </el-row>
               <el-row>
                 <el-form-item label="设备状态">
-                  <el-switch 
-                    v-model="addForm.status" 
+                  <el-switch
+                    v-model="addForm.status"
                     :active-value=0
                     :inactive-value=1
                     :disabled="this.formReadOnly"
@@ -347,7 +348,7 @@ import iLocalStroage from '@/common/js/localStroage';
           {label:'非现场检测设备',id:'01',icon:'icon_zhifadian'},
           {label:'执法车辆',id:'02',icon:'icon_cl11'},
           {label:'执法船舶',id:'03',icon:'icon_cb11'}], */
-        typeData:[],  
+        typeData:[],
         defaultProps: {
           children: "children",
           label: "label"

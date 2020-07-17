@@ -884,6 +884,7 @@ export default {
               // o 是高德地图定位插件实例
               o.getCurrentPosition((status, result) => {
                 if (result && result.position) {
+                  console.log(result.addressComponent)
                   self.currentAddressObj = result.addressComponent;
                   self.lng = result.position.lng;
                   self.lat = result.position.lat;
@@ -892,6 +893,11 @@ export default {
                   self.areaObj = self.currentAddressObj.city
                   self.$nextTick();
                   self.getCountry('0',self.currentAddressObj.city)
+                }else{
+                  self.$message({
+                    type: "error",
+                    message:result.message
+                  });
                 }
               });
             }

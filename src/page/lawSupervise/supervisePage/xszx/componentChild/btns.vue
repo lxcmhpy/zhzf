@@ -304,8 +304,9 @@ export default {
             saveAndUpdate(_this.obj).then(
                 res => {
                   _this.$store.dispatch("deleteTabs", _this.$route.name);
+                  let routerData = {tabActiveValue:'无效信息'}
                   _this.$router.push({
-                      name: 'law_supervise_offSiteManage'
+                      name: 'law_supervise_offSiteManage',params: routerData
                   })
                 },
                 error => {
