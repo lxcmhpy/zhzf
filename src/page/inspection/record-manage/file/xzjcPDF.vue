@@ -1,6 +1,6 @@
 <template>
   <div class="print_box" style="width:790px;margin:0 auto;">
-    {{storagePath}}
+    <!-- {{storagePath}} -->
     <!-- <div class="print_info"> -->
     <!-- <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
            style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item"
