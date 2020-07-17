@@ -243,15 +243,20 @@ export default {
     saveData(handleType) {
       //参数  提交类型 、
       // this.printContent();
-      this.formData.status = '未完成'
 
-      // debugger
+      debugger
       this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
       // this.docData.docContent = JSON.stringify(this.formData)
       console.log("参数", this.docData)
+      if (handleType == 1) {
+        this.docData.status = '未完成'
+
+      } else {
+        this.docData.status = '暂存'
+      }
       // this.docData.createTime=''
       // this.docData.updateTime=''
-      debugger
+      // debugger
       saveOrUpdateDocument(this.docData).then(
         res => {
           if (res.code == 200) {
@@ -261,20 +266,28 @@ export default {
             });
             // this.$emit("getAddModle", 'sucess');
             // 保存到pdf服务器
-            debugger
+            // debugger
             // res.data.storagePath='http://124.192.215.10:9332/14,209459bcf86c'
-            this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-            this.$router.push({
-              name: "inspection_myPDF",
-              params: { docId: this.inspectionFileId, storagePath: res.data.storagePath }
-            });
             if (handleType == 1) {
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$router.push({
+                name: "inspection_myPDF",
+                params: { docId: this.inspectionFileId, storagePath: res.data.storagePath }
+              });
               this.storagePath = res.data.storagePath
               // 隐藏保存、签章按钮，显示撤销、删除按钮
               this.$set(this.formOrDocData.showBtn, 5, false)
               this.$set(this.formOrDocData.showBtn, 1, false)
               this.$set(this.formOrDocData.showBtn, 2, true)
               this.$set(this.formOrDocData.showBtn, 4, true)
+            } else {
+              // 暂存
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$router.push({
+                name: 'inspection_inspectionFiles',
+                params: { id: this.inspectionOrderId }
+                // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+              });
             }
           } else {
             this.$message.error(res.msg);
@@ -286,7 +299,7 @@ export default {
     },
     saveDataStatus(handleType) {
       console.log(this.$route.params)
-      debugger
+      // debugger
       // 保存-修改状态
       changeFileStatus(this.inspectionFileId).then(
         res => {

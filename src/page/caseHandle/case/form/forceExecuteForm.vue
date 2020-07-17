@@ -425,10 +425,10 @@
         }
         if (canGotoNext && approvalPass) {
           console.log('下一环节')
-          // this.com_goToNextLinkTu(
-          //   this.caseId,
-          //   this.caseLinkDataForm.caseLinktypeId
-          // );
+          this.com_goToNextLinkTu(
+            this.caseId,
+            this.caseLinkDataForm.caseLinktypeId
+          );
         } else if(!canGotoNext){
           this.getUnfinishDoc();
           this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
