@@ -147,14 +147,13 @@
                     console.log(res)
                     _this.gradeList = res.data;
                 })*/
-
+                let _this = this;
                 getDictListDetailByNameApi("公路行政级别").then(res=>{
                     console.log(res)
                     _this.levelList = res.data;
                 })
 
                 this.visible = true;
-                let _this = this;
                 this.handelType = type;
                 if (type == 0) {
                     this.dialogTitle = "添加路线信息";
@@ -203,11 +202,11 @@
             },
             //新增案件类型 修改案件类型
             addOrUpdateRoute(formName) {
-                debugger
+                // debugger
                 let _this = this
                 this.$refs[formName].validate(valid => {
                     if (valid) {
-                        if (_this.handelType) {
+                        if (_this.handelType === 2) {
                             //修改
                             _this.addOrUpdateRouteForm.id= this.editRouteId;
                             console.log("要修改的路线信息",_this.addOrUpdateRouteForm);
@@ -226,7 +225,7 @@
                                 }
                             );
                         } else {
-                            _this.$refs["addOrUpdateRouteForm"].resetFields();
+                            // _this.$refs["addOrUpdateRouteForm"].resetFields();
                             _this.$store.dispatch("addOrUpdateRoute", _this.addOrUpdateRouteForm).then(
                                 res => {
                                     console.log("路线信息", res);
