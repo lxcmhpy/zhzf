@@ -31,7 +31,7 @@ import {
 } from "@/api/caseHandle";
 
 import { getDocumentById, } from "@/api/Record";
-import pdf from 'vue-pdf'
+// import pdf from 'vue-pdf'
 export default {
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
     //   showApprovePeople,
     //   approvalDialog,
     xzjcDocFloatBtns,
-    pdf
+    // pdf
   },
   computed: { ...mapGetters(['caseId', 'docId', 'approvalState', 'docDataId', 'caseLinktypeId']) },
   methods: {

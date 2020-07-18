@@ -192,7 +192,7 @@ export default {
   methods: {
     //继续办理  跳转流程图
     continueHandle() {
-      this.$store.dispatch("deleteTabs", "caseInfo");
+      this.$store.dispatch("deleteTabs", "case_handle_caseInfo");
       this.$store.commit("setApprovalState", "");
       this.$router.push({
         name: "case_handle_flowChart"
@@ -200,7 +200,7 @@ export default {
     },
     //案件审批
     approvalCase() {
-      this.$store.dispatch("deleteTabs", "caseInfo");
+      this.$store.dispatch("deleteTabs", "case_handle_caseInfo");
       console.log(this.caseInfo);
       let approvalLink = "";
       let docId = "";

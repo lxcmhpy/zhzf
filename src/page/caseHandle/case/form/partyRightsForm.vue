@@ -139,7 +139,7 @@
                     <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
                     <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
                   </span>
-                  <span v-if="scope.row.status == ''" class="tableHandelcase">
+                  <span v-if="scope.row.status === ''" class="tableHandelcase">
                     <!-- 无状态 -->
                     <i class="iconfont law-add" @click="viewDoc(scope.row)"></i>
                   </span>

@@ -234,7 +234,8 @@
       }
 
       &>div:nth-child(2) {
-        min-width  : 400px;
+        /* min-width  : 400px; */
+        width: calc(100% - 300px);
         margin-left: 100px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -726,5 +727,9 @@
   margin-bottom      : 18px !important;
   border-bottom: 1px dashed #DFDFDF;
 }
-
+.lable-height18px{
+  .el-form-item__label{
+    line-height: 18px;
+  }
+}
 

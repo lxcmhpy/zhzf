@@ -62,14 +62,25 @@
             </el-form-item>
           </span>
         </p>
-        <p class="p_begin">
-          出席人员姓名：
+        <!-- <p class="p_begin">
+          出席人员姓名及职务：
           <span>
             <el-form-item prop="presentMembersName" style="width: 503px;" :rules="fieldRules('presentMembersName',propertyFeatures['presentMembersName'])">
-              <el-input v-model="docData.presentMembersName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['presentMembersName'])"></el-input>
+              <el-input v-model="docData.presentMembersName" type='textarea' maxLength='90' rows="2" :disabled="fieldDisabled(propertyFeatures['presentMembersName'])"></el-input>
             </el-form-item>
           </span>
-        </p>
+        </p> -->
+        <div class="overflow_lins_style">
+          <div class="overflow_lins">
+            <el-form-item prop="presentMembersName" :rules="fieldRules('presentMembersName',propertyFeatures['presentMembersName'])">
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.presentMembersName" rows="2" maxLength='90'
+              :disabled="fieldDisabled(propertyFeatures['presentMembersName'])"></el-input>
+              <span class="overflow_describe" style="text-indent: 0">出席人员姓名及职务：</span>
+              <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+            </el-form-item>
+          </div>
+        </div>
         <!-- <p class="side_right_indent">
           <span class="side_right" @click="overFlowEdit">
             <el-form-item prop="illegalFactsEvidence">
@@ -87,7 +98,7 @@
             <el-form-item prop="discussionRecord" :rules="fieldRules('discussionRecord',propertyFeatures['discussionRecord'])">
               <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90'
               :disabled="fieldDisabled(propertyFeatures['discussionRecord'])"></el-input>
-              <span class="overflow_describe">讨论记录：</span>
+              <span class="overflow_describe" style="text-indent: 0">讨论记录：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
@@ -121,7 +132,7 @@
             <el-form-item prop="conclussionOpinion" :rules="fieldRules('conclussionOpinion',propertyFeatures['conclussionOpinion'])">
               <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.conclussionOpinion" rows="3" maxLength='90'
               :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"></el-input>
-              <span class="overflow_describe">结论性意见：</span>
+              <span class="overflow_describe" style="text-indent: 0">结论性意见：</span>
               <span class="span_bg"  style="margin-top: 8px;">&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
@@ -132,7 +143,9 @@
         <el-row :gutter="20">
           <el-col :span="12">
             出席人员签名：
-            <span class="write_line width250"></span>
+            <span class="write_line width620"></span>
+            <span class="write_line width620"></span>
+            <span class="write_line width620"></span>
           </el-col>
         </el-row>
       </el-form>
@@ -225,7 +238,7 @@ export default {
           { required: true, message: '请输入记录人', trigger: 'blur' },
         ],
         presentMembersName: [
-          { required: true, message: '请输入出席人员姓名', trigger: 'blur' },
+          { required: true, message: '请输入出席人员姓名及职务', trigger: 'blur' },
         ],
         discussionRecord: [
           { required: true, message: '请输入讨论记录', trigger: 'blur' },

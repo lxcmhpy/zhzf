@@ -50,6 +50,7 @@
         visible: false,
         caseInfo: "",
         approvalPeopleList: [],
+        handleperson:{},
       };
     },
     inject: ["reload"],
@@ -75,8 +76,19 @@
         this.$store.dispatch("getApprovePeople", data).then(
           res => {
             let data = res.data;
+            console.log('审批人员',res.data)
+        
             data.splice(0, 1);
             _this.approvalPeopleList = data;
+            
+            _this.approvalPeopleList.forEach((item,index)=>{
+              let ids=[];
+              item.approveUserVo.forEach(user=>{
+                ids.push(user.userId)
+              })
+              this.handleperson['userIds'+(index+1)] = ids.join(',');
+            })
+            console.log('this.handleperson',this.handleperson)
           },
           err => {
             console.log(err);
@@ -99,7 +111,8 @@
           caseLinktypeId:this.caseLinktypeId,
           //单文书环节生成pdf后拿不到docDataId需要给它置空，此时前2个参数必须有值
           docId: huanjieData.data.isPdf == 0 ? '' : this.docDataId,
-          storageId:this.docPdfStorageId
+          storageId:this.docPdfStorageId,
+          handlePerson:JSON.stringify(this.handleperson)
        }
         console.log('提交审批传的参数', data)
         try{
@@ -108,17 +121,18 @@
               type: "success",
               message: "提交成功"
            });
+           if(huanjieData.data.isPdf == 0){ //环节生成pdf
+            _this.$router.push({
+                  name: "case_handle_flowChart"
+            });
+          }else{  //1 环节不生成pdf
+            _this.$router.go(-2)
+          }
         }catch(err){
           _this.$message('提交失败');
         }
         
-        if(huanjieData.data.isPdf == 0){ //环节生成pdf
-           _this.$router.push({
-                name: "case_handle_flowChart"
-          });
-        }else{  //1 环节不生成pdf
-          _this.$router.go(-3)
-        }
+        
       }
     }
   };

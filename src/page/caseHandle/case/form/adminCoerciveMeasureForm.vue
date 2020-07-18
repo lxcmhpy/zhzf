@@ -388,9 +388,10 @@ import {
           measureEndDate: '',
           reconsiderationOrgan: '',
           lawsuitOrgan: '',
-          makeDate: '2019',
+          makeDate: '',
           resList: [],
           resLength: 0,
+          caseName: ''
         },
         handleType: 0, //0  暂存     1 提交
         caseLinkDataForm: {

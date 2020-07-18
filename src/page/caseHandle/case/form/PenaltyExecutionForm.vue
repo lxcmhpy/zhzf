@@ -5,7 +5,7 @@
     </el-form>
     <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px" :disabled="canGoNextLink">
       <!-- <div class="header-case">
-        <div class="header_left">
+        <div class="header_left"> 
           <div class="triangle"></div>
           <div class="header_left_text">返回</div>
         </div>
@@ -51,7 +51,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
-                  <el-input clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
+                  <el-input clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -73,19 +73,20 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input clearable class="w-120" v-model.number="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
+                  <el-input clearable class="w-120" @input="handlePaidAmount" v-model="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="toPayAmount" label="待缴金额" :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])">
-                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input>
+                  <!-- <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input> -->
+                  <el-input clearable class="w-120" size="small" v-model="formData.toPayAmount" placeholder="-" :disabled="true"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-form-item prop="performance" label="执行情况">
-                  <el-select v-model="formData.performance" @change="changePerformance">
+                  <el-select v-model="formData.performance" @change="changePerformance" clearable>
                     <el-option label="未完成" value="未完成"></el-option>
                     <el-option label="已完成" value="已完成"></el-option>
                     <el-option label="催告" value="催告"></el-option>
@@ -152,12 +153,12 @@
           </div>
         </div>
       </div>
-      <div class="content_box">
+      <div class="content_box" v-show="formData.performance || formData.stepPay">
         <div class="content">
           <div class="table_form">
             <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
               <!-- 折叠 -->
-              <el-table-column type="expand" expand-change v-if="allAskDocList.length>0">
+              <el-table-column type="expand" expand-change>
                 <template>
                   <ul class="moreDocList">
                     <li v-for="(item,index) in allAskDocList" :key="index">
@@ -186,7 +187,8 @@
               <el-table-column type="index" label="序号" align="center"></el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
                 <template slot-scope="scope">
-                  <span style="color:red">*</span>
+                  <!-- <span style="color:red">*</span> -->
+                  <span style="color:red" v-if="scope.row.isRequired == 0">*</span>
                   {{scope.row.name}}
                   <span v-if="scope.row.name=='分期（延期）缴纳罚款通知书'">
                     （{{finishDocCount}}/{{allDocCount}}）
@@ -223,7 +225,7 @@
             </el-table>
           </div>
         </div>
-       
+
       </div>
     </el-form>
      <!-- 悬浮按钮 -->
@@ -263,11 +265,13 @@ import addDialog from './PenaltyExecutionFormDialog';
 import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import payDetail from "./payDetail";
 import iLocalStroage from "@/common/js/localStroage";
+import { upMoney } from "@/utils/utils.js"
 import {
   uploadEvApi,
   findFileByIdApi,
 } from "@/api/upload";
 import { findIsOrderApi } from "@/api/caseHandle";
+// import func from '../../../../../vue-temp/vue-editor-bridge';
 export default {
   components: {
     checkDocFinish,
@@ -358,7 +362,10 @@ export default {
       isfinishFlag: true,
       finishDocCount: 0,//完成文书数
       allDocCount: 0,
-      propertyFeatures:''
+      propertyFeatures:'',
+      unfinshDocArr : [],
+      finishDocCount:0,
+      allDocCount:0,
     };
   },
   computed: {
@@ -366,6 +373,35 @@ export default {
   },
   mixins: [mixinGetCaseApiList],
   methods: {
+    /**
+     *
+     * 处罚金额输入框格式改为汉字加数字
+     */
+
+    /**
+     *
+     * 已缴金额数值变化时，计算待缴金额数值
+     */
+    handlePaidAmount(val) {
+      let tempPunishAmount = Number(this.formData.tempPunishAmount), payAmount = Number(val);
+      if(tempPunishAmount >= payAmount) {
+        let num = tempPunishAmount - payAmount
+        this.formData.toPayAmount = upMoney(num) + "(" + num + "元)"
+      } else {
+        this.$message.error('已缴金额不能大于处罚金额')
+        this.formData.paidAmount = 0
+        this.formData.toPayAmount = 0
+      }
+      //代缴金额为0时,执行情况为已完成
+      if(!this.formData.toPayAmount) {
+        this.formData.performance = '已完成';
+      } else {
+        if (this.formData.performance != '催告') {
+          this.formData.performance = '未完成';
+        }
+      }
+    },
+
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
@@ -404,7 +440,8 @@ export default {
                 // this.unfinishFlag = ['分期（延期）缴纳罚款通知书'];
                 // console.log('执行')
                 let caseData = {}
-                this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+                this.$refs.checkDocFinishRef.showModal(this.unfinishFlag); 
                 flag = false;
                 return false;
               }
@@ -421,17 +458,20 @@ export default {
       this.unfinishFlag = [];
       console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
       if (this.formData.performance == '催告') {
+  
         // 催告书必做
         let flag2 = true;
         console.log(this.docTableDatas)
         this.docTableDatas.forEach(element => {
           if (element.name == '催告书') {
             if (element.status == 0) {
-              // this.unfinishFlag = [' 催告书'];
+              // this.unfinishFlag = ['催告书'];
+              this.unfinishFlag.push(['催告书'])
               // console.log('this.unfinishFlag', this.unfinishFlag)
-              let caseData = {}
-              this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
-
+              // let caseData = {}
+              // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
+              this.$refs.checkDocFinishRef.showModal(this.unfinishFlag);
+              
               flag2 = false;
               return flag2;
             }
@@ -446,25 +486,92 @@ export default {
     },
     //下一环节
     continueHandle() {
-      this.unfinishFlag = []
-      let unfinishFlag = []
-      if (this.isComplete() == false) {
-        unfinishFlag.push('分期（延期）缴纳罚款通知书')
-      }
-      if (this.isComplete2() == false) {
-        unfinishFlag.push('催告书')
-      }
+      // this.unfinishFlag = []
+      // let unfinishFlag = []
+      // if (this.isComplete() == false) {
+      //   unfinishFlag.push('分期（延期）缴纳罚款通知书')
+      // }
+      // if (this.isComplete2() == false) {
+      //   unfinishFlag.push('催告书')
+      // }
+      // let caseData = {
+      //   caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
+      //   caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
+      // };
+      // if ((this.isComplete() != false) && (this.isComplete2() != false)) {
+
+      //   this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+      // }
+      // else {
+      //   this.$refs.checkDocFinishRef.showModal(unfinishFlag);
+      //   // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
+      // }
+
+
+
+      console.log(this.docTableDatas)
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId
       };
-      if ((this.isComplete() != false) && (this.isComplete2() != false)) {
+      let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+      for (let i = 0; i < this.docTableDatas.length; i++) {
+        if(this.docTableDatas[i].openRow){  //可展开的多文书
+           let currentMoreDoc = this.docTableDatasCopy.filter(item=>item.docId == this.docTableDatas[i].docId);
+            console.log('morcurrentMoreDoceDoc',currentMoreDoc);
+            // if(this.docTableDatas[i].isRequired === 0){
+              for(let item of currentMoreDoc){
+                if(Number(item.status) == 0){
+                  canGotoNext = false; break;
+                }
+              }
+            // }
 
-        this.com_goToNextLinkTu(this.caseId, this.caseLinkDataForm.caseLinktypeId);
+        }else{
+          if (this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)) {
+            canGotoNext = false;
+            break;
+          }
+        }
+
       }
-      else {
-        this.$refs.checkDocFinishRef.showModal(unfinishFlag);
-        // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, unfinishFlag);
+      if (canGotoNext) {
+        console.log('下一环节')
+        this.com_goToNextLinkTu(
+          this.caseId,
+          this.caseLinkDataForm.caseLinktypeId
+        );
+      } else if(!canGotoNext){
+        this.getUnfinishDoc();
+        this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
+      }
+    },
+
+    //获取本环节必填但是未完成的文书
+    getUnfinishDoc(){
+      this.unfinshDocArr = [];
+      //判断是否为多文书
+      for(let item of this.docTableDatas){
+        if(item.openRow){
+          // if(item.isRequired === 0){
+            //分期（延期）缴纳罚款通知书
+            if(item.docId == '2c9028ac6955b0c2016955bf8d7c0001'){
+              if(this.allAskDocList.length > 0){
+                for(let stageDoc of this.allAskDocList){
+                  if(Number(stageDoc.status) == 0){
+                    this.unfinshDocArr.push(item);
+                    break;
+                  }
+                }
+              }else{
+                this.unfinshDocArr.push(item);
+              }
+            }
+          // }
+        }else{
+          if(item.isRequired === 0 && Number(item.status) == 0) this.unfinshDocArr.push(item);
+        }
+        console.log('this.unfinshDocArr',this.unfinshDocArr)
       }
     },
     // 进入文书
@@ -552,8 +659,8 @@ export default {
           this.findPaymentVoucher(item, false);
         })
       }
-      this.changeStepPay()
-      this.changePerformance()
+      // this.changeStepPay()
+      // this.changePerformance()
 
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     },
@@ -627,35 +734,93 @@ export default {
         return "myhide-expand";
       }
     },
+    // setMoreDocTableTitle() {
+    //   this.docTableDatas = [];
+    //   this.allAskDocList = [];
+    //   this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, path: "case_handle_payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
+
+    //   this.docTableDatasCopy.forEach(item => {
+    //     // console.log('名字啊啊啊', item.name)
+    //     if (item.name != '分期（延期）缴纳罚款通知书【2016】') {
+    //       this.docTableDatas.push(item);
+    //     } else {
+    //       if (item.note != '') {
+    //         this.allAskDocList.push(item);
+
+    //       }
+    //     }
+    //   })
+    //   this.allAskDocList.forEach(element => {
+    //     if (element.name == '分期（延期）缴纳罚款通知书【2016】' && (element.status == '1'||element.status == '2')) {
+    //       this.finishDocCount += 1;
+    //     }
+    //   });
+    //   this.allDocCount = this.allAskDocList.length
+    //   console.log('this.docTableDatas', this.docTableDatas)
+    //   console.log('this.allAskDocList', this.allAskDocList)
+
+    //   this.docTableDatasSave = this.docTableDatas
+    //   this.docTableDatas = []
+    //   this.changeStepPay()
+    //   this.changePerformance()
+    // },
     setMoreDocTableTitle() {
       this.docTableDatas = [];
       this.allAskDocList = [];
-      this.docTableDatas.push({ name: '分期（延期）缴纳罚款通知书', status: '询问', openRow: true, path: "case_handle_payStage", docId: "2c9028ac6955b0c2016955bf8d7c0001", note: '' });
-
-      this.docTableDatasCopy.forEach(item => {
-        // console.log('名字啊啊啊', item.name)
-        if (item.name != '分期（延期）缴纳罚款通知书【2016】') {
-          this.docTableDatas.push(item);
-        } else {
-          if (item.note != '') {
-            this.allAskDocList.push(item);
-
+      this.allApprovalDocList = [];
+      //查找是否为必填
+      let payStageDoc_Require = this.docTableDatasCopy.find(item=>item.docId == '2c9028ac6955b0c2016955bf8d7c0001').isRequired;
+      if (this.formData.stepPay) {
+        this.docTableDatas.push({
+          name: "分期（延期）缴纳罚款通知书",
+          status: "询问",
+          openRow: true,
+          path: "case_handle_payStage",
+          docId: "2c9028ac6955b0c2016955bf8d7c0001",
+          note: "",
+          isRequired:payStageDoc_Require
+        });
+        this.docTableDatasCopy.forEach(item => {
+          if (item.docId == '2c9028ac6955b0c2016955bf8d7c0001') {
+            if (item.note != "") {
+              //防止把可展开的push进来
+              this.allAskDocList.push(item);
+            }
+          } else {
+            this.docTableDatas.push(item);
           }
+        });
+        this.allAskDocList.forEach(element => {
+          if (element.docId == '2c9028ac6955b0c2016955bf8d7c0001' && (element.status == "1" || element.status == "2")) {
+            this.finishDocCount += 1;
+          }
+        });
+        
+        this.allDocCount = this.allAskDocList.length;
+        if (this.formData.performance != '催告') {
+          let indexCG = this.docTableDatas.findIndex(item=> item.docId == '2c9029cf698f9e6c01698fd9e9000002');
+          this.docTableDatas.splice(indexCG,1);
         }
-      })
-      this.allAskDocList.forEach(element => {
-        if (element.name == '分期（延期）缴纳罚款通知书【2016】' && (element.status == '1'||element.status == '2')) {
-          this.finishDocCount += 1;
+      }else{
+        if (this.formData.performance != '催告') {
+          this.docTableDatas = this.docTableDatasCopy.filter(item => {
+            return (
+              item.docId != '2c9028ac6955b0c2016955bf8d7c0001' &&
+              item.docId != '2c9029cf698f9e6c01698fd9e9000002'
+            );
+          });
+        }else{
+          this.docTableDatas = this.docTableDatasCopy.filter(item => {
+            return (
+              item.docId != '2c9028ac6955b0c2016955bf8d7c0001'
+            );
+          });
         }
-      });
-      this.allDocCount = this.allAskDocList.length
-      console.log('this.docTableDatas', this.docTableDatas)
-      console.log('this.allAskDocList', this.allAskDocList)
+        
+      }
 
-      this.docTableDatasSave = this.docTableDatas
-      this.docTableDatas = []
-      this.changeStepPay()
-      this.changePerformance()
+      console.log("this.docTableDatas", this.docTableDatas);
+      console.log("this.allAskDocList", this.allAskDocList);
     },
     //通过案件ID和文书ID查询附件
     findFileList() {
@@ -699,36 +864,38 @@ export default {
       })
     },
     // // 是否已完成缴费
-    isFinish() {
-      //   if (this.formData.toPayAmount == 0) {
-      //     this.formData.performance = '已完成'
-      //   }
-    },
+    // isFinish() {
+    //     if (this.formData.toPayAmount == 0) {
+    //       this.formData.performance = '已完成'
+    //     }
+    // },
     // 分期延期缴纳
     changeStepPay() {
-      console.log('分期延期缴纳')
-      this.docTableDatas = []
-      if (this.formData.stepPay == true) {
-        this.docTableDatas.push(this.docTableDatasSave[0])
-      }
-      console.log('this.docTableDatas', this.docTableDatas)
-      if (this.formData.performance == '催告') {
-        this.docTableDatas.push(this.docTableDatasSave[1])
-      }
-
+      // console.log('分期延期缴纳')
+      // this.docTableDatas = []
+      // if (this.formData.stepPay == true) {
+      //   this.docTableDatas.push(this.docTableDatasSave[0])
+      // }
+      // console.log('this.docTableDatas', this.docTableDatas)
+      // if (this.formData.performance == '催告') {
+      //   this.docTableDatas.push(this.docTableDatasSave[1])
+      // }
+      this.setMoreDocTableTitle();
     },
     // 催告
     changePerformance() {
-      console.log('催告', this.formData.performance)
-      this.docTableDatas = []
+      // console.log('催告', this.formData.performance)
+      // this.docTableDatas = []
 
-      console.log('this.docTableDatas', this.docTableDatas)
-      if (this.formData.stepPay == true) {
-        this.docTableDatas.push(this.docTableDatasSave[0])
-      }
-      if (this.formData.performance == '催告') {
-        this.docTableDatas.push(this.docTableDatasSave[1])
-      }
+      // console.log('this.docTableDatas', this.docTableDatas)
+      // if (this.formData.stepPay == true) {
+      //   this.docTableDatas.push(this.docTableDatasSave[0])
+      // }
+      // if (this.formData.performance == '催告') {
+      //   this.docTableDatas.push(this.docTableDatasSave[1])
+      // }
+      this.setMoreDocTableTitle();
+
     },
   },
 
@@ -764,6 +931,9 @@ export default {
           this.formData.performance = '未完成';
         }
       }
+    },
+    'formData.stepPay'(val){
+      this.setMoreDocTableTitle();
     }
   }
 };
