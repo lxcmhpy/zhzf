@@ -142,9 +142,25 @@
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
+
           </div> 
           <div class="gongLiBox3">至</div>
+          <div class="gongLiBox3">K</div>
           <div class="itemFive">
+            <el-form-item  prop="pileNumber2" label-width="0px">
+              <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
+            </el-form-item>
+          </div>
+          <div class="gongLiBox2">+</div>
+          <div class="itemFive">
+            <el-form-item label-width="0px" prop="distance2">
+              <el-input v-model="inforForm.distance2" placeholder="米数" style="vertical-align: middle;">
+                <template slot="append">m</template>
+              </el-input>
+            </el-form-item>
+            
+          </div> 
+          <!-- <div class="itemFive">
             <el-form-item label="K">
               <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
             </el-form-item>
@@ -155,8 +171,7 @@
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-          </div> 
-         
+          </div>  -->
         </div>
         <div>
           <div class="itemOne">

@@ -84,6 +84,7 @@ export default {
   },
   methods: {
     goToInfoPage(){
+      console.log("shuju1111111",this.infoPage)
       this.goTo(this.infoPage);
     },
     goTo(name){
