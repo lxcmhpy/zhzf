@@ -43,7 +43,7 @@
                    {{userInfo.departName}}
                   </el-form-item>
                   <el-form-item label="上次登录：">
-                    {{userInfo.lastLoginTime}}
+                    {{userInfo.loginTime}}
                   </el-form-item>
                 </el-form>
               </div>
