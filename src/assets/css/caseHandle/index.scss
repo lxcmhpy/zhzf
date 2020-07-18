@@ -727,5 +727,9 @@
   margin-bottom      : 18px !important;
   border-bottom: 1px dashed #DFDFDF;
 }
-
+.lable-height18px{
+  .el-form-item__label{
+    line-height: 18px;
+  }
+}
 

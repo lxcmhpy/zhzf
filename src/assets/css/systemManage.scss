@@ -46,6 +46,8 @@
     .treeBox{
         height:calc(100% - 100px) ;
         overflow: auto;
+        /* 线上样式冲突 */
+        max-height: auto;
     }
     .deep-color{
         .is-current{

@@ -151,7 +151,7 @@
         inject: ["reload"],
         methods: {
             deleteRoute(row) {
-                debugger
+                // debugger
                 let data = {
                     routeName: row.routeName,
                 };
