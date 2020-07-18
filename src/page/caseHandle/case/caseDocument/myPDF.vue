@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" style="width:790px;margin:0 auto;">
+  <div class="print_box" id="myBox" style="width:790px;margin:0 auto;">
     <!-- <div class="print_info"> -->
     <!-- <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
            style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item"
@@ -12,7 +12,7 @@
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
     
-    <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
+    <!-- <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe> -->
     <!-- 该方法不能显示签章 -->
     <!-- <pdf v-for="i in numPages" :key="i" ref="pdf" :src="pdfUrl" :page="i" style="border-bottom:1px solid"></pdf> -->
   </div>
@@ -149,7 +149,7 @@
               this.$router.go(-1);
             }else{
               console.log('退回信息采集')
-               this.$router.go(-3);
+               this.$router.go(-2);
             }
 
           }).catch(err=>{console.log(err)})
@@ -159,7 +159,7 @@
       backHuanjie() {
         console.log('backHuanjie');
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-        this.$router.go(-2);
+        this.$router.go(-1);
       },
 
       //获取当前是几级审批
@@ -208,7 +208,12 @@
         }
         console.log(url);    
         this.pdfUrl =url;
-    
+
+        let myBox = document.getElementById('myBox');
+        let  myIframe = document.createElement('iframe');
+        myIframe.setAttribute("src", '/static/pdf/web/viewer.html?file='+encodeURIComponent(url));
+        myIframe.setAttribute('style','width:790px;height:1119px');
+        myBox.appendChild(myIframe);
       },
 
     },

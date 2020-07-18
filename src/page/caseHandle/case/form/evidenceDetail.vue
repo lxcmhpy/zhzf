@@ -8,6 +8,10 @@
         <el-form ref="form" :model="form">
           <img v-if="form.evType =='照片'" :src="host+form.evPath"  width="350px" height="400" align="center"/>
           <video v-if="form.evType =='音视频'" :src="host+form.evPath" controls="controls" width="350px" height="400">your browser does not support the video tag</video>
+          <div v-if="form.evType=='其他附件'" style="text-align: center;margin-top:100px;">
+              <div><i class="el-icon-document" style="font-size:45px;"></i></div>
+              <div style="margin: 15px;line-height: 35px">{{form.evName}}</div>
+          </div>
         </el-form>
         </div>
         <div style="float: right;width: 55%">

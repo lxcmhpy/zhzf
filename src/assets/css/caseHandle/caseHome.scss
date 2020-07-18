@@ -134,6 +134,9 @@
 
         .el-radio-button__inner {
             border-radius: 0;
+            width: 90px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
