@@ -667,7 +667,7 @@ export default {
         status: "询问",
         openRow: true,
         // url: "case_handle_othermodle",
-        path: "case_handle_othermodle",
+        path: "case_handle_othermodle_JX",
         docId: xunwenDocTypeId
       });
       let askDocListFinishNum = 0;

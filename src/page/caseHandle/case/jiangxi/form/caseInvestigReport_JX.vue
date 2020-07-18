@@ -253,7 +253,7 @@
               <p>材料</p>
             </td>
             <td>序号</td>
-            <td colspan="2">证据名称</td>
+            <td colspan="2">证据材料名称</td>
             <td colspan="2">规格</td>
             <td colspan="1">数量</td>
             <td colspan="2">备注</td>
@@ -283,8 +283,7 @@
               </el-form-item>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;">
                 <p>
-                  签名：
-                  <span class="apro">{{formData.lawOfficeName||' '}}</span>
+                  签名：{{formData.lawOfficeName||' '}}
                 </p>
                 <p style="text-align: right;">
                   <el-form-item prop="lawOfficeApprovalTime" class="pdf_datapick">
@@ -313,11 +312,10 @@
               <p>意见</p>
             </td>
             <td colspan="8" class="aprotd">
-              <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
+              <p class="approveDiv">{{formData.approveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <!-- <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p> -->
-                <p>签名：</p>
-                <p>{{formData.secondApproveTime||' 年 月 日 '}}</p>
+                <p>签名：{{formData.approvePeo||' '}}</p>
+                <p>{{formData.approveTime||' 年 月 日 '}}</p>
               </div>
             </td>
           </tr>
@@ -326,15 +324,13 @@
               <p>行政</p>
               <p>机关</p>
               <p>负责</p>
-              <p>人审</p>
-              <p>批意</p>
+              <p>人意</p>
               <p>见</p>
             </td>
             <td colspan="8" class="aprotd">
               <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
-                <!-- <p>签名：<span class="apro">{{formData.secondApprovePeo||' '}}</span></p> -->
-                <p>签名：</p>
+                <p>签名：{{formData.secondApprovePeo||' '}}</p>
                 <p>{{formData.secondApproveTime||' 年 月 日 '}}</p>
               </div>
             </td>

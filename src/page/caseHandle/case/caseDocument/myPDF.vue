@@ -137,6 +137,7 @@
       //文书提交返回环节
       submitData() {
         if (this.$route.params.caseLinktypeId) {
+          console.log('退回0000000')
           this.com_goToNextLinkTu(this.caseId, this.$route.params.caseLinktypeId)
         } else {
           console.log('this.$route.params.docDataId',this.$route.params.docDataId)
@@ -144,6 +145,7 @@
             console.log('更新状态',res);
             this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
             if(this.$route.params.status == 1){
+              console.log('退回11111')
               this.$router.go(-1);
             }else{
               console.log('退回信息采集')
@@ -155,6 +157,7 @@
         }
       },
       backHuanjie() {
+        console.log('backHuanjie');
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.go(-2);
       },

@@ -36,10 +36,10 @@
           </span>（
           <span class="single_check">
             <el-form-item prop="radio" :rules="fieldRules('radio',propertyFeatures['radio'])">
-              <el-radio-group v-model="docData.radio">
-                  <el-radio  label="1">公开</el-radio>
-                  <el-radio  label="2">不公开</el-radio>
-              </el-radio-group>
+              <el-checkbox-group :max="1" v-model="docData.radio">
+                  <el-checkbox  label="1">公开</el-checkbox>
+                  <el-checkbox  label="2">不公开</el-checkbox>
+              </el-checkbox-group>
             </el-form-item>
           </span>）举行听证会议，请准时出席。
         </p>
@@ -193,7 +193,7 @@
           organContactor: '',
           organTel: '',
           signatureDate: '',
-          radio: ''
+          radio: []
         },
         radio: '1',
         handleType: 0, //0  暂存     1 提交

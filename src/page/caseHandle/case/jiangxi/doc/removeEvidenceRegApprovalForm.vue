@@ -323,6 +323,7 @@ export default {
         cassEvidenceNumber: "",
         staffSign: "",
         staffSignTime: "",
+        approveOpinions:"",
         approvePeo: "",
         approveTime: "",
         secondApproveOpinions: "",

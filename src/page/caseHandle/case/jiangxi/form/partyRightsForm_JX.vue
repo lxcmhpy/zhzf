@@ -107,7 +107,7 @@
             </div>
             <div class="row" v-if="isHearingFlag">
               <div class="col">
-                <div style="display:inline-block;width: 40%">
+                <div style="display:inline-block;width: 48%">
                   <el-form-item
                     prop="hearingStartTime"
                     label="听证时间"
@@ -123,7 +123,7 @@
                   </el-form-item>
                 </div>
                 <div style="display:inline-block;width: 5%;padding-top: 12px;text-align: center;">至</div>
-                <div style="display:inline-block;width: 30%">
+                <div style="display:inline-block;width: 40%">
                   <el-form-item
                     prop="hearingEndTime"
                     label-width="0px"
@@ -266,7 +266,7 @@
                 <template slot-scope="scope">
                   <span v-if="scope.row.status == '1' || scope.row.status == '2'">已完成</span>
                   <span v-if="scope.row.status == '0'">未完成</span>
-                  <span v-if="scope.row.status == ''">-</span>
+                  <span v-if="scope.row.status === ''">-</span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
@@ -283,7 +283,7 @@
                     <span @click="viewDoc(scope.row)">编辑</span>
                     <span @click="delDocDataByDocId(scope.row)">清空</span>
                   </span>
-                  <span v-if="scope.row.status == ''" class="tableHandelcase">
+                  <span v-if="scope.row.status === ''" class="tableHandelcase">
                     <!-- 无状态 -->
                     <span @click="viewDoc(scope.row)">添加</span>
                   </span>
