@@ -58,18 +58,20 @@ const mutations = {
   },
   // 删除tab
   [types.DELETE_TABS](state, name) {
-    let index = 0;
-    for (let option of state.openTab) {
-      if (option.name === name) {
-        break;
+    if(!(name.indexOf('#') > -1)){
+      let index = 0;
+      for (let option of state.openTab) {
+        if (option.name === name) {
+          break;
+        }
+        index++;
       }
-      index++;
+      if (index !== 0) {
+          state.openTab.splice(index, 1);
+      }
+    }else{
+      state.openTab.splice(name.split('#')[1], 1);
     }
-    if (index !== 0) {
-        state.openTab.splice(index, 1);
-    }
-    
-    // state.openTab.splice(name.split('#')[1], 1);
 
   },
   // 替换tab
