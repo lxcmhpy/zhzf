@@ -40,10 +40,10 @@
                     {{userInfo.organName}}
                   </el-form-item>
                   <el-form-item label="所属部门：">
-                    空
+                   {{userInfo.departName}}
                   </el-form-item>
                   <el-form-item label="上次登录：">
-                    2019.04.17 07:06:45
+                    {{userInfo.lastLoginTime}}
                   </el-form-item>
                 </el-form>
               </div>
