@@ -443,14 +443,15 @@ export default {
         this.$store.commit("setCaseNumber", setCaseNumber);
 
         //暂存案件跳转信息采集
-        if (row.state == 0) {
-          this.$store.commit("setCaseId", row.id);
-          iLocalStroage.set("stageCaseId", row.id);
-          this.$router.replace({
-            name: "case_handle_inforCollect"
-          });
-          return;
-        }
+      if(row.state == 0){
+        this.$store.commit("setCaseId", row.id);
+        iLocalStroage.set("stageCaseId",row.id);
+        await this.queryFlowBycaseId();
+        this.$router.replace({
+          name: this.caseFlowData.basicInfoPage, 
+        });
+        return;
+      }
 
         if (row.caseStatus === "已移送") {
           let message = "该案件正在移送中，移送完成后才可与继续办理";

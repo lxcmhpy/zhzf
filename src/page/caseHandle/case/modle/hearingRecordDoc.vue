@@ -88,8 +88,7 @@
           </span>
         </p>
         <p class="p_begin">
-          执法人员：
-          <span>
+          <span style="margin-left:85px">
             <el-form-item prop="staff2" style="width:254px" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
                <el-select v-model="docData.staff2" placeholder="" @change="changeStaff2" :disabled="fieldDisabled(propertyFeatures['staff2'])">
                 <el-option v-for="item in staffList_" :key="item.id" :label="item.name" :value="item">

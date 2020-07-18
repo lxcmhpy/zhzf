@@ -13,12 +13,13 @@
 
     <el-row class="info" :gutter="20" v-for="item in checkList" :key="item.id">
       <el-col :span="2">
-        <span v-if="item.status == '1'">
+        <!-- <span v-if="item.status == '1'">
           <svg t="1578386448666" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3010" width="20" height="20">
             <path d="M63.222927 512c0 0 231.767598 189.584869 254.790964 350.823134 0 0 303.906591-497.491565 641.581264-542.003338 0 0-102.837156-74.943876-69.070098-193.395662 0 0-187.255825 18.684548-540.279067 566.637388L184.79375 413.212066 63.222927 512z" p-id="3011" fill="#17C062"></path>
           </svg>
-        </span>
-        <span v-if="item.status == '0' ||item.status == ''">
+        </span> -->
+        <!-- <span v-if="item.status == '0' ||item.status == ''"> -->
+        <span>
           <svg t="1578386502452" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1278" width="14" height="14">
             <path d="M1023.035952 170.907721l-852.12806 852.128061L0.241225 852.730697l852.248588-852.12806z" p-id="1279" fill="#d81e06"></path>
             <path d="M170.425782 0l852.128061 852.12806L852.248758 1022.794727l-852.12806-852.248588z" p-id="1280" fill="#d81e06"></path>
