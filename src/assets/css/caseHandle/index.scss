@@ -234,7 +234,8 @@
       }
 
       &>div:nth-child(2) {
-        min-width  : 400px;
+        /* min-width  : 400px; */
+        width: calc(100% - 300px);
         margin-left: 100px;
         overflow: hidden;
         text-overflow: ellipsis;

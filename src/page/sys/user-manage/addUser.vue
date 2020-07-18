@@ -160,7 +160,7 @@ export default {
       rules: {
           username: [
           { required: true, message: "请输入登录用户名", trigger: "blur" },
-          { min: 6, message: "长度大于6个字符", trigger: "blur" },
+          { min: 4, message: "长度大于4个字符", trigger: "blur" },
           // { validator: validateUsername, trigger: "blur" },
         ],
         nickName: [
@@ -266,6 +266,7 @@ export default {
       this.$store.dispatch("getDepartmentsNoPage", data).then(
         res => {
           console.log("部门数据", res);
+          debugger
           _this.departments = res.data;
         },
         err => {

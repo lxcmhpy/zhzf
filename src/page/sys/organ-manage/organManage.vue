@@ -11,7 +11,7 @@
         </div>
       <!-- </div> -->
 
-      <div class="treeBox">
+      <div class="treeBox deep-color">
         <el-tree
           class="filter-tree"
           :data="organData"
