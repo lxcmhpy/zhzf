@@ -112,12 +112,12 @@
             <div class="el-upload__text">
               <em>点击上传附件</em>
             </div>
-            <div
+            <!-- <div
               class="el-upload__tip"
               slot="tip"
               style="text-align: center"
             >只能上传jpg/png文件，且不超过500kb
-            </div>
+            </div> -->
           </el-upload>
           
            <!-- <video src="../../../../../static/images/压压.mp4" id="myVideo" style="position: absolute;left: 0; top: 0;" controls="controls" width="350px" height="330">your browser does not support the video tag</video> -->
