@@ -33,7 +33,7 @@
               <u v-if="lineStyleFlag">{{docData.inquestAddress}}</u></p>
           </el-col>
           <el-col :span="10">
-            <p>天气状况：<el-form-item prop="weather" style="width:140px" :rules="fieldRules('weather',propertyFeatures['weather'])">
+            <p>天气情况：<el-form-item prop="weather" style="width:140px" :rules="fieldRules('weather',propertyFeatures['weather'])">
                 <el-select v-model="docData.weather" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['weather'])">
                   <el-option v-for="item in options" :key="item.name" :label="item.label" :value="item.name">
                   </el-option>

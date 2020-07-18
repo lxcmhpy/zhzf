@@ -85,7 +85,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="performance" label="执行情况">
-                  <el-select v-model="formData.performance" @change="changePerformance">
+                  <el-select v-model="formData.performance" @change="changePerformance" clearable>
                     <el-option label="未完成" value="未完成"></el-option>
                     <el-option label="已完成" value="已完成"></el-option>
                     <el-option label="催告" value="催告"></el-option>
@@ -152,7 +152,7 @@
           </div>
         </div>
       </div>
-      <div class="content_box">
+      <div class="content_box" v-show="formData.performance || formData.stepPay">
         <div class="content">
           <div class="table_form">
             <el-table :data="docTableDatas" stripe border style="width: 100%" max-height="250" :row-class-name="getRowClass">
