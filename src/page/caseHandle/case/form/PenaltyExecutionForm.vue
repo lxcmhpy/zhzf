@@ -51,7 +51,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
-                  <el-input clearable class="w-120" v-model.number="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
+                  <el-input clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -73,12 +73,13 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input clearable class="w-120" v-model.number="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
+                  <el-input clearable class="w-120" @input="handlePaidAmount" v-model="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="toPayAmount" label="待缴金额" :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])">
-                  <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input>
+                  <!-- <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input> -->
+                  <el-input clearable class="w-120" size="small" v-model="formData.toPayAmount" placeholder="-" :disabled="true"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -223,7 +224,7 @@
             </el-table>
           </div>
         </div>
-       
+
       </div>
     </el-form>
      <!-- 悬浮按钮 -->
@@ -263,6 +264,7 @@ import addDialog from './PenaltyExecutionFormDialog';
 import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import payDetail from "./payDetail";
 import iLocalStroage from "@/common/js/localStroage";
+import { upMoney } from "@/utils/utils.js"
 import {
   uploadEvApi,
   findFileByIdApi,
@@ -366,6 +368,35 @@ export default {
   },
   mixins: [mixinGetCaseApiList],
   methods: {
+    /**
+     *
+     * 处罚金额输入框格式改为汉字加数字
+     */
+
+    /**
+     *
+     * 已缴金额数值变化时，计算待缴金额数值
+     */
+    handlePaidAmount(val) {
+      let tempPunishAmount = Number(this.formData.tempPunishAmount), payAmount = Number(val);
+      if(tempPunishAmount >= payAmount) {
+        let num = tempPunishAmount - payAmount
+        this.formData.toPayAmount = upMoney(num) + "(" + num + "元)"
+      } else {
+        this.$message.error('已缴金额不能大于处罚金额')
+        this.formData.paidAmount = 0
+        this.formData.toPayAmount = 0
+      }
+      //代缴金额为0时,执行情况为已完成
+      if(!this.formData.toPayAmount) {
+        this.formData.performance = '已完成';
+      } else {
+        if (this.formData.performance != '催告') {
+          this.formData.performance = '未完成';
+        }
+      }
+    },
+
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
@@ -699,11 +730,11 @@ export default {
       })
     },
     // // 是否已完成缴费
-    isFinish() {
-      //   if (this.formData.toPayAmount == 0) {
-      //     this.formData.performance = '已完成'
-      //   }
-    },
+    // isFinish() {
+    //     if (this.formData.toPayAmount == 0) {
+    //       this.formData.performance = '已完成'
+    //     }
+    // },
     // 分期延期缴纳
     changeStepPay() {
       console.log('分期延期缴纳')
@@ -745,27 +776,25 @@ export default {
     this.getDocListByCaseIdAndFormId();
     // this.findFileList();
   },
-  watch: {
-    //代缴金额为0时,执行情况为已完成
-    'formData.paidAmount'(val) {
-      console.log(val);
-      this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
-      if(this.formData.toPayAmount='NAN'){
-        this.formData.toPayAmount=''
-      }
-    },
-    'formData.toPayAmount'(val) {
-      console.log('aaaaaaaaa', val);
-      if (!val) {
-        this.formData.performance = '已完成';
-      } else {
-        // this.formData.performance = '未完成';
-        if (this.formData.performance != '催告') {
-          this.formData.performance = '未完成';
-        }
-      }
-    }
-  }
+  // watch: {
+  //   //代缴金额为0时,执行情况为已完成
+  //   'formData.paidAmount'(val) {
+  //     this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
+  //     if(this.formData.toPayAmount='NAN'){
+  //       this.formData.toPayAmount=''
+  //     }
+  //   },
+  //   'formData.toPayAmount'(val) {
+  //     if (!val) {
+  //       this.formData.performance = '已完成';
+  //     } else {
+  //       // this.formData.performance = '未完成';
+  //       if (this.formData.performance != '催告') {
+  //         this.formData.performance = '未完成';
+  //       }
+  //     }
+  //   }
+  // }
 };
 </script>
 
