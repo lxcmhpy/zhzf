@@ -39,7 +39,7 @@ import { mapGetters } from "vuex";
 import { svgData, imgList, linePosition, stateColor, lineStyle, graphData, mainLinkData, layoutCharts, legend } from './json/flowChart'
 import pleaseRemoveMDia from '@/page/caseHandle/components/pleaseRemoveMDia'
 import {
-  queryFlowBycaseIdApi,
+  queryFlowBycaseIdApi,updateLinkInfoByCaseIdAndLinkTypeIdApi,
 } from "@/api/caseHandle";
 export default {
   data() {
@@ -797,7 +797,16 @@ export default {
 
     },
     //跳转行政强制措施
-    goToAdminCoerciveMeasure(){
+    async goToAdminCoerciveMeasure(){
+      let updataLinkData = {
+          caseId:this.caseId,
+          linkTypeId:this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId
+      }
+       try{
+        await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
+      }catch(err){
+        this.$message('更改流程图状态失败！')
+      }
       this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
     }
   },

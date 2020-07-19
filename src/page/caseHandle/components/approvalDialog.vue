@@ -41,7 +41,7 @@
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import iLocalStroage from "@/common/js/localStroage";
   import {mapGetters} from "vuex";
-  import {approvalPdfQzJxApi } from '@/api/caseHandle.js'
+  import {approvalPdfQzJxApi,approvalPdfApi,queryFlowBycaseIdApi,approvalPdfQzApi } from '@/api/caseHandle.js'
   export default {
     data() {
       return {
@@ -80,7 +80,7 @@
         }
       },
       //审批
-      approvalSure() {
+      async approvalSure() {
         console.log('this.docDataId',this.docDataId);
         let params = {
           // caseId: this.caseData.caseId,
@@ -110,88 +110,179 @@
               thirdApproveTime: this.approvalForm.approvalTime
           });
         }
+      console.log(params);
+      let _this = this;
+      _this.visible = false;
 
+      //先审批
+      let approvalResult,approvalQZResult
+      try{
+        approvalResult = await approvalPdfApi(params)
+      }catch(err){
+        this.$message('审核失败！');
+        throw new Error(err);
+      }
+      //如果有签章功能
+      if(this.showQZBtn){
+        let jsonApproveData = JSON.parse(params.jsonApproveData)
+        let opinion = ''
+        let time = ''
+        let step = ''
+        if (jsonApproveData.approveOpinions) {
+          opinion = jsonApproveData.approveOpinions
+          time = jsonApproveData.approveTime
+          step = '1'
+        } else if (jsonApproveData.secondApproveOpinions) {
+          opinion = jsonApproveData.secondApproveOpinions
+          time = jsonApproveData.secondApproveTime
+          step = '2'
+        } else if (jsonApproveData.thirdApproveOpinions) {
+          opinion = jsonApproveData.thirdApproveOpinions
+          time = jsonApproveData.thirdApproveTime
+          step = '3'
+        }
+  
+        let data = {
+          caseId: this.caseData.caseId,
+          docId: this.docId,
+          docOpinion: opinion,
+          date: time,
+          number: step,
+        }
 
-
-        console.log(params);
-        let _this = this;
-         _this.visible = false;
-        this.$store.dispatch("approvalPdf", params).then(
-          res => {
-            console.log(res);
-            //如果有签章功能
-            if(this.showQZBtn){
-              let jsonApproveData = JSON.parse(params.jsonApproveData)
-              let opinion = ''
-              let time = ''
-              let step = ''
-              if (jsonApproveData.approveOpinions) {
-                opinion = jsonApproveData.approveOpinions
-                time = jsonApproveData.approveTime
-                step = '1'
-              } else if (jsonApproveData.secondApproveOpinions) {
-                opinion = jsonApproveData.secondApproveOpinions
-                time = jsonApproveData.secondApproveTime
-                step = '2'
-              } else if (jsonApproveData.thirdApproveOpinions) {
-                opinion = jsonApproveData.thirdApproveOpinions
-                time = jsonApproveData.thirdApproveTime
-                step = '3'
-              }
-        
-              let data = {
-                caseId: this.caseData.caseId,
-                docId: this.docId,
-                docOpinion: opinion,
-                date: time,
-                number: step,
-              }
-              approvalPdfQzJxApi(data).then(
-                res => {
-                  console.log(res);
-                  _this.$message({
-                    type: "success",
-                    message: "审批通过"
-                  });
-                  _this.$store.commit('setApprovalState', 'approvalOver')
-                  _this.$emit("getNewData");
-                  // _this.visible = false;
-                }).catch(err=>{this.$message('审核失败！')});
-              // this.$store.dispatch("approvalPdfQz", data).then(
-              //   res => {
-              //     console.log(res);
-              //     _this.$message({
-              //       type: "success",
-              //       message: "审批通过"
-              //     });
-              //     _this.$store.commit('setApprovalState', 'approvalOver')
-
-              //     _this.$emit("getNewData");
-                  
-              //     _this.visible = false;
-              //   },
-              //   err => {
-              //     console.log(err);
-              //   }
-              // );
-            }else{   //无签章功能
-              _this.$message({
-                    type: "success",
-                    message: "审批通过"
-                  });
-                  _this.$store.commit('setApprovalState', 'approvalOver')
-
-                  _this.$emit("getNewData");
-                  
-                  // _this.visible = false;
-              }
-          },
-          err => {
-            console.log(err);
+        let currentFlow,flowName = '';
+        try{
+          currentFlow = await queryFlowBycaseIdApi(this.caseId);
+        }catch(err){
+          this.$message('获取案件流程失败！')
+          throw new Error(err);
+        }
+        flowName = currentFlow.data.flowName;
+        if(flowName == '处罚流程'){
+          try{
+            await approvalPdfQzApi(data)
+            this.$message({
+              type: "success",
+              message: "审批通过"
+            });
+            _this.$store.commit('setApprovalState', 'approvalOver')
+            _this.$emit("getNewData");
+          }catch(err){
+            this.$message('审批后签章失败！')
+            throw new Error(err);
           }
-        );
+        }else if(flowName == '江西流程'){
+          try{
+            await approvalPdfQzJxApi(data)
+            this.$message({
+              type: "success",
+              message: "审批通过"
+            });
+            _this.$store.commit('setApprovalState', 'approvalOver')
+            _this.$emit("getNewData");
+          }catch(err){
+            this.$message('审批后签章失败！')
+            throw new Error(err);
+          }
+        }
+      }else{
+        //无签章
+        this.$message({
+          type: "success",
+          message: "审批通过"
+        });
+        this.$store.commit('setApprovalState', 'approvalOver')
+        this.$emit("getNewData");
+      }
+
+
+        
+
+
+        // console.log(params);
+        // let _this = this;
+        //  this.visible = false;
+        // this.$store.dispatch("approvalPdf", params).then(
+        //   res => {
+        //     console.log(res);
+        //     //如果有签章功能
+        //     if(this.showQZBtn){
+        //       let jsonApproveData = JSON.parse(params.jsonApproveData)
+        //       let opinion = ''
+        //       let time = ''
+        //       let step = ''
+        //       if (jsonApproveData.approveOpinions) {
+        //         opinion = jsonApproveData.approveOpinions
+        //         time = jsonApproveData.approveTime
+        //         step = '1'
+        //       } else if (jsonApproveData.secondApproveOpinions) {
+        //         opinion = jsonApproveData.secondApproveOpinions
+        //         time = jsonApproveData.secondApproveTime
+        //         step = '2'
+        //       } else if (jsonApproveData.thirdApproveOpinions) {
+        //         opinion = jsonApproveData.thirdApproveOpinions
+        //         time = jsonApproveData.thirdApproveTime
+        //         step = '3'
+        //       }
+        
+        //       let data = {
+        //         caseId: this.caseData.caseId,
+        //         docId: this.docId,
+        //         docOpinion: opinion,
+        //         date: time,
+        //         number: step,
+        //       }
+        //       approvalPdfQzJxApi(data).then(
+        //         res => {
+        //           console.log(res);
+        //           _this.$message({
+        //             type: "success",
+        //             message: "审批通过"
+        //           });
+        //           _this.$store.commit('setApprovalState', 'approvalOver')
+        //           _this.$emit("getNewData");
+        //           // _this.visible = false;
+        //         }).catch(err=>{this.$message('审核失败！')});
+        //       // this.$store.dispatch("approvalPdfQz", data).then(
+        //       //   res => {
+        //       //     console.log(res);
+        //       //     _this.$message({
+        //       //       type: "success",
+        //       //       message: "审批通过"
+        //       //     });
+        //       //     _this.$store.commit('setApprovalState', 'approvalOver')
+
+        //       //     _this.$emit("getNewData");
+                  
+        //       //     _this.visible = false;
+        //       //   },
+        //       //   err => {
+        //       //     console.log(err);
+        //       //   }
+        //       // );
+        //     }else{   //无签章功能
+        //       _this.$message({
+        //             type: "success",
+        //             message: "审批通过"
+        //           });
+        //           _this.$store.commit('setApprovalState', 'approvalOver')
+
+        //           _this.$emit("getNewData");
+                  
+        //           // _this.visible = false;
+        //       }
+        //   },
+        //   err => {
+        //     console.log(err);
+        //   }
+        // );
+      },
+      //审批之后的签章
+      approvalAfterQZ(){
+
       }
     },
+    
     mounted() {
     }
   };
