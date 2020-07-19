@@ -107,7 +107,7 @@ export default {
       let data = this.lawRegulationsSearchForm;
       data.current = this.currentPage;
       data.size = this.pageSize;
-      data.bnslawIdPun = this.btnlawId;
+      data.bnslawIdCog = this.btnlawId;
       let _this = this;
       getlawRegulationsListApi(data).then(
         res => {

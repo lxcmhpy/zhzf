@@ -4,7 +4,7 @@
       <p>违法行为:<span>{{caseCauseName}}</span></p>
       <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="table_style" @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="drawerName" label="类型"></el-table-column>
+        <!-- <el-table-column prop="drawerName" label="类型"></el-table-column> -->
         <el-table-column prop="illageClause" :label="illageClauseLabel">
           <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
