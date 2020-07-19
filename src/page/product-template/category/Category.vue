@@ -132,7 +132,7 @@ export default {
     },
     //绑定环节  跳转页面
     continueHandle(data) {
-      this.$store.dispatch("deleteTabs", "category");
+      this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({
         name: "case_handle_flowBindLink",
         params: { flowId: data.id }

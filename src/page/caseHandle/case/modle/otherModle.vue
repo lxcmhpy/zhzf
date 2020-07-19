@@ -493,6 +493,7 @@ export default {
         this.docData.inquiriedAge = this.docData.partyAge;
         this.docData.inquiriedIdNo = this.docData.partyIdNo;
         this.docData.inquiriedTel = this.docData.partyTel;
+        this.docData.inquiriedAddress = this.docData.partyAddress
         this.docData.inquiriedUnitPosition = this.docData.partyUnitPosition;
       }else{
         this.docData.inquiried = '';
@@ -501,6 +502,7 @@ export default {
         this.docData.inquiriedIdNo = '';
         this.docData.inquiriedTel = '';
         this.docData.inquiriedUnitPosition = '';
+        this.docData.inquiriedAddress = '';
       }
     },
     //更改执法人员2

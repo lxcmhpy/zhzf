@@ -100,7 +100,7 @@
 
           </el-form-item>
         </p>
-        <div class="pager_input quzheng">抽样取证地点：
+        <div class="pager_input quzheng">抽样地点：
           <el-form-item prop="evidencePlace" :rules="fieldRules('evidencePlace',propertyFeatures['evidencePlace'])">
             <el-input class='text_indent10 overflow_lins_textarea' v-model="docData.evidencePlace"  maxLength='26' placeholder="\" :disabled="fieldDisabled(propertyFeatures['evidencePlace'])"></el-input>
           </el-form-item>

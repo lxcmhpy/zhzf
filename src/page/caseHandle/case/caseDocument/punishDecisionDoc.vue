@@ -183,7 +183,7 @@
         <p>
           你(单位)的行为违反了
           <span>
-            <el-form-item prop="illegalLaw" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
+            <el-form-item style="width:325px" prop="illegalLaw" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
               <el-input
                 type="textarea"
                 v-model="formData.illegalLaw"
@@ -207,7 +207,7 @@
             </el-form-item>
           </span>的规定，决定给予
           <span>
-            <el-form-item prop="tempPunishAmount" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
+            <el-form-item style="width:270px" prop="tempPunishAmount" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
               <el-input
                 type="textarea"
                 v-model="formData.tempPunishAmount"
@@ -229,7 +229,7 @@
             </el-form-item>
           </span>，账号
           <span>
-            <el-form-item prop="account" :rules="fieldRules('account',propertyFeatures['account'])">
+            <el-form-item style="width:200px" prop="account" :rules="fieldRules('account',propertyFeatures['account'])">
               <el-input type="textarea" v-model="formData.account" v-bind:class="{ over_flow:formData.account && formData.account.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['account'])"></el-input>
             </el-form-item>

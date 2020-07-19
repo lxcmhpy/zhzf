@@ -241,15 +241,8 @@
             text-color="#0074F5"
             class="btn_back"
             @change="changeCommonOptions"
-            style="width:100%"
+            style="width:calc(100% - 50px);"
           >
-            <span
-              class="el-radio-button__inner"
-              style="float: right;margin-right: 4px;"
-              @click="moreBtn=!moreBtn"
-            >
-              <i v-bind:class="moreBtn?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
-            </span>
             <!-- <el-radio-button label="水路运政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
             <el-radio-button label="公路路政"></el-radio-button>
             <el-radio-button label="道路运政"></el-radio-button> -->
@@ -264,6 +257,13 @@
               <el-radio-button v-for="item in lawCateList.slice(3,lawCateList.length)" :key="item.id" :label="item.cateName"></el-radio-button>
             </span>
           </el-radio-group>
+            <span
+              class="el-radio-button__inner"
+              style="float: right;margin-right: 3px;width:46px;"
+              @click="moreBtn=!moreBtn"
+            >
+              <i v-bind:class="moreBtn?'el-icon-arrow-up':'el-icon-arrow-down'"></i>
+            </span>
           <div class="magin_btm">
             常见违法行为
             <span class="casehome_topic_select">
@@ -443,14 +443,15 @@ export default {
         this.$store.commit("setCaseNumber", setCaseNumber);
 
         //暂存案件跳转信息采集
-        if (row.state == 0) {
-          this.$store.commit("setCaseId", row.id);
-          iLocalStroage.set("stageCaseId", row.id);
-          this.$router.replace({
-            name: "case_handle_inforCollect"
-          });
-          return;
-        }
+      if(row.state == 0){
+        this.$store.commit("setCaseId", row.id);
+        iLocalStroage.set("stageCaseId",row.id);
+        await this.queryFlowBycaseId();
+        this.$router.replace({
+          name: this.caseFlowData.basicInfoPage, 
+        });
+        return;
+      }
 
         if (row.caseStatus === "已移送") {
           let message = "该案件正在移送中，移送完成后才可与继续办理";

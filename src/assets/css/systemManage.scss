@@ -46,6 +46,13 @@
     .treeBox{
         height:calc(100% - 100px) ;
         overflow: auto;
+        /* 线上样式冲突 */
+        max-height: auto;
+    }
+    .deep-color{
+        .is-current{
+            color: black;
+        }
     }
     p{
         padding: 10px 0 19px 0px;

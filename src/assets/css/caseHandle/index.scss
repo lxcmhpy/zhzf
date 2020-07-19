@@ -41,13 +41,13 @@
       float: left;
     }
     .gongLiBox1{
-      margin-top: 12px;text-align: center;float:left;margin-left:100px;color:#606266
+      margin-top: 12px;text-align: center;float:left;margin-left:90px;color:#606266
     }
     .gongLiBox2{
       margin-top: 12px;text-align: center;float:left;margin-left: 10px;margin-right: 10px;color:#606266
     }
     .gongLiBox3{
-      margin-top: 12px;text-align: center;float: left;margin-left: 70px;
+      margin-top: 12px;text-align: center;float: left;margin-left: 30px;
     }
 
     .itemThird:nth-child(2) {
@@ -234,7 +234,8 @@
       }
 
       &>div:nth-child(2) {
-        min-width  : 400px;
+        /* min-width  : 400px; */
+        width: calc(100% - 300px);
         margin-left: 100px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -726,5 +727,9 @@
   margin-bottom      : 18px !important;
   border-bottom: 1px dashed #DFDFDF;
 }
-
+.lable-height18px{
+  .el-form-item__label{
+    line-height: 18px;
+  }
+}
 

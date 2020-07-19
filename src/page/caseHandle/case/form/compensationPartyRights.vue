@@ -13,7 +13,7 @@
           </div>
         </div>
       </div> -->
-      <div class="content_box"> 
+      <div class="content_box">
         <div class="content">
           <div class="content_title">
             当事人权利
@@ -73,32 +73,32 @@
           <div class="border_blue"></div>
           <div class="content_form bottom_form">
             <div class="row">
-              <div class="col"> 
-                  <el-row>                 
+              <div class="col">
+                  <el-row>
                     <el-col :span="12">
-                        <el-form-item label="是否重大案件">                  
+                        <el-form-item label="是否重大案件">
                             <el-checkbox-group v-model="formData.isImportant"  @change="changeImportant" :max="1">
                                 <el-checkbox label="是"></el-checkbox>
                                 <el-checkbox label="否"></el-checkbox>
-                            </el-checkbox-group>                    
+                            </el-checkbox-group>
                         </el-form-item>
-                    </el-col>                                    
+                    </el-col>
                     <el-col :span="12">
-                        <el-form-item label="是否听证">                  
+                        <el-form-item label="是否听证">
                             <el-checkbox-group v-model="formData.isHearing" @change="changeHearing" :max="1">
                                 <el-checkbox label="是"></el-checkbox>
                                 <el-checkbox label="否"></el-checkbox>
-                            </el-checkbox-group>                   
+                            </el-checkbox-group>
                         </el-form-item>
                     </el-col>
-                  </el-row>                                   
+                  </el-row>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <el-row>
                     <el-col :span="12">
-                    <el-form-item label="是否减免金额">                 
+                    <el-form-item label="是否减免金额">
                       <el-checkbox-group v-model="formData.isCuting" @change="changeCuting" :max="1">
                                 <el-checkbox label="是"></el-checkbox>
                                 <el-checkbox label="否"></el-checkbox>
@@ -111,29 +111,29 @@
                                     size="small" :disabled="this.formData.isCuting[0]==['是'] ?  false: true"></el-input>
                       </el-form-item>
                     </el-col>
-                  </el-row>                
+                  </el-row>
               </div>
             </div>
             <div class="row">
-              <div class="col"> 
-                  <el-row>                 
+              <div class="col">
+                  <el-row>
                     <el-col :span="12">
-                        <el-form-item label="是否要求复核">                  
+                        <el-form-item label="是否要求复核">
                             <el-checkbox-group v-model="formData.isCheck" @change="changeCuting" :max="1">
                                 <el-checkbox label="是"></el-checkbox>
                                 <el-checkbox label="否"></el-checkbox>
-                            </el-checkbox-group>                    
+                            </el-checkbox-group>
                         </el-form-item>
-                    </el-col>                                    
+                    </el-col>
                     <el-col :span="12">
-                        <el-form-item label="是否提起诉讼">                  
+                        <el-form-item label="是否提起诉讼">
                             <el-checkbox-group v-model="formData.isLawsuit" @change="changeCuting" :max="1">
                                 <el-checkbox label="是"></el-checkbox>
                                 <el-checkbox label="否"></el-checkbox>
-                            </el-checkbox-group>                   
+                            </el-checkbox-group>
                         </el-form-item>
                     </el-col>
-                  </el-row>                                   
+                  </el-row>
               </div>
             </div>
             <div class="row" v-if="cutReasonFlag">
@@ -413,7 +413,7 @@
         let routerData = {
           hasApprovalBtn: false,
           docId: row.docId,
-          approvalOver: false, 
+          approvalOver: false,
           hasBack: true,
           status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
           docDataId:row.docDataId
@@ -489,7 +489,7 @@
       },
       //更改 是否是重大案件
       changeImportant(val) {
-          debugger 
+          debugger
         console.log("是否重大案件",val);
         let docIds = ['2c9029ca5b716296015b716568050001'];
         //是重大笔录时
@@ -501,7 +501,7 @@
                     importdoc.push(item);
                     console.log("importdoc",importdoc);
                   }
-              }) 
+              })
           });
           importdoc.forEach(item => {
             this.docTableDatas.push(item);
@@ -519,7 +519,7 @@
           // this.docTableDatas = this.docTableDatas.filter(item => {
           //   docIds.forEach(item1 => {
           //       item.docId !== item1
-          //     }) 
+          //     })
           // });
           let docDataId = '';
           this.docTableDatasCopy.forEach(item => {
@@ -532,8 +532,8 @@
                     console.log(error);
                   })
                 }
-              })            
-          }) 
+              })
+          })
           // console.log("docTableDatas",this.docTableDatas);
         }
       },
@@ -551,12 +551,12 @@
                     haerDoc.push(item);
                     console.log("haerDoc",haerDoc);
                   }
-              })            
+              })
           })
           haerDoc.forEach(item => {
             this.docTableDatas.push(item);
           });
-          // this.docSelectTableDatas = this.docTableDatas;          
+          // this.docSelectTableDatas = this.docTableDatas;
         }else{
           console.log("docTableDatas",this.docTableDatas);
           docIds.forEach(item => {
@@ -569,7 +569,7 @@
           // this.docTableDatas = this.docTableDatas.filter(item => {
           //   docIds.forEach(item1 => {
           //       item.docId !== item1
-          //     }) 
+          //     })
           // });
           let docDataId = '';
           this.docTableDatasCopy.forEach(item => {
@@ -582,8 +582,8 @@
                     console.log(error);
                   })
                 }
-              })            
-          }) 
+              })
+          })
           console.log("docTableDatas",this.docTableDatas);
         }
       },

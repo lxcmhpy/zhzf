@@ -362,5 +362,13 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/otherModle_JX.vue")
   },
+  {
+    path: "/hearingRecordeDoc_JX",
+    name: "case_handle_hearingRecordeDoc_JX",
+    meta: {
+      title: "听证笔录"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/hearingRecordDoc_JX.vue")
+  },
 ]
 

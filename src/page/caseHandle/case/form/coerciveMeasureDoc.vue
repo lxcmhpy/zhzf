@@ -130,6 +130,10 @@
               <el-table-column type="index" label="序号" align="center" width="50">
               </el-table-column>
               <el-table-column prop="name" label="材料名称" align="center">
+                <template slot-scope="scope">
+                  <span style="color:red" v-if="scope.row.isRequired == 0">*</span>
+                  {{scope.row.name}}
+                </template>
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
@@ -182,6 +186,7 @@
         </div>
       </div>
     </el-form>
+    <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <checkDocAllFinish ref="checkDocAllFinishRef"  @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId" @submitCoerciveMeasuer = "submitCoerciveMeasuer"></checkDocAllFinish>
     <saveFormDia ref="saveFormDiaRef"></saveFormDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>
@@ -193,6 +198,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import checkDocAllFinish from '@/page/caseHandle/components/checkDocAllFinish';
+import checkDocFinish from "@/page/caseHandle/components/checkDocFinish2.vue";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu';
 import {
   submitRelieveApi,getDocDataByCaseIdAndDocIdApi
@@ -202,6 +208,7 @@ import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import saveFormDia from "@/page/caseHandle/components/saveFormDia";
 export default {
   components: {
+    checkDocFinish,
     checkDocAllFinish,
     caseSlideMenu,
     resetDocDia,
@@ -308,7 +315,7 @@ export default {
       isParty: true,  //当事人类型为个人
       originalData: "",
       propertyFeatures:'', //字段属性配置
-
+      unfinshDocArr : []
     }
   },
   computed: {
@@ -333,40 +340,33 @@ export default {
     },
     //提交
     continueHandle() {
-      if(this.isSaveLink){
-        let caseData = {
-          caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
-          caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
-        }
-        let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
-        let allFinish = true;
-        console.log("canGotoNext",this.docTableDatas)
-        for (let i = 0; i < this.docTableDatas.length; i++) {
-          if (this.docTableDatas[i].isRequired === 0 && Number(this.docTableDatas[i].status) == 0 ) {
-            canGotoNext = false
+      let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+      for (let i = 0; i < this.docTableDatas.length; i++) {
+        if (this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)) {
+            canGotoNext = false;
             break;
-          }
-          if (this.docTableDatas[i].isRequired !== 0 && this.docTableDatas[i].status === 0) {
-            allFinish = false
-            break;
-          }
         }
-        console.log("canGotoNext",canGotoNext)
-        console.log("allFinish",allFinish)
-        if (canGotoNext) {
-          if(allFinish){
-            this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,1);
-          }
-          else{
-            this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,2);
-          }
-        } else {
-          this.$refs.checkDocAllFinishRef.showModal(this.docTableDatas, caseData,3);
-        }
-      }else{
-        this.$refs.saveFormDiaRef.showModal();
+      }
+      if (canGotoNext) {
+        console.log('下一环节')
+        this.com_goToNextLinkTu(
+          this.caseId,
+          this.caseLinkDataForm.caseLinktypeId
+        );
+      } else if(!canGotoNext){
+        this.getUnfinishDoc();
+        this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
       }
 
+    },
+    //获取本环节必填但是未完成的文书
+    getUnfinishDoc(){
+      this.unfinshDocArr = [];
+      //判断是否为多文书
+      for(let item of this.docTableDatas){
+        if(item.isRequired === 0 && Number(item.status) == 0) this.unfinshDocArr.push(item);
+        console.log('this.unfinshDocArr',this.unfinshDocArr)
+      }
     },
     //提交
     submitCoerciveMeasuer(){

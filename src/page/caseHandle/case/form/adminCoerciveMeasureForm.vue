@@ -240,7 +240,7 @@
             <td ></td>
           </tr>
           <tr v-for="(item,index) in formData.resList" :key="index"  @click="handleAdd">
-            <td>{{item.resNo}}</td>
+            <td>{{++index}}</td>
             <td>{{item.resName}}</td>
             <td>{{item.spec}}</td>
             <td>{{item.amount}}</td>
@@ -277,6 +277,9 @@
           <el-form ref="addResFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column prop="resNo" label="序号" align="center">
+                <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
               </el-table-column>
               <el-table-column label="查封、扣押场所、设施、财物名称" align="center">
                 <template slot-scope="scope">
@@ -388,9 +391,10 @@ import {
           measureEndDate: '',
           reconsiderationOrgan: '',
           lawsuitOrgan: '',
-          makeDate: '2019',
+          makeDate: '',
           resList: [],
           resLength: 0,
+          caseName: ''
         },
         handleType: 0, //0  暂存     1 提交
         caseLinkDataForm: {

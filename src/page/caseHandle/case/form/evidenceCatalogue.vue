@@ -19,9 +19,12 @@
         <el-table bordercolor="black" width="100%" cellspacing="0" :data="eviList">
             <el-table-column prop="evPath" align="center">
               <template slot-scope="scope">
-          　　　　<img v-if="scope.row.evType=='图片'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"/>
-          　　　　<video v-if="scope.row.evType=='视频'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"></video>
-          <iframe v-if="scope.row.evName=='非现场执法电子证据单.pdf'" class="print_info" :src="host+scope.row.evPath" frameborder="0"></iframe>
+          　　　　<img v-if="scope.row.evType=='照片'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"/>
+          　　　　<video v-if="scope.row.evType=='音视频'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"></video>
+                 <iframe v-if="scope.row.evName=='非现场执法电子证据单.pdf'" class="print_info" :src="host+scope.row.evPath" frameborder="0"></iframe>
+                 <div v-if="scope.row.evType=='其他附件'" @click="evidenceDetail(scope.row)" style="text-align: center;">
+                    <div style="line-height: 25px"><i class="el-icon-document" style="font-size:20px;"></i> &nbsp;{{scope.row.evName}}</div>
+                 </div>
           　　</template>
             </el-table-column>
         </el-table>

@@ -63,44 +63,72 @@
             </el-form-item>
           </div>
         </div>
-        <div>
-          <div class="itemOne" v-if="!afddFlag">
-            <el-form-item label="案发地点">
-              <el-input v-model="inforForm.afdd"></el-input>
-            </el-form-item>
-          </div>
-          <label v-if="afddFlag" class="el-form-item__label" style="width: 100px;">案发地点</label>
-          <div class="itemFive">
-            <el-form-item v-if="afddFlag" label-width="20px">
-              <el-select v-model="inforForm.routeId" placeholder="本机构路线编号" filterable allow-create>
+        <div class="afddBox">
+          <label class="el-form-item__label" style="width: 100px;">案发地点</label>
+          <div class="itemFive2">
+            <el-form-item label-width="0" prop="highwayRoute">
+              <el-select ref="highwayRoute" v-model="inforForm.highwayRoute"  placeholder="本机构路线编号">
                 <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
           </div>
-          <div class="itemFive">
-            <el-form-item v-if="afddFlag" label-width="20px">
-              <el-select v-model="inforForm.direction" placeholder="方向">
-                <el-option v-for="item in locationList" :key="item.name" :label="item.label"
-                           :value="item.name"></el-option>
+          <div class="itemFive2">
+            <el-form-item label-width="20px" prop="direction">
+              <el-select ref="direction" v-model="inforForm.direction" placeholder="方向">
+                <el-option
+                  v-for="item in locationList"
+                  :key="item.name"
+                  :label="item.label"
+                  :value="item.name"
+                ></el-option>
               </el-select>
             </el-form-item>
           </div>
-          <div class="itemFive">
-            <el-form-item v-if="afddFlag" label-width="20px">
-              <el-select v-model="inforForm.location" placeholder="位置">
-                <el-option v-for="item in directionList" :key="item.name" :label="item.label"
-                           :value="item.name"></el-option>
+          <div class="itemFive2">
+            <el-form-item label-width="20px" prop="position">
+              <el-select ref="position" v-model="inforForm.position" placeholder="位置">
+                <el-option
+                  v-for="item in directionList"
+                  :key="item.name"
+                  :label="item.label"
+                  :value="item.name"
+                ></el-option>
               </el-select>
             </el-form-item>
           </div>
+          <div class="showMapBtn">
+            <label class="mustTip">*</label>
+            <el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button>
+            <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
+          </div>
+        </div>
+        <div>
+          <div class="gongLiBox1">K</div>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label="K" label-width="20px">
-              <el-input v-model="inforForm.kilometre" placeholder="公里数"></el-input>
+            <el-form-item  prop="pileNumber" label-width="0px">
+              <el-input v-model="inforForm.pileNumber" placeholder="公里数"></el-input>
             </el-form-item>
           </div>
+          <div class="gongLiBox2">+</div>
           <div class="itemFive">
-            <el-form-item v-if="afddFlag" label="+" label-width="20px">
-              <el-input v-model="inforForm.metre" placeholder="米数" style="vertical-align: middle;">
+            <el-form-item label-width="0px" prop="distance">
+              <el-input v-model="inforForm.distance" placeholder="米数" style="vertical-align: middle;">
+                <template slot="append">m</template>
+              </el-input>
+            </el-form-item>
+
+          </div> 
+          <div class="gongLiBox3">至</div>
+          <div class="gongLiBox3">K</div>
+          <div class="itemFive">
+            <el-form-item  prop="pileNumber2" label-width="0px">
+              <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
+            </el-form-item>
+          </div>
+          <div class="gongLiBox2">+</div>
+          <div class="itemFive">
+            <el-form-item label-width="0px" prop="distance2">
+              <el-input v-model="inforForm.distance2" placeholder="米数" style="vertical-align: middle;">
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
@@ -222,12 +250,12 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemSmall">
-            <el-form-item label="统一社会信用代码">
+            <el-form-item label="统一社会信用代码" class="lable-height18px">
               <el-input v-model="inforForm.socialCreditCode"></el-input>
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="道路经营许可证">
+            <el-form-item label="道路经营许可证" class="lable-height18px">
               <el-input v-model="inforForm.roadTransportLicense"></el-input>
             </el-form-item>
           </div>
@@ -779,11 +807,13 @@
         </svg>
       </div>
     </el-backtop>
+    <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
   </div>
 </template>
 <script>
   import chooseLawPerson from "./chooseLawPerson";
   import punishDiag from "./punishDiag";
+  import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
   import caseSlideMenu from '../components/caseSlideMenu'
   import iLocalStroage from "@/common/js/localStroage";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
@@ -1062,12 +1092,13 @@
         //案发地点标志
         afddFlag: false,
         disableZcBtn: false, //暂存按钮禁用
-
+        hasLatitudeAndLongitude:false, //案发坐标是否已经获取
       };
     },
     components: {
       chooseLawPerson,
       punishDiag,
+      mapDiag,
       caseSlideMenu
     },
     mixins: [mixinGetCaseApiList],
@@ -1341,7 +1372,10 @@
         // this.searchLawPerson();
         // console.log('searchLawPerson', this.allUserList)
         // console.log("lawPersonList", this.lawPersonList)
-        console.log("表单数据", this.inforForm)
+        if(!this.inforForm.latitudeAndLongitude){
+          this.$message('请获取坐标！');
+          return;
+        }
         let _this = this
         //        this.$refs["inforForm"].validate(valid => {
         let result = true
@@ -1469,6 +1503,7 @@
         this.$store.dispatch("getCaseBasicInfo", data).then(
           res => {
             _this.inforForm = res.data;
+            console.log("222222222",_this.inforForm)
             this.handleCaseData(res.data);
           },
           err => {
@@ -1497,6 +1532,9 @@
         }
         //驾驶人或代理人
         this.driverOrAgentInfoList = JSON.parse(data.agentPartyEcertId);
+        //案发坐标
+        this.hasLatitudeAndLongitude  = data.latitudeAndLongitude !=='';
+        console.log("坐标是否获取",this.hasLatitudeAndLongitude)
         //超限信息
         if (data.otherInfo != "") {
           this.inforForm.otherInfo = JSON.parse(data.otherInfo);
@@ -1939,6 +1977,15 @@
           return (data.inputValue.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
         };
       },
+      //显示地图
+      showMap(){
+        this.$refs.mapDiagRef.showModal();
+      },
+      //获取坐标
+      getLngLat(lngLatStr){
+        this.inforForm.latitudeAndLongitude = lngLatStr;   
+        this.hasLatitudeAndLongitude = true;
+      },
     },
 
     mounted() {
@@ -1959,7 +2006,7 @@
 
 
       let someCaseInfo = iLocalStroage.gets("someCaseInfo");
-      console.log(someCaseInfo);
+      console.log("3333333",iLocalStroage);
       this.inforForm.caseCauseName = someCaseInfo.illageAct;
       this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
       this.inforForm.caseCauseId = someCaseInfo.illageActId;
@@ -1967,7 +2014,8 @@
       this.inforForm.caseType = someCaseInfo.caseType;
       this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
       this.inforForm.zfmlId = someCaseInfo.cateId;
-      if (this.inforForm.zfmlId == "1002000100000000") {
+      debugger
+      if (this.inforForm.zfmlId === "1002000100000000") {
         this.afddFlag = true;
       } else {
         this.afddFlag = false;
