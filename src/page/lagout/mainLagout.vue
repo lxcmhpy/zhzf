@@ -203,6 +203,8 @@ export default {
                     _this.getSystemData();
                     // _this.$router.push({ name: routerName});
 
+                    this.$store.dispatch('deleteAllTabs');
+
                     let to = _this.$route;
                     _this.$store.dispatch("addTabs", {
                       route: to.path,
