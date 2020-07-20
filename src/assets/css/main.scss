@@ -656,3 +656,9 @@ textarea{
 .margin-bottom0{
   margin-bottom: 0px;
 }
+/* 设置所有不可编辑字体颜色 */
+.is-disabled {
+  .el-input__inner {
+    color: #9FA3AF !important;
+  }
+}
