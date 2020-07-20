@@ -92,8 +92,13 @@
     padding: 20px;
     background: #fff;
     overflow-y: scroll;
-    p{
+    .departTable-title{
         line-height: 30px;
+        display: flex;
+        justify-content: flex-start;
+        .update {
+          margin-left: 10px;
+        }
         .editSelectNode{
             cursor: pointer;
             margin-left: 10px;

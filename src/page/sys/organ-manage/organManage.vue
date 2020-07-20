@@ -35,12 +35,15 @@
       </div>
     </div>
     <div class="departTable">
-      <p>
+      <div class="departTable-title">
         {{selectCurrentTreeName}}
         <!-- <span class="editSelectNode" @click="editSelectNode">
           <i class="iconfont law-btn_bianji"></i>
         </span> -->
-      </p>
+        <div class="update">
+          <el-button size="mini" type="primary">编辑</el-button>
+        </div>
+      </div>
       <div class="handelBtn">
         <div>子机构列表</div>
         <div>
