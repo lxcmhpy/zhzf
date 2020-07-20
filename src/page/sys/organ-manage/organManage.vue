@@ -41,7 +41,7 @@
           <i class="iconfont law-btn_bianji"></i>
         </span> -->
         <div class="departTable-title-update">
-          <el-button size="mini" type="primary">编辑</el-button>
+          <el-button size="mini" type="primary" @click="handleUpdata">编辑</el-button>
         </div>
       </div>
       <div class="handelBtn">
@@ -127,6 +127,14 @@ export default {
   },
   inject: ["reload"],
   methods: {
+    /**
+     *
+     * 点击编辑按钮
+     */
+    handleUpdata() {
+      console.log('handleUpdata')
+    },
+
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
