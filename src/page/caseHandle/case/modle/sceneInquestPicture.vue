@@ -252,7 +252,7 @@ export default {
     },
     getDataAfter(){
       if(this.docData.picImgEvPath){
-        queryImgBase64Api(this.docData.picImgEvPath).then(res=>{
+        queryResizeImageApi(this.docData.picImgEvPath).then(res=>{
             this.imgBase64 = res.data;
             this.changeImgWidHei(this.docData.picImgEvPath);
         })
