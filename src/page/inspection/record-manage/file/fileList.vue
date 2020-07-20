@@ -28,7 +28,7 @@
               </span>
               <span v-else>
                 <el-button :disabled="!inspectionFileEdit" @click="editRecord(scope.row)" type="text">编辑</el-button>
-                <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
+                <el-upload :disabled="!inspectionFileEdit" style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
                   <el-button :disabled="!inspectionFileEdit" type="text">上传</el-button>
                 </el-upload>
               </span>
@@ -123,7 +123,6 @@ export default {
     // 查看模板
     viewRecord(item) {
       this.$store.commit("set_inspection_fileId", item.id)
-      debugger
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: "inspection_myPDF",
@@ -186,7 +185,6 @@ export default {
           }
           updatePicPath(data).then(
             res => {
-              debugger
               if (res.code == 200) {
                 this.$message({
                   type: "success",
@@ -222,7 +220,6 @@ export default {
       let data = this.inspectionOrderId
       getDocListById(data).then(
         res => {
-          // debugger
           console.log(res)
           if (res.data) {
             this.modleList = res.data

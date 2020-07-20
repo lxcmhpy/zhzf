@@ -73,7 +73,8 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input clearable class="w-120" @input="handlePaidAmount" v-model="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input>
+                  <!-- <el-input clearable class="w-120" @input="handlePaidAmount" v-model="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input> -->
+                  <el-input-number @input="handlePaidAmount" v-model="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input-number>
                 </el-form-item>
               </div>
               <div class="col">
@@ -918,7 +919,7 @@ export default {
     'formData.paidAmount'(val) {
       console.log(val);
       this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
-      if(this.formData.toPayAmount='NAN'){
+      if(isNaN(this.formData.toPayAmount)){
         this.formData.toPayAmount=''
       }
     },

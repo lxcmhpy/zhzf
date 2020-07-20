@@ -199,7 +199,7 @@ export const mixinGetCaseApiList = {
       }
     },
     //点击下一环节和提交按钮都跳转流程图
-    com_goToNextLinkTu(caseBasicinfoId, caseLinktypeId) {
+    com_goToNextLinkTu(caseBasicinfoId, caseLinktypeId) { 
       let data = {
         caseId: caseBasicinfoId,
         caseLinktypeId: caseLinktypeId

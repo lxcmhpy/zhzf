@@ -63,7 +63,6 @@ export default {
     reInstall(val) {
       console.log('reinstall')
       this.$set(this, 'storagePath', [])
-      debugger
       this.getFile()
 
 
@@ -83,7 +82,6 @@ export default {
               // if(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST)
               _that.pdfShowUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + (res.data.pdfStorageId || res.data.picStorageId)
               _that.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + (res.data.pdfStorageId || res.data.picStorageId)
-              debugger
               console.log('_that.storagePath', _that.storagePath)
               console.log('_that.storagePath222', this.$route.params.storagePath)
               if (res.data.pdfStorageId) {
