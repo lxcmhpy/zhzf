@@ -40,7 +40,7 @@
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
         <p>
-          <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
+          <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
           <span>
             <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日"
@@ -50,7 +50,7 @@
           </span>。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">同意你（单位）分期缴纳罚款。第
+          <input type="checkbox" name="measure" value="2" v-model="docData.checknames" @change="click">同意你（单位）分期缴纳罚款。第
           <span>
             <el-form-item :prop="disabledTwo?'':'instalmentNum'" style="width:46px">
               <!-- <el-input v-model="docData.instalmentNum"></el-input> -->
@@ -86,7 +86,7 @@
           </span>元（大写）。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">由于
+          <input type="checkbox" name="measure" value="3" v-model="docData.checknames" @change="click">由于
           <span>
             <el-form-item :prop="disabledThree?'placeholder':'reason'" style="width:500px">
               <el-input v-model="docData.reason" v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
@@ -269,12 +269,13 @@
       //保存文书信息
       saveData(handleType) {
 //        console.log('caseBasicinfoId', this.caseDocDataForm.caseBasicinfoId)
+        this.dealCheck()
         if (this.disabledOne && this.disabledTwo && this.disabledThree) {
           this.$message("请选择分期延期决定");
           return
         }
         console.log('shuju',this.docData,this.docData.debtFine,this.docData.payFine)
-        this.docData.checknames = JSON.parse(JSON.stringify(this.checknames))
+        this.docData.checknames = JSON.parse(JSON.stringify(this.docData.checknames))
         this.com_addDocData(handleType, "docForm");
       },
       //是否是完成状态
@@ -374,20 +375,24 @@
       },
       click() {
         this.clearData()
-//        console.log('this.checknames', this.checknames)
-        if (this.checknames.length > 1) {
-          this.checknames.shift();
+//        console.log('this.docData.checknames', this.docData.checknames)
+        this.dealCheck()
+      },
+       dealCheck(){
+         if (this.docData.checknames.length > 1) {
+          this.docData.checknames.shift();
         }
-        if (this.checknames == '1') {
+        debugger
+        if (this.docData.checknames == '1') {
           this.disabledOne = false;
           this.disabledTwo = true;
           this.disabledThree = true;
-        } else if (this.checknames == '2') {
+        } else if (this.docData.checknames == '2') {
           this.disabledOne = true;
           this.disabledTwo = false;
           this.disabledThree = true;
           this.docData.instalmentNum = '1'
-        } else if (this.checknames == '3') {
+        } else if (this.docData.checknames == '3') {
           this.disabledOne = true;
           this.disabledTwo = true;
           this.disabledThree = false;
@@ -426,27 +431,30 @@
       }
 
 //      console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
-      if (this.$route.params.approvalForm.executeHandle === '0') {
-        // 拒绝
-//        console.log('拒绝')
-        this.checknames.push("3")
-        this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
-      }
-      else {
-        if (this.$route.params.approvalForm.executeType === 1) {
-          // 分期
-          this.checknames.push("2")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
-
+      if(this.$route.params.approvalForm){
+        if (this.$route.params.approvalForm.executeHandle == '0') {
+            // 拒绝
+        //        console.log('拒绝')
+          this.docData.checknames.push("3")
+          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
         }
-        if (this.$route.params.approvalForm.executeType === 0) {
-          // 延期
-          this.checknames.push("1")
-          this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
+        else {
+          if (this.$route.params.approvalForm.executeType === 1) {
+            // 分期
+            this.docData.checknames.push("2")
+            this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
 
+          }
+          if (this.$route.params.approvalForm.executeType === 0) {
+            // 延期
+            this.docData.checknames.push("1")
+            this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
+
+          }
         }
+        this.click()
       }
-      this.click()
+    
     },
     created() {
       this.isOverStatus();

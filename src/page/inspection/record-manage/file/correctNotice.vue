@@ -53,17 +53,17 @@
         <p>
           如不服本决定，可以在六十日内依法向
           <span>
-            <el-form-item prop="reconsiderationOrgan" :rules="fieldRules('reconsiderationOrgan',propertyFeatures['reconsiderationOrgan'])">
+            <el-form-item prop="reconsiderationOrgan" >
               <!-- <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' ></el-input> -->
-              <el-select v-model="formData.reconsiderationOrgan" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['reconsiderationOrgan'])">
+              <el-select v-model="formData.reconsiderationOrgan" @change="changeType">
                 <el-option v-for="(item,index) in reconsiderationOptions" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
           </span>申请行政复议，或者在六个月内依法向
           <span>
-            <el-form-item prop="litigationOrgan" :rules="fieldRules('litigationOrgan',propertyFeatures['litigationOrgan'])">
+            <el-form-item prop="litigationOrgan">
               <!-- <el-input v-model="formData.litigationOrgan" :maxLength='maxLength' ></el-input> -->
-              <el-select v-model="formData.litigationOrgan" :maxLength="maxLength" :disabled="fieldDisabled(propertyFeatures['litigationOrgan'])">
+              <el-select v-model="formData.litigationOrgan">
                 <el-option v-for="(item,index) in enforcementOptions" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
@@ -168,25 +168,25 @@ export default {
       },
       name: "",
       rules: {
-        party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
-        caseName: [
-          { required: true, message: '违法事实不能为空', trigger: 'blur' },
-        ],
-        punishLaw: [
-          { required: true, message: "法律条款不能为空", trigger: "blur" }
-        ],
-        reconsiderationOrgan: [
-          { required: true, message: "复议机构不能为空", trigger: "blur" }
-        ],
-        litigationOrgan: [
-          { required: true, message: "诉讼机构不能为空", trigger: "blur" }
-        ],
-        correctWay: [
-          { required: true, message: "责令改正方式不能为空", trigger: "change" }
-        ],
-        correctTime: [
-          { validator: validateBycorrectWay, trigger: "blur" }
-        ]
+        // party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
+        // caseName: [
+        //   { required: true, message: '违法事实不能为空', trigger: 'blur' },
+        // ],
+        // punishLaw: [
+        //   { required: true, message: "法律条款不能为空", trigger: "blur" }
+        // ],
+        // reconsiderationOrgan: [
+        //   { required: true, message: "复议机构不能为空", trigger: "blur" }
+        // ],
+        // litigationOrgan: [
+        //   { required: true, message: "诉讼机构不能为空", trigger: "blur" }
+        // ],
+        // correctWay: [
+        //   { required: true, message: "责令改正方式不能为空", trigger: "change" }
+        // ],
+        // correctTime: [
+        //   { validator: validateBycorrectWay, trigger: "blur" }
+        // ]
       },
       nameLength: 23,
       adressLength: 23,
@@ -210,7 +210,6 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
-      debugger
       if (this.inspectionFileId) {
         getDocumentById(this.inspectionFileId).then(
           res => {
@@ -219,8 +218,6 @@ export default {
               if (this.docData.docContent) {
                 this.formData = JSON.parse(this.docData.docContent)
                 if (!this.formData.docContent.party) {
-
-                  debugger
                   this.formData.party = this.docData.party || ''
                   console.log('this.formData.party', this.formData.party)
                   console.log('this.docData.party', this.docData.party)
@@ -243,8 +240,6 @@ export default {
     saveData(handleType) {
       //参数  提交类型 、
       // this.printContent();
-
-      debugger
       this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
       // this.docData.docContent = JSON.stringify(this.formData)
       console.log("参数", this.docData)
@@ -365,9 +360,10 @@ export default {
           if (organData.enforcementOrgan2) {
             _this.enforcementOptions.push(organData.enforcementOrgan2)
           }
+          debugger
           //默认显示
-          _this.formData.reconsiderationOrgan = _this.reconsiderationOptions[0];
-          _this.formData.litigationOrgan = _this.enforcementOptions[0];
+          _this.formData.reconsiderationOrgan =_this.formData.reconsiderationOrgan?_this.formData.reconsiderationOrgan:_this.reconsiderationOptions[0];
+          _this.formData.litigationOrgan =_this.formData.litigationOrgan?_this.formData.litigationOrgan:_this.enforcementOptions[0];
 
         },
         err => {
@@ -388,6 +384,9 @@ export default {
         params: { id: this.inspectionOrderId }
         // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
       });
+    },
+    changeType(){
+      this.$forceUpdate()
     }
   },
 

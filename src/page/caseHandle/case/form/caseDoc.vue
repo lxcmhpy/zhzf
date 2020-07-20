@@ -292,7 +292,7 @@
                     <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
                   </div>
                   <div v-if="!scope.row.openRow">
-                    
+
                     <!-- 已完成 -->
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
@@ -656,8 +656,8 @@ export default {
     }
   },
   created() {
-    this.initData() 
-  }
+    this.initData()
+  },
 };
 </script>
 

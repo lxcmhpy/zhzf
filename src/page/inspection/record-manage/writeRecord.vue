@@ -559,7 +559,10 @@ export default {
         this.onSaveRecord(true)//暂存一份
         // 更新数据
 
-        this.editMethod()//可修改
+        // this.editMethod()//可修改
+        // 不判断模板 直接添加
+        // this.delFinishFile()
+
 
       })
 

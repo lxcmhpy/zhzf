@@ -92,8 +92,13 @@
     padding: 20px;
     background: #fff;
     overflow-y: scroll;
-    p{
+    .departTable-title{
         line-height: 30px;
+        display: flex;
+        justify-content: flex-start;
+        .departTable-title-update {
+          margin-left: 10px;
+        }
         .editSelectNode{
             cursor: pointer;
             margin-left: 10px;
@@ -298,4 +303,8 @@
     .el-form-item__content{
         margin-bottom:0 !important;
     }
+}
+/* max-height样式冲突 */
+.max-height-conflict{
+    max-height: 9999px !important;
 }
