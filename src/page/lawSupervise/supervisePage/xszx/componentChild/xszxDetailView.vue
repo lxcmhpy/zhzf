@@ -219,10 +219,10 @@
     <div class="b-flex-1">
       <!-- <span :class="$route.name">待审核</span> -->
       <div class="shadow">
-        <div class="box b-w-720">
+        <div class="box box-npshadow b-w-720" >
           <div class="box_title">
             <span class="titleflag"> </span>
-            <span class="title">电子证据单</span>
+            <span class="title" style="margin-top:15px">电子证据单</span>
           </div>
           <ul class="list">
             <li>
@@ -231,7 +231,7 @@
                 style="padding: 0px; width: 815px; height:630px; position: relative;"> -->
               <div class="pdf-html">
                 <div class="container">
-                  <h3>非现场执法电子证据单</h3>
+                  <h3 style="font-weight: 600;font-size: 24px;">非现场执法电子证据单</h3>
                   <p>证据编号：{{obj.workNo}}</p>
                   <table width="100%">
                     <tr>
@@ -244,7 +244,9 @@
                       <td>{{obj.axleNumber}}</td>
                       <td rowspan="7" colspan="2">
                           <!-- xjHost -->
-                        <img width="320"
+                          <!-- 图片居中，暂时写死 -->
+                        <img width="280"
+                        style="margin-left: 20px;margin-top: 65px;"
                           :src="xjHost + imgList[2]"
                           alt=""
                         />
@@ -530,8 +532,8 @@ export default {
       text-align: center;
     }
     p {
-      padding-top: 16px;
-      padding-bottom: 6px;
+      padding-top: 32px;
+      padding-bottom: 12px;
     }
     table {
       width: 760px;
@@ -540,7 +542,8 @@ export default {
       tr {
         td {
           padding: 10px;
-          border: 2px solid #e5e5e5 !important;
+          border: 1px solid #dfdfdf !important;
+          height: 44px;
           img {
             position: absolute;
             height: 136px;
@@ -562,9 +565,15 @@ export default {
         padding-bottom: 16px;
       }
       img {
-        height: 360px;
+        /* height: 360px; */
+        height: auto;
+        width: 100%;
       }
     }
   }
+}
+.box-noshadow{
+  box-shadow: none;
+ -webkit-box-shadow:none
 }
 </style>
