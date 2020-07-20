@@ -1009,7 +1009,6 @@ export default {
       console.log('选择', this.formData.documentFill)
       if (this.formData.documentFill == '是') {
         this.dialogTableVisible = true
-        this.getFileList()
       }
     },
     handleSelectionChange(val) {
@@ -1067,6 +1066,9 @@ export default {
     }
   },
   mounted() {
+    this.$nextTick(() => {
+       this.getFileList()
+      });
   }
 }
 </script>
