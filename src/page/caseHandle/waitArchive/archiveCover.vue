@@ -116,7 +116,7 @@
     <div v-show="showCover=='img'" style="margin:0 auto;width:690px">
         <object >
             <img class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-            :src="docSrc" type="image/*" />
+            :src="docSrc" />
         </object>
     </div>
 

@@ -190,7 +190,13 @@
       <div>
         <div style="float: left;width: 45%">
           <el-form :model="uForm">
-            <img :src="host+uForm.evPath" width="350px" height="400" align="center"/>
+            <!-- <img :src="host+uForm.evPath" width="350px" height="400" align="center"/> -->
+            <img v-if="uForm.evType =='照片'" :src="host+uForm.evPath"  width="350px" height="400" align="center"/>
+            <video v-if="uForm.evType =='音视频'" :src="host+uForm.evPath" controls="controls" width="350px" height="400">your browser does not support the video tag</video>
+            <div v-if="uForm.evType=='其他附件'" style="text-align: center;margin-top:100px;">
+                <div><i class="el-icon-document" style="font-size:45px;"></i></div>
+                <div style="margin: 15px;line-height: 35px">{{uForm.evName}}</div>
+            </div>
           </el-form>
         </div>
         <div style="float: right;width: 55%">
