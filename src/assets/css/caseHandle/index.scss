@@ -241,6 +241,13 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+      .wfqj-tooltip{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        width: 100%;
+      }
 
       span.selectIcon {
         display: none;
@@ -731,5 +738,16 @@
   .el-form-item__label{
     line-height: 18px;
   }
+}
+
+// 自由裁量标准tooltip
+.wfqj-poper{
+  width: 40%;
+  line-height: 24px;
+  font-size: 16px;
+}
+.judge-poper{
+  line-height: 24px;
+  font-size: 16px;
 }
 
