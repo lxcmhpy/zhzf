@@ -104,7 +104,7 @@
                 </div> -->
               <div class="flexBox">
                 <div class="con">
-                  <p>地址：{{curWindow.other.address}}</p>
+                  <p style="width:400px;">地址：{{curWindow.other.address}}</p>
                   <p>联系人：{{curWindow.other.contactor}}</p>
                   <p>联系方式：{{curWindow.other.telephone}}</p>
                 </div>
@@ -1349,35 +1349,41 @@ export default {
                   let position = v.propertyValue ? v.propertyValue.split(',') : ['', ''];
                   let lng = parseFloat(position[0]);
                   let lat = parseFloat(position[1]);
-                  resultList.push({
-                    address: v.address,
-                    distance: null,
-                    id: v.id,
-                    lat: lat,
-                    lng: lng,
-                    icon: 'icon_jc11',
-                    // icons: 'ry',
-                    pid: v.organId,
-                    location: {
-                      O: lng,
-                      P: lat,
+                  if(!isNaN(lng) && !isNaN(lat)){
+                    resultList.push({
+                      address: v.address,
+                      distance: null,
+                      id: v.id,
                       lat: lat,
-                      lng: lng
-                    },
-                    name: v.name,
-                    label: v.nickName,
-                    // position: v.propertyValue,
-                    position: [lng, lat],
-                    shopinfo: '',
-                    tel: '',
-                    type: '0',
-                    other: v
-                  })
+                      lng: lng,
+                      icon: 'icon_jc11',
+                      // icons: 'ry',
+                      pid: v.organId,
+                      location: {
+                        O: lng,
+                        P: lat,
+                        lat: lat,
+                        lng: lng
+                      },
+                      name: v.name,
+                      label: v.nickName,
+                      // position: v.propertyValue,
+                      position: [lng, lat],
+                      shopinfo: '',
+                      tel: '',
+                      type: '0',
+                      other: v
+                    })
+                  }
+                  
                 })
                 node.children = nodeChildren
                 this.category = 0;
                 _this.onSearchResult(resultList, 0, 0);
-                _this.errorMsg(`总计${res.data.length}条数据`, 'success');
+                let msg = ""
+                if(resultList.length<1)
+                  msg = "无定位信息"
+                _this.errorMsg(`总计${res.data.length}条数据 `+ msg, 'success');
                 // _this.toolShow = true;
                 // _this.pointWidth = 150;
               })
