@@ -370,7 +370,8 @@ export default {
         secondApproveTime: "",
         threeApproveOpinions: "",
         threeApprovePeo: "",
-        threeApproveTime: ""
+        threeApproveTime: "",
+        closeResult:""
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交

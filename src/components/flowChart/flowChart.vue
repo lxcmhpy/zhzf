@@ -606,10 +606,28 @@ export default {
       this.getFlowStatusByCaseId(this.caseId);
     },
     //解除或延长强制措施跳转
-    showRemoveOrExtend() {
+    async showRemoveOrExtend() {
       if(this.currentFlow.data.flowName == '处罚流程'){
+        let updataLinkData = {
+          caseId:this.caseId,
+          linkTypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
+        }
+        try{
+          await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
+        }catch(err){
+          this.$message('更改流程图状态失败！')
+        }
         this.$router.push({ name: 'case_handle_removeOrPrelong' }) 
       }else if(this.currentFlow.data.flowName == '江西流程'){
+        let updataLinkData = {
+          caseId:this.caseId,
+          linkTypeId:this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId
+        }
+        try{
+          await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
+        }catch(err){
+          this.$message('更改流程图状态失败！')
+        }
         this.$router.push({ name: 'case_handle_coerciveMeasureDoc_JX' }) 
       }
     },

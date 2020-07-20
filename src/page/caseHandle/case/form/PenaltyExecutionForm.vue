@@ -769,6 +769,7 @@ export default {
       this.docTableDatas = [];
       this.allAskDocList = [];
       this.allApprovalDocList = [];
+      this.finishDocCount = 0;
       //查找是否为必填
       let payStageDoc_Require = this.docTableDatasCopy.find(item=>item.docId == '2c9028ac6955b0c2016955bf8d7c0001').isRequired;
       if (this.formData.stepPay) {

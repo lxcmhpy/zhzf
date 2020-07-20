@@ -38,7 +38,8 @@
         </p>
 
         <p>
-          <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.现因
+        {{docData.checknames}}
+          <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click">1.现因
           <span>
             <el-form-item :prop="disabledOne ? 'placeholder':'stopReason'" class="width120">
               <el-input type="textarea" v-model="docData.stopReason"
@@ -56,7 +57,7 @@
         </p>
 
         <p>
-          <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.现因
+          <input type="checkbox" name="measure" value="2" v-model="docData.checknames" @change="click">2.现因
           <span>
             <el-form-item :prop="disabledTwo ? 'placeholder':'endReason'" class="width120">
               <el-input type="textarea" v-model="docData.endReason" v-bind:disabled="disabledTwo"
@@ -67,7 +68,7 @@
           </span>，根据《中华人民共和国行政强制法》第四十条的规定，本机关决定终结执行。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.你(单位)
+          <input type="checkbox" name="measure" value="3" v-model="docData.checknames" @change="click">3.你(单位)
           <span>
             <el-form-item prop="caseName" class="width120">
               <el-input  type="textarea" v-model="docData.caseName"
@@ -85,7 +86,7 @@
           </span>决定中止执行，现中止执行的情形已消失，根据《中华人民共和国行政强制法》第三十九第二款的规定，决定从即日恢复强制执行。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">4.本机关于
+          <input type="checkbox" name="measure" value="4" v-model="docData.checknames" @change="click">4.本机关于
           <span>
             <el-form-item :prop="disabledFour?'placeholder':'agreeTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.agreeTime" v-bind:disabled="disabledFour" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
@@ -108,6 +109,9 @@
           <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
         </div>
       </el-form>
+      <input type="checkbox" name="haha" value="1" v-model="a.try">
+      <input type="checkbox" name="haha" value="2" v-model="a.try">
+
     </div>
     <!-- 悬浮按钮 -->
     <!-- <div class="float-btns">
@@ -225,7 +229,8 @@ export default {
       disabledTwo: true,
       disabledThree: true,
       disabledFour: true,
-      propertyFeatures:''
+      propertyFeatures:'',
+      a:{try:['1','2']}
     }
   },
 
@@ -266,7 +271,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      this.docData.checknames=this.checknames
+      this.docData.checknames=this.docData.checknames
       console.log('docData提交',this.docData)
 
       this.com_addDocData(handleType, "docForm");
@@ -278,25 +283,26 @@ export default {
       }
     },
     click(){
-      if(this.checknames.length > 1){
-        this.checknames.shift();
+      this.clearData();
+      if(this.docData.checknames.length > 1){
+        this.docData.checknames.shift();
       }
-      if(this.checknames == '1'){
+      if(this.docData.checknames == '1'){
         this.disabledOne = false;
         this.disabledTwo = true;
         this.disabledThree = true;
         this.disabledFour = true;
-      }else if(this.checknames == '2'){
+      }else if(this.docData.checknames == '2'){
         this.disabledOne = true;
         this.disabledTwo = false;
         this.disabledThree = true;
         this.disabledFour = true;
-      }else if(this.checknames == '3'){
+      }else if(this.docData.checknames == '3'){
         this.disabledOne = true;
         this.disabledTwo = true;
         this.disabledThree = false;
         this.disabledFour = true;
-      }else if(this.checknames == '4'){
+      }else if(this.docData.checknames == '4'){
         this.disabledOne = true;
         this.disabledTwo = true;
         this.disabledThree = true;
@@ -308,51 +314,59 @@ export default {
         this.disabledFour = true;
       }
     },
-     clearData() {
-      this.docData.decisionTime = '';
+    clearData() {
+      this.docData.stopReason = '';
+      this.docData.executeTime = '';
+      this.docData.endReason = '';
+      this.docData.serviceTime = '';
+      this.docData.agreeTime = ''; 
+    },
+    getDataAfter(){
+      this.docData.checknames = this.docData.checknames;
+      console.log('this.docData.checknames',this.docData.checknames)
+    },
+    async initData(){
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
 
+      //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
+      let addMoreData = JSON.parse(this.$route.params.addMoreData);
+      
+      if (addMoreData.handelType == 'isAddMore') {
+        console.log('多份文书', this.$route.params.handelType)
+        this.com_getCaseBasicInfo(data.caseId, data.docId);
+        if (addMoreData.approvalForm.executeHandle == 0) {
+          // 拒绝
+          this.docData.checknames.push("1")
+          this.caseDocDataForm.note = "中止行政强制执行通知书";
+        }else if(addMoreData.approvalForm.executeHandle == 1){
+          this.docData.checknames.push("2")
+          this.caseDocDataForm.note = "终结行政强制执行通知书";
+        }else if(addMoreData.approvalForm.executeHandle == 2){
+          this.docData.checknames.push("3")
+          this.caseDocDataForm.note = "恢复行政强制执行通知书";
+        }else if(addMoreData.approvalForm.executeHandle == 3){
+          this.docData.checknames.push("4")
+          this.caseDocDataForm.note = "恢复行政强制执行通知书";
+        }
+        this.click();
+      } else {
+        // this.getDocDetailById(this.$route.params.docDataId)
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        if(currentDocDataId){
+          await this.getDocDetailById(currentDocDataId)
+        }else{
+          await this.getDocDetailById(this.$route.params.docDataId)
+        }
+      }
     }
   },
   mounted() {
-
-    this.caseDocDataForm.caseBasicinfoId = this.caseId;
-    let data = {
-      caseId: this.caseId,
-      docId: this.$route.params.docId
-    };
-
-    //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-    let addMoreData = JSON.parse(this.$route.params.addMoreData);
+    this.initData()
     
-    if (addMoreData.handelType == 'isAddMore') {
-      console.log('多份文书', this.$route.params.handelType)
-      this.com_getCaseBasicInfo(data.caseId, data.docId);
-      if (addMoreData.approvalForm.executeHandle == 0) {
-        // 拒绝
-        this.checknames.push("1")
-        this.caseDocDataForm.note = "中止行政强制执行通知书";
-      }else if(addMoreData.approvalForm.executeHandle == 1){
-        this.checknames.push("2")
-        this.caseDocDataForm.note = "终结行政强制执行通知书";
-      }else if(addMoreData.approvalForm.executeHandle == 2){
-        this.checknames.push("3")
-        this.caseDocDataForm.note = "恢复行政强制执行通知书";
-      }else if(addMoreData.approvalForm.executeHandle == 3){
-        this.checknames.push("4")
-        this.caseDocDataForm.note = "恢复行政强制执行通知书";
-      }
-    } else {
-      // this.getDocDetailById(this.$route.params.docDataId)
-      let currentDocDataId = iLocalStroage.get("currentDocDataId");
-      if(currentDocDataId){
-        this.getDocDetailById(currentDocDataId)
-      }else{
-        this.getDocDetailById(this.$route.params.docDataId)
-      }
-    }
-
-
-    this.click()
 
   },
   created() {

@@ -180,7 +180,7 @@
           <el-form-item label="文书填报" class="modle-radio" prop="documentFill">
             <el-radio-group v-model="formData.documentFill" @change="changeFile()">
               <el-radio label="是" value='是' style="width:5%"></el-radio>
-              <el-button type="primary" style="width:15%;margin-right:20%" @click="dialogTableVisible=true" :disabled="formData.documentFill=='是'?false:true">选择文书</el-button>
+              <el-button type="primary" style="width:15%;margin-right:20%" @click="changeFile" :disabled="formData.documentFill=='是'?false:true">选择文书</el-button>
               <el-radio label="否" value='否'></el-radio>
             </el-radio-group>
           </el-form-item>
@@ -460,6 +460,10 @@ export default {
         this.findDataByld()
         this.drawerTitle = '修改模板'
         this.globalCont = editdata.count + 1;
+      } else {
+        this.$nextTick(() => {
+          this.getFileList()
+        });
       }
       this.findCommonGroupField()
       this.findCommonField()
@@ -468,6 +472,7 @@ export default {
       this.getAllOrgan('root');
       this.getPerson()
       this.newModleTable = true;
+
     },
     // 根据id查找
     findDataByld() {
@@ -506,8 +511,8 @@ export default {
                     _this.formData.templateUserIdList.push({ userId: userId[index], lawOfficerName: element })
                   });
                 }
-                let admin = _this.formData.templateAdmin.split(",")
-                let adminId = _this.formData.templateAdminId.split(",")
+                let admin = _this.formData.templateAdmin ? _this.formData.templateAdmin.split(",") : []
+                let adminId = _this.formData.templateAdminId ? _this.formData.templateAdminId.split(",") : []
 
 
                 admin.forEach((element, index) => {
@@ -517,6 +522,12 @@ export default {
                 if (_this.formData.icon == '' || _this.formData.icon == null) {
                   _this.titileText = _this.formData.title.charAt(0)
                 }
+
+                // 回显文书
+                console.log(_this.formData.documentNameIds)
+
+                _this.multipleSelection = _this.formData.documentNameIds ? _this.formData.documentNameIds.split(",") : []
+                _this.getFileList()
 
               }
             },
@@ -584,7 +595,7 @@ export default {
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = 'key' + this.globalContGroup
       console.log('push', pushDataList)
-      debugger
+      // debugger
       this.formData.templateFieldList[indexSort].fieldList.push(pushDataList)
       this.activeNames.push(this.globalContGroup)
       this.globalContGroup++
@@ -705,8 +716,8 @@ export default {
                 data.templateAdminIdList = '';
                 data.templateUserId = data.scopeOfUse == '指定人员使用' ? data.templateUserId : '';
                 // 文书
-                data.documentNameIds = this.multipleSelection.join(',')
-                data.documentNames = this.multipleSelectionId.join(',')
+                data.documentNameIds = this.multipleSelectionId.join(',')
+                data.documentNames = this.multipleSelection.join(',')
                 // data.templateUser
                 if (data.templateUser.substr(0, 1) == ',') { data.templateUser = data.templateUser.substr(1); }
                 console.log('data.documentNames', data.documentNames)
@@ -1009,6 +1020,7 @@ export default {
       console.log('选择', this.formData.documentFill)
       if (this.formData.documentFill == '是') {
         this.dialogTableVisible = true
+        this.delAlreadyFile()
       }
     },
     handleSelectionChange(val) {
@@ -1051,24 +1063,40 @@ export default {
     },
     // 获取文书名称列表
     getFileList() {
+      console.log(this.multipleSelection)
+      let _this = this
       getDocumentNameList().then(
         res => {
           if (res.code == 200) {
-            this.fileList = res.data
-            debugger
+
+            _this.fileList = res.data
+            // debugger
+
           } else {
-            this.$message.error(res.msg);
+            _this.$message.error(res.msg);
           }
         },
         error => {
 
         })
+    },
+    delAlreadyFile() {
+      if (this.multipleSelection.length > 0) {
+        this.$nextTick(() => {
+          this.multipleSelection.forEach(element => {
+            this.fileList.forEach(item => {
+              if (element == item.id) {
+                console.log(item, element)
+                this.$refs.multipleTable.toggleRowSelection(item)
+                return
+              }
+            });
+          });
+        });
+      }
     }
   },
   mounted() {
-    this.$nextTick(() => {
-       this.getFileList()
-      });
   }
 }
 </script>
