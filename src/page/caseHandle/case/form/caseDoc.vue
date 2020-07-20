@@ -292,7 +292,7 @@
                     <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
                   </div>
                   <div v-if="!scope.row.openRow">
-                    
+
                     <!-- 已完成 -->
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
@@ -506,6 +506,8 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType) {
+      // 删除缓存中的表单数据
+      localStorage.removeItem('caseDoc')
       this.com_submitCaseForm(handleType, "caseDocForm", false);
     },
     //下一环节
@@ -647,6 +649,7 @@ export default {
       }
     },
     async initData(){
+      this.formData = JSON.parse(localStorage.getItem('caseDoc')) // 获取已填好的表单数据
       await this.queryFlowBycaseId();
       //动态环节id
       this.caseLinkDataForm.caseLinktypeId = this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
@@ -656,7 +659,11 @@ export default {
     }
   },
   created() {
-    this.initData() 
+    this.initData()
+  },
+  beforeDestroy() {
+    // 点击其他页面时保存当前页面填好的表单数据
+    localStorage.setItem('caseDoc', JSON.stringify(this.formData))
   }
 };
 </script>
