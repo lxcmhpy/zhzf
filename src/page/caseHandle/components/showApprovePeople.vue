@@ -15,6 +15,7 @@
             v-for="tag in item.approveUserVo"
             closable
             :disable-transitions="false"
+            @close="deleteCurrentUser(tag,item)"
           >{{tag.userName}}
           </el-tag>
         </div>
@@ -81,14 +82,6 @@
             data.splice(0, 1);
             _this.approvalPeopleList = data;
             
-            _this.approvalPeopleList.forEach((item,index)=>{
-              let ids=[];
-              item.approveUserVo.forEach(user=>{
-                ids.push(user.userId)
-              })
-              this.handleperson['userIds'+(index+1)] = ids.join(',');
-            })
-            console.log('this.handleperson',this.handleperson)
           },
           err => {
             console.log(err);
@@ -105,7 +98,17 @@
         }catch(err){
           _this.$message('判断环节是否生成pdf失败');
         }
-        console.log('判断环节是否生成pdf',huanjieData)
+        console.log('判断环节是否生成pdf',huanjieData);
+
+        _this.approvalPeopleList.forEach((item,index)=>{
+          let ids=[];
+          item.approveUserVo.forEach(user=>{
+            ids.push(user.userId)
+          })
+          this.handleperson['userIds'+(index+1)] = ids.join(',');
+        })
+        console.log('this.handleperson',this.handleperson)
+
         let data = {
           caseId: this.caseId,
           caseLinktypeId:this.caseLinktypeId,
@@ -126,13 +129,25 @@
                   name: "case_handle_flowChart"
             });
           }else{  //1 环节不生成pdf
-            _this.$router.go(-2)
+            _this.$router.go(-3)
           }
         }catch(err){
           _this.$message('提交失败');
         }
         
         
+      },
+      //删除人员
+      deleteCurrentUser(tag,tagKind){
+        if(tagKind.approveUserVo.length == 1){
+          this.$message('至少有一个审批人员哦！');
+          return;
+        }
+        for(let item of this.approvalPeopleList){
+          if(item.returnName == tagKind.returnName)
+            item.approveUserVo.splice(tagKind.approveUserVo.findIndex(a=> a.userId == tag.userId), 1); 
+        }
+        // console.log('this.approvalPeopleList',this.approvalPeopleList)
       }
     }
   };

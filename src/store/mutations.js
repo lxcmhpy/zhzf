@@ -84,6 +84,10 @@ const mutations = {
     // state.openTab = [{route: "/index",name: "law_supervise_lawSupervise",title: "可视化监管",headActiveNav:"lawSupervise-menu-law_supervise_lawSupervise"}];
     state.openTab.splice(0,state.openTab.length);
   },
+  //重置tabs
+  reset_ALLTABS(state,data) {
+    state.openTab = data;
+  },
   // 设置当前激活的tab
   [types.SET_ACTIVE_INDEX](state, name) {
     state.activeIndex = name;
