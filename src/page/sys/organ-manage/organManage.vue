@@ -11,7 +11,7 @@
         </div>
       <!-- </div> -->
 
-      <div class="treeBox deep-color">
+      <div class="treeBox deep-color max-height-conflict">
         <el-tree
           class="filter-tree"
           :data="organData"

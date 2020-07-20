@@ -16,7 +16,6 @@ export default  [
                 meta: {
                     title: "可视化监管",
                     oneTab:true,
-                    keepAlive: true
                 },
                 component: () => import("@/page/lawSupervise/supervisePage/kshjg/lawSupervise.vue"),
             }
