@@ -159,16 +159,12 @@ service.interceptors.request.use(
   }
   //弹出提示语
   function alertMessage(msg) {
-    // message.config({
-    //   top: `40px`,
-    //   duration: 3,
-    //   maxCount: 1,
-    // });
-    vue.$message({
-      showClose: true,
-      message: msg,
-      type: 'error'
-    })
+    vue.$messageOne.error({showClose: true, message: msg})
+    // vue.$message({
+    //   showClose: true,
+    //   message: msg,
+    //   type: 'error'
+    // })
 
     //message.error(msg)
   }

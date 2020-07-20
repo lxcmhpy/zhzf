@@ -204,7 +204,8 @@ import iLocalStroage from "@/common/js/localStroage";
                 docId: row.caseDoctypeId,
                 approvalOver: false,
                 hasBack: true,
-                docDataId:row.id
+                docDataId:row.id,
+                status:2
               };
               this.$store.dispatch("deleteTabs", this.$route.name);
               this.$router.push({ name: "case_handle_myPDF", params: routerData });
