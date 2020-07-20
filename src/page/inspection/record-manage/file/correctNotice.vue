@@ -210,7 +210,6 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
-      debugger
       if (this.inspectionFileId) {
         getDocumentById(this.inspectionFileId).then(
           res => {
@@ -219,8 +218,6 @@ export default {
               if (this.docData.docContent) {
                 this.formData = JSON.parse(this.docData.docContent)
                 if (!this.formData.docContent.party) {
-
-                  debugger
                   this.formData.party = this.docData.party || ''
                   console.log('this.formData.party', this.formData.party)
                   console.log('this.docData.party', this.docData.party)
@@ -243,8 +240,6 @@ export default {
     saveData(handleType) {
       //参数  提交类型 、
       // this.printContent();
-
-      debugger
       this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
       // this.docData.docContent = JSON.stringify(this.formData)
       console.log("参数", this.docData)
