@@ -40,7 +40,7 @@
         <!-- <span class="editSelectNode" @click="editSelectNode">
           <i class="iconfont law-btn_bianji"></i>
         </span> -->
-        <div class="update">
+        <div class="departTable-title-update">
           <el-button size="mini" type="primary">编辑</el-button>
         </div>
       </div>
