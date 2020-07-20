@@ -426,7 +426,7 @@
       }
 
 //      console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
-      if (this.$route.params.approvalForm.executeHandle === '0') {
+      if (this.$route.params.approvalForm.executeHandle == '0') {
         // 拒绝
 //        console.log('拒绝')
         this.checknames.push("3")

@@ -468,14 +468,14 @@
       }
 
 //      console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
-      if(addMoreData.approvalForm.executeHandle === '0'){  
+      if(addMoreData.approvalForm.executeHandle == '0'){  
         // 拒绝
 //        console.log('拒绝')
         this.checknames.push("3")
         this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
-      }
-      else {
-        if (addMoreData.approvalForm.executeType === 1) {
+        return;
+      }else {
+        if (addMoreData.approvalForm.executeType ===  1) {
           // 分期
           this.checknames.push("2")
           this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
