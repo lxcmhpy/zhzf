@@ -49,3 +49,17 @@ export function upMoney(n){
   }
   return head + s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整');
 }
+
+/**
+ *
+ * 查找树形数组中符合条件的某个元素id
+ */
+export function findObjByArray(list, name) {
+  for(let i=0; i<list.length; i++) {
+    if(list[i].label === name) {
+      return list[i].id
+    } else {
+      return findObjByArray(list[i].children, name)
+    }
+  }
+}
