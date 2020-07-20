@@ -112,7 +112,12 @@
             <embed class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
             :src="docSrc" type="application/pdf" internalinstanceid="29">
         </object>
-  
+    </div>
+    <div v-show="showCover=='img'" style="margin:0 auto;width:690px">
+        <object >
+            <img class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+            :src="docSrc" type="image/*" />
+        </object>
     </div>
 
     <el-form ref="beikaoForm" :rules="beikaoRules" :model="docData" label-width="145px" v-show="showCover == 'beikao'">
@@ -348,8 +353,18 @@ export default {
         }
         return;
       }
-      this.docSrc = this.host + data.item.storageId;
-      this.showCover = 'pdf';
+      debugger
+      let fileType= this.$util.getFileType(data.item.evName);
+      if(fileType == 'image'){ //图片
+         this.docSrc = this.host + data.item.storageId;
+         this.showCover = 'img';
+      }else{
+          if(fileType == 'pdf'){
+            this.docSrc = this.host + data.item.storageId;
+            this.showCover = 'pdf';
+          }
+      }
+
        
     },
     showCoverEvent(){
@@ -561,6 +576,7 @@ export default {
       handler(newVal,oldVal){
            console.log("newVal","oldVal")
             console.log(newVal,oldVal)
+            debugger
             if(newVal){
               let data = {
                 item:this.clickArchiveCatalogue,
