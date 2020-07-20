@@ -166,7 +166,7 @@ export default {
       dialogTitle: "", //弹出框title
       caseCauseId: "", //违法行为Id
       bnslawIdPun: "", //处罚依据Id
-      bnslawIdPunBind: ""
+      bnslawIdCogBind: ""
     };
   },
   inject: ["reload"],
@@ -249,7 +249,7 @@ export default {
     },
     getlawRegulationsList(row) {
       console.log("id", row);
-      this.bnslawIdPun = row.id;
+      this.bnslawIdCog = row.id;
       this.getlawRegulationsList1();
     },
      // 查询
@@ -261,7 +261,7 @@ export default {
       let data = {
         current: this.currentPage1,
         size: this.pageSize,
-        bnslawIdPun: this.bnslawIdPun,
+        bnslawIdCog: this.bnslawIdCog,
         itemCog: this.lawRegulationsSearchForm.item,
         clauseCog: this.lawRegulationsSearchForm.clause,
         iitemCog: this.lawRegulationsSearchForm.iitem,
@@ -282,13 +282,13 @@ export default {
     handleLawCognizanceChange(val) {
       console.log("选中的数据", val);
       val.forEach(item => {
-        this.bnslawIdPunBind = item.id;
+        this.bnslawIdCogBind = item.id;
       });
     },
     bind() {
       let data = {
         causeId: this.caseCauseId,
-        regulaId: this.bnslawIdPunBind
+        regulaId: this.bnslawIdCogBind
       };
       console.log("1111",data);
       bindCauseLawRegulationsApi(data).then(

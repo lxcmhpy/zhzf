@@ -572,7 +572,7 @@ export const mixinGetCaseApiList = {
           } else {
             //更改流程图状态
             try{
-              await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
+              await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
             }catch(err){
               this.$message('更改流程图状态失败！')
             }

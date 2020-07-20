@@ -228,7 +228,7 @@
               <div class="pdf_seal">
                 <p>签名：{{docData.people}}</p>
                 <p>
-                  <span v-if="docData.approveTime">{{docData.peoTime}}</span>
+                  <span v-if="docData.peoTime">{{docData.peoTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
