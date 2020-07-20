@@ -40,7 +40,7 @@
           </span>（大写）的行政处罚决定，根据你（单位）的申请，本机关依据《中华人民共和国行政处罚法》第五十二条的规定，现决定：
         </p>
         <p>
-          <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
+          <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click">同意你（单位）延期缴纳罚款。延长至
           <span>
             <el-form-item :prop="disabledOne?'placeholder':'delayDate'" class="pdf_datapick width151">
               <el-date-picker v-model="docData.delayDate" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日"
@@ -50,7 +50,7 @@
           </span>。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">同意你（单位）分期缴纳罚款。第
+          <input type="checkbox" name="measure" value="2" v-model="docData.checknames" @change="click">同意你（单位）分期缴纳罚款。第
           <span>
             <el-form-item :prop="disabledTwo?'':'instalmentNum'" style="width:46px">
               <!-- <el-input v-model="docData.instalmentNum"></el-input> -->
@@ -86,7 +86,7 @@
           </span>元（大写）。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">由于
+          <input type="checkbox" name="measure" value="3" v-model="docData.checknames" @change="click">由于
           <span>
             <el-form-item :prop="disabledThree?'placeholder':'reason'" style="width:500px">
               <el-input v-model="docData.reason" v-bind:disabled="disabledThree" :maxLength='maxLength'></el-input>
