@@ -73,7 +73,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
+                  <el-input-number v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input-number>
                 </el-form-item>
               </div>
               <div class="col">
