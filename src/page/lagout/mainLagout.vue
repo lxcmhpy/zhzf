@@ -212,7 +212,8 @@ export default {
                       // title: tabsCode+tabTitle,
                       title: to.meta.title,
                       isCase: false,
-                      params: to.params
+                      params: to.params,
+                      headActiveNav: _this.headActiveNav
                     });
                 },
                 err => {
