@@ -46,12 +46,12 @@
         </el-table>
       </div>
       <div class="paginationBox">
-        <el-pagination 
-        @size-change="handleSizeChange" 
-        @current-change="handleCurrentChange" 
-        :current-page="currentPage" 
-        background :page-sizes="[10, 20, 30, 40]" 
-        layout="prev, pager, next,sizes,jumper" 
+        <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        background :page-sizes="[10, 20, 30, 40]"
+        layout="prev, pager, next,sizes,jumper"
         :total="total"></el-pagination>
       </div>
     </div>
@@ -250,7 +250,7 @@ export default {
         };
         console.log("123",data);
         let _that = this
- 
+
         findByCaseIdAndDocIdSongdaApi(data).then(res=>{
             console.log("1111",res.data);
             _that.mlList = _that.host + res.data.storageId;
@@ -264,7 +264,6 @@ export default {
     //表单筛选
     getDeliverReList(val) {
       console.log('caseId=',this.caseId)
-      this.currentPage = val;
       let data = {
         caseId: this.caseId,
         docName: this.deliverReForm.docName,
@@ -273,7 +272,7 @@ export default {
         servedType: this.deliverReForm.servedType,
         current: this.currentPage,
         size: this.pageSize
-      };      
+      };
       console.log('data',data)
       let _this = this
       this.$store.dispatch("getDeliverReceipt", data).then(res => {
@@ -319,6 +318,7 @@ export default {
     },
     //更换页码
     handleCurrentChange(val) {
+      this.currentPage = val
       this.getDeliverReList(val);
     },
     randomString(e) {
@@ -351,7 +351,7 @@ export default {
       this.$refs.deliverReceiptFormRef.showModal();
     },
     viewDocPdf(row) {
-        
+
         console.log('row',row)
         let routerData = {
           hasApprovalBtn: false,
@@ -364,7 +364,7 @@ export default {
         // docDataId:row.docDataId
           id:row.id
         };
-        
+
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.push({ name: "case_handle_myPDF", params: routerData });
       },

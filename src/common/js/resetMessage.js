@@ -28,4 +28,4 @@ class DoneMessage {
         this[showMessage]('success', options, single)
     }
 }
-export const message = new DoneMessage();
+export const messageOne = new DoneMessage();

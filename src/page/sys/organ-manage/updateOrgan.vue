@@ -198,7 +198,7 @@ export default {
         fundingSource: "",
         legalBasis: "",
         mainPowers: "",
-        
+
       },
       addValueForm:{
         propertyValue:{}
@@ -227,7 +227,7 @@ export default {
       this.handelType = type;
       if (type == 0) {
         this.dialogTitle = "新增机构";
-        
+
         this.parentNode = data;
         this.addOrganForm.pidName = data.parentNodeName;
         this.isDisabled = false;
@@ -309,7 +309,7 @@ export default {
                 propertyValueList: valueList
               };
               console.log("1234",data);
-              addAttachedPropertyValueApi(data).then(  
+              addAttachedPropertyValueApi(data).then(
                  res => {
                   console.log("属性值", res);
                   // _this.addOrganForm = res.data;
@@ -321,7 +321,7 @@ export default {
                 err => {
                   console.log(err);
                 }
-              );              
+              );
               _this.visible = false;
             },
             err => {
@@ -359,7 +359,7 @@ export default {
             res.data.forEach(item => {
               this.$set( this.addValueForm.propertyValue,item.propertyEnName);
               // this.addValueForm.propertyValue[item.propertyEnName]=item.propertyValue;
-            }) 
+            })
           },
           err => {
             console.log(err);
@@ -376,7 +376,7 @@ export default {
             res.data.forEach(item => {
               this.$set( this.addValueForm.propertyValue,item.propertyEnName);
               this.addValueForm.propertyValue[item.propertyEnName]=item.propertyValue;
-            })            
+            })
           },
           err => {
             console.log(err);
