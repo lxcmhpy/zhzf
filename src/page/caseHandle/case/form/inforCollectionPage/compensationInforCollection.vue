@@ -47,7 +47,7 @@
                 v-model="inforForm.caseSourceText"
                 :placeholder="caseSourceTextPla"
               ></el-input>
-               
+
             </el-form-item>
           </div>
         </div>
@@ -125,7 +125,7 @@
               </el-select>
             </el-form-item>
           </div>
-              
+
           <div class="showMapBtn"><label class="mustTip">*</label><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
         </div>
         <div>
@@ -143,7 +143,7 @@
               </el-input>
             </el-form-item>
 
-          </div> 
+          </div>
           <div class="gongLiBox3">至</div>
           <div class="gongLiBox3">K</div>
           <div class="itemFive">
@@ -158,8 +158,8 @@
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-            
-          </div> 
+
+          </div>
           <!-- <div class="itemFive">
             <el-form-item label="K">
               <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
@@ -308,7 +308,7 @@
         <div v-show="partyTypePerson!='1'">
           <div class="itemBig">
             <el-form-item label="单位名称" prop="partyName">
-              <el-input ref="partyName" v-model="inforForm.partyName" maxlength="40"></el-input>
+              <el-input ref="partyName" v-model="inforForm.partyName"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
@@ -725,7 +725,7 @@
             </el-form-item>
           </div>
         </div>
-        
+
         <el-button
           class="caseSubmitBtn"
           icon="el-icon-plus"
@@ -840,7 +840,7 @@ export default {
       if (item.value === "行政检查" || item.value === "投诉举报") {
         this.caseSourceTextDisable = false;
         this.inforForm.caseSourceText = '';
-        
+
       } else {
         this.caseSourceTextPla = item.placeholder
         this.caseSourceTextDisable = true;
@@ -853,10 +853,10 @@ export default {
     },
     //获取坐标
     getLngLat(lngLatStr){
-        this.inforForm.latitudeAndLongitude = lngLatStr;   
+        this.inforForm.latitudeAndLongitude = lngLatStr;
         this.hasLatitudeAndLongitude = true;
     },
-  
+
     //查询举报文书有没有生成
     findReportRecordDocPdf(){
         this.$store.dispatch("getFile", {
@@ -892,7 +892,7 @@ export default {
     // this.findReportRecordDocPdf()
   },
   mounted(){
-   
+
   }
 };
 </script>
