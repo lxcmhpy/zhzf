@@ -136,7 +136,7 @@ service.interceptors.request.use(
       try {
           console.log('error', error.response)
           if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
-          alertMessage("networkError"); //networkError
+          alertMessage("网络错误"); //networkError
           } else if (error.toString().indexOf("500") != -1) {
           alertMessage(error.response.data.msg || "系统错误"); //系统错误
           } else if (error.toString().indexOf("401") != -1 && error.response.data.code == 400000) {

@@ -480,7 +480,6 @@
   //        console.log('拒绝')
           this.docData.checknames.push("3")
           this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
-          return;
         }else {
           if (addMoreData.approvalForm.executeType ===  1) {
             // 分期

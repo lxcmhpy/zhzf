@@ -161,7 +161,7 @@ export default [
     meta: {
       title: "强制执行",
       oneTab: true,
-      keepAlive: true
+      // keepAlive: true
     },
     component: () => import("@/page/caseHandle/case/form/forceExecuteForm.vue")
   },
