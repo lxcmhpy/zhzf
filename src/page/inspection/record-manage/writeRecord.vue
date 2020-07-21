@@ -52,8 +52,8 @@
       <el-form ref="fileForm" :model="fileForm" label-width="80px" :rules="fileRules">
         <el-form-item prop="fileSaveType">
           <el-radio-group v-model="fileForm.fileSaveType">
-            <el-radio :value='1' label="完成记录表单，立即保存" style="width:80%;margin-bottom:20px"></el-radio>
-            <el-radio value='2' label="完成记录表单，继续进行文书填报" style="width:80%"></el-radio>
+            <el-radio :label='1' style="width:80%;margin-bottom:20px">完成记录表单，立即保存</el-radio>
+            <el-radio :label='2' style="width:80%">完成记录表单，继续进行文书填报</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -334,6 +334,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.fileForm.fileSaveType)
+          debugger
           this.fileVisible = false
           this.saveRecord(this.fileForm.fileSaveType)
         } else {
@@ -437,6 +438,7 @@ export default {
 
             // 判断跳转1还是继续作文书2
             if (fileSaveType == '完成记录表单，立即保存') {
+              this.$store.commit("set_inspection_orderId", res.data);
               this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
               this.$router.push({
                 name: 'inspection_recordList',

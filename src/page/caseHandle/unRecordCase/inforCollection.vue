@@ -978,6 +978,21 @@
           partyUnitTel: [
             {validator: validatePhone, trigger: "blur"}
           ],
+          highwayRoute: [
+            {required: true, message: "请选择本机构路线编号", trigger: "change"}
+          ],
+          direction: [
+            {required: true, message: "请选择方向", trigger: "change"}
+          ],
+          position: [
+            {required: true, message: "请选择位置", trigger: "change"}
+          ],
+          distance: [
+            {required: true, message: "请输入米数", trigger: "change"}
+          ],
+          pileNumber: [
+            {required: true, message: "请输入公里数", trigger: "change"}
+          ],
         },
         //案件类型
         allcaseSource: [
@@ -1410,6 +1425,16 @@
           );
           _this.inforForm.state = state;
           _this.inforForm.caseStatus = '未立案';
+          // 拼接案发地点
+          let afddSting=_this.inforForm.highwayRoute+_this.inforForm.direction+'k'+_this.inforForm.pileNumber+'+'+_this.inforForm.distance
+          if(_this.inforForm.distance2||_this.inforForm.pileNumber2){
+            afddSting=afddSting+'至'+'k'+_this.inforForm.pileNumber2+'+'+_this.inforForm.distance2+' '+_this.inforForm.position
+          }else{
+             afddSting=afddSting+' '+_this.inforForm.position
+          }
+          _this.inforForm.afdd=afddSting
+          debugger
+
           _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
             res => {
               console.log(res);
