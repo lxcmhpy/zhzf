@@ -265,7 +265,7 @@ import addDialog from './PenaltyExecutionFormDialog';
 import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import payDetail from "./payDetail";
 import iLocalStroage from "@/common/js/localStroage";
-import { upMoney } from "@/utils/utils.js"
+import until from "@/common/js/util"
 import {
   uploadEvApi,
   findFileByIdApi,
@@ -379,7 +379,7 @@ export default {
      */
     handleChangePaidAmount(val) {
       let num = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
-      this.formData.toPayAmount = upMoney(num) + "(" + num + "元)"
+      this.formData.toPayAmount = until.upMoney(num) + "(" + num + "元)"
     },
 
     /**

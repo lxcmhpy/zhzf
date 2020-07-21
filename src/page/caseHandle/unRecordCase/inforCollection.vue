@@ -185,8 +185,8 @@
         <div v-show="partyTypePerson=='1'">
           <div class="itemThird">
             <el-form-item label="性别">
-              <el-select placeholder="请选择" 
-                v-model="inforForm.partySex" 
+              <el-select placeholder="请选择"
+                v-model="inforForm.partySex"
                 :disabled="inforForm.partyIdNo?true:false">
                 <el-option :value="0" label="男"></el-option>
                 <el-option :value="1" label="女"></el-option>
@@ -215,7 +215,7 @@
           <div class="itemSmall">
             <el-form-item label="邮编" prop="partyZipCode">
               <el-input ref="partyZipCode"
-                @change="changeDriverOrAgentInfo" 
+                @change="changeDriverOrAgentInfo"
                 v-model="inforForm.partyZipCode"
                 @blur="blur3($event.target.value)"></el-input>
             </el-form-item>
@@ -823,7 +823,7 @@
   </div>
 </template>
 <script>
-  import { getCodeLength } from "@/utils/utils";
+  import util from "@/common/js/util";
   import chooseLawPerson from "./chooseLawPerson";
   import punishDiag from "./punishDiag";
   import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
@@ -1145,27 +1145,27 @@
        */
       handleLength(val, type) {
         if(type === "partyName") {
-          if(getCodeLength(val) === 40) {
+          if(util.getCodeLength(val) === 40) {
             this.theStr = val
-          } else if(getCodeLength(val) > 40) {
+          } else if(util.getCodeLength(val) > 40) {
             this.inforForm.partyName = this.theStr
           }
         } else if (type === "partyManager") {
-          if(getCodeLength(val) === 20) {
+          if(util.getCodeLength(val) === 20) {
             this.theStr = val
-          } else if(getCodeLength(val) > 20) {
+          } else if(util.getCodeLength(val) > 20) {
             this.inforForm.partyManager = this.theStr
           }
         } else if (type === "partyManagerPositions") {
-          if(getCodeLength(val) === 20) {
+          if(util.getCodeLength(val) === 20) {
             this.theStr = val
-          } else if(getCodeLength(val) > 20) {
+          } else if(util.getCodeLength(val) > 20) {
             this.inforForm.partyManagerPositions = this.theStr
           }
         } else if (type === "partyUnitAddress") {
-          if(getCodeLength(val) === 60) {
+          if(util.getCodeLength(val) === 60) {
             this.theStr = val
-          } else if(getCodeLength(val) > 60) {
+          } else if(util.getCodeLength(val) > 60) {
             this.inforForm.partyUnitAddress = this.theStr
           }
         }
