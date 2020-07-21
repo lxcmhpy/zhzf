@@ -13,7 +13,7 @@
           </div>
         </div>
       </div> -->
-      <div class="content_box"> 
+      <div class="content_box">
         <div class="content">
           <div class="content_title">
             当事人权利
@@ -132,7 +132,7 @@
                   <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase">
                     <!-- 已完成 -->
                     <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                    <i class="iconfont law-print"></i>
+                    <!-- <i class="iconfont law-print"></i> -->
                   </span>
                   <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->
@@ -353,7 +353,7 @@
         let routerData = {
           hasApprovalBtn: false,
           docId: row.docId,
-          approvalOver: false, 
+          approvalOver: false,
           hasBack: true,
           status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
           docDataId:row.docDataId
