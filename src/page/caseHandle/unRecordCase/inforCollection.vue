@@ -1406,11 +1406,19 @@
         this.inforForm.punishLaw = punishLawArr.join(";");
       },
       //查询自由裁量标准
-      findJudgFreedomList() {
+      findJudgFreedomList(caseCauseId) {
+        debugger
+        let data ={};
         let someCaseInfo = iLocalStroage.gets("someCaseInfo");
-        let data ={
-          causeId:someCaseInfo.illageActId,
-        };
+        if(someCaseInfo){
+          data ={
+            causeId:someCaseInfo.illageActId,
+          };
+        }else{
+          data ={
+            causeId:caseCauseId,
+          };
+        }
         console.log("causeId",data);
         findJudgFreedomListApi(data).then(
           res => {
@@ -1600,6 +1608,7 @@
             _this.inforForm = res.data;
             console.log("222222222",_this.inforForm)
             this.handleCaseData(res.data);
+            this.findJudgFreedomList(res.data.caseCauseId);
           },
           err => {
             console.log(err);
@@ -2145,7 +2154,7 @@
   created() {
     this.getDirectionList();
     this.getLocationList();
-    this.findJudgFreedomList();
+
     this.getTrailerType();
     this.findRouteManageByOrganId();
     // this.setLawPerson(
