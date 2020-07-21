@@ -888,7 +888,7 @@ export default {
     this.getDocListByCaseIdAndFormId();
     // this.findFileList();
   },
-  // watch: {
+  watch: {
   //   //代缴金额为0时,执行情况为已完成
   //   'formData.paidAmount'(val) {
   //     let num = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
@@ -908,10 +908,10 @@ export default {
   //       }
   //     }
   //   },
-  //   'formData.stepPay'(val){
-  //     this.setMoreDocTableTitle();
-  //   }
-  // }
+    'formData.stepPay'(val){
+      this.setMoreDocTableTitle();
+    }
+  }
 };
 </script>
 

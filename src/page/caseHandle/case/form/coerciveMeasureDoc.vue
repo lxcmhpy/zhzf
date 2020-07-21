@@ -349,10 +349,11 @@ export default {
       }
       if (canGotoNext) {
         console.log('下一环节')
-        this.com_goToNextLinkTu(
-          this.caseId,
-          this.caseLinkDataForm.caseLinktypeId
-        );
+        // this.com_goToNextLinkTu(
+        //   this.caseId,
+        //   this.caseLinkDataForm.caseLinktypeId
+        // );
+        this.submitCoerciveMeasuer();
       } else if(!canGotoNext){
         this.getUnfinishDoc();
         this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
@@ -372,7 +373,7 @@ export default {
     submitCoerciveMeasuer(){
       let params = {
         caseId:this.caseId,
-        caseLinktypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
+        caseLinktypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId 
       }
         submitRelieveApi(params).then(res=>{
           console.log('提交解除或延长表单',res);
