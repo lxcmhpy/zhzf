@@ -145,15 +145,27 @@
             <div class="part">
               <p class="titleP">设备说明</p>
               <el-row>
-                  <el-form-item label="所属机构" prop="organId">
-                    <el-select value-key="id" v-model="addForm.organId" placeholder="请选择机构" style="width: 100%;" @change="changeOrgan" :disabled="this.formReadOnly">
-                      <el-option
-                        v-for="item in getOrganList"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id"
-                      ></el-option>
-                    </el-select>
+                  <el-form-item label="所属机构">
+                    <el-popover placement="bottom" trigger="click" v-model="visiblePopover" :disabled="formReadOnly">
+                        <div class="departOrUserTree" style="width:426px">
+                            <div class="treeBox">
+                                <el-tree
+                                    highlight-current
+                                    class="filter-tree"
+                                    :data="getOrganList"
+                                    default-expand-all
+                                    :expand-on-click-node="false"
+                                    ref="tree"
+                                    @node-click="handleNodeClick1"
+                                >
+                                    <span class="custom-tree-node" slot-scope="{ node, data }">
+                                        <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/icon_jc1.png'">{{data.label}}</span>
+                                    </span>
+                                </el-tree>
+                            </div>
+                        </div>
+                        <el-input v-model="addForm.organName" style="width:100%" slot="reference" readonly></el-input>
+                      </el-popover>
                   </el-form-item>
               </el-row>
               <el-row>
@@ -292,7 +304,7 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
-import { organTreeByCurrUser,queryDeviceListPage,findDeviceById,saveOrUpdateDevice,deleteDeviceById,upload,deleteFileByIdApi,queryDeviceTypeAll} from "@/api/lawSupervise.js";
+import { queryDeviceListPage,findDeviceById,saveOrUpdateDevice,deleteDeviceById,upload,deleteFileByIdApi,queryDeviceTypeAll,getCurrentAndNextOrganApi} from "@/api/lawSupervise.js";
 import iLocalStroage from '@/common/js/localStroage';
   export default {
     watch: {
@@ -359,7 +371,9 @@ import iLocalStroage from '@/common/js/localStroage';
         totalPage: 0, //总数
         selectDataIdList: [], //选中的记录
         selectOrganName:'',
-        title:'新增设备'
+        selectOrgan:{},
+        title:'新增设备',
+        visiblePopover: false,
       };
     },
     components: {
@@ -373,6 +387,17 @@ import iLocalStroage from '@/common/js/localStroage';
           callback(new Error("请选择设备有效期"));
         }
       }, */
+      filterNode(value, data) {
+        if (!value) return true;
+        return data.label.indexOf(value) !== -1;
+      },
+      handleNodeClick1(data) {
+        this.addForm.organName = data.label;
+        this.addForm.organId = data.id;
+        this.visiblePopover = false;
+        this.addForm.contactor = data.contactor
+        this.addForm.telephone = data.telephone
+      },
       //删除附件
       deleteFile(file, fileList,type){
         let _this = this
@@ -429,15 +454,7 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       handlePDFPreview(file){
         this.dialogPDFUrl = file.url;
-        this.dialogPDFVisible = true;
-      },
-      changeOrgan(id){
-        let orgData = this.getOrganList.filter(p=>p.id===id)
-        if(orgData){
-          this.addForm.contactor = orgData[0].contactor
-          this.addForm.telephone = orgData[0].telephone
-          this.addForm.organName = orgData[0].name
-        }
+        this.dialogPDFVisible = true;id
       },
       changeDeviceType(id){
         this.hideAddress(id)
@@ -508,6 +525,7 @@ import iLocalStroage from '@/common/js/localStroage';
           this.currentOrganId = data.id
           this.formInline.deviceType = ''
         }
+        this.selectOrgan = data
         this.getDataList(1);
       },
       //表单筛选
@@ -580,12 +598,10 @@ import iLocalStroage from '@/common/js/localStroage';
         this.deviceDate=['','']
         this.title='新增设备'
         if(this.currentOrganId !== ''){
-          let orgData = this.getOrganList.filter(p=>p.id===this.currentOrganId)
-          if(orgData){
-            this.addForm.contactor = orgData[0].contactor
-            this.addForm.telephone = orgData[0].telephone
-            this.addForm.organName = orgData[0].name
-          }
+            this.addForm.contactor = this.selectOrgan.contactor
+            this.addForm.telephone = this.selectOrgan.telephone
+            this.addForm.organName = this.selectOrgan.label
+            this.addForm.organId = this.selectOrgan.id
         }
         this.hideAddress(this.selectDeviceType)
       },
@@ -679,10 +695,11 @@ import iLocalStroage from '@/common/js/localStroage';
             organId: organId,
             type: 0
         }
-        organTreeByCurrUser().then(
+        getCurrentAndNextOrganApi().then(
             res => {
-                let dataArray = res.data;
-                dataArray.forEach((item,i)=>{
+                _this.getOrganList = JSON.parse(JSON.stringify(res.data))
+                _this.organData = res.data;
+                _this.organData.forEach((item,i)=>{
                     item.icon = 'icon_jc1';
                     item.pLabel = item.label
                     addChildren(item);
@@ -707,24 +724,21 @@ import iLocalStroage from '@/common/js/localStroage';
                       })
                   }
                 }
-                _this.organData = dataArray;
-                console.log(dataArray)
             }
         )
       },
-      //获取当前机构及其子机构
-      getCurrentOrganAndChild(organId) {
+      /* //获取当前机构及其子机构
+      getCurrentOrganAndChild() {
         let _this = this
-        this.$store.dispatch("getCurrentAndNextOrgan",organId).then(
+        getCurrentAndNextOrganApi().then(
           res => {
-            console.log(res);
             _this.getOrganList = res.data;
           },
           err => {
             console.log(err);
           }
         );
-      },
+      }, */
       queryDeviceTypeAll(){
         let _this = this
         queryDeviceTypeAll({}).then(
@@ -742,7 +756,7 @@ import iLocalStroage from '@/common/js/localStroage';
     mounted() {
       this.userInfo = iLocalStroage.gets("userInfo");
       this.queryDeviceTypeAll()
-      this.getCurrentOrganAndChild(this.userInfo.organId)
+      //this.getCurrentOrganAndChild()
     },
     created() {
     }

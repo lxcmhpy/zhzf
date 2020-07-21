@@ -23,7 +23,15 @@
                                 </div>
                                 <div class="item">
                                 <el-form-item label="车牌颜色">
-                                    <el-input v-model="checkSearchForm.color"></el-input>
+                                    <el-select v-model="checkSearchForm.color">
+                                        <el-option
+                                        v-for="item in colorList"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.name"
+                                        ></el-option>
+                                    </el-select>
+                                    <el-button type="primary" size="mini" @click="backChange">取消</el-button>
                                 </el-form-item>
                                 </div>
                                 <div class="item">
@@ -763,7 +771,8 @@ export default {
             // delVisible: false
             carInfo:{},
             vehicleInfo:{},
-            ownerInfo:{}
+            ownerInfo:{},
+            currentColor:''
         }
     },
     methods:{
@@ -953,6 +962,11 @@ export default {
             this.obj.vehicleColor = this.checkSearchForm.color;
             this.visible = false;
         },
+        backChange(){
+            this.checkSearchForm.color = this.currentColor
+            this.obj.vehicleColor = this.checkSearchForm.color
+            this.visible = false;
+        },
         //通过案件ID和文书ID查询附件
         getSiteById(){
             let _this = this;
@@ -974,6 +988,7 @@ export default {
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
         this.getSiteById()
         this.findAllDrawerById(BASIC_DATA_SYS.vehicleCheckColor, 'colorList');
+        this.currentColor = this.obj.vehicleColor
     }
 }
 </script>
