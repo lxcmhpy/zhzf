@@ -5,7 +5,7 @@
     </el-form>
     <el-form ref="penaltyExecutionForm" :model="formData" :rules="rules" label-width="105px" :disabled="canGoNextLink">
       <!-- <div class="header-case">
-        <div class="header_left"> 
+        <div class="header_left">
           <div class="triangle"></div>
           <div class="header_left_text">返回</div>
         </div>
@@ -73,14 +73,13 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <!-- <el-input clearable class="w-120" @input="handlePaidAmount" v-model="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])"></el-input> -->
-                  <el-input-number @input="handlePaidAmount" v-model="formData.paidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input-number>
+                  <el-input v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
                 <el-form-item prop="toPayAmount" label="待缴金额" :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])">
                   <!-- <el-input clearable class="w-120" size="small" v-model.number="formData.toPayAmount" placeholder="-" :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"  @change="isFinish"></el-input> -->
-                  <el-input clearable class="w-120" size="small" v-model="formData.toPayAmount" placeholder="-" :disabled="true"></el-input>
+                  <el-input clearable class="w-120" size="small" @input="handleChangeToPayAmount" v-model="formData.toPayAmount" placeholder="-" :disabled="true"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -266,7 +265,7 @@ import addDialog from './PenaltyExecutionFormDialog';
 import resetDocDia from '@/page/caseHandle/components/resetDocDia';
 import payDetail from "./payDetail";
 import iLocalStroage from "@/common/js/localStroage";
-import { upMoney } from "@/utils/utils.js"
+import until from "@/common/js/util"
 import {
   uploadEvApi,
   findFileByIdApi,
@@ -303,7 +302,7 @@ export default {
         correct: "",
         performance: "",
         paidAmount: 0,
-        toPayAmount: 0,
+        toPayAmount: '零元整(0元)',
         stepPay: "",
         note: "",
         payEvidence: "", //缴费凭证id
@@ -376,27 +375,22 @@ export default {
   methods: {
     /**
      *
-     * 处罚金额输入框格式改为汉字加数字
+     * 根据已缴金额计算待缴金额
      */
+    handleChangePaidAmount(val) {
+      let num = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
+      this.formData.toPayAmount = until.upMoney(num) + "(" + num + "元)"
+    },
 
     /**
      *
-     * 已缴金额数值变化时，计算待缴金额数值
+     * 代缴金额为0时,执行情况为已完成
      */
-    handlePaidAmount(val) {
-      let tempPunishAmount = Number(this.formData.tempPunishAmount), payAmount = Number(val);
-      if(tempPunishAmount >= payAmount) {
-        let num = tempPunishAmount - payAmount
-        this.formData.toPayAmount = upMoney(num) + "(" + num + "元)"
-      } else {
-        this.$message.error('已缴金额不能大于处罚金额')
-        this.formData.paidAmount = 0
-        this.formData.toPayAmount = 0
-      }
-      //代缴金额为0时,执行情况为已完成
-      if(!this.formData.toPayAmount) {
+    handleChangeToPayAmount(val) {
+      if (!val) {
         this.formData.performance = '已完成';
       } else {
+        // this.formData.performance = '未完成';
         if (this.formData.performance != '催告') {
           this.formData.performance = '未完成';
         }
@@ -442,7 +436,7 @@ export default {
                 // console.log('执行')
                 let caseData = {}
                 // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
-                this.$refs.checkDocFinishRef.showModal(this.unfinishFlag); 
+                this.$refs.checkDocFinishRef.showModal(this.unfinishFlag);
                 flag = false;
                 return false;
               }
@@ -459,7 +453,7 @@ export default {
       this.unfinishFlag = [];
       console.log('分期延期:', this.formData.stepPay, '，催告：', this.formData.performance)
       if (this.formData.performance == '催告') {
-  
+
         // 催告书必做
         let flag2 = true;
         console.log(this.docTableDatas)
@@ -472,7 +466,7 @@ export default {
               // let caseData = {}
               // this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData, this.unfinishFlag);
               this.$refs.checkDocFinishRef.showModal(this.unfinishFlag);
-              
+
               flag2 = false;
               return flag2;
             }
@@ -797,7 +791,7 @@ export default {
             this.finishDocCount += 1;
           }
         });
-        
+
         this.allDocCount = this.allAskDocList.length;
         if (this.formData.performance != '催告') {
           let indexCG = this.docTableDatas.findIndex(item=> item.docId == '2c9029cf698f9e6c01698fd9e9000002');
@@ -818,7 +812,7 @@ export default {
             );
           });
         }
-        
+
       }
 
       console.log("this.docTableDatas", this.docTableDatas);
@@ -872,32 +866,12 @@ export default {
     //     }
     // },
     // 分期延期缴纳
-    changeStepPay() {
-      // console.log('分期延期缴纳')
-      // this.docTableDatas = []
-      // if (this.formData.stepPay == true) {
-      //   this.docTableDatas.push(this.docTableDatasSave[0])
-      // }
-      // console.log('this.docTableDatas', this.docTableDatas)
-      // if (this.formData.performance == '催告') {
-      //   this.docTableDatas.push(this.docTableDatasSave[1])
-      // }
+    changeStepPay(val) {
       this.setMoreDocTableTitle();
     },
     // 催告
     changePerformance() {
-      // console.log('催告', this.formData.performance)
-      // this.docTableDatas = []
-
-      // console.log('this.docTableDatas', this.docTableDatas)
-      // if (this.formData.stepPay == true) {
-      //   this.docTableDatas.push(this.docTableDatasSave[0])
-      // }
-      // if (this.formData.performance == '催告') {
-      //   this.docTableDatas.push(this.docTableDatasSave[1])
-      // }
       this.setMoreDocTableTitle();
-
     },
   },
 
@@ -915,25 +889,25 @@ export default {
     // this.findFileList();
   },
   watch: {
-    //代缴金额为0时,执行情况为已完成
-    'formData.paidAmount'(val) {
-      console.log(val);
-      this.formData.toPayAmount = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
-      if(isNaN(this.formData.toPayAmount)){
-        this.formData.toPayAmount=''
-      }
-    },
-    'formData.toPayAmount'(val) {
-      console.log('aaaaaaaaa', val);
-      if (!val) {
-        this.formData.performance = '已完成';
-      } else {
-        // this.formData.performance = '未完成';
-        if (this.formData.performance != '催告') {
-          this.formData.performance = '未完成';
-        }
-      }
-    },
+  //   //代缴金额为0时,执行情况为已完成
+  //   'formData.paidAmount'(val) {
+  //     let num = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
+  //     this.formData.toPayAmount = upMoney(num) + "(" + num + "元)"
+  //     // if(isNaN(this.formData.toPayAmount)){
+  //     //   this.formData.toPayAmount=''
+  //     // }
+  //   },
+  //   'formData.toPayAmount'(val) {
+  //     console.log('aaaaaaaaa', val);
+  //     if (!val) {
+  //       this.formData.performance = '已完成';
+  //     } else {
+  //       // this.formData.performance = '未完成';
+  //       if (this.formData.performance != '催告') {
+  //         this.formData.performance = '未完成';
+  //       }
+  //     }
+  //   },
     'formData.stepPay'(val){
       this.setMoreDocTableTitle();
     }

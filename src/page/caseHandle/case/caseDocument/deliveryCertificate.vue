@@ -380,7 +380,7 @@ export default {
             this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
               res => {
                 console.log("23",res);
-                 debugger
+                //  debugger
                 this.$message({
                   type: "success",
                   message: "提交成功"
@@ -389,7 +389,7 @@ export default {
                 // this.$router.push('deliverReceiptForm')
                 //提交成功后提交pdf到服务器，后打开pdf
                 console.log(res.data.id)
-                debugger
+                // debugger
                 this.printContent(res.data.id);
               },
               err => {
@@ -397,7 +397,7 @@ export default {
               }
             );
           } else {
-             debugger
+            //  debugger
             // noPass[Object.keys(v)[0]]
             let a = Object.values(noPass)[0];
             console.log(a);
@@ -413,7 +413,7 @@ export default {
 
         });
       } else {
-        debugger
+
         this.$store.dispatch("saveOrUpdateDeliverReceipt",data).then(
           res => {
             debugger

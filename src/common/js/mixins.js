@@ -15,7 +15,7 @@ export const mixinGetCaseApiList = {
       submitApproval: false,
       caseFlowData:'', //案件流程数据（哪个信息采集页、哪个流程图）
       //立案登记表环节id数组
-      establish_caseLinktypeIdArr:[this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId], 
+      establish_caseLinktypeIdArr:[this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId],
     }
   },
   computed: {
@@ -86,7 +86,7 @@ export const mixinGetCaseApiList = {
         res => {
           console.log("获取表单详情", res.data);
         this.$store.commit("setCaseLinktypeId", caseLinktypeId);
-          
+
           //如果为空，则加载案件信息
           if (res.data == "") {
             this.com_getCaseBasicInfo(caseId, caseLinktypeId);
@@ -220,7 +220,7 @@ export const mixinGetCaseApiList = {
         }
       );
     },
-    
+
     //根据案件ID和文书Id获取数据   文书数据
     com_getDocDataByCaseIdAndDocId(params) {
       let data = {
@@ -376,7 +376,7 @@ export const mixinGetCaseApiList = {
           });
         }
 
-        
+
       } else {
         this.$message('请先保存该环节表单');
       }
@@ -428,7 +428,7 @@ export const mixinGetCaseApiList = {
       }catch(err){
         this.$message('查询是否需要审批失败!')
       }
-      
+
       console.log('nowCaseDocdata',nowCaseDocdata);
 
       if(nowCaseDocdata.data.isApproval === '0'){ //需要审批
@@ -537,7 +537,7 @@ export const mixinGetCaseApiList = {
 
         console.log('查询环节是否生成了pdf', huanjieData);
         if(huanjieData.data.isPdf == 0) isHuanjieDoc = true;
-       
+
         //跳转pdf或表单
         if (isHuanjieDoc)  this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
         else this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
@@ -546,7 +546,7 @@ export const mixinGetCaseApiList = {
           caseId:this.caseId,
           linkTypeId:data.linkID
         }
-        
+
 
 
         //行政强制措施即将到期,从零点开始提示
@@ -561,7 +561,7 @@ export const mixinGetCaseApiList = {
         if(!beforeFinishLink.includes(data.linkID)){
           //更改流程图状态
           try{
-            await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
+            await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
           }catch(err){
             this.$message('更改流程图状态失败！')
           }
@@ -628,9 +628,9 @@ export const mixinGetCaseApiList = {
         this.$message('查询环节是否生成了pdf失败!')
       }
       console.log('查询环节是否生成了pdf', res);
-      
+
         if (res.data.length > 0) {
-        
+
           let nowCaseDocdata = '';
           try{
             nowCaseDocdata = await findDocDataByIdApi(data.docId);
@@ -661,7 +661,7 @@ export const mixinGetCaseApiList = {
         } else {
           this.$router.push({ name: data.nextLink })
         }
-    
+
     },
     //查询文书或表单是否禁用及必填等
     searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {
@@ -727,7 +727,7 @@ export const mixinGetCaseApiList = {
           console.log(err);
         });
     },
-    
+
     //获取要跳转的路由
     async getCaseNextRoute(name){
       let currentFlow,flowName,routeName = '';
@@ -752,7 +752,7 @@ export const mixinGetCaseApiList = {
       }
       console.log('routeName',routeName)
       return routeName;
-      
+
     },
 
   },
