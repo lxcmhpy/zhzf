@@ -385,3 +385,13 @@ export function getCountry(data) {
     cancelToken: setCancelSource()
   });
 }
+//获取本机构及下级机构
+export  function  getCurrentAndNextOrganApi()  {
+    return  request({
+      url:  "/zfjg/sysOrgan/organTreeByCurrUser",
+      method:  "get",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource()
+    });
+  }

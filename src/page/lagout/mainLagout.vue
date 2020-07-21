@@ -152,7 +152,7 @@ export default {
     },
     //获取系统标题
     getSystemData() {
-        debugger;
+        // debugger;
       if(this.systemTitle){
         window.document.title = this.systemTitle;
         return;
@@ -198,10 +198,23 @@ export default {
                 //   _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
                 //   _this.$store.commit('set_Head_Active_Nav',"lawSupervise-menu-law_supervise_lawSupervise");
                     let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
-                    _this.$store.commit("SET_ACTIVE_INDEX_STO", routerName);
+                    _this.$store.commit("SET_ACTIVE_INDEX_STO", `${routerName}#0`);
                     _this.$store.commit('set_Head_Active_Nav',routerName);
                     _this.getSystemData();
-                    _this.$router.push({ name: routerName});
+                    // _this.$router.push({ name: routerName});
+
+                    this.$store.dispatch('deleteAllTabs');
+
+                    let to = _this.$route;
+                    _this.$store.dispatch("addTabs", {
+                      route: to.path,
+                      name: to.name,
+                      // title: tabsCode+tabTitle,
+                      title: to.meta.title,
+                      isCase: false,
+                      params: to.params,
+                      headActiveNav: _this.headActiveNav
+                    });
                 },
                 err => {
                 console.log(err);

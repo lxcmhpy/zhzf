@@ -131,6 +131,7 @@ export const mixinGetCaseApiList = {
         this.$refs[docForm].validate((valid, noPass) => {
           if (valid) {
             console.log('通过')
+            debugger;
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
                 console.log("保存表单", res);
@@ -156,6 +157,7 @@ export const mixinGetCaseApiList = {
                     this.printContent();
                     this.isSaveLink = true;
                   } else {   //刷新数据
+                    console.log('刷新数据')
                     this.reload();
                   }
                 } else if (handleType == 2) {
@@ -599,6 +601,7 @@ export const mixinGetCaseApiList = {
         this.caseDocDataForm.id = res.data.id;
         this.caseDocDataForm.note = res.data.note;
         this.docData = JSON.parse(res.data.docData);
+        console.log('this.docData',this.docData)
         this.getDocDetailByIdAfter()
       }, err => {
         console.log(err)
@@ -758,8 +761,8 @@ export const mixinGetCaseApiList = {
     this.isCompete();
   },
   watch: {
-    '$route'(to, from) {
-      this.init()
-    }
+    // '$route'(to, from) {
+    //   this.init()
+    // }
   }
 }

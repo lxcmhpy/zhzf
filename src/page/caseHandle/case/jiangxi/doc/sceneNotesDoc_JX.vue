@@ -386,6 +386,10 @@ export default {
         certificateId2: "",
         readState:[],
         partyUnitPosition:'',
+        partyIdNo: '',
+        partySex: '',
+        partyTel: '',
+        partyAddress: '',
       },
       rules: {
         afdd: [{ required: true, message: '执法地点不能为空', trigger: "blur" }],

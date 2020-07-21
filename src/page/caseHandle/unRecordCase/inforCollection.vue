@@ -167,16 +167,16 @@
         <div v-show="partyTypePerson=='1'">
           <div class="item">
             <el-form-item label="姓名" prop="party">
-              <el-input ref="party" v-model="inforForm.party"></el-input>
+              <el-input ref="party" @change="changeDriverOrAgentInfo" v-model="inforForm.party"></el-input>
             </el-form-item>
           </div>
           <div class="item appendSelect">
             <el-form-item label="证件类型" prop="partyIdNo">
               <el-input ref="partyIdNo" placeholder="请输入内容" v-model="inforForm.partyIdNo"
                         @change="changePartyIdType(inforForm.partyIdNo)" class="input-with-select hasMargintop">
-                <el-select slot="prepend" v-model="inforForm.partyIdType">
+                <el-select slot="prepend" v-model="inforForm.partyIdType" @change="changeDriverOrAgentInfo">
                   <el-option v-for="item in credentialType" :key="item.value" :label="item.label"
-                             :value="item.value"></el-option>
+                    :value="item.value"></el-option>
                 </el-select>
               </el-input>
             </el-form-item>
@@ -185,7 +185,9 @@
         <div v-show="partyTypePerson=='1'">
           <div class="itemThird">
             <el-form-item label="性别">
-              <el-select placeholder="请选择" v-model="inforForm.partySex" :disabled="inforForm.partyIdNo?true:false">
+              <el-select placeholder="请选择" 
+                v-model="inforForm.partySex" 
+                :disabled="inforForm.partyIdNo?true:false">
                 <el-option :value="0" label="男"></el-option>
                 <el-option :value="1" label="女"></el-option>
               </el-select>
@@ -194,45 +196,47 @@
           <div class="itemThird">
             <el-form-item label="年龄" prop="partyAge">
               <el-input ref="partyAge" v-model="inforForm.partyAge" type="number"
-                        :disabled="inforForm.partyIdNo?true:false"
-                        @change="noFue('inforForm.partyAge',inforForm.partyAge)"></el-input>
+                :disabled="inforForm.partyIdNo?true:false"
+                @change="noFue('inforForm.partyAge',inforForm.partyAge)"></el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="联系电话" prop="partyTel">
-              <el-input ref="partyTel" v-model="inforForm.partyTel"></el-input>
+              <el-input ref="partyTel" @change="changeDriverOrAgentInfo" v-model="inforForm.partyTel"></el-input>
             </el-form-item>
           </div>
         </div>
         <div v-show="partyTypePerson=='1'">
           <div class="itemBig">
             <el-form-item label="联系地址">
-              <el-input v-model="inforForm.partyAddress"></el-input>
+              <el-input v-model="inforForm.partyAddress" @change="changeDriverOrAgentInfo"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="邮编" prop="partyZipCode">
-              <el-input ref="partyZipCode" v-model="inforForm.partyZipCode"
-                        @blur="blur3($event.target.value)"></el-input>
+              <el-input ref="partyZipCode"
+                @change="changeDriverOrAgentInfo" 
+                v-model="inforForm.partyZipCode"
+                @blur="blur3($event.target.value)"></el-input>
             </el-form-item>
           </div>
         </div>
         <div v-show="partyTypePerson=='1'">
           <div class="itemBig">
             <el-form-item label="工作单位">
-              <el-input v-model="inforForm.partyUnitPosition"></el-input>
+              <el-input v-model="inforForm.partyUnitPosition" @change="changeDriverOrAgentInfo"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="职务">
-              <el-input v-model="inforForm.occupation"></el-input>
+              <el-input v-model="inforForm.occupation" @change="changeDriverOrAgentInfo"></el-input>
             </el-form-item>
           </div>
         </div>
         <div v-show="partyTypePerson=='1'">
           <div class="itemOne">
             <el-form-item label="从业资格证号">
-              <el-input v-model="inforForm.partyEcertId"></el-input>
+              <el-input v-model="inforForm.partyEcertId" @change="changeDriverOrAgentInfo"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -416,7 +420,7 @@
         <p>车辆信息</p>
         <div>
           <div class="item">
-            <el-form-item label="车牌号">
+            <el-form-item label="车牌号" prop="vehicleShipId">
               <el-input v-model="inforForm.vehicleShipId"></el-input>
             </el-form-item>
           </div>
@@ -459,7 +463,7 @@
         <p v-if="showTrailer">挂车信息</p>
         <div v-if="showTrailer">
           <div class="item">
-            <el-form-item label="车牌号">
+            <el-form-item label="车牌号" prop="trailerIdNo">
               <el-input v-model="inforForm.trailerIdNo"></el-input>
             </el-form-item>
           </div>
@@ -747,8 +751,16 @@
               <li v-for="(item,index) in judgFreedomList" :key="index" :class="{activeJudgli : activeJudgli==item.id}"
                   @click="selectJudgFreedom(item)">
                 <div>{{item.drawerName}}</div>
-                <div>{{item.wfqj}}</div>
-                <div>{{item.lawerLimit}}</div>
+                <div>
+                  <el-tooltip popper-class="wfqj-poper" class="wfqj-tooltip" effect="dark" :content="item.wfqj" placement="top">
+                    <div>{{item.wfqj}}</div>
+                  </el-tooltip>
+                </div>
+                <div>
+                  <el-tooltip popper-class="judge-poper" class="wfqj-tooltip" effect="dark" :content="item.jycf" placement="top">
+                    <div>{{item.lawerLimit}}</div>
+                  </el-tooltip>
+                </div>
                 <span class="selectIcon"><i class="el-icon-success"></i></span>
               </li>
             </ul>
@@ -791,7 +803,7 @@
 
     <caseSlideMenu :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
     <!-- 置顶 -->
-    <el-backtop target="#inforCollectionBox" :bottom="46" :right='8' :visibility-height='800'>
+    <el-backtop target="#inforCollectionBox" :bottom="46" :right='0' :visibility-height='800' style="width: 58px;height: 58px;" >
       <div class="back-ball">
         <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="1939" width="18" height="22">
@@ -819,7 +831,7 @@
   import iLocalStroage from "@/common/js/localStroage";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
-  import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/common/js/validator'
+  import {validateIDNumber, validateAge, validateZIP, validatePhone, vaildateCardNum} from '@/common/js/validator'
   import {
     getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
   } from "@/api/system";
@@ -980,6 +992,27 @@
           partyUnitTel: [
             {validator: validatePhone, trigger: "blur"}
           ],
+          highwayRoute: [
+            {required: true, message: "请选择本机构路线编号", trigger: "change"}
+          ],
+          direction: [
+            {required: true, message: "请选择方向", trigger: "change"}
+          ],
+          position: [
+            {required: true, message: "请选择位置", trigger: "change"}
+          ],
+          distance: [
+            {required: true, message: "请输入米数", trigger: "change"}
+          ],
+          pileNumber: [
+            {required: true, message: "请输入公里数", trigger: "change"}
+          ],
+          vehicleShipId: [
+            {validator: vaildateCardNum, trigger: "blur"}
+          ],
+          trailerIdNo: [
+            {validator: vaildateCardNum, trigger: "blur"}
+          ]
         },
         //案件类型
         allcaseSource: [
@@ -1258,6 +1291,24 @@
           this.driverOrAgentInfoList[0].zigeNumber = "";
       }
     },
+      changeDriverOrAgentInfo(){
+        let val = this.driverOrAgentInfoList[0].relationWithParty
+        if (val === '同一人' && this.partyTypePerson == "1") {
+          this.driverOrAgentInfoList[0].relationWithCase = "当事人";
+          this.driverOrAgentInfoList[0].name = this.inforForm.party;
+          this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
+          this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
+          this.driverOrAgentInfoList[0].sex = this.inforForm.partySex;
+          this.driverOrAgentInfoList[0].age = this.inforForm.partyAge;
+          this.driverOrAgentInfoList[0].tel = this.inforForm.partyTel;
+          this.driverOrAgentInfoList[0].adress = this.inforForm.partyAddress;
+          this.driverOrAgentInfoList[0].adressCode = this.inforForm.partyZipCode;
+          this.driverOrAgentInfoList[0].company = this.inforForm.partyUnitPosition;
+          this.driverOrAgentInfoList[0].position = this.inforForm.occupation;
+          this.driverOrAgentInfoList[0].zigeNumber = this.inforForm.partyEcertId;
+          this.relationWithPartyIsOne[0] = true;
+        }
+      },
       //更改与当事人关系   为同一人时自动赋值且不可编辑
       changeRelationWithParty(index) {
         console.log(index, 'index')
@@ -1444,6 +1495,16 @@
           );
           _this.inforForm.state = state;
           _this.inforForm.caseStatus = '未立案';
+          // 拼接案发地点
+          let afddSting=_this.inforForm.highwayRoute+_this.inforForm.direction+'k'+_this.inforForm.pileNumber+'+'+_this.inforForm.distance
+          if(_this.inforForm.distance2||_this.inforForm.pileNumber2){
+            afddSting=afddSting+'至'+'k'+_this.inforForm.pileNumber2+'+'+_this.inforForm.distance2+' '+_this.inforForm.position
+          }else{
+             afddSting=afddSting+' '+_this.inforForm.position
+          }
+          _this.inforForm.afdd=afddSting
+          debugger
+
           _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
             res => {
               console.log(res);
@@ -1800,6 +1861,7 @@
         ;
         this.inforForm.partyAge = age;
         this.inforForm.partySex = sex;
+        this.changeDriverOrAgentInfo();
         // let nowDate = new Date();
         // let year = nowDate.getFullYear();
         // let age = '';

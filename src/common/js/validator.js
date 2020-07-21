@@ -53,10 +53,10 @@ export function validateUrl(rule, value, callback) {
 /* 是否是手机号 有值时验证*/
 export function validatePhone(rule, value, callback) {
     // var reg = /^1(3|4|5|6|7|8)\d{9}$/;
-    // var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
+    var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[35879]\d{9})$)/;
     // 适配17-19
     // var reg = /^((13[0-9])|(17[0-1,6-8])|(15[^4,\\D])|(18[0-9]))|(19[1,9])\d{8}$/;
-    var reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+    // var reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
 
     if (!reg.test(value) && value) {
         // this.$message('手机号不正确')
@@ -188,4 +188,13 @@ export function money(rule, value, callback) {
     } else {
         callback()
     }
+}
+
+// 车牌号校验
+export function vaildateCardNum(rule, value, callback){
+    var reg = /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/;
+    if (!reg.test(value) && value) {
+        callback(new Error('请输入正确的车牌号'));
+    }
+    callback();
 }

@@ -56,7 +56,6 @@ export default [
     meta: {
       title: "调查类文书",
       oneTab: true,
-      keepAlive: true
     },
     component: () => import("@/page/caseHandle/case/form/caseDoc.vue")
   },
