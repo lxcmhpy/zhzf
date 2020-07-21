@@ -758,8 +758,8 @@ export const mixinGetCaseApiList = {
     this.isCompete();
   },
   watch: {
-    '$route'(to, from) {
-      this.init()
-    }
+    // '$route'(to, from) {
+    //   this.init()
+    // }
   }
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="box" style="background:#eaedf4">
+  <div class="box">
     <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px">
-      <div class="content_box" style="background:#fff;margin-bottom:22px">
+      <div class="content_box">
         <div class="content">
           <div class="content_title">调查类文书</div>
           <div class="border_blue"></div>
@@ -233,7 +233,7 @@
           </div>
         </div>
       </div>
-      <div class="content_box" style="background:#fff">
+      <div class="content_box">
         <div class="content">
           <div class="table_form">
             <el-table
@@ -292,7 +292,7 @@
                     <span @click="addMoreDoc(scope.row)" class="tableHandelcase">添加</span>
                   </div>
                   <div v-if="!scope.row.openRow">
-
+                    
                     <!-- 已完成 -->
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase" @click="viewDocPdf(scope.row)">查看</span>
                     <!-- 未完成 暂存 -->
@@ -656,8 +656,8 @@ export default {
     }
   },
   created() {
-    this.initData()
-  },
+    this.initData() 
+  }
 };
 </script>
 
