@@ -73,7 +73,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
+                  <el-input-number v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input-number>
                 </el-form-item>
               </div>
               <div class="col">
@@ -586,22 +586,8 @@ export default {
     },
     //查看文书
     viewDoc(row) {
-      if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note == '') {
-        // console.log("弹窗")
-        // this.$refs.addDialogRef.showModal(row, this.isSaveLink);
-        iLocalStroage.removeItem("currentDocDataId");
-        this.$refs.addDialogRef.showModal(
-          row,
-          this.caseLinkDataForm.caseLinktypeId,
-          this.isSaveLink
-        );
-      }
-      else {
-        this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
-      }
-
-
-
+      iLocalStroage.removeItem("currentDocDataId");
+      this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
     },
     //清空文书
     delDocDataByDocId(data) {
