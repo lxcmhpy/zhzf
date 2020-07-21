@@ -831,7 +831,7 @@
   import iLocalStroage from "@/common/js/localStroage";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
-  import {validateIDNumber, validateAge, validateZIP, validatePhone, vaildateCardNum} from '@/common/js/validator'
+  import {validateIDNumber, checkPassport, validateAge, validateZIP, validatePhone, vaildateCardNum} from '@/common/js/validator'
   import {
     getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
   } from "@/api/system";
@@ -870,7 +870,7 @@
         callback();
       };
       return {
-        theStr: "",
+        theStr: "", // 输入框长度到达设定值时输入框的内容
         recentCheckStastions: [],//最近五个检测站
         recentCheckWorkers: [],//历史保存过检测人员
         vehicleTypeList: [],//车型
@@ -980,9 +980,8 @@
           partyAge: [
             {validator: validateAge, trigger: "blur"}
           ],
-          partyIdNo: [
-            {validator: validateIDNumber, trigger: "blur"}
-          ],
+          // partyIdNo: [{validator: validateIDNumber, trigger: "blur"}],
+          // partyIdNo: this.inforForm.partyIdType==="0"?[{validator: validateIDNumber, trigger: "blur"}]:[{validator: checkPassport, trigger: "blur"}],
           partyZipCode: [
             {validator: validateZIP, trigger: "blur"}
           ],
@@ -1291,7 +1290,12 @@
           this.driverOrAgentInfoList[0].zigeNumber = "";
       }
     },
-      changeDriverOrAgentInfo(){
+      changeDriverOrAgentInfo(type){
+        if(type === "0") {
+          this.rules.partyIdNo = [{validator: validateIDNumber, trigger: "blur"}]
+        } else if (type === "1") {
+          this.rules.partyIdNo = [{validator: checkPassport, trigger: "blur"}]
+        }
         let val = this.driverOrAgentInfoList[0].relationWithParty
         if (val === '同一人' && this.partyTypePerson == "1") {
           this.driverOrAgentInfoList[0].relationWithCase = "当事人";
