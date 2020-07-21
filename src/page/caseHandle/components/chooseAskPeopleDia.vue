@@ -113,6 +113,7 @@ export default {
             addMoreData.askData.otherPeopleRelation=this.formData.peopleType
           }
           console.log('addMoreData',addMoreData);
+          this.visible = false;
           this.com_viewDoc(this.docData,this.caseLinktypeId,addMoreData); 
         }
       })
