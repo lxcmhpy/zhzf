@@ -118,7 +118,7 @@
     </el-form>
 
     <!-- 置顶 -->
-    <el-backtop target="#caseInfoBox" :bottom="46" :right="8" :visibility-height="800">
+    <el-backtop target="#caseInfoBox"  :bottom="46" :right='0' :visibility-height='800' style="width: 58px;height: 58px;">
       <div class="back-ball">
         <svg
           t="1581647372853"
