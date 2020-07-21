@@ -191,8 +191,8 @@ export default {
       captchaId: '',   //验证码id
       captchaImg: '',   //验证码图片src
       loginForm: {
-        username: "test",
-        password: "123456",
+        username: "hwjjxzf",
+        password: "c12345678",
         code: ''
       },
       resetForm: {
