@@ -131,6 +131,7 @@ export const mixinGetCaseApiList = {
         this.$refs[docForm].validate((valid, noPass) => {
           if (valid) {
             console.log('通过')
+            debugger;
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
                 console.log("保存表单", res);
@@ -156,6 +157,7 @@ export const mixinGetCaseApiList = {
                     this.printContent();
                     this.isSaveLink = true;
                   } else {   //刷新数据
+                    console.log('刷新数据')
                     this.reload();
                   }
                 } else if (handleType == 2) {
@@ -199,7 +201,7 @@ export const mixinGetCaseApiList = {
       }
     },
     //点击下一环节和提交按钮都跳转流程图
-    com_goToNextLinkTu(caseBasicinfoId, caseLinktypeId) { 
+    com_goToNextLinkTu(caseBasicinfoId, caseLinktypeId) {
       let data = {
         caseId: caseBasicinfoId,
         caseLinktypeId: caseLinktypeId
@@ -572,7 +574,7 @@ export const mixinGetCaseApiList = {
           } else {
             //更改流程图状态
             try{
-              await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
+              await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData);
             }catch(err){
               this.$message('更改流程图状态失败！')
             }
@@ -599,6 +601,7 @@ export const mixinGetCaseApiList = {
         this.caseDocDataForm.id = res.data.id;
         this.caseDocDataForm.note = res.data.note;
         this.docData = JSON.parse(res.data.docData);
+        console.log('this.docData',this.docData)
         this.getDocDetailByIdAfter()
       }, err => {
         console.log(err)

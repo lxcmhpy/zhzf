@@ -108,6 +108,9 @@ $dialog-default-height: 560px !default;
     background: #f2f3f6;
     }
 
+    .el-table--striped .el-table__body tr.el-table__row--striped td{
+      background: #F6F8FF;
+    }
   /* 弹窗 */
   .el-dialog__header {
     background: #E9EDF6;
@@ -143,7 +146,7 @@ $dialog-default-height: 560px !default;
   }
   .el-table__body-wrapper {
     height:calc(100% - 31px) !important;
-    padding-bottom: 15px;
+    /* padding-bottom: 15px; */
     overflow-y:auto;
     min-height:33px;
     }
@@ -162,7 +165,7 @@ $dialog-default-height: 560px !default;
 .paginationBox {
     position  : relative;
     text-align: center;
-    margin:15px;
+    margin:25px 15px 15px;
     flex-shrink:0;
     .el-input__inner,.el-pagination .el-select .el-input .el-input__inner {
         border-radius: 0px;
@@ -353,3 +356,5 @@ $dialog-default-height: 560px !default;
 span {
     outline: none;
 }
+
+

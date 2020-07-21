@@ -1,7 +1,7 @@
 <template>
-  <div class="box">
+  <div class="box" style="background:#eaedf4">
     <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px">
-      <div class="content_box">
+      <div class="content_box"  style="background:#fff;margin-bottom:22px">
         <div class="content">
           <div class="content_title">调查类文书</div>
           <div class="border_blue"></div>
@@ -233,7 +233,7 @@
           </div>
         </div>
       </div>
-      <div class="content_box">
+      <div class="content_box"  style="background:#fff">
         <div class="content">
           <div class="table_form">
             <el-table
