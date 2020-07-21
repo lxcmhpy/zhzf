@@ -117,7 +117,7 @@
               </el-input>
             </el-form-item>
 
-          </div> 
+          </div>
           <div class="gongLiBox3">至</div>
           <div class="gongLiBox3">K</div>
           <div class="itemFive">
@@ -243,7 +243,7 @@
         <div v-show="partyTypePerson!='1'">
           <div class="itemBig">
             <el-form-item label="单位名称" prop="partyName">
-              <el-input ref="partyName" v-model="inforForm.partyName" maxlength="40"></el-input>
+              <el-input ref="partyName" v-model="inforForm.partyName" @input="handleLength(inforForm.partyName,'partyName')"></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
@@ -267,19 +267,19 @@
         <div v-show="partyTypePerson!='1'">
           <div class="itemSmall">
             <el-form-item label="职务">
-              <el-input v-model="inforForm.partyManagerPositions" maxlength="20"></el-input>
+              <el-input v-model="inforForm.partyManagerPositions" @input="handleLength(inforForm.partyManagerPositions, 'partyManagerPositions')"></el-input>
             </el-form-item>
           </div>
           <div class="itemBig">
             <el-form-item label="法定代表人">
-              <el-input v-model="inforForm.partyManager" maxlength="20"></el-input>
+              <el-input v-model="inforForm.partyManager" @input="handleLength(inforForm.partyManager, 'partyManager')"></el-input>
             </el-form-item>
           </div>
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemOne">
             <el-form-item label="地址">
-              <el-input v-model="inforForm.partyUnitAddress" maxlength="40"></el-input>
+              <el-input v-model="inforForm.partyUnitAddress" @input="handleLength(inforForm.partyUnitAddress,'partyUnitAddress')"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -823,6 +823,7 @@
   </div>
 </template>
 <script>
+  import { getCodeLength } from "@/utils/utils";
   import chooseLawPerson from "./chooseLawPerson";
   import punishDiag from "./punishDiag";
   import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
@@ -869,6 +870,7 @@
         callback();
       };
       return {
+        theStr: "",
         recentCheckStastions: [],//最近五个检测站
         recentCheckWorkers: [],//历史保存过检测人员
         vehicleTypeList: [],//车型
@@ -1137,6 +1139,38 @@
     mixins: [mixinGetCaseApiList],
     computed: {...mapGetters(['caseId','openTab','caseHandle'])},
     methods: {
+      /**
+       *
+       * 控制输入框长度，一个汉字占两个字符，一个字母占一个，中文符号占两个，英文符号占一个
+       */
+      handleLength(val, type) {
+        if(type === "partyName") {
+          if(getCodeLength(val) === 40) {
+            this.theStr = val
+          } else if(getCodeLength(val) > 40) {
+            this.inforForm.partyName = this.theStr
+          }
+        } else if (type === "partyManager") {
+          if(getCodeLength(val) === 20) {
+            this.theStr = val
+          } else if(getCodeLength(val) > 20) {
+            this.inforForm.partyManager = this.theStr
+          }
+        } else if (type === "partyManagerPositions") {
+          if(getCodeLength(val) === 20) {
+            this.theStr = val
+          } else if(getCodeLength(val) > 20) {
+            this.inforForm.partyManagerPositions = this.theStr
+          }
+        } else if (type === "partyUnitAddress") {
+          if(getCodeLength(val) === 60) {
+            this.theStr = val
+          } else if(getCodeLength(val) > 60) {
+            this.inforForm.partyUnitAddress = this.theStr
+          }
+        }
+      },
+
       //更改案件来源
       changeCaseSource(item) {
         if (item.value === "行政检查" || item.value === "投诉举报") {
@@ -1217,7 +1251,7 @@
       },
       //更改当事人类型
       changePartyType(val) {
-      debugger
+      // debugger
       this.partyTypePerson = val;
       if (val == "1") {
         this.inforForm.partyName = "";
@@ -1240,7 +1274,7 @@
         this.inforForm.occupation = "";
         this.inforForm.partyEcertId = "";
       }
-      if(this.driverOrAgentInfoList[0].relationWithParty == "同一人" ||this.driverOrAgentInfoList[0].relationWithParty == '近亲戚' || this.driverOrAgentInfoList[0].relationWithParty == '车辆所有人' 
+      if(this.driverOrAgentInfoList[0].relationWithParty == "同一人" ||this.driverOrAgentInfoList[0].relationWithParty == '近亲戚' || this.driverOrAgentInfoList[0].relationWithParty == '车辆所有人'
       || this.driverOrAgentInfoList[0].relationWithParty == '其它' || this.driverOrAgentInfoList[0].relationWithCase == '当事人' || this.driverOrAgentInfoList[0].relationWithCase == '实际所有者'){
           this.driverOrAgentInfoList[0].relationWithParty = "";
           this.driverOrAgentInfoList[0].relationWithCase = "";
@@ -1492,7 +1526,7 @@
               _this.$store.commit("setCaseNumber", res.data.tempNo);
               iLocalStroage.removeItem("stageCaseId");
               this.autoSava = false;
-              
+
              if(this.openTab){
               let replaceIndex = 0;
               for(let i=0;i < this.openTab.length;i++){
@@ -1505,7 +1539,7 @@
               this.openTab[replaceIndex].name = 'case_handle_establish' + '-and-' + this.caseHandle.caseNumber;
               this.openTab[replaceIndex].route = '/establish';
             }
-            
+
             //跳转立案登记
              this.getCaseNextRoute('立案登记').then(res=>{
                   this.$router.push({
@@ -1519,7 +1553,7 @@
             }
           );
         }
-        
+
       },
       //查询执法人员
       getAllUserList(list) {
@@ -1581,8 +1615,8 @@
           }
         );
       },
-    
-      
+
+
       //处理数据回显问题
       handleCaseData(data) {
         console.log('handleCaseData方法', data);
@@ -1623,7 +1657,7 @@
         if (data.discretionId != "") {
           this.activeJudgli = data.discretionId;
         }
-        
+
         //设置执法人员
         this.alreadyChooseLawPerson = [];
         let staffNameList = data.staff.split(',');
@@ -2054,7 +2088,7 @@
       },
       //获取坐标
       getLngLat(lngLatStr){
-        this.inforForm.latitudeAndLongitude = lngLatStr;   
+        this.inforForm.latitudeAndLongitude = lngLatStr;
         this.hasLatitudeAndLongitude = true;
       },
     },
@@ -2085,7 +2119,7 @@
       this.inforForm.caseType = someCaseInfo.caseType;
       this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
       this.inforForm.zfmlId = someCaseInfo.cateId;
-      debugger
+      // debugger
       if (this.inforForm.zfmlId === "1002000100000000") {
         this.afddFlag = true;
       } else {
@@ -2127,11 +2161,11 @@
     //   [iLocalStroage.gets('userInfo').username]
     // )
     console.log(this.$route)
-  
+
     if(!this.$route.params.fromSlide && !iLocalStroage.get("stageCaseId") && !this.$route.params.editFlag){
        this.setLawPersonCurrentP();
     }
-   
+
     if (this.$route.params.fromSlide) {
       this.fromSlide();
       this.disableBtn = true;
@@ -2159,7 +2193,7 @@
     console.log('this.autoSava', this.autoSava);
     if (this.autoSava && to.name != 'login') {  //退出登录不自动暂存
       // this.stageInfo(0);
-     
+
     }
 
       next(vm => {

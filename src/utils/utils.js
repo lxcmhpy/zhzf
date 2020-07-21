@@ -63,3 +63,13 @@ export function findObjByArray(list, name) {
     }
   }
 }
+
+
+/**
+ *
+ * 计算字符串实际长度，一个汉字长度为2，字母长度为1
+ * 利用正则把字符串全转为字母长度，一个汉字占两个字符长度，一个字母占一个字符长度，中文符号占两个字符长度，英文符号占一个字符长度，然后计算长度
+ */
+export function getCodeLength(str) {
+  return str.replace(/[\u0391-\uFFE5]/g,"aa").length
+}

@@ -154,7 +154,7 @@ export function addOrUpdateNoticeApi(data) {
 
 //删除公告信息
 export function deleteNoticeApi(id) {
-  debugger
+  // debugger
   return request({
     url: "/pykh/notice/deleteNotice/"+id,
     method: "get",
@@ -166,7 +166,7 @@ export function deleteNoticeApi(id) {
 
 //获取公告内容
 export function getContentApi(id) {
-  debugger
+  // debugger
   return request({
     url: "/pykh/notice/getContent/"+id,
     method: "get",
