@@ -15,11 +15,11 @@ import { router } from "./router/index";
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
 
-// import { message } from '@/common/js/resetMessage';
+import { messageOne } from '@/common/js/resetMessage';
 
 Vue.use(ElementUI);
 Vue.use(hasPermission);
-// Vue.prototype.$message = message;
+Vue.prototype.$messageOne = messageOne;
 
 Vue.config.productionTip = false;
 

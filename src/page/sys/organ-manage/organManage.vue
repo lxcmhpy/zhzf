@@ -119,7 +119,9 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       currentOrganId: "", //当前organ的id
-      showAddDialog: false
+      showAddDialog: false,
+      theClickId: "", // 当前被点击树的id
+      nodeData: "", // 当前被点击节点对应的 Node
     };
   },
   components: {
@@ -132,7 +134,14 @@ export default {
      * 点击编辑按钮
      */
     handleUpdata() {
-      console.log('handleUpdata')
+      let data = {
+        id: this.theClickId,
+        parentNode: {
+          parentNodeId: this.nodeData.parent.data.id,
+          parentNodeName: this.nodeData.parent.data.label
+        }
+      };
+      this.$refs.updateOrganRef.showModal(2, data);
     },
 
     filterNode(value, data) {
@@ -140,8 +149,10 @@ export default {
       return data.label.indexOf(value) !== -1;
     },
     //点击树事件
-    handleNodeClick(data) {
-      console.log(data);
+    handleNodeClick(data,node,item) {
+      this.nodeData = node
+      this.theClickId = data.id
+      this.thisNode = data
       this.selectCurrentTreeName = data.label;
       this.tableData = [];
       this.currentOrganId = data.id;
@@ -168,6 +179,7 @@ export default {
             });
           }
           _this.organData = res.data;
+          this.allTreeData = res.data
           console.log(_this.defaultExpandedKeys);
           console.log(_this.organData);
           if (organId == "root") {

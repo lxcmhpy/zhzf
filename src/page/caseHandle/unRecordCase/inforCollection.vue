@@ -416,7 +416,7 @@
         <p>车辆信息</p>
         <div>
           <div class="item">
-            <el-form-item label="车牌号">
+            <el-form-item label="车牌号" prop="vehicleShipId">
               <el-input v-model="inforForm.vehicleShipId"></el-input>
             </el-form-item>
           </div>
@@ -459,7 +459,7 @@
         <p v-if="showTrailer">挂车信息</p>
         <div v-if="showTrailer">
           <div class="item">
-            <el-form-item label="车牌号">
+            <el-form-item label="车牌号" prop="trailerIdNo">
               <el-input v-model="inforForm.trailerIdNo"></el-input>
             </el-form-item>
           </div>
@@ -747,8 +747,16 @@
               <li v-for="(item,index) in judgFreedomList" :key="index" :class="{activeJudgli : activeJudgli==item.id}"
                   @click="selectJudgFreedom(item)">
                 <div>{{item.drawerName}}</div>
-                <div>{{item.wfqj}}</div>
-                <div>{{item.lawerLimit}}</div>
+                <div>
+                  <el-tooltip popper-class="wfqj-poper" class="wfqj-tooltip" effect="dark" :content="item.wfqj" placement="top">
+                    <div>{{item.wfqj}}</div>
+                  </el-tooltip>
+                </div>
+                <div>
+                  <el-tooltip popper-class="judge-poper" class="wfqj-tooltip" effect="dark" :content="item.jycf" placement="top">
+                    <div>{{item.lawerLimit}}</div>
+                  </el-tooltip>
+                </div>
                 <span class="selectIcon"><i class="el-icon-success"></i></span>
               </li>
             </ul>
@@ -818,7 +826,7 @@
   import iLocalStroage from "@/common/js/localStroage";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import {mapGetters} from "vuex";
-  import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/common/js/validator'
+  import {validateIDNumber, validateAge, validateZIP, validatePhone, vaildateCardNum} from '@/common/js/validator'
   import {
     getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
   } from "@/api/system";
@@ -978,6 +986,12 @@
           partyUnitTel: [
             {validator: validatePhone, trigger: "blur"}
           ],
+          vehicleShipId: [
+            {validator: vaildateCardNum, trigger: "blur"}
+          ],
+          trailerIdNo: [
+            {validator: vaildateCardNum, trigger: "blur"}
+          ]
         },
         //案件类型
         allcaseSource: [

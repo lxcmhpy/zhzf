@@ -191,8 +191,8 @@ export default {
       captchaId: '',   //验证码id
       captchaImg: '',   //验证码图片src
       loginForm: {
-        username: "hwjjxzf",
-        password: "c12345678",
+        username: "",
+        password: "",
         code: ''
       },
       resetForm: {
@@ -398,7 +398,7 @@ export default {
       new Promise((resolve, reject) => {
         getCurrentUserApi().then(res => {
           console.log("当前用户信息", res);
-          debugger
+          // debugger
 
           if (res.data.passwordStatus == '0') {
             // 判断是否修改过密码
@@ -407,11 +407,10 @@ export default {
             this.editForm.username = this.loginForm.username
             this.editForm.password = this.loginForm.password
           } else {
-            this.$router.push({
-              name: 'home'
-            })
+            // 登录后默认跳转至host.json文件中配置的首页
+            this.$router.push({ name: sessionStorage.getItem('HOME_PAGE_ROUTER_NAME') })
             iLocalStroage.sets('userInfo', res.data);
-            _this.getMenu();
+            // _this.getMenu();
           }
         }, err => {
           console.log(err);

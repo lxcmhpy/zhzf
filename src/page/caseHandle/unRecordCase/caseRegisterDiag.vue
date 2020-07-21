@@ -52,6 +52,7 @@ import {
   queryFlowBycaseTypeApi,
 } from "@/api/caseHandle";
 import { queryLawCateByOrganIdApi} from "@/api/caseDeploy";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -80,6 +81,9 @@ export default {
   inject: ["reload"],
   components: {
     chooseillegalAct
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   methods: {
     showModal(data, caseForm) {
@@ -293,7 +297,11 @@ export default {
           this.$store.commit("setCaseId", res.data.id);
           iLocalStroage.set("stageCaseId", res.data.id);
           this.$store.commit("setInforCollectionType", inforName);
-          this.$router.push({
+          //防止出现多个信息采集tab
+          let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+          this.$store.commit("reset_ALLTABS", newOpenTab);
+          console.log('newOpenTab',newOpenTab)
+          this.$router.push({ 
             name: inforName,
           });
         })

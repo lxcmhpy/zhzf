@@ -44,16 +44,17 @@
         :visible.sync="pdfVisible"
         @close="closeDialog"
         :close-on-click-modal="false"
-        width="1000px"
+        width="800px"
          append-to-body>
         <div >
         <div style="height:auto;">
         <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
-            <div lazy>
-                <object >
+            <div lazy id="myPdfBOx">
+                <!-- <object >
                     <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
                     :src="mlList" type="application/pdf" internalinstanceid="29">
-                </object>
+                </object> -->
+                <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
             </div>
         </div>
         </div>
@@ -62,7 +63,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi,getDeliverReceiptByCaseIdApi } from "@/api/caseHandle";
+import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi,getDeliverReceiptByCaseIdApi,getFileStreamByStorageIdApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -74,6 +75,7 @@ export default {
       // doccloseDialog: false,
       host:'',
       getData:false,
+      pdfUrl:''
     };
   },
   inject: ["reload"],
@@ -124,18 +126,82 @@ export default {
     alertPDF (item) {
         let data = {
             caseId:item.caseId,
-            docId: item.caseSerProofId,
+            docDataId: item.caseSerProofId,
+            docId: '2c9029cf6931aa5c01693381ac690018',
         };
-        let _that = this
-        findByCaseIdAndDocIdApi(data).then(res=>{
-            _that.mlList = _that.host + res.data[0].storageId;
-
-        },err=>{
+        let _that = this;
+        console.log('item',item)
+        // findByCaseIdAndDocIdApi(data).then(res=>{
+        //   console.log('res',res)
+        //     _that.mlList = _that.host + res.data[0].storageId;
+        //   console.log('_that.mlList ',_that.mlList )
+        // },err=>{
+        //     console.log(err);
+        // })
+        this.$store.dispatch("getFile", { 
+          docId: data.docId,
+          caseId: data.caseId,
+        }).then(
+          res => {
+            console.log('地址1',res);
+            //单份文书取一个
+            if (res.length == 1) {
+              _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
+              this.getFileStream(res[0].storageId)
+            }else{
+              //多份文书按照docDataId取地址
+              for (var i = 0; i < res.length; i++) {
+                if (data.docDataId && data.docDataId == res[i].docDataId) {
+                  console.log('res[i].storageId', res[i].storageId);
+                  this.getFileStream(res[i].storageId)
+                  _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
+                  break;
+                }
+              }
+            }
+          },
+          err => {
             console.log(err);
-        })
+          }
+        );
+
         this.indexPdf = 0;
         this.pdfVisible = true
     },
+    //根据stroagId请求文件流
+      getFileStream(storageId){
+        //设置地址
+        this.$store.commit("setDocPdfStorageId", storageId);
+        getFileStreamByStorageIdApi(storageId).then(res=>{
+        // getFileStreamByStorageIdApi('12,13ac7d04e13f').then(res=>{
+
+          console.log(res);
+          this.getObjectURL(res);
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      // 将返回的流数据转换为url
+      getObjectURL(file) {
+        let url = null;
+        if (window.createObjectURL != undefined) { // basic
+          url = window.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+          try {
+            url = window.webkitURL.createObjectURL(file);
+          } catch (error) {
+
+          }
+        } else if (window.URL != undefined) { // mozilla(firefox)
+          try {
+            url = window.URL.createObjectURL(file);
+          } catch (error) {
+
+          }
+        }
+         
+        this.pdfUrl =url;   
+      },
     //显示封面
     showCover(){
       if(this.$route.name!='case_handle_archiveCover'){

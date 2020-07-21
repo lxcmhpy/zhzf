@@ -74,7 +74,8 @@ export const BASIC_DATA_SYS = {
     compensationPartyRights_caseLinktypeId:'2128e21c31b9debba6890bf66635e3f5',
      //协助调查函  docId
     assistInvestigation_caseDocTypeId: '2f20ebfa109dbae1eb8eee3146f11d61',
-
+    //中止（终结、恢复）行政强制执行通知书 docId
+    enforceDoc_caseDocTypeId:'2c902908696a1fc501696a754e3b0002'
 }
 // 评议考核基础数据
 export let PYKH_DATA = {

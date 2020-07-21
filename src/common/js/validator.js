@@ -189,3 +189,12 @@ export function money(rule, value, callback) {
         callback()
     }
 }
+
+// 车牌号校验
+export function vaildateCardNum(rule, value, callback){
+    var reg = /^(([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z](([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-Z][A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳使领]))$/;
+    if (!reg.test(value) && value) {
+        callback(new Error('请输入正确的车牌号'));
+    }
+    callback();
+}
