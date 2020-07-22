@@ -256,8 +256,8 @@
         <p>
           其他说明：
           <span>
-                <el-form-item prop="caseName" rows="2">
-                  <el-input type='textarea' v-model="docData.caseName"
+                <el-form-item prop="caseNote" rows="2">
+                  <el-input type='textarea' v-model="docData.caseNote"
                             v-bind:class="{ over_flow:docData.party.length>14?true:false }"
                             :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
                 </el-form-item>
@@ -394,6 +394,7 @@ import {
           makeDate: '2019',
           resList: [],
           resLength: 0,
+          caseNote: ''
         },
         handleType: 0, //0  暂存     1 提交
         caseDocDataForm: {
