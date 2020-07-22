@@ -249,7 +249,7 @@
           </el-form-item>
           <el-form-item label="模板管理者">
             <el-form-item class="lawPersonBox card-user-box-big" style="width:100%">
-              <el-select ref="templateAdminIdList" value-key="userId" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag">
+              <el-select ref="templateAdminIdList" value-key="userId" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag" @change="changeAdmin">
                 <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
                 <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
@@ -1030,7 +1030,7 @@ export default {
         }];
     },
     changeUser(val) {
-      console.log(val)
+      this.$forceUpdate()
     },
     changeFile(val) {
       // 选择文书填报
@@ -1111,6 +1111,9 @@ export default {
           });
         });
       }
+    },
+    changeAdmin(){
+      this.$forceUpdate()
     }
   },
   mounted() {
