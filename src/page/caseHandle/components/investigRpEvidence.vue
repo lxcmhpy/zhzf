@@ -12,6 +12,7 @@
           <!-- <el-button type="primary" @click="chooseLocalEvidence">本地上传</el-button> -->
           <el-upload
             class="localUpload"
+            :limit="4"
             action="https://jsonplaceholder.typicode.com/posts/"
             :http-request="chooseLocalEvidence" :show-file-list="false" >
             <el-button size="small" type="primary">本地上传</el-button>
@@ -74,7 +75,7 @@ export default {
         _this.fileTableData.forEach(item=>{
           console.log("123",item);
           _this.tableData.push({'name':item.name,'num':1,'des':'份'});
-        })       
+        })
         list.forEach((element,index) => {
             console.log('element',element);
             let evi={'name':element,'des':'份','num':1}
@@ -82,7 +83,7 @@ export default {
             _this.tableData.push(evi);
         });
     },
-    
+
     //本地上传，并且上传到证据目录
     chooseLocalEvidence(param){
       console.log(param);

@@ -51,7 +51,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="处罚金额" :rules="fieldRules('tempPunishAmount',propertyFeatures['tempPunishAmount'])">
-                  <el-input clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
+                  <el-input type="text" suffix="lalala" clearable class="w-120" v-model="formData.tempPunishAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -291,6 +291,7 @@ export default {
       }
     };
     return {
+      totalMoney: "",
       formData: {
         caseNumber: "",
         punishType: "",
@@ -378,7 +379,13 @@ export default {
      * 根据已缴金额计算待缴金额
      */
     handleChangePaidAmount(val) {
-      let num = Number(this.formData.tempPunishAmount) - Number(this.formData.paidAmount);
+      let tempPunishAmount = ''
+      if(this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
+        tempPunishAmount = Number(this.totalMoney)
+      } else {
+        tempPunishAmount = Number(this.formData.tempPunishAmount)
+      }
+      let num = tempPunishAmount - Number(this.formData.paidAmount);
       this.formData.toPayAmount = until.upMoney(num) + "(" + num + "元)"
     },
 
@@ -397,6 +404,17 @@ export default {
       }
     },
 
+    /**
+     *
+     * 当处罚金额不能输入时，转为大写加小写，金额数值赋值给 totalMoney
+     */
+    handleIsTempPunishAmount() {
+      if(this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
+        this.totalMoney = this.formData.tempPunishAmount
+        this.formData.tempPunishAmount = upMoney(totalMoney) + "(" + totalMoney + "元)"
+      }
+    },
+
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
@@ -404,7 +422,7 @@ export default {
         this.caseLinkDataForm.caseBasicinfoId,
         this.caseLinkDataForm.caseLinktypeId,
         false
-      );
+      )
     },
     //保存表单数据
     submitCaseDoc(handleType) {
@@ -878,7 +896,7 @@ export default {
   mounted() {
     // this.getCaseBasicInfo();
     this.findIsOrder()
-
+    this.handleIsTempPunishAmount()
   },
   created() {
     //获取表单数据

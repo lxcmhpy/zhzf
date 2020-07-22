@@ -243,7 +243,8 @@ export default {
         hearingResult:'',
         presidentSign:'',
         adminOpinion:'',
-        adminSign:''
+        adminSign:'',
+        note: '',
       },
       rules: {
         caseName: [

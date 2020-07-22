@@ -142,7 +142,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="totalWeight" sortable label="车货总质量（t）" width="150" align="center">
+            <el-table-column prop="totalWeight" sortable label="车货总质量（t）" width="160" align="center">
               <template slot-scope="scope">
                 <span v-if="scope.row.totalWeight/1000>100" style="color:red">{{scope.row.totalWeight/1000}}</span>
                 <span v-else>{{scope.row.totalWeight/1000}}</span>

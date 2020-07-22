@@ -219,7 +219,7 @@
     <div class="b-flex-1">
       <!-- <span :class="$route.name">待审核</span> -->
       <div class="shadow">
-        <div class="box box-npshadow b-w-720" >
+        <div class="box box-noshadow b-w-720" >
           <div class="box_title">
             <span class="titleflag"> </span>
             <span class="title" style="margin-top:15px">电子证据单</span>
@@ -418,7 +418,7 @@
               </el-carousel>
             </li>
           </ul>
-          <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
+          <el-dialog :visible.sync="dialogIMGVisible" custom-class="dialogImg">
             <div>
                 <el-row>
                   <el-col :span="1" style="margin-top: 200px;">
@@ -573,7 +573,18 @@ export default {
   }
 }
 .box-noshadow{
-  box-shadow: none;
- -webkit-box-shadow:none
+  box-shadow: none !important;
+ -webkit-box-shadow:none !important;
+}
+.dialogImg {
+    margin-top: 5vh !important;
+    width: 90%;
+    .el-dialog__header {
+        display: none ;
+    }
+    .el-dialog__body{
+        max-height: 90%;
+        overflow: auto;
+    }
 }
 </style>

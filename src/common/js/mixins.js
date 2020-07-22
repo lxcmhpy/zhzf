@@ -84,9 +84,6 @@ export const mixinGetCaseApiList = {
       };
       this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
         res => {
-          console.log("获取表单详情", res.data);
-        this.$store.commit("setCaseLinktypeId", caseLinktypeId);
-
           //如果为空，则加载案件信息
           if (res.data == "") {
             this.com_getCaseBasicInfo(caseId, caseLinktypeId);
