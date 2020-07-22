@@ -855,6 +855,8 @@ export default {
       this.docTableDatas = [];
       this.allAskDocList = [];
       this.allApprovalDocList = [];
+      this.finishDocCount = 0;
+      this.finishDelayApprovalDocCount = 0;
       //查找是否为必填
       let stageDelayApprovalFormRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId).isRequired;
       let payStageDoc_JXRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId).isRequired;

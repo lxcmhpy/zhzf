@@ -489,32 +489,9 @@
         this.com_getDocListByCaseIdAndFormId(data);
       },
 
-      //预览pdf
+      //多份文书预览pdf
     viewDocPdf(row) {
-      let routerData = {
-        hasApprovalBtn: false,
-        docId: row.docId,
-        approvalOver: false,
-        hasBack: true,
-        docDataId: row.docDataId,
-        status: row.status //status状态 0 暂存 1保存未提交  2 保存并提交
-      };
-      console.log("routerData,routerData", routerData);
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      if (row.docProcessStatus == "待审批") {
-        this.$store.commit("setApprovalState", "approvalBefore");
-        this.$store.commit(
-          "setCaseLinktypeId",
-          this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId
-        );
-        this.$store.commit("setDocDataId", row.docDataId);
-        this.$store.commit("setDocId", row.docId);
-      } else if (row.docProcessStatus == "审批中") {
-        this.$store.commit("setApprovalState", "submitApproval");
-      } else {
-        this.$store.commit("setApprovalState", "");
-      }
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      this.com_viewDocPdf(row,this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId)
     },
 
       getDataAfter(){
@@ -560,6 +537,9 @@
       this.remindLetterDocList = [];
       this.abortEndRecoverApprovalFormList = [];
       this.enforceDocList = [];
+      this.finishRemindLetterCount = 0;
+      this.finishAbortEndRecoverApprovalCount = 0;
+      this.finishEnforceDocListCount = 0;
       //查找是否为必填
       // 催告书
       let remindLetterDocRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.remindLetterDoc_JX_caseDocTypeId).isRequired;

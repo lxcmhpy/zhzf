@@ -307,6 +307,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
+import iLocalStroage from "@/common/js/localStroage"; 
 export default {
   components: {
     casePageFloatBtns
@@ -450,7 +451,7 @@ export default {
       //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
       
-      if (addMoreData.handelType == 'isAddMore') {
+      if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
         console.log('多份文书', this.$route.params.handelType)
         this.com_getCaseBasicInfo(data.caseId, data.docId);
         if (addMoreData.approvalForm.executeHandle == 0) {
