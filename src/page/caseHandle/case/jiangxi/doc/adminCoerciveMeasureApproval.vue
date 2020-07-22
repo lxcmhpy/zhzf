@@ -533,6 +533,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "adminCoerciveMeasureApproval_print"
       },
+      needDealData:true,
       approvalOver: false, //审核完成
       propertyFeatures: ""
     };
@@ -570,10 +571,21 @@ export default {
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
+    getDataAfter(){
+      debugger
+      if(this.docData.measureStartDate=='' && this.docData.measureEndDate  ==''){
+          this.docData.days  = "";
+      }else{
+          this.docData.days = new Date(this.docData.measureEndDate) - new Date(this.docData.measureStartDate);
+          this.docData.days = Math.abs(this.docData.days)
+          // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
+          this.docData.days = this.docData.days / (24 * 3600 * 1000);
+          // 取整
+          this.docData.days = Math.floor(this.docData.days) ;
+      }
+    },
     starttime(){
       if (this.docData.measureStartDate){
-        console.log('this.docData.measureStartDate',this.docData.measureStartDate)
-        console.log('this.docData.measureEndDate',this.docData.measureEndDate)
         if(this.docData.measureStartDate > this.docData.measureEndDate && this.docData.measureEndDate){
           this.$message({
             message: '开始时间不能大于结束时间',
@@ -582,17 +594,13 @@ export default {
           this.docData.measureStartDate = '';
           this.docData.days = '';
         }else{
-          // this.docData.days = this.docData.measureEndDate - this.docData.measureStartDate;
           this.docData.days = new Date(this.docData.measureEndDate) - new Date(this.docData.measureStartDate);
           this.docData.days = Math.abs(this.docData.days)
           // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
           this.docData.days = this.docData.days / (24 * 3600 * 1000);
           // 取整
-          console.log(this.docData.days,'this.docData.days')
           this.docData.days = Math.floor(this.docData.days) ;
           this.$set(this.docData, 'days',  this.docData.days);
-          // 有问题，第一次点击不回显
-          console.log("timestamp", this.docData.days)
         }
       }
     },
@@ -624,6 +632,9 @@ export default {
     },
   },
   mounted() {
+    this.starttime();
+  },
+  created(){
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
   }
