@@ -6,7 +6,7 @@
         <el-input placeholder="输入机构名" v-model="filterText">
           <el-button slot="append" size="mini" icon="el-icon-search"></el-button>
         </el-input>
-        <div class="treeBox">
+        <div class="treeBox" style="max-height:calc(100vh - 220px)">
           <el-tree
             highlight-current
             class="filter-tree"
@@ -130,7 +130,7 @@
           ></el-pagination>
         </div>
         <el-dialog :title="title"
-          custom-class="leftDialog"
+          custom-class="deviceMngDialog"
           :visible.sync="visible"
           top="0"
           width="40%"
