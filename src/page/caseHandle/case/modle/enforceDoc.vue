@@ -38,7 +38,6 @@
         </p>
 
         <p>
-        {{docData.checknames}}
           <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click">1.现因
           <span>
             <el-form-item :prop="disabledOne ? 'placeholder':'stopReason'" class="width120">

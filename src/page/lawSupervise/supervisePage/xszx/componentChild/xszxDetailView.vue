@@ -219,7 +219,7 @@
     <div class="b-flex-1">
       <!-- <span :class="$route.name">待审核</span> -->
       <div class="shadow">
-        <div class="box box-npshadow b-w-720" >
+        <div class="box box-noshadow b-w-720" >
           <div class="box_title">
             <span class="titleflag"> </span>
             <span class="title" style="margin-top:15px">电子证据单</span>
@@ -573,7 +573,7 @@ export default {
   }
 }
 .box-noshadow{
-  box-shadow: none;
- -webkit-box-shadow:none
+  box-shadow: none !important;
+ -webkit-box-shadow:none !important;
 }
 </style>

@@ -385,6 +385,23 @@
     }
   }
 
+  .deviceMngDialog {
+    height       : 100%;
+    margin-top   : 0;
+    margin-right : 0;
+    margin-bottom: 0;
+    overflow     : auto;
+
+    .el-dialog__header {
+      border-bottom: 1px solid #D6DBE3;
+    }
+
+    .el-dialog__body{
+        max-height: calc(100vh - 190px) ;
+        overflow: auto;
+    }
+  }
+
   .caseBox {
     position: absolute;
     width   : 100%;
