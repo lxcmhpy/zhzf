@@ -120,7 +120,7 @@
                     v-model="formData.partyAddress"
                     size="small"
                     placeholder="请输入"
-                    :disabled="isParty || fieldDisabled(propertyFeatures['partyAddress'])"
+                    :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -392,6 +392,8 @@ export default {
         vehicleShipId: "",
         vehicleShipType: "",
         relationWithCase:"",
+        partyUnitPosition: "",
+        occupation: "",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -640,6 +642,7 @@ export default {
       console.log("this.allAskDocList", this.allAskDocList);
     },
     getDataAfter(){
+      console.log("111111",this.formData)
       if(`${this.formData.partyUnitPosition}`=='' &&`${this.formData.occupation}` ==''){
           this.formData.partyUnitPositionAndCom = "无";
       }else{
