@@ -409,7 +409,11 @@
         <div class="fullscreen">
           <el-form ref="addResFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
-              <el-table-column prop="resNo" label="序号" align="center"></el-table-column>
+              <el-table-column prop="resNo" label="序号" align="center">
+                 <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="查封、扣押场所、设施、财物名称" align="center">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.resName"></el-input>
@@ -711,16 +715,7 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) {
-      let routerData = {
-        hasApprovalBtn: false,
-        docId: row.docId,
-        approvalOver: false,
-        hasBack: true,
-        status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
-        docDataId: row.docDataId
-      };
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      this.com_viewDocPdf(row,this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId)
     },
     //清空文书
     delDocDataByDocId(data) {

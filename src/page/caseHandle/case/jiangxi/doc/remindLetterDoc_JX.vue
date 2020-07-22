@@ -358,7 +358,7 @@ export default {
   },
   methods: {
     //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
+    getDocDataByCaseIdAndDocId() { 
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId, //流程里的案件id
@@ -367,8 +367,8 @@ export default {
       // this.com_getDocDataByCaseIdAndDocId(data);
       //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
-      if (addMoreData.handelType == "isAddMore") {
-        console.log("多份文书", this.$route.params.handelType);
+      if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
+        console.log('多份文书', this.$route.params.handelType)
         this.com_getCaseBasicInfo(data.caseId, data.docId);
         //文书名称
         this.caseDocDataForm.note = "催告书 (第" + addMoreData.addNum + "份)";

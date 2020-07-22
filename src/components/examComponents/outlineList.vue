@@ -60,13 +60,31 @@ export default {
       defaultCheckedKeys: []
     }
   },
-  created(){},
+  created(){
+    if(this.treeData && this.treeData.length){
+      this.treeData.forEach(node => {
+        node.topLevel = node.parentId;
+        this.setNodeTopLevel(node.children, node.parentId);
+      })
+    }
+  },
   watch: {
     filterText(val) {
       this.$refs.outlineTree.filter(val);
     }
   },
   methods:{
+    // 递归处理绑定顶级节点
+    setNodeTopLevel(tree, top){
+      if(tree && tree.length){
+        tree.forEach(item => {
+          item.topLevel = top;
+          if(item.children && item.children.length){
+            this.setNodeTopLevel(item.children, top);
+          }
+        });
+      }
+    },
     // 过滤树节点
      filterNode(value, data) {
       if (!value) return true;

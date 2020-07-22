@@ -25,7 +25,7 @@ export default  [
                 path: "/writeRecordInfo/id=:id&addOrEiditFlag=:addOrEiditFlag",
                 name: "inspection_writeRecordInfo",
                 meta: {
-                title: "写记录",
+                title: "记录详情",
                 // oneTab:true,
                 },
                 component: () => import("@/page/inspection/record-manage/writeRecord.vue"),

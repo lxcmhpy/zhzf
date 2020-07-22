@@ -370,5 +370,13 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/hearingRecordDoc_JX.vue")
   },
+  {
+    path: "/removeAdminCoerciveMeasureDoc_JX",
+    name: "case_handle_removeAdminCoerciveMeasureDoc_JX",
+    meta: {
+      title: "解除行政强制措施决定书"
+    },
+    component: () => import("@/page/caseHandle/case/jiangxi/doc/removeAdminCoerciveMeasureDoc_JX.vue")
+  },
 ]
 

@@ -458,7 +458,7 @@ export default {
         measureEndDate: '',
         reconsiderationOrgan: '',
         lawsuitOrgan: '',
-        defendState:'',
+        defendState:[],
         defendReason:'',
         partyUnitPosition: ''
       },
@@ -653,6 +653,8 @@ export default {
       saveData(handleType) {
         // this.printContent()
         // this.docData.readState=JSON.stringify(this.docData.readState)
+        // this.docData.defendState=['1']
+        // this.docData.readState=['1']
         this.com_addDocData(handleType, "docForm");
       },
       submitData(handleType) {

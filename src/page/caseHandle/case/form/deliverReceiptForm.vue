@@ -362,7 +362,8 @@ export default {
           docDataId:row.caseSerProofId,
           status:row.status,  //status状态 0 暂存 1保存未提交  2 保存并提交
         // docDataId:row.docDataId
-          id:row.id
+          id:row.id,
+          status:2,
         };
 
         this.$store.dispatch("deleteTabs", this.$route.name);

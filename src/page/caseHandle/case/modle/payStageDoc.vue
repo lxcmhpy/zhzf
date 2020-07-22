@@ -263,18 +263,18 @@
           caseId: this.caseId,
           docId: this.$route.params.docId
         };
-        this.com_getDocDataByCaseIdAndDocId(data)
+        // this.com_getDocDataByCaseIdAndDocId(data)
 
         //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
         let addMoreData = JSON.parse(this.$route.params.addMoreData);
 
         if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
           //设置询问笔录名称
-//          console.log('添加')
+         console.log('添加')
           this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
           this.com_getCaseBasicInfo(data.caseId, data.docId);
         } else {
-//          console.log('修改')
+         console.log('修改')
           let currentDocDataId = iLocalStroage.get("currentDocDataId");
           if (currentDocDataId) {
             this.getDocDetailById(currentDocDataId)
@@ -425,6 +425,7 @@
           this.docData.checknames.shift();
         }
         debugger
+        console.log('this.docData.checknames',this.docData.checknames)
         if (this.docData.checknames == '1') {
           this.disabledOne = false;
           this.disabledTwo = true;
@@ -465,13 +466,22 @@
         docId: this.$route.params.docId
       };
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
-      //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-      if(addMoreData.handelType == 'isAddMore'){
-//        console.log('多份文书', this.$route.params.handelType)
-        this.com_getCaseBasicInfo(data.caseId, data.docId)
-      } else {
-        this.getDocDetailById(this.$route.params.docDataId)
-      }
+
+        if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
+          //设置询问笔录名称
+         console.log('添加')
+          // this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
+          this.com_getCaseBasicInfo(data.caseId, data.docId);
+        } else {
+         console.log('修改')
+          let currentDocDataId = iLocalStroage.get("currentDocDataId");
+          if (currentDocDataId) {
+            this.getDocDetailById(currentDocDataId)
+          } else {
+            this.getDocDetailById(this.$route.params.docDataId)
+            // this.docData.checknames=this.docData.checknames
+          }
+        }
 
 //      console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
       if(addMoreData.approvalForm){
