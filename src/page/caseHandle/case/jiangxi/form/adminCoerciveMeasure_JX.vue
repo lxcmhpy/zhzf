@@ -409,7 +409,11 @@
         <div class="fullscreen">
           <el-form ref="addResFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
-              <el-table-column prop="resNo" label="序号" align="center"></el-table-column>
+              <el-table-column prop="resNo" label="序号" align="center">
+                 <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="查封、扣押场所、设施、财物名称" align="center">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.resName"></el-input>
