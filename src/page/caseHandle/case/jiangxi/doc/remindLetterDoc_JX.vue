@@ -77,7 +77,7 @@
                 :disabled="fieldDisabled(propertyFeatures['punishContent'])"
               ></el-input>
             </el-form-item>
-          </span>的决定，决定书案号为
+          </span>的决定，决定书编号为
           <span>
             <el-form-item
               prop="caseNmuberCopy"
@@ -92,37 +92,39 @@
           </span>。你（单位）逾期未履行义务，
         </p>
         <p>
-          <el-checkbox v-model="docData.checkLaw1"></el-checkbox>根据《中华人民共和国行政强制法》第三十五条和第五十四条的规定，
+          <input type="checkbox" name="checkLaw" value="6" v-model="docData.checkLaw" @change="checkTrue" />根据《中华人民共和国行政强制法》第三十五条和第五十四条的规定，
         </p>
         <p>
-          <el-checkbox v-model="docData.checkLaw2"></el-checkbox>本机关于
-          <el-form-item
-            prop="decidedTime"
-            class="pdf_datapick"
-            style="width:140px"
-            :rules="fieldRules('decidedTime',propertyFeatures['decidedTime'])"
-          >
-            <el-date-picker
-              v-model="docData.decidedTime"
-              type="date"
-              format="yyyy年MM月dd日"
-              placeholder="    年  月  日"
-              value-format="yyyy-MM-dd"
-              :disabled="fieldDisabled(propertyFeatures['decidedTime'])"
-            ></el-date-picker>
-          </el-form-item>对你（单位）作出了《代履行决定书》，决定书编号为
-          <el-form-item
-            prop="caseNumberCopy1"
-            class="pdf_datapick"
-            style="width:140px"
-            :rules="fieldRules('caseNumberCopy1',propertyFeatures['caseNumberCopy1'])"
-          >
-            <el-input
-              v-model="docData.caseNmuberCopy1"
-              :maxLength="maxLength"
-              :disabled="fieldDisabled(propertyFeatures['caseNmuberCopy1'])"
-            ></el-input>
-          </el-form-item>，根据《中华人民共和国行政强制法》第五十一条的规定，
+          <input type="checkbox" name="checkLaw" value="7" v-model="docData.checkLaw" @change="checkTrue" />本机关于
+          <span>
+            <el-form-item
+                :prop="lawDisabled?'':'decidedTime'"
+                class="pdf_datapick"
+                style="width:140px"
+                :rules="fieldRules('decidedTime',propertyFeatures['decidedTime'])"
+              >
+                <el-date-picker
+                  v-model="docData.decidedTime"
+                  v-bind:disabled="lawDisabled"
+                  type="date"
+                  format="yyyy年MM月dd日"
+                  placeholder="    年  月  日"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
+              </el-form-item>对你（单位）作出了《代履行决定书》，决定书编号为
+              <el-form-item
+                :prop="lawDisabled?'':'caseNumberCopy1'"
+                class="pdf_datapick"
+                style="width:140px"
+                :rules="fieldRules('caseNumberCopy1',propertyFeatures['caseNumberCopy1'])"
+              >
+                <el-input
+                  v-model="docData.caseNmuberCopy1"
+                  v-bind:disabled="lawDisabled"
+                  :maxLength="maxLength"
+                ></el-input>
+              </el-form-item>，根据《中华人民共和国行政强制法》第五十一条的规定，
+          </span>代履行。
         </p>
         <p>现就有关事项催告如下，请你（单位）按要求履行：</p>
         <p>
@@ -189,34 +191,19 @@
             </el-form-item>
           </span>
         </p>
-        <p>
-          5.其他事项：
-          <span>
-            <el-form-item
-              prop="otherMatter"
-              class="width476"
-              :rules="fieldRules('otherMatter',propertyFeatures['otherMatter'])"
-            >
-              <el-input
-                v-model="docData.otherMatter"
-                :maxLength="maxLength"
-                :disabled="fieldDisabled(propertyFeatures['otherMatter'])"
-              ></el-input>
-            </el-form-item>
-          </span>
-        </p>
+        <p>5.其他事项：</p>
         <p>你（单位）逾期仍不履行的，本机关将依法采取以下措施：</p>
         <p>
-          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click" />1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。
+          <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click" />1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click" />2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。
+          <input type="checkbox" name="measure" value="2" v-model="docData.checknames" @change="click" />2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="5" v-model="checknames" @change="click" />3.申请人民法院强制执行。
+          <input type="checkbox" name="measure" value="3" v-model="docData.checknames" @change="click" />3.申请人民法院强制执行。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="6" v-model="checknames" @change="click" />4.依法代履行或者委托第三人：
+          <input type="checkbox" name="measure" value="4" v-model="docData.checknames" @change="click" />4.依法代履行或者委托第三人：
           <span>
             <el-form-item :prop="wtInfoDisabled?'':'wtInfo'">
               <el-input
@@ -228,7 +215,7 @@
           </span>代履行。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="7" v-model="checknames" @change="click" />5.其他强制执行方式：
+          <input type="checkbox" name="measure" value="5" v-model="docData.checknames" @change="click" />5.其他强制执行方式：
           <span>
             <el-form-item :prop="otherRemindWayDisabled?'':'otherRemindWay'">
               <el-input
@@ -274,7 +261,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import iLocalStroage from "@/common/js/localStroage"; 
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: {
     casePageFloatBtns
@@ -290,8 +277,7 @@ export default {
         caseName: "",
         illegalLaw: "",
         serviceTime: "",
-        checkLaw1: true,
-        checkLaw2: true,
+        checkLaw: [],
         decidedTime: "",
         caseNumberCopy: "",
         punishContent: "",
@@ -300,10 +286,10 @@ export default {
         fulfillLimit: "",
         fulfillWay: "",
         fulfillDemand: "",
-        otherMatter: "",
         wtInfo: "",
         otherRemindWay: "",
-        makeDate: ""
+        makeDate: "",
+        checknames: [],
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -314,9 +300,8 @@ export default {
         status: "", //提交状态
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
-      name: "",
-      inputInfo: "",
-      inputInfos: "",
+      decidedTime: "",
+      caseNmuberCopy1: "",
       illegalFactsEvidence: "",
       value1: "",
       rules: {
@@ -342,8 +327,11 @@ export default {
         fulfillDemand: [
           { required: true, message: "请输入履行要求", trigger: "blur" }
         ],
-        otherMatter: [
-          { required: true, message: "请输入其他事项", trigger: "blur" }
+        decidedTime: [
+          { required: true, message: "请输入代履行人", trigger: "change" }
+        ],
+        caseNumberCopy: [
+          { required: true, message: "请输入代履行人", trigger: "blur" }
         ],
         wtInfo: [
           { required: true, message: "请输入代履行人", trigger: "blur" }
@@ -360,7 +348,7 @@ export default {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: "remindLetter_print"
       },
-      checknames: [],
+      lawDisabled: true,
       wtInfoDisabled: true,
       otherRemindWayDisabled: true,
       propertyFeatures: "",
@@ -368,7 +356,7 @@ export default {
       needDealData: true
     };
   },
- methods: {
+  methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() { 
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -383,15 +371,15 @@ export default {
         console.log('多份文书', this.$route.params.handelType)
         this.com_getCaseBasicInfo(data.caseId, data.docId);
         //文书名称
-        this.caseDocDataForm.note = '催告书 (第'+addMoreData.addNum+'份)';
+        this.caseDocDataForm.note = "催告书 (第" + addMoreData.addNum + "份)";
       } else {
-        console.log('修改')
+        console.log("修改");
         // this.getDocDetailById(this.$route.params.docDataId)
         let currentDocDataId = iLocalStroage.get("currentDocDataId");
-        if(currentDocDataId){
-          this.getDocDetailById(currentDocDataId)
-        }else{
-          this.getDocDetailById(this.$route.params.docDataId)
+        if (currentDocDataId) {
+          this.getDocDetailById(currentDocDataId);
+        } else {
+          this.getDocDetailById(this.$route.params.docDataId);
         }
       }
     },
@@ -408,7 +396,6 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      this.docData.checknames = this.checknames;
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -428,16 +415,28 @@ export default {
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
+    checkTrue() {
+      this.docData.decidedTime = "";
+      this.docData.caseNmuberCopy1 = "";
+      if ( this.docData.checkLaw.length > 1) {
+         this.docData.checkLaw.shift();
+      }
+      if ( this.docData.checkLaw == "6") {
+        this.lawDisabled = true;
+      }else{
+        this.lawDisabled = false;
+      }
+    },
     click() {
       this.docData.wtInfo = "";
       this.docData.otherRemindWay = "";
-      if (this.checknames.length > 1) {
-        this.checknames.shift();
+      if ( this.docData.checknames.length > 1) {
+         this.docData.checknames.shift();
       }
-      if (this.checknames == "6") {
+      if ( this.docData.checknames == "4") {
         this.wtInfoDisabled = false;
         this.otherRemindWayDisabled = true;
-      } else if (this.checknames == "7") {
+      } else if ( this.docData.checknames == "5") {
         this.wtInfoDisabled = true;
         this.otherRemindWayDisabled = false;
       } else {
@@ -445,9 +444,15 @@ export default {
         this.otherRemindWayDisabled = true;
       }
     },
-    getDataAfter() {
-      this.docData.caseNmuberCopy = this.docData.caseNumber;
-    }
+    getDataAfter(){
+      if(this.docData.decidedTime != ""){
+      this.decidedTime = this.docData.decidedTime;
+      }
+      if(this.docData.caseNmuberCopy1 != ""){
+      this.caseNmuberCopy1 = this.docData.caseNmuberCopy1;
+      }
+      
+    },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();

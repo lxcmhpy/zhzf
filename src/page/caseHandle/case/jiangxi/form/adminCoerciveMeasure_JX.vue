@@ -515,12 +515,6 @@ export default {
       }
       callback();
     };
-    var validateEvidencLength = (rule, value, callback) => {
-      if (this.formData.resList.length == 0) {
-        return callback(new Error("至少填写一个物品"));
-      }
-      callback();
-    };
     return {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
@@ -618,9 +612,6 @@ export default {
         ],
         socialCreditCode: [
           { required: true, message: "统一社会信用代码", trigger: "blur" }
-        ],
-        resLength: [
-            {validator: validateEvidencLength, trigger: "blur"}
         ],
         caseSituation: [
           { required: true, message: "案件基本情况不能为空", trigger: "blur" }

@@ -230,7 +230,7 @@
                     <el-checkbox label="4">根据《中华人民共和国行政强制法》第四十二条条第二款，恢复执行</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
-              </div>
+              </div>  
               <div class="pdf_seal">
                 <p>签名：{{docData.approvePeo}}</p>
                 <p>

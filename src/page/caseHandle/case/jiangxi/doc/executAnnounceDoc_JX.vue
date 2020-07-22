@@ -21,7 +21,7 @@
             <el-form-item prop="punishContent" :rules="fieldRules('punishContent',propertyFeatures['punishContent'])">
               <el-input v-model="docData.punishContent" type="textarea" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['punishContent'])"></el-input>
             </el-form-item>
-          </span>的决定，决定书案号为
+          </span>的决定，决定书编号为
           <span>
             <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
               <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength'  type="textarea" placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
