@@ -312,6 +312,7 @@ export const mixinGetCaseApiList = {
             });
             //多份文书查询信息需要用到id，先把id保存起来
             iLocalStroage.set("currentDocDataId", res.data.id);
+            debugger;
             this.reload();
           },
           err => {
