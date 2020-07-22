@@ -91,8 +91,8 @@
 
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
-                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)" @visible-change='changeDisabledStatus(field)' ref="test" :id='field.info?field.info.field:""'>
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
+                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)"  ref="test" :id='field.info?field.info.field:""'>
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title+commonField.fieldDisabled" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
                           </el-select>
 
                         </el-form-item>
@@ -928,7 +928,7 @@ export default {
           this.$set(field, 'title', info)
         }
       }
-
+// this.changeDisabledStatus(field)
 
       // console.log('change！！！！！this.commonFieldList', this.commonFieldList)
       // console.log('find',this.commonFieldList.find(field))
@@ -943,39 +943,56 @@ export default {
 
     },
     changeDisabledStatus(field) {
-      console.log('121212dfadf')
+      console.log('执行')
       // 选中后禁用
       // 判断之前有没有选过
-      // this.$nextTick(() => {
-      // console.log(document.getElementsByName('filedNameFlag')[0].value)
-      // let selectedList = document.getElementsByName('filedNameFlag')
-      // console.log('selectedList', selectedList)
-      // let selectedListField = []
-      // // 存储已选择id
-      // selectedList.forEach(element => {
-      //   console.log('对比的element', element.id)
-      //   if (element.id) {
-      //     selectedListField.push(element.id)
-      //   }
-      // });
-      // // console.log('selectedListField', selectedListField)
+      this.$nextTick(() => {
+        console.log(document.getElementsByName('filedNameFlag')[0].id)
+        console.log(document.getElementsByName('filedNameFlag')[0].value)
+        // console.log(document.getElementsByName('filedNameFlag'))
+        let selectedList = document.getElementsByName('filedNameFlag')
+        console.log('selectedList', selectedList)
+        // let selectedListField = []
+        // // 存储已选择id
+        let j = 1
+        let i = 1
+        this.commonFieldList.forEach(item => {
+          item.fieldDisabled = false
+        });
+        selectedList.forEach(element => {
+          console.log('对比的element', j, element.id)
+          j++
+          // selectedListField.push(element.id)
+          this.commonFieldList.forEach(item => {
+            // item.fieldDisabled = false
+            if (element.id == item.field) {
+              console.log('item', i, item.field)
+              i++
+              // item.fieldDisabled = true
+              this.$set(item, 'fieldDisabled', true)
+              console.log(item)
+              // debugger
+            }
+          });
+        });
+        // // console.log('selectedListField', selectedListField)
 
-      // // 比对,置为不可选
-      // this.commonFieldList.forEach(element => {
-      //   element.fieldDisabled = false
-      // });
-      // selectedListField.forEach(item => {
-      //   this.commonFieldList.forEach(element => {
-      //     if (element.field == item) {
-      //       console.log('elment.title', element.title)
-      //       // element.fieldDisabled = true
-      //       this.$set(element, 'fieldDisabled', true)
-      //     }
-      //   });
-      //   console.log('this.commonFieldList', this.commonFieldList)
-      // });
+        // // 比对,置为不可选
+        // this.commonFieldList.forEach(element => {
+        //   element.fieldDisabled = false
+        // });
+        // selectedListField.forEach(item => {
+        //   this.commonFieldList.forEach(element => {
+        //     if (element.field == item) {
+        //       console.log('elment.title', element.title)
+        //       // element.fieldDisabled = true
+        //       this.$set(element, 'fieldDisabled', true)
+        //     }
+        //   });
+        //   console.log('this.commonFieldList', this.commonFieldList)
+        // });
 
-      // });
+      });
     },
     handleClose() {
       // debugger
