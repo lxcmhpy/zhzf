@@ -92,7 +92,7 @@
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
                           <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)"  ref="test" :id='field.info?field.info.field:""'>
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title+commonField.fieldDisabled" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
+                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
                           </el-select>
 
                         </el-form-item>
