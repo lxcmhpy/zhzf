@@ -184,7 +184,7 @@
                   <span v-if="scope.row.status == '1' || scope.row.status == '2'" class="tableHandelcase">
                     <!-- 已完成 -->
                     <i class="iconfont law-eye" @click="viewDocPdf(scope.row)"></i>
-                    <i class="iconfont law-print"></i>
+                    <!-- <i class="iconfont law-print"></i> -->
                   </span>
                   <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->

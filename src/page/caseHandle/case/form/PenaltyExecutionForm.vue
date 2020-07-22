@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box PenaltyExecutionForm">
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
@@ -73,7 +73,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
+                  <el-input type="number" v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
@@ -917,4 +917,13 @@ export default {
 
 <style lang="scss" src="@/assets/css/documentForm.scss" scoped>
 /* @import "@/assets/css/documentForm.scss"; */
+</style>
+<style>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
 </style>
