@@ -38,7 +38,6 @@
         </p>
 
         <p>
-        {{docData.checknames}}
           <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click">1.现因
           <span>
             <el-form-item :prop="disabledOne ? 'placeholder':'stopReason'" class="width120">
@@ -109,9 +108,7 @@
           <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
         </div>
       </el-form>
-      <input type="checkbox" name="haha" value="1" v-model="a.try">
-      <input type="checkbox" name="haha" value="2" v-model="a.try">
-
+     
     </div>
     <!-- 悬浮按钮 -->
     <!-- <div class="float-btns">
@@ -335,7 +332,7 @@ export default {
       //有多份文书时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
       
-      if (addMoreData.handelType == 'isAddMore') {
+      if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
         console.log('多份文书', this.$route.params.handelType)
         this.com_getCaseBasicInfo(data.caseId, data.docId);
         if (addMoreData.approvalForm.executeHandle == 0) {

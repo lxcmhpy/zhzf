@@ -425,6 +425,7 @@
           this.docData.checknames.shift();
         }
         debugger
+        console.log('this.docData.checknames',this.docData.checknames)
         if (this.docData.checknames == '1') {
           this.disabledOne = false;
           this.disabledTwo = true;
@@ -489,7 +490,6 @@
   //        console.log('拒绝')
           this.docData.checknames.push("3")
           this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
-          return;
         }else {
           if (addMoreData.approvalForm.executeType ===  1) {
             // 分期
