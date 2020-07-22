@@ -604,10 +604,11 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      iLocalStroage.removeItem("currentDocDataId");
       if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note == '') {
         // console.log("弹窗")
         // this.$refs.addDialogRef.showModal(row, this.isSaveLink);
-        iLocalStroage.removeItem("currentDocDataId");
+        // iLocalStroage.removeItem("currentDocDataId");
         this.$refs.addDialogRef.showModal(
           row,
           this.caseLinkDataForm.caseLinktypeId,
@@ -617,8 +618,6 @@ export default {
       else {
         this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       }
-
-
 
     },
     //清空文书

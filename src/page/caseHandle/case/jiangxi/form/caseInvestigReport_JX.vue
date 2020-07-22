@@ -82,7 +82,6 @@
                 <el-input
                   v-model="formData.partyIdNo"
                   v-bind:class="{ over_flow:formData.partyIdNo && formData.partyIdNo.length>14?true:false }"
-                  maxlength="3"
                   placeholder="\"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>

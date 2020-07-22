@@ -98,13 +98,13 @@
               class="pdf_datapick"
               :rules="fieldRules('delayDate',propertyFeatures['delayDate'])"
             >
-              <el-date-picker
+                <el-date-picker
+                :disabled="fieldDisabled(propertyFeatures['delayDate'])"
                 v-model="docData.delayDate"
                 type="date"
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
                 value-format="yyyy-MM-dd"
-                :disabled="fieldDisabled(propertyFeatures['delayDate'])"
               ></el-date-picker>
             </el-form-item>
           </span>。
@@ -266,9 +266,13 @@ export default {
       this.docData.endDate = new Date(this.docData.delayDate).format(
         "yyyy-MM-dd"
       );
-      this.docData.delayDate = new Date(
-        new Date(this.docData.delayDate).getTime() + 30 * 24 * 60 * 60 * 1000
-      ).format("yyyy-MM-dd");
+      if(this.docData.delayDate){
+        this.docData.delayDate = new Date(
+        new Date(this.docData.delayDate).getTime() + 30 * 24 * 60 * 60 * 1000).format("yyyy-MM-dd");
+      }else{
+        this.docData.delayDate =null;
+      }
+
     }
   },
   mounted() {
