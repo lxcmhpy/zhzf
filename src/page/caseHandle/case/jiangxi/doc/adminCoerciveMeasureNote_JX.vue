@@ -9,7 +9,7 @@
           :inline="true"
           :model="docData"
         >
-          <div class="doc_topic height76">行政强制措施现场笔录</div>
+          <div class="doc_topic">行政强制措施现场笔录</div>
           <!-- <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交强现录〔{{docData.caseNumber.substring(8,13)}}〕号</div> -->
           <div class="doc_number">案号：{{docData.caseNumber}}</div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
@@ -253,7 +253,7 @@
                     </el-select>
                   </el-form-item>
                 </span>
-                <br>的强制措施，期限为
+                <br>的行政强制措施，期限为
                  <span>
                   <el-form-item prop="measureStartDate" :rules="fieldRules('measureStartDate',propertyFeatures['measureStartDate'])" style="width: 150px" class="pdf_datapick">
                     <el-date-picker v-model="docData.measureStartDate" @change="startTime" style="width: 150px"
@@ -287,21 +287,23 @@
                 </p>
                 <p>
                     &nbsp;&nbsp;根据《中华人民共和国行政强制法》第十八条第（六）项的规定，你（单<br>
-                    位）如对该行政强制措施有异议，可提出陈述申辩，我们将依法予以核实。<br>你是否需要陈述申辩：
+                    位）如对该行政强制措施有异议，可提出陈述申辩，我们将依法予以核实。<br>
                 </p>
+                <p style="text-align-last: left;">你是否需要陈述申辩：</p>
                 <div>
-                   <el-form-item prop="defendState" :rules="fieldRules('defendState',propertyFeatures['defendState'])">
+                   &nbsp;&nbsp;<el-form-item prop="defendState" :rules="fieldRules('defendState',propertyFeatures['defendState'])">
                     <el-checkbox-group v-model="docData.defendState" :max="1" :disabled="fieldDisabled(propertyFeatures['defendState'])">
-                        <el-checkbox label="0">不需要</el-checkbox>
-                        <el-checkbox label="1">需要
-                            <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])" id="defendReasonItem" style="line-height:17px">
-                                <el-input type='textarea' v-model="docData.defendReason"
-                                        :autosize="{ minRows: 1, maxRows: 3}" :maxLength='50'
-                                        :disabled="fieldDisabled(propertyFeatures['defendReason'])"></el-input>
-                            </el-form-item>
-                        </el-checkbox>
+                        <el-row><el-checkbox label="0">不需要</el-checkbox></el-row>
+                        <el-row style="width:90%"><el-checkbox label="1">需要&nbsp;</el-checkbox>
+                          <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])" id="defendReasonItem" style="line-height:17px;width:90%">
+                              <el-input type='textarea' v-model="docData.defendReason"
+                                      :autosize="{ minRows: 1, maxRows: 3}" :maxLength='50'
+                                      :disabled="fieldDisabled(propertyFeatures['defendReason']) || docData.defendState=='0'"></el-input>
+                          </el-form-item>
+                        </el-row>
                     </el-checkbox-group>
-                   </el-form-item> 
+                   </el-form-item>
+                   
                 </div>
                 <p>
                     <el-form-item prop="readState" :rules="fieldRules('readState',propertyFeatures['readState'])">
@@ -922,7 +924,7 @@ export default {
       }
     }
     #defendReasonItem{
-      line-height: 17px;height:17px;
+      line-height: 17px;
       .el-form-item__content{
         height: 100%;
       }
