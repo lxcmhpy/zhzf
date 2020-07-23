@@ -91,7 +91,7 @@
 
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
-                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)"  ref="test" :id='field.info?field.info.field:""'>
+                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)" ref="test" :id='field.info?field.info.field:""'>
                             <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
                           </el-select>
 
@@ -177,23 +177,23 @@
           </div>
           <!-- 拓展功能 -->
           <p class="border-title card-title-margin">拓展功能</p>
-          <el-form-item label="文书填报" class="modle-radio" prop="documentFill">
+          <el-form-item label="文书填报" class="modle-radio chose-mine" prop="documentFill">
             <el-radio-group v-model="formData.documentFill" @change="changeFile()">
-              <el-radio label="是" value='是' style="width:5%"></el-radio>
+              <el-radio label="是" value='是' style="width:5%" @click.native.prevent="clickitem('是')"></el-radio>
               <el-button type="primary" style="width:15%;margin-right:20%" @click="changeFile" :disabled="formData.documentFill=='是'?false:true">选择文书</el-button>
-              <el-radio label="否" value='否'></el-radio>
+              <el-radio label="否" value='否' @click.native.prevent="clickitem('否')"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="相关记录" class="modle-radio" prop="releventRecords">
+          <el-form-item label="相关记录" class="modle-radio chose-mine" prop="releventRecords">
             <el-radio-group v-model="formData.releventRecords">
-              <el-radio label="当事人" value='当事人'></el-radio>
-              <el-radio label="车辆" value='车辆'></el-radio>
+              <el-radio label="当事人" value='当事人' @click.native.prevent="clickitem2('当事人')"></el-radio>
+              <el-radio label="车辆" value='车辆' @click.native.prevent="clickitem2('车辆')"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="操作记录" class="modle-radio" prop="operateRecords">
+          <el-form-item label="操作记录" class="modle-radio chose-mine" prop="operateRecords">
             <el-radio-group v-model="formData.operateRecords">
-              <el-radio label="是" value='是'></el-radio>
-              <el-radio label="否" value='否'></el-radio>
+              <el-radio label="是" value='是' @click.native.prevent="clickitem3('是')"></el-radio>
+              <el-radio label="否" value='否' @click.native.prevent="clickitem3('否')"></el-radio>
             </el-radio-group>
           </el-form-item>
 
@@ -928,7 +928,7 @@ export default {
           this.$set(field, 'title', info)
         }
       }
-// this.changeDisabledStatus(field)
+      // this.changeDisabledStatus(field)
 
       // console.log('change！！！！！this.commonFieldList', this.commonFieldList)
       // console.log('find',this.commonFieldList.find(field))
@@ -1112,8 +1112,18 @@ export default {
         });
       }
     },
-    changeAdmin(){
+    changeAdmin() {
       this.$forceUpdate()
+    },
+    // 清除选择
+    clickitem(e) {
+      e === this.formData.documentFill ? this.formData.documentFill = '' : this.formData.documentFill = e
+    },
+    clickitem3(e) {
+      e === this.formData.operateRecords ? this.formData.operateRecords = '' : this.formData.operateRecords = e
+    },
+    clickitem2(e) {
+      e === this.formData.releventRecords ? this.formData.releventRecords = '' : this.formData.releventRecords = e
     }
   },
   mounted() {
