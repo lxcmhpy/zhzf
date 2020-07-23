@@ -226,7 +226,7 @@
               </div>
               <div class="el-form-item__content">
                 <el-radio label="机构内使用"></el-radio>
-                <el-form-item v-if="formData.scopeOfUse=='机构内使用'" class="lawPersonBox card-user-box" :prop="formData.scopeOfUse=='机构内使用'?'templateOrgan':'pacholor'">
+                <el-form-item v-if="formData.scopeOfUse=='机构内使用'" class="lawPersonBox card-user-box organClass" :prop="formData.scopeOfUse=='机构内使用'?'templateOrgan':'pacholor'">
                   <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
                     <div class="departOrUserTree" style="width:600px">
                       <div class="treeBox">
@@ -240,7 +240,7 @@
                         </el-tree>
                       </div>
                     </div>
-                    <el-input slot="reference" v-model="formData.templateOrgan" placeholder="请输入选项" clearable style="width:100%">
+                    <el-input slot="reference" v-model="formData.templateOrgan" placeholder="请选择机构" :disabled="true" style="width:100%">
                     </el-input>
                   </el-popover>
                 </el-form-item>
@@ -455,24 +455,23 @@ export default {
   },
   methods: {
     showModal(editdata) {
-      if (editdata) {
-        this.editId = editdata.id;
-        this.findDataByld()
-        this.drawerTitle = '修改模板'
-        this.globalCont = editdata.count + 1;
-      } else {
-        this.$nextTick(() => {
-          this.getFileList()
-        });
-      }
-      this.findCommonGroupField()
-      this.findCommonField()
-      this.getEnforceLawType();
-      this.setLawPersonCurrentP();
-      this.getAllOrgan('root');
-      this.getPerson()
+      // if (editdata) {
+      //   this.editId = editdata.id;
+      //   this.findDataByld()
+      //   this.drawerTitle = '修改模板'
+      //   this.globalCont = editdata.count + 1;
+      // } else {
+      //   this.$nextTick(() => {
+      //     this.getFileList()
+      //   });
+      // }
+      // this.findCommonGroupField()
+      // this.findCommonField()
+      // this.getEnforceLawType();
+      // this.setLawPersonCurrentP();
+      // this.getAllOrgan('root');
+      // this.getPerson()
       this.newModleTable = true;
-
     },
     // 根据id查找
     findDataByld() {
@@ -1124,7 +1123,7 @@ export default {
     },
     clickitem2(e) {
       e === this.formData.releventRecords ? this.formData.releventRecords = '' : this.formData.releventRecords = e
-    }
+    },
   },
   mounted() {
   }
@@ -1132,3 +1131,11 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
+<style lang="scss" >
+.organClass {
+.el-input.is-disabled .el-input__inner {
+    background-color: #fff !important;
+    cursor: default !important;
+  }
+}
+</style>
