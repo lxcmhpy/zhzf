@@ -281,8 +281,10 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
-import {  saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
-  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi, getDocumentNameList} from "@/api/Record";
+import {
+  saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
+  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi, getDocumentNameList
+} from "@/api/Record";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
@@ -725,26 +727,7 @@ export default {
                 data.templateFieldList = JSON.stringify(data.templateFieldList)
                 console.log('提交的字段', data)
                 // 提醒未添加字段
-                if (this.noticeMsg()) {
-                  saveOrUpdateRecordModleApi(data).then(
-                    res => {
-                      if (res.code == 200) {
-                        this.$message({
-                          type: "success",
-                          message: res.msg
-                        });
-                        this.$emit("getAddModle", 'sucess');
-                        this.resetForm('formData')
-                        this.newModleTable = false;
-                      } else {
-                        this.$message.error(res.msg);
-                      }
-                    },
-                    error => {
-
-                    })
-                }
-
+                this.noticeMsg(data)
               })
 
             }
@@ -1049,33 +1032,49 @@ export default {
       });
       console.log('this.multipleSelection', this.multipleSelection)
     },
-    noticeMsg() {
-      console.log('1', this.vehicleShipIdFlag)
-      console.log('2', this.partyFlag)
-      console.log('2', this.formData.releventRecords)
+    noticeMsg(data) {
       if (this.formData.releventRecords == '当事人' && !this.partyFlag) {
         // 当事人字段没有
-        this.$confirm('当前模板没有当事人字段，是否继续发布？', "模板发布", {
-          confirmButtonText: "确认",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          return true
-        })
+        this.$alert('当前模板没有当事人字段，是否继续发布？', "模板发布", {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.noticeMethod(data)
+          }
+        });
       } else {
         if (this.formData.releventRecords == '车辆' && !this.vehicleShipIdFlag) {
           // 车辆字段没有
-          this.$confirm('当前模板没有车辆字段，是否继续发布？', "模板发布", {
-            confirmButtonText: "确认",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            return true
-          })
+          this.$alert('当前模板没有车辆字段，是否继续发布？', "模板发布", {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.noticeMethod(data)
+            }
+          });
         } else {
-          return true;
+          this.noticeMethod(data)
         }
       }
+    },
+    noticeMethod(data) {
+      saveOrUpdateRecordModleApi(data).then(
+        res => {
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
+            this.$emit("getAddModle", 'sucess');
+            this.resetForm('formData')
+            this.newModleTable = false;
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
+
+
     },
     // 获取文书名称列表
     getFileList() {
@@ -1133,7 +1132,7 @@ export default {
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
 <style lang="scss" >
 .organClass {
-.el-input.is-disabled .el-input__inner {
+  .el-input.is-disabled .el-input__inner {
     background-color: #fff !important;
     cursor: default !important;
   }
