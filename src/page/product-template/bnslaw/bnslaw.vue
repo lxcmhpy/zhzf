@@ -41,12 +41,17 @@
             </template>
           </el-table-column>
           <!-- <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column> -->
-          <el-table-column label="操作" align="center">
+          <el-table-column label="操作" align="center" width='280px'>
             <template slot-scope="scope">
               <el-button type="text" @click="getBtnlawVal(scope.row)">法条管理</el-button>
               <el-button type="text" @click="editBtnlaw(scope.row)">编辑</el-button>
               <el-button type="text" @click="getBtnlawDentails(scope.row)">详情</el-button>
               <el-button type="text" @click="deleteBtnlaw(scope.row.id)">删除</el-button>
+              <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadBtnlawVal" multiple :limit="3">
+                <el-button type="text" @click="curRowIndex=scope.row">上传</el-button>
+              </el-upload>
+              <el-button type="text" @click="previewBtnlaw(scope.row.id)">预览</el-button>
+
             </template>
           </el-table-column>
         </el-table>
@@ -67,10 +72,7 @@
           </el-form-item>
           <el-form-item label="法规效力" prop="drawerId">
             <el-select v-model="addBtnlawForm.drawerId" placeholder="请选择">
-              <el-option v-for="item in lawLimitList" 
-              :key="item.id" 
-              :label="item.name" 
-              :value="item.id"></el-option>
+              <el-option v-for="item in lawLimitList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="网站链接" prop="webLink">
@@ -78,10 +80,7 @@
           </el-form-item>
           <el-form-item label="行业类型" prop="industryTypeId">
             <el-select v-model="addBtnlawForm.industryTypeId" placeholder="请选择">
-              <el-option v-for="item in lawCateList" 
-              :key="item.cateId" 
-              :label="item.cateName" 
-              :value="item.cateId"></el-option>
+              <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateId"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="发布时间" prop="dtmDate">
@@ -99,7 +98,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="题注" prop="strNote">
-            <el-input  type="textarea" :rows="2" v-model="addBtnlawForm.strNote"></el-input>
+            <el-input type="textarea" :rows="2" v-model="addBtnlawForm.strNote"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -145,16 +144,23 @@
           <el-button @click="dentailVisible = false">关闭</el-button>
         </span>
       </el-dialog>
-
+      <el-dialog title="预览" :visible.sync="previewVisible" @close="previewVisible = false" :close-on-click-modal="false" width='790'>
+        <div v-if="pdfUrl==''" style="text-align:center">暂未上传</div>
+        <iframe :src="pdfUrl" frameborder="0" style="width:790px;height:1119px"></iframe>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="previewVisible = false">关闭</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
 <script>
-
+import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 import {
-  getBnsLawListApi, addBnsLawApi, deleteBnslawApi,getDictListDetailByNameApi,getBnsLawByIdApi
+  getBnsLawListApi, addBnsLawApi, deleteBnslawApi, getDictListDetailByNameApi, getBnsLawByIdApi
 } from "@/api/system";
+import { uploadCommon, getFile } from "@/api/upload.js";
 export default {
   data() {
     return {
@@ -172,7 +178,8 @@ export default {
       dialogTitle: "添加法规",
       visible: false,
       dentailVisible: false,
-      isAdd:false,
+      previewVisible: false,
+      isAdd: false,
       // 添加、修改
       addBtnlawForm: {
         strName: '',
@@ -185,8 +192,8 @@ export default {
         shiDate: '',
         strNote: '',
         status: 0,
-        drawerId:'',
-        industryTypeId:'',
+        drawerId: '',
+        industryTypeId: '',
 
       },
       lawCateList: [], //业务领域列表
@@ -197,7 +204,9 @@ export default {
         strOrgan: [{ required: true, message: "发布机关必须填写", trigger: "blur" }],
         drawerId: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
         industryTypeId: [{ required: true, message: "行业类型必须填写", trigger: "blur" }],
-      }
+      },
+      curRowIndex: '',
+      pdfUrl: ''
     };
   },
   inject: ["reload"],
@@ -209,8 +218,8 @@ export default {
         size: this.pageSize,
         strName: this.bnslawSearchForm.strName,
         strNumber: this.bnslawSearchForm.strNumber,
-        startTime: this.bnslawSearchForm.dtmDate? this.bnslawSearchForm.dtmDate[0] : '',
-        endTime: this.bnslawSearchForm.dtmDate? this.bnslawSearchForm.dtmDate[1] : '',
+        startTime: this.bnslawSearchForm.dtmDate ? this.bnslawSearchForm.dtmDate[0] : '',
+        endTime: this.bnslawSearchForm.dtmDate ? this.bnslawSearchForm.dtmDate[1] : '',
       };
       let _this = this;
 
@@ -248,7 +257,7 @@ export default {
       this.$store.commit("SET_BTNLAW_ID", row.id);
       this.$router.push({
         name: 'lawRegulations',
-        params: {strName: row.strName}
+        params: { strName: row.strName }
       });
     },
     //删除法规
@@ -286,36 +295,36 @@ export default {
     editBtnlaw(row) {
       this.visible = true;
       let data = {
-        id :row.id
+        id: row.id
       };
-      this.isAdd=true;
+      this.isAdd = true;
       getBnsLawByIdApi(data).then(
         res => {
-          console.log("bnslaw",res);
+          console.log("bnslaw", res);
           this.addBtnlawForm = res.data;
         });
-        err => {
-          console.log(err);
-        };
+      err => {
+        console.log(err);
+      };
     },
-   closeTitle(){
+    closeTitle() {
       this.visible = false;
       this.$refs["addBtnlawForm"].resetFields();
-   },
-   selectDrawer(vId){ 
-        let obj = {};
-        obj = this.lawLimitList.find((item)=>{ 
-            return item.id === vId;
-        });
-        return obj.name;
-     },
-    selectIndustry(vId){ 
-        let obj = {};
-        obj = this.lawCateList.find((item)=>{ 
-            return item.cateId === vId;
-        });
-        return obj.cateName;
-     },
+    },
+    selectDrawer(vId) {
+      let obj = {};
+      obj = this.lawLimitList.find((item) => {
+        return item.id === vId;
+      });
+      return obj.name;
+    },
+    selectIndustry(vId) {
+      let obj = {};
+      obj = this.lawCateList.find((item) => {
+        return item.cateId === vId;
+      });
+      return obj.cateName;
+    },
     //添加法规
     addBtnlaw() {
       this.visible = true
@@ -323,15 +332,15 @@ export default {
     addEditbtnlaw() {
       this.$refs["addBtnlawForm"].validate(valid => {
         if (valid) {
-          this.addBtnlawForm.drawerName =this.selectDrawer(this.addBtnlawForm.drawerId);
-          this.addBtnlawForm.industryType =this.selectIndustry(this.addBtnlawForm.industryTypeId);
+          this.addBtnlawForm.drawerName = this.selectDrawer(this.addBtnlawForm.drawerId);
+          this.addBtnlawForm.industryType = this.selectIndustry(this.addBtnlawForm.industryTypeId);
           let data = this.addBtnlawForm;
           let _this = this;
           addBnsLawApi(data).then(
             res => {
               console.log("添加法规", res);
               if (res.code == '200') {
-                this.$message({ message: '添加成功',type: 'success'});
+                this.$message({ message: '添加成功', type: 'success' });
                 this.visible = false;
                 this.getBtnlawList();
               } else {
@@ -345,7 +354,7 @@ export default {
           );
         }
       })
-      
+
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -399,19 +408,71 @@ export default {
     getlawCateList() {
       this.$store.dispatch("getEnforceLawType", "1").then(
         res => {
-        console.log('getEnforceLawType',res)
+          console.log('getEnforceLawType', res)
           this.lawCateList = res.data;
         },
         err => {
           console.log(err);
         }
       );
-       getDictListDetailByNameApi('法规效力').then(res => {
-         console.log('法规效力',res)
-          this.lawLimitList = res.data;
-        }, err => {
-          console.log(err);
-        })
+      getDictListDetailByNameApi('法规效力').then(res => {
+        console.log('法规效力', res)
+        this.lawLimitList = res.data;
+      }, err => {
+        console.log(err);
+      })
+    },
+    uploadBtnlawVal(param) {
+      console.log('选中的信息', this.curRowIndex)
+      let data = {
+        caseId: this.curRowIndex.id,
+        docId: this.curRowIndex.id
+      }
+      getFile(data).then(
+        res => {
+          let id = res.data.length > 0?res.data[0].id:''
+          var fd = new FormData()
+          fd.append("file", param.file);
+          fd.append("category", '法规法条');
+          fd.append("fileName", param.file.name);
+          fd.append("id", id);
+          fd.append('caseId', this.curRowIndex.id)//传记录id
+          fd.append('docId', this.curRowIndex.id)//传记录id
+          uploadCommon(fd).then(
+            // upload(fd).then(
+            res => {
+              console.log(res);
+            },
+            error => {
+              console.log(error)
+            }
+          );
+        },
+        error => {
+          console.log(error)
+        }
+      );
+      console.log('选中的pdfUrl', this.pdfUrl)
+
+
+    },
+    previewBtnlaw(id) {
+      this.pdfUrl =''
+      this.previewVisible = true;
+      let data = {
+        caseId: id,
+        docId: id
+      }
+      getFile(data).then(
+        res => {
+          if (res.data.length > 0) {
+            this.pdfUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data[0].storageId
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      );
     }
   },
   created() {

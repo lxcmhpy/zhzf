@@ -391,7 +391,7 @@ import {
           measureEndDate: '',
           reconsiderationOrgan: '',
           lawsuitOrgan: '',
-          makeDate: '2019',
+          makeDate: '',
           resList: [],
           resLength: 0,
           caseNote: ''
