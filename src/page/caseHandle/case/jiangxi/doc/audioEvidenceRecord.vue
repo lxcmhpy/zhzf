@@ -143,11 +143,11 @@
             </tr>
             <tr>
               <td align="left" colspan="2">
-                <p class="p_begin">
+                <p class="p_begin" style="white-space: normal">
                   <span>
                     执法人员：{{docData.staff}}
                     &nbsp;&nbsp;
-                    执法证号：{{docData.certificateId}}；
+                    <span v-for="(item,i) in docData.certificateIds" :key="i">执法证号：{{item}}；</span>
                   </span>
                 </p>
               </td>
@@ -220,6 +220,7 @@ export default {
       docData: {
         staff: "",
         certificateId: "",
+        certificateIds:[],
         pPla: "",
         evidenceData: [
           {
@@ -487,6 +488,11 @@ export default {
   created() {
     this.isOverStatus();
     this.getLawOfficer();
+  },
+  watch:{
+    'docData.certificateId' (val){
+      this.docData.certificateIds = val.split(",");
+    }
   }
 };
 </script>

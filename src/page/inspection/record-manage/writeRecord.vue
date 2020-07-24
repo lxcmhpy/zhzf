@@ -76,8 +76,10 @@ import floatBtns from './writeRecordCompoments/floatBtn.vue'
 import documentSideMenu from './writeRecordCompoments/documentSideMenu.vue'
 import formCreate, { maker } from '@form-create/element-ui'
 import Vue from 'vue'
-import {  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
-  findMyRecordByIdApi, findRecordModleTimeByIdApi, delDocumentModifyOrderById} from "@/api/Record";
+import {
+  saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
+  findMyRecordByIdApi, findRecordModleTimeByIdApi, delDocumentModifyOrderById
+} from "@/api/Record";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 
@@ -269,7 +271,7 @@ export default {
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
       } else {
-        debugger
+        // debugger
         this.editMethod()
       }
     },
@@ -423,6 +425,7 @@ export default {
           // console.log(res)
           if (res.code == 200) {
             this.addOrEiditFlag = 'view'
+            debugger
             this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
             this.$message({
               type: "success",
@@ -437,12 +440,16 @@ export default {
             this.formOrDocData.pageDomId = res.data
 
             // 判断跳转1还是继续作文书2
-            if (fileSaveType == '完成记录表单，立即保存') {
+            if (fileSaveType == 1) {
               this.$store.commit("set_inspection_orderId", res.data);
-              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-              this.$router.push({
-                name: 'inspection_recordList',
-              });
+              this.$nextTick(() => {
+                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                this.$router.push({
+                  name: 'inspection_recordList',
+                });
+              })
+              this.$store.commit("set_inspection_fileEdit", true);
+
             } else {
               this.$store.commit("set_inspection_orderId", res.data);
               this.fileEiditFlag = true
