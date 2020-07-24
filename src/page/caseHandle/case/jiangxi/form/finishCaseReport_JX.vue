@@ -10,7 +10,7 @@
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>案由</td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="9" class="color_DBE4EF">
               <el-form-item
                 prop="caseName"
                 :rules="fieldRules('caseName',propertyFeatures['caseName'])"
@@ -33,7 +33,8 @@
               <p>基本情</p>
               <p class="center_similar">况</p>
             </td>
-            <td>个人</td>
+            <td rowspan="2">个人</td>
+            <td>姓名</td>
             <td class="color_DBE4EF">
               <el-form-item
                 prop="party"
@@ -142,6 +143,7 @@
             </td>
           </tr>
           <tr>
+            <td rowspan="3">单位</td>
             <td>名称</td>
             <td class="color_DBE4EF" colspan="2">
               <el-form-item 
@@ -154,7 +156,7 @@
                   v-bind:class="{ over_flow:formData.partyName.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyName'])"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -171,7 +173,7 @@
                   v-bind:class="{ over_flow:formData.partyManager && formData.partyManager.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyManager'])"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -190,7 +192,7 @@
                   v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
                   placeholder="\"
                 ></el-input>
               </el-form-item>
@@ -233,7 +235,7 @@
               <p class="center_similar">结</p>
               <p class="center_similar">果</p>
             </td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="9" class="color_DBE4EF">
               <el-form-item
                 prop="closeResult"
                 :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
@@ -257,7 +259,7 @@
               <p class="center_similar">情</p>
               <p class="center_similar">况</p>
             </td>
-            <td colspan="8" rowspan="4" class="color_DBE4EF">
+            <td colspan="9" rowspan="4" class="color_DBE4EF">
               <el-form-item prop="closeSituation">
                 <el-input
                   style="float:left;width:70%;margin-top:30px;"
@@ -295,7 +297,7 @@
               <p>人意</p>
               <p>见</p>
             </td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="9" class="color_DBE4EF">
               {{formData.approveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
@@ -312,7 +314,7 @@
               <p>机构</p>
               <p>意见</p>              
             </td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="9" class="color_DBE4EF">
               {{formData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.secondApprovePeo}}</p>
@@ -331,7 +333,7 @@
               <p>人意</p>
               <p>见</p>
             </td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="9" class="color_DBE4EF">
               {{formData.thirdApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{formData.thirdApprovePeo}}</p>
