@@ -30,6 +30,18 @@ export default {
      */
     init() {
       let Map = new HMap(this.$el, {
+        controls: {
+          // 放大缩小控件
+          zoom: false,
+          // 旋转控件
+          rotate: false,
+           // 比例尺控件
+          scaleLine: true,
+          // 平移缩放控件
+          zoomSlider: true,
+          // 比例尺控件
+          scaleLine: true
+        },
         view: {
           center: this.center,
           projection: 'EPSG:3857',
@@ -88,5 +100,20 @@ export default {
 .jk-baseHMap {
   width: 100%;
   height: 100%;
+  .ol-viewport {
+    .ol-overlaycontainer-stopevent {
+      .hmap-zoom-slider {
+        top: unset;
+        bottom: 6em;
+      }
+      .hmap-scale-line-control {
+        .hmap-scale-line-control-inner {
+          border: 2px solid #FFFFFF;
+          border-top: none;
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
 }
 </style>
