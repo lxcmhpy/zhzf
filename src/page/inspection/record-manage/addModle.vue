@@ -455,22 +455,22 @@ export default {
   },
   methods: {
     showModal(editdata) {
-      // if (editdata) {
-      //   this.editId = editdata.id;
-      //   this.findDataByld()
-      //   this.drawerTitle = '修改模板'
-      //   this.globalCont = editdata.count + 1;
-      // } else {
-      //   this.$nextTick(() => {
-      //     this.getFileList()
-      //   });
-      // }
-      // this.findCommonGroupField()
-      // this.findCommonField()
-      // this.getEnforceLawType();
-      // this.setLawPersonCurrentP();
-      // this.getAllOrgan('root');
-      // this.getPerson()
+      if (editdata) {
+        this.editId = editdata.id;
+        this.findDataByld()
+        this.drawerTitle = '修改模板'
+        this.globalCont = editdata.count + 1;
+      } else {
+        this.$nextTick(() => {
+          this.getFileList()
+        });
+      }
+      this.findCommonGroupField()
+      this.findCommonField()
+      this.getEnforceLawType();
+      this.setLawPersonCurrentP();
+      this.getAllOrgan('root');
+      this.getPerson()
       this.newModleTable = true;
     },
     // 根据id查找

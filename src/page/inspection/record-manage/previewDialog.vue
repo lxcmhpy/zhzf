@@ -5,14 +5,11 @@
    </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
-      <el-button type="primary" @click="addSure">确 定</el-button>
+      <el-button type="primary" @click="visible = false">确 定</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
-import {
-  addeLawCognizanceApi
-} from "@/api/system";
 import { mapGetters } from "vuex";
 import preview from "./writeRecord"
 export default {
@@ -53,27 +50,6 @@ export default {
       this.visible = false;
       this.$refs["addTempleteFormRef"].resetFields();
     },
-    addSure() {
-      this.addPageForm.bnslawIdCog = this.btnlawId;
-      console.log('addPageForm', this.addPageForm)
-
-      addeLawCognizanceApi(this.addPageForm).then(
-        res => {
-          console.log("添加法规", res);
-          if (res.code == '200') {
-            this.$message({ message: '添加成功', type: 'success' });
-            this.visible = false;
-          } else {
-            this.$message.error('添加失败');
-            return
-          }
-        },
-        error => {
-          console.log(error)
-        }
-      );
-
-    }
   },
   created() {
   }

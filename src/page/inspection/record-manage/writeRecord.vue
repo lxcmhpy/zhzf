@@ -269,7 +269,7 @@ export default {
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error('无修改权限');
       } else {
-        debugger
+        // debugger
         this.editMethod()
       }
     },
