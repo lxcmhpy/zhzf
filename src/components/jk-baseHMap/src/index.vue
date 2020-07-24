@@ -105,8 +105,12 @@ export default {
       .hmap-zoom-slider {
         top: unset;
         bottom: 6em;
+        left: unset;
+        right: 4em;
       }
       .hmap-scale-line-control {
+        left: unset;
+        right: 1em;
         .hmap-scale-line-control-inner {
           border: 2px solid #FFFFFF;
           border-top: none;
