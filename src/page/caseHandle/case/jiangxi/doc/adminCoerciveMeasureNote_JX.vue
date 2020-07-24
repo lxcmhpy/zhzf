@@ -292,7 +292,7 @@
                 <p style="text-align-last: left;">你是否需要陈述申辩：</p>
                 <div>
                    &nbsp;&nbsp;<el-form-item prop="defendState" :rules="fieldRules('defendState',propertyFeatures['defendState'])">
-                    <el-checkbox-group v-model="docData.defendState" :max="1" :disabled="fieldDisabled(propertyFeatures['defendState'])">
+                    <el-checkbox-group v-model="docData.defendState" :max="1" :disabled="fieldDisabled(propertyFeatures['defendState'])" style="line-height:25px;">
                         <el-row><el-checkbox label="0">不需要</el-checkbox></el-row>
                         <el-row style="width:90%"><el-checkbox label="1">需要&nbsp;</el-checkbox>
                           <el-form-item prop="defendReason" :rules="fieldRules('defendReason',propertyFeatures['defendReason'])" id="defendReasonItem" style="line-height:17px;width:90%">
@@ -303,7 +303,6 @@
                         </el-row>
                     </el-checkbox-group>
                    </el-form-item>
-                   
                 </div>
                 <p>
                     <el-form-item prop="readState" :rules="fieldRules('readState',propertyFeatures['readState'])">
@@ -926,9 +925,12 @@ export default {
     #defendReasonItem{
       line-height: 17px;
       .el-form-item__content{
-        height: 100%;
+            height: 30px;
       }
     }
-    
+    p .el-form-item__content {
+      height        : 28px;
+      line-height   : 28px;
+    }
   }
 </style>
