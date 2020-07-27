@@ -63,7 +63,7 @@
             </el-form-item>
           </div>
         </div>
-        <div class="afddBox">
+        <div class="afddBox" v-if="inforForm.zfmlId === '1002000200000000' ">
           <label class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive2">
             <el-form-item label-width="0" prop="highwayRoute">
@@ -102,7 +102,27 @@
             <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
           </div>
         </div>
-        <div>
+        <div v-if="inforForm.zfmlId !== '1002000200000000' ">
+          <div class="itemOne">
+            <el-form-item label="案发地点">
+              <el-input v-model="inforForm.afdd">
+                 <template slot="append">
+                   <div class="showMapBtn" title="点击获取坐标">
+                      <label class="mustTip">*</label>
+                      <el-button icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button>
+                      <el-button icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
+                    </div>
+                 </template>
+              </el-input>
+            </el-form-item>
+          </div>
+          <!-- <div class="showMapBtn">
+            <label class="mustTip">*</label>
+            <el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button>
+            <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
+          </div> -->
+        </div>
+        <div v-if="inforForm.zfmlId === '1002000200000000' ">
           <div class="gongLiBox1">K</div>
           <div class="itemFive">
             <el-form-item  prop="pileNumber" label-width="0px">
@@ -1508,15 +1528,16 @@
           _this.inforForm.state = state;
           _this.inforForm.caseStatus = '未立案';
           // 拼接案发地点
-          let afddSting=_this.inforForm.highwayRoute+_this.inforForm.direction+'k'+_this.inforForm.pileNumber+'+'+_this.inforForm.distance
-          if(_this.inforForm.distance2||_this.inforForm.pileNumber2){
-            afddSting=afddSting+'至'+'k'+_this.inforForm.pileNumber2+'+'+_this.inforForm.distance2+' '+_this.inforForm.position
-          }else{
-             afddSting=afddSting+' '+_this.inforForm.position
+          if(_this.inforForm.zfmlId === "1002000200000000"){
+              let afddSting=_this.inforForm.highwayRoute+_this.inforForm.direction+'k'+_this.inforForm.pileNumber+'+'+_this.inforForm.distance
+              if(_this.inforForm.distance2||_this.inforForm.pileNumber2){
+                afddSting=afddSting+'至'+'k'+_this.inforForm.pileNumber2+'+'+_this.inforForm.distance2+' '+_this.inforForm.position
+              }else{
+                afddSting=afddSting+' '+_this.inforForm.position
+              }
+              _this.inforForm.afdd=afddSting
           }
-          _this.inforForm.afdd=afddSting
-          debugger
-
+          
           _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
             res => {
               console.log(res);
