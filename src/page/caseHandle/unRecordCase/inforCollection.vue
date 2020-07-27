@@ -2112,8 +2112,9 @@
         this.$refs.mapDiagRef.showModal();
       },
       //获取坐标
-      getLngLat(lngLatStr){
+      getLngLat(lngLatStr,address){
         this.inforForm.latitudeAndLongitude = lngLatStr;
+        this.inforForm.afdd = address;
         this.hasLatitudeAndLongitude = true;
       },
     },

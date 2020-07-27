@@ -60,6 +60,7 @@ export default {
       amapManager,
       lng: 0,
       lat: 0,
+      address:"",
       loaded: false,
       plugin: [
           {pName: "ToolBar",},{pName: "Scale",},
@@ -75,6 +76,7 @@ export default {
                     console.log("result",result);
                     self.lng = result.position.lng;
                     self.lat = result.position.lat;
+                    self.address = result.formattedAddress;
                     self.center = [self.lng, self.lat];
                     self.loaded = true;
                     self.componentMarker.position=[self.lng, self.lat]
@@ -127,7 +129,7 @@ export default {
         let lngLatStr = [this.lng,this.lat].join(',');
         console.log('lngLatStr',lngLatStr);
          this.visible = false;
-         this.$emit('getLngLat',lngLatStr);
+         this.$emit('getLngLat',lngLatStr,this.address);
     }
   },
   mounted() {}
