@@ -1,6 +1,9 @@
 <template>
   <div class="jiangXiMap">
-    <JkControlsMap @handleNodeClick="handleNodeClick" :config="config" />
+    <JkControlsMap
+      @handleNodeClick="handleNodeClick"
+      @handleChange="handleChange"
+      :config="config" />
   </div>
 </template>
 
@@ -15,6 +18,7 @@ export default {
       config: {
         treeData: {
           title: "搜执法人员、执法机构",
+          imgUrl: "/static/images/img/lawSupervise/icon_renyuan.png",
           option: [
             {
               label: '固原综合执法支队',
@@ -36,6 +40,76 @@ export default {
               }]
             },
           ],
+        },
+        popoverData: {
+          option: [
+            {
+              title: "西安市",
+              img: "/static/images/img/lawSupervise/area.png",
+              options: [
+                {
+                  value: 'xian',
+                  label: '西安市',
+                  children: [{
+                    value: 'yanta',
+                    label: '雁塔区',
+                    children: [{
+                      value: 'gaoxin',
+                      label: '高新区',
+                    }]
+                  }]
+                },
+                {
+                  value: 'quanguo',
+                  label: '全国',
+                }
+              ]
+            },
+            {
+              title: "图层",
+              img: "/static/images/img/lawSupervise/icon_changjing.png",
+              options: [
+                {
+                  value: 'xian',
+                  label: '西安市',
+                  children: [{
+                    value: 'yanta',
+                    label: '雁塔区',
+                    children: [{
+                      value: 'gaoxin',
+                      label: '高新区',
+                    }]
+                  }]
+                },
+                {
+                  value: 'quanguo',
+                  label: '全国',
+                }
+              ]
+            },
+            {
+              title: "全屏",
+              img: "/static/images/img/lawSupervise/qp.png",
+              options: [
+                {
+                  value: 'xian',
+                  label: '西安市',
+                  children: [{
+                    value: 'yanta',
+                    label: '雁塔区',
+                    children: [{
+                      value: 'gaoxin',
+                      label: '高新区',
+                    }]
+                  }]
+                },
+                {
+                  value: 'quanguo',
+                  label: '全国',
+                }
+              ]
+            }
+          ]
         }
       }
     }
@@ -47,6 +121,14 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
+    },
+
+    /**
+     *
+     * 选中级联选择器节点时触发
+     */
+    handleChange(value) {
+      console.log(value)
     }
   }
 }

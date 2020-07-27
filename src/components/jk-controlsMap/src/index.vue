@@ -2,20 +2,28 @@
   <div class="jk-controlsMap">
     <BaseHMap />
     <JkMapSearch
+      class="jk-controlsMap-inputWithSearch"
       @handleNodeClick="handleNodeClick"
       :config="config.treeData"
-      class="jk-controlsMap-inputWithSearch"
     />
+    <JkMapSelect
+      class="jk-controlsMap-mapSelect"
+      @handleChange="handleChange"
+      :config="config.popoverData"
+    >
+    </JkMapSelect>
   </div>
 </template>
 
 <script>
 import BaseHMap from "@/components/jk-baseHMap";
-import JkMapSearch from "@/components/jk-mapSearch"
+import JkMapSearch from "@/components/jk-mapSearch";
+import JkMapSelect from "@/components/jk-mapSelect";
 export default {
   components: {
     BaseHMap,
-    JkMapSearch
+    JkMapSearch,
+    JkMapSelect
   },
   props: {
     config: {
@@ -32,6 +40,14 @@ export default {
      */
     handleNodeClick(data) {
       this.$emit('handleNodeClick', data)
+    },
+
+    /**
+     *
+     * 选中级联选择器节点时触发
+     */
+    handleChange(value) {
+      this.$emit('handleChange', value)
     }
   }
 }
@@ -46,6 +62,11 @@ export default {
     position: absolute;
     top: 20px;
     left: 30px;
+  }
+  &-mapSelect {
+    position: absolute;
+    top: 20px;
+    right: 30px;
   }
 }
 </style>

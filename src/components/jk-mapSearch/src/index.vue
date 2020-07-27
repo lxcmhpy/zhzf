@@ -12,6 +12,9 @@ export default {
     title() {
       return this.config.title
     },
+    imgUrl() {
+      return this.config.imgUrl
+    },
     option() {
       return this.config.option
     }
@@ -45,12 +48,12 @@ export default {
           <img
             src={
               data.label === '执法人员' ?
-                '../../../../static/images/img/lawSupervise/icon_jc11.png'
+                '/static/images/img/lawSupervise/icon_jc11.png'
                 : data.label === '执法车辆' ?
-                '../../../../static/images/img/lawSupervise/icon_cl11.png'
+                '/static/images/img/lawSupervise/icon_cl11.png'
                 : data.label === '执法船舶' ?
-                '../../../../static/images/img/lawSupervise/icon_cb11.png'
-                : '../../../../static/images/img/lawSupervise/icon_jc1.png'
+                '/static/images/img/lawSupervise/icon_cb11.png'
+                : '/static/images/img/lawSupervise/icon_jc1.png'
             }
           />
           <span>{data.label}</span>
@@ -83,7 +86,7 @@ export default {
       return (
         <div class="contant">
           <div class="contant-imgBox">
-            <img src="../../../../static/images/img/lawSupervise/icon_renyuan.png" />
+            <img src={this.imgUrl} />
           </div>
           <div>
             <el-tree
