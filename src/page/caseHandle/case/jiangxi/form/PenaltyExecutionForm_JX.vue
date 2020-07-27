@@ -465,7 +465,7 @@ export default {
       }
       if (
         value &&
-        (value < 0 || value > Number(this.formData.tempPunishAmount))
+        (value < 0 || value > Number(this.totalMoney))
       ) {
         callback(new Error("不得小于0或大于处罚金额!"));
       } else {
@@ -689,6 +689,7 @@ export default {
     //保存表单数据
     submitCaseDoc(handleType) {
       console.log("分期", this.formData.stepPay);
+      this.formData.tempPunishAmount = this.totalMoney;
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
     
@@ -1184,6 +1185,11 @@ export default {
     // },
     'formData.stepPay'(val){
       this.setMoreDocTableTitle();
+    },
+    'formData.tempPunishAmount'(val){
+      if(!this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
+        this.totalMoney = this.formData.tempPunishAmount;
+      }
     }
   }
 };

@@ -284,7 +284,7 @@ export default {
       if (value && typeof (value) != 'number') {
         callback(new Error('必须为数字!'));
       }
-      if (value && (value < 0 || value > Number(this.formData.tempPunishAmount))) {
+      if (value && (value < 0 || value > Number(this.totalMoney))) {
         callback(new Error('不得小于0或大于处罚金额!'));
       } else {
         callback();
@@ -511,6 +511,7 @@ export default {
     submitCaseDoc(handleType) {
       console.log("分期", this.formData.stepPay)
       // console.log(this.formData)
+      this.formData.tempPunishAmount = this.totalMoney;
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
     // 判断文书是否完成
@@ -1010,6 +1011,11 @@ export default {
   //   },
     'formData.stepPay'(val){
       this.setMoreDocTableTitle();
+    },
+    'formData.tempPunishAmount'(val){
+      if(!this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
+        this.totalMoney = this.formData.tempPunishAmount;
+      }
     }
   }
 };
