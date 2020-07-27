@@ -73,7 +73,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input type="number" v-model.number="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
+                  <el-input type="number" v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
@@ -270,7 +270,7 @@ import {
   uploadEvApi,
   findFileByIdApi,
 } from "@/api/upload";
-import { findIsOrderApi , queryFlowBycaseIdApi,findBindPropertyRuleApi} from "@/api/caseHandle";
+import { findIsOrderApi } from "@/api/caseHandle";
 // import func from '../../../../../vue-temp/vue-editor-bridge';
 export default {
   components: {
@@ -284,7 +284,7 @@ export default {
       if (value && typeof (value) != 'number') {
         callback(new Error('必须为数字!'));
       }
-      if (value && (value < 0 || value > Number(this.totalMoney))) {
+      if (value && (value < 0 || value > Number(this.formData.tempPunishAmount))) {
         callback(new Error('不得小于0或大于处罚金额!'));
       } else {
         callback();
@@ -424,94 +424,11 @@ export default {
         false
       )
     },
-    com_getFormDataByCaseIdAndFormId(caseId, caseLinktypeId, refreshDataForPdf) {
-      let data = {
-        casebasicInfoId: caseId,
-        caseLinktypeId: caseLinktypeId
-      };
-      this.$store.dispatch("getFormDataByCaseIdAndFormId", data).then(
-        res => {
-          console.log("获取表单详情", res.data);
-        this.$store.commit("setCaseLinktypeId", caseLinktypeId);
-          
-          //如果为空，则加载案件信息
-          if (res.data == "") {
-            this.com_getCaseBasicInfo(caseId, caseLinktypeId);
-          } else {
-            console.log(res.data);
-            this.caseLinkDataForm.status = res.data.status;
-            console.log('this.propertyFeatures', this.propertyFeatures);
-            if (this.propertyFeatures != undefined) {
-              let data = {
-                caseBasicInfoId: caseId,
-                typeId: caseLinktypeId
-              };
-              this.searchPropertyFeatures(data, res.data, refreshDataForPdf);
-            }
-
-          }
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
-    searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {
-      findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res => {
-        console.log('通过案件Id级文书类型Id查询案件基本信息及规则', res);
-        let data = JSON.parse(res.data.propertyData);
-        this.propertyFeatures = data;
-        if (this.formData) {
-          if (savedData) {
-            this.caseLinkDataForm.id = savedData.id;
-            this.formData = JSON.parse(savedData.formData);
-            
-            this.isSaveLink = true;
-            this.canGoNextLink = savedData.status == '1' ? true : false
-            if (refreshDataForPdf) {
-              // 提交pdf页
-              setTimeout(() => {
-                this.printContent();
-              }, 1500)
-            }
-          } else {
-            for (var key in data) {
-              this.formData[key] = data[key].val ? data[key].val : this.formData[key];
-            }
-            this.handleIsTempPunishAmount();
-          }
-
-        } else {
-          if (savedData) {
-            this.caseDocDataForm.id = savedData.id;
-            this.caseDocDataForm.status = savedData.status;
-            this.docData = JSON.parse(savedData.docData);
-          } else {
-            for (var key in data) {
-              this.docData[key] = data[key].val ? data[key].val : this.docData[key];
-            }
-            console.log('this.docData', this.docData);
-          }
-        }
-        if (this.needDealData) {
-          this.getDataAfter();
-        }
-        if ((this.formData && this.formData.party) || (this.docData && this.docData.party)) {
-          this.isParty = true;
-        } else {
-          this.isParty = false;
-        }
-      }).catch(err => {
-        console.log(err);
-      })
-
-    },
-
+    
     //保存表单数据
     submitCaseDoc(handleType) {
       console.log("分期", this.formData.stepPay)
       // console.log(this.formData)
-      this.formData.tempPunishAmount = this.totalMoney;
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
     // 判断文书是否完成
@@ -980,7 +897,7 @@ export default {
   mounted() {
     // this.getCaseBasicInfo();
     this.findIsOrder()
-    // this.handleIsTempPunishAmount()
+    this.handleIsTempPunishAmount()
   },
   created() {
     //获取表单数据
@@ -1013,9 +930,8 @@ export default {
       this.setMoreDocTableTitle();
     },
     'formData.tempPunishAmount'(val){
-      if(!this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
-        this.totalMoney = this.formData.tempPunishAmount;
-      }
+      this.totalMoney = this.formData.tempPunishAmount;
+      this.handleChangePaidAmount();
     }
   }
 };
