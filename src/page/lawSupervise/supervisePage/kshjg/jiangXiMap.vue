@@ -9,6 +9,7 @@
 
 <script>
 import JkControlsMap from "@/components/jk-controlsMap";
+import { organTreeByCurrUser } from "@/api/lawSupervise.js";
 export default {
   components: {
     JkControlsMap
@@ -45,7 +46,7 @@ export default {
           option: [
             {
               title: "西安市",
-              img: "/static/images/img/lawSupervise/area.png",
+              imgUrl: "/static/images/img/lawSupervise/area.png",
               options: [
                 {
                   value: 'xian',
@@ -67,7 +68,7 @@ export default {
             },
             {
               title: "图层",
-              img: "/static/images/img/lawSupervise/icon_changjing.png",
+              imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
               options: [
                 {
                   value: 'xian',
@@ -89,7 +90,7 @@ export default {
             },
             {
               title: "全屏",
-              img: "/static/images/img/lawSupervise/qp.png",
+              imgUrl: "/static/images/img/lawSupervise/qp.png",
               options: [
                 {
                   value: 'xian',
@@ -115,6 +116,11 @@ export default {
     }
   },
   methods: {
+    getTree() {
+      organTreeByCurrUser().then(res => {
+        console.log(res)
+      })
+    },
     /**
      *
      * 点击节点回调函数
@@ -130,6 +136,9 @@ export default {
     handleChange(value) {
       console.log(value)
     }
+  },
+  created() {
+    this.getTree()
   }
 }
 </script>

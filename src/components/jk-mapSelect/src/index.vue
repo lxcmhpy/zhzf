@@ -49,7 +49,7 @@ export default {
             <span class="el-dropdown-link">
               { data.title }<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
-            <el-dropdown-menu slot="dropdown"></el-dropdown-menu>
+            <el-dropdown-menu style="width:0;height:0;"></el-dropdown-menu>
           </el-dropdown>
         </div>
       )
@@ -62,7 +62,7 @@ export default {
           return (
             <div class="jk-mapSelect-box">
               {
-                item.img ? <img src={item.img} /> : null
+                item.imgUrl ? <img src={item.imgUrl} /> : null
               }
               <div class="selectDown">
                 <el-popover
