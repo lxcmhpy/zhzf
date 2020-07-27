@@ -387,10 +387,6 @@ import iLocalStroage from '@/common/js/localStroage';
           callback(new Error("请选择设备有效期"));
         }
       }, */
-      filterNode(value, data) {
-        if (!value) return true;
-        return data.label.indexOf(value) !== -1;
-      },
       handleNodeClick1(data) {
         this.addForm.organName = data.label;
         this.addForm.organId = data.id;

@@ -11,6 +11,7 @@ import inspectionJson from './routerJson/inspectionJson'
 import catsAppraisalExamReportJson from './routerJson/catsAppraisalExamReportJson'
 import catsAppraisalExamUploadJson from './routerJson/catsAppraisalExamUploadJson'
 import {StartRouter} from './routerJson/startExamRouterJson'
+import deviceRouterJson from './routerJson/deviceRouterJson'
 // 不作为Main组件的子页面展示的页面单独写，如下
 const route = [
   // 登录
@@ -73,7 +74,8 @@ const route = [
       ...personRouterJson,
       ...examRouterJson,
       ...catsAppraisalExamReportJson,
-      ...catsAppraisalExamUploadJson
+      ...catsAppraisalExamUploadJson,
+      ...deviceRouterJson
     ]
   },
   {
