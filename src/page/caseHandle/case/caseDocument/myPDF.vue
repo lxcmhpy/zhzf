@@ -11,6 +11,7 @@
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
+    <caseSlideMenu :activeIndex="''"></caseSlideMenu>
     
     <!-- <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe> -->
     <!-- 该方法不能显示签章 -->
@@ -29,6 +30,7 @@
   import {
     updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,
   } from "@/api/caseHandle";
+  import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 
   export default {
     data() {
@@ -48,6 +50,7 @@
       showApprovePeople,
       approvalDialog,
       casePageFloatBtns,
+      caseSlideMenu
     },
     computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId','caseLinktypeId'])},
     methods: {
@@ -108,7 +111,7 @@
           this.formOrDocData.showBtn = [false, false, false, true, false, true, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }else if(this.approvalState == 'approvalBefore'){
           //执法人员提交审批
-          this.formOrDocData.showBtn = [false, false, false, true, false, false, true, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+          this.formOrDocData.showBtn = [false, false, false, true, false, true, true, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }else if(this.approvalState == 'submitApproval'){
           //执法人员提交审批之后
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
@@ -120,13 +123,10 @@
         }
       },
       showApprovePeopleList() {
-        // let data = {
-        //   caseId: this.caseId,
-        //   caseLinktypeId:this.caseLinktypeId,
-        //   docId:this.docDataId
-        // }
-        // console.log('提交审批需要的数据',data)
-        // this.$refs.showApprovePeopleRef.showModal(data);
+        if(this.storagePath.length == 0){
+          this.$messageOne.info({showClose: true, message: '未获取到PDF文件！'})
+          return;
+        }
         this.$refs.showApprovePeopleRef.showModal();
       },
       //审批完成 重新获取pdf
@@ -164,6 +164,10 @@
 
       //获取当前是几级审批
       findCurrentApproval(){
+        if(this.storagePath.length == 0){
+          this.$messageOne.info({showClose: true, message: '未获取到PDF文件！'})
+          return;
+        }
         console.log('文书数据idthis.docDataId',this.docDataId)
         getCurrentApproveApi(this.docDataId).then(res=>{
           console.log('几级审批',res);
