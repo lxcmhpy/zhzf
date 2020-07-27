@@ -42,7 +42,7 @@
             <el-form-item>
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
             </el-form-item>
-            <el-form-item>
+            <!-- <el-form-item>
               <el-upload
                 class="upload-demo"
                 action=""
@@ -52,7 +52,7 @@
               >
                 <el-button type="primary" size="medium" icon="el-icon-plus">导入</el-button>
               </el-upload>
-            </el-form-item>
+            </el-form-item> -->
             </div>
           </el-form>
         </div>
