@@ -8,7 +8,7 @@
       :model="formData"
       :disabled="disableWhenApproval"
     >
-      <div class="print_info">
+      <div class="print_info" style = "height: 1250px">
         <div class="doc_topic">案件调查报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -247,7 +247,7 @@
           </tr>
 
           <tr>
-            <td rowspan="5">
+            <td rowspan="7">
               <p>证据</p>
               <p>材料</p>
             </td>
@@ -257,12 +257,12 @@
             <td colspan="1">数量</td>
             <td colspan="2">备注</td>
           </tr>
-          <tr @click="showEvidence" v-for="(item,index) in formData.evidenceList" :key="index">
-            <td>{{item.name ? index+1 : ''}}</td>
-            <td colspan="2">{{item.name ? item.name : ''}}</td>
-            <td colspan="2">{{item.des ? item.des : ''}}</td>
-            <td colspan="1">{{item.num ? item.num : ''}}</td>
-            <td colspan="2">{{item.num ? item.note : ''}}</td>
+          <tr v-for="(item,index) in formData.evidenceList" :key="index" @click="handleAdd">
+            <td>{{item.resNo}}</td>
+            <td colspan="2">{{item.name}}</td>
+            <td colspan="2">{{item.des}}</td>
+            <td colspan="1">{{item.num}}</td>
+            <td colspan="2">{{item.note}}</td>
           </tr>
           <tr style="height:180px">
             <td width="49">
@@ -271,7 +271,6 @@
               <p>见</p>
             </td>
             <td colspan="8" class="aprotd">
-              <!-- <p class="approveDiv">{{formData.lawOfficeOpinions}}</p> -->
               <el-form-item prop="lawOfficeOpinions">
                 <el-input
                   type="textarea"
@@ -351,7 +350,79 @@
         </table>
       </div>
     </el-form>
+    <!-- 添加弹出框 -->
+    <el-dialog
+      title="证据材料名称清单"
+      append-to-body
+      :visible.sync="addVisible"
+      width="60%"
+      v-loading="addLoading"
+    >
+      <div>
+        <div class="fullscreen">
+          <el-form ref="addResFormRef">
+            <el-table :data="tableDatas" stripe border style="width: 100%">
+              <el-table-column prop="resNo" label="序号" align="center">
+                 <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="证据材料名称名称" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.name"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column prop="des" label="规格" align="center">
+                <template slot-scope="scope">
+                  <el-select v-model="scope.row.des" placeholder>
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.label"
+                    ></el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column prop="num" label="数量" align="center">
+                <template slot-scope="scope">
+                  <el-input-number size="mini" v-model="scope.row.num" :min="1" label="描述文字"></el-input-number>
+                </template>
+              </el-table-column>
 
+              <el-table-column label="备注" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.note"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column width="52%">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    icon="el-icon-circle-close"
+                    circle
+                    @click="deleteRes(scope.row)"
+                    class="evdence-form"
+                    style="border-radius:50px"
+                  ></el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-button
+              icon="el-icon-circle-plus-outline"
+              circle
+              type="info"
+              @click="addTableData"
+              style="margin-left: 50%;margin-top: 10px;"
+            ></el-button>
+          </el-form>
+        </div>
+        <div style="margin-left: 45%;margin-top: 10px">
+          <el-button size="medium" type="primary" @click="addResSure('addResFormRef')">确 定</el-button>
+          <el-button size="medium" @click="addVisible=false">取 消</el-button>
+        </div>
+      </div>
+    </el-dialog>
     <casePageFloatBtns
       :pageDomId="'caseInvest-print'"
       :formOrDocData="formOrDocData"
@@ -494,10 +565,20 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "caseInvest-print"
       },
+      options: [
+        {value: "1", label: " "},
+        {value: "2",label: "份"},
+        {value: "3",label: "套"},
+        {value: "4",label: "个"},
+        {value: "5",label: "件"}
+      ],
       huanjieAndDocId: this.BASIC_DATA_JX.caseInvestig_JX_huanjieAndDocId, //案件调查报告的文书id
       approvalOver: false, //审核完成
       nameLength: 10,
       sexLength: 2,
+      addVisible: false,
+      addLoading: false,
+      tableDatas: [],
       adressLength: 23,
       isParty: true,
       originalData: "",
@@ -572,15 +653,87 @@ export default {
       console.log("data", data);
       this.formData.evidenceList = data;
     },
+    handleAdd(resNo, row) {
+      let tableArr = []
+      this.formData.evidenceList.forEach(item => {
+        if(item.resNo!= ""){
+          tableArr.push(item)
+        }
+      });
+      this.tableDatas = tableArr;
+      this.addVisible = true;
+      if (this.tableDatas.length == 0) {
+        this.tableDatas.push({ resNo: 1, num: 1 });
+      }
+    },
+    //删除一行证据
+    deleteRes(row) {
+      for (let i = 0; i < this.tableDatas.length; i++) {
+        if (this.tableDatas[i].resNo > row.resNo) {
+          this.tableDatas[i].resNo = this.tableDatas[i].resNo - 1;
+        }
+      }
+      this.tableDatas.splice(row.resNo - 1, 1);
+      this.formData.evidenceList.splice(row.resNo - 1, 1);
+      this.formData.evidenceList.push({resNo: "", name: "", num: "", des: "", note: ""})
+    },
+    //确定添加
+    addResSure(formName) {
+      debugger
+      let canAdd = true;
+      if (this.tableDatas.length > 0){
+        for (let i = 0; i < this.tableDatas.length; i++) {
+          if (!this.tableDatas[i].name || !this.tableDatas[i].des) {
+            this.$message({
+              message: "证据名称或规格不能为空！",
+              type: "warning"
+            });
+            canAdd = false;
+            break;
+          }
+        }
+        if(canAdd){
+          console.log("证据列表111111",this.tableDatas)
+          this.tableDatas.forEach((item,index,arr) => {
+            item.resNo = index+1
+            this.formData.evidenceList[index] = this.tableDatas[index]
+          });
+          console.log("证据列表111111",this.formData.evidenceList)
+          this.addVisible = false;
+        }
+      } 
+    },
+    //添加一行数据
+    addTableData() {
+      let length = this.tableDatas.length;
+      if (length == 6) {
+        this.$message({
+          message: "最多输入六行！",
+          type: "warning"
+        });
+        return;
+      }
+      if (length == 0) {
+        this.tableDatas.push({ resNo: 1, amount: 1 });
+      } else {
+        this.tableDatas.push({
+          resNo: Number(this.tableDatas[length - 1].resNo) + 1,
+          num: 1,
+          note: ""
+        });
+      }
+    },
     //对原始数据做一下处理
     getDataAfter() {
       console.log(this.formData);
       if (!this.formData.evidenceList.length) {
         this.formData.evidenceList = [
-          { name: "", num: "", des: "", note: ""},
-          { name: "", num: "", des: "", note: "" },
-          { name: "", num: "", des: "", note: "" },
-          { name: "", num: "", des: "", note: "" }
+          {resNo: "", name: "", num: "", des: "", note: ""},
+          {resNo: "", name: "", num: "", des: "", note: "" },
+          {resNo: "", name: "", num: "", des: "", note: "" },
+          {resNo: "", name: "", num: "", des: "", note: "" },
+          {resNo: "", name: "", num: "", des: "", note: "" },
+          {resNo: "", name: "", num: "", des: "", note: "" }
         ];
       }
     }

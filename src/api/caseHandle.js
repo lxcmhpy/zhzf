@@ -146,6 +146,18 @@ export function findStaffListApi(data) {
   });
 }
 
+//通过姓名或执法证号查询执法人员信息
+export function findLawOfficerApi(data) {
+  return request({
+    url: "/case/caseTemplate/lawOfficer/queryLawOfficer",
+    method: "get",
+    showloading: true,
+    params: data,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //根据案件ID获取案件信息
 export function getCaseBasicInfoApi(data) {
   return request({

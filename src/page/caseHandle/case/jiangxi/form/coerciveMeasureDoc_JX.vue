@@ -360,7 +360,7 @@
                 <div class="second_title">查封、扣押场所、设施、财务清单如下：</div>
               </el-col>
             </el-row>
-            <div class="table_form">
+            <div class="table_form" @click="handleAdd">
               <el-table :data="formData.resList" stripe border style="width: 100%">
                 <el-table-column prop="resNo" label="序号" align="center" width="50"></el-table-column>
                 <el-table-column prop="resName" label="查封、扣押、场所、设施、财务名称" align="center"></el-table-column>
@@ -449,6 +449,79 @@
         </div>
       </div>
     </el-form>
+    <!-- 添加弹出框 -->
+    <el-dialog
+      title="查封、扣押场所、设施、财物清单"
+      append-to-body
+      :visible.sync="addVisible"
+      width="60%"
+      v-loading="addLoading"
+    >
+      <div>
+        <div class="fullscreen">
+          <el-form ref="addResFormRef">
+            <el-table :data="tableDatas" stripe border style="width: 100%">
+              <el-table-column prop="resNo" label="序号" align="center">
+                 <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="查封、扣押场所、设施、财物名称" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.resName"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column prop="spec" label="规格" align="center">
+                <template slot-scope="scope">
+                  <el-select v-model="scope.row.spec" placeholder>
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.label"
+                    ></el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column prop="amount" label="数量" align="center">
+                <template slot-scope="scope">
+                  <el-input-number size="mini" v-model="scope.row.amount" :min="1" label="描述文字"></el-input-number>
+                </template>
+              </el-table-column>
+
+              <el-table-column label="备注" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.resNote"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column width="52%">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    icon="el-icon-circle-close"
+                    circle
+                    @click="deleteRes(scope.row)"
+                    class="evdence-form"
+                    style="border-radius:50px"
+                  ></el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-button
+              icon="el-icon-circle-plus-outline"
+              circle
+              type="info"
+              @click="addTableData"
+              style="margin-left: 50%;margin-top: 10px;"
+            ></el-button>
+          </el-form>
+        </div>
+        <div style="margin-left: 45%;margin-top: 10px">
+          <el-button size="medium" type="primary" @click="addResSure('addResFormRef')">确 定</el-button>
+          <el-button size="medium" @click="addVisible=false">取 消</el-button>
+        </div>
+      </div>
+    </el-dialog>
     <checkDocAllFinish
       ref="checkDocAllFinishRef"
       @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"
@@ -531,6 +604,7 @@ export default {
       },
       saveOrSub: true,
       handleType: 0,
+      tableDatas: [],
       docTableDatas: [],
       rules: {
         caseNumber: [
@@ -568,6 +642,30 @@ export default {
           { required: true, message: "统一社会信用代码", trigger: "blur" }
         ]
       },
+      options: [
+        {
+          value: "1",
+          label: " "
+        },
+        {
+          value: "2",
+          label: "份"
+        },
+        {
+          value: "3",
+          label: "套"
+        },
+        {
+          value: "4",
+          label: "个"
+        },
+        {
+          value: "5",
+          label: "件"
+        }
+      ],
+      addVisible: false,
+      addLoading: false,
       isParty: true, //当事人类型为个人
       originalData: "",
       needDealData: true,
@@ -585,17 +683,6 @@ export default {
       if(typeof(this.formData.resList) == 'string')
       this.formData.resList = JSON.parse(this.formData.resList);
     },
-    // startTime() {
-    //   if (this.formData.measureStartDate) {
-    //     this.$set(
-    //       this.formData,
-    //       "measureEndDate",
-    //       new Date(
-    //         this.formData.measureStartDate.getTime() + 29 * 24 * 3600 * 1000
-    //       )
-    //     );
-    //   }
-    // },
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
@@ -716,6 +803,63 @@ export default {
       };
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
+    },
+    handleAdd(resNo, row) {
+      this.tableDatas = JSON.parse(JSON.stringify(this.formData.resList));
+      this.addVisible = true;
+      if (this.tableDatas.length == 0) {
+        this.tableDatas.push({ resNo: 1, amount: 1 });
+      }
+    },
+    //删除一行证据
+    deleteRes(row) {
+      for (let i = 0; i < this.tableDatas.length; i++) {
+        if (this.tableDatas[i].resNo > row.resNo) {
+          this.tableDatas[i].resNo = this.tableDatas[i].resNo - 1;
+        }
+      }
+      this.tableDatas.splice(row.resNo - 1, 1);
+    },
+    //确定添加
+    addResSure(formName) {
+      debugger
+      let canAdd = true;
+      if (this.tableDatas.length > 0){
+        for (let i = 0; i < this.tableDatas.length; i++) {
+          if (!this.tableDatas[i].resName || !this.tableDatas[i].spec) {
+            this.$message({
+              message: "财务名称或规格不能为空！",
+              type: "warning"
+            });
+            canAdd = false;
+            break;
+          }
+        }
+        if(canAdd){
+          this.formData.resList = this.tableDatas;
+          this.addVisible = false;
+        }
+      } 
+    },
+    //添加一行数据
+    addTableData() {
+      let length = this.tableDatas.length;
+      if (length == 5) {
+        this.$message({
+          message: "最多输入五行！",
+          type: "warning"
+        });
+        return;
+      }
+      if (length == 0) {
+        this.tableDatas.push({ resNo: 1, amount: 1 });
+      } else {
+        this.tableDatas.push({
+          resNo: Number(this.tableDatas[length - 1].resNo) + 1,
+          amount: 1,
+          resNote: ""
+        });
+      }
     },
     //清空文书
     delDocDataByDocId(data) {

@@ -493,10 +493,6 @@ import {
             value: '1',
             label: ' '
           },
-          // {
-          //   value: '1',
-          //   label: '(空)'
-          // },
           {
             value: '2',
             label: '份'
@@ -562,6 +558,7 @@ import {
       },
       handleAdd(resNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.docData.resList));
+        let length = this.tableDatas.length;
         this.addVisible = true;
         if (length == 0) {
           this.tableDatas.push({'resNo': 1, 'amount': 1});
