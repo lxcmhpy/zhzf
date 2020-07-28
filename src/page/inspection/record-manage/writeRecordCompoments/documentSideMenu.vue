@@ -25,7 +25,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { getTemplateDocList,getDocListById } from "@/api/Record";
+import { getTemplateDocList,getDocListById } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {

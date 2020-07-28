@@ -2,7 +2,7 @@
   <div class="height100">
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
       <div class="handlePart">
-        <div class="search toggleBox">
+        <div class="search toggleBox search-mini">
           <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
               <el-form-item>
@@ -12,7 +12,10 @@
                 <el-input v-model="searchForm.otherUser"></el-input>
               </el-form-item>
               <el-form-item label="在岗情况：" prop='otherUser'>
-                <el-input v-model="searchForm.otherUser"></el-input>
+                <el-select v-model="searchForm.otherUser" placeholder="请选择">
+                  <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.name">
+                  </el-option>
+                </el-select>
               </el-form-item>
               <el-form-item>
                 <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
@@ -26,13 +29,13 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="createTime" label="姓名" align="center"></el-table-column>
-          <el-table-column prop="createTime" label="性别" align="center"></el-table-column>
-          <el-table-column prop="domain" label="岗位" align="center"></el-table-column>
-          <el-table-column prop="title" label="状态" align="center"></el-table-column>
-          <el-table-column prop="createUser" label="编制" align="center"></el-table-column>
-          <el-table-column prop="status" label="职务" align="center"></el-table-column>
-          <el-table-column prop="status" label="单位" align="center"></el-table-column>
+          <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
+          <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
+          <el-table-column prop="stationName" label="岗位" align="center"></el-table-column>
+          <el-table-column prop="stationStatusName" label="状态" align="center"></el-table-column>
+          <el-table-column prop="" label="编制" align="center"></el-table-column>
+          <el-table-column prop="postName" label="职务" align="center"></el-table-column>
+          <el-table-column prop="oname" label="单位" align="center"></el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">
@@ -40,7 +43,7 @@
       </div>
     </div>
     <div class="height100 inspector-left inspector-center">
-      <div class="inspection-center-btn">
+      <div class="inspection-center-btn" @click="copyMethod">
         <i class="el-icon-d-arrow-right"></i><br>
         复制
       </div>
@@ -52,10 +55,14 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, } from "@/api/Record";
+import { findRecordListApi, getAllPersonApi } from "@/api/inspection";
+// import { getAllPersonApi, } from "@/api/person";
 import iLocalStroage from "@/common/js/localStroage";
-import publicInspectors from './publicInspectors.vue'
+import publicInspectors from './publicInspectors.vue';
+import { mixinPerson } from "@/common/js/personComm";
+import { getDictListDetailByNameApi, } from "@/api/system";
 export default {
+  mixins: [mixinPerson],
   components: {
     publicInspectors,
   },
@@ -100,16 +107,21 @@ export default {
         ]
       },
       zzmmList: [],
-      zcList: []
+      zcList: [],
+      workStatusList: [],
+      options:[]
     }
   },
   methods: {
     // 查询列表时
     getTableData() {
       let data = {
-        title: this.searchForm.title,
+        oName: iLocalStroage.gets("userInfo").organName,
+        // oName: '固原综合执法支队',
+        current: this.currentPage,
+        size: this.pageSize,
       };
-      findRecordListApi(data).then(
+      getAllPersonApi(data).then(
         res => {
           console.log(res)
           this.tableData = res.data.records
@@ -150,16 +162,19 @@ export default {
       // debugger
       this.getTableData()
     },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
+    // submitForm(formName) {
+    //   this.$refs[formName].validate((valid) => {
+    //     if (valid) {
+    //       
+    //     } else {
+    //       console.log('error submit!!');
+    //       return false;
+    //     }
+    //   });
+    // }, 
+    // resetForm(formName) {
+    //   this.$refs[formName].resetFields();
+    // },
     addMethod() {
       this.dialogFormVisible = true
     },
@@ -176,9 +191,24 @@ export default {
     exportMethod() { },
     importModle() { },
     downloadModle() { },
+    getDrawerList(data) {
+      let _this=this
+      getDictListDetailByNameApi(data).then(
+        res => {
+          _this.options = res.data
+        },
+        error => {
+          // reject(error);
+        })
+    },
+    copyMethod(){
+      console.log(this.multipleSelection)
+    }
   },
   mounted() {
-
+    this.getTableData()
+    // 获取抽屉
+    this.getDrawerList('在岗情况')
   }
 }
 </script>
@@ -197,5 +227,6 @@ export default {
 .inspection-center-btn {
   position: relative;
   top: 47%;
+  cursor: pointer;
 }
 </style>

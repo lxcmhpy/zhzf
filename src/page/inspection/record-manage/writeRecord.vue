@@ -79,7 +79,7 @@ import Vue from 'vue'
 import {
   saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
   findMyRecordByIdApi, findRecordModleTimeByIdApi, delDocumentModifyOrderById
-} from "@/api/Record";
+} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 

@@ -64,7 +64,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
-  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi} from "@/api/Record";
+  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi} from "@/api/inspection";
 import Vue from 'vue'
 export default {
 
@@ -90,7 +90,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          
         } else {
           console.log('error submit!!');
           return false;

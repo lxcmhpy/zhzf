@@ -393,3 +393,25 @@ export function delDocumentModifyOrderById(data) {
         cancelToken: setCancelSource()
     });
 }
+// 分页查询执法人员
+export  function  getAllPersonApi(data)  {
+    return  request({
+      url:  "/person/person/personPageList",
+      method:  "get",
+      params: data,
+      showloading: false,
+      baseUrlType:  'LAW_SUPERVISE_HOST',
+      cancelToken:  setCancelSource()
+    });
+}
+// 分页查询公开执法人员
+export  function  getAllPublicPersonApi(data)  {
+    return  request({
+      url:  "/xzjc/randomItem/queryRandomItem",
+      method:  "get",
+      params: data,
+      showloading: false,
+      baseUrlType:  'LAW_SUPERVISE_HOST',
+      cancelToken:  setCancelSource()
+    });
+}
