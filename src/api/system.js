@@ -579,7 +579,7 @@ export function getDictListDetailByNameApi(name) {
     url: "/system/sys/drawer/findAllDrawerByName/" + name,
     method: "get",
     showloading: true,
-    loadingType: name =='系统标题' ? 'loadFull' : 'loadPart',
+    loadingType: name =='系统标题'||name =='loginBg' ? 'loadFull' : 'loadPart',
     cancelToken: setCancelSource()
   });
 }
