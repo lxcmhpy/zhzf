@@ -25,10 +25,10 @@ export default  [
         path: '/jiangXiMap',
         name: 'jiang_xi_map',
         meta: {
-          title: "可视化监管",
+          title: "江西可视化地图",
           oneTab:true,
         },
-        component: () => import("@/page/lawSupervise/supervisePage/kshjg/jiangXiMap.vue"),
+        component: () => import("@/page/lawSupervise/supervisePage/kshjg/jiangXiMap"),
       }
       // {
       //     path: "/offSiteDetectionOverload",

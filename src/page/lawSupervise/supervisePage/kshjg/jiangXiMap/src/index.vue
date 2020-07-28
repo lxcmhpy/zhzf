@@ -7,15 +7,18 @@
       :config="config"
       :center="center"
     />
+    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" />
   </div>
 </template>
 
 <script>
 import JkControlsMap from "@/components/jk-controlsMap";
+import MapWinDow from "./mapWindow.vue"
 import { organTreeByCurrUser } from "@/api/lawSupervise.js";
 export default {
   components: {
-    JkControlsMap
+    JkControlsMap,
+    MapWinDow
   },
   data() {
     return {
@@ -23,6 +26,8 @@ export default {
       map: null,
       zoom: 8,
       center: [12118909.300259633, 4086043.1061670054],
+      showWindow: false,
+      windowData: {},
       config: {
         treeData: {
           title: "搜执法人员、执法机构",
@@ -166,7 +171,19 @@ export default {
      * 点击地图点位触发
      */
     handleClickPoint(data) {
+      this.showWindow = true
+      this.windowData = {
+        title: data.label,
+        info: {},
+      }
       console.log(data)
+    },
+
+    /**
+     * 关闭弹窗
+     */
+    handleClose() {
+      this.showWindow = false
     },
 
     /**
@@ -186,5 +203,6 @@ export default {
 .jiangXiMap {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 </style>
