@@ -154,7 +154,7 @@ export default {
         };
         this.$refs.chooseillegalActRef.showModal(lawCate);
       } else {
-        this.$message("请选择业务领域");
+        this.$messageOne.info({showClose: true, message: '请选择业务领域'})
       }
     },
     //获取业务领域
