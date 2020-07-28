@@ -31,11 +31,11 @@
 </template>
 <script>
 import Vue from "vue";
-import AMap from "vue-amap";
+import VueAMap from "vue-amap";
 import { AMapManager } from "vue-amap";
 
-Vue.use(AMap);
-AMap.initAMapApiLoader({
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
   key: "2fab5dfd6958addd56c89e58df8cbb37",
   plugin: [
     "AMap.Autocomplete",
@@ -44,13 +44,13 @@ AMap.initAMapApiLoader({
     "AMap.OverView",
     "AMap.ToolBar",
     "AMap.Geolocation",
-    "AMap.Geocoder"
+    "Geocoder"
   ],
   v: "1.4.4",
   uiVersion: "1.0.11",
   showLabel: false
 });
-let amapManager = new AMap.AMapManager();
+let amapManager = new VueAMap.AMapManager();
 export default {
   data() {
     let self = this;
@@ -64,7 +64,7 @@ export default {
       address:"",
       loaded: false,
       plugin: [
-          {pName: "ToolBar",},{pName: "Scale",},
+          {pName: "ToolBar",},{pName: "Scale",},{pName: "Geocoder",},
           {
           pName: 'Geolocation',
           events: {
@@ -153,14 +153,29 @@ export default {
     //逆解码函数
     getaddress: function(lnglat) {
       let self=this
-      AMap.plugin('AMap.Geocoder', function() {
-        var geocoder = new AMap.Geocoder({})
-        geocoder.getAddress(lnglat, function(status, result) {
-          if (status === 'complete' && result.info === 'OK') {
-            self.address=result.regeocode.formattedAddress
+      console.log('VueAMap',VueAMap)
+      // VueAMap.plugin('AMap.Geocoder', function() {
+      //   var geocoder = new AMap.Geocoder({})
+      //   geocoder.getAddress(lnglat, function(status, result) {
+      //     if (status === 'complete' && result.info === 'OK') {
+      //              console.log('self.address',self.address)
+      //       self.address=result.regeocode.formattedAddress
+      //     }
+      //   })
+      // })
+      var geocoder = new AMap.Geocoder({
+        radius: 1000,
+        extensions: "all"
+      });        
+      geocoder.getAddress(lnglat, function(status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+          if (result && result.regeocode) {
+            self.address = result.regeocode.formattedAddress;
+            console.log('self.address',self.address)
+            self.$nextTick();
           }
-        })
-      })
+        }
+      }); 
     },
     // 根据坐标查询地址信息
 　  /* mapAddr(){
