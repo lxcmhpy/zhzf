@@ -43,7 +43,8 @@ AMap.initAMapApiLoader({
     "AMap.Scale",
     "AMap.OverView",
     "AMap.ToolBar",
-    "AMap.Geolocation"
+    "AMap.Geolocation",
+    "AMap.Geocoder"
   ],
   v: "1.4.4",
   uiVersion: "1.0.11",
@@ -89,7 +90,22 @@ export default {
                 });
               }
           }
-      }],
+      },
+      /* {
+          pName: 'Geocoder',
+          events: {
+            init(o) {
+              //定位第一次逆解码
+              o.getAddress(self.center, (status, result) => {
+                if (status === 'complete' && result.info === 'OK') {
+                  self.address=result.regeocode.formattedAddress
+                }
+
+              })
+            }
+          }
+      } */
+      ],
       events: {
         init(map) {
         },
@@ -107,7 +123,10 @@ export default {
           console.log('newCenter',newCenter)
           self.lng = newCenter.lng;
           self.lat = newCenter.lat;
-          self.componentMarker.position=[newCenter.lng, newCenter.lat]
+          self.componentMarker.position=[newCenter.lng, newCenter.lat];
+          // self.mapAddr();
+          self.getaddress([self.lng,self.lat])
+
         }
       },
     //mark 位置
@@ -130,7 +149,32 @@ export default {
         console.log('lngLatStr',lngLatStr);
          this.visible = false;
          this.$emit('getLngLat',lngLatStr,this.address);
-    }
+    },
+    //逆解码函数
+    getaddress: function(lnglat) {
+      let self=this
+      AMap.plugin('AMap.Geocoder', function() {
+        var geocoder = new AMap.Geocoder({})
+        geocoder.getAddress(lnglat, function(status, result) {
+          if (status === 'complete' && result.info === 'OK') {
+            self.address=result.regeocode.formattedAddress
+          }
+        })
+      })
+    },
+    // 根据坐标查询地址信息
+　  /* mapAddr(){
+　　　　var _this = this;
+　　　　AMap.plugin('AMap.Geocoder',function() {//回调函数
+　　　　　　var geocoder = new AMap.Geocoder({});
+　　　　　　geocoder.getAddress([_this.lng,_this.lat], function (status, result) {
+　　　　　　　　if (status === 'complete' && result.info === 'OK') {
+　　　　　　　　　　//获得了有效的地址信息:
+　　　　　　　　　　_this.address = result.regeocode.formattedAddress;
+　　　　　　　　}
+　　　　　　});
+　　　　})
+　　}, */
   },
   mounted() {}
 };
