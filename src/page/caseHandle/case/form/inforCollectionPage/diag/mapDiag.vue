@@ -90,22 +90,7 @@ export default {
                 });
               }
           }
-      },
-      /* {
-          pName: 'Geocoder',
-          events: {
-            init(o) {
-              //定位第一次逆解码
-              o.getAddress(self.center, (status, result) => {
-                if (status === 'complete' && result.info === 'OK') {
-                  self.address=result.regeocode.formattedAddress
-                }
-
-              })
-            }
-          }
-      } */
-      ],
+      }],
       events: {
         init(map) {
         },
@@ -153,16 +138,6 @@ export default {
     //逆解码函数
     getaddress: function(lnglat) {
       let self=this
-      console.log('VueAMap',VueAMap)
-      // VueAMap.plugin('AMap.Geocoder', function() {
-      //   var geocoder = new AMap.Geocoder({})
-      //   geocoder.getAddress(lnglat, function(status, result) {
-      //     if (status === 'complete' && result.info === 'OK') {
-      //              console.log('self.address',self.address)
-      //       self.address=result.regeocode.formattedAddress
-      //     }
-      //   })
-      // })
       var geocoder = new AMap.Geocoder({
         radius: 1000,
         extensions: "all"
@@ -171,25 +146,11 @@ export default {
         if (status === 'complete' && result.info === 'OK') {
           if (result && result.regeocode) {
             self.address = result.regeocode.formattedAddress;
-            console.log('self.address',self.address)
             self.$nextTick();
           }
         }
       }); 
     },
-    // 根据坐标查询地址信息
-　  /* mapAddr(){
-　　　　var _this = this;
-　　　　AMap.plugin('AMap.Geocoder',function() {//回调函数
-　　　　　　var geocoder = new AMap.Geocoder({});
-　　　　　　geocoder.getAddress([_this.lng,_this.lat], function (status, result) {
-　　　　　　　　if (status === 'complete' && result.info === 'OK') {
-　　　　　　　　　　//获得了有效的地址信息:
-　　　　　　　　　　_this.address = result.regeocode.formattedAddress;
-　　　　　　　　}
-　　　　　　});
-　　　　})
-　　}, */
   },
   mounted() {}
 };

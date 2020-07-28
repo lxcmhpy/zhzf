@@ -700,5 +700,29 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/deliveryConfirmDoc.vue")
   },
+  {
+    name: "propertyManage",
+    path: "/propertyManage",
+    meta: {
+      title: "财物列表"
+    },
+    component: () => import("@/page/caseHandle/case/form/propertyManage/propertyManageList.vue")
+  },
+  {
+    name: "case_handle_addProperty",
+    path: "/addProperty/:id",
+    meta: {
+      title: "财务登记"
+    },
+    component: () => import("@/page/caseHandle/case/form/propertyManage/propertyForm.vue")
+  },
+  {
+    name: "case_handle_viewProperty",
+    path: "/viewProperty/:id",
+    meta: {
+      title: "财物详情"
+    },
+    component: () => import("@/page/caseHandle/case/form/propertyManage/propertyDetail.vue")
+  },
 
 ]
