@@ -31,11 +31,11 @@
 </template>
 <script>
 import Vue from "vue";
-import AMap from "vue-amap";
+import VueAMap from "vue-amap";
 import { AMapManager } from "vue-amap";
 
-Vue.use(AMap);
-AMap.initAMapApiLoader({
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
   key: "2fab5dfd6958addd56c89e58df8cbb37",
   plugin: [
     "AMap.Autocomplete",
@@ -43,13 +43,14 @@ AMap.initAMapApiLoader({
     "AMap.Scale",
     "AMap.OverView",
     "AMap.ToolBar",
-    "AMap.Geolocation"
+    "AMap.Geolocation",
+    "Geocoder"
   ],
   v: "1.4.4",
   uiVersion: "1.0.11",
   showLabel: false
 });
-let amapManager = new AMap.AMapManager();
+let amapManager = new VueAMap.AMapManager();
 export default {
   data() {
     let self = this;
@@ -63,7 +64,7 @@ export default {
       address:"",
       loaded: false,
       plugin: [
-          {pName: "ToolBar",},{pName: "Scale",},
+          {pName: "ToolBar",},{pName: "Scale",},{pName: "Geocoder",},
           {
           pName: 'Geolocation',
           events: {
@@ -107,7 +108,10 @@ export default {
           console.log('newCenter',newCenter)
           self.lng = newCenter.lng;
           self.lat = newCenter.lat;
-          self.componentMarker.position=[newCenter.lng, newCenter.lat]
+          self.componentMarker.position=[newCenter.lng, newCenter.lat];
+          // self.mapAddr();
+          self.getaddress([self.lng,self.lat])
+
         }
       },
     //mark 位置
@@ -130,7 +134,23 @@ export default {
         console.log('lngLatStr',lngLatStr);
          this.visible = false;
          this.$emit('getLngLat',lngLatStr,this.address);
-    }
+    },
+    //逆解码函数
+    getaddress: function(lnglat) {
+      let self=this
+      var geocoder = new AMap.Geocoder({
+        radius: 1000,
+        extensions: "all"
+      });        
+      geocoder.getAddress(lnglat, function(status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+          if (result && result.regeocode) {
+            self.address = result.regeocode.formattedAddress;
+            self.$nextTick();
+          }
+        }
+      }); 
+    },
   },
   mounted() {}
 };

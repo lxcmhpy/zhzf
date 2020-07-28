@@ -32,7 +32,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
-import { changeFileStatus, documentRevoke, delDocumentById } from "@/api/Record";
+import { changeFileStatus, documentRevoke, delDocumentById } from "@/api/inspection";
 
 export default {
   data() {
