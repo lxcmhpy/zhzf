@@ -129,6 +129,9 @@ export default {
     init(_map, _this) {
       this.map = _map
       this.page = _this
+      _map.on('feature:onselect', event => {
+        this.handleClickPoint(event.value.N.data)
+      });
     },
 
     /**
@@ -139,7 +142,7 @@ export default {
         if(res.code === 200) {
           return res.data
         } else {
-          throw new Error("organTreeByCurrUser()::::::数据错误")
+          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
         this.config.treeData.option = data
@@ -147,7 +150,7 @@ export default {
     },
 
     /**
-     * 点击节点回调函数
+     * 点击节点回调函数，调用打点函数
      */
     handleNodeClick(data) {
       if(data.propertyValue) {
@@ -155,8 +158,15 @@ export default {
         // 调用地图组件中打点函数
         this.page.addPoint(data, latLng)
       } else {
-        throw new Error("handleNodeClick(data):::::::::没有坐标")
+        throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
       }
+    },
+
+    /**
+     * 点击地图点位触发
+     */
+    handleClickPoint(data) {
+      console.log(data)
     },
 
     /**
