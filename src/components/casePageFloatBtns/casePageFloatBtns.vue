@@ -85,6 +85,10 @@
         let fileName = _this.storagePath[0].split("/");
         let fileId = fileName[fileName.length - 1];
 
+        if(!fileId){
+          this.$messageOne.info({showClose: true, message: '未获取到PDF文件！'})
+          return;
+        }
         let websocket = null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
