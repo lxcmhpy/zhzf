@@ -55,12 +55,11 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, getAllPersonApi } from "@/api/inspection";
+import { findRecordListApi, getAllPersonApi ,getDictListDetailByNameApi} from "@/api/inspection";
 // import { getAllPersonApi, } from "@/api/person";
 import iLocalStroage from "@/common/js/localStroage";
 import publicInspectors from './publicInspectors.vue';
 import { mixinPerson } from "@/common/js/personComm";
-import { getDictListDetailByNameApi, } from "@/api/system";
 export default {
   mixins: [mixinPerson],
   components: {
@@ -109,7 +108,7 @@ export default {
       zzmmList: [],
       zcList: [],
       workStatusList: [],
-      options:[]
+      options: []
     }
   },
   methods: {
@@ -178,7 +177,11 @@ export default {
     addMethod() {
       this.dialogFormVisible = true
     },
-    editMethod() { },
+    editMethod(row) {
+      this.addForm = JSON.parse(JSON.stringify(row))
+      this.dialogStatus = '修改'
+      this.dialogFormVisible = true
+    },
     delMethod() {
       this.$confirm('确认删除？', "提示", {
         confirmButtonText: "确定",
@@ -192,7 +195,7 @@ export default {
     importModle() { },
     downloadModle() { },
     getDrawerList(data) {
-      let _this=this
+      let _this = this
       getDictListDetailByNameApi(data).then(
         res => {
           _this.options = res.data
@@ -201,7 +204,8 @@ export default {
           // reject(error);
         })
     },
-    copyMethod(){
+    copyMethod() {
+      // 走公开人员的添加接口
       console.log(this.multipleSelection)
     }
   },

@@ -4,11 +4,11 @@
       <div class="search toggleBox">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
-            <el-form-item label="主体名称：" prop='otherUser'>
-              <el-input v-model="searchForm.otherUser"></el-input>
+            <el-form-item label="名称：" prop='checkItem'>
+              <el-input v-model="searchForm.checkItem"></el-input>
             </el-form-item>
-            <el-form-item label="项目名称：" prop='otherUser'>
-              <el-input v-model="searchForm.otherUser"></el-input>
+            <el-form-item label="抽查主体:" prop='checkSubject'>
+              <el-input v-model="searchForm.checkSubject"></el-input>
             </el-form-item>
           </el-form>
           <div class="search-btns">
@@ -27,12 +27,12 @@
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
           </el-form-item>
-          <el-form-item>
+          <!-- <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-delete-solid" @click="delMethod">删除</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="iconfont law-edit" @click="editMethod">修改</el-button>
-          </el-form-item>
+          </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
@@ -71,8 +71,7 @@
           <el-col :span="12">
             <el-form-item label="抽查主体" prop="checkSubject">
               <el-select v-model="addForm.checkSubject" placeholder="请选择">
-                <el-option label="男" value="0"></el-option>
-                <el-option label="女" value="1"></el-option>
+                <el-option v-for="item in optionsZFZLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -106,22 +105,16 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, } from "@/api/inspection";
+import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, delRandomItemApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
-import { getDictListDetailByNameApi, } from "@/api/system";
 export default {
   data() {
     return {
       tableData: [], //表格数据
       multipleSelection: [],
       searchForm: {
-        domain: "",
-        status: '',
-        createUser: iLocalStroage.gets("userInfo").nickName,
-        otherUser: '',
-        title: '',
-        defaultDisplay: true,
-        name: ''
+        checkSubject: '',
+        checkItem: ''
       },
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -157,9 +150,12 @@ export default {
     // 查询列表时
     getTableData() {
       let data = {
-        title: this.searchForm.title,
+        checkItem: this.searchForm.checkItem,
+        checkSubject: this.searchForm.checkSubject,
+        current: this.currentPage,
+        size: this.pageSize,
       };
-      findRecordListApi(data).then(
+      getAllRandomItemApi(data).then(
         res => {
           console.log(res)
           this.tableData = res.data.records
@@ -201,9 +197,25 @@ export default {
       this.getTableData()
     },
     submitForm(formName) {
+      debugger
       this.$refs[formName].validate((valid) => {
         if (valid) {
-
+          addItemListApi(this.addForm).then(
+            res => {
+              console.log(res)
+              if (res.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: res.msg
+                });
+                this.dialogFormVisible = false
+                this.currentPage = 1;
+                this.getTableData()
+              }
+            },
+            error => {
+              // reject(error);
+            })
         } else {
           console.log('error submit!!');
           return false;
@@ -211,20 +223,39 @@ export default {
       });
     },
     resetForm(formName) {
+      debugger
       this.$refs[formName].resetFields();
     },
     addMethod() {
       this.dialogStatus = '新增'
       this.dialogFormVisible = true
     },
-    editMethod() { },
-    delMethod() {
+    editMethod(row) {
+      this.dialogStatus = '修改'
+      this.dialogFormVisible = true
+      this.addForm = JSON.parse(JSON.stringify(row))
+    },
+    delMethod(id) {
       this.$confirm('确认删除？', "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-
+        delRandomItemApi(id).then(
+          res => {
+            console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.currentPage = 1;
+              this.getTableData()
+            }
+          },
+          error => {
+            // reject(error);
+          })
       })
     },
     exportMethod() { },
@@ -232,7 +263,7 @@ export default {
     downloadModle() { },
   },
   mounted() {
-
+    this.getTableData()
   }
 }
 </script>

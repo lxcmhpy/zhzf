@@ -4,11 +4,11 @@
       <div class="search toggleBox">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
-            <el-form-item label="主体名称：" prop='otherUser'>
-              <el-input v-model="searchForm.otherUser"></el-input>
+            <el-form-item label="姓名：" prop='name'>
+              <el-input v-model="searchForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="项目名称：" prop='otherUser'>
-              <el-input v-model="searchForm.otherUser"></el-input>
+            <el-form-item label="单位：" prop='company'>
+              <el-input v-model="searchForm.company"></el-input>
             </el-form-item>
           </el-form>
           <div class="search-btns">
@@ -27,12 +27,12 @@
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
           </el-form-item>
-          <el-form-item>
+          <!-- <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-delete-solid" @click="delMethod">删除</el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="iconfont law-edit" @click="editMethod">修改</el-button>
-          </el-form-item>
+          </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
@@ -52,7 +52,7 @@
         <el-table-column type="selection" width="55">
         </el-table-column>
         <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-        <el-table-column prop="sex" label="性别" align="center"></el-table-column>
+        <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
         <el-table-column prop="birthDate" label="出生日期" align="center"></el-table-column>
         <el-table-column prop="politicalStatus" label="政治面貌" align="center"></el-table-column>
@@ -109,7 +109,7 @@
           <el-col :span="12">
             <el-form-item label="政治面貌" prop="politicalStatus">
               <el-select v-model="addForm.politicalStatus" placeholder="请选择">
-                <el-option v-for="item in zzmmList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in optionsZZMM" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -130,7 +130,7 @@
           <el-col :span="12">
             <el-form-item label="职称" prop="jobTitle">
               <el-select v-model="addForm.jobTitle" placeholder="请选择">
-                <el-option v-for="item in zcList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in optionsZC" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -183,7 +183,9 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="专业领域" prop="domain">
-              <el-input v-model="addForm.domain"></el-input>
+              <el-select v-model="addForm.domain" placeholder="请选择">
+                <el-option v-for="item in optionsZYLY" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -213,21 +215,17 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, } from "@/api/inspection";
+import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
-import { getDictListDetailByNameApi, } from "@/api/system";
+import { mixinPerson } from "@/common/js/personComm";
 export default {
+  mixins: [mixinPerson],
   data() {
     return {
       tableData: [], //表格数据
       multipleSelection: [],
       searchForm: {
-        domain: "",
-        status: '',
-        createUser: iLocalStroage.gets("userInfo").nickName,
-        otherUser: '',
-        title: '',
-        defaultDisplay: true,
+        company: "",
         name: ''
       },
       currentPage: 1, //当前页
@@ -237,13 +235,26 @@ export default {
       dialogFormVisible: false,
       addForm: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        sex: '',
+        expertNum: '',
+        company: '',
+        politicalStatus: '',
+        birthDate: '',
+        unitAddress: '',
+        jobTitle: '',
+        job: '',
+        evaluationTime: '',
+        graduateSchool: '',
+        email: '',
+        domain: '',
+        fixedTelephone: '',
+        graduateTime: '',
+        practiceQualification: '',
+        qualificationTime: '',
+        contactType: '',
+        baseInfo: '',
+        remark: '',
+        status: '',
       },
       formLabelWidth: '100px',
       dialogStatus: '',
@@ -258,17 +269,21 @@ export default {
           { required: true, trigger: 'blur' }
         ]
       },
-      zzmmList: [],
-      zcList: []
+      optionsZC: [],
+      optionsZZMM: [],
+      optionsZYLY: [],
     }
   },
   methods: {
     // 查询列表时
     getTableData() {
       let data = {
-        title: this.searchForm.title,
+        name: this.searchForm.name,
+        company: this.searchForm.company,
+        current: this.currentPage,
+        size: this.pageSize,
       };
-      findRecordListApi(data).then(
+      getAllExpertApi(data).then(
         res => {
           console.log(res)
           this.tableData = res.data.records
@@ -312,7 +327,22 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-
+          addExpertApi(this.addForm).then(
+            res => {
+              console.log(res)
+              if (res.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: res.msg
+                });
+                this.dialogFormVisible = false
+                this.currentPage = 1;
+                this.getTableData()
+              }
+            },
+            error => {
+              // reject(error);
+            })
         } else {
           console.log('error submit!!');
           return false;
@@ -326,22 +356,63 @@ export default {
       this.dialogStatus = '新增'
       this.dialogFormVisible = true
     },
-    editMethod() { },
-    delMethod() {
+    editMethod(row) {
+      this.addForm = JSON.parse(JSON.stringify(row))
+      this.dialogStatus = '修改'
+      this.dialogFormVisible = true
+    },
+    delMethod(id) {
       this.$confirm('确认删除？', "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-
+        delExpertApi(id).then(
+          res => {
+            console.log(res)
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.currentPage = 1;
+              this.getTableData()
+            }
+          },
+          error => {
+            // reject(error);
+          })
       })
     },
     exportMethod() { },
     importModle() { },
     downloadModle() { },
+    getDrawerList(data) {
+      let _this = this
+      data.forEach(element => {
+        getDictListDetailByNameApi(element.name).then(
+          res => {
+            switch (element.option) {
+              case 2: _this.optionsZC = res.data; break;//职称
+              case 3: _this.optionsZYLY = res.data; break;//专业领域
+              case 4: _this.optionsZZMM = res.data; break;//政治面貌
+            }
+          },
+
+          error => {
+            // reject(error);
+          })
+      });
+
+    },
   },
   mounted() {
-
+    this.getTableData()
+    // 获取抽屉
+    this.getDrawerList([
+      { name: '职称', option: 2 },
+      { name: '专业领域', option: 3 },
+      { name: '人员信息-政治面貌', option: 4 }])
   }
 }
 </script>
