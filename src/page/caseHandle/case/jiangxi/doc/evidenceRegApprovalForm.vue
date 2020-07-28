@@ -459,7 +459,8 @@ export default {
         pageDomId: "evidenceRegApprovalForm_print"
       },
       approvalOver: false, //审核完成
-      propertyFeatures: ""
+      propertyFeatures: "",
+      needDealData:true,
     };
   },
   methods: {
@@ -531,11 +532,20 @@ export default {
           true
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
+    },
+    getDataAfter(){
+      let detainGoodsArr = JSON.parse(this.docData.detainGoods);
+      console.log('detainGoodsArr',detainGoodsArr);
+      let detainGoodsNameArr = [];
+      detainGoodsArr.forEach(item => {
+        detainGoodsNameArr.push(item.evidenceName);
+      });
+      this.docData.detainGoods = detainGoodsNameArr.join(' ');
     }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
-    this.isOverStatus();
+    this.isOverStatus(); 
   }
 };
 </script>
