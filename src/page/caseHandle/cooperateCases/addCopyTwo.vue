@@ -189,7 +189,7 @@
       reSelect() {
         this.$store.dispatch("deleteTabs", this.$route.name);
         this.$router.replace({
-          name: "addCopyOne",
+          name: "case_handle_addCopyOne", 
         });
       },
       goSubmit(formName) {
