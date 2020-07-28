@@ -1,6 +1,6 @@
 <template>
   <div class="jk-controlsMap">
-    <BaseHMap />
+    <BaseHMap @init="init" :center="center" :zoom="zoom" />
     <JkMapSearch
       class="jk-controlsMap-inputWithSearch"
       @handleNodeClick="handleNodeClick"
@@ -26,14 +26,35 @@ export default {
     JkMapSelect
   },
   props: {
+    // 控件相关数据
     config: {
       type: Object,
       default() {
         return {}
       }
-    }
+    },
+    // 中心点
+    center: {
+      type: Array,
+      default() {
+        return [12118909.300259633, 4086043.1061670054];
+      }
+    },
+    // 放大倍数
+    zoom: {
+      type: Number,
+      default: 8
+    },
   },
   methods: {
+    /**
+     *
+     * 派发地图初始化事件
+     */
+    init(map, _this) {
+      this.$emit("init", map, _this)
+    },
+
     /**
      *
      * 点击节点回调函数
