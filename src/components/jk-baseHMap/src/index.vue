@@ -100,14 +100,15 @@ export default {
     },
 
     /**
-     * 地图添加点位
+     * 地图添加点位(单点)
      */
-    addPoint(data) {
+    addPoint(data, latLng) {
+      if(!latLng) return
       const point = {
         attributes: {
           id: data.id
         },
-        geometry: this.getTransLatLng(data.propertyValue.split(','))
+        geometry: this.getTransLatLng(latLng)
       }
       const options = {
         layerName: 'pointLayer',

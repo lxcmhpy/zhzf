@@ -150,8 +150,13 @@ export default {
      * 点击节点回调函数
      */
     handleNodeClick(data) {
-      // 调用地图组件中打点函数
-      this.page.addPoint(data)
+      if(data.propertyValue) {
+        let latLng = data.propertyValue.split(',')
+        // 调用地图组件中打点函数
+        this.page.addPoint(data, latLng)
+      } else {
+        throw new Error("handleNodeClick(data):::::::::没有坐标")
+      }
     },
 
     /**
