@@ -4,7 +4,7 @@
       <section class="form_contianer" v-show="showLogin">
         <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>治超联网监管系统</span></div>-->
         <div class="leftC">
-          <img :src="'./static/images/img/login/zf_bg.jpg'" alt="">
+          <img :src="loginImgSrc" alt="">
           <div class="leftC_title">
             <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
           </div>
@@ -260,7 +260,8 @@ export default {
       editFlag: false,
       timeOutFlag: "",
       menuList: null,
-      systemTitleLogin: null
+      systemTitleLogin: null,
+      loginImgSrc:'',
     };
   },
   computed: { ...mapGetters(['systemTitle']) },
@@ -524,6 +525,15 @@ export default {
       this.$store.commit('setProvince', res.data[2] && res.data[2].name ? res.data[2].name : '');
       //是否需要签章
       this.$store.commit('setShowQZBtn', res.data[1] && res.data[1].name == '是' ? true : false)
+      //获取登录背景图片
+      let imgRes = '';
+      try {
+        imgRes = await getDictListDetailByNameApi('loginBg');
+        this.loginImgSrc = './static/images/img/login/'+ imgRes.data[0].name+'.jpg';
+      } catch (error) {
+        this.loginImgSrc = './static/images/img/login/zf_bg.jpg'
+        throw new Error(error);
+      }
     },
   },
   async created() {
