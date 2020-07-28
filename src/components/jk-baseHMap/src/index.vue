@@ -103,10 +103,11 @@ export default {
      * 地图添加点位(单点)
      */
     addPoint(data, latLng) {
-      if(!latLng) return
+      if(!latLng) throw new Error("addPoint() in jk-baseHMap:::::::::::没有坐标")
       const point = {
         attributes: {
-          id: data.id
+          id: data.id,
+          data: data, // 带入当前点位信息
         },
         geometry: this.getTransLatLng(latLng)
       }

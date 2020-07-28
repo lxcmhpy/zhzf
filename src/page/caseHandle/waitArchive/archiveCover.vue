@@ -353,16 +353,15 @@ export default {
         }
         return;
       }
-      debugger
       let fileType= this.$util.getFileType(data.item.evName);
       if(fileType == 'image'){ //图片
          this.docSrc = this.host + data.item.storageId;
          this.showCover = 'img';
       }else{
-          if(fileType == 'pdf'){
+          // if(fileType == 'pdf'){
             this.docSrc = this.host + data.item.storageId;
             this.showCover = 'pdf';
-          }
+          // }
       }
 
        
@@ -576,7 +575,6 @@ export default {
       handler(newVal,oldVal){
            console.log("newVal","oldVal")
             console.log(newVal,oldVal)
-            debugger
             if(newVal){
               let data = {
                 item:this.clickArchiveCatalogue,

@@ -117,7 +117,7 @@ export default {
     //点击卷宗目录列表
     alertPDF (item) {
       console.log(this.$route.name)
-      if(this.$route.name!='case_handle_archiveCover'){
+      if(this.$route.name!='case_handle_archiveCover'){ 
         this.$router.push({name:'case_handle_archiveCover',params:{clickData:JSON.stringify(item),mulvList:this.caseList}});
         return;
       }
