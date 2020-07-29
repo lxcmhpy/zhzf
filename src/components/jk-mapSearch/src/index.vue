@@ -74,6 +74,7 @@ export default {
      * 点击专题图片触发
      */
     handleSearch(data) {
+      this.isShow = false
       this.$emit("handleSearch", data)
     },
 
