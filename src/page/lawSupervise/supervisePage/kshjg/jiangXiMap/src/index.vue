@@ -2,10 +2,14 @@
   <div class="jiangXiMap">
     <JkControlsMap
       @init="init"
-      @handleNodeClick="handleNodeClick"
       @handleChange="handleChange"
+      @handleSearch="handleSearch"
       :config="config"
       :center="center"
+    />
+    <JkMapTree
+      :config="treeData"
+      @handleNodeClick="handleNodeClick"
     />
     <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" />
   </div>
@@ -13,11 +17,13 @@
 
 <script>
 import JkControlsMap from "@/components/jk-controlsMap";
-import MapWinDow from "./mapWindow.vue"
+import JkMapTree from "@/components/jk-mapTree"
+import MapWinDow from "./mapWindow.vue";
 import { organTreeByCurrUser } from "@/api/lawSupervise.js";
 export default {
   components: {
     JkControlsMap,
+    JkMapTree,
     MapWinDow
   },
   data() {
@@ -28,31 +34,40 @@ export default {
       center: [12118909.300259633, 4086043.1061670054],
       showWindow: false,
       windowData: {},
+      treeData: {
+        option: [
+          // {
+          //   label: '固原综合执法支队',
+          //   children: [{
+          //     label: '执法人员',
+          //   },{
+          //     label: '执法车辆',
+          //   },{
+          //     label: '执法船舶',
+          //   },{
+          //     label: '德隆综合执法大队',
+          //     children: [{
+          //       label: '执法人员',
+          //     },{
+          //       label: '执法车辆',
+          //     },{
+          //       label: '执法船舶',
+          //     },]
+          //   }]
+          // },
+        ],
+      },
       config: {
-        treeData: {
-          title: "搜执法人员、执法机构",
-          imgUrl: "/static/images/img/lawSupervise/icon_renyuan.png",
+        searchData: {
+          title: "专题查询",
+          placeholder: "搜执法人员、执法机构",
           option: [
-            // {
-            //   label: '固原综合执法支队',
-            //   children: [{
-            //     label: '执法人员',
-            //   },{
-            //     label: '执法车辆',
-            //   },{
-            //     label: '执法船舶',
-            //   },{
-            //     label: '德隆综合执法大队',
-            //     children: [{
-            //       label: '执法人员',
-            //     },{
-            //       label: '执法车辆',
-            //     },{
-            //       label: '执法船舶',
-            //     },]
-            //   }]
-            // },
-          ],
+            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+          ]
         },
         popoverData: {
           option: [
@@ -150,8 +165,15 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
-        this.config.treeData.option = data
+        this.treeData.option = data
       })
+    },
+
+    /**
+     * 点击当前专题图片，下钻到树形结构窗口
+     */
+    handleSearch(data) {
+      console.log(data)
     },
 
     /**

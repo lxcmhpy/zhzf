@@ -12,8 +12,8 @@ export default {
     title() {
       return this.config.title
     },
-    imgUrl() {
-      return this.config.imgUrl
+    placeholder() {
+      return this.config.placeholder
     },
     option() {
       return this.config.option
@@ -22,56 +22,23 @@ export default {
   data() {
     return {
       inputModel: "",
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
       isShow: false
     }
   },
   methods: {
     /**
-     *
-     * 节点被点击时的回调
-     */
-    handleNodeClick(data) {
-      this.$emit('handleNodeClick', data)
-    },
-
-    /**
-     *
-     * 自定义子节点图标
-     */
-    renderSlot(h,{ node, data, store }) {
-      return (
-        <div class="tree-slot-box">
-          <img
-            src={
-              data.label === '执法人员' ?
-                '/static/images/img/lawSupervise/icon_jc11.png'
-                : data.label === '执法车辆' ?
-                '/static/images/img/lawSupervise/icon_cl11.png'
-                : data.label === '执法船舶' ?
-                '/static/images/img/lawSupervise/icon_cb11.png'
-                : '/static/images/img/lawSupervise/icon_jc1.png'
-            }
-          />
-          <span>{data.label}</span>
-        </div>
-      )
-    },
-
-    /**
-     *
      * 头部输入框生成函数
      */
     renderSearch() {
       return (
-        <div class="input-with-select">
+        <div class="input-with-select" on-click={ ()=>{this.isShow = true} }>
           <el-input
             value={ this.inputModel }
             on-input={ value => this.inputModel = value }
             placeholder={this.title}>
+            <div slot="suffix" class="closeBox" on-click={this.handleClose}>
+              <i class="el-icon-close"></i>
+            </div>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
@@ -79,34 +46,49 @@ export default {
     },
 
     /**
-     *
-     * 图片和树结构的生成函数
+     * 查询框生成函数
      */
     renderContant() {
       return (
         <div class="contant">
-          <div class="contant-imgBox">
-            <img src={this.imgUrl} />
-          </div>
-          <div>
-            <el-tree
-              data={this.option}
-              props={this.defaultProps}
-              on-node-click={this.handleNodeClick}
-              render-content={this.renderSlot}
-            >
-            </el-tree>
-          </div>
+          <header class="contant-titles">
+            <h4>{this.title}</h4>
+          </header>
+          <article class="contant-flexBoxs">
+            {
+              this._l(this.option, item => {
+                return (
+                  <div class="flexBox">
+                    <img on-click={() => {this.handleSearch(item)}} src={item.imgUrl} />
+                    <div>{item.name}</div>
+                  </div>
+                )
+              })
+            }
+          </article>
         </div>
       )
+    },
+
+    /**
+     * 点击专题图片触发
+     */
+    handleSearch(data) {
+      this.$emit("handleSearch", data)
+    },
+
+    /**
+     * 点击关闭按钮触发
+     */
+    handleClose() {
+      event.stopPropagation()
+      this.isShow = false
+      this.inputModel=''
     }
   },
   render() {
     return (
-      <div class="jk-mapSearch"
-        on-mouseenter = {() => {this.isShow = true}}
-        on-mouseleave = {() => {this.isShow = false}}
-      >
+      <div class="jk-mapSearch">
         { this.renderSearch() }
         {
           this.isShow ? this.renderContant() : null
@@ -128,26 +110,68 @@ export default {
     }
   }
   .input-with-select {
+    margin-bottom: 10px;
     .el-input__inner {
-      width: 392px;
-      height: 46px;
+      width: 311px;
+      height: 40px;
+      border-radius: 4px 0 0 4px;
     }
     .el-input-group__append {
-      background-color: rgba(2,118,250,.9);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 0;
+      .el-button {
+        .el-icon-search {
+          color: #409EFF;
+        }
+      }
+    }
+    .closeBox {
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
     }
   }
   .contant {
-    height: 65vh;
-    background: #FFFFFF;
-    &-imgBox {
-      height: 25%;
-      border-bottom: 2px solid #EEEEEE;
-      text-align: center;
-      img {
-        height: 100%;
+    height: 308px;
+    width: 370px;
+    background: #fff;
+    box-shadow: 1px 1px 8px #ddd;
+    padding: 15px;
+    box-sizing: border-box;
+    &-titles {
+      font-size: 14px;
+      margin-bottom: 10px;
+      h4 {
+        font-weight: bold;
+      }
+    }
+    &-titles h4:before {
+      content: " ";
+      display: inline-block;
+      float: left;
+      background: #46aaff;
+      height: 14px;
+      width: 4px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    &-flexBoxs {
+      overflow: auto;
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      .flexBox {
+        width: 33%;
+        height: 69px;
+        text-align: center;
+        margin-bottom: 15px;
+        img {
+          width: 41px;
+          margin-bottom: 5px;
+          cursor: pointer;
+        }
+        div {
+          text-align: center;
+          font-size: 13px;
+        }
       }
     }
   }
