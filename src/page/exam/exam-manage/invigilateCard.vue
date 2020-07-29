@@ -27,7 +27,7 @@
               >准考证</td>
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
-              <td style="width: 90px; padding: 14px 0;">考生姓名：</td>
+              <td style="width: 92px; padding: 14px 0;">考生姓名：</td>
               <td style="width: 120px; padding: 14px 0;">{{addExamBatchForm.personName}}</td>
               <td style="width: 40px; padding: 14px 0;"></td>
               <td style="width: 120px;"></td>
@@ -44,25 +44,25 @@
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
               <td style="width: 55px; padding: 14px 0;">性别：{{addExamBatchForm.sex==0?'男':'女'}}</td>
-              <td style="width: 90px; padding: 14px 0; text-align:right;">身份证号：</td>
+              <td style="width: 92px; padding: 14px 0; text-align:right;">身份证号：</td>
               <td colspan="3">{{addExamBatchForm.idNo}}</td>
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
-              <td style="width: 90px; padding: 14px 0;">工作单位：</td>
+              <td style="width: 92px; padding: 14px 0;">工作单位：</td>
               <td colspan="3">{{addExamBatchForm.oname}}</td>
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
-              <td style="width: 90px; padding: 14px 0;">考试地点：</td>
+              <td style="width: 92px; padding: 14px 0;">考试地点：</td>
               <td colspan="3">{{addExamBatchForm.examVenues}}</td>
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
               <td
-                style="width: 90px; padding: 14px 0;"
+                style="width: 92px; padding: 14px 0;"
               >考&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场：</td>
               <td colspan="3">{{addExamBatchForm.roomName}}</td>
             </tr>
             <tr style="vertical-align: inherit; font-size:18px;color: #000;">
-              <td style="width: 90px; padding: 14px 0;">考试时间：</td>
+              <td style="width: 92px; padding: 14px 0;">考试时间：</td>
               <td colspan="3">{{addExamBatchForm.examTime}}</td>
             </tr>
           </tbody>
