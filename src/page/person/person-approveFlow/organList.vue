@@ -199,7 +199,7 @@ export default {
       data = _this.paramList;
       // console.info(">>>>>>>>>>"+JSON.stringify(_this.allOrganData))
       // console.info("aaaadddd"+JSON.stringify(_this.paramList))
-       this.$refs.approveDeployRef.showModal(data,id);
+       this.$refs.approveDeployRef.showModal(data, id);
     },
     //根据点击机构的id查找pid
     getOrgPid(arr,id){

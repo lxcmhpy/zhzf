@@ -127,9 +127,9 @@ export default {
         examMsg.examBegin.substring(8, 10) +
         "日" +
         "         " +
-        examMsg.examBegin.substring(12, 16) +
+        examMsg.examBegin.substring(11, 16) +
         "-" +
-        examMsg.examEnd.substring(12, 16);
+        examMsg.examEnd.substring(11, 16);
       this.addExamBatchForm.examBegin = examMsg.examBegin.substring(0, 10);
       this.addExamBatchForm.examEnd = examMsg.examEnd;
       this.addExamBatchForm.examperId = row.examperId;
