@@ -113,6 +113,17 @@ export default  [
                 },
                 component: () => import("@/page/inspection/record-manage/file/xzjcPDF.vue")
             },
+            // 双随机
+            {
+                // 信息维护
+                path: "/infoMaintains",
+                name: "inspection_infoMaintains",
+                meta: {
+                title: "信息维护",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/doubly-stochastic/infoMaintains/infoMaintains.vue")
+            },
         ]
     }, 
 ]

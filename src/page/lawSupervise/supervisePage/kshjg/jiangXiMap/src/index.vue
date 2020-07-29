@@ -1,45 +1,57 @@
 <template>
   <div class="jiangXiMap">
     <JkControlsMap
+      @init="init"
       @handleNodeClick="handleNodeClick"
       @handleChange="handleChange"
-      :config="config" />
+      :config="config"
+      :center="center"
+    />
+    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" />
   </div>
 </template>
 
 <script>
 import JkControlsMap from "@/components/jk-controlsMap";
+import MapWinDow from "./mapWindow.vue"
 import { organTreeByCurrUser } from "@/api/lawSupervise.js";
 export default {
   components: {
-    JkControlsMap
+    JkControlsMap,
+    MapWinDow
   },
   data() {
     return {
+      page: null,
+      map: null,
+      zoom: 8,
+      center: [12118909.300259633, 4086043.1061670054],
+      showWindow: false,
+      windowData: {},
       config: {
         treeData: {
           title: "搜执法人员、执法机构",
           imgUrl: "/static/images/img/lawSupervise/icon_renyuan.png",
           option: [
-            {
-              label: '固原综合执法支队',
-              children: [{
-                label: '执法人员',
-              },{
-                label: '执法车辆',
-              },{
-                label: '执法船舶',
-              },{
-                label: '德隆综合执法大队',
-                children: [{
-                  label: '执法人员',
-                },{
-                  label: '执法车辆',
-                },{
-                  label: '执法船舶',
-                },]
-              }]
-            },
+            // {
+            //   label: '固原综合执法支队',
+            //   children: [{
+            //     label: '执法人员',
+            //   },{
+            //     label: '执法车辆',
+            //   },{
+            //     label: '执法船舶',
+            //   },{
+            //     label: '德隆综合执法大队',
+            //     children: [{
+            //       label: '执法人员',
+            //     },{
+            //       label: '执法车辆',
+            //     },{
+            //       label: '执法船舶',
+            //     },]
+            //   }]
+            // },
           ],
         },
         popoverData: {
@@ -116,21 +128,65 @@ export default {
     }
   },
   methods: {
+    /**
+     * 地图初始化事件
+     */
+    init(_map, _this) {
+      this.map = _map
+      this.page = _this
+      _map.on('feature:onselect', event => {
+        this.handleClickPoint(event.value.N.data)
+      });
+    },
+
+    /**
+     * 获取数据
+     */
     getTree() {
       organTreeByCurrUser().then(res => {
-        console.log(res)
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
+        }
+      }).then(data => {
+        this.config.treeData.option = data
       })
     },
+
     /**
-     *
-     * 点击节点回调函数
+     * 点击节点回调函数，调用打点函数
      */
     handleNodeClick(data) {
+      if(data.propertyValue) {
+        let latLng = data.propertyValue.split(',')
+        // 调用地图组件中打点函数
+        this.page.addPoint(data, latLng)
+      } else {
+        throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
+      }
+    },
+
+    /**
+     * 点击地图点位触发
+     */
+    handleClickPoint(data) {
+      this.showWindow = true
+      this.windowData = {
+        title: data.label,
+        info: {},
+      }
       console.log(data)
     },
 
     /**
-     *
+     * 关闭弹窗
+     */
+    handleClose() {
+      this.showWindow = false
+    },
+
+    /**
      * 选中级联选择器节点时触发
      */
     handleChange(value) {
@@ -147,5 +203,6 @@ export default {
 .jiangXiMap {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 </style>

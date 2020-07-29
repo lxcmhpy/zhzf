@@ -539,7 +539,7 @@
           <div class="itemSmall">
             <el-form-item label="检测单号">
               <el-input v-model="inforForm.otherInfo.checkNumber">
-                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
+                <!-- <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button> -->
               </el-input>
             </el-form-item>
           </div>

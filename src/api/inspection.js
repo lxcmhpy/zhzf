@@ -11,12 +11,12 @@ let vm = new Vue();
 export function saveOrUpdateRecordModleApi(data) {
     data = vm.$qs.stringify(data);
     return request({
-        url:"/xzjc/template/mySaveOrUpdate",
+        url: "/xzjc/template/mySaveOrUpdate",
         method: "post",
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -29,7 +29,7 @@ export function findMoleByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -41,7 +41,7 @@ export function removeMoleByIdApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -53,7 +53,7 @@ export function removeMoleCollectByIdApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -66,7 +66,7 @@ export function findCommonFieldApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -78,7 +78,7 @@ export function findAllCommonFieldApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -89,7 +89,7 @@ export function findAllCommonGroupFieldApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -100,7 +100,7 @@ export function findAllCandidateFieldApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -123,62 +123,62 @@ export function findRecordModleByPersonApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //查询登录人收藏的模板
 export function findUserCollectTemplateApi(data) {
     return request({
-        url: "/xzjc/template/findUserCollectTemplate/"+data,
+        url: "/xzjc/template/findUserCollectTemplate/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //通过模板名称查询模板
 export function findRecordlModleByNameApi(data) {
     return request({
-        url: "/xzjc/template/findByTemplateName/"+data,
+        url: "/xzjc/template/findByTemplateName/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //通过模板UUid查询模板字段
 export function findRecordlModleFieldByIdeApi(data) {
     return request({
-        url: "/xzjc/templateField/findByTemplateUUID/"+data,
+        url: "/xzjc/templateField/findByTemplateUUID/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //根据ID查找模板
 export function findRecordModleByIdApi(data) {
     return request({
-        url: "/xzjc/template/getById/"+data,
+        url: "/xzjc/template/getById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //根据模板UUID查找模板修改时间
 export function findRecordModleTimeByIdApi(data) {
     return request({
-        url: "/xzjc/template/getTemplateUpdateTime/"+data,
+        url: "/xzjc/template/getTemplateUpdateTime/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -190,18 +190,18 @@ export function findRecordModleByNameIdApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //查询所有模板名称
 export function findAllModleNameApi(data) {
     return request({
-        url: "/xzjc/template/queryAlltemplateName/"+data,
+        url: "/xzjc/template/queryAlltemplateName/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -213,7 +213,7 @@ export function findRecordListApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -222,12 +222,12 @@ export function findRecordListApi(data) {
 export function saveOrUpdateRecordApi(data) {
     data = vm.$qs.stringify(data);
     return request({
-        url:"/xzjc/templateOrder/mySaveOrUpdate",
+        url: "/xzjc/templateOrder/mySaveOrUpdate",
         method: "post",
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -238,7 +238,7 @@ export function removeRecordByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -249,7 +249,7 @@ export function findRecordByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -260,7 +260,7 @@ export function findMyRecordByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -271,18 +271,18 @@ export function getDocumentNameList() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //查找当前记录相关文书
 export function getDocListById(data) {
     return request({
-        url: "/xzjc/document/getDocListById/"+data,
+        url: "/xzjc/document/getDocListById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -290,46 +290,46 @@ export function getDocListById(data) {
 export function saveOrUpdateDocument(data) {
     data = vm.$qs.stringify(data);
     return request({
-        url:"/xzjc/document/mySaveOrUpdate",
+        url: "/xzjc/document/mySaveOrUpdate",
         method: "post",
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //添加或修改文书表
 export function getDocumentById(data) {
     return request({
-        url:"/xzjc/document/getById/"+data,
+        url: "/xzjc/document/getById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //根据文书名称模糊查询文书
 export function getDocListByName(data) {
     return request({
-        url:"/xzjc/document/getDocListByName",
+        url: "/xzjc/document/getDocListByName",
         method: "get",
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 //查询当前模板相关文书
 export function getTemplateDocList(data) {
     return request({
-        url:"/xzjc/template/getTemplateDocList/"+data,
+        url: "/xzjc/template/getTemplateDocList/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -337,12 +337,12 @@ export function getTemplateDocList(data) {
 export function changeFileStatus(data) {
     // data = vm.$qs.stringify(data);
     return request({
-        url:"/xzjc/document/updateDocStatus/"+data,
+        url: "/xzjc/document/updateDocStatus/" + data,
         method: "post",
         // data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -350,46 +350,209 @@ export function changeFileStatus(data) {
 export function updatePicPath(data) {
     data = vm.$qs.stringify(data);
     return request({
-        url:"/xzjc/document/updatePicPath",
+        url: "/xzjc/document/updatePicPath",
         method: "post",
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 // 撤销文书操作
 export function documentRevoke(data) {
     return request({
-        url:"/xzjc/document/revoke/"+data,
+        url: "/xzjc/document/revoke/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 // 根据UUID删除文书
 export function delDocumentById(data) {
     return request({
-        url:"/xzjc/document/myRemoveById/"+data,
+        url: "/xzjc/document/myRemoveById/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
 // 修改记录的文书保存情况
-export function delDocumentModifyOrderById(data) {    
+export function delDocumentModifyOrderById(data) {
     // data = vm.$qs.stringify(data);
     return request({
-        url:"/xzjc/templateOrder/modifyOrderById/"+data,
+        url: "/xzjc/templateOrder/modifyOrderById/" + data,
         method: "post",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType:  'XZJC_HOST',
+        baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
 }
+// 分页查询执法人员
+export function getAllPersonApi(data) {
+    return request({
+        url: "/person/person/personPageList",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'LAW_SUPERVISE_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 分页查询公开执法人员
+export function getAllPublicPersonApi(data) {
+    return request({
+        url: "/xzjc/randomPerson/queryRandomPerson",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 根据UUID删除检查对象表数据
+export function delPersonApi(data) {
+    return request({
+        url: "/xzjc/randomPerson/myRemoveById/"+data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添加或修改检查人员表数据
+export function addPublicPersonApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/randomPerson/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 分页查询检查专家表数据
+export function getAllExpertApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/queryRandomExpert",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添加或修改检查专家表数据
+export function addExpertApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/randomExpert/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 根据UUID删除检查专家表数据
+export function delExpertApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/myRemoveById/"+data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 分页查询检查对象表数据
+export function getAllRandomObjectApi(data) {
+    return request({
+        url: "/xzjc/randomObject/queryRandomObject",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 根据UUID删除检查对象表数据
+export function delRandomObjectApi(data) {
+    return request({
+        url: "/xzjc/randomObject/myRemoveById/"+data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添加或修改检查对象表数据
+export function addInspectionObjectApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/randomObject/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 分页查询事项清单表数据
+export function getAllRandomItemApi(data) {
+    return request({
+        url: "/xzjc/randomItem/queryRandomItem",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 根据UUID删除事项清单表数据
+export function delRandomItemApi(data) {
+    return request({
+        url: "/xzjc/randomItem/myRemoveById/"+data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添加或修改事项清单表数据
+export function addItemListApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/randomItem/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//获取字典详情  字典值
+export function getDictListDetailByNameApi(name) {
+    return request({
+      url: "/system/sys/drawer/findAllDrawerByName/" + name,
+      method: "get",
+      showloading: false,
+      loadingType: name =='系统标题'||name =='loginBg' ? 'loadFull' : 'loadPart',
+      cancelToken: setCancelSource()
+    });
+  }
+  

@@ -102,7 +102,7 @@
   </div>
 </template>
 <script>
-import { saveOrUpdateDocument, getDocumentById, findMyRecordByIdApi, changeFileStatus } from "@/api/Record";
+import { saveOrUpdateDocument, getDocumentById, findMyRecordByIdApi, changeFileStatus } from "@/api/inspection";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import xzjcDocFloatBtns from "../writeRecordCompoments/xzjcDocFloatBtns.vue";

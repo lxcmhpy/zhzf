@@ -17,7 +17,7 @@ export default {
     // 放大倍数
     zoom: {
       type: Number,
-      default: 5
+      default: 10
     },
   },
   beforeCreate() {
@@ -45,7 +45,9 @@ export default {
         view: {
           center: this.center,
           projection: 'EPSG:3857',
-          zoom: this.zoom
+          zoom: this.zoom,
+          minZoom: 3,
+          maxZoom: 13
         },
         baseLayers: [
           {
@@ -76,7 +78,8 @@ export default {
                 2.388657133974685
               ]
             },
-            layerUrl: 'http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
+            layerUrl: 'http://111.75.227.156:18967/arcgis/rest/services/jx_channel_mix_2019/MapServer/tile/{z}/{y}/{x}?key=OWUYmEyO'
+            // layerUrl: 'http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
           }
         ]
       });
@@ -88,10 +91,55 @@ export default {
       //派发地图初始化事件
       this.$emit("init", this.map, this);
     },
+
+    /**
+     * 坐标转换
+     * 经纬度转Mercator， lonLatToMercator (lng, lat)
+     */
+    getTransLatLng(arr) {
+      return HMap.transform.lonLatToMercator(Number(arr[0]), Number(arr[1]))
+    },
+
+    /**
+     * 地图添加点位(单点)
+     */
+    addPoint(data, latLng) {
+      if(!latLng) throw new Error("addPoint() in jk-baseHMap:::::::::::没有坐标")
+      const point = {
+        attributes: {
+          id: data.id,
+          data: data, // 带入当前点位信息
+        },
+        geometry: this.getTransLatLng(latLng)
+      }
+      const options = {
+        layerName: 'pointLayer',
+        zoomToExtent: true,
+        style: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '/static/images/img/lawSupervise/map_jigou.png',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        },
+        selectStyle: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '/static/images/img/lawSupervise/map_jigou.png',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        }
+      }
+      this.map.addPoint(point, options)
+    },
   },
   created() {
-    loadCss("../../../../static/hmap/hmap.css");
-    loadScript("../../../../static/hmap/hmap.js").then(() => this.init());
+    loadCss("/static/hmap/hmap.css");
+    loadScript("/static/hmap/hmap.js").then(() => this.init());
   }
 }
 </script>
