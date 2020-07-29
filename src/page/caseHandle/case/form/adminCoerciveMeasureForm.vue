@@ -578,6 +578,7 @@ import {
       },
       handleAdd(resNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.formData.resList));
+        let length = this.tableDatas.length;
         this.addVisible = true;
         if (length == 0) {
           this.tableDatas.push({'resNo': 1, 'amount': 1});

@@ -20,7 +20,7 @@ export default {
   watch: {
     recordMsg: {
       handler(val, oldVal) {
-        // debugger
+        debugger
         console.log('监听', this.recordMsg, 'val', val)
         this.recordId = this.recordMsg
         this.uploadAllImg()

@@ -601,6 +601,11 @@ export const mixinGetCaseApiList = {
         this.caseDocDataForm.id = res.data.id;
         this.caseDocDataForm.note = res.data.note;
         this.docData = JSON.parse(res.data.docData);
+        if (this.docData.party) {
+          this.isParty = true;
+        } else {
+          this.isParty = false;
+        }
         console.log('this.docData',this.docData)
         this.getDocDetailByIdAfter()
       }, err => {
@@ -615,7 +620,7 @@ export const mixinGetCaseApiList = {
       };
       findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res => {
         let resdata = JSON.parse(res.data.propertyData);
-        // console.log(data);
+         console.log("1111111111",resdata.party.val);
         this.propertyFeatures = resdata;
       })
     },

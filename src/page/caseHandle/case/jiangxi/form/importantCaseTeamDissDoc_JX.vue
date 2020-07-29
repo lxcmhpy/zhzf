@@ -8,139 +8,256 @@
         <p class="p_begin">
           案由：
           <span>
-            <el-form-item prop="caseName" style="width: 566px;" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="formData.caseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+            <el-form-item
+              prop="caseName"
+              style="width: 566px;"
+              :rules="fieldRules('caseName',propertyFeatures['caseName'])"
+            >
+              <el-input
+                v-model="formData.caseName"
+                maxLength="32"
+                :disabled="fieldDisabled(propertyFeatures['caseName'])"
+              ></el-input>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           讨论时间：
           <span>
-            <el-form-item prop="discussionStartTime" class="pdf_datapick inputwidth dataTimeReplaceBox" style="width:220px" :rules="fieldRules('discussionStartTime',propertyFeatures['discussionStartTime'])">
-              <el-date-picker v-model="formData.discussionStartTime" type="datetime"
+            <el-form-item
+              prop="discussionStartTime"
+              class="pdf_datapick inputwidth dataTimeReplaceBox"
+              style="width:220px"
+              :rules="fieldRules('discussionStartTime',propertyFeatures['discussionStartTime'])"
+            >
+              <el-date-picker
+                v-model="formData.discussionStartTime"
+                type="datetime"
                 format="yyyy-MM-dd HH:mm"
-                value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionStartTime'])">
-              </el-date-picker>
-              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="formData.discussionStartTime"></el-input>
+                value-format="yyyy年MM月dd日HH时mm分"
+                :disabled="fieldDisabled(propertyFeatures['discussionStartTime'])"
+              ></el-date-picker>
+              <el-input
+                class="replaceTime"
+                placeholder=" 年 月 日 时 分"
+                v-model="formData.discussionStartTime"
+              ></el-input>
             </el-form-item>
           </span> 至
           <span>
-            <el-form-item prop="
-" class="pdf_datapick" style="width:220px" :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])">
-<!--              <el-date-picker v-model="formData.discussionEndTime" type="datetime"-->
-<!--                format="yyyy-MM-dd HH:mm"-->
-<!--                value-format="yyyy年MM月dd日HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">-->
-<!--              </el-date-picker>-->
-              <el-time-picker placeholder="  时 分" v-model="formData.discussionEndTime"
-                format="HH:mm" value-format="HH时mm分" :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])">
-              </el-time-picker>
-<!--              <el-input class="replaceTime" placeholder=" 时 分" v-model="formData.discussionEndTime"></el-input>-->
+            <el-form-item
+              prop="discussionEndTime"
+              class="pdf_datapick"
+              style="width:220px"
+              :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])"
+            >
+              <el-time-picker
+                placeholder="  时 分"
+                v-model="formData.discussionEndTime"
+                format="HH时mm分"
+                value-format="HH:mm"
+                :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])"
+              ></el-time-picker>
             </el-form-item>
           </span>
         </p>
         <p class="p_begin">
           地点：
           <span>
-            <el-form-item prop="discussionPlace" style="width:566px" :rules="fieldRules('discussionPlace',propertyFeatures['discussionPlace'])">
-              <el-input v-model="formData.discussionPlace" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"></el-input>
+            <el-form-item
+              prop="discussionPlace"
+              style="width:566px"
+              :rules="fieldRules('discussionPlace',propertyFeatures['discussionPlace'])"
+            >
+              <el-input
+                v-model="formData.discussionPlace"
+                maxLength="30"
+                :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"
+              ></el-input>
             </el-form-item>
           </span>
         </p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="discussionReason" :rules="fieldRules('discussionReason',propertyFeatures['discussionReason'])">
-              <el-input class='text_indent8 overflow_lins_textarea' type='textarea' v-model="formData.discussionReason" rows="3" maxLength='90'
-              :disabled="fieldDisabled(propertyFeatures['discussionReason'])"></el-input>
+            <el-form-item
+              prop="discussionReason"
+              :rules="fieldRules('discussionReason',propertyFeatures['discussionReason'])"
+            >
+              <el-input
+                class="text_indent8 overflow_lins_textarea"
+                type="textarea"
+                v-model="formData.discussionReason"
+                rows="3"
+                maxlength="60"
+                :disabled="fieldDisabled(propertyFeatures['discussionReason'])"
+              ></el-input>
               <span class="overflow_describe" style="text-indent:0em;">集体讨论原因：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
         </div>
         <p class="p_begin">
           主持人：
           <span>
-            <el-form-item prop="presidingHearer" class='width130' :rules="fieldRules('presidingHearer',propertyFeatures['presidingHearer'])">
-              <el-input v-model="formData.presidingHearer" maxLength='7' :disabled="fieldDisabled(propertyFeatures['presidingHearer'])"></el-input>
+            <el-form-item
+              prop="presidingHearer"
+              class="width130"
+              :rules="fieldRules('presidingHearer',propertyFeatures['presidingHearer'])"
+            >
+              <el-input
+                v-model="formData.presidingHearer"
+                maxlength="7"
+                :disabled="fieldDisabled(propertyFeatures['presidingHearer'])"
+              ></el-input>
             </el-form-item>
           </span>
           职务：
           <span>
-            <el-form-item prop="presidingHearerPos" class='width130' :rules="fieldRules('presidingHearerPos',propertyFeatures['presidingHearerPos'])">
-              <el-input v-model="formData.presidingHearerPos" maxLength='7' :disabled="fieldDisabled(propertyFeatures['presidingHearerPos'])"></el-input>
+            <el-form-item
+              prop="presidingHearerPos"
+              class="width130"
+              :rules="fieldRules('presidingHearerPos',propertyFeatures['presidingHearerPos'])"
+            >
+              <el-input
+                v-model="formData.presidingHearerPos"
+                maxlength="7"
+                :disabled="fieldDisabled(propertyFeatures['presidingHearerPos'])"
+              ></el-input>
             </el-form-item>
           </span>
           记录人：
           <span>
-            <el-form-item prop="recorder" class='width130' :rules="fieldRules('recorder',propertyFeatures['recorder'])">
-              <el-input v-model="formData.recorder" maxLength='7' :disabled="fieldDisabled(propertyFeatures['recorder'])"></el-input>
+            <el-form-item
+              prop="recorder"
+              class="width130"
+              :rules="fieldRules('recorder',propertyFeatures['recorder'])"
+            >
+              <el-input
+                v-model="formData.recorder"
+                maxlength="7"
+                :disabled="fieldDisabled(propertyFeatures['recorder'])"
+              ></el-input>
             </el-form-item>
           </span>
         </p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="discussionPeople" :rules="fieldRules('discussionPeople',propertyFeatures['discussionPeople'])">
-              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="formData.discussionPeople" rows="3" maxLength='90'
-              :disabled="fieldDisabled(propertyFeatures['discussionPeople'])"></el-input>
+            <el-form-item
+              prop="discussionPeople"
+              :rules="fieldRules('discussionPeople',propertyFeatures['discussionPeople'])"
+            >
+              <el-input
+                class="text_indent6 overflow_lins_textarea"
+                type="textarea"
+                v-model="formData.discussionPeople"
+                rows="3"
+                maxlength="60"
+                :disabled="fieldDisabled(propertyFeatures['discussionPeople'])"
+              ></el-input>
               <span class="overflow_describe" style="text-indent:0em;">参加人员：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
         </div>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="attendPeople" :rules="fieldRules('attendPeople',propertyFeatures['attendPeople'])">
-              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="formData.attendPeople" rows="3" maxLength='90'
-              :disabled="fieldDisabled(propertyFeatures['attendPeople'])"></el-input>
+            <el-form-item
+              prop="attendPeople"
+              :rules="fieldRules('attendPeople',propertyFeatures['attendPeople'])"
+            >
+              <el-input
+                class="text_indent6 overflow_lins_textarea"
+                type="textarea"
+                v-model="formData.attendPeople"
+                rows="3"
+                maxlength="60"
+                :disabled="fieldDisabled(propertyFeatures['attendPeople'])"
+              ></el-input>
               <span class="overflow_describe" style="text-indent:0em;">列席人员：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
         </div>
         <p class="p_begin">
           案件承办人员：
           <span>
-            <el-form-item prop="caseUnderTakePeople" style="width: 503px;" :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])">
-              <el-input v-model="formData.caseUnderTakePeople" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"></el-input>
+            <el-form-item
+              prop="caseUnderTakePeople"
+              style="width: 503px;"
+              :rules="fieldRules('caseUnderTakePeople',propertyFeatures['caseUnderTakePeople'])"
+            >
+              <el-input
+                v-model="formData.caseUnderTakePeople"
+                :maxLength="maxLength"
+                :disabled="fieldDisabled(propertyFeatures['caseUnderTakePeople'])"
+              ></el-input>
             </el-form-item>
           </span>
         </p>
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="caseInformation" :rules="fieldRules('caseInformation',propertyFeatures['caseInformation'])">
-              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="formData.caseInformation" rows="3" maxLength='150'
-              :disabled="fieldDisabled(propertyFeatures['caseInformation'])"></el-input>
+            <el-form-item
+              prop="caseInformation"
+              :rules="fieldRules('caseInformation',propertyFeatures['caseInformation'])"
+            >
+              <el-input
+                class="text_indent11 overflow_lins_textarea"
+                type="textarea"
+                v-model="formData.caseInformation"
+                rows="3"
+                maxlength="90"
+                :disabled="fieldDisabled(propertyFeatures['caseInformation'])"
+              ></el-input>
               <span class="overflow_describe" style="text-indent:0em;">案件承办人汇报案件情况：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
         </div>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="discussionOpinionAndReason" :rules="fieldRules('discussionOpinionAndReason',propertyFeatures['discussionOpinionAndReason'])">
-              <el-input class='text_indent11 overflow_lins_textarea' type='textarea' v-model="formData.discussionOpinionAndReason" rows="3" maxLength='150'
-              :disabled="fieldDisabled(propertyFeatures['discussionOpinionAndReason'])"></el-input>
+            <el-form-item
+              prop="discussionOpinionAndReason"
+              :rules="fieldRules('discussionOpinionAndReason',propertyFeatures['discussionOpinionAndReason'])"
+            >
+              <el-input
+                class="text_indent11 overflow_lins_textarea"
+                type="textarea"
+                v-model="formData.discussionOpinionAndReason"
+                rows="3"
+                maxlength="90"
+                :disabled="fieldDisabled(propertyFeatures['discussionOpinionAndReason'])"
+              ></el-input>
               <span class="overflow_describe" style="text-indent:0em;">参见讨论人员意见和理由：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
         </div>
         <!-- 多行样式 -->
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="conclussionOpinion" :rules="fieldRules('conclussionOpinion',propertyFeatures['conclussionOpinion'])">
-              <el-input class='text_indent6 overflow_lins_textarea' type='textarea' v-model="formData.conclussionOpinion" rows="3" maxLength='150'
-              :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"></el-input>
+            <el-form-item
+              prop="conclussionOpinion"
+              :rules="fieldRules('conclussionOpinion',propertyFeatures['conclussionOpinion'])"
+            >
+              <el-input
+                class="text_indent6 overflow_lins_textarea"
+                type="textarea"
+                v-model="formData.conclussionOpinion"
+                rows="3"
+                maxlength="90"
+                :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"
+              ></el-input>
               <span class="overflow_describe" style="text-indent:0em;">结论性意见：</span>
-              <span class="span_bg"  style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg">&nbsp;</span>
               <span class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
@@ -154,8 +271,13 @@
         </el-row>
       </el-form>
     </div>
-    <casePageFloatBtns :pageDomId="'importantCaseTeamDissDoc-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
-
+    <casePageFloatBtns
+      :pageDomId="'importantCaseTeamDissDoc-print'"
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+      @saveData="saveData"
+      @backHuanjie="submitData"
+    ></casePageFloatBtns>
   </div>
 </template>
 <script>
@@ -168,21 +290,31 @@ export default {
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
+  computed: { ...mapGetters(["caseId"]) },
   data() {
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-      console.log(Date.parse(this.formData.discussionStartTime))
-      console.log(Date.parse(this.formData.discussionEndTime))
-      let parseStartTime = this.formData.discussionStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
-      let parseEndTime = this.formData.discussionEndTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
-      if(Date.parse(parseStartTime)>Date.parse(parseEndTime)){
+      console.log(Date.parse(this.formData.discussionStartTime));
+      console.log(Date.parse(this.formData.discussionEndTime));
+      let parseStartTime = this.formData.discussionStartTime
+        .replace("年", "-")
+        .replace("月", "-")
+        .replace("日", " ")
+        .replace("时", ":")
+        .replace("分", "");
+      let parseEndTime = this.formData.discussionEndTime
+        .replace("年", "-")
+        .replace("月", "-")
+        .replace("日", " ")
+        .replace("时", ":")
+        .replace("分", "");
+      if (Date.parse(parseStartTime) > Date.parse(parseEndTime)) {
         this.$message({
-              showClose: true,
-              message: '开始时间不得大于结束时间',
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
+          showClose: true,
+          message: "开始时间不得大于结束时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip"
         });
         return callback(new Error("开始时间不得大于结束时间"));
       }
@@ -190,24 +322,22 @@ export default {
     };
     return {
       formData: {
-        caseNumber: '',
-        caseName: '',
-        discussionStartTime: '',
-        discussionEndTime: '',
-        discussionPlace: '',
-        discussionReason:'',
-        presidingHearer: '',
-        presidingHearerPos: '',
-        recorder: '',
-        discussionPeople:'',
-        attendPeople:'',
-        caseUnderTakePeople:'',
-        caseInformation:'',
-        discussionOpinionAndReason:'',
-        // presentMembersName: '',
+        caseNumber: "",
+        caseName: "",
+        discussionStartTime: "",
+        discussionEndTime: "",
+        discussionPlace: "",
+        discussionReason: "",
+        presidingHearer: "",
+        presidingHearerPos: "",
+        recorder: "",
+        discussionPeople: "",
+        attendPeople: "",
+        caseUnderTakePeople: "",
+        caseInformation: "",
+        discussionOpinionAndReason: "",
         overWidthFlag: false,
-        // discussionRecord: '',//多行编辑内容
-        conclussionOpinion: '',//多行编辑内容
+        conclussionOpinion: "" //多行编辑内容
       },
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
@@ -216,53 +346,57 @@ export default {
         caseLinktypeId: this.BASIC_DATA_JX.importCaseDiss_JX_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
-        status: "",
+        status: ""
       },
       rules: {
         caseName: [
-          { required: true, message: '请输入案件名称', trigger: 'blur' },
+          { required: true, message: "请输入案件名称", trigger: "blur" }
         ],
         discussionStartTime: [
-          { required: true, message: '请输入开始讨论时间', trigger: 'blur' },
+          { required: true, message: "请输入开始讨论时间", trigger: "blur" },
           { validator: validateStartTime, trigger: "blur" }
         ],
         discussionEndTime: [
-          { required: true, message: '请输入结束讨论时间', trigger: 'blur' },
+          { required: true, message: "请输入结束讨论时间", trigger: "blur" },
           { validator: validateStartTime, trigger: "blur" }
         ],
         discussionPlace: [
-          { required: true, message: '请输入地点', trigger: 'blur' },
+          { required: true, message: "请输入地点", trigger: "blur" }
         ],
         presidingHearer: [
-          { required: true, message: '请输入主持人', trigger: 'blur' },
+          { required: true, message: "请输入主持人", trigger: "blur" }
         ],
         presidingHearerPos: [
-          { required: true, message: '请输入职务', trigger: 'blur' },
+          { required: true, message: "请输入职务", trigger: "blur" }
         ],
         recorder: [
-          { required: true, message: '请输入记录人', trigger: 'blur' },
+          { required: true, message: "请输入记录人", trigger: "blur" }
         ],
         discussionReason: [
-          { required: true, message: '请输入集体讨论原因', trigger: 'blur' },
+          { required: true, message: "请输入集体讨论原因", trigger: "blur" }
         ],
         discussionPeople: [
-          { required: true, message: '请输入参加人员', trigger: 'blur' },
+          { required: true, message: "请输入参加人员", trigger: "blur" }
         ],
         attendPeople: [
-          { required: true, message: '请输入列席人员', trigger: 'blur' },
+          { required: true, message: "请输入列席人员", trigger: "blur" }
         ],
         caseUnderTakePeople: [
-          { required: true, message: '请输入案件承办人员', trigger: 'blur' },
+          { required: true, message: "请输入案件承办人员", trigger: "blur" }
         ],
         caseInformation: [
-          { required: true, message: '请输入案件汇报案件情况', trigger: 'blur' },
+          { required: true, message: "请输入案件汇报案件情况", trigger: "blur" }
         ],
         conclussionOpinion: [
-          { required: true, message: '请输入结论性意见', trigger: 'blur' },
+          { required: true, message: "请输入结论性意见", trigger: "blur" }
         ],
         discussionOpinionAndReason: [
-          { required: true, message: '请输入参与讨论人员意见和理由', trigger: 'blur' },
-        ],
+          {
+            required: true,
+            message: "请输入参与讨论人员意见和理由",
+            trigger: "blur"
+          }
+        ]
       },
       nameLength: 23,
       adressLength: 23,
@@ -282,11 +416,11 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId:'importantCaseTeamDissDoc-print'
+        pageDomId: "importantCaseTeamDissDoc-print"
       },
-       huanjieAndDocId: this.BASIC_DATA_JX.importCaseDiss_JX_huanjieAndDocId,
-      propertyFeatures:''
-    }
+      huanjieAndDocId: this.BASIC_DATA_JX.importCaseDiss_JX_huanjieAndDocId,
+      propertyFeatures: ""
+    };
   },
 
   methods: {
@@ -308,12 +442,23 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-       this.com_submitCaseForm(handleType, "docForm", true);
+      this.com_submitCaseForm(handleType, "docForm", true);
     },
     //是否是完成状态
     isOverStatus() {
-      if (this.$route.params.docStatus == '1') {
-        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      if (this.$route.params.docStatus == "1") {
+        this.formOrDocData.showBtn = [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     }
   },
@@ -323,24 +468,24 @@ export default {
   created() {
     this.isOverStatus();
   }
-}
+};
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-#importantCaseTeamDissDoc-print{
-  .dataTimeReplaceBox{
+#importantCaseTeamDissDoc-print {
+  .dataTimeReplaceBox {
     position: relative;
     height: 35px;
-    .el-form-item__content .el-date-editor--datetime{
-      opacity:0;
+    .el-form-item__content .el-date-editor--datetime {
+      opacity: 0;
       position: absolute;
       z-index: 2;
     }
-    .replaceTime{
-      position:absolute;
-      top:0;
-      left:10px;
+    .replaceTime {
+      position: absolute;
+      top: 0;
+      left: 10px;
     }
   }
 }

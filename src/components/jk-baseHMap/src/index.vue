@@ -11,15 +11,30 @@ export default {
     center: {
       type: Array,
       default() {
-        return [12118909.300259633, 4086043.1061670054];
+        return [115.8, 28.8];
       }
     },
     // 放大倍数
     zoom: {
       type: Number,
-      default: 5
+      default: 10
     },
   },
+  data () {
+        return {
+            mapConsts: {
+                // 江西省范围
+                extentJx: [113.57277, 24.488942, 118.482124, 30.079848],
+                // arcgis server默认origin
+                originArcgisServer: [-400, 399.9999999999998],
+                resolutions: [
+                    0.010986328383069278, 0.005493164191534639, 0.0027465809060368165, 0.0013732916427489112,
+                    6.866458213744556E-4, 3.433229106872278E-4, 1.716614553436139E-4, 8.582953794130404E-5, 4.291595870115493E-5,
+                    2.1457979350577466E-5, 1.0728989675288733E-5, 5.363305107141452E-6, 2.681652553570726E-6
+                ]
+            }
+        }
+    },
   beforeCreate() {
     this.map = null;
   },
@@ -43,9 +58,11 @@ export default {
           scaleLine: true
         },
         view: {
-          center: this.center,
-          projection: 'EPSG:3857',
-          zoom: this.zoom
+          center: [115.8, 28.8],
+          projection: 'EPSG:4326',
+          zoom: this.zoom,
+          minZoom: 3,
+          // maxZoom: 13
         },
         baseLayers: [
           {
@@ -53,30 +70,14 @@ export default {
             isDefault: true,
             layerType: 'TileXYZ',
             tileGrid: {
-              tileSize: 256,
-              extent: [-2.0037507067161843E7, -3.0240971958386254E7, 2.0037507067161843E7, 3.0240971958386205E7],
-              origin: [-2.0037508342787E7, 2.0037508342787E7],
-              resolutions: [
-                156543.03392800014,
-                78271.51696399994,
-                39135.75848200009,
-                19567.87924099992,
-                9783.93962049996,
-                4891.96981024998,
-                2445.98490512499,
-                1222.992452562495,
-                611.4962262813797,
-                305.74811314055756,
-                152.87405657041106,
-                76.43702828507324,
-                38.21851414253662,
-                19.10925707126831,
-                9.554628535634155,
-                4.77731426794937,
-                2.388657133974685
-              ]
+              extent: this.mapConsts.extentJx,
+              origin: this.mapConsts.originArcgisServer,
+              resolutions: this.mapConsts.resolutions
             },
-            layerUrl: 'http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
+            projection: 'EPSG:4326',
+            // layerUrl: 'http://111.75.227.156:18967/arcgis/rest/services/jx_channel_mix_2019/MapServer/tile/{z}/{y}/{x}?key=OWUYmEyO'
+            //layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JIANGXIQGBLUE/MapServer/tile/{z}/{y}/{x}'
+            layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}'
           }
         ]
       });
@@ -88,10 +89,55 @@ export default {
       //派发地图初始化事件
       this.$emit("init", this.map, this);
     },
+
+    /**
+     * 坐标转换
+     * 经纬度转Mercator， lonLatToMercator (lng, lat)
+     */
+    getTransLatLng(arr) {
+      return HMap.transform.lonLatToMercator(Number(arr[0]), Number(arr[1]))
+    },
+
+    /**
+     * 地图添加点位(单点)
+     */
+    addPoint(data, latLng) {
+      if(!latLng) throw new Error("addPoint() in jk-baseHMap:::::::::::没有坐标")
+      const point = {
+        attributes: {
+          id: data.id,
+          data: data, // 带入当前点位信息
+        },
+        geometry: this.getTransLatLng(latLng)
+      }
+      const options = {
+        layerName: 'pointLayer',
+        zoomToExtent: true,
+        style: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '/static/images/img/lawSupervise/map_jigou.png',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        },
+        selectStyle: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '/static/images/img/lawSupervise/map_jigou.png',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        }
+      }
+      this.map.addPoint(point, options)
+    },
   },
   created() {
-    loadCss("../../../../static/hmap/hmap.css");
-    loadScript("../../../../static/hmap/hmap.js").then(() => this.init());
+    loadCss("/static/hmap/hmap.css");
+    loadScript("/static/hmap/hmap.js").then(() => this.init());
   }
 }
 </script>
@@ -105,8 +151,12 @@ export default {
       .hmap-zoom-slider {
         top: unset;
         bottom: 6em;
+        left: unset;
+        right: 4em;
       }
       .hmap-scale-line-control {
+        left: unset;
+        right: 1em;
         .hmap-scale-line-control-inner {
           border: 2px solid #FFFFFF;
           border-top: none;

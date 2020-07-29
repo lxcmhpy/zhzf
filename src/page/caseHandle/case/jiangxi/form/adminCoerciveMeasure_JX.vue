@@ -753,13 +753,7 @@ export default {
     //确定添加
     addResSure(formName) {
       let canAdd = true;
-      if (this.tableDatas.length == 0) {
-        this.$message({
-          message: "数据至少有一行不为空！",
-          type: "warning"
-        });
-        canAdd = false;
-      } else {
+      if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {
           if (!this.tableDatas[i].resName || !this.tableDatas[i].spec) {
             this.$message({
@@ -770,11 +764,13 @@ export default {
             break;
           }
         }
+        if(canAdd){
+          this.formData.resList = this.tableDatas;
+          this.addVisible = false;
+        }
       }
-      if (canAdd) {
-        this.formData.resList = this.tableDatas;
-        this.addVisible = false;
-      }
+        
+      
     },
     //添加一行数据
     addTableData() {

@@ -72,7 +72,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
 import {  findRecordlModleByNameApi, findRecordModleByIdApi, removeMoleByIdApi,
-  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi, removeMoleCollectByIdApi} from "@/api/Record";
+  findRecordModleByNameIdApi, findRecordModleByPersonApi, findUserCollectTemplateApi, removeMoleCollectByIdApi} from "@/api/inspection";
 import Vue from 'vue'
 import { mapGetters } from "vuex";
 export default {
@@ -102,7 +102,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          
         } else {
           console.log('error submit!!');
           return false;
