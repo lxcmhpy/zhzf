@@ -1,70 +1,172 @@
+<!-------长软------->
 <template>
-    <div class="box">
-        <div style="margin:0 auto;width:690px">
-            <object >
-                <embed class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                :src="docSrc" type="application/pdf" internalinstanceid="29">
-            </object>
-    
-        </div>
-        <div style="position:fixed;bottom:150px;right: 60px;width:100px;">
-            <el-button @click="showNext('last')" :disabled="!nowShowPdfIndex ? true : false">上一张</el-button><br><br>
-            <el-button @click="showNext('next')" :disabled="nowShowPdfIndex == caseList.length-1 ? true : false">下一张</el-button>
+    <div class="com_searchAndpageBoxPadding hasBigMarginRight">
+        <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'">
+        <el-form ref="form" :model="form"  size="small" label-width="150px">
+            <el-card class="box-card" shadow="never">
+                <div slot="header" class="clearfix">
+                    <span>基本信息</span>
+                </div>
+                <div>
+                    <el-row>
+                        <el-col :span="16">
+                            <el-form-item label="财务名称" prop="propertyName">
+                                {{form.propertyName}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="财务数量" prop="propertyNum">
+                              {{form.propertyNum + form.propertyNumUnit}}
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="16">
+                            <el-form-item label="财物归属人/单位" prop="propertyBelonger">
+                              {{form.propertyBelonger}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="财物状态">
+                              {{form.propertyState}}
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="16">
+                            <el-form-item label="保管单位" prop="saveUnit">
+                              {{form.saveUnit}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="保管人员">
+                              {{form.savePerson}}
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="16">
+                            <el-form-item label="保存地点">
+                              {{form.savePlace}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="保管方式">
+                              {{form.saveWay}}
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="8">
+                            <el-form-item label="登记时间">
+                              {{form.registrationTime}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="登记人">
+                              {{form.registrant}}
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="保管期限">
+                              {{form.storagePeriod}}
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form-item label="财物描述">
+                              <div v-html="form.propertyDescribe"></div>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form-item label="备注">
+                              <div v-html="form.remarks"></div>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
+
+            <el-card class="box-card" shadow="never" style="margin-top:15px;">
+                <div slot="header" class="clearfix">
+                    <span>附件信息</span>
+                </div>
+                <div>
+                    
+                </div>
+            </el-card>
+
+            <el-card class="box-card" shadow="never" style="margin-top:15px;">
+                <div slot="header" class="clearfix">
+                    <span>案件信息</span>
+                </div>
+                <div>
+                    
+                </div>
+            </el-card>
+
+            <el-card class="box-card" shadow="never" style="margin-top:15px;">
+                <div slot="header" class="clearfix">
+                    <span>处理记录</span>
+                </div>
+                <div>
+                    
+                </div>
+            </el-card>
+        </el-form>
         </div>
     </div>
 </template>
+
 <script>
-import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import caseListSearch from "@/components/caseListSearch/caseListSearch";
+
 export default {
   data() {
     return {
-        caseList:[],
-        docSrc:"",
-        host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
-        nowShowPdfIndex:0,
-    }
+      form: {
+        propertyNumUnit:"",
+        propertyName:"",
+        propertyState:"",
+        registrationTime:"",
+        propertyNum:"",
+        saveUnit:"",
+        registrant:"",
+        propertyBelonger:"",
+        savePerson:"",
+        storagePeriod:"",
+        propertyNo:"",
+        saveWay:"",
+        savePlace:"",
+        remarks:"",
+        propertyDescribe:"",
+      },
+      handleWayList:["封存","扣押","退回当事人","移交法院","销毁","其他"],
+      syqxList:[30,90,180,360]
+    };
   },
-  computed: { ...mapGetters(['caseId']) },
-  methods:{
-      getByMlCaseId() {
-        let _that = this
-         this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
-         res=>{
-           console.log('getByMlCaseId',res)
-            res.data = res.data.sort(function(a,b){
-              return a.num - b.num;
-            });
-           console.log('getByMlCaseId2',res.data)
+  methods: {
 
-             this.caseList = res.data;
-            //   this.showCover = 'pdf';
-              this.docSrc = this.host + this.caseList[0].storageId;
-              this.nowShowPdfIndex = 0;
-            //   this.archiveSuccess = true;
-         },
-         err=>{
-           console.log(err)
-         }
-       )
+    //获取已归档的数据
+    getData(searchData) {
+        let data = searchData;
+        data.userId = iLocalStroage.gets("userInfo").id;
+        // this.getCaseList(data);
     },
-    //上下翻页显示pdf
-    showNext(flag){
-      if(flag == 'last'){
-        if(this.nowShowPdfIndex){
-          this.nowShowPdfIndex--;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
-        }
-      }else{
-        if(this.nowShowPdfIndex != this.caseList.length-1){
-          this.nowShowPdfIndex++;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
-        }
-      }
-    },
+    
   },
-  created(){
-      this.getByMlCaseId();
+  mounted(){
+      // if(this.$route.params.id !== "add"){
+      //     this.getData({id:this.$route.params.id});
+      // }
+  },
+  created() {
+      
   }
-}
+};
 </script>
