@@ -35,7 +35,7 @@ export default {
           <el-input
             value={ this.inputModel }
             on-input={ value => this.inputModel = value }
-            placeholder={this.title}>
+            placeholder={this.placeholder}>
             <div slot="suffix" class="closeBox" on-click={this.handleClose}>
               <i class="el-icon-close"></i>
             </div>
