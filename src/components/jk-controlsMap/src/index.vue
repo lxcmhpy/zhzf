@@ -3,15 +3,14 @@
     <BaseHMap @init="init" :center="center" :zoom="zoom" />
     <JkMapSearch
       class="jk-controlsMap-inputWithSearch"
-      @handleNodeClick="handleNodeClick"
-      :config="config.treeData"
+      @handleSearch="handleSearch"
+      :config="config.searchData"
     />
     <JkMapSelect
       class="jk-controlsMap-mapSelect"
       @handleChange="handleChange"
       :config="config.popoverData"
-    >
-    </JkMapSelect>
+    />
   </div>
 </template>
 
@@ -56,11 +55,10 @@ export default {
     },
 
     /**
-     *
-     * 点击节点回调函数
+     * 点击专题图片触发
      */
-    handleNodeClick(data) {
-      this.$emit('handleNodeClick', data)
+    handleSearch(data) {
+      this.$emit("handleSearch", data)
     },
 
     /**

@@ -115,11 +115,11 @@ export default  [
             },
             // 双随机
             {
-                // 任务管理
+                // 信息维护
                 path: "/infoMaintains",
                 name: "inspection_infoMaintains",
                 meta: {
-                title: "任务管理",
+                title: "信息维护",
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/doubly-stochastic/infoMaintains/infoMaintains.vue")

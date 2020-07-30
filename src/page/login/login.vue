@@ -532,7 +532,7 @@ export default {
         this.loginImgSrc = './static/images/img/login/'+ imgRes.data[0].name+'.jpg';
       } catch (error) {
         this.loginImgSrc = './static/images/img/login/zf_bg.jpg'
-        throw new Error(error);
+        throw new Error(error); 
       }
     },
   },

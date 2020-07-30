@@ -30,7 +30,7 @@ import {
   updateDocStatusApi, getCurrentApproveApi, getFileStreamByStorageIdApi,
 } from "@/api/caseHandle";
 
-import { getDocumentById, } from "@/api/Record";
+import { getDocumentById, } from "@/api/inspection";
 // import pdf from 'vue-pdf'
 export default {
   data() {

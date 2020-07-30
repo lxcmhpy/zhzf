@@ -284,7 +284,7 @@ import { mapGetters } from "vuex";
 import {
   saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
   findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi, getDocumentNameList
-} from "@/api/Record";
+} from "@/api/inspection";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
