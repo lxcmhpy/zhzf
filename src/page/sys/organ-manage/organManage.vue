@@ -121,7 +121,11 @@ export default {
       currentOrganId: "", //当前organ的id
       showAddDialog: false,
       theClickId: "", // 当前被点击树的id
-      nodeData: "", // 当前被点击节点对应的 Node
+      nodeData: {
+        id: '',
+        text: '',
+        data: {}
+      }, // 当前被点击节点对应的 Node
     };
   },
   components: {
@@ -130,16 +134,25 @@ export default {
   inject: ["reload"],
   methods: {
     /**
-     *
      * 点击编辑按钮
      */
     handleUpdata() {
-      let data = {
-        id: this.theClickId,
-        parentNode: {
+      let parentNode = {}
+      // 如果当前节点是根节点，则调用修改根节点的方法
+      if(!this.nodeData.parent.text) {
+        parentNode = {
+          parentNodeId: "null",
+          parentNodeName: "null"
+        }
+      } else {
+        parentNode = {
           parentNodeId: this.nodeData.parent.data.id,
           parentNodeName: this.nodeData.parent.data.label
         }
+      }
+      let data = {
+        id: this.theClickId,
+        parentNode: parentNode
       };
       this.$refs.updateOrganRef.showModal(2, data);
     },
@@ -151,8 +164,8 @@ export default {
     //点击树事件
     handleNodeClick(data,node,item) {
       this.nodeData = node
+      console.log(this.nodeData)
       this.theClickId = data.id
-      this.thisNode = data
       this.selectCurrentTreeName = data.label;
       this.tableData = [];
       this.currentOrganId = data.id;
@@ -180,8 +193,6 @@ export default {
           }
           _this.organData = res.data;
           this.allTreeData = res.data
-          console.log(_this.defaultExpandedKeys);
-          console.log(_this.organData);
           if (organId == "root") {
             _this.currentOrganId = res.data[0].id;
           } else {
@@ -249,14 +260,15 @@ export default {
       this.$refs.updateOrganRef.showModal(2, data);
     },
     //修改根节点机构
-    editSelectNode() {
+    editSelectNode(nodeData) {
       let data = {
-        id: id,
+        id: nodeData.id,
         parentNode: {
           parentNodeId: this.currentOrganId,
           parentNodeName: this.selectCurrentTreeName
         }
       };
+      console.log(data)
       this.$refs.addOrganRef.showModal(2, data);
     },
     //删除机构
