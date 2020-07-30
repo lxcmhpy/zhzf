@@ -114,10 +114,11 @@
             </td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <p>&nbsp;&nbsp;该案件拟处理意见属重大行政执法决定，特提请法制机构进行法制审核。</p>
+              {{docData.approveOpinions}}
               <div class="pdf_seal" style="width:280px">
-                <p>承办机构负责人（签章）：{{docData.secondApprovePeo}}</p>
+                <p>承办机构负责人（签章）：{{docData.approvePeo}}</p>
                 <p>
-                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
+                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                   <span v-else>年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
@@ -285,17 +286,17 @@
               <div class="overflow_lins_style" id="noteDesCon">
                 <div class="overflow_lins">
                   <el-form-item
-                    prop="threeApproveOpinions"
-                    :rules="fieldRules('threeApproveOpinions',propertyFeatures['threeApproveOpinions'])"
+                    prop="secondApproveOpinions"
+                    :rules="fieldRules('secondApproveOpinions',propertyFeatures['secondApproveOpinions'])"
                   >
                     <el-input
                       class="text_indent11 overflow_lins_textarea"
                       type="textarea"
-                      v-model="docData.threeApproveOpinions"
+                      v-model="docData.secondApproveOpinions"
                       rows="4"
                       maxlength="400"
                       placeholder="\"
-                      :disabled="fieldDisabled(propertyFeatures['threeApproveOpinions'])"
+                      :disabled="fieldDisabled(propertyFeatures['secondApproveOpinions'])"
                     ></el-input>
                     <span class="overflow_describe_JX" style="padding-bottom:-6px;text-indent:0 !important">有关事项说明及审核结论：</span>
                     <span class="span_bg span_bg_top">&nbsp;</span>
@@ -306,9 +307,9 @@
                 </div>
               </div>
               <div class="pdf_seal" style="width:280px">
-                <p>法制审核机构负责人（签章）：{{docData.threeApprovePeo}}</p>
+                <p>法制审核机构负责人（签章）：{{docData.secondApprovePeo}}</p>
                 <p>
-                  <span v-if="docData.threeApproveTime">{{docData.threeApproveTime}}</span>
+                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年&nbsp;月&nbsp;日</span>
                 </p>
               </div>
@@ -365,12 +366,12 @@ export default {
         selfRights: "",
         suspicionCrime: "",
         auditConclusion: "",
+        approveOpinions: "",
+        approvePeo: "",
+        approveTime: "",
         secondApproveOpinions: "",
         secondApprovePeo: "",
         secondApproveTime: "",
-        threeApproveOpinions: "",
-        threeApprovePeo: "",
-        threeApproveTime: "",
         closeResult:""
       },
       isParty: false,

@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "CURRENT": "SGX",
+=======
+  "CURRENT": "JX",
+>>>>>>> e0f9399a2db92e992c93a38e8ba231eb86379795
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -82,11 +86,11 @@
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
-    "LAW_SUPERVISE_HOST": "http://172.16.170.50:9000/",
+    "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
     "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.169.37:8099",
+    "XZJC_HOST":"http://localhost:8099",
     "EXAM":"http://59.110.216.138:9050"
   },
   "JX": {

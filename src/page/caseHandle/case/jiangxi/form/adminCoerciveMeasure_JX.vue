@@ -409,7 +409,11 @@
         <div class="fullscreen">
           <el-form ref="addResFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
-              <el-table-column prop="resNo" label="序号" align="center"></el-table-column>
+              <el-table-column prop="resNo" label="序号" align="center">
+                 <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="查封、扣押场所、设施、财物名称" align="center">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.resName"></el-input>
@@ -511,12 +515,6 @@ export default {
       }
       callback();
     };
-    var validateEvidencLength = (rule, value, callback) => {
-      if (this.formData.resList.length == 0) {
-        return callback(new Error("至少填写一个物品"));
-      }
-      callback();
-    };
     return {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
@@ -614,9 +612,6 @@ export default {
         ],
         socialCreditCode: [
           { required: true, message: "统一社会信用代码", trigger: "blur" }
-        ],
-        resLength: [
-            {validator: validateEvidencLength, trigger: "blur"}
         ],
         caseSituation: [
           { required: true, message: "案件基本情况不能为空", trigger: "blur" }
@@ -720,16 +715,7 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) {
-      let routerData = {
-        hasApprovalBtn: false,
-        docId: row.docId,
-        approvalOver: false,
-        hasBack: true,
-        status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
-        docDataId: row.docDataId
-      };
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      this.com_viewDocPdf(row,this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId)
     },
     //清空文书
     delDocDataByDocId(data) {
@@ -767,13 +753,7 @@ export default {
     //确定添加
     addResSure(formName) {
       let canAdd = true;
-      if (this.tableDatas.length == 0) {
-        this.$message({
-          message: "数据至少有一行不为空！",
-          type: "warning"
-        });
-        canAdd = false;
-      } else {
+      if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {
           if (!this.tableDatas[i].resName || !this.tableDatas[i].spec) {
             this.$message({
@@ -784,11 +764,13 @@ export default {
             break;
           }
         }
+        if(canAdd){
+          this.formData.resList = this.tableDatas;
+          this.addVisible = false;
+        }
       }
-      if (canAdd) {
-        this.formData.resList = this.tableDatas;
-        this.addVisible = false;
-      }
+        
+      
     },
     //添加一行数据
     addTableData() {

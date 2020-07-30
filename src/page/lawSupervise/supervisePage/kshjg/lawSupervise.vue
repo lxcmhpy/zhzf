@@ -1375,7 +1375,7 @@ export default {
                       other: v
                     })
                   }
-                  
+
                 })
                 node.children = nodeChildren
                 this.category = 0;
@@ -2040,7 +2040,7 @@ export default {
             type: item.code
             };
             this.allSearchList.push(data);
-            
+
                 this.getZfjgLawSupervise(data, this.category);
         } else {
             let _this = this;

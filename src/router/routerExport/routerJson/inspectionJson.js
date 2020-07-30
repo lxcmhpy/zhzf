@@ -25,7 +25,7 @@ export default  [
                 path: "/writeRecordInfo/id=:id&addOrEiditFlag=:addOrEiditFlag",
                 name: "inspection_writeRecordInfo",
                 meta: {
-                title: "写记录",
+                title: "记录详情",
                 // oneTab:true,
                 },
                 component: () => import("@/page/inspection/record-manage/writeRecord.vue"),
@@ -112,6 +112,27 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/record-manage/file/xzjcPDF.vue")
+            },
+            // 双随机
+            {
+                // 信息维护
+                path: "/infoMaintains",
+                name: "inspection_infoMaintains",
+                meta: {
+                title: "信息维护",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/doubly-stochastic/info-maintains/infoMaintains.vue")
+            },
+            {
+                // 任务管理
+                path: "/taskManage",
+                name: "inspection_taskManage",
+                meta: {
+                title: "任务管理",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/doubly-stochastic/task-manage/taskManage.vue")
             },
         ]
     }, 

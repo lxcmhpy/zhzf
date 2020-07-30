@@ -563,7 +563,7 @@
                 style="padding: 0px; width: 730px; height:1100px; position: relative;">
             </div>
         </el-dialog>
-        <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
+        <el-dialog :visible.sync="dialogIMGVisible" custom-class="xszxDialogImg">
             <div>
                 <el-row>
                   <el-col :span="1" style="margin-top: 200px;">

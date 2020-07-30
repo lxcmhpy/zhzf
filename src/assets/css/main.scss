@@ -397,7 +397,18 @@
     }
 
     .el-dialog__body{
-        max-height: calc(100vh - 190px) ;
+        max-height: 100vh;
+        overflow: auto;
+    }
+  }
+  .xszxDialogImg {
+    margin-top: 5vh !important;
+    width: 90%;
+    .el-dialog__header {
+        display: none ;
+    }
+    .el-dialog__body{
+        max-height: 90%;
         overflow: auto;
     }
   }
@@ -678,4 +689,8 @@ textarea{
   .el-input__inner {
     color: #9FA3AF !important;
   }
+}
+
+.height100{
+  height:100%;
 }

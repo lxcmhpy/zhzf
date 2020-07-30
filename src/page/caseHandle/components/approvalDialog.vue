@@ -38,259 +38,171 @@
   </el-dialog>
 </template>
 <script>
-  import {mixinGetCaseApiList} from "@/common/js/mixins";
-  import iLocalStroage from "@/common/js/localStroage";
-  import {mapGetters} from "vuex";
-  import {approvalPdfQzJxApi,approvalPdfApi,queryFlowBycaseIdApi,approvalPdfQzApi } from '@/api/caseHandle.js'
-  export default {
-    data() {
-      return {
-        visible: false,
-        //   myChooseNext: "", //选中的环节
-        //   allNextLink: [], //所有环节
-        //   caseId: "" //案件id
-        approvalForm: {
-          executeHandle: 1,
-          approveOpinions: "同意",
-          approvalTime: new Date().format('yyyy年MM月dd日'),
-        },
-        caseData: "",
-        approvalPeopleName: iLocalStroage.gets("userInfo").nickName ? iLocalStroage.gets("userInfo").nickName : iLocalStroage.gets("userInfo").username,
-      };
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
+import { mapGetters } from "vuex";
+import {
+  approvalPdfQzJxApi,
+  approvalPdfApi,
+  queryFlowBycaseIdApi,
+  approvalPdfQzApi,
+} from "@/api/caseHandle.js";
+export default {
+  data() {
+    return {
+      visible: false,
+      //   myChooseNext: "", //选中的环节
+      //   allNextLink: [], //所有环节
+      //   caseId: "" //案件id
+      approvalForm: {
+        executeHandle: 1,
+        approveOpinions: "同意",
+        approvalTime: new Date().format("yyyy年MM月dd日"),
+      },
+      caseData: "",
+      approvalPeopleName: iLocalStroage.gets("userInfo").nickName
+        ? iLocalStroage.gets("userInfo").nickName
+        : iLocalStroage.gets("userInfo").username,
+    };
+  },
+  inject: ["reload"],
+  mixins: [mixinGetCaseApiList],
+  computed: { ...mapGetters(["caseId", "docId", "showQZBtn", "docDataId"]) },
+  methods: {
+    showModal(data) {
+      console.log(data);
+      this.visible = true;
+      this.caseData = data;
     },
-    inject: ["reload"],
-    mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId', 'docId','showQZBtn','docDataId'])},
-    methods: {
-      showModal(data) {
-        console.log(data);
-        this.visible = true;
-        this.caseData = data;
-      },
-      //关闭弹窗的时候清除数据
-      closeDialog() {
-        this.visible = false;
-      },
-      changeOpion(val) {
-        console.log(val);
-        if (val) {
-          this.approvalForm.approveOpinions = "同意"
-        } else {
-          this.approvalForm.approveOpinions = "不同意"
-        }
-      },
-      //审批
-      async approvalSure() {
-        console.log('this.docDataId',this.docDataId);
-        let params = {
-          // caseId: this.caseData.caseId,
-          docId:this.docDataId,
-          executeHandle: this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
-          // caseLinktypeId: this.caseData.caseLinktypeId,
-          approveOpinions: this.approvalForm.approveOpinions,
-          jsonApproveData: ""
-        };
+    //关闭弹窗的时候清除数据
+    closeDialog() {
+      this.visible = false;
+    },
+    changeOpion(val) {
+      console.log(val);
+      if (val) {
+        this.approvalForm.approveOpinions = "同意";
+      } else {
+        this.approvalForm.approveOpinions = "不同意";
+      }
+    },
+    //审批
+    async approvalSure() {
+      console.log("this.docDataId", this.docDataId);
+      let params = {
+        // caseId: this.caseData.caseId,
+        docId: this.docDataId,
+        executeHandle: this.approvalForm.executeHandle == 1 ? "同意" : "不同意",
+        // caseLinktypeId: this.caseData.caseLinktypeId,
+        approveOpinions: this.approvalForm.approveOpinions,
+        jsonApproveData: "",
+      };
 
-        if (this.caseData.currentApproval == '1') {  //一级审批
-            params.jsonApproveData = JSON.stringify({
-              approveOpinions: this.approvalForm.approveOpinions,
-              approvePeo: this.approvalPeopleName,
-              approveTime: this.approvalForm.approvalTime
-            });
-        }else if(this.caseData.currentApproval == '2'){  //二级审批
-            params.jsonApproveData = JSON.stringify({
-              secondApproveOpinions: this.approvalForm.approveOpinions,
-              secondApprovePeo: this.approvalPeopleName,
-              secondApproveTime: this.approvalForm.approvalTime
-            });
-        }else if(this.caseData.currentApproval == '3'){ //三级审批
-          params.jsonApproveData = JSON.stringify({
-              thirdApproveOpinions: this.approvalForm.approveOpinions,
-              thirdApprovePeo: this.approvalPeopleName,
-              thirdApproveTime: this.approvalForm.approvalTime
-          });
-        }
+      if (this.caseData.currentApproval == "1") {
+        //一级审批
+        params.jsonApproveData = JSON.stringify({
+          approveOpinions: this.approvalForm.approveOpinions,
+          approvePeo: this.approvalPeopleName,
+          approveTime: this.approvalForm.approvalTime,
+        });
+      } else if (this.caseData.currentApproval == "2") {
+        //二级审批
+        params.jsonApproveData = JSON.stringify({
+          secondApproveOpinions: this.approvalForm.approveOpinions,
+          secondApprovePeo: this.approvalPeopleName,
+          secondApproveTime: this.approvalForm.approvalTime,
+        });
+      } else if (this.caseData.currentApproval == "3") {
+        //三级审批
+        params.jsonApproveData = JSON.stringify({
+          thirdApproveOpinions: this.approvalForm.approveOpinions,
+          thirdApprovePeo: this.approvalPeopleName,
+          thirdApproveTime: this.approvalForm.approvalTime,
+        });
+      }
       console.log(params);
       let _this = this;
       _this.visible = false;
 
       //先审批
-      let approvalResult,approvalQZResult
-      try{
-        approvalResult = await approvalPdfApi(params)
-      }catch(err){
-        this.$message('审核失败！');
-        throw new Error(err);
-      }
+      let approvalResult, approvalQZResult;
+
       //如果有签章功能
-      if(this.showQZBtn){
-        let jsonApproveData = JSON.parse(params.jsonApproveData)
-        let opinion = ''
-        let time = ''
-        let step = ''
+      if (this.showQZBtn) {
+        let jsonApproveData = JSON.parse(params.jsonApproveData);
+        let opinion = "";
+        let time = "";
+        let step = "";
         if (jsonApproveData.approveOpinions) {
-          opinion = jsonApproveData.approveOpinions
-          time = jsonApproveData.approveTime
-          step = '1'
+          opinion = jsonApproveData.approveOpinions;
+          time = jsonApproveData.approveTime;
+          step = "1";
         } else if (jsonApproveData.secondApproveOpinions) {
-          opinion = jsonApproveData.secondApproveOpinions
-          time = jsonApproveData.secondApproveTime
-          step = '2'
+          opinion = jsonApproveData.secondApproveOpinions;
+          time = jsonApproveData.secondApproveTime;
+          step = "2";
         } else if (jsonApproveData.thirdApproveOpinions) {
-          opinion = jsonApproveData.thirdApproveOpinions
-          time = jsonApproveData.thirdApproveTime
-          step = '3'
+          opinion = jsonApproveData.thirdApproveOpinions;
+          time = jsonApproveData.thirdApproveTime;
+          step = "3";
         }
-  
+
         let data = {
           caseId: this.caseData.caseId,
           docId: this.docId,
           docOpinion: opinion,
           date: time,
           number: step,
-        }
+        };
 
-        let currentFlow,flowName = '';
-        try{
+        let currentFlow,
+          flowName = "";
+        try {
           currentFlow = await queryFlowBycaseIdApi(this.caseId);
-        }catch(err){
-          this.$message('获取案件流程失败！')
+        } catch (err) {
+          this.$message("获取案件流程失败！");
           throw new Error(err);
         }
         flowName = currentFlow.data.flowName;
-        if(flowName == '处罚流程' || flowName == '赔补偿流程'){
-          try{
-            await approvalPdfQzApi(data)
-            this.$message({
-              type: "success",
-              message: "审批通过"
-            });
-            _this.$store.commit('setApprovalState', 'approvalOver')
-            _this.$emit("getNewData");
-          }catch(err){
-            this.$message('审批后签章失败！')
+        if (flowName == "处罚流程" || flowName == "赔补偿流程") {
+          try {
+            await approvalPdfQzApi(data);
+          } catch (err) {
+            this.$message("审批后签章失败！");
             throw new Error(err);
           }
-        }else if(flowName == '江西流程'){
-          try{
-            await approvalPdfQzJxApi(data)
-            this.$message({
-              type: "success",
-              message: "审批通过"
-            });
-            _this.$store.commit('setApprovalState', 'approvalOver')
-            _this.$emit("getNewData");
-          }catch(err){
-            this.$message('审批后签章失败！')
+        } else if (flowName == "江西流程") {
+          try {
+            await approvalPdfQzJxApi(data);
+          } catch (err) {
+            this.$message("审批后签章失败！");
             throw new Error(err);
           }
         }
-      }else{
-        //无签章
+      } 
+      //审批
+      try {
+        approvalResult = await approvalPdfApi(params);
         this.$message({
           type: "success",
-          message: "审批通过"
+          message: "审批通过",
         });
-        this.$store.commit('setApprovalState', 'approvalOver')
-        this.$emit("getNewData");
-      }
-
-
-        
-
-
-        // console.log(params);
-        // let _this = this;
-        //  this.visible = false;
-        // this.$store.dispatch("approvalPdf", params).then(
-        //   res => {
-        //     console.log(res);
-        //     //如果有签章功能
-        //     if(this.showQZBtn){
-        //       let jsonApproveData = JSON.parse(params.jsonApproveData)
-        //       let opinion = ''
-        //       let time = ''
-        //       let step = ''
-        //       if (jsonApproveData.approveOpinions) {
-        //         opinion = jsonApproveData.approveOpinions
-        //         time = jsonApproveData.approveTime
-        //         step = '1'
-        //       } else if (jsonApproveData.secondApproveOpinions) {
-        //         opinion = jsonApproveData.secondApproveOpinions
-        //         time = jsonApproveData.secondApproveTime
-        //         step = '2'
-        //       } else if (jsonApproveData.thirdApproveOpinions) {
-        //         opinion = jsonApproveData.thirdApproveOpinions
-        //         time = jsonApproveData.thirdApproveTime
-        //         step = '3'
-        //       }
-        
-        //       let data = {
-        //         caseId: this.caseData.caseId,
-        //         docId: this.docId,
-        //         docOpinion: opinion,
-        //         date: time,
-        //         number: step,
-        //       }
-        //       approvalPdfQzJxApi(data).then(
-        //         res => {
-        //           console.log(res);
-        //           _this.$message({
-        //             type: "success",
-        //             message: "审批通过"
-        //           });
-        //           _this.$store.commit('setApprovalState', 'approvalOver')
-        //           _this.$emit("getNewData");
-        //           // _this.visible = false;
-        //         }).catch(err=>{this.$message('审核失败！')});
-        //       // this.$store.dispatch("approvalPdfQz", data).then(
-        //       //   res => {
-        //       //     console.log(res);
-        //       //     _this.$message({
-        //       //       type: "success",
-        //       //       message: "审批通过"
-        //       //     });
-        //       //     _this.$store.commit('setApprovalState', 'approvalOver')
-
-        //       //     _this.$emit("getNewData");
-                  
-        //       //     _this.visible = false;
-        //       //   },
-        //       //   err => {
-        //       //     console.log(err);
-        //       //   }
-        //       // );
-        //     }else{   //无签章功能
-        //       _this.$message({
-        //             type: "success",
-        //             message: "审批通过"
-        //           });
-        //           _this.$store.commit('setApprovalState', 'approvalOver')
-
-        //           _this.$emit("getNewData");
-                  
-        //           // _this.visible = false;
-        //       }
-        //   },
-        //   err => {
-        //     console.log(err);
-        //   }
-        // );
-      },
-      //审批之后的签章
-      approvalAfterQZ(){
-
+        _this.$store.commit("setApprovalState", "approvalOver");
+        _this.$emit("getNewData");
+      } catch (err) {
+        this.$message("审核失败！");
+        throw new Error(err);
       }
     },
-    
-    mounted() {
-    }
-  };
+  },
+
+  mounted() {},
+};
 </script>
 <style lang="scss">
-  // @import "@/assets/css/caseHandle/index.scss";
-  #approvalTimeBox .el-date-editor {
-    width: 100%;
-    padding: 0;
-  }
+// @import "@/assets/css/caseHandle/index.scss";
+#approvalTimeBox .el-date-editor {
+  width: 100%;
+  padding: 0;
+}
 </style>

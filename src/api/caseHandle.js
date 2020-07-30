@@ -146,6 +146,18 @@ export function findStaffListApi(data) {
   });
 }
 
+//通过姓名或执法证号查询执法人员信息
+export function findLawOfficerApi(data) {
+  return request({
+    url: "/case/caseTemplate/lawOfficer/queryLawOfficer",
+    method: "get",
+    showloading: true,
+    params: data,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //根据案件ID获取案件信息
 export function getCaseBasicInfoApi(data) {
   return request({
@@ -467,7 +479,6 @@ export function findEvidencePicApi(data) {
 }
 
 export function findByMlCaseIdNew(caseId) {
-
   return request({
     url: "/case/doc/docCatalog/findCatalogByCaseId/" + caseId,
     method: "get",
@@ -476,6 +487,17 @@ export function findByMlCaseIdNew(caseId) {
     cancelToken: setCancelSource()
   });
 }
+
+export function findDocCatalogByCaseIdApi(caseId) {
+  return request({
+    url: "/case/doc/docCatalog/findDocCatalogByCaseId/" + caseId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 
 export function findByCondition(data) {
   let data2 = vm.$qs.stringify(data);

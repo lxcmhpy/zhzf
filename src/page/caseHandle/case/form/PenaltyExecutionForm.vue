@@ -132,7 +132,7 @@
             <div class="row" v-if="isOnlinePay">
               <div class="col">
                 <el-form-item label="缴纳金额">
-                  <el-input clearable class="w-120" v-model="formData.payAmount" size="small" placeholder="请输入"></el-input>
+                  <el-input clearable class="w-120" v-model.number="formData.payAmount" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -386,6 +386,7 @@ export default {
         tempPunishAmount = Number(this.formData.tempPunishAmount)
       }
       let num = tempPunishAmount - Number(this.formData.paidAmount);
+      this.handleChangeToPayAmount(num);
       this.formData.toPayAmount = until.upMoney(num) + "(" + num + "元)"
     },
 
@@ -411,7 +412,7 @@ export default {
     handleIsTempPunishAmount() {
       if(this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
         this.totalMoney = this.formData.tempPunishAmount
-        this.formData.tempPunishAmount = upMoney(totalMoney) + "(" + totalMoney + "元)"
+        this.formData.tempPunishAmount = until.upMoney(this.totalMoney) + "(" + this.totalMoney + "元)"
       }
     },
 
@@ -424,6 +425,7 @@ export default {
         false
       )
     },
+    
     //保存表单数据
     submitCaseDoc(handleType) {
       console.log("分期", this.formData.stepPay)
@@ -604,10 +606,11 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      iLocalStroage.removeItem("currentDocDataId");
       if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note == '') {
         // console.log("弹窗")
         // this.$refs.addDialogRef.showModal(row, this.isSaveLink);
-        iLocalStroage.removeItem("currentDocDataId");
+        // iLocalStroage.removeItem("currentDocDataId");
         this.$refs.addDialogRef.showModal(
           row,
           this.caseLinkDataForm.caseLinktypeId,
@@ -617,8 +620,6 @@ export default {
       else {
         this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       }
-
-
 
     },
     //清空文书
@@ -928,6 +929,10 @@ export default {
   //   },
     'formData.stepPay'(val){
       this.setMoreDocTableTitle();
+    },
+    'formData.tempPunishAmount'(val){
+      this.totalMoney = this.formData.tempPunishAmount;
+      this.handleChangePaidAmount();
     }
   }
 };

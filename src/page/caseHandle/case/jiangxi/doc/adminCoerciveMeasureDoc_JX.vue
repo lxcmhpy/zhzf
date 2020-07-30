@@ -256,8 +256,8 @@
         <p>
           其他说明：
           <span>
-                <el-form-item prop="caseName" rows="2">
-                  <el-input type='textarea' v-model="docData.caseName"
+                <el-form-item prop="caseNote" rows="2">
+                  <el-input type='textarea' v-model="docData.caseNote"
                             v-bind:class="{ over_flow:docData.party.length>14?true:false }"
                             :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength'></el-input>
                 </el-form-item>
@@ -277,6 +277,9 @@
           <el-form ref="addResFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column prop="resNo" label="序号" align="center">
+                 <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
               </el-table-column>
               <el-table-column label="查封、扣押场所、设施、财物名称" align="center">
                 <template slot-scope="scope">
@@ -388,9 +391,10 @@ import {
           measureEndDate: '',
           reconsiderationOrgan: '',
           lawsuitOrgan: '',
-          makeDate: '2019',
+          makeDate: '',
           resList: [],
           resLength: 0,
+          caseNote: ''
         },
         handleType: 0, //0  暂存     1 提交
         caseDocDataForm: {
@@ -489,10 +493,6 @@ import {
             value: '1',
             label: ' '
           },
-          // {
-          //   value: '1',
-          //   label: '(空)'
-          // },
           {
             value: '2',
             label: '份'
@@ -558,6 +558,7 @@ import {
       },
       handleAdd(resNo, row) {
         this.tableDatas = JSON.parse(JSON.stringify(this.docData.resList));
+        let length = this.tableDatas.length;
         this.addVisible = true;
         if (length == 0) {
           this.tableDatas.push({'resNo': 1, 'amount': 1});

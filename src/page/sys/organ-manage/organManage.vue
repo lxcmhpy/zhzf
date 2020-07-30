@@ -101,6 +101,11 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
+    },
+  },
+  provide() {
+    return {
+      page: this
     }
   },
   data() {
@@ -121,7 +126,11 @@ export default {
       currentOrganId: "", //当前organ的id
       showAddDialog: false,
       theClickId: "", // 当前被点击树的id
-      nodeData: "", // 当前被点击节点对应的 Node
+      nodeData: {
+        id: '',
+        text: 'parent',
+        data: {}
+      }, // 当前被点击节点对应的 Node
     };
   },
   components: {
@@ -130,16 +139,36 @@ export default {
   inject: ["reload"],
   methods: {
     /**
-     *
      * 点击编辑按钮
      */
     handleUpdata() {
-      let data = {
-        id: this.theClickId,
-        parentNode: {
+      let parentNode = {}
+      // 如果没有点击任何节点，默认修改根节点
+      if(this.nodeData.text === 'parent') {
+        let data = {
+          id: this.nodeData.id,
+          parentNode: {
+            parentNodeId: "null",
+            parentNodeName: "null"
+          }
+        };
+        this.$refs.updateOrganRef.showModal(2, data);
+      }
+      // 判断当前是否根节点，是则parentNode属性为null
+      if(this.nodeData.parent.parent) {
+        parentNode = {
           parentNodeId: this.nodeData.parent.data.id,
           parentNodeName: this.nodeData.parent.data.label
         }
+      } else {
+        parentNode = {
+          parentNodeId: "null",
+          parentNodeName: "null"
+        }
+      }
+      let data = {
+        id: this.theClickId,
+        parentNode: parentNode
       };
       this.$refs.updateOrganRef.showModal(2, data);
     },
@@ -151,8 +180,8 @@ export default {
     //点击树事件
     handleNodeClick(data,node,item) {
       this.nodeData = node
+      console.log(this.nodeData)
       this.theClickId = data.id
-      this.thisNode = data
       this.selectCurrentTreeName = data.label;
       this.tableData = [];
       this.currentOrganId = data.id;
@@ -169,6 +198,8 @@ export default {
       let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
+          this.nodeData.id = res.data[0].id
+          this.nodeData.data = res.data[0]
           _this.defaultExpandedKeys.push(res.data[0].id);
           _this.selectCurrentTreeName = _this.selectCurrentTreeName
             ? _this.selectCurrentTreeName
@@ -180,8 +211,6 @@ export default {
           }
           _this.organData = res.data;
           this.allTreeData = res.data
-          console.log(_this.defaultExpandedKeys);
-          console.log(_this.organData);
           if (organId == "root") {
             _this.currentOrganId = res.data[0].id;
           } else {
@@ -249,14 +278,15 @@ export default {
       this.$refs.updateOrganRef.showModal(2, data);
     },
     //修改根节点机构
-    editSelectNode() {
+    editSelectNode(nodeData) {
       let data = {
-        id: id,
+        id: nodeData.id,
         parentNode: {
           parentNodeId: this.currentOrganId,
           parentNodeName: this.selectCurrentTreeName
         }
       };
+      console.log(data)
       this.$refs.addOrganRef.showModal(2, data);
     },
     //删除机构

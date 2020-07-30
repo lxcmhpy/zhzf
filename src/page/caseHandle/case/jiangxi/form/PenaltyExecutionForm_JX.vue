@@ -149,35 +149,13 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item
-                  prop="paidAmount"
-                  label="已缴金额"
-                  :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])"
-                >
-                  <el-input
-                    clearable
-                    class="w-120"
-                    v-model.number="formData.paidAmount"
-                    size="small"
-                    placeholder="-"
-                    :disabled="fieldDisabled(propertyFeatures['paidAmount'])"
-                  ></el-input>
+                <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
+                  <el-input type="number" v-model.number="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
-                <el-form-item
-                  prop="toPayAmount"
-                  label="待缴金额"
-                  :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])"
-                >
-                  <el-input
-                    clearable
-                    class="w-120"
-                    size="small"
-                    v-model.number="formData.toPayAmount"
-                    placeholder="-"
-                    :disabled="fieldDisabled(propertyFeatures['toPayAmount'])"
-                  ></el-input>
+                <el-form-item prop="toPayAmount" label="待缴金额" :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])">
+                  <el-input clearable class="w-120" size="small" @input="handleChangeToPayAmount" v-model="formData.toPayAmount" placeholder="-" :disabled="true"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -471,6 +449,7 @@ import payDetail from "@/page/caseHandle/case/form/payDetail";
 import { uploadEvApi, findFileByIdApi } from "@/api/upload";
 import { findIsOrderApi, queryFlowBycaseIdApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
+import until from "@/common/js/util"
 export default {
   components: {
     checkDocFinish,
@@ -568,6 +547,7 @@ export default {
       finishDelayApprovalDocCount: 0,
       allDelayApprovalDocCount: 0,
       unfinshDocArr : [], //未完成文书列表
+      totalMoney:""
     };
   },
   computed: {
@@ -575,6 +555,50 @@ export default {
   },
   mixins: [mixinGetCaseApiList],
   methods: {
+    /**
+     *
+     * 根据已缴金额计算待缴金额
+     */
+    handleChangePaidAmount(val) {
+      let tempPunishAmount = ''
+      debugger;
+      if(this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
+        tempPunishAmount = Number(this.totalMoney)
+      } else {
+        tempPunishAmount = Number(this.formData.tempPunishAmount)
+      }
+      let num = tempPunishAmount - Number(this.formData.paidAmount);
+      this.handleChangeToPayAmount(num);
+      this.formData.toPayAmount = until.upMoney(num) + "(" + num + "元)"
+      
+    },
+
+    /**
+     *
+     * 代缴金额为0时,执行情况为已完成
+     */
+    handleChangeToPayAmount(val) {
+      debugger
+      if (!val) {
+        this.formData.performance = '已完成';
+      } else {
+        // this.formData.performance = '未完成';
+        if (this.formData.performance != '催告') {
+          this.formData.performance = '未完成';
+        }
+      }
+    },
+
+    /**
+     *
+     * 当处罚金额不能输入时，转为大写加小写，金额数值赋值给 totalMoney
+     */
+    handleIsTempPunishAmount() {
+      if(this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
+        this.totalMoney = this.formData.tempPunishAmount
+        this.formData.tempPunishAmount = until.upMoney(totalMoney) + "(" + totalMoney + "元)"
+      }
+    },
     //加载表单信息
      setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
@@ -855,6 +879,8 @@ export default {
       this.docTableDatas = [];
       this.allAskDocList = [];
       this.allApprovalDocList = [];
+      this.finishDocCount = 0;
+      this.finishDelayApprovalDocCount = 0;
       //查找是否为必填
       let stageDelayApprovalFormRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.stageDelayApprovalForm_JX_caseDocTypeId).isRequired;
       let payStageDoc_JXRequire = this.docTableDatasCopy.find(item=>item.docId == this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId).isRequired;
@@ -1051,35 +1077,39 @@ export default {
   },
   watch: {
     //代缴金额为0时,执行情况为已完成
-    "formData.paidAmount"(val) {
-      if ((this.formData.toPayAmount = "NAN")) {
-        this.formData.toPayAmount = "";
-      }
-    },
-    "formData.payAmount"(val) {
-      if ((this.formData.toPayAmount = "NAN")) {
-        this.formData.toPayAmount = "";
-      }
-    },
-    "formData.toPayAmount"(val) {
-      this.formData.toPayAmount =
-        Number(this.formData.tempPunishAmount) -
-        Number(this.formData.paidAmount) -
-        Number(this.formData.payAmount);
-      if (this.formData.toPayAmount < 0) {
-        this.$message({ message: "代缴金额不得小于0!", type: "error" });
-      }
-      if (!val) {
-        this.formData.performance = "已完成";
-      } else {
-        // this.formData.performance = '未完成';
-        if (this.formData.performance != "催告") {
-          this.formData.performance = "未完成";
-        }
-      }
-    },
+    // "formData.paidAmount"(val) {
+    //   if ((this.formData.toPayAmount = "NAN")) {
+    //     this.formData.toPayAmount = "";
+    //   }
+    // },
+    // "formData.payAmount"(val) {
+    //   if ((this.formData.toPayAmount = "NAN")) {
+    //     this.formData.toPayAmount = "";
+    //   }
+    // },
+    // "formData.toPayAmount"(val) {
+    //   this.formData.toPayAmount =
+    //     Number(this.formData.tempPunishAmount) -
+    //     Number(this.formData.paidAmount) -
+    //     Number(this.formData.payAmount);
+    //   if (this.formData.toPayAmount < 0) {
+    //     this.$message({ message: "代缴金额不得小于0!", type: "error" });
+    //   }
+    //   if (!val) {
+    //     this.formData.performance = "已完成";
+    //   } else {
+    //     // this.formData.performance = '未完成';
+    //     if (this.formData.performance != "催告") {
+    //       this.formData.performance = "未完成";
+    //     }
+    //   }
+    // },
     'formData.stepPay'(val){
       this.setMoreDocTableTitle();
+    },
+    'formData.tempPunishAmount'(val){
+      this.totalMoney = this.formData.tempPunishAmount;
+      this.handleChangePaidAmount();
     }
   }
 };
@@ -1087,4 +1117,13 @@ export default {
 
 <style lang="scss" src="@/assets/css/documentForm.scss" scoped>
 /* @import "@/assets/css/documentForm.scss"; */
+</style>
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type="number"]{
+    -moz-appearance: textfield;
+  }
 </style>

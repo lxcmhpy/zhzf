@@ -82,7 +82,7 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi, findAllModleNameApi } from "@/api/Record";
+import { findRecordListApi, removeRecordByIdApi, findRecordModleByIdApi, findRecordModleTimeByIdApi, findAllModleNameApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { deleteFileByCaseAndHuanjieApi } from "@/api/caseHandle";
 export default {

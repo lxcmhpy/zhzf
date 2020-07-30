@@ -32,7 +32,7 @@
                     <i class="iconfont law-btn_shousuo shousuo"></i>
                     <el-form-item prop="class" label-width="0" style="width:100%;margin-bottom: 10px;">
                       <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空" @change="changeGroup(item)">
-                        <el-option v-for="(commonField,index) in commonGroupFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
+                        <el-option v-for="(commonField,index) in commonGroupFieldList" :key="index" :label="commonField.classs" :value="commonField.classs" :disabled="disabledChooseGruop(commonField)"></el-option>
                       </el-select>
                     </el-form-item>
                     <i class="el-icon-remove" style="margin-left:18px" @click="delField(item,formData.templateFieldList)"></i>
@@ -91,8 +91,8 @@
 
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
-                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)"  ref="test" :id='field.info?field.info.field:""'>
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title+commonField.fieldDisabled" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
+                          <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)" ref="test" :id='field.info?field.info.field:""'>
+                            <el-option v-for="(commonField,index3) in commonFieldList" :key="index3" :label="commonField.title" :value="commonField" :disabled="disabledChoose(commonField)"></el-option>
                           </el-select>
 
                         </el-form-item>
@@ -177,23 +177,23 @@
           </div>
           <!-- 拓展功能 -->
           <p class="border-title card-title-margin">拓展功能</p>
-          <el-form-item label="文书填报" class="modle-radio" prop="documentFill">
+          <el-form-item label="文书填报" class="modle-radio chose-mine" prop="documentFill">
             <el-radio-group v-model="formData.documentFill" @change="changeFile()">
-              <el-radio label="是" value='是' style="width:5%"></el-radio>
+              <el-radio label="是" value='是' style="width:5%" @click.native.prevent="clickitem('是')"></el-radio>
               <el-button type="primary" style="width:15%;margin-right:20%" @click="changeFile" :disabled="formData.documentFill=='是'?false:true">选择文书</el-button>
-              <el-radio label="否" value='否'></el-radio>
+              <el-radio label="否" value='否' @click.native.prevent="clickitem('否')"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="相关记录" class="modle-radio" prop="releventRecords">
+          <el-form-item label="相关记录" class="modle-radio chose-mine" prop="releventRecords">
             <el-radio-group v-model="formData.releventRecords">
-              <el-radio label="当事人" value='当事人'></el-radio>
-              <el-radio label="车辆" value='车辆'></el-radio>
+              <el-radio label="当事人" value='当事人' @click.native.prevent="clickitem2('当事人')"></el-radio>
+              <el-radio label="车辆" value='车辆' @click.native.prevent="clickitem2('车辆')"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="操作记录" class="modle-radio" prop="operateRecords">
+          <el-form-item label="操作记录" class="modle-radio chose-mine" prop="operateRecords">
             <el-radio-group v-model="formData.operateRecords">
-              <el-radio label="是" value='是'></el-radio>
-              <el-radio label="否" value='否'></el-radio>
+              <el-radio label="是" value='是' @click.native.prevent="clickitem3('是')"></el-radio>
+              <el-radio label="否" value='否' @click.native.prevent="clickitem3('否')"></el-radio>
             </el-radio-group>
           </el-form-item>
 
@@ -226,7 +226,7 @@
               </div>
               <div class="el-form-item__content">
                 <el-radio label="机构内使用"></el-radio>
-                <el-form-item v-if="formData.scopeOfUse=='机构内使用'" class="lawPersonBox card-user-box" :prop="formData.scopeOfUse=='机构内使用'?'templateOrgan':'pacholor'">
+                <el-form-item v-if="formData.scopeOfUse=='机构内使用'" class="lawPersonBox card-user-box organClass" :prop="formData.scopeOfUse=='机构内使用'?'templateOrgan':'pacholor'">
                   <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
                     <div class="departOrUserTree" style="width:600px">
                       <div class="treeBox">
@@ -240,7 +240,7 @@
                         </el-tree>
                       </div>
                     </div>
-                    <el-input slot="reference" v-model="formData.templateOrgan" placeholder="请输入选项" clearable style="width:100%">
+                    <el-input slot="reference" v-model="formData.templateOrgan" placeholder="请选择机构" :disabled="true" style="width:100%">
                     </el-input>
                   </el-popover>
                 </el-form-item>
@@ -249,7 +249,7 @@
           </el-form-item>
           <el-form-item label="模板管理者">
             <el-form-item class="lawPersonBox card-user-box-big" style="width:100%">
-              <el-select ref="templateAdminIdList" value-key="userId" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag">
+              <el-select ref="templateAdminIdList" value-key="userId" v-model="formData.templateAdminIdList" multiple filterable @remove-tag="removeAdmintag" @change="changeAdmin">
                 <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
                 <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
@@ -281,8 +281,10 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import { mapGetters } from "vuex";
-import {  saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
-  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi, getDocumentNameList} from "@/api/Record";
+import {
+  saveOrUpdateRecordModleApi, findCommonGroupFieldApi, findAllCommonGroupFieldApi, findRecordModleByIdApi,
+  findRecordlModleFieldByIdeApi, findAllCommonFieldApi, findAllCandidateFieldApi, getDocumentNameList
+} from "@/api/inspection";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 export default {
   components: {
@@ -453,6 +455,41 @@ export default {
       selectFieldList: []
     }
   },
+  computed: {
+    // 不能重复选择字段
+    disabledChoose(item) {
+      return function (item) {
+        let valueList = []
+        this.formData.templateFieldList.forEach(element => {
+          element.fieldList.forEach(item => {
+            valueList.push(item.field)
+          });
+        });
+        let findItemIndex = valueList.findIndex(item2 => item2 == item.field);
+        // let newArr = valueList.splice(findItemIndex, 1);
+        if (findItemIndex != -1) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    disabledChooseGruop(item) {
+      return function (item) {
+        let valueList = []
+        this.formData.templateFieldList.forEach(element => {
+          valueList.push(element.classs)
+        });
+        let findItemIndex = valueList.findIndex(item2 => item2 == item.classs);
+
+        if (findItemIndex != -1) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+  },
   methods: {
     showModal(editdata) {
       if (editdata) {
@@ -472,7 +509,6 @@ export default {
       this.getAllOrgan('root');
       this.getPerson()
       this.newModleTable = true;
-
     },
     // 根据id查找
     findDataByld() {
@@ -569,9 +605,9 @@ export default {
           // 获取通用字段
           this.commonFieldList = res.data
 
-          this.commonFieldList.forEach(element => {
-            element.fieldDisabled = false
-          });
+          // this.commonFieldList.forEach(element => {
+          //   element.fieldDisabled = false
+          // });
         },
         error => {
 
@@ -726,26 +762,7 @@ export default {
                 data.templateFieldList = JSON.stringify(data.templateFieldList)
                 console.log('提交的字段', data)
                 // 提醒未添加字段
-                if (this.noticeMsg()) {
-                  saveOrUpdateRecordModleApi(data).then(
-                    res => {
-                      if (res.code == 200) {
-                        this.$message({
-                          type: "success",
-                          message: res.msg
-                        });
-                        this.$emit("getAddModle", 'sucess');
-                        this.resetForm('formData')
-                        this.newModleTable = false;
-                      } else {
-                        this.$message.error(res.msg);
-                      }
-                    },
-                    error => {
-
-                    })
-                }
-
+                this.noticeMsg(data)
               })
 
             }
@@ -928,7 +945,7 @@ export default {
           this.$set(field, 'title', info)
         }
       }
-// this.changeDisabledStatus(field)
+      // this.changeDisabledStatus(field)
 
       // console.log('change！！！！！this.commonFieldList', this.commonFieldList)
       // console.log('find',this.commonFieldList.find(field))
@@ -1030,7 +1047,7 @@ export default {
         }];
     },
     changeUser(val) {
-      console.log(val)
+      this.$forceUpdate()
     },
     changeFile(val) {
       // 选择文书填报
@@ -1050,33 +1067,49 @@ export default {
       });
       console.log('this.multipleSelection', this.multipleSelection)
     },
-    noticeMsg() {
-      console.log('1', this.vehicleShipIdFlag)
-      console.log('2', this.partyFlag)
-      console.log('2', this.formData.releventRecords)
+    noticeMsg(data) {
       if (this.formData.releventRecords == '当事人' && !this.partyFlag) {
         // 当事人字段没有
-        this.$confirm('当前模板没有当事人字段，是否继续发布？', "模板发布", {
-          confirmButtonText: "确认",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          return true
-        })
+        this.$alert('当前模板没有当事人字段，是否继续发布？', "模板发布", {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.noticeMethod(data)
+          }
+        });
       } else {
         if (this.formData.releventRecords == '车辆' && !this.vehicleShipIdFlag) {
           // 车辆字段没有
-          this.$confirm('当前模板没有车辆字段，是否继续发布？', "模板发布", {
-            confirmButtonText: "确认",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            return true
-          })
+          this.$alert('当前模板没有车辆字段，是否继续发布？', "模板发布", {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.noticeMethod(data)
+            }
+          });
         } else {
-          return true;
+          this.noticeMethod(data)
         }
       }
+    },
+    noticeMethod(data) {
+      saveOrUpdateRecordModleApi(data).then(
+        res => {
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
+            this.$emit("getAddModle", 'sucess');
+            this.resetForm('formData')
+            this.newModleTable = false;
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
+
+
     },
     // 获取文书名称列表
     getFileList() {
@@ -1111,7 +1144,20 @@ export default {
           });
         });
       }
-    }
+    },
+    changeAdmin() {
+      this.$forceUpdate()
+    },
+    // 清除选择
+    clickitem(e) {
+      e === this.formData.documentFill ? this.formData.documentFill = '' : this.formData.documentFill = e
+    },
+    clickitem3(e) {
+      e === this.formData.operateRecords ? this.formData.operateRecords = '' : this.formData.operateRecords = e
+    },
+    clickitem2(e) {
+      e === this.formData.releventRecords ? this.formData.releventRecords = '' : this.formData.releventRecords = e
+    },
   },
   mounted() {
   }
@@ -1119,3 +1165,11 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
+<style lang="scss" >
+.organClass {
+  .el-input.is-disabled .el-input__inner {
+    background-color: #fff !important;
+    cursor: default !important;
+  }
+}
+</style>

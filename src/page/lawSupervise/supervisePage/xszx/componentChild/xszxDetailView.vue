@@ -418,7 +418,7 @@
               </el-carousel>
             </li>
           </ul>
-          <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
+          <el-dialog :visible.sync="dialogIMGVisible" custom-class="xszxDialogImg">
             <div>
                 <el-row>
                   <el-col :span="1" style="margin-top: 200px;">
