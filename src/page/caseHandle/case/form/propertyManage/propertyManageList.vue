@@ -93,9 +93,16 @@
     <el-row>
       <el-button type="primary" size="medium" @click="handleDialog('case')">案件关联/解除</el-button>
       <el-button type="primary" size="medium" @click="handleDialog('property')">财物处理</el-button>
+
+
+      
+      <router-link :to="{ name: 'case_handle_viewProperty', params: { id: 'view' }}">
+        <el-button type="primary" size="medium">详情页显示</el-button>
+      </router-link>
     </el-row>
     <div class="tablePart">
-      <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row>
+      <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55"> </el-table-column>
         <el-table-column prop="propertyNo" label="财务编号" align="center" width="200">
           <template slot-scope="scope">
             <router-link :to="{ name: 'case_handle_viewProperty', params: { id: scope.row.id }}">
@@ -133,7 +140,7 @@
 
   </div>
 
-  <propertyDialog ref="dialog"></propertyDialog>
+  <propertyDialog ref="dialog" @handle-case-data="handleCaseData"></propertyDialog>
 </div>
 </template>
 <script>
@@ -165,7 +172,8 @@ export default {
       total: 0, //总页数
       hideSomeSearch: true,
       handleWayList:["封存","扣押","退回当事人","移交法院","销毁","其他"],
-      syqxList:[30,90,180,360]
+      syqxList:[30,90,180,360],
+      multipleSelection:[]
     };
   },
   mixins:[mixinGetCaseApiList],
@@ -183,7 +191,13 @@ export default {
           ""
         );
     },
-
+    handleCaseData(data){
+        debugger;
+        console.log("绑定案件信息:"+data);
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     //获取已归档的数据
     getDataList(searchData) {
       let data = searchData;
@@ -208,14 +222,8 @@ export default {
     showSomeSearch() {
       this.hideSomeSearch = !this.hideSomeSearch;
     },
-    searchEmit(row){
-      console.log(row);
-      this.$store.commit('setCaseId',row.id);
-      //设置案件状态不为审批中
-    //   this.$store.commit("setCaseApproval", false);
-      this.$router.push({
-        name: "case_handle_electronicFileDetail"
-      });
+    searchEmit(){
+      this.getCaseList2(this.searchForm);
     }
   },
   created() {

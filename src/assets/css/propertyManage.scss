@@ -1,0 +1,69 @@
+@import "./basicStyles/variables.scss";
+
+.u-file-button{
+    display: inline-block;
+    position: relative;
+    line-height: normal;
+  
+    .el-button{
+      margin-top: 0px;
+    }
+  
+    input{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 1;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
+  
+  .u-my-card{
+    .el-card__header
+    ,.el-collapse-item__header{
+      height: rem(31px);
+      line-height: rem(28px);
+      padding: 0px rem(10px);
+      background-color: #f5f7fa;
+  
+      .el-button{
+        margin-top:rem(2px);
+        padding: rem(5px) rem(10px);
+        font-size: rem(12px);
+  
+        span{
+          font-size:rem(12px) !important;
+          font-weight:normal!important;
+        }
+      }
+  
+      .clearfix{
+        span{
+          font-size:rem(14px);
+          font-weight:bold;
+        }
+      }
+    }
+  
+    .el-card__body{
+      padding:0px 0px 0px;
+    }
+  
+    .el-form{
+      padding-bottom:rem(10px);
+    }
+      .el-collapse-item__content{
+          padding:0;
+      }
+  }
+
+  .propery-dialog{
+    .title{
+      font-size: 14px;
+      font-weight: 400; 
+    }
+
+  }
