@@ -63,7 +63,7 @@
             </el-form-item>
           </div>
         </div>
-        <div class="afddBox" v-if="inforForm.zfmlId === '1002000200000000' ">
+        <div class="afddBox" v-if="inforForm.zfmlId === '1002000100000000' ">
           <label class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive2">
             <el-form-item label-width="0" prop="highwayRoute">
@@ -102,7 +102,7 @@
             <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
           </div>
         </div>
-        <div v-if="inforForm.zfmlId !== '1002000200000000' ">
+        <div v-if="inforForm.zfmlId !== '1002000100000000' ">
           <div class="itemOne">
             <el-form-item label="案发地点">
               <el-input v-model="inforForm.afdd">
@@ -122,7 +122,7 @@
             <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
           </div> -->
         </div>
-        <div v-if="inforForm.zfmlId === '1002000200000000' ">
+        <div v-if="inforForm.zfmlId === '1002000100000000' ">
           <div class="gongLiBox1">K</div>
           <div class="itemFive">
             <el-form-item  prop="pileNumber" label-width="0px">
@@ -193,7 +193,7 @@
           <div class="item appendSelect">
             <el-form-item label="证件类型" prop="partyIdNo">
               <el-input ref="partyIdNo" placeholder="请输入内容" v-model="inforForm.partyIdNo"
-                        @change="changePartyIdType(inforForm.partyIdNo)" class="input-with-select hasMargintop">
+                        class="input-with-select hasMargintop">
                 <el-select slot="prepend" v-model="inforForm.partyIdType" @change="changeDriverOrAgentInfo">
                   <el-option v-for="item in credentialType" :key="item.value" :label="item.label"
                     :value="item.value"></el-option>
@@ -358,7 +358,7 @@
             <div class="item appendSelect">
               <el-form-item label="证件类型" prop="partyIdNo">
                 <el-input ref="partyIdNo" placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber"
-                          @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
+                          @input="changePartyIdType2Index = index"
                           class="input-with-select hasMargintop" :disabled="index==0&&relationWithPartyIsOne[index]">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType"
                              :disabled="index==0&&relationWithPartyIsOne[index]">
@@ -889,7 +889,32 @@
         }
         callback();
       };
+      // 检验身份证
+      var checkIdNoPassSort = (rule, value, callback) => {
+        if(this.inforForm.partyIdType==="0") {
+          // validateIDNumber
+          var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
+          if (!reg.test(value) && value) {
+            callback(new Error('身份证格式错误'));
+          } else {
+            if(this.changePartyIdType2Index) {
+              this.changePartyIdType2(this.driverOrAgentInfo.zhengjianNumber,this.changePartyIdType2Index)
+            } else {
+              this.changePartyIdType(this.inforForm.partyIdNo)
+            }
+          }
+          callback();
+        }
+        // else {
+        //   var reg = /^((1[45]\d{7})|(G\d{8})|(P\d{7})|(S\d{7,8}))?$/
+        //   if (!reg.test(value) && value) {
+        //     callback(new Error('护照号码格式错误'));
+        //   }
+        //   callback();
+        // }
+      }
       return {
+        changePartyIdType2Index: "",
         theStr: "", // 输入框长度到达设定值时输入框的内容
         recentCheckStastions: [],//最近五个检测站
         recentCheckWorkers: [],//历史保存过检测人员
@@ -1000,8 +1025,7 @@
           partyAge: [
             {validator: validateAge, trigger: "blur"}
           ],
-          // partyIdNo: [{validator: validateIDNumber, trigger: "blur"}],
-          // partyIdNo: this.inforForm.partyIdType==="0"?[{validator: validateIDNumber, trigger: "blur"}]:[{validator: checkPassport, trigger: "blur"}],
+          partyIdNo: [{validator: checkIdNoPassSort, trigger: "blur"}],
           partyZipCode: [
             {validator: validateZIP, trigger: "blur"}
           ],
@@ -1311,11 +1335,6 @@
       }
     },
       changeDriverOrAgentInfo(type){
-        if(type === "0") {
-          this.rules.partyIdNo = [{validator: validateIDNumber, trigger: "blur"}]
-        } else if (type === "1") {
-          this.rules.partyIdNo = [{validator: checkPassport, trigger: "blur"}]
-        }
         let val = this.driverOrAgentInfoList[0].relationWithParty
         if (val === '同一人' && this.partyTypePerson == "1") {
           this.driverOrAgentInfoList[0].relationWithCase = "当事人";
@@ -1528,7 +1547,7 @@
           _this.inforForm.state = state;
           _this.inforForm.caseStatus = '未立案';
           // 拼接案发地点
-          if(_this.inforForm.zfmlId === "1002000200000000"){
+          if(_this.inforForm.zfmlId === "1002000100000000"){
               let afddSting=_this.inforForm.highwayRoute+_this.inforForm.direction+'k'+_this.inforForm.pileNumber+'+'+_this.inforForm.distance
               if(_this.inforForm.distance2||_this.inforForm.pileNumber2){
                 afddSting=afddSting+'至'+'k'+_this.inforForm.pileNumber2+'+'+_this.inforForm.distance2+' '+_this.inforForm.position
@@ -1537,7 +1556,7 @@
               }
               _this.inforForm.afdd=afddSting
           }
-          
+
           _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
             res => {
               console.log(res);
@@ -2120,6 +2139,7 @@
     },
 
     mounted() {
+      debugger;
       // 事务中心跳转
       let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
       console.log('事务中心', overWeightCaseData)

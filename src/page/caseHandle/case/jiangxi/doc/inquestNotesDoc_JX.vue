@@ -162,6 +162,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 // 验证规则
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { queryUserListByOrganIdApi } from "@/api/system";
+import { findLawOfficerApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   findCaseAllBindPropertyApi,
@@ -404,6 +405,11 @@ export default {
         console.log('代理人信息', dailiData);
 
       }
+      let data = {
+        lawOfficerName:this.docData.staff1,
+        lawOfficerCards:this.docData.certificateId1
+      }
+      this.queryLawOfficerInfo(data,1)
       this.setDataForPelple(dailiData);
     },
     //设置禁用
@@ -414,12 +420,23 @@ export default {
     changeStaff1(val) {
       let staffIndex = this.docData.staff.split(',').indexOf(val);
       this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
-      console.log(staffIndex);
+      let data = {
+        lawOfficerName:val,
+        lawOfficerCards:this.docData.certificateId1
+      }
+      console.log("执法人员姓名和执法证号",data);
+      this.queryLawOfficerInfo(data,1)
     },
     changeStaff2(val) {
       let staffIndex = this.docData.staff.split(',').indexOf(val);
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
-      console.log(staffIndex);
+      let data = {
+        lawOfficerName:val,
+        lawOfficerCards:this.docData.certificateId2
+      }
+      console.log("执法人员姓名和执法证号",data);
+      this.queryLawOfficerInfo(data,2)
+      
     },
     //记录人 查询本机构下的人员
     findUserByOrgan() {
@@ -500,6 +517,19 @@ export default {
         console.log(res);
         let data2 = JSON.parse(res.data.propertyData);
         this.staffList = data2.staff.split(',');
+      }, err => {
+        console.log(err);
+      })
+    },
+    //根据执法人员姓名执法证号获取执法人员信息
+    queryLawOfficerInfo(data,num){
+      findLawOfficerApi(data).then(res => {
+        let staffInfo = res.data;
+        if(num == 1){
+          this.docData.staffUnitAndPosition1 = staffInfo.organName
+        }else{
+          this.docData.staffUnitAndPosition2 = staffInfo.organName
+        }
       }, err => {
         console.log(err);
       })

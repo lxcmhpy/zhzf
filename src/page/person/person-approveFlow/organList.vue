@@ -61,7 +61,7 @@
         <el-table-column prop="isConfig" label="配置状态" align="center" :formatter = "statusFormat"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click.stop @click="doaApploy(scope.row.oid)" type="text">配置</el-button>
+            <el-button @click.stop @click="doaApploy(scope.row)" type="text">配置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -187,19 +187,20 @@ export default {
                 console.log(err);
             });
         },
-    doaApploy(id){
+    doaApploy(row){
       let _this = this;
       _this.index = -1;
       this.paramList=[]
       let data = [];
       
       if(_this.allOrganData.length>0){
-       _this.getOrgPid(_this.allOrganData,id);
+       _this.getOrgPid(_this.allOrganData,row.oid);
       }
       data = _this.paramList;
-      // console.info(">>>>>>>>>>"+JSON.stringify(_this.allOrganData))
-      // console.info("aaaadddd"+JSON.stringify(_this.paramList))
-       this.$refs.approveDeployRef.showModal(data,id);
+      if(data.size == 0 || data.size == undefined){
+        data.push({"id":row.oid,"oname":row.oname,"index":0});
+      }
+       this.$refs.approveDeployRef.showModal(data,row.oid);
     },
     //根据点击机构的id查找pid
     getOrgPid(arr,id){

@@ -6,8 +6,8 @@
           <el-form :inline="true" :model="dicSearchForm" class>
             <el-form-item label="所属标准：">
               <el-select v-model="dicSearchForm.roadLcBz" @change="initRoadLcType">
-                <el-option value="高等级公路标准" label="高等级公路标准"></el-option>
-               <el-option value="普通公路标准" label="普通公路标准"></el-option>
+               <el-option v-for="item in options" :key="item.id" :label="item.name"
+                           :value="item.name"></el-option>
              </el-select>
             </el-form-item>
             <el-form-item label="类型：">
@@ -67,7 +67,7 @@
 <script>
 import addOrUpdateRoadLcDeploy from "./addOrUpdateRoadLcDeploy";
 import {
-  getDictListDetailApi,
+  getDictListDetailApi,getDictListDetailByNameApi
 } from "@/api/system";
 export default {
   data() {
@@ -83,6 +83,7 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       typeList: [],
+      options: [],
     };
   },
   components: {
@@ -139,15 +140,15 @@ export default {
       }
     },
     //选中所属标准，加载类型
-    initRoadLcType(){
+    initRoadLcType(val){
       let _this = this;
-      let bzId = null;
-      if(this.dicSearchForm.roadLcBz == '高等级公路标准'){
-        bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
-      }else{
-        bzId = '0c340250837a8cb58e7ce330266ab5c6';
-      }
-      getDictListDetailApi(bzId).then(res=>{
+      let bzId = val;
+      // if(this.dicSearchForm.roadLcBz == '高等级公路标准'){
+      //   bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
+      // }else{
+      //   bzId = '0c340250837a8cb58e7ce330266ab5c6';
+      // }
+      getDictListDetailByNameApi(bzId).then(res=>{
         console.log(res)
          _this.typeList = res.data;
          _this.dicSearchForm.roadLcType = "";
@@ -180,9 +181,19 @@ export default {
     addOrUpdateRoadLcDeploy() {
       this.$refs.addOrUpdateRoadLcDeployRef.showModal(0, "");
     },
+    //从数据字典获取路产标准
+    getRoadLcBz(){
+      let _this = this;
+      let name = "公路路产所属标准";
+      getDictListDetailByNameApi(name).then(res=>{
+        console.log(res)
+         _this.options = res.data;
+      })
+    }
   },
   created() {
     this.getRoadLcDeploy();
+    this.getRoadLcBz();
   }
 };
 </script>

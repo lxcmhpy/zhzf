@@ -180,6 +180,7 @@
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA';
 import {getAttachedPropertyByConditionApi,getAttachedPropertyAnsValueApi,addAttachedPropertyValueApi} from "@/api/caseHandle";
 export default {
+  inject: ["page"],
   data() {
     return {
       visible: false,
@@ -260,7 +261,8 @@ export default {
       this.errorOrganName = false;
     },
     //失去焦点请求 名称是否重复
-    blurOrganName() {
+    blurOrganName(val) {
+      this.page.selectCurrentTreeName = this.addOrganForm.name
       if(this.addOrganForm.name){
         let _this = this
         this.$store.dispatch("hasOrganName", this.addOrganForm.name).then(
