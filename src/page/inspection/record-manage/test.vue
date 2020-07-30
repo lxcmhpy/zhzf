@@ -1,19 +1,18 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="helpPages_main">
-      <div class="read" v-for="(item, index) in modleList"  :key="index">
-        <div class="header rela" @click="showToggle(item)">
-          <h3>{{item.title}}</h3>
-          <!-- <i class="down abso fa fa-angle-down" v-if="!item.isopen"></i> -->
-        </div>
-        {{item.isSubShow}}
-        <ul  v-show="item.isSubShow">
-          <li class="rela" v-for="(modle, index1) in item.templateList" :key="index1">
-            <i class="fl abso"></i>
-            <p class="fl">{{modle.name}}</p>
-          </li>
-        </ul>
-      </div>
+    <div>
+      <el-select v-model="value1" placeholder="请选择">
+        <el-option v-for="item in haha" :key="item.id" :label="item.label" :value="item.id" :disabled="disabledChoose(item)">
+        </el-option>
+      </el-select>
+      <el-select v-model="value2" placeholder="请选择">
+        <el-option v-for="item in haha" :key="item.id" :label="item.label" :value="item.id" :disabled="disabledChoose(item)">
+        </el-option>
+      </el-select>
+      <el-select v-model="value3" placeholder="请选择">
+        <el-option v-for="item in haha" :key="item.id" :label="item.label" :value="item.id" :disabled="disabledChoose(item)">
+        </el-option>
+      </el-select>
     </div>
   </div>
 </template>
@@ -22,8 +21,44 @@
 export default {
   data() {
     return {
-      modleList: [{title:'12121',isopen:true,isSubShow:true,templateList:[{name:'name'},{nameType:'naemRype'}]}, {title:'34343',isopen:true,isSubShow:true,templateList:[{name:'name'},{nameType:'naemRype'}]}, {title:'454545'}]
+      value1: '',
+      value2: '',
+      value3: '',
+      haha: [{
+        id: 1,
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        id: 2,
+        value: '选项2',
+        label: '双皮奶',
+        disabled: true
+      }, {
+        id: 3,
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        id: 4,
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        id: 5,
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+    }
+  },
 
+  computed: {
+    disabledChoose(item) {
+      return function (item) {
+        let findItemIndex = [this.value1, this.value2, this.value3].findIndex(item2 => item2 == item.id);
+        console.log('findItemIndex', findItemIndex)
+
+        let newArr = [this.value1, this.value2, this.value3].splice(findItemIndex, 1);
+        console.log('newArr', newArr)
+        return newArr.includes(item.id);
+      }
     }
   },
   methods: {

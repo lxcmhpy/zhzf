@@ -2,15 +2,15 @@
   <div class="height100">
     <div class="handlePart">
       <div class="search toggleBox search-mini">
-        <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
+        <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
             <el-form-item>
               双随机一公开执法人员库
             </el-form-item>
-            <el-form-item label="姓名：" prop='personName'>
+            <el-form-item label="姓名" prop='personName'>
               <el-input v-model="searchForm.personName"></el-input>
             </el-form-item>
-            <el-form-item label="在岗情况：" prop='workStatus'>
+            <el-form-item label="在岗情况" prop='workStatus'>
               <el-select v-model="searchForm.workStatus" placeholder="请选择">
                 <el-option v-for="item in optionsZGQK" :key="item.id" :label="item.name" :value="item.name">
                 </el-option>
@@ -19,6 +19,8 @@
           </el-form>
           <div class="search-btns">
             <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
+            <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+            </el-button>
           </div>
         </div>
       </div>
@@ -37,10 +39,10 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
+              <el-button type="primary" size="medium" @click="downloadModle">Excel模板导出</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
+              <el-button type="primary" size="medium" @click="importModle">导入Excel</el-button>
             </el-form-item>
             <el-form-item>
               <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
@@ -58,7 +60,7 @@
         <el-table-column prop="organization" label="执法人员性质" align="center"></el-table-column>
         <el-table-column prop="job" label="职务" align="center"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
             <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
@@ -262,22 +264,25 @@
   </div>
 </template>
 <script>
-import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi ,delPersonApi} from "@/api/inspection";
+import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
+import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
-  mixins: [mixinPerson],
+  mixins: [mixinPerson, mixinInspection],
+  props: ['freshFlag'],
+  watch: {
+    freshFlag(val, oldVal) {
+      console.log('监听', this.freshFlag, 'val', val)
+    },
+  },
   data() {
     return {
-      tableData: [], //表格数据
       multipleSelection: [],
       searchForm: {
         workStatus: "",
         personName: '',
       },
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
       isShow: false,
       dialogFormVisible: false,
       addForm: {
@@ -326,41 +331,13 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      getAllPublicPersonApi(data).then(
-        res => {
-          console.log(res)
-          this.tableData = res.data.records
-          this.totalPage = res.data.total
-        },
-        error => {
-          // reject(error);
-        })
-
+      this.getPageList("getAllPublicPerson", data);
     },
-    // 查询
-    searchTableData() {
-      this.currentPage = 1;
-      this.getTableData()
-    },
-
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.currentPage = 1;
-      this.getTableData();
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getTableData();
-    },
-
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log('multipleSelection', this.multipleSelection)
     },
-
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
@@ -395,44 +372,9 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    addMethod() {
-      this.dialogStatus = '新增'
-      this.dialogFormVisible = true
-    },
-    editMethod(row) {
-      this.addForm = JSON.parse(JSON.stringify(row))
-      this.dialogStatus = '修改'
-      this.dialogFormVisible = true
-    },
     delMethod(id) {
-      this.$confirm('确认删除？', "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        delPersonApi(id).then(
-          res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.currentPage = 1;
-              this.getTableData()
-            }
-          },
-          error => {
-            // reject(error);
-          })
-      })
+      this.deleteById("delPerson", id);
     },
-    exportMethod() { },
-    importModle() { },
-    downloadModle() { },
     getDrawerList(data) {
       let _this = this
       data.forEach(element => {

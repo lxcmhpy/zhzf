@@ -59,7 +59,7 @@
         <el-table-column prop="job" label="职务" align="center"></el-table-column><!-- 显示模板标题 -->
         <el-table-column prop="jobTitle" label="职称" align="center"></el-table-column>
         <el-table-column prop="domain" label="专业领域" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
             <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
@@ -218,21 +218,17 @@
 import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
+import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
-  mixins: [mixinPerson],
+  mixins: [mixinPerson, mixinInspection],
   data() {
     return {
-      tableData: [], //表格数据
       multipleSelection: [],
       searchForm: {
         company: "",
         name: ''
       },
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
       isShow: false,
-      dialogFormVisible: false,
       addForm: {
         name: '',
         sex: '',
@@ -257,7 +253,7 @@ export default {
         status: '',
       },
       formLabelWidth: '100px',
-      dialogStatus: '',
+      // dialogStatus: '',
       rules: {
         pass: [
           { required: true, trigger: 'blur' }
@@ -283,35 +279,8 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      getAllExpertApi(data).then(
-        res => {
-          console.log(res)
-          this.tableData = res.data.records
-          this.totalPage = res.data.total
-        },
-        error => {
-          // reject(error);
-        })
-
+      this.getPageList("getAllExpert", data);
     },
-    // 查询
-    searchTableData() {
-      this.currentPage = 1;
-      this.getTableData()
-    },
-
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.currentPage = 1;
-      this.getTableData();
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getTableData();
-    },
-
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -349,44 +318,12 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    addMethod() {
-      this.dialogStatus = '新增'
-      this.dialogFormVisible = true
-    },
-    editMethod(row) {
-      this.addForm = JSON.parse(JSON.stringify(row))
-      this.dialogStatus = '修改'
-      this.dialogFormVisible = true
-    },
     delMethod(id) {
-      this.$confirm('确认删除？', "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        delExpertApi(id).then(
-          res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.currentPage = 1;
-              this.getTableData()
-            }
-          },
-          error => {
-            // reject(error);
-          })
-      })
+      this.deleteById("delExpert", id);
     },
-    exportMethod() { },
-    importModle() { },
-    downloadModle() { },
+    radomExpertNum() {
+      return Math.random() * 100 + 10000;
+    },
     getDrawerList(data) {
       let _this = this
       data.forEach(element => {

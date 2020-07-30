@@ -5,17 +5,17 @@
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick" style="height:calc(100% - 40px);">
         <el-tab-pane label="检查人员库" name="first">
           <div class="height100">
-            <inspectors></inspectors>
+            <inspectors v-if="activeName=='first'"></inspectors>
           </div>
         </el-tab-pane>
         <el-tab-pane label="检查对象库" name="second">
-          <inspectionObject></inspectionObject>
+          <inspectionObject  v-if="activeName=='second'"></inspectionObject>
         </el-tab-pane>
         <el-tab-pane label="检查专家库" name="third">
-          <expert></expert>
+          <expert v-if="activeName=='third'"></expert>
         </el-tab-pane>
         <el-tab-pane label="事项清单库" name="fourth">
-          <itemList></itemList>
+          <itemList v-if="activeName=='fourth'"></itemList>
         </el-tab-pane>
       </el-tabs>
     </div>

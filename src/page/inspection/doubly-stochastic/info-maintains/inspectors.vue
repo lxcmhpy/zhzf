@@ -3,25 +3,29 @@
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
       <div class="handlePart">
         <div class="search toggleBox search-mini">
-          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
+          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0;height:calc(100% - 125px)">
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
               <el-form-item>
                 执法人员库
               </el-form-item>
-              <el-form-item label="姓名：" prop='otherUser'>
-                <el-input v-model="searchForm.otherUser"></el-input>
+              <el-form-item label="姓名" prop='personName'>
+                <el-input v-model="searchForm.personName"></el-input>
               </el-form-item>
-              <el-form-item label="在岗情况：" prop='otherUser'>
-                <el-select v-model="searchForm.otherUser" placeholder="请选择">
+              <el-form-item label="在岗情况" prop='stationStatusName'>
+                <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
                   <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.name">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
-                <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
               </el-form-item>
             </el-form>
+            <div class="search-btns">
+              <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
+              <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+              </el-button>
+              <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
+            </div>
           </div>
         </div>
       </div>
@@ -33,7 +37,7 @@
           <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
           <el-table-column prop="stationName" label="岗位" align="center"></el-table-column>
           <el-table-column prop="stationStatusName" label="状态" align="center"></el-table-column>
-          <el-table-column prop="" label="编制" align="center"></el-table-column>
+          <el-table-column prop="staffingName" label="编制" align="center"></el-table-column>
           <el-table-column prop="postName" label="职务" align="center"></el-table-column>
           <el-table-column prop="oname" label="单位" align="center"></el-table-column>
         </el-table>
@@ -49,19 +53,20 @@
       </div>
     </div>
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
-      <publicInspectors></publicInspectors>
+      <publicInspectors @freshFlag='freshFlag'></publicInspectors>
     </div>
 
   </div>
 </template>
 <script>
-import { findRecordListApi, getAllPersonApi ,getDictListDetailByNameApi} from "@/api/inspection";
+import { findRecordListApi, getAllPersonApi, getDictListDetailByNameApi, addMorePublicPersonApi } from "@/api/inspection";
 // import { getAllPersonApi, } from "@/api/person";
 import iLocalStroage from "@/common/js/localStroage";
 import publicInspectors from './publicInspectors.vue';
 import { mixinPerson } from "@/common/js/personComm";
+import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
-  mixins: [mixinPerson],
+  mixins: [mixinPerson, mixinInspection],
   components: {
     publicInspectors,
   },
@@ -108,14 +113,19 @@ export default {
       zzmmList: [],
       zcList: [],
       workStatusList: [],
-      options: []
+      options: [],
+      freshFlag: true,
     }
   },
   methods: {
     // 查询列表时
     getTableData() {
       let data = {
-        oName: iLocalStroage.gets("userInfo").organName,
+        // oName: iLocalStroage.gets("userInfo").organName,
+        personName: this.searchForm.personName,
+        // personName: '11',
+        stationStatusName: this.searchForm.stationStatusName,
+        // stationStatusName: '在岗',
         // oName: '固原综合执法支队',
         current: this.currentPage,
         size: this.pageSize,
@@ -131,24 +141,6 @@ export default {
         })
 
     },
-    // 查询
-    searchTableData() {
-      this.currentPage = 1;
-      this.getTableData()
-    },
-
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.currentPage = 1;
-      this.getTableData();
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getTableData();
-    },
-
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -160,36 +152,6 @@ export default {
       this.searchForm.defaultDisplay = true
       // debugger
       this.getTableData()
-    },
-    // submitForm(formName) {
-    //   this.$refs[formName].validate((valid) => {
-    //     if (valid) {
-    //       
-    //     } else {
-    //       console.log('error submit!!');
-    //       return false;
-    //     }
-    //   });
-    // }, 
-    // resetForm(formName) {
-    //   this.$refs[formName].resetFields();
-    // },
-    addMethod() {
-      this.dialogFormVisible = true
-    },
-    editMethod(row) {
-      this.addForm = JSON.parse(JSON.stringify(row))
-      this.dialogStatus = '修改'
-      this.dialogFormVisible = true
-    },
-    delMethod() {
-      this.$confirm('确认删除？', "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-
-      })
     },
     exportMethod() { },
     importModle() { },
@@ -207,6 +169,16 @@ export default {
     copyMethod() {
       // 走公开人员的添加接口
       console.log(this.multipleSelection)
+      this.$emit("freshFlag", !this.freshFlag);
+      addMorePublicPersonApi(this.multipleSelection).then(
+        res => {
+          if (res.code == 200) {
+
+          }
+        },
+        error => {
+          // reject(error);
+        })
     }
   },
   mounted() {
