@@ -1,5 +1,5 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
-    getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi
+    getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi,findDocCatalogByCaseIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
     submitPdfApi,approvalPdfApi,approvalPdfQzApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
     findByCondition,findByMlCaseIdNew,saveOrUpdateDocCatalogList,getCaseTypeListApi,getCatalogListApi,addOrEditCatalogApi,
@@ -375,6 +375,18 @@ const caseHandle = {
         getByMlCaseIdNew ({ commit }, data) {
             return new Promise((resolve, reject) => {
                 findByMlCaseIdNew(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        // 通过案件id查询电子卷宗PDF
+        findDocCatalogByCaseId ({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                findDocCatalogByCaseIdApi(data).then(
                     res => {
                         resolve(res);
                     },

@@ -479,7 +479,6 @@ export function findEvidencePicApi(data) {
 }
 
 export function findByMlCaseIdNew(caseId) {
-
   return request({
     url: "/case/doc/docCatalog/findCatalogByCaseId/" + caseId,
     method: "get",
@@ -488,6 +487,17 @@ export function findByMlCaseIdNew(caseId) {
     cancelToken: setCancelSource()
   });
 }
+
+export function findDocCatalogByCaseIdApi(caseId) {
+  return request({
+    url: "/case/doc/docCatalog/findDocCatalogByCaseId/" + caseId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 
 export function findByCondition(data) {
   let data2 = vm.$qs.stringify(data);
