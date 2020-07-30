@@ -614,3 +614,14 @@ export function addTaskApi(data) {
         cancelToken: setCancelSource()
     });
 }
+// 通过省级行政区划代码查询所有地市
+export function findByAddressCode(data) {
+    return request({
+        url: "/xzjc/country/findByAddressCode/"+data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

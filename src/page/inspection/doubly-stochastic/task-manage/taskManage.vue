@@ -5,14 +5,11 @@
         <div class="search toggleBox">
           <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
-              <el-form-item label="任务名称" prop='name'>
-                <el-input v-model="searchForm.name"></el-input>
+              <el-form-item label="名称" prop='taskName'>
+                <el-input v-model="searchForm.taskName"></el-input>
               </el-form-item>
-              <el-form-item label="抽查主体" prop='company'>
-                <el-input v-model="searchForm.company"></el-input>
-              </el-form-item>
-              <el-form-item label="检查类型" prop='company'>
-                <el-input v-model="searchForm.company"></el-input>
+              <el-form-item label="抽查主体" prop='checkSubject'>
+                <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
             </el-form>
             <div class="search-btns">
@@ -28,8 +25,11 @@
       <div class="handlePart">
         <div class="search" style="width:100%">
           <el-form :inline="true">
-            <el-form-item label="任务领域" prop='company'>
-              <el-input v-model="searchForm.company"></el-input>
+            <el-form-item label="任务领域" prop='taskArea'>
+              <el-select v-model="searchForm.taskArea" placeholder="请选择">
+                <el-option label="省交通运输厅领域" value="省交通运输厅领域"></el-option>
+                <el-option label="省市场监管领域" value="省市场监管领域"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
@@ -66,7 +66,7 @@
           <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="检查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
-             <template slot-scope="scope">
+            <template slot-scope="scope">
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
@@ -226,8 +226,9 @@ export default {
     return {
       multipleSelection: [],
       searchForm: {
-        company: "",
-        name: ''
+        checkSubject: "",
+        taskName: '',
+        taskArea:'省交通运输厅领域'
       },
       isShow: false,
       addForm: {
@@ -277,6 +278,7 @@ export default {
       let data = {
         name: this.searchForm.name,
         company: this.searchForm.company,
+        taskArea: this.searchForm.taskArea,
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -347,10 +349,10 @@ export default {
   mounted() {
     this.getTableData()
     // 获取抽屉
-    this.getDrawerList([
-      { name: '职称', option: 2 },
-      { name: '专业领域', option: 3 },
-      { name: '人员信息-政治面貌', option: 4 }])
+    // this.getDrawerList([
+    //   { name: '职称', option: 2 },
+    //   { name: '专业领域', option: 3 },
+    //   { name: '人员信息-政治面貌', option: 4 }])
   }
 }
 </script>

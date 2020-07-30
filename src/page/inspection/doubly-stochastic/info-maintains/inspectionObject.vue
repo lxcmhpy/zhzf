@@ -83,7 +83,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="行政划分" prop="adminDivision">
-              <el-input v-model="addForm.adminDivision"></el-input>
+              <el-cascader v-model="addForm.adminDivision" :options="provenceList" :props="{ expandTrigger: 'hover' }" @change="handleChange"></el-cascader>
             </el-form-item>
           </el-col>
         </el-row>
@@ -103,14 +103,14 @@
           <el-col :span="12">
             <el-form-item label="对象类型" prop="objectType">
               <el-select v-model="addForm.objectType" placeholder="请选择">
-                 <el-option v-for="item in optionsDXLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsDXLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="监管类型" prop="superviseType">
               <el-select v-model="addForm.superviseType" placeholder="请选择">
-             <el-option v-for="item in optionsJGLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsJGLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -129,7 +129,7 @@
         </el-row>
         <el-form-item label="监管单位" prop="regulatoryUnit">
           <el-select v-model="addForm.regulatoryUnit" placeholder="请选择">
-             <el-option v-for="item in optionsJGDW" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            <el-option v-for="item in optionsJGDW" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
@@ -144,7 +144,7 @@
   </div>
 </template>
 <script>
-import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi } from "@/api/inspection";
+import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -184,9 +184,10 @@ export default {
           { required: true, trigger: 'blur' }
         ]
       },
-      optionsDXLX:[],
-      optionsJGDW:[],
-      optionsJGLX:[],
+      optionsDXLX: [],
+      optionsJGDW: [],
+      optionsJGLX: [],
+      provenceList: []
     }
   },
   methods: {
@@ -207,7 +208,7 @@ export default {
         error => {
           // reject(error);
         })
-        this.getPageList("getAllRandomObject", data);
+      this.getPageList("getAllRandomObject", data);
 
     },
     // 选择数据
@@ -250,7 +251,7 @@ export default {
     delMethod(id) {
       this.deleteById("delRandomObject", id);
     },
-     getDrawerList(data) {
+    getDrawerList(data) {
       let _this = this
       data.forEach(element => {
         getDictListDetailByNameApi(element.name).then(
@@ -258,7 +259,6 @@ export default {
             switch (element.option) {
               case 1: _this.optionsJGLX = res.data; break;//监管类型
               case 2: _this.optionsDXLX = res.data; break;//对象类型
-              case 3: _this.optionsJGDW = res.data; break;//监管单位
             }
           },
           error => {
@@ -267,13 +267,53 @@ export default {
       });
 
     },
+    findProvence() {
+      this.provenceList = []
+      let _this = this
+      let data = '530000'//云南
+      findByAddressCode(data).then(
+        res => {
+          // this.provenceList.push(res.data)
+          let dataList = []
+          dataList.push(res.data)
+          dataList.forEach(element => {
+            console.log('element', element)
+            if (element.myChildren) {
+              element.value = element.adcode;
+              element.label = element.name
+              element.children = element.myChildren
+              element.myChildren.forEach(item => {
+                console.log('item', item)
+                item.value = item.adcode;
+                item.label = item.name
+                if (item.myChildren) {
+                  item.children = item.myChildren
+                  item.children.forEach(item1 => {
+                    item1.value = item1.adcode;
+                    item1.label = item1.name
+                  });
+                }
+              });
+            }
+          })
+          _this.provenceList = dataList
+
+          debugger
+        },
+        error => {
+          // reject(error);
+        })
+    },
+    handleChange(value) {
+      console.log(value);
+    }
   },
   mounted() {
     this.getTableData()
-     // 获取抽屉
+    this.findProvence()
+    // 获取抽屉
     this.getDrawerList([{ name: '监管类型', option: 1 },
-    { name: '对象类型', option: 2 },
-    { name: '监管单位', option: 3 }])
+    { name: '对象类型', option: 2 }])
   }
 }
 </script>

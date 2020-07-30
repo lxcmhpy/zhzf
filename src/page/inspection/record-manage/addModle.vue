@@ -498,6 +498,7 @@ export default {
         this.drawerTitle = '修改模板'
         this.globalCont = editdata.count + 1;
       } else {
+        this.drawerTitle = '创建模板'
         this.$nextTick(() => {
           this.getFileList()
         });
