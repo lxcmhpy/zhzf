@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
+  "CURRENT": "SGX",
+=======
   "CURRENT": "JX",
+>>>>>>> e0f9399a2db92e992c93a38e8ba231eb86379795
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
