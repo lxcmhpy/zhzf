@@ -9,6 +9,9 @@ export default {
     }
   },
   computed: {
+    buttons() {
+      return this.config.buttons
+    },
     option() {
       return this.config.option
     }
@@ -19,6 +22,7 @@ export default {
         children: 'children',
         label: 'label'
       },
+      clickedIndex: 0
     }
   },
   methods: {
@@ -27,6 +31,14 @@ export default {
      */
     handleNodeClick(data) {
       this.$emit('handleNodeClick', data)
+    },
+
+    /**
+     * 点击按钮时触发
+     */
+    handleButton(data, index) {
+      this.clickedIndex = index
+      this.$emit("handleButton", data)
     },
 
     /**
@@ -50,10 +62,29 @@ export default {
         </div>
       )
     },
+
+    /**
+     * 查询切换按钮生成函数
+     */
+    renderButtons() {
+      return (
+        <div class="jk-mapTree-buttons">
+          {this._l(this.buttons, (item,index) => {
+            return  <div class="topButton"
+                      on-click={() => {this.handleButton(item,index)}}
+                      style={this.clickedIndex===index?"background:#409eff;color:#fff;border-color:#409eff;":null}
+                    >
+                      {item.name}
+                    </div>
+          })}
+        </div>
+      )
+    }
   },
   render() {
     return (
       <div class="jk-mapTree">
+        { this.renderButtons() }
         <el-tree
           data={this.option}
           props={this.defaultProps}
@@ -69,6 +100,55 @@ export default {
 
 <style lang="scss">
 .jk-mapTree {
-
+  width: 370px;
+  height: 402px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  background: #FFFFFF;
+  box-sizing: border-box;
+  padding: 15px;
+  &-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    .topButton {
+      width: 79px;
+      height: 32px;
+      background: #FFFFFF;
+      border: 1px solid #dcdfe6;
+      margin-left: -1px;
+      color: #606266;
+      font-weight: 500;
+      font-size: 12px;
+      text-align: center;
+      line-height: 32px;
+      cursor: pointer;
+      transition: color .5s
+    }
+    .topButton:hover {
+      color: #409eff;
+    }
+    .topButton:nth-child(1) {
+      border-radius: 4px 0 0 4px;
+      margin-left: 0;
+    }
+    .topButton:nth-last-child(1) {
+      border-radius: 0 4px 4px 0;
+    }
+  }
+  .el-tree {
+    border-radius: 4px;
+    .tree-slot-box {
+      img {
+        width: 13px;
+        margin-right: 5px;
+      }
+      span {
+        font-size: 12px;
+        color: #606266;
+        font-family: Helvetica,Arial,sans-serif;
+      }
+    }
+  }
 }
 </style>
