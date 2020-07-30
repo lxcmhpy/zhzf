@@ -369,7 +369,7 @@ export const mixinGetCaseApiList = {
               id: row.id,
               docId: row.docId,
               url: this.$route.name,
-              linkTypeId: caseLinkTypeId,
+              caseLinkTypeId: caseLinkTypeId,
               addMoreData: JSON.stringify(addMoreData),
               docDataId: row.docDataId
             }
