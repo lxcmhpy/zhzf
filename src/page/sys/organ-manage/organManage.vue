@@ -101,6 +101,11 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
+    },
+  },
+  provide() {
+    return {
+      page: this
     }
   },
   data() {
@@ -123,7 +128,7 @@ export default {
       theClickId: "", // 当前被点击树的id
       nodeData: {
         id: '',
-        text: '',
+        text: 'parent',
         data: {}
       }, // 当前被点击节点对应的 Node
     };
@@ -138,16 +143,27 @@ export default {
      */
     handleUpdata() {
       let parentNode = {}
-      // 如果当前节点是根节点，则调用修改根节点的方法
-      if(!this.nodeData.parent.text) {
-        parentNode = {
-          parentNodeId: "null",
-          parentNodeName: "null"
-        }
-      } else {
+      // 如果没有点击任何节点，默认修改根节点
+      if(this.nodeData.text === 'parent') {
+        let data = {
+          id: this.nodeData.id,
+          parentNode: {
+            parentNodeId: "null",
+            parentNodeName: "null"
+          }
+        };
+        this.$refs.updateOrganRef.showModal(2, data);
+      }
+      // 判断当前是否根节点，是则parentNode属性为null
+      if(this.nodeData.parent.parent) {
         parentNode = {
           parentNodeId: this.nodeData.parent.data.id,
           parentNodeName: this.nodeData.parent.data.label
+        }
+      } else {
+        parentNode = {
+          parentNodeId: "null",
+          parentNodeName: "null"
         }
       }
       let data = {
@@ -182,6 +198,8 @@ export default {
       let _this = this
       this.$store.dispatch("getAllOrgan").then(
         res => {
+          this.nodeData.id = res.data[0].id
+          this.nodeData.data = res.data[0]
           _this.defaultExpandedKeys.push(res.data[0].id);
           _this.selectCurrentTreeName = _this.selectCurrentTreeName
             ? _this.selectCurrentTreeName
