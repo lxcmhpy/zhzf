@@ -4,6 +4,7 @@
     <JkMapSearch
       class="jk-controlsMap-inputWithSearch"
       @handleSearch="handleSearch"
+      @handleShowSearch="handleShowSearch"
       :config="config.searchData"
     />
     <JkMapSelect
@@ -52,6 +53,13 @@ export default {
      */
     init(map, _this) {
       this.$emit("init", map, _this)
+    },
+
+    /**
+     * 点击头部输入栏触发
+     */
+    handleShowSearch() {
+      this.$emit('handleShowSearch')
     },
 
     /**

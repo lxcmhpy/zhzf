@@ -4,6 +4,7 @@
       @init="init"
       @handleChange="handleChange"
       @handleSearch="handleSearch"
+      @handleShowSearch="handleShowSearch"
       :config="config"
       :center="center"
     />
@@ -14,7 +15,7 @@
         :config="showComp==='JkMapTree'?treeData:windowData"
         @handleNodeClick="handleNodeClick"
         @handleButton="handleButton"
-        @handleClose="handleClose"
+        @handleGoBack="handleGoBack"
       />
     </keep-alive>
     <!-- <JkMapTree
@@ -194,34 +195,42 @@ export default {
     },
 
     /**
+     * 点击头部输入栏触发
+     */
+    handleShowSearch() {
+      this.showComp = ''
+    },
+
+    /**
      * 点击节点回调函数，调用打点函数
      */
     handleNodeClick(data) {
-      if(data.propertyValue) {
-        let latLng = data.propertyValue.split(',')
-        // 调用地图组件中打点函数
-        this.page.addPoint(data, latLng)
-      } else {
-        throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
+      this.showComp = "MapWinDow"
+      this.windowData = {
+        title: data.label,
+        info: {},
       }
+      // if(data.propertyValue) {
+      //   let latLng = data.propertyValue.split(',')
+      //   // 调用地图组件中打点函数
+      //   this.page.addPoint(data, latLng)
+      // } else {
+      //   throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
+      // }
     },
 
     /**
      * 点击地图点位触发
      */
     handleClickPoint(data) {
-      this.windowData = {
-        title: data.label,
-        info: {},
-      }
       console.log(data)
     },
 
     /**
-     * 关闭弹窗
+     * 点击返回
      */
-    handleClose() {
-
+    handleGoBack() {
+      this.showComp = "JkMapTree"
     },
 
     /**
@@ -248,7 +257,7 @@ export default {
 .jiangXiMap {
   &-tree {
     position: absolute;
-    top: 63px;
+    top: 70px;
     left: 30px;
   }
 }
