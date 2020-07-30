@@ -1,12 +1,12 @@
 // 行政检查
-
+import { delRandomObjectApi, delExpertApi, delRandomItemApi, delPersonApi ,delTaskApi,getAllTaskApi,getAllExpertApi,getAllRandomObjectApi,getAllRandomItemApi,getAllPublicPersonApi} from "@/api/inspection";
 
 const inspection = {
     state: {
-        inspectionOrderId:'', //当前记录id
-        inspectionFileId:'', //当前文书id
-        inspectionTempleteId:'', //行政检查模板id
-        inspectionFileEdit:'', //行政检查模板id
+        inspectionOrderId: '', //当前记录id
+        inspectionFileId: '', //当前文书id
+        inspectionTempleteId: '', //行政检查模板id
+        inspectionFileEdit: '', //行政检查模板id
     },
     mutations: {
         set_inspection_orderId(state, data) {
@@ -22,6 +22,129 @@ const inspection = {
             state.inspectionFileEdit = data;
         },
 
+    },
+    actions: {
+        //分页查询对象列表
+        getAllRandomObject({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getAllRandomObjectApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //分页查询专家列表
+        getAllExpert({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getAllExpertApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //分页查询事项清单列表
+        getAllRandomItem({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getAllRandomItemApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //分页查询人员列表
+        getAllPublicPerson({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getAllPublicPersonApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //分页查询检查任务列表
+        getAllTask({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getAllTaskApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除检查对象
+        delRandomObject({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                delRandomObjectApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除检查专家
+        delExpert({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                delExpertApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除事项清单
+        delRandomItem({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                delRandomItemApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除检查人员
+        delPerson({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                delPersonApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除检查任务
+        delTask({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                delTaskApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
     }
 }
+
 export default inspection
