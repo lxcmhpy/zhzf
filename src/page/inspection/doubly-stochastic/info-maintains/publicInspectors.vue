@@ -53,11 +53,11 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
         <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
-        <el-table-column prop="domain" label="监督执法种类" align="center"></el-table-column>
-        <el-table-column prop="workStatus" label="状态" align="center"></el-table-column>
-        <el-table-column prop="organization" label="执法人员性质" align="center"></el-table-column>
+        <el-table-column prop="branchName" label="监督执法种类" align="center"></el-table-column>
+        <el-table-column prop="stationStatusName" label="状态" align="center"></el-table-column>
+        <el-table-column prop="staffingName" label="执法人员性质" align="center"></el-table-column>
         <el-table-column prop="job" label="职务" align="center"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
@@ -75,8 +75,8 @@
       <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="addForm.name"></el-input>
+            <el-form-item label="姓名" prop="personName">
+              <el-input v-model="addForm.personName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -103,15 +103,15 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="民族" prop="education">
-              <el-select v-model="addForm.education" placeholder="请选择">
+            <el-form-item label="民族" prop="nationName">
+              <el-select v-model="addForm.nationName" placeholder="请选择">
                 <el-option v-for="item in optionsMZ" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="政治面貌" prop="politicalStatus">
-              <el-select v-model="addForm.politicalStatus" placeholder="请选择">
+            <el-form-item label="政治面貌" prop="politicalStatusName">
+              <el-select v-model="addForm.politicalStatusName" placeholder="请选择">
                 <el-option v-for="item in optionsZZMM" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -126,8 +126,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="学历专业" prop="profession">
-              <el-input v-model="addForm.profession"></el-input>
+            <el-form-item label="学历专业" prop="majorName">
+              <el-input v-model="addForm.majorName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
