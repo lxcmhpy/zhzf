@@ -7,11 +7,23 @@
       :config="config"
       :center="center"
     />
-    <JkMapTree
+    <keep-alive>
+      <component
+        :is="showComp"
+        :class="showComp==='JkMapTree'?'jiangXiMap-tree':null"
+        :config="showComp==='JkMapTree'?treeData:windowData"
+        @handleNodeClick="handleNodeClick"
+        @handleButton="handleButton"
+        @handleClose="handleClose"
+      />
+    </keep-alive>
+    <!-- <JkMapTree
+      class="jiangXiMap-tree"
       :config="treeData"
       @handleNodeClick="handleNodeClick"
+      @handleButton="handleButton"
     />
-    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" />
+    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" /> -->
   </div>
 </template>
 
@@ -28,33 +40,37 @@ export default {
   },
   data() {
     return {
-      page: null,
+      showComp: "",
+      page: null, // 地图组件的 this
       map: null,
       zoom: 8,
       center: [12118909.300259633, 4086043.1061670054],
-      showWindow: false,
       windowData: {},
       treeData: {
+        buttons: [
+          { name: "路线树查询" },
+          { name: "条件查询" },
+        ],
         option: [
-          // {
-          //   label: '固原综合执法支队',
-          //   children: [{
-          //     label: '执法人员',
-          //   },{
-          //     label: '执法车辆',
-          //   },{
-          //     label: '执法船舶',
-          //   },{
-          //     label: '德隆综合执法大队',
-          //     children: [{
-          //       label: '执法人员',
-          //     },{
-          //       label: '执法车辆',
-          //     },{
-          //       label: '执法船舶',
-          //     },]
-          //   }]
-          // },
+          {
+            label: '固原综合执法支队',
+            children: [{
+              label: '执法人员',
+            },{
+              label: '执法车辆',
+            },{
+              label: '执法船舶',
+            },{
+              label: '德隆综合执法大队',
+              children: [{
+                label: '执法人员',
+              },{
+                label: '执法车辆',
+              },{
+                label: '执法船舶',
+              },]
+            }]
+          },
         ],
       },
       config: {
@@ -173,6 +189,7 @@ export default {
      * 点击当前专题图片，下钻到树形结构窗口
      */
     handleSearch(data) {
+      this.showComp = "JkMapTree"
       console.log(data)
     },
 
@@ -193,7 +210,6 @@ export default {
      * 点击地图点位触发
      */
     handleClickPoint(data) {
-      this.showWindow = true
       this.windowData = {
         title: data.label,
         info: {},
@@ -205,7 +221,7 @@ export default {
      * 关闭弹窗
      */
     handleClose() {
-      this.showWindow = false
+
     },
 
     /**
@@ -213,13 +229,30 @@ export default {
      */
     handleChange(value) {
       console.log(value)
+    },
+
+    /**
+     * 点击查询按钮触发
+     */
+    handleButton(data) {
+      console.log(data)
     }
   },
   created() {
-    this.getTree()
+    // this.getTree()
   }
 }
 </script>
+
+<style lang="scss">
+.jiangXiMap {
+  &-tree {
+    position: absolute;
+    top: 63px;
+    left: 30px;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .jiangXiMap {
