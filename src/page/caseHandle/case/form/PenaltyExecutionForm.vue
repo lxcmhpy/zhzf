@@ -386,6 +386,7 @@ export default {
         tempPunishAmount = Number(this.formData.tempPunishAmount)
       }
       let num = tempPunishAmount - Number(this.formData.paidAmount);
+      this.handleChangeToPayAmount(num);
       this.formData.toPayAmount = until.upMoney(num) + "(" + num + "元)"
     },
 
