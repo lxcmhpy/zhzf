@@ -63,7 +63,7 @@
             </el-form-item>
           </div>
         </div>
-        <div class="afddBox" v-if="inforForm.zfmlId === '1002000200000000' ">
+        <div class="afddBox" v-if="inforForm.zfmlId === '1002000100000000' ">
           <label class="el-form-item__label" style="width: 100px;">案发地点</label>
           <div class="itemFive2">
             <el-form-item label-width="0" prop="highwayRoute">
@@ -102,7 +102,7 @@
             <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
           </div>
         </div>
-        <div v-if="inforForm.zfmlId !== '1002000200000000' ">
+        <div v-if="inforForm.zfmlId !== '1002000100000000' ">
           <div class="itemOne">
             <el-form-item label="案发地点">
               <el-input v-model="inforForm.afdd">
@@ -122,7 +122,7 @@
             <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
           </div> -->
         </div>
-        <div v-if="inforForm.zfmlId === '1002000200000000' ">
+        <div v-if="inforForm.zfmlId === '1002000100000000' ">
           <div class="gongLiBox1">K</div>
           <div class="itemFive">
             <el-form-item  prop="pileNumber" label-width="0px">
@@ -1528,7 +1528,7 @@
           _this.inforForm.state = state;
           _this.inforForm.caseStatus = '未立案';
           // 拼接案发地点
-          if(_this.inforForm.zfmlId === "1002000200000000"){
+          if(_this.inforForm.zfmlId === "1002000100000000"){
               let afddSting=_this.inforForm.highwayRoute+_this.inforForm.direction+'k'+_this.inforForm.pileNumber+'+'+_this.inforForm.distance
               if(_this.inforForm.distance2||_this.inforForm.pileNumber2){
                 afddSting=afddSting+'至'+'k'+_this.inforForm.pileNumber2+'+'+_this.inforForm.distance2+' '+_this.inforForm.position
@@ -2120,6 +2120,7 @@
     },
 
     mounted() {
+      debugger;
       // 事务中心跳转
       let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
       console.log('事务中心', overWeightCaseData)
