@@ -193,7 +193,7 @@
           <div class="item appendSelect">
             <el-form-item label="证件类型" prop="partyIdNo">
               <el-input ref="partyIdNo" placeholder="请输入内容" v-model="inforForm.partyIdNo"
-                        @change="changePartyIdType(inforForm.partyIdNo)" class="input-with-select hasMargintop">
+                        class="input-with-select hasMargintop">
                 <el-select slot="prepend" v-model="inforForm.partyIdType" @change="changeDriverOrAgentInfo">
                   <el-option v-for="item in credentialType" :key="item.value" :label="item.label"
                     :value="item.value"></el-option>
@@ -358,7 +358,7 @@
             <div class="item appendSelect">
               <el-form-item label="证件类型" prop="partyIdNo">
                 <el-input ref="partyIdNo" placeholder="请输入内容" v-model="driverOrAgentInfo.zhengjianNumber"
-                          @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
+                          @input="changePartyIdType2Index = index"
                           class="input-with-select hasMargintop" :disabled="index==0&&relationWithPartyIsOne[index]">
                   <el-select slot="prepend" v-model="driverOrAgentInfo.zhengjianType"
                              :disabled="index==0&&relationWithPartyIsOne[index]">
@@ -889,7 +889,32 @@
         }
         callback();
       };
+      // 检验身份证
+      var checkIdNoPassSort = (rule, value, callback) => {
+        if(this.inforForm.partyIdType==="0") {
+          // validateIDNumber
+          var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
+          if (!reg.test(value) && value) {
+            callback(new Error('身份证格式错误'));
+          } else {
+            if(this.changePartyIdType2Index) {
+              this.changePartyIdType2(this.driverOrAgentInfo.zhengjianNumber,this.changePartyIdType2Index)
+            } else {
+              this.changePartyIdType(this.inforForm.partyIdNo)
+            }
+          }
+          callback();
+        }
+        // else {
+        //   var reg = /^((1[45]\d{7})|(G\d{8})|(P\d{7})|(S\d{7,8}))?$/
+        //   if (!reg.test(value) && value) {
+        //     callback(new Error('护照号码格式错误'));
+        //   }
+        //   callback();
+        // }
+      }
       return {
+        changePartyIdType2Index: "",
         theStr: "", // 输入框长度到达设定值时输入框的内容
         recentCheckStastions: [],//最近五个检测站
         recentCheckWorkers: [],//历史保存过检测人员
@@ -1000,8 +1025,7 @@
           partyAge: [
             {validator: validateAge, trigger: "blur"}
           ],
-          // partyIdNo: [{validator: validateIDNumber, trigger: "blur"}],
-          // partyIdNo: this.inforForm.partyIdType==="0"?[{validator: validateIDNumber, trigger: "blur"}]:[{validator: checkPassport, trigger: "blur"}],
+          partyIdNo: [{validator: checkIdNoPassSort, trigger: "blur"}],
           partyZipCode: [
             {validator: validateZIP, trigger: "blur"}
           ],
@@ -1311,11 +1335,6 @@
       }
     },
       changeDriverOrAgentInfo(type){
-        if(type === "0") {
-          this.rules.partyIdNo = [{validator: validateIDNumber, trigger: "blur"}]
-        } else if (type === "1") {
-          this.rules.partyIdNo = [{validator: checkPassport, trigger: "blur"}]
-        }
         let val = this.driverOrAgentInfoList[0].relationWithParty
         if (val === '同一人' && this.partyTypePerson == "1") {
           this.driverOrAgentInfoList[0].relationWithCase = "当事人";
@@ -1537,7 +1556,7 @@
               }
               _this.inforForm.afdd=afddSting
           }
-          
+
           _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
             res => {
               console.log(res);
