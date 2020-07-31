@@ -161,7 +161,7 @@ export default {
       addForm: {
         objectName: '',
         socialCode: '',
-        adminDivision: '',
+        adminDivision: [],
         legalRepresent: '',
         idCard: '',
         objectType: '',
@@ -226,7 +226,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          addInspectionObjectApi(this.addForm).then(
+          let data = JSON.parse(JSON.stringify(this.addForm))
+          data.adminDivision=this.addForm.adminDivision.join(',')
+          addInspectionObjectApi(data).then(
             res => {
               console.log(res)
               if (res.code == 200) {
@@ -297,8 +299,6 @@ export default {
             }
           })
           _this.provenceList = dataList
-
-          debugger
         },
         error => {
           // reject(error);

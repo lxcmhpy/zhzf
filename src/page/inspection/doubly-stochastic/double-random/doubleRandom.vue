@@ -5,10 +5,13 @@
         <div class="search toggleBox">
           <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
-              <el-form-item label="名称" prop='taskName'>
+              <el-form-item label="任务名称" prop='taskName'>
                 <el-input v-model="searchForm.taskName"></el-input>
               </el-form-item>
-              <el-form-item label="抽查主体" prop='checkSubject'>
+              <el-form-item label="抽查主体" prop='taskName'>
+                <el-input v-model="searchForm.taskName"></el-input>
+              </el-form-item>
+              <el-form-item label="检查类型" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
             </el-form>
@@ -58,23 +61,27 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查事项" align="center" :formatter="sexFormat"></el-table-column>
-          <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
-          <el-table-column prop="politicalStatus" label="检查对象" align="center"></el-table-column>
-          <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column><!-- 显示模板标题 -->
-          <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
-          <el-table-column prop="checkBasis" label="检查依据" align="center"></el-table-column>
-          <el-table-column label="任务周期" align="center">
+          <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查主体" align="center" :formatter="sexFormat"></el-table-column>
+          <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
+          <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
+          <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
+          <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
+          <el-table-column prop="checkBasis" label="检查范围" align="center"></el-table-column>
+            <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
-          <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="checkBasis" label="操作人员" align="center"></el-table-column>
+          <el-table-column prop="checkBasis" label="监督人员" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
-              <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
+              <!-- <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
+              <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button> -->
+              <el-button @click="editMethod(scope.row)" type="text">抽取</el-button>
+              <el-button type="text" @click="delMethod(scope.row.id)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -212,6 +219,7 @@
           <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
         </div>
       </el-dialog>
+
     </div>
   </div>
 </template>

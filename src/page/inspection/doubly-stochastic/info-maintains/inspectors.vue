@@ -173,7 +173,7 @@ export default {
       addMorePublicPersonApi(this.multipleSelection).then(
         res => {
           if (res.code == 200) {
-
+            this.$message({ type: "success", message: res.msg });
           }
         },
         error => {
