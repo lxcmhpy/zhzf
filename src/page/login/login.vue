@@ -4,7 +4,7 @@
       <section class="form_contianer" v-show="showLogin">
         <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>治超联网监管系统</span></div>-->
         <div class="leftC">
-          <img :src="loginImgSrc" alt="">
+          <img :src="loginImgSrc" alt="" @load='loadImg' >
           <div class="leftC_title">
             <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
           </div>
@@ -52,7 +52,7 @@
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
                 </div>
                 <div class="login_btm">
-                  <el-link type="primary" :underline="false" class="left_float">APP下载</el-link>
+                  <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link>
                   <el-link type="primary" :underline="false" class="left_float margin24 wechat_box">
                     <span @click="weChat">微信公众号</span>
                     <div class="wechat" v-if="weChatFlag">
@@ -182,7 +182,7 @@ import {
   getCurrentUserApi, getHost
 } from "@/api/login";
 import {
-  getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi
+  getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi,appDownloadApi,
 } from "@/api/system";
 export default {
   data() {
@@ -262,6 +262,7 @@ export default {
       menuList: null,
       systemTitleLogin: null,
       loginImgSrc:'',
+      appDownHref:'',
     };
   },
   computed: { ...mapGetters(['systemTitle']) },
@@ -529,16 +530,33 @@ export default {
       let imgRes = '';
       try {
         imgRes = await getDictListDetailByNameApi('loginBg');
+        this.$store.dispatch("setLoadingState", {flag: true,type:'loadFull'});
         this.loginImgSrc = './static/images/img/login/'+ imgRes.data[0].name+'.jpg';
+
       } catch (error) {
         this.loginImgSrc = './static/images/img/login/zf_bg.jpg'
         throw new Error(error); 
       }
     },
+    loadImg(){
+        this.$store.dispatch("setLoadingState", {flag:false});
+    },
+    //获取app下载地址
+    getAppDownHref(){
+      appDownloadApi().then(res=>{
+        console.log(res);
+        let host = window.location.host;
+        this.appDownHref = host + res.data;
+        console.log( this.appDownHref )
+      }).catch(err=>{
+        throw new Error(err)
+      })
+    }
   },
   async created() {
     await getHost();
     await this.getSystemData();
+    this.getAppDownHref();
   },
   mounted() {
     this.showLogin = true;
