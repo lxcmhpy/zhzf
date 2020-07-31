@@ -47,7 +47,11 @@ export default {
       map: null,
       zoom: 8,
       center: [12118909.300259633, 4086043.1061670054],
-      windowData: {},
+      windowData: {
+        title: "",
+        info: {},
+        option: []
+      },
       treeData: {
         option: [],
       },
@@ -189,8 +193,9 @@ export default {
 
     /**
      * 点击节点回调函数
-     * 1.如果当前节点不是自定义节点，则调用地图打点函数，并显示信息弹窗
-     * 2.如果当前节点是自定义节点，发送请求获取节点数据。
+     * 1.如果当前节点是路政局，则获取路政局数据、地图打点
+     * 2.如果当前节点是自定义节点，发送请求获取子节点数据
+     * 3.如果当前节点没有下级，则地图打点并打开信息窗口
      */
     handleNodeClick(data) {
       console.log(data)
@@ -198,16 +203,13 @@ export default {
         this.getPeopleTree(data)
       } else if (data.label === '执法车辆' || data.label === '执法船舶') {
         this.getCarShipTree(data)
+        // 当前节点为路政管理局和分局
+      } else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+        this.getLoad(data)
       } else {
-        this.showComp = "MapWinDow"
-        this.windowData = {
-          title: data.label,
-          info: {},
-        }
-
+        // 如果有点位，则打点，否则抛出异常
         if(data.propertyValue) {
           let latLng = data.propertyValue.split(',')
-          // 调用地图组件中打点函数
           this.page.addPoint(data, latLng)
         } else {
           throw new Error("handleNodeClick(data):::::::::没有坐标")
@@ -219,6 +221,10 @@ export default {
      * 点击地图点位触发
      */
     handleClickPoint(data) {
+      // 当前点位是路政局
+      if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+        this.getTheOrganTree(data)
+      }
       console.log(data)
     },
 
