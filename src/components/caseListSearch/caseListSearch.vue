@@ -167,13 +167,12 @@
   </div>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 import {
  getQueryLinkListApi,
- getQueryCaseTypeListApi,
+ getQueryCaseTypeByOrganIdApi,
 } from "@/api/caseHandle";
-import {
- getDictListDetailApi
-} from "@/api/system";
+import { getDictListDetailApi } from "@/api/system";
 export default {
   data() {
     return {
@@ -239,10 +238,11 @@ export default {
     },
     //查询所有案件类型
     getQueryCaseTypeList() {
-      getQueryCaseTypeListApi().then(
+      let organId = iLocalStroage.gets("userInfo").organId;
+      getQueryCaseTypeByOrganIdApi(organId).then(
         res => {
           console.log('类型',res);
-          this.caseTypeList = res.data.records;
+          this.caseTypeList = res.data;
         },
         error => {
           console.log(error)

@@ -442,6 +442,17 @@ export function getQueryCaseTypeListApi() {
   });
 }
 
+//查询机构绑定案件类型
+export function getQueryCaseTypeByOrganIdApi(organId) {
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/findCaseTypeByOrganId/"+organId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //通过表单（文书）类型Id查询表单（文书）绑定的案件基本信息属性
 export function findCaseAllBindPropertyApi(data) {
   return request({

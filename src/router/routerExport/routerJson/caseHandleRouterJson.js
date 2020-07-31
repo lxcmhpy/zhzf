@@ -698,7 +698,7 @@ export default [
     meta: {
       title: "测试文书"
     },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/deliveryConfirmDoc.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/form/caseInvestigReport_JX.vue")
   },
   {
     name: "propertyManage",
