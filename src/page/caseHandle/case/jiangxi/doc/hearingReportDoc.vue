@@ -150,9 +150,18 @@
                 class="color_DBE4EF table_seal"
                 style="white-space: pre-wrap;word-break:break-all"
               >
-                {{docData.hearingResult}}
+                <el-form-item prop="hearingResult" :rules="fieldRules('hearingResult',propertyFeatures['hearingResult'])">
+                  <el-input
+                    v-model="docData.hearingResult"
+                    v-bind:class="{ over_flow:docData.hearingResult.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="nameLength"
+                    error
+                    placeholder="\"
+                    :disabled="fieldDisabled(propertyFeatures['hearingResult'])"
+                  ></el-input>
+                </el-form-item>
                 <div class="pdf_seal">
-                  <!-- <p>签名：{{formData.secondApprovePeo}}</p> -->
                   <p>听证主持人签名：</p>
                   <p>
                     <span v-if="docData.hearingResult">{{docData.presidentSign}}</span>
@@ -174,12 +183,11 @@
                 class="color_DBE4EF table_seal"
                 style="white-space: pre-wrap;word-break:break-all"
               >
-                {{docData.adminOpinion}}
+                {{docData.approveOptions}}
                 <div class="pdf_seal">
-                  <!-- <p>签名：{{formData.secondApprovePeo}}</p> -->
-                  <p>负责人签名：</p>
+                  <p>负责人签名：{{formData.approvePeo}}</p>
                   <p>
-                    <span v-if="docData.adminOpinion">{{docData.adminSign}}</span>
+                    <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                     <span v-else>年 月 日</span>
                   </p>
                 </div>

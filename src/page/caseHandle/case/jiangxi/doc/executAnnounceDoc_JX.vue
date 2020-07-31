@@ -4,7 +4,7 @@
     <div class="print_info" id="executAnnounceDoc_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">执行公告</div>
-        <div class="doc_number">赣（{{docData.caseNumber.substring(3,7)}}）交公告〔{{docData.caseNumber.substring(8,13)}}〕号</div>
+        <div class="doc_number">案号：赣（{{docData.caseNumber.substring(3,7)}}）交公告〔{{docData.caseNumber.substring(8,13)}}〕号</div>
         <p>
           <span>
             <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">

@@ -8,12 +8,12 @@
         <el-card class="box-card u-my-card" shadow="naver">
             <div slot="header" class="clearfix">
                 <span>{{title}}</span>
-                <el-button type="primary" size="mini"  @click="handleDialog" style="float:right;">添加关联案件</el-button>
+                <el-button v-if="!isDetail" type="primary" size="mini"  @click="handleDialog" style="float:right;">添加关联案件</el-button>
             </div>
             <el-table :data="caseData" stripe style="width: 100%" highlight-current-row  height="100%">
                 <el-table-column type="index" width="55"> </el-table-column>
                 <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
-                <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
+                <el-table-column prop="party" label="当事人/单位" align="center" width="150"></el-table-column>
                 <el-table-column prop="caseCauseName" label="违法行为" align="center">
                     <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" placement="top-start">
@@ -25,7 +25,7 @@
                 <el-table-column prop="op" label="操作" align="center" width="150">
                     <template slot-scope="scope">
                         <el-button type="text" @click="onDetail(scope.row.id)" size="mini">详情</el-button>&nbsp;
-                        <el-button type="text" @click="onDelete(scope.$index)" size="mini">解绑</el-button>
+                        <el-button type="text" @click="onDelete(scope.row,scope.$index)" size="mini">解绑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -48,6 +48,7 @@
 </template>
 <script>
 import propertyDialog from "./propertyDialog.vue";
+import {relieve} from "@/api/propertyManage";
 
 export default {
     components: {
@@ -61,6 +62,10 @@ export default {
             type: Array,
             default: function () { return [] }
         },
+        isDetail: {
+            type: Boolean,
+            default: false
+        },
     },
     data:function () {
         return {
@@ -71,7 +76,9 @@ export default {
 
     },
     watch: {
-
+        datas(val) {
+            this.caseData = this.datas;
+        }
     },
     mounted: function () {
         
@@ -86,18 +93,24 @@ export default {
         handleCaseData(data){
             debugger;
             console.log("绑定案件信息:"+data);
-            this.caseData = data;
+            this.caseData = this.caseData.concat(data);
         },
-        onDetail (i) {
+        onDetail (id) {
             // this.files.splice(i, 1);
         },
 
-        onDelete (i) {
+        async onDelete (row,i) {
+            if(row.propertyid){
+                let param = {caseId:row.id,propertyId:row.propertyid}
+                let res = await relieve(param);
+                this.$message({type: "success",message:"解绑成功!"});
+            }
             this.caseData.splice(i, 1);
         },
 
         getCaseData () {
-            return $util.clone(this.caseData, true);
+            let cases = JSON.parse(JSON.stringify(this.caseData));
+            return cases;
         },
 
     }

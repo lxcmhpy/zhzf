@@ -243,7 +243,7 @@ export default {
       maxLengthOverLine: 122,
       maxLength: 23,
       formOrDocData: {
-        showBtn: [false, true, false, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
+        showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'deliverCertificate-print',
       },
       addVisible: false,

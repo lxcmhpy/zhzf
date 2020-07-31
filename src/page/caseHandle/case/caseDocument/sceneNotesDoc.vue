@@ -197,8 +197,8 @@
               <td>车(船)型</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="vehicleShipType" :rules="fieldRules('vehicleShipType',propertyFeatures['vehicleShipType'])">
-                  <el-select v-model="docData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
-                    <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.label"></el-option>
+                  <el-select @change="test" v-model="docData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
+                    <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
@@ -550,6 +550,10 @@ export default {
       casePageFloatBtns
     },
     methods: {
+      test(val){
+        console.log("111111111111",val)
+        console.log("2132111111",this.docData.vehicleShipType)
+      },
       //根据案件ID和文书Id获取数据
       getDocDataByCaseIdAndDocId() {
         this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -597,6 +601,7 @@ export default {
         this.docData.illegalFactsEvidence = edit;
       },
       getDataAfter() {
+        console.log("1111111",typeof(this.docData.vehicleShipType))
         this.staffList = this.docData.staff.split(',');
         this.docData.staff1 = this.docData.staff.split(',')[0];
         this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
