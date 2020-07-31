@@ -49,29 +49,29 @@ export default {
       windowData: {},
       treeData: {
         buttons: [
-          { name: "路线树查询" },
-          { name: "条件查询" },
+          // { name: "路线树查询" },
+          // { name: "条件查询" },
         ],
         option: [
-          {
-            label: '固原综合执法支队',
-            children: [{
-              label: '执法人员',
-            },{
-              label: '执法车辆',
-            },{
-              label: '执法船舶',
-            },{
-              label: '德隆综合执法大队',
-              children: [{
-                label: '执法人员',
-              },{
-                label: '执法车辆',
-              },{
-                label: '执法船舶',
-              },]
-            }]
-          },
+          // {
+          //   label: '固原综合执法支队',
+          //   children: [{
+          //     label: '执法人员',
+          //   },{
+          //     label: '执法车辆',
+          //   },{
+          //     label: '执法船舶',
+          //   },{
+          //     label: '德隆综合执法大队',
+          //     children: [{
+          //       label: '执法人员',
+          //     },{
+          //       label: '执法车辆',
+          //     },{
+          //       label: '执法船舶',
+          //     },]
+          //   }]
+          // },
         ],
       },
       config: {
@@ -172,6 +172,24 @@ export default {
     },
 
     /**
+     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶
+     */
+    addNode(arr) {
+      let myNode = [
+        { label: '执法人员' },
+        { label: '执法车辆' },
+        { label: '执法船舶' },
+      ]
+      arr.map(item => {
+        if(item.hasOwnProperty('children')) {
+          item.children = myNode.concat(item.children)
+          this.addNode(item.children)
+        }
+      })
+      return arr
+    },
+
+    /**
      * 获取数据
      */
     getTree() {
@@ -182,7 +200,7 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
-        this.treeData.option = data
+        this.treeData.option = this.addNode(data)
       })
     },
 
@@ -248,7 +266,7 @@ export default {
     }
   },
   created() {
-    // this.getTree()
+    this.getTree()
   }
 }
 </script>
