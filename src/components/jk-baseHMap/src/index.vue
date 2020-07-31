@@ -91,14 +91,6 @@ export default {
     },
 
     /**
-     * 坐标转换
-     * 经纬度转Mercator， lonLatToMercator (lng, lat)
-     */
-    getTransLatLng(arr) {
-      return HMap.transform.lonLatToMercator(Number(arr[0]), Number(arr[1]))
-    },
-
-    /**
      * 地图添加点位(单点)
      */
     addPoint(data, latLng) {
@@ -108,7 +100,7 @@ export default {
           id: data.id,
           data: data, // 带入当前点位信息
         },
-        geometry: this.getTransLatLng(latLng)
+        geometry: latLng
       }
       const options = {
         layerName: 'pointLayer',
@@ -157,11 +149,6 @@ export default {
       .hmap-scale-line-control {
         left: unset;
         right: 1em;
-        .hmap-scale-line-control-inner {
-          border: 2px solid #FFFFFF;
-          border-top: none;
-          color: #FFFFFF;
-        }
       }
     }
   }

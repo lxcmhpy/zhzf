@@ -204,14 +204,15 @@ export default {
           title: data.label,
           info: {},
         }
+
+        if(data.propertyValue) {
+          let latLng = data.propertyValue.split(',')
+          // 调用地图组件中打点函数
+          this.page.addPoint(data, latLng)
+        } else {
+          throw new Error("handleNodeClick(data):::::::::没有坐标")
+        }
       }
-      // if(data.propertyValue) {
-      //   let latLng = data.propertyValue.split(',')
-      //   // 调用地图组件中打点函数
-      //   this.page.addPoint(data, latLng)
-      // } else {
-      //   throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
-      // }
     },
 
     /**
