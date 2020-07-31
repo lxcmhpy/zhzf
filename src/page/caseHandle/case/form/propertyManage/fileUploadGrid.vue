@@ -12,7 +12,7 @@
                     <el-button size="mini" @click="onShowAddDialog" icon="el-icon-ex-add" style="float:right;"></el-button>
                 </el-tooltip> -->
                 <span>{{title}}</span>
-                <div v-if="inputShow" class="u-file-button" style="float:right;">
+                <div v-if="inputShow && !isDetail" class="u-file-button" style="float:right;">
                     <el-button type="primary" size="small" class="u-button-mini">添加</el-button>
                     <input type="file" multiple
                            v-bind:accept="acceptType"
@@ -41,7 +41,7 @@
                 <el-table-column prop="accPersonName" label="上传人" align="center"></el-table-column>
                 <el-table-column prop="op" label="操作" align="center" width="120">
                     <template slot-scope="scope">
-                        <el-tooltip content="预览" placement="top">
+                        <el-tooltip content="预览" placement="top" v-if="scope.row.accType === '图片'">
                             <el-button type="text" @click="previewFile(scope.row)">预览</el-button>
                         </el-tooltip>
                         <el-tooltip content="删除" placement="top">
@@ -57,9 +57,9 @@
             <video v-if="dialogPreviewType === '音视频' " width="100%" controls>
                 <source :src="dialogPreviewUrl" type="video/mp4" />
             </video>
-            <object v-if="dialogPreviewType === '其他附件' ">
+            <!-- <object v-if="dialogPreviewType === '其他附件' ">
               <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPreviewUrl" type="application/pdf" internalinstanceid="29">
-            </object>
+            </object> -->
         </el-dialog>
         <!-- <el-dialog
           :visible.sync="dialogPDFVisible"
@@ -77,7 +77,6 @@
 <!-- 模型  -->
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import util from "@/common/js/util.js";
 import {upload,findFileByIdApi,deleteFileByIdApi} from "@/api/upload";
 export default {
     props:{
@@ -87,10 +86,15 @@ export default {
         files: {
             required: true
         },
+        isDetail: {
+            type: Boolean,
+            default: false
+        },
         acceptType:{
             type: String,
             default: ""
         }
+        
     },
     data:function () {
         return {
@@ -116,6 +120,7 @@ export default {
             var files = input.files;
             let nickname = iLocalStroage.gets("userInfo").nickName;
             let userId = iLocalStroage.gets("userInfo").id;
+            debugger;
             var fs = [];
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -126,7 +131,7 @@ export default {
                     accType: this.getType(file),
                     accPersonName:nickname,
                     accPersonId:userId,
-                    accUpTime: '2020-07-30 12:23:03',
+                    accUpTime: (new Date()).format("yyyy-MM-dd HH:mm:ss"),
                     file: file
                 });
             }
@@ -134,7 +139,7 @@ export default {
             for (var i = 0; i < fs.length; i++) {
                 this.files.push(fs[i]);
             }
-            this.saveFiles();
+            this.saveFiles(fs);
 
             this.inputShow = false;
             var that = this;
@@ -155,9 +160,9 @@ export default {
             }
             return fType;
         },
-        saveFiles(){
-            for (var i = 0; i < this.files.length; i++) {
-                var param = this.files[i];
+        saveFiles(fs){
+            for (var i = 0; i < fs.length; i++) {
+                var param = fs[i];
                 
                 this.saveFile(param)
             }
@@ -180,7 +185,7 @@ export default {
                     });
                     let file = _this.files.find(item => item.id === param.id);
                     file.accUrl = res.data[0].storageId;
-                    file.url = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId;
+                    // file.url = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId;
                 },
                 error => {
                     console.log(error)
@@ -209,8 +214,8 @@ export default {
         },
 
         previewFile(file) {
-            this.dialogPreviewType = file.evType;
-            this.dialogPreviewUrl = file.url;
+            this.dialogPreviewType = file.accType;
+            this.dialogPreviewUrl = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+file.accUrl;
             this.dialogPreviewVisible = true;
         },
 

@@ -2,7 +2,7 @@
     <div class="propery-dialog">
 
         <el-dialog title="案件信息" :visible.sync="caseVisible" @close="caseVisible = false" :close-on-click-modal="false" width="60%">
-            <el-row style="height:32px;line-height:32px;"><span style="font-size:16px;">关联案件：</span>
+            <el-row style="height:32px;line-height:32px;margin: -10px 0 10px 0;"><span style="font-size:16px;">关联案件：</span>
                 <el-tag v-for="tag in multipleSelection" :key="tag.caseNumber" closable @close="toggleSelection([tag])">
                     {{tag.caseNumber}}
                 </el-tag>
@@ -94,7 +94,7 @@
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="propertyVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveHandleWayData()">确 定</el-button>
+                <el-button type="primary" @click="handleWayData()">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -200,8 +200,9 @@ export default {
         this.closeDialog("case");
     },
     
-    saveHandleWayData() {
-      
+    handleWayData() {
+        this.$emit("handle-way-data", this.dispose);
+        this.closeDialog("way");
     }
 
   },
