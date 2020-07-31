@@ -1,8 +1,8 @@
 <!-------长软------->
 <template>
     <div class="com_searchAndpageBoxPadding hasBigMarginRight">
-        <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'">
-        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="150px">
+        <div class="searchAndpageBox searchAndpageBox2">
+        <el-form ref="form" :model="form.propertyInvolvedForm" :rules="rules" size="small" label-width="150px">
             <el-card class="box-card" shadow="never">
                 <div slot="header" class="clearfix">
                     <span>基本信息</span>
@@ -11,18 +11,18 @@
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="财务名称" prop="propertyName">
-                                <el-input v-model="form.propertyName"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.propertyName"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-col :span="18">
                                 <el-form-item label="财务数量" prop="propertyNum">
-                                    <el-input v-model="form.propertyNum" placeholder="请输入" ></el-input>
+                                    <el-input v-model="form.propertyInvolvedForm.propertyNum" placeholder="请输入" ></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="6">
                                 <el-form-item label-width="0" prop="propertyNumUnit">
-                                    <el-select v-model="form.propertyNumUnit" placeholder="单位" 
+                                    <el-select v-model="form.propertyInvolvedForm.propertyNumUnit" placeholder="单位" 
                                     @focus="getUnits('涉案财物-单位','unitOptions')"
                                     >
                                         <el-option
@@ -39,53 +39,53 @@
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="财物归属人/单位" prop="propertyBelonger">
-                                <el-input v-model="form.propertyBelonger"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.propertyBelonger"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="财物状态">
-                                <el-input v-model="form.propertyState"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.propertyState"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="保管单位" prop="saveUnit">
-                                <el-input v-model="form.saveUnit"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.saveUnit"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="保管人员">
-                                <el-input v-model="form.savePerson"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.savePerson"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="保存地点">
-                                <el-input v-model="form.savePlace"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.savePlace"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="保管方式">
-                                <el-input v-model="form.saveWay"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.saveWay"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="登记时间">
-                                <el-input v-model="form.registrationTime"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.registrationTime"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="登记人">
-                                <el-input v-model="form.registrant"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.registrant"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="保管期限">
-                                <el-select v-model="form.storagePeriod" placeholder="请选择" style="width: 100%">
+                                <el-select v-model="form.propertyInvolvedForm.storagePeriod" placeholder="请选择" style="width: 100%">
                                     <el-option
                                     v-for="(item,index) in syqxList"
                                     :key="index"
@@ -99,14 +99,14 @@
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="财物描述">
-                                <el-input type="textarea" v-model="form.propertyDescribe"></el-input>
+                                <el-input type="textarea" v-model="form.propertyInvolvedForm.propertyDescribe"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="备注">
-                                <el-input type="textarea" v-model="form.remarks"></el-input>
+                                <el-input type="textarea" v-model="form.propertyInvolvedForm.remarks"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -139,7 +139,7 @@
                 </div>
             </el-card> -->
             <div class="deliver"></div>
-            <fileUploadGrid ref="files" :files="files" title="附件信息"></fileUploadGrid>
+            <fileUploadGrid ref="files" :files="form.accs" title="附件信息"></fileUploadGrid>
             <div class="deliver"></div>
             <caseBindGrid ref="cases" :datas="cases" title="案件信息"></caseBindGrid>
             <div class="deliver"></div>
@@ -151,7 +151,7 @@
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="处理方式">
-                                <el-radio-group v-model="radio">
+                                <el-radio-group v-model="form.dispose.disposeWay">
                                     <el-radio 
                                     v-for="(item,index) in handleWayList"
                                     :key="index"
@@ -165,7 +165,7 @@
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="其他">
-                                <el-input type="textarea" v-model="form.evName"></el-input>
+                                <el-input type="textarea" v-model="form.dispose.disposeRemark"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -173,7 +173,7 @@
             </el-card>
                 
             <div style="margin:15px;text-align:center;">
-                <el-button size="medium" type="primary" @click="submitForm('form')">保存</el-button>
+                <el-button size="medium" type="primary" @click="submitForm()">保存</el-button>
             </div>
         </el-form>
         </div>
@@ -186,6 +186,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import fileUploadGrid from "./fileUploadGrid.vue";
 import caseBindGrid from "./caseBindGrid.vue";
+import {findPropertyById,savePropertyInvolved} from "@/api/propertyManage";
 
 export default {
     components:{
@@ -194,22 +195,32 @@ export default {
     },
     data() {
         return {
-            form: {
-                propertyNumUnit:"",
-                propertyName:"",
-                propertyState:"",
-                registrationTime:"",
-                propertyNum:"",
-                saveUnit:"",
-                registrant:"",
-                propertyBelonger:"",
-                savePerson:"",
-                storagePeriod:"",
-                propertyNo:"",
-                saveWay:"",
-                savePlace:"",
-                remarks:"",
-                propertyDescribe:"",
+            form:{
+                propertyInvolvedForm: {
+                    propertyNumUnit:"",
+                    propertyName:"",
+                    propertyState:"",
+                    registrationTime:"",
+                    propertyNum:"",
+                    saveUnit:"",
+                    registrant:"",
+                    propertyBelonger:"",
+                    savePerson:"",
+                    storagePeriod:"",
+                    propertyNo:"",
+                    saveWay:"",
+                    savePlace:"",
+                    remarks:"",
+                    propertyDescribe:"",
+                },
+                caseIds:[],
+                accs:[],
+                dispose:{
+                    disposeWay:"",
+                    disposeRemark:"",
+                    disposePersonId: iLocalStroage.gets("userInfo").id,
+                    disposePersonName: iLocalStroage.gets("userInfo").nickName,
+                }
             },
             rules:{
                 propertyName: [{required: true,message: "请输入财务名称",trigger: "blur"}],
@@ -221,25 +232,78 @@ export default {
             unitOptions:[],
             handleWayList:["封存","扣押","退回当事人","移交法院","销毁","其他"],
             syqxList:[30,90,180,360],
-            files:[],
-            cases:[]
+            // files:[],
+            cases:[],
+            // storageIds:[]
         };
     },
     methods: {
+        
+        // saveFiles(){
+        //     for (var i = 0; i < this.files.length; i++) {
+        //         var file = this.files[i];
+        //         let fileType= this.$util.getFileType(param.file.name);
+        //         console.log('给附件类型赋值',fileType);
+        //         let fType = "";
+        //         if(fileType == 'image'){ //图片
+        //             fType = '图片'
+        //         }else if(fileType == 'video' || fileType == 'radio'){
+        //             fType = '音视频'
+        //         }else{
+        //             fType = '其他附件'
+        //         }
+        //         this.saveFile(file,fType)
+        //     }
+        // },
+        // saveFile (param,type) {
+        //     var fd = new FormData()
+        //     fd.append("file", param.file);
+        //     fd.append("category", '涉案财物管理');
+        //     fd.append("fileName", param.file.name);
+        //     fd.append('status', type)//传记录id
+        //     fd.append('caseId', param.file.name+new Date().getTime())//传记录id
+        //     fd.append('docId', param.file.name+new Date().getTime())//传记录id
+        //     let _this = this
+        //     upload(fd).then(
+        //         res => {
+        //             _this.storageIds.push({
+        //                 url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
+        //                 storageId:res.data[0].storageId,
+        //                 name:res.data[0].fileName
+        //             });
+        //         },
+        //         error => {
+        //             console.log(error)
+        //         }
+        //     );
+        // },
+        // setFiles () {
+        //     for (var i = 0; i < this.files.length; i++) {
+        //         var file = this.files[i];
+        //         this.form.accs.push(file);
+        //         // this.saveFile(param)
+        //     }
+        // },
+        setCaseIds (){
+            let cases = this.$refs.cases.getCaseData();
+            for (var i = 0; i < cases.length; i++) {
+                this.form.caseIds.push(cases[i].id);
+            }
+        },
         submitForm(){
             let _this = this
             this.$refs['form'].validate(valid => {
-            if (valid) {
-                addOrUpdateNoticeApi(_this.form).then(
-                    res => {
-                    _this.$message({type: "success",message:"保存成功!"});
-                    _this.$router.push(({ name: 'case_handle_viewProperty',params: res.data}));
-                    },
-                    err => {
-                    console.log(err);
-                    }
-                );
-            }
+                if (valid) {
+                    savePropertyInvolved(_this.form).then(
+                        res => {
+                            _this.$message({type: "success",message:"保存成功!"});
+                            _this.$router.push(({ name: 'case_handle_viewProperty',params: {id:res.data}}));
+                        },
+                        err => {
+                            console.log(err);
+                        }
+                    );
+                }
             });
 
         },
@@ -261,16 +325,15 @@ export default {
         },
 
         //获取已归档的数据
-        getData(searchData) {
-            let data = searchData;
-            data.userId = iLocalStroage.gets("userInfo").id;
-            // this.getCaseList(data);
+        async getData(id) {
+            let res = await findPropertyById(id);
+            this.form = res.data;
         },
         
     },
     mounted(){
         if(this.$route.params.id !== "add"){
-            this.getData({id:this.$route.params.id});
+            this.getData(this.$route.params.id);
         }
     },
     created() {

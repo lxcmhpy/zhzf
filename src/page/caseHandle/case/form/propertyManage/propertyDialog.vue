@@ -68,11 +68,11 @@
 
         <el-dialog title="财物处理" :visible.sync="propertyVisible" @close="propertyVisible = false" :close-on-click-modal="false" width="50%">
             <div>
-                <el-form ref="handleForm" :model="handleForm" label-width="90px">
+                <el-form ref="handleForm" :model="dispose" label-width="90px">
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="处理方式">
-                                <el-radio-group v-model="handleForm.handleWay">
+                                <el-radio-group v-model="dispose.disposeWay">
                                     <el-radio 
                                     v-for="(item,index) in handleWayList"
                                     :key="index"
@@ -86,7 +86,7 @@
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="其他">
-                                <el-input type="textarea" v-model="handleForm.other"></el-input>
+                                <el-input type="textarea" v-model="dispose.disposeRemark"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -119,17 +119,24 @@ export default {
         hideSomeSearch: true,
         caseVisible: false,
         propertyVisible: false,
-        handleForm: {
-            ids: "",
-            caseIds: "",
-            handleWay:"",
-            other:""
+        // handleForm: {
+        //     ids: "",
+        //     caseIds: "",
+        //     handleWay:"",
+        //     other:""
+        // },
+        dispose:{
+            disposeWay:"",
+            disposeRemark:"",
+            disposePersonId:"",
+            disposePerson:"",
         },
         caseData: "",
         isSaveLink: '',
         caseLinktypeId:'',
         handleWayList:["封存","扣押","退回当事人","移交法院","销毁","其他"],
-        multipleSelection:[]
+        multipleSelection:[],
+        selectedData:[]
     };
   },
   inject: ["reload"],
@@ -166,7 +173,7 @@ export default {
             this.$refs.caseTable.clearSelection();
         }
     },
-    showModal(type,data,caseLinktypeId,isSaveLink) {
+    showModal(type,data) {
       console.log(data);
       if(type === 'case'){
           this.caseVisible = true;
@@ -174,11 +181,8 @@ export default {
       }else{
           this.propertyVisible = true;
       }
-      
-      this.caseData = data;
-      this.isSaveLink = isSaveLink;
-      this.caseLinktypeId = caseLinktypeId;
-
+      this.selectedData = data;
+    //   this.toggleSelection(data);
     },
     //关闭弹窗的时候清除数据
     closeDialog(type) {
@@ -195,10 +199,7 @@ export default {
         this.$emit("handle-case-data", this.multipleSelection);
         this.closeDialog("case");
     },
-    // 获取绑定的数据
-    // getCaseData () {
-    //     return $util.clone(this.table.multipleSelection, true);
-    // },
+    
     saveHandleWayData() {
       
     }
