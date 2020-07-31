@@ -44,6 +44,8 @@ export const inforCollectionCommonMixins = {
       callback();
     };
     return {
+      dateTooltip: "",// 案发时间提示语
+      moneyTooltip: "",// 自由裁量权金额提示语
       recentCheckStastions: [],//最近五个检测站
       recentCheckWorkers: [],//历史保存过检测人员
       vehicleTypeList: [],//车型

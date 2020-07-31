@@ -233,7 +233,7 @@
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['discussionOpinionAndReason'])"
               ></el-input>
-              <span class="overflow_describe" style="text-indent:0em;">参见讨论人员意见和理由：</span>
+              <span class="overflow_describe" style="text-indent:0em;">参加讨论人员意见和理由：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
               <span class="span_bg">&nbsp;</span>
               <span class="span_bg">&nbsp;</span>
