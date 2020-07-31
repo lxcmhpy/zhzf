@@ -568,7 +568,9 @@ export default {
         tempPunishAmount = Number(this.formData.tempPunishAmount)
       }
       let num = tempPunishAmount - Number(this.formData.paidAmount);
+      this.handleChangeToPayAmount(num);
       this.formData.toPayAmount = until.upMoney(num) + "(" + num + "元)"
+      
     },
 
     /**
@@ -576,6 +578,7 @@ export default {
      * 代缴金额为0时,执行情况为已完成
      */
     handleChangeToPayAmount(val) {
+      debugger
       if (!val) {
         this.formData.performance = '已完成';
       } else {

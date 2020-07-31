@@ -4,14 +4,27 @@
       @init="init"
       @handleChange="handleChange"
       @handleSearch="handleSearch"
+      @handleShowSearch="handleShowSearch"
       :config="config"
       :center="center"
     />
-    <JkMapTree
+    <keep-alive>
+      <component
+        :is="showComp"
+        :class="showComp==='JkMapTree'?'jiangXiMap-tree':null"
+        :config="showComp==='JkMapTree'?treeData:windowData"
+        @handleNodeClick="handleNodeClick"
+        @handleButton="handleButton"
+        @handleGoBack="handleGoBack"
+      />
+    </keep-alive>
+    <!-- <JkMapTree
+      class="jiangXiMap-tree"
       :config="treeData"
       @handleNodeClick="handleNodeClick"
+      @handleButton="handleButton"
     />
-    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" />
+    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" /> -->
   </div>
 </template>
 
@@ -28,13 +41,17 @@ export default {
   },
   data() {
     return {
-      page: null,
+      showComp: "",
+      page: null, // 地图组件的 this
       map: null,
       zoom: 8,
       center: [12118909.300259633, 4086043.1061670054],
-      showWindow: false,
       windowData: {},
       treeData: {
+        buttons: [
+          // { name: "路线树查询" },
+          // { name: "条件查询" },
+        ],
         option: [
           // {
           //   label: '固原综合执法支队',
@@ -155,6 +172,24 @@ export default {
     },
 
     /**
+     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶
+     */
+    addNode(arr) {
+      let myNode = [
+        { label: '执法人员' },
+        { label: '执法车辆' },
+        { label: '执法船舶' },
+      ]
+      arr.map(item => {
+        if(item.hasOwnProperty('children')) {
+          item.children = myNode.concat(item.children)
+          this.addNode(item.children)
+        }
+      })
+      return arr
+    },
+
+    /**
      * 获取数据
      */
     getTree() {
@@ -165,7 +200,7 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
-        this.treeData.option = data
+        this.treeData.option = this.addNode(data)
       })
     },
 
@@ -173,39 +208,47 @@ export default {
      * 点击当前专题图片，下钻到树形结构窗口
      */
     handleSearch(data) {
+      this.showComp = "JkMapTree"
       console.log(data)
+    },
+
+    /**
+     * 点击头部输入栏触发
+     */
+    handleShowSearch() {
+      this.showComp = ''
     },
 
     /**
      * 点击节点回调函数，调用打点函数
      */
     handleNodeClick(data) {
-      if(data.propertyValue) {
-        let latLng = data.propertyValue.split(',')
-        // 调用地图组件中打点函数
-        this.page.addPoint(data, latLng)
-      } else {
-        throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
+      this.showComp = "MapWinDow"
+      this.windowData = {
+        title: data.label,
+        info: {},
       }
+      // if(data.propertyValue) {
+      //   let latLng = data.propertyValue.split(',')
+      //   // 调用地图组件中打点函数
+      //   this.page.addPoint(data, latLng)
+      // } else {
+      //   throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
+      // }
     },
 
     /**
      * 点击地图点位触发
      */
     handleClickPoint(data) {
-      this.showWindow = true
-      this.windowData = {
-        title: data.label,
-        info: {},
-      }
       console.log(data)
     },
 
     /**
-     * 关闭弹窗
+     * 点击返回
      */
-    handleClose() {
-      this.showWindow = false
+    handleGoBack() {
+      this.showComp = "JkMapTree"
     },
 
     /**
@@ -213,6 +256,13 @@ export default {
      */
     handleChange(value) {
       console.log(value)
+    },
+
+    /**
+     * 点击查询按钮触发
+     */
+    handleButton(data) {
+      console.log(data)
     }
   },
   created() {
@@ -220,6 +270,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.jiangXiMap {
+  &-tree {
+    position: absolute;
+    top: 70px;
+    left: 30px;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .jiangXiMap {

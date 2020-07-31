@@ -71,7 +71,7 @@
           <el-col :span="12">
             <el-form-item label="抽查主体" prop="checkSubject">
               <el-select v-model="addForm.checkSubject" placeholder="请选择">
-                <el-option v-for="item in optionsZFZLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -107,18 +107,16 @@
 <script>
 import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, delRandomItemApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
+import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
+  mixins: [mixinInspection],
   data() {
     return {
-      tableData: [], //表格数据
       multipleSelection: [],
       searchForm: {
         checkSubject: '',
         checkItem: ''
       },
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
       isShow: false,
       dialogFormVisible: false,
       addForm: {
@@ -142,8 +140,7 @@ export default {
           { required: true, trigger: 'blur' }
         ]
       },
-      zzmmList: [],
-      zcList: []
+      optionsCCZT: [],
     }
   },
   methods: {
@@ -155,35 +152,17 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      getAllRandomItemApi(data).then(
-        res => {
-          console.log(res)
-          this.tableData = res.data.records
-          this.totalPage = res.data.total
-        },
-        error => {
-          // reject(error);
-        })
-
+      // getAllRandomItemApi(data).then(
+      //   res => {
+      //     console.log(res)
+      //     this.tableData = res.data.records
+      //     this.totalPage = res.data.total
+      //   },
+      //   error => {
+      //     // reject(error);
+      //   })
+this.getPageList("getAllRandomItem", data);
     },
-    // 查询
-    searchTableData() {
-      this.currentPage = 1;
-      this.getTableData()
-    },
-
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.currentPage = 1;
-      this.getTableData();
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getTableData();
-    },
-
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -197,7 +176,6 @@ export default {
       this.getTableData()
     },
     submitForm(formName) {
-      debugger
       this.$refs[formName].validate((valid) => {
         if (valid) {
           addItemListApi(this.addForm).then(
@@ -222,45 +200,9 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      debugger
-      this.$refs[formName].resetFields();
-    },
-    addMethod() {
-      this.dialogStatus = '新增'
-      this.dialogFormVisible = true
-    },
-    editMethod(row) {
-      this.dialogStatus = '修改'
-      this.dialogFormVisible = true
-      this.addForm = JSON.parse(JSON.stringify(row))
-    },
     delMethod(id) {
-      this.$confirm('确认删除？', "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        delRandomItemApi(id).then(
-          res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.currentPage = 1;
-              this.getTableData()
-            }
-          },
-          error => {
-            // reject(error);
-          })
-      })
+      this.deleteById("delRandomItem", id);
     },
-    exportMethod() { },
-    importModle() { },
-    downloadModle() { },
   },
   mounted() {
     this.getTableData()

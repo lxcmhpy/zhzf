@@ -31,7 +31,7 @@ export default {
      */
     renderSearch() {
       return (
-        <div class="input-with-select" on-click={ ()=>{this.isShow = true} }>
+        <div class="input-with-select" on-click={ this.handleShowSearch }>
           <el-input
             value={ this.inputModel }
             on-input={ value => this.inputModel = value }
@@ -68,6 +68,14 @@ export default {
           </article>
         </div>
       )
+    },
+
+    /**
+     * 点击头部输入栏触发
+     */
+    handleShowSearch() {
+      this.isShow = true
+      this.$emit('handleShowSearch')
     },
 
     /**

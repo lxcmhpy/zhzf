@@ -13,8 +13,8 @@
         </el-form-item>
         <el-form-item label="所属标准" prop="roadLcBz">
            <el-select v-model="addOrUpdateRoadLcDeployForm.roadLcBz"  @change="initRoadLcType2">
-            <el-option value="高等级公路标准" label="高等级公路标准"></el-option>
-            <el-option value="普通公路标准" label="普通公路标准"></el-option>
+            <el-option v-for="item in options" :key="item.name" :label="item.name"
+                           :value="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="类型" prop="roadLcType">
@@ -43,7 +43,7 @@
 </template>
 <script>
 import {
-  getAllFlowApi, getDictListDetailApi,
+  getAllFlowApi, getDictListDetailApi,getDictListDetailByNameApi
 } from "@/api/system";
 export default {
   data() {
@@ -68,7 +68,8 @@ export default {
       handelType: 0, //添加 0  修改2
       editRoadLcDeployeId: "",
       typeList:[], //类别列表
-      unitList:[]
+      unitList:[],
+      options: [],
     };
   },
   inject: ["reload"],
@@ -90,22 +91,26 @@ export default {
       //this.addOrUpdateRoadLcDeployForm.roadLcPrice = value.replace(/\D/g,'')
     },
     //选中所属标准，加载类型
-    initRoadLcType2(type){
+    initRoadLcType2(val){
       let _this = this;
-      let bzId = null;
-      if(this.addOrUpdateRoadLcDeployForm.roadLcBz == '高等级公路标准'){
-        bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
-      }else{
-        bzId = '0c340250837a8cb58e7ce330266ab5c6';
-      }
-      getDictListDetailApi(bzId).then(res=>{
-        console.log(res)
-        _this.addOrUpdateRoadLcDeployForm.roadLcType = "";
-        _this.typeList = res.data;
+      let name = val;
+      console.log("111",val)
+      getDictListDetailByNameApi(name).then(res=>{
+         _this.typeList = res.data;
       })
+      // let bzId = null;
+      // if(this.addOrUpdateRoadLcDeployForm.roadLcBz == '高等级公路标准'){
+      //   bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
+      // }else{
+      //   bzId = '0c340250837a8cb58e7ce330266ab5c6';
+      // }
+      // getDictListDetailApi(bzId).then(res=>{
+      //   console.log(res)
+      //   _this.addOrUpdateRoadLcDeployForm.roadLcType = "";
+      //   _this.typeList = res.data;
+      // })
     },
     showModal(type, data) {
-      debugger
       this.visible = true;
       let _this = this;
       this.handelType = type;
@@ -126,18 +131,18 @@ export default {
         this.addOrUpdateRoadLcDeployForm.roadLcUnit = data.roadLcUnit;
         this.addOrUpdateRoadLcDeployForm.roadLcNote = data.roadLcNote;
         this.editRoadLcDeployeId = data.id;
-        let _this = this;
-        let bzId = null;
-        if(this.addOrUpdateRoadLcDeployForm.roadLcBz == '高等级公路标准'){
-           bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
-        }else{
-           bzId = '0c340250837a8cb58e7ce330266ab5c6';
-        }
-        getDictListDetailApi(bzId).then(res=>{
-            console.log(res)
-            _this.addOrUpdateRoadLcDeployForm.roadLcType = data.roadLcType;
-            _this.typeList = res.data;
-        })
+        // let _this = this;
+        // let bzId = null;
+        // if(this.addOrUpdateRoadLcDeployForm.roadLcBz == '高等级公路标准'){
+        //    bzId = '9fba0079cdcf93994a9dc317f3c8ee0d';
+        // }else{
+        //    bzId = '0c340250837a8cb58e7ce330266ab5c6';
+        // }
+        // getDictListDetailApi(bzId).then(res=>{
+        //     console.log(res)
+        //     _this.addOrUpdateRoadLcDeployForm.roadLcType = data.roadLcType;
+        //     _this.typeList = res.data;
+        // })
 
       }
     },
@@ -193,8 +198,18 @@ export default {
         }
       });
     },
+    //从数据字典获取路产标准
+    getRoadLcBz(){
+      let _this = this;
+      let name = "公路路产所属标准";
+      getDictListDetailByNameApi(name).then(res=>{
+        console.log(res)
+         _this.options = res.data;
+      })
+    },
   },
   mounted(){
+    this.getRoadLcBz()
     this.$nextTick(()=>{
           this.$refs["addOrUpdateRoadLcDeployForm"].resetFields();
           console.log('sadsdsfthis.$refs["addOrUpdateRoadLcDeployForm"]',this.$refs["addOrUpdateRoadLcDeployForm"])

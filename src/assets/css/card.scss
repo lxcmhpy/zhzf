@@ -475,20 +475,29 @@
 
 /* 内嵌的tab */
 .inspection-info {
-  .el-tabs__content {
-    height: calc(100% - 56px);
-    .el-tab-pane {
-      height: 100%;
+    .el-tabs__content {
+        height: calc(100% - 56px);
+
+        .el-tab-pane {
+            height: 100%;
+        }
     }
-  }
-/*   .el-form-item{
+
+    /*   .el-form-item{
       margin-bottom: 0;
   } */
 }
 
-.search-mini{
+.search-mini {
     display: block;
-    .search-btns{
+
+    .search-btns {
         width: auto !important;
+    }
+}
+
+.el-form-bottom0 {
+    .el-form-item {
+        margin-bottom: 0;
     }
 }

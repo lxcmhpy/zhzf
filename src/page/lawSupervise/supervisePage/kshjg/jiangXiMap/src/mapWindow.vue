@@ -18,10 +18,10 @@ export default {
   },
   methods: {
     /**
-     * 关闭弹窗
+     * 点击返回
      */
-    handleClose() {
-      this.$emit('handleClose')
+    handleGoBack() {
+      this.$emit('handleGoBack')
     },
 
     /**
@@ -31,11 +31,8 @@ export default {
       return (
         <div class="jiangXiMap_mapWindow-info">
           <header>
-            <div class="headerTitle">
-              <i class="iconfont law-zfj"></i>
-              <span>{this.title}</span>
-            </div>
-            <i on-click={this.handleClose} class="el-icon-close"></i>
+            <span>{this.title}</span>
+            <span class="goBack" on-click={this.handleGoBack}>返回</span>
           </header>
           <p class="contantInfo">地址：宁夏回族自治区固原市原州区六盘山西路与六盘山东路交叉路口往西南约50米(利民小区西北侧约50米)</p>
           <p class="contantInfo">联系人：曾新富</p>
@@ -65,32 +62,35 @@ export default {
   top: 70px;
   left: 30px;
   &-info {
-    width: 450px;
-    height: 368px;
+    width: 370px;
+    height: 402px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     background: #FFFFFF;
+    box-sizing: border-box;
     header {
       width: 100%;
-      height: 50px;
-      background: #4573d0;
+      height: 46px;
+      background: #46aaff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .headerTitle {
-        font-size: 18px;
-        font-weight: 200;
+      padding: 15px 20px;
+      box-sizing: border-box;
+      span {
+        font-size: 14px;
+        font-weight: 400;
         color: #ffffff;
-        i {
-          margin: 0 5px 0 5px;
-        }
+        font-family: Helvetica,Arial,sans-serif;
       }
-      .el-icon-close {
+      .goBack {
+        font-size: 13px;
         cursor: pointer;
-        margin-right: 10px;
       }
     }
     .contantInfo {
+      padding: 15px;
       box-sizing: border-box;
-      padding-left: 10px;
       line-height: 40px;
       color: #7b7b7b;
       font-size: 14px;

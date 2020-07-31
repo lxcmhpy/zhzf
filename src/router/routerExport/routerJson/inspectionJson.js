@@ -122,7 +122,17 @@ export default  [
                 title: "信息维护",
                 oneTab:true,
                 },
-                component: () => import("@/page/inspection/doubly-stochastic/infoMaintains/infoMaintains.vue")
+                component: () => import("@/page/inspection/doubly-stochastic/info-maintains/infoMaintains.vue")
+            },
+            {
+                // 任务管理
+                path: "/taskManage",
+                name: "inspection_taskManage",
+                meta: {
+                title: "任务管理",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/doubly-stochastic/task-manage/taskManage.vue")
             },
         ]
     }, 
