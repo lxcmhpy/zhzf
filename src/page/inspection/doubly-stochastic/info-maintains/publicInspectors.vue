@@ -270,9 +270,13 @@ export default {
   mixins: [mixinPerson, mixinInspection],
   props: ['freshFlag'],
   watch: {
-    freshFlag(val, oldVal) {
-      console.log('监听', this.freshFlag, 'val', val)
+    freshFlag: {
+      handler(val, oldVal) {
+        this.getTableData()
+      },
+      deep: true
     },
+   
   },
   data() {
     return {
@@ -319,6 +323,9 @@ export default {
     }
   },
   methods: {
+    // freshFlag(val) {
+    //   console.log('val', val)
+    // },
     // 查询列表时
     getTableData() {
       let data = {
