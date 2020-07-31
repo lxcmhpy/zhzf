@@ -57,7 +57,33 @@
           </el-form>
         </div>
       </div>
-      <div class="tablePart">
+      <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55">
+          </el-table-column>
+          <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查主体" align="center" :formatter="sexFormat"></el-table-column>
+          <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
+          <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
+          <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
+          <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
+          <el-table-column label="任务周期" align="center">
+            <template slot-scope="scope">
+              {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column label="操作" align="center" width="200px">
+            <template slot-scope="scope">
+              <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
+              <el-button @click="editMethod(scope.row)" type="text">查看详情</el-button>
+              <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
@@ -271,7 +297,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="检查范围" prop="checkRange">
-             <el-input v-model="addForm2.checkRange"></el-input>
+            <el-input v-model="addForm2.checkRange"></el-input>
           </el-form-item>
           <el-form-item label="备注" prop="remark">
             <el-input v-model="addForm2.remark"></el-input>
@@ -339,7 +365,7 @@
   </div>
 </template>
 <script>
-import {  addTaskApi, getDictListDetailByNameApi, } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
