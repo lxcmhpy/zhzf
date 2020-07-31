@@ -1,7 +1,7 @@
 <!-------长软------->
 <template>
     <div class="com_searchAndpageBoxPadding hasBigMarginRight">
-        <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'">
+        <div class="searchAndpageBox searchAndpageBox2">
         <el-form ref="form" :model="form"  size="small" label-width="150px">
             <el-card class="box-card" shadow="never">
                 <div slot="header" class="clearfix">
@@ -125,45 +125,56 @@
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
+import {findPropertyById} from "@/api/propertyManage";
 
 export default {
   data() {
     return {
-      form: {
-        propertyNumUnit:"",
-        propertyName:"",
-        propertyState:"",
-        registrationTime:"",
-        propertyNum:"",
-        saveUnit:"",
-        registrant:"",
-        propertyBelonger:"",
-        savePerson:"",
-        storagePeriod:"",
-        propertyNo:"",
-        saveWay:"",
-        savePlace:"",
-        remarks:"",
-        propertyDescribe:"",
-      },
-      handleWayList:["封存","扣押","退回当事人","移交法院","销毁","其他"],
-      syqxList:[30,90,180,360]
+        form:{
+            propertyDisposeForm: {
+                propertyNumUnit:"",
+                propertyName:"",
+                propertyState:"",
+                registrationTime:"",
+                propertyNum:"",
+                saveUnit:"",
+                registrant:"",
+                propertyBelonger:"",
+                savePerson:"",
+                storagePeriod:"",
+                propertyNo:"",
+                saveWay:"",
+                savePlace:"",
+                remarks:"",
+                propertyDescribe:"",
+            },
+            cases:[],
+            accs:[],
+            dispose:{
+                disposeWay:"",
+                disposeRemark:"",
+                disposePersonId:"",
+                disposePerson:"",
+            }
+        },
+        handleWayList:["封存","扣押","退回当事人","移交法院","销毁","其他"],
+        syqxList:[30,90,180,360]
     };
   },
   methods: {
 
     //获取已归档的数据
-    getData(searchData) {
-        let data = searchData;
-        data.userId = iLocalStroage.gets("userInfo").id;
-        // this.getCaseList(data);
+    async getData(id) {
+        let res = await findPropertyById(id);
+        this.form = res.data;
     },
     
   },
   mounted(){
-      // if(this.$route.params.id !== "add"){
-      //     this.getData({id:this.$route.params.id});
-      // }
+      debugger
+      if(this.$route.params.id){
+          this.getData(this.$route.params.id);
+      }
   },
   created() {
       

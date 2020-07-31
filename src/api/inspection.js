@@ -396,7 +396,7 @@ export function delDocumentModifyOrderById(data) {
 // 分页查询执法人员
 export function getAllPersonApi(data) {
     return request({
-        url: "/person/person/personPageList",
+        url: "/person/personExternalInterface/personInfoList",
         method: "get",
         params: data,
         showloading: true,
@@ -404,6 +404,16 @@ export function getAllPersonApi(data) {
         cancelToken: setCancelSource()
     });
 }
+// export  function  getAllPersonApi(data)  {
+//     return  request({
+//       url:  "/person/person/personPageList",
+//       method:  "get",
+//       params: data,
+//       showloading: false,
+//       baseUrlType:  'LAW_SUPERVISE_HOST',
+//       cancelToken:  setCancelSource()
+//     });
+// }
 // 分页查询公开执法人员
 export function getAllPublicPersonApi(data) {
     return request({
@@ -434,6 +444,20 @@ export function addPublicPersonApi(data) {
         method: "post",
         data: data,
         showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 一次性添加多个检查人员
+export function addMorePublicPersonApi(data) {
+    console.log(data)
+    return request({
+        url: "/xzjc/randomPerson/multipleSave",
+        method: "post",
+        data: data,
+        showloading: true,
+        async: false,
         loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
@@ -555,4 +579,49 @@ export function getDictListDetailByNameApi(name) {
       cancelToken: setCancelSource()
     });
   }
-  
+  // 分页查询检查任务表数据
+export function getAllTaskApi(data) {
+    return request({
+        url: "/xzjc/randomTask/queryRandomTask",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 根据UUID删除检查任务表数据
+export function delTaskApi(data) {
+    return request({
+        url: "/xzjc/randomTask/myRemoveById/"+data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添加或修改检查任务表数据
+export function addTaskApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/randomTask/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 通过省级行政区划代码查询所有地市
+export function findByAddressCode(data) {
+    return request({
+        url: "/xzjc/country/findByAddressCode/"+data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

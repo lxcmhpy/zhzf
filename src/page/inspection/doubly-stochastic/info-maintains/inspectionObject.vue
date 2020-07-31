@@ -83,7 +83,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="行政划分" prop="adminDivision">
-              <el-input v-model="addForm.adminDivision"></el-input>
+              <el-cascader v-model="addForm.adminDivision" :options="provenceList" :props="{ expandTrigger: 'hover' }" @change="handleChange"></el-cascader>
             </el-form-item>
           </el-col>
         </el-row>
@@ -103,14 +103,14 @@
           <el-col :span="12">
             <el-form-item label="对象类型" prop="objectType">
               <el-select v-model="addForm.objectType" placeholder="请选择">
-                 <el-option v-for="item in optionsDXLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsDXLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="监管类型" prop="superviseType">
               <el-select v-model="addForm.superviseType" placeholder="请选择">
-             <el-option v-for="item in optionsJGLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsJGLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -129,7 +129,7 @@
         </el-row>
         <el-form-item label="监管单位" prop="regulatoryUnit">
           <el-select v-model="addForm.regulatoryUnit" placeholder="请选择">
-             <el-option v-for="item in optionsJGDW" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            <el-option v-for="item in optionsJGDW" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
@@ -144,26 +144,24 @@
   </div>
 </template>
 <script>
-import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi } from "@/api/inspection";
+import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
+import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
+  mixins: [mixinInspection],
   data() {
     return {
-      tableData: [], //表格数据
       multipleSelection: [],
       searchForm: {
         objectName: "",
         projectName: '',
       },
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
       isShow: false,
       dialogFormVisible: false,
       addForm: {
         objectName: '',
         socialCode: '',
-        adminDivision: '',
+        adminDivision: [],
         legalRepresent: '',
         idCard: '',
         objectType: '',
@@ -186,9 +184,10 @@ export default {
           { required: true, trigger: 'blur' }
         ]
       },
-      optionsDXLX:[],
-      optionsJGDW:[],
-      optionsJGLX:[],
+      optionsDXLX: [],
+      optionsJGDW: [],
+      optionsJGLX: [],
+      provenceList: []
     }
   },
   methods: {
@@ -209,26 +208,9 @@ export default {
         error => {
           // reject(error);
         })
+      this.getPageList("getAllRandomObject", data);
 
     },
-    // 查询
-    searchTableData() {
-      this.currentPage = 1;
-      this.getTableData()
-    },
-
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.currentPage = 1;
-      this.getTableData();
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getTableData();
-    },
-
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -244,7 +226,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          addInspectionObjectApi(this.addForm).then(
+          let data = JSON.parse(JSON.stringify(this.addForm))
+          data.adminDivision=this.addForm.adminDivision.join(',')
+          addInspectionObjectApi(data).then(
             res => {
               console.log(res)
               if (res.code == 200) {
@@ -266,45 +250,10 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    addMethod() {
-      this.dialogStatus = '新增'
-      this.dialogFormVisible = true
-    },
-    editMethod(row) {
-      this.addForm = JSON.parse(JSON.stringify(row))
-      this.dialogStatus = '修改'
-      this.dialogFormVisible = true
-    },
     delMethod(id) {
-      this.$confirm('确认删除？', "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        delRandomObjectApi(id).then(
-          res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.currentPage = 1;
-              this.getTableData()
-            }
-          },
-          error => {
-            // reject(error);
-          })
-      })
+      this.deleteById("delRandomObject", id);
     },
-    exportMethod() { },
-    importModle() { },
-    downloadModle() { },
-     getDrawerList(data) {
+    getDrawerList(data) {
       let _this = this
       data.forEach(element => {
         getDictListDetailByNameApi(element.name).then(
@@ -312,23 +261,59 @@ export default {
             switch (element.option) {
               case 1: _this.optionsJGLX = res.data; break;//监管类型
               case 2: _this.optionsDXLX = res.data; break;//对象类型
-              case 3: _this.optionsJGDW = res.data; break;//监管单位
             }
           },
-
           error => {
             // reject(error);
           })
       });
 
     },
+    findProvence() {
+      this.provenceList = []
+      let _this = this
+      let data = '530000'//云南
+      findByAddressCode(data).then(
+        res => {
+          // this.provenceList.push(res.data)
+          let dataList = []
+          dataList.push(res.data)
+          dataList.forEach(element => {
+            console.log('element', element)
+            if (element.myChildren) {
+              element.value = element.adcode;
+              element.label = element.name
+              element.children = element.myChildren
+              element.myChildren.forEach(item => {
+                console.log('item', item)
+                item.value = item.adcode;
+                item.label = item.name
+                if (item.myChildren) {
+                  item.children = item.myChildren
+                  item.children.forEach(item1 => {
+                    item1.value = item1.adcode;
+                    item1.label = item1.name
+                  });
+                }
+              });
+            }
+          })
+          _this.provenceList = dataList
+        },
+        error => {
+          // reject(error);
+        })
+    },
+    handleChange(value) {
+      console.log(value);
+    }
   },
   mounted() {
     this.getTableData()
-     // 获取抽屉
+    this.findProvence()
+    // 获取抽屉
     this.getDrawerList([{ name: '监管类型', option: 1 },
-    { name: '对象类型', option: 2 },
-    { name: '监管单位', option: 3 }])
+    { name: '对象类型', option: 2 }])
   }
 }
 </script>

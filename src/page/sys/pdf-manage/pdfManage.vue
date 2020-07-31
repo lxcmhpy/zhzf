@@ -506,9 +506,9 @@ export default {
 
     //更改每页显示的条数
     handleSizeChange(val) {
-      console.log(val)
-      this.pageSize = JSON.parse(JSON.stringify(val));
-      this.getPdfAndFormList('pdfForm', val);
+      this.pageSize = val;
+      this.currentPage = 1;
+      this.getPdfAndFormList('pdfForm', 1);
     },
     //更换页码
     handleCurrentChange(val) {

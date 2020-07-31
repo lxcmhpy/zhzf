@@ -1248,3 +1248,14 @@ export  function  hasUsernameLoginApi(name)  {
     cancelToken: setCancelSource()
   });
 }
+
+//appDownload  app下载
+export function appDownloadApi() {
+  return request({
+      url: "/case/doc/app/appDownload",
+      method: "get",
+      showloading: false,
+      loadingType:'loadFull',
+      cancelToken: setCancelSource()
+  });
+}

@@ -443,7 +443,7 @@ export default {
             if (fileSaveType == 1) {
               this.$store.commit("set_inspection_orderId", res.data);
               this.$nextTick(() => {
-                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
                 this.$router.push({
                   name: 'inspection_recordList',
                 });
@@ -527,7 +527,7 @@ export default {
               })
               if (!noRouter) {
                 // this.addOrEiditFlag = 'view';
-                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
                 this.$router.push({
                   name: 'inspection_recordList',
                   // params: item

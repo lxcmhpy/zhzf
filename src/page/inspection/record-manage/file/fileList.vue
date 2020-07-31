@@ -29,7 +29,7 @@
               <span v-else>
                 <el-button :disabled="!inspectionFileEdit" @click="editRecord(scope.row)" type="text">编辑</el-button>
                 <el-upload :disabled="!inspectionFileEdit" style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-                  <el-button :disabled="!inspectionFileEdit" type="text">上传</el-button>
+                  <el-button :disabled="!inspectionFileEdit" type="text" @click="currentFileId=scope.row.id">上传</el-button>
                 </el-upload>
               </span>
             </template>
@@ -61,14 +61,14 @@ export default {
       modleList: [],
       modleSaveList: [],//收藏列表
       modleSaveListDefaut: [],//收藏列表
-      currentUserLawId: '',
+      currentFileId: '',
       modleSaveListFlag: true,
       showSave: true,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       fileList: [],
-      editFlag: true
+      editFlag: true,
     }
   },
   computed: {
@@ -165,21 +165,21 @@ export default {
     uploadImg(param) {
       //上传图片
       console.log(param);
+      let currentFileId=this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append("category", '行政检查');
       fd.append("fileName", param.file.name);
       fd.append('status', '文书')//传记录id
       fd.append('caseId', this.inspectionOrderId)//传记录id
-      fd.append('docId', this.modleList[0].id)//传文书id
+      fd.append('docId', currentFileId)//传文书id
       uploadCommon(fd).then(
         // upload(fd).then(
         res => {
           console.log(res);
-
           // 保存-修改状态
           let data = {
-            id: this.modleList[0].id,
+            id: currentFileId,
             picPath: res.data[0].storagePath,
             picStorageId: res.data[0].storageId
           }

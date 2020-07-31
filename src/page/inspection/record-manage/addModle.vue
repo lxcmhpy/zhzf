@@ -32,7 +32,7 @@
                     <i class="iconfont law-btn_shousuo shousuo"></i>
                     <el-form-item prop="class" label-width="0" style="width:100%;margin-bottom: 10px;">
                       <el-select v-model="item.classs" filterable allow-create clearable placeholder="请输入字段组名称，可为空" @change="changeGroup(item)">
-                        <el-option v-for="(commonField,index) in commonGroupFieldList" :key="index" :label="commonField.classs" :value="commonField.classs"></el-option>
+                        <el-option v-for="(commonField,index) in commonGroupFieldList" :key="index" :label="commonField.classs" :value="commonField.classs" :disabled="disabledChooseGruop(commonField)"></el-option>
                       </el-select>
                     </el-form-item>
                     <i class="el-icon-remove" style="margin-left:18px" @click="delField(item,formData.templateFieldList)"></i>
@@ -92,7 +92,7 @@
                           <!-- 改成选择字段 -->
                           <span style="display:none">{{field.info}}{{field}}</span><!-- 视图更新 -->
                           <el-select name='filedNameFlag' v-model="field.info" filterable value-key="id" allow-create clearable placeholder="请填写字段名称" @change="changeField(field.info,field)" ref="test" :id='field.info?field.info.field:""'>
-                            <el-option v-for="(commonField,index) in commonFieldList" :key="index" :label="commonField.title" :value="commonField" :disabled="commonField.fieldDisabled"></el-option>
+                            <el-option v-for="(commonField,index3) in commonFieldList" :key="index3" :label="commonField.title" :value="commonField" :disabled="disabledChoose(commonField)"></el-option>
                           </el-select>
 
                         </el-form-item>
@@ -455,6 +455,41 @@ export default {
       selectFieldList: []
     }
   },
+  computed: {
+    // 不能重复选择字段
+    disabledChoose(item) {
+      return function (item) {
+        let valueList = []
+        this.formData.templateFieldList.forEach(element => {
+          element.fieldList.forEach(item => {
+            valueList.push(item.field)
+          });
+        });
+        let findItemIndex = valueList.findIndex(item2 => item2 == item.field);
+        // let newArr = valueList.splice(findItemIndex, 1);
+        if (findItemIndex != -1) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    disabledChooseGruop(item) {
+      return function (item) {
+        let valueList = []
+        this.formData.templateFieldList.forEach(element => {
+          valueList.push(element.classs)
+        });
+        let findItemIndex = valueList.findIndex(item2 => item2 == item.classs);
+
+        if (findItemIndex != -1) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+  },
   methods: {
     showModal(editdata) {
       if (editdata) {
@@ -463,6 +498,7 @@ export default {
         this.drawerTitle = '修改模板'
         this.globalCont = editdata.count + 1;
       } else {
+        this.drawerTitle = '创建模板'
         this.$nextTick(() => {
           this.getFileList()
         });
@@ -570,9 +606,9 @@ export default {
           // 获取通用字段
           this.commonFieldList = res.data
 
-          this.commonFieldList.forEach(element => {
-            element.fieldDisabled = false
-          });
+          // this.commonFieldList.forEach(element => {
+          //   element.fieldDisabled = false
+          // });
         },
         error => {
 

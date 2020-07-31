@@ -2,16 +2,16 @@
   <div class="height100">
     <div class="handlePart">
       <div class="search toggleBox search-mini">
-        <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
+        <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
             <el-form-item>
               双随机一公开执法人员库
             </el-form-item>
-            <el-form-item label="姓名：" prop='personName'>
+            <el-form-item label="姓名" prop='personName'>
               <el-input v-model="searchForm.personName"></el-input>
             </el-form-item>
-            <el-form-item label="在岗情况：" prop='workStatus'>
-              <el-select v-model="searchForm.workStatus" placeholder="请选择">
+            <el-form-item label="在岗情况" prop='stationStatusName'>
+              <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
                 <el-option v-for="item in optionsZGQK" :key="item.id" :label="item.name" :value="item.name">
                 </el-option>
               </el-select>
@@ -19,6 +19,8 @@
           </el-form>
           <div class="search-btns">
             <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
+            <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+            </el-button>
           </div>
         </div>
       </div>
@@ -37,10 +39,10 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
+              <el-button type="primary" size="medium" @click="downloadModle">Excel模板导出</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
+              <el-button type="primary" size="medium" @click="importModle">导入Excel</el-button>
             </el-form-item>
             <el-form-item>
               <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
@@ -51,14 +53,14 @@
     </div>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
         <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
-        <el-table-column prop="domain" label="监督执法种类" align="center"></el-table-column>
-        <el-table-column prop="workStatus" label="状态" align="center"></el-table-column>
-        <el-table-column prop="organization" label="执法人员性质" align="center"></el-table-column>
-        <el-table-column prop="job" label="职务" align="center"></el-table-column>
+        <el-table-column prop="branchName" label="监督执法种类" align="center"></el-table-column>
+        <el-table-column prop="stationStatusName" label="状态" align="center"></el-table-column>
+        <el-table-column prop="staffingName" label="执法人员性质" align="center"></el-table-column>
+        <el-table-column prop="postName" label="职务" align="center"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
             <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
@@ -73,8 +75,8 @@
       <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="addForm.name"></el-input>
+            <el-form-item label="姓名" prop="personName">
+              <el-input v-model="addForm.personName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -101,15 +103,15 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="民族" prop="education">
-              <el-select v-model="addForm.education" placeholder="请选择">
+            <el-form-item label="民族" prop="nationName">
+              <el-select v-model="addForm.nationName" placeholder="请选择">
                 <el-option v-for="item in optionsMZ" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="政治面貌" prop="politicalStatus">
-              <el-select v-model="addForm.politicalStatus" placeholder="请选择">
+            <el-form-item label="政治面貌" prop="politicalStatusName">
+              <el-select v-model="addForm.politicalStatusName" placeholder="请选择">
                 <el-option v-for="item in optionsZZMM" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -124,8 +126,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="学历专业" prop="profession">
-              <el-input v-model="addForm.profession"></el-input>
+            <el-form-item label="学历专业" prop="majorName">
+              <el-input v-model="addForm.majorName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -144,8 +146,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="人员类型" prop="region">
-              <el-select v-model="addForm.region" placeholder="请选择">
+            <el-form-item label="人员类型" prop="lawOfficeType">
+              <el-select v-model="addForm.lawOfficeType" placeholder="请选择">
                 <el-option v-for="item in optionsRYLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -160,8 +162,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="执法人员性质" prop="organization">
-              <el-select v-model="addForm.organization" placeholder="请选择">
+            <el-form-item label="执法人员性质" prop="staffingName">
+              <el-select v-model="addForm.staffingName" placeholder="请选择">
                 <el-option v-for="item in optionsZFRYXZ" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -175,22 +177,20 @@
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="监督检查种类" prop="domain">
-              <el-select v-model="addForm.domain" placeholder="请选择">
+            <el-form-item label="监督检查种类" prop="branchName">
+              <el-select v-model="addForm.branchName" placeholder="请选择">
                 <el-option v-for="item in optionsJDJCZL" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="监督检查区域" prop="lawArea">
-              <el-select v-model="addForm.lawArea" placeholder="请选择">
-                <el-option v-for="item in optionsJDJCZL" :key="item.id" :label="item.name" :value="item.name"></el-option>
-              </el-select>
+              <el-input v-model="addForm.lawArea"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="执法证类型" prop="certType">
-          <el-select v-model="addForm.domain" placeholder="请选择">
+          <el-select v-model="addForm.certType" placeholder="请选择">
             <el-option v-for="item in optionsZFZLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
@@ -230,7 +230,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否具有法律职业资格" prop="isLawProfession">
+            <el-form-item label="是否具有法律职业资格" prop="isLawProfession" label-width="160px">
               <el-radio-group v-model="addForm.isLawProfession">
                 <el-radio label="是"></el-radio>
                 <el-radio label="否"></el-radio>
@@ -238,8 +238,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="是否在岗" prop="workStatus">
-          <el-radio-group v-model="addForm.workStatus">
+        <el-form-item label="是否在岗" prop="stationStatusName">
+          <el-radio-group v-model="addForm.stationStatusName">
             <el-radio label="在岗"></el-radio>
             <el-radio label="离岗"></el-radio>
           </el-radio-group>
@@ -262,22 +262,25 @@
   </div>
 </template>
 <script>
-import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi ,delPersonApi} from "@/api/inspection";
+import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
+import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
-  mixins: [mixinPerson],
+  mixins: [mixinPerson, mixinInspection],
+  props: ['freshFlag'],
+  watch: {
+    freshFlag(val, oldVal) {
+      console.log('监听', this.freshFlag, 'val', val)
+    },
+  },
   data() {
     return {
-      tableData: [], //表格数据
       multipleSelection: [],
       searchForm: {
-        workStatus: "",
+        stationStatusName: "",
         personName: '',
       },
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
       isShow: false,
       dialogFormVisible: false,
       addForm: {
@@ -326,41 +329,13 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      getAllPublicPersonApi(data).then(
-        res => {
-          console.log(res)
-          this.tableData = res.data.records
-          this.totalPage = res.data.total
-        },
-        error => {
-          // reject(error);
-        })
-
+      this.getPageList("getAllPublicPerson", data);
     },
-    // 查询
-    searchTableData() {
-      this.currentPage = 1;
-      this.getTableData()
-    },
-
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.currentPage = 1;
-      this.getTableData();
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getTableData();
-    },
-
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log('multipleSelection', this.multipleSelection)
     },
-
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
@@ -395,44 +370,9 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    addMethod() {
-      this.dialogStatus = '新增'
-      this.dialogFormVisible = true
-    },
-    editMethod(row) {
-      this.addForm = JSON.parse(JSON.stringify(row))
-      this.dialogStatus = '修改'
-      this.dialogFormVisible = true
-    },
     delMethod(id) {
-      this.$confirm('确认删除？', "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        delPersonApi(id).then(
-          res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.currentPage = 1;
-              this.getTableData()
-            }
-          },
-          error => {
-            // reject(error);
-          })
-      })
+      this.deleteById("delPerson", id);
     },
-    exportMethod() { },
-    importModle() { },
-    downloadModle() { },
     getDrawerList(data) {
       let _this = this
       data.forEach(element => {
