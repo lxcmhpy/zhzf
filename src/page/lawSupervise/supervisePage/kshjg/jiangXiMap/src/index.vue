@@ -30,10 +30,11 @@
 
 <script>
 import JkControlsMap from "@/components/jk-controlsMap";
-import JkMapTree from "@/components/jk-mapTree"
+import JkMapTree from "@/components/jk-mapTree";
 import MapWinDow from "./mapWindow.vue";
-import { organTreeByCurrUser } from "@/api/lawSupervise.js";
+import store from "../store.js"
 export default {
+  mixins: [store],
   components: {
     JkControlsMap,
     JkMapTree,
@@ -48,31 +49,7 @@ export default {
       center: [12118909.300259633, 4086043.1061670054],
       windowData: {},
       treeData: {
-        buttons: [
-          // { name: "路线树查询" },
-          // { name: "条件查询" },
-        ],
-        option: [
-          // {
-          //   label: '固原综合执法支队',
-          //   children: [{
-          //     label: '执法人员',
-          //   },{
-          //     label: '执法车辆',
-          //   },{
-          //     label: '执法船舶',
-          //   },{
-          //     label: '德隆综合执法大队',
-          //     children: [{
-          //       label: '执法人员',
-          //     },{
-          //       label: '执法车辆',
-          //     },{
-          //       label: '执法船舶',
-          //     },]
-          //   }]
-          // },
-        ],
+        option: [],
       },
       config: {
         searchData: {
@@ -172,36 +149,27 @@ export default {
     },
 
     /**
-     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶
+     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶子节点
      */
     addNode(arr) {
       let myNode = [
-        { label: '执法人员' },
-        { label: '执法车辆' },
-        { label: '执法船舶' },
+        { label: '执法人员', type: 0, children: [] },
+        { label: '执法车辆', type: 2, children: [] },
+        { label: '执法船舶', type: 3, children: [] },
       ]
       arr.map(item => {
-        if(item.hasOwnProperty('children')) {
+        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
+          myNode.map(myNodeItem => {
+            // 给自定义节点添加 pid 属性， 值为父节点的 id
+            myNodeItem.pid = item.id
+          })
+          // 在 children 里添加自定义节点
           item.children = myNode.concat(item.children)
+          // 递归调用
           this.addNode(item.children)
         }
       })
       return arr
-    },
-
-    /**
-     * 获取数据
-     */
-    getTree() {
-      organTreeByCurrUser().then(res => {
-        if(res.code === 200) {
-          return res.data
-        } else {
-          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
-        }
-      }).then(data => {
-        this.treeData.option = this.addNode(data)
-      })
     },
 
     /**
@@ -220,13 +188,22 @@ export default {
     },
 
     /**
-     * 点击节点回调函数，调用打点函数
+     * 点击节点回调函数
+     * 1.如果当前节点不是自定义节点，则调用地图打点函数，并显示信息弹窗
+     * 2.如果当前节点是自定义节点，发送请求获取节点数据。
      */
     handleNodeClick(data) {
-      this.showComp = "MapWinDow"
-      this.windowData = {
-        title: data.label,
-        info: {},
+      console.log(data)
+      if(data.label === '执法人员') {
+        this.getPeopleTree(data)
+      } else if (data.label === '执法车辆' || data.label === '执法船舶') {
+        this.getCarShipTree(data)
+      } else {
+        this.showComp = "MapWinDow"
+        this.windowData = {
+          title: data.label,
+          info: {},
+        }
       }
       // if(data.propertyValue) {
       //   let latLng = data.propertyValue.split(',')
