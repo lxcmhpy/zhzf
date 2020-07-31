@@ -10,8 +10,8 @@
             <el-form-item label="姓名" prop='personName'>
               <el-input v-model="searchForm.personName"></el-input>
             </el-form-item>
-            <el-form-item label="在岗情况" prop='workStatus'>
-              <el-select v-model="searchForm.workStatus" placeholder="请选择">
+            <el-form-item label="在岗情况" prop='stationStatusName'>
+              <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
                 <el-option v-for="item in optionsZGQK" :key="item.id" :label="item.name" :value="item.name">
                 </el-option>
               </el-select>
@@ -58,7 +58,7 @@
         <el-table-column prop="branchName" label="监督执法种类" align="center"></el-table-column>
         <el-table-column prop="stationStatusName" label="状态" align="center"></el-table-column>
         <el-table-column prop="staffingName" label="执法人员性质" align="center"></el-table-column>
-        <el-table-column prop="job" label="职务" align="center"></el-table-column>
+        <el-table-column prop="postName" label="职务" align="center"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -146,8 +146,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="人员类型" prop="region">
-              <el-select v-model="addForm.region" placeholder="请选择">
+            <el-form-item label="人员类型" prop="lawOfficeType">
+              <el-select v-model="addForm.lawOfficeType" placeholder="请选择">
                 <el-option v-for="item in optionsRYLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -162,8 +162,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="执法人员性质" prop="organization">
-              <el-select v-model="addForm.organization" placeholder="请选择">
+            <el-form-item label="执法人员性质" prop="staffingName">
+              <el-select v-model="addForm.staffingName" placeholder="请选择">
                 <el-option v-for="item in optionsZFRYXZ" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -177,22 +177,20 @@
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="监督检查种类" prop="domain">
-              <el-select v-model="addForm.domain" placeholder="请选择">
+            <el-form-item label="监督检查种类" prop="branchName">
+              <el-select v-model="addForm.branchName" placeholder="请选择">
                 <el-option v-for="item in optionsJDJCZL" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="监督检查区域" prop="lawArea">
-              <el-select v-model="addForm.lawArea" placeholder="请选择">
-                <el-option v-for="item in optionsJDJCZL" :key="item.id" :label="item.name" :value="item.name"></el-option>
-              </el-select>
+              <el-input v-model="addForm.lawArea"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="执法证类型" prop="certType">
-          <el-select v-model="addForm.domain" placeholder="请选择">
+          <el-select v-model="addForm.certType" placeholder="请选择">
             <el-option v-for="item in optionsZFZLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
@@ -232,7 +230,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否具有法律职业资格" prop="isLawProfession">
+            <el-form-item label="是否具有法律职业资格" prop="isLawProfession" label-width="160px">
               <el-radio-group v-model="addForm.isLawProfession">
                 <el-radio label="是"></el-radio>
                 <el-radio label="否"></el-radio>
@@ -240,8 +238,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="是否在岗" prop="workStatus">
-          <el-radio-group v-model="addForm.workStatus">
+        <el-form-item label="是否在岗" prop="stationStatusName">
+          <el-radio-group v-model="addForm.stationStatusName">
             <el-radio label="在岗"></el-radio>
             <el-radio label="离岗"></el-radio>
           </el-radio-group>
@@ -280,7 +278,7 @@ export default {
     return {
       multipleSelection: [],
       searchForm: {
-        workStatus: "",
+        stationStatusName: "",
         personName: '',
       },
       isShow: false,
