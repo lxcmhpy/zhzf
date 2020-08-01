@@ -3,7 +3,7 @@
 
         <el-dialog title="案件信息" :visible.sync="caseVisible" @close="caseVisible = false" :close-on-click-modal="false" width="60%">
             <el-row style="height:32px;line-height:32px;margin: -10px 0 10px 0;"><span style="font-size:16px;">关联案件：</span>
-                <el-tag v-for="tag in multipleSelection" :key="tag.caseNumber" closable @close="toggleSelection([tag])">
+                <el-tag v-for="(tag,index) in multipleSelection" :key="index" closable @close="onDelete(tag,index)" style="margin-left:3px;">
                     {{tag.caseNumber}}
                 </el-tag>
             </el-row>
@@ -41,8 +41,12 @@
                     </el-form>
                 </div>
                 <div class="tablePart table_tr_overflow">
-                    <el-table ref="caseTable" :data="tableData" stripe style="width: 100%" highlight-current-row  height="300px" @selection-change="handleSelectionChange">
-                        <el-table-column type="selection" width="55"> </el-table-column>
+                    <el-table ref="caseTable" :data="tableData" stripe style="width: 100%" highlight-current-row  height="300px">
+                        <el-table-column type="selection" width="55" >
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.selected"  @change="handleSelectionChange(scope.row,scope.$index)"></el-checkbox>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
                         <el-table-column prop="name" label="当事人/单位" align="center" width="150"></el-table-column>
                         <el-table-column prop="caseCauseName" label="违法行为" align="center">
@@ -103,6 +107,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
+import {findCaseListApi} from "@/api/propertyManage";
 
 export default {
   data() {
@@ -119,12 +124,6 @@ export default {
         hideSomeSearch: true,
         caseVisible: false,
         propertyVisible: false,
-        // handleForm: {
-        //     ids: "",
-        //     caseIds: "",
-        //     handleWay:"",
-        //     other:""
-        // },
         dispose:{
             disposeWay:"",
             disposeRemark:"",
@@ -142,71 +141,124 @@ export default {
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
   methods: {
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
-    //获取机构下数据
-    getCaseList2(searchData) {
-      let data = searchData;
-    //   data.flag = 0;
-      data.userId = iLocalStroage.gets("userInfo").id;
-      data.current = this.currentPage;
-      data.size = this.pageSize;
-      this.getCaseList(data);
-    },
-      //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.getCaseList2({});
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getCaseList2({});
-    },
-    toggleSelection(rows) {
-        if (rows.length > 0 ) {
-            rows.forEach(row => {
-                this.$refs.caseTable.toggleRowSelection(row);
+        handleSelectionChange(row,index) {
+            debugger;
+            // this.multipleSelection.push(row);
+            // this.$set(this.tableData,index,row); 
+            let flag = this.multipleSelection.findIndex((element)=>(element.id == row.id));
+            if(flag != -1){
+                this.multipleSelection.splice(flag, 1);
+            }else{
+                this.multipleSelection.push(row);
+            }
+            this.$set(this.tableData,index,row);     
+        },
+        //获取机构下数据
+        async getCaseList2(searchData) {
+            let data = searchData;
+            data.userId = iLocalStroage.gets("userInfo").id;
+            data.current = this.currentPage;
+            data.size = this.pageSize;
+            data.flag = 5;
+            let res = await findCaseListApi(data);
+            this.setTableState(res.data.records);
+            this.total = res.data.total;
+            // this.tableData = res.data.records;
+            // this.getCaseList(data);
+        },
+        //获取列表中的数据  未立案 审批中  待办理
+        async getCaseList(params) {
+            let data = params;
+            let res = await this.$store.dispatch("queryCaseBasicInfoListPage", data);
+            
+        },
+        setTableState(data){
+            if(data){
+                let _this = this;
+                data.forEach((item,index) => {
+                    item.name = item.party ? item.party : item.partyName;
+                    let flag = _this.multipleSelection.findIndex((element)=>(element.id == item.id));
+                    if(flag !== -1 ){
+                        item.selected = true  //不可勾选
+                    }else{    
+                        item.selected =false  //可勾选
+                    }
+                })
+                this.tableData = data;
+            }else{
+                this.tableData = [];
+            }
+        },
+        setRowState(row){
+            let _this = this;
+            this.tableData.find
+            this.tableData.find(item => {
+                if(row.id == item.id){
+                    item.selected = row.selected  //不可勾选
+                }
+            })
+        },
+        //更改每页显示的条数
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.getCaseList2({});
+        },
+        //更换页码
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            this.getCaseList2({});
+        },
+        onDelete (row,i) {
+            this.multipleSelection.splice(i, 1);
+            let _this = this;
+            this.tableData.find((element,index)=>{
+                if(element.id == row.id)
+                    element.selected =false;
+                    _this.$set(this.tableData,index,element); 
             });
-        } else {
-            this.$refs.caseTable.clearSelection();
+        },
+        showModal(type,data) {
+            if(type === 'case'){
+                this.caseVisible = true;
+                if(data.length>0 && data[0].caseID){
+                    this.multipleSelection = [];
+                    for (let i = 0; i < data[0].caseID.length; i++) {
+                        this.multipleSelection.push({
+                            id:data[0].caseID[i],
+                            caseNumber:data[0].caseNumber[i],
+                            propertyId:data[0].id
+                        })
+                    }
+                }
+                
+                this.getCaseList2({});
+            }else{
+                this.propertyVisible = true;
+            }
+        },
+        //关闭弹窗的时候清除数据
+        closeDialog(type) {
+            if(type === 'case'){
+                this.caseVisible = false;
+            }else{
+                this.propertyVisible = false;
+            }
+        },
+        searchEmit(){
+            this.getCaseList2(this.searchForm);
+        },
+        handleCaseData(){
+            this.$emit("handle-case-data", this.multipleSelection);
+            this.closeDialog("case");
+        },
+        
+        handleWayData() {
+            this.$emit("handle-way-data", this.dispose);
+            this.closeDialog("way");
         }
-    },
-    showModal(type,data) {
-      console.log(data);
-      if(type === 'case'){
-          this.caseVisible = true;
-          this.getCaseList2({});
-      }else{
-          this.propertyVisible = true;
-      }
-      this.selectedData = data;
-    //   this.toggleSelection(data);
-    },
-    //关闭弹窗的时候清除数据
-    closeDialog(type) {
-        if(type === 'case'){
-            this.caseVisible = false;
-        }else{
-            this.propertyVisible = false;
-        }
-    },
-    searchEmit(){
-      this.getCaseList2(this.searchForm);
-    },
-    handleCaseData(){
-        this.$emit("handle-case-data", this.multipleSelection);
-        this.closeDialog("case");
-    },
-    
-    handleWayData() {
-        this.$emit("handle-way-data", this.dispose);
-        this.closeDialog("way");
-    }
 
-  },
-  mounted() { }
+    },
+    mounted() { }
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>

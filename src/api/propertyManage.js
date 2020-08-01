@@ -86,3 +86,16 @@ export function dispose(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//查看非未立案的列表
+export function findCaseListApi(data) {
+  console.log(data);
+  return request({
+    url: "/case/doc/caseBasicInfo/queryCaseBasicInfoPageByOrgan",
+    method: "get",
+    showloading: true,
+    params:data,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

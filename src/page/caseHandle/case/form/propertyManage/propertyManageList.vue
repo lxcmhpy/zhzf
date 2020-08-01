@@ -91,8 +91,8 @@
     </div>
   </div>
     <el-row>
-      <el-button type="primary" size="medium" @click="handleDialog('case')">案件关联</el-button>
-      <el-button type="primary" size="medium" @click="handleDialog('property')">财物处理</el-button>
+      <el-button type="primary" size="medium" @click="handleDialog('case')" :disabled="moreColum">案件关联/解绑</el-button>
+      <el-button type="primary" size="medium" @click="handleDialog('property')" :disabled="moreColum">财物处理</el-button>
     </el-row>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @selection-change="handleSelectionChange">
@@ -181,6 +181,7 @@ export default {
       multipleSelection:[],
       caseIds:[],
       propertyIds:[],
+      moreColum:false
     };
   },
   mixins:[mixinGetCaseApiList],
@@ -195,7 +196,7 @@ export default {
             this.$message({type: "warning",message:"请选择涉案财物记录"});
             return;
         }
-        this.$refs.dialog.showModal(type,{});
+        this.$refs.dialog.showModal(type,this.multipleSelection);
     },
     async handleCaseData(data){
         debugger;
@@ -231,9 +232,22 @@ export default {
         this.$message({type: "success",message:"操作成功!"});
         this.getDataList({});
     },
-    handleSelectionChange(val) {
+    handleSelectionChange(val) { //多选
+      if(val.length > 1){
+        this.moreColum = true;
+        this.$message({type: "warning",message:"请选择一条记录操作!"});
+        return
+      }
+      this.moreColum = false;
       this.multipleSelection = val;
     },
+    //单选
+    /* handleCurrentChange(val) {
+      debugger;
+      let data = [];
+      data.push(val);
+      this.multipleSelection = data;
+    }, */
     //获取已归档的数据
     getDataList(searchData) {
         let data = searchData;
@@ -277,3 +291,4 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss">
 </style>
+

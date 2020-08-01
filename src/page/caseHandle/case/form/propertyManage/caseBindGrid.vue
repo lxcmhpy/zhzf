@@ -24,7 +24,7 @@
                 </el-table-column>
                 <el-table-column prop="op" label="操作" align="center" width="150">
                     <template slot-scope="scope">
-                        <el-button type="text" @click="onDetail(scope.row.id)" size="mini">详情</el-button>&nbsp;
+                        <el-button type="text" @click="onDetail(scope.row)" size="mini">详情</el-button>&nbsp;
                         <el-button type="text" @click="onDelete(scope.row,scope.$index)" size="mini">解绑</el-button>
                     </template>
                 </el-table-column>
@@ -85,18 +85,32 @@ export default {
     },
     methods: {
         handleDialog(type) {
-            this.$refs.dialog.showModal(
-            "case",
-            {}
-            );
+            this.$refs.dialog.showModal("case",this.caseData);
         },
         handleCaseData(data){
             debugger;
             console.log("绑定案件信息:"+data);
             this.caseData = this.caseData.concat(data);
         },
-        onDetail (id) {
-            // this.files.splice(i, 1);
+        //跳转案件详情
+        onDetail(row) {
+            if (row.caseStatus === '已移送') {
+                let message = '该案件正在移送中，移送完成后才可与继续办理'
+                this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
+            }
+            else {
+                this.$store.commit("setCaseId", row.id);
+                //设置案件状态不为审批中
+                this.$store.commit("setCaseApproval", false);
+                this.$router.push({
+                    name: "case_handle_caseInfo",
+                    params: {
+                        caseInfo: row
+                    }
+                });
+                let setCaseNumber = row.caseNumber != '' ? row.caseNumber : row.tempNo;
+                this.$store.commit("setCaseNumber", setCaseNumber);
+            }
         },
 
         async onDelete (row,i) {
