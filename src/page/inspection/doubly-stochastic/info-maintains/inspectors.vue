@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="tablePart">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
           <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
-      <publicInspectors @freshFlag='freshFlag'></publicInspectors>
+      <publicInspectors :freshFlag='freshFlag'></publicInspectors>
     </div>
 
   </div>
@@ -114,7 +114,7 @@ export default {
       zcList: [],
       workStatusList: [],
       options: [],
-      freshFlag: true,
+      freshFlag: 1,
     }
   },
   methods: {
@@ -150,7 +150,6 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     exportMethod() { },
@@ -168,18 +167,33 @@ export default {
     },
     copyMethod() {
       // 走公开人员的添加接口
-      console.log(this.multipleSelection)
-      this.$emit("freshFlag", !this.freshFlag);
-      addMorePublicPersonApi(this.multipleSelection).then(
-        res => {
-          if (res.code == 200) {
-            this.$message({ type: "success", message: res.msg });
-          }
-        },
-        error => {
-          // reject(error);
-        })
-    }
+      let _this = this
+      if (this.multipleSelection.length > 0) {
+        addMorePublicPersonApi(this.multipleSelection).then(
+          res => {
+            if (res.code == 200) {
+              _this.freshFlag += JSON.parse(JSON.stringify(_this.freshFlag))
+              _this.toggleSelection()
+              _this.$message({ type: "success", message: res.msg });
+            }
+          },
+          error => {
+            // reject(error);
+          })
+      } else {
+        this.$message({ type: "warning", message: '请选择至少一条数据' });
+      }
+    },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+
   },
   mounted() {
     this.getTableData()

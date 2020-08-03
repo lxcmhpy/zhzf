@@ -24,7 +24,7 @@
           </div>
           <div class="item">
             <el-form-item label="关联案件案号">
-              <el-input v-model="searchForm.caseNumber"></el-input>
+              <el-input v-model="searchForm.csaseNo"></el-input>
             </el-form-item>
           </div>
           
@@ -42,8 +42,8 @@
             <div class="item">
                 <el-form-item label="处理方式">
                     <el-select
-                        v-model="searchForm.handleWay"
-                        placeholder="请选择"
+                        v-model="searchForm.disposeWay"
+                        placeholder="请选择" clearable
                     >
                         <el-option
                         v-for="(item,index) in handleWayList"
@@ -73,7 +73,7 @@
           <div class="item">
             <el-form-item label="剩余期限">
                 <el-select
-                v-model="searchForm.storagePeriod"
+                v-model="searchForm.period"
                 placeholder="请选择"
               >
                 <el-option
@@ -91,8 +91,8 @@
     </div>
   </div>
     <el-row>
-      <el-button type="primary" size="medium" @click="handleDialog('case')">案件关联/解除</el-button>
-      <el-button type="primary" size="medium" @click="handleDialog('property')">财物处理</el-button>
+      <el-button type="primary" size="medium" @click="handleDialog('case')" :disabled="moreColum">案件关联/解绑</el-button>
+      <el-button type="primary" size="medium" @click="handleDialog('property')" :disabled="moreColum">财物处理</el-button>
     </el-row>
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @selection-change="handleSelectionChange">
@@ -106,7 +106,17 @@
         </el-table-column>
         <el-table-column prop="propertyName" label="财务名称" align="center"></el-table-column>
         <el-table-column prop="propertyNum" label="财务数量/单位" align="center"></el-table-column>
-        <el-table-column prop="caseNo" label="关联案件案号" align="center"></el-table-column>
+        <el-table-column prop="caseNumber" label="关联案件案号" align="center" width="180">
+            <template slot-scope="scope">
+                <el-popover v-if=" scope.row.caseID.length > 0 "
+                  placement="left"
+                  width="200"
+                  trigger="hover">
+                    <el-row v-for="(item,index) in scope.row.caseNumber" :key="index" style="padding:5px;">{{(index+1) + " : " +item}}</el-row>
+                    <el-button type="text" slot="reference">{{scope.row.caseNumber[0]}}...</el-button>
+                </el-popover>
+            </template>
+        </el-table-column>
         <el-table-column prop="propertyBelonger" label="财物归属人/单位" align="center"></el-table-column>
         <el-table-column prop="saveUnit" label="保管单位" align="center"></el-table-column>
         <el-table-column prop="saveWay" label="保管方式" align="center"></el-table-column>
@@ -134,7 +144,7 @@
 
   </div>
 
-  <propertyDialog ref="dialog" @handle-case-data="handleCaseData"></propertyDialog>
+  <propertyDialog ref="dialog" @handle-case-data="handleCaseData" @handle-way-data="handleWayData"></propertyDialog>
 </div>
 </template>
 <script>
@@ -143,7 +153,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import propertyDialog from "./propertyDialog.vue";
-import {queryProperty,deletePropertyById} from "@/api/propertyManage";
+import {queryProperty,deletePropertyById,dispose,addCase} from "@/api/propertyManage";
 
 export default {
   components: {
@@ -168,7 +178,10 @@ export default {
       hideSomeSearch: true,
       handleWayList:["封存","扣押","退回当事人","移交法院","销毁","其他"],
       syqxList:[30,90,180,360],
-      multipleSelection:[]
+      multipleSelection:[],
+      caseIds:[],
+      propertyIds:[],
+      moreColum:false
     };
   },
   mixins:[mixinGetCaseApiList],
@@ -179,18 +192,62 @@ export default {
       })
     },
     handleDialog(type) {
-        this.$refs.dialog.showModal(
-          type,
-          {}
-          );
+        if(this.multipleSelection.length < 1){
+            this.$message({type: "warning",message:"请选择涉案财物记录"});
+            return;
+        }
+        this.$refs.dialog.showModal(type,this.multipleSelection);
     },
-    handleCaseData(data){
+    async handleCaseData(data){
         debugger;
-        console.log("绑定案件信息:"+data);
+        this.caseIds = [];
+        this.propertyIds = [];
+        let that = this;
+        data.forEach(item => {
+          that.caseIds.push(item.id);
+        });
+        this.multipleSelection.forEach(item => {
+          that.propertyIds.push(item.id);
+        });
+        let param = {
+          caseId:that.caseIds.join(),
+          propertyId:that.propertyIds.join(),
+        }
+        let res = await addCase(param);
+        this.$message({type: "success",message:"操作成功!"});
+        this.getDataList({});
     },
-    handleSelectionChange(val) {
+    async handleWayData(data){
+        debugger;
+        this.propertyIds = [];
+        let that = this;
+        this.multipleSelection.forEach(item => {
+          that.propertyIds.push(item.id);
+        });
+        data.ids = that.propertyIds.join();
+        data.disposePersonId = iLocalStroage.gets("userInfo").id;
+        data.disposePersonName = iLocalStroage.gets("userInfo").nickName;
+        
+        let res = await dispose(data);
+        this.$message({type: "success",message:"操作成功!"});
+        this.getDataList({});
+    },
+    handleSelectionChange(val) { //多选
+      if(val.length > 1){
+        this.moreColum = true;
+        this.$message({type: "warning",message:"请选择一条记录操作!"});
+        return
+      }
+      this.moreColum = false;
       this.multipleSelection = val;
     },
+    //单选
+    /* handleCurrentChange(val) {
+      debugger;
+      let data = [];
+      data.push(val);
+      this.multipleSelection = data;
+    }, */
     //获取已归档的数据
     getDataList(searchData) {
         let data = searchData;
@@ -199,7 +256,7 @@ export default {
         let _this = this;
         queryProperty(data).then(
               res => {
-                  _this.totalPage = res.data.total;
+                  _this.total = res.data.total;
                   debugger
                   _this.tableData = res.data.records;
               },
@@ -234,3 +291,4 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss">
 </style>
+

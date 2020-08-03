@@ -14,6 +14,9 @@ export default {
     },
     info() {
       return this.config.info
+    },
+    option() {
+      return this.config.option
     }
   },
   methods: {
@@ -34,14 +37,18 @@ export default {
             <span>{this.title}</span>
             <span class="goBack" on-click={this.handleGoBack}>返回</span>
           </header>
-          <p class="contantInfo">地址：宁夏回族自治区固原市原州区六盘山西路与六盘山东路交叉路口往西南约50米(利民小区西北侧约50米)</p>
-          <p class="contantInfo">联系人：曾新富</p>
-          <p class="contantInfo">联系方式：13717000000</p>
+          <p class="contantInfo">地址：{this.info.address}</p>
+          <p class="contantInfo">联系人：{this.info.contactor}</p>
+          <p class="contantInfo">联系方式：{this.info.telephone}</p>
           <div class="peopleTitle">
             <img src="/static/images/img/lawSupervise/icon_duiwu.png" />
             <span>人员在线情况</span>
           </div>
-          <div class="peopleOnline"></div>
+          <div class="peopleOnline">
+            {this._l(this.option, item => {
+              return <div class="circleName">{item.nickName}</div>
+            })}
+          </div>
         </div>
       )
     }
@@ -91,7 +98,7 @@ export default {
     .contantInfo {
       padding: 15px;
       box-sizing: border-box;
-      line-height: 40px;
+      line-height: 20px;
       color: #7b7b7b;
       font-size: 14px;
     }
@@ -108,7 +115,22 @@ export default {
       }
     }
     .peopleOnline {
-
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      .circleName {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 50%;
+        background:#00adb5;
+        color: #fff;
+        font-weight: 400;
+        font-size: 12px;
+        margin: 14px 0 0 14px;
+        cursor: pointer;
+      }
     }
   }
 }

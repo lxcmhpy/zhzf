@@ -7,32 +7,14 @@
     <section class="file-upload-grid">
         <el-card class="box-card u-my-card" shadow="naver">
             <div slot="header" class="clearfix">
-                <!-- <span>附件信息</span>
-                <el-tooltip content="添加">
-                    <el-button size="mini" @click="onShowAddDialog" icon="el-icon-ex-add" style="float:right;"></el-button>
-                </el-tooltip> -->
                 <span>{{title}}</span>
-                <div v-if="inputShow" class="u-file-button" style="float:right;">
+                <div v-if="inputShow && !isDetail" class="u-file-button" style="float:right;">
                     <el-button type="primary" size="small" class="u-button-mini">添加</el-button>
                     <input type="file" multiple
                            v-bind:accept="acceptType"
                            v-on:change="onFileChange"/>
                 </div>
             </div>
-            <!-- <el-table :data="table.data" border style="width:100%;border:0px;" show-summary :summary-method="summaryMethod">
-                <el-table-column type="index" label="#" width="60" align="center"></el-table-column>
-                <el-table-column prop="fkzhmc" label="转出账户"></el-table-column>
-                <el-table-column prop="skzhmc" label="转入账户"></el-table-column>
-                <el-table-column prop="zzje" label="划转金额"></el-table-column>
-                <el-table-column prop="bz" label="备注" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="op" label="操作" align="center" width="100">
-                    <template slot-scope="scope">
-                        <el-tooltip :enterable="false" content="删除">
-                            <el-button @click="onDelete(scope.$index)" size="mini" icon="el-icon-ex-close" class="u-button-mini"></el-button>
-                        </el-tooltip>
-                    </template>
-                </el-table-column>
-            </el-table> -->
             <el-table :data="files" stripe style="width: 100%" highlight-current-row  height="100%">
                 <el-table-column type="index" width="55"> </el-table-column>
                 <el-table-column prop="accName" label="附件名称" align="center"></el-table-column>
@@ -57,27 +39,16 @@
             <video v-if="dialogPreviewType === '音视频' " width="100%" controls>
                 <source :src="dialogPreviewUrl" type="video/mp4" />
             </video>
-            <object v-if="dialogPreviewType === '其他附件' ">
+            <object v-if="dialogPreviewType === 'PDF' ">
               <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPreviewUrl" type="application/pdf" internalinstanceid="29">
             </object>
+            <span>该文件暂不支持预览</span>
         </el-dialog>
-        <!-- <el-dialog
-          :visible.sync="dialogPDFVisible"
-          width="1000px"
-          height="1000px"
-          append-to-body
-          >
-          <object>
-              <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPDFUrl" type="application/pdf" internalinstanceid="29">
-          </object>
-        </el-dialog> -->
-
     </section>
 </template>
 <!-- 模型  -->
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import util from "@/common/js/util.js";
 import {upload,findFileByIdApi,deleteFileByIdApi} from "@/api/upload";
 export default {
     props:{
@@ -87,10 +58,15 @@ export default {
         files: {
             required: true
         },
+        isDetail: {
+            type: Boolean,
+            default: false
+        },
         acceptType:{
             type: String,
             default: ""
         }
+        
     },
     data:function () {
         return {
@@ -116,6 +92,7 @@ export default {
             var files = input.files;
             let nickname = iLocalStroage.gets("userInfo").nickName;
             let userId = iLocalStroage.gets("userInfo").id;
+            debugger;
             var fs = [];
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -126,7 +103,7 @@ export default {
                     accType: this.getType(file),
                     accPersonName:nickname,
                     accPersonId:userId,
-                    accUpTime: '2020-07-30 12:23:03',
+                    accUpTime: (new Date()).format("yyyy-MM-dd HH:mm:ss"),
                     file: file
                 });
             }
@@ -134,7 +111,7 @@ export default {
             for (var i = 0; i < fs.length; i++) {
                 this.files.push(fs[i]);
             }
-            this.saveFiles();
+            this.saveFiles(fs);
 
             this.inputShow = false;
             var that = this;
@@ -150,14 +127,16 @@ export default {
                 fType = '图片'
             }else if(fileType == 'video' || fileType == 'radio'){
                 fType = '音视频'
+            }else if(fileType == 'pdf'){
+                fType = 'PDF'
             }else{
                 fType = '其他附件'
             }
             return fType;
         },
-        saveFiles(){
-            for (var i = 0; i < this.files.length; i++) {
-                var param = this.files[i];
+        saveFiles(fs){
+            for (var i = 0; i < fs.length; i++) {
+                var param = fs[i];
                 
                 this.saveFile(param)
             }
@@ -180,7 +159,7 @@ export default {
                     });
                     let file = _this.files.find(item => item.id === param.id);
                     file.accUrl = res.data[0].storageId;
-                    file.url = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId;
+                    // file.url = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId;
                 },
                 error => {
                     console.log(error)
@@ -209,14 +188,10 @@ export default {
         },
 
         previewFile(file) {
-            this.dialogPreviewType = file.evType;
-            this.dialogPreviewUrl = file.url;
+            this.dialogPreviewType = file.accType;
+            this.dialogPreviewUrl = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+file.accUrl;
             this.dialogPreviewVisible = true;
         },
-
-        // getFiles () {
-        //     return $util.clone(this.storageIds, true);
-        // },
 
     }
 }

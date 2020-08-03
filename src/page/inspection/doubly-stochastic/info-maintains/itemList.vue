@@ -24,8 +24,17 @@
     <div class="handlePart">
       <div class="search" style="width:100%">
         <el-form :inline="true">
-          <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
+          <el-form-item label="任务领域" prop='checkDomain'>
+            <el-select v-model="searchForm.checkDomain" placeholder="请选择" @change="searchTableData('searchForm')">
+              <el-option label="省交通运输厅领域" value="省交通运输厅领域"></el-option>
+              <el-option label="省市场监管领域" value="省市场监管领域"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="searchForm.checkDomain=='省交通运输厅领域'">
+            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod1">新增</el-button>
+          </el-form-item>
+          <el-form-item v-if="searchForm.checkDomain=='省市场监管领域'">
+            <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod2">新增</el-button>
           </el-form-item>
           <!-- <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-delete-solid" @click="delMethod">删除</el-button>
@@ -35,7 +44,11 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
+              <!-- <el-link href="./static/excel/事项清单模板.xlsx">
+                <el-button type="primary" size="medium" icon="el-icon-plus">模板下载</el-button>
+              </el-link> -->
+              <a class="el-button el-button--primary el-button--medium" href="./static/excel/事项清单模板.xlsx" download="事项清单模板.xlsx">Excel模板导出</a>
+              <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
@@ -56,7 +69,8 @@
         <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
+            <el-button v-if="searchForm.checkDomain=='省交通运输厅领域'" @click="editMethod(scope.row)" type="text">修改</el-button>
+            <el-button v-if="searchForm.checkDomain=='省市场监管领域'" @click="editMethod2(scope.row)" type="text">修改</el-button>
             <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -102,6 +116,72 @@
         <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog :title='dialogStatus2+"市场领域检查事项"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
+      <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="抽查类别" prop="checkType">
+              <el-select v-model="addForm2.checkType" placeholder="请选择">
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="抽查事项" prop="checkSubject">
+              <el-select v-model="addForm2.checkItem" placeholder="请选择">
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="事项类别" prop="itemType">
+              <el-select v-model="addForm2.itemType" placeholder="请选择">
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="检查对象" prop="checkObject">
+              <el-input type="text" v-model="addForm2.checkObject"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="检查方式" prop="checkMode">
+              <el-select v-model="addForm2.checkMode" placeholder="请选择">
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="检查主体" prop="checkSubject">
+              <el-select v-model="addForm2.checkSubject" placeholder="请选择">
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="抽查依据" prop="checkBasis">
+          <el-input type="textarea" v-model="addForm2.checkBasis"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" v-model="addForm2.remark"></el-input>
+        </el-form-item>
+        <el-form-item prop="status">
+          <el-radio-group v-model="addForm2.status">
+            <el-radio label="启用"></el-radio>
+            <el-radio label="停用"></el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm2('addForm2')">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -115,10 +195,12 @@ export default {
       multipleSelection: [],
       searchForm: {
         checkSubject: '',
-        checkItem: ''
+        checkItem: '',
+        checkDomain: '省交通运输厅领域'
       },
       isShow: false,
       dialogFormVisible: false,
+      dialogFormVisible2: false,
       addForm: {
         checkSubject: '',
         checkMode: '',
@@ -127,9 +209,29 @@ export default {
         status: '',
         checkContent: ''
       },
+      addForm2: {
+        checkSubject: '',
+        checkMode: '',
+        checkBasis: '',
+        checkItem: '',
+        status: '',
+        checkContent: ''
+      },
       dialogStatus: '',
+      dialogStatus2: '',
       formLabelWidth: '100px',
       rules: {
+        pass: [
+          { required: true, trigger: 'blur' }
+        ],
+        checkPass: [
+          { required: true, trigger: 'blur' }
+        ],
+        age: [
+          { required: true, trigger: 'blur' }
+        ]
+      },
+      rules2: {
         pass: [
           { required: true, trigger: 'blur' }
         ],
@@ -149,6 +251,7 @@ export default {
       let data = {
         checkItem: this.searchForm.checkItem,
         checkSubject: this.searchForm.checkSubject,
+        checkDomain: this.searchForm.checkDomain,
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -161,7 +264,7 @@ export default {
       //   error => {
       //     // reject(error);
       //   })
-this.getPageList("getAllRandomItem", data);
+      this.getPageList("getAllRandomItem", data);
     },
     // 选择数据
     handleSelectionChange(val) {
@@ -200,8 +303,50 @@ this.getPageList("getAllRandomItem", data);
         }
       });
     },
+    submitForm2(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          addItemListApi(this.addForm).then(
+            res => {
+              console.log(res)
+              if (res.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: res.msg
+                });
+                this.dialogFormVisible2 = false
+                this.currentPage = 1;
+                this.getTableData()
+              }
+            },
+            error => {
+              // reject(error);
+            })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
     delMethod(id) {
       this.deleteById("delRandomItem", id);
+    },
+    // 添加-弹窗
+    addMethod1() {
+      this.addForm.checkDomain = this.searchForm.checkDomain
+      this.addMethod()
+    },
+    // 添加-弹窗
+    addMethod2() {
+      this.addForm.checkDomain = this.searchForm.checkDomain
+      this.dialogStatus2 = '新增'
+      this.dialogFormVisible2 = true
+    },
+    // 修改
+    editMethod2(row) {
+      this.addForm2 = JSON.parse(JSON.stringify(row))
+      this.dialogStatus2 = '修改'
+      this.dialogFormVisible2 = true
     },
   },
   mounted() {
