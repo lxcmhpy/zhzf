@@ -231,6 +231,7 @@ export default {
                     savePropertyInvolved(_this.form).then(
                         res => {
                             _this.$message({type: "success",message:"保存成功!"});
+                            _this.$store.dispatch("deleteTabs", _this.$route.name);
                             _this.$router.push(({ name: 'case_handle_viewProperty',params: {id:res.data}}));
                         },
                         err => {

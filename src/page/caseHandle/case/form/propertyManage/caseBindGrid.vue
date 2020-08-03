@@ -29,16 +29,6 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- <el-table :data="table.data" border style="width:100%;border:0px;" show-summary :summary-method="summaryMethod">
-                
-                <el-table-column prop="op" label="操作" align="center" width="100">
-                    <template slot-scope="scope">
-                        <el-tooltip :enterable="false" content="删除">
-                            <el-button @click="onDelete(scope.$index)" size="mini" icon="el-icon-ex-close" class="u-button-mini"></el-button>
-                        </el-tooltip>
-                    </template>
-                </el-table-column>
-            </el-table> -->
         </el-card>
 
         
