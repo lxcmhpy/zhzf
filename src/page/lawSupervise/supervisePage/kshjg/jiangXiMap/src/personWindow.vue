@@ -2,6 +2,7 @@
   <div class="personWindow">
     <header class="personWindow-header">
       {{config.title}}
+      <span class="personGoBack" @click="handlePersonGoBack">返回</span>
     </header>
     <div class="personWindow-info">
       <p>机构名称：{{config.info.organName}}</p>
@@ -19,6 +20,14 @@ export default {
         return {}
       }
     }
+  },
+  methods: {
+    /**
+     * 点击返回
+     */
+    handlePersonGoBack() {
+      this.$emit('handlePersonGoBack')
+    }
   }
 }
 </script>
@@ -35,13 +44,19 @@ export default {
   &-header {
     background: #00adb5;
     height: 46px;
-    line-height: 46px;
     font-size: 14px;
     font-weight: 400;
     color: #ffffff;
     font-family: Helvetica,Arial,sans-serif;
     box-sizing: border-box;
-    padding-left: 15px;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .personGoBack {
+      font-size: 13px;
+      cursor: pointer;
+    }
   }
   &-info {
     box-sizing: border-box;
