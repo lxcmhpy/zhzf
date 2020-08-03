@@ -109,7 +109,7 @@ export default {
           image: {
             type: 'icon',
             image: {
-              imageSrc: '/static/images/img/lawSupervise/map_jigou.png',
+              imageSrc: data.imgUrl || '',
               imageAnchor: [0.5, 1]
             }
           }
@@ -118,7 +118,7 @@ export default {
           image: {
             type: 'icon',
             image: {
-              imageSrc: '/static/images/img/lawSupervise/map_jigou.png',
+              imageSrc: data.imgUrl || '',
               imageAnchor: [0.5, 1]
             }
           }

@@ -28,6 +28,13 @@ export default {
     },
 
     /**
+     * 人员在线头像
+     */
+    handlePerson(node) {
+      this.$emit("handlePerson", node)
+    },
+
+    /**
      * 信息弹框生成函数
      */
     renderInfo() {
@@ -46,7 +53,7 @@ export default {
           </div>
           <div class="peopleOnline">
             {this._l(this.option, item => {
-              return <div class="circleName">{item.nickName}</div>
+              return <div on-click={() => {this.handlePerson(item)}} class="circleName">{item.nickName}</div>
             })}
           </div>
         </div>
