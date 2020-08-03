@@ -43,7 +43,9 @@
               <!-- <el-button type="primary" size="medium" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" @click="importModle">导入Excel</el-button>
+              <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="importModle">
+                <el-button type="primary" size="medium">导入Excel</el-button>
+              </el-upload>
             </el-form-item>
             <el-form-item>
               <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
@@ -263,7 +265,7 @@
   </div>
 </template>
 <script>
-import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi } from "@/api/inspection";
+import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi, importPersonExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -301,15 +303,9 @@ export default {
       dialogStatus: '',
       formLabelWidth: '125px',
       rules: {
-        pass: [
+        personName: [
           { required: true, trigger: 'blur' }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
-        ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
       },
       optionsZGQK: [],
       optionsMZ: [],
@@ -380,6 +376,21 @@ export default {
     },
     delMethod(id) {
       this.deleteById("delPerson", id);
+    },
+    // 导入
+    importModle(param) {
+      console.log(param);
+      // let currentFileId = this.currentFileId
+      var fd = new FormData()
+      fd.append("file", param.file);
+      importPersonExcelApi(fd).then(res => {
+        if (res.code === 200) {
+          this.$message({ type: "success", message: res.msg });
+          this.currentPage = 1;
+          this.getTableData()
+        }
+      }
+      );
     },
     getDrawerList(data) {
       let _this = this

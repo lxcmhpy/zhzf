@@ -6,6 +6,9 @@
             <el-card class="box-card" shadow="never">
                 <div slot="header" class="clearfix">
                     <span>基本信息</span>
+                    <router-link :to="{ name: 'case_handle_addProperty', params: { id: form.propertyInvolved.id }}">
+                        <el-button type="primary" size="mini" icon="el-icon-edit" style="float:right;">编辑</el-button>
+                    </router-link>
                 </div>
                 <div>
                     <el-row>
@@ -69,7 +72,8 @@
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="保管期限">
-                              {{form.propertyInvolved.storagePeriod}}
+                              {{form.propertyInvolved.storagePeriod}}天
+                              &nbsp;(剩余天数：{{form.propertyInvolved.storageDump}}天)
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -184,4 +188,9 @@ export default {
 .deliver{
     height: 15px
 }
+.el-card__header{
+    height: 50px;
+    line-height: 36px;
+    padding: 9px 20px;
+  }
 </style>

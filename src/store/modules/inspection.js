@@ -1,5 +1,8 @@
 // 行政检查
-import { delRandomObjectApi, delExpertApi, delRandomItemApi, delPersonApi ,delTaskApi,getAllTaskApi,getAllExpertApi,getAllRandomObjectApi,getAllRandomItemApi,getAllPublicPersonApi} from "@/api/inspection";
+import {
+    delRandomObjectApi, delExpertApi, delRandomItemApi, delPersonApi, delTaskApi, getAllTaskApi, getAllExpertApi, getAllRandomObjectApi, getAllRandomItemApi,
+    getAllPublicPersonApi,
+} from "@/api/inspection";
 
 const inspection = {
     state: {
