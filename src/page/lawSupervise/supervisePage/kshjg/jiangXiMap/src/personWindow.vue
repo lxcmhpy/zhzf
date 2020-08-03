@@ -7,6 +7,11 @@
     <div class="personWindow-info">
       <p>机构名称：{{config.info.organName}}</p>
       <p v-if="config.info.mobile">联系方式：{{config.info.mobile}}</p>
+      <div class="btns">
+        <div class="btnsBox" v-for="(item,index) of btnList" :key="index">
+          <i :class="item.class" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +24,17 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  data() {
+    return {
+      btnList: [
+        { class: 'el-icon-phone blueC3' },
+        { class: 'iconfont law-shipin greenC3' },
+        { class: 'iconfont law-jiankong' },
+        { class: 'iconfont law-msg-box' },
+        { class: 'iconfont law-xianlu' }
+      ]
     }
   },
   methods: {
@@ -39,7 +55,7 @@ export default {
   top: 70px;
   left: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  height: 263px;
+  // height: 263px;
   background: #FFFFFF;
   &-header {
     background: #00adb5;
@@ -65,6 +81,22 @@ export default {
     font-size: 14px;
     p {
       line-height: 30px;
+    }
+    .btns {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 10px;
+      .btnsBox {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        background: #EEEEEE;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        margin-right: 10px;
+      }
     }
   }
 }
