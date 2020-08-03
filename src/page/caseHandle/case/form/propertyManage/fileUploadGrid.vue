@@ -17,7 +17,12 @@
             </div>
             <el-table :data="files" stripe style="width: 100%" highlight-current-row  height="100%">
                 <el-table-column type="index" width="55"> </el-table-column>
-                <el-table-column prop="accName" label="附件名称" align="center"></el-table-column>
+                <el-table-column prop="accName" label="附件名称" align="center">
+                    <template slot-scope="scope">
+                        <el-input v-model="scope.row.accName" v-if="!isDetail"></el-input>
+                        <span v-else>{{scope.row.accName}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="accType" label="类型" align="center"></el-table-column>
                 <el-table-column prop="accUpTime" label="上传日期" align="center"></el-table-column>
                 <el-table-column prop="accPersonName" label="上传人" align="center"></el-table-column>
@@ -41,7 +46,7 @@
             <object v-if="dialogPreviewType === 'PDF' ">
               <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPreviewUrl" type="application/pdf" internalinstanceid="29">
             </object>
-            <span>该文件暂不支持预览</span>
+            <span v-else>该文件暂不支持预览</span>
         </el-dialog>
     </section>
 </template>

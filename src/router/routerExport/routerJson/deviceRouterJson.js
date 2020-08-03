@@ -7,5 +7,21 @@ export default  [
           title: "装备类型管理"
         },
         component: () => import("@/page/device/device-type/deviceTypeManagment.vue")
+    },
+    {
+        path: "/deviceInventoryManage",
+        name: "deviceInventoryManage",
+        meta: {
+          title: "库存管理"
+        },
+        component: () => import("@/page/device/device-inventory/deviceInventoryManage.vue")
+    },
+    {
+        path: "/deviceUserdBillManage",
+        name: "deviceUserdBillManage",
+        meta: {
+          title: "配发(领用)管理"
+        },
+        component: () => import("@/page/device/device-bill/deviceUserdBillManage.vue")
     }
 ]

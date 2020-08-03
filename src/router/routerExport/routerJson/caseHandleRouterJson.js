@@ -712,7 +712,7 @@ export default [
     name: "case_handle_addProperty",
     path: "/addProperty/:id",
     meta: {
-      title: "财务登记"
+      title: "财物登记"
     },
     component: () => import("@/page/caseHandle/case/form/propertyManage/propertyForm.vue")
   },

@@ -4,21 +4,10 @@ let vm = new Vue();
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
 
-//查询装备类型管理树
-export function queryDeviceTypeTree() {
+//查询装备库存管理单
+export function queryDeviceBill(data) {
     return request({
-        url: "/device/type/allTree",
-        method: "get",
-        showloading: true,
-        loadingType:'loadPart',
-        baseUrlType:  'DEVICE_HOST',
-        cancelToken: setCancelSource()
-    });
-}
-//查询装备类型管理
-export function queryDeviceType(data) {
-    return request({
-        url: "/device/type/list",
+        url: "/device/bill/list",
         method: "get",
         params: data,
         showloading: true,
@@ -27,10 +16,10 @@ export function queryDeviceType(data) {
         cancelToken: setCancelSource()
     });
 }
-//保存装备类型管理
-export function saveOrUpdateDeviceType (data) {
+//保存装备库存管理单
+export function saveOrUpdateDeviceBill (data) {
     return request({
-        url: "/device/type/saveOrUpdate",
+        url: "/device/bill/saveOrUpdate",
         method: "post",
         showloading: true,
         loadingType:'loadPart',
@@ -39,10 +28,10 @@ export function saveOrUpdateDeviceType (data) {
         cancelToken: setCancelSource()
     })
 }
-//根据ID查询装备类型管理
-export function findDeviceTypeById (id) {
+//根据ID查询装备库存管理单
+export function findDeviceBillById (id) {
     return request({
-        url: "/device/type/findById/" +id,
+        url: "/device/bill/findById/" +id,
         method: "get",
         showloading: true,
         loadingType:'loadPart',
@@ -50,10 +39,10 @@ export function findDeviceTypeById (id) {
         cancelToken: setCancelSource()
     });
 }
-//删除装备类型管理
-export function deleteDeviceTypeById(id) {
+//删除装备库存管理单
+export function deleteDeviceBillById(id) {
     return request({
-        url: "/device/type/deleteById/" +id,
+        url: "/device/bill/deleteById/" +id,
         method: "get",
         showloading: true,
         loadingType:'loadPart',
