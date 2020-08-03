@@ -11,16 +11,16 @@
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="财务名称" prop="propertyInvolvedForm.propertyName">
-                                <el-input v-model="form.propertyInvolvedForm.propertyName"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.propertyName" maxlength="40"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-col :span="18">
+                            <el-col :span="16">
                                 <el-form-item label="财务数量" prop="propertyInvolvedForm.propertyNum">
-                                    <el-input v-model="form.propertyInvolvedForm.propertyNum" placeholder="请输入" ></el-input>
+                                    <el-input-number v-model="form.propertyInvolvedForm.propertyNum" placeholder="请输入数字" :controls="false"></el-input-number>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="6">
+                            <el-col :span="8">
                                 <el-form-item label-width="0" prop="propertyInvolvedForm.propertyNumUnit">
                                     <el-select v-model="form.propertyInvolvedForm.propertyNumUnit" placeholder="单位" 
                                     @focus="getUnits('涉案财物-单位','unitOptions')"
@@ -39,48 +39,48 @@
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="财物归属人/单位" prop="propertyInvolvedForm.propertyBelonger">
-                                <el-input v-model="form.propertyInvolvedForm.propertyBelonger"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.propertyBelonger"  maxlength="40"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="财物状态">
-                                <el-input v-model="form.propertyInvolvedForm.propertyState"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.propertyState"  maxlength="20"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="保管单位" prop="propertyInvolvedForm.saveUnit">
-                                <el-input v-model="form.propertyInvolvedForm.saveUnit"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.saveUnit"  maxlength="40"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="保管人员">
-                                <el-input v-model="form.propertyInvolvedForm.savePerson"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.savePerson"  maxlength="20"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="16">
                             <el-form-item label="保存地点">
-                                <el-input v-model="form.propertyInvolvedForm.savePlace"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.savePlace"  maxlength="40"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="保管方式">
-                                <el-input v-model="form.propertyInvolvedForm.saveWay"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.saveWay"  maxlength="20"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="登记时间">
-                                <el-date-picker v-model="form.propertyInvolvedForm.registrationTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%"></el-date-picker>
+                                <el-date-picker v-model="form.propertyInvolvedForm.registrationTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%" disabled></el-date-picker>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="登记人">
-                                <el-input v-model="form.propertyInvolvedForm.registrant"></el-input>
+                                <el-input v-model="form.propertyInvolvedForm.registrant" disabled></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -99,14 +99,14 @@
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="财物描述">
-                                <el-input type="textarea" v-model="form.propertyInvolvedForm.propertyDescribe"></el-input>
+                                <el-input type="textarea" v-model="form.propertyInvolvedForm.propertyDescribe"  maxlength="200"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="备注">
-                                <el-input type="textarea" v-model="form.propertyInvolvedForm.remarks"></el-input>
+                                <el-input type="textarea" v-model="form.propertyInvolvedForm.remarks"  maxlength="100"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -177,7 +177,7 @@ export default {
                     propertyState:"",
                     registrationTime:(new Date()).format("yyyy-MM-dd HH:mm:ss"),
                     propertyNum:"",
-                    saveUnit:"",
+                    saveUnit:iLocalStroage.gets("userInfo").organName,
                     registrant:iLocalStroage.gets("userInfo").nickName,
                     propertyBelonger:"",
                     savePerson:"",
