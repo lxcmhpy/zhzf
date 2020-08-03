@@ -267,8 +267,8 @@ export default {
         let _this = this
         this.$store.dispatch("hasOrganName", this.addOrganForm.name).then(
         res => {
-          console.log(res);
-          if(res.data.id){
+          console.log(res.data);
+          if(res.data){
             _this.errorOrganName = true;
           }else{
             _this.errorOrganName = false;

@@ -292,7 +292,7 @@ export default {
     //删除机构
     deleteOrgan(id) {
         let _this = this
-      this.$confirm("确认删除该机构?", "提示", {
+      this.$confirm("删除机构将清空机构下所有用户,确认删除该机构吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"

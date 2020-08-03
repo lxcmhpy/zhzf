@@ -109,7 +109,7 @@
                   prop="withPartyRelation"
                   :rules="fieldRules('withPartyRelation',propertyFeatures['withPartyRelation'])"
                 >
-                  <el-checkbox-group :max="1" v-model="docData.withPartyRelation">
+                  <el-checkbox-group @change="choosePeo" :max="1" v-model="docData.withPartyRelation">
                     <el-checkbox label="1">本人</el-checkbox>
                     <el-checkbox label="2">代理人</el-checkbox>
                     <el-checkbox label="3">其他代收人</el-checkbox>
@@ -120,7 +120,12 @@
             <tr>
               <td>证件类型</td>
               <td class="color_DBE4EF">
-                <el-form-item
+                <el-form-item prop="certificateType" :rules="fieldRules('certificateType',propertyFeatures['certificateType'],'',isParty)">
+                  <el-select ref="certificateType" v-model="docData.certificateType" :disabled="!isParty || fieldDisabled(propertyFeatures['certificateType'])">
+                    <el-option v-for="item in credentialType" :key="item.id" :label="item.value" :value="item.id"></el-option>
+                  </el-select>
+                </el-form-item>
+                <!-- <el-form-item
                   prop="certificateType"
                   :rules="fieldRules('certificateType',propertyFeatures['certificateType'])"
                 >
@@ -134,8 +139,7 @@
                     placeholder="\"
                     :disabled="fieldDisabled(propertyFeatures['certificateType'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
-                </el-form-item>
+                </el-form-item> -->
               </td>
               <td>证件号码</td>
               <td colspan="5" class="color_DBE4EF">
@@ -388,7 +392,6 @@
         @saveData="saveData"
         @backHuanjie="submitData"
       ></casePageFloatBtns>
-      <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
     </div>
   </div>
 </template>
@@ -433,6 +436,8 @@ export default {
         caseNumber: "",
         caseName: "",
         party: "",
+        partyIdNo: "",
+        partyIdType: "",
         receiver: "",
         isAcceptElDel: [],
         withPartyRelation: [], 
@@ -495,7 +500,11 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       handleType: "", // 0 暂存  1  提交
-      options: [],
+      //证件类型
+      credentialType: [
+        {id: "0", value: "身份证"},
+        {id: "1", value: "护照"}
+      ],
       nameLength: 23,
       adressLength: 23,
       maxLength: 23,
@@ -580,13 +589,14 @@ export default {
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    // 多行编辑
-    overFlowEdit() {
-      // this.$refs.overflowInputRef.showModal(0, "");
-    },
-    // 获取多行编辑内容
-    getOverFloeEditInfo(edit) {
-      this.docData.illegalFactsEvidence = edit;
+    choosePeo(){
+      if(this.docData.withPartyRelation[0] == '1'){
+        this.docData.certificateNumber = this.docData.partyIdNo;
+        this.docData.certificateType = this.docData.partyIdType;
+      }else{
+        this.docData.certificateNumber = "";
+        this.docData.certificateType = "";
+      }
     },
     //设置案件来源
     getDataAfter() {
