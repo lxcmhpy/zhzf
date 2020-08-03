@@ -41,7 +41,7 @@
                 <el-table-column prop="accPersonName" label="上传人" align="center"></el-table-column>
                 <el-table-column prop="op" label="操作" align="center" width="120">
                     <template slot-scope="scope">
-                        <el-tooltip content="预览" placement="top" v-if="scope.row.accType === '图片'">
+                        <el-tooltip content="预览" placement="top">
                             <el-button type="text" @click="previewFile(scope.row)">预览</el-button>
                         </el-tooltip>
                         <el-tooltip content="删除" placement="top">
@@ -57,9 +57,10 @@
             <video v-if="dialogPreviewType === '音视频' " width="100%" controls>
                 <source :src="dialogPreviewUrl" type="video/mp4" />
             </video>
-            <!-- <object v-if="dialogPreviewType === '其他附件' ">
+            <object v-if="dialogPreviewType === 'PDF' ">
               <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPreviewUrl" type="application/pdf" internalinstanceid="29">
-            </object> -->
+            </object>
+            <span>该文件暂不支持预览</span>
         </el-dialog>
         <!-- <el-dialog
           :visible.sync="dialogPDFVisible"
@@ -155,6 +156,8 @@ export default {
                 fType = '图片'
             }else if(fileType == 'video' || fileType == 'radio'){
                 fType = '音视频'
+            }else if(fileType == 'pdf'){
+                fType = 'PDF'
             }else{
                 fType = '其他附件'
             }
