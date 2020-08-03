@@ -17,18 +17,22 @@
             </div>
             <el-table :data="files" stripe style="width: 100%" highlight-current-row  height="100%">
                 <el-table-column type="index" width="55"> </el-table-column>
-                <el-table-column prop="accName" label="附件名称" align="center"></el-table-column>
+                <el-table-column prop="accName" label="附件名称" align="center">
+                    <template slot-scope="scope">
+                        <el-input v-model="scope.row.accName" v-if="!isDetail"></el-input>
+                        <span v-else>{{scope.row.accName}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="accType" label="类型" align="center"></el-table-column>
                 <el-table-column prop="accUpTime" label="上传日期" align="center"></el-table-column>
                 <el-table-column prop="accPersonName" label="上传人" align="center"></el-table-column>
                 <el-table-column prop="op" label="操作" align="center" width="120">
                     <template slot-scope="scope">
-                        <el-tooltip content="预览" placement="top">
-                            <el-button type="text" @click="previewFile(scope.row)">预览</el-button>
-                        </el-tooltip>
-                        <el-tooltip content="删除" placement="top">
-                            <el-button type="text" @click="removeFile(scope.row,scope.$index)">删除</el-button>
-                        </el-tooltip>
+                        <el-button type="text" @click="previewFile(scope.row)">预览</el-button>
+                        <el-button v-if="!isDetail" type="text" @click="removeFile(scope.row,scope.$index)">删除</el-button>
+                        <el-link v-else target="_blank" :href="host+scope.row.accUrl" :underline="false" style="margin-left:10px">
+                            <el-button type="text">下载</el-button>
+                        </el-link>
                     </template>
                 </el-table-column>
             </el-table>
@@ -42,7 +46,7 @@
             <object v-if="dialogPreviewType === 'PDF' ">
               <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPreviewUrl" type="application/pdf" internalinstanceid="29">
             </object>
-            <span>该文件暂不支持预览</span>
+            <span v-else>该文件暂不支持预览</span>
         </el-dialog>
     </section>
 </template>
@@ -74,7 +78,8 @@ export default {
             storageIds:[],
             dialogPreviewType:"",
             dialogPreviewUrl:false,
-            dialogPreviewVisible:false
+            dialogPreviewVisible:false,
+            host:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST
         };
     },
     computed: {
@@ -153,7 +158,7 @@ export default {
             upload(fd).then(
                 res => {
                     _this.storageIds.push({
-                        url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
+                        url:_this.host+'/'+res.data[0].storageId,
                         storageId:res.data[0].storageId,
                         name:res.data[0].fileName
                     });
@@ -189,7 +194,7 @@ export default {
 
         previewFile(file) {
             this.dialogPreviewType = file.accType;
-            this.dialogPreviewUrl = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+file.accUrl;
+            this.dialogPreviewUrl = this.host+'/'+file.accUrl;
             this.dialogPreviewVisible = true;
         },
 

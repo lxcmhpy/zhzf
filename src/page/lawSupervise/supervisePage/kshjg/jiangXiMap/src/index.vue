@@ -12,19 +12,14 @@
       <component
         :is="showComp"
         :class="showComp==='JkMapTree'?'jiangXiMap-tree':null"
-        :config="showComp==='JkMapTree'?treeData:windowData"
+        :config="showComp==='JkMapTree'?treeData:showComp==='MapWinDow'?windowData:personData"
         @handleNodeClick="handleNodeClick"
         @handleButton="handleButton"
         @handleGoBack="handleGoBack"
+        @handlePerson="handlePerson"
+        @handlePersonGoBack="() => {showComp='JkMapTree'}"
       />
     </keep-alive>
-    <!-- <JkMapTree
-      class="jiangXiMap-tree"
-      :config="treeData"
-      @handleNodeClick="handleNodeClick"
-      @handleButton="handleButton"
-    />
-    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" /> -->
   </div>
 </template>
 
@@ -32,13 +27,15 @@
 import JkControlsMap from "@/components/jk-controlsMap";
 import JkMapTree from "@/components/jk-mapTree";
 import MapWinDow from "./mapWindow.vue";
+import PersonWindow from "./personWindow.vue";
 import store from "../store.js"
 export default {
   mixins: [store],
   components: {
     JkControlsMap,
     JkMapTree,
-    MapWinDow
+    MapWinDow,
+    PersonWindow
   },
   data() {
     return {
@@ -47,6 +44,10 @@ export default {
       map: null,
       zoom: 8,
       center: [12118909.300259633, 4086043.1061670054],
+      personData: {
+        title: '',
+        info: {}
+      },
       windowData: {
         title: "",
         info: {},
@@ -72,6 +73,7 @@ export default {
             {
               title: "西安市",
               imgUrl: "/static/images/img/lawSupervise/area.png",
+              value: "xian",
               options: [
                 {
                   value: 'xian',
@@ -86,7 +88,7 @@ export default {
                   }]
                 },
                 {
-                  value: 'quanguo',
+                  value: ' ',
                   label: '全国',
                 }
               ]
@@ -94,46 +96,13 @@ export default {
             {
               title: "图层",
               imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
-                  children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
-                  }]
-                },
-                {
-                  value: 'quanguo',
-                  label: '全国',
-                }
-              ]
+              value: "coverage",
+              options: []
             },
             {
               title: "全屏",
               imgUrl: "/static/images/img/lawSupervise/qp.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
-                  children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
-                  }]
-                },
-                {
-                  value: 'quanguo',
-                  label: '全国',
-                }
-              ]
+              value: "fullScreen"
             }
           ]
         }
@@ -207,6 +176,19 @@ export default {
       } else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
         this.getLoad(data)
       } else {
+        // 添加点位图标
+        data.parentLabel === "执法人员" ?
+          data.imgUrl = "/static/images/img/lawSupervise/map_renyuan.png"
+          : data.parentLabel === "执法车辆" ?
+          data.imgUrl = "/static/images/img/lawSupervise/map_jingche.png"
+          : data.imgUrl = "/static/images/img/lawSupervise/map_cbo.png"
+        // 显示弹出框
+        this.personData.title = data.label
+        this.personData.info = {
+          organName: data.organName || '',
+          mobile: data.mobile || ''
+        }
+        this.showComp = "PersonWindow"
         // 如果有点位，则打点，否则抛出异常
         if(data.propertyValue) {
           let latLng = data.propertyValue.split(',')
@@ -247,6 +229,13 @@ export default {
      */
     handleButton(data) {
       console.log(data)
+    },
+
+    /**
+     * 点击人员在线情况头像
+     */
+    handlePerson(node) {
+      this.personClick(node)
     }
   },
   created() {

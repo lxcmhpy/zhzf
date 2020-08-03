@@ -5,25 +5,25 @@
     <div class="handlePart caseHandleSearchPart">
     <div>
        <router-link :to="{ name: 'case_handle_addProperty', params: { id: 'add' }}">
-          <el-button type="primary" size="medium" icon="el-icon-plus">财务登记</el-button>
+          <el-button type="primary" size="medium" icon="el-icon-plus">财物登记</el-button>
        </router-link>
     </div>
     <div>
-      <el-form :model="searchForm" ref="searchForm" class="caseSearchForm" label-width="110px">
+      <el-form :model="searchForm" ref="searchForm" class="caseSearchForm" label-width="80px">
         <div>
           <div class="item">
-            <el-form-item label="财务编号">
+            <el-form-item label="财物编号">
               <el-input v-model="searchForm.propertyNo"></el-input>
             </el-form-item>
           </div>
 
           <div class="item">
-            <el-form-item label="财务名称">
+            <el-form-item label="财物名称">
               <el-input v-model="searchForm.propertyName"></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="关联案件案号">
+            <el-form-item label="关联案件案号" label-width="110px">
               <el-input v-model="searchForm.csaseNo"></el-input>
             </el-form-item>
           </div>
@@ -54,14 +54,14 @@
                     </el-select>
                 </el-form-item>
             </div>
-            <div class="item">
-                <el-form-item label="归属人/单位">
-                    <el-input v-model="searchForm.propertyBelonger"></el-input>
-                </el-form-item>
-            </div>
             <div class="item" >
                 <el-form-item label="保管单位">
                     <el-input v-model="searchForm.saveUnit"></el-input>
+                </el-form-item>
+            </div>
+            <div class="item">
+                <el-form-item label="归属人/单位" label-width="110px">
+                    <el-input v-model="searchForm.propertyBelonger"></el-input>
                 </el-form-item>
             </div>
             <div class="item" >
@@ -97,15 +97,19 @@
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column prop="propertyNo" label="财务编号" align="center">
+        <el-table-column prop="propertyNo" label="财物编号" align="center">
           <template slot-scope="scope">
             <router-link :to="{ name: 'case_handle_viewProperty', params: { id: scope.row.id }}">
               <el-button type="text" >{{scope.row.propertyNo}}</el-button>
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="propertyName" label="财务名称" align="center"></el-table-column>
-        <el-table-column prop="propertyNum" label="财务数量/单位" align="center"></el-table-column>
+        <el-table-column prop="propertyName" label="财物名称" align="center"></el-table-column>
+        <el-table-column prop="propertyNum" label="财物数量/单位" align="center">
+            <template slot-scope="scope">
+              {{scope.row.propertyNum + scope.row.propertyNumUnit}}
+            </template>
+        </el-table-column>
         <el-table-column prop="caseNumber" label="关联案件案号" align="center" width="180">
             <template slot-scope="scope">
                 <el-popover v-if=" scope.row.caseID.length > 0 "
@@ -121,13 +125,19 @@
         <el-table-column prop="saveUnit" label="保管单位" align="center"></el-table-column>
         <el-table-column prop="saveWay" label="保管方式" align="center"></el-table-column>
         <el-table-column prop="storagePeriod" label="剩余期限" align="center"></el-table-column>
-        <el-table-column prop="op" label="操作" align="center" width="100">
+        <el-table-column prop="disposeWay" label="处理方式" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.propertyDispose">{{scope.row.propertyDispose.disposeWay}}</span>
+              <span v-else>无</span>
+            </template>
+        </el-table-column>
+        <!-- <el-table-column prop="op" label="操作" align="center" width="100">
           <template slot-scope="scope">
             <router-link :to="{ name: 'case_handle_addProperty', params: { id: scope.row.id }}">
               <el-button type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
             </router-link>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <div class="paginationBox"  v-if="tableData.length > 0">

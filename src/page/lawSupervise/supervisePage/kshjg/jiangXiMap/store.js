@@ -1,5 +1,5 @@
 import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise } from "@/api/lawSupervise.js";
-import { getOrganDetailApi } from "@/api/system.js";
+import { getOrganDetailApi, getOrganIdApi } from "@/api/system.js";
 export default {
   methods: {
     /**
@@ -34,6 +34,7 @@ export default {
       }).then(data => {
         node.children = data.map(item => {
           item.label = item.nickName
+          item.parentLabel = node.label
           return item
         })
       })
@@ -56,6 +57,7 @@ export default {
       }).then(data => {
         node.children = data.map(item => {
           item.label = item.vehicleNumber || item.shipNumber
+          item.parentLabel = node.label
           return item
         })
       })
@@ -68,6 +70,7 @@ export default {
       // 如果有点位，则打点，否则抛出异常
       if(node.propertyValue) {
         let latLng = node.propertyValue.split(',')
+        node.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
         this.page.addPoint(node, latLng)
       } else {
         throw new Error("handleNodeClick(data):::::::::没有坐标")
@@ -110,6 +113,23 @@ export default {
         this.windowData.option = data
         this.showComp = "MapWinDow"
       })
+    },
+
+    /**
+     * 获取人员在线情况
+     */
+    personClick (node) {
+      // 地图打点
+      let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
+      node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
+      this.page.addPoint(node, latLng)
+      // 显示弹出框
+      this.personData.title = node.nickName
+      this.personData.info = {
+        organName: node.organName,
+        mobile: node.mobile
+      }
+      this.showComp = "PersonWindow"
     },
   }
 }
