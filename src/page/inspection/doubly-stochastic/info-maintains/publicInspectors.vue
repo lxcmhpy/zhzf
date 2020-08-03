@@ -39,7 +39,8 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <el-button type="primary" size="medium" @click="downloadModle">Excel模板导出</el-button>
+              <a class="el-button el-button--primary el-button--medium" href="./static/excel/检查人员模板.xlsx" download="检查人员模板.xlsx">Excel模板导出</a>
+              <!-- <el-button type="primary" size="medium" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" @click="importModle">导入Excel</el-button>
@@ -276,7 +277,7 @@ export default {
       },
       deep: true
     },
-   
+
   },
   data() {
     return {

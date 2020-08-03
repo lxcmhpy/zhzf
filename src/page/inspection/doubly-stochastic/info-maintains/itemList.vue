@@ -44,7 +44,11 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
+              <!-- <el-link href="./static/excel/事项清单模板.xlsx">
+                <el-button type="primary" size="medium" icon="el-icon-plus">模板下载</el-button>
+              </el-link> -->
+              <a class="el-button el-button--primary el-button--medium" href="./static/excel/事项清单模板.xlsx" download="事项清单模板.xlsx">Excel模板导出</a>
+              <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
