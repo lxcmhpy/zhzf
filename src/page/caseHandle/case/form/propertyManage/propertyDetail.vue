@@ -9,16 +9,18 @@
                     <router-link :to="{ name: 'case_handle_addProperty', params: { id: form.propertyInvolved.id }}">
                         <el-button type="primary" size="mini" icon="el-icon-edit" style="float:right;">编辑</el-button>
                     </router-link>
+                    <el-button type="primary" size="mini" @click="handleDialog('case')" style="float:right;margin-right:10px;">案件关联/解绑</el-button>
+                    <el-button type="primary" size="mini" @click="handleDialog('property')" style="float:right;margin-right:10px;">财物处理</el-button>
                 </div>
                 <div>
                     <el-row>
                         <el-col :span="16">
-                            <el-form-item label="财务名称" prop="propertyName">
+                            <el-form-item label="财物名称" prop="propertyName">
                                 {{form.propertyInvolved.propertyName}}
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="财务数量" prop="propertyNum">
+                            <el-form-item label="财物数量" prop="propertyNum">
                               {{form.propertyInvolved.propertyNum + form.propertyInvolved.propertyNumUnit}}
                             </el-form-item>
                         </el-col>
@@ -120,6 +122,8 @@
 
         </el-form>
         </div>
+
+        <propertyDialog ref="dialog" @handle-case-data="handleCaseData" @handle-way-data="handleWayData"></propertyDialog>
     </div>
 </template>
 
@@ -127,14 +131,16 @@
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
-import {findPropertyById} from "@/api/propertyManage";
+import {findPropertyById,dispose,addCase} from "@/api/propertyManage";
 import fileUploadGrid from "./fileUploadGrid.vue";
 import caseBindGrid from "./caseBindGrid.vue";
+import propertyDialog from "./propertyDialog.vue";
 
 export default {
     components:{
         fileUploadGrid,
-        caseBindGrid
+        caseBindGrid,
+        propertyDialog
     },
   data() {
     return {
@@ -165,6 +171,47 @@ export default {
     };
   },
   methods: {
+    handleDialog(type) {
+        let data = {};
+        if(type === 'case'){
+            let caseid = [];
+            let caseNumber = [];
+            this.form.cases.forEach(item =>{
+                caseid.push(item.id);
+                caseNumber.push(item.caseNumber);
+            })
+            data.caseID = caseid;
+            data.caseNumber = caseNumber;
+            data.id = this.form.propertyInvolved.id;
+        }
+        this.$refs.dialog.showModal(type,[data]);
+    },
+    async handleCaseData(data){
+        debugger;
+        this.caseIds = [];
+        let that = this;
+        data.forEach(item => {
+          that.caseIds.push(item.id);
+        });
+        let param = {
+          caseId:that.caseIds.join(),
+          propertyId:this.form.propertyInvolved.id,
+        }
+        let res = await addCase(param);
+        this.$message({type: "success",message:"操作成功!"});
+        this.getData(this.form.propertyInvolved.id);
+    },
+    async handleWayData(data){
+        debugger;
+        let that = this;
+        data.ids = this.form.propertyInvolved.id;
+        data.disposePersonId = iLocalStroage.gets("userInfo").id;
+        data.disposePersonName = iLocalStroage.gets("userInfo").nickName;
+        
+        let res = await dispose(data);
+        this.$message({type: "success",message:"操作成功!"});
+        this.getData(this.form.propertyInvolved.id);
+    },
 
     //获取已归档的数据
     async getData(id) {
