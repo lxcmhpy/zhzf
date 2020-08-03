@@ -90,7 +90,7 @@
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="其他">
-                                <el-input type="textarea" v-model="dispose.disposeRemark"></el-input>
+                                <el-input type="textarea" v-model="dispose.disposeRemark" maxlength="30"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>

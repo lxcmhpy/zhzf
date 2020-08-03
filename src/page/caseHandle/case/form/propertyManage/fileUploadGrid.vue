@@ -7,10 +7,6 @@
     <section class="file-upload-grid">
         <el-card class="box-card u-my-card" shadow="naver">
             <div slot="header" class="clearfix">
-                <!-- <span>附件信息</span>
-                <el-tooltip content="添加">
-                    <el-button size="mini" @click="onShowAddDialog" icon="el-icon-ex-add" style="float:right;"></el-button>
-                </el-tooltip> -->
                 <span>{{title}}</span>
                 <div v-if="inputShow && !isDetail" class="u-file-button" style="float:right;">
                     <el-button type="primary" size="small" class="u-button-mini">添加</el-button>
@@ -19,20 +15,6 @@
                            v-on:change="onFileChange"/>
                 </div>
             </div>
-            <!-- <el-table :data="table.data" border style="width:100%;border:0px;" show-summary :summary-method="summaryMethod">
-                <el-table-column type="index" label="#" width="60" align="center"></el-table-column>
-                <el-table-column prop="fkzhmc" label="转出账户"></el-table-column>
-                <el-table-column prop="skzhmc" label="转入账户"></el-table-column>
-                <el-table-column prop="zzje" label="划转金额"></el-table-column>
-                <el-table-column prop="bz" label="备注" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="op" label="操作" align="center" width="100">
-                    <template slot-scope="scope">
-                        <el-tooltip :enterable="false" content="删除">
-                            <el-button @click="onDelete(scope.$index)" size="mini" icon="el-icon-ex-close" class="u-button-mini"></el-button>
-                        </el-tooltip>
-                    </template>
-                </el-table-column>
-            </el-table> -->
             <el-table :data="files" stripe style="width: 100%" highlight-current-row  height="100%">
                 <el-table-column type="index" width="55"> </el-table-column>
                 <el-table-column prop="accName" label="附件名称" align="center"></el-table-column>
@@ -41,7 +23,7 @@
                 <el-table-column prop="accPersonName" label="上传人" align="center"></el-table-column>
                 <el-table-column prop="op" label="操作" align="center" width="120">
                     <template slot-scope="scope">
-                        <el-tooltip content="预览" placement="top" v-if="scope.row.accType === '图片'">
+                        <el-tooltip content="预览" placement="top">
                             <el-button type="text" @click="previewFile(scope.row)">预览</el-button>
                         </el-tooltip>
                         <el-tooltip content="删除" placement="top">
@@ -57,21 +39,11 @@
             <video v-if="dialogPreviewType === '音视频' " width="100%" controls>
                 <source :src="dialogPreviewUrl" type="video/mp4" />
             </video>
-            <!-- <object v-if="dialogPreviewType === '其他附件' ">
+            <object v-if="dialogPreviewType === 'PDF' ">
               <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPreviewUrl" type="application/pdf" internalinstanceid="29">
-            </object> -->
+            </object>
+            <span>该文件暂不支持预览</span>
         </el-dialog>
-        <!-- <el-dialog
-          :visible.sync="dialogPDFVisible"
-          width="1000px"
-          height="1000px"
-          append-to-body
-          >
-          <object>
-              <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1000px" name="plugin" id="plugin" :src="dialogPDFUrl" type="application/pdf" internalinstanceid="29">
-          </object>
-        </el-dialog> -->
-
     </section>
 </template>
 <!-- 模型  -->
@@ -155,6 +127,8 @@ export default {
                 fType = '图片'
             }else if(fileType == 'video' || fileType == 'radio'){
                 fType = '音视频'
+            }else if(fileType == 'pdf'){
+                fType = 'PDF'
             }else{
                 fType = '其他附件'
             }
@@ -218,10 +192,6 @@ export default {
             this.dialogPreviewUrl = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+file.accUrl;
             this.dialogPreviewVisible = true;
         },
-
-        // getFiles () {
-        //     return $util.clone(this.storageIds, true);
-        // },
 
     }
 }
