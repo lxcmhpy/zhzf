@@ -44,14 +44,12 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <!-- <el-link href="./static/excel/事项清单模板.xlsx">
-                <el-button type="primary" size="medium" icon="el-icon-plus">模板下载</el-button>
-              </el-link> -->
               <a class="el-button el-button--primary el-button--medium" href="./static/excel/事项清单模板.xlsx" download="事项清单模板.xlsx">Excel模板导出</a>
-              <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
+              <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="importModle">
+                <el-button type="primary" size="medium">导入Excel</el-button>
+              </el-upload>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
@@ -60,13 +58,31 @@
         </el-form>
       </div>
     </div>
-    <div class="tablePart">
+    <div class="tablePart"  v-if="searchForm.checkDomain=='省交通运输厅领域'">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="checkItem" label="抽查事项名称" align="center"></el-table-column>
         <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
         <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
         <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
         <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button v-if="searchForm.checkDomain=='省交通运输厅领域'" @click="editMethod(scope.row)" type="text">修改</el-button>
+            <el-button v-if="searchForm.checkDomain=='省市场监管领域'" @click="editMethod2(scope.row)" type="text">修改</el-button>
+            <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="tablePart"  v-if="searchForm.checkDomain=='省市场监管领域'">
+      <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+        <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
+        <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
+        <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
+        <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
+        <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column>
+        <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
+        <el-table-column prop="checkBasis" label="检查依据" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button v-if="searchForm.checkDomain=='省交通运输厅领域'" @click="editMethod(scope.row)" type="text">修改</el-button>
@@ -91,7 +107,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="抽查方式" prop="checkMode">
-              <el-input v-model="addForm.checkMode"></el-input>
+              <el-select v-model="addForm.checkMode" placeholder="请选择">
+                <el-option v-for="item in optionsCCFS" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -122,14 +140,14 @@
           <el-col :span="12">
             <el-form-item label="抽查类别" prop="checkType">
               <el-select v-model="addForm2.checkType" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="抽查事项" prop="checkSubject">
               <el-select v-model="addForm2.checkItem" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -138,7 +156,7 @@
           <el-col :span="12">
             <el-form-item label="事项类别" prop="itemType">
               <el-select v-model="addForm2.itemType" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsSXLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -152,7 +170,7 @@
           <el-col :span="12">
             <el-form-item label="检查方式" prop="checkMode">
               <el-select v-model="addForm2.checkMode" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCFS" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -185,7 +203,7 @@
   </div>
 </template>
 <script>
-import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, delRandomItemApi } from "@/api/inspection";
+import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, delRandomItemApi,importItemExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -243,6 +261,10 @@ export default {
         ]
       },
       optionsCCZT: [],
+      optionsCCFS: [],
+      optionsSXLB: [],
+      optionsCCLB: [],
+      optionsCCSX: [],
     }
   },
   methods: {
@@ -275,7 +297,6 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName) {
@@ -348,9 +369,51 @@ export default {
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
     },
+     // 导入
+    importModle(param) {
+      console.log(param);
+      // let currentFileId = this.currentFileId
+      var fd = new FormData()
+      fd.append("file", param.file);
+      importItemExcelApi(fd).then(res => {
+        if (res.code === 200) {
+          this.$message({ type: "success", message: res.msg });
+          this.currentPage = 1;
+          this.getTableData()
+        }
+      }
+      );
+    },
+    getDrawerList(data) {
+      let _this = this
+      data.forEach(element => {
+        getDictListDetailByNameApi(element.name).then(
+          res => {
+            switch (element.option) {
+              case 1: _this.optionsSXLB = res.data; break;//事项类别
+              case 2: _this.optionsCCFS = res.data; break;//抽查方式
+              case 3: _this.optionsCCZT = res.data; break;//抽查主体
+              case 4: _this.optionsCCLB = res.data; break;//抽查类别
+              case 5: _this.optionsCCSX = res.data; break;//抽查事项
+            }
+          },
+
+          error => {
+            // reject(error);
+          })
+      });
+
+    },
   },
   mounted() {
     this.getTableData()
+    // 获取抽屉
+    this.getDrawerList([{ name: '事项类别', option: 1 },
+    { name: '抽查方式', option: 2 },
+    { name: '抽查主体', option: 3 },
+    { name: '抽查类别', option: 4 },
+    { name: '抽查事项', option: 5 },
+    ])
   }
 }
 </script>

@@ -39,7 +39,9 @@
               <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
+              <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="importModle">
+                <el-button type="primary" size="medium">导入Excel</el-button>
+              </el-upload>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
@@ -145,7 +147,7 @@
   </div>
 </template>
 <script>
-import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode } from "@/api/inspection";
+import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode ,importObjectExcelApi} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -307,7 +309,22 @@ export default {
     },
     handleChange(value) {
       console.log(value);
-    }
+    },
+     // 导入
+    importModle(param) {
+      console.log(param);
+      // let currentFileId = this.currentFileId
+      var fd = new FormData()
+      fd.append("file", param.file);
+      importObjectExcelApi(fd).then(res => {
+        if (res.code === 200) {
+          this.$message({ type: "success", message: res.msg });
+          this.currentPage = 1;
+          this.getTableData()
+        }
+      }
+      );
+    },
   },
   mounted() {
     this.getTableData()

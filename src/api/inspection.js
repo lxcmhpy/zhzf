@@ -428,7 +428,7 @@ export function getAllPublicPersonApi(data) {
 // 根据UUID删除检查对象表数据
 export function delPersonApi(data) {
     return request({
-        url: "/xzjc/randomPerson/myRemoveById/"+data,
+        url: "/xzjc/randomPerson/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
@@ -490,7 +490,7 @@ export function addExpertApi(data) {
 // 根据UUID删除检查专家表数据
 export function delExpertApi(data) {
     return request({
-        url: "/xzjc/randomExpert/myRemoveById/"+data,
+        url: "/xzjc/randomExpert/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
@@ -512,7 +512,7 @@ export function getAllRandomObjectApi(data) {
 // 根据UUID删除检查对象表数据
 export function delRandomObjectApi(data) {
     return request({
-        url: "/xzjc/randomObject/myRemoveById/"+data,
+        url: "/xzjc/randomObject/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
@@ -547,7 +547,7 @@ export function getAllRandomItemApi(data) {
 // 根据UUID删除事项清单表数据
 export function delRandomItemApi(data) {
     return request({
-        url: "/xzjc/randomItem/myRemoveById/"+data,
+        url: "/xzjc/randomItem/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
@@ -572,14 +572,14 @@ export function addItemListApi(data) {
 //获取字典详情  字典值
 export function getDictListDetailByNameApi(name) {
     return request({
-      url: "/system/sys/drawer/findAllDrawerByName/" + name,
-      method: "get",
-      showloading: false,
-      loadingType: name =='系统标题'||name =='loginBg' ? 'loadFull' : 'loadPart',
-      cancelToken: setCancelSource()
+        url: "/system/sys/drawer/findAllDrawerByName/" + name,
+        method: "get",
+        showloading: false,
+        loadingType: name == '系统标题' || name == 'loginBg' ? 'loadFull' : 'loadPart',
+        cancelToken: setCancelSource()
     });
-  }
-  // 分页查询检查任务表数据
+}
+// 分页查询检查任务表数据
 export function getAllTaskApi(data) {
     return request({
         url: "/xzjc/randomTask/queryRandomTask",
@@ -593,7 +593,7 @@ export function getAllTaskApi(data) {
 // 根据UUID删除检查任务表数据
 export function delTaskApi(data) {
     return request({
-        url: "/xzjc/randomTask/myRemoveById/"+data,
+        url: "/xzjc/randomTask/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
@@ -617,11 +617,77 @@ export function addTaskApi(data) {
 // 通过省级行政区划代码查询所有地市
 export function findByAddressCode(data) {
     return request({
-        url: "/xzjc/country/findByAddressCode/"+data,
+        url: "/xzjc/country/findByAddressCode/" + data,
         method: "get",
         params: data,
         showloading: true,
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
+    });
+}
+
+// 导入专家
+export function importExpertExcelApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+// 导入对象
+export function importObjectExcelApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+// 导入事项清单
+export function importItemExcelApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+// 导入人员
+export function importPersonExcelApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+// 导入任务
+export function importTaskExcelApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
     });
 }
