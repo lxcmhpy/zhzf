@@ -17,7 +17,7 @@
         @handleButton="handleButton"
         @handleGoBack="handleGoBack"
         @handlePerson="handlePerson"
-        @handlePersonGoBack="() => {showComp='MapWinDow'}"
+        @handlePersonGoBack="() => {showComp='JkMapTree'}"
       />
     </keep-alive>
     <!-- <JkMapTree
