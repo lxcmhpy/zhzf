@@ -37,23 +37,6 @@
             <el-form-item v-if="searchForm.taskArea=='省市场监管领域'">
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod2">新增</el-button>
             </el-form-item>
-            <!-- <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-delete-solid" @click="delMethod">删除</el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="medium" icon="iconfont law-edit" @click="editMethod">修改</el-button>
-          </el-form-item> -->
-            <div style="width:auto;float:right">
-              <el-form-item>
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
-              </el-form-item>
-            </div>
           </el-form>
         </div>
       </div>
@@ -61,7 +44,7 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
+          <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查主体" align="center" :formatter="sexFormat"></el-table-column>
           <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
@@ -76,8 +59,8 @@
           <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod(scope.row)" type="text">查看详情</el-button>
+              <el-button @click="editMethod1(scope.row)" type="text">修改</el-button>
+              <el-button @click="editMethod1(scope.row)" type="text">查看详情</el-button>
               <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -103,8 +86,8 @@
           <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod(scope.row)" type="text">查看详情</el-button>
+              <el-button @click="editMethod2(scope.row)" type="text">修改</el-button>
+              <el-button @click="editMethod2(scope.row)" type="text">查看详情</el-button>
               <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -235,8 +218,8 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="remark">
-            <el-date-picker v-model="addForm.remark" type="daterange" range-separator="至">
+          <el-form-item label="抽查时限" prop="timeList">
+            <el-date-picker v-model="addForm.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </el-form>
@@ -290,8 +273,8 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="检查对象" prop="checkItem">
-                <el-input v-model="addForm2.checkItem"></el-input>
+              <el-form-item label="检查对象" prop="checkObject">
+                <el-input v-model="addForm2.checkObject"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -357,8 +340,8 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="remark">
-            <el-date-picker v-model="addForm2.remark" type="daterange" range-separator="至">
+          <el-form-item label="抽查时限" prop="timeList">
+            <el-date-picker v-model="addForm2.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </el-form>
@@ -472,12 +455,18 @@ export default {
       this.getTableData()
     },
     submitForm(formName, type) {
-      this.addForm.taskArea = '省交通运输厅领域'
+      let data = JSON.parse(JSON.stringify(this.addForm))
+      data.taskArea = '省交通运输厅领域'
+      if (data.timeList) {
+        data.taskStartTime = data.timeList[0]
+        data.taskEndTime = data.timeList[1]
+      }
+      data.checkMode = data.checkMode ? data.checkMode.join(',') : ''
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.addForm.taskStatus = '保存'
-            addTaskApi(this.addForm).then(
+            data.taskStatus = '保存'
+            addTaskApi(data).then(
               res => {
                 console.log(res)
                 if (res.code == 200) {
@@ -520,13 +509,17 @@ export default {
 
     },
     submitForm2(formName, type) {
-      this.addForm.taskArea = '市场领域检查事项'
+      let data = JSON.parse(JSON.stringify(this.addForm2))
+      data.taskArea = '省市场监管领域'
+      if (data.timeList) {
+        data.taskStartTime = data.timeList[0]
+        data.taskEndTime = data.timeList[1]
+      }
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.addForm.taskStatus = '保存'
-
-            addTaskApi(this.addForm).then(
+            data.taskStatus = '保存'
+            addTaskApi(data).then(
               res => {
                 console.log(res)
                 if (res.code == 200) {
@@ -582,8 +575,23 @@ export default {
       this.dialogStatus2 = '新增'
       this.dialogFormVisible2 = true
     },
+    editMethod1(row) {
+      row.timeList = []
+      if (row.taskEndTime && row.taskStartTime) {
+        row.timeList[0] = row.taskStartTime
+        row.timeList[1] = row.taskEndTime
+      }
+      row.checkMode = row.checkMode?row.checkMode.split(','):''
+      this.editMethod(row)
+    },
     // 修改
     editMethod2(row) {
+      row.timeList = []
+      if (row.taskEndTime && row.taskStartTime) {
+        row.timeList[0] = row.taskStartTime
+        row.timeList[1] = row.taskEndTime
+      }
+      row.checkMode = row.checkMode?row.checkMode.split(','):''
       this.addForm2 = JSON.parse(JSON.stringify(row))
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true

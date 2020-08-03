@@ -156,8 +156,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="职级" prop="technicalTitle">
-              <el-select v-model="addForm.technicalTitle" placeholder="请选择">
+            <el-form-item label="职级" prop="userRank">
+              <el-select v-model="addForm.userRank" placeholder="请选择">
                 <el-option v-for="item in optionsZJ" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -250,12 +250,12 @@
         <el-form-item label="其他情况" prop="remark">
           <el-input type="textarea" v-model="addForm.remark"></el-input>
         </el-form-item>
-        <el-form-item prop="status">
+        <!-- <el-form-item prop="status">
           <el-radio-group v-model="addForm.status">
             <el-radio label="启用"></el-radio>
             <el-radio label="停用"></el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>

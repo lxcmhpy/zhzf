@@ -58,7 +58,7 @@
         </el-form>
       </div>
     </div>
-    <div class="tablePart"  v-if="searchForm.checkDomain=='省交通运输厅领域'">
+    <div class="tablePart" v-if="searchForm.checkDomain=='省交通运输厅领域'">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="checkItem" label="抽查事项名称" align="center"></el-table-column>
         <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
@@ -74,7 +74,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="tablePart"  v-if="searchForm.checkDomain=='省市场监管领域'">
+    <div class="tablePart" v-if="searchForm.checkDomain=='省市场监管领域'">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
         <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
@@ -203,7 +203,7 @@
   </div>
 </template>
 <script>
-import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, delRandomItemApi,importItemExcelApi } from "@/api/inspection";
+import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, delRandomItemApi, importItemExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -369,7 +369,7 @@ export default {
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
     },
-     // 导入
+    // 导入
     importModle(param) {
       console.log(param);
       // let currentFileId = this.currentFileId
@@ -383,6 +383,11 @@ export default {
         }
       }
       );
+    },
+    searchTableData() {
+      this.$forceUpdate();
+      this.currentPage = 1;
+      this.getTableData()
     },
     getDrawerList(data) {
       let _this = this

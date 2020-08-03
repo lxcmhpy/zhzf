@@ -178,8 +178,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="固定电话" prop="fixedTelephone">
-              <el-date-picker v-model="addForm.fixedTelephone" type="date" placeholder="选择日期">
-              </el-date-picker>
+              <el-input v-model="addForm.fixedTelephone"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -218,7 +217,7 @@
   </div>
 </template>
 <script>
-import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi,importPersonExcelApi } from "@/api/inspection";
+import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, importExpertExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -324,7 +323,7 @@ export default {
       // let currentFileId = this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);
-      importPersonExcelApi(fd).then(res => {
+      importExpertExcelApi(fd).then(res => {
         if (res.code === 200) {
           this.$message({ type: "success", message: res.msg });
           this.currentPage = 1;

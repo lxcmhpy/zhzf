@@ -400,6 +400,7 @@ export function getAllPersonApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()
     });
@@ -421,6 +422,7 @@ export function getAllPublicPersonApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -432,6 +434,7 @@ export function delPersonApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -470,6 +473,7 @@ export function getAllExpertApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -494,6 +498,7 @@ export function delExpertApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -504,7 +509,8 @@ export function getAllRandomObjectApi(data) {
         url: "/xzjc/randomObject/queryRandomObject",
         method: "get",
         params: data,
-        showloading: true,
+        // showloading: true,
+        // loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -516,6 +522,7 @@ export function delRandomObjectApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -551,6 +558,7 @@ export function delRandomItemApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -642,7 +650,7 @@ export function importExpertExcelApi(data) {
 // 导入对象
 export function importObjectExcelApi(data) {
     return request({
-        url: "/xzjc/randomExpert/excelImport",
+        url: "/xzjc/randomObject/excelImport",
         method: "POST",
         data: data,
         contentType: 'multipart/form-data;',
@@ -655,7 +663,7 @@ export function importObjectExcelApi(data) {
 // 导入事项清单
 export function importItemExcelApi(data) {
     return request({
-        url: "/xzjc/randomExpert/excelImport",
+        url: "/xzjc/randomItem/excelImport",
         method: "POST",
         data: data,
         contentType: 'multipart/form-data;',
@@ -668,7 +676,7 @@ export function importItemExcelApi(data) {
 // 导入人员
 export function importPersonExcelApi(data) {
     return request({
-        url: "/xzjc/randomExpert/excelImport",
+        url: "/xzjc/randomPerson/excelImport",
         method: "POST",
         data: data,
         contentType: 'multipart/form-data;',
