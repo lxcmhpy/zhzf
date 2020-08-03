@@ -85,7 +85,7 @@
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="保管期限">
-                                <el-select v-model="form.propertyInvolvedForm.storagePeriod" placeholder="请选择" style="width: 100%">
+                                <el-select v-model="form.propertyInvolvedForm.storagePeriod" placeholder="请选择" style="width: 85%">
                                     <el-option
                                     v-for="(item,index) in syqxList"
                                     :key="index"
@@ -93,6 +93,9 @@
                                     :value="item"
                                     ></el-option>
                                 </el-select>
+                                <el-tooltip content="温馨提示：若财物未关联案件，到期则自动删除" placement="top">
+                                    <el-button type="text" icon="el-icon-info"></el-button>
+                                </el-tooltip>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -140,7 +143,7 @@
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="其他">
-                                <el-input type="textarea" v-model="form.dispose.disposeRemark"></el-input>
+                                <el-input type="textarea" v-model="form.dispose.disposeRemark"  maxlength="30"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
