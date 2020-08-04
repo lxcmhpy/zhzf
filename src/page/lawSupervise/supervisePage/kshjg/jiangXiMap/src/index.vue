@@ -41,6 +41,12 @@ export default {
   },
   data() {
     return {
+      imgUrl: new Map([
+        [0, '/static/images/img/lawSupervise/map_renyuan.png'],
+        [1, '/static/images/img/lawSupervise/map_jigou.png'],
+        [2, '/static/images/img/lawSupervise/map_jingche.png'],
+        [3, '/static/images/img/lawSupervise/map_cbo.png']
+      ]), // 各类型所对应的点位图标
       showComp: "",
       page: null, // 地图组件的 this
       map: null,
@@ -183,11 +189,7 @@ export default {
         this.getLoad(data)
       } else {
         // 添加点位图标
-        data.parentLabel === "执法人员" ?
-          data.imgUrl = "/static/images/img/lawSupervise/map_renyuan.png"
-          : data.parentLabel === "执法车辆" ?
-          data.imgUrl = "/static/images/img/lawSupervise/map_jingche.png"
-          : data.imgUrl = "/static/images/img/lawSupervise/map_cbo.png"
+        data.imgUrl = this.imgUrl.get(data.type)
         // 显示弹出框
         this.personData.title = data.label
         this.personData.info = {

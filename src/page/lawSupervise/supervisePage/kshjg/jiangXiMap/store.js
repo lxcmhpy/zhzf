@@ -39,6 +39,7 @@ export default {
         }
       }).then(data => {
         node.children = data.map(item => {
+          item.type = node.type
           item.label = item.nickName
           item.parentLabel = node.label
           return item
@@ -67,6 +68,7 @@ export default {
         }
       }).then(data => {
         node.children = data.map(item => {
+          item.type = node.type
           item.label = item.vehicleNumber || item.shipNumber
           item.parentLabel = node.label
           return item
@@ -144,15 +146,15 @@ export default {
     },
 
     /**
-     * 图层下拉项的回调，获取执法人员所有点位
+     * 图层下拉项的回调，获取各下拉项的点位数据
      */
     handleCommand(type) {
-      console.log(type)
       let param = {
         organId: this.config.popoverData.organId,
         type: type
       }
-      if(type === 0) {
+      if(type != 4) {
+        console.log(type)
         getZfjgLawSupervise(param).then(res => {
           if(res.code === 200) {
             this.$message({
@@ -166,7 +168,7 @@ export default {
           }
         }).then(data => {
           // 添加点位图片
-          data.imgUrl = "/static/images/img/lawSupervise/map_renyuan.png"
+          data.imgUrl = this.imgUrl.get(type)
           this.page.addPoints(data)
         })
       }
