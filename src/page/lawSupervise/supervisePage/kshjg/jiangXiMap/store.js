@@ -13,6 +13,7 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
+        this.config.popoverData.organId = data[0].id
         this.treeData.option = this.addNode(data)
       })
     },
@@ -27,12 +28,18 @@ export default {
       }
       getOrganTree(param).then(res => {
         if(res.code === 200) {
+          this.$message({
+            message: '查询到'+res.data.length+'条数据',
+            type: 'success'
+          });
           return res.data
         } else {
+          this.$message.error('getOrganTree()::::::::接口数据错误');
           throw new Error("getOrganTree()::::::::接口数据错误")
         }
       }).then(data => {
         node.children = data.map(item => {
+          item.type = node.type
           item.label = item.nickName
           item.parentLabel = node.label
           return item
@@ -50,12 +57,18 @@ export default {
       }
       getZfjgLawSupervise(param).then(res => {
         if(res.code === 200) {
+          this.$message({
+            message: '查询到'+res.data.length+'条数据',
+            type: 'success'
+          });
           return res.data
         } else {
+          this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
           throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
         }
       }).then(data => {
         node.children = data.map(item => {
+          item.type = node.type
           item.label = item.vehicleNumber || item.shipNumber
           item.parentLabel = node.label
           return item
@@ -130,6 +143,35 @@ export default {
         mobile: node.mobile
       }
       this.showComp = "PersonWindow"
+    },
+
+    /**
+     * 图层下拉项的回调，获取各下拉项的点位数据
+     */
+    handleCommand(type) {
+      let param = {
+        organId: this.config.popoverData.organId,
+        type: type
+      }
+      if(type != 4) {
+        console.log(type)
+        getZfjgLawSupervise(param).then(res => {
+          if(res.code === 200) {
+            this.$message({
+              message: '查询到'+res.data.length+'条数据',
+              type: 'success'
+            });
+            return res.data
+          } else {
+            this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
+            throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
+          }
+        }).then(data => {
+          // 添加点位图片
+          data.imgUrl = this.imgUrl.get(type)
+          this.page.addPoints(data)
+        })
+      }
     },
   }
 }

@@ -20,7 +20,7 @@
         <p class="outline-title">{{selectCurrentTreeName}}</p>
         <div class="handelBtn">
           <div>子大纲列表</div>
-          <div v-if="!editable && currentNodeLevel === '1'">
+          <div v-if="handleLimit">
             <el-button @click="addOutline" icon="el-icon-plus" type="primary" size="small">新增大纲</el-button>
           </div>
         </div>
@@ -38,7 +38,7 @@
             <el-table-column prop="outlineName" label="大纲名称" align="center"></el-table-column>
             <el-table-column prop="createName" label="创建人" align="center"></el-table-column>
             <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
-            <el-table-column v-if="!editable && currentNodeLevel === '1'" fixed="right" label="操作" align="center">
+            <el-table-column v-if="handleLimit" fixed="right" label="操作" align="center">
               <template slot-scope="scope">
                 <el-button @click.stop @click="updateOutline(scope.row)" type="text">修改</el-button>
                 <el-button type="text" @click.stop @click="deleteOutline(scope.row.outlineId)">删除</el-button>
@@ -86,7 +86,7 @@ export default {
       systemType: "", //系统类型：部级还是省级
       tableLoading: false,
       treeLoading: false,
-      editable: false,
+      editable: true,
       currentNodeLevel: ''
     };
   },
@@ -96,6 +96,11 @@ export default {
     outlineList
   },
   inject: ["reload"],
+  computed:{
+    handleLimit(){
+      return !this.editable || (this.editable && this.currentNodeLevel === '1')
+    }
+  },
   created() {
     this.getSystemParams();
     this.getAllOutline("");
@@ -107,7 +112,6 @@ export default {
     },
     //点击树事件
     handleNodeClick(data) {
-      console.log(data);
       this.currentNodeLevel = data.topLevel;
       this.selectCurrentTreeName = data.outlineName;
       this.tableData = [];

@@ -5,6 +5,8 @@
       @handleChange="handleChange"
       @handleSearch="handleSearch"
       @handleShowSearch="handleShowSearch"
+      @handleCommand="handleCommand"
+      @handleClose="showComp = ''"
       :config="config"
       :center="center"
     />
@@ -39,6 +41,12 @@ export default {
   },
   data() {
     return {
+      imgUrl: new Map([
+        [0, '/static/images/img/lawSupervise/map_renyuan.png'],
+        [1, '/static/images/img/lawSupervise/map_jigou.png'],
+        [2, '/static/images/img/lawSupervise/map_jingche.png'],
+        [3, '/static/images/img/lawSupervise/map_cbo.png']
+      ]), // 各类型所对应的点位图标
       showComp: "",
       page: null, // 地图组件的 this
       map: null,
@@ -69,11 +77,11 @@ export default {
           ]
         },
         popoverData: {
+          organId: "",
           option: [
             {
               title: "西安市",
               imgUrl: "/static/images/img/lawSupervise/area.png",
-              value: "xian",
               options: [
                 {
                   value: 'xian',
@@ -96,13 +104,17 @@ export default {
             {
               title: "图层",
               imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
-              value: "coverage",
-              options: []
+              options: [
+                {name: '执法人员', type: 0},
+                {name: '执法机构', type: 1},
+                {name: '执法车辆', type: 2},
+                {name: '执法船舶', type: 3},
+                {name: '非现场站点', type: 4},
+              ]
             },
             {
               title: "全屏",
               imgUrl: "/static/images/img/lawSupervise/qp.png",
-              value: "fullScreen"
             }
           ]
         }
@@ -177,11 +189,7 @@ export default {
         this.getLoad(data)
       } else {
         // 添加点位图标
-        data.parentLabel === "执法人员" ?
-          data.imgUrl = "/static/images/img/lawSupervise/map_renyuan.png"
-          : data.parentLabel === "执法车辆" ?
-          data.imgUrl = "/static/images/img/lawSupervise/map_jingche.png"
-          : data.imgUrl = "/static/images/img/lawSupervise/map_cbo.png"
+        data.imgUrl = this.imgUrl.get(data.type)
         // 显示弹出框
         this.personData.title = data.label
         this.personData.info = {
@@ -206,6 +214,14 @@ export default {
       // 当前点位是路政局
       if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
         this.getTheOrganTree(data)
+      } else {
+        // 显示弹出框
+        this.personData.title = data.nickName
+        this.personData.info = {
+          organName: data.organName || '',
+          mobile: data.mobile || ''
+        }
+        this.showComp = "PersonWindow"
       }
       console.log(data)
     },
@@ -236,7 +252,7 @@ export default {
      */
     handlePerson(node) {
       this.personClick(node)
-    }
+    },
   },
   created() {
     this.getTree()

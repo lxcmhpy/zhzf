@@ -107,6 +107,7 @@ export default {
   background: #FFFFFF;
   box-sizing: border-box;
   padding: 15px;
+  overflow: auto;
   &-buttons {
     display: flex;
     justify-content: center;

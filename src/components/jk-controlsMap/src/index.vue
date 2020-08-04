@@ -5,11 +5,13 @@
       class="jk-controlsMap-inputWithSearch"
       @handleSearch="handleSearch"
       @handleShowSearch="handleShowSearch"
+      @handleClose="handleClose"
       :config="config.searchData"
     />
     <JkMapSelect
       class="jk-controlsMap-mapSelect"
       @handleChange="handleChange"
+      @handleCommand="handleCommand"
       :config="config.popoverData"
     />
   </div>
@@ -48,7 +50,6 @@ export default {
   },
   methods: {
     /**
-     *
      * 派发地图初始化事件
      */
     init(map, _this) {
@@ -70,11 +71,24 @@ export default {
     },
 
     /**
-     *
      * 选中级联选择器节点时触发
      */
     handleChange(value) {
       this.$emit('handleChange', value)
+    },
+
+    /**
+     * 点击图层下拉菜单项的回调
+     */
+    handleCommand(type) {
+      this.$emit('handleCommand', type)
+    },
+
+    /**
+     * 点击关闭按钮触发
+     */
+    handleClose() {
+      this.$emit('handleClose')
     }
   }
 }

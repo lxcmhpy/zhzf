@@ -21,20 +21,20 @@ export default {
     },
   },
   data () {
-        return {
-            mapConsts: {
-                // 江西省范围
-                extentJx: [113.57277, 24.488942, 118.482124, 30.079848],
-                // arcgis server默认origin
-                originArcgisServer: [-400, 399.9999999999998],
-                resolutions: [
-                    0.010986328383069278, 0.005493164191534639, 0.0027465809060368165, 0.0013732916427489112,
-                    6.866458213744556E-4, 3.433229106872278E-4, 1.716614553436139E-4, 8.582953794130404E-5, 4.291595870115493E-5,
-                    2.1457979350577466E-5, 1.0728989675288733E-5, 5.363305107141452E-6, 2.681652553570726E-6
-                ]
-            }
-        }
-    },
+    return {
+      mapConsts: {
+        // 江西省范围
+        extentJx: [113.57277, 24.488942, 118.482124, 30.079848],
+        // arcgis server默认origin
+        originArcgisServer: [-400, 399.9999999999998],
+        resolutions: [
+          0.010986328383069278, 0.005493164191534639, 0.0027465809060368165, 0.0013732916427489112,
+          6.866458213744556E-4, 3.433229106872278E-4, 1.716614553436139E-4, 8.582953794130404E-5, 4.291595870115493E-5,
+          2.1457979350577466E-5, 1.0728989675288733E-5, 5.363305107141452E-6, 2.681652553570726E-6
+        ]
+      },
+    }
+  },
   beforeCreate() {
     this.map = null;
   },
@@ -94,7 +94,9 @@ export default {
      * 地图添加点位(单点)
      */
     addPoint(data, latLng) {
-      if(!latLng) throw new Error("addPoint() in jk-baseHMap:::::::::::没有坐标")
+      // 打点之前清空地图所有点位
+      this.map.removeFeatureByLayerName('pointLayer')
+      if(!latLng) throw new Error("addPoint():::::::::::没有坐标")
       const point = {
         attributes: {
           id: data.id,
@@ -125,6 +127,46 @@ export default {
         }
       }
       this.map.addPoint(point, options)
+    },
+
+    /**
+     * 地图添加点位(多点)
+     */
+    addPoints(arr) {
+      // 打点之前清空地图所有点位
+      this.map.removeFeatureByLayerName('pointLayer')
+      let points = arr.map(item => {
+        return {
+          attributes: {
+            id: item.id,
+            data: item, // 带入当前点位信息
+          },
+          geometry: (item && item.propertyValue && item.propertyValue.split(',')) || []
+        }
+      })
+      const options = {
+        layerName: 'pointLayer',
+        zoomToExtent: true,
+        style: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: arr.imgUrl || '',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        },
+        selectStyle: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: arr.imgUrl || '',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        }
+      }
+      this.map.addPoints(points, options)
     },
   },
   created() {

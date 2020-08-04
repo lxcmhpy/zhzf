@@ -93,6 +93,7 @@ export default {
       event.stopPropagation()
       this.isShow = false
       this.inputModel=''
+      this.$emit('handleClose')
     }
   },
   render() {
