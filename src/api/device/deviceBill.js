@@ -50,3 +50,26 @@ export function deleteDeviceBillById(id) {
         cancelToken: setCancelSource()
     })
 }
+//更新单据状态
+export function updateStatus(id,status) {
+    return request({
+        url: "/device/bill/updateStatus/" +id+"/"+status,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+//根据条件获取装备列表
+export function listDevice(data) {
+    return request({
+        url: "/device/bill/listDevice",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    })
+}

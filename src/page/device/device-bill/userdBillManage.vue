@@ -9,7 +9,7 @@
                             <el-input v-model="queryForm.billNo"></el-input>
                         </el-form-item>
                         <el-form-item label="单据日期" prop="billDate">
-                            <el-date-picker v-model="queryForm.billDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+                            <el-date-picker v-model="queryForm.billDate" type="date" style="width:140px" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
                         </el-form-item>
                         <el-form-item label="使用单位" prop="useUnit">
                             <elSelectTree
@@ -17,6 +17,7 @@
                                 :options="organList"
                                 :accordion="true"
                                 :props="orgTreeProps"
+                                style="width:200px" 
                                 @getValue="queryFormUseUnitClick">
                             </elSelectTree>
                             <el-input style="display:none" v-model="queryForm.useUnit"></el-input>
@@ -155,7 +156,13 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
-    import { queryDeviceBill,findDeviceBillById,saveOrUpdateDeviceBill,deleteDeviceBillById} from "@/api/device/deviceBill.js";
+    import { 
+        queryDeviceBill,
+        findDeviceBillById,
+        saveOrUpdateDeviceBill,
+        deleteDeviceBillById,
+        listDevice
+    } from "@/api/device/deviceBill.js";
     import {
         tree,
         getDataList,
@@ -172,7 +179,10 @@
                     value: "id"
                 },
                 queryForm: {
-                    billType:'配发(领用)'
+                    billType:'PF',
+                    billDate:'',
+                    billNo:'',
+                    useUnit:''
                 },
                 addForm:{
                 },
@@ -186,12 +196,23 @@
                 title:"新增配发(领用)",
                 userList:[],
                 organList:[],
+                deviceList:[]
             };
         },
         components: {
             elSelectTree,
         },
         methods: {
+            async selectDevice(){
+                let queryData={
+                    useUnit:this.addForm.useUnit,
+                    billType:this.queryForm.billType,
+                    name:'',
+                    deviceType:''
+                }
+                let res = await listDevice(queryData)
+                this.deviceList = res.data;
+            },
             async getUserDataList(pid){
                 let res = await getDataList(pid,'user')
                 this.userList=res.data
@@ -256,7 +277,12 @@
                 if(this.$refs.addFormUseUnitTreeObj){
                     this.$refs.addFormUseUnitTreeObj.clearHandle()
                 }
-                this.addForm = {createId:this.userInfo.id,createName:this.userInfo.nickName}
+                this.addForm = {
+                    createId:this.userInfo.id,
+                    createName:this.userInfo.nickName,
+                    billType:'PF',
+                    billDate:new Date().format('yyyy-MM-dd')
+                }
                 this.title="新增配发(领用)"
                 this.formReadOnly = false
                 this.visible = true
@@ -279,6 +305,11 @@
                     res => {
                         _this.addForm = res.data
                         _this.visible=true
+                        if(_this.addForm.useUnit){
+                            _this.getUserDataList(_this.addForm.useUnit)
+                        }else{
+                            _this.userList=[]
+                        }
                     },
                     err => {
                         console.log(err);

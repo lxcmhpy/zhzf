@@ -17,11 +17,43 @@ export default  [
         component: () => import("@/page/device/device-inventory/deviceInventoryManage.vue")
     },
     {
-        path: "/deviceUserdBillManage",
-        name: "deviceUserdBillManage",
+        path: "/userdBillManage",
+        name: "userdBillManage",
         meta: {
           title: "配发(领用)管理"
         },
-        component: () => import("@/page/device/device-bill/deviceUserdBillManage.vue")
+        component: () => import("@/page/device/device-bill/userdBillManage.vue")
+    },
+    {
+        path: "/maintainBillManage",
+        name: "maintainBillManage",
+        meta: {
+          title: "维修管理"
+        },
+        component: () => import("@/page/device/device-bill/maintainBillManage.vue")
+    },
+    {
+        path: "/transferBillManage",
+        name: "transferBillManage",
+        meta: {
+          title: "调拨管理"
+        },
+        component: () => import("@/page/device/device-bill/transferBillManage.vue")
+    },
+    {
+        path: "/invalidBillManage",
+        name: "invalidBillManage",
+        meta: {
+          title: "报废管理"
+        },
+        component: () => import("@/page/device/device-bill/invalidBillManage.vue")
+    },
+    {
+        path: "/recoveryBillManage",
+        name: "recoveryBillManage",
+        meta: {
+          title: "回收管理"
+        },
+        component: () => import("@/page/device/device-bill/recoveryBillManage.vue")
     }
 ]
