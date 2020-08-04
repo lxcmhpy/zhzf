@@ -5,6 +5,7 @@
       class="jk-controlsMap-inputWithSearch"
       @handleSearch="handleSearch"
       @handleShowSearch="handleShowSearch"
+      @handleClose="handleClose"
       :config="config.searchData"
     />
     <JkMapSelect
@@ -82,6 +83,13 @@ export default {
     handleCommand(type) {
       this.$emit('handleCommand', type)
     },
+
+    /**
+     * 点击关闭按钮触发
+     */
+    handleClose() {
+      this.$emit('handleClose')
+    }
   }
 }
 </script>

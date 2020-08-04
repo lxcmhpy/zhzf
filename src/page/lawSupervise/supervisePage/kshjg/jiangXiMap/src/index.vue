@@ -6,6 +6,7 @@
       @handleSearch="handleSearch"
       @handleShowSearch="handleShowSearch"
       @handleCommand="handleCommand"
+      @handleClose="showComp = ''"
       :config="config"
       :center="center"
     />
