@@ -77,7 +77,7 @@
                     ></el-button>
                   </el-form-item>
                 </el-row>
-                <el-row v-if="!editable && currentNodeLevel === '1'">
+                <el-row v-if="handleLimit">
                   <el-form-item>
                     <el-button
                       type="primary"
@@ -97,7 +97,7 @@
           :data="tableData"
           stripe
           class="question-table"
-          :class="{'noHandle': !editable && currentNodeLevel === '1'}"
+          :class="{'noHandle': handleLimit}"
           style="width: 100%"
           v-loading="tableLoading"
           element-loading-spinner="car-loading"
@@ -147,13 +147,13 @@
                     style="margin-right: 30px;"
                   >预览</el-button>
                   <el-button
-                    v-if="!editable && currentNodeLevel === '1'"
+                    v-if="handleLimit"
                     type="text"
                     style="margin-right: 30px;"
                     @click.stop="updateQuestionInfo(scope.row.questionId, '2')"
                   >修改</el-button>
                   <el-button
-                    v-if="!editable && currentNodeLevel === '1'"
+                    v-if="handleLimit"
                     type="text"
                     @click.stop="deleteQuestionInfo(scope.row.questionId)"
                   >删除</el-button>
@@ -218,7 +218,7 @@ export default {
       questionLevelNume: ["简单", "一般", "困难"],
       tableLoading: false,
       treeLoading: false,
-      editable: false,
+      editable: true,
       currentNodeLevel: ''
     };
   },
@@ -230,6 +230,11 @@ export default {
     importQuestion
   },
   inject: ["reload"],
+  computed:{
+    handleLimit(){
+      return !this.editable || (this.editable && this.currentNodeLevel === '1')
+    }
+  },
   methods: {
     selectDataInfo(val) {
       this.selectQustionId = val.map(item => item.questionId);
