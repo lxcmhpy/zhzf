@@ -189,7 +189,6 @@
             <el-col :span="4">
               <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
                 <el-input v-model="addForm.contactType"></el-input>
-                </el-date-picker>
               </el-form-item>
             </el-col>
 
@@ -355,7 +354,7 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, importTaskExcelApi } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi,} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -571,21 +570,7 @@ export default {
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
     },
-    // 导入
-    importModle(param) {
-      console.log(param);
-      // let currentFileId = this.currentFileId
-      var fd = new FormData()
-      fd.append("file", param.file);
-      importTaskExcelApi(fd).then(res => {
-        if (res.code === 200) {
-          this.$message({ type: "success", message: res.msg });
-          this.currentPage = 1;
-          this.getTableData()
-        }
-      }
-      );
-    },
+
     getDrawerList(data) {
 
       let _this = this

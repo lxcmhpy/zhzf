@@ -44,7 +44,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportExpert')">导出所有对象</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -217,7 +217,7 @@
   </div>
 </template>
 <script>
-import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, importExpertExcelApi } from "@/api/inspection";
+import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, importExpertExcelApi, exportExpertApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -257,8 +257,23 @@ export default {
       formLabelWidth: '100px',
       // dialogStatus: '',
       rules: {
+        sex: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        politicalStatus: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        unitAddress: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        job: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         name: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change" }
         ],
       },
       optionsZC: [],
@@ -353,6 +368,32 @@ export default {
       });
 
     },
+    // exportMethod() {
+    //   exportExpertApi().then(res => {
+    //    // debugger
+    //     // this.getObjectURL(res)
+    //     console.log('res:',res);
+    //    // let blob = new Blob([res.data], { type: 'application/vnd.ms-excel' }); //需要下载的文件格式，xls文件
+    //   //  console.log('blob',blob)
+    //     //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+    //     if (window.navigator && window.navigator.msSaveBlob) {
+    //       //IE浏览器、微软浏览器
+    //       /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+    //         IE可不重命名，以防万一，所以都写上比较好 */
+    //       //window.navigator.msSaveBlob(blob, '检查专家表.xls');
+    //     } else {
+    //       //其他浏览器
+    //       let link = document.createElement('a'); // 创建a标签
+    //       link.style.display = 'none';
+    //       link.setAttribute('download','检查专家表.xls')
+    //       let objectUrl = URL.createObjectURL(res);
+    //       link.href = objectUrl;
+    //       link.click();
+    //      URL.revokeObjectURL(objectUrl);
+    //     }
+    //   }
+    //   ).catch(err=>{console.log(err);throw new Error(err)})
+    // },
   },
   mounted() {
     this.getTableData()

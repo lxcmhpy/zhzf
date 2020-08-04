@@ -44,7 +44,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportObject')">导出所有对象</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -80,7 +80,7 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="统一社会信用代码" prop="socialCode">
+            <el-form-item label="统一社会信用代码" prop="socialCode" label-width="140px">
               <el-input v-model="addForm.socialCode"></el-input>
             </el-form-item>
           </el-col>
@@ -131,7 +131,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox organClass">
+        <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox-aline organClass">
           <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
             <div class="departOrUserTree" style="width:600px">
               <div class="treeBox">
@@ -196,15 +196,18 @@ export default {
       formLabelWidth: '125px',
       dialogStatus: '',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        objectName: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        projectName: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        superviseType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        socialCode: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
       },
       optionsDXLX: [],
       optionsJGDW: [],

@@ -131,12 +131,18 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="操作人员" prop="operatePerson">
-                <el-input v-model="addForm.operatePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.operatePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="监督人员" prop="supervisePerson">
-                <el-input v-model="addForm.supervisePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.supervisePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -189,7 +195,6 @@
             <el-col :span="4">
               <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
                 <el-input v-model="addForm.contactType"></el-input>
-                </el-date-picker>
               </el-form-item>
             </el-col>
 
@@ -262,12 +267,18 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="操作人员" prop="operatePerson">
-                <el-input v-model="addForm2.operatePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.operatePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="监督人员" prop="supervisePerson">
-                <el-input v-model="addForm2.supervisePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.supervisePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -355,8 +366,9 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, importTaskExcelApi } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi,} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
+import { findLawOfficerListApi } from "@/api/caseHandle";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -400,26 +412,68 @@ export default {
       dialogStatus: '',
       dialogStatus2: '',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        taskName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        // checkSubject: [
+        //   { required: true, message: "必填项", trigger: "change" }
+        // ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        operatePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        supervisePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObject: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        itemType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        timeList: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObjectNum: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
       },
       rules2: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        taskName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        // checkSubject: [
+        //   { required: true, message: "必填项", trigger: "change" }
+        // ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        operatePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        supervisePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObject: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        itemType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        timeList: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObjectNum: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
       },
       optionsZC: [],
       optionsZZMM: [],
@@ -428,6 +482,8 @@ export default {
       optionsRWMC: [],
       optionsCCFS: [],
       optionsSSLB: [],
+      LawOfficerList: [],//执法人员列表
+      alreadyChooseAdminPerson: [],//已选择管理人员列表
     }
   },
   methods: {
@@ -461,7 +517,9 @@ export default {
         data.taskStartTime = data.timeList[0]
         data.taskEndTime = data.timeList[1]
       }
-      data.checkMode = data.checkMode ? data.checkMode.join(',') : ''
+      data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
+      data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
+      data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -515,6 +573,9 @@ export default {
         data.taskStartTime = data.timeList[0]
         data.taskEndTime = data.timeList[1]
       }
+      data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
+      data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
+      data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -581,7 +642,9 @@ export default {
         row.timeList[0] = row.taskStartTime
         row.timeList[1] = row.taskEndTime
       }
-      row.checkMode = row.checkMode?row.checkMode.split(','):''
+      row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
       this.editMethod(row)
     },
     // 修改
@@ -591,25 +654,25 @@ export default {
         row.timeList[0] = row.taskStartTime
         row.timeList[1] = row.taskEndTime
       }
-      row.checkMode = row.checkMode?row.checkMode.split(','):''
+      row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
       this.addForm2 = JSON.parse(JSON.stringify(row))
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
     },
-    // 导入
-    importModle(param) {
-      console.log(param);
-      // let currentFileId = this.currentFileId
-      var fd = new FormData()
-      fd.append("file", param.file);
-      importTaskExcelApi(fd).then(res => {
-        if (res.code === 200) {
-          this.$message({ type: "success", message: res.msg });
-          this.currentPage = 1;
-          this.getTableData()
-        }
-      }
-      );
+    // 获取机构下的人员
+    getPerson() {
+      findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(
+        res => {
+          this.LawOfficerList = res.data
+        },
+        error => {
+
+        })
+    },
+    changeAdmin() {
+      this.$forceUpdate()
     },
     getDrawerList(data) {
 
@@ -643,6 +706,7 @@ export default {
       { name: '抽查事项', option: 4 },
       { name: '事项类别', option: 5 },
     ])
+    this.getPerson()
   }
 }
 </script>

@@ -101,13 +101,13 @@ export default {
       formLabelWidth: '100px',
       rules: {
         pass: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change"}
         ],
         checkPass: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change"}
         ],
         age: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change"}
         ]
       },
       zzmmList: [],

@@ -52,7 +52,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportItem')">导出所有事项清单</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -233,32 +233,62 @@ export default {
         checkBasis: '',
         checkItem: '',
         status: '',
-        checkContent: ''
+        checkContent: '',
+        checkObject: '',
+        itemType: '',
+        checkType: ''
       },
       dialogStatus: '',
       dialogStatus2: '',
-      formLabelWidth: '100px',
+      formLabelWidth: '120px',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        checkSubject: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        age: [
-          { required: true, trigger: 'blur' }
+        checkBasis: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkContent: [
+          { required: true, message: "必填项", trigger: "change"}
         ]
       },
       rules2: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        checkSubject: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        checkBasis:[
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkContent: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkObject: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        itemType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
       },
       optionsCCZT: [],
       optionsCCFS: [],

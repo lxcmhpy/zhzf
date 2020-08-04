@@ -48,7 +48,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
+              <el-button size="medium" type="primary" @click="exportMethod('exportPerson')">导出所有人员</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -304,7 +304,43 @@ export default {
       formLabelWidth: '125px',
       rules: {
         personName: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        idCard: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        politicalStatusName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        majorName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        highestEducation: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        lawOfficeType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        userRank: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        staffingName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        company: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        branchName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        certNumber: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        certType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        company: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
       },
       optionsZGQK: [],

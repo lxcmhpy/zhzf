@@ -129,6 +129,35 @@
     }
 }
 
+.lawPersonBox-aline {
+    position: relative;
+
+    .el-form-item__content {
+        margin-left: 0 !important;
+        width      : calc(100% - 125px);
+        display    : inline-block;
+    }
+
+    .el-form-item__content button {
+        position     : absolute;
+        right        : 0;
+        height       : 32px;
+        width        : 20px;
+        top          : 4px;
+        border-radius: 0;
+
+        i {
+            position: absolute;
+            left    : 13px;
+            top     : 9px;
+        }
+    }
+
+    .el-select {
+        width: calc(100% - 17px);
+    }
+}
+
 .card-select {
     .el-form-item__content {
         width: 100%;
