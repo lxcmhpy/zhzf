@@ -4,21 +4,10 @@ let vm = new Vue();
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
 
-//查询装备类型管理树
-export function queryDeviceTypeTree() {
+//查询库存管理
+export function queryDeviceInventory(data) {
     return request({
-        url: "/device/type/allTree",
-        method: "get",
-        showloading: true,
-        loadingType:'loadPart',
-        baseUrlType:  'DEVICE_HOST',
-        cancelToken: setCancelSource()
-    });
-}
-//查询装备类型管理
-export function queryDeviceType(data) {
-    return request({
-        url: "/device/type/list",
+        url: "/device/inventory/list",
         method: "get",
         params: data,
         showloading: true,
@@ -27,10 +16,10 @@ export function queryDeviceType(data) {
         cancelToken: setCancelSource()
     });
 }
-//保存装备类型管理
-export function saveOrUpdateDeviceType (data) {
+//保存库存管理
+export function saveOrUpdateDeviceInventory (data) {
     return request({
-        url: "/device/type/saveOrUpdate",
+        url: "/device/inventory/saveOrUpdate",
         method: "post",
         showloading: true,
         loadingType:'loadPart',
@@ -39,10 +28,10 @@ export function saveOrUpdateDeviceType (data) {
         cancelToken: setCancelSource()
     })
 }
-//根据ID查询装备类型管理
-export function findDeviceTypeById (id) {
+//根据ID查询库存管理
+export function findDeviceInventoryById (id) {
     return request({
-        url: "/device/type/findById/" +id,
+        url: "/device/inventory/findById/" +id,
         method: "get",
         showloading: true,
         loadingType:'loadPart',
@@ -50,14 +39,26 @@ export function findDeviceTypeById (id) {
         cancelToken: setCancelSource()
     });
 }
-//删除装备类型管理
-export function deleteDeviceTypeById(id) {
+//删除库存管理
+export function deleteDeviceInventoryById(id) {
     return request({
-        url: "/device/type/deleteById/" +id,
+        url: "/device/inventory/deleteById/" +id,
         method: "get",
         showloading: true,
         loadingType:'loadPart',
         baseUrlType:'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+//复制库存管理
+export function copyData(data) {
+    return request({
+        url: "/device/inventory/copyData",
+        method: "post",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'DEVICE_HOST',
+        data:  data,
         cancelToken: setCancelSource()
     })
 }

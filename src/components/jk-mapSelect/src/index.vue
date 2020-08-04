@@ -15,7 +15,6 @@ export default {
   },
   methods: {
     /**
-     *
      * 选中节点时触发
      */
     handleChange(value) {
@@ -23,34 +22,80 @@ export default {
     },
 
     /**
-     *
      * 级联选择框生成函数
      */
-    renderCascader(data) {
+    renderCascader() {
+      let data = this.list[0]
       return (
-        <div class="block">
-          <el-cascader
-            clearable
-            options={data.options}
-            on-change={ this.handleChange }>
-          </el-cascader>
+        <div class="jk-mapSelect-box">
+          {
+            data.imgUrl ? <img src={data.imgUrl} /> : null
+          }
+          <div class="selectDown">
+            <el-popover
+              placement="bottom"
+              width="200"
+              trigger="click">
+              <div class="block">
+                <el-cascader
+                  clearable
+                  options={data.options}
+                  on-change={ this.handleChange }>
+                </el-cascader>
+              </div>
+              <div slot="reference">
+                <el-dropdown placement="bottom">
+                  <span class="el-dropdown-link">
+                    { data.title }<i class="el-icon-arrow-down el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu></el-dropdown-menu>
+                </el-dropdown>
+              </div>
+            </el-popover>
+          </div>
         </div>
       )
     },
 
     /**
-     *
-     * 下拉选择生成函数
+     * 下拉选择框生成函数
      */
-    renderDropdown(data) {
+    renderDropdown() {
+      let data = this.list[1]
       return (
-        <div slot="reference">
-          <el-dropdown placement="bottom">
-            <span class="el-dropdown-link">
-              { data.title }<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu style="width:0;height:0;"></el-dropdown-menu>
-          </el-dropdown>
+        <div class="jk-mapSelect-box">
+          {
+            data.imgUrl ? <img src={data.imgUrl} /> : null
+          }
+          <div class="selectDown">
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                {data.title}<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>执法人员</el-dropdown-item>
+                <el-dropdown-item>执法机构</el-dropdown-item>
+                <el-dropdown-item>执法车辆</el-dropdown-item>
+                <el-dropdown-item>执法船舶</el-dropdown-item>
+                <el-dropdown-item>非现场站点</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
+      )
+    },
+
+    /**
+     * 全屏按钮生成函数
+     */
+    renderFull() {
+      let data = this.list[2]
+      return (
+        <div class="jk-mapSelect-box">
+          {
+            data.imgUrl ? <img src={data.imgUrl} /> : null
+          }
+          <span class="fullScreen">{data.title}</span>
         </div>
       )
     }
@@ -58,24 +103,9 @@ export default {
   render() {
     return (
       <div class="jk-mapSelect">
-        {this._l(this.list, item => {
-          return (
-            <div class="jk-mapSelect-box">
-              {
-                item.imgUrl ? <img src={item.imgUrl} /> : null
-              }
-              <div class="selectDown">
-                <el-popover
-                  placement="bottom"
-                  width="200"
-                  trigger="click">
-                  { this.renderCascader(item) }
-                  { this.renderDropdown(item) }
-                </el-popover>
-              </div>
-            </div>
-          )
-        })}
+        {this.renderCascader()}
+        {this.renderDropdown()}
+        {this.renderFull()}
       </div>
     )
   }
@@ -98,6 +128,11 @@ export default {
     align-items: center;
     img {
       margin-right: 10px;
+    }
+    .fullScreen {
+      font-size: 14px;
+      color: #606266;
+      cursor: pointer;
     }
   }
 }

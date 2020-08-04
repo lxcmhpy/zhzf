@@ -17,15 +17,9 @@
         @handleButton="handleButton"
         @handleGoBack="handleGoBack"
         @handlePerson="handlePerson"
+        @handlePersonGoBack="() => {showComp='JkMapTree'}"
       />
     </keep-alive>
-    <!-- <JkMapTree
-      class="jiangXiMap-tree"
-      :config="treeData"
-      @handleNodeClick="handleNodeClick"
-      @handleButton="handleButton"
-    />
-    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" /> -->
   </div>
 </template>
 
@@ -79,6 +73,7 @@ export default {
             {
               title: "西安市",
               imgUrl: "/static/images/img/lawSupervise/area.png",
+              value: "xian",
               options: [
                 {
                   value: 'xian',
@@ -93,7 +88,7 @@ export default {
                   }]
                 },
                 {
-                  value: 'quanguo',
+                  value: ' ',
                   label: '全国',
                 }
               ]
@@ -101,46 +96,13 @@ export default {
             {
               title: "图层",
               imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
-                  children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
-                  }]
-                },
-                {
-                  value: 'quanguo',
-                  label: '全国',
-                }
-              ]
+              value: "coverage",
+              options: []
             },
             {
               title: "全屏",
               imgUrl: "/static/images/img/lawSupervise/qp.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
-                  children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
-                  }]
-                },
-                {
-                  value: 'quanguo',
-                  label: '全国',
-                }
-              ]
+              value: "fullScreen"
             }
           ]
         }

@@ -48,8 +48,6 @@ export const mixinInspection = {
         },
         // 导出
         exportMethod() { },
-        // 导入
-        importModle() { },
         // 下载模板
         downloadModle() { },
         //根据id删除

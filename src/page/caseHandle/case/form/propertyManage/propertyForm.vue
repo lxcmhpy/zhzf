@@ -10,13 +10,13 @@
                 <div>
                     <el-row>
                         <el-col :span="16">
-                            <el-form-item label="财务名称" prop="propertyInvolvedForm.propertyName">
+                            <el-form-item label="财物名称" prop="propertyInvolvedForm.propertyName">
                                 <el-input v-model="form.propertyInvolvedForm.propertyName" maxlength="40"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-col :span="16">
-                                <el-form-item label="财务数量" prop="propertyInvolvedForm.propertyNum">
+                                <el-form-item label="财物数量" prop="propertyInvolvedForm.propertyNum">
                                     <el-input-number v-model="form.propertyInvolvedForm.propertyNum" placeholder="请输入数字" :controls="false"></el-input-number>
                                 </el-form-item>
                             </el-col>
@@ -184,7 +184,7 @@ export default {
                     registrant:iLocalStroage.gets("userInfo").nickName,
                     propertyBelonger:"",
                     savePerson:"",
-                    storagePeriod:"",
+                    storagePeriod:90,
                     propertyNo:"",
                     saveWay:"",
                     savePlace:"",
@@ -201,8 +201,8 @@ export default {
                 }
             },
             rules:{
-                "propertyInvolvedForm.propertyName": [{required: true,message: "请输入财务名称",trigger: "blur"}],
-                "propertyInvolvedForm.propertyNum": [{required: true, message: "请输入财务数量", trigger: "blur"}],
+                "propertyInvolvedForm.propertyName": [{required: true,message: "请输入财物名称",trigger: "blur"}],
+                "propertyInvolvedForm.propertyNum": [{required: true, message: "请输入财物数量", trigger: "blur"}],
                 "propertyInvolvedForm.propertyNumUnit": [{required: true, message: "请选择单位", trigger: "change"}],
                 "propertyInvolvedForm.propertyBelonger": [{required: true, message: "请输入财物归属人/单位", trigger: "blur"}],
                 "propertyInvolvedForm.saveUnit": [{required: true, message: "请输入保管单位", trigger: "blur"}],
