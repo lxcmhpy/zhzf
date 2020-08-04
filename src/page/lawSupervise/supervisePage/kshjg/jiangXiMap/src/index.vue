@@ -5,6 +5,7 @@
       @handleChange="handleChange"
       @handleSearch="handleSearch"
       @handleShowSearch="handleShowSearch"
+      @handleCommand="handleCommand"
       :config="config"
       :center="center"
     />
@@ -69,11 +70,11 @@ export default {
           ]
         },
         popoverData: {
+          organId: "",
           option: [
             {
               title: "西安市",
               imgUrl: "/static/images/img/lawSupervise/area.png",
-              value: "xian",
               options: [
                 {
                   value: 'xian',
@@ -96,13 +97,17 @@ export default {
             {
               title: "图层",
               imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
-              value: "coverage",
-              options: []
+              options: [
+                {name: '执法人员', type: 0},
+                {name: '执法机构', type: 1},
+                {name: '执法车辆', type: 2},
+                {name: '执法船舶', type: 3},
+                {name: '非现场站点', type: 4},
+              ]
             },
             {
               title: "全屏",
               imgUrl: "/static/images/img/lawSupervise/qp.png",
-              value: "fullScreen"
             }
           ]
         }
@@ -206,6 +211,14 @@ export default {
       // 当前点位是路政局
       if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
         this.getTheOrganTree(data)
+      } else {
+        // 显示弹出框
+        this.personData.title = data.nickName
+        this.personData.info = {
+          organName: data.organName || '',
+          mobile: data.mobile || ''
+        }
+        this.showComp = "PersonWindow"
       }
       console.log(data)
     },
@@ -236,7 +249,7 @@ export default {
      */
     handlePerson(node) {
       this.personClick(node)
-    }
+    },
   },
   created() {
     this.getTree()

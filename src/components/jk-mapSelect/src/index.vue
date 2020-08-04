@@ -22,6 +22,13 @@ export default {
     },
 
     /**
+     * 点击图层下拉菜单项的回调
+     */
+    handleCommand(type) {
+      this.$emit('handleCommand', type)
+    },
+
+    /**
      * 级联选择框生成函数
      */
     renderCascader() {
@@ -68,16 +75,16 @@ export default {
             data.imgUrl ? <img src={data.imgUrl} /> : null
           }
           <div class="selectDown">
-            <el-dropdown>
+            <el-dropdown on-command={this.handleCommand}>
               <span class="el-dropdown-link">
                 {data.title}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>执法人员</el-dropdown-item>
-                <el-dropdown-item>执法机构</el-dropdown-item>
-                <el-dropdown-item>执法车辆</el-dropdown-item>
-                <el-dropdown-item>执法船舶</el-dropdown-item>
-                <el-dropdown-item>非现场站点</el-dropdown-item>
+                {this._l(data.options, item => {
+                  return (
+                    <el-dropdown-item command={item.type}>{item.name}</el-dropdown-item>
+                  )
+                })}
               </el-dropdown-menu>
             </el-dropdown>
           </div>

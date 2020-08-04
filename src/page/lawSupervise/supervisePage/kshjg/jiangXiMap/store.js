@@ -13,6 +13,7 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
+        this.config.popoverData.organId = data[0].id
         this.treeData.option = this.addNode(data)
       })
     },
@@ -130,6 +131,30 @@ export default {
         mobile: node.mobile
       }
       this.showComp = "PersonWindow"
+    },
+
+    /**
+     * 图层下拉项的回调，获取执法人员所有点位
+     */
+    handleCommand(type) {
+      console.log(type)
+      let param = {
+        organId: this.config.popoverData.organId,
+        type: type
+      }
+      if(type === 0) {
+        getZfjgLawSupervise(param).then(res => {
+          if(res.code === 200) {
+            return res.data
+          } else {
+            throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
+          }
+        }).then(data => {
+          // 添加点位图片
+          data.imgUrl = "/static/images/img/lawSupervise/map_renyuan.png"
+          this.page.addPoints(data)
+        })
+      }
     },
   }
 }

@@ -94,7 +94,7 @@ export default {
      * 地图添加点位(单点)
      */
     addPoint(data, latLng) {
-      if(!latLng) throw new Error("addPoint() in jk-baseHMap:::::::::::没有坐标")
+      if(!latLng) throw new Error("addPoint():::::::::::没有坐标")
       const point = {
         attributes: {
           id: data.id,
@@ -125,6 +125,44 @@ export default {
         }
       }
       this.map.addPoint(point, options)
+    },
+
+    /**
+     * 地图添加点位(多点)
+     */
+    addPoints(arr) {
+      let points = arr.map(item => {
+        return {
+          attributes: {
+            id: item.id,
+            data: item, // 带入当前点位信息
+          },
+          geometry: (item && item.propertyValue && item.propertyValue.split(',')) || []
+        }
+      })
+      const options = {
+        layerName: 'pointLayer',
+        zoomToExtent: true,
+        style: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: arr.imgUrl || '',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        },
+        selectStyle: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: arr.imgUrl || '',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        }
+      }
+      this.map.addPoints(points, options)
     },
   },
   created() {
