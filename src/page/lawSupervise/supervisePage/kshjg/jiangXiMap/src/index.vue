@@ -45,7 +45,8 @@ export default {
         [0, '/static/images/img/lawSupervise/map_renyuan.png'],
         [1, '/static/images/img/lawSupervise/map_jigou.png'],
         [2, '/static/images/img/lawSupervise/map_jingche.png'],
-        [3, '/static/images/img/lawSupervise/map_cbo.png']
+        [3, '/static/images/img/lawSupervise/map_cbo.png'],
+        [4, '/static/images/img/lawSupervise/map_o_gud.png'],
       ]), // 各类型所对应的点位图标
       showComp: "",
       page: null, // 地图组件的 this
@@ -69,10 +70,6 @@ export default {
           title: "专题查询",
           placeholder: "搜执法人员、执法机构",
           option: [
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
             { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
           ]
         },
@@ -214,6 +211,8 @@ export default {
       // 当前点位是路政局
       if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
         this.getTheOrganTree(data)
+      } else if (data.type === 4) {
+        console.log('hahahahahahaha')
       } else {
         // 显示弹出框
         this.personData.title = data.nickName

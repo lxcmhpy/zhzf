@@ -149,29 +149,40 @@ export default {
      * 图层下拉项的回调，获取各下拉项的点位数据
      */
     handleCommand(type) {
-      let param = {
-        organId: this.config.popoverData.organId,
-        type: type
+      let param = {}
+      if(type === 4) {
+        param = {
+          size: 20,
+          type: type
+        }
+      } else {
+        param = {
+          organId: this.config.popoverData.organId,
+          type: type
+        }
       }
-      if(type != 4) {
-        console.log(type)
-        getZfjgLawSupervise(param).then(res => {
-          if(res.code === 200) {
-            this.$message({
-              message: '查询到'+res.data.length+'条数据',
-              type: 'success'
-            });
-            return res.data
-          } else {
-            this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-            throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
-          }
-        }).then(data => {
-          // 添加点位图片
-          data.imgUrl = this.imgUrl.get(type)
-          this.page.addPoints(data)
-        })
-      }
+      getZfjgLawSupervise(param).then(res => {
+        if(res.code === 200) {
+          this.$message({
+            message: '查询到'+res.data.length+'条数据',
+            type: 'success'
+          });
+          return res.data
+        } else {
+          this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
+          throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
+        }
+      }).then(data => {
+        // 手动给非现场站点添加type
+        if(type === 4) {
+          data.map(item => {
+            item.type = type
+          })
+        }
+        // 添加点位图片
+        data.imgUrl = this.imgUrl.get(type)
+        this.page.addPoints(data)
+      })
     },
   }
 }
