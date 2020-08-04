@@ -28,8 +28,13 @@ export default {
       }
       getOrganTree(param).then(res => {
         if(res.code === 200) {
+          this.$message({
+            message: '查询到'+res.data.length+'条数据',
+            type: 'success'
+          });
           return res.data
         } else {
+          this.$message.error('getOrganTree()::::::::接口数据错误');
           throw new Error("getOrganTree()::::::::接口数据错误")
         }
       }).then(data => {
@@ -51,8 +56,13 @@ export default {
       }
       getZfjgLawSupervise(param).then(res => {
         if(res.code === 200) {
+          this.$message({
+            message: '查询到'+res.data.length+'条数据',
+            type: 'success'
+          });
           return res.data
         } else {
+          this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
           throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
         }
       }).then(data => {
@@ -145,8 +155,13 @@ export default {
       if(type === 0) {
         getZfjgLawSupervise(param).then(res => {
           if(res.code === 200) {
+            this.$message({
+              message: '查询到'+res.data.length+'条数据',
+              type: 'success'
+            });
             return res.data
           } else {
+            this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
             throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
           }
         }).then(data => {
