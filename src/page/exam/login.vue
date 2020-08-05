@@ -15,9 +15,9 @@
               <span class="sys-title">人员考试系统</span>
               <!-- <span v-if="check === '0'" class="title checkText">参考考生</span>
               <span v-if="check === '1'" class="title checkText">监考老师</span>
-              <span v-if="check === '2'" class="title checkText">评卷人</span> -->
+              <span v-if="check === '2'" class="title checkText">评卷人</span>-->
               <div class="formC1">
-                <el-form :model="loginForm" :rules="rules" ref="loginForm" class="demo-ruleForm">
+                <el-form :model="loginForm" :rules="rules" ref="loginForm">
                   <el-form-item prop="loginName">
                     <el-input placeholder="请输入账号" v-model="loginForm.loginName" maxlength="18">
                       <i slot="prefix">
@@ -66,14 +66,26 @@
                       </i>
                     </el-input>
                   </el-form-item>
-                  <el-form-item class="codeInputBox">
+                  <el-form-item prop="kaptcha">
+                    <el-input
+                      placeholder="请输入验证码"
+                      v-model="loginForm.kaptcha"
+                      maxlength="6"
+                      class="captcha-input"
+                    >
+                      <template slot="append">
+                        <img :src="captchaImg" @click="getCaptchaImg" />
+                      </template>
+                    </el-input>
+                  </el-form-item>
+                  <!-- <el-form-item class="codeInputBox">
                     <vue-simple-verify ref="verify" :width="460" tips="向右滑动完成验证" @success="pass()" />
                     <div class="forgetPass" style="margin: 0; position:absolute;">
                       <el-collapse-transition>
                         <div v-show="errorMessage" class="error">{{errorMessage}}</div>
                       </el-collapse-transition>
                     </div>
-                  </el-form-item>
+                  </el-form-item>-->
                   <div>
                     <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
                   </div>
@@ -99,7 +111,7 @@
                 class="entry-type"
                 :class="check === '2'  ? 'active' : '' "
                 @click="changeType('2')"
-              >评卷入口</span> -->
+              >评卷入口</span>-->
             </center>
           </div>
         </div>
@@ -124,11 +136,14 @@ export default {
       loginForm: {
         loginName: "",
         password: "",
-        code: ""
+        kaptcha: "",
+        code: "",
+        uuid: "",
       },
       rules: {
         loginName: [{ required: true, message: "请输入账号", trigger: "blur" }],
-        code: [{ required: true, message: "请完成验证", trigger: "blur" }]
+        kaptcha: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+        code: [{ required: true, message: "请完成验证", trigger: "blur" }],
       },
       showLogin: false,
       errorMessage: "",
@@ -138,8 +153,16 @@ export default {
       weChatFlag: false,
       resetFlag: false,
       timeOutFlag: "",
-      systemTitle: null
+      systemTitle: null,
+      captchaImg: "",
+      kaptchaInfo: { kaptcha: "", uuid: "" },
     };
+  },
+  computed: {
+    ajaxUrl() {
+      const BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
+      return BASEURL["EXAM"];
+    },
   },
   methods: {
     // 切换登录方式
@@ -149,70 +172,84 @@ export default {
       this.loginForm.password = "";
     },
 
+    // 获取验证码
+    getCaptchaImg() {
+      this.$store.dispatch("getCaptchaImg").then(
+        (res) => {
+          if (res.code === 200) {
+            this.kaptchaInfo.kaptcha = res.data.kaptcha;
+            this.kaptchaInfo.uuid = res.data.uuid;
+            this.loginForm.uuid = res.data.uuid;
+            this.captchaImg = `${this.ajaxUrl}/examLogin/captchaImg?kaptcha=${res.data.kaptcha}&uuid=${res.data.uuid}`;
+          }
+        },
+        (err) => {
+          this.catsMessage({
+            type: "error",
+            message: error.msg || "",
+          });
+        }
+      );
+    },
+
     //登录
     submitLogin(formName) {
       let _this = this;
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           // 验证码
           const submitData = {
             loginName: _this.loginForm.loginName,
             password: _this.loginForm.password,
-            type: _this.check
+            kaptcha: _this.loginForm.kaptcha,
+            uuid: _this.loginForm.uuid,
+            type: _this.check,
           };
-          if (_this.success) {
-            _this.$store.dispatch("personLoginExam", submitData).then(
-              res => {
-                sessionStorage.setItem("ExamName", _this.loginForm.loginName);
-                // 监考老师 登录成功
-                if (_this.check === "1") {
-                  sessionStorage.setItem(
-                    "ExamUserInfo",
-                    JSON.stringify(res.data)
-                  );
-                  const fromPath = res.data.invigilatorInfo.token
-                    ? "/invigilator"
-                    : "/entrySystem";
-                  _this.$router.push({
-                    path: fromPath,
-                    query: {
-                      name: _this.loginForm.loginName,
-                      id: res.data.invigilatorInfo.invigilatorId
-                    }
-                  });
-                } else if (_this.check === "0") {
-                  _this.$router.push({
-                    path: "/examineeEntry",
-                    query: {
-                      name: _this.loginForm.loginName
-                    }
-                  });
-                } else if (_this.check === "2") {
-                  _this.$router.push({
-                    path: "/markPaper",
-                    query: {
-                      name: _this.loginForm.loginName
-                    }
-                  });
-                }
-                // 清除定时器
-                clearTimeout(_this.timeOutFlag);
-                _this.success = false;
-              },
-              error => {
-                this.$message({
-                  type: "error",
-                  message: error.msg || ""
+          _this.$store.dispatch("personLoginExam", submitData).then(
+            (res) => {
+              sessionStorage.setItem("ExamName", _this.loginForm.loginName);
+              // 监考老师 登录成功
+              if (_this.check === "1") {
+                sessionStorage.setItem(
+                  "ExamUserInfo",
+                  JSON.stringify(res.data)
+                );
+                const fromPath = res.data.invigilatorInfo.token
+                  ? "/invigilator"
+                  : "/entrySystem";
+                _this.$router.push({
+                  path: fromPath,
+                  query: {
+                    name: _this.loginForm.loginName,
+                    id: res.data.invigilatorInfo.invigilatorId,
+                  },
+                });
+              } else if (_this.check === "0") {
+                _this.$router.push({
+                  path: "/examineeEntry",
+                  query: {
+                    name: _this.loginForm.loginName,
+                  },
+                });
+              } else if (_this.check === "2") {
+                _this.$router.push({
+                  path: "/markPaper",
+                  query: {
+                    name: _this.loginForm.loginName,
+                  },
                 });
               }
-            );
-          } else {
-            _this.errorMessage = "验证错误,请重试，3秒后自动消失";
-            const errorMsg = setTimeout(() => {
-              _this.errorMessage = "";
-              clearTimeout(errorMsg);
-            }, 3000);
-          }
+              // 清除定时器
+              clearTimeout(_this.timeOutFlag);
+              _this.success = false;
+            },
+            (error) => {
+              this.$message({
+                type: "error",
+                message: error.msg || "",
+              });
+            }
+          );
         } else {
           return false;
         }
@@ -245,20 +282,20 @@ export default {
         "setProvince",
         res.data[2] && res.data[2].name ? res.data[2].name : ""
       );
-    }
+    },
   },
- async created() {
+  async created() {
     window.sessionStorage.clear();
     removeToken("TokenKey");
     sessionStorage.setItem("LoginSystem", "examLogin");
     // this.systemTitle = localStorage.getItem("SYS_TITLE");
     await getHost();
     await this.getSystemData();
+    this.getCaptchaImg();
   },
   mounted() {
     this.showLogin = true;
-
-  }
+  },
 };
 </script>
 
@@ -302,6 +339,21 @@ export default {
   .formC1 {
     width: 460px;
     margin-top: 30px;
+    .captcha-input {
+      font-size: 16px;
+      >>> .el-input__inner {
+        height: 50px;
+      }
+      >>> .el-input-group__append {
+        padding: 0;
+        > img {
+          display: block;
+          width: 100px;
+          height: 50px;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
 .sys-title {

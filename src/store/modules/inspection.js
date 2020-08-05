@@ -1,7 +1,7 @@
 // 行政检查
 import {
     delRandomObjectApi, delExpertApi, delRandomItemApi, delPersonApi, delTaskApi, getAllTaskApi, getAllExpertApi, getAllRandomObjectApi, getAllRandomItemApi,
-    getAllPublicPersonApi,
+    getAllPublicPersonApi,exportExpertApi,exportPersonApi,exportItemApi,exportObjectApi
 } from "@/api/inspection";
 
 const inspection = {
@@ -139,6 +139,54 @@ const inspection = {
         delTask({ commit }, data) {
             return new Promise((resolve, reject) => {
                 delTaskApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //导出专家
+        exportExpert({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                exportExpertApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //导出人员
+        exportPerson({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                exportPersonApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //导出对象
+        exportObject({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                exportObjectApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //导出事项清单
+        exportItem({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                exportItemApi(data).then(
                     res => {
                         resolve(res);
                     },

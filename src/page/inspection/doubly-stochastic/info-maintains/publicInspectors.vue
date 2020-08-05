@@ -1,7 +1,7 @@
 <template>
   <div class="height100">
-    <div class="handlePart">
-      <div class="search toggleBox search-mini">
+    <div class="handlePart el-form-bottom0">
+      <div class="search toggleBox search-mini" style="width:100%">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
             <el-form-item>
@@ -11,9 +11,13 @@
               <el-input v-model="searchForm.personName"></el-input>
             </el-form-item>
             <el-form-item label="在岗情况" prop='stationStatusName'>
-              <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
+              <!-- <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
                 <el-option v-for="item in optionsZGQK" :key="item.id" :label="item.name" :value="item.name">
                 </el-option>
+              </el-select> -->
+              <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
+                <el-option label="是" value="是"></el-option>
+                <el-option label="否" value="否"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -25,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="handlePart">
+    <div class="handlePart el-form-bottom0">
       <div class="search" style="width:100%">
         <el-form :inline="true">
           <el-form-item>
@@ -48,7 +52,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
+              <el-button size="medium" type="primary" @click="exportMethod('exportPerson')">导出所有人员</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -243,8 +247,8 @@
         </el-row>
         <el-form-item label="是否在岗" prop="stationStatusName">
           <el-radio-group v-model="addForm.stationStatusName">
-            <el-radio label="在岗"></el-radio>
-            <el-radio label="离岗"></el-radio>
+            <el-radio label="是"></el-radio>
+            <el-radio label="否"></el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="其他情况" prop="remark">
@@ -269,6 +273,7 @@ import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, 
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { validatePhone,validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinPerson, mixinInspection],
   props: ['freshFlag'],
@@ -304,7 +309,50 @@ export default {
       formLabelWidth: '125px',
       rules: {
         personName: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        idCard: [
+          { required: true, message: "必填项", trigger: "change"},
+          { validator:validateIDNumber , trigger: "change" }
+        ],
+        politicalStatusName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        majorName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        highestEducation: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        lawOfficeType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        userRank: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        staffingName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        company: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        branchName: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        certNumber: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        certType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        company: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        contactNum: [
+          { validator:validatePhone , trigger: "change" }
+        ],
+        phoneNum: [
+          { validator:validatePhone , trigger: "change" }
         ],
       },
       optionsZGQK: [],

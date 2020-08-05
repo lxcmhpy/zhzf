@@ -52,7 +52,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportItem')">导出所有事项清单</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -81,7 +81,12 @@
         <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
         <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
         <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column>
-        <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
+        <el-table-column prop="checkSubject" label="检查主体" align="center">
+          <template slot-scope="scope">
+            <!-- 避免视图不刷新 -->
+            {{scope.row.checkSubject}}
+          </template>
+        </el-table-column>
         <el-table-column prop="checkBasis" label="检查依据" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -233,32 +238,62 @@ export default {
         checkBasis: '',
         checkItem: '',
         status: '',
-        checkContent: ''
+        checkContent: '',
+        checkObject: '',
+        itemType: '',
+        checkType: ''
       },
       dialogStatus: '',
       dialogStatus2: '',
-      formLabelWidth: '100px',
+      formLabelWidth: '120px',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        checkSubject: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        age: [
-          { required: true, trigger: 'blur' }
+        checkBasis: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkContent: [
+          { required: true, message: "必填项", trigger: "change"}
         ]
       },
       rules2: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        checkSubject: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change"}
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        checkBasis:[
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkContent: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkObject: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        itemType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
+        checkType: [
+          { required: true, message: "必填项", trigger: "change"}
+        ],
       },
       optionsCCZT: [],
       optionsCCFS: [],
@@ -327,7 +362,7 @@ export default {
     submitForm2(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          addItemListApi(this.addForm).then(
+          addItemListApi(this.addForm2).then(
             res => {
               console.log(res)
               if (res.code == 200) {
@@ -359,7 +394,7 @@ export default {
     },
     // 添加-弹窗
     addMethod2() {
-      this.addForm.checkDomain = this.searchForm.checkDomain
+      this.addForm2.checkDomain = this.searchForm.checkDomain
       this.dialogStatus2 = '新增'
       this.dialogFormVisible2 = true
     },

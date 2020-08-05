@@ -32,7 +32,7 @@
               </el-select>
             </el-form-item>
             <el-form-item v-if="searchForm.taskArea=='省交通运输厅领域'">
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod1">新增</el-button>
             </el-form-item>
             <el-form-item v-if="searchForm.taskArea=='省市场监管领域'">
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod2">新增</el-button>
@@ -45,9 +45,9 @@
           <el-table-column type="selection" width="55">
           </el-table-column>
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查主体" align="center" :formatter="sexFormat"></el-table-column>
-          <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
-          <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
+          <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
+          <el-table-column prop="checkStandard" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
@@ -70,8 +70,9 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查事项" align="center" :formatter="sexFormat"></el-table-column>
+          <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
+          <!-- <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column> -->
+          <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
           <!-- 字段 -->
           <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
@@ -101,7 +102,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
-                <el-select v-model="addForm.taskName" placeholder="请选择">
+                <el-select v-model="addForm.taskName" placeholder="请选择" @change="changeTaskName(1)">
                   <el-option v-for="item in optionsRWMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
@@ -117,7 +118,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查主体" prop="checkSubject">
-                <el-input v-model="addForm.checkSubject" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+                <el-input v-model="addForm.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -131,12 +132,18 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="操作人员" prop="operatePerson">
-                <el-input v-model="addForm.operatePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.operatePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="监督人员" prop="supervisePerson">
-                <el-input v-model="addForm.supervisePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.supervisePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -155,10 +162,10 @@
             </el-col>
           </el-row>
           <el-form-item label="抽查依据" prop="checkBasis">
-            <el-input v-model="addForm.checkBasis" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+            <el-input v-model="addForm.checkBasis" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
           </el-form-item>
           <el-form-item label="抽查内容" prop="checkContent">
-            <el-input v-model="addForm.checkContent" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+            <el-input v-model="addForm.checkContent" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
           </el-form-item>
           <el-form-item label="抽查标准" prop="checkStandard">
             <el-input v-model="addForm.checkStandard"></el-input>
@@ -176,8 +183,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="项/总数" prop="qualificationTime" label-width="70px">
-                <el-input v-model="addForm.qualificationTime"></el-input>
+              <el-form-item label="项/总数" prop="checkObjectNumAll" label-width="70px">
+                <el-input v-model="addForm.checkObjectNumAll" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -187,9 +194,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm.contactType"></el-input>
-                </el-date-picker>
+              <el-form-item label="人/总数" prop="checkPersonNum" label-width="70px">
+                <el-input v-model="addForm.checkPersonNum" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -199,8 +205,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm.contactType"></el-input>
+              <el-form-item label="人/总数" prop="checkExpertNum" label-width="70px">
+                <el-input v-model="addForm.checkExpertNum" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -234,8 +240,8 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
-                <el-select v-model="addForm2.taskName" placeholder="请选择">
-                  <el-option v-for="item in optionsRWMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-select v-model="addForm2.taskName" placeholder="请选择" @change="changeTaskName(2)">
+                  <el-option v-for="item in optionsRWMCJG" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -250,24 +256,32 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查主体" prop="checkSubject">
-                <el-input v-model="addForm2.checkSubject" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+                <el-input v-model="addForm2.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="检查方式" prop="checkMode">
-                <el-input v-model="addForm2.checkMode"></el-input>
+                <el-select v-model="addForm2.checkMode" multiple placeholder="请选择">
+                  <el-option v-for="item in optionsCCFS" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="操作人员" prop="operatePerson">
-                <el-input v-model="addForm2.operatePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.operatePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="监督人员" prop="supervisePerson">
-                <el-input v-model="addForm2.supervisePerson"></el-input>
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.supervisePerson" multiple filterable @change="changeAdmin">
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -284,7 +298,7 @@
             </el-col>
           </el-row>
           <el-form-item label="检查依据" prop="checkBasis">
-            <el-input v-model="addForm.checkBasis" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+            <el-input v-model="addForm2.checkBasis" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
           </el-form-item>
           <el-form-item label="检查范围" prop="checkRange">
             <el-input v-model="addForm2.checkRange"></el-input>
@@ -299,8 +313,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="项/总数" prop="qualificationTime" label-width="70px">
-                <el-input v-model="addForm2.qualificationTime"></el-input>
+              <el-form-item label="项/总数" prop="checkObjectNumAll" label-width="70px">
+                <el-input v-model="addForm2.checkObjectNumAll" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -310,8 +324,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm2.contactType"></el-input>
+              <el-form-item label="人/总数" prop="checkPersonNum" label-width="70px">
+                <el-input v-model="addForm2.checkPersonNum" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -321,8 +335,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm2.contactType"></el-input>
+              <el-form-item label="人/总数" prop="checkExpertNum" label-width="70px">
+                <el-input v-model="addForm2.checkExpertNum" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -355,8 +369,9 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, importTaskExcelApi } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, searchTaskDataApi, getCountByOrganNameApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
+import { findLawOfficerListApi } from "@/api/caseHandle";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -400,34 +415,97 @@ export default {
       dialogStatus: '',
       dialogStatus2: '',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        taskName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        // checkSubject: [
+        //   { required: true, message: "必填项", trigger: "change" }
+        // ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        operatePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        supervisePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObject: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        itemType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        timeList: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObjectNum: [
+          { required: true, message: "必填项", trigger: "change" },
+          // { type: 'number', message: '须为数字' }
+        ],
+        expertNum: [
+          { required: true, message: "必填项", trigger: "change" },
+          // { type: 'number', message: '须为数字' }
+        ],
+        lawEnforceNum: [
+          { required: true, message: "必填项", trigger: "change" },
+          // { type: 'number', message: '须为数字' }
+        ],
       },
       rules2: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        taskName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        // checkSubject: [
+        //   { required: true, message: "必填项", trigger: "change" }
+        // ],
+        checkItem: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        checkMode: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        operatePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        supervisePerson: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObject: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        itemType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        timeList: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkObjectNum: [
+          { required: true, message: "必填项", trigger: "change" },
+          // { type: 'number', message: '须为数字' }
+        ],
+        expertNum: [
+          { required: true, message: "必填项", trigger: "change" },
+          // { type: 'number', message: '须为数字' }
+        ],
+        lawEnforceNum: [
+          { required: true, message: "必填项", trigger: "change" },
+          // { type: 'number', message: '须为数字' }
+        ],
       },
       optionsZC: [],
       optionsZZMM: [],
       optionsZYLY: [],
       optionsCCSX: [],
       optionsRWMC: [],
+      optionsRWMCJG: [],
       optionsCCFS: [],
       optionsSSLB: [],
+      LawOfficerList: [],//执法人员列表
+      alreadyChooseAdminPerson: [],//已选择管理人员列表
     }
   },
   methods: {
@@ -451,7 +529,6 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName, type) {
@@ -461,7 +538,10 @@ export default {
         data.taskStartTime = data.timeList[0]
         data.taskEndTime = data.timeList[1]
       }
-      data.checkMode = data.checkMode ? data.checkMode.join(',') : ''
+      data.timeList = ''
+      data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
+      data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
+      data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -515,6 +595,10 @@ export default {
         data.taskStartTime = data.timeList[0]
         data.taskEndTime = data.timeList[1]
       }
+      data.timeList = ''
+      data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
+      data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
+      data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -527,7 +611,7 @@ export default {
                     type: "success",
                     message: res.msg
                   });
-                  this.dialogFormVisible = false
+                  this.dialogFormVisible2 = false
                   this.currentPage = 1;
                   this.getTableData()
                 }
@@ -567,11 +651,13 @@ export default {
     // 添加-弹窗
     addMethod1() {
       this.addForm.checkDomain = this.searchForm.taskArea
+      this.getCountByOrganName(1)
       this.addMethod()
     },
     // 添加-弹窗
     addMethod2() {
-      this.addForm.checkDomain = this.searchForm.taskArea
+      this.addForm2.checkDomain = this.searchForm.taskArea
+      this.getCountByOrganName(2)
       this.dialogStatus2 = '新增'
       this.dialogFormVisible2 = true
     },
@@ -581,7 +667,9 @@ export default {
         row.timeList[0] = row.taskStartTime
         row.timeList[1] = row.taskEndTime
       }
-      row.checkMode = row.checkMode?row.checkMode.split(','):''
+      row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
       this.editMethod(row)
     },
     // 修改
@@ -591,25 +679,78 @@ export default {
         row.timeList[0] = row.taskStartTime
         row.timeList[1] = row.taskEndTime
       }
-      row.checkMode = row.checkMode?row.checkMode.split(','):''
+      row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
       this.addForm2 = JSON.parse(JSON.stringify(row))
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
     },
-    // 导入
-    importModle(param) {
-      console.log(param);
-      // let currentFileId = this.currentFileId
-      var fd = new FormData()
-      fd.append("file", param.file);
-      importTaskExcelApi(fd).then(res => {
-        if (res.code === 200) {
-          this.$message({ type: "success", message: res.msg });
-          this.currentPage = 1;
-          this.getTableData()
+    // 获取机构下的人员
+    getPerson() {
+      findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(
+        res => {
+          this.LawOfficerList = res.data
+        },
+        error => {
+
+        })
+    },
+    changeAdmin() {
+      this.$forceUpdate()
+    },
+    changeTaskName(type) {
+      let _this = this
+      if (type == 1) {
+        let data = {
+          taskArea: this.searchForm.taskArea,
+          taskName: this.addForm.taskName
         }
+        searchTaskDataApi(data).then(
+          res => {
+            if (res.data) {
+              this.$set(_this.addForm, `checkBasis`, res.data.checkBasis||'');
+              this.$set(_this.addForm, `checkContent`, res.data.checkContent||'');
+              this.$set(_this.addForm, `checkSubject`, res.data.checkSubject||'');
+            }
+          },
+          error => {
+          })
+      } else {
+        let data = {
+          taskArea: this.searchForm.taskArea,
+          taskName: this.addForm2.taskName
+        }
+        searchTaskDataApi(data).then(
+          res => {
+            if (res.data) {
+              this.$set(_this.addForm2, `checkBasis`, res.data.checkBasis||'');
+              this.$set(_this.addForm2, `checkContent`, res.data.checkContent||'');
+              this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject||'');
+            }
+          },
+          error => {
+          })
       }
-      );
+    },
+    getCountByOrganName(type) {
+      let _this = this
+      let data = iLocalStroage.gets("userInfo").organName
+      getCountByOrganNameApi(data).then(
+        res => {
+          if (type == 1) {
+            this.$set(_this.addForm, `checkObjectNumAll`, res.data.checkObjectNum);
+            this.$set(_this.addForm, `checkPersonNum`, res.data.checkPersonNum);
+            this.$set(_this.addForm, `checkExpertNum`, res.data.checkExpertNum);
+          } else {
+            this.$set(_this.addForm2, `checkObjectNumAll`, res.data.checkObjectNum);
+            this.$set(_this.addForm2, `checkPersonNum`, res.data.checkPersonNum);
+            this.$set(_this.addForm2, `checkExpertNum`, res.data.checkExpertNum);
+          }
+        },
+        error => {
+
+        })
     },
     getDrawerList(data) {
 
@@ -623,6 +764,7 @@ export default {
               case 3: _this.optionsCCFS = res.data; break;//抽查方式
               case 4: _this.optionsCCSX = res.data; break;//抽查事项
               case 5: _this.optionsSSLB = res.data; break;//事项类别
+              case 6: _this.optionsRWMCJG = res.data; break;//任务名称-监管领域
             }
           },
 
@@ -642,7 +784,9 @@ export default {
       { name: '抽查方式', option: 3 },
       { name: '抽查事项', option: 4 },
       { name: '事项类别', option: 5 },
+      { name: '抽查类别', option: 6 },
     ])
+    this.getPerson()
   }
 }
 </script>

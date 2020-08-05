@@ -44,7 +44,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportObject')">导出所有对象</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -80,7 +80,7 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="统一社会信用代码" prop="socialCode">
+            <el-form-item label="统一社会信用代码" prop="socialCode" label-width="140px">
               <el-input v-model="addForm.socialCode"></el-input>
             </el-form-item>
           </el-col>
@@ -131,7 +131,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox organClass">
+        <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox-aline organClass">
           <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
             <div class="departOrUserTree" style="width:600px">
               <div class="treeBox">
@@ -157,6 +157,12 @@
         <el-form-item label="备注" prop="remark">
           <el-input type="textarea" v-model="addForm.remark"></el-input>
         </el-form-item>
+        <el-form-item prop="status">
+          <el-radio-group v-model="addForm.status">
+            <el-radio label="启用"></el-radio>
+            <el-radio label="停用"></el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -169,6 +175,7 @@
 import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode, importObjectExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinInspection],
   data() {
@@ -196,15 +203,27 @@ export default {
       formLabelWidth: '125px',
       dialogStatus: '',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        objectName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        projectName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        superviseType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        socialCode: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        idCard: [
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        contactNumber: [
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
       },
       optionsDXLX: [],
       optionsJGDW: [],
@@ -255,11 +274,10 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName) {
-      let _this=this
+      let _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = JSON.parse(JSON.stringify(_this.addForm))

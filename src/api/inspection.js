@@ -686,16 +686,80 @@ export function importPersonExcelApi(data) {
         cancelToken: setCancelSource(),
     });
 }
-// 导入任务
-export function importTaskExcelApi(data) {
+
+// 添导出所有专家表数据
+export function exportExpertApi() {
     return request({
-        url: "/xzjc/randomExpert/excelImport",
-        method: "POST",
-        data: data,
-        contentType: 'multipart/form-data;',
+        url: "/xzjc/randomExpert/excelExport",
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添导出所有对象表数据
+export function exportObjectApi() {
+    return request({
+        url: "/xzjc/randomObject/excelExport",
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添导出所有事项清单表数据
+export function exportItemApi() {
+    return request({
+        url: "/xzjc/randomItem/excelExport",
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添导出所有人员表数据
+export function exportPersonApi() {
+    return request({
+        url: "/xzjc/randomPerson/excelExport",
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+// 查询任务数据
+export function searchTaskDataApi(data) {
+    return request({
+        url: "/xzjc/randomTask/queryByTaskName",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//查询检查对象的数量、本机构下执法人员的数量、检查专家的数量
+export function getCountByOrganNameApi(data) {
+    return request({
+        url: "/xzjc/randomTask/getCountByOrganName/" + data,
+        method: "get",
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
-        cancelToken: setCancelSource(),
+        cancelToken: setCancelSource()
     });
 }
