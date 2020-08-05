@@ -1013,14 +1013,14 @@ export default {
           })
         } else if (item.type == '引用型') {
           item.type = 'input';
-          let classType='iconfont law-people'
+          let classType = 'iconfont law-people'
           if (item.field == 'staff') {
             this.LawName = item.id;// 执企业组织信息员字段名
           } else if (item.field == 'certificateId') {//执企业组织信息员账号字段名
             this.LawOfficerCard = item.id;
           } else if (item.field == 'caseCauseName') {
             this.iligalName = item.id;// 违法行为字段名
-            classType='iconfont law-sousuo'
+            classType = 'iconfont law-sousuo'
           }
           this.rule.push({
             type: 'input',
@@ -1218,11 +1218,21 @@ export default {
     submitFileData() {
 
     },
-    focusMethod(field){
-      debugger
+    focusMethod(field) {
+      // debugger
       // 特殊方法
       // field == 'staff' ? this.changeLaw : this.changeLawId
-      return this.changeIligalName
+      field == 'staff' ? this.changeLaw : this.changeLawId
+      if (field == 'staff') {
+        // 执法人员
+        return this.changeLaw
+      }else if (field == 'certificateId') {
+        // 执法人员证件号
+        return this.changeLawId
+      }else if (field == 'caseCauseName') {
+        // 违法行为
+        return this.changeIligalName
+      }
     }
   },
   mounted() {

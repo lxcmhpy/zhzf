@@ -32,7 +32,7 @@
               </el-select>
             </el-form-item>
             <el-form-item v-if="searchForm.taskArea=='省交通运输厅领域'">
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod1">新增</el-button>
             </el-form-item>
             <el-form-item v-if="searchForm.taskArea=='省市场监管领域'">
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod2">新增</el-button>
@@ -70,7 +70,8 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
+          <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
+          <!-- <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column> -->
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
           <!-- 字段 -->
@@ -175,6 +176,8 @@
           <el-form-item label="备注" prop="remark">
             <el-input v-model="addForm.remark"></el-input>
           </el-form-item>
+          {{addForm.checkPersonNum}}
+
           <el-row>
             <el-col :span="4">
               <el-form-item label="抽查对象数" prop="checkObjectNum">
@@ -182,8 +185,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="项/总数" prop="qualificationTime" label-width="70px">
-                <el-input v-model="addForm.qualificationTime"></el-input>
+              <el-form-item label="项/总数" prop="checkObjectNumAll" label-width="70px">
+                <el-input v-model="addForm.checkObjectNumAll" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -193,8 +196,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm.contactType"></el-input>
+              <el-form-item label="人/总数" prop="checkPersonNum" label-width="70px">
+                <el-input v-model="addForm.checkPersonNum" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -204,8 +207,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm.contactType"></el-input>
+              <el-form-item label="人/总数" prop="checkExpertNum" label-width="70px">
+                <el-input v-model="addForm.checkExpertNum" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -312,8 +315,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="项/总数" prop="qualificationTime" label-width="70px">
-                <el-input v-model="addForm2.qualificationTime"></el-input>
+              <el-form-item label="项/总数" prop="checkObjectNumAll" label-width="70px">
+                <el-input v-model="addForm2.checkObjectNumAll" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -323,8 +326,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm2.contactType"></el-input>
+              <el-form-item label="人/总数" prop="checkPersonNum" label-width="70px">
+                <el-input v-model="addForm2.checkPersonNum" disabled></el-input>
               </el-form-item>
             </el-col>
 
@@ -334,8 +337,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm2.contactType"></el-input>
+              <el-form-item label="人/总数" prop="checkExpertNum" label-width="70px">
+                <el-input v-model="addForm2.checkExpertNum" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -368,7 +371,7 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, searchTaskDataApi } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, searchTaskDataApi, getCountByOrganNameApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 import { mixinPerson } from "@/common/js/personComm";
@@ -527,7 +530,6 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName, type) {
@@ -537,12 +539,10 @@ export default {
         data.taskStartTime = data.timeList[0]
         data.taskEndTime = data.timeList[1]
       }
-      data.timeList=''
+      data.timeList = ''
       data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
-      debugger
-
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -596,7 +596,7 @@ export default {
         data.taskStartTime = data.timeList[0]
         data.taskEndTime = data.timeList[1]
       }
-      data.timeList=''
+      data.timeList = ''
       data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
@@ -652,11 +652,13 @@ export default {
     // 添加-弹窗
     addMethod1() {
       this.addForm.checkDomain = this.searchForm.taskArea
+      this.getCountByOrganName(1)
       this.addMethod()
     },
     // 添加-弹窗
     addMethod2() {
-      this.addForm.checkDomain = this.searchForm.taskArea
+      this.addForm2.checkDomain = this.searchForm.taskArea
+      this.getCountByOrganName(2)
       this.dialogStatus2 = '新增'
       this.dialogFormVisible2 = true
     },
@@ -716,6 +718,25 @@ export default {
       }
 
 
+    },
+    getCountByOrganName(type) {
+      let _this = this
+      let data = iLocalStroage.gets("userInfo").organName
+      getCountByOrganNameApi(data).then(
+        res => {
+          if (type == 1) {
+            this.$set(_this.addForm, `checkObjectNumAll`, res.data.checkObjectNum);
+            this.$set(_this.addForm, `checkPersonNum`, res.data.checkPersonNum);
+            this.$set(_this.addForm, `checkExpertNum`, res.data.checkExpertNum);
+          } else {
+            this.$set(_this.addForm2, `checkObjectNumAll`, res.data.checkObjectNum);
+            this.$set(_this.addForm2, `checkPersonNum`, res.data.checkPersonNum);
+            this.$set(_this.addForm2, `checkExpertNum`, res.data.checkExpertNum);
+          }
+        },
+        error => {
+
+        })
     },
     getDrawerList(data) {
 

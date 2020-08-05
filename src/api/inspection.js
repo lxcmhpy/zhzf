@@ -751,3 +751,15 @@ export function searchTaskDataApi(data) {
         cancelToken: setCancelSource()
     });
 }
+
+//查询检查对象的数量、本机构下执法人员的数量、检查专家的数量
+export function getCountByOrganNameApi(data) {
+    return request({
+        url: "/xzjc/randomTask/getCountByOrganName/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
