@@ -1,4 +1,4 @@
-import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise } from "@/api/lawSupervise.js";
+import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId } from "@/api/lawSupervise.js";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system.js";
 export default {
   methods: {
@@ -144,6 +144,38 @@ export default {
         mobile: node.mobile
       }
       this.$refs.Search.showCom = "Window4"
+    },
+
+    /**
+     * 获取非现场站点点位数据
+     */
+    getWindow5(data) {
+      this.searchWindowData.window5.info = data
+      const params = {
+        current: 1,
+        size: 5,
+        siteName: data.name
+      }
+      // 获取 Window5 表格数据
+      queryAlarmVehiclePage(params).then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("queryAlarmVehiclePage:::::接口错误")
+        }
+      }).then(data => {
+        this.searchWindowData.window5.data = data
+      })
+      // 获取图片数据
+      findImageByCaseId(data.id).then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("findImageByCaseId:::::接口错误")
+        }
+      }).then(data => {
+        this.searchWindowData.window5.imgList = data
+      })
     },
 
     /**

@@ -18,6 +18,7 @@
           :window2="config.window2"
           :window3="config.window3"
           :window4="config.window4"
+          :window5="config.window5"
           @handleNodeClick="handleNodeClick"
           @handlePerson="handlePerson"
         />
@@ -31,6 +32,7 @@ import Window1 from "./window1.vue";
 import Window2 from "./window2.vue";
 import Window3 from "./window3.vue";
 import Window4 from "./window4.vue";
+import Window5 from "./window5.vue";
 export default {
   provide() {
     return {
@@ -49,7 +51,8 @@ export default {
     Window1,
     Window2,
     Window3,
-    Window4
+    Window4,
+    Window5
   },
   data() {
     return {

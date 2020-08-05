@@ -65,6 +65,11 @@ export default {
           title: '',
           info: {}
         },
+        window5: {
+          imgList: [],
+          info: {},
+          data: {}
+        }
       },
       selectData: {
         organId: "",
@@ -189,6 +194,8 @@ export default {
       if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
         this.getTheOrganTree(data)
       } else if (data.type === 4) {
+        this.$refs.Search.showCom = "Window5"
+        this.getWindow5(data)
         console.log('hahahahahahaha')
       } else {
         // 显示弹出框
