@@ -679,7 +679,7 @@ export function deleteDocTypeApi(id) {
 export function getRequestListByModelIdApi(id) {
   return request({
     url: "/case/doc/caseRequestModel/findRequestListByModelId/"+id,
-    method: "post",
+    method: "GET",
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -713,7 +713,7 @@ export function deleteRequestApi(id) {
 export function getRequestModelListApi(data) {
   return request({
     url: "/case/doc/caseRequestModel/findByCondition",
-    method: "POST",
+    method: "GET",
     params: data,
     showloading: true,
     loadingType:'loadPart',
@@ -723,6 +723,7 @@ export function getRequestModelListApi(data) {
 
 //新增或修改问答模板
 export function saveOrUpdateRequestModelApi(data) {
+  console.log("111111",data)
   return request({
     url: "case/doc/caseRequestModel/create",
     method: "POST",
@@ -987,7 +988,7 @@ export function findRequestListByModelIdApi(modelId) {
   let data = vm.$qs.stringify({modelId: modelId})
   return request({
     url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelId,
-    method: "post",
+    method: "GET",
     data: data,
     showloading: true,
     loadingType: 'loadPart',
@@ -1069,7 +1070,7 @@ export function findModelListByModelTypeIdApi(modelTypeId) {
   return request({
     // url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelTypeId,
     url: "/case/doc/caseRequestModel/findModelListByModelTypeId/" + modelTypeId,
-    method: "post",
+    method: "GET",
     data: data,
     showloading: true,
     loadingType: 'loadPart',

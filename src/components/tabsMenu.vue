@@ -84,7 +84,6 @@ export default {
             this.$router.push({ name: routerName });
         }
       } else {
-        debugger;
         let targetNameIndex = targetName.split('#')[1];
         let activeArray = this.activeIndexSto.split('#');
         this.$store.commit("SET_ACTIVE_INDEX_STO", targetNameIndex > activeArray[1] ? this.activeIndexSto : activeArray[0]+'#'+(parseInt(activeArray[1])-1));

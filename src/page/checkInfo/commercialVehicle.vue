@@ -128,7 +128,6 @@ export default {
     getCheck(checkType) {
         let _this = this
         if(checkType==3){
-            debugger
             let json=[];
             let param={
                 vehicleNo:this.checkData.vehicleNo,

@@ -175,7 +175,6 @@
                         console.log('sadsdsf',this.$refs["addOrUpdateRouteForm"].resetFields())
                     })
                 } else if (type == 2) {
-                    debugger
                     console.log(data);
                     this.dialogTitle = "路线信息维护";
                     this.addOrUpdateRouteForm.routeName = data.routeName;

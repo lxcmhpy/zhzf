@@ -1207,7 +1207,6 @@ export default {
       this.fxcObj = row;
     },
     isCheckAll () {
-      debugger;
       let _this = this;
       if (this.radioVal == '全选') {
         this.radioVal = '取消全选';
@@ -1978,7 +1977,6 @@ export default {
       }
     },
     getBySiteId (id, obj) {
-      debugger
       let _this = this;
       new Promise((resolve, reject) => {
         getBySiteId(id).then(
@@ -1993,7 +1991,6 @@ export default {
       });
     },
     getBySiteName (obj) {
-      debugger
       let _this = this;
       new Promise((resolve, reject) => {
         queryAlarmVehiclePage({ current: 1, size: 5, siteName: obj.name }).then(
@@ -2008,7 +2005,6 @@ export default {
       });
     },
     getImageBySiteId (obj) {
-      debugger
       let _this = this;
       new Promise((resolve, reject) => {
         findImageByCaseId(obj.id).then(
@@ -2058,7 +2054,6 @@ export default {
         }
     }, */
     searchByTab (item) {
-      debugger;
       if (this.allSearchList.length == 0) {
         this.markers.splice(0, this.markers.length);
       }
@@ -2109,7 +2104,6 @@ export default {
 
     },
     searchAll (pois) {
-      debugger;
       this.markers.splice(0, this.markers.length);
       if (this.curWindow) {
         this.curWindow.visible = false;

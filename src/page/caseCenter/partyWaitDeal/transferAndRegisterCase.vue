@@ -329,7 +329,6 @@ export default {
     },
     routerDetail(row) {
     //   this.$store.commit('setOffSiteManageId', row.id);
-    debugger;
     this.tabActiveValue = this.processStatus[this.tabActiveIndex].value;
       this.$router.push({
         name: 'law_center_dentails-index',

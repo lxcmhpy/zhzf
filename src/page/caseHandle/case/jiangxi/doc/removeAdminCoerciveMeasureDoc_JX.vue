@@ -424,7 +424,6 @@ export default {
     },
     //确定添加
     addResSure(formName) {
-      debugger
       let canAdd = true;
       console.log("添加数据", this.tableDatas.length)
       if (this.tableDatas.length == 0) {

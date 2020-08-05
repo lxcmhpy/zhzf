@@ -97,7 +97,6 @@ export default {
       //接收到消息的回调方法
       websocket.onmessage = function (event) {
         console.log('收到消息', event)
-        debugger
         setMessageInnerHTML(event.data);
       }
 
@@ -167,7 +166,6 @@ export default {
         // _this.storagePath = 'http://172.16.170.54:9332/8,2067302d4168'
         // _this.storagePath = 'http://124.192.215.10:9332/14,20cb17801f2b'
         console.log('_this.storagePath', _this.storagePath)
-        debugger
         var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.storagePath
         // var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=http://172.16.170.54:9332/14,205ca69bdf11"
         console.log(ActivexURL);
@@ -196,7 +194,6 @@ export default {
       this.$emit('saveData', handleType);
     },
     saveDataBtn(handleType) {
-      debugger
       if (handleType == 1 || handleType == 0) {
         // 保存
         // 隐藏保存、签章按钮，显示撤销、删除按钮
@@ -247,7 +244,6 @@ export default {
       );
     },
     delDataBtn() {
-      debugger
       delDocumentById(this.inspectionFileId).then(
         res => {
           if (res.code == 200) {

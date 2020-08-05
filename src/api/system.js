@@ -149,10 +149,6 @@ export  function  addUserApi(data)  {
 }
 //用户管理   修改用户
 export function updateUserApi(data) {
-  debugger
-  console.log('用户', vm.$qs.stringify(data));
-  console.log(data);
-
   return request({
     url: "/system/sys/user/updateUser",
     method: "POST",
@@ -683,22 +679,24 @@ export function getOrganNotInCaseNumberApi() {
   });
 }
 
+export function getCaseNumberByIdApi(id) {
+  return request({
+    url: "/case/doc/caseNumber/findById/"+id,
+    method: "get",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //新增 修改 案件编号配置
 export function addCaseNumberApi(data) {
-  let caseNumberForm = {
-    id: data.id,
-    organId: data.organId,
-    organName: data.organName,
-    caseWord: data.caseWord,
-    digit: data.digit,
-    onlineNumberStart: data.onlineNumberStart
-  };
-  console.log('添加字典', caseNumberForm)
-  let data2 = vm.$qs.stringify(caseNumberForm);
+  console.log('添加案号', data)
+  data = vm.$qs.stringify(data);
   return request({
     url: "/case/doc/caseNumber/create",
     method: "post",
-    data: data2,
+    data: data,
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -1204,7 +1202,6 @@ export function getCaseCauseListVoApi(data) {
 
 //删除路产配置
 export function deleteRoadLcDeployApi(id) {
-  debugger
   return request({
     url: "/case/road/roadLcDeploy/delete/"+id,
     method: "get",

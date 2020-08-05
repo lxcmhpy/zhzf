@@ -101,7 +101,6 @@ export default {
       var files = input.files;
       let nickname = iLocalStroage.gets("userInfo").nickName;
       let userId = iLocalStroage.gets("userInfo").id;
-      debugger;
       var fs = [];
       for (var i = 0; i < files.length; i++) {
         var file = files[i];

@@ -90,7 +90,6 @@ export default {
       this.$refs.dialog.showModal("case", [data]);
     },
     handleCaseData(data) {
-      debugger;
       console.log("绑定案件信息:" + data);
       this.caseData = data;
     },

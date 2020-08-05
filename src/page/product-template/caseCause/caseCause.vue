@@ -156,7 +156,6 @@ export default {
       this.$refs.addCaseCauseRef.showModal(2,newRow);
     },
     deleteCaseCause(id){
-      debugger
       this.$confirm("确认删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

@@ -360,7 +360,6 @@ export default {
           if (organData.enforcementOrgan2) {
             _this.enforcementOptions.push(organData.enforcementOrgan2)
           }
-          debugger
           //默认显示
           _this.formData.reconsiderationOrgan =_this.formData.reconsiderationOrgan?_this.formData.reconsiderationOrgan:_this.reconsiderationOptions[0];
           _this.formData.litigationOrgan =_this.formData.litigationOrgan?_this.formData.litigationOrgan:_this.enforcementOptions[0];

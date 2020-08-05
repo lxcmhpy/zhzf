@@ -192,7 +192,6 @@ export default {
       this.$refs.dialog.showModal(type, [data]);
     },
     async handleCaseData(data) {
-      debugger;
       this.caseIds = [];
       let that = this;
       data.forEach((item) => {
@@ -207,7 +206,6 @@ export default {
       this.getData(this.form.propertyInvolved.id);
     },
     async handleWayData(data) {
-      debugger;
       let that = this;
       data.ids = this.form.propertyInvolved.id;
       data.disposePersonId = iLocalStroage.gets("userInfo").id;
@@ -225,7 +223,6 @@ export default {
     },
   },
   mounted() {
-    debugger;
     if (this.$route.params.id) {
       this.getData(this.$route.params.id);
     }
