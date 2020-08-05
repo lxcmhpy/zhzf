@@ -5,10 +5,13 @@
         <div class="search toggleBox">
           <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
-              <el-form-item label="名称" prop='taskName'>
+              <el-form-item label="任务名称" prop='taskName'>
                 <el-input v-model="searchForm.taskName"></el-input>
               </el-form-item>
               <el-form-item label="抽查主体" prop='checkSubject'>
+                <el-input v-model="searchForm.checkSubject"></el-input>
+              </el-form-item>
+              <el-form-item label="检查类型" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
             </el-form>
@@ -26,7 +29,7 @@
         <div class="search" style="width:100%">
           <el-form :inline="true">
             <el-form-item label="任务领域" prop='taskArea'>
-              <el-select v-model="searchForm.taskArea" placeholder="请选择" @change="resetSearchData('searchForm')">
+              <el-select v-model="searchForm.taskArea" placeholder="请选择">
                 <el-option label="省交通运输厅领域" value="省交通运输厅领域"></el-option>
                 <el-option label="省市场监管领域" value="省市场监管领域"></el-option>
               </el-select>
@@ -45,9 +48,10 @@
           <el-table-column type="selection" width="55">
           </el-table-column>
           <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查主体" align="center" :formatter="sexFormat"></el-table-column>
+          <el-table-column prop="itemType" label="对象名称" align="center"></el-table-column>
+          <el-table-column prop="itemType" label="项目名称" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
-          <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
@@ -56,12 +60,13 @@
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
-          <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查状态" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查评价" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查结果" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod(scope.row)" type="text">查看详情</el-button>
-              <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
+              <el-button @click="editMethod(scope.row)" type="text">附件管理</el-button>
+              <el-button @click="checkMethod(scope.row)" type="text">检查</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -71,24 +76,25 @@
           <el-table-column type="selection" width="55">
           </el-table-column>
           <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查事项" align="center" :formatter="sexFormat"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
           <!-- 字段 -->
           <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
-          <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
-          <el-table-column prop="checkBasis" label="检查依据" align="center"></el-table-column>
+          <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column><!-- 显示模板标题 -->
+          <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
-          <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查状态" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查评价" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查结果" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod(scope.row)" type="text">查看详情</el-button>
-              <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
+              <el-button @click="editMethod(scope.row)" type="text">附件管理</el-button>
+              <el-button @click="checkMethod(scope.row)" type="text">检查</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -96,150 +102,30 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog :title='dialogStatus+"省交通运输厅领域任务"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
-        <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="任务名称" prop="taskName">
-                <el-select v-model="addForm.taskName" placeholder="请选择">
-                  <el-option v-for="item in optionsRWMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="抽查事项" prop="checkItem">
-                <el-select v-model="addForm.checkItem" placeholder="请选择">
-                  <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="检查主体" prop="checkSubject">
-                <el-input v-model="addForm.checkSubject" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="检查方式" prop="checkMode">
-                <el-select v-model="addForm.checkMode" multiple placeholder="请选择">
-                  <el-option v-for="item in optionsCCFS" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="操作人员" prop="operatePerson">
-                <el-input v-model="addForm.operatePerson"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="监督人员" prop="supervisePerson">
-                <el-input v-model="addForm.supervisePerson"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="检查对象" prop="checkObject">
-                <el-input v-model="addForm.checkObject"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="事项类别" prop="itemType">
-                <el-select v-model="addForm.itemType" placeholder="请选择">
-                  <el-option v-for="item in optionsSSLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="抽查依据" prop="checkBasis">
-            <el-input v-model="addForm.checkBasis" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
-          </el-form-item>
-          <el-form-item label="抽查内容" prop="checkContent">
-            <el-input v-model="addForm.checkContent" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
-          </el-form-item>
-          <el-form-item label="抽查标准" prop="checkStandard">
-            <el-input v-model="addForm.checkStandard"></el-input>
-          </el-form-item>
-          <el-form-item label="检查范围" prop="checkRange">
-            <el-input v-model="addForm.checkRange"></el-input>
-          </el-form-item>
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="addForm.remark"></el-input>
-          </el-form-item>
-          <el-row>
-            <el-col :span="4">
-              <el-form-item label="抽查对象数" prop="checkObjectNum">
-                <el-input v-model="addForm.checkObjectNum"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <el-form-item label="项/总数" prop="qualificationTime" label-width="70px">
-                <el-input v-model="addForm.qualificationTime"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="4">
-              <el-form-item label="执法人员" prop="lawEnforceNum">
-                <el-input v-model="addForm.lawEnforceNum"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm.contactType"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="4">
-              <el-form-item label="专家" prop="expertNum">
-                <el-input v-model="addForm.expertNum"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm.contactType"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <!-- <el-row>
-            <el-col :span="12">
-              <el-form-item label="专业领域" prop="taskArea">
-                <el-select v-model="addForm.taskArea" placeholder="请选择">
-                  <el-option v-for="item in optionsZYLY" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="E-mail" prop="email">
-                <el-input v-model="addForm.email"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row> -->
-          <el-form-item label="抽查时限" prop="remark">
-            <el-date-picker v-model="addForm.remark" type="daterange" range-separator="至">
-            </el-date-picker>
-          </el-form-item>
-        </el-form>
+      <el-dialog title="上传附件" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+        <div class="search-btns">
+          <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button> -->
+          <el-button size="medium" class="commonBtn searchBtn" @click="searchTableData()">添加附件</el-button>
+          <!-- <el-button size="medium" class="commonBtn searchBtn" >开始上传</el-button> -->
+        </div>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="submitForm('addForm',0)">暂存</el-button>
           <el-button type="primary" @click="submitForm('addForm',1)">保存</el-button>
         </div>
       </el-dialog>
-      <el-dialog :title='dialogStatus2+"省市场监管领域任务"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
+      <el-dialog title="检查" :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
         <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
           <el-row>
             <el-col :span="12">
-              <el-form-item label="任务名称" prop="taskName">
+              <el-form-item label="检查人员" prop="taskName">
                 <el-select v-model="addForm2.taskName" placeholder="请选择">
                   <el-option v-for="item in optionsRWMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="抽查事项" prop="checkItem">
+              <el-form-item label="检查专家" prop="checkItem">
                 <el-select v-model="addForm2.checkItem" placeholder="请选择">
                   <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
@@ -248,100 +134,35 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="检查主体" prop="checkSubject">
+              <el-form-item label="检查评价" prop="checkSubject">
                 <el-input v-model="addForm2.checkSubject" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="检查方式" prop="checkMode">
-                <el-input v-model="addForm2.checkMode"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="操作人员" prop="operatePerson">
-                <el-input v-model="addForm2.operatePerson"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="监督人员" prop="supervisePerson">
-                <el-input v-model="addForm2.supervisePerson"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="检查对象" prop="checkItem">
-                <el-input v-model="addForm2.checkItem"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="事项类别" prop="itemType">
-                <el-input v-model="addForm2.itemType"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="检查依据" prop="checkBasis">
-            <el-input v-model="addForm.checkBasis" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
-          </el-form-item>
-          <el-form-item label="检查范围" prop="checkRange">
-            <el-input v-model="addForm2.checkRange"></el-input>
-          </el-form-item>
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="addForm2.remark"></el-input>
-          </el-form-item>
-          <el-row>
-            <el-col :span="4">
-              <el-form-item label="抽查对象数" prop="checkObjectNum">
-                <el-input v-model="addForm2.checkObjectNum"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <el-form-item label="项/总数" prop="qualificationTime" label-width="70px">
-                <el-input v-model="addForm2.qualificationTime"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="4">
-              <el-form-item label="执法人员" prop="lawEnforceNum">
-                <el-input v-model="addForm2.lawEnforceNum"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm2.contactType"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="4">
-              <el-form-item label="专家" prop="expertNum">
-                <el-input v-model="addForm2.expertNum"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="4">
-              <el-form-item label="人/总数" prop="fixedTelephone" label-width="70px">
-                <el-input v-model="addForm2.contactType"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <!-- <el-row>
-            <el-col :span="12">
-              <el-form-item label="专业领域" prop="taskArea">
-                <el-select v-model="addForm.taskArea" placeholder="请选择">
-                  <el-option v-for="item in optionsZYLY" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              <el-form-item label="抽查结果" prop="checkMode">
+                <el-select v-model="searchForm.checkMode" placeholder="请选择" >
+                  <el-option label="合格" value="合格"></el-option>
+                  <el-option label="不合格" value="不合格"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-row>
             <el-col :span="12">
-              <el-form-item label="E-mail" prop="email">
-                <el-input v-model="addForm.email"></el-input>
+              <el-form-item label="检查开始时间" prop="operatePerson">
+                <el-date-picker v-model="addForm2.operatePerson" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
+                </el-date-picker>
               </el-form-item>
             </el-col>
-          </el-row> -->
-          <el-form-item label="抽查时限" prop="remark">
-            <el-date-picker v-model="addForm2.remark" type="daterange" range-separator="至">
+            <el-col :span="12">
+              <el-form-item label="检查结束时间" prop="supervisePerson">
+                 <el-date-picker v-model="addForm2.operatePerson" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="评价内容" prop="remark">
+            <el-input v-model="addForm2.remark"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -354,7 +175,7 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi,} from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -445,6 +266,13 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log('multipleSelection', this.multipleSelection)
+    },
+
+    resetForm(formName) {
+    //   this.$refs[formName].resetFields();
+    //   this.searchForm.defaultDisplay = true
+    //   // debugger
+    //   this.getTableData()
     },
 
     resetSearchData(formName) {
@@ -570,9 +398,13 @@ export default {
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
     },
+    checkMethod(row) {
+      this.addForm2 = JSON.parse(JSON.stringify(row))
+      this.dialogStatus2 = '修改'
+      this.dialogFormVisible2 = true
+    },
 
     getDrawerList(data) {
-
       let _this = this
       data.forEach(element => {
         getDictListDetailByNameApi(element.name).then(

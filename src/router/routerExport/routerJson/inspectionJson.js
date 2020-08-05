@@ -134,6 +134,16 @@ export default  [
                 },
                 component: () => import("@/page/inspection/doubly-stochastic/task-manage/taskManage.vue")
             },
+            {
+                // 任务管理
+                path: "/checkResult",
+                name: "inspection_checkResult",
+                meta: {
+                title: "检查结果",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/doubly-stochastic/check-result/checkResult.vue")
+            },
         ]
     }, 
 ]

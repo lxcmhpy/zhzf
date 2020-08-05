@@ -169,6 +169,7 @@
 import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode, importObjectExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { validatePhone,validateIDNumber  } from "@/common/js/validator";
 export default {
   mixins: [mixinInspection],
   data() {
@@ -207,6 +208,12 @@ export default {
         ],
         socialCode: [
           { required: true, message: "必填项", trigger: "change"}
+        ],
+        idCard: [
+          { validator:validateIDNumber , trigger: "blur" }
+        ],
+        contactNumber: [
+          { validator:validatePhone , trigger: "blur" }
         ],
       },
       optionsDXLX: [],

@@ -221,6 +221,7 @@ import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { validatePhone,validateIDNumber  } from "@/common/js/validator";
 export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
@@ -274,6 +275,12 @@ export default {
         ],
         name: [
           { required: true, message: "必填项", trigger: "change" }
+        ],
+        contactType: [
+         { validator:validatePhone , trigger: "blur" }
+        ],
+        fixedTelephone: [
+         { validator:validatePhone , trigger: "blur" }
         ],
       },
       optionsZC: [],

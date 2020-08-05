@@ -739,3 +739,15 @@ export function exportPersonApi() {
         cancelToken: setCancelSource()
     });
 }
+
+// 查询任务数据
+export function searchTaskDataApi(data) {
+    return request({
+        url: "/xzjc/randomTask/queryRandomTask",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

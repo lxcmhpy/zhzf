@@ -62,7 +62,7 @@
           <el-table-column type="selection" width="55">
           </el-table-column>
           <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查主体" align="center" :formatter="sexFormat"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
