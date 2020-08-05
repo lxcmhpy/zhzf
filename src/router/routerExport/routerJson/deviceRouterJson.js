@@ -55,5 +55,26 @@ export default  [
           title: "回收管理"
         },
         component: () => import("@/page/device/device-bill/recoveryBillManage.vue")
+    },
+    // 装备弹窗组件(zhjt)
+    {
+      name: "deviceComponts",
+      path: "/device-componts",
+      meta: { title: "装备组件" },
+      component: () => import("@/page/device/components/index.vue")
+    },
+    // 车辆基本信息(zhjt)
+    {
+      name: "equipmentDetail",
+      path: "/equipment-detail",
+      meta: { title: "装备信息" },
+      component: () => import("@/page/device/components/equipmentDetail/equipmentDetail.vue")
+    },
+    // 发证申请(zhjt)
+    {
+      name: "applyCertificate",
+      path: "/apply-certificate",
+      meta: { title: "发证申请" },
+      component: () => import("@/page/device/components/applyManage/applyManage.vue")
     }
 ]
