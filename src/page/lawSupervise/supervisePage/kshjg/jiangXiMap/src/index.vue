@@ -223,7 +223,7 @@ export default {
       this.personClick(node)
     },
   },
-  created() {
+  activated() {
     this.getTree()
   }
 }
