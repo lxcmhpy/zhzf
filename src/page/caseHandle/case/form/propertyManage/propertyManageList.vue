@@ -209,7 +209,6 @@ export default {
         this.$refs.dialog.showModal(type,this.multipleSelection);
     },
     async handleCaseData(data){
-        debugger;
         this.caseIds = [];
         this.propertyIds = [];
         let that = this;
@@ -228,7 +227,6 @@ export default {
         this.getDataList({});
     },
     async handleWayData(data){
-        debugger;
         this.propertyIds = [];
         let that = this;
         this.multipleSelection.forEach(item => {
@@ -267,7 +265,6 @@ export default {
         queryProperty(data).then(
               res => {
                   _this.total = res.data.total;
-                  debugger
                   _this.tableData = res.data.records;
               },
               error => {

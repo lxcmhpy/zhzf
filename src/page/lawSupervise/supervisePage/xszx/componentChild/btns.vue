@@ -210,7 +210,6 @@ export default {
         new Promise((resolve, reject) => {
             transerCase(_this.obj.id).then(
                 res => {
-                    debugger;
                     _this.zlaVisible = true;
                     // _this.$store.commit('setCaseId','f205736182a36d9fd0574fa75eb30a30');
                     /* _this.$store.commit('setCaseId',res.data.id);

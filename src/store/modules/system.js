@@ -804,7 +804,6 @@ const system = {
         //获取所有流程
         getAllFlow(data) {
             console.log('getdata',data)
-            debugger
             return new Promise((resolve, reject) => {
                 getAllFlowApi(data).then(
                     res => {

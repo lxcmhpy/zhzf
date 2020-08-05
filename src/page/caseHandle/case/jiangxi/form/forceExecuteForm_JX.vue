@@ -261,7 +261,6 @@
     },
     data() {
       var validatePaid = (rule, value, callback) => {
-        debugger
         // value = value.replace("\"","");
         //去除字符串两边的引号
         // value = value.substring(1, value.length-1);

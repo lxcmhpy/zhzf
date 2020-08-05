@@ -98,7 +98,6 @@ export default {
     addOrEdit() {
       // debugger
       let _this = this;
-      debugger;
       if (_this.handelType == "0") {
         saveOrUpdateRequestApi(_this.addRequest).then(
           res => {

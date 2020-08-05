@@ -142,7 +142,6 @@ export default {
   mixins: [mixinGetCaseApiList],
   methods: {
         handleSelectionChange(row,index) {
-            debugger;
             // this.multipleSelection.push(row);
             // this.$set(this.tableData,index,row); 
             let flag = this.multipleSelection.findIndex((element)=>(element.id == row.id));

@@ -299,7 +299,6 @@ export default {
       });
     },
     validateScore(row){
-        debugger;
       var re = /^[0-9]([0-9])*$/;
       if (!re.test(row.score)){
           row.score='';

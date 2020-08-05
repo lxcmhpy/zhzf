@@ -561,7 +561,6 @@ export default {
      */
     handleChangePaidAmount(val) {
       let tempPunishAmount = ''
-      debugger;
       if(this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
         tempPunishAmount = Number(this.totalMoney)
       } else {
@@ -578,7 +577,6 @@ export default {
      * 代缴金额为0时,执行情况为已完成
      */
     handleChangeToPayAmount(val) {
-      debugger
       if (!val) {
         this.formData.performance = '已完成';
       } else {

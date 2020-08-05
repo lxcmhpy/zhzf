@@ -76,7 +76,6 @@ export function relieve(data) {
 
 //财物处理
 export function dispose(data) {
-  debugger;
   return request({
     url: "/case/property/involved/dispose",
     method: "post",

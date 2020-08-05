@@ -249,11 +249,9 @@ export default {
           _this.defautFileList = res.data.attachedList
           // 设置文件按钮是否可用
           _this.fileEiditFlag = res.data.status == '保存' ? true : false
-          debugger
           if (res.data.createUser == iLocalStroage.gets("userInfo").nickName) {
             this.$store.commit("set_inspection_fileEdit", _this.fileEiditFlag);
           } else {
-            debugger
             this.$store.commit("set_inspection_fileEdit", false);
           }
         },
@@ -336,11 +334,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.fileForm.fileSaveType)
-          debugger
           this.fileVisible = false
           this.saveRecord(this.fileForm.fileSaveType)
         } else {
-
           return false;
         }
       });
@@ -425,7 +421,6 @@ export default {
           // console.log(res)
           if (res.code == 200) {
             this.addOrEiditFlag = 'view'
-            debugger
             this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
             this.$message({
               type: "success",

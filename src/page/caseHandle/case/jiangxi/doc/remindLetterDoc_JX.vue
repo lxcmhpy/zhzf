@@ -113,13 +113,13 @@
                 ></el-date-picker>
               </el-form-item>对你（单位）作出了《代履行决定书》，决定书编号为
               <el-form-item
-                :prop="lawDisabled?'':'caseNumberCopy1'"
+                :prop="lawDisabled?'':'performNumber'"
                 class="pdf_datapick"
                 style="width:140px"
-                :rules="fieldRules('caseNumberCopy1',propertyFeatures['caseNumberCopy1'])"
+                :rules="fieldRules('performNumber',propertyFeatures['performNumber'])"
               >
                 <el-input
-                  v-model="docData.caseNmuberCopy1"
+                  v-model="docData.performNumber"
                   v-bind:disabled="lawDisabled"
                   :maxLength="maxLength"
                 ></el-input>
@@ -281,7 +281,7 @@ export default {
         decidedTime: "",
         caseNumberCopy: "",
         punishContent: "",
-        caseNmuberCopy1: "",
+        performNumber: "",
         fulfillSub: "",
         fulfillLimit: "",
         fulfillWay: "",
@@ -301,7 +301,7 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       decidedTime: "",
-      caseNmuberCopy1: "",
+      performNumber: "",
       illegalFactsEvidence: "",
       value1: "",
       rules: {
@@ -417,7 +417,7 @@ export default {
     },
     checkTrue() {
       this.docData.decidedTime = "";
-      this.docData.caseNmuberCopy1 = "";
+      this.docData.performNumber = "";
       if ( this.docData.checkLaw.length > 1) {
          this.docData.checkLaw.shift();
       }
@@ -425,6 +425,7 @@ export default {
         this.lawDisabled = true;
       }else{
         this.lawDisabled = false;
+        this.docData.performNumber = this.performNumber;
       }
     },
     click() {
@@ -448,8 +449,8 @@ export default {
       if(this.docData.decidedTime != ""){
       this.decidedTime = this.docData.decidedTime;
       }
-      if(this.docData.caseNmuberCopy1 != ""){
-      this.caseNmuberCopy1 = this.docData.caseNmuberCopy1;
+      if(this.docData.performNumber != ""){
+      this.performNumber = this.docData.performNumber;
       }
       
     },

@@ -263,7 +263,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = JSON.parse(JSON.stringify(_this.addForm))
-          debugger
           data.adminDivision = _this.addForm.adminDivision.join(',')
           // data.adminDivision = this.addForm.adminDivision[2]
           addInspectionObjectApi(data).then(
@@ -345,7 +344,6 @@ export default {
     editClick(row) {
       let data = JSON.parse(JSON.stringify(row))
       data.adminDivision = data.adminDivision.split(',')
-      debugger
       this.editMethod(data)
     },
     handleChange(value) {

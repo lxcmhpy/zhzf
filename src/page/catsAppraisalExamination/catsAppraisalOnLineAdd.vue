@@ -283,7 +283,6 @@ export default {
             updateScore(row).then(
                 res => {
                     let sum = 0
-                    debugger
                     this.form.pykhScoreDetailsVos.forEach(function(item){
                          sum += parseInt(item.twoSore===null?'0':item.twoSore)
                     })
