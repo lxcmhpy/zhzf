@@ -229,16 +229,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.jiangXiMap {
-  &-tree {
-    position: absolute;
-    top: 70px;
-    left: 30px;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .jiangXiMap {
   width: 100%;
