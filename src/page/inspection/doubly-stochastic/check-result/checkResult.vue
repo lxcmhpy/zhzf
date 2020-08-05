@@ -108,6 +108,19 @@
           <el-button size="medium" class="commonBtn searchBtn" @click="searchTableData()">添加附件</el-button>
           <!-- <el-button size="medium" class="commonBtn searchBtn" >开始上传</el-button> -->
         </div>
+        <el-table :data="fileList" stripe style="width: 100%" height="100%">
+          <el-table-column type="index" width="50"></el-table-column>
+          <el-table-column prop="fileName" label="文件名称" align="center"></el-table-column>
+          <el-table-column prop="fileName" label="上传者" align="center"></el-table-column>
+          <el-table-column prop="fileName" label="大小" align="center"></el-table-column>
+          <el-table-column label="操作" align="center" width="200px">
+            <template slot-scope="scope">
+              <el-button @click="getFileStream(scope.row.storageId)" type="text">查看</el-button>
+              <el-button @click="delFileMethod(scope.row.storageId)" type="text">删除</el-button>
+              <el-button @click="downLoadMethod(scope.row.storageId)" type="text">下载</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="submitForm('addForm',0)">暂存</el-button>
@@ -166,18 +179,32 @@
           </el-form-item>
         </el-form>
         <el-table :data="fileList" stripe style="width: 100%" height="100%">
-          <el-table-column prop="checkType" label="文件名称" align="center"></el-table-column>
+          <el-table-column type="index" width="50"></el-table-column>
+          <el-table-column prop="fileName" label="文件名称" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">查看</el-button>
-              <el-button @click="checkMethod(scope.row)" type="text">下载</el-button>
+              <el-button @click="getFileStream(scope.row.storageId)" type="text">查看</el-button>
+              <el-button @click="downLoadMethod(scope.row.storageId)" type="text">下载</el-button>
             </template>
           </el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm2('addForm2',0)">暂存</el-button>
-          <el-button type="primary" @click="submitForm2('addForm2',1)">保存</el-button>
+          <el-button type="primary" @click="submitForm('addForm2',1)">确定</el-button>
+        </div>
+      </el-dialog>
+      <el-dialog :visible.sync="pdfVisible" :close-on-click-modal="false" width="800px" append-to-body>
+        <div>
+          <div style="height:auto;">
+            <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+            <div lazy id="myPdfBOx">
+              <!-- <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="mlList" type="application/pdf" internalinstanceid="29">
+                </object> -->
+              <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
+            </div>
+          </div>
         </div>
       </el-dialog>
     </div>
@@ -188,6 +215,7 @@ import { addTaskApi, getDictListDetailByNameApi, } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { getFileStreamByStorageIdApi } from "@/api/caseHandle";
 import { downLoadCommon, deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 export default {
   mixins: [mixinPerson, mixinInspection],
@@ -258,7 +286,12 @@ export default {
       optionsRWMC: [],
       optionsCCFS: [],
       optionsSSLB: [],
-      fileList: []
+      fileList: [{
+        fileName: '测试文件.pdf',
+        storageId: '14,25762fd66a3e'
+      }],
+      pdfVisible: false,
+      pdfUrl: ''
     }
   },
   methods: {
@@ -271,7 +304,8 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      this.getPageList("getAllTask", data);
+      // this.getPageList("getAllTask", data);
+      this.tableData = [{}]
     },
     // 选择数据
     handleSelectionChange(val) {
@@ -413,6 +447,79 @@ export default {
       this.addForm2 = JSON.parse(JSON.stringify(row))
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
+    },
+    viewMethod() { },
+    delFileMethod(storageId) {
+      this.$confirm('确认删除？', "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        deleteFileByIdApi(storageId).then(
+          res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+            }
+          },
+          error => {
+            console.log(error)
+          }
+        );
+      })
+
+    },
+    downLoadMethod(row) {
+      // 这里传fileStorageid
+      getDictListDetailByNameApi(row.storageId).then(
+        res => {
+          // 接收数据需未blob格式
+          //其他浏览器
+          let link = document.createElement('a'); // 创建a标签
+          link.style.display = 'none';
+          link.setAttribute('download', '检查专家表.xls')//必须要重命名
+          let objectUrl = URL.createObjectURL(res);
+          link.href = objectUrl;
+          link.click();
+          URL.revokeObjectURL(objectUrl);
+        },
+      ).catch(err => { console.log(err); throw new Error(err) })
+    },
+    //根据stroagId请求文件流
+    getFileStream(storageId) {
+      //设置地址
+      getFileStreamByStorageIdApi(storageId).then(res => {
+        // getFileStreamByStorageIdApi('12,13ac7d04e13f').then(res=>{
+
+        console.log(res);
+        this.getObjectURL(res);
+      }).catch(err => {
+        console.log(err);
+      })
+    },
+    // 将返回的流数据转换为url
+    getObjectURL(file) {
+      let url = null;
+      if (window.createObjectURL != undefined) { // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) { // webkit or chrome
+        try {
+          url = window.webkitURL.createObjectURL(file);
+        } catch (error) {
+
+        }
+      } else if (window.URL != undefined) { // mozilla(firefox)
+        try {
+          url = window.URL.createObjectURL(file);
+        } catch (error) {
+
+        }
+      }
+
+      this.pdfUrl = url;
+      this.pdfVisible = true
     },
 
     getDrawerList(data) {
