@@ -140,7 +140,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="抽查结果" prop="checkMode">
-                <el-select v-model="searchForm.checkMode" placeholder="请选择" >
+                <el-select v-model="searchForm.checkMode" placeholder="请选择">
                   <el-option label="合格" value="合格"></el-option>
                   <el-option label="不合格" value="不合格"></el-option>
                 </el-select>
@@ -150,14 +150,14 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查开始时间" prop="operatePerson">
-                <el-date-picker v-model="addForm2.operatePerson" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
+                <el-date-picker v-model="addForm2.operatePerson" type="date" value-format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="检查结束时间" prop="supervisePerson">
-                 <el-date-picker v-model="addForm2.operatePerson" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
-            </el-date-picker>
+                <el-date-picker v-model="addForm2.operatePerson" type="date" value-format="yyyy-MM-dd">
+                </el-date-picker>
               </el-form-item>
             </el-col>
           </el-row>
@@ -165,6 +165,15 @@
             <el-input v-model="addForm2.remark"></el-input>
           </el-form-item>
         </el-form>
+        <el-table :data="fileList" stripe style="width: 100%" height="100%">
+          <el-table-column prop="checkType" label="文件名称" align="center"></el-table-column>
+          <el-table-column label="操作" align="center" width="200px">
+            <template slot-scope="scope">
+              <el-button @click="editMethod(scope.row)" type="text">查看</el-button>
+              <el-button @click="checkMethod(scope.row)" type="text">下载</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible2 = false">取 消</el-button>
           <el-button type="primary" @click="submitForm2('addForm2',0)">暂存</el-button>
@@ -179,6 +188,7 @@ import { addTaskApi, getDictListDetailByNameApi, } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { downLoadCommon, deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
@@ -248,6 +258,7 @@ export default {
       optionsRWMC: [],
       optionsCCFS: [],
       optionsSSLB: [],
+      fileList: []
     }
   },
   methods: {
@@ -269,10 +280,10 @@ export default {
     },
 
     resetForm(formName) {
-    //   this.$refs[formName].resetFields();
-    //   this.searchForm.defaultDisplay = true
-    //   // debugger
-    //   this.getTableData()
+      //   this.$refs[formName].resetFields();
+      //   this.searchForm.defaultDisplay = true
+      //   // debugger
+      //   this.getTableData()
     },
 
     resetSearchData(formName) {

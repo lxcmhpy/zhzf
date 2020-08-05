@@ -47,7 +47,7 @@
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
-          <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
+          <el-table-column prop="checkStandard" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
@@ -101,8 +101,8 @@
         <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
           <el-row>
             <el-col :span="12">
-              <el-form-item label="任务名称" prop="taskName" @change="changeTaskName(1)">
-                <el-select v-model="addForm.taskName" placeholder="请选择">
+              <el-form-item label="任务名称" prop="taskName">
+                <el-select v-model="addForm.taskName" placeholder="请选择" @change="changeTaskName(1)">
                   <el-option v-for="item in optionsRWMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
@@ -118,7 +118,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查主体" prop="checkSubject">
-                <el-input v-model="addForm.checkSubject" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+                <el-input v-model="addForm.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -162,10 +162,10 @@
             </el-col>
           </el-row>
           <el-form-item label="抽查依据" prop="checkBasis">
-            <el-input v-model="addForm.checkBasis" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+            <el-input v-model="addForm.checkBasis" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
           </el-form-item>
           <el-form-item label="抽查内容" prop="checkContent">
-            <el-input v-model="addForm.checkContent" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+            <el-input v-model="addForm.checkContent" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
           </el-form-item>
           <el-form-item label="抽查标准" prop="checkStandard">
             <el-input v-model="addForm.checkStandard"></el-input>
@@ -176,8 +176,6 @@
           <el-form-item label="备注" prop="remark">
             <el-input v-model="addForm.remark"></el-input>
           </el-form-item>
-          {{addForm.checkPersonNum}}
-
           <el-row>
             <el-col :span="4">
               <el-form-item label="抽查对象数" prop="checkObjectNum">
@@ -241,9 +239,9 @@
         <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
           <el-row>
             <el-col :span="12">
-              <el-form-item label="任务名称" prop="taskName" @change="changeTaskName(2)">
-                <el-select v-model="addForm2.taskName" placeholder="请选择">
-                  <el-option v-for="item in optionsRWMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              <el-form-item label="任务名称" prop="taskName">
+                <el-select v-model="addForm2.taskName" placeholder="请选择" @change="changeTaskName(2)">
+                  <el-option v-for="item in optionsRWMCJG" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -258,7 +256,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查主体" prop="checkSubject">
-                <el-input v-model="addForm2.checkSubject" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+                <el-input v-model="addForm2.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -300,7 +298,7 @@
             </el-col>
           </el-row>
           <el-form-item label="检查依据" prop="checkBasis">
-            <el-input v-model="addForm2.checkBasis" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+            <el-input v-model="addForm2.checkBasis" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
           </el-form-item>
           <el-form-item label="检查范围" prop="checkRange">
             <el-input v-model="addForm2.checkRange"></el-input>
@@ -503,6 +501,7 @@ export default {
       optionsZYLY: [],
       optionsCCSX: [],
       optionsRWMC: [],
+      optionsRWMCJG: [],
       optionsCCFS: [],
       optionsSSLB: [],
       LawOfficerList: [],//执法人员列表
@@ -701,23 +700,38 @@ export default {
       this.$forceUpdate()
     },
     changeTaskName(type) {
+      let _this = this
       if (type == 1) {
-        searchTaskDataApi(this.addForm.taskName).then(
+        let data = {
+          taskArea: this.searchForm.taskArea,
+          taskName: this.addForm.taskName
+        }
+        searchTaskDataApi(data).then(
           res => {
+            if (res.data) {
+              this.$set(_this.addForm, `checkBasis`, res.data.checkBasis||'');
+              this.$set(_this.addForm, `checkContent`, res.data.checkContent||'');
+              this.$set(_this.addForm, `checkSubject`, res.data.checkSubject||'');
+            }
           },
           error => {
-
           })
       } else {
-        searchTaskDataApi(this.addForm2.taskName).then(
+        let data = {
+          taskArea: this.searchForm.taskArea,
+          taskName: this.addForm2.taskName
+        }
+        searchTaskDataApi(data).then(
           res => {
+            if (res.data) {
+              this.$set(_this.addForm2, `checkBasis`, res.data.checkBasis||'');
+              this.$set(_this.addForm2, `checkContent`, res.data.checkContent||'');
+              this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject||'');
+            }
           },
           error => {
-
           })
       }
-
-
     },
     getCountByOrganName(type) {
       let _this = this
@@ -750,6 +764,7 @@ export default {
               case 3: _this.optionsCCFS = res.data; break;//抽查方式
               case 4: _this.optionsCCSX = res.data; break;//抽查事项
               case 5: _this.optionsSSLB = res.data; break;//事项类别
+              case 6: _this.optionsRWMCJG = res.data; break;//任务名称-监管领域
             }
           },
 
@@ -769,6 +784,7 @@ export default {
       { name: '抽查方式', option: 3 },
       { name: '抽查事项', option: 4 },
       { name: '事项类别', option: 5 },
+      { name: '抽查类别', option: 6 },
     ])
     this.getPerson()
   }

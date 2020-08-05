@@ -99,5 +99,15 @@ export function uploadCommon(data) {
     cancelToken:  setCancelSource(),
   });
 }
+//文件下载接口
+export function downLoadCommon(data) {
+  return  request({
+    url:  "/case/sys/file/download/"+data,
+    method:  "GET",
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken:  setCancelSource(),
+  });
+}
 
 
