@@ -1,5 +1,5 @@
 {
-  "CURRENT": "WC",
+  "CURRENT": "JXW",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -96,7 +96,7 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.50:9000/",
+    "XZJC_HOST":"http://172.16.170.50:9000",
     "EXAM":"http://59.110.216.138:9050"
   },
   "JXW": {
