@@ -743,7 +743,7 @@ export function exportPersonApi() {
 // 查询任务数据
 export function searchTaskDataApi(data) {
     return request({
-        url: "/xzjc/randomTask/queryRandomTask",
+        url: "/xzjc/randomTask/queryByTaskName",
         method: "get",
         params: data,
         showloading: true,

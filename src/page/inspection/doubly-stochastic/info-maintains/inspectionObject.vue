@@ -157,6 +157,12 @@
         <el-form-item label="备注" prop="remark">
           <el-input type="textarea" v-model="addForm.remark"></el-input>
         </el-form-item>
+        <el-form-item prop="status">
+          <el-radio-group v-model="addForm.status">
+            <el-radio label="启用"></el-radio>
+            <el-radio label="停用"></el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -169,7 +175,7 @@
 import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode, importObjectExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
-import { validatePhone,validateIDNumber  } from "@/common/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinInspection],
   data() {
@@ -198,22 +204,25 @@ export default {
       dialogStatus: '',
       rules: {
         objectName: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         projectName: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         superviseType: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         socialCode: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         idCard: [
-          { validator:validateIDNumber , trigger: "blur" }
+          { validator: validateIDNumber, trigger: "blur" }
         ],
         contactNumber: [
-          { validator:validatePhone , trigger: "blur" }
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
       },
       optionsDXLX: [],
@@ -265,15 +274,13 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName) {
-      let _this=this
+      let _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = JSON.parse(JSON.stringify(_this.addForm))
-          debugger
           data.adminDivision = _this.addForm.adminDivision.join(',')
           // data.adminDivision = this.addForm.adminDivision[2]
           addInspectionObjectApi(data).then(
@@ -355,7 +362,6 @@ export default {
     editClick(row) {
       let data = JSON.parse(JSON.stringify(row))
       data.adminDivision = data.adminDivision.split(',')
-      debugger
       this.editMethod(data)
     },
     handleChange(value) {
