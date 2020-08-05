@@ -164,6 +164,7 @@ export default {
       },
       partyNameTitle: '',
       parsonNameTitle: '',
+      iligalName: '',//违法行为
     }
   },
   computed: {
@@ -1012,6 +1013,15 @@ export default {
           })
         } else if (item.type == '引用型') {
           item.type = 'input';
+          let classType='iconfont law-people'
+          if (item.field == 'staff') {
+            this.LawName = item.id;// 执企业组织信息员字段名
+          } else if (item.field == 'certificateId') {//执企业组织信息员账号字段名
+            this.LawOfficerCard = item.id;
+          } else if (item.field == 'caseCauseName') {
+            this.iligalName = item.id;// 违法行为字段名
+            classType='iconfont law-sousuo'
+          }
           this.rule.push({
             type: 'input',
             field: item.id || item.field,//id用于传值，field用于预览
@@ -1030,21 +1040,18 @@ export default {
             children: [
               {
                 type: 'i',
-                class: 'iconfont law-people',
+                class: classType,
                 slot: 'suffix',
 
               }
             ],
             inject: true,
             on: {
-              'focus': item.field == 'staff' ? this.changeLaw : this.changeLawId
+              'focus': this.focusMethod(item.field)
             },
           })
-          if (item.field == 'staff') {
-            this.LawName = item.id;// 执企业组织信息员字段名
-          } else if (item.field == 'certificateId') {//执企业组织信息员账号字段名
-            this.LawOfficerCard = item.id;
-          }
+
+
         }
 
         if (item.field == 'party') {
@@ -1127,6 +1134,12 @@ export default {
       //选择执企业组织信息员
       this.$refs.chooseLawPersonIdRef.showModal(this.alreadyChooseLawPersonId);
     },
+    // 搜索违法行为
+    changeIligalName(inject) {
+      console.log(`选择违法行为`);
+      console.log(`blur: ${inject.self.title}`);
+      console.log(`blur: ${inject.self.field}`);
+    },
     // 选择当事人类型
     changePersonParty(inject) {
       this.personFieldList = JSON.parse(JSON.stringify(this.defaultPersonFieldList))
@@ -1205,6 +1218,12 @@ export default {
     submitFileData() {
 
     },
+    focusMethod(field){
+      debugger
+      // 特殊方法
+      // field == 'staff' ? this.changeLaw : this.changeLawId
+      return this.changeIligalName
+    }
   },
   mounted() {
     console.log('id', this.$route.params.id)
