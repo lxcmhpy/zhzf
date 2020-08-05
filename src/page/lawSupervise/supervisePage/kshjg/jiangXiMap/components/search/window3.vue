@@ -1,7 +1,7 @@
 <template>
   <div class="search-window3">
-    <header>
-      <span>{{title}}</span>
+    <header class="search-window3-header">
+      <span class="headerText">{{title}}</span>
       <span class="goBack" @click="handleGoBack">返回</span>
     </header>
     <div class="search-window3-contant">
@@ -13,12 +13,12 @@
         <span>人员在线情况</span>
       </div>
       <div class="peopleOnline">
-        <div
-          class="circleName"
-          v-for="(item,index) of list"
-          :key="index"
-          @click="handlePerson(item)"
-        >{{item.nickName}}</div>
+        <div class="circleName" v-for="(item,index) of list" :key="index">
+          <div
+            class="flexCircle"
+            @click="handlePerson(item)"
+          >{{item.nickName}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -67,38 +67,39 @@ export default {
 <style lang="scss">
 .search-window3 {
   height: 350px;
-  overflow: auto;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  background: #FFFFFF;
+  background: #46aaff;
   box-sizing: border-box;
-  header {
-    border-radius: 4px 4px 0 0;
-    width: 100%;
-    height: 46px;
-    background: #46aaff;
+  &-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    box-sizing: border-box;
-    span {
+    color: #ffffff;
+    height: 46px;
+    .headerText {
+      line-height: 46px;
       font-size: 14px;
       font-weight: 400;
-      color: #ffffff;
       font-family: Helvetica,Arial,sans-serif;
+      margin-left: 15px;
     }
     .goBack {
+      line-height: 46px;
       font-size: 13px;
       cursor: pointer;
+      margin-right: 15px;
     }
   }
   &-contant {
-    width: 100%;
+    height: 304px;
+    background: #FFFFFF;
+    border-radius: 0 0 4px 4px;
     box-sizing: border-box;
     padding: 15px;
+    overflow: auto;
     .contantInfo {
-      line-height: 20px;
+      line-height: 30px;
       color: #7b7b7b;
       font-size: 14px;
     }
@@ -106,12 +107,11 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      img {
-        margin: 5px 0;
-      }
+      margin: 10px 0 10px 0;
       span {
         color: #7b7b7b;
         font-size: 14px;
+        margin-left: 5px;
       }
     }
     .peopleOnline {
@@ -119,17 +119,24 @@ export default {
       justify-content: flex-start;
       flex-wrap: wrap;
       .circleName {
-        // margin-right: 10px;
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
+        box-sizing: border-box;
+        padding: 10px;
         text-align: center;
-        line-height: 40px;
-        border-radius: 50%;
-        background:#00adb5;
-        color: #fff;
-        font-weight: 400;
-        font-size: 12px;
-        cursor: pointer;
+        line-height: 50px;
+        .flexCircle {
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+          text-align: center;
+          line-height: 40px;
+          border-radius: 50%;
+          background:#00adb5;
+          color: #fff;
+          font-weight: 400;
+          font-size: 12px;
+        }
       }
     }
   }

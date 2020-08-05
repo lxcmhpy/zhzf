@@ -98,6 +98,8 @@ export default {
   position: absolute;
   top: 20px;
   left: 30px;
+  width: 369px;
+  box-sizing: border-box;
   .input-with-select {
     margin-bottom: 5px;
     .el-input__inner {
@@ -117,9 +119,6 @@ export default {
       line-height: 40px;
       cursor: pointer;
     }
-  }
-  &-mainBox {
-
   }
 }
 </style>
