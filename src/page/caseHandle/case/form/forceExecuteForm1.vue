@@ -250,7 +250,6 @@
     },
     data() {
       var validatePaid = (rule, value, callback) => {
-        debugger
         // value = value.replace("\"","");
         //去除字符串两边的引号
         // value = value.substring(1, value.length-1);
@@ -377,21 +376,17 @@
 
       // 判断文书是否完成
       isComplete() {
-        debugger
         // this.unfinishFlag = '';
 //        console.log('强制类型:', this.formData.forceType)
         if (this.formData.forceType==='强制执行') {
           // 强制执行书必做
-           debugger
 //          console.log(this.docTableDatas)
           let flag = true
           this.docTableDatas.forEach(element => {
             if (element.name == '行政强制执行决定书【2016】') {
-               debugger
               // this.unfinishFlag = '行政强制执行决定书';
 //              console.log('lement.status,element.status', element.status)
               if (element.status == 0) {
-                 debugger
                 // this.unfinishFlag = '行政强制执行决定书';
 //                console.log('执行')
                 let caseData = {}
@@ -408,7 +403,6 @@
       },
 
       isComplete2(){
-        debugger
         // this.unfinishFlag = '';
 //        console.log('强制类型:', this.formData.forceType)
         if (this.formData.forceType==='代履行') {
@@ -417,9 +411,7 @@
 //          console.log(this.docTableDatas)
           this.docTableDatas.forEach(element => {
             if (element.name == '代履行决定书【2016】') {
-               debugger
               if (element.status == 0) {
-                 debugger
                 // this.unfinishFlag = '代履行决定书';
 //                console.log('this.unfinishFlag', this.unfinishFlag)
                 let caseData = {}
@@ -554,7 +546,6 @@
 
 
       setMoreDocTableTitle() {
-        debugger
 //        console.log("djhafiufh执行方法")
         this.docTableDatas = [];
         this.allAskDocList = [];

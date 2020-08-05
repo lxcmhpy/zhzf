@@ -131,7 +131,6 @@ export const mixinGetCaseApiList = {
         this.$refs[docForm].validate((valid, noPass) => {
           if (valid) {
             console.log('通过')
-            debugger;
             this.$store.dispatch("addFormData", this.caseLinkDataForm).then(
               res => {
                 console.log("保存表单", res);

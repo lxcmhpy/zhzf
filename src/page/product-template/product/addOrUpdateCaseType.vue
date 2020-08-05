@@ -11,9 +11,6 @@
         <el-form-item label="案件类型名称" prop="typeName">
           <el-input v-model="addOrUpdateCaseTypeForm.typeName"></el-input>
         </el-form-item>
-        <el-form-item label="案件字" prop="caseTypeKey">
-          <el-input v-model="addOrUpdateCaseTypeForm.caseTypeKey"></el-input>
-        </el-form-item>
         <el-form-item label="所属流程名称" prop="bindProcessName">
            <el-select v-model="addOrUpdateCaseTypeForm.bindProcessName" placeholder="请选择">
               <el-option v-for="item in processList" :key="item.id" :label="item.flowName" :value="item.id"></el-option>
@@ -49,7 +46,6 @@ export default {
       visible: false,
       addOrUpdateCaseTypeForm: {
         typeName: "",
-        caseTypeKey: "",
         bindProcessName:"",
         programType: "",
         status: ""
@@ -58,7 +54,6 @@ export default {
         typeName: [{ required: true, message: "请输入案件类型名称", trigger: "blur" }],
         programType : [{ required: true, message: "请选择程序类型", trigger: "blur" }],
         status : [{ required: true, message: "请选择状态", trigger: "blur" }],
-        caseTypeKey : [{ required: true, message: "请输入案件字", trigger: "blur" }],
       },
       dialogTitle: "", //弹出框title
       handelType: 0, //添加 0  修改2
@@ -95,7 +90,6 @@ export default {
         this.dialogTitle = "修改案件类型";
         this.addOrUpdateCaseTypeForm.typeName = data.typeName;
         this.addOrUpdateCaseTypeForm.bindProcessName = data.bindProcessName;
-        this.addOrUpdateCaseTypeForm.caseTypeKey = data.caseTypeKey;
         this.addOrUpdateCaseTypeForm.programType = data.programType;
         this.addOrUpdateCaseTypeForm.status = data.status;
         this.editCaseTypeId = data.id;
@@ -112,7 +106,6 @@ export default {
     },
     //新增案件类型 修改案件类型
     addOrUpdateCaseType(formName) {
-      debugger
       let _this = this
       this.$refs[formName].validate(valid => {
         if (valid) {

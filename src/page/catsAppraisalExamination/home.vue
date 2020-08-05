@@ -194,7 +194,6 @@ export default {
         },
         //获取公告信息
         getNotices() {
-            debugger;
             let data = {
                 current: this.currentPage++,
                 size: this.pageSize
@@ -223,7 +222,6 @@ export default {
         },
         //查看公告信息
         viewNotice(row) {
-          debugger;
             if(row.noticeType==="附件"){
                 let routerData = {
                     storageId: row.storageId
@@ -267,7 +265,6 @@ export default {
         }
     },
     mounted () {
-        debugger;
         this.userInfo = iLocalStroage.gets('userInfo');
         // this.$store.dispatch("deleteTabs", this.$route.name);
         this.getNotices()

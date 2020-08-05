@@ -823,7 +823,6 @@ export default {
     },
     //确定添加
     addResSure(formName) {
-      debugger
       let canAdd = true;
       if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {

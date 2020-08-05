@@ -1450,7 +1450,6 @@
       },
       //查询自由裁量标准
       findJudgFreedomList(caseCauseId) {
-        debugger
         let data ={};
         let someCaseInfo = iLocalStroage.gets("someCaseInfo");
         if(someCaseInfo){
@@ -2139,7 +2138,6 @@
     },
 
     mounted() {
-      debugger;
       // 事务中心跳转
       let overWeightCaseData = iLocalStroage.gets("overWeightCaseData")
       console.log('事务中心', overWeightCaseData)

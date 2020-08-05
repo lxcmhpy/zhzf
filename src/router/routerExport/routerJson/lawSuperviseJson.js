@@ -27,6 +27,7 @@ export default  [
         meta: {
           title: "江西可视化地图",
           oneTab:true,
+          keepAlive: true
         },
         component: () => import("@/page/lawSupervise/supervisePage/kshjg/jiangXiMap"),
       }

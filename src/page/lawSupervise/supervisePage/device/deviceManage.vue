@@ -457,7 +457,7 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       formatDeviceType (row) {
         let data = this.typeData.filter(p=>p.code==row.deviceType)
-        if(data){
+        if(data && data.length>0){
           return data[0].name
         }
         return ''
