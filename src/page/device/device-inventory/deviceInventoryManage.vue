@@ -556,7 +556,7 @@
             },
             formatStatus(row) {
                 let data = this.statusList.filter(p=>p.id==row.status)
-                if(data){
+                if(data && data.length>0){
                     return data[0].label
                 }
                 return ''

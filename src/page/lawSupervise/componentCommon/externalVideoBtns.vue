@@ -49,7 +49,7 @@ export default {
             // 语音呼叫
             // setTimeout(function(){
             //     // window.PhoneCallModule.sipAudioCall("100006","ecds04");
-                window.PhoneCallModule.sipAudioCall("100013","ecds05");
+                window.PhoneCallModule.sipAudioCall("1003","ecds05");
             //     // window.PhoneCallModule.sipAudioCall("100001","app01");
             //     // window.PhoneCallModule.sipAudioCall("100013","app02");
             //     // window.PhoneCallModule.sipAudioCall("100009","pad02");
@@ -61,7 +61,7 @@ export default {
             // window.PhoneCallModule.sipRegister();
             // setTimeout(function(){
             //     // window.PhoneCallModule.sipVideoCall("100006","ecds04");
-                window.PhoneCallModule.sipVideoCall("100013","ecds05");
+                window.PhoneCallModule.sipVideoCall("1003","ecds05");
             //     // window.PhoneCallModule.sipVideoCall("100001","app01");
             //     // window.PhoneCallModule.sipVideoCall("100013","app02");
             //     // window.PhoneCallModule.sipVideoCall("100009","pad02");
