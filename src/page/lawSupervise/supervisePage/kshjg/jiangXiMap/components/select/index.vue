@@ -121,12 +121,17 @@ export default {
 
 <style lang="scss">
 .jk-mapSelect {
+  position: absolute;
+  top: 20px;
+  right: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 417px;
-  height: 46px;
+  width: 350px;
+  height: 40px;
   background: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  border-radius: 4px;
   &-box {
     flex: 1;
     height: 100%;

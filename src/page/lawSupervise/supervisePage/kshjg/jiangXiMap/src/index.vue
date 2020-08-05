@@ -1,43 +1,31 @@
 <template>
   <div class="jiangXiMap">
-    <JkControlsMap
-      @init="init"
-      @handleChange="handleChange"
-      @handleSearch="handleSearch"
-      @handleShowSearch="handleShowSearch"
-      @handleCommand="handleCommand"
-      @handleClose="showComp = ''"
-      :config="config"
-      :center="center"
+    <JkBaseHMap @init="init" :center="center" />
+    <Search
+      ref="Search"
+      :config="searchWindowData"
+      @handleNodeClick="handleNodeClick"
+      @handlePerson="handlePerson"
     />
-    <keep-alive>
-      <component
-        :is="showComp"
-        :class="showComp==='JkMapTree'?'jiangXiMap-tree':null"
-        :config="showComp==='JkMapTree'?treeData:showComp==='MapWinDow'?windowData:personData"
-        @handleNodeClick="handleNodeClick"
-        @handleButton="handleButton"
-        @handleGoBack="handleGoBack"
-        @handlePerson="handlePerson"
-        @handlePersonGoBack="() => {showComp='JkMapTree'}"
-      />
-    </keep-alive>
+    <Select
+      :config="selectData"
+      @handleChange="handleChange"
+      @handleCommand="handleCommand"
+    />
   </div>
 </template>
 
 <script>
-import JkControlsMap from "@/components/jk-controlsMap";
-import JkMapTree from "@/components/jk-mapTree";
-import MapWinDow from "./mapWindow.vue";
-import PersonWindow from "./personWindow.vue";
-import store from "../store.js"
+import JkBaseHMap from "@/components/jk-baseHMap";
+import Search from "../components/search/index.vue";
+import Select from "../components/select/index.vue";
+import store from "../store.js";
 export default {
   mixins: [store],
   components: {
-    JkControlsMap,
-    JkMapTree,
-    MapWinDow,
-    PersonWindow
+    JkBaseHMap,
+    Search,
+    Select
   },
   data() {
     return {
@@ -48,73 +36,77 @@ export default {
         [3, '/static/images/img/lawSupervise/map_cbo.png'],
         [4, '/static/images/img/lawSupervise/map_o_gud.png'],
       ]), // 各类型所对应的点位图标
-      showComp: "",
       page: null, // 地图组件的 this
       map: null,
       zoom: 8,
       center: [12118909.300259633, 4086043.1061670054],
-      personData: {
-        title: '',
-        info: {}
-      },
-      windowData: {
-        title: "",
-        info: {},
-        option: []
-      },
-      treeData: {
-        option: [],
-      },
-      config: {
-        searchData: {
+      searchWindowData: {
+        window1: {
           title: "专题查询",
-          placeholder: "搜执法人员、执法机构",
-          option: [
+          list: [
+            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
             { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
           ]
         },
-        popoverData: {
-          organId: "",
-          option: [
-            {
-              title: "西安市",
-              imgUrl: "/static/images/img/lawSupervise/area.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
+        window2: {
+          defaultProps: {
+            children: 'children',
+            label: 'label'
+          },
+          option: []
+        },
+        window3: {
+          title: "",
+          info: {},
+          option: []
+        },
+        window4: {
+          title: '',
+          info: {}
+        },
+      },
+      selectData: {
+        organId: "",
+        option: [
+          {
+            title: "西安市",
+            imgUrl: "/static/images/img/lawSupervise/area.png",
+            options: [
+              {
+                value: 'xian',
+                label: '西安市',
+                children: [{
+                  value: 'yanta',
+                  label: '雁塔区',
                   children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
+                    value: 'gaoxin',
+                    label: '高新区',
                   }]
-                },
-                {
-                  value: ' ',
-                  label: '全国',
-                }
-              ]
-            },
-            {
-              title: "图层",
-              imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
-              options: [
-                {name: '执法人员', type: 0},
-                {name: '执法机构', type: 1},
-                {name: '执法车辆', type: 2},
-                {name: '执法船舶', type: 3},
-                {name: '非现场站点', type: 4},
-              ]
-            },
-            {
-              title: "全屏",
-              imgUrl: "/static/images/img/lawSupervise/qp.png",
-            }
-          ]
-        }
+                }]
+              },
+              {
+                value: ' ',
+                label: '全国',
+              }
+            ]
+          },
+          {
+            title: "图层",
+            imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
+            options: [
+              {name: '执法人员', type: 0},
+              {name: '执法机构', type: 1},
+              {name: '执法车辆', type: 2},
+              {name: '执法船舶', type: 3},
+              {name: '非现场站点', type: 4},
+            ]
+          },
+          {
+            title: "全屏",
+            imgUrl: "/static/images/img/lawSupervise/qp.png",
+          }
+        ]
       }
     }
   },
@@ -155,21 +147,6 @@ export default {
     },
 
     /**
-     * 点击当前专题图片，下钻到树形结构窗口
-     */
-    handleSearch(data) {
-      this.showComp = "JkMapTree"
-      console.log(data)
-    },
-
-    /**
-     * 点击头部输入栏触发
-     */
-    handleShowSearch() {
-      this.showComp = ''
-    },
-
-    /**
      * 点击节点回调函数
      * 1.如果当前节点是路政局，则获取路政局数据、地图打点
      * 2.如果当前节点是自定义节点，发送请求获取子节点数据
@@ -188,12 +165,12 @@ export default {
         // 添加点位图标
         data.imgUrl = this.imgUrl.get(data.type)
         // 显示弹出框
-        this.personData.title = data.label
-        this.personData.info = {
+        this.searchWindowData.window4.title = data.label
+        this.searchWindowData.window4.info = {
           organName: data.organName || '',
           mobile: data.mobile || ''
         }
-        this.showComp = "PersonWindow"
+        this.$refs.Search.showCom = "Window4"
         // 如果有点位，则打点，否则抛出异常
         if(data.propertyValue) {
           let latLng = data.propertyValue.split(',')
@@ -215,21 +192,14 @@ export default {
         console.log('hahahahahahaha')
       } else {
         // 显示弹出框
-        this.personData.title = data.nickName
-        this.personData.info = {
+        this.searchWindowData.window4.title = data.nickName
+        this.searchWindowData.window4.info = {
           organName: data.organName || '',
           mobile: data.mobile || ''
         }
-        this.showComp = "PersonWindow"
+        this.$refs.Search.showCom = "Window4"
       }
       console.log(data)
-    },
-
-    /**
-     * 点击返回
-     */
-    handleGoBack() {
-      this.showComp = "JkMapTree"
     },
 
     /**
@@ -237,13 +207,6 @@ export default {
      */
     handleChange(value) {
       console.log(value)
-    },
-
-    /**
-     * 点击查询按钮触发
-     */
-    handleButton(data) {
-      console.log(data)
     },
 
     /**

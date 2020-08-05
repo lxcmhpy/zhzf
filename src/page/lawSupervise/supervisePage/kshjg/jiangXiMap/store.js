@@ -13,8 +13,8 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
-        this.config.popoverData.organId = data[0].id
-        this.treeData.option = this.addNode(data)
+        this.selectData.organId = data[0].id
+        this.searchWindowData.window2.option = this.addNode(data)
       })
     },
 
@@ -97,7 +97,7 @@ export default {
           throw new Error("getOrganDetail():::::::接口数据错误")
         }
       }).then(data => {
-        this.windowData = {
+        this.searchWindowData.window3 = {
           title: node.label,
           info: {
             address: data.address,
@@ -123,8 +123,9 @@ export default {
           throw new Error("getOrganTree()::::::接口数据错误")
         }
       }).then(data => {
-        this.windowData.option = data
-        this.showComp = "MapWinDow"
+        this.searchWindowData.window3.list = data
+        // 打开弹框
+        this.$refs.Search.showCom = "Window3"
       })
     },
 
@@ -137,12 +138,12 @@ export default {
       node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
       this.page.addPoint(node, latLng)
       // 显示弹出框
-      this.personData.title = node.nickName
-      this.personData.info = {
+      this.searchWindowData.window4.title = node.nickName
+      this.searchWindowData.window4.info = {
         organName: node.organName,
         mobile: node.mobile
       }
-      this.showComp = "PersonWindow"
+      this.$refs.Search.showCom = "Window4"
     },
 
     /**
@@ -157,7 +158,7 @@ export default {
         }
       } else {
         param = {
-          organId: this.config.popoverData.organId,
+          organId: this.selectData.organId,
           type: type
         }
       }
