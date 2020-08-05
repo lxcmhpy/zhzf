@@ -727,9 +727,9 @@ export function exportItemApi() {
     });
 }
 // 添导出所有人员表数据
-export function exportPersonApi() {
+export function exportPersonApi(data) {
     return request({
-        url: "/xzjc/randomPerson/excelExport",
+        url: "/xzjc/randomPerson/excelExport/"+data,
         method: "post",
         // data: data,
         showloading: true,

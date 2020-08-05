@@ -52,7 +52,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportItem')">导出所有事项清单</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportItem','事项清单表.xls')">导出所有事项清单</el-button>
             </el-form-item>
           </div>
         </el-form>

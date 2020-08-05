@@ -16,13 +16,14 @@
                 </el-option>
               </el-select> -->
               <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
-                <el-option label="是" value="是"></el-option>
-                <el-option label="否" value="否"></el-option>
+                <el-option label="在岗" value="在岗"></el-option>
+                <el-option label="离岗" value="离岗"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
           <div class="search-btns">
             <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
+            <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="resetSearchData('searchForm')"></el-button>
             <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
             </el-button>
           </div>
@@ -52,7 +53,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" type="primary" @click="exportMethod('exportPerson')">导出所有人员</el-button>
+              <el-button size="medium" type="primary" @click="exportMethod('检查人员表.xls')">导出所有人员</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -247,8 +248,8 @@
         </el-row>
         <el-form-item label="是否在岗" prop="stationStatusName">
           <el-radio-group v-model="addForm.stationStatusName">
-            <el-radio label="是"></el-radio>
-            <el-radio label="否"></el-radio>
+            <el-radio label="在岗">是</el-radio>
+            <el-radio label="离岗">否</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="其他情况" prop="remark">
@@ -269,11 +270,11 @@
   </div>
 </template>
 <script>
-import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi, importPersonExcelApi } from "@/api/inspection";
+import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi, importPersonExcelApi, exportPersonApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
-import { validatePhone,validateIDNumber } from "@/common/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinPerson, mixinInspection],
   props: ['freshFlag'],
@@ -309,50 +310,50 @@ export default {
       formLabelWidth: '125px',
       rules: {
         personName: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         idCard: [
-          { required: true, message: "必填项", trigger: "change"},
-          { validator:validateIDNumber , trigger: "change" }
+          { required: true, message: "必填项", trigger: "change" },
+          { validator: validateIDNumber, trigger: "change" }
         ],
         politicalStatusName: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         majorName: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         highestEducation: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         lawOfficeType: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         userRank: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         staffingName: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         company: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         branchName: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         certNumber: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         certType: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         company: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         contactNum: [
-          { validator:validatePhone , trigger: "change" }
+          { validator: validatePhone, trigger: "change" }
         ],
         phoneNum: [
-          { validator:validatePhone , trigger: "change" }
+          { validator: validatePhone, trigger: "change" }
         ],
       },
       optionsZGQK: [],
@@ -390,7 +391,6 @@ export default {
     },
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
-      this.searchForm.defaultDisplay = true
       // debugger
       this.getTableData()
     },
@@ -398,6 +398,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // this.addForm.photo=this.addForm.photo||''
+          this.addForm.organName = iLocalStroage.gets("userInfo").organName
           this.$delete(this.addForm, 'photo')
           addPublicPersonApi(this.addForm).then(
             res => {
@@ -439,6 +440,21 @@ export default {
         }
       }
       );
+    },
+    // 导出
+    exportMethod(fileName) {
+      exportPersonApi(iLocalStroage.gets("userInfo").organName).then(res => {
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        //其他浏览器
+        let link = document.createElement('a'); // 创建a标签
+        link.style.display = 'none';
+        link.setAttribute('download', fileName)//必须要重命名
+        let objectUrl = URL.createObjectURL(res);
+        link.href = objectUrl;
+        link.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      ).catch(err => { console.log(err); throw new Error(err) })
     },
     getDrawerList(data) {
       let _this = this
