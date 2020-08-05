@@ -75,7 +75,7 @@ export default {
             data.imgUrl ? <img src={data.imgUrl} /> : null
           }
           <div class="selectDown">
-            <el-dropdown on-command={this.handleCommand}>
+            <el-dropdown on-command={this.handleCommand} placement="bottom">
               <span class="el-dropdown-link">
                 {data.title}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
