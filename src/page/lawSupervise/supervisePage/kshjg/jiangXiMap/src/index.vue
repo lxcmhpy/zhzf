@@ -223,21 +223,11 @@ export default {
       this.personClick(node)
     },
   },
-  created() {
+  activated() {
     this.getTree()
   }
 }
 </script>
-
-<style lang="scss">
-.jiangXiMap {
-  &-tree {
-    position: absolute;
-    top: 70px;
-    left: 30px;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .jiangXiMap {

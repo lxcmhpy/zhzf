@@ -104,6 +104,7 @@ export default {
   width: 369px;
   box-sizing: border-box;
   .input-with-select {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-bottom: 5px;
     .el-input__inner {
       width: 311px;

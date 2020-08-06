@@ -334,7 +334,7 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       formatDeviceType (row) {
         let data = this.treeData.filter(p=>p.id==row.parentId)
-        if(data){
+        if(data && data.length>0){
           return data[0].label
         }
         return ''

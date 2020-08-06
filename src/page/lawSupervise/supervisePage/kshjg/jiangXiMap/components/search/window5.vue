@@ -26,6 +26,33 @@ export default {
   },
   methods: {
     /**
+     * 点击详情跳转路由
+     */
+    routerToManage() {
+      this.$router.push({
+        name: 'law_supervise_offSiteManage',
+        params: {
+          siteName: this.info.name
+        }
+      });
+    },
+
+    /**
+     * 点击表格行跳转
+     */
+    routerToDetail (row) {
+      // debugger;
+      this.$router.push({
+        name: 'law_supervise_examineDoingDetail',
+        params: {
+          status: '0',
+          tabTitle: '线索详情',
+          offSiteManageId: row.id
+        }
+      });
+    },
+
+    /**
      * 图片切换栏生成函数
      */
     renderImgList() {
@@ -59,7 +86,7 @@ export default {
             <p>{this.info.address}</p>
             <p>
               {this.info.createTime} &nbsp; 超限{this.info.cxchl} &nbsp; 黑名单{this.info.blackList}
-              <span class="details">详情</span>
+              <span class="details" on-click={this.routerToManage}>详情</span>
             </p>
           </article>
         </div>
@@ -73,6 +100,7 @@ export default {
       return (
         <div class="siteTable">
           <el-table
+            on-row-click={this.routerToDetail}
             data={this.tableData}
             style="width: 100%">
             <el-table-column
@@ -158,6 +186,7 @@ export default {
         font-size: 14px;
         line-height: 30px;
         .details {
+          color: #409EFF;
           cursor: pointer;
           margin-left: 20px;
         }

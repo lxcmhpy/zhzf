@@ -44,7 +44,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportObject')">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportObject','检查对象表.xls')">导出所有对象</el-button>
             </el-form-item>
           </div>
         </el-form>
