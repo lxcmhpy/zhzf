@@ -317,10 +317,10 @@ export default {
       if (hou > 0) {
         this.countDownList += obj.hou + "时";
       }
-      if (min > 0) {
+      if (min >= 0) {
         this.countDownList += obj.min + "分";
       }
-      if (sec > 0) {
+      if (sec >= 0) {
         this.countDownList += obj.sec + "秒";
       }
     },
