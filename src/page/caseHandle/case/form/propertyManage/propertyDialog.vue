@@ -122,7 +122,7 @@
           </el-row>
           <el-row v-if="dispose.disposeWay=='其他'">
             <el-col :span="24">
-              <el-form-item label="其他">
+              <el-form-item label="备注">
                 <el-input type="textarea" v-model="dispose.disposeRemark" maxlength="30"></el-input>
               </el-form-item>
             </el-col>
