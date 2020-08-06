@@ -12,6 +12,7 @@
       @handleChange="handleChange"
       @handleCommand="handleCommand"
     />
+    <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
   </div>
 </template>
 
@@ -19,16 +20,19 @@
 import JkBaseHMap from "@/components/jk-baseHMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
+import Drawer from "../components/drawer/index.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
   components: {
     JkBaseHMap,
     Search,
-    Select
+    Select,
+    Drawer
   },
   data() {
     return {
+      isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
         [0, '/static/images/img/lawSupervise/map_renyuan.png'],
         [1, '/static/images/img/lawSupervise/map_jigou.png'],
@@ -112,6 +116,14 @@ export default {
             imgUrl: "/static/images/img/lawSupervise/qp.png",
           }
         ]
+      },
+      drawerData: {
+        // 告警车辆数据
+        carData: {},
+        // 非现场执法点数据
+        noEnforceData: {
+          option: []
+        }
       }
     }
   },
@@ -196,7 +208,6 @@ export default {
       } else if (data.type === 4) {
         this.$refs.Search.showCom = "Window5"
         this.getWindow5(data)
-        console.log('hahahahahahaha')
       } else {
         // 显示弹出框
         this.searchWindowData.window4.title = data.nickName
@@ -222,6 +233,17 @@ export default {
     handlePerson(node) {
       this.personClick(node)
     },
+
+    /**
+     * 点击列表，地图打点
+     */
+    handleEcforce(data) {
+      // 添加点位图标
+      data.imgUrl = this.imgUrl.get(data.type)
+
+      let latLng = data.propertyValue.split(',')
+      this.page.addPoint(data, latLng)
+    }
   },
   activated() {
     this.getTree()
