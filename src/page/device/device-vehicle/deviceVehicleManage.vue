@@ -89,7 +89,7 @@
           <el-table-column prop="usePermitState" label="证件状态" align="center"></el-table-column>
           <el-table-column prop="op" label="操作" align="center" width="100">
             <template slot-scope="scope">
-              <router-link :to="{ name: 'deviceVehicle', params: { id: scope.row.id }}">
+              <router-link :to="{ name: 'equipmentDetail', params: { id: scope.row.id }}">
                 <el-button type="text" size="mini">查看</el-button>
               </router-link>
             </template>
