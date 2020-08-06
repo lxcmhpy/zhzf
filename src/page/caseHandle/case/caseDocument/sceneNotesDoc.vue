@@ -197,7 +197,7 @@
               <td>车(船)型</td>
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="vehicleShipType" :rules="fieldRules('vehicleShipType',propertyFeatures['vehicleShipType'])">
-                  <el-select @change="test" v-model="docData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
+                  <el-select v-model="docData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
                     <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
@@ -322,8 +322,7 @@ export default {
       let parseInquestStartTime = this.docData.enforceStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
       let a = parseInquestStartTime.split(' ');
       let parseinquestEndTime = a[0] + ' ' + this.docData.enforceEndTime;
-      let currentTime = new Date();
-      if(Date.parse(parseInquestStartTime)>Date.parse(currentTime)){
+      if(Date.parse(parseInquestStartTime)>Date.parse(new Date())){
         this.$message({
               showClose: true,
               message: '开始时间不得大于当前时间',
@@ -331,9 +330,10 @@ export default {
               offset: 100,
               customClass: 'validateErrorTip'
         });
-        return callback(new Error("开始时间不得大于结束时间"));
+        this.docData.enforceStartTime = ""
+        return callback(new Error("开始时间不得大于当前时间"));
       }
-      if(Date.parse(parseinquestEndTime)>Date.parse(currentTime)){
+      if(Date.parse(parseinquestEndTime)>Date.parse(new Date())){
         this.$message({
               showClose: true,
               message: '结束时间不得大于当前时间',
@@ -341,7 +341,8 @@ export default {
               offset: 100,
               customClass: 'validateErrorTip'
         });
-        return callback(new Error("开始时间不得大于结束时间"));
+        this.docData.enforceEndTime = ""
+        return callback(new Error("结束时间不得大于当前时间"));
       }
       if((Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime)) && this.docData.enforceEndTime){
         this.$message({
@@ -550,10 +551,6 @@ export default {
       casePageFloatBtns
     },
     methods: {
-      test(val){
-        console.log("111111111111",val)
-        console.log("2132111111",this.docData.vehicleShipType)
-      },
       //根据案件ID和文书Id获取数据
       getDocDataByCaseIdAndDocId() {
         this.caseDocDataForm.caseBasicinfoId = this.caseId;
