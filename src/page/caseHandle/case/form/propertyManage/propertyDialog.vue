@@ -120,7 +120,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row v-if="dispose.disposeWay=='其他'">
             <el-col :span="24">
               <el-form-item label="其他">
                 <el-input type="textarea" v-model="dispose.disposeRemark" maxlength="30"></el-input>
@@ -174,6 +174,7 @@ export default {
   mixins: [mixinGetCaseApiList],
   methods: {
     handleSelectionChange(row, index) {
+      debugger;
       // this.multipleSelection.push(row);
       // this.$set(this.tableData,index,row);
       let flag = this.multipleSelection.findIndex(
@@ -287,6 +288,10 @@ export default {
     },
 
     handleWayData() {
+      if (!this.dispose.disposeWay) {
+        this.$message({ type: "error", message: "请选择处理方式" });
+        return;
+      }
       this.$emit("handle-way-data", this.dispose);
       this.closeDialog("way");
     },
