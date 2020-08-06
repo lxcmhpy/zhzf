@@ -84,29 +84,19 @@
         </div>
       </div>
       <el-row>
-        <el-button
-          type="primary"
-          size="medium"
-          @click="handleDialog('case')"
-          :disabled="moreColum"
-        >案件关联/解绑</el-button>
-        <el-button
-          type="primary"
-          size="medium"
-          @click="handleDialog('property')"
-          :disabled="moreColum"
-        >财物处理</el-button>
+        <el-button type="primary" size="medium" @click="handleDialog('case')">案件关联/解绑</el-button>
+        <el-button type="primary" size="medium" @click="handleDialog('property')">财物处理</el-button>
       </el-row>
       <div class="tablePart">
         <el-table
+          ref="singleTable"
           :data="tableData"
-          stripe
           style="width: 100%"
           height="100%"
           highlight-current-row
-          @selection-change="handleSelectionChange"
+          @row-click="handleCurrentChange"
         >
-          <el-table-column type="selection" width="30"></el-table-column>
+          <!-- <el-table-column type="selection" width="30"></el-table-column> -->
           <el-table-column prop="propertyNo" label="财物编号" align="center" width="150">
             <template slot-scope="scope">
               <router-link :to="{ name: 'case_handle_viewProperty', params: { id: scope.row.id }}">
@@ -212,7 +202,6 @@ export default {
       multipleSelection: [],
       caseIds: [],
       propertyIds: [],
-      moreColum: false,
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -230,6 +219,7 @@ export default {
       this.$refs.dialog.showModal(type, this.multipleSelection);
     },
     async handleCaseData(data) {
+      debugger;
       this.caseIds = [];
       this.propertyIds = [];
       let that = this;
@@ -248,6 +238,7 @@ export default {
       this.getDataList({});
     },
     async handleWayData(data) {
+      debugger;
       this.propertyIds = [];
       let that = this;
       this.multipleSelection.forEach((item) => {
@@ -261,23 +252,32 @@ export default {
       this.$message({ type: "success", message: "操作成功!" });
       this.getDataList({});
     },
-    handleSelectionChange(val) {
-      //多选
-      if (val.length > 1) {
-        this.moreColum = true;
-        this.$message({ type: "warning", message: "请选择一条记录操作!" });
-        return;
-      }
-      this.moreColum = false;
-      this.multipleSelection = val;
-    },
+    // handleSelectionChange(val) {
+    //   //多选
+    //   if (val.length > 1) {
+    //     this.moreColum = true;
+    //     this.$message({ type: "warning", message: "请选择一条记录操作!" });
+    //     return;
+    //   }
+    //   this.moreColum = false;
+    //   this.multipleSelection = val;
+    // },
     //单选
-    /* handleCurrentChange(val) {
+    handleCurrentChange(row) {
       debugger;
-      let data = [];
-      data.push(val);
-      this.multipleSelection = data;
-    }, */
+      if (this.multipleSelection.length > 0) {
+        if (this.multipleSelection[0].id == row.id) {
+          this.$refs.singleTable.setCurrentRow();
+          this.multipleSelection = [];
+        } else {
+          this.$refs.singleTable.setCurrentRow(row);
+          this.multipleSelection = [row];
+        }
+      } else {
+        this.$refs.singleTable.setCurrentRow(row);
+        this.multipleSelection = [row];
+      }
+    },
     //获取已归档的数据
     getDataList(searchData) {
       let data = searchData;
@@ -287,6 +287,7 @@ export default {
       queryProperty(data).then(
         (res) => {
           _this.total = res.data.total;
+          debugger;
           _this.tableData = res.data.records;
         },
         (error) => {

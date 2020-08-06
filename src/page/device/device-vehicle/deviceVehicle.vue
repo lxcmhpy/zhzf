@@ -1,130 +1,119 @@
 <template>
   <div class="com_searchAndpageBoxPadding hasBigMarginRight">
     <div class="searchAndpageBox searchAndpageBox2">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName" @tab-click="handleClick" class="device-top-tab">
         <!-- 基本信息 -->
         <el-tab-pane label="基本信息">
-          <el-form
-            ref="form"
-            :model="form"
-            :rules="rules"
-            size="small"
-            label-width="120px"
-            :disabled="formDisable"
-          >
-            <el-row>
+          <div class="base-info-wrap">
+            <el-row v-if="!startEdit" :gutter="20">
               <el-col :span="12">
-                <el-form-item label="使用单位" prop="useUnit">
-                  <el-input v-model="form.useUnit" placeholder="请选择"></el-input>
-                </el-form-item>
+                <label class="item-label">使用单位</label>
+                <div class="item-text">{{form.useUnit}}</div>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="车牌号" prop="vehicleNumber">
-                  <el-input v-model="form.vehicleNumber" placeholder="请输入内容，字母请大写"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="车牌颜色" prop="vehicleColor">
-                  <el-select v-model="form.vehicleColor" placeholder="请选择">
-                    <el-option
-                      v-for="(value,index) in colors"
-                      :key="index"
-                      :label="value"
-                      :value="value"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
+                <label class="item-label">车牌号</label>
+                <div class="item-text">{{form.vehicleNumber}}</div>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="使用状况" prop="useCondition">
-                  <el-select v-model="form.useCondition" placeholder="请选择">
-                    <el-option
-                      v-for="(value,index) in conditions"
-                      :key="index"
-                      :label="value"
-                      :value="value"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="车辆类别" prop="vehicleCategory">
-                  <el-select v-model="form.vehicleCategory" placeholder="请选择">
-                    <el-option
-                      v-for="(value,index) in categorys"
-                      :key="index"
-                      :label="value"
-                      :value="value"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
+                <label class="item-label">车牌颜色</label>
+                <div class="item-text">{{form.vehicleColor}}</div>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="车辆类型" prop="vehicleType">
-                  <el-input v-model="form.vehicleType" placeholder="请输入行驶证上车辆类型"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="厂牌型号" prop="brandModel">
-                  <el-input v-model="form.brandModel" placeholder="请输入行驶证上品牌型号，字母请大写"></el-input>
-                </el-form-item>
+                <label class="item-label">使用状况</label>
+                <div class="item-text">{{form.useCondition}}</div>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="发动机号" prop="engineNumber">
-                  <el-input v-model="form.engineNumber" placeholder="请输入行驶证上发动机号，字母请大写"></el-input>
-                </el-form-item>
+                <label class="item-label">车辆类别</label>
+                <div class="item-text">{{form.vehicleCategory}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">车辆类型</label>
+                <div class="item-text">{{form.vehicleType}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">厂牌型号</label>
+                <div class="item-text">{{form.brandModel}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">发动机号</label>
+                <div class="item-text">{{form.engineNumber}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">车架号码</label>
+                <div class="item-text">{{form.axleNumber}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">排放标准</label>
+                <div class="item-text">{{form.emissionStandard}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">购置日期</label>
+                <div class="item-text">{{form.payTime}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">购置价格(元)</label>
+                <div class="item-text">{{form.payPrice}}</div>
+              </el-col>
+              <el-col :span="24">
+                <label class="item-label">报废期限</label>
+                <div class="item-text">{{form.scarpType +'/'+ form.scarpDeadline}}</div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">使用证号</label>
+                <div class="item-text">
+                  <span>DN 4578534953</span>
+                  <el-button
+                    type="text"
+                    style="padding:0;margin-left: 10px;"
+                    @click="openCertificateDetail"
+                  >&lt;查看详情&gt;</el-button>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <label class="item-label">使用证状态</label>
+                <div class="item-text">根据证件状态变化颜色</div>
+              </el-col>
+              <el-col :span="24">
+                <label class="item-label">使用期限</label>
+                <div class="item-text">X年/XX公里/长期</div>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="车架号码" prop="axleNumber">
-                  <el-input v-model="form.axleNumber" placeholder="请输入行驶证上车辆识别代码，字母请大写"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="排放标准" prop="emissionStandard">
-                  <el-select v-model="form.emissionStandard" placeholder="请选择">
-                    <el-option
-                      v-for="(value,index) in standards"
-                      :key="index"
-                      :label="value"
-                      :value="value"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="购置日期">
-                  <el-date-picker
-                    v-model="form.payTime"
-                    type="date"
-                    value-format="yyyy-MM-dd"
-                    style="width: 100%"
-                    placeholder="请选择日期"
-                  ></el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="购置价格（元）">
-                  <el-input v-model="form.payPrice" placeholder="请输入"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-col :span="14">
-                  <el-form-item label="报废期限">
-                    <el-select v-model="form.scarpType" placeholder="里程（公里）">
+            <el-form
+              v-if="startEdit"
+              ref="form"
+              :model="form"
+              :rules="rules"
+              size="small"
+              label-width="120px"
+            >
+              <el-row :gutter="30">
+                <el-col :span="12">
+                  <el-form-item label="使用单位" prop="useUnit">
+                    <elSelectTree
+                      ref="addFormUseUnitTreeObj"
+                      :options="organList"
+                      :accordion="true"
+                      :props="orgTreeProps"
+                      style="width: 100%;"
+                      placeholder="请选择"
+                      :value="form.useUnit"
+                    ></elSelectTree>
+                    <!-- <el-input style="display:none" v-model="form.useUnit"></el-input> -->
+                    <!-- <el-input v-model="form.useUnit" placeholder="请选择"></el-input> -->
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="车牌号" prop="vehicleNumber">
+                    <el-input v-model="form.vehicleNumber" placeholder="请输入内容，字母请大写"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="车牌颜色" prop="vehicleColor">
+                    <el-select v-model="form.vehicleColor" placeholder="请选择">
                       <el-option
-                        v-for="(value,index) in scarpTypes"
+                        v-for="(value,index) in colors"
                         :key="index"
                         :label="value"
                         :value="value"
@@ -132,51 +121,216 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="10">
-                  <el-form-item label-width="0">
-                    <el-input-number
-                      v-model="form.scarpDeadline"
-                      placeholder="请输入数字"
-                      :controls="false"
-                      style="width:99%"
-                    ></el-input-number>
+                <el-col :span="12">
+                  <el-form-item label="使用状况" prop="useCondition">
+                    <el-select v-model="form.useCondition" placeholder="请选择">
+                      <el-option
+                        v-for="(value,index) in conditions"
+                        :key="index"
+                        :label="value"
+                        :value="value"
+                      ></el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
-              </el-col>
-            </el-row>
-            <div style="margin:15px;text-align:center;">
-              <el-button v-if="!formDisable" size="medium" type="primary" @click="submitForm()">保存</el-button>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="车辆类别" prop="vehicleCategory">
+                    <el-select v-model="form.vehicleCategory" placeholder="请选择">
+                      <el-option
+                        v-for="(value,index) in categorys"
+                        :key="index"
+                        :label="value"
+                        :value="value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="车辆类型" prop="vehicleType">
+                    <el-input v-model="form.vehicleType" placeholder="请输入行驶证上车辆类型"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="厂牌型号" prop="brandModel">
+                    <el-input v-model="form.brandModel" placeholder="请输入行驶证上品牌型号，字母请大写"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="发动机号" prop="engineNumber">
+                    <el-input v-model="form.engineNumber" placeholder="请输入行驶证上发动机号，字母请大写"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="车架号码" prop="axleNumber">
+                    <el-input v-model="form.axleNumber" placeholder="请输入行驶证上车辆识别代码，字母请大写"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="排放标准" prop="emissionStandard">
+                    <el-select v-model="form.emissionStandard" placeholder="请选择">
+                      <el-option
+                        v-for="(value,index) in standards"
+                        :key="index"
+                        :label="value"
+                        :value="value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="购置日期">
+                    <el-date-picker
+                      v-model="form.payTime"
+                      type="date"
+                      value-format="yyyy-MM-dd"
+                      style="width: 100%"
+                      placeholder="请选择日期"
+                    ></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="购置价格（元）">
+                    <el-input v-model="form.payPrice" placeholder="请输入"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-col :span="14">
+                    <el-form-item label="报废期限">
+                      <el-select v-model="form.scarpType" placeholder="里程（公里）">
+                        <el-option
+                          v-for="(value,index) in scarpTypes"
+                          :key="index"
+                          :label="value"
+                          :value="value"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="10">
+                    <el-form-item label-width="0">
+                      <el-input-number
+                        v-model="form.scarpDeadline"
+                        placeholder="请输入数字"
+                        :controls="false"
+                        style="width:99%"
+                      ></el-input-number>
+                    </el-form-item>
+                  </el-col>
+                </el-col>
+              </el-row>
+            </el-form>
+            <!-- 操作按钮 -->
+            <div class="float-btns">
               <el-button
-                v-if="formDisable"
-                size="medium"
+                v-if="!startEdit"
+                class="edit_btn"
                 type="primary"
-                @click=" formDisable = false "
-              >修改</el-button>
+                @click="startEdit = true"
+              >
+                <i class="iconfont law-edit"></i>
+                <br />修改
+              </el-button>
+              <el-button v-if="startEdit" class="edit_btn" type="primary" @click="submitForm">
+                <i class="iconfont law-save"></i>
+                <br />保存
+              </el-button>
             </div>
-          </el-form>
+          </div>
         </el-tab-pane>
         <!-- 车辆照片 -->
         <el-tab-pane label="车辆照片" v-if="form.id">
-          <div class="part">
-            <p class="titleP">其他材料</p>
-            <el-form-item label="设备照片">
-              <el-upload
-                action="#"
-                accept=".jpg, .png"
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :http-request="saveImageFile"
-                :file-list="imageList"
-                :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
-              >
-                <i class="el-icon-plus"></i>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="相关附件">
+          <div class="tip bar">限制提示：单张照片2M以内，格式为jpg或png</div>
+          <div>
+            <div class="bar">
+              <span class="title">车辆照片:</span>
+              <span class="tip">车辆前45°、后45°照片各一张</span>
+            </div>
+            <el-row>
+              <el-col :span="10">
+                <el-upload
+                  class="avatar-uploader"
+                  action="#"
+                  :show-file-list="false"
+                  :on-preview="handlePictureCardPreview"
+                  :http-request="saveImage1File"
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
+                >
+                  <img v-if="inspection.url" :src="inspection.url" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon pictureAvatar"></i>
+                  <div slot="tip" class="el-upload__tip">前45°照片</div>
+                </el-upload>
+              </el-col>
+              <el-col :span="10">
+                <el-upload
+                  class="avatar-uploader"
+                  action="#"
+                  :show-file-list="false"
+                  :on-preview="handlePictureCardPreview"
+                  :http-request="saveImage1File"
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
+                >
+                  <img v-if="inspection.url" :src="inspection.url" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon pictureAvatar"></i>
+                  <div slot="tip" class="el-upload__tip">后45°照片</div>
+                </el-upload>
+              </el-col>
+            </el-row>
+          </div>
+          <div>
+            <div class="bar">
+              <span class="title">行驶证照片:</span>
+              <span class="tip">行驶证主页、副页照片各一张</span>
+            </div>
+            <el-row>
+              <el-col :span="10">
+                <el-upload
+                  class="avatar-uploader"
+                  action="#"
+                  :show-file-list="false"
+                  :on-preview="handlePictureCardPreview"
+                  :http-request="saveImage1File"
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
+                >
+                  <img v-if="inspection.url" :src="inspection.url" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon pictureAvatar"></i>
+                  <div slot="tip" class="el-upload__tip">主页</div>
+                </el-upload>
+              </el-col>
+              <el-col :span="10">
+                <el-upload
+                  class="avatar-uploader"
+                  action="#"
+                  :show-file-list="false"
+                  :on-preview="handlePictureCardPreview"
+                  :http-request="saveImage1File"
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
+                >
+                  <img v-if="inspection.url" :src="inspection.url" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon pictureAvatar"></i>
+                  <div slot="tip" class="el-upload__tip">副业</div>
+                </el-upload>
+              </el-col>
+            </el-row>
+          </div>
+          <div>
+            <div class="bar">
+              <span class="title">其他:</span>
+            </div>
+            <el-row>
               <el-upload
                 class="upload-demo"
                 action="#"
-                accept=".pdf, .PDF"
+                accept=".jpg, .png"
                 :http-request="saveAttachFile"
                 :on-preview="handlePDFPreview"
                 multiple
@@ -184,9 +338,9 @@
                 :limit="3"
                 :file-list="attachList"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button size="small">上传照片</el-button>
               </el-upload>
-            </el-form-item>
+            </el-row>
           </div>
         </el-tab-pane>
         <!-- 年检信息 -->
@@ -281,13 +435,14 @@ import {
   saveOrUpdateDeviceVehicle,
   findDeviceVehicleById,
 } from "@/api/device/deviceVehicle.js";
+import { tree } from "@/api/device/device.js";
 import iLocalStroage from "@/common/js/localStroage";
 import { upload, getFileByCaseId, deleteFileByIdApi } from "@/api/upload";
 export default {
   data() {
     return {
       activeName: "",
-      formDisable: false,
+      //   formDisable: false,
       form: {
         id: "",
         useUnit: "",
@@ -364,7 +519,12 @@ export default {
           { required: true, message: "请输入检验机构", trigger: "blur" },
         ],
       },
-      isEdit: false,
+      startEdit: false,
+      organList: [],
+      orgTreeProps: {
+        label: "label",
+        value: "id",
+      },
       //   selectNode: {},
       //   treeData: [],
       //   title: "",
@@ -385,7 +545,7 @@ export default {
                 message: "保存成功!",
               });
               _this.form = res.data;
-              _this.formDisable = true;
+              _this.startEdit = false;
             },
             (err) => {
               console.log(err);
@@ -506,10 +666,12 @@ export default {
       let res = await findDeviceVehicleById(id);
       this.form = res.data;
     },
+    async getSelfTree() {
+      let res = await tree(iLocalStroage.gets("userInfo").organId, "organ");
+      this.organList = res.data;
+    },
   },
   mounted() {
-    // this.userInfo = iLocalStroage.gets("userInfo");
-    //   this.init()
     if (this.$route.params.id !== "add") {
       this.getData(this.$route.params.id);
     }
@@ -551,4 +713,92 @@ export default {
   height: 80px;
   display: block;
 }
-</style>           
+.pictureAvatar {
+  width: 380px;
+  height: 190px;
+  line-height: 190px;
+}
+.bar {
+  padding: 10px;
+}
+.title {
+  font-weight: 400;
+  font-size: 18px;
+}
+.tip {
+  font-size: 14px;
+  color: #606266;
+}
+.el-upload__tip {
+  text-align: center;
+  font-size: 14px;
+  color: #3a3b3d;
+  font-weight: bold;
+  margin: 15px;
+}
+</style>       
+
+<style lang="scss" scoped>
+.base-info-wrap {
+  padding: 10px 0;
+  line-height: 28px;
+  margin: 40px 10%;
+  font-size: 14px;
+  >>> .el-col {
+    margin-bottom: 20px;
+  }
+  .edit-base-info-from {
+    >>> .el-col {
+      margin-bottom: 0px;
+    }
+    >>> .el-select,
+    >>> .el-date-editor {
+      display: block;
+    }
+    >>> .el-date-editor.el-input,
+    >>> .el-date-editor.el-input__inner {
+      width: 100%;
+    }
+  }
+  .item-label {
+    width: 100px;
+    padding-right: 8px;
+    display: inline-block;
+    text-align: right;
+    color: #7b7b7b;
+  }
+  .item-text {
+    margin-left: 110px;
+    color: #20232c;
+    font-weight: 560;
+  }
+  .item-img {
+    display: block;
+    width: 176px;
+    height: 96px;
+    margin-top: 10px;
+    text-align: center;
+    line-height: 96px;
+  }
+  .float-btns {
+    width: 48px;
+    height: 100px;
+    position: fixed;
+    right: 70px;
+    bottom: 70px;
+    z-index: 100;
+    &.float-btns .el-button {
+      border-radius: 1px;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      text-align: center;
+    }
+    .iconfont {
+      display: inline-block;
+      margin-bottom: 4px;
+      margin-left: 4px;
+    }
+  }
+}
+</style>

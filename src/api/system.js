@@ -671,7 +671,7 @@ export function getCaseNumberApi(data) {
 //查询未配置案件字的机构
 export function getOrganNotInCaseNumberApi() {
   return request({
-    url: "/system/sys/organ/getOrganNotInCaseNumber",
+    url: "/system/organ/provider/getOrganList",
     method: "get",
     showloading: true,
     loadingType:'loadPart',

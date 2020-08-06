@@ -275,9 +275,6 @@ export default {
     };
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-      console.log(value)
-
-      console.log(Date.parse(value),Date.parse(this.docData.getEvidenceTimeEnd))
       if(Date.parse(this.docData.getEvidenceTime)>Date.parse(this.docData.getEvidenceTimeEnd)){
         this.$message({
               showClose: true,
@@ -296,7 +293,19 @@ export default {
               offset: 100,
               customClass: 'validateErrorTip'
         });
+        this.docData.getEvidenceTimeEnd = ""
         return callback(new Error("结束时间不得大于当前时间"));
+      }
+      if(Date.parse(this.docData.getEvidenceTime)>Date.parse(new Date())){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        this.docData.getEvidenceTime = ""
+        return callback(new Error("开始时间不得大于当前时间"));
       }
       callback();
     };
