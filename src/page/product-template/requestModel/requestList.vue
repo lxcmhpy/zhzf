@@ -16,6 +16,7 @@
           <template slot="header">序号</template>
         </el-table-column>
         <el-table-column prop="request" :show-overflow-tooltip="true" label="名称" align="center"></el-table-column>
+        <el-table-column prop="sort" :show-overflow-tooltip="true" label="排序" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="editRequest(scope.row)" >修改</el-button>
