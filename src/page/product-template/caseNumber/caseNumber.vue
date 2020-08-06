@@ -13,7 +13,9 @@
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column prop="organName" label="机构名称" align="center"></el-table-column>
+        <el-table-column prop="caseType" label="案件类型" align="center"></el-table-column>
         <el-table-column prop="caseWord" label="案件字" align="center"></el-table-column>
+        <el-table-column prop="teamCode" label="大队码" align="center"></el-table-column>
         <el-table-column prop="digit" label="案件顺序位数" align="center"></el-table-column>
         <el-table-column prop="onlineNumberStart" label="案件顺序号起始号" align="center"></el-table-column>
         <el-table-column fixed="right" label="操作" align="center">
@@ -66,6 +68,7 @@ export default {
       getCaseNumberApi(data).then(
         res => {
           _this.tableData = res.data.records;
+          console.log("1111111111",_this.tableData)
           _this.totalPage = res.data.total;
         },
         err => {
@@ -79,14 +82,14 @@ export default {
             id:'',
             leng:this.tableData.length
       }
-      this.$refs.addCaseNumber.showModal(0, data,'list');
+      this.$refs.addCaseNumber.showModal(0, data);
     },
     //编辑案件编号配置
     editCaseNumber(row){
       let data = {
             row:row
       }
-      this.$refs.addCaseNumber.showModal(2, data,'list');
+      this.$refs.addCaseNumber.showModal(2, data);
     },
     //删除案件编号配置
     deleteCaseNumber(id){

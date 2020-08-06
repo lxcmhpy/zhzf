@@ -101,7 +101,7 @@
             </tr>
             <tr rowspan="5">
               <td colspan="8">
-                <div class="overflow_lins_style" id="noteDesCon">
+                <div class="overflow_lins_style" id="hearingSummary_noteDesCon">
                   <div class="overflow_lins">
                     <el-form-item
                       prop="hearingSummary"
@@ -121,7 +121,7 @@
                         style="padding-bottom:-6px;"
                       >听证会基本情况摘要：（详见听证笔录，笔录附后）</span>
                       <!-- <span class="span_bg span_bg_top">&nbsp;</span> -->
-                      <p class="span_bg">&nbsp;</p>
+                      <p class="span_bg span_bg_tops">&nbsp;</p>
                       <p class="span_bg">&nbsp;</p>
                       <p class="span_bg">&nbsp;</p>
                       <p class="span_bg">&nbsp;</p>
@@ -152,19 +152,19 @@
               >
                 <el-form-item prop="hearingResult" :rules="fieldRules('hearingResult',propertyFeatures['hearingResult'])">
                   <el-input
+                    type="textarea" 
                     v-model="docData.hearingResult"
                     v-bind:class="{ over_flow:docData.hearingResult.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="nameLength"
-                    error
+                    :maxlength="100"
                     placeholder="\"
                     :disabled="fieldDisabled(propertyFeatures['hearingResult'])"
                   ></el-input>
                 </el-form-item>
                 <div class="pdf_seal">
-                  <p>听证主持人签名：</p>
+                  <p>听证主持人签名：{{docData.presidentSign}}</p>
                   <p>
-                    <span v-if="docData.hearingResult">{{docData.presidentSign}}</span>
+                    <span v-if="docData.presidentTime">{{docData.presidentTime}}</span>
                     <span v-else>年 月 日</span>
                   </p>
                 </div>
@@ -185,7 +185,7 @@
               >
                 {{docData.approveOptions}}
                 <div class="pdf_seal">
-                  <p>负责人签名：{{formData.approvePeo}}</p>
+                  <p>负责人签名：{{docData.approvePeo}}</p>
                   <p>
                     <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                     <span v-else>年 月 日</span>
@@ -250,8 +250,10 @@ export default {
         hearingSummary:'',
         hearingResult:'',
         presidentSign:'',
-        adminOpinion:'',
-        adminSign:'',
+        presidentTime:'',
+        approveOptions:'',
+        approvePeo:'',
+        approveTime:'',
         note: '',
       },
       rules: {
@@ -275,15 +277,7 @@ export default {
         ],
         hearingResult: [
           { required: true, message: "听证结论及处理意见不能为空", trigger: "blur" }
-        ],
-        adminOpinion: [
-          {
-            required: true,
-            message: "行政机构负责人意见不能为空",
-            trigger: "blur"
-          },
-          { validator: validatePhone, trigger: "blur" }
-        ],
+        ]
       },
       caseDocDataForm: {
         id: "", //修改的时候用
@@ -418,12 +412,14 @@ export default {
       left: 10px;
     }
   }
-  #noteDesCon {
+  #hearingSummary_noteDesCon {
     .overflow_lins_textarea {
-      padding-top: 4px;
+      padding-top: 1px;
       textarea {
         text-indent: 29em;
         line-height: 25px !important;
+        padding-right: 9px;
+        padding-left: 5px;
       }
     }
     span.overflow_lins_textarea {
@@ -431,8 +427,8 @@ export default {
     }
     .span_bg {
       box-sizing: border-box;
-      margin: 4px 0;
-      height: 20px;
+      margin: 3px 0;
+      height: 22px;
     }
   }
 }

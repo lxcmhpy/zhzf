@@ -65,7 +65,7 @@
           <el-table-column prop="checkRange" label="检查结果" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">附件管理</el-button>
+              <el-button @click="editMethod2(scope.row)" type="text">附件管理</el-button>
               <el-button @click="checkMethod(scope.row)" type="text">检查</el-button>
             </template>
           </el-table-column>
@@ -93,7 +93,7 @@
           <el-table-column prop="checkRange" label="检查结果" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">附件管理</el-button>
+              <el-button @click="editMethod2(scope.row)" type="text">附件管理</el-button>
               <el-button @click="checkMethod(scope.row)" type="text">检查</el-button>
             </template>
           </el-table-column>
@@ -103,16 +103,21 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
       <el-dialog title="上传附件" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
-        <div class="search-btns">
-          <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button> -->
-          <el-button size="medium" class="commonBtn searchBtn" @click="searchTableData()">添加附件</el-button>
-          <!-- <el-button size="medium" class="commonBtn searchBtn" >开始上传</el-button> -->
+        <div class="search-btns" style="margin-bottom:20px">
+          <el-upload :show-file-list="false" class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" multiple :limit="3" :file-list="fileList">
+            <el-button size="small" type="primary">选取文件</el-button>
+          </el-upload>
         </div>
+        已上传文件列表
         <el-table :data="fileList" stripe style="width: 100%" height="100%">
           <el-table-column type="index" width="50"></el-table-column>
           <el-table-column prop="fileName" label="文件名称" align="center"></el-table-column>
-          <el-table-column prop="fileName" label="上传者" align="center"></el-table-column>
-          <el-table-column prop="fileName" label="大小" align="center"></el-table-column>
+          <el-table-column prop="userId" label="上传者" align="center"></el-table-column>
+          <el-table-column prop="fileSize" label="大小" align="center">
+            <template slot-scope="scope">
+              {{scope.row.fileSize}}K
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="getFileStream(scope.row.storageId)" type="text">查看</el-button>
@@ -196,12 +201,7 @@
       <el-dialog :visible.sync="pdfVisible" :close-on-click-modal="false" width="800px" append-to-body>
         <div>
           <div style="height:auto;">
-            <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
             <div lazy id="myPdfBOx">
-              <!-- <object >
-                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                    :src="mlList" type="application/pdf" internalinstanceid="29">
-                </object> -->
               <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
             </div>
           </div>
@@ -211,12 +211,12 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
 import { getFileStreamByStorageIdApi } from "@/api/caseHandle";
-import { downLoadCommon, deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
+import { downLoadCommon, deleteFileByIdApi, uploadCommon ,getFile} from "@/api/upload.js";
 export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
@@ -429,6 +429,7 @@ export default {
     // 添加-弹窗
     addMethod1() {
       this.addForm.checkDomain = this.searchForm.taskArea
+
       this.addMethod()
     },
     // 添加-弹窗
@@ -439,9 +440,9 @@ export default {
     },
     // 修改
     editMethod2(row) {
-      this.addForm2 = JSON.parse(JSON.stringify(row))
-      this.dialogStatus2 = '修改'
-      this.dialogFormVisible2 = true
+      this.getByMlCaseId(row)
+      debugger
+      this.dialogFormVisible = true
     },
     checkMethod(row) {
       this.addForm2 = JSON.parse(JSON.stringify(row))
@@ -471,21 +472,21 @@ export default {
       })
 
     },
-    downLoadMethod(row) {
+    downLoadMethod(storageId) {
       // 这里传fileStorageid
-      getDictListDetailByNameApi(row.storageId).then(
+      getFileStreamByStorageIdApi(storageId).then(
         res => {
           // 接收数据需未blob格式
           //其他浏览器
           let link = document.createElement('a'); // 创建a标签
           link.style.display = 'none';
-          link.setAttribute('download', '检查专家表.xls')//必须要重命名
+          link.setAttribute('download', '附件.pdf')//必须要重命名
           let objectUrl = URL.createObjectURL(res);
           link.href = objectUrl;
           link.click();
           URL.revokeObjectURL(objectUrl);
         },
-      ).catch(err => { console.log(err); throw new Error(err) })
+      ).catch(err=>{console.log(err)});
     },
     //根据stroagId请求文件流
     getFileStream(storageId) {
@@ -521,7 +522,47 @@ export default {
       this.pdfUrl = url;
       this.pdfVisible = true
     },
+    saveFile(param) {
+      var fd = new FormData()
+      fd.append("file", param.file);
+      fd.append("userId", iLocalStroage.gets("userInfo").nickName);
+      fd.append("fileName", param.file.name);
+      fd.append('caseId', '873098753842759823')//传记录id
+      fd.append('docId', '873098753842759823')//传记录id
+      uploadCommon(fd).then(
+        // upload(fd).then(
+        res => {
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      )
+    },
+    //获取文书列表
+    getByMlCaseId(pageDomId) {
+      let _this = this
+      let data={
+        caseId:'873098753842759823',
+        docId:'873098753842759823'
+      }
+      getFile(data).then(
+        res => {
+          console.log(res);
+          _this.fileList = res.data;
+        },
+        error => {
+          console.log(error);
+        }
+      );
 
+
+    },
     getDrawerList(data) {
       let _this = this
       data.forEach(element => {

@@ -543,7 +543,6 @@ import _ from "lodash";
     },
     // 查询考核细则
     findPykhZpByPage (parentId, current) {
-        debugger;
         this.xzForm.metricsId = parentId;
         this.xzForm.current = current;
         let _this = this;
@@ -701,7 +700,6 @@ import _ from "lodash";
                                     _this.drawer1 = false;
                                     _this.$set(_this.zbList,_this.updateIndex1, _this.zbObj);
                                 }
-                                debugger;
                                  _this.$set(_this, 'zbObj', {
                                         "id": "",
                                         "note": "",
@@ -910,7 +908,6 @@ import _ from "lodash";
             // clearTimeout(this.timer);
         },
         handleCurrentChange(val) {
-            debugger;
             this.search(val);
         },
         handleSizeChange(val) {
@@ -918,7 +915,6 @@ import _ from "lodash";
             this.search(1);
         },
         handleZbCurrentChange(parentId, val) {
-            debugger;
             this.findPykhMetricsByPage(parentId, val);
         },
         handleZbSizeChange(parentId,val) {
@@ -926,7 +922,6 @@ import _ from "lodash";
             this.findPykhMetricsByPage(parentId,1);
         },
           handleXzCurrentChange(parentId, val) {
-            debugger;
             this.findPykhZpByPage(parentId, val);
         },
         handleXzSizeChange(parentId,val) {

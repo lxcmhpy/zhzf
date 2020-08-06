@@ -416,7 +416,6 @@ export default {
 
         this.$store.dispatch("saveOrUpdateDeliverReceipt",data).then(
           res => {
-            debugger
             console.log("暂存文书", res);
             this.$message({
               type: "success",
@@ -478,7 +477,6 @@ export default {
       }
     },
     addTableData(){
-      debugger
       console.log(this.tableDatas)
       let length = this.tableDatas.length;
       if(length == 0){
@@ -566,7 +564,6 @@ export default {
 
     console.log('数组',this.tableDatas)},
     getDataAfter() {
-      debugger
       console.log(this.docData.deliveryCertificatelist);
       if (!this.docData.deliveryCertificatelist.length) {
         this.docData.deliveryCertificatelist = [{ docName: '', receiver: '', address: '', servedDate: '', servedType: '', deliveryMaster: '' }]

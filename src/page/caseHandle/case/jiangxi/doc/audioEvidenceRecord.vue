@@ -354,11 +354,9 @@ export default {
       this.getBase64(selpicData);
     },
     getBase64(selpicData) {
-      debugger
       let storageId = selpicData.picData.evPath;
       queryResizeImageApi(storageId) 
         .then(res => {
-          debugger
           console.log("获取base64", res);
           let picBase64Key = "picBase64_" + selpicData.picIndex;
           this.docData.evidenceData[selpicData.pastePage][picBase64Key] =

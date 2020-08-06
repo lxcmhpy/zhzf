@@ -252,6 +252,16 @@ export default {
         });
         return callback(new Error("开始时间不得大于结束时间"));
       }
+      if((Date.parse(parseinquestEndTime)>Date.parse(new Date())) && this.docData.askdataEnd){
+        this.$message({
+              showClose: true,
+              message: '结束时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("结束时间不得大于当前时间"));
+      }
       callback();
     };
     return {

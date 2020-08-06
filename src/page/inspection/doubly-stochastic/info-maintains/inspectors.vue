@@ -13,8 +13,11 @@
               </el-form-item>
               <el-form-item label="在岗情况" prop='stationStatusName'>
                 <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
-                  <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.name">
-                  </el-option>
+                  <el-option label="在岗" value="在岗"> </el-option>
+                  <el-option label="调岗中" value="调岗中"> </el-option>
+                  <el-option label="退休" value="退休"> </el-option>
+                  <el-option label="调离" value="调离"> </el-option>
+                  <el-option label="自然人" value="自然人"> </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -33,7 +36,7 @@
           <el-form :inline="true">
             <div style="width:auto;float:right">
               <el-form-item>
-                <el-button size="medium" type="primary" @click="exportMethod('exportPerson')">导出所有人员</el-button>
+                <el-button size="medium" type="primary" @click="exportMethod('exportPerson','执法人员表.xls')">导出所有人员</el-button>
               </el-form-item>
             </div>
           </el-form>
@@ -179,6 +182,11 @@ export default {
       // 走公开人员的添加接口
       let _this = this
       if (this.multipleSelection.length > 0) {
+        this.multipleSelection.forEach(element => {
+          element.organName=iLocalStroage.gets("userInfo").
+          // 删除是否在岗
+          this.$delete(element, 'stationStatusName')
+        });
         addMorePublicPersonApi(this.multipleSelection).then(
           res => {
             if (res.code == 200) {

@@ -572,7 +572,6 @@ export default {
       }
     },
     getDataAfter(){
-      debugger
       if(this.docData.measureStartDate=='' && this.docData.measureEndDate  ==''){
           this.docData.days  = "";
       }else{

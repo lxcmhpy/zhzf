@@ -134,7 +134,6 @@ export default {
     },
     //装换为浮点数
     changeNumberL(){
-      debugger
       if(this.addPageForm.lawerLimit != ""){
         this.addPageForm.lawerLimit = parseFloat(this.addPageForm.lawerLimit).toFixed(2);
       }  

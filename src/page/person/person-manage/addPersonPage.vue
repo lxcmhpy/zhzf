@@ -313,7 +313,6 @@ export default {
     methods:{
         selectDegree(val){
             let obj={};
-            debugger;
             obj=this.degrees.find((item)=>{
                 return item.id=val;
             })
