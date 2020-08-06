@@ -232,6 +232,14 @@ export default [
             },
             component: () => import("@/page/product-template/route/routeManage.vue")
           },
+          {
+            name: "warningManage",
+            path: "warningManage",
+            meta: {
+              title: "预警管理"
+            },
+            component: () => import("@/page/product-template/warning/warningManage.vue")
+          },
         ]
       },
       {
