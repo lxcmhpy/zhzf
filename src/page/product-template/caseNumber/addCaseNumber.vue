@@ -8,22 +8,27 @@
     append-to-body
   >
     <el-form :model="addCaseNumberForm" :rules="rules" ref="addCaseNumberForm" class="errorTipForm" label-width="80px" prop="addCaseNumberForm">
+      <div class="item" style="display:none">
+        <el-form-item  prop="organId">
+            <el-input v-model="addCaseNumberForm.organId"  style = "width:100%"></el-input>
+          </el-form-item>
+      </div>
+      <div class="item" style="display:none">
+        <el-form-item  prop="id">
+            <el-input v-model="addCaseNumberForm.id"  style = "width:100%"></el-input>
+          </el-form-item>
+      </div>
       <div class="item">
-        <el-form-item label="执法机构" prop="organId" v-if="isAdd">
-            <el-select v-model="addCaseNumberForm.organId"  style = "width:100%" placeholder="请选择执法机构" @change="getDepartment">
-              <el-option
-                v-for="item in getOrganList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="执法机构" v-else>
-            <el-input v-model="addCaseNumberForm.organName"  style = "width:100%" placeholder="请选择执法机构" disabled>
-            </el-input>
-            
-          </el-form-item>
+        <el-form-item label="执法机构" prop="organId">
+          <el-select filterable :disabled="!isAdd" v-model="addCaseNumberForm.organId"  style = "width:100%" placeholder="请选择执法机构" @change="getDepartment">
+            <el-option
+              v-for="item in getOrganList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
       </div>
       <div class="item">
         <el-form-item label="案件类型" prop="caseTypeId">
@@ -100,25 +105,14 @@ export default {
     showModal(type, data) {
       this.visible = true;
       this.handelType = type;
-      // this.formType = formType;
       if (type == 0) {
         this.isAdd = true;
         this.dialogTitle = "新增";
-        this.getCaseNumberByid(data.id)
       } else if (type == 2) {
-        console.log(data);
         this.dictData = data.row;
         this.isAdd = false;
         this.dialogTitle = "修改";
-        // this.addCaseNumberForm.id = this.dictData.id;
-        // this.addCaseNumberForm.organId = this.dictData.organId;
-        // this.addCaseNumberForm.caseTypeId = this.dictData.caseTypeId;
-        // this.addCaseNumberForm.teamCode = this.dictData.teamCode;
-        // this.addCaseNumberForm.organName = this.dictData.organName;
-        // this.addCaseNumberForm.caseWord = this.dictData.caseWord;
-        // this.addCaseNumberForm.digit = this.dictData.digit;
-        // this.addCaseNumberForm.onlineNumberStart = this.dictData.onlineNumberStart;
-        this.getCaseNumberByid(this.dictData.id)
+        this.getCaseNumberByid(this.dictData.id);
       }
     },
     //关闭弹窗的时候清除数据
@@ -156,7 +150,8 @@ export default {
       let _this = this
       getOrganNotInCaseNumberApi().then(
         res => {
-         _this.getOrganList = res.data;
+         _this.getOrganList = res;
+         _this.getCaseTypeList();
         },
         err => {
           console.log(err);
@@ -174,7 +169,6 @@ export default {
     },
     //新增 修改
     addOrEditCaseNumberSure(){
-      console.log("data",this.addCaseNumberForm);
       addCaseNumberApi(this.addCaseNumberForm).then(
           res => {
           if (res.code == 200) {
@@ -182,6 +176,7 @@ export default {
               message: "操作成功！",
               type: "success"
             });
+            this.$refs["addCaseNumberForm"].resetFields();
             this.visible = false;
             this.currentPage = 1;
             this.reload();
