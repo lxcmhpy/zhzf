@@ -172,9 +172,6 @@ export default {
   data() {
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-
-      // let parseInquestStartTime = this.docData.inquestStartTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
-      // let parseinquestEndTime = this.docData.inquestEndTime.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
       let parseInquestStartTime = this.docData.inquestStartTime
       let parseinquestEndTime = this.docData.inquestEndTime
       if (Date.parse(parseInquestStartTime) > Date.parse(parseinquestEndTime)) {
@@ -187,6 +184,17 @@ export default {
         });
         return callback(new Error("开始时间不得大于结束时间"));
       }
+      if (Date.parse(parseInquestStartTime) > Date.parse(new Date())) {
+        this.$message({
+          showClose: true,
+          message: '开始时间不得大于当前时间',
+          type: 'error',
+          offset: 100,
+          customClass: 'validateErrorTip'
+        });
+        this.docData.inquestStartTime = ""
+        return callback(new Error("开始时间不得大于当前时间"));
+      }
       if (Date.parse(parseinquestEndTime) > Date.parse(new Date())) {
         this.$message({
           showClose: true,
@@ -195,6 +203,7 @@ export default {
           offset: 100,
           customClass: 'validateErrorTip'
         });
+        this.docData.inquestEndTime = ""
         return callback(new Error("结束时间不得大于当前时间"));
       }
       callback();

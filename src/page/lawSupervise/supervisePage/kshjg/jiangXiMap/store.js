@@ -184,10 +184,22 @@ export default {
     handleCommand(type) {
       let param = {}
       if(type === 4) {
+        // 显示抽屉组件
+        this.isShowDrawer = true
         param = {
           size: 20,
           type: type
         }
+        // 获取告警车辆数据
+        queryAlarmVehiclePage({current: 1}).then(res => {
+          if(res.code === 200) {
+            return res.data
+          } else {
+            throw new Error("queryAlarmVehiclePage::::::接口数据错误")
+          }
+        }).then(data => {
+          this.drawerData.carData = data
+        })
       } else {
         param = {
           organId: this.selectData.organId,
@@ -211,6 +223,8 @@ export default {
           data.map(item => {
             item.type = type
           })
+          // 给抽屉弹窗里塞入数据
+          this.drawerData.noEnforceData.option = data
         }
         // 添加点位图片
         data.imgUrl = this.imgUrl.get(type)

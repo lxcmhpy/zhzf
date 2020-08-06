@@ -123,7 +123,7 @@ export default {
 .jk-mapSelect {
   position: absolute;
   top: 20px;
-  right: 30px;
+  right: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
