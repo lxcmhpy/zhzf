@@ -6,10 +6,10 @@
         <el-tab-pane label="基本信息">
           <BaseInfo />
         </el-tab-pane>
-        <el-tab-pane label="车辆照片">
+        <el-tab-pane label="车辆照片" v-if="show">
           <PhotosInfo />
         </el-tab-pane>
-        <el-tab-pane label="年检信息">
+        <el-tab-pane label="年检信息" v-if="show">
           <YearInspection />
         </el-tab-pane>
       </el-tabs>
@@ -32,7 +32,15 @@ export default {
       tabLabel: "",
     };
   },
-  computed: {},
+  computed: {
+    show: function () {
+      if (this.$route.params.id == "add") {
+        return false;
+      } else {
+        return true;
+      }
+    },
+  },
   methods: {},
 };
 </script>
@@ -102,5 +110,4 @@ export default {
     }
   }
 }
-
 </style>

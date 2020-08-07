@@ -18,19 +18,26 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item label="使用单位">
-                  <el-input v-model="searchForm.useUnit"></el-input>
+                  <el-input v-model="searchForm.name"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="车辆类别">
-                  <el-input v-model="searchForm.vehicleCategory"></el-input>
+                  <el-select v-model="searchForm.vehicleCategory" placeholder="请选择" clearable>
+                    <el-option
+                      v-for="(item,index) in categorys"
+                      :key="index"
+                      :label="item"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="使用情况">
                   <el-select v-model="searchForm.useCondition" placeholder="请选择" clearable>
                     <el-option
-                      v-for="(item,index) in handleWayList"
+                      v-for="(item,index) in conditions"
                       :key="index"
                       :label="item"
                       :value="item"
@@ -66,10 +73,10 @@
         </div>
       </div>
       <el-row>
-        <router-link :to="{ name: 'deviceVehicle', params: { id: 'add' }}">
+        <router-link :to="{ name: 'equipmentDetail', params: { id: 'add' }}">
           <el-button type="primary" size="medium" icon="el-icon-plus">新增</el-button>
         </router-link>
-        <el-button type="primary" size="medium" icon="el-icon-delete">删除</el-button>
+        <el-button type="primary" size="medium" icon="el-icon-delete" @click="deleteBatch">删除</el-button>
       </el-row>
       <div class="tablePart">
         <el-table
@@ -82,7 +89,7 @@
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="vehicleNumber" label="车牌号" align="center"></el-table-column>
-          <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+          <el-table-column prop="name" label="使用单位" align="center"></el-table-column>
           <el-table-column prop="vehicleCategory" label="车辆类别" align="center"></el-table-column>
           <el-table-column prop="useCondition" label="使用状况" align="center"></el-table-column>
           <el-table-column prop="usePermitNo" label="使用证号" align="center"></el-table-column>
@@ -113,7 +120,10 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
-import { queryDeviceVehicle } from "@/api/device/deviceVehicle.js";
+import {
+  queryDeviceVehicle,
+  deleteVehicles,
+} from "@/api/device/deviceVehicle.js";
 
 export default {
   data() {
@@ -130,8 +140,8 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总页数
-      handleWayList: ["封存", "扣押", "退回当事人", "移交法院", "销毁", "其他"],
-      syqxList: [30, 90, 180, 360],
+      conditions: ["正常", "维修", "报废"],
+      categorys: ["轿车", "越野车", "轻型货车"],
       multipleSelection: [],
       caseIds: [],
       propertyIds: [],
@@ -151,57 +161,30 @@ export default {
       }
       this.$refs.dialog.showModal(type, this.multipleSelection);
     },
-    async handleCaseData(data) {
-      debugger;
-      this.caseIds = [];
-      this.propertyIds = [];
-      let that = this;
-      data.forEach((item) => {
-        that.caseIds.push(item.id);
-      });
-      this.multipleSelection.forEach((item) => {
-        that.propertyIds.push(item.id);
-      });
-      let param = {
-        caseId: that.caseIds.join(),
-        propertyId: that.propertyIds.join(),
-      };
-      let res = await addCase(param);
-      this.$message({ type: "success", message: "操作成功!" });
-      this.getDataList({});
-    },
-    async handleWayData(data) {
-      debugger;
-      this.propertyIds = [];
-      let that = this;
-      this.multipleSelection.forEach((item) => {
-        that.propertyIds.push(item.id);
-      });
-      data.ids = that.propertyIds.join();
-      data.disposePersonId = iLocalStroage.gets("userInfo").id;
-      data.disposePersonName = iLocalStroage.gets("userInfo").nickName;
-
-      let res = await dispose(data);
-      this.$message({ type: "success", message: "操作成功!" });
-      this.getDataList({});
-    },
     handleSelectionChange(val) {
-      //多选
-      if (val.length > 1) {
-        this.moreColum = true;
+      this.multipleSelection = val;
+    },
+    deleteBatch() {
+      if (this.multipleSelection.length < 1) {
         this.$message({ type: "warning", message: "请选择一条记录操作!" });
         return;
       }
-      this.moreColum = false;
-      this.multipleSelection = val;
+      let ids = [];
+      this.multipleSelection.forEach((item) => {
+        ids.push(item.id);
+      });
+      let _this = this;
+      deleteVehicles({ ids: ids }).then(
+        (res) => {
+          _this.$message({ type: "success", message: "删除成功!" });
+          _this.getDataList({});
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    //单选
-    /* handleCurrentChange(val) {
-      debugger;
-      let data = [];
-      data.push(val);
-      this.multipleSelection = data;
-    }, */
+
     //获取已归档的数据
     getDataList(searchData) {
       let data = searchData;
