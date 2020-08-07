@@ -179,6 +179,86 @@ export default {
     },
 
     /**
+     * 获取告警车辆数据
+     */
+    getCarData() {
+      queryAlarmVehiclePage({current: 1}).then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("queryAlarmVehiclePage::::::接口数据错误")
+        }
+      }).then(data => {
+        this.drawerData.carData = data
+      })
+    },
+
+    /**
+     * 点击单个复选框
+     */
+    handleItemCheck({val, name}) {
+      let typeMap = new Map([
+        ['执法人员', 0],
+        ['执法机构', 1],
+        ['执法车辆', 2],
+        ['执法船舶', 3],
+        ['非现场站点', 4],
+      ])
+      let param = {}, type = typeMap.get(name)
+      if(name === '非现场站点') {
+        // 显示抽屉组件
+        this.isShowDrawer = true
+        param = {
+          size: 20,
+          type: type
+        }
+        // 当单选框被勾选时
+        if(val) {
+          // 获取告警车辆数据以备用
+          this.getCarData()
+        }
+      } else {
+        param = {
+          organId: this.selectData.organId,
+          type: type
+        }
+      }
+
+      // 当单选框被勾选时,获取图层数据
+      if(val) {
+        getZfjgLawSupervise(param).then(res => {
+          if(res.code === 200) {
+            this.$message({
+              message: '查询到'+res.data.length+'条数据',
+              type: 'success'
+            });
+            return res.data
+          } else {
+            this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
+            throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
+          }
+        }).then(data => {
+          // 手动给数据添加图层唯一标识
+          data.layerName = name
+          // 手动给非现场站点添加type
+          if(type === 4) {
+            data.map(item => {
+              item.type = type
+            })
+            // 给抽屉弹窗里塞入数据
+            this.drawerData.noEnforceData.option = data
+          }
+          // 添加点位图片
+          data.imgUrl = this.imgUrl.get(type)
+          // 调用地图打点方法
+          this.page.addPoints(data)
+        })
+      } else { // 当取消勾选时，清除对应图层点位
+        this.page.cleanPoints(name)
+      }
+    },
+
+    /**
      * 图层下拉项的回调，获取各下拉项的点位数据
      */
     handleCommand(type) {

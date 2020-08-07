@@ -10,7 +10,7 @@
     <Select
       :config="selectData"
       @handleChange="handleChange"
-      @handleCommand="handleCommand"
+      @handleItemCheck="handleItemCheck"
     />
     <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
   </div>
@@ -190,6 +190,11 @@ export default {
         this.$refs.Search.showCom = "Window4"
         // 如果有点位，则打点，否则抛出异常
         if(data.propertyValue) {
+          // 打点之前先清除通过 addPoints 打的多个点位
+          let pointsPlayer = ['执法人员','执法机构','执法车辆','执法船舶','非现场站点']
+          pointsPlayer.map(item => {
+            this.page.cleanPoints(item)
+          })
           let latLng = data.propertyValue.split(',')
           this.page.addPoint(data, latLng)
         } else {
