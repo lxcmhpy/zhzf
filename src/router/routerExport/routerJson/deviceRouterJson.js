@@ -91,14 +91,6 @@ export default [{
     component: () => import("@/page/device/device-vehicle/deviceVehicleManage.vue")
   },
   {
-    path: "/deviceVehicle",
-    name: "deviceVehicle",
-    meta: {
-      title: "执法车辆"
-    },
-    component: () => import("@/page/device/device-vehicle/deviceVehicle.vue")
-  },
-  {
     path: "/deviceParamManage",
     name: "deviceParamManage",
     meta: {

@@ -5,7 +5,7 @@
     <el-row v-if="!startEdit" :gutter="20">
       <el-col :span="12">
         <label class="item-label">使用单位</label>
-        <div class="item-text">{{form.useUnit}}</div>
+        <div class="item-text">{{form.name}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">车牌号</label>
@@ -95,6 +95,7 @@
               :props="orgTreeProps"
               style="width: 100%;"
               placeholder="请选择"
+              :value="form.useUnit"
               @getValue="queryFormUseUnitClick"
             ></elSelectTree>
             <el-input style="display:none" v-model="form.useUnit"></el-input>
@@ -241,6 +242,7 @@
 import {
   saveOrUpdateDeviceVehicle,
   findDeviceVehicleById,
+  findplate,
 } from "@/api/device/deviceVehicle.js";
 import { tree } from "@/api/device/device.js";
 import iLocalStroage from "@/common/js/localStroage";
@@ -250,9 +252,19 @@ import elSelectTree from "@/components/elSelectTree/elSelectTree";
 export default {
   components: { elSelectTree, CertificateDetail },
   data() {
+    let _this = this;
+    var validateNumber = (rule, value, callback) => {
+      _this.checkNumber(value).then((result) => {
+        if (result) {
+          callback(new Error("该车牌号已存在"));
+        } else {
+          callback();
+        }
+      });
+    };
     return {
       form: {
-        id: "",
+        id: null,
         useUnit: "",
         vehicleNumber: "",
         vehicleColor: "",
@@ -274,6 +286,7 @@ export default {
         ],
         vehicleNumber: [
           { required: true, message: "请输入车牌号", trigger: "blur" },
+          { validator: validateNumber, trigger: "blur" },
         ],
         vehicleColor: [
           { required: true, message: "请选择车牌颜色", trigger: "change" },
@@ -315,6 +328,16 @@ export default {
   },
   created() {},
   methods: {
+    async checkNumber(val) {
+      let _this = this;
+      let res = await findplate(val);
+      debugger;
+      if (res.data !== null || res.data !== _this.form.id) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     // 查看详情
     openCertificateDetail() {
       this.$refs.certificateDetailRef.showModal();
@@ -332,6 +355,7 @@ export default {
               });
               _this.form = res.data;
               _this.startEdit = false;
+              _this.$route.params.id = res.data.id;
             },
             (err) => {
               console.log(err);
@@ -342,13 +366,11 @@ export default {
     },
     //获取数据
     async getData(id) {
-      this.isEdit = true;
       let res = await findDeviceVehicleById(id);
       this.form = res.data;
     },
-    async getSelfTree() {
-      debugger;
-      let res = await tree(iLocalStroage.gets("userInfo").organId, "organ");
+    async getSelfTree(organId) {
+      let res = await tree(organId, "organ");
       console.log("organ=====" + res.data);
       this.organList = res.data;
     },
@@ -358,9 +380,12 @@ export default {
     },
   },
   mounted() {
-    this.getSelfTree();
+    let organId = iLocalStroage.gets("userInfo").organId;
+    this.getSelfTree(organId);
     if (this.$route.params.id !== "add") {
       this.getData(this.$route.params.id);
+    } else {
+      this.startEdit = true;
     }
   },
 };
