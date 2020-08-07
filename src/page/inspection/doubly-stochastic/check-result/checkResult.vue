@@ -307,8 +307,8 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      this.getPageList("getRandomResultByPage", data);
-      this.tableData = [{}]
+      this.getPageList("getAllTask", data);
+      // this.tableData = [{}]
     },
     // 选择数据
     handleSelectionChange(val) {

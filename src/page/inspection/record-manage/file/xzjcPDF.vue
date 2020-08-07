@@ -228,6 +228,7 @@ export default {
         name: 'inspection_inspectionFiles',
         // params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
         // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+        params: { id: this.formOrDocData.pageDomId || this.$route.params.id, edit: this.formOrDocData.pageDomId ? false : true }
       });
     },
 

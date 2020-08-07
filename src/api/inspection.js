@@ -776,3 +776,13 @@ export function getRandomResultByPageApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//获取抽取结果
+export function getExtractResultApi(data) {
+    return request({
+        url: "/xzjc/randomTask/getExtractResult",
+        method: "get",
+        params: data,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
