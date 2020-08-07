@@ -400,6 +400,7 @@ export function getAllPersonApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()
     });
@@ -421,6 +422,7 @@ export function getAllPublicPersonApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -428,10 +430,11 @@ export function getAllPublicPersonApi(data) {
 // 根据UUID删除检查对象表数据
 export function delPersonApi(data) {
     return request({
-        url: "/xzjc/randomPerson/myRemoveById/"+data,
+        url: "/xzjc/randomPerson/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -470,6 +473,7 @@ export function getAllExpertApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -490,10 +494,11 @@ export function addExpertApi(data) {
 // 根据UUID删除检查专家表数据
 export function delExpertApi(data) {
     return request({
-        url: "/xzjc/randomExpert/myRemoveById/"+data,
+        url: "/xzjc/randomExpert/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -504,7 +509,8 @@ export function getAllRandomObjectApi(data) {
         url: "/xzjc/randomObject/queryRandomObject",
         method: "get",
         params: data,
-        showloading: true,
+        // showloading: true,
+        // loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -512,10 +518,11 @@ export function getAllRandomObjectApi(data) {
 // 根据UUID删除检查对象表数据
 export function delRandomObjectApi(data) {
     return request({
-        url: "/xzjc/randomObject/myRemoveById/"+data,
+        url: "/xzjc/randomObject/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -547,10 +554,11 @@ export function getAllRandomItemApi(data) {
 // 根据UUID删除事项清单表数据
 export function delRandomItemApi(data) {
     return request({
-        url: "/xzjc/randomItem/myRemoveById/"+data,
+        url: "/xzjc/randomItem/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -572,14 +580,14 @@ export function addItemListApi(data) {
 //获取字典详情  字典值
 export function getDictListDetailByNameApi(name) {
     return request({
-      url: "/system/sys/drawer/findAllDrawerByName/" + name,
-      method: "get",
-      showloading: false,
-      loadingType: name =='系统标题'||name =='loginBg' ? 'loadFull' : 'loadPart',
-      cancelToken: setCancelSource()
+        url: "/system/sys/drawer/findAllDrawerByName/" + name,
+        method: "get",
+        showloading: false,
+        loadingType: name == '系统标题' || name == 'loginBg' ? 'loadFull' : 'loadPart',
+        cancelToken: setCancelSource()
     });
-  }
-  // 分页查询检查任务表数据
+}
+// 分页查询检查任务表数据
 export function getAllTaskApi(data) {
     return request({
         url: "/xzjc/randomTask/queryRandomTask",
@@ -593,7 +601,7 @@ export function getAllTaskApi(data) {
 // 根据UUID删除检查任务表数据
 export function delTaskApi(data) {
     return request({
-        url: "/xzjc/randomTask/myRemoveById/"+data,
+        url: "/xzjc/randomTask/myRemoveById/" + data,
         method: "get",
         params: data,
         showloading: true,
@@ -608,6 +616,147 @@ export function addTaskApi(data) {
         url: "/xzjc/randomTask/mySaveOrUpdate",
         method: "post",
         data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 通过省级行政区划代码查询所有地市
+export function findByAddressCode(data) {
+    return request({
+        url: "/xzjc/country/findByAddressCode/" + data,
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+// 导入专家
+export function importExpertExcelApi(data) {
+    return request({
+        url: "/xzjc/randomExpert/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+// 导入对象
+export function importObjectExcelApi(data) {
+    return request({
+        url: "/xzjc/randomObject/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+// 导入事项清单
+export function importItemExcelApi(data) {
+    return request({
+        url: "/xzjc/randomItem/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+// 导入人员
+export function importPersonExcelApi(data) {
+    return request({
+        url: "/xzjc/randomPerson/excelImport",
+        method: "POST",
+        data: data,
+        contentType: 'multipart/form-data;',
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource(),
+    });
+}
+
+// 添导出所有专家表数据
+export function exportExpertApi() {
+    return request({
+        url: "/xzjc/randomExpert/excelExport",
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添导出所有对象表数据
+export function exportObjectApi() {
+    return request({
+        url: "/xzjc/randomObject/excelExport",
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添导出所有事项清单表数据
+export function exportItemApi() {
+    return request({
+        url: "/xzjc/randomItem/excelExport",
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 添导出所有人员表数据
+export function exportPersonApi(data) {
+    return request({
+        url: "/xzjc/randomPerson/excelExport/"+data,
+        method: "post",
+        // data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+// 查询任务数据
+export function searchTaskDataApi(data) {
+    return request({
+        url: "/xzjc/randomTask/queryByTaskName",
+        method: "get",
+        params: data,
+        showloading: true,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//查询检查对象的数量、本机构下执法人员的数量、检查专家的数量
+export function getCountByOrganNameApi(data) {
+    return request({
+        url: "/xzjc/randomTask/getCountByOrganName/" + data,
+        method: "get",
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',

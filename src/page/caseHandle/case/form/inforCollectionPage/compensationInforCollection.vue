@@ -60,6 +60,7 @@
                 format="yyyy-MM-dd HH:mm"
                 value-format="yyyy-MM-dd HH:mm"
               ></el-date-picker>
+            <div class="el-form-item__error">{{dateTooltip}}</div> 
             </el-form-item>
           </div>
           <div class="item">

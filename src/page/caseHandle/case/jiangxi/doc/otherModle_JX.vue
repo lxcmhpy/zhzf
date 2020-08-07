@@ -241,8 +241,7 @@ export default {
       let parseInquestStartTime = this.docData.askdataStart.replace('年','-').replace('月','-').replace('日',' ').replace('时',":").replace('分',"");
       let a = parseInquestStartTime.split(' ');
       let parseinquestEndTime = a[0] + ' ' + this.docData.askdataEnd;
-
-      if((Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime)) && this.docData.askdataEnd){
+      if((Date.parse(parseInquestStartTime)>Date.parse(parseinquestEndTime))){
         this.$message({
               showClose: true,
               message: '开始时间不得大于结束时间',
@@ -251,6 +250,28 @@ export default {
               customClass: 'validateErrorTip'
         });
         return callback(new Error("开始时间不得大于结束时间"));
+      }
+      if((Date.parse(parseInquestStartTime)>Date.parse(new Date()))){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        this.docData.askdataStart = "";
+        return callback(new Error("开始时间不得大于当前时间"));
+      }
+      if((Date.parse(parseinquestEndTime)>Date.parse(new Date())) && this.docData.askdataEnd){
+        this.$message({
+              showClose: true,
+              message: '结束时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        this.docData.askdataEnd = "";
+        return callback(new Error("结束时间不得大于当前时间"));
       }
       callback();
     };

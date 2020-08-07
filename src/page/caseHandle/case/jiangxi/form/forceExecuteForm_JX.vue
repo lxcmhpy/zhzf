@@ -37,8 +37,19 @@
 
             <div class="row">
               <div class="col">
-                <el-form-item prop="punishTerm" label="处罚期限" :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])">
-                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['punishTerm'])" ref="punishTerm" format="yyyy-MM-dd" clearable class="w-120" v-model="formData.punishTerm" size="small" placeholder="请输入"></el-date-picker>
+                <el-form-item
+                  prop="punishTerm"
+                  label="处罚期限"
+                  :rules="fieldRules('punishTerm',propertyFeatures['punishTerm'])"
+                >
+                  <el-date-picker
+                    class="w-120"
+                    value-format="yyyy-MM-dd HH:mm"
+                    v-model="formData.punishTerm"
+                    type="date"
+                    placeholder="选择日期"
+                    :disabled="fieldDisabled(propertyFeatures['punishTerm'])"
+                  ></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -250,7 +261,6 @@
     },
     data() {
       var validatePaid = (rule, value, callback) => {
-        debugger
         // value = value.replace("\"","");
         //去除字符串两边的引号
         // value = value.substring(1, value.length-1);

@@ -119,7 +119,6 @@ export default {
         let _this = this
         this.$store.dispatch("getEvidence", data).then(res => {
             _this.eviList = res.data.records;
-            debugger
             console.log("111",_this.eviList);
             this.$emit("getEvidenceEmit");
         });

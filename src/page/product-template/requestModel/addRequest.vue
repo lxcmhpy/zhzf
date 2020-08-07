@@ -26,6 +26,16 @@
               </el-input>
             </el-form-item>
           </div>
+          <div class="item">
+            <el-form-item label="排序" prop="sort">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 1, maxRows: 4}"
+                placeholder="请输入问题"
+                v-model.number="addRequest.sort">
+              </el-input>
+            </el-form-item>
+          </div>
         </div>
       </el-form>
     </div>
@@ -39,15 +49,27 @@
 import { saveOrUpdateRequestApi } from "@/api/caseHandle";
 export default {
   data() {
+    var validateNum = (rule, value, callback) => {
+      if(value && typeof(value) != 'number'){
+        callback(new Error('必须为数字!'));
+      }else {
+        callback();
+      }
+    }
     return {
       inVisible: false,
       addRequest: {
         id: "",
         modelId: "",
-        request: ""
+        request: "",
+        sort: ""
       },
       rules: {
-        request: [{ required: true, message: "问题不能为空", trigger: "blur" }]
+        request: [{ required: true, message: "问题不能为空", trigger: "blur" }],
+        sort: [
+          { required: true, message: "排序不能为空", trigger: "blur" },
+          { validator: validateNum, trigger: "blur"}
+        ]
       },
       dialogTitle: "", //弹出框title
       handelType: 0 //添加 0  修改2
@@ -69,6 +91,7 @@ export default {
         this.addRequest.id = data.id;
         this.addRequest.modelId = data.modelId;
         this.addRequest.request = data.request;
+        this.addRequest.sort = data.sort;
       }
     },
     //关闭弹窗的时候清除数据
@@ -98,7 +121,6 @@ export default {
     addOrEdit() {
       // debugger
       let _this = this;
-      debugger;
       if (_this.handelType == "0") {
         saveOrUpdateRequestApi(_this.addRequest).then(
           res => {

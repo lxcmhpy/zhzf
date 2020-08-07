@@ -261,7 +261,7 @@
               </el-table-column>
               <el-table-column label="证据材料名称名称" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.name"></el-input>
+                  <el-input maxlength="15" v-model="scope.row.name"></el-input>
                 </template>
               </el-table-column>
               <el-table-column prop="des" label="规格" align="center">
@@ -284,7 +284,7 @@
 
               <el-table-column label="备注" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.note"></el-input>
+                  <el-input maxlength="10" v-model="scope.row.note"></el-input>
                 </template>
               </el-table-column>
               <el-table-column width="52%">
@@ -708,7 +708,6 @@ export default {
     },
     //确定添加
     addResSure(formName) {
-      debugger
       let canAdd = true;
       if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {

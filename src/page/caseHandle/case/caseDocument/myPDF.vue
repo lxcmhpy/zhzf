@@ -213,7 +213,12 @@
         console.log(url);    
         this.pdfUrl =url;
 
-        let myBox = document.getElementById('myBox');
+        // let myBox = document.getElementById('myBox');
+        let myBox = document.getElementById("myBox");
+        let iframes = document.getElementsByTagName("iframe");
+        for (let i = 0; i < iframes.length; i++) {
+          myBox.removeChild(iframes[i]);
+        }
         let  myIframe = document.createElement('iframe');
         myIframe.setAttribute("src", '/static/pdf/web/viewer.html?file='+encodeURIComponent(url));
         myIframe.setAttribute('style','width:790px;height:1119px');

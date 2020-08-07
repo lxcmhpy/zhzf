@@ -142,7 +142,6 @@ export default {
     },
     //查询角色下绑定的机构
     getRoleBindOrgan(id) {
-      debugger;
       this.$store.dispatch("getRoleBindOrgan", id).then(
         res => {
           console.log("角色下绑定的机构", res);

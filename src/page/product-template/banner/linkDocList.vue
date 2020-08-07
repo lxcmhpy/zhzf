@@ -162,6 +162,7 @@ export default {
     //关联文书
     saveLinkDoc() {
       let _this = this;
+      console.log("11111111111111",this.datas)
       saveOrUpdateCaseLinkDocApi(this.datas).then(
         res => {
           this.getLinkDocList();

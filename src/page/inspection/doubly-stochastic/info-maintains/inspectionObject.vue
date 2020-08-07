@@ -35,13 +35,16 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
+              <a class="el-button el-button--primary el-button--medium" href="./static/excel/检查对象模板.xlsx" download="检查对象模板.xlsx">Excel模板导出</a>
+              <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
+              <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="importModle">
+                <el-button type="primary" size="medium">导入Excel</el-button>
+              </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportObject','检查对象表.xls')">导出所有对象</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -61,7 +64,7 @@
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
+            <el-button @click="editClick(scope.row)" type="text">修改</el-button>
             <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -77,13 +80,14 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="统一社会信用代码" prop="socialCode">
+            <el-form-item label="统一社会信用代码" prop="socialCode" label-width="140px">
               <el-input v-model="addForm.socialCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <!-- {{addForm.adminDivision}} -->
             <el-form-item label="行政划分" prop="adminDivision">
-              <el-input v-model="addForm.adminDivision"></el-input>
+              <el-cascader v-model="addForm.adminDivision" :options="provenceList" :props="{ expandTrigger: 'hover' }" @change="handleChange"></el-cascader>
             </el-form-item>
           </el-col>
         </el-row>
@@ -103,14 +107,14 @@
           <el-col :span="12">
             <el-form-item label="对象类型" prop="objectType">
               <el-select v-model="addForm.objectType" placeholder="请选择">
-                 <el-option v-for="item in optionsDXLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsDXLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="监管类型" prop="superviseType">
               <el-select v-model="addForm.superviseType" placeholder="请选择">
-             <el-option v-for="item in optionsJGLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsJGLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -127,13 +131,37 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="监管单位" prop="regulatoryUnit">
-          <el-select v-model="addForm.regulatoryUnit" placeholder="请选择">
-             <el-option v-for="item in optionsJGDW" :key="item.id" :label="item.name" :value="item.name"></el-option>
-          </el-select>
+        <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox-aline organClass">
+          <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
+            <div class="departOrUserTree" style="width:600px">
+              <div class="treeBox">
+                <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
+                  <span class="custom-tree-node" slot-scope="{ node,data }">
+                    <span>
+                      <i :class="data.children && data.children.length>0 ? 'iconfont law-icon_shou_bag' : ''"></i>
+                      <span :class="data.children ? '' : 'hasMarginLeft'">{{ node.label }}</span>
+                    </span>
+                  </span>
+                </el-tree>
+              </div>
+            </div>
+            <el-input slot="reference" v-model="addForm.regulatoryUnit" placeholder="请选择机构" :disabled="true" style="width:100%">
+            </el-input>
+          </el-popover>
         </el-form-item>
+        <!-- <el-form-item label="监管单位" prop="regulatoryUnit">
+          <el-select v-model="addForm.regulatoryUnit" placeholder="请选择">
+            <el-option v-for="item in optionsJGDW" :key="item.id" :label="item.name" :value="item.name"></el-option>
+          </el-select>
+        </el-form-item> -->
         <el-form-item label="备注" prop="remark">
           <el-input type="textarea" v-model="addForm.remark"></el-input>
+        </el-form-item>
+        <el-form-item prop="status">
+          <el-radio-group v-model="addForm.status">
+            <el-radio label="启用"></el-radio>
+            <el-radio label="停用"></el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -144,9 +172,10 @@
   </div>
 </template>
 <script>
-import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi } from "@/api/inspection";
+import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode, importObjectExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinInspection],
   data() {
@@ -161,7 +190,7 @@ export default {
       addForm: {
         objectName: '',
         socialCode: '',
-        adminDivision: '',
+        adminDivision: [],
         legalRepresent: '',
         idCard: '',
         objectType: '',
@@ -174,19 +203,45 @@ export default {
       formLabelWidth: '125px',
       dialogStatus: '',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        objectName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        projectName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        superviseType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        socialCode: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        idCard: [
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        contactNumber: [
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        status: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
       },
-      optionsDXLX:[],
-      optionsJGDW:[],
-      optionsJGLX:[],
+      optionsDXLX: [],
+      optionsJGDW: [],
+      optionsJGLX: [],
+      provenceList: [],
+      LawOfficerList: [],//执法人员列表
+      alreadyChooseAdminPerson: [],//已选择管理人员列表
+      alreadyChooseUserPerson: [],//已选择使用人员列表
+      defaultExpandedKeys: [],
+      organData: [],//机构列表
+      lawCateList: [], //业务领域列表
+      globalCont: 1,//key1
+      globalContGroup: 1,//key1
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      visiblePopover: false,
     }
   },
   methods: {
@@ -207,7 +262,7 @@ export default {
         error => {
           // reject(error);
         })
-        this.getPageList("getAllRandomObject", data);
+      this.getPageList("getAllRandomObject", data);
 
     },
     // 选择数据
@@ -219,23 +274,26 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName) {
+      let _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          addInspectionObjectApi(this.addForm).then(
+          let data = JSON.parse(JSON.stringify(_this.addForm))
+          data.adminDivision = _this.addForm.adminDivision.join(',')
+          // data.adminDivision = this.addForm.adminDivision[2]
+          addInspectionObjectApi(data).then(
             res => {
               console.log(res)
               if (res.code == 200) {
-                this.$message({
+                _this.$message({
                   type: "success",
                   message: res.msg
                 });
-                this.dialogFormVisible = false
-                this.currentPage = 1;
-                this.getTableData()
+                _this.dialogFormVisible = false
+                _this.currentPage = 1;
+                _this.getTableData()
               }
             },
             error => {
@@ -250,7 +308,7 @@ export default {
     delMethod(id) {
       this.deleteById("delRandomObject", id);
     },
-     getDrawerList(data) {
+    getDrawerList(data) {
       let _this = this
       data.forEach(element => {
         getDictListDetailByNameApi(element.name).then(
@@ -258,7 +316,6 @@ export default {
             switch (element.option) {
               case 1: _this.optionsJGLX = res.data; break;//监管类型
               case 2: _this.optionsDXLX = res.data; break;//对象类型
-              case 3: _this.optionsJGDW = res.data; break;//监管单位
             }
           },
           error => {
@@ -267,13 +324,111 @@ export default {
       });
 
     },
+    findProvence() {
+      this.provenceList = []
+      let _this = this
+      let data = '530000'//云南
+      findByAddressCode(data).then(
+        res => {
+          // this.provenceList.push(res.data)
+          let dataList = []
+          dataList.push(res.data)
+          dataList.forEach(element => {
+            console.log('element', element)
+            if (element.myChildren) {
+              element.value = element.adcode;
+              element.label = element.name
+              element.children = element.myChildren
+              element.myChildren.forEach(item => {
+                console.log('item', item)
+                item.value = item.adcode;
+                item.label = item.name
+                if (item.myChildren) {
+                  item.children = item.myChildren
+                  item.children.forEach(item1 => {
+                    item1.value = item1.adcode;
+                    item1.label = item1.name
+                  });
+                }
+              });
+            }
+          })
+          _this.provenceList = dataList
+        },
+        error => {
+          // reject(error);
+        })
+    },
+    editClick(row) {
+      let data = JSON.parse(JSON.stringify(row))
+      data.adminDivision = data.adminDivision.split(',')
+      this.editMethod(data)
+    },
+    handleChange(value) {
+      console.log(value);
+    },
+    // 导入
+    importModle(param) {
+      console.log(param);
+      // let currentFileId = this.currentFileId
+      var fd = new FormData()
+      fd.append("file", param.file);
+      importObjectExcelApi(fd).then(res => {
+        if (res.code === 200) {
+          this.$message({ type: "success", message: res.msg });
+          this.currentPage = 1;
+          this.getTableData()
+        }
+      }
+      );
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    // 获取机构
+    getAllOrgan(organId) {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
+            : res.data[0].label;
+          if (res.data[0].children && res.data[0].children.length > 0) {
+            res.data[0].children.forEach(item => {
+              _this.defaultExpandedKeys.push(item.id);
+            });
+          }
+          _this.organData = res.data;
+          if (organId == "root") {
+            _this.currentOrganId = res.data[0].id;
+          } else {
+            _this.currentOrganId = organId;
+          }
+        },
+        err => {
+        }
+      );
+    },
+    handleNodeClick1(data) {
+      this.addForm.regulatoryUnit = data.label;
+      this.addForm.regulatoryUnitId = data.id;
+      this.visiblePopover = false;
+    },
+    nodeExpand(data, node, jq) {
+      console.log(data);
+      console.log(node);
+      console.log(jq);
+    },
   },
   mounted() {
     this.getTableData()
-     // 获取抽屉
+    this.findProvence()
+    this.getAllOrgan('root');
+    // 获取抽屉
     this.getDrawerList([{ name: '监管类型', option: 1 },
-    { name: '对象类型', option: 2 },
-    { name: '监管单位', option: 3 }])
+    { name: '对象类型', option: 2 }])
   }
 }
 </script>

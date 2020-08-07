@@ -489,7 +489,6 @@
       },
       //更改 是否是重大案件
       changeImportant(val) {
-          debugger
         console.log("是否重大案件",val);
         let docIds = ['2c9029ca5b716296015b716568050001'];
         //是重大笔录时
@@ -539,7 +538,6 @@
       },
       //更改 是否听证
       changeHearing(val) {
-        debugger
         console.log("是否听证",val);
         let docIds = ['2c9029ca5b71686d015b718068cf0015','2c9029ca5b71686d015b71836d570019'];
         //是听证时

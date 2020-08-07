@@ -118,10 +118,10 @@
                           </el-input>
                         </el-form-item> -->
                         <el-form-item v-for="(radio,index) in field.options" :key="index" label-width="0" prop="value">
-                          <i class="el-icon-remove-outline" style="margin-right:14px" @click="delField(radio,field.options)"></i>
+                          <i v-if="field.status===0?false:true" class="el-icon-remove-outline" style="margin-right:14px" @click="delField(radio,field.options)"></i>
                           <el-input size="mini" v-model="radio.value" placeholder="请输入选项" clearable style="width: calc(100% - 70px)" :disabled="field.status===0?true:false">
                           </el-input>
-                          <i class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(field.options)"></i>
+                          <i v-if="field.status===0?false:true" class="el-icon-circle-plus-outline" style="margin-left:14px" @click="addRadioList(field.options)"></i>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -498,6 +498,7 @@ export default {
         this.drawerTitle = '修改模板'
         this.globalCont = editdata.count + 1;
       } else {
+        this.drawerTitle = '创建模板'
         this.$nextTick(() => {
           this.getFileList()
         });

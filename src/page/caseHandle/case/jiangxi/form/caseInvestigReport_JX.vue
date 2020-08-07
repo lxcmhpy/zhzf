@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box printNumbers_box" id="caseInvest-print" style="width:790px; margin:0 auto;">
+  <div class="print_box printNumbers_box" id="caseInvestJX-print" style="width:790px; margin:0 auto;">
     <el-form
       :rules="rules"
       ref="caseInvestiForm"
@@ -8,10 +8,10 @@
       :model="formData"
       :disabled="disableWhenApproval"
     >
-      <div class="print_info" style = "height: 1250px">
+      <div class="print_info" style = "height: 1600px">
         <div class="doc_topic">案件调查报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+        <table class="print_table caseReportJX" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>案由</td>
             <td colspan="7" class="color_DBE4EF">
@@ -80,8 +80,11 @@
                 :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)"
               >
                 <el-input
+                  type="textarea"
                   v-model="formData.partyIdNo"
                   v-bind:class="{ over_flow:formData.partyIdNo && formData.partyIdNo.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 2}"
+                  maxlength="18"
                   placeholder="\"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
@@ -117,7 +120,7 @@
                   v-model="formData.partyTel"
                   v-bind:class="{ over_flow:formData.partyTel && formData.partyTel.length>4?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
-                  maxlength="20"
+                  maxlength="11"
                   placeholder="\"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                 ></el-input>
@@ -220,15 +223,12 @@
             </td>
           </tr>
           <tr style="height:100px">
-            <td>
-              <p>案件</p>
-              <p>调查</p>
-              <p>经过</p>
-              <p>及违</p>
-              <p>法事</p>
-              <p>实</p>
+            <td colspan="2">
+              <p>案件调查</p>
+              <p>经过及违</p>
+              <p>法事实</p>
             </td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="7" class="color_DBE4EF">
               <el-form-item
                 prop="illegalFact"
                 :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])"
@@ -245,32 +245,31 @@
               </el-form-item>
             </td>
           </tr>
-
-          <tr>
-            <td rowspan="7">
+          <tr @click="handleAdd">
+            <td :rowspan="formData.evidenceList.length+1">
               <p>证据</p>
               <p>材料</p>
+              <p>清单</p>
             </td>
             <td>序号</td>
-            <td colspan="2">证据材料名称</td>
-            <td colspan="2">规格</td>
-            <td colspan="1">数量</td>
-            <td colspan="2">备注</td>
+            <td colspan="2" class="aprotd">证据材料名称</td>
+            <td>规格</td>
+            <td>数量</td>
+            <td colspan="3" class="aprotd">备注</td>
           </tr>
           <tr v-for="(item,index) in formData.evidenceList" :key="index" @click="handleAdd">
             <td>{{item.resNo}}</td>
-            <td colspan="2">{{item.name}}</td>
-            <td colspan="2">{{item.des}}</td>
+            <td colspan="2" class="aprotd">{{item.name}}</td>
+            <td colspan="1">{{item.des}}</td>
             <td colspan="1">{{item.num}}</td>
-            <td colspan="2">{{item.note}}</td>
+            <td colspan="3" class="aprotd">{{item.note}}</td>
           </tr>
           <tr style="height:180px">
-            <td width="49">
-              <p>承办</p>
-              <p>人意</p>
+            <td colspan="2">
+              <p>承办人意</p>
               <p>见</p>
             </td>
-            <td colspan="8" class="aprotd">
+            <td colspan="7" class="aprotd">
               <el-form-item prop="lawOfficeOpinions">
                 <el-input
                   type="textarea"
@@ -297,19 +296,12 @@
               </div>
             </td>
           </tr>
-        </table>
-      </div>
-
-      <div class="print_info">
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
-          <tr style="height:310px">
-            <td>
-              <p>承办</p>
-              <p>机构</p>
-              <p>审核</p>
-              <p>意见</p>
+          <tr>
+            <td colspan="2">
+              <p>承办机构</p>
+              <p>审核意见</p>
             </td>
-            <td colspan="8" class="aprotd">
+            <td colspan="7" class="aprotd">
               <p class="approveDiv">{{formData.approveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
                 <p>签名：{{formData.approvePeo||' '}}</p>
@@ -317,15 +309,13 @@
               </div>
             </td>
           </tr>
-          <tr style="height:310px">
-            <td width="49">
-              <p>行政</p>
-              <p>机关</p>
-              <p>负责</p>
-              <p>人意</p>
+          <tr>
+            <td colspan="2">
+              <p>行政机关</p>
+              <p>负责人意</p>
               <p>见</p>
             </td>
-            <td colspan="8" class="aprotd">
+            <td colspan="7" class="aprotd">
               <p class="approveDiv">{{formData.secondApproveOpinions}}</p>
               <div class="pdf_seal" style="white-space:nowrap; width:auto;margin-top:140px;">
                 <p>签名：{{formData.secondApprovePeo||' '}}</p>
@@ -334,7 +324,7 @@
             </td>
           </tr>
           <tr>
-            <td>备注</td>
+            <td colspan="2">备注</td>
             <td colspan="7" class="color_DBE4EF">
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'])">
                 <el-input
@@ -369,7 +359,7 @@
               </el-table-column>
               <el-table-column label="证据材料名称名称" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.name"></el-input>
+                  <el-input maxlength="15" v-model="scope.row.name"></el-input>
                 </template>
               </el-table-column>
               <el-table-column prop="des" label="规格" align="center">
@@ -392,7 +382,7 @@
 
               <el-table-column label="备注" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.note"></el-input>
+                  <el-input maxlength="10" v-model="scope.row.note"></el-input>
                 </template>
               </el-table-column>
               <el-table-column width="52%">
@@ -424,7 +414,7 @@
       </div>
     </el-dialog>
     <casePageFloatBtns
-      :pageDomId="'caseInvest-print'"
+      :pageDomId="'caseInvestJX-print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
     ></casePageFloatBtns>
@@ -563,7 +553,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "caseInvest-print"
+        pageDomId: "caseInvestJX-print"
       },
       options: [
         {value: "1", label: " "},
@@ -679,7 +669,6 @@ export default {
     },
     //确定添加
     addResSure(formName) {
-      debugger
       let canAdd = true;
       if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {
@@ -693,12 +682,10 @@ export default {
           }
         }
         if(canAdd){
-          console.log("证据列表111111",this.tableDatas)
           this.tableDatas.forEach((item,index,arr) => {
             item.resNo = index+1
             this.formData.evidenceList[index] = this.tableDatas[index]
           });
-          console.log("证据列表111111",this.formData.evidenceList)
           this.addVisible = false;
         }
       } 
@@ -725,10 +712,9 @@ export default {
     },
     //对原始数据做一下处理
     getDataAfter() {
-      console.log(this.formData);
       if (!this.formData.evidenceList.length) {
         this.formData.evidenceList = [
-          {resNo: "", name: "", num: "", des: "", note: ""},
+          {resNo: "", name: "", num: "", des: "", note: "" },
           {resNo: "", name: "", num: "", des: "", note: "" },
           {resNo: "", name: "", num: "", des: "", note: "" },
           {resNo: "", name: "", num: "", des: "", note: "" },
@@ -750,6 +736,10 @@ export default {
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 </style>
 <style scoped>
+.caseReportJX tr td {
+  text-align: center;
+  text-align-last: center;
+}
 .apro {
   display: inline-block;
   border-bottom: 1px solid;

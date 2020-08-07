@@ -442,6 +442,17 @@ export function getQueryCaseTypeListApi() {
   });
 }
 
+//查询机构绑定案件类型
+export function getQueryCaseTypeByOrganIdApi(organId) {
+  return request({
+    url: "/case/caseTemplate/LawCateConfiguration/findCaseTypeByOrganId/"+organId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
 //通过表单（文书）类型Id查询表单（文书）绑定的案件基本信息属性
 export function findCaseAllBindPropertyApi(data) {
   return request({
@@ -668,7 +679,7 @@ export function deleteDocTypeApi(id) {
 export function getRequestListByModelIdApi(id) {
   return request({
     url: "/case/doc/caseRequestModel/findRequestListByModelId/"+id,
-    method: "post",
+    method: "GET",
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -702,7 +713,7 @@ export function deleteRequestApi(id) {
 export function getRequestModelListApi(data) {
   return request({
     url: "/case/doc/caseRequestModel/findByCondition",
-    method: "POST",
+    method: "GET",
     params: data,
     showloading: true,
     loadingType:'loadPart',
@@ -712,6 +723,7 @@ export function getRequestModelListApi(data) {
 
 //新增或修改问答模板
 export function saveOrUpdateRequestModelApi(data) {
+  console.log("111111",data)
   return request({
     url: "case/doc/caseRequestModel/create",
     method: "POST",
@@ -976,7 +988,7 @@ export function findRequestListByModelIdApi(modelId) {
   let data = vm.$qs.stringify({modelId: modelId})
   return request({
     url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelId,
-    method: "post",
+    method: "GET",
     data: data,
     showloading: true,
     loadingType: 'loadPart',
@@ -1058,7 +1070,7 @@ export function findModelListByModelTypeIdApi(modelTypeId) {
   return request({
     // url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelTypeId,
     url: "/case/doc/caseRequestModel/findModelListByModelTypeId/" + modelTypeId,
-    method: "post",
+    method: "GET",
     data: data,
     showloading: true,
     loadingType: 'loadPart',
@@ -1426,3 +1438,47 @@ export function getLinkTypeInfoByIdApi(id) {
   });
 }
 
+//分页查询定时器信息
+export function getWarInfoLlistApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/case/sys/war/list",
+    method: "POST",
+    data: data,
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}
+//添加时器信息
+export function addWarInfoLlistApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/case/sys/war/saveOrUpdate",
+    method: "POST",
+    data: data,
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}
+//删除定时器信息
+export function delWarInfoLlistApi(data) {
+  return request({
+    url: "/case/sys/war/deleteById/"+data,
+    method: "get",
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}
+//根据id查询定时器信息
+export function findWarInfoByIdApi(data) {
+  return request({
+    url: "/case/sys/war/findById/"+data,
+    method: "get",
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}

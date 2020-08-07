@@ -61,7 +61,11 @@ service.interceptors.request.use(
         showFullScreenLoading(loadingType);
       }
       if (getToken("TokenKey")) {
-        config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+        if(config.baseUrlType === 'EXAM'){
+          config.headers["Authorization_k"] = "Bearer " + getToken("TokenKey");
+        }else{
+          config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+        }
       }
       config.url = config.url + '?time='+new Date().getTime();
       console.log('config', config)

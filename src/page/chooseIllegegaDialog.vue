@@ -35,7 +35,7 @@
           <el-table-column prop="strContent" label="违法行为"></el-table-column>
         </el-table>
       </div>
-      <div class="paginationBox center">
+      <div class="paginationBox center illegegaPaginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
 
@@ -175,5 +175,9 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/main.scss"></style>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
+<style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
+<style lang="scss">
+.illegegaPaginationBox{
+  margin: 5px 15px 15px;
+}
 </style>

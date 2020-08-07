@@ -1,5 +1,4 @@
-export default [
-  {
+export default [{
     path: "/deleteEvidence",
     name: "case_handle_deleteEvidence",
     meta: {
@@ -56,6 +55,7 @@ export default [
     meta: {
       title: "调查类文书",
       oneTab: true,
+      keepAlive: true
     },
     component: () => import("@/page/caseHandle/case/form/caseDoc.vue")
   },
@@ -267,7 +267,7 @@ export default [
     path: "/myPDF",
     name: "case_handle_myPDF",
     meta: {
-      title: "pdf" ,
+      title: "pdf",
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/caseDocument/myPDF.vue")
@@ -286,7 +286,7 @@ export default [
     name: "case_handle_checkHome",
     meta: {
       title: "信息查验首页",
-      isNotCase:true,
+      isNotCase: true,
 
     },
     component: () => import("@/page/checkInfo/checkHome.vue")
@@ -297,7 +297,7 @@ export default [
     meta: {
       // title: "道路运输从业人员"
       title: "信息查验",
-      isNotCase:true,
+      isNotCase: true,
 
     },
     component: () => import("@/page/checkInfo/transportWorker.vue")
@@ -308,7 +308,7 @@ export default [
     meta: {
       // title: "营运车辆"
       title: "信息查验",
-      isNotCase:true,
+      isNotCase: true,
 
 
     },
@@ -320,7 +320,7 @@ export default [
     meta: {
       // title: "经营业户"
       title: "信息查验",
-      isNotCase:true,
+      isNotCase: true,
 
     },
     component: () => import("@/page/checkInfo/industry.vue")
@@ -331,7 +331,7 @@ export default [
     meta: {
       // title: "客运线路标志牌"
       title: "信息查验",
-      isNotCase:true,
+      isNotCase: true,
 
 
     },
@@ -343,7 +343,7 @@ export default [
     meta: {
       // title: "船员适任证查验"
       title: "信息查验",
-      isNotCase:true,
+      isNotCase: true,
 
 
     },
@@ -356,7 +356,7 @@ export default [
     meta: {
       // title: "国内（国际）船舶查询"
       title: "信息查验",
-      isNotCase:true,
+      isNotCase: true,
 
 
     },
@@ -698,13 +698,14 @@ export default [
     meta: {
       title: "测试文书"
     },
-    component: () => import("@/page/caseHandle/case/jiangxi/doc/deliveryConfirmDoc.vue")
+    component: () => import("@/page/caseHandle/case/jiangxi/form/caseInvestigReport_JX.vue")
   },
   {
     name: "propertyManage",
     path: "/propertyManage",
     meta: {
-      title: "财物列表"
+      title: "财物列表",
+      isNotCase: true
     },
     component: () => import("@/page/caseHandle/case/form/propertyManage/propertyManageList.vue")
   },
@@ -712,7 +713,8 @@ export default [
     name: "case_handle_addProperty",
     path: "/addProperty/:id",
     meta: {
-      title: "财务登记"
+      title: "财物登记",
+      isNotCase: true
     },
     component: () => import("@/page/caseHandle/case/form/propertyManage/propertyForm.vue")
   },
@@ -720,7 +722,8 @@ export default [
     name: "case_handle_viewProperty",
     path: "/viewProperty/:id",
     meta: {
-      title: "财物详情"
+      title: "财物详情",
+      isNotCase: true
     },
     component: () => import("@/page/caseHandle/case/form/propertyManage/propertyDetail.vue")
   },

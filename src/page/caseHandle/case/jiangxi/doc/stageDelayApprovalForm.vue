@@ -569,7 +569,6 @@ export default {
         console.log("添加",addMoreData.approvalForm.executeHandle);
         // this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
         this.com_getCaseBasicInfo(data.caseId, data.docId);
-        debugger
         if (addMoreData.approvalForm.executeHandle === 0) {
           this.docData.checknames.push("3");
           this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";

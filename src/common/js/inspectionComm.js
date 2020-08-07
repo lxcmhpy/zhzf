@@ -47,9 +47,20 @@ export const mixinInspection = {
             this.dialogFormVisible = true
         },
         // 导出
-        exportMethod() { },
-        // 导入
-        importModle() { },
+        exportMethod(methodName,fileName) {
+            this.$store.dispatch(methodName).then(res => {
+                //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+                //其他浏览器
+                let link = document.createElement('a'); // 创建a标签
+                link.style.display = 'none';
+                link.setAttribute('download', fileName)//必须要重命名
+                let objectUrl = URL.createObjectURL(res);
+                link.href = objectUrl;
+                link.click();
+                URL.revokeObjectURL(objectUrl);
+            },
+            ).catch(err=>{console.log(err)});
+        },
         // 下载模板
         downloadModle() { },
         //根据id删除

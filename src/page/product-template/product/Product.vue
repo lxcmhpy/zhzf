@@ -20,7 +20,6 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="typeName" label="案件类型名称" align="center"></el-table-column>
           <el-table-column prop="bindProcessName" label="所属流程名称" align="center"></el-table-column>
-          <el-table-column prop="caseTypeKey" label="案件字" align="center"></el-table-column>
           <el-table-column prop="programType" label="程序类型" align="center">
             <span slot-scope="scope">
               <span>{{scope.row.programType == 0 ? '一般程序': '简易程序'}}</span>
@@ -77,7 +76,6 @@ export default {
   methods: {
     //编辑案件类型
     editCaseType(row) {
-      debugger
       this.$refs.addOrUpdateCaseTypeRef.showModal(2, row);
     },
     //删除案件类型

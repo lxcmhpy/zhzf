@@ -424,7 +424,6 @@
          if (this.docData.checknames.length > 1) {
           this.docData.checknames.shift();
         }
-        debugger
         console.log('this.docData.checknames',this.docData.checknames)
         if (this.docData.checknames == '1') {
           this.disabledOne = false;

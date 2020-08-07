@@ -33,6 +33,17 @@ export function loginExam(data){
   })
 }
 
+// 获取考生登录验证码
+export function getKaptcha(){
+  return request({
+      url: `examLogin/captcha`,
+      method: 'get',
+      baseUrlType: 'EXAM',
+      showloading: false,
+      cancelToken: setCancelSource()
+  })
+}
+
 // 监考人员提交个人信息
 export function invigilatorSubmitInfo(data){
   return request({

@@ -134,6 +134,26 @@ export default  [
                 },
                 component: () => import("@/page/inspection/doubly-stochastic/task-manage/taskManage.vue")
             },
+            {
+                // 检查结果
+                path: "/checkResult",
+                name: "inspection_inspectionResults",
+                meta: {
+                title: "检查结果",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/doubly-stochastic/check-result/checkResult.vue")
+            },
+            {
+                // 随机抽取
+                path: "/randomExtract",
+                name: "inspection_randomExtract",
+                meta: {
+                title: "随机抽取",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/doubly-stochastic/double-random/doubleRandom.vue")
+            },
         ]
     }, 
 ]

@@ -1,159 +1,128 @@
 <template>
   <div class="jiangXiMap">
-    <JkControlsMap
-      @init="init"
-      @handleChange="handleChange"
-      @handleSearch="handleSearch"
-      :config="config"
-      :center="center"
-    />
-    <keep-alive>
-      <component
-        :is="showComp"
-        :class="showComp==='JkMapTree'?'jiangXiMap-tree':null"
-        :config="showComp==='JkMapTree'?treeData:windowData"
-        @handleNodeClick="handleNodeClick"
-        @handleButton="handleButton"
-        @handleClose="handleClose"
-      />
-    </keep-alive>
-    <!-- <JkMapTree
-      class="jiangXiMap-tree"
-      :config="treeData"
+    <JkBaseHMap @init="init" :center="center" />
+    <Search
+      ref="Search"
+      :config="searchWindowData"
       @handleNodeClick="handleNodeClick"
-      @handleButton="handleButton"
+      @handlePerson="handlePerson"
     />
-    <MapWinDow v-if="showWindow" @handleClose="handleClose" :config="windowData" /> -->
+    <Select
+      :config="selectData"
+      @handleChange="handleChange"
+      @handleCommand="handleCommand"
+    />
+    <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
   </div>
 </template>
 
 <script>
-import JkControlsMap from "@/components/jk-controlsMap";
-import JkMapTree from "@/components/jk-mapTree"
-import MapWinDow from "./mapWindow.vue";
-import { organTreeByCurrUser } from "@/api/lawSupervise.js";
+import JkBaseHMap from "@/components/jk-baseHMap";
+import Search from "../components/search/index.vue";
+import Select from "../components/select/index.vue";
+import Drawer from "../components/drawer/index.vue";
+import store from "../store.js";
 export default {
+  mixins: [store],
   components: {
-    JkControlsMap,
-    JkMapTree,
-    MapWinDow
+    JkBaseHMap,
+    Search,
+    Select,
+    Drawer
   },
   data() {
     return {
-      showComp: "",
+      isShowDrawer: false, // 是否显示抽屉组件
+      imgUrl: new Map([
+        [0, '/static/images/img/lawSupervise/map_renyuan.png'],
+        [1, '/static/images/img/lawSupervise/map_jigou.png'],
+        [2, '/static/images/img/lawSupervise/map_jingche.png'],
+        [3, '/static/images/img/lawSupervise/map_cbo.png'],
+        [4, '/static/images/img/lawSupervise/map_o_gud.png'],
+      ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
       zoom: 8,
       center: [12118909.300259633, 4086043.1061670054],
-      windowData: {},
-      treeData: {
-        buttons: [
-          { name: "路线树查询" },
-          { name: "条件查询" },
-        ],
-        option: [
-          {
-            label: '固原综合执法支队',
-            children: [{
-              label: '执法人员',
-            },{
-              label: '执法车辆',
-            },{
-              label: '执法船舶',
-            },{
-              label: '德隆综合执法大队',
-              children: [{
-                label: '执法人员',
-              },{
-                label: '执法车辆',
-              },{
-                label: '执法船舶',
-              },]
-            }]
-          },
-        ],
-      },
-      config: {
-        searchData: {
+      searchWindowData: {
+        window1: {
           title: "专题查询",
-          placeholder: "搜执法人员、执法机构",
-          option: [
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+          list: [
             { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
             { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
             { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
           ]
         },
-        popoverData: {
-          option: [
-            {
-              title: "西安市",
-              imgUrl: "/static/images/img/lawSupervise/area.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
+        window2: {
+          defaultProps: {
+            children: 'children',
+            label: 'label'
+          },
+          option: []
+        },
+        window3: {
+          title: "",
+          info: {},
+          option: []
+        },
+        window4: {
+          title: '',
+          info: {}
+        },
+        window5: {
+          imgList: [],
+          info: {},
+          data: {}
+        }
+      },
+      selectData: {
+        organId: "",
+        option: [
+          {
+            title: "西安市",
+            imgUrl: "/static/images/img/lawSupervise/area.png",
+            options: [
+              {
+                value: 'xian',
+                label: '西安市',
+                children: [{
+                  value: 'yanta',
+                  label: '雁塔区',
                   children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
+                    value: 'gaoxin',
+                    label: '高新区',
                   }]
-                },
-                {
-                  value: 'quanguo',
-                  label: '全国',
-                }
-              ]
-            },
-            {
-              title: "图层",
-              imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
-                  children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
-                  }]
-                },
-                {
-                  value: 'quanguo',
-                  label: '全国',
-                }
-              ]
-            },
-            {
-              title: "全屏",
-              imgUrl: "/static/images/img/lawSupervise/qp.png",
-              options: [
-                {
-                  value: 'xian',
-                  label: '西安市',
-                  children: [{
-                    value: 'yanta',
-                    label: '雁塔区',
-                    children: [{
-                      value: 'gaoxin',
-                      label: '高新区',
-                    }]
-                  }]
-                },
-                {
-                  value: 'quanguo',
-                  label: '全国',
-                }
-              ]
-            }
-          ]
+                }]
+              },
+              {
+                value: ' ',
+                label: '全国',
+              }
+            ]
+          },
+          {
+            title: "图层",
+            imgUrl: "/static/images/img/lawSupervise/icon_changjing.png",
+            options: [
+              {name: '执法人员', type: 0},
+              {name: '执法机构', type: 1},
+              {name: '执法车辆', type: 2},
+              {name: '执法船舶', type: 3},
+              {name: '非现场站点', type: 4},
+            ]
+          },
+          {
+            title: "全屏",
+            imgUrl: "/static/images/img/lawSupervise/qp.png",
+          }
+        ]
+      },
+      drawerData: {
+        // 告警车辆数据
+        carData: {},
+        // 非现场执法点数据
+        noEnforceData: {
+          option: []
         }
       }
     }
@@ -171,38 +140,61 @@ export default {
     },
 
     /**
-     * 获取数据
+     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶子节点
      */
-    getTree() {
-      organTreeByCurrUser().then(res => {
-        if(res.code === 200) {
-          return res.data
-        } else {
-          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
+    addNode(arr) {
+      let myNode = [
+        { label: '执法人员', type: 0, children: [] },
+        { label: '执法车辆', type: 2, children: [] },
+        { label: '执法船舶', type: 3, children: [] },
+      ]
+      arr.map(item => {
+        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
+          myNode.map(myNodeItem => {
+            // 给自定义节点添加 pid 属性， 值为父节点的 id
+            myNodeItem.pid = item.id
+          })
+          // 在 children 里添加自定义节点
+          item.children = myNode.concat(item.children)
+          // 递归调用
+          this.addNode(item.children)
         }
-      }).then(data => {
-        this.treeData.option = data
       })
+      return arr
     },
 
     /**
-     * 点击当前专题图片，下钻到树形结构窗口
-     */
-    handleSearch(data) {
-      this.showComp = "JkMapTree"
-      console.log(data)
-    },
-
-    /**
-     * 点击节点回调函数，调用打点函数
+     * 点击节点回调函数
+     * 1.如果当前节点是路政局，则获取路政局数据、地图打点
+     * 2.如果当前节点是自定义节点，发送请求获取子节点数据
+     * 3.如果当前节点没有下级，则地图打点并打开信息窗口
      */
     handleNodeClick(data) {
-      if(data.propertyValue) {
-        let latLng = data.propertyValue.split(',')
-        // 调用地图组件中打点函数
-        this.page.addPoint(data, latLng)
+      console.log(data)
+      if(data.label === '执法人员') {
+        this.getPeopleTree(data)
+      } else if (data.label === '执法车辆' || data.label === '执法船舶') {
+        this.getCarShipTree(data)
+        // 当前节点为路政管理局和分局
+      } else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+        this.getLoad(data)
       } else {
-        throw new Error("handleNodeClick(data) in jiangXiMap.vue:::::::::没有坐标")
+        // 添加点位图标
+        data.imgUrl = this.imgUrl.get(data.type)
+        // 显示弹出框
+        this.searchWindowData.window4.title = data.label
+        this.searchWindowData.window4.info = {
+          organName: data.organName || '',
+          mobile: data.mobile || ''
+        }
+        this.$refs.Search.showCom = "Window4"
+        // 如果有点位，则打点，否则抛出异常
+        if(data.propertyValue) {
+          let latLng = data.propertyValue.split(',')
+          this.page.addPoint(data, latLng)
+        } else {
+          throw new Error("handleNodeClick(data):::::::::没有坐标")
+        }
       }
     },
 
@@ -210,18 +202,22 @@ export default {
      * 点击地图点位触发
      */
     handleClickPoint(data) {
-      this.windowData = {
-        title: data.label,
-        info: {},
+      // 当前点位是路政局
+      if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+        this.getTheOrganTree(data)
+      } else if (data.type === 4) {
+        this.$refs.Search.showCom = "Window5"
+        this.getWindow5(data)
+      } else {
+        // 显示弹出框
+        this.searchWindowData.window4.title = data.nickName
+        this.searchWindowData.window4.info = {
+          organName: data.organName || '',
+          mobile: data.mobile || ''
+        }
+        this.$refs.Search.showCom = "Window4"
       }
       console.log(data)
-    },
-
-    /**
-     * 关闭弹窗
-     */
-    handleClose() {
-
     },
 
     /**
@@ -232,27 +228,28 @@ export default {
     },
 
     /**
-     * 点击查询按钮触发
+     * 点击人员在线情况头像
      */
-    handleButton(data) {
-      console.log(data)
+    handlePerson(node) {
+      this.personClick(node)
+    },
+
+    /**
+     * 点击列表，地图打点
+     */
+    handleEcforce(data) {
+      // 添加点位图标
+      data.imgUrl = this.imgUrl.get(data.type)
+
+      let latLng = data.propertyValue.split(',')
+      this.page.addPoint(data, latLng)
     }
   },
-  created() {
-    // this.getTree()
+  activated() {
+    this.getTree()
   }
 }
 </script>
-
-<style lang="scss">
-.jiangXiMap {
-  &-tree {
-    position: absolute;
-    top: 63px;
-    left: 30px;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .jiangXiMap {

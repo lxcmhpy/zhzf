@@ -12,7 +12,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     
     import { loginExam, invigilatorSubmitInfo, getJoinExamPerson, signOutSystem, startQuestion, getpersonExamQuestionNextApi, getexamResultSubmitApi,examPersonsByInvigilatorIdApi,getExamInfoByInvigilatorInfoApi,
     addExamRollingApi,examRecordQueryApi,addExamRecordApi,deleteExamRecordApi,updateExamRecordApi,drawInfoApi,setBatchExamDelayedApi,getPersonExamStatus,getWaitScoringExam,getPersonScoreList,
-    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam,editInvigilatorInfo,examRecordQueryForManangeApi} from '@/api/joinExam';
+    getWaitScoreQuestion,saveScoreResult, getSystemDate, checkEntryExam,editInvigilatorInfo,examRecordQueryForManangeApi, getKaptcha} from '@/api/joinExam';
     import * as types from "../mutation-types";
     
     const exam = {
@@ -966,6 +966,21 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                     err => { reject(err); }
                 )
             });
+        },
+        // 登录时获取验证码
+        getCaptchaImg({
+            commit
+        }){
+            return new Promise((resolve, reject) => {
+                getKaptcha().then(
+                    res => {
+                        resolve(res);
+                    },
+                    err => {
+                        reject(err);
+                    }
+                )
+            })
         }
     
         }

@@ -770,7 +770,6 @@ export default {
           if (item.note != "") {
             // this.allAskDocList.push(item);
             this.docTableDatasOther.forEach((itema, index, arr) => {
-              debugger;
               if (item.docId == itema.docId) {
                 childrenArr.push = [item]
               }

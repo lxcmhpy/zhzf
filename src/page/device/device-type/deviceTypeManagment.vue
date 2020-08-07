@@ -14,6 +14,7 @@
             default-expand-all
             :filter-node-method="filterNode"
             :expand-on-click-node="false"
+            :default-checked-keys="defaultCheckedKeys"
             ref="tree"
             @node-click="handleNodeClick"
           >
@@ -32,11 +33,19 @@
             <el-form-item label="类型名称" prop="name">
               <el-input v-model="queryForm.name"></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDataList(1)">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset">重置</el-button>
+            <el-form-item style="margin-top:1px; margin-left: 15px;">
+                <el-button 
+                    title="搜索"
+                    class="commonBtn searchBtn"
+                    size="medium"
+                    icon="iconfont law-sousuo" 
+                    @click="getDataList(1)"/>
+                <el-button 
+                    title="重置"
+                    class="commonBtn searchBtn"
+                    size="medium"
+                    icon="iconfont law-zhongzhi"
+                    @click="reset"/>
             </el-form-item>
             <div>
             <el-form-item>
@@ -95,39 +104,30 @@
             :total="totalPage"
           ></el-pagination>
         </div>
-        <el-dialog :title="title"
-                    custom-class="leftDialog"
-                    :visible.sync="visible"
-                    top="0"
-                    width="40%"
-                    @close="closeDialog"
-                    :close-on-click-modal="false">
+        <el-dialog
+            :title="title"
+            :visible.sync="visible"
+            @close="closeDialog"
+            :close-on-click-modal="false"
+            width="35%"
+        >
             <el-form
-                    :model="addForm"
-                    ref="addForm"
-                    :rules="rules"
-                    label-width="150px"
-                    class="addOrganClass" >
-                <div class="part">
-                    <!--卡片字段-->
-                    <el-table-column prop="code" label="类型编码"></el-table-column>
-                    <el-row>
-                        <el-form-item label="类型编码" prop="code">
-                            <el-input v-model="addForm.code" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
-                        </el-form-item>
-                    </el-row>
-                    <el-table-column prop="name" label="类型名称"></el-table-column>
+                :model="addForm"
+                :rules="rules"
+                label-position="right"
+                label-width="90px"
+                ref="addForm"
+                >
                     <el-row>
                         <el-form-item label="类型名称" prop="name">
                             <el-input v-model="addForm.name" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                         </el-form-item>
                     </el-row>
-                    <el-table-column prop="parentId" label="上级类型"></el-table-column>
                     <el-row>
                         <el-form-item label="上级类型" prop="parentId">
                             <el-select v-model="addForm.parentId" style="width: 100%;" :disabled="true">
                                 <el-option
-                                v-for="item in treeData[0].children"
+                                v-for="item in treeData"
                                 :key="item.id"
                                 :label="item.label"
                                 :value="item.id"
@@ -135,15 +135,8 @@
                             </el-select>
                         </el-form-item>
                     </el-row>
-                    <el-table-column prop="note" label="备注"></el-table-column>
-                    <el-row>
-                        <el-form-item label="备注" prop="note">
-                            <el-input v-model="addForm.note" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
-                        </el-form-item>
-                    </el-row>
-                </div>
-            </el-form>
-            <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
+                </el-form>
+            <div slot="footer" class="dialog-footer">
                 <el-button @click="closeDialog">取 消</el-button>
                 <el-button @click="saveOrUpdate('addForm')"  type="primary" class="btn-custom" >
                     <span>确 定</span>
@@ -173,11 +166,11 @@ import iLocalStroage from '@/common/js/localStroage';
             name:''
         },
         addForm:{
+            name:'',
+            parentId:'',
+            note:'',
         },
         rules: {
-            code: [
-                {required: true, message: "请输入编码", trigger: "blur"}
-            ],
             name: [
                 {required: true, message: "请输入名称", trigger: "blur"}
             ]
@@ -190,7 +183,8 @@ import iLocalStroage from '@/common/js/localStroage';
         pageSize: 10, //pagesize
         totalPage: 0, //总数
         title:'',
-        userInfo:{}
+        userInfo:{},
+        defaultCheckedKeys: []
       };
     },
     components: {
@@ -238,25 +232,28 @@ import iLocalStroage from '@/common/js/localStroage';
       //表单筛选
       async getDataList(val) {
         this.currentPage = val
-        let data = {
-          name: this.queryForm.name,
-          parentId:this.selectNode.id,
-          current: this.currentPage,
-          size: this.pageSize
-        };
-        let res = await queryDeviceType(data)
+        if(this.selectNode.pid=="deviceType"){
+            this.queryForm.parentId=this.selectNode.id
+            this.queryForm.id=''
+        }else{
+            this.queryForm.parentId=''
+            this.queryForm.id=this.selectNode.id
+        }
+        this.queryForm.current=this.currentPage,
+        this.queryForm.size= this.pageSize
+        let res = await queryDeviceType(this.queryForm)
         this.totalPage = res.data.total;
         this.tableData = res.data.records;
       },
       //新增
       addData() {
-        if(this.selectNode.id){
+        if(this.selectNode.id && this.selectNode.pid=="deviceType"){
+            this.addForm = {parentId:this.selectNode.id}
             this.visible=true
             this.formReadOnly = false
-            this.addForm = {parentId:this.selectNode.id}
             this.title='新增'+this.funName
         }else{
-            _this.$message({type: "error",message: "请先选择左侧装备类型!"});
+            this.$message({type: "error",message: "请先选择左侧装备类型!"});
         }
       },
       // 表格id删除
@@ -272,7 +269,7 @@ import iLocalStroage from '@/common/js/localStroage';
               res => {
                 if(res.data==true){
                   _this.$message({type: "success",message: "删除成功!"});
-                  _this.getDataList(1)
+                  _this.refreshData()
                 }else{
                    _this.$message({type: "error",message: "删除失败!"});
                 }
@@ -314,7 +311,7 @@ import iLocalStroage from '@/common/js/localStroage';
                     message:"保存成功!"
                   });
                   _this.visible = false;
-                  _this.getDataList(1);
+                  _this.refreshData();
                 },
                 err => {
                   console.log(err);
@@ -323,13 +320,18 @@ import iLocalStroage from '@/common/js/localStroage';
           }
         });
       },
+      async refreshData(){
+        let res = await queryDeviceTypeTree()
+        this.treeData = res.data
+        this.getDataList(1)
+      },
       async init(){
         let res = await queryDeviceTypeTree()
         this.treeData = res.data
       },
       formatDeviceType (row) {
-        let data = this.treeData[0].children.filter(p=>p.id==row.parentId)
-        if(data){
+        let data = this.treeData.filter(p=>p.id==row.parentId)
+        if(data && data.length>0){
           return data[0].label
         }
         return ''

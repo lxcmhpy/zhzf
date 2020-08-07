@@ -1,7 +1,7 @@
 <template>
   <div class="height100">
-    <div class="handlePart">
-      <div class="search toggleBox search-mini">
+    <div class="handlePart el-form-bottom0">
+      <div class="search toggleBox search-mini" style="width:100%">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
             <el-form-item>
@@ -10,22 +10,27 @@
             <el-form-item label="姓名" prop='personName'>
               <el-input v-model="searchForm.personName"></el-input>
             </el-form-item>
-            <el-form-item label="在岗情况" prop='workStatus'>
-              <el-select v-model="searchForm.workStatus" placeholder="请选择">
+            <el-form-item label="在岗情况" prop='stationStatusName'>
+              <!-- <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
                 <el-option v-for="item in optionsZGQK" :key="item.id" :label="item.name" :value="item.name">
                 </el-option>
+              </el-select> -->
+              <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
+                <el-option label="在岗" value="在岗"></el-option>
+                <el-option label="离岗" value="离岗"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
           <div class="search-btns">
             <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
+            <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="resetSearchData('searchForm')"></el-button>
             <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
             </el-button>
           </div>
         </div>
       </div>
     </div>
-    <div class="handlePart">
+    <div class="handlePart el-form-bottom0">
       <div class="search" style="width:100%">
         <el-form :inline="true">
           <el-form-item>
@@ -39,13 +44,16 @@
           </el-form-item> -->
           <div style="width:auto;float:right">
             <el-form-item>
-              <el-button type="primary" size="medium" @click="downloadModle">Excel模板导出</el-button>
+              <a class="el-button el-button--primary el-button--medium" href="./static/excel/检查人员模板.xlsx" download="检查人员模板.xlsx">Excel模板导出</a>
+              <!-- <el-button type="primary" size="medium" @click="downloadModle">Excel模板导出</el-button> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" @click="importModle">导入Excel</el-button>
+              <el-upload style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="importModle">
+                <el-button type="primary" size="medium">导入Excel</el-button>
+              </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
+              <el-button size="medium" type="primary" @click="exportMethod('检查人员表.xls')">导出所有人员</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -58,7 +66,7 @@
         <el-table-column prop="branchName" label="监督执法种类" align="center"></el-table-column>
         <el-table-column prop="stationStatusName" label="状态" align="center"></el-table-column>
         <el-table-column prop="staffingName" label="执法人员性质" align="center"></el-table-column>
-        <el-table-column prop="job" label="职务" align="center"></el-table-column>
+        <el-table-column prop="postName" label="职务" align="center"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -146,15 +154,15 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="人员类型" prop="region">
-              <el-select v-model="addForm.region" placeholder="请选择">
+            <el-form-item label="人员类型" prop="lawOfficeType">
+              <el-select v-model="addForm.lawOfficeType" placeholder="请选择">
                 <el-option v-for="item in optionsRYLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="职级" prop="technicalTitle">
-              <el-select v-model="addForm.technicalTitle" placeholder="请选择">
+            <el-form-item label="职级" prop="userRank">
+              <el-select v-model="addForm.userRank" placeholder="请选择">
                 <el-option v-for="item in optionsZJ" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -162,8 +170,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="执法人员性质" prop="organization">
-              <el-select v-model="addForm.organization" placeholder="请选择">
+            <el-form-item label="执法人员性质" prop="staffingName">
+              <el-select v-model="addForm.staffingName" placeholder="请选择">
                 <el-option v-for="item in optionsZFRYXZ" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -177,22 +185,20 @@
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="监督检查种类" prop="domain">
-              <el-select v-model="addForm.domain" placeholder="请选择">
+            <el-form-item label="监督检查种类" prop="branchName">
+              <el-select v-model="addForm.branchName" placeholder="请选择">
                 <el-option v-for="item in optionsJDJCZL" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="监督检查区域" prop="lawArea">
-              <el-select v-model="addForm.lawArea" placeholder="请选择">
-                <el-option v-for="item in optionsJDJCZL" :key="item.id" :label="item.name" :value="item.name"></el-option>
-              </el-select>
+              <el-input v-model="addForm.lawArea"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="执法证类型" prop="certType">
-          <el-select v-model="addForm.domain" placeholder="请选择">
+          <el-select v-model="addForm.certType" placeholder="请选择">
             <el-option v-for="item in optionsZFZLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
@@ -232,7 +238,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否具有法律职业资格" prop="isLawProfession">
+            <el-form-item label="是否具有法律职业资格" prop="isLawProfession" label-width="160px">
               <el-radio-group v-model="addForm.isLawProfession">
                 <el-radio label="是"></el-radio>
                 <el-radio label="否"></el-radio>
@@ -240,21 +246,21 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="是否在岗" prop="workStatus">
-          <el-radio-group v-model="addForm.workStatus">
-            <el-radio label="在岗"></el-radio>
-            <el-radio label="离岗"></el-radio>
+        <el-form-item label="是否在岗" prop="stationStatusName">
+          <el-radio-group v-model="addForm.stationStatusName">
+            <el-radio label="在岗">是</el-radio>
+            <el-radio label="离岗">否</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="其他情况" prop="remark">
           <el-input type="textarea" v-model="addForm.remark"></el-input>
         </el-form-item>
-        <el-form-item prop="status">
+        <!-- <el-form-item prop="status">
           <el-radio-group v-model="addForm.status">
             <el-radio label="启用"></el-radio>
             <el-radio label="停用"></el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -264,23 +270,28 @@
   </div>
 </template>
 <script>
-import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi } from "@/api/inspection";
+import { getAllPublicPersonApi, addPublicPersonApi, getDictListDetailByNameApi, delPersonApi, importPersonExcelApi, exportPersonApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinPerson, mixinInspection],
   props: ['freshFlag'],
   watch: {
-    freshFlag(val, oldVal) {
-      console.log('监听', this.freshFlag, 'val', val)
+    freshFlag: {
+      handler(val, oldVal) {
+        this.getTableData()
+      },
+      deep: true
     },
+
   },
   data() {
     return {
       multipleSelection: [],
       searchForm: {
-        workStatus: "",
+        stationStatusName: "",
         personName: '',
       },
       isShow: false,
@@ -298,15 +309,52 @@ export default {
       dialogStatus: '',
       formLabelWidth: '125px',
       rules: {
-        pass: [
-          { required: true, trigger: 'blur' }
+        personName: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkPass: [
-          { required: true, trigger: 'blur' }
+        idCard: [
+          { required: true, message: "必填项", trigger: "change" },
+          { validator: validateIDNumber, trigger: "change" }
         ],
-        age: [
-          { required: true, trigger: 'blur' }
-        ]
+        politicalStatusName: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        majorName: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        highestEducation: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        lawOfficeType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        userRank: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        staffingName: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        company: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        branchName: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        certNumber: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        certType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        company: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        contactNum: [
+          { validator: validatePhone, trigger: "change" }
+        ],
+        phoneNum: [
+          { validator: validatePhone, trigger: "change" }
+        ],
       },
       optionsZGQK: [],
       optionsMZ: [],
@@ -321,6 +369,9 @@ export default {
     }
   },
   methods: {
+    // freshFlag(val) {
+    //   console.log('val', val)
+    // },
     // 查询列表时
     getTableData() {
       let data = {
@@ -340,7 +391,6 @@ export default {
     },
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
-      this.searchForm.defaultDisplay = true
       // debugger
       this.getTableData()
     },
@@ -348,6 +398,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // this.addForm.photo=this.addForm.photo||''
+          this.addForm.organName = iLocalStroage.gets("userInfo").organName
           this.$delete(this.addForm, 'photo')
           addPublicPersonApi(this.addForm).then(
             res => {
@@ -374,6 +425,36 @@ export default {
     },
     delMethod(id) {
       this.deleteById("delPerson", id);
+    },
+    // 导入
+    importModle(param) {
+      console.log(param);
+      // let currentFileId = this.currentFileId
+      var fd = new FormData()
+      fd.append("file", param.file);
+      importPersonExcelApi(fd).then(res => {
+        if (res.code === 200) {
+          this.$message({ type: "success", message: res.msg });
+          this.currentPage = 1;
+          this.getTableData()
+        }
+      }
+      );
+    },
+    // 导出
+    exportMethod(fileName) {
+      exportPersonApi(iLocalStroage.gets("userInfo").organName).then(res => {
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        //其他浏览器
+        let link = document.createElement('a'); // 创建a标签
+        link.style.display = 'none';
+        link.setAttribute('download', fileName)//必须要重命名
+        let objectUrl = URL.createObjectURL(res);
+        link.href = objectUrl;
+        link.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      ).catch(err => { console.log(err); throw new Error(err) })
     },
     getDrawerList(data) {
       let _this = this

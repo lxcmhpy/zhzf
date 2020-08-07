@@ -283,18 +283,18 @@
                 <el-form-item
                   label="案件基本情况"
                   class="line-height13"
-                  prop="socialCreditCode"
-                  :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
+                  prop="caseSituation"
+                  :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'],'',!isParty)"
                 >
                   <el-input
                     type="textarea"
                     class="height106"
-                    ref="socialCreditCode"
+                    ref="caseSituation"
                     clearable
-                    v-model="formData.socialCreditCode"
+                    v-model="formData.caseSituation"
                     size="small"
                     placeholder="请输入"
-                    :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
+                    :disabled="isParty || fieldDisabled(propertyFeatures['caseSituation'])"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -588,6 +588,7 @@ export default {
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
+        caseSituation: "",
         afsj: "",
         measureStartDate: "",
         measureEndDate: "",
@@ -822,7 +823,6 @@ export default {
     },
     //确定添加
     addResSure(formName) {
-      debugger
       let canAdd = true;
       if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {
