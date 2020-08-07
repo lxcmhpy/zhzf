@@ -226,8 +226,12 @@ export default {
           if (res.code === 200) {
             if(res.data){
               this.courseList = res.data.listVo;
+              if(!res.data.listVo.length){
+                this.$message({type: 'info', message: '请先添加课件在预览'});
+              }else{
+                this.showPreview = true;
+              }
             }
-            this.showPreview = true;
           }
         },
         err => {
