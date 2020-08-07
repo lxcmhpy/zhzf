@@ -1443,7 +1443,7 @@ export function getWarInfoLlistApi(data) {
   data = vm.$qs.stringify(data);
   return request({
     url: "/case/sys/war/list",
-    method: "POST",
+    method: "get",
     data: data,
     showloading: false,
     baseUrlType: 'test',

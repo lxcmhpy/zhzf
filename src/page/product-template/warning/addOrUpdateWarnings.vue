@@ -42,7 +42,7 @@
         <el-radio v-model="addOrUpdateForm.configType" label="文书配置">文书配置</el-radio>
         <el-radio v-model="addOrUpdateForm.configType" label="环节配置">环节配置</el-radio>
       </el-form-item>
-      <div class="table-title">开启预警条件</div>
+      <div class="random-table-title">开启预警条件</div>
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
           <el-form-item label="分项指标">
@@ -234,15 +234,3 @@ export default {
 };
 
 </script>
-<style lang="scss">
-.table-title {
-  margin-bottom: 18px;
-  border-top: 1px solid #e3e3ec;
-  background: #e9edf6;
-  text-align: center;
-  line-height: 30px;
-  font-size: 16px;
-  font-weight: bolder;
-  color: #20232b;
-}
-</style>

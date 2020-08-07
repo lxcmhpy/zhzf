@@ -108,7 +108,7 @@
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
         </div>
-        <div class="table-title">
+        <div class="random-table-title">
           已上传文件列表
         </div>
         <el-table :data="fileList" stripe style="width: 100%" height="100%">
@@ -602,14 +602,3 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
-<style lang="scss">
-.table-title {
-  border-top: 1px solid #e3e3ec;
-  background: #e9edf6;
-  text-align: center;
-  line-height: 30px;
-  font-size: 16px;
-  font-weight: bolder;
-  color: #20232b;
-}
-</style>

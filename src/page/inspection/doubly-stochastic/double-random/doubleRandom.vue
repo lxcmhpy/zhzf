@@ -70,15 +70,18 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
       <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
-        <div>
-          <el-carousel ref="randomDom" trigger="click" height="20px" direction="vertical" :autoplay="false">
-            <el-carousel-item v-for="(item,index) in taskList" :key="index.toString()" name="item">
-              <h3 class="medium">{{ item }}</h3>
-            </el-carousel-item>
-          </el-carousel>
-          <el-button @click="startRandom" type="text">开始抽取</el-button>
-          <el-button type="text" @click="editMethod(scope.row.id)">重置</el-button>
-        </div>
+        <el-row>
+          <el-col :span="18">
+            <div class="random-table-title" style="min-width:100px;height:30px">{{ randomContent }}</div>
+          </el-col>
+          <el-col :span="6">
+            <el-button v-if="isRandomFlag" type="primary" size="medium" @click="startRandom">开始抽取</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="editMethod(scope.row.id)">保存抽取结果</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="resetRandom(scope.row.id)">重置</el-button>
+          </el-col>
+        </el-row>
+        <el-button type="primary" size="medium" @click="endRandom">结束</el-button>
+        <div class="random-table-title">抽取结果</div>
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
@@ -110,6 +113,7 @@ export default {
         taskArea: '省交通运输厅领域'
       },
       isShow: false,
+      dialogFormVisible: true,
       addForm: {
         name: '',
         sex: '',
@@ -149,7 +153,10 @@ export default {
       optionsZC: [],
       optionsZZMM: [],
       optionsZYLY: [],
-      taskList: ['qw', '第三方', '七二', '输入法', '房德罡', '挨个', '台湾人', '阿达', '阿斯顿发生', '的非官方']
+      taskList: ['qw', '第三方', '七二', '输入法', '房德罡', '挨个', '台湾人', '阿达', '阿斯顿发生', '的非官方'],
+      randomContent: '',
+      timer: '',
+      isRandomFlag: true,
     }
   },
   methods: {
@@ -207,13 +214,34 @@ export default {
     radomExpertNum() {
       return Math.random() * 100 + 10000;
     },
+    // 抽取效果开始
     startRandom() {
-      // this.$refs.randomDom.setActiveItem(2)
-      this.taskList.forEach((index,element) => {
-        setTimeout(() => {
-          this.$refs.randomDom.setActiveItem(index)
-        }, 1000);
-      });
+      this.isRandomFlag = false
+      this.timer = setInterval(this.scroll, 100);//设置计时器
+    },
+    scroll() {
+      this.animate = true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+      setTimeout(() => {      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
+        this.randomContent = this.taskList[0]
+        this.taskList.push(this.taskList[0]);  // 将数组的第一个元素添加到数组的
+        this.taskList.shift();               //删除数组的第一个元素
+        this.animate = false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+      }, 500)
+    },
+    // 抽取效果结束
+    endRandom() {
+      clearInterval(this.timer);//销毁计时器
+      this.timer = null;
+      setTimeout(() => {
+        // 最后显示的值
+        this.randomContent = 'asjkdhjfahsdasidjfhaidhfiashjdifah'
+      }, 700)
+    },
+    // 重置
+    resetRandom() {
+      clearInterval(this.timer);//销毁计时器
+      this.timer = null;
+      this.isRandomFlag = true
     },
     getDrawerList(data) {
       let _this = this
