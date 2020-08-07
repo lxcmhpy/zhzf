@@ -69,6 +69,7 @@
                 >
                     <el-table-column
                         type="selection"
+                        :selectable='checkBoxAble'
                         width="55px">
                     </el-table-column>
                     <el-table-column label="序号" width="70px">
@@ -88,7 +89,7 @@
                         <template slot-scope="scope">
                             <div style="width:160px">
                                 <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button>
+                                <el-button v-if="scope.row.status=='闲置'" type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -546,15 +547,23 @@
             elSelectTree,
         },
         methods: {
+            checkBoxAble(row, rowIndex){
+                /* if(row.status=='闲置'){ */
+                    return true
+                /* }else{
+                    return false
+                } */
+            },
             saveImageFile (param) {
                 var fd = new FormData()
                 fd.append("file", param.file);
-                fd.append("category", '执法装备');
+                fd.append("category", '装备图片');
                 fd.append("fileName", param.file.name);
-                fd.append('caseId', param.file.name+new Date().getTime())//传记录id
-                fd.append('docId', param.file.name+new Date().getTime())//传记录id
                 if(this.addForm.storageId){
                     fd.append("storageId", this.addForm.storageId);
+                    fd.append('caseId', this.addForm.id)//传记录id
+                }else{
+                    fd.append('caseId', param.file.name+new Date().getTime())//传记录id
                 }
                 let _this = this
                 upload(fd).then(
@@ -738,27 +747,17 @@
             },
             //新增
             addData() {
-                if(this.$refs.addFormDeviceTypeTreeObj){
-                    this.$refs.addFormDeviceTypeTreeObj.clearHandle()
-                }
-                if(this.$refs.addFormPurchaseUnitTreeObj){
-                    this.$refs.addFormPurchaseUnitTreeObj.clearHandle()
-                }
-                if(this.$refs.addFormUseUnitTreeObj){
-                    this.$refs.addFormUseUnitTreeObj.clearHandle()
-                }
+                this.getUserDataList(this.userInfo.organId)
                 this.addForm = {useUnit:this.userInfo.organId};
                 this.title="新增装备"
                 this.formReadOnly = false
                 this.visible = true
-                this.userList=[]
+                this.$set(this.addForm,'useUnit',this.userInfo.organId)
             },
             //编辑
             handleEdit() {
                 this.title="修改装备"
                 this.findDeviceInventoryById(this.addForm.id)
-                this.detailVisible = false
-                this.visible = true
             },
             //查看详情
             showDataDetail(row){
@@ -776,6 +775,8 @@
                         }else{
                             _this.userList=[]
                         }
+                        _this.detailVisible = false
+                        _this.visible = true
                     },
                     err => {
                         console.log(err);
@@ -806,12 +807,8 @@
                 .then(() => {
                     deleteDeviceInventoryById(row.id).then(
                         res => {
-                            if(res.data==true){
-                                _this.$message({type: "success",message: "删除成功!"});
-                                _this.queryData(1)
-                            }else{
-                                _this.$message({type: "error",message: "删除失败!"});
-                            }
+                            _this.$message({type: "success",message: "删除成功!"});
+                            _this.queryData(1)
                         },
                         err => {
                             console.log(err);
@@ -825,6 +822,15 @@
             closeDialog() {
                 this.visible = false;
                 this.$refs["addForm"].resetFields();
+                if(this.$refs.addFormDeviceTypeTreeObj){
+                    this.$refs.addFormDeviceTypeTreeObj.clearHandle()
+                }
+                if(this.$refs.addFormPurchaseUnitTreeObj){
+                    this.$refs.addFormPurchaseUnitTreeObj.clearHandle()
+                }
+                if(this.$refs.addFormUseUnitTreeObj){
+                    this.$refs.addFormUseUnitTreeObj.clearHandle()
+                }
             },
             init(){
                 this.queryData(1)
