@@ -65,22 +65,24 @@ export function getDrawerList(data) {
 // 文件上传
 export  function  upload(data)  {
     return  request({
-      url:  "/system/sys/file/uploadCommon",
+      url:  "/sys/file/uploadCommon",
       method:  "POST",
       data: data,
       contentType: 'multipart/form-data;',
       showloading: true,
       loadingType:'loadPart',
+      baseUrlType:  'DEVICE_HOST',
       cancelToken:  setCancelSource(),
     });
   }
   //根据主键ID删除附件
   export function deleteFileById(fileId) {
     return  request({
-      url:  "/system/file/provider/delete/"+fileId,
+      url:  "/sys/file/delete/"+fileId,
       method:  "GET",
       showloading: true,
       loadingType:'loadPart',
+      baseUrlType:  'DEVICE_HOST',
       cancelToken:  setCancelSource(),
     });
   }

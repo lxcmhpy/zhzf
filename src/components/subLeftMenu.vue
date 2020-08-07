@@ -56,6 +56,7 @@ import { mapGetters } from "vuex";
       handleClose(key, keyPath) {
       },
       clicSubmenu() {
+        // debugger
         this.$store.commit("setCaseNumber", '');
       },
       //获取侧边栏菜单

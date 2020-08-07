@@ -93,3 +93,28 @@ export function findAnnualById(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//车牌号是否存在
+export function findplate(plateNumber) {
+  return request({
+    url: "/device/info/findplate/" + plateNumber,
+    method: "get",
+    showloading: false,
+    loadingType: 'loadPart',
+    baseUrlType: 'DEVICE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
+//批量删除车辆信息
+export function deleteVehicles(data) {
+  return request({
+    url: "/device/info/deletebyid",
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    data: data,
+    baseUrlType: 'DEVICE_HOST',
+    cancelToken: setCancelSource()
+  });
+}

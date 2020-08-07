@@ -1101,9 +1101,10 @@ export default {
 
     },
     //获取坐标
-    getLngLat(lngLatStr) {
+    getLngLat(lngLatStr, address) {
       console.log(`lngLatStr:`, lngLatStr);
-      this.$data.$f.setValue(this.adressName, lngLatStr);
+      console.log(`address:`, address);
+      this.$data.$f.setValue(this.adressName, address + '(' + lngLatStr + ')');
       // this.inforForm.latitudeAndLongitude = lngLatStr;   
       // this.hasLatitudeAndLongitude = true;
     },
@@ -1221,10 +1222,10 @@ export default {
       if (field == 'staff') {
         // 执法人员
         return this.changeLaw
-      }else if (field == 'certificateId') {
+      } else if (field == 'certificateId') {
         // 执法人员证件号
         return this.changeLawId
-      }else if (field == 'caseCauseName') {
+      } else if (field == 'caseCauseName') {
         // 违法行为
         return this.changeIligalName
       }

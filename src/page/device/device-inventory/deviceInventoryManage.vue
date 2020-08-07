@@ -69,6 +69,7 @@
                 >
                     <el-table-column
                         type="selection"
+                        :selectable='checkBoxAble'
                         width="55px">
                     </el-table-column>
                     <el-table-column label="序号" width="70px">
@@ -88,7 +89,7 @@
                         <template slot-scope="scope">
                             <div style="width:160px">
                                 <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button>
+                                <el-button v-if="scope.row.status=='闲置'" type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -247,11 +248,11 @@
                                 accept=".jpg, .png"
                                 class="device-uploader"
                                 :http-request="saveImageFile"
-                                :file-list="imageList"
                                 :on-remove="deleteFile"
                                 :show-file-list="false"
+                                :on-change="changeDeviceImage"
                             >
-                                <img v-if="addForm.storageId" :src="host+addForm.storageId" class="device-img" />
+                                <img v-if="imageUrl" :src="imageUrl" class="device-img" />
                                 <i v-else class="el-icon-picture-outline avatar-uploader-icon"></i>
                             </el-upload>
                             </div>
@@ -395,7 +396,7 @@
                         </el-col>
                         <el-col :span="24">
                             <label class="item-label">图片</label>
-                            <el-image v-if="addForm.storageId" class="item-img" :src="host+addForm.storageId" />
+                            <el-image v-if="imageUrl" class="item-img" :src="imageUrl" />
                             <i v-else class="el-icon-picture-outline avatar-uploader-icon"></i>
                         </el-col>
                         <el-col :span="24">
@@ -539,32 +540,42 @@
                 deviceTypeList:[],
                 logList:[],
                 host: '',
-                imageList:[]
+                imageUrl:''
             };
         },
         components: {
             elSelectTree,
         },
         methods: {
+            checkBoxAble(row, rowIndex){
+                /* if(row.status=='闲置'){ */
+                    return true
+                /* }else{
+                    return false
+                } */
+            },
+            // 选择装备图片
+            changeDeviceImage(file, fileList){
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
             saveImageFile (param) {
                 var fd = new FormData()
                 fd.append("file", param.file);
-                fd.append("category", '执法装备');
+                fd.append("category", '装备图片');
                 fd.append("fileName", param.file.name);
-                fd.append('caseId', param.file.name+new Date().getTime())//传记录id
-                fd.append('docId', param.file.name+new Date().getTime())//传记录id
                 if(this.addForm.storageId){
                     fd.append("storageId", this.addForm.storageId);
+                    fd.append('caseId', this.addForm.id)//传记录id
+                }else{
+                    fd.append('caseId', param.file.name+new Date().getTime())//传记录id
                 }
                 let _this = this
                 upload(fd).then(
                     res => {
+                        if(_this.addForm.storageId){
+                            _this.addForm.storageId = null
+                        }
                         _this.addForm.storageId = res.data[0].storageId
-                        _this.imageList.push({
-                            url:_this.host+'/'+res.data[0].storageId,
-                            storageId:res.data[0].storageId,
-                            name:res.data[0].fileName
-                        });
                     },
                     error => {
                         console.log(error)
@@ -575,7 +586,6 @@
             deleteFile(file, fileList){
                 let _this = this
                 deleteFileById(file.storageId).then(res=>{
-                    _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
                 },err=>{
                     console.log(err)
                 })
@@ -738,27 +748,17 @@
             },
             //新增
             addData() {
-                if(this.$refs.addFormDeviceTypeTreeObj){
-                    this.$refs.addFormDeviceTypeTreeObj.clearHandle()
-                }
-                if(this.$refs.addFormPurchaseUnitTreeObj){
-                    this.$refs.addFormPurchaseUnitTreeObj.clearHandle()
-                }
-                if(this.$refs.addFormUseUnitTreeObj){
-                    this.$refs.addFormUseUnitTreeObj.clearHandle()
-                }
+                this.getUserDataList(this.userInfo.organId)
                 this.addForm = {useUnit:this.userInfo.organId};
                 this.title="新增装备"
                 this.formReadOnly = false
                 this.visible = true
-                this.userList=[]
+                this.$set(this.addForm,'useUnit',this.userInfo.organId)
             },
             //编辑
             handleEdit() {
                 this.title="修改装备"
                 this.findDeviceInventoryById(this.addForm.id)
-                this.detailVisible = false
-                this.visible = true
             },
             //查看详情
             showDataDetail(row){
@@ -776,6 +776,11 @@
                         }else{
                             _this.userList=[]
                         }
+                        _this.detailVisible = false
+                        _this.visible = true
+                        if(_this.addForm.storageId){
+                            _this.imageUrl=_this.host+_this.addForm.storageId+"?t=" + Math.random()
+                        }
                     },
                     err => {
                         console.log(err);
@@ -789,6 +794,9 @@
                         _this.addForm = res.data
                         _this.logList = res.data.logList
                         _this.addForm.logList = []
+                        if(_this.addForm.storageId){
+                            _this.imageUrl=_this.host+_this.addForm.storageId+"?t=" + Math.random()
+                        }
                     },
                     err => {
                         console.log(err);
@@ -806,12 +814,8 @@
                 .then(() => {
                     deleteDeviceInventoryById(row.id).then(
                         res => {
-                            if(res.data==true){
-                                _this.$message({type: "success",message: "删除成功!"});
-                                _this.queryData(1)
-                            }else{
-                                _this.$message({type: "error",message: "删除失败!"});
-                            }
+                            _this.$message({type: "success",message: "删除成功!"});
+                            _this.queryData(1)
                         },
                         err => {
                             console.log(err);
@@ -825,6 +829,15 @@
             closeDialog() {
                 this.visible = false;
                 this.$refs["addForm"].resetFields();
+                if(this.$refs.addFormDeviceTypeTreeObj){
+                    this.$refs.addFormDeviceTypeTreeObj.clearHandle()
+                }
+                if(this.$refs.addFormPurchaseUnitTreeObj){
+                    this.$refs.addFormPurchaseUnitTreeObj.clearHandle()
+                }
+                if(this.$refs.addFormUseUnitTreeObj){
+                    this.$refs.addFormUseUnitTreeObj.clearHandle()
+                }
             },
             init(){
                 this.queryData(1)

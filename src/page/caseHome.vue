@@ -438,25 +438,24 @@ export default {
       }
     },
     async clickCase(row) {
+      this.$store.commit("setCaseId", row.id);
+      iLocalStroage.set("stageCaseId",row.id);
       if (this.moreFlag === "unRecordCase") { 
         let setCaseNumber = row.caseNumber != "" ? row.caseNumber : row.tempNo;
         this.$store.commit("setCaseNumber", setCaseNumber);
-
         //暂存案件跳转信息采集
-      if(row.state == 0){
-        this.$store.commit("setCaseId", row.id);
-        iLocalStroage.set("stageCaseId",row.id);
-        await this.queryFlowBycaseId();
-        this.$router.replace({
-          name: this.caseFlowData.basicInfoPage, 
-        });
-        return;
-      }
-
+        if(row.state == 0){
+          await this.queryFlowBycaseId();
+          this.$router.replace({
+            name: this.caseFlowData.basicInfoPage, 
+          });
+          return;
+        }
         if (row.caseStatus === "已移送") {
           let message = "该案件正在移送中，移送完成后才可与继续办理";
           this.$refs.tansferAtentionDialogRef.showModal(message, "移送中");
         } else {
+          console.log("1111111",this.caseId)
           //立案登记表已保存未提交审批时 跳转pdf页面
          let docTypeId,linkId,currentFlow = '';
          try{
@@ -797,10 +796,6 @@ export default {
   box-sizing: border-box;
 }
 
-.padding22 {
-  /* padding: 0 22px; */
-  /* box-sizing: border-box; */
-}
 
 .colorD8DBE0 {
   background: rgba(246, 248, 253, 1);

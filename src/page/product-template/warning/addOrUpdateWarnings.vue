@@ -42,19 +42,19 @@
         <el-radio v-model="addOrUpdateForm.configType" label="文书配置">文书配置</el-radio>
         <el-radio v-model="addOrUpdateForm.configType" label="环节配置">环节配置</el-radio>
       </el-form-item>
-      <div class="table-title">开启预警条件</div>
+      <div class="random-table-title">开启预警条件</div>
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
           <el-form-item label="分项指标">
-            <el-select v-model="item.type" placeholder="请选择">
-              <el-option v-for="item in levelList" :key="item" :label="item" :value="item"></el-option>
+            <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type)">
+              <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="5" v-if="addOrUpdateForm.startingPoint!='2'">
+        <el-col :span="5" v-if="addOrUpdateForm.configType!='环节配置'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
-              <el-option v-for="item in gradeList" :key="item.name" :label="item.name" :value="item.name"></el-option>
+              <el-option v-for="item in bindPdfFieldList" :key="item.id" :label="item.itemValue" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -88,8 +88,10 @@
       </el-row>
       <el-form-item label="是否启用" prop="status">
         <el-radio-group v-model="addOrUpdateForm.status">
-          <el-radio label="是"></el-radio>
-          <el-radio label="否"></el-radio>
+          <!-- <el-radio label="是"></el-radio>
+          <el-radio label="否"></el-radio> -->
+          <el-radio label="启用"></el-radio>
+          <el-radio label="关闭"></el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -102,6 +104,7 @@
 <script>
 import { addWarInfoLlistApi, findWarInfoByIdApi } from "@/api/caseHandle";
 import { getDictListDetailByNameApi, } from "@/api/system";
+import { getAllPdfListApi, findSetListApi, saveOrUpdatePropertyApi, findAllSetListApi, getQueryLinkListApi, delBindApi } from '@/api/caseHandle.js'
 export default {
   data() {
     return {
@@ -122,8 +125,10 @@ export default {
       dialogTitle: "", //弹出框title
       handelType: 0, //添加 0  修改2
       editRouteId: '',
-      levelList: ['立案登记表', '案件处罚决定书', '询问笔录'], //分项指标列表
-      gradeList: [],//指标项列表
+      bindPdfFieldList: [], //分项指标列表
+      // levelList: ['立案登记表', '案件处罚决定书', '询问笔录'], //分项指标列表
+      bindPdfList: [],//指标项列表
+      // gradeList: [],//指标项列表
       standerList: [],//条件列表
       timeList: ['时', '分', '秒', '天'],
       taskTypeList: ['定时任务'],
@@ -137,6 +142,8 @@ export default {
       let _this = this;
       this.visible = true;
       this.handelType = type;
+      this.getFormList();
+      this.getPdfList();
       if (type == 0) {
         this.dialogTitle = "添加预警信息";
         this.$nextTick(() => {
@@ -150,14 +157,14 @@ export default {
             if (res.code == 200) {
               _this.dialogTitle = "预警信息维护";
               _this.addOrUpdateForm = res.data;
-              if (this.addOrUpdateForm.cycleTime!=null) {
+              if (this.addOrUpdateForm.cycleTime != null) {
                 let cycleTimeList = this.addOrUpdateForm.cycleTime.split('_')
-                this.$set(_this.addOrUpdateForm,'cycleTime2',cycleTimeList[1])
-                this.$set(_this.addOrUpdateForm,'cycleTime1',cycleTimeList[0])
+                this.$set(_this.addOrUpdateForm, 'cycleTime2', cycleTimeList[1])
+                this.$set(_this.addOrUpdateForm, 'cycleTime1', cycleTimeList[0])
                 // _this.addOrUpdateForm.cycleTime2 == cycleTimeList[1]
                 // _this.addOrUpdateForm.cycleTime1 == cycleTimeList[0]
               }
-              _this.addList=res.data.sysWarInfoVoList
+              _this.addList = res.data.sysWarInfoVoList
               _this.visible = true;
             }
           },
@@ -166,7 +173,6 @@ export default {
       // 获取抽屉
       this.getDrawerList([
         { name: '预警信息-条件', option: 1 },
-        { name: '预警信息-指标项', option: 2 },
         { name: '人员信息-政治面貌', option: 4 }])
     },
     //关闭弹窗的时候清除数据
@@ -209,7 +215,6 @@ export default {
           res => {
             switch (element.option) {
               case 1: _this.standerList = res.data; break;//条件
-              case 2: _this.gradeList = res.data; break;//预警信息-指标项
               case 4: _this.optionsZZMM = res.data; break;//政治面貌
             }
           },
@@ -225,6 +230,63 @@ export default {
     },
     delTargetMethod(index) {
       this.addList.splice(index, 1)
+    },
+    // 表单抽屉表
+    getFormList() {
+      let data = {}
+      getQueryLinkListApi(data).then(
+        res => {
+          console.log('抽屉表', res)
+          this.pdfAndFormList = res.data
+          this.bindPdfFieldList = res.data
+        });
+    },
+    //  文书抽屉表 
+    getPdfList() {
+      let data = {
+        size: 100
+      }
+      getAllPdfListApi(data).then(res => {
+        if (res.code == 200) {
+          console.log('文书抽屉表', res)
+          // this.pdfAndFormList = res.data.records
+          this.bindPdfList = res.data.records
+        } else {
+          console.log("fail");
+        }
+      });
+    },
+    changeType(typeId) {
+      let _this=this
+      let data = {
+        typeId: typeId
+      }
+      findAllSetListApi(data).then(
+        res => {
+          console.log('列表', res)
+          _this.bindPdfFieldList=res.data
+
+          // this.pdfAndFormList = res.data.records
+          // console.log('pdfAndFormList', this.pdfAndFormList)
+          // this.tableData = res.data.records
+          // this.totalPage = res.data.total
+          // // 类型转换
+          // this.tableData.forEach(element => {
+          //   if (element.isEditable == 'true') {
+          //     element.isEditable = true
+          //   }
+          //   if (element.isEditable == 'false') {
+          //     element.isEditable = false
+          //   }
+          //   if (element.isRequired == 'true') {
+          //     element.isRequired = true
+          //   }
+          //   if (element.isRequired == 'false') {
+          //     element.isRequired = false
+          //   }
+          // });
+
+        });
     }
   },
   mounted() {
@@ -232,15 +294,3 @@ export default {
 };
 
 </script>
-<style lang="scss">
-.table-title {
-  margin-bottom: 18px;
-  border-top: 1px solid #e3e3ec;
-  background: #e9edf6;
-  text-align: center;
-  line-height: 30px;
-  font-size: 16px;
-  font-weight: bolder;
-  color: #20232b;
-}
-</style>

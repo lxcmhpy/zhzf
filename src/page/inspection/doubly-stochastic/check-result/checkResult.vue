@@ -11,8 +11,8 @@
               <el-form-item label="抽查主体" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
-              <el-form-item label="检查类型" prop='checkSubject'>
-                <el-input v-model="searchForm.checkSubject"></el-input>
+              <el-form-item label="检查类型" prop='checkType'>
+                <el-input v-model="searchForm.checkType"></el-input>
               </el-form-item>
             </el-form>
             <div class="search-btns">
@@ -108,7 +108,7 @@
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
         </div>
-        <div class="table-title">
+        <div class="random-table-title">
           已上传文件列表
         </div>
         <el-table :data="fileList" stripe style="width: 100%" height="100%">
@@ -214,7 +214,7 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById ,getRandomResultByPage} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -301,14 +301,14 @@ export default {
     // 查询列表时
     getTableData() {
       let data = {
-        name: this.searchForm.name,
-        company: this.searchForm.company,
-        taskArea: this.searchForm.taskArea,
+        objectName: this.searchForm.objectName,
+        checkSubject: this.searchForm.checkSubject,
+        checkType: this.searchForm.checkType,
         current: this.currentPage,
         size: this.pageSize,
       };
-      // this.getPageList("getAllTask", data);
-      this.tableData = [{}]
+      this.getPageList("getAllTask", data);
+      // this.tableData = [{}]
     },
     // 选择数据
     handleSelectionChange(val) {
@@ -602,14 +602,3 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
-<style lang="scss">
-.table-title {
-  border-top: 1px solid #e3e3ec;
-  background: #e9edf6;
-  text-align: center;
-  line-height: 30px;
-  font-size: 16px;
-  font-weight: bolder;
-  color: #20232b;
-}
-</style>

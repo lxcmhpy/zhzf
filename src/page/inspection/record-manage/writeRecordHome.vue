@@ -123,7 +123,6 @@ export default {
     // 选择模板
     writeRecord(item) {
       // 写记录
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
         name: 'inspection_writeRecordInfo',
         // params: item
