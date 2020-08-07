@@ -80,7 +80,7 @@
             <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="resetRandom(scope.row.id)">重置</el-button>
           </el-col>
         </el-row>
-        <el-button type="primary" size="medium" @click="endRandom">结束</el-button>
+        <!-- <el-button type="primary" size="medium" @click="endRandom">结束</el-button> -->
         <div class="random-table-title">抽取结果</div>
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
@@ -113,7 +113,7 @@ export default {
         taskArea: '省交通运输厅领域'
       },
       isShow: false,
-      dialogFormVisible: true,
+      dialogFormVisible: false,
       addForm: {
         name: '',
         sex: '',

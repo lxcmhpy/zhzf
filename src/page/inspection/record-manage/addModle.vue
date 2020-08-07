@@ -547,6 +547,8 @@ export default {
                   user.forEach((element, index) => {
                     _this.formData.templateUserIdList.push({ userId: userId[index], lawOfficerName: element })
                   });
+                }else{
+                  this.changeScopeOfUse()
                 }
                 let admin = _this.formData.templateAdmin ? _this.formData.templateAdmin.split(",") : []
                 let adminId = _this.formData.templateAdminId ? _this.formData.templateAdminId.split(",") : []
@@ -1158,6 +1160,16 @@ export default {
     },
     clickitem2(e) {
       e === this.formData.releventRecords ? this.formData.releventRecords = '' : this.formData.releventRecords = e
+    },
+    changeScopeOfUse() {
+      let _this=this
+      if (this.formData.templateUserIdList.length == 0) {
+        _this.formData.templateUserIdList=[]
+        _this.formData.organId = iLocalStroage.gets("userInfo").organId;
+        _this.formData.organName = iLocalStroage.gets("userInfo").organName;
+        _this.formData.templateUserIdList.push({ userId: iLocalStroage.gets("userInfo").id, lawOfficerName: iLocalStroage.gets("userInfo").username });
+        // this.$set()
+      }
     },
   },
   mounted() {

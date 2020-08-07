@@ -11,8 +11,8 @@
               <el-form-item label="抽查主体" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
-              <el-form-item label="检查类型" prop='checkSubject'>
-                <el-input v-model="searchForm.checkSubject"></el-input>
+              <el-form-item label="检查类型" prop='checkType'>
+                <el-input v-model="searchForm.checkType"></el-input>
               </el-form-item>
             </el-form>
             <div class="search-btns">
@@ -214,7 +214,7 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById ,getRandomResultByPage} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -301,13 +301,13 @@ export default {
     // 查询列表时
     getTableData() {
       let data = {
-        name: this.searchForm.name,
-        company: this.searchForm.company,
-        taskArea: this.searchForm.taskArea,
+        objectName: this.searchForm.objectName,
+        checkSubject: this.searchForm.checkSubject,
+        checkType: this.searchForm.checkType,
         current: this.currentPage,
         size: this.pageSize,
       };
-      // this.getPageList("getAllTask", data);
+      this.getPageList("getRandomResultByPage", data);
       this.tableData = [{}]
     },
     // 选择数据
