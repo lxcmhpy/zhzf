@@ -2,7 +2,8 @@
   <div class="uplode-equipment-photo" style="width:100%;float:left;margin-bottom:30px;">
     <div class="card-title">
       <font class="font" style="font-size:25px;">
-        <span class="titleflag"></span>{{ topTitle.title }}
+        <span class="titleflag"></span>
+        {{ topTitle.title }}
         <span class="upload-explain">{{ topTitle.tips }}</span>
       </font>
     </div>
@@ -36,7 +37,7 @@
                 action="#"
                 accept=".jpg, .png"
                 list-type="picture-card"
-                :auto-upload="false"
+                :http-request="saveImageFile"
                 :show-file-list="false"
                 :on-change="(file, fileList) => {changeDeviceImage(file, fileList, index)}"
               >
@@ -87,12 +88,56 @@ export default {
     return {
       dialogImageUrl: "",
       dialogVisible: false,
-      editAble: false
+      editAble: false,
+      vehicleId: "",
     };
   },
   computed: {},
   created() {},
+  mounted() {
+    this.vehicleId = this.$route.params.id;
+  },
   methods: {
+    saveImageFile(param) {
+      this.saveFile(param, this.topTitle.title);
+    },
+    saveFile(param, type) {
+      var fd = new FormData();
+      fd.append("file", param.file);
+      fd.append("category", "装备系统");
+      fd.append("fileName", param.file.name);
+      fd.append("fileType", type);
+      fd.append("status", type); //传记录id
+      fd.append("caseId", this.vehicleId); //传记录id
+      fd.append("docId", this.vehicleId); //传记录id
+      let _this = this;
+      upload(fd).then(
+        (res) => {
+          if (type == "车辆照片") {
+            _this.imageList.push({
+              url:
+                iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +
+                "/" +
+                res.data[0].storageId,
+              storageId: res.data[0].storageId,
+              name: res.data[0].fileName,
+            });
+          } else {
+            _this.attachList.push({
+              url:
+                iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +
+                "/" +
+                res.data[0].storageId,
+              storageId: res.data[0].storageId,
+              name: res.data[0].fileName,
+            });
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
     // 选择装备图片
     changeDeviceImage(file, fileList, index) {
       const fileIndex = fileList.findIndex((item) => item.uid === file.uid);

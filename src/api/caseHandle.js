@@ -1438,3 +1438,47 @@ export function getLinkTypeInfoByIdApi(id) {
   });
 }
 
+//分页查询定时器信息
+export function getWarInfoLlistApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/case/sys/war/list",
+    method: "get",
+    data: data,
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}
+//添加时器信息
+export function addWarInfoLlistApi(data) {
+  data = vm.$qs.stringify(data);
+  return request({
+    url: "/case/sys/war/saveOrUpdate",
+    method: "POST",
+    data: data,
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}
+//删除定时器信息
+export function delWarInfoLlistApi(data) {
+  return request({
+    url: "/case/sys/war/deleteById/"+data,
+    method: "get",
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}
+//根据id查询定时器信息
+export function findWarInfoByIdApi(data) {
+  return request({
+    url: "/case/sys/war/findById/"+data,
+    method: "get",
+    showloading: false,
+    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}

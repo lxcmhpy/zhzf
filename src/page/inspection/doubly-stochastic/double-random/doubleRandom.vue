@@ -28,32 +28,12 @@
       <div class="handlePart">
         <div class="search" style="width:100%">
           <el-form :inline="true">
-            <el-form-item label="任务领域" prop='taskArea'>
+            <el-form-item label="抽取领域" prop='taskArea'>
               <el-select v-model="searchForm.taskArea" placeholder="请选择" @change="resetSearchData('searchForm')">
                 <el-option label="省交通运输厅领域" value="省交通运输厅领域"></el-option>
                 <el-option label="省市场监管领域" value="省市场监管领域"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
-            </el-form-item>
-            <!-- <el-form-item>
-            <el-button type="primary" size="medium" icon="el-icon-delete-solid" @click="delMethod">删除</el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="medium" icon="iconfont law-edit" @click="editMethod">修改</el-button>
-          </el-form-item> -->
-            <div style="width:auto;float:right">
-              <el-form-item>
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="downloadModle">Excel模板导出</el-button>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="medium" icon="eel-icon-search" @click="importModle">导入Excel</el-button>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod">导出所有对象</el-button>
-              </el-form-item>
-            </div>
           </el-form>
         </div>
       </div>
@@ -69,19 +49,19 @@
           <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="检查范围" align="center"></el-table-column>
-            <el-table-column label="任务周期" align="center">
+          <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
           <el-table-column prop="checkBasis" label="操作人员" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="监督人员" align="center"></el-table-column>
-          <el-table-column fixed="right" label="操作" align="center">
+          <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <!-- <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
               <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button> -->
               <el-button @click="editMethod(scope.row)" type="text">抽取</el-button>
-              <el-button type="text" @click="delMethod(scope.row.id)">查看</el-button>
+              <el-button type="text" @click="editMethod(scope.row.id)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -89,137 +69,31 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog :title='dialogStatus+"省市场监管领域任务"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
-        <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="任务名称" prop="name">
-                <el-input v-model="addForm.name"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="抽查事项" prop="sex">
-                <el-select v-model="addForm.sex" placeholder="请选择">
-                  <el-option label="男" value="0"></el-option>
-                  <el-option label="女" value="1"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="检查主体" prop="expertNum">
-                <el-input v-model="addForm.expertNum"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="检查方式" prop="company">
-                <el-input v-model="addForm.company"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="操作人员" prop="birthDate">
-                <el-date-picker v-model="addForm.birthDate" type="date">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="监督人员" prop="politicalStatus">
-                <el-select v-model="addForm.politicalStatus" placeholder="请选择">
-                  <el-option v-for="item in optionsZZMM" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="检查对象" prop="job">
-                <el-input v-model="addForm.job"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="事项类别" prop="unitAddress">
-                <el-input v-model="addForm.unitAddress"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="检查依据" prop="jobTitle">
-            <el-select v-model="addForm.jobTitle" placeholder="请选择">
-              <el-option v-for="item in optionsZC" :key="item.id" :label="item.name" :value="item.name"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="检查范围" prop="evaluationTime">
-            <el-date-picker v-model="addForm.evaluationTime" type="date" placeholder="选择日期">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="备注" prop="graduateSchool">
-            <el-input v-model="addForm.graduateSchool"></el-input>
-          </el-form-item>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="抽查对象数" prop="practiceQualification">
-                <el-input v-model="addForm.practiceQualification"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="项/总数" prop="qualificationTime">
-                <el-date-picker v-model="addForm.qualificationTime" type="date" placeholder="选择日期">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="执法人员" prop="contactType">
-                <el-input v-model="addForm.contactType"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="人/总数" prop="fixedTelephone">
-                <el-date-picker v-model="addForm.fixedTelephone" type="date" placeholder="选择日期">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="专家" prop="contactType">
-                <el-input v-model="addForm.contactType"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="人/总数" prop="fixedTelephone">
-                <el-date-picker v-model="addForm.fixedTelephone" type="date" placeholder="选择日期">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="专业领域" prop="domain">
-                <el-select v-model="addForm.domain" placeholder="请选择">
-                  <el-option v-for="item in optionsZYLY" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="E-mail" prop="email">
-                <el-input v-model="addForm.email"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="抽查时限" prop="remark">
-            <el-input type="textarea" v-model="addForm.remark"></el-input>
-          </el-form-item>
-        </el-form>
+      <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+        <el-row>
+          <el-col :span="18">
+            <div class="random-table-title" style="min-width:100px;height:30px">{{ randomContent }}</div>
+          </el-col>
+          <el-col :span="6">
+            <el-button v-if="isRandomFlag" type="primary" size="medium" @click="startRandom">开始抽取</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="editMethod(scope.row.id)">保存抽取结果</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="resetRandom(scope.row.id)">重置</el-button>
+          </el-col>
+        </el-row>
+        <el-button type="primary" size="medium" @click="endRandom">结束</el-button>
+        <div class="random-table-title">抽取结果</div>
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55">
+          </el-table-column>
+          <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="检查人员" align="center"></el-table-column>
+          <el-table-column prop="itemType" label="检查专家" align="center"></el-table-column>
+        </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
         </div>
       </el-dialog>
-
     </div>
   </div>
 </template>
@@ -236,9 +110,10 @@ export default {
       searchForm: {
         checkSubject: "",
         taskName: '',
-        taskArea:'省交通运输厅领域'
+        taskArea: '省交通运输厅领域'
       },
       isShow: false,
+      dialogFormVisible: true,
       addForm: {
         name: '',
         sex: '',
@@ -278,6 +153,10 @@ export default {
       optionsZC: [],
       optionsZZMM: [],
       optionsZYLY: [],
+      taskList: ['qw', '第三方', '七二', '输入法', '房德罡', '挨个', '台湾人', '阿达', '阿斯顿发生', '的非官方'],
+      randomContent: '',
+      timer: '',
+      isRandomFlag: true,
     }
   },
   methods: {
@@ -334,6 +213,35 @@ export default {
     },
     radomExpertNum() {
       return Math.random() * 100 + 10000;
+    },
+    // 抽取效果开始
+    startRandom() {
+      this.isRandomFlag = false
+      this.timer = setInterval(this.scroll, 100);//设置计时器
+    },
+    scroll() {
+      this.animate = true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+      setTimeout(() => {      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
+        this.randomContent = this.taskList[0]
+        this.taskList.push(this.taskList[0]);  // 将数组的第一个元素添加到数组的
+        this.taskList.shift();               //删除数组的第一个元素
+        this.animate = false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+      }, 500)
+    },
+    // 抽取效果结束
+    endRandom() {
+      clearInterval(this.timer);//销毁计时器
+      this.timer = null;
+      setTimeout(() => {
+        // 最后显示的值
+        this.randomContent = 'asjkdhjfahsdasidjfhaidhfiashjdifah'
+      }, 700)
+    },
+    // 重置
+    resetRandom() {
+      clearInterval(this.timer);//销毁计时器
+      this.timer = null;
+      this.isRandomFlag = true
     },
     getDrawerList(data) {
       let _this = this

@@ -1,137 +1,145 @@
 <template>
     <div class="com_searchAndpageBoxPadding">
-        <div class="searchPageLayout" id="userBox">
-            <div class="searchPage toggleBox">
-                <div class="handlePart">
-                    <el-form :inline="true" ref="deviceBillForm" :model="queryForm" label-width="120px">
-                        <!--查询字段-->
-                        <el-form-item label="单据号" prop="billNo">
-                            <el-input v-model="queryForm.billNo"></el-input>
-                        </el-form-item>
-                        <el-form-item label="单据日期" prop="billDate">
-                            <el-date-picker v-model="queryForm.billDate" type="date" style="width:140px"  value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
-                        </el-form-item>
+        <div class="searchPage">
+            <div class="handlePart">
+                <el-form :inline="true" ref="deviceBillForm" :model="queryForm" label-width="120px">
+                    <!--查询字段-->
+                    <el-form-item label="单据号" prop="billNo">
+                        <el-input v-model="queryForm.billNo"></el-input>
+                    </el-form-item>
+                    <el-form-item label="单据日期" prop="billDate">
+                        <el-date-picker v-model="queryForm.billDate" type="date" style="width:140px"  value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="使用单位" prop="useUnit">
+                        <elSelectTree
+                            ref="queryFormUseUnitTreeObj"
+                            :options="organList"
+                            :accordion="true"
+                            :props="orgTreeProps"
+                            style="width:200px" 
+                            @getValue="queryFormUseUnitClick">
+                        </elSelectTree>
+                        <el-input style="display:none" v-model="queryForm.useUnit"></el-input>
+                    </el-form-item>
+
+                    <el-form-item style="margin-top:1px; margin-left: 15px;">
+                        <el-button 
+                            title="搜索"
+                            class="commonBtn searchBtn"
+                            size="medium"
+                            icon="iconfont law-sousuo" 
+                            @click="queryData(1)"/>
+                        <el-button 
+                            title="重置"
+                            class="commonBtn searchBtn"
+                            size="medium"
+                            icon="iconfont law-zhongzhi"
+                            @click="reset"/>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="tableHandle" style="margin-bottom: 10px;">
+                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
+            </div> 
+            <div class="tablePart">
+                <el-table
+                        :data="tableData"
+                        stripe
+                        resizable
+                        border
+                        style="width: 100%;height:100%"
+                        @row-click="showDataDetail"
+                >
+                    <el-table-column label="序号" width="70px">
+                        <template slot-scope="scope">
+                            {{scope.$index+1}}
+                        </template>
+                    </el-table-column>
+                    <!--列表字段-->
+                    <el-table-column prop="billNo" label="单据号" width="160"></el-table-column>
+                    <el-table-column prop="billDate" label="单据日期" width="120px"></el-table-column>
+                    <el-table-column prop="useUnit" label="使用单位"></el-table-column>
+                    <el-table-column prop="createName" label="处理人" width="120px"></el-table-column>
+                    <el-table-column label="操作" width="120">
+                        <template slot-scope="scope">
+                            <div style="width:160px">
+                                <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
+                                <!--  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                                <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button> -->
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="paginationBox" v-if="tableData.length > 0">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="currentPage"
+                        background
+                        :page-sizes="[10, 20, 30, 40]"
+                        layout="prev, pager, next,sizes,jumper"
+                        :total="totalPage"
+                ></el-pagination>
+            </div>
+            <el-dialog :title="title"
+                        custom-class="leftDialog"
+                        :visible.sync="visible"
+                        top="0"
+                        width="40%"
+                        @close="closeDialog"
+                        :close-on-click-modal="false">
+                <el-form
+                        :model="addForm"
+                        ref="addForm"
+                        :rules="rules"
+                        label-width="150px"
+                        class="addOrganClass" >
+                    <div class="part">
+                        <!--卡片字段-->
+                        <el-row>
                         <el-form-item label="使用单位" prop="useUnit">
                             <elSelectTree
-                                ref="queryFormUseUnitTreeObj"
+                                ref="addFormUseUnitTreeObj"
                                 :options="organList"
+                                :value="addForm.useUnit"
                                 :accordion="true"
                                 :props="orgTreeProps"
-                                style="width:200px" 
-                                @getValue="queryFormUseUnitClick">
+                                style="width: 100%;"
+                                @getValue="addFormUseUnitClick">
                             </elSelectTree>
-                            <el-input style="display:none" v-model="queryForm.useUnit"></el-input>
+                            <el-input style="display:none" v-model="addForm.useUnit"></el-input>
                         </el-form-item>
-
-                        <el-form-item>
-                            <el-button type="primary" size="medium" icon="el-icon-search" @click="queryData(1)">查询</el-button>
-                            <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset">重置</el-button>
+                        </el-row>
+                        <el-row>
+                        <el-form-item label="单据日期" prop="billDate">
+                            <el-date-picker v-model="addForm.billDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
                         </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
+                        </el-row>
+                        <el-row>
+                        <el-form-item label="处理人" prop="operator">
+                            <el-input v-model="addForm.createName" style="width: 100%;" :readonly="true"></el-input>
                         </el-form-item>
-                    </el-form>
-                </div>
-                <div class="tablePart">
-                    <el-table
-                            :data="tableData"
-                            stripe
-                            resizable
-                            border
-                            style="width: 100%;height:100%"
-                            @row-click="showDataDetail"
-                    >
-                        <el-table-column label="序号" width="70px">
-                            <template slot-scope="scope">
-                                {{scope.$index+1}}
-                            </template>
-                        </el-table-column>
-                        <!--列表字段-->
-                        <el-table-column prop="billNo" label="单据号" width="160"></el-table-column>
-                        <el-table-column prop="billDate" label="单据日期" width="120px"></el-table-column>
-                        <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                        <el-table-column prop="createName" label="处理人" width="120px"></el-table-column>
-                        <el-table-column label="操作" width="120">
-                            <template slot-scope="scope">
-                                <div style="width:160px">
-                                    <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                   <!--  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                                    <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button> -->
-                                </div>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-                <div class="paginationBox" v-if="tableData.length > 0">
-                    <el-pagination
-                            @size-change="handleSizeChange"
-                            @current-change="handleCurrentChange"
-                            :current-page="currentPage"
-                            background
-                            :page-sizes="[10, 20, 30, 40]"
-                            layout="prev, pager, next,sizes,jumper"
-                            :total="totalPage"
-                    ></el-pagination>
-                </div>
-                <el-dialog :title="title"
-                           custom-class="leftDialog"
-                           :visible.sync="visible"
-                           top="0"
-                           width="40%"
-                           @close="closeDialog"
-                           :close-on-click-modal="false">
-                    <el-form
-                            :model="addForm"
-                            ref="addForm"
-                            :rules="rules"
-                            label-width="150px"
-                            class="addOrganClass" >
-                        <div class="part">
-                            <!--卡片字段-->
-                            <el-row>
-                            <el-form-item label="使用单位" prop="useUnit">
-                                <elSelectTree
-                                    ref="addFormUseUnitTreeObj"
-                                    :options="organList"
-                                    :value="addForm.useUnit"
-                                    :accordion="true"
-                                    :props="orgTreeProps"
-                                    style="width: 100%;"
-                                    @getValue="addFormUseUnitClick">
-                                </elSelectTree>
-                                <el-input style="display:none" v-model="addForm.useUnit"></el-input>
-                            </el-form-item>
-                            </el-row>
-                            <el-row>
-                            <el-form-item label="单据日期" prop="billDate">
-                                <el-date-picker v-model="addForm.billDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
-                            </el-form-item>
-                            </el-row>
-                            <el-row>
-                            <el-form-item label="处理人" prop="operator">
-                                <el-input v-model="addForm.createName" style="width: 100%;" :readonly="true"></el-input>
-                            </el-form-item>
-                            </el-row>
-                            <el-row>
-                            <el-form-item label="备注" prop="note">
-                                <el-input
-                                    type="textarea"
-                                    v-model="addForm.note"
-                                    :autosize="{ minRows: 2, maxRows: 3}"
-                                    :readonly="this.formReadOnly"
-                                ></el-input>
-                            </el-form-item>
-                            </el-row>
-                        </div>
-                    </el-form>
-                    <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
-                        <el-button @click="closeDialog">取 消</el-button>
-                        <el-button @click="saveOrUpdate('addForm')"  type="primary" class="btn-custom" >
-                            <span>确 定</span>
-                        </el-button>
+                        </el-row>
+                        <el-row>
+                        <el-form-item label="备注" prop="note">
+                            <el-input
+                                type="textarea"
+                                v-model="addForm.note"
+                                :autosize="{ minRows: 2, maxRows: 3}"
+                                :readonly="this.formReadOnly"
+                            ></el-input>
+                        </el-form-item>
+                        </el-row>
                     </div>
-                </el-dialog>
-            </div>
+                </el-form>
+                <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
+                    <el-button @click="closeDialog">取 消</el-button>
+                    <el-button @click="saveOrUpdate('addForm')"  type="primary" class="btn-custom" >
+                        <span>确 定</span>
+                    </el-button>
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>

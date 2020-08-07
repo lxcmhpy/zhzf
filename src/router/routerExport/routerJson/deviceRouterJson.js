@@ -105,21 +105,21 @@ export default [{
       title: "系统参数"
     },
     component: () => import("@/page/device/param/paramManage.vue")
+  },
+  {
+    path: "/deviceApproveFlow",
+    name: "deviceApproveFlow",
+    meta: {
+      title: "使用证流程配置"
     },
-    {
-        path: "/deviceApproveFlow",
-        name: "deviceApproveFlow",
-        meta: {
-        title: "使用证流程配置"
-        },
-        component: () => import("@/page/device/approve-flow/approveFlow.vue")
+    component: () => import("@/page/device/approve-flow/approveFlow.vue")
+  },
+  {
+    path: "/certificateBillManage",
+    name: "certificateBillManage",
+    meta: {
+      title: "申请管理"
     },
-    {
-        path: "/certificateBillManage",
-        name: "certificateBillManage",
-        meta: {
-          title: "申请管理"
-        },
-        component: () => import("@/page/device/certificate-bill/certificateBillManage.vue")
-    }
+    component: () => import("@/page/device/certificate-bill/certificateBillManage.vue")
+  }
 ]
