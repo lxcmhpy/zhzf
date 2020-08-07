@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="valueTitle" :clearable="clearable" @clear="clearHandle">
+  <el-select :value="valueTitle" :disabled="disabled" :clearable="clearable" @clear="clearHandle">
     <el-option :value="valueTitle" :label="valueTitle">
       <el-tree  id="tree-option"
                 ref="selectTree"
@@ -42,6 +42,10 @@
       clearable:{
         type:Boolean,
         default:()=>{ return true }
+      },
+      disabled:{
+        type:Boolean,
+        default:()=>{ return false }
       },
       /* 自动收起 */
       accordion:{

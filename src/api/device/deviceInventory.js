@@ -39,6 +39,17 @@ export function findDeviceInventoryById (id) {
         cancelToken: setCancelSource()
     });
 }
+//根据ID查询库存管理
+export function findByIdAndLog (id) {
+    return request({
+        url: "/device/inventory/findByIdAndLog/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //删除库存管理
 export function deleteDeviceInventoryById(id) {
     return request({
@@ -61,4 +72,16 @@ export function copyData(data) {
         data:  data,
         cancelToken: setCancelSource()
     })
+}
+//根据条件查询装备列表
+export function listDevice(data) {
+    return request({
+        url: "/device/inventory/listDevice",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    });
 }
