@@ -51,7 +51,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="5" v-if="addOrUpdateForm.startingPoint!='2'">
+        <el-col :span="5" v-if="addOrUpdateForm.configType!='环节配置'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
               <el-option v-for="item in gradeList" :key="item.name" :label="item.name" :value="item.name"></el-option>
@@ -88,8 +88,10 @@
       </el-row>
       <el-form-item label="是否启用" prop="status">
         <el-radio-group v-model="addOrUpdateForm.status">
-          <el-radio label="是"></el-radio>
-          <el-radio label="否"></el-radio>
+          <!-- <el-radio label="是"></el-radio>
+          <el-radio label="否"></el-radio> -->
+          <el-radio label="启用"></el-radio>
+          <el-radio label="关闭"></el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -150,14 +152,14 @@ export default {
             if (res.code == 200) {
               _this.dialogTitle = "预警信息维护";
               _this.addOrUpdateForm = res.data;
-              if (this.addOrUpdateForm.cycleTime!=null) {
+              if (this.addOrUpdateForm.cycleTime != null) {
                 let cycleTimeList = this.addOrUpdateForm.cycleTime.split('_')
-                this.$set(_this.addOrUpdateForm,'cycleTime2',cycleTimeList[1])
-                this.$set(_this.addOrUpdateForm,'cycleTime1',cycleTimeList[0])
+                this.$set(_this.addOrUpdateForm, 'cycleTime2', cycleTimeList[1])
+                this.$set(_this.addOrUpdateForm, 'cycleTime1', cycleTimeList[0])
                 // _this.addOrUpdateForm.cycleTime2 == cycleTimeList[1]
                 // _this.addOrUpdateForm.cycleTime1 == cycleTimeList[0]
               }
-              _this.addList=res.data.sysWarInfoVoList
+              _this.addList = res.data.sysWarInfoVoList
               _this.visible = true;
             }
           },

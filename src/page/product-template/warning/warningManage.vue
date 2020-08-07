@@ -94,7 +94,7 @@ export default {
       }).then(() => {
         delWarInfoLlistApi(row.id).then(
           res => {
-            if (res.data == true) {
+            if (res.code == 200) {
               this.$message({ type: "success", message: "删除成功!" });
               this.currentPage = 1;
               this.getCatalog();

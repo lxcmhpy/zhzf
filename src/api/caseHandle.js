@@ -1464,7 +1464,6 @@ export function addWarInfoLlistApi(data) {
 }
 //删除定时器信息
 export function delWarInfoLlistApi(data) {
-  debugger
   return request({
     url: "/case/sys/war/deleteById/"+data,
     method: "get",
