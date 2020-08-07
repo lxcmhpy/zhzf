@@ -248,11 +248,11 @@
                                 accept=".jpg, .png"
                                 class="device-uploader"
                                 :http-request="saveImageFile"
-                                :file-list="imageList"
                                 :on-remove="deleteFile"
                                 :show-file-list="false"
+                                :on-change="changeDeviceImage"
                             >
-                                <img v-if="addForm.storageId" :src="host+addForm.storageId" class="device-img" />
+                                <img v-if="imageUrl" :src="imageUrl" class="device-img" />
                                 <i v-else class="el-icon-picture-outline avatar-uploader-icon"></i>
                             </el-upload>
                             </div>
@@ -396,7 +396,7 @@
                         </el-col>
                         <el-col :span="24">
                             <label class="item-label">图片</label>
-                            <el-image v-if="addForm.storageId" class="item-img" :src="host+addForm.storageId" />
+                            <el-image v-if="imageUrl" class="item-img" :src="imageUrl" />
                             <i v-else class="el-icon-picture-outline avatar-uploader-icon"></i>
                         </el-col>
                         <el-col :span="24">
@@ -540,7 +540,7 @@
                 deviceTypeList:[],
                 logList:[],
                 host: '',
-                imageList:[]
+                imageUrl:''
             };
         },
         components: {
@@ -553,6 +553,10 @@
                 /* }else{
                     return false
                 } */
+            },
+            // 选择装备图片
+            changeDeviceImage(file, fileList){
+                this.imageUrl = URL.createObjectURL(file.raw);
             },
             saveImageFile (param) {
                 var fd = new FormData()
@@ -568,12 +572,10 @@
                 let _this = this
                 upload(fd).then(
                     res => {
+                        if(_this.addForm.storageId){
+                            _this.addForm.storageId = null
+                        }
                         _this.addForm.storageId = res.data[0].storageId
-                        _this.imageList.push({
-                            url:_this.host+'/'+res.data[0].storageId,
-                            storageId:res.data[0].storageId,
-                            name:res.data[0].fileName
-                        });
                     },
                     error => {
                         console.log(error)
@@ -584,7 +586,6 @@
             deleteFile(file, fileList){
                 let _this = this
                 deleteFileById(file.storageId).then(res=>{
-                    _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
                 },err=>{
                     console.log(err)
                 })
@@ -777,6 +778,9 @@
                         }
                         _this.detailVisible = false
                         _this.visible = true
+                        if(_this.addForm.storageId){
+                            _this.imageUrl=_this.host+_this.addForm.storageId+"?t=" + Math.random()
+                        }
                     },
                     err => {
                         console.log(err);
@@ -790,6 +794,9 @@
                         _this.addForm = res.data
                         _this.logList = res.data.logList
                         _this.addForm.logList = []
+                        if(_this.addForm.storageId){
+                            _this.imageUrl=_this.host+_this.addForm.storageId+"?t=" + Math.random()
+                        }
                     },
                     err => {
                         console.log(err);
