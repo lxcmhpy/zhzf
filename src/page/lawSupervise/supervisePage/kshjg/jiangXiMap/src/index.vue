@@ -26,6 +26,11 @@ import Drawer from "../components/drawer/index.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
+  provide() {
+    return {
+      indexPage: this
+    }
+  },
   components: {
     JkBaseHMap,
     Search,
@@ -34,6 +39,7 @@ export default {
   },
   data() {
     return {
+      organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
         [0, '/static/images/img/lawSupervise/map_renyuan.png'],
@@ -50,17 +56,9 @@ export default {
         window1: {
           title: "专题查询",
           list: [
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法机构", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法人员", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/ysgljg.png"},
           ]
-        },
-        window2: {
-          defaultProps: {
-            children: 'children',
-            label: 'label'
-          },
-          option: []
         },
         window3: {
           title: "",
@@ -78,7 +76,6 @@ export default {
         }
       },
       selectData: {
-        organId: "",
         option: [
           {
             title: "西安市",
@@ -139,30 +136,6 @@ export default {
       _map.on('feature:onselect', event => {
         this.handleClickPoint(event.value.N.data)
       });
-    },
-
-    /**
-     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶子节点
-     */
-    addNode(arr) {
-      let myNode = [
-        { label: '执法人员', type: 0, children: [] },
-        { label: '执法车辆', type: 2, children: [] },
-        { label: '执法船舶', type: 3, children: [] },
-      ]
-      arr.map(item => {
-        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
-          myNode.map(myNodeItem => {
-            // 给自定义节点添加 pid 属性， 值为父节点的 id
-            myNodeItem.pid = item.id
-          })
-          // 在 children 里添加自定义节点
-          item.children = myNode.concat(item.children)
-          // 递归调用
-          this.addNode(item.children)
-        }
-      })
-      return arr
     },
 
     /**
@@ -260,7 +233,7 @@ export default {
      */
     handleCheckAllChange(val) {
       this.getAllPoints(val)
-    }
+    },
   },
   activated() {
     this.getTree()

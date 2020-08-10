@@ -13,8 +13,7 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
-        this.selectData.organId = data[0].id
-        this.searchWindowData.window2.option = this.addNode(data)
+        this.organId = data[0].id
       })
     },
 
@@ -35,7 +34,6 @@ export default {
           return res.data
         } else {
           this.$message.error('getOrganTree()::::::::接口数据错误');
-          throw new Error("getOrganTree()::::::::接口数据错误")
         }
       }).then(data => {
         node.children = data.map(item => {
@@ -64,7 +62,6 @@ export default {
           return res.data
         } else {
           this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-          throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
         }
       }).then(data => {
         node.children = data.map(item => {
@@ -219,7 +216,7 @@ export default {
         }
       } else {
         param = {
-          organId: this.selectData.organId,
+          organId: this.organId,
           type: type
         }
       }
@@ -235,7 +232,6 @@ export default {
             return res.data
           } else {
             this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-            throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
           }
         }).then(data => {
           // 手动给数据添加图层唯一标识
@@ -272,7 +268,7 @@ export default {
         ]
         let allPromise = typeMap.map(item => {
           let param = {
-            organId: this.selectData.organId,
+            organId: this.organId,
             type: item.type
           }
           return getZfjgLawSupervise(param)

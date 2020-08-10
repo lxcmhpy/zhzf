@@ -106,6 +106,7 @@ export default {
       this.pointsLayerName.forEach(item => {
         this.map.removeFeatureByLayerName(item)
       })
+      // 清空 Set
       this.pointsLayerName.clear()
     },
 
