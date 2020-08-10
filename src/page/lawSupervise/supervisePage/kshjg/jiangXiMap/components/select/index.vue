@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       isIndeterminate: true,
-      checkedCities: ['执法人员','执法机构'], // 选择的参数
+      checkedCities: [], // 选择的参数
       checkAll: false,
     }
   },
@@ -30,6 +30,7 @@ export default {
         this.list[1].options.map(item => {return item.name})
         : [];
       this.isIndeterminate = false;
+      this.$emit('handleCheckAllChange', val)
     },
 
     /**

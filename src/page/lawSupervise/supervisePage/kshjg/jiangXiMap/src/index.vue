@@ -8,9 +8,11 @@
       @handlePerson="handlePerson"
     />
     <Select
+      ref="Select"
       :config="selectData"
       @handleChange="handleChange"
       @handleItemCheck="handleItemCheck"
+      @handleCheckAllChange="handleCheckAllChange"
     />
     <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
   </div>
@@ -171,6 +173,9 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
+      // 清空右侧复选框
+      this.$refs.Select.checkedCities = []
+
       if(data.label === '执法人员') {
         this.getPeopleTree(data)
       } else if (data.label === '执法车辆' || data.label === '执法船舶') {
@@ -248,6 +253,13 @@ export default {
 
       let latLng = data.propertyValue.split(',')
       this.page.addPoint(data, latLng)
+    },
+
+    /**
+     * 点击全选, 获取全部点位数据并打点
+     */
+    handleCheckAllChange(val) {
+      this.getAllPoints(val)
     }
   },
   activated() {
