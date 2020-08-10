@@ -11,7 +11,7 @@ export default {
     center: {
       type: Array,
       default() {
-        return [115.8, 28.8];
+        return [115.871344, 28.710709];
       }
     },
     // 放大倍数

@@ -51,7 +51,7 @@ export default {
       page: null, // 地图组件的 this
       map: null,
       zoom: 8,
-      center: [12118909.300259633, 4086043.1061670054],
+      center: [115.871344, 28.710709],
       searchWindowData: {
         window1: {
           title: "专题查询",
