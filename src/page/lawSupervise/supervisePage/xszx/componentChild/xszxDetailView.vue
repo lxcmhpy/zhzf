@@ -247,7 +247,7 @@
                           <!-- 图片居中，暂时写死 -->
                         <img width="280"
                         style="margin-left: 20px;margin-top: 65px;"
-                          :src="xjHost + imgList[2]"
+                          :src="pHost + imgObj['PHOTO_L.jpg']"
                           alt=""
                         />
                       </td>
@@ -288,7 +288,7 @@
                     <p>车辆图片2</p>
                     <!-- 车头照片 -->
                     <img
-                      :src="xjHost + imgList[1]"
+                      :src="pHost + imgObj['PHOTO_F.jpg']"
                       alt="link_01.jpg"
                     />
                   </div>
@@ -296,7 +296,7 @@
                     <p>车辆图片3</p>
                     <!-- 车尾照片 -->
                     <img
-                      :src="xjHost + imgList[0]"
+                      :src="pHost + imgObj['PHOTO_D.jpg']"
                       alt="link_02.jpg"
                     />
                   </div>
@@ -304,7 +304,7 @@
                     <p>车辆图片4</p>
                     <!-- 侧面照片 -->
                     <img
-                      :src="xjHost + imgList[3]"
+                      :src="pHost + imgObj['PHOTO_S.jpg']"
                       alt="link_03.jpg"
                     />
                   </div>
@@ -391,15 +391,10 @@
                 indicator-position="outside"
                 :interval="5000"
               >
-                <el-carousel-item :key="0">
+                <el-carousel-item :key="0" v-if="videoUrl!=''">
                   <video width="280px" height="180px" controls>
                     <source
-                      :src="
-                        xjHost +
-                          '/api/ecds/GetCarPicture?work_no=' +
-                          obj.workNo +
-                          '&photo=PHOTO_V'
-                      "
+                      :src="pHost +videoUrl"
                       type="video/mp4"
                     />
                   </video>
@@ -412,7 +407,7 @@
                     width="280px"
                     height="180px"
                     @click="showImg(index)"
-                    :src="xjHost + item"
+                    :src="pHost + item"
                   />
                 </el-carousel-item>
               </el-carousel>
@@ -425,7 +420,7 @@
                   <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
                   </el-col>
                   <el-col :span="22">
-                    <img width="100%" :src="xjHost+imgIndexUrl">
+                    <img width="100%" :src="pHost+imgIndexUrl">
                   </el-col>
                   <el-col :span="1" style="margin-top: 200px;">
                     <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
@@ -459,18 +454,15 @@
 
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+import {getFileByCaseId} from "@/api/lawSupervise.js";
 export default {
   props: ["obj"],
   data() {
     return {
       imgIndexUrl: null,
       imgList: [
-          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
-          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
-          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
-          '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
           ],
-      xjHost: null,
+      pHost: null,
       dialogIMGVisible: false,
       acitveCar: 0,
       dialogPDFVisible: false,
@@ -480,7 +472,9 @@ export default {
         name: "",
         mobile: "",
         mark: ""
-      }
+      },
+      videoUrl:'',
+      imgObj:{}
     };
   },
   methods: {
@@ -510,6 +504,27 @@ export default {
           }
           this.imgIndexUrl = this.imgList[n];
         },
+        //通过案件ID和文书ID查询附件
+        findFileList() {
+            let data = {
+                caseId: this.obj.workNo
+            }
+            getFileByCaseId(data).then(
+                res => {
+                    res.data.forEach(p => {
+                        if(p.status=='治超图片'){
+                            this.imgList.push(p.storageId)
+                            this.imgObj[p.name]=p.storageId
+                        }else if(p.status=='治超视频'){
+                            this.videoUrl=p.storageId
+                        }
+                    });
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+        }
   },
   mounted() {
     // http://172.16.170.54:9332/14,16d92a05edcd   old:9,10a727c3ada3
@@ -517,7 +532,8 @@ export default {
     //   iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + "14,16d92a05edcd";
     // debugger;
     // this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
-    this.xjHost = iLocalStroage.gets("CURRENT_BASE_URL").XJ_IMG_HOST;
+    this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
+    this.findFileList();
   }
 };
 </script>

@@ -10,14 +10,14 @@
         <el-col :span="8">
           <el-form-item label="预警类型" prop="warType">
             <el-select v-model="addOrUpdateForm.warType" placeholder="请选择">
-              <el-option v-for="item in warnTypeList" :key="item" :label="item" :value="item"></el-option>
+              <el-option v-for="item in warnTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="任务类型" prop="taskType">
             <el-select v-model="addOrUpdateForm.taskType" placeholder="请选择">
-              <el-option v-for="item in taskTypeList" :key="item" :label="item" :value="item"></el-option>
+              <el-option v-for="item in taskTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -39,22 +39,27 @@
       </el-row>
 
       <el-form-item label="配置类型" prop="configType">
-        <el-radio v-model="addOrUpdateForm.configType" label="文书配置">文书配置</el-radio>
-        <el-radio v-model="addOrUpdateForm.configType" label="环节配置">环节配置</el-radio>
+        <el-radio v-model="addOrUpdateForm.configType" label="0">文书配置</el-radio>
+        <el-radio v-model="addOrUpdateForm.configType" label="1">环节配置</el-radio>
       </el-form-item>
       <div class="random-table-title">开启预警条件</div>
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
-          <el-form-item label="分项指标">
+          <el-form-item label="分项指标" v-if="addOrUpdateForm.configType!='环节配置'">
             <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type)">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="分项指标" v-else>
+            <el-select v-model="item.type" placeholder="请选择">
+              <el-option v-for="item in bindPdfFieldList" :key="item.id" :label="item.linkName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5" v-if="addOrUpdateForm.configType!='环节配置'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
-              <el-option v-for="item in bindPdfFieldList" :key="item.id" :label="item.itemValue" :value="item.id"></el-option>
+              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -90,8 +95,8 @@
         <el-radio-group v-model="addOrUpdateForm.status">
           <!-- <el-radio label="是"></el-radio>
           <el-radio label="否"></el-radio> -->
-          <el-radio label="启用"></el-radio>
-          <el-radio label="关闭"></el-radio>
+          <el-radio label="1">启用</el-radio>
+          <el-radio label="0">关闭</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -126,13 +131,14 @@ export default {
       handelType: 0, //添加 0  修改2
       editRouteId: '',
       bindPdfFieldList: [], //分项指标列表
+      pdfFieldList: [], //指标项列表
       // levelList: ['立案登记表', '案件处罚决定书', '询问笔录'], //分项指标列表
       bindPdfList: [],//指标项列表
       // gradeList: [],//指标项列表
       standerList: [],//条件列表
       timeList: ['时', '分', '秒', '天'],
-      taskTypeList: ['定时任务'],
-      warnTypeList: ['提醒', '预警', '报警'],
+      taskTypeList: [{ label: '定时任务', value:'1' }],
+      warnTypeList: [{ label: '提醒', value: '1' },{ label: '预警', value: '2' },{ label: '报警', value: '3' }],
       addList: [{}]
     };
   },
@@ -165,6 +171,7 @@ export default {
                 // _this.addOrUpdateForm.cycleTime1 == cycleTimeList[0]
               }
               _this.addList = res.data.sysWarInfoVoList
+              _this.changeType(_this.addList.indexInfo)
               _this.visible = true;
             }
           },
@@ -257,35 +264,14 @@ export default {
       });
     },
     changeType(typeId) {
-      let _this=this
+      let _this = this
       let data = {
         typeId: typeId
       }
       findAllSetListApi(data).then(
         res => {
           console.log('列表', res)
-          _this.bindPdfFieldList=res.data
-
-          // this.pdfAndFormList = res.data.records
-          // console.log('pdfAndFormList', this.pdfAndFormList)
-          // this.tableData = res.data.records
-          // this.totalPage = res.data.total
-          // // 类型转换
-          // this.tableData.forEach(element => {
-          //   if (element.isEditable == 'true') {
-          //     element.isEditable = true
-          //   }
-          //   if (element.isEditable == 'false') {
-          //     element.isEditable = false
-          //   }
-          //   if (element.isRequired == 'true') {
-          //     element.isRequired = true
-          //   }
-          //   if (element.isRequired == 'false') {
-          //     element.isRequired = false
-          //   }
-          // });
-
+          _this.pdfFieldList = res.data
         });
     }
   },
@@ -294,3 +280,4 @@ export default {
 };
 
 </script>
+<style lang="scss" src="@/assets/css/card.scss"></style>

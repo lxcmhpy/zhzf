@@ -119,8 +119,8 @@ export default {
   computed: {
     queryData() {
       return {
-        personLessonId: this.$route.query.perId,
-        lessonId: this.$route.query.lessonId,
+        personLessonId: this.$route.params.perId,
+        lessonId: this.$route.params.lessonId,
         idNo: this.UserInfo.idNumber
       };
     },

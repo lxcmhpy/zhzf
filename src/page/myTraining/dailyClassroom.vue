@@ -135,8 +135,8 @@ export default {
     // 日常课程开始学习
     startStudy(row){
       this.$router.push({
-        path: "/course-detail",
-        query: {
+        name: "CourseDetails",
+        params: {
           lessonId: row.lessonId,
           perId: row.personLessonId
         }
@@ -178,6 +178,7 @@ export default {
     flex-wrap: wrap;
     height: calc(100% - 130px);
     overflow-y: scroll;
+    border-bottom: 1px solid #e3e3ec;
     .course-item{
       font-size: 14px;
       color: #7B7B7B;

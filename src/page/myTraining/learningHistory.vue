@@ -74,8 +74,9 @@
               >
                 <el-card>
                   <div class="watch-record">
-                    <el-image v-if="lesson.path" :src="lesson.path"></el-image>
-                    <el-image v-else :src="'../../../static/images/img/trained/mock_exam.png'"></el-image>
+                    <el-image :src="lesson.path">
+                      <el-image slot="error" :src="lessonDefaultPic"></el-image>
+                    </el-image>
                     <div class="time-record">{{ lesson.accTime == 0 ? "尚未观看" : "已观看"+lesson.accTime+"分钟"}}</div>
                   </div>
                   <p class="course-name">{{ lesson.couName }}</p>
@@ -117,7 +118,8 @@ export default {
       tableLoading: false,
       showPreview: false,
       recordSize: 0,
-      listTotal: { size: 0 }
+      listTotal: { size: 0 },
+      lessonDefaultPic: '@/../static/images/img/trained/lesson_default.jpg'
     };
   },
   components: {},
@@ -243,6 +245,7 @@ export default {
   height: calc(100% - 80px);
   .table-wrap{
     height: calc(100% - 80px);
+    border-bottom: 1px solid #e3e3ec;
   }
   .exam-wrap{
     display: flex;

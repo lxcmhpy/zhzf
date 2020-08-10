@@ -27,12 +27,12 @@
     <div class="tablePart">
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column prop="warName" label="预警提醒名称" align="center"></el-table-column>
-        <el-table-column prop="warType" label="提醒类型" align="center"></el-table-column>
-        <el-table-column prop="taskType" label="任务类型" align="center"></el-table-column>
+        <el-table-column prop="warType" label="提醒类型" align="center" :formatter="warTypeFormat"></el-table-column>
+        <el-table-column prop="taskType" label="任务类型" align="center" :formatter="taskTypeFormat"></el-table-column>
         <!-- <el-table-column prop="routeGrade" label="条件内容" align="center"></el-table-column> -->
         <!-- <el-table-column prop="startingPoint" label="发送对象" align="center"></el-table-column> -->
         <!-- <el-table-column prop="enddingPoint" label="提醒内容" align="center"></el-table-column> -->
-        <el-table-column prop="status" label="状态" align="center"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center" :formatter="statusFormat"></el-table-column>
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <div style="width:160px">
@@ -157,7 +157,29 @@ export default {
 
     showIndex(index) {
       return (this.currentPage - 1) * this.pageSize + index + 1;
-    }
+    },
+    taskTypeFormat(row) {
+      if (row.taskType === '1') {
+        return '定时任务'
+      }
+    },
+    warTypeFormat(row) {
+      if (row.warType === '1') {
+        return '提醒'
+      } else if (row.warType === '2') {
+        return '预警'
+      } else if (row.warType === '3') {
+        return '报警'
+      }
+    },
+    statusFormat(row) {
+      if (row.warType === '1') {
+        return '启用'
+      } else if (row.warType === '0') {
+        return '关闭'
+      }
+    },
+
   },
   created() {
     this.getCatalog();
