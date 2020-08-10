@@ -11,7 +11,7 @@
                <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" >
                 <!-- <el-table-column type="selection" width="35px" align="center"></el-table-column> -->
                 <el-table-column type="index" width="55px" label="序号" align="center"></el-table-column>
-                <el-table-column prop="checkTime" label="检测时间" align="center"></el-table-column>
+                <el-table-column prop="checkTime" label="检测时间" width="105" align="center"></el-table-column>
                 <el-table-column prop="siteName" label="检测站点" align="center"></el-table-column>
                 <el-table-column label="ETC" align="center"  width="55px">
                     <template slot-scope="scope">

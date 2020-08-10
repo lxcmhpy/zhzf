@@ -545,7 +545,7 @@
                         <td class="color_ff w-1">检测位置</td>
                         <td>{{obj.checkLocation?obj.checkLocation:'/'}}</td>
                         <td class="color_ff w-1">车道号</td>
-                        <td>{{obj.lane}}</td>
+                        <td>{{obj.lane?obj.lane:'/'}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">所属执法机构</td>
