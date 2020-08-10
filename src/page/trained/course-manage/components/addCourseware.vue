@@ -50,7 +50,7 @@
               </el-upload>
             </div>
           </div>
-          <div class="upload-import-text">1、文档类课件支持格式：doc、docx、ppt、pptx、pdf</div>
+          <div class="upload-import-text">1、文档类课件支持格式：pdf</div>
           <div class="upload-import-text">2、视频类课件支持格式：mp4、wmv、avi</div>
         </el-form-item>
       </el-row>

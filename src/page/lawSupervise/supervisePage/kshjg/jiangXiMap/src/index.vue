@@ -8,10 +8,13 @@
       @handlePerson="handlePerson"
     />
     <Select
+      ref="Select"
       :config="selectData"
       @handleChange="handleChange"
-      @handleCommand="handleCommand"
+      @handleItemCheck="handleItemCheck"
+      @handleCheckAllChange="handleCheckAllChange"
     />
+    <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
   </div>
 </template>
 
@@ -19,16 +22,19 @@
 import JkBaseHMap from "@/components/jk-baseHMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
+import Drawer from "../components/drawer/index.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
   components: {
     JkBaseHMap,
     Search,
-    Select
+    Select,
+    Drawer
   },
   data() {
     return {
+      isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
         [0, '/static/images/img/lawSupervise/map_renyuan.png'],
         [1, '/static/images/img/lawSupervise/map_jigou.png'],
@@ -112,6 +118,14 @@ export default {
             imgUrl: "/static/images/img/lawSupervise/qp.png",
           }
         ]
+      },
+      drawerData: {
+        // 告警车辆数据
+        carData: {},
+        // 非现场执法点数据
+        noEnforceData: {
+          option: []
+        }
       }
     }
   },
@@ -159,6 +173,9 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
+      // 清空右侧复选框
+      this.$refs.Select.checkedCities = []
+
       if(data.label === '执法人员') {
         this.getPeopleTree(data)
       } else if (data.label === '执法车辆' || data.label === '执法船舶') {
@@ -178,6 +195,11 @@ export default {
         this.$refs.Search.showCom = "Window4"
         // 如果有点位，则打点，否则抛出异常
         if(data.propertyValue) {
+          // 打点之前先清除通过 addPoints 打的多个点位
+          let pointsPlayer = ['执法人员','执法机构','执法车辆','执法船舶','非现场站点']
+          pointsPlayer.map(item => {
+            this.page.cleanPoints(item)
+          })
           let latLng = data.propertyValue.split(',')
           this.page.addPoint(data, latLng)
         } else {
@@ -196,7 +218,6 @@ export default {
       } else if (data.type === 4) {
         this.$refs.Search.showCom = "Window5"
         this.getWindow5(data)
-        console.log('hahahahahahaha')
       } else {
         // 显示弹出框
         this.searchWindowData.window4.title = data.nickName
@@ -222,6 +243,24 @@ export default {
     handlePerson(node) {
       this.personClick(node)
     },
+
+    /**
+     * 点击列表，地图打点
+     */
+    handleEcforce(data) {
+      // 添加点位图标
+      data.imgUrl = this.imgUrl.get(data.type)
+
+      let latLng = data.propertyValue.split(',')
+      this.page.addPoint(data, latLng)
+    },
+
+    /**
+     * 点击全选, 获取全部点位数据并打点
+     */
+    handleCheckAllChange(val) {
+      this.getAllPoints(val)
+    }
   },
   activated() {
     this.getTree()

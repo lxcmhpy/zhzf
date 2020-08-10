@@ -33,6 +33,7 @@ export default {
           2.1457979350577466E-5, 1.0728989675288733E-5, 5.363305107141452E-6, 2.681652553570726E-6
         ]
       },
+      pointsLayerName: new Set(), // 多点点位的地图标识
     }
   },
   beforeCreate() {
@@ -91,11 +92,29 @@ export default {
     },
 
     /**
+     * 通过图层标识清除多个点位
+     */
+    cleanPoints(layerName) {
+      this.map.removeFeatureByLayerName(layerName)
+    },
+
+    /**
+     * 清除所有点位
+     */
+    cleanAll() {
+      this.map.removeFeatureByLayerName('layerName')
+      this.pointsLayerName.forEach(item => {
+        this.map.removeFeatureByLayerName(item)
+      })
+      this.pointsLayerName.clear()
+    },
+
+    /**
      * 地图添加点位(单点)
      */
     addPoint(data, latLng) {
-      // 打点之前清空地图所有点位
-      this.map.removeFeatureByLayerName('pointLayer')
+      // 打点之前清除地图点位
+      this.cleanAll()
       if(!latLng) throw new Error("addPoint():::::::::::没有坐标")
       const point = {
         attributes: {
@@ -105,7 +124,7 @@ export default {
         geometry: latLng
       }
       const options = {
-        layerName: 'pointLayer',
+        layerName: 'layerName',
         zoomToExtent: true,
         style: {
           image: {
@@ -133,8 +152,11 @@ export default {
      * 地图添加点位(多点)
      */
     addPoints(arr) {
-      // 打点之前清空地图所有点位
-      this.map.removeFeatureByLayerName('pointLayer')
+      // 清除单点点位
+      this.map.removeFeatureByLayerName('layerName')
+
+      let _layerName = arr.layerName
+      this.pointsLayerName.add(_layerName)
       let points = arr.map(item => {
         return {
           attributes: {
@@ -145,7 +167,7 @@ export default {
         }
       })
       const options = {
-        layerName: 'pointLayer',
+        layerName: _layerName,
         zoomToExtent: true,
         style: {
           image: {

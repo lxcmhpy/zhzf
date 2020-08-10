@@ -33,11 +33,19 @@
             <el-form-item label="类型名称" prop="name">
               <el-input v-model="queryForm.name"></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDataList(1)">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset">重置</el-button>
+            <el-form-item style="margin-top:1px; margin-left: 15px;">
+                <el-button 
+                    title="搜索"
+                    class="commonBtn searchBtn"
+                    size="medium"
+                    icon="iconfont law-sousuo" 
+                    @click="getDataList(1)"/>
+                <el-button 
+                    title="重置"
+                    class="commonBtn searchBtn"
+                    size="medium"
+                    icon="iconfont law-zhongzhi"
+                    @click="reset"/>
             </el-form-item>
             <div>
             <el-form-item>
@@ -96,34 +104,25 @@
             :total="totalPage"
           ></el-pagination>
         </div>
-        <el-dialog :title="title"
-                    custom-class="leftDialog"
-                    :visible.sync="visible"
-                    top="0"
-                    width="40%"
-                    @close="closeDialog"
-                    :close-on-click-modal="false">
+        <el-dialog
+            :title="title"
+            :visible.sync="visible"
+            @close="closeDialog"
+            :close-on-click-modal="false"
+            width="35%"
+        >
             <el-form
-                    :model="addForm"
-                    ref="addForm"
-                    :rules="rules"
-                    label-width="150px"
-                    class="addOrganClass" >
-                <div class="part">
-                    <!--卡片字段-->
-                    <!-- <el-table-column prop="code" label="类型编码"></el-table-column>
-                    <el-row>
-                        <el-form-item label="类型编码" prop="code">
-                            <el-input v-model="addForm.code" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
-                        </el-form-item>
-                    </el-row> -->
-                    <el-table-column prop="name" label="类型名称"></el-table-column>
+                :model="addForm"
+                :rules="rules"
+                label-position="right"
+                label-width="90px"
+                ref="addForm"
+                >
                     <el-row>
                         <el-form-item label="类型名称" prop="name">
                             <el-input v-model="addForm.name" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                         </el-form-item>
                     </el-row>
-                    <el-table-column prop="parentId" label="上级类型"></el-table-column>
                     <el-row>
                         <el-form-item label="上级类型" prop="parentId">
                             <el-select v-model="addForm.parentId" style="width: 100%;" :disabled="true">
@@ -136,15 +135,8 @@
                             </el-select>
                         </el-form-item>
                     </el-row>
-                    <el-table-column prop="note" label="备注"></el-table-column>
-                    <el-row>
-                        <el-form-item label="备注" prop="note">
-                            <el-input v-model="addForm.note" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
-                        </el-form-item>
-                    </el-row>
-                </div>
-            </el-form>
-            <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
+                </el-form>
+            <div slot="footer" class="dialog-footer">
                 <el-button @click="closeDialog">取 消</el-button>
                 <el-button @click="saveOrUpdate('addForm')"  type="primary" class="btn-custom" >
                     <span>确 定</span>
@@ -160,6 +152,11 @@
 import { queryDeviceTypeTree,queryDeviceType,findDeviceTypeById,saveOrUpdateDeviceType,deleteDeviceTypeById} from "@/api/device/deviceType.js";
 import iLocalStroage from '@/common/js/localStroage';
   export default {
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val);
+      }
+    },
     data() {
       return {
         visible:false,

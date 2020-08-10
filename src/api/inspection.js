@@ -763,3 +763,26 @@ export function getCountByOrganNameApi(data) {
         cancelToken: setCancelSource()
     });
 }
+
+//分页查询抽取结果
+export function getRandomResultByPageApi(data) {
+    return request({
+        url: "/xzjc/extractResult/queryByPage",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//获取抽取结果
+export function getExtractResultApi(data) {
+    return request({
+        url: "/xzjc/randomTask/getExtractResult",
+        method: "get",
+        params: data,
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

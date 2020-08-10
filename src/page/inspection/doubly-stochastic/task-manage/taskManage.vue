@@ -134,7 +134,7 @@
               <el-form-item label="操作人员" prop="operatePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.operatePerson" multiple filterable @change="changeAdmin">
                   <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -142,7 +142,7 @@
               <el-form-item label="监督人员" prop="supervisePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.supervisePerson" multiple filterable @change="changeAdmin">
                   <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>

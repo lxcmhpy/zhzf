@@ -1,7 +1,7 @@
 // 行政检查
 import {
     delRandomObjectApi, delExpertApi, delRandomItemApi, delPersonApi, delTaskApi, getAllTaskApi, getAllExpertApi, getAllRandomObjectApi, getAllRandomItemApi,
-    getAllPublicPersonApi,exportExpertApi,exportPersonApi,exportItemApi,exportObjectApi
+    getAllPublicPersonApi, exportExpertApi, exportPersonApi, exportItemApi, exportObjectApi, getRandomResultByPageApi
 } from "@/api/inspection";
 
 const inspection = {
@@ -187,6 +187,18 @@ const inspection = {
         exportItem({ commit }, data) {
             return new Promise((resolve, reject) => {
                 exportItemApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //分页查询检查结果清单列表
+        getRandomResultByPage({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getRandomResultByPageApi(data).then(
                     res => {
                         resolve(res);
                     },

@@ -9,7 +9,7 @@
     <el-form
       :model="addExamBatchForm"
       label-position="right"
-      label-width="100px"
+      label-width="110px"
       ref="addExamBatchFormRef"
       :rules="rules"
     >
@@ -44,7 +44,7 @@
       </el-row>
       <el-row>
         <el-form-item label="考试人数" prop="examSum" class="form-class">
-          <el-input v-model="addExamBatchForm.examSum" @input="trim()"></el-input>
+          <el-input v-model="addExamBatchForm.examSum" @input="trim('examSum')"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -72,6 +72,15 @@
         </el-form-item>
       </el-row>
       <el-row>
+        <el-form-item label="限制交卷时间" prop="timeLimit">
+          <el-input
+            v-model="addExamBatchForm.timeLimit"
+            @input="trim('timeLimit')"
+            placeholder="限制交卷时间"
+          ></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
         <el-form-item label="考试地点" prop="examVenues" class="form-class">
           <el-input v-model="addExamBatchForm.examVenues"></el-input>
         </el-form-item>
@@ -94,25 +103,25 @@
 export default {
   data() {
     const validateExamBegin = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入考试开始时间'));
+      if (value === "") {
+        callback(new Error("请输入考试开始时间"));
       } else {
         const timeHours = new Date(value).getHours();
-        if(timeHours === 0){
-          callback(new Error('考试开始时间格式错误，开始时间不能为00:00:00'));
-        }else{
+        if (timeHours === 0) {
+          callback(new Error("考试开始时间格式错误，开始时间不能为00:00:00"));
+        } else {
           const nowDate = new Date().getTime();
           const beginTime = new Date(value).getTime();
-          if(beginTime - nowDate < 0){
-            callback(new Error('开始时间不能小于当前时间'));
-            return
+          if (beginTime - nowDate < 0) {
+            callback(new Error("开始时间不能小于当前时间"));
+            return;
           }
-          if (this.addExamBatchForm.examEnd !== '') {
+          if (this.addExamBatchForm.examEnd !== "") {
             const endTime = new Date(this.addExamBatchForm.examEnd).getTime();
-            if(beginTime - endTime > 0){
-              callback(new Error('开始时间不能大于结束时间'));
-            }else{
-              this.$refs.addExamBatchFormRef.validateField('examEnd');
+            if (beginTime - endTime > 0) {
+              callback(new Error("开始时间不能大于结束时间"));
+            } else {
+              this.$refs.addExamBatchFormRef.validateField("examEnd");
             }
           }
           callback();
@@ -120,29 +129,31 @@ export default {
       }
     };
     const validateExamEnd = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入考试结束时间'));
+      if (value === "") {
+        callback(new Error("请输入考试结束时间"));
       } else {
         const timeHours = new Date(value).getHours();
-        if(timeHours === 0){
-          callback(new Error('考试结束时间格式错误，结束时间不能为00:00:00'));
-        }else{
+        if (timeHours === 0) {
+          callback(new Error("考试结束时间格式错误，结束时间不能为00:00:00"));
+        } else {
           const beginTime = new Date(this.addExamBatchForm.examBegin).getTime();
-          const beginHour = new Date(this.addExamBatchForm.examBegin).getHours();
+          const beginHour = new Date(
+            this.addExamBatchForm.examBegin
+          ).getHours();
           const nowDate = new Date().getTime();
           const endTime = new Date(value).getTime();
-          if(endTime - nowDate < 0){
-            callback(new Error('结束时间不能小于当前时间'));
-            return
+          if (endTime - nowDate < 0) {
+            callback(new Error("结束时间不能小于当前时间"));
+            return;
           }
-          if (this.addExamBatchForm.examBegin !== '') {
-            if(beginTime - endTime > 0){
-              callback(new Error('结束时间不能小于开始时间'));
-            }else{
-              if(beginHour > 0 && beginTime - nowDate > 0){
-                this.$refs.addExamBatchFormRef.clearValidate('examBegin');
-              }else{
-                this.$refs.addExamBatchFormRef.validateField('examBegin');
+          if (this.addExamBatchForm.examBegin !== "") {
+            if (beginTime - endTime > 0) {
+              callback(new Error("结束时间不能小于开始时间"));
+            } else {
+              if (beginHour > 0 && beginTime - nowDate > 0) {
+                this.$refs.addExamBatchFormRef.clearValidate("examBegin");
+              } else {
+                this.$refs.addExamBatchFormRef.validateField("examBegin");
               }
             }
           }
@@ -166,64 +177,67 @@ export default {
         examBegin: "", //考试开始时间
         examEnd: "", //考试结束时间
         examVenues: "", //考试地点
-        remark: "" //备注
+        remark: "", //备注
       },
       rules: {
         examName: [
-          { required: true, message: "考试名称不能为空", trigger: "blur" }
+          { required: true, message: "考试名称不能为空", trigger: "blur" },
         ],
         examType: [
-          { required: true, message: "考试类型不能为空", trigger: "change" }
+          { required: true, message: "考试类型不能为空", trigger: "change" },
         ],
         examSort: [
-          { required: true, message: "试题排序不能为空", trigger: "blur" }
+          { required: true, message: "试题排序不能为空", trigger: "blur" },
         ],
         examSum: [
-          { required: true, message: "考试人数不能为空", trigger: "blur" }
+          { required: true, message: "考试人数不能为空", trigger: "blur" },
         ],
         examBegin: [
-          { required: true, validator: validateExamBegin, trigger: "blur" }
+          { required: true, validator: validateExamBegin, trigger: "blur" },
         ],
         examEnd: [
-          { required: true, validator: validateExamEnd, trigger: "blur" }
+          { required: true, validator: validateExamEnd, trigger: "blur" },
+        ],
+        timeLimit: [
+          { required: true, message: "限制交卷时间不能为空", trigger: "blur" },
         ],
         examVenues: [
-          { required: true, message: "考试地点不能为空", trigger: "blur" }
-        ]
+          { required: true, message: "考试地点不能为空", trigger: "blur" },
+        ],
       },
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
-      handelType: 0 //添加 0  修改2  查看3
+      handelType: 0, //添加 0  修改2  查看3
     };
   },
   methods: {
     changeType(event) {
       this.addExamBatchForm.examType = event;
     },
-     trim(){
-        this.addExamBatchForm.examSum=this.addExamBatchForm.examSum.replace(/[^\d]/g,'');
+    trim(item) {
+      this.addExamBatchForm[item] = this.addExamBatchForm[item].replace(/[^\d]/g, '');
     },
     //提交
     submit() {
       let _this = this;
-      _this.$refs.addExamBatchFormRef.validate(valid => {
+      _this.$refs.addExamBatchFormRef.validate((valid) => {
         if (valid) {
           const loading = this.$loading({
             lock: true,
             text: "正在保存",
             spinner: "car-loading",
             customClass: "loading-box",
-            background: "rgba(234,237,244, 0.8)"
+            background: "rgba(234,237,244, 0.8)",
           });
           if (_this.handelType == 1) {
             _this.$store.dispatch("addExamBatch", _this.addExamBatchForm).then(
-              res => {
+              (res) => {
                 _this.$emit("getExamBatchListComp");
                 _this.$message({ type: "success", message: "添加成功!" });
                 _this.closeDialog();
                 loading.close();
               },
-              err => {
+              (err) => {
                 loading.close();
                 _this.$message({ type: "error", message: err.msg || "" });
               }
@@ -232,13 +246,13 @@ export default {
             _this.$store
               .dispatch("updateExamBatch", _this.addExamBatchForm)
               .then(
-                res => {
+                (res) => {
                   _this.$emit("getExamBatchListComp");
                   _this.$message({ type: "success", message: "修改成功!" });
                   _this.closeDialog();
                   loading.close();
                 },
-                err => {
+                (err) => {
                   loading.close();
                   _this.$message({ type: "error", message: err.msg || "" });
                 }
@@ -253,7 +267,7 @@ export default {
     getDictInfo(name, codeName) {
       this.$store.dispatch("findAllDrawerByName", name).then(
         //考试类型
-        res => {
+        (res) => {
           if (res.code === 200) {
             if (codeName === "examTypeInfo") {
               this.examTypeInfo = res.data;
@@ -268,7 +282,7 @@ export default {
       let _this = this;
       _this.visible = true;
       _this.handelType = type;
-      console.info(JSON.stringify(row))
+      console.info(JSON.stringify(row));
       if (type == 1) {
         //新增
         _this.dialogTitle = "新增考试";
@@ -299,8 +313,8 @@ export default {
       for (const key in this.addExamBatchForm) {
         this.addExamBatchForm[key] = "";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

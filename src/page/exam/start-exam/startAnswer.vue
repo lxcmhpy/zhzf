@@ -126,6 +126,7 @@
                 type="primary"
                 icon="el-icon-document-checked"
                 class="entry-btn"
+                :disabled="!disabledHandPaper"
                 @click="handPaper"
               >我要交卷</el-button>
             </div>
@@ -157,7 +158,8 @@ export default {
       currentSysTime: new Date().getTime(),
       currentGraph: {},
       questionFontSize: 16,
-      fontSizeClone: 16
+      fontSizeClone: 16,
+      disabledHandPaper: false
     };
   },
   computed: {
@@ -281,18 +283,29 @@ export default {
       let newTime = sysTime;
       // 对结束时间进行处理渲染到页面
       let endTime = new Date(this.examPerInfo.examInfo.examEnd).getTime();
+      // 限制交卷时间内我要交卷按钮禁止点击
+      let limitTime = 0;
+      if(this.examPerInfo.examInfo.timeLimit && this.examPerInfo.examInfo.timeLimit > 0){
+        limitTime = this.examPerInfo.examInfo.timeLimit * 60 * 1000;
+      }
       let diffTime = endTime - newTime;
       if (diffTime > 0) {
         let time = diffTime / 1000;
         this.setCountDownTime(time);
-        this.countDownFun(endTime);
+        this.countDownFun(endTime, limitTime);
       }
     },
     // 倒计时方法
-    countDownFun(examEnd) {
+    countDownFun(examEnd, limitTime) {
       this.intervalTime = setInterval(() => {
         // 获取当前时间，考试结束时间
         let newTime = this.currentSysTime;
+        // 限制交卷时间内禁止点击我要交卷
+        if(limitTime && !this.disabledHandPaper){
+            let examBegin = new Date(this.examPerInfo.examInfo.examBegin.replace(/-/g,"/")).getTime();
+            let examTimeLen = newTime - examBegin;
+            this.disabledHandPaper = examTimeLen - limitTime > 0;
+        }
         // 对结束时间进行处理渲染到页面
         let endTime = new Date(examEnd).getTime();
         let diffTime = endTime - newTime;
@@ -690,6 +703,10 @@ export default {
             width: 100%;
             height: 58px;
             font-size: 18px;
+            &.is-disabled{
+              background: #DCDFE6;
+              border: 1px solid #DCDFE6;
+            }
           }
         }
       }

@@ -34,29 +34,15 @@ export function saveOrUpdateDeviceVehicle(data) {
   })
 }
 //根据ID查询装备类型管理
-export function findDeviceVehicleById(data) {
+export function findDeviceVehicleById(id) {
   return request({
-    url: "/device/info/findbyid",
+    url: "/device/info/findbyid/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
     baseUrlType: 'DEVICE_HOST',
-    data: vm.$qs.stringify(data),
     cancelToken: setCancelSource()
   });
-}
-
-//删除装备类型管理
-export function findplate(data) {
-  return request({
-    url: "/device/info/findplate",
-    method: "get",
-    showloading: true,
-    loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
-    data: data,
-    cancelToken: setCancelSource()
-  })
 }
 
 //保存年检信息
@@ -72,15 +58,63 @@ export function saveAnnual(data) {
   })
 }
 
-//根据ID查找年检信息
-export function findAnnualById(data) {
+//根据车辆ID查找所有年检信息
+export function findAnnualByVehicleId(id) {
   return request({
-    url: "/device/info/findAnnual",
+    url: "/device/info/findAnnual/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
     baseUrlType: 'DEVICE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据年检ID删除年检信息
+export function deleteAnnualById(id) {
+  return request({
+    url: "/device/info/deleteplate/" + id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'DEVICE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据年检ID查找年检信息
+export function findAnnualById(id) {
+  return request({
+    url: "/device/info/findinspection/" + id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'DEVICE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
+//车牌号是否存在
+export function findplate(plateNumber) {
+  return request({
+    url: "/device/info/findplate/" + plateNumber,
+    method: "get",
+    showloading: false,
+    loadingType: 'loadPart',
+    baseUrlType: 'DEVICE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
+//批量删除车辆信息
+export function deleteVehicles(data) {
+  return request({
+    url: "/device/info/deletebyid",
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
     data: data,
+    baseUrlType: 'DEVICE_HOST',
     cancelToken: setCancelSource()
   });
 }

@@ -24,7 +24,7 @@ export function saveOrUpdateDeviceBill (data) {
         showloading: true,
         loadingType:'loadPart',
         baseUrlType:  'DEVICE_HOST',
-        data:  vm.$qs.stringify(data),
+        data:  data,
         cancelToken: setCancelSource()
     })
 }

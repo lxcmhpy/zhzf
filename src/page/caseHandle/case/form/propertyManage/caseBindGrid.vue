@@ -31,7 +31,7 @@
         <el-table-column prop="op" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-button type="text" @click="onDetail(scope.row)">详情</el-button>&nbsp;
-            <el-button type="text" @click="onDelete(scope.row,scope.$index)">解绑</el-button>
+            <el-button v-if="!isDetail" type="text" @click="onDelete(scope.row,scope.$index)">解绑</el-button>
           </template>
         </el-table-column>
       </el-table>

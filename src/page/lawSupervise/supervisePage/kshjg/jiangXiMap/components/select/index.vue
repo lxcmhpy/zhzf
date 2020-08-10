@@ -13,19 +13,55 @@ export default {
       return this.config.option
     }
   },
+  data() {
+    return {
+      isIndeterminate: true,
+      checkedCities: [], // 选择的参数
+      checkAll: false,
+    }
+  },
   methods: {
+    /**
+     * 点击全选
+     */
+    handleCheckAllChange(val) {
+      this.checkAll = val
+      this.checkedCities = val ?
+        this.list[1].options.map(item => {return item.name})
+        : [];
+      this.isIndeterminate = false;
+      this.$emit('handleCheckAllChange', val)
+    },
+
+    /**
+     * 点击全选
+     */
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length
+      this.checkAll = checkedCount === this.list[1].options.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.list[1].options.length;
+      this.$emit('handleCheckedCitiesChange', value)
+    },
+
+    /**
+     * 点击单个复选框，完成数据双向绑定
+     */
+    handleItemCheck(val,event) {
+      let name = event.target.defaultValue
+      if(val) {
+        this.checkedCities.push(name)
+      } else {
+        let index = this.checkedCities.indexOf(name)
+        this.checkedCities.splice(index, 1)
+      }
+      this.$emit('handleItemCheck', {val, name})
+    },
+
     /**
      * 选中节点时触发
      */
     handleChange(value) {
       this.$emit("handleChange", value)
-    },
-
-    /**
-     * 点击图层下拉菜单项的回调
-     */
-    handleCommand(type) {
-      this.$emit('handleCommand', type)
     },
 
     /**
@@ -65,7 +101,7 @@ export default {
     },
 
     /**
-     * 下拉选择框生成函数
+     * 下拉复选框生成函数
      */
     renderDropdown() {
       let data = this.list[1]
@@ -75,16 +111,25 @@ export default {
             data.imgUrl ? <img src={data.imgUrl} /> : null
           }
           <div class="selectDown">
-            <el-dropdown on-command={this.handleCommand} placement="bottom">
+            <el-dropdown hide-on-click={false} placement="bottom">
               <span class="el-dropdown-link">
                 {data.title}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                {this._l(data.options, item => {
-                  return (
-                    <el-dropdown-item command={item.type}>{item.name}</el-dropdown-item>
-                  )
-                })}
+                <el-dropdown-item>
+                  <el-checkbox indeterminate={this.isIndeterminate} value={this.checkAll} on-change={this.handleCheckAllChange}>全选</el-checkbox>
+                  <el-checkbox-group
+                    value={this.checkedCities}
+                    on-change={this.handleCheckedCitiesChange}>
+                    {this._l(data.options, item => {
+                      return (
+                        <div>
+                          <el-checkbox on-change={this.handleItemCheck} label={item.name}>{item.name}</el-checkbox>
+                        </div>
+                      )
+                    })}
+                  </el-checkbox-group>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -123,7 +168,7 @@ export default {
 .jk-mapSelect {
   position: absolute;
   top: 20px;
-  right: 30px;
+  right: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -145,6 +190,13 @@ export default {
       font-size: 14px;
       color: #606266;
       cursor: pointer;
+    }
+    .selectDown {
+      // .myCheckBox {
+      //   display: flex;
+      //   flex-direction: column;
+      //   justify-content: flex-start;
+      // }
     }
   }
 }

@@ -11,8 +11,8 @@
               <el-form-item label="抽查主体" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
-              <el-form-item label="检查类型" prop='checkSubject'>
-                <el-input v-model="searchForm.checkSubject"></el-input>
+              <el-form-item label="检查类型" prop='checkType'>
+                <el-input v-model="searchForm.checkType"></el-input>
               </el-form-item>
             </el-form>
             <div class="search-btns">
@@ -108,8 +108,11 @@
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
         </div>
-        已上传文件列表
+        <div class="random-table-title">
+          已上传文件列表
+        </div>
         <el-table :data="fileList" stripe style="width: 100%" height="100%">
+          <caption></caption>
           <el-table-column type="index" width="50"></el-table-column>
           <el-table-column prop="fileName" label="文件名称" align="center"></el-table-column>
           <el-table-column prop="userId" label="上传者" align="center"></el-table-column>
@@ -126,11 +129,11 @@
             </template>
           </el-table-column>
         </el-table>
-        <div slot="footer" class="dialog-footer">
+        <!-- <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="submitForm('addForm',0)">暂存</el-button>
           <el-button type="primary" @click="submitForm('addForm',1)">保存</el-button>
-        </div>
+        </div> -->
       </el-dialog>
       <el-dialog title="检查" :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
         <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
@@ -211,12 +214,12 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById ,getRandomResultByPage} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
 import { getFileStreamByStorageIdApi } from "@/api/caseHandle";
-import { downLoadCommon, deleteFileByIdApi, uploadCommon ,getFile} from "@/api/upload.js";
+import { downLoadCommon, deleteFileByIdApi, uploadCommon, getFile } from "@/api/upload.js";
 export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
@@ -298,14 +301,14 @@ export default {
     // 查询列表时
     getTableData() {
       let data = {
-        name: this.searchForm.name,
-        company: this.searchForm.company,
-        taskArea: this.searchForm.taskArea,
+        objectName: this.searchForm.objectName,
+        checkSubject: this.searchForm.checkSubject,
+        checkType: this.searchForm.checkType,
         current: this.currentPage,
         size: this.pageSize,
       };
-      // this.getPageList("getAllTask", data);
-      this.tableData = [{}]
+      this.getPageList("getAllTask", data);
+      // this.tableData = [{}]
     },
     // 选择数据
     handleSelectionChange(val) {
@@ -486,7 +489,7 @@ export default {
           link.click();
           URL.revokeObjectURL(objectUrl);
         },
-      ).catch(err=>{console.log(err)});
+      ).catch(err => { console.log(err) });
     },
     //根据stroagId请求文件流
     getFileStream(storageId) {
@@ -547,9 +550,9 @@ export default {
     //获取文书列表
     getByMlCaseId(pageDomId) {
       let _this = this
-      let data={
-        caseId:'873098753842759823',
-        docId:'873098753842759823'
+      let data = {
+        caseId: '873098753842759823',
+        docId: '873098753842759823'
       }
       getFile(data).then(
         res => {

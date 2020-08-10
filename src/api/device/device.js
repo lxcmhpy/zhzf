@@ -61,3 +61,28 @@ export function getDrawerList(data) {
         cancelToken: setCancelSource()
     })
 }
+
+// 文件上传
+export  function  upload(data)  {
+    return  request({
+      url:  "/sys/file/uploadCommon",
+      method:  "POST",
+      data: data,
+      contentType: 'multipart/form-data;',
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:  'DEVICE_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  //根据主键ID删除附件
+  export function deleteFileById(fileId) {
+    return  request({
+      url:  "/sys/file/delete/"+fileId,
+      method:  "GET",
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:  'DEVICE_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }

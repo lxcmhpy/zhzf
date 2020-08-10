@@ -2,7 +2,8 @@
   <div class="uplode-equipment-photo" style="width:100%;float:left;margin-bottom:30px;">
     <div class="card-title">
       <font class="font" style="font-size:25px;">
-        <span class="titleflag"></span>{{ topTitle.title }}
+        <span class="titleflag"></span>
+        {{ topTitle.title }}
         <span class="upload-explain">{{ topTitle.tips }}</span>
       </font>
     </div>
@@ -25,6 +26,7 @@
             class="device-uploader"
             action
             accept=".jpg, .png"
+            :http-request="saveImageFile"
             :show-file-list="false"
             :on-change="(file, fileList) => {changeDeviceImage(file, fileList, index)}"
           >
@@ -36,7 +38,7 @@
                 action="#"
                 accept=".jpg, .png"
                 list-type="picture-card"
-                :auto-upload="false"
+                :http-request="saveImageFile"
                 :show-file-list="false"
                 :on-change="(file, fileList) => {changeDeviceImage(file, fileList, index)}"
               >
@@ -55,6 +57,8 @@
   </div>
 </template>
 <script>
+import { upload, deleteFileByIdApi } from "@/api/upload";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: {
     photoList: {
@@ -65,11 +69,13 @@ export default {
             photoUrl: "",
             photoTips: "前45°照片",
             file: null,
+            storageId: null,
           },
           {
             photoUrl: "",
             photoTips: "后45°照片",
             file: null,
+            storageId: null,
           },
         ];
       },
@@ -87,14 +93,36 @@ export default {
     return {
       dialogImageUrl: "",
       dialogVisible: false,
-      editAble: false
+      editAble: false,
+      vehicleId: "",
+      flag: "",
+      baseUrl: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
     };
   },
   computed: {},
   created() {},
+  mounted() {
+    this.vehicleId = this.$route.params.id;
+  },
   methods: {
+    saveImageFile(param) {
+      this.saveFile(param, this.topTitle.title);
+    },
+    async saveFile(param, type) {
+      var fd = new FormData();
+      fd.append("file", param.file);
+      fd.append("category", "装备系统");
+      fd.append("fileName", param.file.name);
+      fd.append("status", type); //标记
+      fd.append("caseId", this.vehicleId); //传记录id
+      fd.append("docId", type + this.flag); //传记录id
+      let res = await upload(fd);
+      this.photoList[this.flag]["storageId"] = res.data[0].storageId;
+    },
     // 选择装备图片
     changeDeviceImage(file, fileList, index) {
+      debugger;
+      this.flag = index;
       const fileIndex = fileList.findIndex((item) => item.uid === file.uid);
       const isGt2M = file.size / 1024 / 1024 > 2;
       if (isGt2M) {
@@ -105,16 +133,11 @@ export default {
         fileList.splice(fileIndex, 1);
       } else {
         this.photoList[index]["photoUrl"] = URL.createObjectURL(file.raw);
-        this.photoList[index]["file"] = file.raw;
       }
     },
     // 点击图片弹出预览
     previewImg(item) {
-      if (item.isSave || item.status === "success") {
-        this.dialogImageUrl = this.baseUrl + item.photoUrl;
-      } else {
-        this.dialogImageUrl = item.photoUrl;
-      }
+      this.dialogImageUrl = item.photoUrl;
       this.dialogVisible = true;
     },
     // 删除图片
@@ -126,10 +149,22 @@ export default {
         customClass: "custom-confirm",
       })
         .then(() => {
-          this.photoList[index]["photoUrl"] = "";
-          this.photoList[index]["file"] = null;
+          this.deleteFile(this.photoList[index]["storageId"]).then(() => {
+            this.photoList[index]["photoUrl"] = "";
+            this.photoList[index]["storageId"] = "";
+            this.photoList[index]["file"] = null;
+          });
         })
         .catch(() => {});
+    },
+    //删除附件
+    async deleteFile(url) {
+      let _this = this;
+      let res = await deleteFileByIdApi(url);
+      this.$message({
+        type: "success",
+        message: "操作成功!",
+      });
     },
   },
 };
