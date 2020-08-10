@@ -193,8 +193,8 @@ export default {
     // 进入培训
     enterTrain(train){
       this.$router.push({
-        path: '/start-trained',
-        query: {
+        name: 'startTrained',
+        params: {
           trainName: train.trainName,
           trainperId: train.trainperId
         }
