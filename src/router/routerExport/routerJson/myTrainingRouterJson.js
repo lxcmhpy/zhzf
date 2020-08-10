@@ -57,13 +57,13 @@ export default [
       },
       {
         name: "CourseDetails",
-        path: "/course-detail",
+        path: "/course-detail/:lessonId/:perId",
         meta: { title: "课程详情", loading: false },
         component: () => import("@/page/myTraining/components/courseDetails.vue")
       },
       {
         name: "startTrained",
-        path: "/start-trained",
+        path: "/start-trained/:trainName/:trainperId",
         meta: { title: "开始培训", loading: false, refuseBack: true },
         component: () => import("@/page/myTraining/components/trainDetail.vue")
       }

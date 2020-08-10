@@ -135,8 +135,8 @@ export default {
     // 日常课程开始学习
     startStudy(row){
       this.$router.push({
-        path: "/course-detail",
-        query: {
+        name: "CourseDetails",
+        params: {
           lessonId: row.lessonId,
           perId: row.personLessonId
         }

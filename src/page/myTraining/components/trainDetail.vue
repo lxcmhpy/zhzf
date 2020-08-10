@@ -4,7 +4,7 @@
       <el-row class="header-row">
         <el-col :span="17">
           <!-- <a class="back-btn" @click="backCourseList"><i class="el-icon-arrow-left"></i></a> -->
-          <span class="course-name" style="margin-left: 20px;">{{ $route.query.trainName }}</span>
+          <span class="course-name" style="margin-left: 20px;">{{ $route.params.trainName }}</span>
         </el-col>
         <el-col :span="7" style="display:flex;justify-content: flex-end;align-items: center;">
           <div v-if="progressData.progress < 100" class="progress-static">
@@ -55,7 +55,7 @@ export default {
         customClass: "loading-box",
         background: "rgba(234,237,244, 0.8)"
       });
-      getTrainCourseDetail({ trainperId: this.$route.query.trainperId }).then(
+      getTrainCourseDetail({ trainperId: this.$route.params.trainperId }).then(
         res => {
           loading.close();
           if (res.code === 200) {
@@ -64,7 +64,7 @@ export default {
               res.data.data.forEach(item => {
                 item.listVo.forEach(list => {
                   list.flag = '1',
-                  list.trainperId = this.$route.query.trainperId
+                  list.trainperId = this.$route.params.trainperId
                 })
                 this.courseList = this.courseList.concat(item.listVo);
               });
