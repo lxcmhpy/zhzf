@@ -45,16 +45,21 @@
       <div class="random-table-title">开启预警条件</div>
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
-          <el-form-item label="分项指标">
+          <el-form-item label="分项指标"  v-if="addOrUpdateForm.configType!='环节配置'">
             <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type)">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="分项指标"  v-else>
+            <el-select v-model="item.type" placeholder="请选择">
+              <el-option v-for="item in bindPdfFieldList" :key="item.id" :label="item.linkName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5" v-if="addOrUpdateForm.configType!='环节配置'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
-              <el-option v-for="item in bindPdfFieldList" :key="item.id" :label="item.itemValue" :value="item.id"></el-option>
+              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -126,6 +131,7 @@ export default {
       handelType: 0, //添加 0  修改2
       editRouteId: '',
       bindPdfFieldList: [], //分项指标列表
+      pdfFieldList: [], //指标项列表
       // levelList: ['立案登记表', '案件处罚决定书', '询问笔录'], //分项指标列表
       bindPdfList: [],//指标项列表
       // gradeList: [],//指标项列表
@@ -264,28 +270,7 @@ export default {
       findAllSetListApi(data).then(
         res => {
           console.log('列表', res)
-          _this.bindPdfFieldList=res.data
-
-          // this.pdfAndFormList = res.data.records
-          // console.log('pdfAndFormList', this.pdfAndFormList)
-          // this.tableData = res.data.records
-          // this.totalPage = res.data.total
-          // // 类型转换
-          // this.tableData.forEach(element => {
-          //   if (element.isEditable == 'true') {
-          //     element.isEditable = true
-          //   }
-          //   if (element.isEditable == 'false') {
-          //     element.isEditable = false
-          //   }
-          //   if (element.isRequired == 'true') {
-          //     element.isRequired = true
-          //   }
-          //   if (element.isRequired == 'false') {
-          //     element.isRequired = false
-          //   }
-          // });
-
+          _this.pdfFieldList=res.data
         });
     }
   },
