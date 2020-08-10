@@ -17,7 +17,7 @@ export default {
     // 放大倍数
     zoom: {
       type: Number,
-      default: 10
+      default: 5
     },
   },
   data () {
@@ -62,8 +62,8 @@ export default {
           center: [115.8, 28.8],
           projection: 'EPSG:4326',
           zoom: this.zoom,
-          minZoom: 3,
-          // maxZoom: 13
+          extent: [113.57277, 24.488942, 118.482124, 30.079848],
+          maxZoom: 12
         },
         baseLayers: [
           {

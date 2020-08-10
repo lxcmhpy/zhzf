@@ -1,6 +1,6 @@
 <template>
   <div class="jiangXiMap">
-    <JkBaseHMap @init="init" :center="center" />
+    <JkBaseHMap @init="init" :center="center" :zoom="zoom" />
     <Search
       ref="Search"
       :config="searchWindowData"
@@ -50,7 +50,7 @@ export default {
       ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
-      zoom: 8,
+      zoom: 3,
       center: [115.871344, 28.710709],
       searchWindowData: {
         window1: {
