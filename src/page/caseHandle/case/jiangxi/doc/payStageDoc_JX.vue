@@ -382,7 +382,6 @@
          if (this.docData.checknames.length > 1) {
           this.docData.checknames.shift();
         }
-        debugger
         if (this.docData.checknames == '1') {
           this.disabledOne = false;
           this.disabledTwo = true;

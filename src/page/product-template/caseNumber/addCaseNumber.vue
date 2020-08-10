@@ -8,27 +8,48 @@
     append-to-body
   >
     <el-form :model="addCaseNumberForm" :rules="rules" ref="addCaseNumberForm" class="errorTipForm" label-width="80px" prop="addCaseNumberForm">
+      <div class="item" style="display:none">
+        <el-form-item  prop="organId">
+            <el-input v-model="addCaseNumberForm.organId"  style = "width:100%"></el-input>
+          </el-form-item>
+      </div>
+      <div class="item" style="display:none">
+        <el-form-item  prop="id">
+            <el-input v-model="addCaseNumberForm.id"  style = "width:100%"></el-input>
+          </el-form-item>
+      </div>
       <div class="item">
-        <el-form-item label="执法机构" prop="organId" v-if="isAdd">
-            <el-select v-model="addCaseNumberForm.organId"  style = "width:100%" placeholder="请选择执法机构" @change="getDepartment">
+        <el-form-item label="执法机构" prop="organId">
+          <el-select filterable :disabled="!isAdd" v-model="addCaseNumberForm.organId"  style = "width:100%" placeholder="请选择执法机构" @change="getDepartment">
+            <el-option
+              v-for="item in getOrganList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="item">
+        <el-form-item label="案件类型" prop="caseTypeId">
+            <el-select v-model="addCaseNumberForm.caseTypeId"  style = "width:100%" placeholder="请选择执法机构">
               <el-option
-                v-for="item in getOrganList"
+                v-for="item in caseTypeList"
                 :key="item.id"
-                :label="item.name"
+                :label="item.typeName"
                 :value="item.id"
               ></el-option>
             </el-select>
-            
-          </el-form-item>
-          <el-form-item label="执法机构" v-else>
-            <el-input v-model="addCaseNumberForm.organName"  style = "width:100%" placeholder="请选择执法机构" disabled>
-            </el-input>
-            
           </el-form-item>
       </div>
       <div class="item">
         <el-form-item label="案件字" prop="caseWord"  class="is-required">
             <el-input v-model="addCaseNumberForm.caseWord"></el-input>
+        </el-form-item>
+      </div>
+      <div class="item">
+        <el-form-item label="大队码" prop="digit">
+          <el-input v-model="addCaseNumberForm.teamCode" ></el-input>
         </el-form-item>
       </div>
       <div class="item">
@@ -49,7 +70,8 @@
   </el-dialog>
 </template>
 <script>
-import {getOrganNotInCaseNumberApi,addCaseNumberApi} from "@/api/system";
+import {getOrganNotInCaseNumberApi,addCaseNumberApi,getCaseNumberByIdApi} from "@/api/system";
+import {getQueryCaseTypeByOrganIdApi} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -57,11 +79,14 @@ export default {
       addCaseNumberForm: {
         id:"",
         organId: "",
+        caseTypeId: "",
+        teamCode: "",
         organName: "",
         caseWord: "",
         digit:"",
         onlineNumberStart: ""
       },
+      caseTypeList: [],//机构绑定的案件类型
       getOrganList: [], //获取机构级下级机构
       rules: {
         organId: [{ required: true, message: "请输入名称", trigger: "blur" }]
@@ -77,45 +102,56 @@ export default {
     this.getDepartment();
   },
   methods: {
-    showModal(type, data,formType) {
+    showModal(type, data) {
       this.visible = true;
       this.handelType = type;
-      this.dictData = data.row;
-      this.formType = formType;
       if (type == 0) {
-        console.log(data);
         this.isAdd = true;
         this.dialogTitle = "新增";
       } else if (type == 2) {
-        console.log(data);
+        this.dictData = data.row;
         this.isAdd = false;
         this.dialogTitle = "修改";
-        this.addCaseNumberForm.id = this.dictData.id;
-        this.addCaseNumberForm.organId = this.dictData.organId;
-        this.addCaseNumberForm.organName = this.dictData.organName;
-        this.addCaseNumberForm.caseWord = this.dictData.caseWord;
-        this.addCaseNumberForm.digit = this.dictData.digit;
-        this.addCaseNumberForm.onlineNumberStart = this.dictData.onlineNumberStart;
+        this.getCaseNumberByid(this.dictData.id);
       }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.$refs["addCaseNumberForm"].resetFields();
       this.visible = false;
-      // this.$nextTick(() => {
-      //   this.$refs["addCaseNumberForm"].resetFields();
-      // });
     },
-    //聚焦清除错误信息
-    focusName() {
-      this.errorName = false;
+    getCaseNumberByid(id){
+      let _this = this;
+      getCaseNumberByIdApi(id).then(
+        res => {
+          _this.addCaseNumberForm = res.data;
+          _this.addCaseNumberForm.organName = _this.dictData.organName;
+          _this.getCaseTypeList();
+        },
+        error => {
+          console.log(error)
+        }
+      );
     },
-    //获取选中的机构下的部门
+    getCaseTypeList(){
+      let organId = this.addCaseNumberForm.organId;
+      let _this = this;
+      getQueryCaseTypeByOrganIdApi(organId).then(
+        res => {
+          _this.caseTypeList = res.data;
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    },
+    //获取选中的机构下的案件类型
     getDepartment() {
       let _this = this
       getOrganNotInCaseNumberApi().then(
         res => {
-         _this.getOrganList = res.data;
+         _this.getOrganList = res;
+         _this.getCaseTypeList();
         },
         err => {
           console.log(err);
@@ -133,7 +169,6 @@ export default {
     },
     //新增 修改
     addOrEditCaseNumberSure(){
-      console.log("data",this.addCaseNumberForm);
       addCaseNumberApi(this.addCaseNumberForm).then(
           res => {
           if (res.code == 200) {
@@ -141,6 +176,7 @@ export default {
               message: "操作成功！",
               type: "success"
             });
+            this.$refs["addCaseNumberForm"].resetFields();
             this.visible = false;
             this.currentPage = 1;
             this.reload();

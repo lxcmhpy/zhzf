@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box printNumbers_box" id="caseInvest-print" style="width:790px; margin:0 auto;">
+  <div class="print_box printNumbers_box" id="caseInvestJX-print" style="width:790px; margin:0 auto;">
     <el-form
       :rules="rules"
       ref="caseInvestiForm"
@@ -11,7 +11,7 @@
       <div class="print_info" style = "height: 1600px">
         <div class="doc_topic">案件调查报告</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
-        <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+        <table class="print_table caseReportJX" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>案由</td>
             <td colspan="7" class="color_DBE4EF">
@@ -80,8 +80,11 @@
                 :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)"
               >
                 <el-input
+                  type="textarea"
                   v-model="formData.partyIdNo"
                   v-bind:class="{ over_flow:formData.partyIdNo && formData.partyIdNo.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 2}"
+                  maxlength="18"
                   placeholder="\"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
@@ -117,7 +120,7 @@
                   v-model="formData.partyTel"
                   v-bind:class="{ over_flow:formData.partyTel && formData.partyTel.length>4?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
-                  maxlength="20"
+                  maxlength="11"
                   placeholder="\"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                 ></el-input>
@@ -356,7 +359,7 @@
               </el-table-column>
               <el-table-column label="证据材料名称名称" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.name"></el-input>
+                  <el-input maxlength="15" v-model="scope.row.name"></el-input>
                 </template>
               </el-table-column>
               <el-table-column prop="des" label="规格" align="center">
@@ -379,7 +382,7 @@
 
               <el-table-column label="备注" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.note"></el-input>
+                  <el-input maxlength="10" v-model="scope.row.note"></el-input>
                 </template>
               </el-table-column>
               <el-table-column width="52%">
@@ -411,7 +414,7 @@
       </div>
     </el-dialog>
     <casePageFloatBtns
-      :pageDomId="'caseInvest-print'"
+      :pageDomId="'caseInvestJX-print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
     ></casePageFloatBtns>
@@ -550,7 +553,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "caseInvest-print"
+        pageDomId: "caseInvestJX-print"
       },
       options: [
         {value: "1", label: " "},
@@ -666,7 +669,6 @@ export default {
     },
     //确定添加
     addResSure(formName) {
-      debugger
       let canAdd = true;
       if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {
@@ -710,7 +712,6 @@ export default {
     },
     //对原始数据做一下处理
     getDataAfter() {
-      console.log(this.formData);
       if (!this.formData.evidenceList.length) {
         this.formData.evidenceList = [
           {resNo: "", name: "", num: "", des: "", note: "" },
@@ -735,6 +736,10 @@ export default {
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 </style>
 <style scoped>
+.caseReportJX tr td {
+  text-align: center;
+  text-align-last: center;
+}
 .apro {
   display: inline-block;
   border-bottom: 1px solid;

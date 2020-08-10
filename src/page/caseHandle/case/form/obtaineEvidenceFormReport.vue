@@ -90,13 +90,13 @@
           </el-date-picker>
           </el-form-item> -->
           <el-form-item prop="getEvidenceTime" class="dataTimeReplaceBox" style="width:215px" :rules="fieldRules('getEvidenceTime',propertyFeatures['getEvidenceTime'])"> 
-             <el-date-picker v-model="docData.getEvidenceTime" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTime'])"></el-date-picker>
-            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.getEvidenceTime"></el-input>
+             <el-date-picker :default-value="new Date()" v-model="docData.getEvidenceTime" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTime'])"></el-date-picker>
+            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="getEvidenceTime"></el-input>
           </el-form-item>
           <span>至</span>
           <el-form-item prop="getEvidenceTimeEnd" class="dataTimeReplaceBox" style="width:215px" :rules="fieldRules('getEvidenceTimeEnd',propertyFeatures['getEvidenceTimeEnd'])">
-             <el-date-picker v-model="docData.getEvidenceTimeEnd" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTimeEnd'])"></el-date-picker>
-            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.getEvidenceTimeEnd"></el-input>
+             <el-date-picker :default-value="new Date()" v-model="docData.getEvidenceTimeEnd" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" :disabled="fieldDisabled(propertyFeatures['getEvidenceTimeEnd'])"></el-date-picker>
+            <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="getEvidenceTimeEnd"></el-input>
 
           </el-form-item>
         </p>
@@ -151,40 +151,7 @@
             <td>{{item.spec}}</td>
             <td>{{item.amount}}</td>
             <td ><div style="">{{item.savePlace}}</div></td>
-          </tr>
-          <!-- <tr v-for="item in evdenceList" :key="item.id">
-            <td class="color_DBE4EF">
-             
-              <el-form-item>
-                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.index" rows="3" maxLength='90' placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-            <td class="color_DBE4EF">
-      
-              <el-form-item>
-                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.sampleName" rows="3" maxLength='90' placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-            <td class="color_DBE4EF">
-             
-              <el-form-item>
-                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.batchNumber" rows="3" maxLength='90' placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-            <td class="color_DBE4EF">
-             
-              <el-form-item>
-                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.sampleNumber" rows="3" maxLength='90' placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-            <td class="color_DBE4EF">
-             
-              <el-form-item>
-                <el-input class='text_indent10 overflow_lins_textarea' v-model="item.samplePlace" rows="3" maxLength='90' placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-          </tr> -->
-         
+          </tr> 
         </table>
         <el-form-item  prop="evidenceLength" style="visibility:hidden">
           <el-input v-model="docData.evidenceLength"></el-input>
@@ -285,7 +252,19 @@ export default {
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
+  computed: { 
+    ...mapGetters(['caseId']),
+    getEvidenceTimeEnd() {
+      if (this.docData.getEvidenceTimeEnd) {
+        return new Date(this.docData.getEvidenceTimeEnd).format('dd日HH时mm分')
+      }
+    },
+    getEvidenceTime() {
+      if (this.docData.getEvidenceTime) {
+        return new Date(this.docData.getEvidenceTime).format('yyyy年MM月dd日HH时mm分')
+      }
+    }
+  },
   data() {
     //验证是否填写证据
     var validateEvidencLength = (rule, value, callback) => {
@@ -296,9 +275,6 @@ export default {
     };
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-      console.log(value)
-
-      console.log(Date.parse(value),Date.parse(this.docData.getEvidenceTimeEnd))
       if(Date.parse(this.docData.getEvidenceTime)>Date.parse(this.docData.getEvidenceTimeEnd)){
         this.$message({
               showClose: true,
@@ -308,6 +284,28 @@ export default {
               customClass: 'validateErrorTip'
         });
         return callback(new Error("开始时间不得大于结束时间"));
+      }
+      if(Date.parse(this.docData.getEvidenceTimeEnd)>Date.parse(new Date())){
+        this.$message({
+              showClose: true,
+              message: '结束时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        this.docData.getEvidenceTimeEnd = ""
+        return callback(new Error("结束时间不得大于当前时间"));
+      }
+      if(Date.parse(this.docData.getEvidenceTime)>Date.parse(new Date())){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        this.docData.getEvidenceTime = ""
+        return callback(new Error("开始时间不得大于当前时间"));
       }
       callback();
     };

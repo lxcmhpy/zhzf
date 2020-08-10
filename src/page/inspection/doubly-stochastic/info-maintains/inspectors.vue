@@ -1,9 +1,9 @@
 <template>
   <div class="height100">
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
-      <div class="handlePart">
-        <div class="search toggleBox search-mini">
-          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0;height:calc(100% - 125px)">
+      <div class="handlePart el-form-bottom0">
+        <div class="search toggleBox search-mini" style="width:100%">
+          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0;">
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
               <el-form-item>
                 执法人员库
@@ -13,8 +13,11 @@
               </el-form-item>
               <el-form-item label="在岗情况" prop='stationStatusName'>
                 <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
-                  <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.name">
-                  </el-option>
+                  <el-option label="在岗" value="在岗"> </el-option>
+                  <el-option label="调岗中" value="调岗中"> </el-option>
+                  <el-option label="退休" value="退休"> </el-option>
+                  <el-option label="调离" value="调离"> </el-option>
+                  <el-option label="自然人" value="自然人"> </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -24,9 +27,19 @@
               <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
               <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
               </el-button>
-              <el-button size="medium" type="primary" @click="resetSearchData('searchForm')">导出所有人员</el-button>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="handlePart el-form-bottom0">
+        <div class="search" style="width:100%">
+          <el-form :inline="true">
+            <div style="width:auto;float:right">
+              <el-form-item>
+                <el-button size="medium" type="primary" @click="exportMethod('exportPerson','执法人员表.xls')">导出所有人员</el-button>
+              </el-form-item>
+            </div>
+          </el-form>
         </div>
       </div>
       <div class="tablePart">
@@ -101,13 +114,13 @@ export default {
       formLabelWidth: '100px',
       rules: {
         pass: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkPass: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change" }
         ],
         age: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: "必填项", trigger: "change" }
         ]
       },
       zzmmList: [],
@@ -169,6 +182,11 @@ export default {
       // 走公开人员的添加接口
       let _this = this
       if (this.multipleSelection.length > 0) {
+        this.multipleSelection.forEach(element => {
+          element.organName=iLocalStroage.gets("userInfo").
+          // 删除是否在岗
+          this.$delete(element, 'stationStatusName')
+        });
         addMorePublicPersonApi(this.multipleSelection).then(
           res => {
             if (res.code == 200) {

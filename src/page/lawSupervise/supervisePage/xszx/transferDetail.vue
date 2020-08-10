@@ -331,7 +331,6 @@ export default {
                 getDetailById(id).then(
                     res => {
                         // resolve(res);
-                        debugger;
                         _this.obj = res.data;
                         // obj.list = res.data
                         if (_this.obj.workNo) {

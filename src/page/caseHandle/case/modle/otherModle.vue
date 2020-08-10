@@ -252,6 +252,28 @@ export default {
         });
         return callback(new Error("开始时间不得大于结束时间"));
       }
+      if((Date.parse(parseInquestStartTime)>Date.parse(new Date()))){
+        this.docData.askdataStart = "";
+        this.$message({
+              showClose: true,
+              message: '开始时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得大于当前时间"));
+      }
+      if((Date.parse(parseinquestEndTime)>Date.parse(new Date()))){
+        this.$message({
+              showClose: true,
+              message: '结束时间不得大于当前时间',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        this.docData.askdataEnd = "";
+        return callback(new Error("结束时间不得大于当前时间"));
+      }
       callback();
     };
     return {
@@ -657,10 +679,6 @@ export default {
 #askRecordBox{
  .askRecordNumberBox{
    width: 100px;
- }
- .inquiryAddressBox{
-  //  width: calc(100% - 60px);
-  // width: 500px;
  }
  .inquiriedUnitPositionBox{
    width: calc(100% - 130px);

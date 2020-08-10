@@ -266,7 +266,6 @@ export default {
       this.$store.dispatch("getDepartmentsNoPage", data).then(
         res => {
           console.log("部门数据", res);
-          debugger
           _this.departments = res.data;
         },
         err => {

@@ -1,8 +1,8 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox inspection-info" id="roleBox" style="height:calc(100% - 22px)">
-      <div style="height:40px;line-height:40px">信息类型：</div>
-      <el-tabs v-model="activeName" type="card" @tab-click="handleClick" style="height:calc(100% - 40px);">
+      <!-- <div style="height:40px;line-height:40px">信息类型：</div> -->
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick" style="height:100%">
         <el-tab-pane label="检查人员库" name="first">
           <div class="height100">
             <inspectors v-if="activeName=='first'"></inspectors>

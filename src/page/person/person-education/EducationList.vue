@@ -148,7 +148,6 @@ export default {
     },
     //删除所选择的用户信息
     deleteEducation() {
-      debugger;
       let _this = this;
       this.$confirm("确定要删除所选的人员吗?", "提示", {
         confirmButtonText: "确定",

@@ -484,7 +484,6 @@ export default {
           // if (this.editForm.newPassword == this.editForm.repetPassword) {
           hasUsernameLoginApi(this.editForm.username).then(
             res => {
-              debugger
               let data = {
                 id: res.id,
                 newPassword: this.editForm.newPassword,

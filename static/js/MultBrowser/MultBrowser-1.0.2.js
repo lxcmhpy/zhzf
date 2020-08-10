@@ -86,7 +86,6 @@ var MultBrowser = function(){
 				window.external.sendStatus(status, data);
 			},
 			closeBrowser:function(){
-                debugger;
 				window.external.closeBrowser();
 			}
 	}

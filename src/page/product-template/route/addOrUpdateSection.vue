@@ -172,7 +172,6 @@
                 this.visible = true;
                 this.handelType = type;
                 if (type == 0) {
-                    debugger
                     _this.dialogTitle = "添加路段信息";
                     _this.addOrUpdateSectionForm.organId = "";
                     _this.addOrUpdateSectionForm.routeName = data.routeName;
@@ -222,7 +221,6 @@
             },
             //新增案件类型 修改案件类型
             addOrUpdateSection(formName) {
-                debugger
                 let _this = this
                 this.$refs[formName].validate(valid => {
                     if (valid) {
