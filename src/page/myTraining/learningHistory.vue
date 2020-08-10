@@ -243,6 +243,7 @@ export default {
   height: calc(100% - 80px);
   .table-wrap{
     height: calc(100% - 80px);
+    border-bottom: 1px solid #e3e3ec;
   }
   .exam-wrap{
     display: flex;
