@@ -534,7 +534,7 @@
                         <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
                         </el-col>
                         <el-col :span="22">
-                            <img width="100%" :src="xjHost+imgIndexUrl">
+                            <img width="100%" :src="pHost+imgIndexUrl">
                         </el-col>
                         <el-col :span="1" style="margin-top: 200px;">
                             <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
@@ -563,13 +563,13 @@
                             <!-- <img class="img" :src="'./static/images/img/temp/sp.jpg'" > -->
 
                             <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
-                                <el-carousel-item :key="0">
+                                <el-carousel-item :key="0" v-if="videoUrl!=''">
                                     <video width="280px" height="180px" controls>
-                                        <source :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_V'" type="video/mp4">
+                                        <source :src="pHost+videoUrl" type="video/mp4">
                                     </video>
                                 </el-carousel-item>
                                 <el-carousel-item  v-for="(item,index) in imgList" :key="(index +1).toString()">
-                                    <img width="280px" height="180px" @click="showImg(index)"  :src="xjHost+item">
+                                    <img width="280px" height="180px" @click="showImg(index)"  :src="pHost+item">
                                 </el-carousel-item>
                                 <!-- <el-carousel-item :key="2">
                                     <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_F'">
@@ -667,13 +667,12 @@ export default {
             siteInfo:{},
             fileList: [],
             imgIndexUrl: null,
-            imgList: [
+            imgList: [/* 
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
-                ],
-            xjHost: null,
+                 */],
             dialogIMGVisible: false,
             storageStr: '',
             dialogPDFVisible: false,
@@ -705,7 +704,8 @@ export default {
             pHost: null,
             carInfo:{},
             vehicleInfo:{},
-            ownerInfo:{}
+            ownerInfo:{},
+            videoUrl:''
         }
     },
     methods:{
@@ -844,7 +844,15 @@ export default {
             }
             getFileByCaseId(data).then(
                 res => {
-                    this.fileList = res.data;
+                    res.data.forEach(p => {
+                        if(p.status=='治超图片'){
+                            this.imgList.push(p.storageId)
+                        }else if(p.status=='治超视频'){
+                            this.videoUrl=p.storageId
+                        }else{
+                            this.fileList.push(p)
+                        }
+                    });
                 },
                 error => {
                     console.log(error);
@@ -867,7 +875,6 @@ export default {
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
-        this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
         this.findFileList();
         this.getSiteById()

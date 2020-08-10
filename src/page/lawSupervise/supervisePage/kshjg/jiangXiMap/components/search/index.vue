@@ -3,11 +3,11 @@
     <header class="input-with-select" @click="handleShowSearch">
       <el-input
         v-model="inputModel"
-        placeholder="搜执法人员、执法机构">
+        :placeholder="placeholder">
         <div slot="suffix" class="closeBox" @click="handleClose">
           <i class="el-icon-close"></i>
         </div>
-        <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </el-input>
     </header>
     <div class="jiangXiMap-search-mainBox">
@@ -15,12 +15,13 @@
         <component
           :is="showCom"
           :window1="config.window1"
-          :window2="config.window2"
+          :window2="window2"
           :window3="config.window3"
           :window4="config.window4"
           :window5="config.window5"
           @handleNodeClick="handleNodeClick"
           @handlePerson="handlePerson"
+          @clickImg="clickImg"
         />
       </keep-alive>
     </div>
@@ -33,12 +34,14 @@ import Window2 from "./window2.vue";
 import Window3 from "./window3.vue";
 import Window4 from "./window4.vue";
 import Window5 from "./window5.vue";
+import { organTreeByCurrUser, getOrganTree } from "@/api/lawSupervise.js";
 export default {
   provide() {
     return {
       page: this
     }
   },
+  inject: ['indexPage'],
   props: {
     config: {
       type: Object,
@@ -58,15 +61,125 @@ export default {
     return {
       inputModel: "",
       showCom: "",
+      projectName: "",
+      window2: {
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        },
+        option: []
+      },
+      placeholder: "",
     }
   },
   methods: {
     /**
+     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶子节点
+     */
+    addNode(arr) {
+      let myNode = [
+        { label: '执法人员', type: 0, children: [] },
+        { label: '执法车辆', type: 2, children: [] },
+        { label: '执法船舶', type: 3, children: [] },
+      ]
+      arr.map(item => {
+        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
+          myNode.map(myNodeItem => {
+            // 给自定义节点添加 pid 属性， 值为父节点的 id
+            myNodeItem.pid = item.id
+          })
+          // 在 children 里添加自定义节点
+          item.children = myNode.concat(item.children)
+          // 递归调用
+          this.addNode(item.children)
+        }
+      })
+      return arr
+    },
+
+    /**
+     * 获取数据
+     */
+    getTree() {
+      organTreeByCurrUser().then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
+        }
+      }).then(data => {
+        this.window2.option = this.addNode(data)
+      })
+    },
+
+    /**
+     * 单独获取执法人员的数据，为了在执法人员专题下单独显示
+     */
+    getPeople() {
+      let param = {
+        organId: this.indexPage.organId,
+        type: 0
+      }
+      getOrganTree(param).then(res => {
+        if(res.code === 200) {
+          this.$message({
+            message: '查询到'+res.data.length+'条数据',
+            type: 'success'
+          });
+          return res.data
+        } else {
+          this.$message.error('getWindow2People()::::::::接口数据错误');
+        }
+      }).then(data => {
+        this.window2.option = data.map(item => {
+          item.type = 0
+          item.label = item.nickName
+          return item
+        })
+      })
+    },
+
+    /**
      * 点击头部输入栏触发
      */
     handleShowSearch() {
-      this.showCom = "Window1"
+      if(this.showCom === "") {
+        this.showCom = "Window1"
+      }
       this.$emit('handleShowSearch')
+    },
+
+    /**
+     * 点击搜索按钮，获取数据
+     */
+    handleSearch() {
+      if(this.projectName === "执法人员") {
+        let param = {
+          key: this.inputModel,
+          organId: this.indexPage.organId,
+          type: 0
+        }
+        // 搜索执法人员数据
+        getOrganTree(param).then(res => {
+          if(res.code === 200) {
+            this.$message({
+              message: '查询到'+res.data.length+'条数据',
+              type: 'success'
+            });
+            return res.data
+          } else {
+            this.$message.error('getOrganTree()::::::::接口数据错误');
+          }
+        }).then(data => {
+          this.window2.option = data.map(item => {
+            item.type = 0
+            item.label = item.nickName
+            return item
+          })
+        })
+      } else if (this.projectName === "执法机构") {
+
+      }
     },
 
     /**
@@ -91,6 +204,21 @@ export default {
      */
     handlePerson(node) {
       this.$emit("handlePerson", node)
+    },
+
+    /**
+     * 点击专题图片，获取树形数据，下钻到树形窗口
+     */
+    clickImg(name) {
+      this.projectName = name
+      this.window2.option = []
+      if(name === "执法机构") {
+        this.placeholder = '搜索执法机构'
+        this.getTree()
+      } else if (name === "执法人员") {
+        this.placeholder = '搜索执法人员'
+        this.getPeople()
+      }
     },
   }
 }

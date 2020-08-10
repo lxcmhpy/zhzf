@@ -300,7 +300,7 @@
 <script>
 import iLocalStroage from '@/common/js/localStroage';
 import btns from '@/page/lawSupervise/supervisePage/xszx/componentChild/btns.vue';
-import {getDetailById} from '@/api/lawSupervise.js';
+import {getDetailById,getFileByCaseId} from '@/api/lawSupervise.js';
 import { mapGetters } from "vuex";
 import examineDoingZbDetail from './componentChild/examineDoingDetail/examineDoingZbDetail.vue';
 
@@ -310,8 +310,9 @@ export default {
         return {
             obj: null,
             visible: false,
-            xjHost: null,
-            imgList: null,
+            pHost: null,
+            imgList: [],
+            videoUrl:'',
             acitveCar: 0,
             // xjHost: null,
             dialogPDFVisible: false,
@@ -332,15 +333,7 @@ export default {
                     res => {
                         // resolve(res);
                         _this.obj = res.data;
-                        // obj.list = res.data
-                        if (_this.obj.workNo) {
-                         _this.imgList =  [
-                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_D',
-                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_F',
-                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_L',
-                            '/api/ecds/GetCarPicture?work_no='+_this.obj.workNo+'&photo=PHOTO_S'
-                            ];
-                        }
+                        _this.findFileList()
                     },
                     error => {
                         //  _this.errorMsg(error.toString(), 'error')
@@ -348,6 +341,27 @@ export default {
                     }
                 )
             })
+        },
+        //通过案件ID和文书ID查询附件
+        findFileList() {
+            let data = {
+                caseId: this.obj.id
+            }
+            getFileByCaseId(data).then(
+                res => {
+                    res.data.forEach(p => {
+                        if(p.status=='治超图片'){
+                            this.imgList.push(p.storageId)
+                            this.imgObj[p.name]=p.storageId
+                        }else if(p.status=='治超视频'){
+                            this.videoUrl=p.storageId
+                        }
+                    });
+                },
+                error => {
+                    console.log(error);
+                }
+            )
         },
          goToInforCollect() {
             this.$store.commit('setCaseId','3f04ca8748038e4e7fe1b6719f8f8d43');
@@ -360,8 +374,7 @@ export default {
     },
     mounted () {
         this.getDetailById(this.$route.params.offSiteManageId);
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
-        this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
+        this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
     },
     computed: {
         // ...mapGetters(["offSiteManageId"])

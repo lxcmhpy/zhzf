@@ -187,7 +187,7 @@ export function saveAndUpdate (data) {
     return request({
         url: "/zfjg/superviseVehicle/saveAndUpdate",
         method: "post",
-        showloading: false,
+        showloading: true,
         baseUrlType:  'LAW_SUPERVISE_HOST',
         data:  vm.$qs.stringify(data),
         cancelToken: setCancelSource()
@@ -220,7 +220,7 @@ export function transerCase (id) {
     return request({
         url: "/zfjg/superviseVehicle/transferCase/" + id,
         method: "get",
-        showloading: false,
+        showloading: true,
         baseUrlType:  'LAW_SUPERVISE_HOST',
         // params: data,
         cancelToken: setCancelSource()

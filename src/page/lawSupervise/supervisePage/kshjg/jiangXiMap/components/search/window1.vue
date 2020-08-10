@@ -5,7 +5,7 @@
     </header>
     <article class="search-window1-flexBoxs">
       <div class="flexBox" v-for="(item,index) of list" :key="index">
-        <img @click="handleSearch(item)" :src="item.imgUrl" />
+        <img @click="clickImg(item)" :src="item.imgUrl" />
         <div>{{item.name}}</div>
       </div>
     </article>
@@ -35,8 +35,9 @@ export default {
     /**
      * 点击专题图片，隐藏当前窗口，并下钻到树窗口
      */
-    handleSearch(data) {
+    clickImg(data) {
       this.page.showCom = "Window2"
+      this.$emit('clickImg', data.name)
     },
   }
 }

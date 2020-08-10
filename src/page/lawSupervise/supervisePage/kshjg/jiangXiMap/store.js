@@ -13,8 +13,7 @@ export default {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
       }).then(data => {
-        this.selectData.organId = data[0].id
-        this.searchWindowData.window2.option = this.addNode(data)
+        this.organId = data[0].id
       })
     },
 
@@ -35,7 +34,6 @@ export default {
           return res.data
         } else {
           this.$message.error('getOrganTree()::::::::接口数据错误');
-          throw new Error("getOrganTree()::::::::接口数据错误")
         }
       }).then(data => {
         node.children = data.map(item => {
@@ -64,7 +62,6 @@ export default {
           return res.data
         } else {
           this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-          throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
         }
       }).then(data => {
         node.children = data.map(item => {
@@ -219,7 +216,7 @@ export default {
         }
       } else {
         param = {
-          organId: this.selectData.organId,
+          organId: this.organId,
           type: type
         }
       }
@@ -235,7 +232,6 @@ export default {
             return res.data
           } else {
             this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-            throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
           }
         }).then(data => {
           // 手动给数据添加图层唯一标识
@@ -259,57 +255,52 @@ export default {
     },
 
     /**
-     * 图层下拉项的回调，获取各下拉项的点位数据
+     * 获取全部复选框点位数据
      */
-    handleCommand(type) {
-      let param = {}
-      if(type === 4) {
+    getAllPoints(val) {
+      if(val) {
+        let typeMap = [
+          { name: '执法人员', type: 0 },
+          { name: '执法机构', type: 1 },
+          { name: '执法车辆', type: 2 },
+          { name: '执法船舶', type: 3 },
+          { name: '非现场站点', type: 4 },
+        ]
+        let allPromise = typeMap.map(item => {
+          let param = {
+            organId: this.organId,
+            type: item.type
+          }
+          return getZfjgLawSupervise(param)
+        })
+
         // 显示抽屉组件
         this.isShowDrawer = true
-        param = {
-          size: 20,
-          type: type
-        }
-        // 获取告警车辆数据
-        queryAlarmVehiclePage({current: 1}).then(res => {
-          if(res.code === 200) {
-            return res.data
-          } else {
-            throw new Error("queryAlarmVehiclePage::::::接口数据错误")
-          }
-        }).then(data => {
-          this.drawerData.carData = data
+        // 获取告警车辆数据以备用
+        this.getCarData()
+
+        Promise.all(allPromise).then(res => {
+          res.map((item,index) => {
+            if(index === 4) {
+              // 手动给非现场站点添加type
+              item.data.map(item => {
+                item.type = 4
+              })
+              // 给抽屉弹窗里塞入数据
+              this.drawerData.noEnforceData.option = item.data
+            }
+
+            // 手动给数据添加图层唯一标识
+            item.data.layerName = typeMap[index].name
+            // 添加点位图片
+            item.data.imgUrl = this.imgUrl.get(typeMap[index].type)
+            // 调用地图打点方法
+            this.page.addPoints(item.data)
+          })
         })
       } else {
-        param = {
-          organId: this.selectData.organId,
-          type: type
-        }
+        this.page.cleanAll()
       }
-      getZfjgLawSupervise(param).then(res => {
-        if(res.code === 200) {
-          this.$message({
-            message: '查询到'+res.data.length+'条数据',
-            type: 'success'
-          });
-          return res.data
-        } else {
-          this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-          throw new Error("getZfjgLawSupervise()::::::::接口数据错误")
-        }
-      }).then(data => {
-        // 手动给非现场站点添加type
-        if(type === 4) {
-          data.map(item => {
-            item.type = type
-          })
-          // 给抽屉弹窗里塞入数据
-          this.drawerData.noEnforceData.option = data
-        }
-        // 添加点位图片
-        data.imgUrl = this.imgUrl.get(type)
-        this.page.addPoints(data)
-      })
     },
   }
 }
