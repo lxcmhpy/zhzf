@@ -113,5 +113,13 @@ export default [{
       title: "申请管理"
     },
     component: () => import("@/page/device/certificate-bill/certificateBillManage.vue")
+  },
+  {
+    path: "/certificateManage",
+    name: "certificateManage",
+    meta: {
+      title: "证件管理"
+    },
+    component: () => import("@/page/device/certificate/certificateManage.vue")
   }
 ]
