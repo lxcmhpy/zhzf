@@ -2,7 +2,7 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     addExamBatchApi,deleteExamBantchApi,getPageManageListApi,addPageManageApi,deletePageManageApi,getInvigilatorPageListApi,getExamParsonListByExamApi,getExamParsonListByPersonApi,pageTempletePageListApi,
     addPageTempleteApi,deletePageTempleteByIdApi,updatePageTempleteApi,getOutlineQuestionListApi,addExamQuestionInfoApi,deleteExamQuestionInfoApi,updateExamQuestionInfoApi,selectExamQuestionInfoApi,disposeInfoApi,
     updateExamBatchApi,getUnSelectedPersonApi,addExamPersonApi,selectExamPersonApi,removeExamPersonApi,isCanUpdateTempleteApi,pageTempleteApi,updateTempleteApi,getAddInvigilatorApi,
-    getExamPersonsSearchInfoApi,setBatchExamDelayedInfoApi,getpersonExamInfoListApi,getpersonExamQuestionApi,updateStatusApi
+    getExamPersonsSearchInfoApi,setBatchExamDelayedInfoApi,getpersonExamInfoListApi,getpersonExamQuestionApi,updateStatusApi,setExamResultApi
     ,getAllTempleteForSelectedApi,addRoomManageApi,roomManageListApi,deleteRoomManageByIdApi,getUnDispatchCountApi,addExamDispatchApi,getUnDispatchPersonByRoomIdApi,
     getDispatchPersonByRoomIdApi,removeDispatchApi,autoDispatchApi,getPageListApi,disPapersApi,examDetialApi,previewPageApi,exportInvigilatorApi,exportExamPersonApi,exporExamtDetailApi
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
@@ -180,6 +180,14 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
           disposeInfo({commit},data){
             return new Promise((resolve, reject) => {
                 disposeInfoApi(data).then(
+                    res => {  resolve(res);   },
+                    error => { reject(error); })
+            })
+        },
+        //报送成绩
+        setExamResult({commit},data){
+            return new Promise((resolve, reject) => {
+                setExamResultApi(data).then(
                     res => {  resolve(res);   },
                     error => { reject(error); })
             })

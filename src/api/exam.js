@@ -164,6 +164,16 @@ export function disposeInfoApi(data){
         cancelToken: setCancelSource()
     })
 }
+//报送成绩
+export function setExamResultApi(data){
+    return request({
+        url: "/exam/examManage/submitResult",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
 //查询未分配参考人员
 export function getUnSelectedPersonApi(data){
     return request({

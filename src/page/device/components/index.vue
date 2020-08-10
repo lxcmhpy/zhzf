@@ -18,6 +18,10 @@
       <span>5.21 发证申请基本信息</span>
       <el-button type="info" @click="openApplyCertificate">发证申请</el-button>
     </div>
+    <div style="padding: 30px;">
+      <span>请选择业务类型</span>
+      <el-button type="info" @click="openDialog('selectBusinessTypeRef')">发证申请</el-button>
+    </div>
     <!-- 复制装备 -->
     <AddByCopy ref="addByCopyRef" />
     <!-- 新增装备 -->
@@ -26,6 +30,8 @@
     <DeviceDetail ref="deviceDetailRef" />
     <!-- 配发(领用)单 -->
     <AllotmentReceive ref="allotmentReceiveRef" />
+    <!-- 选择业务类型 -->
+    <SelectBusinessType ref="selectBusinessTypeRef" />
   </div>
 </template>
 <script>
@@ -33,9 +39,10 @@ import AddByCopy from '@/page/device/components/addDevice/addByCopy';
 import AddDevice from '@/page/device/components/addDevice/addDevice';
 import DeviceDetail from '@/page/device/components/addDevice/deviceDetail';
 import AllotmentReceive from '@/page/device/components/allotmentReceive/allotmentReceive';
+import SelectBusinessType from '@/page/device/components/selectBusinessType';
 
 export default {
-  components: { AddByCopy, AddDevice, DeviceDetail, AllotmentReceive },
+  components: { AddByCopy, AddDevice, DeviceDetail, AllotmentReceive, SelectBusinessType },
   data() {
     return {
     };

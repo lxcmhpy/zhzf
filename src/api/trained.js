@@ -601,3 +601,14 @@ export function exportTrainDetial(data){
       cancelToken: setCancelSource()
   })
 }
+
+//报送成绩
+export function setTrainResult(data){
+  return request({
+      url: "/train/manage/submitResult",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource()
+  })
+}
