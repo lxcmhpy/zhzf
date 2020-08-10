@@ -152,8 +152,12 @@
                         <el-form-item label="图片">
                             <div class="upload-device-image">
                             <el-upload
+                                action="#"
+                                accept=".jpg, .png"
                                 class="device-uploader"
-                                action
+                                :http-request="saveImageFile"
+                                :file-list="imageList"
+                                :on-remove="deleteFile"
                                 :disabled="this.formReadOnly"
                                 :show-file-list="false"
                             >
@@ -209,12 +213,13 @@
         queryDeviceBill,
         findDeviceBillById,
         saveOrUpdateDeviceBill,
-        deleteDeviceBillById,
-        listDevice
+        deleteDeviceBillById
     } from "@/api/device/deviceBill.js";
     import {
         tree,
         getDataList,
+        upload,
+        deleteFileById
     } from "@/api/device/device.js";
     import elSelectTree from '@/components/elSelectTree/elSelectTree';
     import iLocalStroage from '@/common/js/localStroage';
@@ -229,7 +234,6 @@
                     label: "label",
                     value: "id"
                 },
-                host:'',
                 queryForm: {
                     billType:'PF',
                     billDate:'',
@@ -255,7 +259,9 @@
                 userList:[],
                 organList:[],
                 deviceList:[],
-                itemList:[]
+                itemList:[],
+                host: '',
+                imageList:[]
             };
         },
         components: {
@@ -263,13 +269,48 @@
             SelectEquipment
         },
         methods: {
+            saveImageFile (param) {
+                var fd = new FormData()
+                fd.append("file", param.file);
+                fd.append("category", '装备配发图片');
+                fd.append("fileName", param.file.name);
+                if(this.addForm.storageId){
+                    fd.append("storageId", this.addForm.storageId);
+                    fd.append('caseId', this.addForm.id)//传记录id
+                }else{
+                    fd.append('caseId', param.file.name+new Date().getTime())//传记录id
+                }
+                let _this = this
+                upload(fd).then(
+                    res => {
+                        _this.addForm.storageId = res.data[0].storageId
+                        _this.imageList.push({
+                            url:_this.host+'/'+res.data[0].storageId,
+                            storageId:res.data[0].storageId,
+                            name:res.data[0].fileName
+                        });
+                    },
+                    error => {
+                        console.log(error)
+                    }
+                );
+            },
+            //删除附件
+            deleteFile(file, fileList){
+                let _this = this
+                deleteFileById(file.storageId).then(res=>{
+                    _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
+                },err=>{
+                    console.log(err)
+                })
+            },
             addDevice(){
                 let _this = this
-                 this.$refs.addForm.validate(valid => {
-                    if (valid) {
+                this.$refs.addForm.validateField('useUnit',valid => {
+                    if (valid=="") {
                         _this.$refs.selectEquipmentRef.showModal(this.queryForm.billType,this.addForm.useUnit);
                     }
-                 });
+                 })
             },
             addItemList(rows){
                 rows.forEach(p=>this.itemList.push(p))
@@ -287,16 +328,6 @@
                     return;
                 }
             },
-            async selectDevice(){
-                let queryData={
-                    useUnit:this.addForm.useUnit,
-                    billType:this.queryForm.billType,
-                    name:'',
-                    deviceType:''
-                }
-                let res = await listDevice(queryData)
-                this.deviceList = res.data;
-            },
             async getUserDataList(pid){
                 let res = await getDataList(pid,'user')
                 this.userList=res.data
@@ -312,9 +343,10 @@
             addFormUseUnitClick(val) {
                 if(val!=null){
                     this.$refs.addFormUseUnitTreeObj.$children[0].handleClose();
-                    this.addForm.useUnit  = val
+                    this.$set(this.addForm,'useUnit',val)
                     this.getUserDataList(val)
                     this.$set(this.addForm,'userId','')
+                    this.itemList=[]
                 }
             },
             saveOrUpdate(formName){
@@ -366,13 +398,16 @@
                 if(this.$refs.addFormUseUnitTreeObj){
                     this.$refs.addFormUseUnitTreeObj.clearHandle()
                 }
+                this.getUserDataList(this.userInfo.organId)
                 this.addForm = {
                     createId:this.userInfo.id,
                     createName:this.userInfo.nickName,
                     billType:'PF',
-                    billDate:new Date().format('yyyy-MM-dd')
+                    billDate:new Date().format('yyyy-MM-dd'),
+                    useUnit:this.userInfo.organId
                 }
                 this.itemList=[]
+                this.imageList=[]
                 this.title="新增配发(领用)"
                 this.formReadOnly = false
                 this.visible = true

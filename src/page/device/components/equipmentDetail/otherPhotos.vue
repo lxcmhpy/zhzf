@@ -3,20 +3,6 @@
     <div class="card-title">
       <font class="font" style="font-size:25px;">
         <span class="titleflag"></span>其他
-        <!-- <el-button
-          v-if="params.type !== 'view'"
-          style="margin: 2px 18px 0;"
-          size="medium"
-          type="primary"
-          @click="editAble = true"
-        >修改</el-button>
-        <el-button
-          v-show="editAble"
-          style="margin: 2px 0;"
-          size="medium"
-          type="success"
-          @click="submitUpload"
-        >保存</el-button> -->
       </font>
     </div>
     <div ref="degreeXX" class="block upload-material">
@@ -26,20 +12,12 @@
       >
         <li
           v-for="(item, $index) in uploadFileList"
-          :key="item.uid"
+          :key="$index"
           tabindex="0"
           class="el-upload-list__item is-ready"
         >
           <img
-            v-if="item.status === 'ready'"
-            :src="item.url"
-            alt
-            class="el-upload-list__item-thumbnail"
-            @click="previewImg(item)"
-          />
-          <img
-            v-if="item.isSave || item.status === 'success'"
-            :src="baseUrl + item.url"
+            :src="item.photoUrl"
             alt
             class="el-upload-list__item-thumbnail"
             @click="previewImg(item)"
@@ -51,11 +29,11 @@
                 action="#"
                 accept=".jpg, .png"
                 list-type="picture-card"
-                :auto-upload="false"
+                :http-request="saveImageFile"
                 :show-file-list="false"
                 :on-change="handleEditChange"
               >
-                <span class="item-handle-btn edit-item" @click="editItemImg($index)">替换</span>
+                <span class="item-handle-btn edit-item" @click="editItemImg(item,$index)">替换</span>
               </el-upload>
               <span class="item-handle-btn delete-item" @click="deleteItem(item, $index)">删除</span>
             </div>
@@ -69,7 +47,7 @@
         multiple
         accept=".jpg, .png"
         list-type="picture-card"
-        :auto-upload="false"
+        :http-request="saveImageFile"
         :show-file-list="false"
         :on-change="handleChange"
         :file-list="uploadFileList"
@@ -83,6 +61,8 @@
   </div>
 </template>
 <script>
+import { upload, deleteFileByIdApi } from "@/api/upload";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: {
     params: {
@@ -92,17 +72,25 @@ export default {
       },
       required: true,
     },
+    uploadFileList: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   data() {
     return {
       imageUrl: "",
-      uploadFileList: [],
+      //   uploadFileList: [],
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
       editImgIndex: null,
+      docId: null,
       uploadPics: [],
-      editAble: true
+      editAble: true,
+      baseUrl: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
     };
   },
   computed: {
@@ -122,29 +110,40 @@ export default {
         });
         fileList.splice(fileIndex, 1);
       }
+      fileList[fileIndex]["photoUrl"] = URL.createObjectURL(file.raw);
       this.uploadFileList = fileList;
     },
     // 上传到服务器
-    submitUpload() {
-      if (this.uploadFileList) {
-        const formData = new FormData();
-        const changeIndex = [];
-        this.uploadFileList.forEach((item, index) => {
-          if (item.status === "ready") {
-            formData.append("file", item.raw);
-            changeIndex.push(index);
-          }
-        });
-        this.saveMaterialNo(formData, changeIndex);
-      }
+    saveImageFile(param) {
+      var fd = new FormData();
+      let type = "其他";
+      fd.append("file", param.file);
+      fd.append("category", "装备系统");
+      fd.append("fileName", param.file.name);
+      fd.append("status", type); //标记
+      fd.append("caseId", this.$route.params.id); //传记录id
+      debugger;
+      let docId = this.docId ? this.docId : type + new Date().getTime();
+      fd.append("docId", docId); //传记录id
+      let _this = this;
+      upload(fd).then(
+        (res) => {
+          let file = _this.uploadFileList.find(
+            (item) => item.uid === param.file.uid
+          );
+          file.storageId = res.data[0].storageId;
+          file.docId = res.data[0].docId;
+          _this.docId = null;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
+
     // 点击图片弹出预览
     previewImg(item) {
-      if (item.isSave || item.status === "success") {
-        this.dialogImageUrl = this.baseUrl + item.url;
-      } else {
-        this.dialogImageUrl = item.url;
-      }
+      this.dialogImageUrl = item.photoUrl;
       this.dialogVisible = true;
     },
     // 删除图片
@@ -156,16 +155,25 @@ export default {
         customClass: "custom-confirm",
       })
         .then(() => {
-          this.uploadFileList.splice(index, 1);
-          if (row.isSave || row.status === "success") {
-            this.uploadPics.splice(index, 1);
-          }
+          this.deleteFile(row.storageId).then(() => {
+            this.uploadFileList.splice(index, 1);
+          });
         })
         .catch(() => {});
     },
+    //删除附件
+    async deleteFile(url) {
+      let _this = this;
+      let res = await deleteFileByIdApi(url);
+      this.$message({
+        type: "success",
+        message: "操作成功!",
+      });
+    },
     // 修改图片
-    editItemImg(index) {
+    editItemImg(item, index) {
       this.editImgIndex = index;
+      this.docId = item.docId;
     },
 
     // 修改图片重新选择图片
@@ -182,6 +190,7 @@ export default {
         fileList.splice(fileIndex, 1);
       } else {
         fileList.splice(0, fileList.length);
+        file.photoUrl = URL.createObjectURL(file.raw);
         this.uploadFileList.splice(this.editImgIndex, 1, file);
       }
     },

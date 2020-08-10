@@ -91,6 +91,13 @@ export default {
     },
 
     /**
+     * 通过图层标识清除点位
+     */
+    cleanPoints(layerName) {
+      this.map.removeFeatureByLayerName(layerName)
+    },
+
+    /**
      * 地图添加点位(单点)
      */
     addPoint(data, latLng) {
@@ -133,8 +140,7 @@ export default {
      * 地图添加点位(多点)
      */
     addPoints(arr) {
-      // 打点之前清空地图所有点位
-      this.map.removeFeatureByLayerName('pointLayer')
+      let _layerName = arr.layerName
       let points = arr.map(item => {
         return {
           attributes: {
@@ -145,7 +151,7 @@ export default {
         }
       })
       const options = {
-        layerName: 'pointLayer',
+        layerName: _layerName,
         zoomToExtent: true,
         style: {
           image: {

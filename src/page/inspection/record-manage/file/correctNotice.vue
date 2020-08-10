@@ -238,6 +238,7 @@ export default {
     },
     // 提交表单
     saveData(handleType) {
+      let _this=this
       //参数  提交类型 、
       // this.printContent();
       this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
@@ -267,9 +268,9 @@ export default {
               this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
               this.$router.push({
                 name: "inspection_myPDF",
-                params: { docId: this.inspectionFileId, storagePath: res.data.storagePath }
+                params: { id: this.inspectionFileId, storagePath: res.data.storagePath }
               });
-              this.storagePath = res.data.storagePath
+              // _this.storagePath = res.data.storagePath
               // 隐藏保存、签章按钮，显示撤销、删除按钮
               this.$set(this.formOrDocData.showBtn, 5, false)
               this.$set(this.formOrDocData.showBtn, 1, false)

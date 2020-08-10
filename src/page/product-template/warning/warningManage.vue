@@ -32,7 +32,7 @@
         <!-- <el-table-column prop="routeGrade" label="条件内容" align="center"></el-table-column> -->
         <!-- <el-table-column prop="startingPoint" label="发送对象" align="center"></el-table-column> -->
         <!-- <el-table-column prop="enddingPoint" label="提醒内容" align="center"></el-table-column> -->
-        <el-table-column prop="status" label="是否启用" align="center"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center"></el-table-column>
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <div style="width:160px">
@@ -94,7 +94,7 @@ export default {
       }).then(() => {
         delWarInfoLlistApi(row.id).then(
           res => {
-            if (res.data == true) {
+            if (res.code == 200) {
               this.$message({ type: "success", message: "删除成功!" });
               this.currentPage = 1;
               this.getCatalog();

@@ -41,21 +41,21 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
+          <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
-          <el-table-column prop="politicalStatus" label="抽查标准" align="center"></el-table-column>
+          <el-table-column prop="checkStandard" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
-          <el-table-column prop="checkBasis" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
-          <el-table-column prop="checkBasis" label="操作人员" align="center"></el-table-column>
-          <el-table-column prop="checkBasis" label="监督人员" align="center"></el-table-column>
+          <el-table-column prop="operatePerson" label="操作人员" align="center"></el-table-column>
+          <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <!-- <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
@@ -70,21 +70,24 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
       <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
-        <div>
-          <el-carousel ref="randomDom" trigger="click" height="20px" direction="vertical" :autoplay="false">
-            <el-carousel-item v-for="(item,index) in taskList" :key="index.toString()" name="item">
-              <h3 class="medium">{{ item }}</h3>
-            </el-carousel-item>
-          </el-carousel>
-          <el-button @click="startRandom" type="text">开始抽取</el-button>
-          <el-button type="text" @click="editMethod(scope.row.id)">重置</el-button>
-        </div>
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+        <el-row>
+          <el-col :span="18">
+            <div class="random-table-title" style="min-width:100px;height:30px">{{ randomContent }}</div>
+          </el-col>
+          <el-col :span="6">
+            <el-button v-if="isRandomFlag" type="primary" size="medium" @click="startRandom()">开始抽取</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="editMethod()">保存抽取结果</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="resetRandom()">重置</el-button>
+          </el-col>
+        </el-row>
+        <!-- <el-button type="primary" size="medium" @click="endRandom">结束</el-button> -->
+        <div class="random-table-title" style="margin-top:20px">抽取结果</div>
+        <el-table :data="randomList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="检查人员" align="center"></el-table-column>
-          <el-table-column prop="itemType" label="检查专家" align="center"></el-table-column>
+          <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
+          <el-table-column prop="personName" label="检查人员" align="center"></el-table-column>
+          <el-table-column prop="name" label="检查专家" align="center"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -95,7 +98,7 @@
   </div>
 </template>
 <script>
-import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi } from "@/api/inspection";
+import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, getExtractResultApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -110,6 +113,7 @@ export default {
         taskArea: '省交通运输厅领域'
       },
       isShow: false,
+      dialogFormVisible: false,
       addForm: {
         name: '',
         sex: '',
@@ -149,7 +153,12 @@ export default {
       optionsZC: [],
       optionsZZMM: [],
       optionsZYLY: [],
-      taskList: ['qw', '第三方', '七二', '输入法', '房德罡', '挨个', '台湾人', '阿达', '阿斯顿发生', '的非官方']
+      taskList: ['qw', '第三方', '七二', '输入法', '房德罡', '挨个', '台湾人', '阿达', '阿斯顿发生', '的非官方'],
+      randomContent: '',
+      timer: '',
+      isRandomFlag: true,
+      randomList: [],
+      randomData: []
     }
   },
   methods: {
@@ -207,13 +216,79 @@ export default {
     radomExpertNum() {
       return Math.random() * 100 + 10000;
     },
+    // 抽取效果开始
     startRandom() {
-      // this.$refs.randomDom.setActiveItem(2)
-      this.taskList.forEach((index,element) => {
-        setTimeout(() => {
-          this.$refs.randomDom.setActiveItem(index)
-        }, 1000);
-      });
+      let _this = this
+      // 数据效果
+      this.isRandomFlag = false
+      this.timer = setInterval(this.scroll, 100);//设置计时器
+
+      console.log(this.addForm)
+      let data = {
+        expertNum: this.addForm.expertNum,//	抽查专家数
+        objectNum: this.addForm.checkObjectNum,//抽查对象数
+        organName: iLocalStroage.gets("userInfo").organName,//机构名称
+        personNum: this.addForm.lawEnforceNum,//	抽查人员数
+      }
+      debugger
+      getExtractResultApi(data).then(
+        res => {
+          _this.randomList = res.data.randomObjectVoList
+          let data2 = []
+          let data3 = []
+          console.log(res.data.randomObjectVoList)
+          if (res.data.randomObjectVoList.length > 0 & res.data.randomPersonVoList.length > 0 & res.data.randomExpertVoList.length > 0) {
+            res.data.randomObjectVoList.forEach(element => {
+              res.data.randomExpertVoList.forEach(item => {
+                res.data.randomExpertVoList.forEach(item => {
+                  console.log(element, item)
+                  data2.push(Object.assign(element, item))
+                  console.log(Object.assign(element, item))
+                  console.log(data2)
+                  debugger
+                });
+              });
+
+            });
+          }else{
+            // 抽取失败-人数不够
+          }
+          console.log(data2)
+          // data2=res.data.randomObjectVoList.concat(res.data.randomObjectVoList)
+          debugger
+          setTimeout(() => {
+            // 最后显示的值
+            this.randomContent = 'asjkdhjfahsdasidjfhaidhfiashjdifah'
+          }, 1000)
+        },
+
+        error => {
+          // reject(error);
+        })
+    },
+    scroll() {
+      this.animate = true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+      setTimeout(() => {      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
+        this.randomContent = this.taskList[0]
+        this.taskList.push(this.taskList[0]);  // 将数组的第一个元素添加到数组的
+        this.taskList.shift();               //删除数组的第一个元素
+        this.animate = false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+      }, 500)
+    },
+    // 抽取效果结束
+    endRandom() {
+      clearInterval(this.timer);//销毁计时器
+      this.timer = null;
+      setTimeout(() => {
+        // 最后显示的值
+        this.randomContent = 'asjkdhjfahsdasidjfhaidhfiashjdifah'
+      }, 700)
+    },
+    // 重置
+    resetRandom() {
+      clearInterval(this.timer);//销毁计时器
+      this.timer = null;
+      this.isRandomFlag = true
     },
     getDrawerList(data) {
       let _this = this
@@ -231,8 +306,12 @@ export default {
             // reject(error);
           })
       });
-
     },
+    // editMethod(row) {
+    //   this.addForm = JSON.parse(JSON.stringify(row))
+    //   this.dialogStatus = '修改'
+    //   this.dialogFormVisible = true
+    // }
   },
   mounted() {
     this.getTableData()
