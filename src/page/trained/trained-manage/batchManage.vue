@@ -112,18 +112,54 @@
                   <span class="m-r-30">发起机构：{{scope.row.trainOName }}</span>
                 </p>
                 <p>
-                  <el-button v-if="scope.row.isConfigOver !== '1'" type="text" @click="editTrained('2', scope.row)">修改</el-button>
-                  <el-button v-if="scope.row.isConfigOver !== '1'" type="text" @click="handleTrained('addCourseRef', scope.row)">课程选择</el-button>
-                  <el-button type="text" @click="handleTrained('joinTrainedPersonRef', scope.row)">参训人员</el-button>
-                  <el-button v-if="scope.row.isConfigOver !== '1'" type="text" @click="handleTrained('selectOrganizationRef', scope.row)">培训机构</el-button>
-                  <el-button v-if="scope.row.isConfigOver !== '1'" type="text" @click="disposeInfo(scope.row)">配置完成</el-button>
-                  <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="handleTrained('addCourseRef', scope.row)">查看课程</el-button>
-                  <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="handleTrained('trainedDetailRef', scope.row)">培训详情</el-button>
-                  <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getSendResultlInfo(scope.row)">报送成绩</el-button>
+                  <el-button
+                    v-if="scope.row.isConfigOver !== '1'"
+                    type="text"
+                    @click="editTrained('2', scope.row)"
+                  >修改</el-button>
+                  <el-button
+                    v-if="scope.row.isConfigOver !== '1'"
+                    type="text"
+                    @click="handleTrained('addCourseRef', scope.row)"
+                  >课程选择</el-button>
+                  <el-button
+                    type="text"
+                    @click="handleTrained('joinTrainedPersonRef', scope.row)"
+                  >参训人员</el-button>
+                  <el-button
+                    v-if="scope.row.isConfigOver !== '1'"
+                    type="text"
+                    @click="handleTrained('selectOrganizationRef', scope.row)"
+                  >培训机构</el-button>
+                  <el-button
+                    v-if="scope.row.isConfigOver !== '1'"
+                    type="text"
+                    @click="disposeInfo(scope.row)"
+                  >配置完成</el-button>
+                  <el-button
+                    v-if="scope.row.isConfigOver === '1'"
+                    type="text"
+                    @click="handleTrained('addCourseRef', scope.row)"
+                  >查看课程</el-button>
+                  <el-button
+                    v-if="scope.row.isConfigOver === '1'"
+                    type="text"
+                    @click="handleTrained('trainedDetailRef', scope.row)"
+                  >培训详情</el-button>
+                  <el-button
+                    v-if="scope.row.isConfigOver === '1'"
+                    type="text"
+                    @click="getSendResultlInfo(scope.row)"
+                  >报送成绩</el-button>
                 </p>
               </template>
             </el-table-column>
-            <el-table-column align="center" prop="beginTime" width="240px" class-name="vertical-top">
+            <el-table-column
+              align="center"
+              prop="beginTime"
+              width="240px"
+              class-name="vertical-top"
+            >
               <template slot-scope="scope">
                 <span>
                   <i class="el-icon-time" size="small"></i>
@@ -167,83 +203,121 @@
   </div>
 </template>
 <script>
-import addTrained from './components/addTrained';
-import addCourse from './components/addCourse';
-import joinTrainedPerson from './components/joinTrainedPerson';
-import selectOrganization from './components/selectOrganization';
-import trainedDetail from './components/trainedDetail';
-import { getTrainedBatchList, deleteTrainedBatch, disposeOverBatch } from '@/api/trained';
+import addTrained from "./components/addTrained";
+import addCourse from "./components/addCourse";
+import joinTrainedPerson from "./components/joinTrainedPerson";
+import selectOrganization from "./components/selectOrganization";
+import trainedDetail from "./components/trainedDetail";
+import {
+  getTrainedBatchList,
+  deleteTrainedBatch,
+  disposeOverBatch,
+  setTrainResult
+} from "@/api/trained";
 
 export default {
   data() {
     return {
-      tableData:[],
+      tableData: [],
       trainTypeInfo: [], // 培训类型列表
       batchManageForm: {
         trainName: "", // 培训名称
         trainType: "", // 培训类型
         beginTime: "", // 开始时间
-        endTime: "" // 结束时间
+        endTime: "", // 结束时间
       },
       selectTrainIdList: [], //选中培训id
       selectList: [], // 选中培训信息
       currentPage: 1, // 当前页
       pageSize: 10, // pagesize
       totalPage: 0, // 总数
-      tableLoading: false
+      tableLoading: false,
     };
   },
-  components: { addTrained, addCourse, joinTrainedPerson, selectOrganization, trainedDetail },
-  created(){
+  components: {
+    addTrained,
+    addCourse,
+    joinTrainedPerson,
+    selectOrganization,
+    trainedDetail,
+  },
+  created() {
     this.getTrainBatchList();
   },
   methods: {
     // 点击下拉框的时查询培训类型
     getDictInfo(name, codeName) {
-      this.$store.dispatch("findAllDrawerByName", name).then(
-        res => {
-          if (res.code === 200) {
-            if (codeName === "trainTypeInfo") {
-              this.trainTypeInfo = res.data;
-              this.trainTypeInfo.unshift({ id: "", name: "全部" });
-            }
-          } else {
-            console.info("没有查询到数据");
+      this.$store.dispatch("findAllDrawerByName", name).then((res) => {
+        if (res.code === 200) {
+          if (codeName === "trainTypeInfo") {
+            this.trainTypeInfo = res.data;
+            this.trainTypeInfo.unshift({ id: "", name: "全部" });
           }
+        } else {
+          console.info("没有查询到数据");
         }
-      );
+      });
     },
     // 新增|修改培训
-    editTrained(type, row){
+    editTrained(type, row) {
       this.$refs.addTrainedRef.showModal(type, row);
     },
     // 培训操作
-    handleTrained(ref, row){
+    handleTrained(ref, row) {
       this.$refs[ref].showModal(row);
     },
     // 报送成绩
-    getSendResultlInfo(row, param) {
-      this.$message({ type: 'info', message: '正在开发中' });
-      // this.$refs['invigilateManageCompRef'].showModal(param,row);;
+    getSendResultlInfo(row) {
+      let _this = this;
+      let data = {
+        trainName: row.trainName,
+        trainType: row.trainType,
+        trainId: row.trainId,
+        beginTime: row.beginTime,
+        endTime: row.endTime,
+      };
+      _this
+        .$confirm("确认报送成绩吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: "custom-question",
+          customClass: "custom-confirm",
+        })
+        .then(() => {
+          setTrainResult(data).then(
+            (res) => {
+              console.info("aaa" + JSON.stringify(res));
+              if (res.code === 200) {
+                this.$message({ type: "success", message: "报送成绩已完成!" });
+                //重新加载页面数据
+                this.getTrainBatchList();
+              }
+            },
+            (err) => {
+              this.$message({ type: "error", message: err.msg || "" });
+            }
+          );
+        })
+        .catch(() => {});
     },
     // 配置完成
     disposeInfo(row) {
       this.$confirm("确认配置完成吗？", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          iconClass: "custom-question",
-          customClass: "custom-confirm"
-        })
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: "custom-question",
+        customClass: "custom-confirm",
+      })
         .then(() => {
           const loading = this.$loading({
             lock: true,
             text: "正在配置",
             spinner: "car-loading",
             customClass: "loading-box",
-            background: "rgba(234,237,244, 0.8)"
+            background: "rgba(234,237,244, 0.8)",
           });
           disposeOverBatch({ trainId: row.trainId }).then(
-            res => {
+            (res) => {
               loading.close();
               if (res.code === 200) {
                 this.$message({ type: "success", message: "配置已完成!" });
@@ -251,7 +325,7 @@ export default {
                 this.getTrainBatchList();
               }
             },
-            err => {
+            (err) => {
               loading.close();
               this.$message({ type: "error", message: err.msg || "" });
             }
@@ -260,7 +334,7 @@ export default {
         .catch(() => {});
     },
     // 获取培训批次列表
-     getTrainBatchList() {
+    getTrainBatchList() {
       this.tableLoading = true;
       let data = {
         trainName: this.batchManageForm.trainName,
@@ -268,22 +342,25 @@ export default {
         beginTime: this.batchManageForm.beginTime,
         endTime: this.batchManageForm.endTime,
         current: this.currentPage,
-        size: this.pageSize
+        size: this.pageSize,
       };
-      getTrainedBatchList(data).then(res => {
-        this.tableLoading = false;
-        if(res.code === 200){
-          this.tableData = res.data.records;
-          this.totalPage = res.data.total;
+      getTrainedBatchList(data).then(
+        (res) => {
+          this.tableLoading = false;
+          if (res.code === 200) {
+            this.tableData = res.data.records;
+            this.totalPage = res.data.total;
+          }
+        },
+        (err) => {
+          this.tableLoading = false;
+          this.$message({ type: "error", message: err.msg || "" });
         }
-      }, err => {
-        this.tableLoading = false;
-        this.$message({ type: 'error', message: err.msg || '' });
-      })
+      );
     },
     // 选择操作的批次
-    selectedListChange(val){
-      this.selectTrainIdList = val.map(item => item.trainId);
+    selectedListChange(val) {
+      this.selectTrainIdList = val.map((item) => item.trainId);
     },
     // 删除培训
     deleteExamBatchInfo() {
@@ -291,7 +368,7 @@ export default {
         this.selectTrainIdList == undefined ||
         this.selectTrainIdList.length == 0
       ) {
-        this.$message({type: "warning", message: "请选择一条考试信息"});
+        this.$message({ type: "warning", message: "请选择一条考试信息" });
       } else if (this.selectTrainIdList.length > 1) {
         this.$message({ type: "warning", message: "只能选择一条考试信息" });
       } else {
@@ -299,23 +376,23 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           iconClass: "el-icon-question",
-          customClass: "custom-confirm"
+          customClass: "custom-confirm",
         })
-        .then(() => {
-          deleteTrainedBatch(this.selectTrainIdList[0]).then(
-            res => {
-              if (res.code === 200) {
-                this.$message({ type: "success", message: "删除成功!" });
-                //重新加载页面数据
-                this.getTrainBatchList();
+          .then(() => {
+            deleteTrainedBatch(this.selectTrainIdList[0]).then(
+              (res) => {
+                if (res.code === 200) {
+                  this.$message({ type: "success", message: "删除成功!" });
+                  //重新加载页面数据
+                  this.getTrainBatchList();
+                }
+              },
+              (err) => {
+                this.$message({ type: "error", message: err.msg || "" });
               }
-            },
-            err => {
-              this.$message({ type: "error", message: err.msg || "" });
-            }
-          );
-        })
-        .catch(() => {});
+            );
+          })
+          .catch(() => {});
       }
     },
     // 筛选项重置
@@ -333,53 +410,53 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getTrainBatchList();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style  lang="scss" scoped>
 @import "@/assets/css/searchPage.scss";
 @import "@/assets/css/personManage.scss";
-.batch-manage{
-  .tablePart{
+.batch-manage {
+  .tablePart {
     height: calc(100% - 120px) !important;
-    .table-wrap{
+    .table-wrap {
       height: 82%;
     }
   }
-  >>>.el-icon-date{
+  >>> .el-icon-date {
     line-height: 32px;
   }
-  .batch-table{
-    >>>.el-table__row{
-      .el-table-column--selection{
+  .batch-table {
+    >>> .el-table__row {
+      .el-table-column--selection {
         vertical-align: top;
       }
-      td{
+      td {
         padding: 15px 0;
-        &.vertical-top{
+        &.vertical-top {
           vertical-align: top;
         }
-        .exam-status{
+        .exam-status {
           display: inline-block;
           font-size: 15px;
           padding: 0px 6px;
           color: #000;
         }
-        .exam-name{
-          font-size:18px;
+        .exam-name {
+          font-size: 18px;
           font-weight: 600;
-          color:rgba(32,35,43,1);
+          color: rgba(32, 35, 43, 1);
         }
-        .exam-info{
+        .exam-info {
           margin: 14px 0;
-          color: #7B7B7B;
+          color: #7b7b7b;
         }
       }
     }
   }
-  .m-r-30{
+  .m-r-30 {
     margin-right: 30px;
   }
 }

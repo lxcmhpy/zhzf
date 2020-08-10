@@ -275,10 +275,37 @@ export default {
       let _this = this;
       _this.$refs.invigilateManageCompRef.showModal(row, param);
     },
+    //报送成绩
     getSendResultlInfo(row, param) {
-      //报送成绩
-      this.$message({ type: 'info', message: '正在开发中' });
-      // _this.$refs['invigilateManageCompRef'].showModal(param,row);;
+         let _this = this;
+         let data ={
+           examName:row.examName,
+           examType:row.examType,
+           examId:row.examId,
+           examEnd:row.examEnd
+         }
+        _this
+        .$confirm("确认报送成绩吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: "custom-question",
+          customClass: "custom-confirm"
+        })
+        .then(() => {
+          _this.$store.dispatch("setExamResult", data).then(
+            res => {
+              if (res.code === 200) {
+                _this.$message({ type: "success", message: "报送成绩完成!" });
+                //重新加载页面数据
+                _this.getExamBatchList();
+              }
+            },
+            err => {
+              _this.$message({ type: "error", message: err.msg || "" });
+            }
+          );
+        })
+        .catch(() => {});
     },
     disposeInfo(row, param) {
       //配置完成
