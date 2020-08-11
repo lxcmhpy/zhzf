@@ -548,10 +548,10 @@ export default {
     getAppDownHref() {
       appDownloadApi().then(res => {
         console.log(res);
-        let host = window.location.host;
-        this.appDownHref = host + res.data;
-        console.log(this.appDownHref)
-      }).catch(err => {
+        // let host = window.location.host;
+        this.appDownHref = res.data;
+        console.log( this.appDownHref )
+      }).catch(err=>{
         throw new Error(err)
       })
     },

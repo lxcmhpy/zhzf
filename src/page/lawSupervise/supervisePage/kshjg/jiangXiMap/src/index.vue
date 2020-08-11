@@ -1,6 +1,6 @@
 <template>
   <div class="jiangXiMap">
-    <JkBaseHMap @init="init" :center="center" />
+    <JkBaseHMap @init="init" :center="center" :zoom="zoom" />
     <Search
       ref="Search"
       :config="searchWindowData"
@@ -8,9 +8,11 @@
       @handlePerson="handlePerson"
     />
     <Select
+      ref="Select"
       :config="selectData"
       @handleChange="handleChange"
       @handleItemCheck="handleItemCheck"
+      @handleCheckAllChange="handleCheckAllChange"
     />
     <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
   </div>
@@ -24,6 +26,11 @@ import Drawer from "../components/drawer/index.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
+  provide() {
+    return {
+      indexPage: this
+    }
+  },
   components: {
     JkBaseHMap,
     Search,
@@ -32,6 +39,7 @@ export default {
   },
   data() {
     return {
+      organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
         [0, '/static/images/img/lawSupervise/map_renyuan.png'],
@@ -42,23 +50,15 @@ export default {
       ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
-      zoom: 8,
-      center: [12118909.300259633, 4086043.1061670054],
+      zoom: 3,
+      center: [115.871344, 28.710709],
       searchWindowData: {
         window1: {
           title: "专题查询",
           list: [
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法部门", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法机构", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
+            { name: "执法人员", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/ysgljg.png"},
           ]
-        },
-        window2: {
-          defaultProps: {
-            children: 'children',
-            label: 'label'
-          },
-          option: []
         },
         window3: {
           title: "",
@@ -76,7 +76,6 @@ export default {
         }
       },
       selectData: {
-        organId: "",
         option: [
           {
             title: "西安市",
@@ -140,30 +139,6 @@ export default {
     },
 
     /**
-     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶子节点
-     */
-    addNode(arr) {
-      let myNode = [
-        { label: '执法人员', type: 0, children: [] },
-        { label: '执法车辆', type: 2, children: [] },
-        { label: '执法船舶', type: 3, children: [] },
-      ]
-      arr.map(item => {
-        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
-          myNode.map(myNodeItem => {
-            // 给自定义节点添加 pid 属性， 值为父节点的 id
-            myNodeItem.pid = item.id
-          })
-          // 在 children 里添加自定义节点
-          item.children = myNode.concat(item.children)
-          // 递归调用
-          this.addNode(item.children)
-        }
-      })
-      return arr
-    },
-
-    /**
      * 点击节点回调函数
      * 1.如果当前节点是路政局，则获取路政局数据、地图打点
      * 2.如果当前节点是自定义节点，发送请求获取子节点数据
@@ -171,6 +146,9 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
+      // 清空右侧复选框
+      this.$refs.Select.checkedCities = []
+
       if(data.label === '执法人员') {
         this.getPeopleTree(data)
       } else if (data.label === '执法车辆' || data.label === '执法船舶') {
@@ -248,7 +226,14 @@ export default {
 
       let latLng = data.propertyValue.split(',')
       this.page.addPoint(data, latLng)
-    }
+    },
+
+    /**
+     * 点击全选, 获取全部点位数据并打点
+     */
+    handleCheckAllChange(val) {
+      this.getAllPoints(val)
+    },
   },
   activated() {
     this.getTree()
