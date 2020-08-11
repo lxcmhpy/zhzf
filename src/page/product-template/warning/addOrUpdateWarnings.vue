@@ -138,7 +138,7 @@ export default {
       standerList: [],//条件列表
       timeList: ['时', '分', '秒', '天'],
       taskTypeList: [{ label: '定时任务', value:'1' }],
-      warnTypeList: [{ label: '提醒', value: '1' },{ label: '预警', value: '2' },{ label: '报警', value: '3' }],
+      warnTypeList: [{ label: '提醒', value: '3' },{ label: '预警', value: '2' },{ label: '报警', value: '1' }],
       addList: [{}]
     };
   },

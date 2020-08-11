@@ -11,7 +11,8 @@
     "VIDEO_HOST": "综合监管语音通话",
     "CHECK_API":"信息检查 91:8081",
     "XZJC_HOST":"行政检查 168.38:8099",
-    "XJ_IMG_HOST": "新疆图片视频地址"
+    "XJ_IMG_HOST": "新疆图片视频地址",
+    "OLDSYSTEM_HOST": "新疆3.2系统登录ip",
   },
   "TEST": {
     "CAPTCHA_HOST": "http://124.192.215.4:9000",
@@ -119,7 +120,8 @@
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
     "CHECK_API":"http://124.192.215.11:8081",
     "XZJC_HOST":"http://218.84.108.29:9461",
-    "EXAM":"http://218.84.108.29:9461/exam"
+    "EXAM":"http://218.84.108.29:9461/exam",
+    "OLDSYSTEM_HOST":"http://172.16.169.39:8100"
   },
   "QD": {
     "CAPTCHA_HOST": "http://172.16.170.55:9000",

@@ -2,6 +2,7 @@
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
 import Vue from "vue";
+import { data } from "autoprefixer";
 let vm = new Vue();
 /**
  * 管理员登录
@@ -124,4 +125,17 @@ export function getHost () {
         showloading: false,
         cancelToken: setCancelSource()
     })
+}
+
+//获取当前登录用户的信息
+export function loginOldSystemApi(data) {
+  return request({
+    url: "/zhzf/login",
+    method: "POST",
+    data:data,
+    showloading: false,
+    baseUrlType:'OLDSYSTEM_HOST',
+    loadingType:'loadFull',
+    cancelToken: setCancelSource()
+  });
 }

@@ -786,3 +786,17 @@ export function getExtractResultApi(data) {
         cancelToken: setCancelSource()
     });
 }
+
+// 添加或修改抽取结果表数据
+export function addRandomResultApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/extractResult/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
