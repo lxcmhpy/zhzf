@@ -57,8 +57,8 @@
       </el-col>
       <el-col :span="12">
         <label class="item-label">使用证号</label>
-        <div class="item-text">
-          <span>DN 4578534953</span>
+        <div class="item-text" v-if="form.deviceUsePerVo">
+          <span>{{form.deviceUsePerVo.usePermitNumber}}</span>
           <el-button
             type="text"
             style="padding:0;margin-left: 10px;"
@@ -68,11 +68,14 @@
       </el-col>
       <el-col :span="12">
         <label class="item-label">使用证状态</label>
-        <div class="item-text">根据证件状态变化颜色</div>
+        <div class="item-text">{{form.state}}</div>
       </el-col>
       <el-col :span="24">
         <label class="item-label">使用期限</label>
-        <div class="item-text">X年/XX公里/长期</div>
+        <div
+          class="item-text"
+          v-if="form.deviceUsePerVo"
+        >{{form.deviceUsePerVo.beginDate}}~{{form.deviceUsePerVo.endDate}}</div>
       </el-col>
     </el-row>
     <!-- 编辑基本信息表单 -->
@@ -216,6 +219,7 @@
                 v-model="form.scarpDeadline"
                 placeholder="请输入数字"
                 :controls="false"
+                :disabled="form.scarpType == '长期'"
                 style="width:99%"
               ></el-input-number>
             </el-form-item>
@@ -225,7 +229,7 @@
     </el-form>
     <!-- 操作按钮 -->
     <div class="float-btns">
-      <el-button v-if="!startEdit" class="edit_btn" type="primary" @click="startEdit = true">
+      <el-button v-if="!startEdit" class="edit_btn" type="primary" @click="onEdit">
         <i class="iconfont law-edit"></i>
         <br />修改
       </el-button>
@@ -248,6 +252,7 @@ import { tree } from "@/api/device/device.js";
 import iLocalStroage from "@/common/js/localStroage";
 import CertificateDetail from "@/page/device/components/equipmentDetail/certificateDetail";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
+import { vaildateCardNum } from "@/common/js/validator";
 
 export default {
   components: { elSelectTree, CertificateDetail },
@@ -255,6 +260,7 @@ export default {
     let _this = this;
     var validateNumber = (rule, value, callback) => {
       _this.checkNumber(value).then((result) => {
+        debugger;
         if (result) {
           callback(new Error("该车牌号已存在"));
         } else {
@@ -287,6 +293,7 @@ export default {
         vehicleNumber: [
           { required: true, message: "请输入车牌号", trigger: "blur" },
           { validator: validateNumber, trigger: "blur" },
+          { validator: vaildateCardNum, trigger: "blur" },
         ],
         vehicleColor: [
           { required: true, message: "请选择车牌颜色", trigger: "change" },
@@ -332,15 +339,26 @@ export default {
       let _this = this;
       let res = await findplate(val);
       debugger;
-      if (res.data !== null || res.data !== _this.form.id) {
+      if (res.data !== null && res.data !== _this.form.id) {
         return true;
       } else {
         return false;
       }
     },
+    onEdit() {
+      if (this.form.state !== "未申请" && this.form.state !== "注销") {
+        this.$message({
+          type: "warning",
+          message:
+            "当前车辆存在" + this.form.state + "状态证件，基本信息禁止修改!",
+        });
+        return;
+      }
+      this.startEdit = true;
+    },
     // 查看详情
     openCertificateDetail() {
-      this.$refs.certificateDetailRef.showModal();
+      this.$refs.certificateDetailRef.showModal(this.form.deviceUsePerVo.id);
     },
     // 保存
     saveInfo() {

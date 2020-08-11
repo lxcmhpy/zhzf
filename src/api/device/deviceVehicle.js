@@ -110,7 +110,7 @@ export function findplate(plateNumber) {
 export function deleteVehicles(data) {
   return request({
     url: "/device/info/deletebyid",
-    method: "get",
+    method: "post",
     showloading: true,
     loadingType: 'loadPart',
     data: data,

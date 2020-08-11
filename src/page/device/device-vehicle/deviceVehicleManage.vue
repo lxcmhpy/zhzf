@@ -12,17 +12,17 @@
           >
             <el-row>
               <el-col :span="6">
-                <el-form-item label="车牌号">
+                <el-form-item label="车牌号" prop="vehicleNumber">
                   <el-input v-model="searchForm.vehicleNumber"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="使用单位">
+                <el-form-item label="使用单位" prop="name">
                   <el-input v-model="searchForm.name"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="车辆类别">
+                <el-form-item label="车辆类别" prop="vehicleCategory">
                   <el-select v-model="searchForm.vehicleCategory" placeholder="请选择" clearable>
                     <el-option
                       v-for="(item,index) in categorys"
@@ -34,7 +34,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="使用情况">
+                <el-form-item label="使用情况" prop="useCondition">
                   <el-select v-model="searchForm.useCondition" placeholder="请选择" clearable>
                     <el-option
                       v-for="(item,index) in conditions"
@@ -48,13 +48,20 @@
             </el-row>
             <el-row>
               <el-col :span="6">
-                <el-form-item label="使用证号">
+                <el-form-item label="使用证号" prop="usePermitNo">
                   <el-input v-model="searchForm.usePermitNo"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="证件状态">
-                  <el-input v-model="searchForm.usePermitState"></el-input>
+                <el-form-item label="证件状态" prop="usePermitState">
+                  <el-select v-model="searchForm.usePermitState" placeholder="请选择" clearable>
+                    <el-option
+                      v-for="(item,index) in status"
+                      :key="index"
+                      :label="item"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
@@ -92,8 +99,12 @@
           <el-table-column prop="name" label="使用单位" align="center"></el-table-column>
           <el-table-column prop="vehicleCategory" label="车辆类别" align="center"></el-table-column>
           <el-table-column prop="useCondition" label="使用状况" align="center"></el-table-column>
-          <el-table-column prop="usePermitNo" label="使用证号" align="center"></el-table-column>
-          <el-table-column prop="usePermitState" label="证件状态" align="center"></el-table-column>
+          <el-table-column label="使用证号" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.deviceUsePerVo">{{scope.row.deviceUsePerVo.usePermitNumber}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="state" label="证件状态" align="center"></el-table-column>
           <el-table-column prop="op" label="操作" align="center" width="100">
             <template slot-scope="scope">
               <router-link :to="{ name: 'equipmentDetail', params: { id: scope.row.id }}">
@@ -142,6 +153,7 @@ export default {
       total: 0, //总页数
       conditions: ["正常", "维修", "报废"],
       categorys: ["轿车", "越野车", "轻型货车"],
+      status: ["未申请", "申请中", "待颁发", "正常", "挂失", "注销", "已年审"],
       multipleSelection: [],
       caseIds: [],
       propertyIds: [],
@@ -174,7 +186,7 @@ export default {
         ids.push(item.id);
       });
       let _this = this;
-      deleteVehicles({ ids: ids }).then(
+      deleteVehicles(ids).then(
         (res) => {
           _this.$message({ type: "success", message: "删除成功!" });
           _this.getDataList({});
