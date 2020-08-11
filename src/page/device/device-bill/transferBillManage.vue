@@ -52,6 +52,7 @@
                                     :accordion="true"
                                     :props="orgTreeProps"
                                     style="width:200px" 
+                                    :filterable="true"
                                     @getValue="queryFormTransferUnitClick">
                                 </elSelectTree>
                                 <el-input style="display:none" v-model="queryForm.transferUnit"></el-input>
@@ -63,6 +64,7 @@
                                     :accordion="true"
                                     :props="orgTreeProps"
                                     style="width:200px" 
+                                    :filterable="true"
                                     @getValue="queryFormUseUnitClick">
                                 </elSelectTree>
                                 <el-input style="display:none" v-model="queryForm.useUnit"></el-input>
@@ -144,6 +146,7 @@
                                     :props="orgTreeProps"
                                     style="width: 100%;"
                                     :disabled="this.formReadOnly"
+                                    :filterable="true"
                                     @getValue="addFormTransferUnitClick">
                                 </elSelectTree>
                                 <el-input style="display:none" v-model="addForm.transferUnit"></el-input>
@@ -159,6 +162,7 @@
                                     :props="orgTreeProps"
                                     style="width: 100%;"
                                     :disabled="this.formReadOnly"
+                                    :filterable="true"
                                     @getValue="addFormUseUnitClick">
                                 </elSelectTree>
                                 <el-input style="display:none" v-model="addForm.useUnit"></el-input>

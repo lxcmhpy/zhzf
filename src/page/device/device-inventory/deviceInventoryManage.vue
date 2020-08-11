@@ -23,6 +23,7 @@
                             :options="deviceTypeList"
                             :accordion="true"
                             :props="orgTreeProps"
+                            :filterable="true"
                             @getValue="queryFormDeviceTypeClick">
                         </elSelectTree>
                         <el-input style="display:none" v-model="queryForm.deviceType"></el-input>
@@ -33,6 +34,7 @@
                             :options="organList"
                             :accordion="true"
                             :props="orgTreeProps"
+                            :filterable="true"
                             @getValue="queryFormUseUnitClick">
                         </elSelectTree>
                         <el-input style="display:none" v-model="queryForm.useUnit"></el-input>
@@ -138,6 +140,7 @@
                                         :options="deviceTypeList"
                                         :accordion="true"
                                         :props="orgTreeProps"
+                                        :filterable="true"
                                         :value="addForm.deviceType"
                                         @getValue="addFormDeviceTypeClick">
                                     </elSelectTree>
@@ -184,6 +187,7 @@
                                         :accordion="true"
                                         :props="orgTreeProps"
                                         style="width: 100%;"
+                                        :filterable="true"
                                         :value="addForm.purchaseUnit"
                                         @getValue="addFormPurchaseUnitClick">
                                     </elSelectTree>
@@ -218,6 +222,7 @@
                                         :accordion="true"
                                         :props="orgTreeProps"
                                         style="width: 100%;"
+                                        :filterable="true"
                                         :disabled="this.formReadOnly"
                                         :value="addForm.useUnit"
                                         @getValue="addFormUseUnitClick">

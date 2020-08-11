@@ -118,3 +118,15 @@ export function deleteVehicles(data) {
     cancelToken: setCancelSource()
   });
 }
+
+export function listVehicle(data) {
+    return request({
+      url: "/device/info/listVehicle",
+      method: "get",
+      params: data,
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType: 'DEVICE_HOST',
+      cancelToken: setCancelSource()
+    });
+  }

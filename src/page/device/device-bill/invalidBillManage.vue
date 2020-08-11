@@ -16,6 +16,7 @@
                             :options="organList"
                             :accordion="true"
                             :props="orgTreeProps"
+                            :filterable="true"
                             style="width:200px" 
                             @getValue="queryFormUseUnitClick">
                         </elSelectTree>
@@ -104,6 +105,7 @@
                                 :value="addForm.useUnit"
                                 :accordion="true"
                                 :props="orgTreeProps"
+                                :filterable="true"
                                 style="width: 100%;"
                                 @getValue="addFormUseUnitClick">
                             </elSelectTree>
