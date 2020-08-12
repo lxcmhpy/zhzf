@@ -19,7 +19,7 @@
               v-for="(res) in caseTypeList"
               :key="res.id"
               :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-              :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+              :value="res.id"
             ></el-option>
           </el-select>
         </el-form-item>
