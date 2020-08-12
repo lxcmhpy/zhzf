@@ -99,7 +99,7 @@ export default {
   },
   inject: ["reload"],
   created() {
-    this.getDepartment();
+    
   },
   methods: {
     showModal(type, data) {
@@ -114,6 +114,7 @@ export default {
         this.dialogTitle = "修改";
         this.getCaseNumberByid(this.dictData.id);
       }
+      this.getDepartment();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -135,15 +136,17 @@ export default {
     },
     getCaseTypeList(){
       let organId = this.addCaseNumberForm.organId;
-      let _this = this;
-      getQueryCaseTypeByOrganIdApi(organId).then(
-        res => {
-          _this.caseTypeList = res.data;
-        },
-        error => {
-          console.log(error)
-        }
-      );
+      if(organId){
+        let _this = this;
+        getQueryCaseTypeByOrganIdApi(organId).then(
+          res => {
+            _this.caseTypeList = res.data;
+          },
+          error => {
+            console.log(error)
+          }
+        );
+      }
     },
     //获取选中的机构下的案件类型
     getDepartment() {

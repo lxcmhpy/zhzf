@@ -195,7 +195,7 @@
         <!-- 悬浮按钮 -->
         <div class="float-btns ">
 
-          <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
             <svg t="1577515608465" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  p-id="2285" width="24" height="24">
               <path
@@ -205,17 +205,17 @@
             <br>
             下一<br>环节
           </el-button>
-          <el-button type="primary" @click="submitCaseDoc(1)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
+          <el-button type="primary" @click="submitCaseDoc(1)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
             <i class="iconfont law-save"></i>
             <br>
             保存
           </el-button>
-          <el-button type="success" @click="submitCaseDoc(0)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete">
+          <el-button type="success" @click="submitCaseDoc(0)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
             <i class="iconfont law-save"></i>
             <br>
             暂存
           </el-button>
-          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
+          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete || IsLawEnforcementSupervision">
             <i class="iconfont law-back"></i>
             <br/>返回
           </el-button>
@@ -303,7 +303,7 @@
       }
     },
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId'])},
+    computed: {...mapGetters(['caseId','IsLawEnforcementSupervision'])},
     inject: ['reload'],
     methods: {
       //加载表单信息

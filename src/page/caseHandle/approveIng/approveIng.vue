@@ -88,6 +88,8 @@ export default {
       }
       else {
         this.$store.commit("setCaseId", row.id);
+        this.$store.commit("setIsLawEnforcementSupervision", false);
+        this.$store.commit("setLawEnforcementSupervisionType", '');
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
         console.log(this.$store.state.caseId);

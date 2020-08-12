@@ -93,6 +93,9 @@
   }
 
   .el-aside {
+    height: calc(100% - 69px);
+    overflow-x: hidden;
+    border-bottom: 1px solid #363d4c;
     .el-menu {
       background  : $cats-black2B313E-color;
       border-right: 0;

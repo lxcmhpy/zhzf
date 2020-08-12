@@ -312,7 +312,7 @@
           remark: "",
           file: null,
           docId: "",
-          category: "",
+          category: "证据",
           userId: "",
           recordPlace:'',
           userName:'',
@@ -405,6 +405,7 @@
       getEviList() {
         let data = {
           caseId: this.caseId,
+          category: "证据",
           evName: this.evidenceForm.evName,
           evType: this.evidenceForm.evType,
           status: this.evidenceForm.status,

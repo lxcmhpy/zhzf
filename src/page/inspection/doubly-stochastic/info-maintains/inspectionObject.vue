@@ -253,24 +253,13 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      getAllRandomObjectApi(data).then(
-        res => {
-          console.log(res)
-          this.tableData = res.data.records
-          this.totalPage = res.data.total
-        },
-        error => {
-          // reject(error);
-        })
       this.getPageList("getAllRandomObject", data);
 
     },
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log('multipleSelection', this.multipleSelection)
     },
-
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
@@ -282,10 +271,8 @@ export default {
         if (valid) {
           let data = JSON.parse(JSON.stringify(_this.addForm))
           data.adminDivision = _this.addForm.adminDivision.join(',')
-          // data.adminDivision = this.addForm.adminDivision[2]
           addInspectionObjectApi(data).then(
             res => {
-              console.log(res)
               if (res.code == 200) {
                 _this.$message({
                   type: "success",
@@ -334,13 +321,11 @@ export default {
           let dataList = []
           dataList.push(res.data)
           dataList.forEach(element => {
-            console.log('element', element)
             if (element.myChildren) {
               element.value = element.adcode;
               element.label = element.name
               element.children = element.myChildren
               element.myChildren.forEach(item => {
-                console.log('item', item)
                 item.value = item.adcode;
                 item.label = item.name
                 if (item.myChildren) {
@@ -369,7 +354,6 @@ export default {
     },
     // 导入
     importModle(param) {
-      console.log(param);
       // let currentFileId = this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);

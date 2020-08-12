@@ -179,7 +179,7 @@ import { menuList } from "@/common/data/menu";
 import VueSimpleVerify from 'vue-simple-verify';
 // Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
-  getCurrentUserApi, getHost, loginOldSystemApi
+  getCurrentUserApi, getHost
 } from "@/api/login";
 import {
   getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi, appDownloadApi,
@@ -414,8 +414,6 @@ export default {
             this.$router.push({ name: sessionStorage.getItem('HOME_PAGE_ROUTER_NAME') })
             iLocalStroage.sets('userInfo', res.data);
             // _this.getMenu();
-            // 新疆需要登录3.2系统
-            // _this.loginOldSystem()
           }
         }, err => {
           console.log(err);
@@ -555,18 +553,6 @@ export default {
         throw new Error(err)
       })
     },
-    loginOldSystem() {
-      let values = {
-        username: this.loginForm.username,
-        password: this.loginForm.password,
-        captcha: 'tadfd',
-      }
-      loginOldSystemApi(values).then(res => {
-        console.log('res', res)
-      }).catch(err => {
-        throw new Error(err)
-      })
-    }
   },
   async created() {
     await getHost();

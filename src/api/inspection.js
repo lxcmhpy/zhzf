@@ -509,8 +509,8 @@ export function getAllRandomObjectApi(data) {
         url: "/xzjc/randomObject/queryRandomObject",
         method: "get",
         params: data,
-        // showloading: true,
-        // loadingType: 'loadPart',
+        showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -547,6 +547,7 @@ export function getAllRandomItemApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -594,6 +595,7 @@ export function getAllTaskApi(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -629,6 +631,7 @@ export function findByAddressCode(data) {
         method: "get",
         params: data,
         showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
         cancelToken: setCancelSource()
     });
@@ -794,6 +797,92 @@ export function addRandomResultApi(data) {
         url: "/xzjc/extractResult/mySaveOrUpdate",
         method: "post",
         data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据任务ID删除抽取结果表数据
+export function resetRandomByIdApi(data) {
+    return request({
+        url: "/xzjc/extractResult/deleteByTaskId/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据任务ID查询抽取结果
+export function getRandomByIdApi(data) {
+    return request({
+        url: "/xzjc/randomTask/getByTaskId/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据UUID获取检查结果表数据
+export function getCheckResultByIdApi(data) {
+    return request({
+        url: "/xzjc/checkResult/myGetById/"+data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+// 添加或修改检查结果表
+export function addCheckResultApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/checkResult/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//分页查询带抽取结果和检查结果
+export function getCheckResultByPageApi(data) {
+    return request({
+        url: "/xzjc/randomTask/queryMyPage",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//根据任务ID和抽取结果表ID查询检查结果
+export function getCheckResultByTwoIdApi(data) {
+    return request({
+        url: "/xzjc/checkResult/getCheckResult",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+
+//根据任务ID和抽取结果表ID查询检查结果
+export function getCheckResultByIdsApi(data) {
+    return request({
+        url: "/xzjc/checkResult/getCheckResult",
+        method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
