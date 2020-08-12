@@ -79,18 +79,29 @@
         <el-form ref="handleForm" :model="form" :rules="rules" label-width="120px">
           <el-row>
             <el-col :span="24">
-              <el-form-item label="机构名称" prop="organizationName">
-                <el-input v-model="form.organizationName"></el-input>
+              <el-form-item label="机构名称" prop="organizationId">
+                <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="tableDataTree"
+                  :accordion="true"
+                  :props="{label: 'label', value: 'id'}"
+                  @getValue="hindleChanged"
+                ></elSelectTree>
+                <el-input style="display:none" v-model="form.organizationId"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="号段起" prop="startNumber">
-                <el-input v-model="form.startNumber"></el-input>
+                <el-input
+                  v-model="form.startNumber"
+                  maxlength="8"
+                  @input="setionChange('startNumber')"
+                ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="号段止" prop="endNumber">
-                <el-input v-model="form.endNumber"></el-input>
+                <el-input v-model="form.endNumber" maxlength="8" @input="setionChange('endNumber')"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -116,9 +127,49 @@ import {
   deleteNumberById,
   deleteNumberByIds,
 } from "@/api/device/number.js";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
 export default {
+  components: { elSelectTree },
   data() {
+    const NumReg = /^[0-9]*$/;
+    const validateSectionBegin = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入号段起"));
+      } else {
+        if (!NumReg.test(value)) {
+          callback(new Error("号段起只能输入数字"));
+        } else if (this.form.endNumber) {
+          const diffVal = value - this.form.endNumber;
+          if (diffVal > -1) {
+            callback(new Error("号段起必须小于号段止"));
+          } else {
+            this.$refs.handleForm.clearValidate("endNumber");
+            callback();
+          }
+        } else {
+          callback();
+          this.$refs.handleForm.validateField("endNumber");
+        }
+      }
+    };
+    const validateSectionEnd = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入号段止"));
+      } else {
+        if (!NumReg.test(value)) {
+          callback(new Error("号段止只能输入数字"));
+        } else if (this.form.startNumber) {
+          const diffVal = value - this.form.startNumber;
+          if (diffVal <= 0) {
+            callback(new Error("号段止必须大于号段起"));
+          } else {
+            this.$refs.handleForm.clearValidate("startNumber");
+            callback();
+          }
+        }
+      }
+    };
     return {
       searchForm: {
         organizationName: "",
@@ -128,33 +179,62 @@ export default {
       pageSize: 10, //pagesize
       total: 0, //总页数
       visible: false,
-      form: {},
+      form: {
+        organizationId: "",
+        startNumber: "",
+        endNumber: "",
+        remark: "",
+      },
       rules: {
-        organizationName: [
+        organizationId: [
           { required: true, message: "请选择机构 ", trigger: "change" },
         ],
         startNumber: [
-          { required: true, message: "请输入号段起始值", trigger: "blur" },
+          { required: true, validator: validateSectionBegin, trigger: "blur" },
         ],
         endNumber: [
-          { required: true, message: "请输入号段终止值", trigger: "change" },
+          { required: true, validator: validateSectionEnd, trigger: "blur" },
         ],
         remark: [{ required: true, message: "请输入备注", trigger: "blur" }],
       },
       multipleSelection: [],
+      tableDataTree: [],
     };
   },
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    // 获取机构树
+    getOidTreeData() {
+      let _this = this;
+      _this.$store.dispatch("findOrganTreeByCurrUser").then(
+        (res) => {
+          _this.tableDataTree = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    // 所属机构切换
+    hindleChanged(val) {
+      this.form.organizationId = val;
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+    },
     onAdd() {
+      this.getOidTreeData();
       this.form = {};
       this.visible = true;
     },
     onEdit(row) {
+      this.getOidTreeData();
       this.form = row;
       this.visible = true;
+    },
+    // 号段只能输入数字
+    setionChange(name) {
+      this.form[name] = this.form[name].replace(/[^\d]/g, "");
     },
     submitData() {
       let _this = this;
