@@ -17,6 +17,7 @@
                             :accordion="true"
                             :props="orgTreeProps"
                             style="width:200px"
+                            :filterable="true"
                             @getValue="queryFormUseUnitClick">
                         </elSelectTree>
                         <el-input style="display:none" v-model="queryForm.useUnit"></el-input>
@@ -106,6 +107,7 @@
                                 :accordion="true"
                                 :props="orgTreeProps"
                                 style="width: 100%;"
+                                :filterable="true"
                                 @getValue="addFormUseUnitClick">
                             </elSelectTree>
                             <el-input style="display:none" v-model="addForm.useUnit"></el-input>

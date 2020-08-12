@@ -164,11 +164,11 @@ export default {
       }
     },
     warTypeFormat(row) {
-      if (row.warType === '1') {
+      if (row.warType === '3') {
         return '提醒'
       } else if (row.warType === '2') {
         return '预警'
-      } else if (row.warType === '3') {
+      } else if (row.warType === '1') {
         return '报警'
       }
     },

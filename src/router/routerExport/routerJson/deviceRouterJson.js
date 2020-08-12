@@ -121,5 +121,21 @@ export default [{
       title: "证件管理"
     },
     component: () => import("@/page/device/certificate/certificateManage.vue")
+  },
+  {
+    path: "/numberManage",
+    name: "numberManage",
+    meta: {
+      title: "号段管理"
+    },
+    component: () => import("@/page/device/device-number/numberManage.vue")
+  },
+  {
+    path: "/applyManage",
+    name: "applyManage",
+    meta: {
+      title: "发证申请"
+    },
+    component: () => import("@/page/device/certificate-bill/applyManage.vue")
   }
 ]

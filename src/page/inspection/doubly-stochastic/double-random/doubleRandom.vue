@@ -8,11 +8,11 @@
               <el-form-item label="任务名称" prop='taskName'>
                 <el-input v-model="searchForm.taskName"></el-input>
               </el-form-item>
-              <el-form-item label="抽查主体" prop='taskName'>
-                <el-input v-model="searchForm.taskName"></el-input>
-              </el-form-item>
-              <el-form-item label="检查类型" prop='checkSubject'>
+              <el-form-item label="抽查主体" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
+              </el-form-item>
+              <el-form-item label="检查类型" prop='checkType' v-if="searchForm.taskArea=='省交通运输厅领域'">
+                <el-input v-model="searchForm.checkType"></el-input>
               </el-form-item>
             </el-form>
             <div class="search-btns">
@@ -58,10 +58,8 @@
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <!-- <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
-              <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button> -->
               <el-button @click="editMethod(scope.row)" type="text">抽取</el-button>
-              <el-button type="text" @click="editMethod(scope.row.id)">查看</el-button>
+              <el-button type="text" @click="viewMethod(scope.row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -69,22 +67,42 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+      <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm()">
         <el-row>
           <el-col :span="18">
             <div class="random-table-title" style="min-width:100px;height:30px">{{ randomContent }}</div>
           </el-col>
           <el-col :span="6">
             <el-button v-if="isRandomFlag" type="primary" size="medium" @click="startRandom()">开始抽取</el-button>
-            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="editMethod()">保存抽取结果</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="saveRandom()">保存抽取结果</el-button>
             <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="resetRandom()">重置</el-button>
           </el-col>
         </el-row>
-        <!-- <el-button type="primary" size="medium" @click="endRandom">结束</el-button> -->
         <div class="random-table-title" style="margin-top:20px">抽取结果</div>
         <el-table :data="randomList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55">
+          <el-table-column label="对象名称" align="center">
+            <template slot-scope="scope">
+              <span v-if="isObjectTrue">{{scope.row.objectName}}</span>
+            </template>
           </el-table-column>
+          <el-table-column label="检查人员" align="center">
+            <template slot-scope="scope">
+              <span v-if="isPersonNameTrue">{{scope.row.personName}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="检查专家" align="center">
+            <template slot-scope="scope">
+              <span v-if="isNameTrue">{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
+        </div>
+      </el-dialog>
+      <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()">
+        <el-table :data="randomResultList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="personName" label="检查人员" align="center"></el-table-column>
           <el-table-column prop="name" label="检查专家" align="center"></el-table-column>
@@ -98,7 +116,7 @@
   </div>
 </template>
 <script>
-import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, getExtractResultApi } from "@/api/inspection";
+import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, getExtractResultApi, addRandomResultApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -110,10 +128,11 @@ export default {
       searchForm: {
         checkSubject: "",
         taskName: '',
-        taskArea: '省交通运输厅领域'
+        taskArea: '省交通运输厅领域',
       },
       isShow: false,
       dialogFormVisible: false,
+      dialogResultVisible: false,
       addForm: {
         name: '',
         sex: '',
@@ -158,7 +177,13 @@ export default {
       timer: '',
       isRandomFlag: true,
       randomList: [],
-      randomData: []
+      randomResultList: [],
+      randomData: [],
+      randomResult: [],
+      currentId: '',
+      isNameTrue: false,
+      isPersonNameTrue: false,
+      isObjectTrue: false,
     }
   },
   methods: {
@@ -168,6 +193,9 @@ export default {
         name: this.searchForm.name,
         company: this.searchForm.company,
         taskArea: this.searchForm.taskArea,
+        taskName: this.searchForm.taskName,
+        checkSubject: this.searchForm.checkSubject,
+        checkType: this.searchForm.taskArea == '省交通运输厅领域' ? this.searchForm.checkType : '',
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -182,7 +210,6 @@ export default {
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName) {
@@ -230,7 +257,6 @@ export default {
         organName: iLocalStroage.gets("userInfo").organName,//机构名称
         personNum: this.addForm.lawEnforceNum,//	抽查人员数
       }
-      debugger
       getExtractResultApi(data).then(
         res => {
           _this.randomList = res.data.randomObjectVoList
@@ -239,27 +265,29 @@ export default {
           console.log(res.data.randomObjectVoList)
           if (res.data.randomObjectVoList.length > 0 & res.data.randomPersonVoList.length > 0 & res.data.randomExpertVoList.length > 0) {
             res.data.randomObjectVoList.forEach(element => {
-              res.data.randomExpertVoList.forEach(item => {
-                res.data.randomExpertVoList.forEach(item => {
-                  console.log(element, item)
-                  data2.push(Object.assign(element, item))
-                  console.log(Object.assign(element, item))
-                  console.log(data2)
-                  debugger
+              res.data.randomPersonVoList.forEach(item1 => {
+                res.data.randomExpertVoList.forEach(item2 => {
+                  data2.push(Object.assign(element, item1, item2))
+                  console.log(Object.assign(element, item1, item2))
+                  console.log('data2', data2)
                 });
               });
-
             });
-          }else{
+            // 结束抽取
+            setTimeout(() => {
+              _this.endRandom(res.data.randomExpertVoList[res.data.randomExpertVoList.length - 1].name)
+            }, 2000);
+          } else {
             // 抽取失败-人数不够
           }
           console.log(data2)
           // data2=res.data.randomObjectVoList.concat(res.data.randomObjectVoList)
-          debugger
+
           setTimeout(() => {
             // 最后显示的值
-            this.randomContent = 'asjkdhjfahsdasidjfhaidhfiashjdifah'
-          }, 1000)
+            // _this.randomContent = res.data.randomExpertVoList[res.data.randomExpertVoList.length - 1].name
+            _this.randomResult = data2
+          }, 3000)
         },
 
         error => {
@@ -276,19 +304,31 @@ export default {
       }, 500)
     },
     // 抽取效果结束
-    endRandom() {
-      clearInterval(this.timer);//销毁计时器
-      this.timer = null;
+    endRandom(endValue) {
+      setTimeout(() => {
+        this.isObjectTrue = true
+      }, 700)
+      setTimeout(() => {
+        this.isPersonNameTrue = true
+        clearInterval(this.timer);//销毁计时器
+        this.timer = null;
+      }, 1400)
       setTimeout(() => {
         // 最后显示的值
-        this.randomContent = 'asjkdhjfahsdasidjfhaidhfiashjdifah'
-      }, 700)
+        this.randomContent = endValue;
+        this.isNameTrue = true
+      }, 2100)
     },
     // 重置
     resetRandom() {
       clearInterval(this.timer);//销毁计时器
       this.timer = null;
       this.isRandomFlag = true
+      this.isNameTrue = false
+      this.isPersonNameTrue = false
+      this.isObjectTrue = false
+      this.randomResult = []
+      // 执行删除方法
     },
     getDrawerList(data) {
       let _this = this
@@ -301,17 +341,63 @@ export default {
               case 4: _this.optionsZZMM = res.data; break;//政治面貌
             }
           },
-
           error => {
             // reject(error);
           })
       });
     },
-    // editMethod(row) {
-    //   this.addForm = JSON.parse(JSON.stringify(row))
-    //   this.dialogStatus = '修改'
-    //   this.dialogFormVisible = true
-    // }
+    editMethod(row) {
+      this.addForm = JSON.parse(JSON.stringify(row))
+      this.dialogFormVisible = true
+      this.currentId = row.id
+    },
+    viewMethod(row) {
+      this.addForm = JSON.parse(JSON.stringify(row))
+      // 根据id查询
+      getDictListDetailByNameApi(row.id).then(
+        res => {
+
+        },
+        error => {
+          // reject(error);
+        })
+      this.dialogResultVisible = true
+      this.currentId = row.id
+    },
+    resetForm() {
+      this.randomResultList = []
+      this.randomList = []
+    },
+    saveRandom() {
+      console.log(this.randomResult)
+      let _this = this
+      // let data = this.randomResult
+      let data = {
+        legalPerson: this.randomResult[0].personName,
+        matchExpert: this.randomResult[0].name,
+        matchPerson: this.randomResult[0].personName,
+        projectName: this.randomResult[0].objectName,
+        taskId: this.currentId,
+      }
+      // data.legalPerson = this.randomResult[0].personName;
+      // data.matchExpert = this.randomResult[0].name;
+      // data.matchPerson = this.randomResult[0].personName;
+      // data.projectName = this.randomResult[0].objectName;
+      // data.taskId = this.currentId;
+
+
+      addRandomResultApi(data).then(
+        res => {
+          if (res.code == 200) {
+
+          }
+        },
+
+        error => {
+          // reject(error);
+        })
+
+    },
   },
   mounted() {
     this.getTableData()

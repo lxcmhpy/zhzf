@@ -97,61 +97,55 @@
       <el-row :gutter="30">
         <el-col :span="12">
           <el-form-item label="车牌号" prop="vehicleNumber">
-            <el-input v-model="addForm.vehicleNumber" placeholder="请输入">
-              <el-button slot="append">选择</el-button>
+            <el-input v-model="addForm.vehicleNumber" :readonly="true">
+              <el-button style="color: white;background-color: #4d89ff;" slot="append" @click="changeVehicle">选择</el-button>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="使用单位" prop="useCompany">
-            <el-input v-model="addForm.useCompany" placeholder="请输入" :readonly="true"></el-input>
+          <el-form-item label="使用单位" prop="useUnit">
+            <el-input v-model="addForm.useUnit" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="车辆类别" prop="type">
-            <el-select v-model="addForm.type" placeholder="请选择">
-              <el-option label="小汽车" value="1"></el-option>
-              <el-option label="大车" value="2"></el-option>
-            </el-select>
+          <el-form-item label="车辆类别" prop="vehicleCategory">
+            <el-input v-model="addForm.vehicleCategory" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="车辆类型" prop="model">
-            <el-input v-model="addForm.model" placeholder="请输入"></el-input>
+          <el-form-item label="车辆类型" prop="movehicleTypeel">
+            <el-input v-model="addForm.vehicleType" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="厂牌型号" prop="brandType">
-            <el-select v-model="addForm.brandType" placeholder="请选择">
-              <el-option label="型号1" value="1"></el-option>
-              <el-option label="型号2" value="2"></el-option>
-            </el-select>
+          <el-form-item label="厂牌型号" prop="brandModel">
+            <el-input v-model="addForm.brandModel" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="发动机号" prop="engineNum">
-            <el-input v-model="addForm.engineNum" placeholder="请输入"></el-input>
+          <el-form-item label="发动机号" prop="engineNumber">
+            <el-input v-model="addForm.engineNumber" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="车架号码" prop="frameNum">
-            <el-input v-model="addForm.frameNum" placeholder="请输入"></el-input>
+          <el-form-item label="车架号码" prop="axleNumber">
+            <el-input v-model="addForm.axleNumber" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="使用证号" prop="useCertificateNo">
-            <el-input v-model="addForm.useCertificateNo" placeholder="请输入">
-              <el-button slot="append">自动获取</el-button>
+          <el-form-item label="使用证号" prop="usePermitNumber">
+            <el-input v-model="addForm.usePermitNumber" placeholder="请输入">
+              <el-button style="color: white;background-color: #4d89ff;" slot="append">自动获取</el-button>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="申请理由" prop="applyReason">
+          <el-form-item label="申请理由" prop="note">
             <el-input
               type="textarea"
               :autosize="{ minRows: 2, maxRows: 4}"
               placeholder="请输入"
-              v-model="addForm.applyReason"
+              v-model="addForm.note"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -175,9 +169,9 @@
           </div>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="申请日期" prop="applyDay">
+          <el-form-item label="申请日期" prop="billDate">
             <el-date-picker
-              v-model="addForm.applyDay"
+              v-model="addForm.billDate"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
               placeholder="请选择日期"
@@ -186,21 +180,27 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="申报单位" prop="applicant">
-            <el-select v-model="addForm.applicant" placeholder="请选择">
-              <el-option label="单位1" value="1"></el-option>
-              <el-option label="单位2" value="2"></el-option>
-            </el-select>
+          <el-form-item label="申报单位" prop="declarationUnit">
+                <elSelectTree
+                    ref="addFormDeclarationUnitTreeObj"
+                    :options="organList"
+                    :accordion="true"
+                    :props="orgTreeProps"
+                    :filterable="true"
+                    :value="addForm.declarationUnit"
+                    @getValue="addFormDeclarationUnitClick">
+                </elSelectTree>
+                <el-input style="display:none" v-model="addForm.declarationUnit"></el-input>
+            </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="申请联系人" prop="contactPerson">
+            <el-input v-model="addForm.contactPerson" placeholder="请输入"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="联系电话" prop="contactPhone">
-            <el-input v-model="addForm.contactPhone" placeholder="请输入"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="申请联系人" prop="contactPeople">
-            <el-input v-model="addForm.contactPeople" placeholder="请输入"></el-input>
+          <el-form-item label="联系电话" prop="contactNumber">
+            <el-input v-model="addForm.contactNumber" placeholder="请输入"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -219,45 +219,117 @@
     <el-dialog title="预览" :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
+    <!-- 选择车辆 -->
+    <SelectVehicle ref="selectVehicleRef" @VehicleOk="VehicleOk"></SelectVehicle>
   </div>
 </template>
 <script>
+import elSelectTree from '@/components/elSelectTree/elSelectTree';
+import iLocalStroage from '@/common/js/localStroage';
+import SelectVehicle from '@/page/device/components/selectVehicle';
+import {
+    tree,
+    upload,
+    deleteFileById
+} from "@/api/device/device.js";
+import { 
+    findDeviceCertificateBillById,
+    saveOrUpdateDeviceCertificateBill
+} from "@/api/device/deviceCertificateBill.js";
 export default {
-    components: {},
+    components: {elSelectTree,SelectVehicle},
     data() {
         return {
-        addForm: {},
-        rules: {},
-        startEdit: true,
-        dialogVisible: false,
-        dialogImageUrl: "",
+            addForm: {
+                billDate:new Date().format('yyyy-MM-dd'),
+            },
+            rules: {
+                declarationUnit: [
+                    {required: true, message: "请输入申报单位", trigger: "blur"}
+                ],
+                vehicleNumber: [
+                    {required: true, message: "请选择车牌号", trigger: "blur"}
+                ],
+                usePermitNumber: [
+                    {required: true, message: "请输入使用证号", trigger: "blur"}
+                ],
+            },
+            startEdit: true,
+            dialogVisible: false,
+            dialogImageUrl: "",
+            orgTreeProps: {
+                label: "label",
+                value: "id"
+            },
+            userInfo:{},
+            host:'',
         };
     },
     props: {
       billTypeName: String,
       billType: String,
       url: String,
+      organList:Array,
     },
   created() {},
   methods: {
+    changeVehicle(){
+        this.$refs.selectVehicleRef.showModal(this.billType,this.organList);
+    },
+    VehicleOk(obj){
+        this.$set(this.addForm,'vehicleNumber',obj.vehicleNumber)
+        this.$set(this.addForm,'vehicleId',obj.id)
+        this.$set(this.addForm,'brandModel',obj.brandModel)
+        this.$set(this.addForm,'axleNumber',obj.axleNumber)
+        this.$set(this.addForm,'engineNumber',obj.engineNumber)
+        this.$set(this.addForm,'useUnit',obj.useUnit)
+        this.$set(this.addForm,'vehicleType',obj.vehicleType)
+        this.$set(this.addForm,'vehicleCategory',obj.vehicleCategory)
+        this.$set(this.addForm,'billType',this.billType)
+    },
     // 删除其他材料
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+        console.log(file, fileList);
     },
     // 预览其他材料
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
     },
     // 修改
     editInfo() {
-      this.startEdit = true;
+        this.startEdit = true;
     },
     // 保存
     saveInfo() {
-      this.startEdit = false;
+        let _this = this
+        this.$refs['addFormRef'].validate(valid => {
+            if (valid) {
+                saveOrUpdateDeviceCertificateBill(_this.addForm).then(
+                    res => {
+                        _this.$message({
+                            type: "success",
+                            message:"保存成功!"
+                        });
+                        _this.startEdit = false;
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
+            }
+        });
+    },
+    addFormDeclarationUnitClick(val) {
+        this.$refs.addFormDeclarationUnitTreeObj.$children[0].handleClose();
+        this.$set(this.addForm,'declarationUnit',val)
     },
   },
+  mounted(){
+    this.userInfo = iLocalStroage.gets("userInfo");
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    this.$set(this.addForm,'declarationUnit',this.userInfo.organId)
+  }
 };
 </script>
 <style lang="scss" scoped>
