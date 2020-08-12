@@ -99,7 +99,8 @@ export default {
       console.log(row);
       let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
-      
+      this.$store.commit("setIsLawEnforcementSupervision", false);
+      this.$store.commit("setLawEnforcementSupervisionType", '');
       
       //暂存案件跳转信息采集
       if(row.state == 0){

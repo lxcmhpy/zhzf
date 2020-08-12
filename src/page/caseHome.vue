@@ -440,6 +440,8 @@ export default {
     async clickCase(row) {
       this.$store.commit("setCaseId", row.id);
       iLocalStroage.set("stageCaseId",row.id);
+      this.$store.commit("setIsLawEnforcementSupervision", false);
+      this.$store.commit("setLawEnforcementSupervisionType", '');
       if (this.moreFlag === "unRecordCase") { 
         let setCaseNumber = row.caseNumber != "" ? row.caseNumber : row.tempNo;
         this.$store.commit("setCaseNumber", setCaseNumber);

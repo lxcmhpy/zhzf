@@ -6,12 +6,12 @@
         <div class="search">
           <el-form :inline="true" :model="evidenceForm" ref="evidenceForm" label-width="80px">
             <el-form-item>
-              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval">上传证据</el-button>
+              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval">上传备案材料</el-button>
             </el-form-item>
-            <el-form-item label="证据名称" prop="evName">
+            <el-form-item label="材料名称" prop="evName">
               <el-input v-model="evidenceForm.evName"></el-input>
             </el-form-item>
-            <el-form-item label="证据类型" prop="evType">
+            <el-form-item label="材料类型" prop="evType">
               <el-select v-model="evidenceForm.evType"  clearable>
                 <el-option
                   v-for="item in evTypeOptions"
@@ -21,7 +21,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="证据状态" prop="status">
+            <!-- <el-form-item label="材料状态" prop="status">
               <el-select v-model="evidenceForm.status" clearable>
                 <el-option
                   v-for="item in statusOptions"
@@ -30,7 +30,7 @@
                   :value="item.value"
                 ></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getEviList">查询</el-button>
               <el-button type="primary" size="medium" @click="resetSearch">重置</el-button>
@@ -41,23 +41,8 @@
       <div class="tablePartF">
         <el-table :data="tableData" stripe height="100%" @row-click="evidenceDetail">
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-          <el-table-column prop="evName" label="证据名称" align="center"></el-table-column>
-          <el-table-column prop="evType" label="证据类型" align="center"></el-table-column>
-          <el-table-column prop="status" label="状态" align="center">
-            <template slot-scope="scope">
-              <label>
-                <el-switch
-                  v-model="scope.row.status"
-                  :active-value="0"
-                  :inactive-value="1"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  @change="updateEviBySwitch(scope.row)"
-                  :disabled="caseApproval"
-                ></el-switch>
-              </label>
-            </template>
-          </el-table-column>
+          <el-table-column prop="evName" label="材料名称" align="center"></el-table-column>
+          <el-table-column prop="evType" label="材料类型" align="center"></el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
                 <img v-if="scope.row.evType =='照片'" :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
@@ -65,7 +50,7 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
-            <template slot-scope="scope">
+            <!-- <template slot-scope="scope">
               <el-button
                 type="text"
                 icon="el-icon-edit"
@@ -73,6 +58,12 @@
                 :disabled="caseApproval"
               >编辑
               </el-button>
+            </template> -->
+            <template slot-scope="scope">
+              <el-button type="text" @click="getFileStream(scope.row,scope.row.evPath)">下载
+                <!-- <el-link type="primary" :underline="false" :href="host.PDF_HOST+scope.row.evPath" :download="scope.row.evName">下载</el-link> -->
+              </el-button>
+              <el-button @click="deleteEvFile(scope.row.id)" type="text">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -91,7 +82,7 @@
     </div>
     <!-- 添加弹出框 -->
     <el-dialog
-      title="上传证据"
+      title="上传材料"
       :visible.sync="addVisible"
       width="60%"
       v-loading="addLoading"
@@ -126,7 +117,7 @@
         </div>
         <div style="float: right;width: 55%">
           <el-form ref="form" :model="form" :rules="addrules">
-            <el-form-item label="证据类型" prop="evType"  label-width="113px">
+            <el-form-item label="材料类型" prop="evType"  label-width="113px">
               <el-select v-model="form.evType" style="width: 100%" :disabled="true">
                 <el-option
                   v-for="item in evTypeOptions"
@@ -136,8 +127,8 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="证据名称" prop="evName" label-width="113px">
-              <el-input v-model="form.evName" placeholder="请输入"></el-input>
+            <el-form-item label="材料名称" prop="evName" label-width="113px">
+              <el-input v-model="form.evName" placeholder="请输入" disabled></el-input>
             </el-form-item>
             <el-form-item label="记 录 人" prop="userName" label-width="113px">
               <!-- <el-input v-model="form.userName" placeholder="请输入"></el-input> -->
@@ -181,7 +172,7 @@
     </el-dialog>
     <!-- 编辑弹出框 -->
     <el-dialog
-      title="编辑证据"
+      title="编辑材料"
       :visible.sync="editVisible"
       width="60%"
       v-loading="editLoading"
@@ -201,7 +192,7 @@
         </div>
         <div style="float: right;width: 55%">
           <el-form ref="uForm" :model="uForm" :rules="addrules">
-            <el-form-item label="证据类型" prop="evType" label-width="113px">
+            <el-form-item label="材料类型" prop="evType" label-width="113px">
               <el-select v-model="uForm.evType" style="width: 100%">
                 <el-option
                   v-for="item in evTypeOptions"
@@ -211,7 +202,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="证据名称" prop="evName" label-width="113px">
+            <el-form-item label="材料名称" prop="evName" label-width="113px">
               <el-input v-model="uForm.evName" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="记 录 人" prop="userName" label-width="113px">
@@ -252,26 +243,28 @@
       </div>
     </el-dialog>
     <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'evidenceForm'" @showEvidenceCatalogue="showEvidenceCatalogue" @getEvidenceEmit="getEviList"></caseSlideMenu>
+    <caseSlideMenu :activeIndex="'lawEnforcementSupervision_caseFileList'"></caseSlideMenu>
 
-    <!-- 证据目录 -->
+    <!-- 材料目录 -->
     <!-- <evidenceCatalogue ref="evidenceCatalogueRef"></evidenceCatalogue> -->
 
-    <evidenceDetail ref="evidenceDetailRef"></evidenceDetail>
+    <!-- <evidenceDetail ref="evidenceDetailRef"></evidenceDetail> -->
 
-    <evidenceImageDetail ref="evidenceImageDetailRef"></evidenceImageDetail>
+    <!-- <evidenceImageDetail ref="evidenceImageDetailRef"></evidenceImageDetail> -->
   </div>
 </template>
 <script>
   import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
   import {mapGetters} from "vuex";
-  import evidenceCatalogue from "./evidenceCatalogue";
+  // import evidenceCatalogue from "./evidenceCatalogue";
   import {uploadEvApi, findFileByIdApi, uploadEvdence} from "@/api/upload";
 
-  import {getCaseBasicInfoApi} from "@/api/caseHandle";
+  import {getCaseBasicInfoApi,getFileStreamByStorageIdApi,deleteEvFileApi} from "@/api/caseHandle";
   import iLocalStroage from "@/common/js/localStroage.js";
-  import evidenceDetail from "./evidenceDetail";
-  import evidenceImageDetail from "./evidenceImageDetail";
+  
+  import {uploadLawSupervisionFile,queryFileUploadConditionApi} from "@/api/lawEnforcementSupervision";
+  // import evidenceDetail from "./evidenceDetail";
+  // import evidenceImageDetail from "./evidenceImageDetail";
   // import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
   // import { getEviByCaseIdApi } from "@api/caseHandle";
   export default {
@@ -312,7 +305,7 @@
           remark: "",
           file: null,
           docId: "",
-          category: "证据",
+          category: "",
           userId: "",
           recordPlace:'',
           userName:'',
@@ -327,13 +320,13 @@
           evType: [
             {
               required: true,
-              message: "证据类型不能为空",
+              message: "材料类型不能为空",
               trigger: "change",
               // validator: isSelect
             },
             // {
             //   required: true,
-            //   message: "证据类型不能为空",
+            //   message: "材料类型不能为空",
             //   trigger: "change",
             //   validator: isSelect
             // }
@@ -344,12 +337,12 @@
         myVideoSrc:'',
       };
     },
-    computed: {...mapGetters(["caseId",'caseApproval'])},
+    computed: {...mapGetters(["caseId",'caseApproval','lawEnforcementSupervisionType'])},
     components: {
       caseSlideMenu,
-      evidenceCatalogue,
-      evidenceDetail,
-      evidenceImageDetail
+      // evidenceCatalogue,
+      // evidenceDetail,
+      // evidenceImageDetail
     },
     methods: {
       submitForm(formName) {
@@ -382,11 +375,12 @@
       },
       handleAdd(index, row) {
         this.form = {};
+        this.fileList = [];
         this.addVisible = true;
       },
       handleEdit(index, row) {
         const item = this.tableData[index];
-        console.log("编辑证据", item);
+        console.log("编辑材料", item);
         this.uForm = {
           id: item.id,
           caseId: item.caseId,
@@ -405,14 +399,14 @@
       getEviList() {
         let data = {
           caseId: this.caseId,
-          category: "证据",
+          category:this.lawEnforcementSupervisionType, 
           evName: this.evidenceForm.evName,
           evType: this.evidenceForm.evType,
           status: this.evidenceForm.status,
           current: this.currentPage,
           size: this.pageSize
         };
-        console.log("证据目录参数", data);
+        console.log("材料目录参数", data);
         let _this = this;
         this.$store.dispatch("getEvidence", data).then(res => {
           console.log('res',res)
@@ -425,14 +419,14 @@
         (this.form.file = param.file),
           (this.form.caseId = this.caseId),
           (this.form.docId = "000"),
-          (this.form.category = "证据"),
+          (this.form.category = this.lawEnforcementSupervisionType),
           (this.form.userId = iLocalStroage.gets("userInfo").id),
           (this.form.evName = param.file.name);
         // }
 
-        //给证据类型赋值
+        //给材料类型赋值
         let fileType= this.$util.getFileType(param.file.name);
-        console.log('给证据类型赋值',fileType);
+        console.log('给材料类型赋值',fileType);
         this.$set(this.form,'evType')
         if(fileType == 'image'){ //图片
           console.log('是图片呀')
@@ -454,13 +448,14 @@
           }, 500);
        }
       },
-      //插入证据表
+      //插入材料表
       insertEvi() {
         var fd = new FormData();
+        console.log('this.form',this.form)
         fd.append("file", this.form.file);
         fd.append("caseId", this.form.caseId);
         fd.append("objectId", this.form.docId);
-        fd.append("category", this.form.category);
+        fd.append("category", this.lawEnforcementSupervisionType);
         fd.append("userId", this.form.userId);
         fd.append("evName", this.form.evName);
         fd.append("evType", this.form.evType);
@@ -479,7 +474,7 @@
 
         let _this = this;
         // this.$store.dispatch("saveOrUpdateEvidence", data).then(res => {
-        uploadEvdence(fd).then(res => {
+        uploadLawSupervisionFile(fd).then(res => {
           console.log("1111111", res);
           if (res.code == 200) {
             _this.$message({
@@ -523,7 +518,7 @@
           }
         });
       },
-      //修改证据
+      //修改材料
       updateEvi() {
         let data = {
           id: this.uForm.id,
@@ -602,7 +597,7 @@
         // return Y + M + D + h + m + s;
         return Y + M + D;
       },
-      //鼠标hover证据目录后 显示证据目录
+      //鼠标hover材料目录后 显示材料目录
       showEvidenceCatalogue() {
         this.$refs.evidenceCatalogueRef.showModal();
       },
@@ -610,9 +605,9 @@
         console.log(file);
         this.evfile = file.raw;
       },
-      //显示证据详情
+      //显示材料详情
       evidenceDetail(row) {
-        console.log("证据详情", row)
+        console.log("材料详情", row)
         this.$refs.evidenceDetailRef.showModal(row);
       },
       imgDetail(row) {
@@ -655,6 +650,60 @@
             array.push(binary.charCodeAt(i));
         }
         return new Blob([new Uint8Array(array)], {type:type});
+      },
+      //根据stroagId请求文件流
+    getFileStream(data,storageId) {
+      //设置地址
+      // this.$store.commit("setDocPdfStorageId", storageId);
+      getFileStreamByStorageIdApi(storageId)
+        .then((res) => {
+          console.log(res);
+          this.getObjectURL(data,res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 将返回的流数据转换为url
+    getObjectURL(data,file) {
+      let url = null;
+      if (window.createObjectURL != undefined) {
+        // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) {
+        // webkit or chrome
+        try {
+          url = window.webkitURL.createObjectURL(file);
+        } catch (error) {}
+      } else if (window.URL != undefined) {
+        // mozilla(firefox)
+        try {
+          url = window.URL.createObjectURL(file);
+        } catch (error) {}
+      }
+      console.log(url);
+      // this.pdfUrl = url; 
+      // return url;
+      this.downFile(data,url);
+    },
+      //下载
+      downFile(data,url){
+        var eleLink = document.createElement('a');
+        eleLink.download = data.evName;
+        eleLink.style.display = 'none';
+        eleLink.href = url;
+        // 触发点击
+        document.body.appendChild(eleLink);
+        eleLink.click();
+        // 然后移除
+        document.body.removeChild(eleLink);
+      },
+      //删除
+      deleteEvFile(id){
+        deleteEvFileApi(id).then(res=>{
+          this.$message({ type: "success", message: "删除成功!"});
+          this.getEviList();
+        }).catch(err=>{throw new Error(err)})
       }
     },
     mounted() {

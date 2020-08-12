@@ -95,6 +95,8 @@ export default {
     clickCase(row){
       console.log('列表数据row',row)
       this.$store.commit("setCaseId", row.id);
+      this.$store.commit("setIsLawEnforcementSupervision", false);
+      this.$store.commit("setLawEnforcementSupervisionType", '');
       //设置案件状态为审批中
       this.$store.commit("setCaseApproval", true);
       let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : row.tempNo;
