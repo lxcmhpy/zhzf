@@ -1482,3 +1482,13 @@ export function findWarInfoByIdApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+//删除证据 
+export function deleteEvFileApi(id) {
+  return request({
+    url: "/case/doc/evidence/deleteById/"+id,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}

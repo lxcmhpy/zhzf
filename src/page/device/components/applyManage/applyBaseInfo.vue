@@ -1,7 +1,7 @@
 <!-- 发证申请 -->
 <template>
   <div class="apply-info-wrap">
-    <h3 class="page-title">发证申请</h3>
+    <h3 class="page-title">{{billTypeName}}</h3>
     <!-- 查看基本信息 -->
     <el-row v-if="!startEdit" :gutter="20">
       <el-col :span="12">
@@ -87,29 +87,29 @@
     <!-- 编辑基本信息表单 -->
     <el-form
       v-if="startEdit"
-      :model="editBaseInfoForm"
+      :model="addForm"
       :rules="rules"
       label-position="right"
       label-width="120px"
-      ref="editBaseInfoFormRef"
+      ref="addFormRef"
       class="edit-apply-info-from"
     >
       <el-row :gutter="30">
         <el-col :span="12">
-          <el-form-item label="车牌号" prop="carNum">
-            <el-input v-model="editBaseInfoForm.carNum" placeholder="请输入">
+          <el-form-item label="车牌号" prop="vehicleNumber">
+            <el-input v-model="addForm.vehicleNumber" placeholder="请输入">
               <el-button slot="append">选择</el-button>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="使用单位" prop="useCompany">
-            <el-input v-model="editBaseInfoForm.useCompany" placeholder="请输入"></el-input>
+            <el-input v-model="addForm.useCompany" placeholder="请输入" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="车辆类别" prop="type">
-            <el-select v-model="editBaseInfoForm.type" placeholder="请选择">
+            <el-select v-model="addForm.type" placeholder="请选择">
               <el-option label="小汽车" value="1"></el-option>
               <el-option label="大车" value="2"></el-option>
             </el-select>
@@ -117,12 +117,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="车辆类型" prop="model">
-            <el-input v-model="editBaseInfoForm.model" placeholder="请输入"></el-input>
+            <el-input v-model="addForm.model" placeholder="请输入"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="厂牌型号" prop="brandType">
-            <el-select v-model="editBaseInfoForm.brandType" placeholder="请选择">
+            <el-select v-model="addForm.brandType" placeholder="请选择">
               <el-option label="型号1" value="1"></el-option>
               <el-option label="型号2" value="2"></el-option>
             </el-select>
@@ -130,17 +130,17 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="发动机号" prop="engineNum">
-            <el-input v-model="editBaseInfoForm.engineNum" placeholder="请输入"></el-input>
+            <el-input v-model="addForm.engineNum" placeholder="请输入"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="车架号码" prop="frameNum">
-            <el-input v-model="editBaseInfoForm.frameNum" placeholder="请输入"></el-input>
+            <el-input v-model="addForm.frameNum" placeholder="请输入"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="使用证号" prop="useCertificateNo">
-            <el-input v-model="editBaseInfoForm.useCertificateNo" placeholder="请输入">
+            <el-input v-model="addForm.useCertificateNo" placeholder="请输入">
               <el-button slot="append">自动获取</el-button>
             </el-input>
           </el-form-item>
@@ -151,7 +151,7 @@
               type="textarea"
               :autosize="{ minRows: 2, maxRows: 4}"
               placeholder="请输入"
-              v-model="editBaseInfoForm.applyReason"
+              v-model="addForm.applyReason"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -177,7 +177,7 @@
         <el-col :span="12">
           <el-form-item label="申请日期" prop="applyDay">
             <el-date-picker
-              v-model="editBaseInfoForm.applyDay"
+              v-model="addForm.applyDay"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
               placeholder="请选择日期"
@@ -187,7 +187,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="申报单位" prop="applicant">
-            <el-select v-model="editBaseInfoForm.applicant" placeholder="请选择">
+            <el-select v-model="addForm.applicant" placeholder="请选择">
               <el-option label="单位1" value="1"></el-option>
               <el-option label="单位2" value="2"></el-option>
             </el-select>
@@ -195,12 +195,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="联系电话" prop="contactPhone">
-            <el-input v-model="editBaseInfoForm.contactPhone" placeholder="请输入"></el-input>
+            <el-input v-model="addForm.contactPhone" placeholder="请输入"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="申请联系人" prop="contactPeople">
-            <el-input v-model="editBaseInfoForm.contactPeople" placeholder="请输入"></el-input>
+            <el-input v-model="addForm.contactPeople" placeholder="请输入"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -223,16 +223,21 @@
 </template>
 <script>
 export default {
-  components: {},
-  data() {
-    return {
-      editBaseInfoForm: {},
-      rules: {},
-      startEdit: true,
-      dialogVisible: false,
-      dialogImageUrl: "",
-    };
-  },
+    components: {},
+    data() {
+        return {
+        addForm: {},
+        rules: {},
+        startEdit: true,
+        dialogVisible: false,
+        dialogImageUrl: "",
+        };
+    },
+    props: {
+      billTypeName: String,
+      billType: String,
+      url: String,
+    },
   created() {},
   methods: {
     // 删除其他材料

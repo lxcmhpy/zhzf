@@ -43,7 +43,7 @@
           <el-col :span="18">
             <el-card>
               <div slot="header" class="clearfix">
-                <span class="card-title">课程目录</span>
+                <span class="course-card-title">课程目录</span>
               </div>
               <div class="card-content">
                 <!-- 课程列表 -->
@@ -85,7 +85,7 @@
           <el-col :span="6">
             <el-card>
               <div slot="header" class="clearfix">
-                <span class="card-title">课程简介</span>
+                <span class="course-card-title">课程简介</span>
               </div>
               <div class="card-content">{{ lessonData.lessonComment }}</div>
             </el-card>
@@ -290,7 +290,7 @@ export default {
   .course-wrap {
     position: relative;
     height: calc(100% - 238px);
-    .card-title {
+    .course-card-title {
       display: inline-block;
       padding-left: 8px;
       border-left: 4px solid #4573d0;

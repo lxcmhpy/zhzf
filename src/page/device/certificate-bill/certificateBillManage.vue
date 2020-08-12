@@ -2,57 +2,78 @@
     <div class="com_searchAndpageBoxPadding">
         <div class="searchPage">
             <div class="handlePart">
-                <el-form :inline="true" ref="deviceCertificateBillForm" :model="queryForm" label-width="120px">
+                <el-form :inline="true" ref="queryForm" :model="queryForm" label-width="120px">
                     <!--查询字段-->
-                    <el-form-item label="单据类型" prop="billType">
-                        <el-select v-model="queryForm.billType">
-                            <el-option
-                                v-for="item in billTypeList"
-                                :key="item.id"
-                                :label="item.label"
-                                :value="item.id"
-                            ></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="单据号" prop="billNo">
-                        <el-input v-model="queryForm.billNo"></el-input>
-                    </el-form-item>
-                    <el-form-item label="车牌号" prop="vehicleNumber">
-                        <el-input v-model="queryForm.vehicleNumber"></el-input>
-                    </el-form-item>
-                    <el-form-item label="单据状态" prop="status">
-                        <el-select v-model="queryForm.status">
-                            <el-option
-                                v-for="item in statusList"
-                                :key="item.id"
-                                :label="item.label"
-                                :value="item.id"
-                            ></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="申请日期" prop="billDate">
-                        <el-date-picker v-model="queryForm.billDate" type="date" style="width:140px" value-format="yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
-                    </el-form-item>
-
-                    <el-form-item style="margin-top:1px; margin-left: 15px;">
-                        <el-button 
-                            title="搜索"
-                            class="commonBtn searchBtn"
-                            size="medium"
-                            icon="iconfont law-sousuo" 
-                            @click="queryData(1)"/>
-                        <el-button 
-                            title="重置"
-                            class="commonBtn searchBtn"
-                            size="medium"
-                            icon="iconfont law-zhongzhi"
-                            @click="reset"/>
-                    </el-form-item>
+                    <div>
+                        <div class="item">
+                            <el-form-item label="单据类型" prop="billType">
+                                <el-select v-model="queryForm.billType">
+                                    <el-option
+                                        v-for="item in billTypeList"
+                                        :key="item.id"
+                                        :label="item.label"
+                                        :value="item.id"
+                                    ></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="单据号" prop="billNo">
+                                <el-input v-model="queryForm.billNo"></el-input>
+                            </el-form-item>
+                            <el-form-item label="车牌号" prop="vehicleNumber">
+                                <el-input v-model="queryForm.vehicleNumber"></el-input>
+                            </el-form-item>
+                            <el-form-item style="margin-top:1px; margin-left: 15px;">
+                                <el-button
+                                        title="搜索"
+                                        class="commonBtn searchBtn"
+                                        size="medium"
+                                        icon="iconfont law-sousuo"
+                                        @click="queryData(1)"/>
+                                <el-button
+                                        title="重置"
+                                        class="commonBtn searchBtn"
+                                        size="medium"
+                                        icon="iconfont law-zhongzhi"
+                                        @click="reset"/>
+                                <el-button
+                                    size="medium"
+                                    class="commonBtn toogleBtn"
+                                    :title="isShow? '点击收缩':'点击展开'"
+                                    :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                                    @click="isShow = !isShow"/>
+                            </el-form-item>
+                            </div>
+                        <div class="item" v-show="isShow">
+                            <el-form-item label="单据状态" prop="status">
+                                <el-select clearable v-model="queryForm.status">
+                                    <el-option
+                                        v-for="item in statusList"
+                                        :key="item.id"
+                                        :label="item.label"
+                                        :value="item.id"
+                                    ></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="申请日期">
+                                <el-date-picker 
+                                    style='width:240px' 
+                                    :picker-options="pickerOptions" 
+                                    unlink-panels 
+                                    v-model="timeList"
+                                    type="daterange" 
+                                    range-separator="—" 
+                                    value-format="yyyy-MM-dd" 
+                                    format="yyyy-MM-dd" 
+                                    start-placeholder="开始日期" 
+                                    end-placeholder="结束日期"/>
+                            </el-form-item>
+                        </div>
+                    </div>
                 </el-form>
             </div>
             <div class="tableHandle" style="margin-bottom: 10px;">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
-            </div> 
+            </div>
             <div class="tablePart">
                 <el-table
                         :data="tableData"
@@ -74,7 +95,7 @@
                     <el-table-column prop="useUnit" label="使用单位"></el-table-column>
                     <el-table-column prop="usePermitNumber" label="使用证号"></el-table-column>
                     <el-table-column prop="billDate" label="申请日期"></el-table-column>
-                        <el-table-column prop="status" label="单据状态" :formatter="formatStatus"></el-table-column>
+                    <el-table-column prop="status" label="单据状态" :formatter="formatStatus"></el-table-column>
                     <el-table-column label="操作" width="160">
                         <template slot-scope="scope">
                             <div style="width:160px">
@@ -98,12 +119,12 @@
                 ></el-pagination>
             </div>
             <el-dialog :title="title"
-                        custom-class="leftDialog"
-                        :visible.sync="visible"
-                        top="0"
-                        width="40%"
-                        @close="closeDialog"
-                        :close-on-click-modal="false">
+                       custom-class="leftDialog"
+                       :visible.sync="visible"
+                       top="0"
+                       width="40%"
+                       @close="closeDialog"
+                       :close-on-click-modal="false">
                 <el-form
                         :model="addForm"
                         ref="addForm"
@@ -114,7 +135,7 @@
                         <!--卡片字段-->
                         <el-row>
                         <el-form-item label="车牌号" prop="vehicleNumber">
-                            <el-input v-model="addForm.vehicleNumber" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
+                            <el-input v-model="addForm.vehicleNumber" style="width: 100%;" :readonly="true"></el-input>
                         </el-form-item>
                         </el-row>
                         <el-row>
@@ -215,6 +236,7 @@
                                 :value="addForm.declarationUnit"
                                 :accordion="true"
                                 :props="orgTreeProps"
+                                :filterable="true"
                                 style="width: 100%;"
                                 @getValue="addFormDeclarationUnitClick">
                             </elSelectTree>
@@ -222,7 +244,7 @@
                         </el-form-item>
                         </el-row>
                         <el-row>
-                        <el-form-item label="联系人" prop="contactPerson">
+                        <el-form-item label="申报联系人" prop="contactPerson">
                             <el-input v-model="addForm.contactPerson" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                         </el-form-item>
                         </el-row>
@@ -240,6 +262,22 @@
                     </el-button>
                 </div>
             </el-dialog>
+            <el-dialog
+                title="请选择业务类型"
+                :visible.sync="dialogVisible"
+                @close="dialogVisible=false"
+                :close-on-click-modal="false"
+                width="22%"
+                class="fullscreen select-bussiness-type-dialog"
+                append-to-body
+            >
+                <div class="bussiness-type-wrap">
+                    <el-button type="primary" @click="selectType('FZ')">发证申请</el-button>
+                    <el-button type="primary" @click="selectType('NS')">年审申请</el-button>
+                    <el-button type="primary" @click="selectType('GS')">挂失申请</el-button>
+                    <el-button type="primary" @click="selectType('ZX')">注销申请</el-button>
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -254,8 +292,10 @@
     import iLocalStroage from '@/common/js/localStroage';
     export default {
         data() {
+            let _this = this;
             return {
                 visible:false,
+                dialogVisible:false,
                 formReadOnly:false,
                 orgTreeProps: {
                     label: "label",
@@ -266,7 +306,6 @@
                     billNo:'',
                     vehicleNumber:'',
                     status:'',
-                    billDate:'',
                 },
                 addForm:{
                 },
@@ -286,7 +325,7 @@
                 currentPage: 1, //当前页
                 pageSize: 10, //pagesize
                 totalPage: 0, //总数
-                title:'',
+                title:"新增证件管理单",
                 statusList:[],
                 organList:[],
                 billTypeList:[
@@ -294,13 +333,37 @@
                     {id:'NS',label:'年审申请'},
                     {id:'GS',label:'挂失申请'},
                     {id:'ZX',label:'注销申请'},
-                ]
+                ],
+                isShow:false,
+                pickerOptions: {
+                    onPick: ({ maxDate, minDate }) => {
+                    if (minDate) {
+                        _this.$set(_this.timeList, 0, minDate);
+                    }
+                    let max = new Date(maxDate ? maxDate : minDate);
+                    max.setHours(23);
+                    max.setMinutes(59);
+                    max.setSeconds(59);
+                    _this.$set(_this.timeList, 1, max);
+                    }
+                },
+                timeList: ['', ''],
             };
         },
         components: {
             elSelectTree,
         },
         methods: {
+            // 选择业务类型
+            selectType(val){
+                let routerData = {
+                    billType: val,
+                    billTypeName:this.formatBillType({billType:val}),
+                    url: this.$route.name,
+                    organList:this.organList
+                };
+                this.$router.push({ name: "applyManage", params: routerData });
+            },
             async getDrawerDataList(){
                 let data = []
                 data.push({pid:'证件管理单-申请状态',fieldName:'statusList'})
@@ -350,10 +413,14 @@
                 });
             },
             reset() {
-                this.$refs["deviceCertificateBillForm"].resetFields();
+                this.$refs["queryForm"].resetFields();
+                this.timeList=['', '']
             },
             //表单筛选
             queryData(val) {
+                this.queryForm.startBillDate = typeof this.timeList[0] == 'object' ? this.timeList[0].format('yyyy-MM-dd') : this.timeList[0];
+                this.queryForm.endBillDate = typeof this.timeList[1] == 'object' ? this.timeList[1].format('yyyy-MM-dd') : this.timeList[1];
+                this.currentPage=val
                 this.queryForm.size=this.pageSize
                 this.queryForm.current=this.currentPage
                 let _this = this
@@ -361,42 +428,30 @@
                     _this.totalPage = res.data.total;
                     _this.tableData = res.data.records;
                 });
-                err => {
-                    console.log(err);
-                };
             },
             //新增
             addData() {
-                if(this.$refs.addFormDeclarationUnitTreeObj){
-                    this.$refs.addFormDeclarationUnitTreeObj.clearHandle()
-                }
-                let billType = 'FZ'
-                this.addForm = {
-                    billDate:new Date().format('yyyy-MM-dd'),
-                    billType:billType
-                };
-                this.title="新增"+this.formatBillType({billType:billType})
-                this.formReadOnly = false
-                this.visible = true
+                this.dialogVisible=true
             },
             //编辑
             handleEdit(index, row) {
                 this.title="修改"+this.formatBillType(row)
                 this.findDeviceCertificateBillById(row)
                 this.formReadOnly = false
+                this.visible = true
             },
             //查看详情
             showDataDetail(row){
                 this.title=this.formatBillType(row)
                 this.findDeviceCertificateBillById(row)
                 this.formReadOnly = true
+                this.visible = true
             },
             findDeviceCertificateBillById(row){
                 let _this = this
                 findDeviceCertificateBillById(row.id).then(
                     res => {
                         _this.addForm = res.data
-                        _this.visible=true
                     },
                     err => {
                         console.log(err);
@@ -446,7 +501,6 @@
             },
             //更换页码
             handleCurrentChange(val) {
-                this.currentPage = val;
                 this.queryData(val);
             },
         },
@@ -460,4 +514,20 @@
 </script>
 <style lang="scss">
     @import "@/assets/css/systemManage.scss";
+</style>
+<style lang="scss" scoped>
+.select-bussiness-type-dialog {
+  >>> .el-dialog {
+    min-width: 420px;
+  }
+  .bussiness-type-wrap{
+      margin: auto 85px;
+      >>>.el-button{
+          margin-left: 0;
+          margin-bottom: 24px;
+          display: block;
+          width: 100%;
+      }
+  }
+}
 </style>

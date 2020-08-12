@@ -24,7 +24,8 @@ const caseHandle = {
         showQZBtn:'',  //是否显示签章按钮
         province:'', //当前系统部署在哪个省
         docPdfStorageId:'',//文书pdf地址id
-        
+        IsLawEnforcementSupervision:'', //判断是否为执法监督
+        lawEnforcementSupervisionType:'', //执法监督类型
     },
     mutations:{
         //设置caseId
@@ -68,6 +69,12 @@ const caseHandle = {
         },
         setDocPdfStorageId(state,data){
             state.docPdfStorageId = data;
+        },
+        setIsLawEnforcementSupervision(state,data){
+            state.IsLawEnforcementSupervision = data;
+        },
+        setLawEnforcementSupervisionType(state,data){
+            state.lawEnforcementSupervisionType = data;
         },
         
     },

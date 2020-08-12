@@ -320,14 +320,6 @@ $totalColor: #4aafa7;
   .course-wrap {
     position: relative;
     height: calc(100% - 202px);
-    .card-title {
-      display: inline-block;
-      padding-left: 8px;
-      border-left: 4px solid #4573d0;
-      font-size: 20px;
-      color: #20232b;
-      font-weight: bold;
-    }
     >>> .el-row,
     >>> .el-col,
     >>> .el-card {
