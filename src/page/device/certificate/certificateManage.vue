@@ -11,22 +11,22 @@
         >
           <el-row>
             <el-col :span="5">
-              <el-form-item label="车牌号">
+              <el-form-item label="车牌号" prop="vehicleNumber">
                 <el-input v-model="searchForm.vehicleNumber"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="使用单位">
+              <el-form-item label="使用单位" prop="useUnit">
                 <el-input v-model="searchForm.useUnit"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="使用证号">
+              <el-form-item label="使用证号" prop="usePermitNumber">
                 <el-input v-model="searchForm.usePermitNumber"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label="证件状态">
+              <el-form-item label="证件状态" prop="state">
                 <el-select v-model="searchForm.state" placeholder="请选择" clearable>
                   <el-option
                     v-for="(item,index) in status"
@@ -60,8 +60,18 @@
           <el-table-column prop="state" label="证件状态" align="center"></el-table-column>
           <el-table-column prop="op" label="操作" align="center" width="100">
             <template slot-scope="scope">
-              <el-button type="text" size="mini" @click="openIssueDialog(scope.row)">颁发</el-button>
-              <el-button type="text" size="mini" @click="openViewDialog(scope.row)">查看</el-button>
+              <el-button
+                v-if="scope.row.state=='待颁发' || scope.row.state=='挂失' || scope.row.state=='已年审'"
+                type="text"
+                size="mini"
+                @click="openIssueDialog(scope.row)"
+              >颁发</el-button>
+              <el-button
+                v-if="scope.row.state!='待颁发'"
+                type="text"
+                size="mini"
+                @click="openViewDialog(scope.row)"
+              >查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -210,77 +220,8 @@
       </span>
     </el-dialog>
 
-    <el-dialog
-      title="查看"
-      :visible.sync="viewVisible"
-      @close="viewVisible = false"
-      :close-on-click-modal="false"
-      width="60%"
-    >
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="证件信息" name="first">
-          <el-form label-width="80px">
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="车牌号">{{deviceUsePer.vehicleNumber}}</el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="使用单位">{{deviceUsePer.useUnit}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="车辆类型">{{deviceUsePer.vehicleType}}</el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="厂牌型号">{{deviceUsePer.brandModel}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="发动机号">{{deviceUsePer.engineNumber}}</el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="车架号码">{{deviceUsePer.axleNumber}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="使用证号">{{deviceUsePer.usePermitNumber}}</el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="使用期限">{{deviceUsePer.beginDate}}~{{deviceUsePer.endDate}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="发证机关">{{deviceUsePer.issueOrgan}}</el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="发证时间">{{deviceUsePer.lssueTime}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="签发人">{{deviceUsePer.signer}}</el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="签发时间">{{deviceUsePer.signDate}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="经办人">{{deviceUsePer.manager}}</el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="经办时间">{{deviceUsePer.handlingDate}}</el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="历史记录" name="second">历史记录</el-tab-pane>
-      </el-tabs>
-    </el-dialog>
+    <!-- 查看证件详情 -->
+    <CertificateDetail ref="certificateDetailRef" />
   </div>
 </template>
 <script>
@@ -290,8 +231,10 @@ import {
   saveOrUpdateCertificate,
   findCertificateById,
 } from "@/api/device/deviceCertificate.js";
+import CertificateDetail from "@/page/device/components/equipmentDetail/certificateDetail";
 
 export default {
+  components: { CertificateDetail },
   data() {
     return {
       searchForm: {
@@ -308,7 +251,6 @@ export default {
       pageSize: 10, //pagesize
       total: 0, //总页数
       issueVisible: false,
-      viewVisible: false,
       handleForm: {},
       deviceUsePer: {},
       daterange: "",
@@ -377,8 +319,7 @@ export default {
       this.issueVisible = true;
     },
     openViewDialog(row) {
-      this.deviceUsePer = row;
-      this.viewVisible = true;
+      this.$refs.certificateDetailRef.showModal(row.id);
     },
     submitData() {
       let _this = this;
@@ -387,6 +328,7 @@ export default {
           debugger;
           _this.deviceUsePer.beginDate = _this.daterange[0];
           _this.deviceUsePer.endDate = _this.daterange[1];
+          _this.deviceUsePer.state = "正常";
           saveOrUpdateCertificate(_this.deviceUsePer).then(
             (res) => {
               _this.$message({ type: "success", message: "操作成功!" });
