@@ -37,21 +37,52 @@
           </el-form>
         </div>
       </div>
-      <div class="tablePart">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55">
-          </el-table-column>
+      <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
-          <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
+          <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
+          <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkStandard" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
-          <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="checkRange" label="检查范围" align="center">
+            <template slot-scope="scope">
+              {{scope.row.checkRange}}
+            </template>
+          </el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="operatePerson" label="操作人员" align="center"></el-table-column>
+          <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.checkStatus==1">抽取</el-button>
+              <el-button type="text" @click="viewMethod(scope.row)">查看</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+          <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
+          <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
+          <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
+          <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column>
+          <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
+          <el-table-column prop="checkBasis" label="检查依据" align="center"></el-table-column>
+          <el-table-column label="任务周期" align="center">
+            <template slot-scope="scope">
+              {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="checkRange" label="检查范围" align="center">
+            <template slot-scope="scope">
+              {{scope.row.checkRange}}
             </template>
           </el-table-column>
           <el-table-column prop="operatePerson" label="操作人员" align="center"></el-table-column>
@@ -79,7 +110,7 @@
           </el-col>
         </el-row>
         <div class="random-table-title" style="margin-top:20px">抽取结果</div>
-        <el-table :data="randomList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+        <el-table :data="randomList" stripe style="width: 100%" height="100%" >
           <el-table-column label="对象名称" align="center">
             <template slot-scope="scope">
               <span v-if="isObjectTrue">{{scope.row.objectName}}</span>
@@ -102,7 +133,7 @@
         </div>
       </el-dialog>
       <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()">
-        <el-table :data="randomResultList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+        <el-table :data="randomResultList" stripe style="width: 100%" height="100%" >
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="legalPerson" label="检查人员" align="center"></el-table-column>
           <el-table-column prop="matchExpert" label="检查专家" align="center"></el-table-column>

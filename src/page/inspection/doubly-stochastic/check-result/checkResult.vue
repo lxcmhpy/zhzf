@@ -38,9 +38,7 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55">
-          </el-table-column>
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
@@ -74,10 +72,8 @@
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55">
-          </el-table-column>
-          <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
+        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+          <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
           <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
