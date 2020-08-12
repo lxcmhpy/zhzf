@@ -46,7 +46,7 @@
           <el-col :span="18">
             <el-card>
               <div slot="header" class="clearfix">
-                <span class="card-title">日常学习</span>
+                <span class="course-card-title">日常学习</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="jumpAssignPage('/daily-classroom')">更多>>></el-button>
               </div>
               <div
@@ -87,7 +87,7 @@
           <el-col :span="6">
             <el-card>
               <div slot="header" class="clearfix">
-                <span class="card-title">培训任务</span>
+                <span class="course-card-title">培训任务</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="jumpAssignPage('/my-training')">更多>>></el-button>
               </div>
               <div
@@ -359,7 +359,7 @@ export default {
   .course-wrap{
     position: relative;
     height: calc(100% - 202px);
-    .card-title{
+    .course-card-title{
       display: inline-block;
       padding-left: 8px;
       border-left: 4px solid #4573D0;

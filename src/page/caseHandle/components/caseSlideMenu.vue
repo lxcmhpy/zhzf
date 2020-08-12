@@ -4,10 +4,10 @@
       <i class="el-icon-arrow-down"></i>
     </div>
     <el-menu class="el-menu-vertical-demo" :default-active="activeIndex" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
-      <el-menu-item index="caseInfo" :disabled = "disabledCaseInfo" @click="goTo('case_handle_caseInfo')">
+      <el-menu-item index="caseInfo" v-show="!IsLawEnforcementSupervision" :disabled = "disabledCaseInfo" @click="goTo('case_handle_caseInfo')">
         案件<br>总览
       </el-menu-item>
-      <el-menu-item index="inforCollect" @click="goToInfoPage">
+      <el-menu-item index="inforCollect" v-show="!IsLawEnforcementSupervision"  @click="goToInfoPage">
         基本<br>信息
       </el-menu-item>
       <el-menu-item index="flowChart" :disabled = "disabledFlow" @click="goTo('case_handle_flowChart')">
@@ -16,14 +16,23 @@
       <el-menu-item index="handleRecordForm" @click="goTo('case_handle_handleRecordForm')">
         操作<br>记录
       </el-menu-item>
-      <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish">
+      <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish" v-show="!IsLawEnforcementSupervision || lawEnforcementSupervisionType =='archivesCaseSupervision'">
         <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('case_handle_documentForm')">文书<br>列表</div>
         <div v-else>文书<br>列表</div>
       </el-menu-item>
-      <el-menu-item index="deliverReceiptForm" :disabled = "disabledBeforeEstablish">
+      <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish" v-show="IsLawEnforcementSupervision && lawEnforcementSupervisionType!=='archivesCaseSupervision'">
+        <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('documentForm_supervision')" @click="mouseenterShowEmit('documentForm_supervision')">文书<br>列表</div>
+        <div v-else>文书<br>列表</div>
+      </el-menu-item>
+      <el-menu-item index="deliverReceiptForm" :disabled = "disabledBeforeEstablish" v-show="!IsLawEnforcementSupervision || lawEnforcementSupervisionType =='archivesCaseSupervision'">
         <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('deliverReceiptForm')" @click="goTo('case_handle_deliverReceiptForm')">送达<br>回证</div>
         <div v-else>送达<br>回证</div>
       </el-menu-item>
+      <el-menu-item index="deliverReceiptForm" :disabled = "disabledBeforeEstablish" v-show="IsLawEnforcementSupervision && lawEnforcementSupervisionType!=='archivesCaseSupervision'">
+        <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('deliverReceiptForm_supervision')" @click="mouseenterShowEmit('deliverReceiptForm_supervision')">送达<br>回证</div>
+        <div v-else>送达<br>回证</div>
+      </el-menu-item>
+
       <el-menu-item index="evidenceForm" >
         <div @mouseenter="mouseenterShowEmit('evidenceForm')" @click="goTo('case_handle_evidenceForm')">证据<br>目录</div>
       </el-menu-item>
@@ -31,6 +40,18 @@
         <div v-if="!disabledArchiveCatalogue" @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('case_handle_archiveCatalogueDetail')">卷宗<br>目录</div>
         <div v-else>卷宗<br>目录</div>
        </el-menu-item>
+      <el-menu-item index="lawEnforcementSupervision_supervisionRecord" v-show="IsLawEnforcementSupervision && lawEnforcementSupervisionType!=='archivesCaseSupervision'" @click="goTo('lawEnforcementSupervision_supervisionRecord')">
+        督办<br>记录
+      </el-menu-item>
+      <el-menu-item index="lawEnforcementSupervision_caseFileList" v-show="lawEnforcementSupervisionType =='majorCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
+        重大案件<br>送报材料
+      </el-menu-item>
+      <el-menu-item index="lawEnforcementSupervision_caseFileList" v-show="lawEnforcementSupervisionType =='adminCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
+        行政复议<br>备案材料
+      </el-menu-item>
+      <el-menu-item index="lawEnforcementSupervision_archivesReviewResult" v-show="lawEnforcementSupervisionType =='archivesCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
+        评查<br>打分
+      </el-menu-item>
       <!-- <el-menu-item index="10" class="top" @click="scrollToTop">
         置顶
       </el-menu-item> -->
@@ -50,6 +71,10 @@
     <documentFormRef ref="documentFormRef"></documentFormRef>
      <!-- 送达回证列表 -->
     <deliverReceiptFormRef ref="deliverReceiptFormRef"></deliverReceiptFormRef>
+    <!--执法监督 文书列表 -->
+    <documentFormSupervision ref="documentFormSupervisionRef"></documentFormSupervision>
+    <!--执法监督 送达回证 -->
+    <deliverReceiptFormSupervision ref="deliverReceiptFormSupervisionRef"></deliverReceiptFormSupervision>
   </div>
 
 </template>
@@ -64,6 +89,8 @@ import deliverReceiptFormRef from "@/page/caseHandle/case/form/deliverReceiptFor
 import {
   queryFlowBycaseIdApi,
 } from "@/api/caseHandle";
+import documentFormSupervision from "@/page/lawEnforcementSupervision/components/documentFormSupervision";
+import deliverReceiptFormSupervision from "@/page/lawEnforcementSupervision/components/deliverReceiptFormSupervision";
 export default {
   data(){
     return{
@@ -75,12 +102,14 @@ export default {
     }
   },
   props:['activeIndex'],
-  computed: { ...mapGetters(["caseApproval",'caseId','caseHandle']) },
+  computed: { ...mapGetters(["caseApproval",'caseId','caseHandle','IsLawEnforcementSupervision','lawEnforcementSupervisionType']) },
   components: {
     archiveCatalogue,
     evidenceCatalogue,
     documentFormRef,
-    deliverReceiptFormRef
+    deliverReceiptFormRef,
+    documentFormSupervision,
+    deliverReceiptFormSupervision,
   },
   methods: {
     goToInfoPage(){
@@ -130,6 +159,14 @@ export default {
       if(type == 'evidenceForm'){
         this.$refs.evidenceCatalogueRef.showModal();
       }
+      //执法监督文书列表
+      if(type == 'documentForm_supervision'){
+        this.$refs.documentFormSupervisionRef.showModal();
+      }
+      //执法监督送达回证
+      if(type == 'deliverReceiptForm_supervision'){
+        this.$refs.deliverReceiptFormSupervisionRef.showModal();
+      }
 
     },
     //关掉其他目录弹窗
@@ -138,6 +175,8 @@ export default {
         this.$refs.evidenceCatalogueRef.closeDialog();
         this.$refs.documentFormRef.closeDialog();
         this.$refs.deliverReceiptFormRef.closeDialog();
+        this.$refs.documentFormSupervisionRef.closeDialog();
+        this.$refs.deliverReceiptFormSupervisionRef.closeDialog();
     },
     getEvidence(){
       this.$emit("getEvidenceEmit");

@@ -161,7 +161,7 @@ export default {
             let isCase = false;
             let name = '';
             // debugger;
-            if (to.name.indexOf('case_handle_') > -1 && this.caseHandle.caseNumber &&this.caseHandle.caseNumber != "案件") {
+            if ((to.name.indexOf('case_handle_') > -1 || to.name.indexOf('lawEnforcementSupervision_') > -1) && this.caseHandle.caseNumber &&this.caseHandle.caseNumber != "案件") {
                 //信息查验需要直接显示title
                 if(to.meta.isNotCase){
                     tabTitle = this.$route.meta.title;

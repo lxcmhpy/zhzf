@@ -421,7 +421,7 @@
             type="primary"
             @click="continueHandle"
             :disabled="!canGoNextLink"
-            v-if="!this.$route.params.isComplete"
+            v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision"
           >
             <svg
               t="1577515608465"
@@ -446,12 +446,12 @@
             type="primary"
             @click="submitCaseDoc(1)"
             :disabled="canGoNextLink"
-            v-if="!this.$route.params.isComplete"
+            v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision"
           >
             <i class="iconfont law-save"></i>
             <br />保存
           </el-button>
-          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete">
+          <el-button type="primary" @click="backBtn" v-if="this.$route.params.isComplete || IsLawEnforcementSupervision">
             <i class="iconfont law-back"></i>
             <br />返回
           </el-button>
@@ -569,7 +569,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["caseId"])
+    ...mapGetters(["caseId",'IsLawEnforcementSupervision'])
   },
   mixins: [mixinGetCaseApiList],
   inject: ["reload"],
