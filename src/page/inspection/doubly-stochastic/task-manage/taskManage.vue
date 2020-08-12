@@ -60,7 +60,7 @@
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod1(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod1(scope.row)" type="text">查看详情</el-button>
+              <el-button @click="viewMethod(scope.row)" type="text">查看详情</el-button>
               <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -88,7 +88,7 @@
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod2(scope.row)" type="text">查看详情</el-button>
+              <el-button @click="viewMethod2(scope.row)" type="text">查看详情</el-button>
               <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -98,7 +98,7 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
       <el-dialog :title='dialogStatus+"省交通运输厅领域任务"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
-        <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
+        <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm" :disabled="!eidtFlag">
           <el-row>
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
@@ -236,7 +236,7 @@
         </div>
       </el-dialog>
       <el-dialog :title='dialogStatus2+"省市场监管领域任务"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
-        <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
+        <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2" :disabled="eidtFlag">
           <el-row>
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
@@ -411,6 +411,7 @@ export default {
       addForm2: {},
       dialogFormVisible: false,
       dialogFormVisible2: false,
+      eidtFlag: '',
       formLabelWidth: '100px',
       dialogStatus: '',
       dialogStatus2: '',
@@ -662,6 +663,35 @@ export default {
       this.dialogFormVisible2 = true
     },
     editMethod1(row) {
+      this.eidtFlag = true;
+      row.timeList = []
+      if (row.taskEndTime && row.taskStartTime) {
+        row.timeList[0] = row.taskStartTime
+        row.timeList[1] = row.taskEndTime
+      }
+      console.log(row,typeof(row.checkMode))
+      row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
+      this.editMethod(row)
+    },
+    viewMethod(row) {
+      this.eidtFlag = false;
+      let data=JSON.parse(JSON.stringify(row))
+      data.timeList = []
+      if (data.taskEndTime && data.taskStartTime) {
+        data.timeList[0] = row.taskStartTime
+        data.timeList[1] = row.taskEndTime
+      }
+      console.log(data,typeof(data.checkMode))
+      data.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      data.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      data.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
+      this.editMethod(data)
+    },
+    // 修改
+    editMethod2(row) {
+      this.eidtFlag = true;
       row.timeList = []
       if (row.taskEndTime && row.taskStartTime) {
         row.timeList[0] = row.taskStartTime
@@ -670,10 +700,12 @@ export default {
       row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
       row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
       row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
-      this.editMethod(row)
+      this.addForm2 = JSON.parse(JSON.stringify(row))
+      this.dialogStatus2 = '修改'
+      this.dialogFormVisible2 = true
     },
-    // 修改
-    editMethod2(row) {
+    viewMethod2(row) {
+      this.eidtFlag = false;
       row.timeList = []
       if (row.taskEndTime && row.taskStartTime) {
         row.timeList[0] = row.taskStartTime
@@ -709,9 +741,9 @@ export default {
         searchTaskDataApi(data).then(
           res => {
             if (res.data) {
-              this.$set(_this.addForm, `checkBasis`, res.data.checkBasis||'');
-              this.$set(_this.addForm, `checkContent`, res.data.checkContent||'');
-              this.$set(_this.addForm, `checkSubject`, res.data.checkSubject||'');
+              this.$set(_this.addForm, `checkBasis`, res.data.checkBasis || '');
+              this.$set(_this.addForm, `checkContent`, res.data.checkContent || '');
+              this.$set(_this.addForm, `checkSubject`, res.data.checkSubject || '');
             }
           },
           error => {
@@ -724,9 +756,9 @@ export default {
         searchTaskDataApi(data).then(
           res => {
             if (res.data) {
-              this.$set(_this.addForm2, `checkBasis`, res.data.checkBasis||'');
-              this.$set(_this.addForm2, `checkContent`, res.data.checkContent||'');
-              this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject||'');
+              this.$set(_this.addForm2, `checkBasis`, res.data.checkBasis || '');
+              this.$set(_this.addForm2, `checkContent`, res.data.checkContent || '');
+              this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject || '');
             }
           },
           error => {

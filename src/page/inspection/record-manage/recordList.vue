@@ -14,11 +14,11 @@
                   <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateName"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="记录类型" prop='title'>
-                <!-- <el-input v-model="searchForm.title"></el-input> -->
-                <el-select v-model="searchForm.title" placeholder="请选择">
+              <el-form-item label="模板标题" prop='title'>
+                <el-input v-model="searchForm.title" placeholder="请输入模板名称"></el-input>
+                <!-- <el-select v-model="searchForm.title" placeholder="请选择">
                   <el-option v-for="(item,index) in recordTitleList" :key="index" :label="item" :value="item"></el-option>
-                </el-select>
+                </el-select> -->
               </el-form-item>
               <el-form-item label="状态" prop='status'>
                 <el-select v-model="searchForm.status" placeholder="请选择" @change="changStatus">
@@ -62,7 +62,7 @@
           </el-table-column>
           <el-table-column prop="createTime" label="记录时间" align="center"></el-table-column>
           <el-table-column prop="domain" label="业务领域" align="center"></el-table-column>
-          <el-table-column prop="title" label="记录类型" align="center"></el-table-column><!-- 显示模板标题 -->
+          <el-table-column prop="title" label="模板标题" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="createUser" label="记录人" align="center"></el-table-column>
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">

@@ -253,15 +253,15 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       };
-      getAllRandomObjectApi(data).then(
-        res => {
-          console.log(res)
-          this.tableData = res.data.records
-          this.totalPage = res.data.total
-        },
-        error => {
-          // reject(error);
-        })
+      // getAllRandomObjectApi(data).then(
+      //   res => {
+      //     console.log(res)
+      //     this.tableData = res.data.records
+      //     this.totalPage = res.data.total
+      //   },
+      //   error => {
+      //     // reject(error);
+      //   })
       this.getPageList("getAllRandomObject", data);
 
     },

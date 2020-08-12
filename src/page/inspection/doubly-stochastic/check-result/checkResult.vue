@@ -11,7 +11,7 @@
               <el-form-item label="抽查主体" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
-              <el-form-item label="检查类型" prop='checkType'>
+              <el-form-item label="检查类型" prop='checkType' v-if="searchForm.taskArea=='省交通运输厅领域'">
                 <el-input v-model="searchForm.checkType"></el-input>
               </el-form-item>
             </el-form>
@@ -29,16 +29,10 @@
         <div class="search" style="width:100%">
           <el-form :inline="true">
             <el-form-item label="任务领域" prop='taskArea'>
-              <el-select v-model="searchForm.taskArea" placeholder="请选择">
+              <el-select v-model="searchForm.taskArea" placeholder="请选择" @change="resetSearchData('searchForm')">
                 <el-option label="省交通运输厅领域" value="省交通运输厅领域"></el-option>
                 <el-option label="省市场监管领域" value="省市场监管领域"></el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item v-if="searchForm.taskArea=='省交通运输厅领域'">
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod">新增</el-button>
-            </el-form-item>
-            <el-form-item v-if="searchForm.taskArea=='省市场监管领域'">
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="addMethod2">新增</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -47,22 +41,30 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column prop="checkType" label="任务名称" align="center"></el-table-column>
-          <el-table-column prop="itemType" label="对象名称" align="center"></el-table-column>
-          <el-table-column prop="itemType" label="项目名称" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
-          <el-table-column prop="itemType" label="检查类型" align="center"></el-table-column>
+          <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
+          <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
+          <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
+          <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
+          <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
-          <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
-          <el-table-column prop="checkRange" label="检查状态" align="center"></el-table-column>
-          <el-table-column prop="checkRange" label="检查评价" align="center"></el-table-column>
-          <el-table-column prop="checkRange" label="检查结果" align="center"></el-table-column>
+          <el-table-column prop="checkStatus" label="检查状态" align="center">
+            <template slot-scope="scope">
+              {{scope.row.checkStatus==0?'未检查':'已检查'}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="checkEvaluate" label="检查评价" align="center"></el-table-column>
+          <el-table-column prop="checkResult" label="检查结果" align="center">
+            <template slot-scope="scope">
+              {{scope.row.checkResult}}
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text">附件管理</el-button>
@@ -78,7 +80,6 @@
           <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
-          <!-- 字段 -->
           <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
           <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column><!-- 显示模板标题 -->
@@ -88,9 +89,17 @@
               {{scope.row.taskStartTime}}-{{scope.row.taskEndTime}}
             </template>
           </el-table-column>
-          <el-table-column prop="checkRange" label="检查状态" align="center"></el-table-column>
-          <el-table-column prop="checkRange" label="检查评价" align="center"></el-table-column>
-          <el-table-column prop="checkRange" label="检查结果" align="center"></el-table-column>
+          <el-table-column prop="checkStatus" label="检查状态" align="center">
+            <template slot-scope="scope">
+              {{scope.row.checkStatus==0?'未检查':'已检查'}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="checkEvaluate" label="检查评价" align="center">
+            <template slot-scope="scope">
+              {{scope.row.checkEvaluate}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="checkResult" label="检查结果" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text">附件管理</el-button>
@@ -102,9 +111,9 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog title="上传附件" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+      <el-dialog title="上传附件" :visible.sync="dialogFormVisible" @close="resetFileForm()">
         <div class="search-btns" style="margin-bottom:20px">
-          <el-upload :show-file-list="false" class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" multiple :limit="3" :file-list="fileList">
+          <el-upload accept=".pdf" :show-file-list="false" class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" multiple :limit="3" :file-list="fileList">
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
         </div>
@@ -139,29 +148,28 @@
         <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
           <el-row>
             <el-col :span="12">
-              <el-form-item label="检查人员" prop="taskName">
-                <el-select v-model="addForm2.taskName" placeholder="请选择">
-                  <el-option v-for="item in optionsRWMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
+              <el-form-item label="检查人员" prop="matchPerson">
+                <el-input v-model="addForm2.matchPerson" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="检查专家" prop="checkItem">
-                <el-select v-model="addForm2.checkItem" placeholder="请选择">
-                  <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
-                </el-select>
+              <el-form-item label="检查专家" prop="matchExpert">
+                <el-input v-model="addForm2.matchExpert" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="检查评价" prop="checkSubject">
-                <el-input v-model="addForm2.checkSubject" :disabled="true" placeholder="选择检查任务名称后自动带出"></el-input>
+              <el-form-item label="检查评价" prop="checkEvaluate">
+                <!-- <el-input v-model="addForm2.checkEvaluate"></el-input> -->
+                <el-select v-model="addForm2.checkEvaluate" placeholder="请选择">
+                  <el-option v-for="item in optionsJCPJ" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="抽查结果" prop="checkMode">
-                <el-select v-model="searchForm.checkMode" placeholder="请选择">
+              <el-form-item label="抽查结果" prop="checkResult">
+                <el-select v-model="addForm2.checkResult" placeholder="请选择">
                   <el-option label="合格" value="合格"></el-option>
                   <el-option label="不合格" value="不合格"></el-option>
                 </el-select>
@@ -170,20 +178,20 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="检查开始时间" prop="operatePerson">
-                <el-date-picker v-model="addForm2.operatePerson" type="date" value-format="yyyy-MM-dd">
+              <el-form-item label="检查开始时间" prop="checkStartTime">
+                <el-date-picker v-model="addForm2.checkStartTime" type="date" value-format="yyyy-MM-dd">
                 </el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="检查结束时间" prop="supervisePerson">
-                <el-date-picker v-model="addForm2.operatePerson" type="date" value-format="yyyy-MM-dd">
+              <el-form-item label="检查结束时间" prop="checkEndTime">
+                <el-date-picker v-model="addForm2.checkEndTime" type="date" value-format="yyyy-MM-dd" @blur="handleTimestamp">
                 </el-date-picker>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="评价内容" prop="remark">
-            <el-input v-model="addForm2.remark"></el-input>
+          <el-form-item label="评价内容" prop="evaluateContent">
+            <el-input v-model="addForm2.evaluateContent"></el-input>
           </el-form-item>
         </el-form>
         <el-table :data="fileList" stripe style="width: 100%" height="100%">
@@ -198,7 +206,7 @@
         </el-table>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('addForm2',1)">确定</el-button>
+          <el-button type="primary" @click="submitForm2('addForm2',1)">确定</el-button>
         </div>
       </el-dialog>
       <el-dialog :visible.sync="pdfVisible" :close-on-click-modal="false" width="800px" append-to-body>
@@ -214,7 +222,10 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById ,getRandomResultByPage} from "@/api/inspection";
+import {
+  addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById, getRandomResultByPage,
+  addCheckResultApi, getCheckResultByIdApi, getCheckResultByTwoIdApi, getCheckResultByIdsApi
+} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -282,32 +293,25 @@ export default {
           { required: true, trigger: 'blur' }
         ]
       },
-      optionsZC: [],
-      optionsZZMM: [],
-      optionsZYLY: [],
-      optionsCCSX: [],
-      optionsRWMC: [],
-      optionsCCFS: [],
-      optionsSSLB: [],
-      fileList: [{
-        fileName: '测试文件.pdf',
-        storageId: '14,25762fd66a3e'
-      }],
+      optionsJCPJ: [],
+      fileList: [],
       pdfVisible: false,
-      pdfUrl: ''
+      pdfUrl: '',
+      currentData: ''
     }
   },
   methods: {
     // 查询列表时
     getTableData() {
       let data = {
-        objectName: this.searchForm.objectName,
+        taskName: this.searchForm.taskName,
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.checkType,
+        taskArea: this.searchForm.taskArea,
         current: this.currentPage,
         size: this.pageSize,
       };
-      this.getPageList("getAllTask", data);
+      this.getPageList("getCheckResultByPage", data);
       // this.tableData = [{}]
     },
     // 选择数据
@@ -316,17 +320,18 @@ export default {
       console.log('multipleSelection', this.multipleSelection)
     },
 
+    resetFileForm() {
+      this.fileList = []
+    },
     resetForm(formName) {
       //   this.$refs[formName].resetFields();
       //   this.searchForm.defaultDisplay = true
-      //   // debugger
       //   this.getTableData()
     },
 
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
-      // debugger
       this.getTableData()
     },
     submitForm(formName, type) {
@@ -335,7 +340,7 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.addForm.taskStatus = '保存'
-            addTaskApi(this.addForm).then(
+            addCheckResultApi(this.addForm).then(
               res => {
                 console.log(res)
                 if (res.code == 200) {
@@ -378,13 +383,26 @@ export default {
 
     },
     submitForm2(formName, type) {
-      this.addForm.taskArea = '市场领域检查事项'
+      // this.addForm2.taskId = this.addForm2.id
+      // this.addForm2.id = ''
+      console.log('task', this.addForm2)
+      console.log('checkResult', this.addForm2.checkResult)
+      let data = {
+        checkEndTime: this.addForm2.checkEndTime,
+        checkEvaluate: this.addForm2.checkEvaluate,
+        checkResult: this.addForm2.checkResult,
+        checkStartTime: this.addForm2.checkStartTime,
+        evaluateContent: this.addForm2.evaluateContent,
+        extractResultId: this.addForm2.extractResultId,
+        taskId: this.addForm2.id,
+        id: this.addForm2.checkResultId
+      }
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.addForm.taskStatus = '保存'
+            this.addForm2.taskStatus = '保存'
 
-            addTaskApi(this.addForm).then(
+            addCheckResultApi(data).then(
               res => {
                 console.log(res)
                 if (res.code == 200) {
@@ -392,9 +410,11 @@ export default {
                     type: "success",
                     message: res.msg
                   });
-                  this.dialogFormVisible = false
+                  this.dialogFormVisible2 = false
                   this.currentPage = 1;
                   this.getTableData()
+                } else {
+                  this.$message({ type: "error", message: res.msg });
                 }
               },
               error => {
@@ -432,28 +452,43 @@ export default {
     // 添加-弹窗
     addMethod1() {
       this.addForm.checkDomain = this.searchForm.taskArea
-
       this.addMethod()
     },
     // 添加-弹窗
     addMethod2() {
       this.addForm.checkDomain = this.searchForm.taskArea
-      this.dialogStatus2 = '新增'
       this.dialogFormVisible2 = true
     },
     // 修改
     editMethod2(row) {
+      this.currentData = row
       this.getByMlCaseId(row)
-      debugger
       this.dialogFormVisible = true
     },
     checkMethod(row) {
+      let _this = this
       this.addForm2 = JSON.parse(JSON.stringify(row))
-      this.dialogStatus2 = '修改'
+      console.log(this.addForm2)
+      getCheckResultByIdApi(this.addForm2.checkResultId).then(
+        // upload(fd).then(
+        res => {
+          if (res.code == 200) {
+            // _this.addForm2.evaluateContent=res.data.evaluateContent||''
+            this.$set(_this.addForm2, 'evaluateContent', res.data.evaluateContent)
+            this.$set(_this.addForm2, 'checkEndTime', res.data.checkEndTime)
+            this.$set(_this.addForm2, 'checkStartTime', res.data.checkStartTime)
+            this.fileList = res.data.fileList || ''
+          }
+        },
+        error => {
+          console.log(error)
+        }
+      )
       this.dialogFormVisible2 = true
     },
     viewMethod() { },
     delFileMethod(storageId) {
+      let _this = this
       this.$confirm('确认删除？', "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -466,6 +501,7 @@ export default {
                 type: "success",
                 message: res.msg
               });
+              _this.getByMlCaseId(_this.currentData)
             }
           },
           error => {
@@ -497,7 +533,6 @@ export default {
       getFileStreamByStorageIdApi(storageId).then(res => {
         // getFileStreamByStorageIdApi('12,13ac7d04e13f').then(res=>{
 
-        console.log(res);
         this.getObjectURL(res);
       }).catch(err => {
         console.log(err);
@@ -525,13 +560,49 @@ export default {
       this.pdfUrl = url;
       this.pdfVisible = true
     },
+    handleChange(file, fileList) {
+      const fileIndex = fileList.findIndex((item) => item.uid === file.uid);
+      const isGt2M = file.size / 1024 > 10;
+      if (isGt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 10MB!",
+          type: "warning",
+        });
+        fileList.splice(fileIndex, 1);
+      }
+      if (file.raw.type != 'application/pdf') {
+        this.$message({
+          message: "请选择pdf文件!",
+          type: "warning",
+        });
+        fileList.splice(fileIndex, 1);
+      }
+
+    },
     saveFile(param) {
+      let _this = this
+      const isGt2M = param.file.size / 1024 / 1024 > 10;
+      if (isGt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 10MB!",
+          type: "warning",
+        });
+        return
+      }
+      if (param.file.type != 'application/pdf') {
+        this.$message({
+          message: "请选择pdf文件!",
+          type: "warning",
+        });
+        // fileList.splice(fileIndex, 1);
+        return
+      }
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append("userId", iLocalStroage.gets("userInfo").nickName);
       fd.append("fileName", param.file.name);
-      fd.append('caseId', '873098753842759823')//传记录id
-      fd.append('docId', '873098753842759823')//传记录id
+      fd.append('caseId', this.currentData.id)//传记录id
+      fd.append('docId', this.currentData.extractResultId)//传记录id
       uploadCommon(fd).then(
         // upload(fd).then(
         res => {
@@ -540,6 +611,7 @@ export default {
               type: "success",
               message: res.msg
             });
+            _this.getByMlCaseId(_this.currentData)
           }
         },
         error => {
@@ -551,8 +623,8 @@ export default {
     getByMlCaseId(pageDomId) {
       let _this = this
       let data = {
-        caseId: '873098753842759823',
-        docId: '873098753842759823'
+        caseId: this.currentData.id,
+        docId: this.currentData.extractResultId
       }
       getFile(data).then(
         res => {
@@ -563,8 +635,9 @@ export default {
           console.log(error);
         }
       );
-
-
+    },
+    handleTimestamp() {
+      this.$set(this.addForm2, 'checkEndTime', this.addForm2.checkEndTime)
     },
     getDrawerList(data) {
       let _this = this
@@ -572,30 +645,20 @@ export default {
         getDictListDetailByNameApi(element.name).then(
           res => {
             switch (element.option) {
-              case 1: _this.optionsRWMC = res.data; break;//任务名称
-              case 2: _this.optionsJCLX = res.data; break;//检查类型
-              case 3: _this.optionsCCFS = res.data; break;//抽查方式
-              case 4: _this.optionsCCSX = res.data; break;//抽查事项
-              case 5: _this.optionsSSLB = res.data; break;//事项类别
+              case 1: _this.optionsJCPJ = res.data; break;//检查评价
             }
           },
-
           error => {
             // reject(error);
           })
       });
-
     },
   },
   mounted() {
     this.getTableData()
     // 获取抽屉
     this.getDrawerList([
-      { name: '任务名称', option: 1 },
-      { name: '检查类型', option: 2 },
-      { name: '抽查方式', option: 3 },
-      { name: '抽查事项', option: 4 },
-      { name: '事项类别', option: 5 },
+      { name: '检查评价', option: 1 }
     ])
   }
 }

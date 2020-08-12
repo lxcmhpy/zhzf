@@ -58,7 +58,7 @@
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text">抽取</el-button>
+              <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.checkStatus==1">抽取</el-button>
               <el-button type="text" @click="viewMethod(scope.row)">查看</el-button>
             </template>
           </el-table-column>
@@ -74,8 +74,8 @@
           </el-col>
           <el-col :span="6">
             <el-button v-if="isRandomFlag" type="primary" size="medium" @click="startRandom()">开始抽取</el-button>
-            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="saveRandom()">保存抽取结果</el-button>
-            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="resetRandom()">重置</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="saveRandom()" :disabled="!isFinishFlag">保存抽取结果</el-button>
+            <el-button v-if="!isRandomFlag" type="primary" size="medium" @click="resetRandom()" :disabled="!isFinishFlag">重置</el-button>
           </el-col>
         </el-row>
         <div class="random-table-title" style="margin-top:20px">抽取结果</div>
@@ -97,26 +97,31 @@
           </el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
+          <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
+          <el-button type="primary" @click="dialogFormVisible = false">关闭</el-button>
         </div>
       </el-dialog>
       <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()">
         <el-table :data="randomResultList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
-          <el-table-column prop="personName" label="检查人员" align="center"></el-table-column>
-          <el-table-column prop="name" label="检查专家" align="center"></el-table-column>
+          <el-table-column prop="legalPerson" label="检查人员" align="center"></el-table-column>
+          <el-table-column prop="matchExpert" label="检查专家" align="center"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
+          <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submitForm('addForm')">确 定</el-button> -->
+          <el-button type="primary" @click="dialogFormVisible = false">关闭</el-button>
+
         </div>
       </el-dialog>
     </div>
   </div>
 </template>
 <script>
-import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, getExtractResultApi, addRandomResultApi } from "@/api/inspection";
+import {
+  getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, getExtractResultApi, addRandomResultApi,
+  resetRandomByIdApi, getRandomByIdApi
+} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
@@ -124,6 +129,7 @@ export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
     return {
+      // tableData:[{}],
       multipleSelection: [],
       searchForm: {
         checkSubject: "",
@@ -184,6 +190,7 @@ export default {
       isNameTrue: false,
       isPersonNameTrue: false,
       isObjectTrue: false,
+      isFinishFlag: false
     }
   },
   methods: {
@@ -316,7 +323,8 @@ export default {
       setTimeout(() => {
         // 最后显示的值
         this.randomContent = endValue;
-        this.isNameTrue = true
+        this.isNameTrue = true;
+        this.isFinishFlag = true
       }, 2100)
     },
     // 重置
@@ -327,8 +335,21 @@ export default {
       this.isNameTrue = false
       this.isPersonNameTrue = false
       this.isObjectTrue = false
+      this.isFinishFlag = false
       this.randomResult = []
       // 执行删除方法
+      resetRandomByIdApi(this.currentId).then(
+        res => {
+          if (res.code == 200) {
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
+          }
+        },
+        error => {
+          // reject(error);
+        })
     },
     getDrawerList(data) {
       let _this = this
@@ -354,9 +375,9 @@ export default {
     viewMethod(row) {
       this.addForm = JSON.parse(JSON.stringify(row))
       // 根据id查询
-      getDictListDetailByNameApi(row.id).then(
+      getRandomByIdApi(row.id).then(
         res => {
-
+          this.randomResultList = res.data
         },
         error => {
           // reject(error);
@@ -365,6 +386,9 @@ export default {
       this.currentId = row.id
     },
     resetForm() {
+      this.isFinishFlag = false;
+      this.randomContent = '';
+      this.isRandomFlag = true
       this.randomResultList = []
       this.randomList = []
     },
@@ -376,27 +400,22 @@ export default {
         legalPerson: this.randomResult[0].personName,
         matchExpert: this.randomResult[0].name,
         matchPerson: this.randomResult[0].personName,
-        projectName: this.randomResult[0].objectName,
+        objectName: this.randomResult[0].objectName,
+        projectName: this.randomResult[0].projectName,
         taskId: this.currentId,
       }
-      // data.legalPerson = this.randomResult[0].personName;
-      // data.matchExpert = this.randomResult[0].name;
-      // data.matchPerson = this.randomResult[0].personName;
-      // data.projectName = this.randomResult[0].objectName;
-      // data.taskId = this.currentId;
-
-
       addRandomResultApi(data).then(
         res => {
           if (res.code == 200) {
-
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
           }
         },
-
         error => {
           // reject(error);
         })
-
     },
   },
   mounted() {
