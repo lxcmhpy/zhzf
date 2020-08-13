@@ -332,7 +332,7 @@ export default {
     back() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
-        name: 'inspection_writeRecordInfo',
+        name: 'inspection_writeInfoRecord',
         params: {
           id: this.inspectionOrderId,
           addOrEiditFlag: 'view'
