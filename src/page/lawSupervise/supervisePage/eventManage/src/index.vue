@@ -7,7 +7,7 @@
         <el-input clearable v-model="form.eventName" placeholder="输入事件名称"></el-input>
       </el-form-item>
       <el-form-item label="是否重点事件" prop="isemphasis">
-        <el-select @change="handleIsemphasis" v-model="form.isemphasis" clearable placeholder="请选择">
+        <el-select v-model="form.isemphasis" clearable placeholder="请选择">
           <el-option label="是" :value="1"></el-option>
           <el-option label="否" :value="0"></el-option>
         </el-select>
@@ -30,7 +30,7 @@
     <!-- 按钮 -->
     <div class="eventManage-buttonList">
       <el-button @click="handleFind" type="primary" icon="el-icon-search" size="small">查询</el-button>
-      <el-button type="primary" size="small">重置</el-button>
+      <el-button @click="handleReset" type="primary" icon="el-icon-refresh-left" size="small">重置</el-button>
       <el-button @click="addEvent" type="primary" size="small">新增事件</el-button>
     </div>
 
@@ -163,13 +163,6 @@ export default {
     },
 
     /**
-     * 选择是否重点
-     */
-    handleIsemphasis(val) {
-      console.log(val)
-    },
-
-    /**
      * 选择时间
      */
     handleEventDate(val) {
@@ -187,15 +180,18 @@ export default {
      * 查询
      */
     handleFind() {
-      // let params = {
-      //   current: 1,
-      //   size: 5,
-      //   eventName: this.form.eventName,
-      //   isemphasis: this.form.isemphasis,
-      //   startDate: this.form.eventDate[0],
-      //   endDate: this.form.eventDate[0],
-      // }
       this.getData(this.form)
+    },
+
+    /**
+     * 重置
+     */
+    handleReset() {
+      this.eventDate = ''
+      this.form.eventName = ''
+      this.form.isemphasis = ''
+      this.form.startDate = ''
+      this.form.endDate = ''
     },
 
     /**
@@ -206,7 +202,6 @@ export default {
       this.$refs.dialogAssigned.dialogAssignedVisible = true
       this.$refs.dialogAssigned.form.state = row.state
       this.$refs.dialogAssigned.form.id = row.id
-      console.log(index, row)
     },
 
     /**
