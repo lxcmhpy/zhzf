@@ -157,10 +157,10 @@
               <span @click="showCaseInfo(scope.row)">{{scope.row.caseNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="zfml" label="执法领域" align="center" width="100"></el-table-column>
-          <el-table-column prop="party" label="当事人" align="center" width="150"></el-table-column>
-          <el-table-column prop="vehicleShipId" label="车船号牌" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseName" label="案由" align="center" width="100">
+          <el-table-column prop="zfml" label="执法领域" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="party" label="当事人" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="vehicleShipId" label="车船号牌" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="caseName" label="案由" align="center" min-width="100">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
                 <div slot="content" style="max-width:200px">{{scope.row.caseName}}</div>
@@ -168,12 +168,12 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="organName" label="立案机构" align="center" width="100"></el-table-column>
-          <el-table-column prop="staff" label="执法人员" align="center" width="100"></el-table-column>
-          <el-table-column prop="punishAmount" label="处罚金额" align="center" width="100"></el-table-column>
-          <el-table-column prop="isUploadImp" label="要求上传备案材料" align="center" width="100"></el-table-column>
-          <el-table-column prop="subNumber" label="督办次数" align="center" width="100"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="50">
+          <el-table-column prop="organName" label="立案机构" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="staff" label="执法人员" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="punishAmount" label="处罚金额" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="isUploadImp" label="要求上传备案材料" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="subNumber" label="督办次数" align="center" min-width="100"></el-table-column>
+          <el-table-column fixed="right" label="操作" min-width="50">
             <template slot-scope="scope">
               <el-button @click="handleCase(scope.row)" type="text">查看</el-button>
             </template>

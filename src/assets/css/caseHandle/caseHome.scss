@@ -134,8 +134,8 @@
 
         .el-radio-button__inner {
             border-radius: 0;
-            width: 90px;
-            overflow: hidden;
+            width        : 90px;
+            overflow     : hidden;
             text-overflow: ellipsis;
         }
     }
@@ -199,5 +199,19 @@
             width     : 136px;
             text-align: left;
         }
+    }
+}
+
+.warn-box {
+    width        : 20px;
+    height       : 20px;
+    border-radius: 50px;
+    color        : #fff;
+    line-height  : 20px;
+}
+
+.warn-li {
+    li {
+        list-style-type: disc;
     }
 }

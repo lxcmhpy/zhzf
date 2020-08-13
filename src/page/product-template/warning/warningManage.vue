@@ -173,9 +173,9 @@ export default {
       }
     },
     statusFormat(row) {
-      if (row.warType === '1') {
+      if (row.status == '1') {
         return '启用'
-      } else if (row.warType === '0') {
+      } else if (row.status == '0') {
         return '关闭'
       }
     },

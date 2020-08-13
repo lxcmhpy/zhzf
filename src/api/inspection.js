@@ -731,10 +731,11 @@ export function exportItemApi() {
 }
 // 添导出所有人员表数据
 export function exportPersonApi(data) {
+    data = vm.$qs.stringify(data);
     return request({
-        url: "/xzjc/randomPerson/excelExport/"+data,
+        url: "/xzjc/randomPerson/excelExport",
         method: "post",
-        // data: data,
+        data: data,
         showloading: true,
         loadingType: 'loadPart',
         responseType:'blob',

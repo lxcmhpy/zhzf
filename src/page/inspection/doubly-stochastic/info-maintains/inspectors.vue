@@ -72,7 +72,7 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, getAllPersonApi, getDictListDetailByNameApi, addMorePublicPersonApi } from "@/api/inspection";
+import { findRecordListApi, getAllPersonApi, getDictListDetailByNameApi, addMorePublicPersonApi,exportPersonApi } from "@/api/inspection";
 // import { getAllPersonApi, } from "@/api/person";
 import iLocalStroage from "@/common/js/localStroage";
 import publicInspectors from './publicInspectors.vue';
@@ -136,6 +136,7 @@ export default {
       let data = {
         // oName: iLocalStroage.gets("userInfo").organName,
         personName: this.searchForm.personName,
+        organId: iLocalStroage.gets("userInfo").organId,
         // personName: '11',
         stationStatusName: this.searchForm.stationStatusName,
         // stationStatusName: '在岗',
@@ -165,7 +166,24 @@ export default {
       this.searchForm.defaultDisplay = true
       this.getTableData()
     },
-    exportMethod() { },
+    // 导出
+    exportMethod(methodName, fileName) {
+      let data={
+        organName:iLocalStroage.gets("userInfo").organName
+      }
+      exportPersonApi(data).then(res => {
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        //其他浏览器
+        let link = document.createElement('a'); // 创建a标签
+        link.style.display = 'none';
+        link.setAttribute('download', fileName)//必须要重命名
+        let objectUrl = URL.createObjectURL(res);
+        link.href = objectUrl;
+        link.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      ).catch(err => { console.log(err) });
+    },
     importModle() { },
     downloadModle() { },
     getDrawerList(data) {
@@ -183,9 +201,11 @@ export default {
       let _this = this
       if (this.multipleSelection.length > 0) {
         this.multipleSelection.forEach(element => {
-          element.organName=iLocalStroage.gets("userInfo").
+          element.organName = iLocalStroage.gets("userInfo").organName
           // 删除是否在岗
-          this.$delete(element, 'stationStatusName')
+          if (element.stationStatusName) {
+            this.$delete(element, 'stationStatusName')
+          }
         });
         addMorePublicPersonApi(this.multipleSelection).then(
           res => {

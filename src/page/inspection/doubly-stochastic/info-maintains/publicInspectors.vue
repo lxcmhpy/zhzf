@@ -68,7 +68,7 @@
         <el-table-column prop="staffingName" label="执法人员性质" align="center"></el-table-column>
         <el-table-column prop="postName" label="职务" align="center"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="100">
           <template slot-scope="scope">
             <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
             <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
@@ -376,7 +376,8 @@ export default {
     getTableData() {
       let data = {
         personName: this.searchForm.personName,
-        workStatus: this.searchForm.workStatus,
+        stationStatusName: this.searchForm.stationStatusName,
+        // workStatus: this.searchForm.stationStatusName,
         // OName: iLocalStroage.gets("userInfo").organName,
         // oName: '固原综合执法支队',
         current: this.currentPage,
@@ -443,7 +444,10 @@ export default {
     },
     // 导出
     exportMethod(fileName) {
-      exportPersonApi(iLocalStroage.gets("userInfo").organName).then(res => {
+        let data={
+        organName:iLocalStroage.gets("userInfo").organName
+      }
+      exportPersonApi(data).then(res => {
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持
         //其他浏览器
         let link = document.createElement('a'); // 创建a标签
