@@ -44,16 +44,6 @@
                             </el-form-item>
                             </div>
                         <div class="item" v-show="isShow">
-                            <el-form-item label="单据状态" prop="status">
-                                <el-select clearable v-model="queryForm.status">
-                                    <el-option
-                                        v-for="item in statusList"
-                                        :key="item.id"
-                                        :label="item.label"
-                                        :value="item.id"
-                                    ></el-option>
-                                </el-select>
-                            </el-form-item>
                             <el-form-item label="申请日期">
                                 <el-date-picker 
                                     style='width:240px' 
@@ -70,9 +60,6 @@
                         </div>
                     </div>
                 </el-form>
-            </div>
-            <div class="tableHandle" style="margin-bottom: 10px;">
-                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
             </div>
             <div class="tablePart">
                 <el-table
@@ -99,8 +86,7 @@
                     <el-table-column label="操作" width="160">
                         <template slot-scope="scope">
                             <div style="width:160px">
-                                <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                <el-button type="text" v-if="scope.row.status==1" @click.stop @click="deleteRecord(scope.row)">删除</el-button>
+                                <el-button type="text" @click.stop @click="showDataDetail(scope.row)">审核</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -117,44 +103,18 @@
                         :total="totalPage"
                 ></el-pagination>
             </div>
-            <el-dialog
-                title="请选择业务类型"
-                :visible.sync="dialogVisible"
-                @close="dialogVisible=false"
-                :close-on-click-modal="false"
-                width="22%"
-                class="fullscreen select-bussiness-type-dialog"
-                append-to-body
-            >
-                <div class="bussiness-type-wrap">
-                    <el-button type="primary" @click="selectType('FZ')">发证申请</el-button>
-                    <el-button type="primary" @click="selectType('NS')">年审申请</el-button>
-                    <el-button type="primary" @click="selectType('GS')">挂失申请</el-button>
-                    <el-button type="primary" @click="selectType('ZX')">注销申请</el-button>
-                </div>
-            </el-dialog>
         </div>
     </div>
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
-    import { queryDeviceCertificateBill,findDeviceCertificateBillById,deleteDeviceCertificateBillById} from "@/api/device/deviceCertificateBill.js";
-    import {
-        getDrawerList,
-    } from "@/api/device/device.js";
-    import elSelectTree from '@/components/elSelectTree/elSelectTree';
+    import { queryApproveBill,findDeviceCertificateBillById} from "@/api/device/deviceCertificateBill.js";
     import iLocalStroage from '@/common/js/localStroage';
     export default {
         data() {
             let _this = this;
             return {
                 visible:false,
-                dialogVisible:false,
-                formReadOnly:false,
-                orgTreeProps: {
-                    label: "label",
-                    value: "id"
-                },
                 queryForm: {
                     billType:'',
                     billNo:'',
@@ -166,7 +126,6 @@
                 currentPage: 1, //当前页
                 pageSize: 10, //pagesize
                 totalPage: 0, //总数
-                title:"新增证件管理单",
                 statusList:[
                     {id:1,label:'未申请'},
                     {id:2,label:'申请中'},
@@ -197,21 +156,8 @@
             };
         },
         components: {
-            elSelectTree,
         },
         methods: {
-            // 选择业务类型
-            selectType(val){
-                let routerData = {
-                    billType: val,
-                    billTypeName:this.formatBillType({billType:val}),
-                    url: this.$route.name,
-                    data:{billDate:new Date().format('yyyy-MM-dd'),billType:val},
-                    isEdit:true,
-                    isApprove:false
-                };
-                this.$router.push({ name: "applyManage", params: routerData });
-            },
             formatStatus(row){
                 let data = this.statusList.filter(p=>p.id==row.status)
                 if(data && data.length>0){
@@ -238,14 +184,10 @@
                 this.queryForm.size=this.pageSize
                 this.queryForm.current=this.currentPage
                 let _this = this
-                queryDeviceCertificateBill(this.queryForm).then(res => {
+                queryApproveBill(this.queryForm).then(res => {
                     _this.totalPage = res.data.total;
                     _this.tableData = res.data.records;
                 });
-            },
-            //新增
-            addData() {
-                this.dialogVisible=true
             },
             //查看详情
             showDataDetail(row){
@@ -281,7 +223,7 @@
                             data:res.data,
                             imageList:imageList,
                             isEdit:false,
-                            isApprove:false,
+                            isApprove:true,
                             status:status,
                             pdfId:pdfId
                         };
@@ -291,32 +233,6 @@
                         console.log(err);
                     }
                 );
-            },
-            // 表格id删除
-            deleteRecord(row) {
-                let _this = this
-                this.$confirm("确认删除该"+this.formatBillType(row)+"?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                .then(() => {
-                    deleteDeviceCertificateBillById(row.id).then(
-                        res => {
-                            if(res.data==true){
-                                _this.$message({type: "success",message: "删除成功!"});
-                                _this.queryData(1)
-                            }else{
-                                _this.$message({type: "error",message: "删除失败!"});
-                            }
-                        },
-                        err => {
-                            console.log(err);
-                        }
-                    );
-                })
-                .catch(() => {
-                });
             },
             //关闭弹窗的时候清除数据
             init(){
