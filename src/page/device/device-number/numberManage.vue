@@ -85,6 +85,7 @@
                   :options="tableDataTree"
                   :accordion="true"
                   :props="{label: 'label', value: 'id'}"
+                  :value="form.organizationId"
                   @getValue="hindleChanged"
                 ></elSelectTree>
                 <el-input style="display:none" v-model="form.organizationId"></el-input>

@@ -91,7 +91,7 @@ export default {
   methods: {
     async getFiles() {
       let _this = this;
-      let res = await getFileByCaseId({ caseId: this.$route.params.id });
+      let res = await getFileByCaseId({ caseId: this.$route.query.id });
       debugger;
       res.data.forEach((item) => {
         let flag = item.docId.charAt(item.docId.length - 1) + "";

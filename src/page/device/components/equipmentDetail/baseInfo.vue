@@ -373,7 +373,7 @@ export default {
               });
               _this.form = res.data;
               _this.startEdit = false;
-              _this.$route.params.id = res.data.id;
+              _this.$route.query.id = res.data.id;
             },
             (err) => {
               console.log(err);
@@ -400,8 +400,8 @@ export default {
   mounted() {
     let organId = iLocalStroage.gets("userInfo").organId;
     this.getSelfTree(organId);
-    if (this.$route.params.id !== "add") {
-      this.getData(this.$route.params.id);
+    if (this.$route.query.id !== "add") {
+      this.getData(this.$route.query.id);
     } else {
       this.startEdit = true;
     }

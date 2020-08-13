@@ -144,7 +144,7 @@ export default {
       let _this = this;
       this.$refs["inspection"].validate((valid) => {
         if (valid) {
-          _this.inspection.deviceId = _this.$route.params.id;
+          _this.inspection.deviceId = _this.$route.query.id;
           saveAnnual(_this.inspection).then(
             (res) => {
               _this.$message({
@@ -224,7 +224,7 @@ export default {
     },
     //获取数据
     async getData() {
-      let res = await findAnnualByVehicleId(this.$route.params.id);
+      let res = await findAnnualByVehicleId(this.$route.query.id);
       this.records = res.data;
     },
   },

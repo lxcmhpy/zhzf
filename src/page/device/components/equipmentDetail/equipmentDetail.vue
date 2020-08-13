@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     show: function () {
-      if (this.$route.params.id == "add") {
+      if (this.$route.query.id == "add") {
         return false;
       } else {
         return true;
