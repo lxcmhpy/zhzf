@@ -231,7 +231,7 @@ export default {
     // 查看
     viewRecord(row) {
       this.$router.push({
-        name: 'inspection_writeRecordInfo',
+        name: 'inspection_writeInfoRecord',
         params: row
       });
     },
@@ -258,7 +258,7 @@ export default {
       //         // 写记录
       //         // row.addOrEiditFlag = 'edit'
       this.$router.push({
-        name: 'inspection_writeRecordInfo',
+        name: 'inspection_writeInfoRecord',
         params: { id: row.id, addOrEiditFlag: addOrEiditFlag }
         // query: { id: row.id, addOrEiditFlag: addOrEiditFlag }
       });
