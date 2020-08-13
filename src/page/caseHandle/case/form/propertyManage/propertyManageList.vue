@@ -319,6 +319,9 @@ export default {
   },
 };
 </script>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
+<style>
+.el-table__body tr.current-row > td {
+  background-color: #b8dafa !important;
+}
 </style>
 
