@@ -24,11 +24,29 @@
 
 <script>
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
-import { organTreeByCurrUser, getOrganTree } from "@/api/lawSupervise.js";
 import { assigned } from "@/api/eventManage";
 export default {
+  inject: ['page'],
   components: {
     ElSelectTree
+  },
+  props: {
+    config: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  computed: {
+    // 机构数据
+    treeOptions() {
+      return this.config.treeOptions
+    },
+    // 人员数据
+    peopleOptions() {
+      return this.config.peopleOptions
+    }
   },
   data() {
     return {
@@ -39,77 +57,14 @@ export default {
         disposeOrgan: '', // 选择的机构 id
         disposePerson: '', // 选择的人员 id
       },
-      treeOptions: [], // 机构数据
       treeProps: {
         value: "id", // ID字段名
         label: "label", // 显示名称
         children: "children", // 子级字段名
-      }, // 机构配置
-      peopleOptions: [], // 人员数据
+      },
     }
   },
   methods: {
-    /**
-     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶子节点
-     */
-    addNode(arr) {
-      let myNode = [
-        { label: '执法人员', type: 0, children: [] },
-        { label: '执法车辆', type: 2, children: [] },
-        { label: '执法船舶', type: 3, children: [] },
-      ]
-      arr.map(item => {
-        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
-          myNode.map(myNodeItem => {
-            // 给自定义节点添加 pid 属性， 值为父节点的 id
-            myNodeItem.pid = item.id
-          })
-          // 在 children 里添加自定义节点
-          item.children = myNode.concat(item.children)
-          // 递归调用
-          this.addNode(item.children)
-        }
-      })
-      return arr
-    },
-
-    /**
-     * 获取数据
-     */
-    getTree() {
-      organTreeByCurrUser().then(res => {
-        if(res.code === 200) {
-          return res.data
-        } else {
-          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
-        }
-      }).then(data => {
-        this.treeOptions = data
-        // this.treeOptions = this.addNode(data)
-
-        /**
-         * 单独获取执法人员的数据
-         */
-        let param = {
-          organId: data[0].id,
-          type: 0
-        }
-        getOrganTree(param).then(res => {
-          if(res.code === 200) {
-            return res.data
-          } else {
-            throw new Error("getOrganTree()::::::接口数据错误")
-          }
-        }).then(data => {
-          this.peopleOptions = data.map(item => {
-            item.label = item.nickName
-            item.value = item.id
-            return item
-          })
-        })
-      })
-    },
-
     /**
      * 获取选择到的人员
      */
@@ -137,14 +92,11 @@ export default {
             type: "success"
           })
         } else {
-          tis.$message.error(res.msg)
+          this.$message.error(res.msg)
         }
       })
     }
   },
-  created() {
-    this.getTree()
-  }
 }
 </script>
 

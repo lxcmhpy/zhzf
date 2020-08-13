@@ -21,6 +21,19 @@
         <el-radio v-model="form.iscoordinator" :label='1'>是</el-radio>
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
+      <el-form-item label="机构" label-width="60px">
+        <ElSelectTree @getValue="getValue" :options="treeOptions" :props="treeProps" />
+      </el-form-item>
+      <el-form-item label="人员" label-width="60px">
+        <el-select @change="handlePeopleChange" v-model="form.disposePerson" placeholder="请选择">
+          <el-option
+            v-for="item in peopleOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="事件附件" :label-width="formLabelWidth">
         <el-upload
           action="#"
@@ -97,21 +110,48 @@
     <div slot="footer" class="dialog-footer">
       <el-button v-if="disabled" type="primary" @click="dialogFormVisible = false">关 闭</el-button>
       <el-button v-if="!disabled" @click="dialogFormVisible = false">取 消</el-button>
-      <el-button v-if="!disabled" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <el-button v-if="!disabled" type="primary" @click="handleSubmit">确 定</el-button>
     </div>
   </el-dialog>
 </template>
 
-<script>
+<script>addUpdate
+import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
+import { addUpdate } from "@/api/eventManage";
 export default {
+  inject: ['page'],
   props: {
     title: {
       type: String,
       default: ""
     },
+    config: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  computed: {
+    // 机构数据
+    treeOptions() {
+      return this.config.treeOptions
+    },
+    // 人员数据
+    peopleOptions() {
+      return this.config.peopleOptions
+    }
+  },
+  components: {
+    ElSelectTree
   },
   data() {
     return {
+      treeProps: {
+        value: "id", // ID字段名
+        label: "label", // 显示名称
+        children: "children", // 子级字段名
+      },
       disabled: false,
       formLabelWidth: '120px',
       dialogFormVisible: false,
@@ -121,7 +161,8 @@ export default {
         eventDate: '',
         isemphasis: 1,
         iscoordinator: 1,
-
+        disposeOrgan: '', // 选择的机构 id
+        disposePerson: '', // 选择的人员 id
       },
       dialogImageUrl: '',
       dialogVisible: false,
@@ -129,6 +170,39 @@ export default {
     }
   },
   methods: {
+    /**
+     * 获取选择到的人员
+     */
+    handlePeopleChange(val) {
+      console.log(val)
+    },
+
+    /**
+     * 获取选择到的机构
+     */
+    getValue(val) {
+      this.form.disposeOrgan = val
+      console.log(val)
+    },
+
+    /**
+     * 提交表单
+     */
+    handleSubmit() {
+      addUpdate(this.form).then(res => {
+        if(res.code === 200) {
+          this.dialogFormVisible = false
+          this.$message({
+            message: res.msg,
+            type: "success"
+          })
+          this.page.initPage()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+
     handleRemove(file) {
       console.log(file);
     },

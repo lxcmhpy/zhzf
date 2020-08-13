@@ -31,7 +31,7 @@
     <div class="eventManage-buttonList">
       <el-button @click="handleFind" type="primary" icon="el-icon-search" size="small">查询</el-button>
       <el-button @click="handleReset" type="primary" icon="el-icon-refresh-left" size="small">重置</el-button>
-      <el-button @click="addEvent" type="primary" size="small">新增事件</el-button>
+      <el-button @click="addEvent" type="primary" icon="el-icon-plus" size="small">新增事件</el-button>
     </div>
 
     <!-- 表格 -->
@@ -76,12 +76,16 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              type="primary"
+              type="text"
               @click="handleAssigned(scope.$index, scope.row)">指派</el-button>
             <el-button
               size="mini"
-              type="primary"
+              type="text"
               @click="handleDetails(scope.$index, scope.row)">详情</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -101,10 +105,10 @@
     </div>
 
     <!-- 详情和新增弹窗 -->
-    <Dialog ref="dialog" :title="title" />
+    <Dialog :title="title" :config="config" ref="dialog" />
 
     <!-- 指派弹窗 -->
-    <DialogAssigned ref="dialogAssigned" />
+    <DialogAssigned :config="config" ref="dialogAssigned" />
   </div>
 </template>
 
@@ -114,15 +118,24 @@ import DialogAssigned from "./dialogAssigned.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
+  provide() {
+    return {
+      page: this
+    }
+  },
   components: {
     Dialog,
     DialogAssigned
   },
   data() {
     return {
+      config: {
+        treeOptions: [],
+        peopleOptions: []
+      },
       title: "", // 弹出框标题
       currentPage: 1,
-      total: "", // 总条数
+      total: 0, // 总条数
       eventDate: '',
       form: {
         current: 1, // 当前页
@@ -225,9 +238,17 @@ export default {
       // 禁用表单
       this.$refs.dialog.disabled = true
     },
+
+    /**
+     * 删除行
+     */
+    handleDelete(row) {
+      this.deleteEvent({id: row.id})
+    },
   },
   created() {
     this.initPage()
+    this.getTree()
   }
 }
 </script>
