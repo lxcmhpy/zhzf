@@ -1,11 +1,13 @@
 <template>
   <div class="start_draw">
-    {{randomContent}}
+
+    <a href="http://218.84.108.27:8888/zhzfxj/jsp/main/index.jsp" target="_blank">121212</a>
+    <!-- {{randomContent}}
     <ul>
       <li v-for='item in taskList' :key="item.name">{{item.name}}</li>
     </ul>
     <el-button @click="start">点击开始</el-button>
-    <el-button @click="end">点击结束</el-button>
+    <el-button @click="end">点击结束</el-button> -->
   </div>
 </template>
 <script>

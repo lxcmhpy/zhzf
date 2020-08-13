@@ -130,6 +130,7 @@ export function getHost () {
 //获取当前登录用户的信息
 export function loginOldSystemApi(data) {
   return request({
+    // url: "/zhzfxj/login",
     url: "/zhzf/login",
     method: "POST",
     data:data,

@@ -302,7 +302,6 @@ export default {
     // 选择数据
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log('multipleSelection', this.multipleSelection)
     },
 
     resetSearchData(formName) {
@@ -316,7 +315,6 @@ export default {
         if (valid) {
           addExpertApi(this.addForm).then(
             res => {
-              console.log(res)
               if (res.code == 200) {
                 this.$message({
                   type: "success",
@@ -331,7 +329,6 @@ export default {
               // reject(error);
             })
         } else {
-          console.log('error submit!!');
           return false;
         }
       });
@@ -341,7 +338,6 @@ export default {
     },
     // 导入
     importModle(param) {
-      console.log(param);
       // let currentFileId = this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);

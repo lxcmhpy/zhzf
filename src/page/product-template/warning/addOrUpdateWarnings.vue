@@ -59,7 +59,7 @@
         <el-col :span="5" v-if="addOrUpdateForm.configType!='环节配置'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
-              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.id"></el-option>
+              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
