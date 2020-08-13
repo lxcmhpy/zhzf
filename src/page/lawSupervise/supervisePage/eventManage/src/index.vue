@@ -3,17 +3,23 @@
 
     <!-- 表单 -->
     <el-form :inline="true" :model="form" class="eventManage-form">
-      <el-form-item label="事件名称" prop="lawName">
-        <el-input v-model="form.lawName" placeholder="输入法规名称"></el-input>
+      <el-form-item label="事件名称" prop="eventName">
+        <el-input v-model="form.eventName" placeholder="输入法规名称"></el-input>
       </el-form-item>
-      <el-form-item label="是否重点事件" prop="isImportant">
-        <el-input v-model="form.isImportant" placeholder="发布文号"></el-input>
+      <el-form-item label="是否重点事件" prop="isemphasis">
+        <el-select @change="handleIsemphasis" v-model="form.isemphasis" clearable placeholder="请选择">
+          <el-option label="是" :value="1"></el-option>
+          <el-option label="否" :value="0"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="事件时间" prop="eventTime">
+      <el-form-item label="事件时间" prop="eventDate">
         <el-date-picker
-          v-model="form.eventTime"
+          @change="handleEventDate"
+          :editable="false"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          v-model="form.eventDate"
           size="small"
-          type="daterange"
+          type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期">
@@ -23,7 +29,7 @@
 
     <!-- 按钮 -->
     <div class="eventManage-buttonList">
-      <el-button type="primary" icon="el-icon-search" size="small">查询</el-button>
+      <el-button @click="handleFind" type="primary" icon="el-icon-search" size="small">查询</el-button>
       <el-button type="primary" size="small">重置</el-button>
       <el-button @click="addEvent" type="primary" size="small">新增事件</el-button>
     </div>
@@ -103,9 +109,9 @@ export default {
     return {
       title: "", // 弹出框标题
       form: {
-        lawName: '',
-        isImportant: '',
-        eventTime: '',
+        eventName: '',
+        isemphasis: '',
+        eventDate: '',
       },
       tableData: []
     }
@@ -116,6 +122,35 @@ export default {
      */
     initPage() {
       let params = { current:1, size:5 }
+      this.getData(params)
+    },
+
+    /**
+     * 选择是否重点
+     */
+    handleIsemphasis(val) {
+      console.log(val)
+    },
+
+    /**
+     * 选择时间
+     */
+    handleEventDate(val) {
+      console.log(val)
+    },
+
+    /**
+     * 查询
+     */
+    handleFind() {
+      let params = {
+        current: 1,
+        size: 5,
+        eventName: this.form.eventName,
+        isemphasis: this.form.isemphasis,
+        startDate: this.form.eventDate[0],
+        endDate: this.form.eventDate[0],
+      }
       this.getData(params)
     },
 
