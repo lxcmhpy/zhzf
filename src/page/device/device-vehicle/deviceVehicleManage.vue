@@ -80,7 +80,7 @@
         </div>
       </div>
       <el-row>
-        <router-link :to="{ name: 'equipmentDetail', query: { id: 'add' }}">
+        <router-link :to="{ name: 'equipmentDetail', params: { id: 'add' }}">
           <el-button type="primary" size="medium" icon="el-icon-plus">新增</el-button>
         </router-link>
         <el-button type="primary" size="medium" icon="el-icon-delete" @click="deleteBatch">删除</el-button>
@@ -107,7 +107,7 @@
           <el-table-column prop="state" label="证件状态" align="center"></el-table-column>
           <el-table-column prop="op" label="操作" align="center" width="100">
             <template slot-scope="scope">
-              <router-link :to="{ name: 'equipmentDetail', query: { id: scope.row.id }}">
+              <router-link :to="{ name: 'equipmentDetail', params: { id: scope.row.id }}">
                 <el-button type="text" size="mini">查看</el-button>
               </router-link>
             </template>

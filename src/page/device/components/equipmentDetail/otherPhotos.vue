@@ -121,7 +121,7 @@ export default {
       fd.append("category", "装备系统");
       fd.append("fileName", param.file.name);
       fd.append("status", type); //标记
-      fd.append("caseId", this.$route.query.id); //传记录id
+      fd.append("caseId", this.$route.params.id); //传记录id
       debugger;
       let docId = this.docId ? this.docId : type + new Date().getTime();
       fd.append("docId", docId); //传记录id

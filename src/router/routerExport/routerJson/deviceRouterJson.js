@@ -67,7 +67,7 @@ export default [{
   // 车辆基本信息(zhjt)
   {
     name: "equipmentDetail",
-    path: "/equipment-detail",
+    path: "/equipment-detail/:id",
     meta: {
       title: "装备信息"
     },

@@ -102,7 +102,7 @@ export default {
   computed: {},
   created() {},
   mounted() {
-    this.vehicleId = this.$route.query.id;
+    this.vehicleId = this.$route.params.id;
   },
   methods: {
     saveImageFile(param) {
