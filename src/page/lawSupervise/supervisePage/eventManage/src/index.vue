@@ -91,8 +91,10 @@
 
 <script>
 import Dialog from "./dialog.vue";
-import DialogAssigned from "./dialogAssigned.vue"
+import DialogAssigned from "./dialogAssigned.vue";
+import store from "../store.js";
 export default {
+  mixins: [store],
   components: {
     Dialog,
     DialogAssigned
@@ -105,18 +107,26 @@ export default {
         isImportant: '',
         eventTime: '',
       },
-      tableData: [
-        {eventName:'XX事件', eventDescribe:'测试描述测试描述测试描述测试描述测试描述', eventDate:'2020-07-20', isemphasis:1, state:1}
-      ]
+      tableData: []
     }
   },
   methods: {
+    /**
+     * 页面初始化
+     */
+    initPage() {
+      let params = { current:1, size:5 }
+      this.getData(params)
+    },
+
     /**
      * 指派
      */
     handleAssigned(index, row) {
       // 打开指派弹窗
       this.$refs.dialogAssigned.dialogAssignedVisible = true
+      this.$refs.dialogAssigned.form.state = row.state
+      this.$refs.dialogAssigned.form.id = row.id
       console.log(index, row)
     },
 
@@ -141,6 +151,9 @@ export default {
       // 禁用表单
       this.$refs.dialog.disabled = true
     },
+  },
+  created() {
+    this.initPage()
   }
 }
 </script>
