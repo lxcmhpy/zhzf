@@ -4,10 +4,17 @@
     <div class="equipment-detail">
       <el-tabs style="min-height:800px;position:relative;">
         <el-tab-pane label="基本信息">
-          <ApplyBaseInfo :billTypeName="billTypeName" :billType="billType" :url="url" :organList="organList"/>
+          <ApplyBaseInfo 
+            :billTypeName="billTypeName" 
+            :billType="billType" 
+            :addForm="data"
+            :imageList="imageList"
+            :isEdit="isEdit"
+            @afterCommit="afterCommit"
+        />
         </el-tab-pane>
         <el-tab-pane label="审批单" v-if="commited">
-          <ApprovalForm />
+          <ApprovalForm :id="id" :isApprove="isApprove" :status="status" :pdfId="pdfId"/>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -25,19 +32,44 @@ export default {
         billType:'',
         url:'',
         billTypeName:'',
-        organList:[]
+        data:{},
+        imageList:[],
+        isEdit:true,
+        id:'',
+        isApprove:false,
+        status:'',
+        pdfId:''
     };
   },
   computed: {},
   methods: {
-
+      afterCommit(){
+        this.commited=true
+        this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+        this.$router.push({
+            name: this.url
+        });
+      }
   },
     mounted () {
         if(this.$route.params.billType !== undefined){
             this.billType=this.$route.params.billType
             this.url=this.$route.params.url
             this.billTypeName=this.$route.params.billTypeName
-            this.organList=this.$route.params.organList
+            this.data=this.$route.params.data
+            this.imageList=this.$route.params.imageList
+            this.isEdit=this.$route.params.isEdit
+            this.isApprove=this.$route.params.isApprove
+            if(this.data.id){
+                this.commited=true
+                this.id=this.data.id
+            }
+            if(this.$route.params.status){
+                this.status=this.$route.params.status
+            }
+            if(this.$route.params.pdfId){
+                this.pdfId = this.$route.params.pdfId
+            }
         }
     }
 };

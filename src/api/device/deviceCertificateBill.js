@@ -16,6 +16,18 @@ export function queryDeviceCertificateBill(data) {
         cancelToken: setCancelSource()
     });
 }
+//查询证件管理审批单
+export function queryApproveBill(data) {
+    return request({
+        url: "/device/certificate/bill/listApprove",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //保存证件管理单
 export function saveOrUpdateDeviceCertificateBill (data) {
     return request({
@@ -50,3 +62,72 @@ export function deleteDeviceCertificateBillById(id) {
         cancelToken: setCancelSource()
     })
 }
+//获取证件号
+export function getNo(oid) {
+    return request({
+        url: "/device/certificate/getNo/" +oid,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+//检查证件号
+export function checkNo(no,oid) {
+    return request({
+        url: "/device/certificate/checkNo/" +no+"/"+oid,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+//提交证件管理单
+export function commitBill (id) {
+    return request({
+        url: "/device/certificate/bill/commit/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//查询审批列表
+export function listApproveInfo (id) {
+    return request({
+        url: "/device/certificate/bill/listApproveInfo/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'DEVICE_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//审批证件管理单
+export function approveBill (data) {
+    return request({
+        url: "/device/certificate/bill/audit",
+        method: "post",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'DEVICE_HOST',
+        data:  vm.$qs.stringify(data),
+        cancelToken: setCancelSource()
+    });
+}
+
+//获取文件流
+export function getFileStreamByStorageIdApi(storageId) {
+    return request({
+      url: "/sys/file/getFileStreamByStorageId/"+storageId,
+      method: "get",
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType:  'DEVICE_HOST',
+      responseType:'blob',
+      cancelToken: setCancelSource()
+    });
+  }
