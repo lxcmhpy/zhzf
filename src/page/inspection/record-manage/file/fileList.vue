@@ -28,7 +28,7 @@
               </span>
               <span v-else>
                 <el-button :disabled="!inspectionFileEdit" @click="editRecord(scope.row)" type="text">编辑</el-button>
-                <el-upload :disabled="!inspectionFileEdit" style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
+                <el-upload :disabled="!inspectionFileEdit" style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList" accept="image/*">
                   <el-button :disabled="!inspectionFileEdit" type="text" @click="currentFileId=scope.row.id">上传</el-button>
                 </el-upload>
               </span>
@@ -81,7 +81,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          
+
         } else {
           console.log('error submit!!');
           return false;
@@ -165,7 +165,24 @@ export default {
     uploadImg(param) {
       //上传图片
       console.log(param);
-      let currentFileId=this.currentFileId
+      const isGt2M = param.file.size / 1024 / 1024 > 10;
+      if (isGt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 10MB!",
+          type: "warning",
+        });
+        return
+      }
+      let fileType = param.file.type.split('/')[0]
+      if (fileType != 'image') {
+        this.$message({
+          message: "请选择图片文件!",
+          type: "warning",
+        });
+        // fileList.splice(fileIndex, 1);
+        return
+      }
+      let currentFileId = this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append("category", '行政检查');
@@ -264,7 +281,7 @@ export default {
           res => {
             console.log(res)
             if (res.code == 200) {
-              this.modleList = res.data||[]
+              this.modleList = res.data || []
               if (res.data.length != 0) {
 
               } else {
