@@ -42,8 +42,6 @@ import { mapGetters } from "vuex";
     methods: {
       //切换菜单
       changeMenu(key, keyPath) {
-          // debugger;
-        //   debugger;
         if(this.$store.state.system.activeIndexSto.indexOf(key)==-1){
           this.$store.commit('SET_ACTIVE_INDEX_STO', key);
           this.$router.push({name: key});

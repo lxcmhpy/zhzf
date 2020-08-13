@@ -6,11 +6,11 @@
         <div
           class="approval-left-menu"
           :class="{'active': currentMenu === '0'}"
-          @click="currentMenu = '0'"
+          @click="clickPDF"
         >
           <i class="el-icon-arrow-right"></i>
           <span>申请表</span>
-          <a class="status-tip">审批通过</a>
+          <a class="status-tip">{{status}}</a>
         </div>
         <div
           class="approval-left-menu"
@@ -25,8 +25,8 @@
         <div class="approval-right-wrap">
           <!-- 申请表 -->
           <div v-if="currentMenu === '0'" class="approval-table">
-            <h3 class="table-title">公路监督检查专用车辆申请表</h3>
-            <div style="width: 488px;height:604px;border:1px solid #000;margin:20px auto;">申请表pdf</div>
+            <div class="print_box" id="myBox" style="width:790px;margin:0 auto;">
+            </div>
           </div>
           <!-- 申请历史 -->
           <div v-if="currentMenu === '1'" class="approval-history">
@@ -39,42 +39,42 @@
               >
                 <!-- 审批通过 || 审批不通过 -->
                 <span
-                  v-if="record.approvalStatusId === '0' || record.approvalStatusId === '3'"
+                  v-if="record.approveStatus === '审批通过' || record.approveStatus === '审批未通过'"
                   slot="dot"
                   class="index-dot"
-                    :class="{'passApproval': record.approvalStatusId === '0', 'noApproval': record.approvalStatusId === '3'}"
+                    :class="{'passApproval': record.approveStatus === '审批通过', 'noApproval': record.approveStatus === '审批未通过'}"
                 >
                   <i
-                    :class="{'el-icon-check': record.approvalStatusId === '0', 'el-icon-close': record.approvalStatusId === '3'}"
+                    :class="{'el-icon-check': record.approveStatus === '审批通过', 'el-icon-close': record.approveStatus === '审批未通过'}"
                   />
                 </span>
                 <span
                   v-else
                   slot="dot"
                   class="index-dot"
-                  :class="{'waitApproval': record.approvalStatusId === '2'}"
+                  :class="{'waitApproval': record.approveStatus === '审批中'}"
                 >{{ index + 1 }}</span>
                 <div class="device-info-wrap" style="padding-top:0;">
                   <el-row :gutter="20">
                     <el-col :span="12">
                       <label class="item-label">审批单位:</label>
-                      <div class="item-text">{{ record.approvalDepertment }}</div>
+                      <div class="item-text">{{ record.organName }}</div>
                     </el-col>
                     <el-col :span="12">
                       <label class="item-label">审批人:</label>
-                      <div class="item-text">{{ record.approvalPeople }}</div>
+                      <div class="item-text">{{ record.approver }}</div>
                     </el-col>
                     <el-col :span="12">
                       <label class="item-label">审批状态:</label>
-                      <div class="item-text">{{ record.approvalStatus }}</div>
+                      <div class="item-text">{{ record.approveStatus }}</div>
                     </el-col>
                     <el-col :span="12">
                       <label class="item-label">审批信息:</label>
-                      <div class="item-text">{{ record.approvalInfo }}</div>
+                      <div class="item-text">{{ record.note }}</div>
                     </el-col>
                     <el-col :span="12">
                       <label class="item-label">审批时间:</label>
-                      <div class="item-text">{{ record.approvalTime }}</div>
+                      <div class="item-text">{{ record.checkTime }}</div>
                     </el-col>
                   </el-row>
                 </div>
@@ -86,77 +86,124 @@
     </el-row>
     <!-- 操作按钮 -->
     <div class="float-btns">
-      <el-button class="edit_btn" type="primary" @click="editInfo">
+      <el-button v-if="isApprove && !sealed" class="edit_btn" type="primary" @click="makeSeal">
         <i class="iconfont law-approval"></i>
         <br />签章
       </el-button>
-      <el-button class="edit_btn" type="info" style="margin-left:0;margin-top:10px;" @click="saveInfo">
+      <el-button v-if="isApprove && !approved" class="edit_btn" type="info" style="margin-left:0;margin-top:10px;" @click="approveBill">
         <i class="iconfont law-edit"></i>
         <br />审批
       </el-button>
     </div>
+    <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
   </div>
 </template>
 
 <script>
+import { 
+    listApproveInfo,getFileStreamByStorageIdApi
+} from "@/api/device/deviceCertificateBill.js";
+import iLocalStroage from "@/common/js/localStroage";
+import approvalDialog from "@/page/device/components/approvalDialog";
 export default {
-  components: {},
+  components: {approvalDialog},
   data() {
     return {
       editBaseInfoForm: {},
       rules: {},
-      startEdit: true,
       currentMenu: "0",
       reverse: false,
-      records: [
-        {
-          approvalDepertment: "固原综合执法队",
-          approvalPeople: "李志",
-          approvalStatus: "审批通过",
-          approvalStatusId: "0",
-          approvalInfo:
-            "哈尔滨工业大学威海校区发布的一则“处分决定”引发公众热议。",
-          approvalTime: "2019-09-13 13:34:17",
-        },
-        {
-          approvalDepertment: "固原综合执法队",
-          approvalPeople: "李志",
-          approvalStatus: "审批中",
-          approvalStatusId: "1",
-          approvalInfo:
-            "哈尔滨工业大学威海校区发布的一则“处分决定”引发公众热议。",
-          approvalTime: "2019-09-13 13:34:17",
-        },
-        {
-          approvalDepertment: "固原综合执法队",
-          approvalPeople: "李志",
-          approvalStatus: "待审批",
-          approvalStatusId: "2",
-          approvalInfo:
-            "哈尔滨工业大学威海校区发布的一则“处分决定”引发公众热议。",
-          approvalTime: "2019-09-13 13:34:17",
-        },
-        {
-          approvalDepertment: "固原综合执法队",
-          approvalPeople: "李志",
-          approvalStatus: "审批不通过",
-          approvalStatusId: "3",
-          approvalInfo:
-            "哈尔滨工业大学威海校区发布的一则“处分决定”引发公众热议。",
-          approvalTime: "2019-09-13 13:34:17",
-        },
-      ],
+      records: [],
+      sealed:false,
+      approved:false,
+      step:0,
+      organId:''
     };
   },
-  created() {},
+  created() {
+      this.getApproveInfo()
+      this.getFile()
+      this.organId=iLocalStroage.gets("userInfo").organId
+  },
+  props: {
+    id: String,
+    isApprove:Boolean,
+    status:String,
+    pdfId:String,
+  },
+  inject: ['reload'],
   methods: {
-    // 修改
-    editInfo() {
-      this.startEdit = true;
+      clickPDF(){
+          this.currentMenu = '0'
+          this.getFile()
+      },
+      getFile() {
+        this.getFileStream(this.pdfId)
+      },
+      //根据stroagId请求文件流
+      getFileStream(storageId){
+        getFileStreamByStorageIdApi(storageId).then(res=>{
+          this.getObjectURL(res);
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      // 将返回的流数据转换为url
+      getObjectURL(file) {
+        let url = null;
+        if (window.createObjectURL != undefined) { // basic
+          url = window.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+          try {
+            url = window.webkitURL.createObjectURL(file);
+          } catch (error) {
+
+          }
+        } else if (window.URL != undefined) { // mozilla(firefox)
+          try {
+            url = window.URL.createObjectURL(file);
+          } catch (error) {
+
+          }
+        }
+        this.pdfUrl =url;
+        let myBox = document.getElementById("myBox");
+        let iframes = document.getElementsByTagName("iframe");
+        for (let i = 0; i < iframes.length; i++) {
+          myBox.removeChild(iframes[i]);
+        }
+        let  myIframe = document.createElement('iframe');
+        myIframe.setAttribute("src", '/static/pdf/web/viewer.html?file='+encodeURIComponent(url));
+        myIframe.setAttribute('style','width:790px;height:1119px');
+        myBox.appendChild(myIframe);
+      },
+      async getApproveInfo(){
+          let res = await listApproveInfo(this.id)
+          this.records = res.data
+          res.data.forEach(p=>{
+              if(p.organId==this.organId){
+                this.step=p.step
+              }
+          })
+      },
+    //签章
+    makeSeal() {
+        this.sealed=true
     },
-    // 保存
-    saveInfo() {
-      this.startEdit = false;
+    //审批
+    approveBill() {
+        this.approved = true
+        let approveData = {
+            step:this.step,
+            billId:this.id,
+            storageId:this.pdfId,
+            organId:this.organId
+        }
+        this.$refs.approvalDialogRef.showModal(approveData);
+    },
+    //审批完成 重新获取pdf
+    approvalOver() {
+        this.reload();
     },
   },
 };

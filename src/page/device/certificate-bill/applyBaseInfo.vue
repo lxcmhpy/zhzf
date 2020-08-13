@@ -7,43 +7,45 @@
       <el-col :span="12">
         <label class="item-label">车牌号</label>
         <div class="item-text">
-          <span class="item-text" style="margin-left:0;">京A66666</span>
-          <el-button type="text" style="padding:0;margin-left: 10px;">&lt;查看详情&gt;</el-button>
+          <span class="item-text" style="margin-left:0;">{{this.addForm.vehicleNumber}}</span>
+          <router-link :to="{ name: 'equipmentDetail', query: { id: this.addForm.vehicleId }}">
+            <el-button type="text" style="padding:0;margin-left: 10px;">&lt;查看详情&gt;</el-button>
+        </router-link>
         </div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">使用单位</label>
-        <div class="item-text">单位</div>
+        <div class="item-text">{{this.addForm.useUnitName}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">车辆类别</label>
-        <div class="item-text">类别一</div>
+        <div class="item-text">{{this.addForm.vehicleCategory}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">车辆类型</label>
-        <div class="item-text">汽车</div>
+        <div class="item-text">{{this.addForm.vehicleType}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">厂牌型号</label>
-        <div class="item-text">宝马</div>
+        <div class="item-text">{{this.addForm.brandModel}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">发动机号</label>
-        <div class="item-text">987654321</div>
+        <div class="item-text">{{this.addForm.engineNumber}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">车架号码</label>
-        <div class="item-text">请输入行驶证上车辆识别代号，字母请大些</div>
+        <div class="item-text">{{this.addForm.axleNumber}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">使用证号</label>
-        <div class="item-text">1234567</div>
+        <div class="item-text">{{this.addForm.usePermitNumber}}</div>
       </el-col>
       <el-col :span="24">
         <label class="item-label">申请理由</label>
         <div
           class="item-text"
-        >上半年，我国经济运行稳步复苏，发展韧性和活力进一步彰显，但当前全球疫情蔓延扩散，我国经济下行压力依然较大。在危机中育新机、于变局中开新局，中国制造业正迎难而上、积极谋求转型升级。在疫情防控常态化条件下，中国制造业发展要克服哪些困难，又将迎来怎样的机遇？今天起，本版推出“危中寻机谋转型”系列报道。</div>
+        >{{this.addForm.note}}</div>
       </el-col>
       <el-col :span="24">
         <label class="item-label">其他材料</label>
@@ -51,17 +53,12 @@
           <p class="title-tips">挂失、注销必须提交相应证明</p>
           <div class="upload-apply-material">
             <ul class="el-upload-list el-upload-list--picture-card">
-              <li tabindex="0" class="el-upload-list__item is-ready" style="margin-right: 30px;">
-                <img
-                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1596608190416&di=4bcb89e073759d7dad09b5c5fe962713&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201510%2F15%2F20151015110000_KdRi2.jpeg"
-                  class="el-upload-list__item-thumbnail"
-                />
-              </li>
-              <li tabindex="0" class="el-upload-list__item is-ready" style="margin-right: 30px;">
-                <img
-                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1596608232265&di=41ae063579a9c47611f717f40ffb368a&imgtype=0&src=http%3A%2F%2Fimg1.gtimg.com%2Fauto%2Fpics%2Fhv1%2F9%2F18%2F2054%2F133565949.jpg"
-                  class="el-upload-list__item-thumbnail"
-                />
+                <li v-for="(item) in imageList" :key="item.storageId" class="el-upload-list__item is-ready" style="margin-right: 30px;">
+                  <img
+                    :src="item.url"
+                    class="el-upload-list__item-thumbnail"
+                    @click="handlePicturePreview(item.url)"
+                    />
               </li>
             </ul>
           </div>
@@ -69,19 +66,19 @@
       </el-col>
       <el-col :span="12">
         <label class="item-label">申请日期</label>
-        <div class="item-text">2019年09月11日</div>
+        <div class="item-text">{{this.addForm.billDate}}</div>
       </el-col>
       <el-col :span="12">
-        <label class="item-label">申请单位</label>
-        <div class="item-text">北京市交通运输局</div>
+        <label class="item-label">申报单位</label>
+        <div class="item-text">{{this.addForm.declarationUnitName}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">联系电话</label>
-        <div class="item-text">15247952234</div>
+        <div class="item-text">{{this.addForm.contactNumber}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">申请联系人</label>
-        <div class="item-text">李四</div>
+        <div class="item-text">{{this.addForm.contactPerson}}</div>
       </el-col>
     </el-row>
     <!-- 编辑基本信息表单 -->
@@ -103,8 +100,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="使用单位" prop="useUnit">
-            <el-input v-model="addForm.useUnit" :readonly="true"></el-input>
+          <el-form-item label="使用单位" prop="useUnitName">
+            <el-input v-model="addForm.useUnitName" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -113,7 +110,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="车辆类型" prop="movehicleTypeel">
+          <el-form-item label="车辆类型" prop="vehicleType">
             <el-input v-model="addForm.vehicleType" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
@@ -135,7 +132,12 @@
         <el-col :span="12">
           <el-form-item label="使用证号" prop="usePermitNumber">
             <el-input v-model="addForm.usePermitNumber" placeholder="请输入">
-              <el-button style="color: white;background-color: #4d89ff;" slot="append">自动获取</el-button>
+              <el-button 
+                style="color: white;background-color: #4d89ff;" 
+                slot="append" 
+                @click="getPerCode"
+                v-show="addForm.vehicleNumber"
+            >自动获取</el-button>
             </el-input>
           </el-form-item>
         </el-col>
@@ -156,11 +158,13 @@
               <p class="title-tips">挂失、注销必须提交相应证明</p>
               <div class="upload-apply-material">
                 <el-upload
-                  action
+                  action="#"
+                  accept=".jpg, .png"
                   list-type="picture-card"
                   :on-preview="handlePictureCardPreview"
-                  :on-remove="handleRemove"
-                  :auto-upload="false"
+                  :http-request="saveImageFile"
+                  :file-list="imageList"
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
                 >
                   <i class="el-icon-picture-outline"></i>
                 </el-upload>
@@ -207,11 +211,19 @@
     </el-form>
     <!-- 操作按钮 -->
     <div class="float-btns">
-      <el-button v-if="!startEdit" class="edit_btn" type="primary" @click="editInfo">
-        <i class="iconfont law-edit"></i>
-        <br />修改
-      </el-button>
-      <el-button v-if="startEdit" class="edit_btn" type="primary" @click="saveInfo">
+        <div>
+            <el-button v-if="!startEdit && addForm.status==1" class="edit_btn" type="primary" @click="editInfo">
+                <i class="iconfont law-edit"></i>
+                <br />修改
+            </el-button>
+        </div>
+      <div>
+        <el-button v-if="!startEdit && addForm.status==1" class="edit_btn" type="primary" @click="commitBill">
+            <i class="iconfont law-save"></i>
+            <br />提交
+        </el-button>
+      </div>
+      <el-button v-if="startEdit && addForm.status==1" class="edit_btn" type="primary" @click="saveInfo">
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
@@ -234,15 +246,15 @@ import {
 } from "@/api/device/device.js";
 import { 
     findDeviceCertificateBillById,
-    saveOrUpdateDeviceCertificateBill
+    saveOrUpdateDeviceCertificateBill,
+    getNo,
+    checkNo,
+    commitBill
 } from "@/api/device/deviceCertificateBill.js";
 export default {
     components: {elSelectTree,SelectVehicle},
     data() {
         return {
-            addForm: {
-                billDate:new Date().format('yyyy-MM-dd'),
-            },
             rules: {
                 declarationUnit: [
                     {required: true, message: "请输入申报单位", trigger: "blur"}
@@ -254,7 +266,6 @@ export default {
                     {required: true, message: "请输入使用证号", trigger: "blur"}
                 ],
             },
-            startEdit: true,
             dialogVisible: false,
             dialogImageUrl: "",
             orgTreeProps: {
@@ -263,16 +274,78 @@ export default {
             },
             userInfo:{},
             host:'',
+            startEdit:true,
+            organList:[],
         };
     },
     props: {
       billTypeName: String,
       billType: String,
-      url: String,
-      organList:Array,
+      addForm:Object,
+      imageList:Array,
+      isEdit:Boolean,
     },
-  created() {},
+  created() {
+      this.getSelfTree()
+  },
   methods: {
+      handlePicturePreview(obj){
+        this.dialogImageUrl = obj;
+        this.dialogVisible = true;
+      },
+    async commitBill(){
+        let res = await commitBill(this.addForm.id)
+        if(res.code===200){
+            this.$message({
+                type: "success",
+                message:"提交成功!"
+            });
+            this.$emit('afterCommit')
+        }
+    },
+    async getSelfTree(){
+        this.userInfo = iLocalStroage.gets("userInfo");
+        let res = await tree(this.userInfo.organId,'organ')
+        this.organList=res.data
+    },
+    async getPerCode(){
+        let res = await getNo(this.addForm.useUnit)
+        this.$set(this.addForm,'usePermitNumber',res.data)
+    },
+    //删除附件
+    deleteFile(file, fileList,type){
+        let _this = this
+        deleteFileByIdApi(file.storageId).then(res=>{
+            _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
+        },err=>{
+            console.log(err)
+        })
+    },
+    saveImageFile(param){
+        this.saveFile(param,'图片')
+    },
+    saveFile (param,type) {
+        var fd = new FormData()
+        fd.append("file", param.file);
+        fd.append("category", '执法装备证件单');
+        fd.append("fileName", param.file.name);
+        fd.append('status', type)//传记录id
+        fd.append('caseId', param.file.name+new Date().getTime())//传记录id
+        fd.append('docId', param.file.name+new Date().getTime())//传记录id
+        let _this = this
+        upload(fd).then(
+            res => {
+                _this.imageList.push({
+                    url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
+                    storageId:res.data[0].storageId,
+                    name:res.data[0].fileName
+                });
+            },
+            error => {
+                console.log(error)
+            }
+        );
+    },
     changeVehicle(){
         this.$refs.selectVehicleRef.showModal(this.billType,this.organList);
     },
@@ -282,14 +355,11 @@ export default {
         this.$set(this.addForm,'brandModel',obj.brandModel)
         this.$set(this.addForm,'axleNumber',obj.axleNumber)
         this.$set(this.addForm,'engineNumber',obj.engineNumber)
+        this.$set(this.addForm,'useUnitName',obj.useUnitName)
         this.$set(this.addForm,'useUnit',obj.useUnit)
         this.$set(this.addForm,'vehicleType',obj.vehicleType)
         this.$set(this.addForm,'vehicleCategory',obj.vehicleCategory)
         this.$set(this.addForm,'billType',this.billType)
-    },
-    // 删除其他材料
-    handleRemove(file, fileList) {
-        console.log(file, fileList);
     },
     // 预览其他材料
     handlePictureCardPreview(file) {
@@ -303,18 +373,43 @@ export default {
     // 保存
     saveInfo() {
         let _this = this
+        let storageIds = []
+        if(_this.imageList){
+            _this.imageList.forEach(item=>{
+                storageIds.push(item.storageId)
+            })
+            _this.addForm.storageIds = storageIds
+        }
+        _this.addForm.fileList = []
         this.$refs['addFormRef'].validate(valid => {
             if (valid) {
-                saveOrUpdateDeviceCertificateBill(_this.addForm).then(
-                    res => {
-                        _this.$message({
-                            type: "success",
-                            message:"保存成功!"
-                        });
-                        _this.startEdit = false;
+                checkNo(_this.addForm.usePermitNumber,_this.addForm.useUnit).then(
+                    res=>{
+                        if(res.code==200){
+                            saveOrUpdateDeviceCertificateBill(_this.addForm).then(
+                                res => {
+                                    _this.$message({
+                                        type: "success",
+                                        message:"保存成功!"
+                                    });
+                                    _this.startEdit = false;
+                                },
+                                err => {
+                                    console.log(err);
+                                }
+                            );
+                        }else{
+                            _this.$message({
+                                type: "error",
+                                message:res.msg
+                            });
+                        }
                     },
-                    err => {
-                        console.log(err);
+                    err =>{
+                        _this.$message({
+                                type: "error",
+                                message:err.msg
+                            });
                     }
                 );
             }
@@ -323,13 +418,17 @@ export default {
     addFormDeclarationUnitClick(val) {
         this.$refs.addFormDeclarationUnitTreeObj.$children[0].handleClose();
         this.$set(this.addForm,'declarationUnit',val)
+        this.$set(this.addForm,'declarationUnitName',this.$refs.addFormDeclarationUnitTreeObj.valueTitle)
     },
   },
   mounted(){
-    this.userInfo = iLocalStroage.gets("userInfo");
     this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    this.$set(this.addForm,'declarationUnit',this.userInfo.organId)
-  }
+  },
+  watch: {
+    isEdit(val) {
+      this.startEdit = this.isEdit
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

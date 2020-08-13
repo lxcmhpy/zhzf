@@ -67,7 +67,7 @@ export default [{
   // 车辆基本信息(zhjt)
   {
     name: "equipmentDetail",
-    path: "/equipment-detail",
+    path: "/equipment-detail/:id",
     meta: {
       title: "装备信息"
     },
@@ -137,5 +137,13 @@ export default [{
       title: "发证申请"
     },
     component: () => import("@/page/device/certificate-bill/applyManage.vue")
+  },
+  {
+    path: "/certificateBillApprove",
+    name: "certificateBillApprove",
+    meta: {
+      title: "证件审批"
+    },
+    component: () => import("@/page/device/certificate-bill/certificateBillApprove.vue")
   }
 ]

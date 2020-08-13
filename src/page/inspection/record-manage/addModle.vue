@@ -874,7 +874,7 @@ export default {
     // 选择模板
     checkModle() {
       this.$router.push({
-        name: 'inspection_writeRecordInfo',
+        name: 'inspection_writeInfoRecord',
         params: {
           isApproval: true
         }

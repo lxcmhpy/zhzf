@@ -124,7 +124,7 @@ export default {
     writeRecord(item) {
       // 写记录
       this.$router.push({
-        name: 'inspection_writeRecordInfo',
+        name: 'inspection_writeInfoRecord',
         // params: item
         // query: { id: item.id, addOrEiditFlag: 'add' }
         params: {

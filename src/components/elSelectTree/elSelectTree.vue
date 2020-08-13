@@ -109,9 +109,11 @@ export default {
         let scrollBar = document.querySelectorAll(
           ".el-scrollbar .el-scrollbar__bar"
         );
-        scrollWrap.style.cssText =
-          "margin: 0px; max-height: none; overflow: hidden;";
-        scrollBar.forEach((ele) => (ele.style.width = 0));
+        if(scrollWrap){
+            scrollWrap.style.cssText =
+            "margin: 0px; max-height: none; overflow: hidden;";
+            scrollBar.forEach((ele) => (ele.style.width = 0));
+        }
       });
     },
     // 切换选项
