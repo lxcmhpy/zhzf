@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
@@ -67,7 +67,7 @@
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
@@ -110,7 +110,7 @@
           </el-col>
         </el-row>
         <div class="random-table-title" style="margin-top:20px">抽取结果</div>
-        <el-table :data="randomList" stripe style="width: 100%" height="100%" >
+        <el-table :data="randomList" stripe style="width: 100%" height="100%">
           <el-table-column label="对象名称" align="center">
             <template slot-scope="scope">
               <span v-if="isObjectTrue">{{scope.row.objectName}}</span>
@@ -133,7 +133,7 @@
         </div>
       </el-dialog>
       <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()">
-        <el-table :data="randomResultList" stripe style="width: 100%" height="100%" >
+        <el-table :data="randomResultList" stripe style="width: 100%" height="100%">
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="legalPerson" label="检查人员" align="center"></el-table-column>
           <el-table-column prop="matchExpert" label="检查专家" align="center"></el-table-column>
@@ -151,7 +151,7 @@
 <script>
 import {
   getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, getExtractResultApi, addRandomResultApi,
-  resetRandomByIdApi, getRandomByIdApi
+  resetRandomByIdApi, getRandomByIdApi, addRandomResultMoreApi
 } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
@@ -297,38 +297,76 @@ export default {
       }
       getExtractResultApi(data).then(
         res => {
-          _this.randomList = res.data.randomObjectVoList
-          let data2 = []
-          let data3 = []
-          console.log(res.data.randomObjectVoList)
-          if (res.data.randomObjectVoList.length > 0 & res.data.randomPersonVoList.length > 0 & res.data.randomExpertVoList.length > 0) {
-            res.data.randomObjectVoList.forEach(element => {
-              res.data.randomPersonVoList.forEach(item1 => {
-                res.data.randomExpertVoList.forEach(item2 => {
-                  data2.push(Object.assign(element, item1, item2))
-                  console.log(Object.assign(element, item1, item2))
-                  console.log('data2', data2)
-                });
+          if (res.code == 200) {
+            // _this.randomList = res.data.randomObjectVoList
+
+            let personVoList = []
+            let expertVoList = []
+
+            let i = 0
+            for (i; i < res.data.personVoList.length; i++) {
+              let personVoListName = []
+              res.data.personVoList[i].forEach(element => {
+                personVoListName.push(element.personName)
               });
-            });
-            // 结束抽取
+              console.log('personVoListName', personVoListName)
+              personVoList.push({ personName: personVoListName.join(',') })
+            }
+            let j = 0
+            for (j; j < res.data.expertVoList.length; j++) {
+              let expertVoListName = []
+              res.data.expertVoList[j].forEach(element => {
+                expertVoListName.push(element.name)
+              });
+              expertVoList.push({ name: expertVoListName.join(',') })
+            }
+            let data2 = []
+            // 处理数据
+            if (res.data.randomObjectVoList.length > 0 & personVoList.length > 0) {
+              res.data.randomObjectVoList.forEach((element, index) => {
+                if (expertVoList.length > 0) {
+                    data2.push(Object.assign(element, personVoList[index], expertVoList[index]))
+                } else {
+                  data2.push(Object.assign(element, personVoList[index]))
+                }
+              });
+              console.log('data2',data2)
+              debugger
+              // 结束抽取
+              setTimeout(() => {
+                _this.randomList = data2
+                _this.endRandom(data2[data2.length - 1].name || data2[data2.length - 1].personName)
+              }, 2000);
+            } else {
+              // 抽取失败-人数不够
+              clearInterval(this.timer);//销毁计时器
+              this.timer = null;
+              this.$message({
+                type: "error",
+                message: '抽取失败'
+              });
+            }
+            console.log(data2)
+            // data2=res.data.randomObjectVoList.concat(res.data.randomObjectVoList)
+
             setTimeout(() => {
-              _this.endRandom(res.data.randomExpertVoList[res.data.randomExpertVoList.length - 1].name)
-            }, 2000);
+              // 最后显示的值
+              // _this.randomContent = res.data.randomExpertVoList[res.data.randomExpertVoList.length - 1].name
+              _this.randomResult = data2
+            }, 3000)
           } else {
-            // 抽取失败-人数不够
+            // _this.endRandom()
+            clearInterval(this.timer);//销毁计时器
+            this.timer = null;
+            this.$message({
+              type: "error",
+              message: '抽取失败'
+            });
           }
-          console.log(data2)
-          // data2=res.data.randomObjectVoList.concat(res.data.randomObjectVoList)
-
-          setTimeout(() => {
-            // 最后显示的值
-            // _this.randomContent = res.data.randomExpertVoList[res.data.randomExpertVoList.length - 1].name
-            _this.randomResult = data2
-          }, 3000)
         },
-
         error => {
+          clearInterval(this.timer);//销毁计时器
+          this.timer = null;
           // reject(error);
         })
     },
@@ -353,7 +391,7 @@ export default {
       }, 1400)
       setTimeout(() => {
         // 最后显示的值
-        this.randomContent = endValue;
+        this.randomContent = endValue || '';
         this.isNameTrue = true;
         this.isFinishFlag = true
       }, 2100)
@@ -424,18 +462,30 @@ export default {
       this.randomList = []
     },
     saveRandom() {
-      console.log(this.randomResult)
       let _this = this
       // let data = this.randomResult
-      let data = {
-        legalPerson: this.randomResult[0].personName,
-        matchExpert: this.randomResult[0].name,
-        matchPerson: this.randomResult[0].personName,
-        objectName: this.randomResult[0].objectName,
-        projectName: this.randomResult[0].projectName,
-        taskId: this.currentId,
-      }
-      addRandomResultApi(data).then(
+      console.log(this.randomList)
+      let data = []
+      this.randomList.forEach(element => {
+        data.push({
+          legalPerson: element.legalRepresent,
+          matchExpert: element.name,
+          matchPerson: element.personName,
+          objectName: element.objectName,
+          projectName: element.projectName,
+          taskId: this.currentId,
+        })
+      });
+      // let data = {
+      //   legalPerson: this.randomResult[0].personName,
+      //   matchExpert: this.randomResult[0].name,
+      //   matchPerson: this.randomResult[0].personName,
+      //   objectName: this.randomResult[0].objectName,
+      //   projectName: this.randomResult[0].projectName,
+      //   taskId: this.currentId,
+      // }
+      // addRandomResultApi(data).then(
+      addRandomResultMoreApi(data).then(
         res => {
           if (res.code == 200) {
             this.$message({

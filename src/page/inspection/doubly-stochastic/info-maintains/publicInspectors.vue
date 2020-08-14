@@ -53,7 +53,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" type="primary" @click="exportMethod('检查人员表.xls')">导出所有人员</el-button>
+              <el-button size="medium" type="primary" @click="exportMethod('公开执法人员表.xls')">导出所有人员</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -378,7 +378,7 @@ export default {
         personName: this.searchForm.personName,
         stationStatusName: this.searchForm.stationStatusName,
         // workStatus: this.searchForm.stationStatusName,
-        // OName: iLocalStroage.gets("userInfo").organName,
+        organName: iLocalStroage.gets("userInfo").organName,
         // oName: '固原综合执法支队',
         current: this.currentPage,
         size: this.pageSize,
@@ -433,19 +433,19 @@ export default {
       // let currentFileId = this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);
+      fd.append("organName", iLocalStroage.gets("userInfo").organName);
       importPersonExcelApi(fd).then(res => {
         if (res.code === 200) {
           this.$message({ type: "success", message: res.msg });
           this.currentPage = 1;
           this.getTableData()
         }
-      }
-      );
+      });
     },
     // 导出
     exportMethod(fileName) {
-        let data={
-        organName:iLocalStroage.gets("userInfo").organName
+      let data = {
+        organName: iLocalStroage.gets("userInfo").organName
       }
       exportPersonApi(data).then(res => {
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持
