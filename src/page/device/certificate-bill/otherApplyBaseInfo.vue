@@ -412,6 +412,16 @@ export default {
         this.$set(this.addForm,'vehicleType',obj.vehicleType)
         this.$set(this.addForm,'vehicleCategory',obj.vehicleCategory)
         this.$set(this.addForm,'billType',this.billType)
+        this.$set(this.addForm,'lssueTime',obj.lssueTime)
+        this.$set(this.addForm,'beginDate',obj.beginDate)
+        this.$set(this.addForm,'endDate',obj.endDate)
+        this.timeList=[obj.beginDate,obj.endDate]
+        this.$set(this.addForm,'signer',obj.signer)
+        this.$set(this.addForm,'manager',obj.manager)
+        this.$set(this.addForm,'issueOrgan',obj.issueOrgan)
+        this.$set(this.addForm,'handlingDate',obj.handlingDate)
+        this.$set(this.addForm,'signDate',obj.signDate)
+        this.$set(this.addForm,'usePermitId',obj.usePermitId)
     },
     // 预览其他材料
     handlePictureCardPreview(file) {
