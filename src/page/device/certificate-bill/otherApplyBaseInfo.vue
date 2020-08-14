@@ -129,18 +129,66 @@
             <el-input v-model="addForm.axleNumber" :readonly="true"></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="30">
         <el-col :span="12">
           <el-form-item label="使用证号" prop="usePermitNumber">
-            <el-input v-model="addForm.usePermitNumber" placeholder="请输入">
-              <el-button 
-                style="color: white;background-color: #4d89ff;" 
-                slot="append" 
-                @click="getPerCode"
-                v-show="addForm.vehicleNumber"
-            >自动获取</el-button>
+            <el-input v-model="addForm.usePermitNumber" :readonly="true">
             </el-input>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="使用期限">
+            <el-date-picker 
+                :disabled="true"
+                :picker-options="pickerOptions" 
+                unlink-panels 
+                v-model="timeList"
+                type="daterange" 
+                range-separator="—" 
+                value-format="yyyy-MM-dd" 
+                format="yyyy-MM-dd" 
+                start-placeholder="开始日期" 
+                end-placeholder="结束日期"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="发证机关" prop="issueOrgan">
+            <el-input v-model="addForm.issueOrgan" :readonly="true">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="发证时间" prop="lssueTime">
+            <el-input v-model="addForm.lssueTime" :readonly="true">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="签发人" prop="signer">
+            <el-input v-model="addForm.signer" :readonly="true">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="签发时间" prop="signDate">
+            <el-input v-model="addForm.signDate" :readonly="true">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="经办人" prop="manager">
+            <el-input v-model="addForm.manager" :readonly="true">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="经办时间" prop="handlingDate">
+            <el-input v-model="addForm.handlingDate" :readonly="true">
+            </el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
         <el-col :span="24">
           <el-form-item label="申请理由" prop="note">
             <el-input
@@ -247,8 +295,6 @@ import {
 import { 
     findDeviceCertificateBillById,
     saveOrUpdateDeviceCertificateBill,
-    getNo,
-    checkNo,
     commitBill
 } from "@/api/device/deviceCertificateBill.js";
 export default {
@@ -262,9 +308,6 @@ export default {
                 vehicleNumber: [
                     {required: true, message: "请选择车牌号", trigger: "blur"}
                 ],
-                usePermitNumber: [
-                    {required: true, message: "请输入使用证号", trigger: "blur"}
-                ],
             },
             dialogVisible: false,
             dialogImageUrl: "",
@@ -276,6 +319,19 @@ export default {
             host:'',
             startEdit:true,
             organList:[],
+            pickerOptions: {
+                onPick: ({ maxDate, minDate }) => {
+                if (minDate) {
+                    _this.$set(_this.timeList, 0, minDate);
+                }
+                let max = new Date(maxDate ? maxDate : minDate);
+                max.setHours(23);
+                max.setMinutes(59);
+                max.setSeconds(59);
+                _this.$set(_this.timeList, 1, max);
+                }
+            },
+            timeList: ['', ''],
         };
     },
     props: {
@@ -307,10 +363,6 @@ export default {
         this.userInfo = iLocalStroage.gets("userInfo");
         let res = await tree(this.userInfo.organId,'organ')
         this.organList=res.data
-    },
-    async getPerCode(){
-        let res = await getNo(this.addForm.useUnit)
-        this.$set(this.addForm,'usePermitNumber',res.data)
     },
     //删除附件
     deleteFile(file, fileList,type){
@@ -360,6 +412,16 @@ export default {
         this.$set(this.addForm,'vehicleType',obj.vehicleType)
         this.$set(this.addForm,'vehicleCategory',obj.vehicleCategory)
         this.$set(this.addForm,'billType',this.billType)
+        this.$set(this.addForm,'lssueTime',obj.lssueTime)
+        this.$set(this.addForm,'beginDate',obj.beginDate)
+        this.$set(this.addForm,'endDate',obj.endDate)
+        this.timeList=[obj.beginDate,obj.endDate]
+        this.$set(this.addForm,'signer',obj.signer)
+        this.$set(this.addForm,'manager',obj.manager)
+        this.$set(this.addForm,'issueOrgan',obj.issueOrgan)
+        this.$set(this.addForm,'handlingDate',obj.handlingDate)
+        this.$set(this.addForm,'signDate',obj.signDate)
+        this.$set(this.addForm,'usePermitId',obj.usePermitId)
     },
     // 预览其他材料
     handlePictureCardPreview(file) {
@@ -383,35 +445,18 @@ export default {
         _this.addForm.fileList = []
         this.$refs['addFormRef'].validate(valid => {
             if (valid) {
-                checkNo(_this.addForm.usePermitNumber,_this.addForm.useUnit).then(
-                    res=>{
-                        if(res.code==200){
-                            saveOrUpdateDeviceCertificateBill(_this.addForm).then(
-                                res => {
-                                    _this.$message({
-                                        type: "success",
-                                        message:"保存成功!"
-                                    });
-                                    _this.addForm.status=1
-                                    _this.addForm.id=res.data
-                                    _this.startEdit = false
-                                },
-                                err => {
-                                    console.log(err);
-                                }
-                            );
-                        }else{
-                            _this.$message({
-                                type: "error",
-                                message:res.msg
-                            });
-                        }
-                    },
-                    err =>{
+                saveOrUpdateDeviceCertificateBill(_this.addForm).then(
+                    res => {
                         _this.$message({
-                                type: "error",
-                                message:err.msg
-                            });
+                            type: "success",
+                            message:"保存成功!"
+                        });
+                        _this.addForm.status=1
+                        _this.addForm.id=res.data
+                        _this.startEdit = false
+                    },
+                    err => {
+                        console.log(err);
                     }
                 );
             }

@@ -145,6 +145,34 @@
               <div v-if="scope.row.caseStatus=='审批中'" style="color:#0074F5">{{scope.row.caseStatus}}</div>
             </template>
           </el-table-column>
+          <!-- <el-table-column label="标签" align="center" width="50">
+            <template slot-scope="scope">
+              <el-tooltip v-if="scope.row.warType=='1'" placement="top-start" effect="light">
+                <div slot="content" class="warn-li" style="color:#FF0000">
+                  <li>【报警指标】第一行信息</li>
+                  <li>第二行信息</li>
+                  <li>第二行信息</li>
+                </div>
+                <div class="warn-box" style="background:#FF0000">警</div>
+              </el-tooltip>
+              <el-tooltip v-if="scope.row.warType=='2'" placement="top-start" effect="light">
+                <div slot="content" class="warn-li" style="color:#FF6600">
+                  <li>【报警指标】第一行信息</li>
+                  <li>第二行信息</li>
+                  <li>第二行信息</li>
+                </div>
+                <div class="warn-box" style="background:#FF6600">警</div>
+              </el-tooltip>
+              <el-tooltip v-if="scope.row.warType=='3'"  placement="top-start" effect="light">
+                <div slot="content"  class="warn-li" style="color:#0084FF">
+                  <li>【报警指标】第一行信息</li>
+                  <li>第二行信息</li>
+                  <li>第二行信息</li>
+                </div>
+                <div class="warn-box" style="background:#0084FF">警</div>
+              </el-tooltip>
+            </template>
+          </el-table-column> -->
         </el-table>
       </div>
 

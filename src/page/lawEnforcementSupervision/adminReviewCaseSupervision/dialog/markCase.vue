@@ -5,6 +5,7 @@
     @close="closeDialog"
     :close-on-click-modal="false"
     width="800px"
+    custom-class="markCaseBox"
   >
     <el-form
       :model="markCaseSearchForm"
@@ -32,7 +33,7 @@
         </el-form-item>
       </div>
       <div class="flexBox">
-        <el-form-item label="立案时间">
+        <el-form-item label="立案时间" style="width:435px"> 
           <el-date-picker
             v-model="acceptTimeArrayMark"
             type="daterange"
@@ -63,7 +64,7 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="tempNo" label="编号" align="center"></el-table-column>
+      <el-table-column prop="caseNumber" label="编号" align="center"></el-table-column>
       <el-table-column prop="zfml" label="执法领域" align="center"></el-table-column>
       <el-table-column prop="party" label="当事人" align="center"></el-table-column>
       <el-table-column prop="vehicleShipId" label="车船号牌" align="center"></el-table-column>
@@ -144,8 +145,8 @@ export default {
       this.markCaseSearchForm.acceptEndTime = this.acceptTimeArrayMark && this.acceptTimeArrayMark[1] ? this.acceptTimeArrayMark[1] : '';
       let sentData = {
         ...this.markCaseSearchForm,
-        current: this.currentPage,
-        size: this.pageSize,
+        current: this.currentPageMarkCase,
+        size: this.pageSizeMarkCase,
         flag: 5,
         isThisOrgan: 1,
         reconType: "",
@@ -163,6 +164,10 @@ export default {
     //标记
     markTo(flag) {
       let sentData = [];
+      if(this.multipleSelection.length ==0){
+        this.$message('请选择案件')
+        return;
+      }
       this.multipleSelection.forEach((item) => {
         let data = {
           id: item.reconId,
@@ -192,10 +197,13 @@ export default {
 };
 </script>
 <style lang="scss" >
-.flexBox {
-  display: flex;
- .buttonItem{
+.markCaseBox{
+  .flexBox {
+    display: flex; 
+  }
+  .buttonItem{
    margin: 5px 0 5px 5px;
  }
 }
+
 </style>

@@ -759,3 +759,17 @@
 .el-backtop:hover{
   background-color: #363B42;
 }
+
+.warn-box {
+  width        : 20px;
+  height       : 20px;
+  border-radius: 50px;
+  color        : #fff;
+  line-height  : 20px;
+}
+
+.warn-li {
+  li {
+      list-style-type: disc;
+  }
+}

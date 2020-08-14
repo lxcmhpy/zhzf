@@ -4,10 +4,10 @@
     <!-- 表单 -->
     <el-form :inline="true" :model="form" class="eventManage-form">
       <el-form-item label="事件名称" prop="eventName">
-        <el-input v-model="form.eventName" placeholder="输入法规名称"></el-input>
+        <el-input clearable v-model="form.eventName" placeholder="输入事件名称"></el-input>
       </el-form-item>
       <el-form-item label="是否重点事件" prop="isemphasis">
-        <el-select @change="handleIsemphasis" v-model="form.isemphasis" clearable placeholder="请选择">
+        <el-select v-model="form.isemphasis" clearable placeholder="请选择">
           <el-option label="是" :value="1"></el-option>
           <el-option label="否" :value="0"></el-option>
         </el-select>
@@ -17,7 +17,7 @@
           @change="handleEventDate"
           :editable="false"
           value-format="yyyy-MM-dd HH:mm:ss"
-          v-model="form.eventDate"
+          v-model="eventDate"
           size="small"
           type="datetimerange"
           range-separator="至"
@@ -30,8 +30,8 @@
     <!-- 按钮 -->
     <div class="eventManage-buttonList">
       <el-button @click="handleFind" type="primary" icon="el-icon-search" size="small">查询</el-button>
-      <el-button type="primary" size="small">重置</el-button>
-      <el-button @click="addEvent" type="primary" size="small">新增事件</el-button>
+      <el-button @click="handleReset" type="primary" icon="el-icon-refresh-left" size="small">重置</el-button>
+      <el-button @click="addEvent" type="primary" icon="el-icon-plus" size="small">新增事件</el-button>
     </div>
 
     <!-- 表格 -->
@@ -75,23 +75,41 @@
           label="操作">
           <template slot-scope="scope">
             <el-button
+              v-if="scope.row.state===1"
               size="mini"
-              type="primary"
+              type="text"
               @click="handleAssigned(scope.$index, scope.row)">指派</el-button>
             <el-button
               size="mini"
-              type="primary"
-              @click="handleDetails(scope.$index, scope.row)">详情</el-button>
+              type="text"
+              @click="handleDetails(scope.row)">详情</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
 
+    <!-- 分页条 -->
+    <div class="eventManage-pagination">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="[5, 10, 15, 20, 25, 30, 35, 40]"
+        :page-size="5"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
+
     <!-- 详情和新增弹窗 -->
-    <Dialog ref="dialog" :title="title" />
+    <Dialog :title="title" :config="config" ref="dialog" />
 
     <!-- 指派弹窗 -->
-    <DialogAssigned ref="dialogAssigned" />
+    <DialogAssigned :config="config" ref="dialogAssigned" />
   </div>
 </template>
 
@@ -101,17 +119,32 @@ import DialogAssigned from "./dialogAssigned.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
+  provide() {
+    return {
+      page: this
+    }
+  },
   components: {
     Dialog,
     DialogAssigned
   },
   data() {
     return {
+      config: {
+        treeOptions: [],
+        peopleOptions: []
+      },
       title: "", // 弹出框标题
+      currentPage: 1,
+      total: 0, // 总条数
+      eventDate: '',
       form: {
+        current: 1, // 当前页
+        size: 5, // 每页显示条数
         eventName: '',
         isemphasis: '',
-        eventDate: '',
+        startDate: '', // 开始时间
+        endDate: '', // 结束时间
       },
       tableData: []
     }
@@ -126,32 +159,53 @@ export default {
     },
 
     /**
-     * 选择是否重点
+     * 更改每页显示条数时
      */
-    handleIsemphasis(val) {
-      console.log(val)
+    handleSizeChange(val) {
+      this.form.size = val
+      this.getData(this.form)
+      console.log(`每页 ${val} 条`);
+    },
+
+    /**
+     * 当前页码变动时触发
+     */
+    handleCurrentChange(val) {
+      this.form.current = val
+      this.getData(this.form)
+      console.log(`当前页: ${val}`);
     },
 
     /**
      * 选择时间
      */
     handleEventDate(val) {
-      console.log(val)
+      // 如果没选择日期时间或者日期时间被清空了，则清除表单时间
+      if(val) {
+        this.form.startDate = val[0]
+        this.form.endDate = val[1]
+      } else {
+        this.form.startDate = ""
+        this.form.endDate = ""
+      }
     },
 
     /**
      * 查询
      */
     handleFind() {
-      let params = {
-        current: 1,
-        size: 5,
-        eventName: this.form.eventName,
-        isemphasis: this.form.isemphasis,
-        startDate: this.form.eventDate[0],
-        endDate: this.form.eventDate[0],
-      }
-      this.getData(params)
+      this.getData(this.form)
+    },
+
+    /**
+     * 重置
+     */
+    handleReset() {
+      this.eventDate = ''
+      this.form.eventName = ''
+      this.form.isemphasis = ''
+      this.form.startDate = ''
+      this.form.endDate = ''
     },
 
     /**
@@ -162,7 +216,6 @@ export default {
       this.$refs.dialogAssigned.dialogAssignedVisible = true
       this.$refs.dialogAssigned.form.state = row.state
       this.$refs.dialogAssigned.form.id = row.id
-      console.log(index, row)
     },
 
     /**
@@ -172,6 +225,10 @@ export default {
       this.title = "新增事件"
       // 打开弹窗
       this.$refs.dialog.dialogFormVisible = true
+      // 清空表单
+      this.$nextTick(() => {
+        this.$refs.dialog.handleReset()
+      })
       // 启用表单
       this.$refs.dialog.disabled = false
     },
@@ -179,16 +236,30 @@ export default {
     /**
      * 详情
      */
-    handleDetails() {
+    handleDetails(row) {
       this.title = "事件详情"
+      // 清空表单
+      this.$nextTick(() => {
+        this.$refs.dialog.handleReset()
+      })
       // 打开弹窗
       this.$refs.dialog.dialogFormVisible = true
       // 禁用表单
       this.$refs.dialog.disabled = true
+      // 获取数据
+      this.getDetails(row.id)
+    },
+
+    /**
+     * 删除行
+     */
+    handleDelete(row) {
+      this.deleteEvent({id: row.id})
     },
   },
   created() {
     this.initPage()
+    this.getTree()
   }
 }
 </script>
@@ -206,6 +277,10 @@ export default {
   }
   &-table {
     margin-top: 30px;
+  }
+  &-pagination {
+    margin-top: 10px;
+    text-align: right;
   }
 }
 </style>

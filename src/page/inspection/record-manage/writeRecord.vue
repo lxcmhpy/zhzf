@@ -23,6 +23,7 @@
       <uploadTmp ref="uploadRef" :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList' :addOrEiditFlag='addOrEiditFlag'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
       <chooseLawPerson ref="chooseLawPersonIdRef" @setLawPer="setLawPersonId" @userList="getAllUserListId"></chooseLawPerson>
+      <chooseillegalAct ref="chooseillegalActRef" @toCaseRegister="toCaseRegister"></chooseillegalAct>
       <mapDiag id="mapDiagRef" ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
       <!-- 悬浮按钮-操作 -->
       <div class="float-btns btn-height63">
@@ -69,6 +70,7 @@ import writeRecordHome from "./modleList.vue";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag.vue";
 import chooseLawPerson from "./chooseModlePerson.vue";
 import chooseLawPersonId from "./chooseModlePerson.vue";
+import chooseillegalAct from "@/page/chooseIllegegaDialog.vue";
 // import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson.vue";
 
 import uploadTmp from './upload/uploadModleFile.vue'
@@ -179,6 +181,7 @@ export default {
     chooseLawPersonId,
     floatBtns,
     documentSideMenu,//文书列表
+    chooseillegalAct,//违法行为
   },
   methods: {
     // 查找模板-添加
@@ -1037,13 +1040,15 @@ export default {
                 type: 'i',
                 class: classType,
                 slot: 'suffix',
-
-              }
+                on: {
+                  'focus': this.focusMethod(item.field)
+                },
+              },
             ],
             inject: true,
-            on: {
-              'focus': this.focusMethod(item.field)
-            },
+            // on: {
+            //   'focus': this.focusMethod(item.field)
+            // },
           })
 
 
@@ -1135,6 +1140,25 @@ export default {
       console.log(`选择违法行为`);
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
+      debugger
+      // 查看更多违法行为
+      let cate = "";
+      // this.options.forEach(element => {
+      //   if (this.caseForm.wayType == element.label) {
+      //     cate = element.cateId;
+      //   }
+      // });
+      let lawCate = {
+        cateId: '1002000200000000',
+        cateName: '道路运政',
+        hyTypeId: '',
+        resourse: "writeRecord"
+      };
+      this.$refs.chooseillegalActRef.showModal(lawCate);
+    },
+    //设置违法行为
+    toCaseRegister(val) {
+      // this.caseRecord(val, this.caseForm);
     },
     // 选择当事人类型
     changePersonParty(inject) {

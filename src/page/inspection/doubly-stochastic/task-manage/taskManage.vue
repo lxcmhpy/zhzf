@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
@@ -65,7 +65,7 @@
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <!-- <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column> -->
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
@@ -184,7 +184,7 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="执法人员" prop="lawEnforceNum">
+              <el-form-item label="执法人员" prop="lawEnforceNum"  label-width="80px">
                 <el-input v-model="addForm.lawEnforceNum"></el-input>
               </el-form-item>
             </el-col>
@@ -195,7 +195,7 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="专家" prop="expertNum">
+              <el-form-item label="专家" prop="expertNum"  label-width="70px">
                 <el-input v-model="addForm.expertNum"></el-input>
               </el-form-item>
             </el-col>
@@ -509,8 +509,8 @@ export default {
     // 查询列表时
     getTableData() {
       let data = {
-        name: this.searchForm.name,
-        company: this.searchForm.company,
+        checkSubject: this.searchForm.checkSubject,
+        taskName: this.searchForm.taskName,
         taskArea: this.searchForm.taskArea,
         current: this.currentPage,
         size: this.pageSize,
@@ -662,6 +662,7 @@ export default {
     },
     editMethod1(row) {
       this.eidtFlag = true;
+      this.getCountByOrganName(1)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
       if (data.taskEndTime && data.taskStartTime) {
@@ -675,6 +676,7 @@ export default {
     },
     viewMethod(row) {
       this.eidtFlag = false;
+       this.getCountByOrganName(1)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
       if (data.taskEndTime && data.taskStartTime) {
@@ -689,6 +691,7 @@ export default {
     // 修改
     editMethod2(row) {
       this.eidtFlag = true;
+      this.getCountByOrganName(2)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
       if (data.taskEndTime && data.taskStartTime) {
@@ -704,6 +707,7 @@ export default {
     },
     viewMethod2(row) {
       this.eidtFlag = false;
+      this.getCountByOrganName(2)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
       if (data.taskEndTime && data.taskStartTime) {

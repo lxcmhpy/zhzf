@@ -6,21 +6,22 @@ let  vm  =  new  Vue();
 
 export  function  getParamList(data)  {//参数列表查询
   return  request({
-    url:  "/device/params/paramsPageList",
+    url: "/device/device/params/paramsPageList",
     method:  "get",
     params: data,
-    showloading: false,
-    baseUrlType:  'DEVICE_HOST',
+    showloading: true,
+    loadingType:'loadPart',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken:  setCancelSource()
   });
 }
 export  function  updateParam(data)  {//参数修改
   return  request({
-    url:  "/device/params/updateParams",
+    url: "/device/device/params/updateParams",
     method:  "get",
     params: data,
     showloading: false,
-    baseUrlType:  'DEVICE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken:  setCancelSource()
   });
 }

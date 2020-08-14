@@ -401,7 +401,7 @@ export function getAllPersonApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'LAW_SUPERVISE_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -729,16 +729,31 @@ export function exportItemApi() {
         cancelToken: setCancelSource()
     });
 }
-// 添导出所有人员表数据
+// 添导出所有人员表数据（公开）
 export function exportPersonApi(data) {
+    data = vm.$qs.stringify(data);
     return request({
-        url: "/xzjc/randomPerson/excelExport/"+data,
+        url: "/xzjc/randomPerson/excelExport",
         method: "post",
-        // data: data,
+        data: data,
         showloading: true,
         loadingType: 'loadPart',
         responseType:'blob',
         baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 导出所有人员表数据
+export function exportAllPersonApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/person/person/excelExport",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -795,6 +810,18 @@ export function addRandomResultApi(data) {
     data = vm.$qs.stringify(data);
     return request({
         url: "/xzjc/extractResult/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+// 一次性添加多条抽取结果
+export function addRandomResultMoreApi(data) {
+    return request({
+        url: "/xzjc/extractResult/multipleSave",
         method: "post",
         data: data,
         showloading: true,

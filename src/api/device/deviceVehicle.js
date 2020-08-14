@@ -9,12 +9,12 @@ import {
 //查询执法车辆信息列表
 export function queryDeviceVehicle(data) {
   return request({
-    url: "/device/info/list",
+    url: "/device/device/info/list",
     method: "get",
     params: data,
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -24,11 +24,11 @@ export function saveOrUpdateDeviceVehicle(data) {
   debugger
   let a = vm.$qs.stringify(data);
   return request({
-    url: "/device/info/save",
+    url: "/device/device/info/save",
     method: "post",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     data: data,
     cancelToken: setCancelSource()
   })
@@ -36,11 +36,11 @@ export function saveOrUpdateDeviceVehicle(data) {
 //根据ID查询装备类型管理
 export function findDeviceVehicleById(id) {
   return request({
-    url: "/device/info/findbyid/" + id,
+    url: "/device/device/info/findbyid/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -48,11 +48,11 @@ export function findDeviceVehicleById(id) {
 //保存年检信息
 export function saveAnnual(data) {
   return request({
-    url: "/device/info/saveAnnual",
+    url: "/device/device/info/saveAnnual",
     method: "post",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     data: data,
     cancelToken: setCancelSource()
   })
@@ -61,11 +61,11 @@ export function saveAnnual(data) {
 //根据车辆ID查找所有年检信息
 export function findAnnualByVehicleId(id) {
   return request({
-    url: "/device/info/findAnnual/" + id,
+    url: "/device/device/info/findAnnual/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -73,11 +73,11 @@ export function findAnnualByVehicleId(id) {
 //根据年检ID删除年检信息
 export function deleteAnnualById(id) {
   return request({
-    url: "/device/info/deleteplate/" + id,
+    url: "/device/device/info/deleteplate/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -85,11 +85,11 @@ export function deleteAnnualById(id) {
 //根据年检ID查找年检信息
 export function findAnnualById(id) {
   return request({
-    url: "/device/info/findinspection/" + id,
+    url: "/device/device/info/findinspection/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -97,11 +97,11 @@ export function findAnnualById(id) {
 //车牌号是否存在
 export function findplate(plateNumber) {
   return request({
-    url: "/device/info/findplate/" + plateNumber,
+    url: "/device/device/info/findplate/" + plateNumber,
     method: "get",
     showloading: false,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -109,24 +109,24 @@ export function findplate(plateNumber) {
 //批量删除车辆信息
 export function deleteVehicles(data) {
   return request({
-    url: "/device/info/deletebyid",
+    url: "/device/device/info/deletebyid",
     method: "post",
     showloading: true,
     loadingType: 'loadPart',
     data: data,
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
 
 export function listVehicle(data) {
     return request({
-      url: "/device/info/listVehicle",
+      url: "/device/device/info/listVehicle",
       method: "get",
       params: data,
       showloading: true,
       loadingType: 'loadPart',
-      baseUrlType: 'DEVICE_HOST',
+      baseUrlType: 'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
   }

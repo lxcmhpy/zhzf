@@ -138,6 +138,12 @@
                     {id:'GS',label:'挂失申请'},
                     {id:'ZX',label:'注销申请'},
                 ],
+                approveBillTypeList:[
+                    {id:'FZ',label:'发证审批'},
+                    {id:'NS',label:'年审审批'},
+                    {id:'GS',label:'挂失审批'},
+                    {id:'ZX',label:'注销审批'},
+                ],
                 isShow:false,
                 pickerOptions: {
                     onPick: ({ maxDate, minDate }) => {
@@ -167,6 +173,13 @@
             },
             formatBillType(row){
                 let data = this.billTypeList.filter(p=>p.id==row.billType)
+                if(data && data.length>0){
+                    return data[0].label
+                }
+                return ''
+            },
+            formatApproveBillType(row){
+                let data = this.approveBillTypeList.filter(p=>p.id==row.billType)
                 if(data && data.length>0){
                     return data[0].label
                 }
@@ -225,7 +238,8 @@
                             isEdit:false,
                             isApprove:true,
                             status:status,
-                            pdfId:pdfId
+                            pdfId:pdfId,
+                            tabTitle:this.formatApproveBillType({billType:res.data.billType}),
                         };
                         this.$router.push({ name: "applyManage", params: routerData });
                     },

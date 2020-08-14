@@ -63,7 +63,7 @@
           <div :class="{hideSomeSearchClass:hideSomeSearch}">
             <div class="item">
               <el-form-item label="下级立案机构">
-                <el-input v-model="caseSearchForm.caseNumber"></el-input>
+                <el-input v-model="caseSearchForm.caseNumber2"></el-input>
               </el-form-item>
             </div>
             <div class="item">
@@ -172,8 +172,8 @@
           <el-table-column prop="staff" label="执法人员" align="center" min-width="100"></el-table-column>
           <el-table-column prop="punishAmount" label="处罚金额" align="center" min-width="100"></el-table-column>
           <el-table-column prop="isUploadImp" label="要求上传备案材料" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="subNumber" label="督办次数" align="center" min-width="100"></el-table-column>
-          <el-table-column fixed="right" label="操作" min-width="50">
+          <el-table-column prop="subNumber" label="督办次数" align="center" min-width="50"></el-table-column>
+          <el-table-column  label="操作" min-width="50">
             <template slot-scope="scope">
               <el-button @click="handleCase(scope.row)" type="text">查看</el-button>
             </template>
@@ -222,6 +222,7 @@ export default {
         zfmlId: "",
         organId: "",
         illegalLaw: "",
+        caseNumber2:'',
       },
       majorCaseMoney: "",
       currentRowData: "",

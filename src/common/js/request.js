@@ -96,6 +96,9 @@ service.interceptors.request.use(
         } else if (
           response.data.code == 400 || response.data.code == 500) {
           tryHideFullScreenLoading();
+          if(response.data.msg){
+              alertMessage(response.data.msg);
+          }
           return Promise.reject(response.data);
         } else if (response.data.code == 401 || response.data.code == 403) {   //无权限
           tryHideFullScreenLoading();

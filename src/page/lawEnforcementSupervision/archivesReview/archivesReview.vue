@@ -58,7 +58,7 @@
           <div :class="{hideSomeSearchClass:hideSomeSearch}">
             <div class="item">
               <el-form-item label="下级立案机构">
-                <el-input v-model="caseSearchForm.caseNumber"></el-input>
+                <el-input v-model="caseSearchForm.caseNumber2"></el-input>
               </el-form-item>
             </div>
             <div class="item">
@@ -140,11 +140,11 @@
               <span @click="showCaseInfo(scope.row)">{{scope.row.caseNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="zfml" label="执法领域" align="center" width="100"></el-table-column>
-          <el-table-column prop="acceptTime" label="立案时间" align="center" width="150"></el-table-column>
-          <el-table-column prop="party" label="当事人" align="center" width="150"></el-table-column>
-          <el-table-column prop="vehicleShipId" label="车船号牌" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseName" label="案由" align="center" width="100">
+          <el-table-column prop="zfml" label="执法领域" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="acceptTime" label="立案时间" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="party" label="当事人" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="vehicleShipId" label="车船号牌" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="caseName" label="案由" align="center" min-width="100">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
                 <div slot="content" style="max-width:200px">{{scope.row.caseName}}</div>
@@ -152,10 +152,10 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="organName" label="立案机构" align="center" width="100"></el-table-column>
-          <el-table-column prop="staff" label="执法人员" align="center" width="100"></el-table-column>
-          <el-table-column prop="pcStatue" label="评查状态" align="center" width="100"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="50">
+          <el-table-column prop="organName" label="立案机构" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="staff" label="执法人员" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="pcStatue" label="评查状态" align="center" min-width="100"></el-table-column>
+          <el-table-column  label="操作" min-width="50">
             <template slot-scope="scope">
               <el-button @click="handleCase(scope.row)" type="text">查看</el-button>
             </template>
@@ -174,6 +174,7 @@
         ></el-pagination>
       </div>
     </div>
+    <caseInfoDia ref="caseInfoDiaRef"></caseInfoDia>
     <!-- <caseCheckDialog ref="caseCheckDialogRef"></caseCheckDialog> -->
   </div>
 </template>
@@ -199,6 +200,7 @@ export default {
         zfmlId:"",
         organId:"",
         illegalLaw:"",
+        caseNumber2:''
       },
       allPCStatue:[{value:'',label:'全部'},{value:'已评查',label:'已评查'},{value:'',label:'未评查'}],
     };
