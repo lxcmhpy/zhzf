@@ -50,7 +50,7 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row>
           <el-table-column type="index" width="55"></el-table-column>
           <el-table-column prop="vehicleNumber" label="车牌号" align="center"></el-table-column>
-          <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+          <el-table-column prop="useUnitName" label="使用单位" align="center"></el-table-column>
           <el-table-column prop="vehicleType" label="车辆类型" align="center"></el-table-column>
           <el-table-column prop="usePermitNumber" label="使用证号" align="center"></el-table-column>
           <el-table-column prop="lssueTime" label="发证时间" align="center"></el-table-column>
@@ -106,7 +106,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="使用单位">
-                <el-input v-model="deviceUsePer.useUnit" disabled></el-input>
+                <el-input v-model="deviceUsePer.useUnitName" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -142,9 +142,8 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="使用期限" prop="daterange">
-                <!-- <el-input v-model="deviceUsePer.useUnit" disabled></el-input> -->
                 <el-date-picker
-                  v-model="daterange"
+                  v-model="deviceUsePer.daterange"
                   type="daterange"
                   range-separator="~"
                   start-placeholder="开始日期"
@@ -164,7 +163,6 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="发证时间" prop="lssueTime">
-                <!-- <el-input v-model="deviceUsePer.lssueTime"></el-input> -->
                 <el-date-picker
                   v-model="deviceUsePer.lssueTime"
                   type="date"
@@ -183,7 +181,6 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="签发时间" prop="signDate">
-                <!-- <el-input v-model="deviceUsePer.signDate"></el-input> -->
                 <el-date-picker
                   v-model="deviceUsePer.signDate"
                   type="date"
@@ -202,7 +199,6 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="经办时间" prop="handlingDate">
-                <!-- <el-input v-model="deviceUsePer.handlingDate"></el-input> -->
                 <el-date-picker
                   v-model="deviceUsePer.handlingDate"
                   value-format="yyyy-MM-dd"
@@ -252,8 +248,9 @@ export default {
       total: 0, //总页数
       issueVisible: false,
       handleForm: {},
-      deviceUsePer: {},
-      daterange: "",
+      deviceUsePer: {
+        daterange: "",
+      },
       activeName: "first",
       rules: {
         daterange: [
@@ -315,7 +312,7 @@ export default {
     },
     openIssueDialog(row) {
       this.deviceUsePer = row;
-      this.daterange = [row.beginDate, row.endDate];
+      this.deviceUsePer.daterange = [row.beginDate, row.endDate];
       this.issueVisible = true;
     },
     openViewDialog(row) {
@@ -326,8 +323,8 @@ export default {
       this.$refs["handleForm"].validate((valid) => {
         if (valid) {
           debugger;
-          _this.deviceUsePer.beginDate = _this.daterange[0];
-          _this.deviceUsePer.endDate = _this.daterange[1];
+          _this.deviceUsePer.beginDate = _this.deviceUsePer.daterange[0];
+          _this.deviceUsePer.endDate = _this.deviceUsePer.daterange[1];
           _this.deviceUsePer.state = "正常";
           saveOrUpdateCertificate(_this.deviceUsePer).then(
             (res) => {

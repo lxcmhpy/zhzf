@@ -26,11 +26,11 @@ export function getAllOrigin(){
  //流程审批
  export  function  queryByOid(data)  {
     return  request({
-      url:  "/device/approveProcess/queryByOid",
+      url:  "/device/device/approveProcess/queryByOid",
       method:  "get",
       params: data,
       showloading: false,
-      baseUrlType:  'DEVICE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken:  setCancelSource()
     });
   }
@@ -38,22 +38,22 @@ export function getAllOrigin(){
 //查询审批列表queryApproveProcessPageApi
 export  function  queryApproveProcessPage(data)  {//岗位修改
     return  request({
-      url:  "/device/approveProcess/queryApproveProcessPage",
+      url:  "/device/device/approveProcess/queryApproveProcessPage",
       method:  "get",
       params: data,
       showloading: false,
-      baseUrlType:  'DEVICE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken:  setCancelSource()
     });
   }
   //修改流程审批
   export  function  updateAp(data)  {
     return  request({
-      url:  "/device/approveProcess/updateAP",
+      url:  "/device/device/approveProcess/updateAP",
       method:  "get",
       params: data,
       showloading: false,
-      baseUrlType:  'DEVICE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken:  setCancelSource()
     });
   }
@@ -61,20 +61,20 @@ export  function  queryApproveProcessPage(data)  {//岗位修改
   // 全部初始化流程
   export function initAllApprove(){
     return  request({
-      url:  "/device/approveProcess/genDefaultProcess",
+      url:  "/device/device/approveProcess/genDefaultProcess",
       method:  "get",
       showloading: false,
-      baseUrlType:  'DEVICE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken:  setCancelSource()
     });
   }
 //初始化选中机构
   export function initOrg(id){
     return  request({
-      url:  "/device/approveProcess/genDefaultProcess/"+id,
+      url:  "/device/device/approveProcess/genDefaultProcess/"+id,
       method:  "get",
       showloading: false,
-      baseUrlType:  'DEVICE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken:  setCancelSource()
     });
   }

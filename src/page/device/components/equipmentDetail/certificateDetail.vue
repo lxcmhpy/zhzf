@@ -20,7 +20,7 @@
               </el-col>
               <el-col :span="12">
                 <label class="item-label">使用单位</label>
-                <div class="item-text">{{deviceUsePer.useUnit}}</div>
+                <div class="item-text">{{deviceUsePer.useUnitName}}</div>
               </el-col>
               <el-col :span="12">
                 <label class="item-label">车辆类型</label>
@@ -88,7 +88,7 @@
               <span
                 slot="dot"
                 class="index-dot"
-                :style="{'background': statusColor[record.statusNo]}"
+                :style="{'background': statusColor[record.operationType]}"
               >{{ index + 1 }}</span>
               <div class="device-info-wrap" style="padding-top:0;">
                 <el-row :gutter="20">
@@ -96,16 +96,16 @@
                     <label class="item-label">证件状态:</label>
                     <div
                       class="item-text"
-                      :style="{'color': statusColor[record.statusNo]}"
-                    >{{ record.status }}</div>
+                      :style="{'color': statusColor[record.operationType]}"
+                    >{{ record.operationType }}</div>
                   </el-col>
                   <el-col :span="12">
                     <label class="item-label">操作日期:</label>
-                    <div class="item-text">{{ record.handleTime }}</div>
+                    <div class="item-text">{{ record.operationDate }}</div>
                   </el-col>
                   <el-col :span="24">
                     <label class="item-label">变化原因(单号):</label>
-                    <div class="item-text">{{ record.handleReason }}</div>
+                    <div class="item-text">{{ record.billNo }}</div>
                   </el-col>
                 </el-row>
               </div>
@@ -120,7 +120,7 @@
   </el-dialog>
 </template>
 <script>
-import { findCertificateById } from "@/api/device/deviceCertificate.js";
+import { findInfoAndHistory } from "@/api/device/deviceCertificate.js";
 export default {
   components: {},
   data() {
@@ -130,43 +130,43 @@ export default {
       reverse: false,
       deviceUsePer: {},
       records: [
-        {
-          statusNo: "0",
-          status: "待颁发",
-          handleTime: "2019年09月12日 12:09:35",
-          handleReason: "FZ4358394589",
-        },
-        {
-          statusNo: "1",
-          status: "正常",
-          handleTime: "2019年09月12日 12:09:35",
-          handleReason: "FZ4358394589",
-        },
-        {
-          statusNo: "2",
-          status: "挂失",
-          handleTime: "2019年09月12日 12:09:35",
-          handleReason: "FZ4358394589",
-        },
-        {
-          statusNo: "3",
-          status: "已年审",
-          handleTime: "2019年09月12日 12:09:35",
-          handleReason: "FZ4358394589",
-        },
-        {
-          statusNo: "4",
-          status: "注销",
-          handleTime: "2019年09月12日 12:09:35",
-          handleReason: "FZ4358394589",
-        },
+        // {
+        //   statusNo: "0",
+        //   status: "待颁发",
+        //   handleTime: "2019年09月12日 12:09:35",
+        //   handleReason: "FZ4358394589",
+        // },
+        // {
+        //   statusNo: "1",
+        //   status: "正常",
+        //   handleTime: "2019年09月12日 12:09:35",
+        //   handleReason: "FZ4358394589",
+        // },
+        // {
+        //   statusNo: "2",
+        //   status: "挂失",
+        //   handleTime: "2019年09月12日 12:09:35",
+        //   handleReason: "FZ4358394589",
+        // },
+        // {
+        //   statusNo: "3",
+        //   status: "已年审",
+        //   handleTime: "2019年09月12日 12:09:35",
+        //   handleReason: "FZ4358394589",
+        // },
+        // {
+        //   statusNo: "4",
+        //   status: "注销",
+        //   handleTime: "2019年09月12日 12:09:35",
+        //   handleReason: "FZ4358394589",
+        // },
       ],
       statusColor: {
-        "0": "#0074F5",
-        "1": "#05C051",
-        "2": "#FF8000",
-        "3": "#0BA5BF",
-        "4": "#999999",
+        待颁发: "#0074F5",
+        正常: "#05C051",
+        挂失: "#FF8000",
+        已年审: "#0BA5BF",
+        注销: "#999999",
       },
     };
   },
@@ -183,9 +183,10 @@ export default {
     },
     getData(id) {
       let _this = this;
-      findCertificateById(id).then(
+      findInfoAndHistory(id).then(
         (res) => {
-          _this.deviceUsePer = res.data;
+          _this.deviceUsePer = res.data.info;
+          _this.records = res.data.history;
         },
         (err) => {
           console.log(err);
