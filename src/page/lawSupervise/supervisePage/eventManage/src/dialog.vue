@@ -34,7 +34,7 @@
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
       <el-form-item label="机构" label-width="60px">
-        <ElSelectTree @getValue="getValue" :options="treeOptions" :props="treeProps" />
+        <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
       </el-form-item>
       <el-form-item label="人员" label-width="60px">
         <el-select @change="handlePeopleChange" v-model="form.disposePerson" placeholder="请选择">
@@ -262,6 +262,7 @@ export default {
      * 清空表单
      */
     handleReset() {
+      this.$refs.elSelectTree.valueTitle = ''
       Object.keys(this.form).map(key => {
         if(key === 'isemphasis' || key === 'iscoordinator' || key === 'state') {
           this.form[key] = 1
@@ -271,6 +272,13 @@ export default {
           this.form[key] = ''
         }
       })
+    },
+
+    /**
+     * 给 elSelectTree 组件赋值
+     */
+    setValue(val) {
+      this.$refs.elSelectTree.valueTitle = val
     },
 
     handleRemove(file) {

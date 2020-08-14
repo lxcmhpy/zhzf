@@ -212,8 +212,6 @@ export default {
      * 指派
      */
     handleAssigned(index, row) {
-      // 清空指派表单
-      this.$refs.dialogAssigned.resetForm()
       // 打开指派弹窗
       this.$refs.dialogAssigned.dialogAssignedVisible = true
       this.$refs.dialogAssigned.form.state = row.state
@@ -228,7 +226,9 @@ export default {
       // 打开弹窗
       this.$refs.dialog.dialogFormVisible = true
       // 清空表单
-      this.$refs.dialog.handleReset()
+      this.$nextTick(() => {
+        this.$refs.dialog.handleReset()
+      })
       // 启用表单
       this.$refs.dialog.disabled = false
     },
@@ -238,6 +238,10 @@ export default {
      */
     handleDetails(row) {
       this.title = "事件详情"
+      // 清空表单
+      this.$nextTick(() => {
+        this.$refs.dialog.handleReset()
+      })
       // 打开弹窗
       this.$refs.dialog.dialogFormVisible = true
       // 禁用表单

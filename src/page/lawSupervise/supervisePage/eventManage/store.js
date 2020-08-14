@@ -69,6 +69,9 @@ export default {
           throw new Error("findById()::::::::接口数据错误")
         }
       }).then(data => {
+        this.$nextTick(() => {
+          this.$refs.dialog.setValue(data.disposeOrganName)
+        })
         // 给详情页赋值
         Object.keys(this.$refs.dialog.form).map(key => {
           this.$refs.dialog.form[key] = data[key]
