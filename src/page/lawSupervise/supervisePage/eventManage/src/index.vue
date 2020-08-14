@@ -212,6 +212,8 @@ export default {
      * 指派
      */
     handleAssigned(index, row) {
+      // 清空指派表单
+      this.$refs.dialogAssigned.resetForm()
       // 打开指派弹窗
       this.$refs.dialogAssigned.dialogAssignedVisible = true
       this.$refs.dialogAssigned.form.state = row.state
