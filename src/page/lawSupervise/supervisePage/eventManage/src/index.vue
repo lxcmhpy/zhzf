@@ -225,6 +225,8 @@ export default {
       this.title = "新增事件"
       // 打开弹窗
       this.$refs.dialog.dialogFormVisible = true
+      // 清空表单
+      this.$refs.dialog.handleReset()
       // 启用表单
       this.$refs.dialog.disabled = false
     },

@@ -3,7 +3,7 @@
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
-    <el-form :model="form" :disabled="disabled">
+    <el-form ref="dialogForm" :model="form" :disabled="disabled">
       <el-form-item label="事件名称" :label-width="formLabelWidth">
         <el-input v-model="form.eventName" autocomplete="off"></el-input>
       </el-form-item>
@@ -104,7 +104,7 @@
   </el-dialog>
 </template>
 
-<script>addUpdate
+<script>
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { addUpdate } from "@/api/eventManage";
 import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js"
@@ -258,6 +258,21 @@ export default {
       })
     },
 
+    /**
+     * 清空表单
+     */
+    handleReset() {
+      Object.keys(this.form).map(key => {
+        if(key === 'isemphasis' || key === 'iscoordinator' || key === 'state') {
+          this.form[key] = 1
+        } else if (key === 'storageIds') {
+          this.form[key] = []
+        } else {
+          this.form[key] = ''
+        }
+      })
+    },
+
     handleRemove(file) {
       console.log(file);
     },
@@ -268,7 +283,7 @@ export default {
     handleDownload(file) {
       console.log(file);
     }
-  }
+  },
 }
 </script>
 
