@@ -17,7 +17,14 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="使用单位" prop="useUnit">
-                <el-input v-model="searchForm.useUnit"></el-input>
+                <el-input style="display:none" v-model="searchForm.useUnit"></el-input>
+                <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="tableDataTree"
+                  :accordion="true"
+                  :props="{label: 'label', value: 'id'}"
+                  @getValue="hindleChanged"
+                ></elSelectTree>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -228,9 +235,10 @@ import {
   findCertificateById,
 } from "@/api/device/deviceCertificate.js";
 import CertificateDetail from "@/page/device/components/equipmentDetail/certificateDetail";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
 export default {
-  components: { CertificateDetail },
+  components: { CertificateDetail, elSelectTree },
   data() {
     return {
       searchForm: {
@@ -269,10 +277,28 @@ export default {
         handlingDate: [
           { required: true, message: "请输入经办时间", trigger: "blur" },
         ],
+        tableDataTree: [],
       },
     };
   },
   methods: {
+    // 获取机构树
+    getOidTreeData() {
+      let _this = this;
+      _this.$store.dispatch("findOrganTreeByCurrUser").then(
+        (res) => {
+          _this.tableDataTree = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    // 所属机构切换
+    hindleChanged(val) {
+      this.searchForm.useUnit = val;
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+    },
     //获取已归档的数据
     getDataList(searchData) {
       let data = searchData;
@@ -341,6 +367,7 @@ export default {
   },
   created() {
     this.getDataList({});
+    this.getOidTreeData();
   },
 };
 </script>

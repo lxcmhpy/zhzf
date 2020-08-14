@@ -7,7 +7,14 @@
             <el-row>
               <el-col :span="6">
                 <el-form-item label="单位名称" prop="organizationName">
-                  <el-input v-model="searchForm.organizationName"></el-input>
+                  <el-input style="display:none" v-model="searchForm.organizationName"></el-input>
+                  <elSelectTree
+                    ref="elSelectTreeObj1"
+                    :options="tableDataTree"
+                    :accordion="true"
+                    :props="{label: 'label', value: 'id'}"
+                    @getValue="hindleChanged1"
+                  ></elSelectTree>
                 </el-form-item>
               </el-col>
               <el-col :span="5">
@@ -174,6 +181,7 @@ export default {
     return {
       searchForm: {
         organizationName: "",
+        organizationId: "",
       },
       tableData: [],
       currentPage: 1, //当前页
@@ -223,13 +231,15 @@ export default {
       this.form.organizationId = val;
       this.$refs.elSelectTreeObj.$children[0].handleClose();
     },
+    hindleChanged1(val) {
+      this.searchForm.organizationId = val;
+      this.$refs.elSelectTreeObj1.$children[0].handleClose();
+    },
     onAdd() {
-      this.getOidTreeData();
       this.form = {};
       this.visible = true;
     },
     onEdit(row) {
-      this.getOidTreeData();
       this.form = row;
       this.visible = true;
     },
@@ -307,6 +317,7 @@ export default {
   },
   created() {
     this.getDataList({});
+    this.getOidTreeData();
   },
 };
 </script>
