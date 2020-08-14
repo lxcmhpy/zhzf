@@ -58,7 +58,7 @@
             </div>
             <div class="tableHandle" style="margin-bottom: 10px;">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
-                <el-button plain size="medium" icon="el-icon-plus"  @click="copyClick">复制</el-button>
+                <el-button plain size="medium" icon="el-icon-document"  @click="copyClick">复制</el-button>
             </div>    
             <div class="tablePart">
                 <el-table

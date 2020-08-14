@@ -9,23 +9,23 @@ import {
 //查询证件列表
 export function queryCertificateList(data) {
   return request({
-    url: "/device/use/per/list",
+    url: "/device/device/use/per/list",
     method: "get",
     params: data,
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
 //保存证件信息
 export function saveOrUpdateCertificate(data) {
   return request({
-    url: "/device/use/per/saveOrUpdate",
+    url: "/device/device/use/per/saveOrUpdate",
     method: "post",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     data: vm.$qs.stringify(data),
     cancelToken: setCancelSource()
   })
@@ -33,11 +33,11 @@ export function saveOrUpdateCertificate(data) {
 //根据ID查询证件信息
 export function findCertificateById(id) {
   return request({
-    url: "/device/use/per/findById/" + id,
+    url: "/device/device/use/per/findById/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -45,11 +45,11 @@ export function findCertificateById(id) {
 //根据ID查询证件信息及历史信息
 export function findInfoAndHistory(id) {
   return request({
-    url: "/device/use/per/findInfoAndHistory/" + id,
+    url: "/device/device/use/per/findInfoAndHistory/" + id,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DEVICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }

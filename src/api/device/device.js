@@ -8,11 +8,11 @@ let vm = new Vue();
  */
 export function allOrgTree() {
     return request({
-        url: "/device/pub/getAllOrgTree",
+        url: "/device/device/pub/getAllOrgTree",
         method: "get",
         showloading: true,
         loadingType:'loadPart',
-        baseUrlType:  'DEVICE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -23,11 +23,11 @@ export function allOrgTree() {
  */
 export function tree(pid,treeType) {
     return request({
-        url: "/device/pub/tree/"+pid+"/"+treeType,
+        url: "/device/device/pub/tree/"+pid+"/"+treeType,
         method: "get",
         showloading: true,
         loadingType:'loadPart',
-        baseUrlType:  'DEVICE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -38,11 +38,11 @@ export function tree(pid,treeType) {
  */
 export function getDataList (pid,dataType) {
     return request({
-        url: "/device/pub/getDataList/"+pid+"/"+dataType,
+        url: "/device/device/pub/getDataList/"+pid+"/"+dataType,
         method: "get",
         showloading: true,
         loadingType:'loadPart',
-        baseUrlType:  'DEVICE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     })
 }
@@ -52,11 +52,11 @@ export function getDataList (pid,dataType) {
  */
 export function getDrawerList(data) {
     return request({
-        url: "/device/pub/getDrawerList/",
+        url: "/device/device/pub/getDrawerList/",
         method: "post",
         showloading: true,
         loadingType:'loadPart',
-        baseUrlType:  'DEVICE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         data: data,
         cancelToken: setCancelSource()
     })
@@ -65,24 +65,24 @@ export function getDrawerList(data) {
 // 文件上传
 export  function  upload(data)  {
     return  request({
-      url:  "/sys/file/uploadCommon",
+      url:  "/device/sys/file/uploadCommon",
       method:  "POST",
       data: data,
       contentType: 'multipart/form-data;',
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'DEVICE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken:  setCancelSource(),
     });
   }
   //根据主键ID删除附件
   export function deleteFileById(fileId) {
     return  request({
-      url:  "/sys/file/delete/"+fileId,
+      url:  "/device/sys/file/delete/"+fileId,
       method:  "GET",
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'DEVICE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken:  setCancelSource(),
     });
   }
