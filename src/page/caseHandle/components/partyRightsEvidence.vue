@@ -67,7 +67,7 @@ export default {
         this.evidenceForm.hasfile = true;
       }
       this.evfile = file.raw;
-
+      this.evidenceForm.evName = this.evfile.name;
     },
     //上传附件
     uploadEvidence() {

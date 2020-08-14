@@ -14,6 +14,11 @@
       class="errorTipForm"
       label-width="110px"
     >
+      <div class="item" style="display:none">
+        <el-form-item  prop="id">
+            <el-input v-model="addHylbForm.id"  style = "width:100%"></el-input>
+          </el-form-item>
+      </div>
       <div class="item">
         <el-form-item label="行业类别名称" prop="name">
           <el-input v-model="addHylbForm.name"></el-input>
@@ -21,7 +26,7 @@
       </div>
       <div class="item">
         <el-form-item label="排序" prop="sort">
-          <el-input v-model="addHylbForm.sort" disabled></el-input>
+          <el-input v-model="addHylbForm.sort"></el-input>
         </el-form-item>
       </div>
     </el-form>
@@ -39,6 +44,7 @@ export default {
     return {
       visible: false,
       addHylbForm: {
+        id: "",
         name:"",
         sort:""
       },
@@ -57,26 +63,24 @@ export default {
   inject: ["reload"],
   methods: {
     showModal(type, data) {
-      console.log("123",data);
       this.visible = true;
       this.handelType = type; 
       this.pid = data.pid;
       if (type == 0) {
         this.dialogTitle = "新增行业类别";
-        this.addHylbForm.sort = data.leng + 1;
+        this.addHylbForm = {};
         this.addHylbForm.pid = data.pid;
       } else if (type == 2) {       
         this.dialogTitle = "修改行业类别";
         this.addHylbForm = data.item;
         this.editLawCategoryId = data.item.id;
+         this.addHylbForm.sort = data.item.sort;
         this.addHylbForm.pid = data.pid;
       }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-    //   this.$refs["addRoleForm"].resetFields();
-      //this.errorOrganName = false;
     },
     addOrEditHylb(formName){
       let _this = this;

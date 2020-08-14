@@ -26,7 +26,7 @@
         <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
         <el-table-column prop="docApplicant" label="申请人" align="center" width="100"></el-table-column>
         <el-table-column prop="currentLinkName" label="当前环节" align="center" width="100"></el-table-column>
-        <el-table-column label="标签" align="center" width="50">
+        <!-- <el-table-column label="标签" align="center" width="50">
             <template slot-scope="scope">
               <el-tooltip v-if="scope.row.warType=='1'" placement="top-start" effect="light">
                 <div slot="content" class="warn-li" style="color:#FF0000">
@@ -53,7 +53,7 @@
                 <div class="warn-box" style="background:#0084FF">警</div>
               </el-tooltip>
             </template>
-          </el-table-column>
+          </el-table-column> -->
       </el-table>
     </div>
     <div class="paginationBox">

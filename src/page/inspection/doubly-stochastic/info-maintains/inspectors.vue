@@ -72,7 +72,7 @@
   </div>
 </template>
 <script>
-import { findRecordListApi, getAllPersonApi, getDictListDetailByNameApi, addMorePublicPersonApi,exportPersonApi } from "@/api/inspection";
+import { findRecordListApi, getAllPersonApi, getDictListDetailByNameApi, addMorePublicPersonApi,exportAllPersonApi } from "@/api/inspection";
 // import { getAllPersonApi, } from "@/api/person";
 import iLocalStroage from "@/common/js/localStroage";
 import publicInspectors from './publicInspectors.vue';
@@ -169,9 +169,9 @@ export default {
     // 导出
     exportMethod(methodName, fileName) {
       let data={
-        organName:iLocalStroage.gets("userInfo").organName
+        organId:iLocalStroage.gets("userInfo").organId
       }
-      exportPersonApi(data).then(res => {
+      exportAllPersonApi(data).then(res => {
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持
         //其他浏览器
         let link = document.createElement('a'); // 创建a标签

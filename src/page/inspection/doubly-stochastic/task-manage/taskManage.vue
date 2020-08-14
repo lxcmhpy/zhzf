@@ -184,7 +184,7 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="执法人员" prop="lawEnforceNum">
+              <el-form-item label="执法人员" prop="lawEnforceNum"  label-width="80px">
                 <el-input v-model="addForm.lawEnforceNum"></el-input>
               </el-form-item>
             </el-col>
@@ -195,7 +195,7 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="专家" prop="expertNum">
+              <el-form-item label="专家" prop="expertNum"  label-width="70px">
                 <el-input v-model="addForm.expertNum"></el-input>
               </el-form-item>
             </el-col>

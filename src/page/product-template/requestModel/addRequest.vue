@@ -22,6 +22,7 @@
                 type="textarea"
                 :autosize="{ minRows: 1, maxRows: 4}"
                 placeholder="请输入问题"
+                maxlength="85"
                 v-model="addRequest.request">
               </el-input>
             </el-form-item>
@@ -31,7 +32,7 @@
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 1, maxRows: 4}"
-                placeholder="请输入问题"
+                placeholder=""
                 v-model.number="addRequest.sort">
               </el-input>
             </el-form-item>

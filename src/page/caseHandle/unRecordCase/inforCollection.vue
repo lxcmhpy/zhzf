@@ -32,14 +32,17 @@
         </div>
         <div>
           <div class="item">
-            <el-form-item label="案发时间">
-              <el-date-picker v-model="inforForm.afsj" type="datetime" format="yyyy-MM-dd HH:mm"
+            <el-form-item label="案发时间" prop="afsj">
+              <el-date-picker @change="checkDays" v-model="inforForm.afsj" type="datetime" format="yyyy-MM-dd HH:mm"
                               value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+              <div v-if="dateShow" class="el-form-item__error error-color">
+                当前案发时间早于受案时间10日以上，若核对无误可忽略本提醒。
+              </div>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="受案时间" prop="acceptTime">
-              <el-date-picker v-model="inforForm.acceptTime" type="datetime" format="yyyy-MM-dd HH:mm"
+              <el-date-picker @change="checkDays" v-model="inforForm.acceptTime" type="datetime" format="yyyy-MM-dd HH:mm"
                               value-format="yyyy-MM-dd HH:mm"></el-date-picker>
             </el-form-item>
           </div>
@@ -912,7 +915,16 @@
         //   }
         //   callback();
         // }
-      }
+      };
+      //验证时间
+      var validateTime = (rule, value, callback) => {
+        let afsj = this.inforForm.afsj; // 案发时间
+        let acceptTime = this.inforForm.acceptTime // 受案时间
+        if (Date.parse(afsj) > Date.parse(acceptTime) && this.inforForm.afsj) {
+          return callback(new Error("案发时间不得晚于受案时间"));
+        }
+        callback();
+      };
       return {
         changePartyIdType2Index: "",
         theStr: "", // 输入框长度到达设定值时输入框的内容
@@ -993,8 +1005,12 @@
         rules: {
           caseSource: [{required: true, message: "请选择", trigger: "change"}],
           caseSourceText: [{required: true, validator: validatecaseSourceText, trigger: "change"}],
+          afsj: [
+            { validator: validateTime, trigger: "change"}
+          ],
           acceptTime: [
-            {required: true, message: "请选择时间", trigger: "change"}
+            {required: true, message: "请选择时间", trigger: "change"},
+            {required: true, validator: validateTime, trigger: "change"}
           ],
           party: [
             // { required: true, message: "请输入", trigger: "blur" },
@@ -1154,6 +1170,7 @@
           {value: "摩托车", label: "摩托车"},
           {value: "拖拉机", label: "拖拉机"}
         ],
+        dateShow: false,
         showTrailer: false, //是否显示挂车信息
         judgFreedomList: [], //自由裁量列表
         caseSourceTextDisable: false,
@@ -1224,6 +1241,19 @@
           this.caseSourceTextDisable = true;
         }
         this.inforForm.caseSource = item.value
+      },
+      //查询案发时间和受案时间相差天数
+      checkDays(){
+        this.dateShow = false;
+        let afsj = this.inforForm.afsj; // 案发时间
+        let acceptTime = this.inforForm.acceptTime // 受案时间
+        if(this.inforForm.afsj && this.inforForm.acceptTime){
+          let diff = new Date(acceptTime).getTime() - new Date(afsj).getTime();
+          let days = diff / 24 / 60 / 60 / 1000;
+          if(days > 10){
+            this.dateShow = true;
+          }
+        }
       },
       //选择执法人员
       addLawPerson() {
@@ -2249,4 +2279,9 @@
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss">
 /* @import "@/assets/css/caseHandle/index.scss"; */
+</style>
+<style lang="scss">
+  .error-color {
+    color: #FF6600
+  }
 </style>

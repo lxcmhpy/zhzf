@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
@@ -65,14 +65,14 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod2(scope.row)" type="text">附件管理</el-button>
-              <el-button @click="checkMethod(scope.row)" type="text">检查</el-button>
+              <el-button @click="editMethod2(scope.row)" type="text" :disabled="!scope.row.objectName">附件管理</el-button>
+              <el-button @click="checkMethod(scope.row)" type="text" :disabled="!scope.row.objectName">检查</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" >
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
@@ -98,8 +98,8 @@
           <el-table-column prop="checkResult" label="检查结果" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
-              <el-button @click="editMethod2(scope.row)" type="text">附件管理</el-button>
-              <el-button @click="checkMethod(scope.row)" type="text">检查</el-button>
+              <el-button @click="editMethod2(scope.row)" type="text" :disabled="!scope.row.objectName">附件管理</el-button>
+              <el-button @click="checkMethod(scope.row)" type="text"  :disabled="!scope.row.objectName">检查</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -465,21 +465,25 @@ export default {
       let _this = this
       this.addForm2 = JSON.parse(JSON.stringify(row))
       console.log(this.addForm2)
-      getCheckResultByIdApi(this.addForm2.checkResultId).then(
-        // upload(fd).then(
-        res => {
-          if (res.code == 200) {
-            // _this.addForm2.evaluateContent=res.data.evaluateContent||''
-            this.$set(_this.addForm2, 'evaluateContent', res.data.evaluateContent)
-            this.$set(_this.addForm2, 'checkEndTime', res.data.checkEndTime)
-            this.$set(_this.addForm2, 'checkStartTime', res.data.checkStartTime)
-            this.fileList = res.data.fileList || ''
+      if (this.addForm2.checkResultId) {
+        getCheckResultByIdApi(this.addForm2.checkResultId).then(
+          // upload(fd).then(
+          res => {
+            if (res.code == 200) {
+              // _this.addForm2.evaluateContent=res.data.evaluateContent||''
+              this.$set(_this.addForm2, 'evaluateContent', res.data.evaluateContent)
+              this.$set(_this.addForm2, 'checkEndTime', res.data.checkEndTime)
+              this.$set(_this.addForm2, 'checkStartTime', res.data.checkStartTime)
+              this.fileList = res.data.fileList || ''
+            }
+          },
+          error => {
+            console.log(error)
           }
-        },
-        error => {
-          console.log(error)
-        }
-      )
+        )
+      }else{
+         _this.getByMlCaseId(row)
+      }
       this.dialogFormVisible2 = true
     },
     viewMethod() { },
@@ -597,8 +601,8 @@ export default {
       fd.append("file", param.file);
       fd.append("userId", iLocalStroage.gets("userInfo").nickName);
       fd.append("fileName", param.file.name);
-      fd.append('caseId', this.currentData.id)//传记录id
-      fd.append('docId', this.currentData.extractResultId)//传记录id
+      fd.append('caseId', this.currentData.id)//传任务id
+      fd.append('docId', this.currentData.extractResultId)//传extractResultId
       uploadCommon(fd).then(
         // upload(fd).then(
         res => {
@@ -616,11 +620,11 @@ export default {
       )
     },
     //获取文书列表
-    getByMlCaseId(pageDomId) {
+    getByMlCaseId(currentData) {
       let _this = this
       let data = {
-        caseId: this.currentData.id,
-        docId: this.currentData.extractResultId
+        caseId: currentData.id,
+        docId: currentData.extractResultId
       }
       getFile(data).then(
         res => {
