@@ -43,8 +43,16 @@ export const inforCollectionCommonMixins = {
       }
       callback();
     };
+    //验证时间
+    var validateTime = (rule, value, callback) => {
+      let afsj = this.inforForm.afsj; // 案发时间
+      let acceptTime = this.inforForm.acceptTime // 受案时间
+      if (Date.parse(afsj) > Date.parse(acceptTime) && this.inforForm.afsj) {
+        return callback(new Error("案发时间不得晚于受案时间"));
+      }
+      callback();
+    };
     return {
-      dateTooltip: "",// 案发时间提示语
       moneyTooltip: "",// 自由裁量权金额提示语
       recentCheckStastions: [],//最近五个检测站
       recentCheckWorkers: [],//历史保存过检测人员
@@ -123,10 +131,13 @@ export const inforCollectionCommonMixins = {
       directionList: [],
       locationList: [],
       rules: {
-        caseSource: [{required: true, message: "请选择", trigger: "change"}],
         caseSourceText: [{required: true, validator: validatecaseSourceText, trigger: "change"}],
+        afsj: [
+          { validator: validateTime, trigger: "change"}
+        ],
         acceptTime: [
-          {required: true, message: "请选择时间", trigger: "change"}
+          {required: true, message: "请选择时间", trigger: "change"},
+          {required: true, validator: validateTime, trigger: "change"}
         ],
         party: [
           // { required: true, message: "请输入", trigger: "blur" },
@@ -282,6 +293,7 @@ export const inforCollectionCommonMixins = {
         {value: "摩托车", label: "摩托车"},
         {value: "拖拉机", label: "拖拉机"}
       ],
+      dateShow: false, //是否显示时间提示语
       showTrailer: false, //是否显示挂车信息
       judgFreedomList: [], //自由裁量列表
       caseSourceTextDisable: false,
@@ -433,7 +445,6 @@ export const inforCollectionCommonMixins = {
       let val = this.driverOrAgentInfoList[index].relationWithParty
       if (val === '同一人') {
         console.log(val);
-        // debugger
         this.driverOrAgentInfoList[index].relationWithCase = "当事人";
         this.driverOrAgentInfoList[index].name = this.inforForm.party;
         this.driverOrAgentInfoList[index].zhengjianType = this.inforForm.partyIdType;
@@ -1163,7 +1174,19 @@ export const inforCollectionCommonMixins = {
           console.log(err);
         })
     },
-
+    //查询案发时间和受案时间相差天数
+    checkDays(){
+      this.dateShow = false;
+      let afsj = this.inforForm.afsj; // 案发时间
+      let acceptTime = this.inforForm.acceptTime // 受案时间
+      if(this.inforForm.afsj && this.inforForm.acceptTime){
+        let diff = new Date(acceptTime).getTime() - new Date(afsj).getTime();
+        let days = diff / 24 / 60 / 60 / 1000;
+        if(days > 10){
+          this.dateShow = true;
+        }
+      }
+    },
     // 锚点回显-start
     scrool1() {
       let scrolled = this.$refs.link_1.scrollTop;
@@ -1251,9 +1274,10 @@ export const inforCollectionCommonMixins = {
 
 },
 created() {
+  this.checkDays();
   this.getDirectionList();
   this.getLocationList();
-  this.findJudgFreedomList();
+  // this.findJudgFreedomList();
   this.getTrailerType();
   this.findRouteManageByOrganId();
   // this.setLawPerson(

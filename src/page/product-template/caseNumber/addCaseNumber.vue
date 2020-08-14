@@ -48,7 +48,7 @@
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="大队码" prop="digit">
+        <el-form-item label="大队码" prop="teamCode">
           <el-input v-model="addCaseNumberForm.teamCode" ></el-input>
         </el-form-item>
       </div>

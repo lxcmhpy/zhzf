@@ -10,9 +10,15 @@
       :model="addLawCategoryForm"
       :rules="rules"
       ref="addLawCategoryForm"
+      prop="addLawCategoryForm"
       class="errorTipForm"
       label-width="110px"
     >
+      <div class="item" style="display:none">
+        <el-form-item  prop="id">
+            <el-input v-model="addLawCategoryForm.id"></el-input>
+          </el-form-item>
+      </div>
       <div class="item">
         <el-form-item label="业务领域名称" prop="name">
           <el-input v-model="addLawCategoryForm.name"></el-input>
@@ -20,7 +26,7 @@
       </div>
       <div class="item">
         <el-form-item label="排序" prop="sort">
-          <el-input v-model="addLawCategoryForm.sort" disabled></el-input>
+          <el-input v-model="addLawCategoryForm.sort"></el-input>
         </el-form-item>
       </div>
     </el-form>
@@ -38,6 +44,7 @@ export default {
     return {
       visible: false,
       addLawCategoryForm: {
+        id: "",
         name:"",
         sort:""
       },
@@ -55,12 +62,12 @@ export default {
   inject: ["reload"],
   methods: {
     showModal(type, data) {
-      console.log("123",data);
+      console.log("1111111",this.addLawCategoryForm)
       this.visible = true;
       this.handelType = type; 
       if (type == 0) {
         this.dialogTitle = "新增业务领域";
-        this.addLawCategoryForm.sort = data.leng + 1;
+        this.addLawCategoryForm= {};
       } else if (type == 2) {       
         this.dialogTitle = "修改业务领域";
         this.addLawCategoryForm = data;
@@ -69,9 +76,9 @@ export default {
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
+      this.$refs["addLawCategoryForm"].resetFields();
+      console.log("1111111",this.addLawCategoryForm)
       this.visible = false;
-    //   this.$refs["addRoleForm"].resetFields();
-      //this.errorOrganName = false;
     },
     addOrEditLawCategory(formName){
       let _this = this;
