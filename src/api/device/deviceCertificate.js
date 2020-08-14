@@ -41,3 +41,15 @@ export function findCertificateById(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//根据ID查询证件信息及历史信息
+export function findInfoAndHistory(id) {
+  return request({
+    url: "/device/use/per/findInfoAndHistory/" + id,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'DEVICE_HOST',
+    cancelToken: setCancelSource()
+  });
+}
