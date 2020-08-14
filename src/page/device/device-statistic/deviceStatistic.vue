@@ -159,7 +159,7 @@ export default {
           type: "scroll",
           orient: "vertical",
           right: 10,
-          bottom: 20,
+          bottom: 80,
           data: legendData,
         },
         series: [
@@ -180,7 +180,8 @@ export default {
               "#8378EA",
               "#96BFFF",
             ],
-            radius: ["50%", "70%"],
+            radius: ["40%", "60%"],
+            center: ["40%", "50%"],
             data: seriesData,
           },
         ],
@@ -269,7 +270,7 @@ export default {
           type: "scroll",
           orient: "vertical",
           right: 10,
-          bottom: 20,
+          bottom: 80,
           data: legendData,
         },
         series: [
