@@ -115,21 +115,24 @@ export default {
       reverse: false,
       records: [],
       sealed:false,
-      approved:false,
+      approved:true,
       step:0,
-      organId:''
+      organId:'',
+      host:''
     };
   },
   created() {
       this.getApproveInfo()
       this.getFile()
       this.organId=iLocalStroage.gets("userInfo").organId
+      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
   },
   props: {
     id: String,
     isApprove:Boolean,
     status:String,
     pdfId:String,
+    billType:String,
   },
   inject: ['reload'],
   methods: {
@@ -183,26 +186,126 @@ export default {
           res.data.forEach(p=>{
               if(p.organId==this.organId){
                 this.step=p.step
+                if(p.approveStatus=='审批中'){
+                    this.approved=false
+                }
               }
           })
       },
-    //签章
-    makeSeal() {
-        this.sealed=true
-    },
+    // 盖章
+      makeSeal() {
+        let _this = this;
+        let websocket = null;
+        //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window) {
+          let _url = "ws://124.192.215.4:8083/socket/" + this.pdfId
+          // let _url = "ws://172.16.170.44:8083/socket/" + fileId
+          websocket = new WebSocket(_url);
+        } else {
+          alert('Not support websocket')
+        }
+
+        //连接发生错误的回调方法
+        websocket.onerror = function () {
+          setMessageInnerHTML("error");
+        };
+
+        //连接成功建立的回调方法
+        websocket.onopen = function (event) {
+          setMessageInnerHTML("open");
+        }
+
+        //接收到消息的回调方法
+        websocket.onmessage = function (event) {
+          setMessageInnerHTML(event.data);
+        }
+
+        //连接关闭的回调方法
+        websocket.onclose = function () {
+          setMessageInnerHTML("close");
+        }
+
+        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+        window.onbeforeunload = function () {
+          websocket.close();
+        }
+
+        //将消息显示在网页上
+        function setMessageInnerHTML(innerHTML) {
+          console.log(innerHTML);
+          if (innerHTML === '1') {
+            _this.$emit('reInstall');
+          }
+
+        }
+
+        //关闭连接
+        function closeWebSocket() {
+          websocket.close();
+        }
+
+        //   signature.openURL('oeder');
+        // let ActivexURL = "http://172.16.170.44:8083/iWebPDFEditor-V5.1/MultBrowser.html?path=http://172.16.170.54:9332/12,3b11e8faa6"
+        // MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+
+        openURL();
+
+        function callBackBrowserURL(error, id) {
+          if (error == 0) {  //调用成功
+            MultBrowser.waitStatus(id, "2", callBackWaitStatus);
+          }
+        }
+
+        function callBackWaitStatus(id, error, status, msg) {
+          if (error == 0) {
+            if (status == "0") {
+              //超时
+              //alert("我啥也不做");
+            }
+            else {
+              //成功
+              alert(status + "---" + msg);  //通过这里的数据进行刷新调用方页面等操作
+            }
+            //继续循环监听
+            MultBrowser.waitStatus(id, "2", callBackWaitStatus);
+          }
+        }
+
+        function openURL(){
+          var pdfPath = getParam("paramName");
+          var test = window.location.href;
+          var string = test.split("/");
+          var path = string[0] + "//" + string[2] + "/";
+          // path +
+            var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.host+_this.pdfId
+            console.log(ActivexURL);
+            window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+        }
+
+        function getParam(paramName) {
+          let paramValue = "";
+          let isFound = !1;
+          if (window.location.search.indexOf("?") == 0 && window.location.search.indexOf("=") > 1) {
+            arrSource = unescape(window.location.search).substring(1, window.location.search.length).split("="), i = 0;
+            paramValue = arrSource[1];
+          }
+          return paramValue == "" && (paramValue = null), paramValue;
+        }
+      },
     //审批
     approveBill() {
-        this.approved = true
         let approveData = {
             step:this.step,
             billId:this.id,
             storageId:this.pdfId,
-            organId:this.organId
+            organId:this.organId,
+            billType:this.billType
         }
         this.$refs.approvalDialogRef.showModal(approveData);
     },
     //审批完成 重新获取pdf
-    approvalOver() {
+    approvalOver(status) {
+        iLocalStroage.set('certApproveOver',status);
         this.reload();
     },
   },
@@ -233,7 +336,7 @@ export default {
     }
     .status-tip {
       display: inline-block;
-      width: 58px;
+      width: 70px;
       height: 20px;
       background: #05c051;
       border-radius: 8px 8px 8px 0px;

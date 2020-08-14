@@ -83,15 +83,16 @@ export default {
             note: this.approvalForm.note,
             checkDate: this.approvalForm.checkDate,
             step: this.approveData.step,
-            organId:this.approveData.organId
+            organId:this.approveData.organId,
+            billType:this.approveData.billType
         };
         try{
             let res = await approveBill(data);
             this.$message({
                 type: "success",
-                message: "审批通过",
+                message: "审批完成",
             });
-            this.$emit("getNewData");
+            this.$emit("getNewData",res.data);
         } catch (err) {
           throw new Error(err);
         }

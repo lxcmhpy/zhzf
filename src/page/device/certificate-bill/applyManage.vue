@@ -2,9 +2,19 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="equipment-detail">
-      <el-tabs style="min-height:800px;position:relative;">
-        <el-tab-pane label="基本信息">
+      <el-tabs  v-model="activeName" style="min-height:800px;position:relative;">
+        <el-tab-pane name="base" label="基本信息">
           <ApplyBaseInfo 
+            v-if="billType=='FZ'"
+            :billTypeName="billTypeName" 
+            :billType="billType" 
+            :addForm="data"
+            :imageList="imageList"
+            :isEdit="isEdit"
+            @afterCommit="afterCommit"
+        />
+         <OtherApplyBaseInfo 
+            v-else
             :billTypeName="billTypeName" 
             :billType="billType" 
             :addForm="data"
@@ -13,8 +23,14 @@
             @afterCommit="afterCommit"
         />
         </el-tab-pane>
-        <el-tab-pane label="审批单" v-if="commited">
-          <ApprovalForm :id="id" :isApprove="isApprove" :status="status" :pdfId="pdfId"/>
+        <el-tab-pane name="approve" label="审批单" v-if="commited">
+          <ApprovalForm 
+            :id="id" 
+            :isApprove="isApprove" 
+            :status="status" 
+            :pdfId="pdfId" 
+            :billType="billType"
+        />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -22,10 +38,12 @@
 </template>
 <script>
 import ApplyBaseInfo from "@/page/device/certificate-bill/applyBaseInfo";
+import OtherApplyBaseInfo from "@/page/device/certificate-bill/otherApplyBaseInfo";
 import ApprovalForm from "@/page/device/certificate-bill/approvalForm";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
-  components: { ApplyBaseInfo, ApprovalForm },
+  components: { ApplyBaseInfo, ApprovalForm,OtherApplyBaseInfo },
   data() {
     return {
         commited:false,
@@ -38,7 +56,8 @@ export default {
         id:'',
         isApprove:false,
         status:'',
-        pdfId:''
+        pdfId:'',
+        activeName:'base'
     };
   },
   computed: {},
@@ -57,7 +76,9 @@ export default {
             this.url=this.$route.params.url
             this.billTypeName=this.$route.params.billTypeName
             this.data=this.$route.params.data
-            this.imageList=this.$route.params.imageList
+            if(this.$route.params.imageList){
+                this.imageList=this.$route.params.imageList
+            }
             this.isEdit=this.$route.params.isEdit
             this.isApprove=this.$route.params.isApprove
             if(this.data.id){
@@ -70,6 +91,11 @@ export default {
             if(this.$route.params.pdfId){
                 this.pdfId = this.$route.params.pdfId
             }
+        }
+        if(iLocalStroage.get('certApproveOver')){
+            this.status=iLocalStroage.get('certApproveOver')
+            iLocalStroage.removeItem('certApproveOver')
+            this.activeName='approve'
         }
     }
 };

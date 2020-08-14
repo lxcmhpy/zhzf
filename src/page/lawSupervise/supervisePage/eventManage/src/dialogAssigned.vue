@@ -2,7 +2,7 @@
   <el-dialog class="eventManage-dialogAssigned" title="选择指派人员" :visible.sync="dialogAssignedVisible">
     <el-form :model="form">
       <el-form-item label="机构" label-width="60px">
-        <ElSelectTree @getValue="getValue" :options="treeOptions" :props="treeProps" />
+        <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" :value="form.disposeOrgan" />
       </el-form-item>
       <el-form-item label="人员" label-width="60px">
         <el-select @change="handlePeopleChange" v-model="form.disposePerson" placeholder="请选择">
@@ -95,7 +95,7 @@ export default {
           this.$message.error(res.msg)
         }
       })
-    }
+    },
   },
 }
 </script>

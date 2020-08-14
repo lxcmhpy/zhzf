@@ -208,7 +208,8 @@
                     url: this.$route.name,
                     data:{billDate:new Date().format('yyyy-MM-dd'),billType:val},
                     isEdit:true,
-                    isApprove:false
+                    isApprove:false,
+                    tabTitle:this.formatBillType({billType:val}),
                 };
                 this.$router.push({ name: "applyManage", params: routerData });
             },
@@ -283,7 +284,8 @@
                             isEdit:false,
                             isApprove:false,
                             status:status,
-                            pdfId:pdfId
+                            pdfId:pdfId,
+                            tabTitle:this.formatBillType({billType:val}),
                         };
                         this.$router.push({ name: "applyManage", params: routerData });
                     },

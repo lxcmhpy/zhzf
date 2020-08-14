@@ -145,5 +145,14 @@ export default [{
       title: "证件审批"
     },
     component: () => import("@/page/device/certificate-bill/certificateBillApprove.vue")
+  },
+  {
+    path: "/deviceStatistic",
+    name: "deviceStatistic",
+    meta: {
+      title: "统计"
+    },
+    component: () => import("@/page/device/device-statistic/deviceStatistic.vue")
   }
+
 ]
