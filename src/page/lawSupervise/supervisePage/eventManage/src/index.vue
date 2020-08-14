@@ -75,13 +75,14 @@
           label="操作">
           <template slot-scope="scope">
             <el-button
+              v-if="scope.row.state===1"
               size="mini"
               type="text"
               @click="handleAssigned(scope.$index, scope.row)">指派</el-button>
             <el-button
               size="mini"
               type="text"
-              @click="handleDetails(scope.$index, scope.row)">详情</el-button>
+              @click="handleDetails(scope.row)">详情</el-button>
             <el-button
               size="mini"
               type="text"
@@ -231,12 +232,14 @@ export default {
     /**
      * 详情
      */
-    handleDetails() {
+    handleDetails(row) {
       this.title = "事件详情"
       // 打开弹窗
       this.$refs.dialog.dialogFormVisible = true
       // 禁用表单
       this.$refs.dialog.disabled = true
+      // 获取数据
+      this.getDetails(row.id)
     },
 
     /**

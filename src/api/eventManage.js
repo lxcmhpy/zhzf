@@ -16,6 +16,19 @@ export function findData (data) {
 }
 
 /**
+ * 查看详情
+ */
+export function findById (id) {
+  return request({
+    url: `http://192.168.1.8:8090/event/manage/findById/${id}`,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  })
+}
+
+/**
  * 指派
  */
 export function assigned (data) {
@@ -52,17 +65,4 @@ export function deleteById (data) {
     params: data,
     cancelToken: setCancelSource()
   })
-}
-
-// 文件上传
-export function upload(data)  {
-  return request({
-    url: "/zfjg/sys/file/uploadCommon",
-    method: "POST",
-    data: data,
-    contentType: 'multipart/form-data;',
-    showloading: true,
-    loadingType: 'loadPart',
-    cancelToken: setCancelSource(),
-  });
 }

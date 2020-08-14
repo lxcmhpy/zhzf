@@ -1,4 +1,4 @@
-import { findData, deleteById, upload } from "@/api/eventManage";
+import { findData, deleteById, findById } from "@/api/eventManage";
 import { organTreeByCurrUser, getOrganTree } from "@/api/lawSupervise.js";
 
 export default {
@@ -59,6 +59,24 @@ export default {
     },
 
     /**
+     * 查看详情
+     */
+    getDetails(id) {
+      findById(id).then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("findById()::::::::接口数据错误")
+        }
+      }).then(data => {
+        // 给详情页赋值
+        Object.keys(this.$refs.dialog.form).map(key => {
+          this.$refs.dialog.form[key] = data[key]
+        })
+      })
+    },
+
+    /**
      * 删除
      */
     deleteEvent(params) {
@@ -84,6 +102,6 @@ export default {
           message: '已取消删除'
         });
       });
-    }
+    },
   }
 }
