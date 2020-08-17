@@ -110,7 +110,9 @@ export default {
       // collapsed: false,
       // avatar: Cookies.get("avatar")
       userInfo: null,
-      selectedHeadMenu: null   //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu: null,   //接收headMenu传来的选中的一级菜单
+      userName:iLocalStroage.gets('userInfo').username,
+      password:iLocalStroage.gets('userInfo').password
     };
   },
   components: {

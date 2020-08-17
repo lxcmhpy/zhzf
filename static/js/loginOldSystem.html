@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>跨域登陆测试</title>
+	<!-- <script type="text/javascript" src="./jquery-1.7.1.min.js"></script> -->
+	<!-- <script type="text/javascript" src="./jquery.easyui.min.js"></script> -->
+	<script src="./MultBrowser/jquery-1.11.2.min.js"></script>
+</head>
+
+<body οnlοad="WebNewRequest();">
+	<form id="loginform">
+		<div class="box">
+			<div class="username">
+				<input id="username" name="username" value="" />
+			</div>
+			<div class="password">
+				<input id="password" name="password" value="12345qwert" type="password" />
+			</div>
+			<div class="codebox">
+				<input id="captcha" name='captcha' type="text" value="sdfsd">
+			</div>
+			<div class="btn">
+				<button id="login" class="login loginbtn">登录</button>
+			</div>
+		</div>
+	</form>
+</body>
+<script>
+	// var data = window.location.href.split("?")[1].split("=")[1];
+	// console.log(data, 'data')
+</script>
+<script>
+	$("#login").bind('click', function () {
+		var username = 'admin';
+		var password = $("#password").val();
+		var captcha = $("#captcha").val();
+		console.log(username, password)
+		debugger
+		// $("#loginform").submit();
+		$.ajax({
+			type: "POST",
+			url: "http://218.84.108.27:8888/zhzfxj/login",
+			data: { username: 'admin' ,password:'12345qwert',captcha:'ssss'},
+			dataType: "json",
+			success: function (data) {
+			}
+		});
+	});
+
+</script>
+<!-- <script>
+	$("#login").bind('click', function () {
+		var username = $("#username").val();
+		var password = $("#password").val();
+		var captcha = $("#captcha").val();
+		$("#loginform").submit();
+	});
+</script> -->
+<!-- <script>
+	// window.onload = login()
+	function login() {
+		var username = $("#username").val();
+		var password = $("#password").val();
+		var captcha = $("#captcha").val();
+		$("#loginform").submit();
+	}
+</script> -->
+
+</html>

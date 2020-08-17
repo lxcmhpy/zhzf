@@ -24,34 +24,22 @@
               <div :style="{'color':scope.row.caseStatus=='已移送'?'#22C058':''}">{{scope.row.caseStatus}}</div>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="标签" align="center" width="50">
+          <el-table-column label="标签" align="center" width="50">
             <template slot-scope="scope">
-              <el-tooltip v-if="scope.row.warType=='1'" placement="top-start" effect="light">
-                <div slot="content" class="warn-li" style="color:#FF0000">
-                  <li>多行信息</li>
-                  <li>第二行信息</li>
-                  <li>第二行信息</li>
+              <el-tooltip placement="top-start" effect="light">
+                <div slot="content" class="warn-li">
+                  <li v-for="(item,index) in scope.row.warContent" :key="index">
+                    <span v-if="item.warType=='1'"  style="color:#FF0000">{{item.warContent}}</span>
+                    <span v-if="item.warType=='2'"  style="color:#FF6600">{{item.warContent}}</span>
+                    <span v-if="item.warType=='3'"  style="color:#0084FF">{{item.warContent}}</span>
+                    </li>
                 </div>
-                <div class="warn-box" style="background:#FF0000">警</div>
-              </el-tooltip>
-              <el-tooltip v-if="scope.row.warType=='2'" placement="top-start" effect="light">
-                <div slot="content" class="warn-li" style="color:#FF6600">
-                  <li>多行信息</li>
-                  <li>第二行信息</li>
-                  <li>第二行信息</li>
-                </div>
-                <div class="warn-box" style="background:#FF6600">警</div>
-              </el-tooltip>
-              <el-tooltip v-if="scope.row.warType=='3'"  placement="top-start" effect="light">
-                <div slot="content"  class="warn-li" style="color:#0084FF">
-                  <li>多行信息</li>
-                  <li>第二行信息</li>
-                  <li>第二行信息</li>
-                </div>
-                <div class="warn-box" style="background:#0084FF">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='1'" style="background:#FF0000">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='3'" style="background:#0084FF">警</div>
               </el-tooltip>
             </template>
-          </el-table-column> -->
+          </el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">

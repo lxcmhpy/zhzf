@@ -58,12 +58,12 @@ export const examRouterJson = [
         meta: { title: "维护模板", loading: false },
         component: () => import("@/page/exam/page-manage/maintain-templete/maintainTemp.vue")
       },
-      {
-        name: "maintainTemplete",
-        path: "/maintain-templete",
-        meta: { title: "维护模板", loading: false },
-        component: () => import("@/page/exam/page-manage/maintain-templete/maintainTemp.vue")
-      },
+      // {
+      //   name: "maintainTemplete",
+      //   path: "/maintain-templete",
+      //   meta: { title: "维护模板", loading: false },
+      //   component: () => import("@/page/exam/page-manage/maintain-templete/maintainTemp.vue")
+      // },
       {
         path: "/viewApplayDetail/:pageId/:name/:type",
         name: "viewApplayDetail",
