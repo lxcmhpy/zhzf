@@ -17,7 +17,7 @@
               </el-form-item>
             </div>
             <div class="item">
-              <el-form-item label="立案地点" prop="afdd">
+              <el-form-item label="案发地点" prop="afdd">
                 <el-input v-model="caseSearchForm.afdd"></el-input>
               </el-form-item>
             </div>
@@ -72,7 +72,7 @@
               </el-form-item>
             </div>
             <div class="item">
-              <el-form-item label="认定依据" prop="illegalLaw">
+              <el-form-item label="违法条款" prop="illegalLaw">
                 <el-input v-model="caseSearchForm.illegalLaw"></el-input>
               </el-form-item>
             </div>
@@ -142,7 +142,7 @@
           </el-table-column>
           <el-table-column prop="zfml" label="执法领域" align="center" min-width="100"></el-table-column>
           <el-table-column prop="acceptTime" label="立案时间" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="party" label="当事人" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="name" label="当事人" align="center" min-width="150"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车船号牌" align="center" min-width="100"></el-table-column>
           <el-table-column prop="caseName" label="案由" align="center" min-width="100">
             <template slot-scope="scope">
@@ -221,7 +221,10 @@ export default {
         queryCaseByEvaluationListApi(sentData).then(res=>{
             console.log(res);
             this.total = res.data.total
-            this.tableData = res.data.records;
+            this.tableData = res.data.records || [];
+            this.tableData.forEach(item => {
+              item.name = item.party ? item.party : item.partyName;
+            })
         }).catch(err=>{throw new Error(err)})
     },
     //查看案件，跳转流程图

@@ -3,44 +3,74 @@
   <div class="apply-info-wrap">
     <h3 class="page-title">{{billTypeName}}</h3>
     <!-- 查看基本信息 -->
-    <el-row v-if="!startEdit" :gutter="20">
-      <el-col :span="12">
-        <label class="item-label">车牌号</label>
-        <div class="item-text">
-          <span class="item-text" style="margin-left:0;">{{this.addForm.vehicleNumber}}</span>
-          <router-link :to="{ name: 'equipmentDetail', query: { id: this.addForm.vehicleId }}">
-            <el-button type="text" style="padding:0;margin-left: 10px;">&lt;查看详情&gt;</el-button>
-        </router-link>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <label class="item-label">使用单位</label>
-        <div class="item-text">{{this.addForm.useUnitName}}</div>
-      </el-col>
-      <el-col :span="12">
-        <label class="item-label">车辆类别</label>
-        <div class="item-text">{{this.addForm.vehicleCategory}}</div>
-      </el-col>
-      <el-col :span="12">
-        <label class="item-label">车辆类型</label>
-        <div class="item-text">{{this.addForm.vehicleType}}</div>
-      </el-col>
-      <el-col :span="12">
-        <label class="item-label">厂牌型号</label>
-        <div class="item-text">{{this.addForm.brandModel}}</div>
-      </el-col>
-      <el-col :span="12">
-        <label class="item-label">发动机号</label>
-        <div class="item-text">{{this.addForm.engineNumber}}</div>
-      </el-col>
-      <el-col :span="12">
-        <label class="item-label">车架号码</label>
-        <div class="item-text">{{this.addForm.axleNumber}}</div>
-      </el-col>
+    <el-row v-if="!isEdit" :gutter="20">
+        <el-row>
+            <el-col :span="12">
+                <label class="item-label">车牌号</label>
+                <div class="item-text">
+                <span class="item-text" style="margin-left:0;">{{this.addForm.vehicleNumber}}</span>
+                <el-button type="text" @click="viewVehicle" style="padding:0;margin-left: 10px;">&lt;查看详情&gt;</el-button>
+                </div>
+            </el-col>
+            <el-col :span="12">
+                <label class="item-label">使用单位</label>
+                <div class="item-text">{{this.addForm.useUnitName}}</div>
+            </el-col>
+            <el-col :span="12">
+                <label class="item-label">车辆类别</label>
+                <div class="item-text">{{this.addForm.vehicleCategory}}</div>
+            </el-col>
+            <el-col :span="12">
+                <label class="item-label">车辆类型</label>
+                <div class="item-text">{{this.addForm.vehicleType}}</div>
+            </el-col>
+            <el-col :span="12">
+                <label class="item-label">厂牌型号</label>
+                <div class="item-text">{{this.addForm.brandModel}}</div>
+            </el-col>
+            <el-col :span="12">
+                <label class="item-label">发动机号</label>
+                <div class="item-text">{{this.addForm.engineNumber}}</div>
+            </el-col>
+            <el-col :span="12">
+                <label class="item-label">车架号码</label>
+                <div class="item-text">{{this.addForm.axleNumber}}</div>
+            </el-col>
+            </el-row>
+      <el-row>
       <el-col :span="12">
         <label class="item-label">使用证号</label>
         <div class="item-text">{{this.addForm.usePermitNumber}}</div>
       </el-col>
+      <el-col :span="12">
+        <label class="item-label">使用期限</label>
+        <div class="item-text">{{this.addForm.beginDate}}~{{this.addForm.endDate}}</div>
+      </el-col>
+      <el-col :span="12">
+        <label class="item-label">发证机关</label>
+        <div class="item-text">{{this.addForm.issueOrgan}}</div>
+      </el-col>
+      <el-col :span="12">
+        <label class="item-label">发证时间</label>
+        <div class="item-text">{{this.addForm.lssueTime}}</div>
+      </el-col>
+      <el-col :span="12">
+        <label class="item-label">签发人</label>
+        <div class="item-text">{{this.addForm.signer}}</div>
+      </el-col>
+      <el-col :span="12">
+        <label class="item-label">签发时间</label>
+        <div class="item-text">{{this.addForm.signDate}}</div>
+      </el-col>
+      <el-col :span="12">
+        <label class="item-label">经办人</label>
+        <div class="item-text">{{this.addForm.manager}}</div>
+      </el-col>
+      <el-col :span="12">
+        <label class="item-label">经办时间</label>
+        <div class="item-text">{{this.addForm.handlingDate}}</div>
+      </el-col>
+    </el-row>
       <el-col :span="24">
         <label class="item-label">申请理由</label>
         <div
@@ -83,7 +113,7 @@
     </el-row>
     <!-- 编辑基本信息表单 -->
     <el-form
-      v-if="startEdit"
+      v-if="isEdit"
       :model="addForm"
       :rules="rules"
       label-position="right"
@@ -260,18 +290,18 @@
     <!-- 操作按钮 -->
     <div class="float-btns">
         <div>
-            <el-button v-if="!startEdit && addForm.status==1" class="edit_btn" type="primary" @click="editInfo">
+            <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" @click="editInfo">
                 <i class="iconfont law-edit"></i>
                 <br />修改
             </el-button>
         </div>
       <div>
-        <el-button v-if="!startEdit && addForm.status==1" class="edit_btn" type="primary" @click="commitBill">
+        <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" @click="commitBill">
             <i class="iconfont law-save"></i>
             <br />提交
         </el-button>
       </div>
-      <el-button v-if="startEdit" class="edit_btn" type="primary" @click="saveInfo">
+      <el-button v-if="isEdit" class="edit_btn" type="primary" @click="saveInfo">
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
@@ -317,7 +347,6 @@ export default {
             },
             userInfo:{},
             host:'',
-            startEdit:true,
             organList:[],
             pickerOptions: {
                 onPick: ({ maxDate, minDate }) => {
@@ -345,6 +374,10 @@ export default {
       this.getSelfTree()
   },
   methods: {
+      viewVehicle(){
+          let routerData = { id: this.addForm.vehicleId }
+          this.$router.push({ name: "equipmentDetail", params: routerData });
+      },
       handlePicturePreview(obj){
         this.dialogImageUrl = obj;
         this.dialogVisible = true;
@@ -417,6 +450,7 @@ export default {
         this.$set(this.addForm,'endDate',obj.endDate)
         this.timeList=[obj.beginDate,obj.endDate]
         this.$set(this.addForm,'signer',obj.signer)
+        this.$set(this.addForm,'usePermitNumber',obj.perNumber)
         this.$set(this.addForm,'manager',obj.manager)
         this.$set(this.addForm,'issueOrgan',obj.issueOrgan)
         this.$set(this.addForm,'handlingDate',obj.handlingDate)
@@ -430,12 +464,22 @@ export default {
     },
     // 修改
     editInfo() {
-        this.startEdit = true;
+        this.$emit('setEdit', true)
+        this.timeList=[this.addForm.beginDate,this.addForm.endDate]
     },
     // 保存
     saveInfo() {
         let _this = this
         let storageIds = []
+        if(this.billType=='GS' || this.billType=='ZX'){
+            if(_this.imageList.length==0){
+                _this.$message({
+                    type: "error",
+                    message:"挂失、注销必须提交相应证明"
+                });
+                return;
+            }
+        }
         if(_this.imageList){
             _this.imageList.forEach(item=>{
                 storageIds.push(item.storageId)
@@ -453,7 +497,7 @@ export default {
                         });
                         _this.addForm.status=1
                         _this.addForm.id=res.data
-                        _this.startEdit = false
+                        _this.$emit('setEdit', false)
                     },
                     err => {
                         console.log(err);
@@ -470,11 +514,6 @@ export default {
   },
   mounted(){
     this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-  },
-  watch: {
-    isEdit(val) {
-      this.startEdit = this.isEdit
-    },
   },
 };
 </script>

@@ -472,7 +472,7 @@
                 </el-tabs>
                 </div>
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="handleEdit">修 改</el-button>
+                    <el-button type="primary" v-if="addForm.status=='638a075d4f94b1b312334c630f1a611e'" @click="handleEdit">修 改</el-button>
                 </div>
             </el-dialog>
         </div>

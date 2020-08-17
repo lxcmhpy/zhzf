@@ -12,7 +12,7 @@
                 v-for="(res) in caseTypeList"
                 :key="res.id"
                 :label="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
-                :value="res.programType==='0' ?'一般程序'+'：'+res.typeName:'简易程序'+'：'+res.typeName"
+                :value="res.id"
               ></el-option>
             </el-select>
             <!-- <el-input v-model="searchForm.remark" clearable placeholder="请输入环节名称"></el-input> -->
@@ -34,7 +34,7 @@
       <el-table :data="tableData" stripe style="width: 100%" height="100%">
         <el-table-column type="index" :index="showIndex" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="name" label="模板名称" align="center"></el-table-column>
-        <el-table-column prop="caseType" label="所属案件类型" align="center"></el-table-column>
+        <el-table-column prop="typeName" label="所属案件类型" align="center"></el-table-column>
         <el-table-column prop="remark" label="描述" align="center"></el-table-column>
         <el-table-column prop="sort" label="顺序" align="center"></el-table-column>
         <el-table-column label="操作" width="160">

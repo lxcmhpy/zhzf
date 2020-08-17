@@ -54,7 +54,7 @@ import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
-
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -69,6 +69,9 @@ export default {
   components: {
     caseListSearch,
     tansferAtentionDialog
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   methods: {
     goFlowChart(id) {
@@ -85,7 +88,7 @@ export default {
       data.flag = 0;
       data.userId = iLocalStroage.gets("userInfo").id;
       data.current = this.currentPage;
-      data.size = this.pageSize;
+      data.size = this.pageSize; 
       this.getCaseList(data);
     },
     clickCase(row) {
@@ -100,6 +103,9 @@ export default {
         this.$store.commit("setLawEnforcementSupervisionType", '');
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
+        //防止出现多个案件tab
+        let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+        this.$store.commit("reset_ALLTABS", newOpenTab);
         console.log(this.$store.state.caseId);
         this.$router.push({
           name: "case_handle_caseInfo",

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="eventManage-dialog" :title="title" :visible.sync="dialogFormVisible" top="0">
+  <el-dialog class="eventManage-dialog" :title="title" :visible.sync="dialogFormVisible" top="0" @close="handleCloseDialog">
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
@@ -49,50 +49,31 @@
       <el-form-item label="事件附件" :label-width="formLabelWidth">
         <el-upload
           action="#"
+          accept=".jpg, .png"
+          :limit="2"
           list-type="picture-card"
-          :auto-upload="false">
-            <i slot="default" class="el-icon-plus"></i>
-            <div slot="file" slot-scope="{file}">
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="file.url" alt=""
-              >
-              <span class="el-upload-list__item-actions">
-                <span
-                  class="el-upload-list__item-preview"
-                  @click="handlePictureCardPreview(file)"
-                >
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleDownload(file)"
-                >
-                  <i class="el-icon-download"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
+          :on-preview="handlePictureCardPreview"
+          :http-request="param => {uploadFile({param, type:1})}"
+          :file-list="eventFileDataUp"
+          :disabled="disabled"
+          :on-remove="(file,fileList) => {deleteFile({file,fileList,type:1})}">
+          <i class="el-icon-plus"></i>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10M</div>
         </el-upload>
       </el-form-item>
       <el-form-item label="处理结果附件" :label-width="formLabelWidth">
         <el-upload
           action="#"
+          :limit="2"
           accept=".jpg, .png"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
-          :http-request="uploadFile"
-          :file-list="imageList"
+          :http-request="param => {uploadFile({param, type:2})}"
+          :file-list="eventFileDataDown"
           :disabled="disabled"
-          :on-remove="deleteFile">
+          :on-remove="(file,fileList) => {deleteFile({file,fileList,type:2})}">
           <i class="el-icon-plus"></i>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10M</div>
         </el-upload>
       </el-form-item>
     </el-form>
@@ -107,7 +88,8 @@
 <script>
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { addUpdate } from "@/api/eventManage";
-import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js"
+import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js";
+import localStroage from '@/common/js/localStroage';
 export default {
   inject: ['page'],
   props: {
@@ -137,7 +119,8 @@ export default {
   },
   data() {
     return {
-      imageList: [], // 文件列表
+      eventFileDataUp: [], // 事件附件
+      eventFileDataDown: [], // 处理结果附件
       treeProps: {
         value: "id", // ID字段名
         label: "label", // 显示名称
@@ -147,6 +130,7 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       form: {
+        id: "", // 当前行 id，为空则新增，否则为编辑
         eventName: '',
         eventDescribe: '',
         eventDate: '',
@@ -163,6 +147,25 @@ export default {
     }
   },
   methods: {
+    /**
+     * 弹窗关闭时的回调
+     * 弹窗关闭时清空表单
+     */
+    handleCloseDialog() {
+      this.eventFileDataUp = []
+      this.eventFileDataDown = []
+      this.$refs.elSelectTree.valueTitle = ''
+      Object.keys(this.form).map(key => {
+        if(key === 'isemphasis' || key === 'iscoordinator' || key === 'state') {
+          this.form[key] = 1
+        } else if (key === 'storageIds') {
+          this.form[key] = []
+        } else {
+          this.form[key] = ''
+        }
+      })
+    },
+
     /**
      * 获取选择到的人员
      */
@@ -181,55 +184,58 @@ export default {
     /**
      * 上传图片
      */
-    uploadFile(param) {
-      let type = '图片'
+    uploadFile({param, type}) {
       var fd = new FormData()
       fd.append("file", param.file);
-      fd.append("category", '事件管理');
+      fd.append("category", type);
       fd.append("fileName", param.file.name);
-      fd.append('status', type)//传记录id
       fd.append('caseId', param.file.name+new Date().getTime())//传记录id
       fd.append('docId', param.file.name+new Date().getTime())//传记录id
-      let _this = this
-      upload(fd).then(
-        res => {
-          console.log(res)
-          if(type==="图片"){
-            _this.imageList.push({
-              url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
-              storageId:res.data[0].storageId,
-              name:res.data[0].fileName
-            });
-          }else{
-            _this.attachList.push({
-              url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
-              storageId:res.data[0].storageId,
-              name:res.data[0].fileName
-            });
-          }
-        },
-        error => {
-          console.log(error)
+      upload(fd).then(res => {
+        if(res.code === 200) {
+          this.$message({
+            message: res.msg,
+            type: "success"
+          })
+          return res.data
+        } else {
+          this.$message.error(res.msg)
         }
-      );
+      }).then(data => {
+        data.map(item => {
+          this.form.storageIds.push(item.storageId)
+          if(type === 1) {
+            this.eventFileDataUp.push({
+              url: 'http://124.192.215.10:9332/'+item.storageId,
+              storageId: item.storageId,
+              name: item.name
+            })
+          } else {
+            this.eventFileDataDown.push({
+              url: 'http://124.192.215.10:9332/'+item.storageId,
+              storageId: item.storageId,
+              name: item.name
+            })
+          }
+        })
+      })
     },
 
     /**
      * 删除附件
      */
-    deleteFile(file, fileList){
-      let type = '图片'
-      let _this = this
+    deleteFile({ file, fileList, type }){
+      console.log(file)
       deleteFileByIdApi(file.storageId).then(res=>{
         if(res.code === 200) {
           this.$message({
             message: res.msg,
             type: "success"
           })
-          if(type=="图片"){
-            _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
+          if(type === 1){
+            this.eventFileDataUp.splice(this.eventFileDataUp.findIndex(item => item.storageId === file.storageId), 1)
           }else{
-            _this.attachList.splice(_this.attachList.findIndex(item => item.storageId === file.storageId), 1)
+            this.eventFileDataDown.splice(this.eventFileDataDown.findIndex(item => item.storageId === file.storageId), 1)
           }
         } else {
           this.$message.error(res.msg)
@@ -241,12 +247,17 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-      this.imageList.forEach(item=>{
+      this.eventFileDataUp.forEach(item=>{
+        this.form.storageIds.push(item.storageId)
+      })
+      this.eventFileDataDown.forEach(item=>{
         this.form.storageIds.push(item.storageId)
       })
       addUpdate(this.form).then(res => {
         if(res.code === 200) {
           this.dialogFormVisible = false
+          this.eventFileDataUp = []
+          this.eventFileDataDown = []
           this.$message({
             message: res.msg,
             type: "success"
@@ -254,22 +265,6 @@ export default {
           this.page.initPage()
         } else {
           this.$message.error(res.msg)
-        }
-      })
-    },
-
-    /**
-     * 清空表单
-     */
-    handleReset() {
-      this.$refs.elSelectTree.valueTitle = ''
-      Object.keys(this.form).map(key => {
-        if(key === 'isemphasis' || key === 'iscoordinator' || key === 'state') {
-          this.form[key] = 1
-        } else if (key === 'storageIds') {
-          this.form[key] = []
-        } else {
-          this.form[key] = ''
         }
       })
     },

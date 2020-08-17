@@ -62,6 +62,7 @@
   import iLocalStroage from "@/common/js/localStroage";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
   import caseListSearch from "@/components/caseListSearch/caseListSearch";
+  import { mapGetters } from "vuex";
 
   export default {
     data() {
@@ -76,6 +77,9 @@
     mixins: [mixinGetCaseApiList],
     components: {
       caseListSearch,
+    },
+    computed: {
+      ...mapGetters(["openTab"])
     },
     methods: {
 
@@ -106,6 +110,9 @@
       clickCase(row) {
         console.log(row);
         this.$store.commit('setCaseId', row.id); 
+        //防止出现多个案件tab
+        let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+        this.$store.commit("reset_ALLTABS", newOpenTab);
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
         this.$router.push({
