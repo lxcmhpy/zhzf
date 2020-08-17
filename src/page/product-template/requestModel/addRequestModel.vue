@@ -86,7 +86,10 @@ export default {
           value: "id"
       },
       rules: {
-         modelName: [{ required: true, message: "模板名称不能为空", trigger: "blur" }],
+         modelName: [
+          { required: true, message: "模板名称不能为空", trigger: "blur" },
+          { max: 85, message: "最多输入85个字符", trigger: "blur" },
+         ],
          modelTypeId: [{ required: true, message: "模板类型不能为空", trigger: "blur" }],
          zfjg: [{ required: true, message: "执法机构不能为空", trigger: "blur" }],
          zfml: [{ required: true, message: "执法门类不能为空", trigger: "blur" }]
