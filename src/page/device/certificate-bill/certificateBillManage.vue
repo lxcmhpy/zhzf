@@ -285,7 +285,7 @@
                             isApprove:false,
                             status:status,
                             pdfId:pdfId,
-                            tabTitle:this.formatBillType({billType:val}),
+                            tabTitle:this.formatBillType({billType:res.data.billType}),
                         };
                         this.$router.push({ name: "applyManage", params: routerData });
                     },

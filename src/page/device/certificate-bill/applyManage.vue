@@ -4,7 +4,7 @@
     <div class="equipment-detail">
       <el-tabs  v-model="activeName" style="min-height:800px;position:relative;">
         <el-tab-pane name="base" label="基本信息">
-          <ApplyBaseInfo 
+          <ApplyBaseInfo
             v-if="billType=='FZ'"
             :billTypeName="billTypeName" 
             :billType="billType" 
@@ -12,6 +12,7 @@
             :imageList="imageList"
             :isEdit="isEdit"
             @afterCommit="afterCommit"
+            @setEdit="setEdit"
         />
          <OtherApplyBaseInfo 
             v-else
@@ -21,6 +22,7 @@
             :imageList="imageList"
             :isEdit="isEdit"
             @afterCommit="afterCommit"
+            @setEdit="setEdit"
         />
         </el-tab-pane>
         <el-tab-pane name="approve" label="审批单" v-if="commited">
@@ -68,6 +70,9 @@ export default {
         this.$router.push({
             name: this.url
         });
+      },
+      setEdit(value){
+          this.isEdit= value
       }
   },
     mounted () {
@@ -82,8 +87,10 @@ export default {
             this.isEdit=this.$route.params.isEdit
             this.isApprove=this.$route.params.isApprove
             if(this.data.id){
-                this.commited=true
                 this.id=this.data.id
+                if(this.data.status!=1){
+                    this.commited=true
+                }
             }
             if(this.$route.params.status){
                 this.status=this.$route.params.status
