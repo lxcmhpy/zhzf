@@ -68,6 +68,8 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -81,6 +83,9 @@ export default {
   mixins: [mixinGetCaseApiList],
   components: {
     caseListSearch,
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   methods: {
 
@@ -118,6 +123,9 @@ export default {
         this.$store.commit("setCaseId", row.id);
         this.$store.commit("setIsLawEnforcementSupervision", false);
         this.$store.commit("setLawEnforcementSupervisionType", '');
+        //防止出现多个案件tab
+        let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+        this.$store.commit("reset_ALLTABS", newOpenTab);
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
         console.log(this.$store.state.caseId);
