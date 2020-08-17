@@ -130,6 +130,7 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       form: {
+        id: "", // 当前行 id，为空则新增，否则为编辑
         eventName: '',
         eventDescribe: '',
         eventDate: '',

@@ -86,6 +86,10 @@
             <el-button
               size="mini"
               type="text"
+              @click="handleUpdate(scope.row)">编辑</el-button>
+            <el-button
+              size="mini"
+              type="text"
               @click="handleDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -240,6 +244,20 @@ export default {
       this.$refs.dialog.disabled = true
       // 获取数据
       this.getDetails(row.id)
+    },
+
+    /**
+     * 编辑
+     */
+    handleUpdate(row) {
+      this.title = "编辑事件"
+      this.$refs.dialog.form.id = row.id
+      // 获取数据
+      this.getDetails(row.id)
+      // 打开弹窗
+      this.$refs.dialog.dialogFormVisible = true
+      // 启用表单
+      this.$refs.dialog.disabled = false
     },
 
     /**
