@@ -37,6 +37,7 @@
     <!-- 表格 -->
     <div class="eventManage-table">
       <el-table
+        @row-dblclick="handleDetails"
         :data="tableData"
         style="width: 100%">
         <el-table-column
@@ -270,6 +271,7 @@ export default {
   created() {
     this.initPage()
     this.getTree()
+    this.getTopInfo()
   }
 }
 </script>
