@@ -22,7 +22,6 @@
                 type="textarea"
                 :autosize="{ minRows: 1, maxRows: 4}"
                 placeholder="请输入问题"
-                maxlength="85"
                 v-model="addRequest.request">
               </el-input>
             </el-form-item>
@@ -66,7 +65,10 @@ export default {
         sort: ""
       },
       rules: {
-        request: [{ required: true, message: "问题不能为空", trigger: "blur" }],
+        request: [
+          { required: true, message: "问题不能为空", trigger: "blur" },
+          { max: 85, message: "最多输入85个字符", trigger: "blur" }
+        ],
         sort: [
           { required: true, message: "排序不能为空", trigger: "blur" },
           { validator: validateNum, trigger: "blur"}

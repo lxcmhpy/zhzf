@@ -11,7 +11,7 @@
         <el-select
           v-model="addDiscretionForm.causeId"
           placeholder="请选择违法行为"
-          @focus="setMinWidth"
+         
           style="width:100%"
           :popper-append-to-body='false'
           filterable
@@ -40,10 +40,10 @@
       <el-form-item label="处罚标准" prop="jycf">
         <el-input type="textarea" :rows="2" v-model="addDiscretionForm.jycf"></el-input>
       </el-form-item>
-      <el-form-item label="罚款上限" prop="webLink">
+      <el-form-item label="罚款上限" prop="upperLimit">
         <el-input v-model="addDiscretionForm.upperLimit"></el-input>
       </el-form-item>
-      <el-form-item label="罚款下限" prop="strNote">
+      <el-form-item label="罚款下限" prop="lawerLimit">
         <el-input v-model="addDiscretionForm.lawerLimit"></el-input>
       </el-form-item>
     </el-form>
@@ -61,8 +61,18 @@ import {
   getDictListDetailByNameApi,
   getCaseCauseListVoApi
 } from "@/api/system";
+// 验证规则
+import {numType} from "@/common/js/validator";
 export default {
   data() {
+    var validateLimit = (rule, value, callback) => {
+      debugger
+      if (this.addDiscretionForm.upperLimit  && this.addDiscretionForm.lawerLimit 
+        && Number(this.addDiscretionForm.lawerLimit)> Number(this.addDiscretionForm.upperLimit)) {
+        return callback(new Error("下限金额不得大于上限金额"));
+      }
+      callback();
+    };
     return {
       visible: false,
       addDiscretionForm: {
@@ -71,8 +81,8 @@ export default {
         drawerId: "",
         drawerName: "",
         wfqj: "",
-        upperLimit: "",
-        lawerLimit: "",
+        upperLimit: 0,
+        lawerLimit: 0,
         jycf: ""
       },
       dialogTitle: "", //弹出框title
@@ -84,6 +94,14 @@ export default {
       rules: {
         causeId: [
           { required: true, message: "违法行为必须填写", trigger: "blur" }
+        ],
+        upperLimit: [
+          { validator: numType, trigger: "blur" },
+          { validator: validateLimit, trigger: "blur"}
+        ],
+        lawerLimit: [
+          { validator: numType, trigger: "blur" },
+          { validator: validateLimit, trigger: "blur"}
         ],
         drawerId: [
           { required: true, message: "违法程度必须填写", trigger: "blur" }
