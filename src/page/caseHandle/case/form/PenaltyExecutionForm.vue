@@ -73,7 +73,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item prop="paidAmount" label="已缴金额" :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])">
-                  <el-input type="number" v-model="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
+                  <el-input type="number" v-model.number="formData.paidAmount" @input="handleChangePaidAmount" size="small" placeholder="-" :disabled="fieldDisabled(propertyFeatures['paidAmount'])" :controls="false" style="width:100%"></el-input>
                 </el-form-item>
               </div>
               <div class="col">
@@ -282,6 +282,8 @@ export default {
   data() {
     var validatePaid = (rule, value, callback) => {
       if (value && typeof (value) != 'number') {
+        console.log(value);
+        console.log(typeof(value))
         callback(new Error('必须为数字!'));
       }
       if (value && (value < 0 || value > Number(this.formData.tempPunishAmount))) {

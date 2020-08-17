@@ -1,81 +1,91 @@
 <template v-if="caseInfo">
-<div>
-  <el-dialog
-    custom-class="leftDialog leftDialog2 archiveCatalogueBox deliverSupervisionCaBox"
-    :visible.sync="visible"
-    @close="closeDialog"
-    top="0px"
-    width="405px"
-    :modal="false"
-    :show-close="false"
-    :append-to-body="true"
-  >
-    <template slot="title">
+  <div>
+    <el-dialog
+      custom-class="leftDialog leftDialog2 archiveCatalogueBox deliverSupervisionCaBox"
+      :visible.sync="visible"
+      @close="closeDialog"
+      top="0px"
+      width="405px"
+      :modal="false"
+      :show-close="false"
+      :append-to-body="true"
+    >
+      <template slot="title">
         <div class="catalogueTitle">
-            送达回证
-            <!-- 案件：{{caseInfo.caseNumber}} -->
+          送达回证
+          <!-- 案件：{{caseInfo.caseNumber}} -->
         </div>
-    </template>
-    <!-- <div class="haha" v-show="visible">
+      </template>
+      <!-- <div class="haha" v-show="visible">
       <div class="archiveCatalogueHead">卷宗目录</div>
       <div class="archiveCatalogueCon"></div>
       <div class="archiveCatalogueFoot">排序管理</div>
 
-    </div> -->
-    <div >
+      </div>-->
+      <div>
         <table border="1" bordercolor="black" width="100%" cellspacing="0">
-            <tr>
-                <td>序号</td>
-                <td>文书名称</td>
-                <!-- <td>页码</td> -->
-            </tr>
-            <tr v-for="(item,index) in caseList" :key="index" @click="showCasePdf(item)">
-                <td>{{index+1}}</td>
-                <td>{{item.docName}}</td>
-                <!-- <td>{{item.page}}</td> -->
-            </tr>
+          <tr>
+            <td>序号</td>
+            <td>文书名称</td>
+            <!-- <td>页码</td> -->
+          </tr>
+          <tr v-for="(item,index) in caseList" :key="index" @click="showCasePdf(item)">
+            <td>{{index+1}}</td>
+            <td>{{item.docName}}</td>
+            <!-- <td>{{item.page}}</td> -->
+          </tr>
         </table>
-    </div>
-    <!-- <span slot="footer" class="dialog-footer">
+      </div>
+      <!-- <span slot="footer" class="dialog-footer">
       <el-button @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
-    </span> -->
-  </el-dialog>
-  <el-dialog
-        :visible.sync="pdfVisible"
-        @close="closeDialog"
-        :close-on-click-modal="false"
-        width="800px"
-         append-to-body>
-        <div >
+      </span>-->
+    </el-dialog>
+    <el-dialog
+      :visible.sync="pdfVisible"
+      @close="closeDialog"
+      :close-on-click-modal="false"
+      width="800px"
+      append-to-body
+    >
+      <div>
         <div style="height:auto;">
-        <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
-            <div lazy id="myPdfBOx">
-                <!-- <object >
+          <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
+          <div lazy id="myPdfBOx">
+            <!-- <object >
                     <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
                     :src="mlList" type="application/pdf" internalinstanceid="29">
-                </object> -->
-                <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
-            </div>
+            </object>-->
+            <iframe
+              :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)"
+              frameborder="0"
+              style="width:790px;height:1119px"
+            ></iframe>
+          </div>
         </div>
-        </div>
+      </div>
     </el-dialog>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi,getDeliverReceiptByCaseIdApi,getFileStreamByStorageIdApi } from "@/api/caseHandle";
+import {
+  findByCaseBasicInfoIdApi,
+  findByCaseIdAndDocIdApi,
+  getDeliverReceiptByCaseIdApi,
+  getFileStreamByStorageIdApi,
+} from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
       visible: false,
-      caseList:[],
+      caseList: [],
       mlList: "",
       pdfVisible: false,
       // doccloseDialog: false,
-      host:'',
-      getData:false,
-      pdfUrl:''
+      host: "",
+      getData: false,
+      pdfUrl: "",
     };
   },
   inject: ["reload"],
@@ -83,10 +93,9 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   methods: {
     showModal() {
-      console.log('show');
+      console.log("show");
       this.visible = true;
-      if(!this.getData)  this.getByMlCaseId();
-
+      if (!this.getData) this.getByMlCaseId();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -105,40 +114,78 @@ export default {
     //获取已完成送达回证列表
     getByMlCaseId() {
       this.getData = true;
-        let data = {
-            caseId: this.caseId,
-        };
-      let _this = this
+      let data = {
+        caseId: this.caseId,
+      };
+      let _this = this;
       getDeliverReceiptByCaseIdApi(data).then(
-        res => {
-
+        (res) => {
           console.log(res);
           _this.caseList = res.data;
+          _this.getAllStorageIds();
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
     },
-    routerArchiveCatalogueDetail () {
-        this.$router.push({name:'case_handle_archiveCatalogueDetail'})
+    routerArchiveCatalogueDetail() {
+      this.$router.push({ name: "case_handle_archiveCatalogueDetail" });
+    },
+    //获取pdf地址
+    getAllStorageIds() {
+      this.caseList.forEach((fileitem) => {
+        let data = {
+          caseId: fileitem.caseId,
+          docDataId: fileitem.caseSerProofId,
+          docId: "2c9029cf6931aa5c01693381ac690018",
+        };
+        this.$store
+          .dispatch("getFile", {
+            docId: data.docId,
+            caseId: fileitem.caseId,
+          })
+          .then((res) => {
+            console.log("res", res);
+            fileitem.storageId = res[0].storageId;
+          });
+      });
     },
     //跳转到pdf页面
-      showCasePdf(item){
-        this.$router.push({
-            name: 'lawEnforcementSupervision_casePDF',
-            params:{currentPdf:JSON.stringify(item),allCasePdf:JSON.stringify(this.caseList)}
-        });
-      }
+    showCasePdf(item) {
+      console.log("item", item);
+      // let data = {
+      //     caseId:item.caseId,
+      //     docDataId: item.caseSerProofId,
+      //     docId: '2c9029cf6931aa5c01693381ac690018',
+      // };
+      // this.$store.dispatch("getFile", {
+      //   docId: data.docId,
+      //   caseId: data.caseId,
+      // }).then(
+      //   res => {
+      //     console.log('res',res)
+      //     item.storageId = res[0].storageId
+      //   }
+      // )
+
+      this.$router.push({
+        name: "lawEnforcementSupervision_casePDF",
+        params: {
+          currentPdf: JSON.stringify(item),
+          allCasePdf: JSON.stringify(this.caseList),
+        },
+      });
+    },
   },
-  mounted () {
-     this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-      let class1 =  document.getElementsByClassName("deliverSupervisionCaBox");
-      let class2 = class1[0].parentNode;
-      class2.style.right = '60px';
-      class2.style.top = '60px';
-      class2.style.overflow = 'hidden';
-  }
+  mounted() {
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    let class1 = document.getElementsByClassName("deliverSupervisionCaBox");
+    let class2 = class1[0].parentNode;
+    class2.style.right = "60px";
+    class2.style.top = "60px";
+    class2.style.overflow = "hidden";
+  },
 };
 </script>
 <style lang="scss">

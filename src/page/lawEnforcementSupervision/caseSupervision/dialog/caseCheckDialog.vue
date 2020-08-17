@@ -25,30 +25,12 @@
               ></elSelectTree>
           </el-form-item>
         </div>
-        <div class="item">
+        <!-- <div class="item">
           <el-form-item label="下级立案机构">
             <el-input v-model="checkSearchForm.caseNumber"></el-input>
           </el-form-item>
-        </div>
-      </div>
-      <div>
-        <!-- <div class="item"> -->
-        <el-form-item label="受案时间">
-          <el-date-picker
-            v-model="checkSearchForm.acceptTime"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            format="yyyy-MM-dd"
-            :default-time="['00:00:00', '23:59:59']"
-          ></el-date-picker>
-        </el-form-item>
-        <!-- </div> -->
-      </div>
-      <div>
-        <div class="item">
+        </div> -->
+         <div class="item">
           <el-form-item label="执法领域">
             <el-select v-model="checkSearchForm.zfmlId" placeholder="请选择">
               <el-option value label="全部"></el-option>
@@ -61,6 +43,25 @@
             </el-select>
           </el-form-item>
         </div>
+      </div>
+      <div>
+        <!-- <div class="item"> -->
+        <el-form-item label="受案时间">
+          <el-date-picker
+            v-model="checkSearchForm.acceptTime" 
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            format="yyyy-MM-dd"
+            :default-time="['00:00:00', '23:59:59']"
+          ></el-date-picker>
+        </el-form-item>
+        <!-- </div> -->
+      </div>
+      <div>
+       
         <div class="item">
           <el-form-item label="当事人类型">
             <el-select v-model="checkSearchForm.partyType" placeholder="请选择">
@@ -73,8 +74,6 @@
             </el-select>
           </el-form-item>
         </div>
-      </div>
-      <div>
         <div class="item">
           <el-form-item label="抽取数量">
             <el-select v-model="checkSearchForm.sjNum" placeholder="请选择">
@@ -87,6 +86,9 @@
             </el-select>
           </el-form-item>
         </div>
+      </div>
+      <div>
+        
         <div class="item">
           <el-form-item label="案件状态">
             <el-select v-model="checkSearchForm.caseStatus" placeholder="请选择">
@@ -125,9 +127,13 @@ export default {
         sjNum: "",
         caseStatus: "",
         organId:'',
+        // acceptStartTime:'',
+        // acceptEndTime:''
+        acceptTime:''
       },
       allCheckNumber: [{ value: "10" ,label:'10条'}, { value: "20" ,label:'20条'}, { value: "50", label:'50条'}],
       allPartyType: [{ value: 1, label:'个人'}, { value: 2,label:'法人' }],
+      acceptTimeArray:[]
     };
   },
   mixins: [caseSupervisionCommonMixins],
@@ -149,6 +155,8 @@ export default {
     //抽查
     startCheck() {
       this.visible = false;
+      // this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0];
+      // this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1];
       this.$emit('setNewSearchCondition',this.checkSearchForm);
     },
   },
