@@ -53,7 +53,7 @@
           :limit="2"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
-          :http-request="param => {uploadFile({param, type:1})}"
+          :http-request="param => {uploadFile({param, type: 1})}"
           :file-list="eventFileDataUp"
           :disabled="disabled"
           :on-remove="(file,fileList) => {deleteFile({file,fileList,type:1})}">
@@ -68,7 +68,7 @@
           accept=".jpg, .png"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
-          :http-request="param => {uploadFile({param, type:2})}"
+          :http-request="param => {uploadFile({param, type: 2})}"
           :file-list="eventFileDataDown"
           :disabled="disabled"
           :on-remove="(file,fileList) => {deleteFile({file,fileList,type:2})}">
@@ -203,8 +203,7 @@ export default {
         }
       }).then(data => {
         data.map(item => {
-          this.form.storageIds.push(item.storageId)
-          if(type === 1) {
+          if(item.category === '1') {
             this.eventFileDataUp.push({
               url: 'http://124.192.215.10:9332/'+item.storageId,
               storageId: item.storageId,
@@ -247,17 +246,22 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-      this.eventFileDataUp.forEach(item=>{
-        this.form.storageIds.push(item.storageId)
-      })
-      this.eventFileDataDown.forEach(item=>{
-        this.form.storageIds.push(item.storageId)
-      })
+      let upList = [], downList = [];
+      if(this.eventFileDataUp.length > 0) {
+        upList = this.eventFileDataUp.map(item=>{
+          return item.storageId
+        })
+      }
+      if(this.eventFileDataDown.length > 0) {
+        downList = this.eventFileDataDown.map(item=>{
+          return item.storageId
+          this.form.storageIds.push(item.storageId)
+        })
+      }
+      this.form.storageIds = upList.concat(downList)
       addUpdate(this.form).then(res => {
         if(res.code === 200) {
           this.dialogFormVisible = false
-          this.eventFileDataUp = []
-          this.eventFileDataDown = []
           this.$message({
             message: res.msg,
             type: "success"

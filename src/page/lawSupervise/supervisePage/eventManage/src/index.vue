@@ -271,7 +271,6 @@ export default {
   created() {
     this.initPage()
     this.getTree()
-    this.getTopInfo()
   }
 }
 </script>
