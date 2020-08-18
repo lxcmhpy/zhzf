@@ -312,6 +312,12 @@ export default {
         personName: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        birthDate: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        sex: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         idCard: [
           { required: true, message: "必填项", trigger: "change" },
           { validator: validateIDNumber, trigger: "change" }
@@ -346,7 +352,7 @@ export default {
         certType: [
           { required: true, message: "必填项", trigger: "change" }
         ],
-        company: [
+        nationName: [
           { required: true, message: "必填项", trigger: "change" }
         ],
         contactNum: [

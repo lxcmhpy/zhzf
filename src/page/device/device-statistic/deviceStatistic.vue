@@ -377,7 +377,7 @@ export default {
 }
 .chart-box {
   width: 500px;
-  height: 400px;
+  height: 350px;
 }
 </style>
 
