@@ -17,7 +17,7 @@
           <div class="item">
             <el-form-item label="所属标准">
               <el-select v-model="pathLossSearchForm.roadLcBz" placeholder="请选择" @change="changeBz">
-                <el-option v-for="item in allRoadLcBz" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in allRoadLcBz" :key="item" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -171,18 +171,14 @@ export default {
     },
     //更改标准
     changeBz(val) {
-      let _this = this;    
       getDictListDetailByNameApi(val).then(
         res => {
-          console.log("chopsepath",res.data);
-            _this.allRoadType=res.data;
-            _this.pathLossSearchForm.roadLcType="";                
+          this.allRoadType = res.data;
         },
         err => {
           console.log(err);
         }
       );
-      
     },
     //是否禁止选择
     canSelectable(row, index) {
@@ -223,18 +219,9 @@ export default {
           }
         })
       })
-    },
-    //从数据字典获取路产标准
-    getRoadLcBz(){
-      let name = "公路路产所属标准";
-      getDictListDetailByNameApi(name).then(res=>{
-          this.allRoadLcBz=res.data;
-      })
     }
   },
-  mounted() {
-    this.getRoadLcBz();
-  }
+  mounted() {}
 };
 </script>
 <style lang="scss">
