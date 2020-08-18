@@ -53,7 +53,7 @@ export default {
           throw new Error("findData()::::::接口数据错误")
         }
       }).then(data => {
-        this.total = data.records.length
+        this.total = data.total
         this.tableData = data.records
       })
     },
