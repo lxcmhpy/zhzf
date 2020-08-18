@@ -131,12 +131,17 @@ export default {
       this.canEdit = flag ? false : true;
       findSupervisionRecoredByIdApi(id).then(res=>{
             console.log(res);
-            this.checkSearchForm = res.data;
-            let userData = iLocalStroage.gets('userInfo');
-            this.checkSearchForm.updateName = userData.nickName;
-            this.checkSearchForm.feedOrgan = userData.organName;
-            this.checkSearchForm.feedPhone = userData.mobile;
-            this.checkSearchForm.feedTime = new Date().format('yyyy-MM-dd HH:mm');
+            this.checkSearchForm = JSON.parse(JSON.stringify(res.data));
+            console.log('this.checkSearchForm',this.checkSearchForm);
+            
+            if(!flag){
+              let userData = iLocalStroage.gets('userInfo');
+              this.checkSearchForm.updateName = userData.nickName;
+              this.checkSearchForm.feedOrgan = userData.organName;
+              this.checkSearchForm.feedPhone = userData.mobile;
+              this.checkSearchForm.feedTime = new Date().format('yyyy-MM-dd HH:mm');
+            }
+            
         }).catch(err=>{throw new Error(err)})
     },
     //关闭弹窗的时候清除数据

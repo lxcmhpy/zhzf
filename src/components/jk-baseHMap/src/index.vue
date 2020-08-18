@@ -63,7 +63,8 @@ export default {
           projection: 'EPSG:4326',
           zoom: this.zoom,
           extent: [113.57277, 24.488942, 118.482124, 30.079848],
-          maxZoom: 12
+          minZoom: 2,
+          maxZoom: 10
         },
         baseLayers: [
           {

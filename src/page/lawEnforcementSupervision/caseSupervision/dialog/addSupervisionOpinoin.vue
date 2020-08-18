@@ -63,7 +63,7 @@
     </div>
     <div class="el-dialog__footer">
         <span slot="footer" class="dialog-footer">
-        <el-button @click="visible = false">取 消</el-button>
+        <el-button @click="showAddSupervisionOpinoin = false">取 消</el-button>
         <el-button type="primary" @click="addData()">提交</el-button>
         </span>
     </div>

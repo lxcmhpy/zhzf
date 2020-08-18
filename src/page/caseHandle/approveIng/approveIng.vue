@@ -24,34 +24,22 @@
           <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
           <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
           <el-table-column prop="caseStatus" label="案件状态" align="center" width="100"></el-table-column>
-          <!-- <el-table-column label="标签" align="center" width="50">
+          <el-table-column label="标签" align="center" width="50">
             <template slot-scope="scope">
-              <el-tooltip v-if="scope.row.warType=='1'" placement="top-start" effect="light">
-                <div slot="content" class="warn-li" style="color:#FF0000">
-                  <li>多行信息</li>
-                  <li>第二行信息</li>
-                  <li>第二行信息</li>
+              <el-tooltip placement="top-start" effect="light">
+                <div slot="content" class="warn-li">
+                  <li v-for="(item,index) in scope.row.warContent" :key="index">
+                    <span v-if="item.warType=='1'"  style="color:#FF0000">{{item.warContent}}</span>
+                    <span v-if="item.warType=='2'"  style="color:#FF6600">{{item.warContent}}</span>
+                    <span v-if="item.warType=='3'"  style="color:#0084FF">{{item.warContent}}</span>
+                    </li>
                 </div>
-                <div class="warn-box" style="background:#FF0000">警</div>
-              </el-tooltip>
-              <el-tooltip v-if="scope.row.warType=='2'" placement="top-start" effect="light">
-                <div slot="content" class="warn-li" style="color:#FF6600">
-                  <li>多行信息</li>
-                  <li>第二行信息</li>
-                  <li>第二行信息</li>
-                </div>
-                <div class="warn-box" style="background:#FF6600">警</div>
-              </el-tooltip>
-              <el-tooltip v-if="scope.row.warType=='3'"  placement="top-start" effect="light">
-                <div slot="content"  class="warn-li" style="color:#0084FF">
-                  <li>多行信息</li>
-                  <li>第二行信息</li>
-                  <li>第二行信息</li>
-                </div>
-                <div class="warn-box" style="background:#0084FF">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='1'" style="background:#FF0000">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='3'" style="background:#0084FF">警</div>
               </el-tooltip>
             </template>
-          </el-table-column> -->
+          </el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">
@@ -68,6 +56,8 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -81,6 +71,9 @@ export default {
   mixins: [mixinGetCaseApiList],
   components: {
     caseListSearch,
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   methods: {
 
@@ -118,6 +111,9 @@ export default {
         this.$store.commit("setCaseId", row.id);
         this.$store.commit("setIsLawEnforcementSupervision", false);
         this.$store.commit("setLawEnforcementSupervisionType", '');
+        //防止出现多个案件tab
+        let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+        this.$store.commit("reset_ALLTABS", newOpenTab);
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
         console.log(this.$store.state.caseId);

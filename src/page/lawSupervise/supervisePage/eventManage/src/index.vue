@@ -37,6 +37,7 @@
     <!-- 表格 -->
     <div class="eventManage-table">
       <el-table
+        @row-dblclick="handleDetails"
         :data="tableData"
         style="width: 100%">
         <el-table-column
@@ -83,6 +84,10 @@
               size="mini"
               type="text"
               @click="handleDetails(scope.row)">详情</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="handleUpdate(scope.row)">编辑</el-button>
             <el-button
               size="mini"
               type="text"
@@ -243,6 +248,20 @@ export default {
     },
 
     /**
+     * 编辑
+     */
+    handleUpdate(row) {
+      this.title = "编辑事件"
+      this.$refs.dialog.form.id = row.id
+      // 获取数据
+      this.getDetails(row.id)
+      // 打开弹窗
+      this.$refs.dialog.dialogFormVisible = true
+      // 启用表单
+      this.$refs.dialog.disabled = false
+    },
+
+    /**
      * 删除行
      */
     handleDelete(row) {
@@ -252,6 +271,7 @@ export default {
   created() {
     this.initPage()
     this.getTree()
+    this.getTopInfo()
   }
 }
 </script>

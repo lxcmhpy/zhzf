@@ -10,11 +10,11 @@
               </el-col>
               <el-col :span="12">
                 <elSelectTree
-                  ref="elSelectTreeObj"
+                  ref="elSelectTreeObj1"
                   :options="tableDataTree"
                   :accordion="true"
                   :props="{label: 'label', value: 'id'}"
-                  @getValue="hindleChanged"
+                  @getValue="hindleChanged1"
                 ></elSelectTree>
               </el-col>
             </el-row>
@@ -29,11 +29,11 @@
               </el-col>
               <el-col :span="12">
                 <elSelectTree
-                  ref="elSelectTreeObj"
+                  ref="elSelectTreeObj2"
                   :options="tableDataTree"
                   :accordion="true"
                   :props="{label: 'label', value: 'id'}"
-                  @getValue="hindleChanged"
+                  @getValue="hindleChanged2"
                 ></elSelectTree>
               </el-col>
             </el-row>
@@ -50,11 +50,11 @@
               </el-col>
               <el-col :span="12">
                 <elSelectTree
-                  ref="elSelectTreeObj"
+                  ref="elSelectTreeObj3"
                   :options="tableDataTree"
                   :accordion="true"
                   :props="{label: 'label', value: 'id'}"
-                  @getValue="hindleChanged"
+                  @getValue="hindleChanged3"
                 ></elSelectTree>
               </el-col>
             </el-row>
@@ -69,11 +69,11 @@
               </el-col>
               <el-col :span="12">
                 <elSelectTree
-                  ref="elSelectTreeObj"
+                  ref="elSelectTreeObj4"
                   :options="tableDataTree"
                   :accordion="true"
                   :props="{label: 'label', value: 'id'}"
-                  @getValue="hindleChanged"
+                  @getValue="hindleChanged4"
                 ></elSelectTree>
               </el-col>
             </el-row>
@@ -87,10 +87,12 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import echarts from "echarts";
-/* import {
-  queryDeviceVehicle,
-  deleteVehicles,
-} from "@/api/device/deviceVehicle.js"; */
+import {
+  countDevice,
+  countDeviceType,
+  countUsePer,
+  countVehicle,
+} from "@/api/device/statistic.js";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
 export default {
@@ -116,45 +118,46 @@ export default {
       );
     },
     // 所属机构切换
-    hindleChanged(val) {
+    hindleChanged1(val) {
       this.organizationId = val;
-      this.$refs.elSelectTreeObj.$children[0].handleClose();
+      this.$refs.elSelectTreeObj1.$children[0].handleClose();
+      this.showChart1(val);
     },
-    showChart1() {
-      let legendData = ["闲置", "在用", "维修", "调拨", "报废"];
-      let seriesData = [
-        { value: 335, name: "闲置" },
-        { value: 310, name: "在用" },
-        { value: 234, name: "维修" },
-        { value: 135, name: "调拨" },
-        { value: 1548, name: "报废" },
-      ];
-      /*let legendData = [];
+    // 所属机构切换
+    hindleChanged2(val) {
+      this.organizationId = val;
+      this.$refs.elSelectTreeObj2.$children[0].handleClose();
+      this.showChart2(val);
+    },
+    // 所属机构切换
+    hindleChanged3(val) {
+      this.organizationId = val;
+      this.$refs.elSelectTreeObj3.$children[0].handleClose();
+      this.showChart3(val);
+    },
+    // 所属机构切换
+    hindleChanged4(val) {
+      this.organizationId = val;
+      this.$refs.elSelectTreeObj4.$children[0].handleClose();
+      this.showChart4(val);
+    },
+    async showChart1(val) {
+      let data = "";
+      let res = await this.getData(1, val);
+      data = res;
+      let legendData = [];
       let seriesData = [];
-       let total = parseFloat(this.tjData.caseInfoTotal);
-      Object.keys(this.tjData.businessAreaMap).forEach((k) => {
-        let num = parseFloat(this.tjData.businessAreaMap[k]);
-        let percent =
-          total <= 0 ? "0%" : Math.round((num / total) * 10000) / 100.0 + "%";
-        let n = k;
-        legendData.push(n);
+      data.forEach((k) => {
+        let name = k.name + "(" + k.quantity + ")";
+        legendData.push(name);
         seriesData.push({
-          name: n,
-          value: this.tjData.businessAreaMap[k],
+          name: name,
+          value: k.quantity,
         });
-      }); */
-      debugger;
+      });
+
       let myChart = echarts.init(document.getElementById("deviceUseChart"));
       myChart.setOption({
-        // title: {
-        //   text: "装备使用概况",
-        //   left: "left",
-        // },
-        tooltip: {
-          trigger: "item",
-          position: "top",
-          formatter: "{b} : {c}",
-        },
         legend: {
           type: "scroll",
           orient: "vertical",
@@ -187,22 +190,18 @@ export default {
         ],
       });
     },
-    showChart2() {
-      let data1 = ["通用设备", "电气设备"];
-      let data2 = ["4", "8"];
-      /*  let data1 = [];
-      let data2 = [];
-      Object.keys(this.tjData.cityDivisionMap).forEach((k) => {
-        data1.push(k);
-        data2.push(this.tjData.cityDivisionMap[k]);
-      });*/
-      debugger;
+    async showChart2(val) {
+      let data = "";
+      let res = await this.getData(2, val);
+      data = res;
+      let legendData = [];
+      let seriesData = [];
+      data.forEach((k) => {
+        legendData.push(k.name);
+        seriesData.push(k.quantity);
+      });
       let myChart = echarts.init(document.getElementById("deviceTypeChart"));
       myChart.setOption({
-        // title: {
-        //   text: "装备分类统计",
-        //   left: "left",
-        // },
         tooltip: {
           trigger: "item",
           position: "top",
@@ -210,7 +209,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: data1,
+          data: legendData,
         },
         yAxis: {
           type: "value",
@@ -220,7 +219,7 @@ export default {
         },
         series: [
           {
-            data: data2,
+            data: seriesData,
             type: "bar",
             showBackground: true,
             backgroundStyle: {
@@ -233,34 +232,22 @@ export default {
         ],
       });
     },
-    showChart3() {
-      let legendData = ["正常", "维修", "报废"];
-      let seriesData = [
-        { value: 4, name: "正常" },
-        { value: 8, name: "维修" },
-        { value: 6, name: "报废" },
-      ];
-      /*let legendData = [];
-      let seriesData = [];
-       let total = parseFloat(this.tjData.caseInfoTotal);
-      Object.keys(this.tjData.businessAreaMap).forEach((k) => {
-        let num = parseFloat(this.tjData.businessAreaMap[k]);
-        let percent =
-          total <= 0 ? "0%" : Math.round((num / total) * 10000) / 100.0 + "%";
-        let n = k;
-        legendData.push(n);
-        seriesData.push({
-          name: n,
-          value: this.tjData.businessAreaMap[k],
-        });
-      }); */
+    async showChart3(val) {
       debugger;
+      let data = "";
+      let res = await this.getData(3, val);
+      data = res;
+      let legendData = [];
+      let seriesData = [];
+      data.forEach((k) => {
+        legendData.push(k.name);
+        seriesData.push({
+          name: k.name,
+          value: k.quantity,
+        });
+      });
       let myChart = echarts.init(document.getElementById("vehicleUseChart"));
       myChart.setOption({
-        // title: {
-        //   text: "车辆使用概况",
-        //   left: "left",
-        // },
         tooltip: {
           trigger: "item",
           position: "top",
@@ -305,30 +292,19 @@ export default {
         ],
       });
     },
-    showChart4() {
-      let data1 = [
-        "未申请",
-        "申请中",
-        "待颁发",
-        "正常",
-        "挂失",
-        "注销",
-        "已年审",
-      ];
-      let data2 = ["4", "8", "4", "13", "4", "2", "4"];
-      /*  let data1 = [];
-      let data2 = [];
-      Object.keys(this.tjData.cityDivisionMap).forEach((k) => {
-        data1.push(k);
-        data2.push(this.tjData.cityDivisionMap[k]);
-      });*/
+    async showChart4(val) {
       debugger;
+      let data = "";
+      let res = await this.getData(4, val);
+      data = res;
+      let legendData = [];
+      let seriesData = [];
+      data.forEach((k) => {
+        legendData.push(k.name);
+        seriesData.push(k.quantity);
+      });
       let myChart = echarts.init(document.getElementById("certStateChart"));
       myChart.setOption({
-        // title: {
-        //   text: "使用证状态",
-        //   left: "left",
-        // },
         tooltip: {
           trigger: "item",
           position: "top",
@@ -336,7 +312,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: data1,
+          data: legendData,
         },
         yAxis: {
           type: "value",
@@ -346,7 +322,7 @@ export default {
         },
         series: [
           {
-            data: data2,
+            data: seriesData,
             type: "bar",
             showBackground: true,
             backgroundStyle: {
@@ -358,6 +334,24 @@ export default {
           },
         ],
       });
+    },
+    async getData(type, organId) {
+      let res = "";
+      switch (type) {
+        case 1:
+          res = await countDevice(organId);
+          break;
+        case 2:
+          res = await countDeviceType(organId);
+          break;
+        case 3:
+          res = await countVehicle(organId);
+          break;
+        case 4:
+          res = await countUsePer(organId);
+          break;
+      }
+      return res.data;
     },
   },
   created() {
@@ -374,10 +368,12 @@ export default {
 <style>
 .chart-title {
   margin-left: 20px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   height: 40px;
   line-height: 40px;
+  font-family: "黑体";
+  color: #4c4d50;
 }
 .chart-box {
   width: 500px;
