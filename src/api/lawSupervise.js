@@ -79,16 +79,6 @@ export function getById(type,id) {
     });
   }
 
-  export function getUserById(id) {
-      return request({
-        url: "/zfjg/user/findByOrganId/" + id,
-        method: "get",
-        showloading: false,
-        //   loadingType:'loadPart',
-        baseUrlType:  'LAW_SUPERVISE_HOST',
-        cancelToken: setCancelSource()
-      })
-  }
 //   /zfjg/superviseVehicle/findWeighingRecord/{name}
   export function queryListPage(data) {
     return request({
@@ -158,16 +148,6 @@ export function getById(type,id) {
         baseUrlType:  'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()
     });
-  }
-  // 获取监管机构详情
-  export function getOrganDetail (id) {
-      return request({
-        url: "/zfjg/organ/findById/"+id,
-        method: "get",
-        showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
-        cancelToken: setCancelSource()
-      })
   }
 
   // 重点监管-车辆列表
