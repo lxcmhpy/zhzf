@@ -184,6 +184,7 @@ import {
 import {
   getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi, appDownloadApi,
 } from "@/api/system";
+import {encryption} from "@/common/js/cryptoAes";
 export default {
   data() {
     return {
@@ -412,6 +413,10 @@ export default {
           } else {
             // 登录后默认跳转至host.json文件中配置的首页
             this.$router.push({ name: sessionStorage.getItem('HOME_PAGE_ROUTER_NAME') })
+
+            res.data.encryptionUserName=encryption(this.loginForm.username)
+            res.data.encryptionPassword=encryption(this.loginForm.password)
+            debugger
             iLocalStroage.sets('userInfo', res.data);
             // _this.getMenu();
           }

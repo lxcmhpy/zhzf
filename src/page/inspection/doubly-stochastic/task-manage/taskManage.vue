@@ -438,6 +438,12 @@ export default {
         timeList: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        checkSubject: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         checkObjectNum: [
           { required: true, message: "必填项", trigger: "change" },
           // { type: 'number', message: '须为数字' }
@@ -565,8 +571,8 @@ export default {
           }
         });
       } else {
-        this.addForm.taskStatus = '暂存'
-        addTaskApi(this.addForm).then(
+        data.taskStatus = '暂存'
+        addTaskApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
@@ -622,8 +628,8 @@ export default {
           }
         });
       } else {
-        this.addForm.taskStatus = '暂存'
-        addTaskApi(this.addForm).then(
+        data.taskStatus = '暂存'
+        addTaskApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
