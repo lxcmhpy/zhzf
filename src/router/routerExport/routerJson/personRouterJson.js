@@ -160,6 +160,52 @@ export const personRouterJson = [
           title: "日志管理"
         }
       // component: () => import("@/page/person/certificate-data/certificateDataList.vue")
+      },
+      // 日常绩效管理
+      {
+        name: "dailyAttendanceManage",
+        path: "/dailyAttendanceManage",
+        component: MainContent,
+        meta: { title: "日常绩效管理" },
+        redirect: '/attendance-info',
+        children: [
+          {
+            name: "attendanceInfo",
+            path: "/attendance-info",
+            meta: { title: "考勤信息管理", loading: false },
+            component: () => import("@/page/person/attendance-manage/attendanceInfo")
+          },
+          {
+            name: "personTrainInfo",
+            path: "/person-train-info",
+            meta: { title: "培训信息管理", loading: false },
+            component: () => import("@/page/person/attendance-manage/trainInfo")
+          },
+          {
+            name: "personExamInfo",
+            path: "/person-exam-info",
+            meta: { title: "考试信息管理", loading: false },
+            component: () => import("@/page/person/attendance-manage/examInfo")
+          },
+          {
+            name: "personComplaintsReport",
+            path: "/person-complaints-report",
+            meta: { title: "投诉举报记录管理", loading: false },
+            component: () => import("@/page/person/attendance-manage/complaintsReport")
+          },
+          {
+            name: "personComplaintsReportDetail",
+            path: "/person-complaints-report-detail",
+            meta: { title: "投诉举报记录", loading: false },
+            component: () => import("@/page/person/attendance-manage/components/complaintsDetail")
+          },
+          {
+            name: "personAttendanceDetail",
+            path: "/person-attendance-detail",
+            meta: { title: "考勤详情", loading: false },
+            component: () => import("@/page/person/attendance-manage/components/attendanceDetail")
+          }
+        ]
       }
     ]
   },

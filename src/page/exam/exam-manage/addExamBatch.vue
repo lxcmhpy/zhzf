@@ -178,6 +178,7 @@ export default {
         examEnd: "", //考试结束时间
         examVenues: "", //考试地点
         remark: "", //备注
+        timeLimit: ''
       },
       rules: {
         examName: [
@@ -304,6 +305,7 @@ export default {
         _this.addExamBatchForm.examSort = row.examSort.trim();
         _this.addExamBatchForm.examVenues = row.examVenues;
         _this.addExamBatchForm.oid = row.oid;
+        _this.addExamBatchForm.timeLimit = row.timeLimit;
       }
     },
     //关闭弹窗的时候清除数据
