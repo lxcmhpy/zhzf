@@ -1,5 +1,5 @@
 {
-  "CURRENT": "TEST",
+  "CURRENT": "JX",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -90,7 +90,8 @@
     "CHECK_API":"http://172.16.170.91:8081",
     "XZJC_HOST":"http://localhost:8099",
     "EXAM":"http://59.110.216.138:9050",
-    "test":"http://172.16.169.37:9003"
+    "test":"http://172.16.169.37:9003",
+    "OLDSYSTEM_HOST":"http://172.16.169.39:8100"
   },
   "JX": {
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
@@ -122,7 +123,7 @@
     "CHECK_API":"http://124.192.215.11:8081",
     "XZJC_HOST":"http://218.84.108.29:9461",
     "EXAM":"http://218.84.108.29:9461/exam",
-    "OLDSYSTEM_HOST":"http://172.16.169.39:8100"
+    "OLDSYSTEM_HOST":"http://218.84.108.27:8888"
   },
   "QD": {
     "CAPTCHA_HOST": "http://172.16.170.55:9000",

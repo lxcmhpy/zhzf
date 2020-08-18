@@ -53,7 +53,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" type="primary" @click="exportMethod('检查人员表.xls')">导出所有人员</el-button>
+              <el-button size="medium" type="primary" @click="exportMethod('公开执法人员表.xls')">导出所有人员</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -68,7 +68,7 @@
         <el-table-column prop="staffingName" label="执法人员性质" align="center"></el-table-column>
         <el-table-column prop="postName" label="职务" align="center"></el-table-column>
         <el-table-column prop="company" label="单位" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="100">
           <template slot-scope="scope">
             <el-button @click="editMethod(scope.row)" type="text">修改</el-button>
             <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
@@ -312,6 +312,12 @@ export default {
         personName: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        birthDate: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        sex: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         idCard: [
           { required: true, message: "必填项", trigger: "change" },
           { validator: validateIDNumber, trigger: "change" }
@@ -346,7 +352,7 @@ export default {
         certType: [
           { required: true, message: "必填项", trigger: "change" }
         ],
-        company: [
+        nationName: [
           { required: true, message: "必填项", trigger: "change" }
         ],
         contactNum: [
@@ -376,8 +382,9 @@ export default {
     getTableData() {
       let data = {
         personName: this.searchForm.personName,
-        workStatus: this.searchForm.workStatus,
-        // OName: iLocalStroage.gets("userInfo").organName,
+        stationStatusName: this.searchForm.stationStatusName,
+        // workStatus: this.searchForm.stationStatusName,
+        organName: iLocalStroage.gets("userInfo").organName,
         // oName: '固原综合执法支队',
         current: this.currentPage,
         size: this.pageSize,
@@ -432,18 +439,21 @@ export default {
       // let currentFileId = this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);
+      fd.append("organName", iLocalStroage.gets("userInfo").organName);
       importPersonExcelApi(fd).then(res => {
         if (res.code === 200) {
           this.$message({ type: "success", message: res.msg });
           this.currentPage = 1;
           this.getTableData()
         }
-      }
-      );
+      });
     },
     // 导出
     exportMethod(fileName) {
-      exportPersonApi(iLocalStroage.gets("userInfo").organName).then(res => {
+      let data = {
+        organName: iLocalStroage.gets("userInfo").organName
+      }
+      exportPersonApi(data).then(res => {
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持
         //其他浏览器
         let link = document.createElement('a'); // 创建a标签

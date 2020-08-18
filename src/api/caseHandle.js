@@ -1446,7 +1446,6 @@ export function getWarInfoLlistApi(data) {
     method: "get",
     data: data,
     showloading: false,
-    baseUrlType: 'test',
     cancelToken: setCancelSource()
   });
 }
@@ -1458,7 +1457,6 @@ export function addWarInfoLlistApi(data) {
     method: "POST",
     data: data,
     showloading: false,
-    baseUrlType: 'test',
     cancelToken: setCancelSource()
   });
 }
@@ -1468,7 +1466,6 @@ export function delWarInfoLlistApi(data) {
     url: "/case/sys/war/deleteById/"+data,
     method: "get",
     showloading: false,
-    baseUrlType: 'test',
     cancelToken: setCancelSource()
   });
 }
@@ -1478,7 +1475,16 @@ export function findWarInfoByIdApi(data) {
     url: "/case/sys/war/findById/"+data,
     method: "get",
     showloading: false,
-    baseUrlType: 'test',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除证据 
+export function deleteEvFileApi(id) {
+  return request({
+    url: "/case/doc/evidence/deleteById/"+id,
+    method: "get",
+    showloading: false,
     cancelToken: setCancelSource()
   });
 }

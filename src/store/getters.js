@@ -24,7 +24,9 @@ const getters = {
   showQZBtn:state => state.caseHandle.showQZBtn,
   province: state => state.caseHandle.province,
   docPdfStorageId:state => state.caseHandle.docPdfStorageId,
-
+  IsLawEnforcementSupervision:state => state.caseHandle.IsLawEnforcementSupervision,
+  lawEnforcementSupervisionType:state => state.caseHandle.lawEnforcementSupervisionType,
+  
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,
   // 语音视频

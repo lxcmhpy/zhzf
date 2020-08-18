@@ -151,5 +151,12 @@ export default  [
         title: "设备类型管理",
       },
       component: () => import("@/page/lawSupervise/supervisePage/devicetype/deviceTypeManage.vue")
-  }
+  }, {
+      path: "/eventManage",
+      name: "law_supervise_eventManage",
+      meta: {
+        title: "事件管理",
+      },
+      component: () => import("@/page/lawSupervise/supervisePage/eventManage")
+  },
 ]

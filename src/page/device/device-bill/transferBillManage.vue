@@ -409,7 +409,6 @@
                     this.$set(this.addForm,'useUnit',val)
                     this.getUserDataList(val)
                     this.$set(this.addForm,'userId','')
-                    this.itemList=[]
                 }
             },
             queryFormTransferUnitClick(val) {
@@ -419,6 +418,7 @@
             addFormTransferUnitClick(val) {
                 this.$refs.addFormTransferUnitTreeObj.$children[0].handleClose();
                 this.$set(this.addForm,'transferUnit',val)
+                this.itemList=[]
             },
             saveOrUpdate(formName){
                 let _this = this

@@ -89,19 +89,18 @@
                         </template>
                     </el-table-column>
                     <!--列表字段-->
-                    <el-table-column prop="billType" label="单据类型" :formatter="formatBillType"></el-table-column>
-                    <el-table-column prop="billNo" label="单据号"></el-table-column>
-                    <el-table-column prop="vehicleNumber" label="车牌号"></el-table-column>
-                    <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                    <el-table-column prop="usePermitNumber" label="使用证号"></el-table-column>
-                    <el-table-column prop="billDate" label="申请日期"></el-table-column>
-                    <el-table-column prop="status" label="单据状态" :formatter="formatStatus"></el-table-column>
+                    <el-table-column prop="billType" label="单据类型" width="120px" :formatter="formatBillType"></el-table-column>
+                    <el-table-column prop="billNo" label="单据号" width="200px"></el-table-column>
+                    <el-table-column prop="vehicleNumber" label="车牌号" width="120px"></el-table-column>
+                    <el-table-column prop="useUnit" label="使用单位" ></el-table-column>
+                    <el-table-column prop="usePermitNumber" label="使用证号" width="200px"></el-table-column>
+                    <el-table-column prop="billDate" label="申请日期" width="120px"></el-table-column>
+                    <el-table-column prop="status" label="单据状态" width="120px" :formatter="formatStatus"></el-table-column>
                     <el-table-column label="操作" width="160">
                         <template slot-scope="scope">
                             <div style="width:160px">
                                 <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                                <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button>
+                                <el-button type="text" v-if="scope.row.status==1" @click.stop @click="deleteRecord(scope.row)">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -118,150 +117,6 @@
                         :total="totalPage"
                 ></el-pagination>
             </div>
-            <el-dialog :title="title"
-                       custom-class="leftDialog"
-                       :visible.sync="visible"
-                       top="0"
-                       width="40%"
-                       @close="closeDialog"
-                       :close-on-click-modal="false">
-                <el-form
-                        :model="addForm"
-                        ref="addForm"
-                        :rules="rules"
-                        label-width="150px"
-                        class="addOrganClass" >
-                    <div class="part">
-                        <!--卡片字段-->
-                        <el-row>
-                        <el-form-item label="车牌号" prop="vehicleNumber">
-                            <el-input v-model="addForm.vehicleNumber" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="使用单位" prop="useUnit">
-                            <el-input v-model="addForm.useUnit" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="车辆类别" prop="vehicleCategory">
-                            <el-input v-model="addForm.vehicleCategory" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="车辆类型" prop="vehicleType">
-                            <el-input v-model="addForm.vehicleType" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="厂牌型号" prop="brandModel">
-                            <el-input v-model="addForm.brandModel" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="发动机号" prop="engineNumber">
-                            <el-input v-model="addForm.engineNumber" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="车架号" prop="axleNumber">
-                            <el-input v-model="addForm.axleNumber" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="使用证号" prop="usePermitNumber">
-                            <el-input v-model="addForm.usePermitNumber" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="开始日期" prop="beginDate">
-                            <el-date-picker v-model="addForm.beginDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="结束日期" prop="endDate">
-                            <el-date-picker v-model="addForm.endDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="发证机关" prop="issueOrgan">
-                            <el-input v-model="addForm.issueOrgan" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="发证时间" prop="lssueTime">
-                            <el-date-picker v-model="addForm.lssueTime" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="签发人" prop="signer">
-                            <el-input v-model="addForm.signer" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="签发时间" prop="signDate">
-                            <el-date-picker v-model="addForm.signDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="经办人" prop="manager">
-                            <el-input v-model="addForm.manager" style="width: 100%;" :readonly="true"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="经办时间" prop="handlingDate">
-                            <el-date-picker v-model="addForm.handlingDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="申请理由" prop="note">
-                            <el-input
-                                    type="textarea"
-                                    v-model="addForm.note"
-                                    :autosize="{ minRows: 2, maxRows: 3}"
-                                    :readonly="this.formReadOnly"
-                            ></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="申请日期" prop="billDate">
-                            <el-date-picker v-model="addForm.billDate" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" :readonly="true"></el-date-picker>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="申报单位" prop="declarationUnit">
-                            <elSelectTree
-                                ref="addFormDeclarationUnitTreeObj"
-                                :options="organList"
-                                :value="addForm.declarationUnit"
-                                :accordion="true"
-                                :props="orgTreeProps"
-                                :filterable="true"
-                                style="width: 100%;"
-                                @getValue="addFormDeclarationUnitClick">
-                            </elSelectTree>
-                            <el-input style="display:none" v-model="addForm.declarationUnit"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="申报联系人" prop="contactPerson">
-                            <el-input v-model="addForm.contactPerson" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
-                        </el-form-item>
-                        </el-row>
-                        <el-row>
-                        <el-form-item label="联系电话" prop="contactNumber">
-                            <el-input v-model="addForm.contactNumber" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
-                        </el-form-item>
-                        </el-row>
-                    </div>
-                </el-form>
-                <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
-                    <el-button @click="closeDialog">取 消</el-button>
-                    <el-button @click="saveOrUpdate('addForm')"  type="primary" class="btn-custom" >
-                        <span>确 定</span>
-                    </el-button>
-                </div>
-            </el-dialog>
             <el-dialog
                 title="请选择业务类型"
                 :visible.sync="dialogVisible"
@@ -283,9 +138,8 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
-    import { queryDeviceCertificateBill,findDeviceCertificateBillById,saveOrUpdateDeviceCertificateBill,deleteDeviceCertificateBillById} from "@/api/device/deviceCertificateBill.js";
+    import { queryDeviceCertificateBill,findDeviceCertificateBillById,deleteDeviceCertificateBillById} from "@/api/device/deviceCertificateBill.js";
     import {
-        tree,
         getDrawerList,
     } from "@/api/device/device.js";
     import elSelectTree from '@/components/elSelectTree/elSelectTree';
@@ -307,27 +161,18 @@
                     vehicleNumber:'',
                     status:'',
                 },
-                addForm:{
-                },
-                rules: {
-                    vehicleNumber:[
-                        {required: true, message: "请输入车牌号", trigger: "blur"}
-                    ],
-                    usePermitNumber:[
-                        {required: true, message: "请输入使用证号", trigger: "blur"}
-                    ],
-                    declarationUnit:[
-                        {required: true, message: "请输入申报单位", trigger: "blur"}
-                    ],
-                },
                 userInfo:{},
                 tableData: [], //表格数据
                 currentPage: 1, //当前页
                 pageSize: 10, //pagesize
                 totalPage: 0, //总数
                 title:"新增证件管理单",
-                statusList:[],
-                organList:[],
+                statusList:[
+                    {id:1,label:'未申请'},
+                    {id:2,label:'申请中'},
+                    {id:3,label:'申请通过'},
+                    {id:0,label:'申请未通过'},
+                ],
                 billTypeList:[
                     {id:'FZ',label:'发证申请'},
                     {id:'NS',label:'年审申请'},
@@ -348,6 +193,7 @@
                     }
                 },
                 timeList: ['', ''],
+                host:''
             };
         },
         components: {
@@ -360,23 +206,12 @@
                     billType: val,
                     billTypeName:this.formatBillType({billType:val}),
                     url: this.$route.name,
-                    organList:this.organList
+                    data:{billDate:new Date().format('yyyy-MM-dd'),billType:val},
+                    isEdit:true,
+                    isApprove:false,
+                    tabTitle:this.formatBillType({billType:val}),
                 };
                 this.$router.push({ name: "applyManage", params: routerData });
-            },
-            async getDrawerDataList(){
-                let data = []
-                data.push({pid:'证件管理单-申请状态',fieldName:'statusList'})
-                let res = await getDrawerList(data)
-                this.statusList=res.data.statusList
-            },
-            async getSelfTree(){
-                let res = await tree(this.userInfo.organId,'organ')
-                this.organList=res.data
-            },
-            addFormDeclarationUnitClick(val) {
-                this.$refs.addFormDeclarationUnitTreeObj.$children[0].handleClose();
-                this.addForm.declarationUnit  = val
             },
             formatStatus(row){
                 let data = this.statusList.filter(p=>p.id==row.status)
@@ -391,26 +226,6 @@
                     return data[0].label
                 }
                 return ''
-            },
-            saveOrUpdate(formName){
-                let _this = this
-                this.$refs[formName].validate(valid => {
-                    if (valid) {
-                        saveOrUpdateDeviceCertificateBill(_this.addForm).then(
-                            res => {
-                                _this.$message({
-                                    type: "success",
-                                    message:"保存成功!"
-                                });
-                                _this.visible = false;
-                                _this.queryData(1);
-                            },
-                            err => {
-                                console.log(err);
-                            }
-                        );
-                    }
-                });
             },
             reset() {
                 this.$refs["queryForm"].resetFields();
@@ -433,25 +248,46 @@
             addData() {
                 this.dialogVisible=true
             },
-            //编辑
-            handleEdit(index, row) {
-                this.title="修改"+this.formatBillType(row)
-                this.findDeviceCertificateBillById(row)
-                this.formReadOnly = false
-                this.visible = true
-            },
             //查看详情
             showDataDetail(row){
-                this.title=this.formatBillType(row)
                 this.findDeviceCertificateBillById(row)
-                this.formReadOnly = true
-                this.visible = true
             },
             findDeviceCertificateBillById(row){
                 let _this = this
                 findDeviceCertificateBillById(row.id).then(
                     res => {
-                        _this.addForm = res.data
+                        let imageList = []
+                        let pdfId = ''
+                        if(res.data.fileList){
+                            res.data.fileList.forEach(p=>{
+                                p.url=this.host+p.storageId
+                                if(p.category == "执法装备证件单"){
+                                    imageList.push(p)
+                                }else{
+                                    pdfId = p.storageId
+                                }
+                            })
+                        }
+                        res.data.fileList=[]
+                        let status = ''
+                        this.statusList.forEach(p=>{
+                            if(p.id==res.data.status){
+                                status = p.label
+                            }
+                        })
+                        let routerData = {
+                            billType: res.data.billType,
+                            billTypeName:this.formatBillType({billType:res.data.billType}),
+                            url: this.$route.name,
+                            data:res.data,
+                            imageList:imageList,
+                            isEdit:false,
+                            isApprove:false,
+                            status:status,
+                            pdfId:pdfId,
+                            tabTitle:this.formatBillType({billType:res.data.billType}),
+                        };
+                        this.$router.push({ name: "applyManage", params: routerData });
                     },
                     err => {
                         console.log(err);
@@ -485,14 +321,8 @@
                 });
             },
             //关闭弹窗的时候清除数据
-            closeDialog() {
-                this.visible = false;
-                this.$refs["addForm"].resetFields();
-            },
             init(){
                 this.queryData(1)
-                this.getDrawerDataList()
-                this.getSelfTree()
             },
             //更改每页显示的条数
             handleSizeChange(val) {
@@ -506,6 +336,7 @@
         },
         mounted() {
             this.userInfo = iLocalStroage.gets("userInfo");
+            this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
             this.init()
         },
         created() {

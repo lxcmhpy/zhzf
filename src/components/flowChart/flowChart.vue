@@ -64,7 +64,7 @@ export default {
     }
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId','province']) },
+  computed: { ...mapGetters(['caseId','province','IsLawEnforcementSupervision']) },
   methods: {
     async getFlowStatusByCaseId(id) {
       //   console.log(id)
@@ -285,6 +285,8 @@ export default {
       let that = this;
       flowChart.off('click');
       flowChart.on('click', function (params) {
+        //执法监督下查看不允许点击查看
+        if(that.IsLawEnforcementSupervision) return
         if (params.name) {
           // complete: '#0174f5',//已完成  doing: '#f2a010',// 进行中  unLock: '#52c2b6',// 已解锁  lock: '#b2b2b2' //未解锁
           if (that.stateLinkArray.indexOf(params.data.curLinkState) > -1) {
@@ -607,6 +609,9 @@ export default {
     },
     //解除或延长强制措施跳转
     async showRemoveOrExtend() {
+      //执法监督不可点击
+      if(this.IsLawEnforcementSupervision) return;
+
       if(this.currentFlow.data.flowName == '处罚流程'){
         let updataLinkData = {
           caseId:this.caseId,
@@ -816,6 +821,8 @@ export default {
     },
     //跳转行政强制措施
     async goToAdminCoerciveMeasure(){
+      //执法监督不可以点击
+      if(this.IsLawEnforcementSupervision) return
       let updataLinkData = {
           caseId:this.caseId,
           linkTypeId:this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId

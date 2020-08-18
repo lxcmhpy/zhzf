@@ -2,12 +2,37 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="equipment-detail">
-      <el-tabs style="min-height:800px;position:relative;">
-        <el-tab-pane label="基本信息">
-          <ApplyBaseInfo :billTypeName="billTypeName" :billType="billType" :url="url" :organList="organList"/>
+      <el-tabs  v-model="activeName" style="min-height:800px;position:relative;">
+        <el-tab-pane name="base" label="基本信息">
+          <ApplyBaseInfo
+            v-if="billType=='FZ'"
+            :billTypeName="billTypeName" 
+            :billType="billType" 
+            :addForm="data"
+            :imageList="imageList"
+            :isEdit="isEdit"
+            @afterCommit="afterCommit"
+            @setEdit="setEdit"
+        />
+         <OtherApplyBaseInfo 
+            v-else
+            :billTypeName="billTypeName" 
+            :billType="billType" 
+            :addForm="data"
+            :imageList="imageList"
+            :isEdit="isEdit"
+            @afterCommit="afterCommit"
+            @setEdit="setEdit"
+        />
         </el-tab-pane>
-        <el-tab-pane label="审批单" v-if="commited">
-          <ApprovalForm />
+        <el-tab-pane name="approve" label="审批单" v-if="commited">
+          <ApprovalForm 
+            :id="id" 
+            :isApprove="isApprove" 
+            :status="status" 
+            :pdfId="pdfId" 
+            :billType="billType"
+        />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -15,29 +40,69 @@
 </template>
 <script>
 import ApplyBaseInfo from "@/page/device/certificate-bill/applyBaseInfo";
+import OtherApplyBaseInfo from "@/page/device/certificate-bill/otherApplyBaseInfo";
 import ApprovalForm from "@/page/device/certificate-bill/approvalForm";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
-  components: { ApplyBaseInfo, ApprovalForm },
+  components: { ApplyBaseInfo, ApprovalForm,OtherApplyBaseInfo },
   data() {
     return {
         commited:false,
         billType:'',
         url:'',
         billTypeName:'',
-        organList:[]
+        data:{},
+        imageList:[],
+        isEdit:true,
+        id:'',
+        isApprove:false,
+        status:'',
+        pdfId:'',
+        activeName:'base'
     };
   },
   computed: {},
   methods: {
-
+      afterCommit(){
+        this.commited=true
+        this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+        this.$router.push({
+            name: this.url
+        });
+      },
+      setEdit(value){
+          this.isEdit= value
+      }
   },
     mounted () {
         if(this.$route.params.billType !== undefined){
             this.billType=this.$route.params.billType
             this.url=this.$route.params.url
             this.billTypeName=this.$route.params.billTypeName
-            this.organList=this.$route.params.organList
+            this.data=this.$route.params.data
+            if(this.$route.params.imageList){
+                this.imageList=this.$route.params.imageList
+            }
+            this.isEdit=this.$route.params.isEdit
+            this.isApprove=this.$route.params.isApprove
+            if(this.data.id){
+                this.id=this.data.id
+                if(this.data.status!=1){
+                    this.commited=true
+                }
+            }
+            if(this.$route.params.status){
+                this.status=this.$route.params.status
+            }
+            if(this.$route.params.pdfId){
+                this.pdfId = this.$route.params.pdfId
+            }
+        }
+        if(iLocalStroage.get('certApproveOver')){
+            this.status=iLocalStroage.get('certApproveOver')
+            iLocalStroage.removeItem('certApproveOver')
+            this.activeName='approve'
         }
     }
 };

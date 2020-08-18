@@ -6,7 +6,7 @@
         <div class="search">
           <el-form :inline="true" :model="evidenceForm" ref="evidenceForm" label-width="80px">
             <el-form-item>
-              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval">上传证据</el-button>
+              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval && !IsLawEnforcementSupervision">上传证据</el-button>
             </el-form-item>
             <el-form-item label="证据名称" prop="evName">
               <el-input v-model="evidenceForm.evName"></el-input>
@@ -53,7 +53,7 @@
                   active-color="#13ce66"
                   inactive-color="#ff4949"
                   @change="updateEviBySwitch(scope.row)"
-                  :disabled="caseApproval"
+                  :disabled="caseApproval || IsLawEnforcementSupervision"
                 ></el-switch>
               </label>
             </template>
@@ -70,9 +70,10 @@
                 type="text"
                 icon="el-icon-edit"
                 @click.stop="handleEdit(scope.$index, scope.row)"
-                :disabled="caseApproval"
+                :disabled="caseApproval || IsLawEnforcementSupervision"
               >编辑
               </el-button>
+              <el-button type="text" @click.stop="getFileStream(scope.row,scope.row.evPath)">下载</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -268,7 +269,7 @@
   import evidenceCatalogue from "./evidenceCatalogue";
   import {uploadEvApi, findFileByIdApi, uploadEvdence} from "@/api/upload";
 
-  import {getCaseBasicInfoApi} from "@/api/caseHandle";
+  import {getCaseBasicInfoApi,getFileStreamByStorageIdApi} from "@/api/caseHandle";
   import iLocalStroage from "@/common/js/localStroage.js";
   import evidenceDetail from "./evidenceDetail";
   import evidenceImageDetail from "./evidenceImageDetail";
@@ -312,7 +313,7 @@
           remark: "",
           file: null,
           docId: "",
-          category: "",
+          category: "证据",
           userId: "",
           recordPlace:'',
           userName:'',
@@ -344,7 +345,7 @@
         myVideoSrc:'',
       };
     },
-    computed: {...mapGetters(["caseId",'caseApproval'])},
+    computed: {...mapGetters(["caseId",'caseApproval','IsLawEnforcementSupervision'])},
     components: {
       caseSlideMenu,
       evidenceCatalogue,
@@ -405,6 +406,7 @@
       getEviList() {
         let data = {
           caseId: this.caseId,
+          category: "证据",
           evName: this.evidenceForm.evName,
           evType: this.evidenceForm.evType,
           status: this.evidenceForm.status,
@@ -654,7 +656,53 @@
             array.push(binary.charCodeAt(i));
         }
         return new Blob([new Uint8Array(array)], {type:type});
+      },
+      getFileStream(data,storageId) {
+      //设置地址
+      // this.$store.commit("setDocPdfStorageId", storageId);
+      getFileStreamByStorageIdApi(storageId)
+        .then((res) => {
+          console.log(res);
+          this.getObjectURL(data,res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 将返回的流数据转换为url
+    getObjectURL(data,file) {
+      let url = null;
+      if (window.createObjectURL != undefined) {
+        // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) {
+        // webkit or chrome
+        try {
+          url = window.webkitURL.createObjectURL(file);
+        } catch (error) {}
+      } else if (window.URL != undefined) {
+        // mozilla(firefox)
+        try {
+          url = window.URL.createObjectURL(file);
+        } catch (error) {}
       }
+      console.log(url);
+      // this.pdfUrl = url; 
+      // return url;
+      this.downFile(data,url);
+    },
+      //下载
+      downFile(data,url){
+        var eleLink = document.createElement('a');
+        eleLink.download = data.evName;
+        eleLink.style.display = 'none';
+        eleLink.href = url;
+        // 触发点击
+        document.body.appendChild(eleLink);
+        eleLink.click();
+        // 然后移除
+        document.body.removeChild(eleLink);
+      },
     },
     mounted() {
       this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;

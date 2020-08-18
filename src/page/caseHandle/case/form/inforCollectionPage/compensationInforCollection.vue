@@ -53,19 +53,23 @@
         </div>
         <div>
           <div class="item">
-            <el-form-item label="案发时间">
+            <el-form-item label="案发时间" prop="afsj">
               <el-date-picker
+                @change="checkDays"
                 v-model="inforForm.afsj"
                 type="datetime"
                 format="yyyy-MM-dd HH:mm"
                 value-format="yyyy-MM-dd HH:mm"
               ></el-date-picker>
-            <div class="el-form-item__error">{{dateTooltip}}</div> 
+              <div v-if="dateShow" class="el-form-item__error error-color">
+                当前案发时间早于受案时间10日以上，若核对无误可忽略本提醒。
+              </div>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="受案时间" prop="acceptTime">
               <el-date-picker
+                @change="checkDays"
                 v-model="inforForm.acceptTime"
                 type="datetime"
                 format="yyyy-MM-dd HH:mm"
@@ -899,4 +903,9 @@ export default {
 </script>
 <style lang="scss">
   @import "@/assets/css/caseHandle/index.scss";
+</style>
+<style lang="scss">
+  .error-color {
+    color: #FF6600
+  }
 </style>

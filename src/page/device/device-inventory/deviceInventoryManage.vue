@@ -58,7 +58,7 @@
             </div>
             <div class="tableHandle" style="margin-bottom: 10px;">
                 <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
-                <el-button plain size="medium" icon="el-icon-plus"  @click="copyClick">复制</el-button>
+                <el-button plain size="medium" icon="el-icon-document"  @click="copyClick">复制</el-button>
             </div>    
             <div class="tablePart">
                 <el-table
@@ -472,7 +472,7 @@
                 </el-tabs>
                 </div>
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="handleEdit">修 改</el-button>
+                    <el-button type="primary" v-if="addForm.status=='638a075d4f94b1b312334c630f1a611e'" @click="handleEdit">修 改</el-button>
                 </div>
             </el-dialog>
         </div>

@@ -423,8 +423,14 @@
     }
 
     & .el-menu-item {
-        padding    : 13px 14px !important;
+        // padding    : 13px 14px !important;
+        // line-height: 16px;
         line-height: 16px;
+        width: 100%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 13px;
+        text-align: center;
     }
 
     & .el-menu-item.is-active {

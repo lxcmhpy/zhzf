@@ -26,6 +26,22 @@
         <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
         <el-table-column prop="docApplicant" label="申请人" align="center" width="100"></el-table-column>
         <el-table-column prop="currentLinkName" label="当前环节" align="center" width="100"></el-table-column>
+        <el-table-column label="标签" align="center" width="50">
+            <template slot-scope="scope">
+              <el-tooltip placement="top-start" effect="light">
+                <div slot="content" class="warn-li">
+                  <li v-for="(item,index) in scope.row.warContent" :key="index">
+                    <span v-if="item.warType=='1'"  style="color:#FF0000">{{item.warContent}}</span>
+                    <span v-if="item.warType=='2'"  style="color:#FF6600">{{item.warContent}}</span>
+                    <span v-if="item.warType=='3'"  style="color:#0084FF">{{item.warContent}}</span>
+                    </li>
+                </div>
+                <div class="warn-box" v-if="scope.row.warType=='1'" style="background:#FF0000">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='3'" style="background:#0084FF">警</div>
+              </el-tooltip>
+            </template>
+          </el-table-column>
       </el-table>
     </div>
     <div class="paginationBox">
@@ -48,6 +64,7 @@
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -63,6 +80,9 @@ export default {
   mixins:[mixinGetCaseApiList],
   components: {
     caseListSearch,
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   methods: {
 
@@ -95,6 +115,11 @@ export default {
     clickCase(row){
       console.log('列表数据row',row)
       this.$store.commit("setCaseId", row.id);
+      this.$store.commit("setIsLawEnforcementSupervision", false);
+      this.$store.commit("setLawEnforcementSupervisionType", '');
+      //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
       //设置案件状态为审批中
       this.$store.commit("setCaseApproval", true);
       let setCaseNumber = row.caseNumber!='' ?  row.caseNumber : row.tempNo;

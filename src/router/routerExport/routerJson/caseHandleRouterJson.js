@@ -461,14 +461,14 @@ export default [{
     },
     component: () => import("@/page/caseHandle/case/form/coerciveMeasureDoc.vue")
   },
-  {
-    path: "/importantCaseTeamDissDoc",
-    name: "case_handle_importantCaseTeamDissDoc",
-    meta: {
-      title: "重大案件集体讨论记录"
-    },
-    component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
-  },
+  // {
+  //   path: "/importantCaseTeamDissDoc",
+  //   name: "case_handle_importantCaseTeamDissDoc",
+  //   meta: {
+  //     title: "重大案件集体讨论记录"
+  //   },
+  //   component: () => import("@/page/caseHandle/case/modle/importantCaseTeamDissDoc.vue")
+  // },
   {
     path: "/hearingNoticeDoc",
     name: "case_handle_hearingNoticeDoc",

@@ -42,6 +42,8 @@ import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionD
 import {
   queryFlowBycaseIdApi,
 } from "@/api/caseHandle";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -67,6 +69,9 @@ export default {
     caseRegisterDiag,
     tansferAtentionDialog
 
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   methods: {
     caseRecord() {
@@ -99,8 +104,12 @@ export default {
       console.log(row);
       let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
-      
-      
+      this.$store.commit("setIsLawEnforcementSupervision", false);
+      this.$store.commit("setLawEnforcementSupervisionType", '');
+      //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
+
       //暂存案件跳转信息采集
       if(row.state == 0){
         this.$store.commit("setCaseId", row.id);

@@ -18,7 +18,14 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item label="使用单位" prop="name">
-                  <el-input v-model="searchForm.name"></el-input>
+                  <el-input style="display:none" v-model="searchForm.name"></el-input>
+                  <elSelectTree
+                    ref="elSelectTreeObj"
+                    :options="tableDataTree"
+                    :accordion="true"
+                    :props="{label: 'label', value: 'id'}"
+                    @getValue="hindleChanged"
+                  ></elSelectTree>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
@@ -135,8 +142,10 @@ import {
   queryDeviceVehicle,
   deleteVehicles,
 } from "@/api/device/deviceVehicle.js";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
 export default {
+  components: { elSelectTree },
   data() {
     return {
       searchForm: {
@@ -157,10 +166,28 @@ export default {
       multipleSelection: [],
       caseIds: [],
       propertyIds: [],
+      tableDataTree: [],
     };
   },
   mixins: [mixinGetCaseApiList],
   methods: {
+    // 获取机构树
+    getOidTreeData() {
+      let _this = this;
+      _this.$store.dispatch("findOrganTreeByCurrUser").then(
+        (res) => {
+          _this.tableDataTree = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    // 所属机构切换
+    hindleChanged(val) {
+      this.searchForm.useUnit = val;
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+    },
     newAdd() {
       this.$router.push({
         name: "case_handle_addProperty",
@@ -237,6 +264,7 @@ export default {
   },
   created() {
     this.getDataList({});
+    this.getOidTreeData();
   },
 };
 </script>

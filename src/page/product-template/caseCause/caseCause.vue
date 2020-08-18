@@ -5,7 +5,7 @@
       <div class="search">
         <el-form :inline="true" :model="caseCauseForm" label-width="130px"  ref="caseCauseForm">
             <el-form-item label="业务领域" prop="cateId">
-              <el-select v-model="caseCauseForm.cateId" placeholder="请选择" @change="getEnforceLawType" style="width:260px;" >
+              <el-select v-model="caseCauseForm.cateId" placeholder="请选择"  style="width:260px;" >
                 <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateId"></el-option>
               </el-select>
             </el-form-item>

@@ -231,6 +231,7 @@ import {
             resetSearch() {
                 this.$refs["recordForm"].resetFields();
                 let data = {
+                    caseBasicInfoId:this.caseId,
                     current: this.currentPage,
                     size: this.pageSize
                 };

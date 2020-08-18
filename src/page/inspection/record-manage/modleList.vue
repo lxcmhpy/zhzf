@@ -113,7 +113,7 @@ export default {
       // 写记录
       // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       // this.$router.push({
-      //   name: 'inspection_writeRecordInfo',
+      //   name: 'inspection_writeInfoRecord',
       //   // params: item
       //   query: { id: item.id, addOrEiditFlag: 'add' }
       // });

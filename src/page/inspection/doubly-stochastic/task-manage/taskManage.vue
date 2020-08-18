@@ -41,15 +41,13 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55">
-          </el-table-column>
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
-          <el-table-column prop="checkItem" label="抽查主体" align="center"></el-table-column>
+          <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkStandard" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
-          <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
@@ -60,21 +58,18 @@
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod1(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod1(scope.row)" type="text">查看详情</el-button>
+              <el-button @click="viewMethod(scope.row)" type="text">查看详情</el-button>
               <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55">
-          </el-table-column>
-          <!-- <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column> -->
-          <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
+        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+          <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
+          <!-- <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column> -->
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
-          <!-- 字段 -->
           <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
@@ -88,7 +83,7 @@
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text">修改</el-button>
-              <el-button @click="editMethod2(scope.row)" type="text">查看详情</el-button>
+              <el-button @click="viewMethod2(scope.row)" type="text">查看详情</el-button>
               <el-button type="text" @click="delMethod(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -98,7 +93,7 @@
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
       <el-dialog :title='dialogStatus+"省交通运输厅领域任务"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
-        <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
+        <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm" :disabled="!eidtFlag">
           <el-row>
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
@@ -108,21 +103,21 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="抽查事项" prop="checkItem">
-                <el-select v-model="addForm.checkItem" placeholder="请选择">
-                  <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              <el-form-item label="检查类型" prop="checkType">
+                <el-select v-model="addForm.checkType" placeholder="请选择">
+                  <el-option v-for="item in optionsJCLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="检查主体" prop="checkSubject">
+              <el-form-item label="抽查主体" prop="checkSubject">
                 <el-input v-model="addForm.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="检查方式" prop="checkMode">
+              <el-form-item label="抽查方式" prop="checkMode">
                 <el-select v-model="addForm.checkMode" multiple placeholder="请选择">
                   <el-option v-for="item in optionsCCFS" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
@@ -147,7 +142,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col :span="12">
               <el-form-item label="检查对象" prop="checkObject">
                 <el-input v-model="addForm.checkObject"></el-input>
@@ -160,7 +155,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-form-item label="抽查依据" prop="checkBasis">
             <el-input v-model="addForm.checkBasis" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
           </el-form-item>
@@ -189,7 +184,7 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="执法人员" prop="lawEnforceNum">
+              <el-form-item label="执法人员" prop="lawEnforceNum"  label-width="80px">
                 <el-input v-model="addForm.lawEnforceNum"></el-input>
               </el-form-item>
             </el-col>
@@ -200,7 +195,7 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="专家" prop="expertNum">
+              <el-form-item label="专家" prop="expertNum"  label-width="70px">
                 <el-input v-model="addForm.expertNum"></el-input>
               </el-form-item>
             </el-col>
@@ -236,7 +231,7 @@
         </div>
       </el-dialog>
       <el-dialog :title='dialogStatus2+"省市场监管领域任务"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
-        <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
+        <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2" :disabled="!eidtFlag">
           <el-row>
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
@@ -272,7 +267,7 @@
               <el-form-item label="操作人员" prop="operatePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.operatePerson" multiple filterable @change="changeAdmin">
                   <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -280,7 +275,7 @@
               <el-form-item label="监督人员" prop="supervisePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.supervisePerson" multiple filterable @change="changeAdmin">
                   <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加"></el-option>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -411,6 +406,7 @@ export default {
       addForm2: {},
       dialogFormVisible: false,
       dialogFormVisible2: false,
+      eidtFlag: '',
       formLabelWidth: '100px',
       dialogStatus: '',
       dialogStatus2: '',
@@ -440,6 +436,12 @@ export default {
           { required: true, message: "必填项", trigger: "change" }
         ],
         timeList: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkSubject: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        checkType: [
           { required: true, message: "必填项", trigger: "change" }
         ],
         checkObjectNum: [
@@ -497,6 +499,7 @@ export default {
         ],
       },
       optionsZC: [],
+      optionsJCLX: [],
       optionsZZMM: [],
       optionsZYLY: [],
       optionsCCSX: [],
@@ -512,8 +515,8 @@ export default {
     // 查询列表时
     getTableData() {
       let data = {
-        name: this.searchForm.name,
-        company: this.searchForm.company,
+        checkSubject: this.searchForm.checkSubject,
+        taskName: this.searchForm.taskName,
         taskArea: this.searchForm.taskArea,
         current: this.currentPage,
         size: this.pageSize,
@@ -568,8 +571,8 @@ export default {
           }
         });
       } else {
-        this.addForm.taskStatus = '暂存'
-        addTaskApi(this.addForm).then(
+        data.taskStatus = '暂存'
+        addTaskApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
@@ -625,8 +628,8 @@ export default {
           }
         });
       } else {
-        this.addForm.taskStatus = '暂存'
-        addTaskApi(this.addForm).then(
+        data.taskStatus = '暂存'
+        addTaskApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
@@ -650,39 +653,77 @@ export default {
     },
     // 添加-弹窗
     addMethod1() {
+      this.eidtFlag = true;
       this.addForm.checkDomain = this.searchForm.taskArea
       this.getCountByOrganName(1)
       this.addMethod()
     },
     // 添加-弹窗
     addMethod2() {
+      this.eidtFlag = true;
       this.addForm2.checkDomain = this.searchForm.taskArea
       this.getCountByOrganName(2)
       this.dialogStatus2 = '新增'
       this.dialogFormVisible2 = true
     },
     editMethod1(row) {
-      row.timeList = []
-      if (row.taskEndTime && row.taskStartTime) {
-        row.timeList[0] = row.taskStartTime
-        row.timeList[1] = row.taskEndTime
+      this.eidtFlag = true;
+      this.getCountByOrganName(1)
+      let data = JSON.parse(JSON.stringify(row))
+      data.timeList = []
+      if (data.taskEndTime && data.taskStartTime) {
+        data.timeList[0] = row.taskStartTime
+        data.timeList[1] = row.taskEndTime
       }
-      row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
-      row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
-      row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
-      this.editMethod(row)
+      data.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      data.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      data.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
+      this.editMethod(data)
+    },
+    viewMethod(row) {
+      this.eidtFlag = false;
+       this.getCountByOrganName(1)
+      let data = JSON.parse(JSON.stringify(row))
+      data.timeList = []
+      if (data.taskEndTime && data.taskStartTime) {
+        data.timeList[0] = row.taskStartTime
+        data.timeList[1] = row.taskEndTime
+      }
+      data.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      data.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      data.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
+      this.editMethod(data)
     },
     // 修改
     editMethod2(row) {
-      row.timeList = []
-      if (row.taskEndTime && row.taskStartTime) {
-        row.timeList[0] = row.taskStartTime
-        row.timeList[1] = row.taskEndTime
+      this.eidtFlag = true;
+      this.getCountByOrganName(2)
+      let data = JSON.parse(JSON.stringify(row))
+      data.timeList = []
+      if (data.taskEndTime && data.taskStartTime) {
+        data.timeList[0] = row.taskStartTime
+        data.timeList[1] = row.taskEndTime
       }
-      row.checkMode = row.checkMode ? row.checkMode.split(',') : '';
-      row.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
-      row.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
-      this.addForm2 = JSON.parse(JSON.stringify(row))
+      data.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      data.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      data.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
+      this.addForm2 = data
+      this.dialogStatus2 = '修改'
+      this.dialogFormVisible2 = true
+    },
+    viewMethod2(row) {
+      this.eidtFlag = false;
+      this.getCountByOrganName(2)
+      let data = JSON.parse(JSON.stringify(row))
+      data.timeList = []
+      if (data.taskEndTime && data.taskStartTime) {
+        data.timeList[0] = row.taskStartTime
+        data.timeList[1] = row.taskEndTime
+      }
+      data.checkMode = row.checkMode ? row.checkMode.split(',') : '';
+      data.operatePerson = row.operatePerson ? row.operatePerson.split(',') : '';
+      data.supervisePerson = row.supervisePerson ? row.supervisePerson.split(',') : '';
+      this.addForm2 = data
       this.dialogStatus2 = '修改'
       this.dialogFormVisible2 = true
     },
@@ -709,9 +750,9 @@ export default {
         searchTaskDataApi(data).then(
           res => {
             if (res.data) {
-              this.$set(_this.addForm, `checkBasis`, res.data.checkBasis||'');
-              this.$set(_this.addForm, `checkContent`, res.data.checkContent||'');
-              this.$set(_this.addForm, `checkSubject`, res.data.checkSubject||'');
+              this.$set(_this.addForm, `checkBasis`, res.data.checkBasis || '');
+              this.$set(_this.addForm, `checkContent`, res.data.checkContent || '');
+              this.$set(_this.addForm, `checkSubject`, res.data.checkSubject || '');
             }
           },
           error => {
@@ -724,9 +765,9 @@ export default {
         searchTaskDataApi(data).then(
           res => {
             if (res.data) {
-              this.$set(_this.addForm2, `checkBasis`, res.data.checkBasis||'');
-              this.$set(_this.addForm2, `checkContent`, res.data.checkContent||'');
-              this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject||'');
+              this.$set(_this.addForm2, `checkBasis`, res.data.checkBasis || '');
+              this.$set(_this.addForm2, `checkContent`, res.data.checkContent || '');
+              this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject || '');
             }
           },
           error => {

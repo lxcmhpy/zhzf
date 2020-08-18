@@ -1,11 +1,56 @@
 <template>
   <div class="start_draw">
-    {{randomContent}}
+
+    <a href="http://218.84.108.27:8888/zhzfxj/jsp/main/index.jsp" target="_blank">121212</a>
+    <!-- {{randomContent}}
     <ul>
       <li v-for='item in taskList' :key="item.name">{{item.name}}</li>
     </ul>
     <el-button @click="start">点击开始</el-button>
-    <el-button @click="end">点击结束</el-button>
+    <el-button @click="end">点击结束</el-button> -->
+    <el-dropdown split-button type="primary">
+  默认尺寸
+  <el-dropdown-menu slot="dropdown">
+    <el-dropdown-item>黄金糕</el-dropdown-item>
+    <el-dropdown-item>狮子头</el-dropdown-item>
+    <el-dropdown-item>螺蛳粉</el-dropdown-item>
+    <el-dropdown-item>双皮奶</el-dropdown-item>
+    <el-dropdown-item>蚵仔煎</el-dropdown-item>
+  </el-dropdown-menu>
+</el-dropdown>
+
+<el-dropdown size="medium" split-button type="primary">
+  中等尺寸
+  <el-dropdown-menu slot="dropdown">
+    <el-dropdown-item>黄金糕</el-dropdown-item>
+    <el-dropdown-item>狮子头</el-dropdown-item>
+    <el-dropdown-item>螺蛳粉</el-dropdown-item>
+    <el-dropdown-item>双皮奶</el-dropdown-item>
+    <el-dropdown-item>蚵仔煎</el-dropdown-item>
+  </el-dropdown-menu>
+</el-dropdown>
+
+<el-dropdown size="small" split-button type="primary">
+  小型尺寸
+  <el-dropdown-menu slot="dropdown">
+    <el-dropdown-item>黄金糕</el-dropdown-item>
+    <el-dropdown-item>狮子头</el-dropdown-item>
+    <el-dropdown-item>螺蛳粉</el-dropdown-item>
+    <el-dropdown-item>双皮奶</el-dropdown-item>
+    <el-dropdown-item>蚵仔煎</el-dropdown-item>
+  </el-dropdown-menu>
+</el-dropdown>
+
+<el-dropdown size="mini" split-button type="primary">
+  超小尺寸
+  <el-dropdown-menu slot="dropdown">
+    <el-dropdown-item>黄金糕</el-dropdown-item>
+    <el-dropdown-item>狮子头</el-dropdown-item>
+    <el-dropdown-item>螺蛳粉</el-dropdown-item>
+    <el-dropdown-item>双皮奶</el-dropdown-item>
+    <el-dropdown-item>蚵仔煎</el-dropdown-item>
+  </el-dropdown-menu>
+</el-dropdown>
   </div>
 </template>
 <script>

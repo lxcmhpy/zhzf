@@ -66,7 +66,7 @@
       >
         <el-table-column type="selection" width="40" align="center"></el-table-column>
         <el-table-column prop="vehicleNumber" label="车牌号" align="left" width="120px"></el-table-column>
-        <el-table-column prop="useUnit" label="使用单位" align="center" ></el-table-column>
+        <el-table-column prop="useUnitName" label="使用单位" align="center" ></el-table-column>
         <el-table-column prop="vehicleCategory" label="车辆类别" align="center" width="120px"></el-table-column>
         <el-table-column prop="useCondition" label="使用状况" align="center" width="120px"></el-table-column>
         <el-table-column prop="perNumber" label="使用证号" align="center" width="140px"></el-table-column>
@@ -126,13 +126,20 @@
                 this.queryForm.useUnit  = val
             },
             confirm(){
+                if(this.$refs.vehicleTable.selection.length==0){
+                    this.$message({
+                        type: "error",
+                        message:"请选择车辆"
+                    });
+                    return;
+                }
                 if(this.$refs.vehicleTable.selection.length==1){
                     this.$emit("VehicleOk",this.$refs.vehicleTable.selection[0]);
                     this.closeDialog();
                 }else{
                     this.$message({
                         type: "error",
-                        message:"请选择车辆"
+                        message:"只能选择一个车辆"
                     });
                 }
             },

@@ -24,6 +24,22 @@
               <div :style="{'color':scope.row.caseStatus=='已移送'?'#22C058':''}">{{scope.row.caseStatus}}</div>
             </template>
           </el-table-column>
+          <el-table-column label="标签" align="center" width="50">
+            <template slot-scope="scope">
+              <el-tooltip placement="top-start" effect="light">
+                <div slot="content" class="warn-li">
+                  <li v-for="(item,index) in scope.row.warContent" :key="index">
+                    <span v-if="item.warType=='1'"  style="color:#FF0000">{{item.warContent}}</span>
+                    <span v-if="item.warType=='2'"  style="color:#FF6600">{{item.warContent}}</span>
+                    <span v-if="item.warType=='3'"  style="color:#0084FF">{{item.warContent}}</span>
+                    </li>
+                </div>
+                <div class="warn-box" v-if="scope.row.warType=='1'" style="background:#FF0000">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
+                <div class="warn-box" v-if="scope.row.warType=='3'" style="background:#0084FF">警</div>
+              </el-tooltip>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">
@@ -38,7 +54,7 @@ import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
-
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -53,6 +69,9 @@ export default {
   components: {
     caseListSearch,
     tansferAtentionDialog
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   methods: {
     goFlowChart(id) {
@@ -69,7 +88,7 @@ export default {
       data.flag = 0;
       data.userId = iLocalStroage.gets("userInfo").id;
       data.current = this.currentPage;
-      data.size = this.pageSize;
+      data.size = this.pageSize; 
       this.getCaseList(data);
     },
     clickCase(row) {
@@ -80,8 +99,13 @@ export default {
       }
       else {
         this.$store.commit("setCaseId", row.id);
+        this.$store.commit("setIsLawEnforcementSupervision", false);
+        this.$store.commit("setLawEnforcementSupervisionType", '');
         //设置案件状态不为审批中
         this.$store.commit("setCaseApproval", false);
+        //防止出现多个案件tab
+        let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+        this.$store.commit("reset_ALLTABS", newOpenTab);
         console.log(this.$store.state.caseId);
         this.$router.push({
           name: "case_handle_caseInfo",

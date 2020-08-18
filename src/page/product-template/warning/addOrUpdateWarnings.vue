@@ -45,7 +45,7 @@
       <div class="random-table-title">开启预警条件</div>
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
-          <el-form-item label="分项指标" v-if="addOrUpdateForm.configType!='环节配置'">
+          <el-form-item label="分项指标" v-if="addOrUpdateForm.configType!='1'">
             <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type)">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
@@ -56,10 +56,10 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="5" v-if="addOrUpdateForm.configType!='环节配置'">
+        <el-col :span="5" v-if="addOrUpdateForm.configType!='1'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
-              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.id"></el-option>
+              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
