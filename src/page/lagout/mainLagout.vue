@@ -252,7 +252,6 @@ export default {
     enterOld(){
       var name=iLocalStroage.gets('userInfo').encryptionUserName; //可以是一个可变的值
       var pwd=iLocalStroage.gets('userInfo').encryptionPassword; //可以是一个可变的值
-      debugger
       this.oldSystemHref="../../../static/js/loginOldSystem.html?user="+name+"&pwd="+pwd
     }
   },

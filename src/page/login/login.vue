@@ -416,7 +416,6 @@ export default {
 
             res.data.encryptionUserName=encryption(this.loginForm.username)
             res.data.encryptionPassword=encryption(this.loginForm.password)
-            debugger
             iLocalStroage.sets('userInfo', res.data);
             // _this.getMenu();
           }
