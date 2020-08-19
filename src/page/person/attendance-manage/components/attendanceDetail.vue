@@ -2,7 +2,7 @@
   <!-- 考情信息详情 -->
   <div class="com_searchAndpageBoxPadding">
     <div class="searchPage">
-      <p class="attendance-top-title">2020年8月考勤详情</p>
+      <p class="attendance-top-title">{{year}}年{{month}}月考勤详情</p>
       <div class="handlePart">
         <el-form
           class="search-form"
@@ -54,18 +54,23 @@
           element-loading-text="加载中..."
           style="width: 100%;height:100%;"
         >
-          <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-          <el-table-column prop="ministerialNo" label="执法证号" align="center"></el-table-column>
-          <el-table-column prop="dayTotal" label="应出勤天数" align="center" width="120px;"></el-table-column>
-          <el-table-column prop="dayActual" label="实际出勤天数" align="center" min-width="120px"></el-table-column>
-          <el-table-column prop="travelDay" label="出差" align="center" min-width="60px"></el-table-column>
-          <el-table-column prop="lateDay" label="迟到" align="center" min-width="60px"></el-table-column>
-          <el-table-column prop="absenteeismDay" label="旷工" align="center" min-width="60px"></el-table-column>
-          <el-table-column prop="lateRate" label="平时加班" align="center" min-width="120px"></el-table-column>
-          <el-table-column prop="weekendOvertime" label="周末加班" align="center" min-width="120px"></el-table-column>
-          <el-table-column prop="holidayOvertime" label="节假日加班" align="center" min-width="120px"></el-table-column>
-          <el-table-column prop="absence" label="事假" align="center" min-width="60px"></el-table-column>
-          <el-table-column prop="illness" label="病假" align="center" min-width="60px"></el-table-column>
+          <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
+          <el-table-column prop="personNo" label="执法证号" align="center"></el-table-column>
+          <el-table-column prop="attendanceDays" label="应出勤天数" align="center" width="120px;"></el-table-column>
+          <el-table-column
+            prop="actualAttendanceDays"
+            label="实际出勤天数"
+            align="center"
+            min-width="120px"
+          ></el-table-column>
+          <el-table-column prop="businessTripNum" label="出差" align="center" min-width="60px"></el-table-column>
+          <el-table-column prop="lateNum" label="迟到" align="center" min-width="60px"></el-table-column>
+          <el-table-column prop="absenteeismNum" label="旷工" align="center" min-width="60px"></el-table-column>
+          <el-table-column prop="workOverTime" label="平时加班" align="center" min-width="120px"></el-table-column>
+          <el-table-column prop="weekWorkOverTime" label="周末加班" align="center" min-width="120px"></el-table-column>
+          <el-table-column prop="holidaySeason" label="节假日加班" align="center" min-width="120px"></el-table-column>
+          <el-table-column prop="leaveNum" label="事假" align="center" min-width="60px"></el-table-column>
+          <el-table-column prop="sickLeaveNum" label="病假" align="center" min-width="60px"></el-table-column>
           <el-table-column prop="score" label="得分" align="center" min-width="60px"></el-table-column>
           <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
@@ -74,16 +79,33 @@
           </el-table-column>
         </el-table>
       </div>
+      <div class="paginationBox">
+          <div class="paginationBox">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              background
+              :page-sizes="[10, 20, 30, 40]"
+              layout="prev, pager, next,sizes,jumper"
+              :total="totalPage"
+            ></el-pagination>
+          </div>
+        </div>
     </div>
     <!-- 导入考勤 -->
     <ImportAttendance ref="ImportAttendanceRef" />
     <!-- 扣分管理 -->
     <DeductScore ref="DeductScoreRef" />
+    <!-- 信息修改 -->
+    <AttendanceEdit ref="AttendanceEditRef" />
   </div>
 </template>
 <script>
-import ImportAttendance from '@/page/person/attendance-manage/components/importAttendance';
-import DeductScore from '@/page/person/attendance-manage/components/deductScore';
+import ImportAttendance from "@/page/person/attendance-manage/components/importAttendance";
+import DeductScore from "@/page/person/attendance-manage/components/deductScore";
+import AttendanceEdit from "@/page/person/attendance-manage/components/attendanceEdit";
+import { getAttendanceList } from "@/api/attendance";
 
 export default {
   data() {
@@ -92,28 +114,19 @@ export default {
         personName: "",
         ministerialNo: "",
       },
-      tableData: [
-        {
-          name: "张三",
-          ministerialNo: "12345678",
-          dayTotal: "22",
-          dayActual: "18",
-          travelDay: "1",
-          lateDay: "1",
-          absenteeismDay: "1",
-          lateRate: "1",
-          weekendOvertime: "0",
-          holidayOvertime: "0",
-          absence: "1",
-          illness: "0",
-          score: "94",
-        },
-      ],
+      tableData: [],
       tableLoading: false,
+      year: undefined,
+      month: undefined,
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      totalPage: 0, //总数
     };
   },
-  components: { ImportAttendance, DeductScore },
+  components: { ImportAttendance, DeductScore, AttendanceEdit },
   created() {
+    this.year = this.$route.params.year;
+    this.month = this.$route.params.month;
     // 查询考勤列表
     this.getAttendanceList();
   },
@@ -121,18 +134,51 @@ export default {
     // 根据查询条件查询考情列表
     getAttendanceList() {
       console.log("查询考勤列表");
+      this.tableLoading = true;
+      const data ={ 
+        year: this.year,
+        month: this.month,
+        personName: this.searchForm.personName,
+        personNo: this.searchForm.ministerialNo,
+        current: this.currentPage,
+        size: this.pageSize 
+      }
+      getAttendanceList(data).then(
+        (res) => {
+          this.tableLoading = false;
+          if (res.code === 200) {
+            this.tableData = res.data.records;
+            this.totalPage = res.data.total;
+          }
+        },
+        (err) => {
+          this.tableLoading = false;
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
+    },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getAttendanceList(1);
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getAttendanceList(val);
     },
     // 修改考情
     editAttendanceInfo(row) {
       console.log(row);
+      this.$refs.AttendanceEditRef.showModal(row);
     },
     // 批量导入考勤
-    importAttendance(){
-        this.$refs.ImportAttendanceRef.showModal();
+    importAttendance() {
+      this.$refs.ImportAttendanceRef.showModal();
     },
     // 扣分管理
-    deductManage(){
-        this.$refs.DeductScoreRef.showModal();
+    deductManage() {
+      this.$refs.DeductScoreRef.showModal();
     },
     // 重置查询
     resetLog() {

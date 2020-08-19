@@ -34,6 +34,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { downLoadFile } from "@/api/joinExam";
+import { downLoadAttendanceMode, batchImportAttendance } from "@/api/attendance";
 
 export default {
   data() {
@@ -57,21 +58,22 @@ export default {
     },
     // 下载模板
     downTemplate() {
-    //   this.$store.dispatch("downLoadQuestionTemp").then(
-    //     res => {
-    //       downLoadFile(res.data, res.fileName);
-    //     },
-    //     err => {
-    //       this.$message({ type: "error", message: err.msg || "" });
-    //     }
-    //   );
+      downLoadAttendanceMode().then(
+        res => {
+          downLoadFile(res.data, res.fileName);
+        },
+        err => {
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
     },
     // 上传文件
     batchImport() {
       const formData = new FormData();
       const file = this.fileList[0];
       formData.append("file", file.raw);
-      formData.append("outlineId", this.currentOutlineId);
+      formData.append("year", this.$route.params.year);
+      formData.append("month", this.$route.params.month);
       const loading = this.$loading({
         lock: true,
         text: '正在上传',
@@ -79,17 +81,19 @@ export default {
         customClass: 'loading-box',
         background: 'rgba(234,237,244, 0.8)'
       });
-    //   this.$store.dispatch('batchImportQuestion', formData).then(res => {
-    //     loading.close();
-    //     if(res.code === 200){
-    //       this.$message({ type: 'success', message: '上传成功' });
-    //       this.uploadSuccess = true;
-    //       this.fileList.splice(0, 1);
-    //     }
-    //   }, err =>{
-    //     loading.close();
-    //     this.$message({ type: 'error', message: err.msg || '' });
-    //   })
+      batchImportAttendance(formData).then(res => {
+        loading.close();
+        if(res.code === 200){
+          this.$message({ type: 'success', message: '上传成功' });
+          this.uploadSuccess = true;
+          this.fileList.splice(0, 1);
+          this.$parent.getAttendanceList();
+          this.visible = false;
+        }
+      }, err =>{
+        loading.close();
+        this.$message({ type: 'error', message: err.msg || '' });
+      })
     },
     // 选择文件变化
     fileChange(file, fileList) {

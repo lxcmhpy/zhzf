@@ -149,6 +149,18 @@ export function findRecordlModleByNameApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//分页查询模板
+export function findRecordlModleByPageApi(data) {
+    return request({
+        url: "/xzjc/template/queryByOrganIdAndUserId",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //通过模板UUid查询模板字段
 export function findRecordlModleFieldByIdeApi(data) {
     return request({

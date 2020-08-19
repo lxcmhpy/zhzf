@@ -499,6 +499,11 @@ export const mixinGetCaseApiList = {
     },
     //判断流程图跳转pdf文书还是表单 前先获取一下案件基本信息，为了获取是否有环节正在审批中
     flowShowPdfOrFormBefore(data, flowChartData) {
+      console.log(data, flowChartData)
+      let currentFileData=data;
+      currentFileData.url=this.$route.name;
+      currentFileData.path=data.linkName
+      this.$store.commit("setCurrentFileData", currentFileData);//保存文书信息
       let casedata = {
         id: this.caseId
       };
@@ -539,7 +544,6 @@ export const mixinGetCaseApiList = {
 
         console.log('查询环节是否生成了pdf', huanjieData);
         if(huanjieData.data.isPdf == 0) isHuanjieDoc = true;
-       
         //跳转pdf或表单
         if (isHuanjieDoc)  this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, isComplete: true } })
         else this.$router.push({ name: data2.nextLink, params: { isComplete: true } })
