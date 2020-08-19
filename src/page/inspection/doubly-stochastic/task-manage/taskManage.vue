@@ -92,7 +92,7 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog :title='dialogStatus+"省交通运输厅领域任务"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+      <el-dialog :title='dialogStatus+"省交通运输厅领域任务"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')" width="70%">
         <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm" :disabled="!eidtFlag">
           <el-row>
             <el-col :span="12">
@@ -174,7 +174,7 @@
           <el-row>
             <el-col :span="4">
               <el-form-item label="抽查对象数" prop="checkObjectNum">
-                <el-input v-model="addForm.checkObjectNum"></el-input>
+                <el-input v-model="addForm.checkObjectNum" type="number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -184,8 +184,8 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="执法人员" prop="lawEnforceNum"  label-width="80px">
-                <el-input v-model="addForm.lawEnforceNum"></el-input>
+              <el-form-item label="执法人员" prop="lawEnforceNum" label-width="80px">
+                <el-input v-model="addForm.lawEnforceNum" type="number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -195,8 +195,8 @@
             </el-col>
 
             <el-col :span="4">
-              <el-form-item label="专家" prop="expertNum"  label-width="70px">
-                <el-input v-model="addForm.expertNum"></el-input>
+              <el-form-item label="专家" prop="expertNum" label-width="70px">
+                <el-input v-model="addForm.expertNum" type="number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -230,7 +230,7 @@
           <el-button type="primary" @click="submitForm('addForm',1)">保存</el-button>
         </div>
       </el-dialog>
-      <el-dialog :title='dialogStatus2+"省市场监管领域任务"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
+      <el-dialog :title='dialogStatus2+"省市场监管领域任务"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')" width="70%">
         <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2" :disabled="!eidtFlag">
           <el-row>
             <el-col :span="12">
@@ -304,7 +304,7 @@
           <el-row>
             <el-col :span="4">
               <el-form-item label="抽查对象数" prop="checkObjectNum">
-                <el-input v-model="addForm2.checkObjectNum"></el-input>
+                <el-input v-model="addForm2.checkObjectNum" type="number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -315,7 +315,7 @@
 
             <el-col :span="4">
               <el-form-item label="执法人员" prop="lawEnforceNum">
-                <el-input v-model="addForm2.lawEnforceNum"></el-input>
+                <el-input v-model="addForm2.lawEnforceNum" type="number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -326,7 +326,7 @@
 
             <el-col :span="4">
               <el-form-item label="专家" prop="expertNum">
-                <el-input v-model="addForm2.expertNum"></el-input>
+                <el-input v-model="addForm2.expertNum" type="number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -372,6 +372,72 @@ import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
+    var validateCheckObjectNum = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('必填项'));
+      } else if (value <= 0) {
+        callback(new Error('必须大于0'));
+      } else if (value > this.addForm.checkObjectNumAll) {
+        callback(new Error('必须小于总数'));
+      } else {
+        callback();
+      }
+    };
+    var validateCheckObjectNum2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('必填项'));
+      } else if (value <= 0) {
+        callback(new Error('必须大于0'));
+      } else if (value > this.addForm2.checkObjectNumAll) {
+        callback(new Error('必须小于总数'));
+      } else {
+        callback();
+      }
+    };
+    var validateLawEnforceNum = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('必填项'));
+      } else if (value <= 0) {
+        callback(new Error('必须大于0'));
+      } else if (value > this.addForm.checkPersonNum) {
+        callback(new Error('必须小于总数'));
+      } else {
+        callback();
+      }
+    };
+    var validateLawEnforceNum2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('必填项'));
+      } else if (value <= 0) {
+        callback(new Error('必须大于0'));
+      } else if (value > this.addForm2.checkPersonNum) {
+        callback(new Error('必须小于总数'));
+      } else {
+        callback();
+      }
+    };
+    var validateExpertNum = (rule, value, callback) => {
+      if (!value) {
+        callback();
+      } else if (value <= 0) {
+        callback(new Error('必须大于0'));
+      } else if (value > this.addForm.checkExpertNum) {
+        callback(new Error('必须小于总数'));
+      } else {
+        callback();
+      }
+    };
+    var validateExpertNum2 = (rule, value, callback) => {
+      if (!value) {
+        callback();
+      } else if (value <= 0) {
+        callback(new Error('必须大于0'));
+      } else if (value > this.addForm2.checkExpertNum) {
+        callback(new Error('必须小于总数'));
+      } else {
+        callback();
+      }
+    };
     return {
       multipleSelection: [],
       searchForm: {
@@ -445,25 +511,24 @@ export default {
           { required: true, message: "必填项", trigger: "change" }
         ],
         checkObjectNum: [
-          { required: true, message: "必填项", trigger: "change" },
-          // { type: 'number', message: '须为数字' }
+          { validator: validateCheckObjectNum, trigger: "change" },
         ],
         expertNum: [
-          { required: true, message: "必填项", trigger: "change" },
-          // { type: 'number', message: '须为数字' }
+          { validator: validateExpertNum, trigger: "change" },
+          // { type: 'number', message: "须为数字", trigger: "change" },
         ],
         lawEnforceNum: [
-          { required: true, message: "必填项", trigger: "change" },
-          // { type: 'number', message: '须为数字' }
+          { validator: validateLawEnforceNum, trigger: "change" },
+          // { type: 'number', message: "须为数字", trigger: "change" },
         ],
       },
       rules2: {
         taskName: [
           { required: true, message: "必填项", trigger: "change" }
         ],
-        // checkSubject: [
-        //   { required: true, message: "必填项", trigger: "change" }
-        // ],
+        checkSubject: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         checkItem: [
           { required: true, message: "必填项", trigger: "change" }
         ],
@@ -486,16 +551,16 @@ export default {
           { required: true, message: "必填项", trigger: "change" }
         ],
         checkObjectNum: [
-          { required: true, message: "必填项", trigger: "change" },
-          // { type: 'number', message: '须为数字' }
+          { validator: validateCheckObjectNum2, trigger: "change" },
+          // { type: 'number', message: "须为数字", trigger: "change" },
         ],
         expertNum: [
-          { required: true, message: "必填项", trigger: "change" },
-          // { type: 'number', message: '须为数字' }
+          { validator: validateExpertNum2, trigger: "change" },
+          // { type: 'number', message: "须为数字", trigger: "change" },
         ],
         lawEnforceNum: [
-          { required: true, message: "必填项", trigger: "change" },
-          // { type: 'number', message: '须为数字' }
+          { validator: validateLawEnforceNum2, trigger: "change" },
+          // { type: 'number', message: "须为数字", trigger: "change" },
         ],
       },
       optionsZC: [],
@@ -637,7 +702,7 @@ export default {
                 type: "success",
                 message: res.msg
               });
-              this.dialogFormVisible = false
+              this.dialogFormVisible2 = false
               this.currentPage = 1;
               this.getTableData()
             }
@@ -682,7 +747,7 @@ export default {
     },
     viewMethod(row) {
       this.eidtFlag = false;
-       this.getCountByOrganName(1)
+      this.getCountByOrganName(1)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
       if (data.taskEndTime && data.taskStartTime) {

@@ -96,7 +96,8 @@ export default {
       pageSize:10,
       tableData: [],
       totalPage: 0,
-      allRoadLcBz: ["高等级公路标准", "普通公路标准"],
+      // allRoadLcBz: ["高等级公路标准", "普通公路标准"],
+      allRoadLcBz: [],
       allRoadType: [],
       selectRows: [],
       alreadyAddData: []
@@ -114,7 +115,7 @@ export default {
       this.visible = false;
       this.$emit("selectData", this.selectRows);
     },
-    showModal(alreadyAddData) {
+    async showModal(alreadyAddData) {
       this.visible = true;
       this.currentPage = 1;
       this.pageSize = 10;
@@ -123,6 +124,10 @@ export default {
       this.pathLossSearchForm.roadLcName = "";
       this.allRoadType = [];
       this.alreadyAddData = alreadyAddData;
+      //查询所有的所属标准
+      
+      let data1 = await getDictListDetailByNameApi('公路路产所属标准');
+      this.allRoadLcBz = data1.data;
       this.searchPathLoss();
     },
     closeDialog() {

@@ -341,6 +341,9 @@
       },
       //查看文书
       viewDoc(row) {
+        row.url=this.$route.name;
+        row.caseBasicinfoId= this.caseBasicinfoId
+        this.$store.commit("setCurrentFileData", row);//保存文书信息
         this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       },
       //清空文书
@@ -350,6 +353,9 @@
       },
       //预览pdf
       viewDocPdf(row) {
+        row.url=this.$route.name;
+        row.caseBasicinfoId= this.caseBasicinfoId
+        this.$store.commit("setCurrentFileData", row);//保存文书信息
         let routerData = {
           hasApprovalBtn: false,
           docId: row.docId,
