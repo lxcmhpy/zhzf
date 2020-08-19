@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>正在登陆</title>
+	<script src="./MultBrowser/jquery-1.11.2.min.js"></script>
+	<!-- <script src="./crypto-js-develop/cryptoAes.js"></script> -->
+	<!-- <script src="../../src/common/js/cryptoAes.js"></script> -->
+</head>
+
+<body οnlοad="WebNewRequest();">
+	<form action="http://218.84.108.27:8888/zhzfxj/login" id="loginform" method="POST" style="display: none;">
+		<div class="box">
+			<div class="username">
+				<input id="username" name="username" value="" />
+			</div>
+			<div class="password">
+				<input id="password" name="password" value="" type="password" />
+			</div>
+			<div class="codebox">
+				<input id="captcha" name='captcha' type="text" value="5785">
+			</div>
+			<div class="btn">
+				<button id="login" class="login loginbtn">登录</button>
+			</div>
+		</div>
+	</form>
+</body>
+<!-- <script>
+	$("#login").bind('click', function () {
+		var username = 'admin';
+		var password = $("#password").val();
+		var captcha = $("#captcha").val();
+		console.log(username, password)
+		debugger
+		// $("#loginform").submit();
+		$.ajax({
+			type: "POST",
+			url: "http://218.84.108.27:8888/zhzfxj/login",
+			data: { username: 'admin' ,password:'12345qwert',captcha:'ssss'},
+			dataType: "json",
+			success: function (data) {
+			}
+		});
+	});
+
+</script> -->
+<!-- <script type="module">
+	 import {encryption} from "../../src/common/js/cryptoAes";
+	 var user = GetQueryString("user");
+	var pwd = GetQueryString("pwd");
+	 user=encryption(user);
+	pwd =encryption(pwd);
+	console.log('data', user, pwd);
+
+
+</script> -->
+<script src="./crypto-js-develop/crypto-js.js"></script>
+<script src="./crypto-js-develop/cryptoAes.js"></script>
+<script>
+	//
+	var user = GetQueryString("user");
+	var pwd = GetQueryString("pwd");
+	user=decryption(user);
+	pwd =decryption(pwd);
+	$("#login").bind('click', function () {
+		console.log('data', user, pwd)
+		var username = $("#username").val(user);
+		var password = $("#password").val(pwd);
+	});
+
+	function GetQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return unescape(r[2]); return null;
+	}
+	window.onload= function WebNewRequest() {
+		document.getElementById("login").click()
+	}
+
+
+</script>

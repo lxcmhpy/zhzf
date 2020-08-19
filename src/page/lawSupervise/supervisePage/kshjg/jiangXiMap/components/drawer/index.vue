@@ -100,7 +100,7 @@ export default {
 <style lang="scss">
 .jiangXiMap-drawer {
   position: absolute;
-  top: 0;
+  top: 20px;
   right: 0;
   display: flex;
   justify-content: flex-start;

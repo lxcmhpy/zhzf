@@ -80,9 +80,12 @@
           <!-- :selectedHeadMenu="selectedHeadMenu" -->
           <subLeftMenu :selectedHeadMenu="selectedHeadMenu"></subLeftMenu>
         </el-aside>
-        <div class="table-title-old" @click="loginOldSystem()">
+        <div class="table-title-old">
           <i class="iconfont law-jinru"></i>
-          综合执法平台
+          <!-- <a href='../../../static/js/loginOldSystem.html?user=admin&pwd=12345qwert'>综合执法平台</a> -->
+          
+    <a :href="oldSystemHref" id="n" οnclick="enterOld()" target="_blank">综合执法平台</a>
+          <!-- 综合执法平台 -->
         </div>
         <el-container>
           <el-header id="tabsHeader" style="height:33px">
@@ -113,6 +116,7 @@ import headMenuAll from "@/components/headMenuAll";
 
 import { getCurrentUserApi, getMenuApi , loginOldSystemApi} from "@/api/login";
 import { getDictListDetailByNameApi } from "@/api/system";
+import {decryption,encryption} from "@/common/js/cryptoAes";
 export default {
   name: "mainLagout",
   data() {
@@ -122,7 +126,10 @@ export default {
       // collapsed: false,
       // avatar: Cookies.get("avatar")
       userInfo: null,
-      selectedHeadMenu: null ,  //接收headMenu传来的选中的一级菜单
+      selectedHeadMenu: null,   //接收headMenu传来的选中的一级菜单
+      userName:iLocalStroage.gets('userInfo').username,
+      password:iLocalStroage.gets('userInfo').password,
+      oldSystemHref:'',
       showMoreMenusFlag: true,
       moreMenuIcon:false,
     };
@@ -194,7 +201,10 @@ export default {
         let _this = this;
         new Promise((resolve, reject) => {
           getCurrentUserApi().then(res => {
-            iLocalStroage.sets('userInfo', res.data);
+            
+            // res.data.encryptionUserName=encryption(this.loginForm.username)
+            // res.data.encryptionPassword=encryption(this.loginForm.password)
+            // iLocalStroage.sets('userInfo', res.data);
             _this.userInfo = res.data;
             _this.initMenu();
           }, err => {
@@ -266,6 +276,11 @@ export default {
     //隐藏更多菜单
     hideMoreMenus(){
       this.showMoreMenusFlag = false;
+    },
+    enterOld(){
+      var name=iLocalStroage.gets('userInfo').encryptionUserName; //可以是一个可变的值
+      var pwd=iLocalStroage.gets('userInfo').encryptionPassword; //可以是一个可变的值
+      this.oldSystemHref="../../../static/js/loginOldSystem.html?user="+name+"&pwd="+pwd
     }
   },
   watch: {
@@ -276,6 +291,7 @@ export default {
   mounted() {
     this.selectedHeadMenu = this.headActiveNav;
     this.userInfo = iLocalStroage.gets('userInfo');
+    this.enterOld()
   },
   created() {
     //判断有没有menu
@@ -311,6 +327,9 @@ export default {
   font-size: 16px;
   font-weight: bolder;
   color: #96a3af;
+  a{
+    color: #96a3af;
+  }
 }
 </style>
 

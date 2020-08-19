@@ -316,7 +316,7 @@ export default {
         examId: this.addExamPersonForm.examId,
         personName: this.addExamPersonForm.personName,
         idNo: this.addExamPersonForm.idNo,
-        oname: this.addExamPersonForm.oname,
+        oName: this.addExamPersonForm.oname,
         branchName: this.addExamPersonForm.branchName,
         oid: this.addExamPersonForm.oid,
         stationName: this.addExamPersonForm.stationName,

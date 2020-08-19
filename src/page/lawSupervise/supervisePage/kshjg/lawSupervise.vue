@@ -839,8 +839,8 @@ import { mapGetters } from "vuex";
 import echarts from "echarts";
 // import "echarts/lib/chart/graph";
 import { lawSuperviseObj, yjObj } from "@/page/lawSupervise/supervisePage/kshjg/echarts/echartsJson.js";
-import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, getOrganDetail, getUserById, organTreeByCurrUser, queryAlarmVehiclePage, findImageByCaseId, getCountry } from "@/api/lawSupervise.js";
-import { getOrganDetailApi, getOrganIdApi } from "@/api/system.js";
+import { getZfjgLawSupervise, getBySiteId, getById, getOrganTree, organTreeByCurrUser, queryAlarmVehiclePage, findImageByCaseId, getCountry } from "@/api/lawSupervise.js";
+import { getOrganDetailApi } from "@/api/system.js";
 import { lawSuperviseMixins, mixinsCommon } from "@/common/js/mixinsCommon";
 import externalVideoBtns from '../../componentCommon/externalVideoBtns.vue';
 import lunarDate from '@/common/js/lunarDate.js';
@@ -1333,7 +1333,6 @@ export default {
             type: 0
           }
           new Promise((resolve, reject) => {
-            // getOrganIdApi({id: node.id}).then(
             getOrganTree(params).then(
               res => {
                 // _this.showTree = false;
@@ -1556,18 +1555,6 @@ export default {
           }
         );
       });
-    },
-    getOrganDetail (id) {
-      return new Promise((resolve, reject) => {
-        getOrganDetail(id).then(
-          res => {
-            resolve(res.data);
-          },
-          error => {
-
-          }
-        )
-      })
     },
     // routerXsBySiteName (siteName) {
     //   this.$router.push({
@@ -1935,13 +1922,13 @@ export default {
                       );
                     } else if (category == 0) {
                       _this.pointWidth = 150;
-                      new Promise((resolve, reject) => {
+                      /* new Promise((resolve, reject) => {
                         getOrganIdApi({ id: that.curWindow.other.id }).then(
                           res => {
                             _this.$set(_this.curWindow.other, 'address', res.data.address);
                           });
 
-                      })
+                      }) */
                     } else if (category == 1) {
                       _this.pointWidth = that.curWindow.other.name.length * 24;
                       new Promise((resolve, reject) => {

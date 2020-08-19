@@ -38,7 +38,6 @@
   </el-dialog>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage";
 import {
   approveBill
 } from "@/api/device/deviceCertificateBill.js";
@@ -51,13 +50,9 @@ export default {
         note: "同意",
         checkDate: new Date().format("yyyy年MM月dd日"),
       },
-      approveData: {},
-      approvalPeopleName: iLocalStroage.gets("userInfo").nickName
-        ? iLocalStroage.gets("userInfo").nickName
-        : iLocalStroage.gets("userInfo").username,
+      approveData: {}
     };
   },
-  inject: ["reload"],
   methods: {
     showModal(data) {
       this.visible = true;
@@ -92,7 +87,7 @@ export default {
                 type: "success",
                 message: "审批完成",
             });
-            this.$emit("getNewData",res.data);
+            this.$emit("approvalOver",res.data);
         } catch (err) {
           throw new Error(err);
         }
@@ -103,7 +98,6 @@ export default {
 };
 </script>
 <style lang="scss">
-// @import "@/assets/css/caseHandle/index.scss";
 #approvalTimeBox .el-date-editor {
   width: 100%;
   padding: 0;

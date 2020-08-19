@@ -212,6 +212,9 @@
 
 .warn-li {
     li {
-        list-style-type: disc;
+        list-style-type: none !important;
+        i{
+            font-size: 4px;
+        }
     }
 }

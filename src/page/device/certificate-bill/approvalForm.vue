@@ -95,7 +95,7 @@
         <br />审批
       </el-button>
     </div>
-    <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
+    <approvalDialog ref="approvalDialogRef" @approvalOver="approvalOver"></approvalDialog>
   </div>
 </template>
 
@@ -183,14 +183,16 @@ export default {
       async getApproveInfo(){
           let res = await listApproveInfo(this.id)
           this.records = res.data
-          res.data.forEach(p=>{
-              if(p.organId==this.organId){
-                this.step=p.step
+          for (var i = 0; i < this.records.length; i++) {
+              let p = this.records[i]
+            if(p.organId==this.organId){
                 if(p.approveStatus=='审批中'){
+                    this.step=p.step
                     this.approved=false
+                    break
                 }
               }
-          })
+          }
       },
     // 盖章
       makeSeal() {
@@ -234,7 +236,7 @@ export default {
         function setMessageInnerHTML(innerHTML) {
           console.log(innerHTML);
           if (innerHTML === '1') {
-            _this.$emit('reInstall');
+            _this.getFile()
           }
 
         }

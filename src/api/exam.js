@@ -275,6 +275,7 @@ export function exportExamPersonApi(data){
         method: "get",
         params: data,
         showloading: false,
+        downloadType: 'EXAM',
         cancelToken: setCancelSource()
     })
 }

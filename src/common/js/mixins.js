@@ -68,6 +68,9 @@ export const mixinGetCaseApiList = {
             day = Math.ceil(day)
             item.caseDealTime = day + '天';
             // console.log(item.closeDate,'item.closeDate',day, '天', endTime, item.acceptTime, item.caseDealTime)
+            // 处理预警标签
+            item.warContent=JSON.parse(item.warContent)
+
           })
           this.total = res.data.total;
         },
