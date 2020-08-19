@@ -3,8 +3,8 @@
     <el-carousel trigger="click" height="28px" :autoplay="false">
       <el-carousel-item v-for="(item,index) in list" :key="index">
         <p @click="handleDialog(item.id)">
-          <span>{{ item.eventDate }}</span>
-          <span>{{ item.eventName }}</span>
+          <span>时间：{{ item.eventDate }}</span>
+          <span>事件名称：{{ item.eventName }}</span>
         </p>
       </el-carousel-item>
     </el-carousel>
@@ -64,9 +64,6 @@ export default {
           throw new Error("findById()::::::::接口数据错误")
         }
       }).then(data => {
-        this.$nextTick(() => {
-          this.$refs.dialog.setValue(data.disposeOrganName)
-        })
         // 给详情页赋值
         Object.keys(this.$refs.dialog.form).map(key => {
           this.$refs.dialog.form[key] = data[key]
