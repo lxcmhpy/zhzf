@@ -1066,12 +1066,13 @@ export function AddEditTransferCaseApi(modelId) {
 
 //通过问答模板类型id查询问答模板
 export function findModelListByModelTypeIdApi(modelTypeId) {
-  let data = vm.$qs.stringify({modelTypeId: modelTypeId})
+  let data ={modelTypeId: modelTypeId}
+  console.log('查询', data)
   return request({
     // url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelTypeId,
-    url: "/case/doc/caseRequestModel/findModelListByModelTypeId/" + modelTypeId,
+    url: "/case/doc/caseRequestModel/findByCondition",
     method: "GET",
-    data: data,
+    params: data,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
