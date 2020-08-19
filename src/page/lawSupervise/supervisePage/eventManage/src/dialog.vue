@@ -4,13 +4,13 @@
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
     <el-form ref="dialogForm" :model="form" :disabled="disabled">
-      <el-form-item label="事件名称" :label-width="formLabelWidth">
+      <el-form-item label="事件名称:" :label-width="formLabelWidth">
         <el-input v-model="form.eventName" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="事件描述" :label-width="formLabelWidth">
+      <el-form-item label="事件描述:" :label-width="formLabelWidth">
         <el-input v-model="form.eventDescribe" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="事件时间" :label-width="formLabelWidth">
+      <el-form-item label="事件时间:" :label-width="formLabelWidth">
         <el-date-picker
           v-model="form.eventDate"
           value-format="yyyy-MM-dd"
@@ -18,25 +18,25 @@
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="是否重点事件" :label-width="formLabelWidth">
+      <el-form-item label="是否重点事件:" :label-width="formLabelWidth">
         <el-radio v-model="form.isemphasis" :label='1'>是</el-radio>
         <el-radio v-model="form.isemphasis" :label='0'>否</el-radio>
       </el-form-item>
-      <el-form-item label="事件状态" :label-width="formLabelWidth">
+      <el-form-item label="事件状态:" :label-width="formLabelWidth">
         <el-radio-group v-model="form.state">
           <el-radio :label="1">待处理</el-radio>
           <el-radio :label="2">处理中</el-radio>
           <el-radio :label="3">处理完毕</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="是否需要协调" :label-width="formLabelWidth">
+      <el-form-item label="是否需要协调:" :label-width="formLabelWidth">
         <el-radio v-model="form.iscoordinator" :label='1'>是</el-radio>
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
-      <el-form-item label="机构" label-width="60px">
+      <el-form-item label="机构:" :label-width="formLabelWidth">
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
       </el-form-item>
-      <el-form-item label="人员" label-width="60px">
+      <el-form-item label="人员:" :label-width="formLabelWidth">
         <el-select @change="handlePeopleChange" v-model="form.disposePerson" placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
@@ -46,14 +46,14 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="事件附件" :label-width="formLabelWidth">
+      <el-form-item label="事件附件:" :label-width="formLabelWidth">
         <el-upload
           action="#"
           accept=".jpg, .png"
           :limit="2"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
-          :http-request="param => {uploadFile({param, type:1})}"
+          :http-request="param => {uploadFile({param, type: 1})}"
           :file-list="eventFileDataUp"
           :disabled="disabled"
           :on-remove="(file,fileList) => {deleteFile({file,fileList,type:1})}">
@@ -61,14 +61,14 @@
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10M</div>
         </el-upload>
       </el-form-item>
-      <el-form-item label="处理结果附件" :label-width="formLabelWidth">
+      <el-form-item label="处理结果附件:" :label-width="formLabelWidth">
         <el-upload
           action="#"
           :limit="2"
           accept=".jpg, .png"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
-          :http-request="param => {uploadFile({param, type:2})}"
+          :http-request="param => {uploadFile({param, type: 2})}"
           :file-list="eventFileDataDown"
           :disabled="disabled"
           :on-remove="(file,fileList) => {deleteFile({file,fileList,type:2})}">
@@ -203,8 +203,7 @@ export default {
         }
       }).then(data => {
         data.map(item => {
-          this.form.storageIds.push(item.storageId)
-          if(type === 1) {
+          if(item.category === '1') {
             this.eventFileDataUp.push({
               url: 'http://124.192.215.10:9332/'+item.storageId,
               storageId: item.storageId,
@@ -247,17 +246,22 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-      this.eventFileDataUp.forEach(item=>{
-        this.form.storageIds.push(item.storageId)
-      })
-      this.eventFileDataDown.forEach(item=>{
-        this.form.storageIds.push(item.storageId)
-      })
+      let upList = [], downList = [];
+      if(this.eventFileDataUp.length > 0) {
+        upList = this.eventFileDataUp.map(item=>{
+          return item.storageId
+        })
+      }
+      if(this.eventFileDataDown.length > 0) {
+        downList = this.eventFileDataDown.map(item=>{
+          return item.storageId
+          this.form.storageIds.push(item.storageId)
+        })
+      }
+      this.form.storageIds = upList.concat(downList)
       addUpdate(this.form).then(res => {
         if(res.code === 200) {
           this.dialogFormVisible = false
-          this.eventFileDataUp = []
-          this.eventFileDataDown = []
           this.$message({
             message: res.msg,
             type: "success"

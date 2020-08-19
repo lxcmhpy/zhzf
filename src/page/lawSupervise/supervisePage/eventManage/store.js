@@ -53,7 +53,7 @@ export default {
           throw new Error("findData()::::::接口数据错误")
         }
       }).then(data => {
-        this.total = data.records.length
+        this.total = data.total
         this.tableData = data.records
       })
     },
@@ -76,20 +76,24 @@ export default {
         Object.keys(this.$refs.dialog.form).map(key => {
           this.$refs.dialog.form[key] = data[key]
         })
-        data.eventFileDataUp.map(item => {
-          this.$refs.dialog.eventFileDataUp.push({
-            url: 'http://124.192.215.10:9332/'+item.storageId,
-            storageId: item.storageId,
-            name: item.name
+        if(data.eventFileDataUp.length > 0) {
+          data.eventFileDataUp.map(item => {
+            this.$refs.dialog.eventFileDataUp.push({
+              url: 'http://124.192.215.10:9332/'+item.storageId,
+              storageId: item.storageId,
+              name: item.name
+            })
           })
-        })
-        data.eventFileDataDown.map(item => {
-          this.$refs.dialog.eventFileDataDown.push({
-            url: 'http://124.192.215.10:9332/'+item.storageId,
-            storageId: item.storageId,
-            name: item.name
+        }
+        if(data.eventFileDataDown.length > 0) {
+          data.eventFileDataDown.map(item => {
+            this.$refs.dialog.eventFileDataDown.push({
+              url: 'http://124.192.215.10:9332/'+item.storageId,
+              storageId: item.storageId,
+              name: item.name
+            })
           })
-        })
+        }
       })
     },
 

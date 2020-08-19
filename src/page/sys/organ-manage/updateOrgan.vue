@@ -268,7 +268,7 @@ export default {
         this.$store.dispatch("hasOrganName", this.addOrganForm.name).then(
         res => {
           console.log(res.data);
-          if(res.data){
+          if(res.data&&res.data.id!=this.organId){
             _this.errorOrganName = true;
           }else{
             _this.errorOrganName = false;
@@ -342,6 +342,8 @@ export default {
         res => {
           console.log("机构", res);
           _this.addOrganForm = res.data;
+          _this.parentNode.parentNodeId = res.data.pid;
+          _this.parentNode.parentNodeName = res.data.pidName;
         },
         err => {
           console.log(err);

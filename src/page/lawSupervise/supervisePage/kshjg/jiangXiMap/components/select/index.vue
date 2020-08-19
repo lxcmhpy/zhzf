@@ -167,7 +167,7 @@ export default {
 <style lang="scss">
 .jk-mapSelect {
   position: absolute;
-  top: 20px;
+  top: 40px;
   right: 80px;
   display: flex;
   justify-content: space-between;
