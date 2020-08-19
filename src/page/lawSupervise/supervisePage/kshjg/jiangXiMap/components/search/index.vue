@@ -227,7 +227,7 @@ export default {
 <style lang="scss">
 .jiangXiMap-search {
   position: absolute;
-  top: 20px;
+  top: 40px;
   left: 30px;
   width: 369px;
   box-sizing: border-box;

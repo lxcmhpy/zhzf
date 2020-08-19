@@ -215,6 +215,9 @@ export default {
         socialCode: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        objectType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         idCard: [
           { validator: validateIDNumber, trigger: "blur" }
         ],

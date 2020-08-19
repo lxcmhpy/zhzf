@@ -50,7 +50,7 @@ import _ from "lodash";
     created () {
     },
     mounted () {
-        this.headMenuList = this.menu;
+        this.headMenuList = this.menu.slice(0,7);
         // debugger;
         this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
         this.$emit("selectHeadMenu",  this.headActiveNav);
@@ -58,7 +58,7 @@ import _ from "lodash";
     watch:{
       //监听menu
       menu(val){
-        this.headMenuList = this.menu;
+        this.headMenuList = this.menu.slice(0,7);
         this.$store.commit("set_Head_Active_Nav", this.headActiveNav);
         this.$emit("selectHeadMenu",  this.headActiveNav);
       }
