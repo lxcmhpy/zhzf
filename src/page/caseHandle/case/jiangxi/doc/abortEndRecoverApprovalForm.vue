@@ -313,7 +313,7 @@ export default {
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { ...mapGetters(["caseId",'currentFileData']) },
   data() {
     return {
       validatePhone: validatePhone,
@@ -470,7 +470,7 @@ export default {
         }
       } else {
         // this.getDocDetailById(this.$route.params.docDataId)
-        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        let currentDocDataId = this.currentFileData.docDataId;
         if(currentDocDataId){
           this.getDocDetailById(currentDocDataId)
         }else{
