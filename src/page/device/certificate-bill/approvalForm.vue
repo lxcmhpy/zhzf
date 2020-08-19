@@ -95,7 +95,7 @@
         <br />审批
       </el-button>
     </div>
-    <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
+    <approvalDialog ref="approvalDialogRef" @approvalOver="approvalOver"></approvalDialog>
   </div>
 </template>
 
