@@ -1,5 +1,5 @@
 import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId } from "@/api/lawSupervise.js";
-import { getOrganDetailApi, getOrganIdApi } from "@/api/system.js";
+import { getOrganDetailApi } from "@/api/system.js";
 export default {
   methods: {
     /**

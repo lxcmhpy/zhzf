@@ -608,6 +608,9 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       iLocalStroage.removeItem("currentDocDataId");
       if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note == '') {
         // console.log("弹窗")
@@ -638,6 +641,9 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) {
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,

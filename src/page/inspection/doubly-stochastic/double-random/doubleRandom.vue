@@ -135,8 +135,10 @@
       <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()">
         <el-table :data="randomResultList" stripe style="width: 100%" height="100%">
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
-          <el-table-column prop="legalPerson" label="检查人员" align="center"></el-table-column>
-          <el-table-column prop="matchExpert" label="检查专家" align="center"></el-table-column>
+          <el-table-column prop="legalPerson" label="法人名称" align="center"></el-table-column>
+          <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
+          <el-table-column prop="matchPerson" label="匹配人员" align="center"></el-table-column>
+          <el-table-column prop="matchExpert" label="匹配专家" align="center"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
           <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>

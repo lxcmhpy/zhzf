@@ -42,6 +42,12 @@
         style="width: 100%">
         <el-table-column
           align="center"
+          type="index"
+          width="50"
+          label="序号">
+        </el-table-column>
+        <el-table-column
+          align="center"
           prop="eventName"
           label="事件名称">
         </el-table-column>
@@ -103,8 +109,8 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-sizes="[5, 10, 15, 20, 25, 30, 35, 40]"
-        :page-size="5"
+        :page-sizes="[5, 8, 10, 20, 30, 40]"
+        :page-size="form.size"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
@@ -145,7 +151,7 @@ export default {
       eventDate: '',
       form: {
         current: 1, // 当前页
-        size: 5, // 每页显示条数
+        size: 8, // 每页显示条数
         eventName: '',
         isemphasis: '',
         startDate: '', // 开始时间
@@ -159,7 +165,7 @@ export default {
      * 页面初始化
      */
     initPage() {
-      let params = { current:1, size:5 }
+      let params = { current:1, size:8 }
       this.getData(params)
     },
 
@@ -290,7 +296,7 @@ export default {
     margin-top: 30px;
   }
   &-pagination {
-    margin-top: 10px;
+    margin: 10px 0 20px 0;
     text-align: right;
   }
 }

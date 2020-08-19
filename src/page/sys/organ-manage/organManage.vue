@@ -89,8 +89,8 @@
       </div>
     </div>
 
-    <addOrgan ref="addOrganRef" @getAllOrgan2="getAllOrgan"></addOrgan>
-    <updateOrgan ref="updateOrganRef" @getAllOrgan2="getAllOrgan"></updateOrgan>
+    <addOrgan ref="addOrganRef" @getAllOrgan2="getAllOrgan('root')"></addOrgan>
+    <updateOrgan ref="updateOrganRef" @getAllOrgan2="getAllOrgan('root')"></updateOrgan>
   </div>
 </div>
 </template>

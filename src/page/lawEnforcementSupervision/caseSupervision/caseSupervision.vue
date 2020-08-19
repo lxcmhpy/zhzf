@@ -50,7 +50,7 @@
 
             <div class="item buttonItem">
               &nbsp;
-              <el-button type="primary" size="medium" @click="searchCase">查询</el-button>
+              <el-button type="primary" size="medium" @click="searchCase(1)">查询</el-button>
               <el-button type="primary" size="medium" @click="resetSearchForm">重置</el-button>
               <el-button type="primary" size="medium" @click="showCaseCheck">案件抽查</el-button>
               <el-button
@@ -62,11 +62,11 @@
             </div>
           </div>
           <div :class="{hideSomeSearchClass:hideSomeSearch}">
-            <div class="item">
+            <!-- <div class="item">
               <el-form-item label="下级立案机构">
                 <el-input v-model="caseSearchForm.caseNumber2"></el-input>
               </el-form-item>
-            </div>
+            </div> -->
             <div class="item">
               <el-form-item label="当事人" prop="party">
                 <el-input v-model="caseSearchForm.party"></el-input>
@@ -87,8 +87,6 @@
                 <el-input v-model="caseSearchForm.punishLaw"></el-input>
               </el-form-item>
             </div>
-          </div>
-          <div :class="{hideSomeSearchClass:hideSomeSearch}">
             <div class="item">
               <el-form-item label="执法人员" prop="staffId">
                 <el-select v-model="caseSearchForm.staffId" placeholder="请选择">
@@ -101,8 +99,11 @@
                 </el-select>
               </el-form-item>
             </div>
+          </div>
+          <div :class="{hideSomeSearchClass:hideSomeSearch}">
+            
             <div class="item">
-              <el-form-item label="违法行为代码" prop="caseCauseName">
+              <el-form-item label="违法行为" prop="caseCauseName">
                 <el-input v-model="caseSearchForm.caseCauseName"></el-input>
               </el-form-item>
             </div>
@@ -239,7 +240,8 @@ export default {
   mixins: [caseSupervisionCommonMixins],
   methods: {
     //查询列表
-    searchCase() {
+    searchCase(currentPage='') {
+      if(currentPage) this.currentPage = 1;
       this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0];
       this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1];
       let sentData = {

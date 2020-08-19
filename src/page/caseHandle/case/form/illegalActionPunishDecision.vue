@@ -8,7 +8,7 @@
   >
     <div id="illegalActionPunishDecisionBox">
       <el-checkbox-group v-model="checkDec">
-        <p><el-checkbox label="罚款" value="0" @change="changeCheckDec">罚款</el-checkbox><el-input placeholder="请输入罚款金额" v-model="cont1" :disabled="checkDec[0]=='罚款'?false:true"></el-input></p>
+        <p><el-checkbox label="罚款" value="0" @change="changeCheckDec">罚款</el-checkbox><el-input placeholder="请输入罚款金额（输数字）" v-model.number="cont1" :disabled="checkDec[0]=='罚款'?false:true"></el-input></p>
         <p><el-checkbox label="责令整改" value="1" @change="changeCheckDec2">责令整改</el-checkbox><el-input placeholder="请输入责令整改要求" v-model="cont2" :disabled="checkDec[0]=='责令整改'||checkDec[1]=='责令整改'?false:true"></el-input></p>
         <p><el-checkbox label="警告" value="2" @change="changeCheckDec3">警告</el-checkbox><el-input placeholder="请输入警告内容" v-model="cont3" :disabled="checkDec[0]=='警告'||checkDec[1]=='警告'||checkDec[2]=='警告'?false:true"></el-input></p>
         <p><el-checkbox label="没收违法所得" value="3" @change="changeCheckDec4">没收违法所得</el-checkbox><el-input placeholder="请输入罚款金额" v-model="cont4" :disabled="checkDec[0]=='没收违法所得'||checkDec[1]=='没收违法所得'||checkDec[2]=='没收违法所得'||checkDec[3]=='没收违法所得'?false:true"></el-input></p>

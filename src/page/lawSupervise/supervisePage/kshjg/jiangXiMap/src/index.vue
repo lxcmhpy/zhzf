@@ -1,6 +1,7 @@
 <template>
   <div class="jiangXiMap">
     <JkBaseHMap @init="init" :center="center" :zoom="zoom" />
+    <TopInFo />
     <Search
       ref="Search"
       :config="searchWindowData"
@@ -23,6 +24,7 @@ import JkBaseHMap from "@/components/jk-baseHMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
+import TopInFo from "../components/topInfo/index.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
@@ -35,7 +37,8 @@ export default {
     JkBaseHMap,
     Search,
     Select,
-    Drawer
+    Drawer,
+    TopInFo
   },
   data() {
     return {
