@@ -26,7 +26,7 @@
                   class="commonBtn searchBtn"
                   size="medium"
                   icon="iconfont law-sousuo"
-                  @click="currentPage = 1 ;getAttendanceList()"
+                  @click="currentPage = 1 ;getStatisticalList()"
                 ></el-button>
                 <el-button
                   title="重置"
@@ -55,7 +55,12 @@
           <el-table-column prop="month" label="月" align="center"></el-table-column>
           <el-table-column prop="businessTripNumTotal" label="出差人数" align="center" width="120px;"></el-table-column>
           <el-table-column prop="businessTripNumRate" label="出差率" align="center" min-width="100px"></el-table-column>
-          <el-table-column prop="attendanceDaysTotal" label="出勤总天数" align="center" min-width="140px"></el-table-column>
+          <el-table-column
+            prop="attendanceDaysTotal"
+            label="出勤总天数"
+            align="center"
+            min-width="140px"
+          ></el-table-column>
           <el-table-column prop="attendanceDaysRate" label="出勤率" align="center" min-width="100px"></el-table-column>
           <el-table-column prop="lateNumTotal" label="迟到人数" align="center" min-width="120px"></el-table-column>
           <el-table-column prop="lateNumRate" label="迟到率" align="center" min-width="120px"></el-table-column>
@@ -74,7 +79,8 @@
   </div>
 </template>
 <script>
-import { getAttendanceList } from "@/api/attendance";
+import { getStatisticalList } from "@/api/attendance";
+import Moment from "moment";
 
 export default {
   name: "attendanceInfo",
@@ -82,7 +88,7 @@ export default {
     return {
       getYearList: [],
       searchForm: {
-        attendanceYear: `${new Date().getFullYear()}`
+        attendanceYear: `${new Date().getFullYear()}`,
       },
       tableData: [],
       tableLoading: false,
@@ -90,46 +96,50 @@ export default {
         disabledDate: (time) => {
           let currentYear = new Date().getFullYear();
           return time.getFullYear() > currentYear;
-        }
+        },
       },
     };
   },
   components: {},
   created() {
     // 查询考勤列表
-    this.getAttendanceList();
+    this.getStatisticalList();
   },
   methods: {
     // 根据查询条件查询考情列表
-    getAttendanceList() {
+    getStatisticalList() {
+      let { attendanceYear } = this.searchForm;
       console.log("查询考勤列表");
       this.tableLoading = true;
-      getAttendanceList({ year: this.searchForm.attendanceYear }).then(
-        res => {
+      attendanceYear = Moment(attendanceYear).format("YYYY");
+      console.log(this.searchForm.attendanceYear);
+      getStatisticalList({ year: attendanceYear }).then(
+        (res) => {
           this.tableLoading = false;
-          if(res.code === 200){
+          if (res.code === 200) {
             this.tableData = res.data;
           }
         },
-        err => {
+        (err) => {
           this.tableLoading = false;
-          this.$message({ type: 'error', message: err.msg || '' });
+          this.$message({ type: "error", message: err.msg || "" });
         }
-      )
-
+      );
     },
     // 查看考勤详情
     getDetailInfo(row) {
+      const { year, month } = row;
       console.log(row);
       this.$router.push({
         name: "personAttendanceDetail",
+        params: { year, month }
       });
     },
     // 重置查询
     resetLog() {
       this.$refs["searchFormRef"].resetFields();
       this.currentPage = 1;
-      this.getAttendanceList();
+      this.getStatisticalList();
     },
   },
 };
@@ -148,7 +158,7 @@ export default {
 >>> .el-select {
   margin-right: 0;
 }
->>>.el-input__icon{
+>>> .el-input__icon {
   line-height: 32px;
 }
 .person-table {
@@ -156,7 +166,7 @@ export default {
     padding-bottom: 0;
   }
 }
-.tableWrap{
+.tableWrap {
   flex-shrink: 1;
   height: calc(100% - 70px) !important;
 }

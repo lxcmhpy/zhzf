@@ -18,19 +18,21 @@
       class="deduct-score-form"
     >
       <el-form-item label="迟到扣分:" prop="lateDeduct">
-        <el-input-number v-model="deductScoreForm.lateDeduct" :min="1" :max="100"></el-input-number>
+        <el-input-number v-model="deductScoreForm.lateDeduct" :min="1" :max="100" :disabled="true"></el-input-number>
       </el-form-item>
       <el-form-item label="旷工扣分:" prop="absenteeismDeduct">
-        <el-input-number v-model="deductScoreForm.absenteeismDeduct" :min="1" :max="100"></el-input-number>
+        <el-input-number v-model="deductScoreForm.absenteeismDeduct" :min="1" :max="100" :disabled="true"></el-input-number>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <!-- <div slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
       <el-button type="primary" @click="submit">保 存</el-button>
-    </div>
+    </div> -->
   </el-dialog>
 </template>
 <script>
+
+import { getDeductMarks } from "@/api/attendance";
 
 export default {
   data() {
@@ -38,16 +40,16 @@ export default {
       visible: false,
       dialogTitle: "扣分管理",
       deductScoreForm: {
-        lateDeduct: "1",
-        absenteeismDeduct: "1"
+        lateDeduct: 1,
+        absenteeismDeduct: 5
       },
       rules: {
-        lateDeduct: [
-          { required: true, message: "投诉人姓名必须填写", trigger: "blur" },
-        ],
-        absenteeismDeduct: [
-          { required: true, message: "投诉途径必须填写", trigger: "blur" },
-        ]
+        // lateDeduct: [
+        //   { required: true, message: "迟到扣分必须填写", trigger: "blur" },
+        // ],
+        // absenteeismDeduct: [
+        //   { required: true, message: "矿工扣分必须填写", trigger: "blur" },
+        // ]
       },
     };
   },
@@ -56,6 +58,7 @@ export default {
     // 打开弹窗
     showModal() {
       this.visible = true;
+      this.getDeductMarks();
     },
     //提交
     submit() {
@@ -85,6 +88,20 @@ export default {
       for (const key in this.deductScoreForm) {
         this.deductScoreForm[key] = "";
       }
+    },
+    getDeductMarks(){
+      const that = this;
+      getDeductMarks().then(
+        (res) => {
+          if (res.code === 200) {
+            that.deductScoreForm.lateDeduct = res.data.lateDeduct;
+            that.deductScoreForm.absenteeismDeduct = res.data.absenteeismDeduct;
+          }
+        },
+        (err) => {
+          that.$message({ type: "error", message: err.msg || "" });
+        }
+      );
     }
   }
 };
