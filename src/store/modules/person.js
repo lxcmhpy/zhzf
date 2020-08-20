@@ -8,7 +8,7 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
     queryPersonCertApi,getApproveApi,getQueryArDataByPersonIdApi,unLossDocApi,queryByOidApi,queryApproveProcessPageApi,updateApApi,getCertNoApi,changeCertByEndDateApi,examInfoPageListApi,addExamInfoApi
     ,getProvinceCode,deleteExamInfoByIdApi,updateExamInfoApi,deleteTrainInfoByIdApi,updateTrainInfoApi,addTrainInfoApi,trainInfoPageListApi, initAllApprove, personEdabled,uploadMaterial,
     savePersonMaterial, getAllOrigin, savePersonPhoto,getScheduleJobPageApi,addScheduleJobApi,updateScheduleJobApi,cacheQuestionRedisApi,resumeScheduleJobInfoApi,deleteScheduleJobApi,repauseAllJobApi,pauseAllJobApi,
-    resumejobApi,pausejobApi
+    resumejobApi,pausejobApi,getJxExamListApi,getJxExamMesageApi,getJxTrainListApi,getJxTrainMessageApi,statisticByAgeApi,statisticByChannelApi,statisticByYearAddApi,statisticByEducationLevelApi,statisticByBranchApi,statisticByMajorApi
   } from "@/api/person";
   
   const person = {
@@ -1181,7 +1181,129 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
                 })
             })
             },   
+/////////////////////////江西个性化/////////////////////
+         //考试列表查询
+         getJxExamList({commit}){
+            return new Promise((resolve, reject) => {
+                getJxExamListApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            }, 
+         //考试信息查询
+         getJxExamMesage({commit}){
+            return new Promise((resolve, reject) => {
+                getJxExamMesageApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },     
+          //培训信息查询
+          getJxTrainMessage({commit}){
+            return new Promise((resolve, reject) => {
+                getJxTrainMessageApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            }, 
+          //考试列表查询
+          getJxTrainList({commit}){
+            return new Promise((resolve, reject) => {
+                getJxTrainListApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            }, 
+        ///////////////////////人员统计/////////////////////////
+        //按年龄段统计
+        statisticByAge({commit}){
+            return new Promise((resolve, reject) => {
+                statisticByAgeApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },
+            //按渠道统计
+            statisticByChannel({commit}){
+                return new Promise((resolve, reject) => {
+                    statisticByChannelApi().then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+                })
+                },
+         //按年度新增
+         statisticByYearAdd({commit}){
+            return new Promise((resolve, reject) => {
+                statisticByYearAddApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },        
+        //按文化程度
+        statisticByEducationLevel({commit}){
+            return new Promise((resolve, reject) => {
+                statisticByEducationLevelApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },  
 
+         //按执法门类
+         statisticByBranchApi({commit}){
+            return new Promise((resolve, reject) => {
+                statisticByBranchApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },  
+        //按专业
+        statisticByMajor({commit}){
+            return new Promise((resolve, reject) => {
+                statisticByMajorApi().then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+            })
+            },        
   }
   }
   export default person
