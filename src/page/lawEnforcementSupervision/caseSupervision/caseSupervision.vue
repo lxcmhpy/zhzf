@@ -108,7 +108,7 @@
               </el-form-item>
             </div>
             <div class="item">
-              <el-form-item label="受案时间">
+              <el-form-item label="受案时间" style="display:inline-block">
                 <el-date-picker
                   v-model="acceptTimeArray"
                   type="daterange"
@@ -118,8 +118,24 @@
                   value-format="yyyy-MM-dd HH:mm:ss"
                   format="yyyy-MM-dd"
                   :default-time="['00:00:00', '23:59:59']"
-                ></el-date-picker>
+                ></el-date-picker> 
+                <!-- <el-date-picker
+                  v-model="caseSearchForm.acceptStartTime"
+                  type="date"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker> -->
               </el-form-item>
+              <!-- <el-form-item label="至" style="display:inline-block">
+                <el-date-picker
+                  v-model="caseSearchForm.acceptEndTime"
+                  type="date"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-form-item> -->
             </div>
             <div class="item">
               <el-form-item label="案件状态">
@@ -214,7 +230,9 @@ export default {
         illegalLaw: "",
         partyType:'',
         sjNum:'',
-        caseNumber2:''
+        caseNumber2:'',
+        acceptStartTime:'',
+        acceptEndTime:''
       },
       hideSomeSearch: true,
       tableData: [],

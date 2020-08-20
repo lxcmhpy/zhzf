@@ -1362,6 +1362,7 @@
           this.driverOrAgentInfoList[0].company = "";
           this.driverOrAgentInfoList[0].position = "";
           this.driverOrAgentInfoList[0].zigeNumber = "";
+          this.relationWithPartyIsOne[0] = false;
       }
     },
       changeDriverOrAgentInfo(type){

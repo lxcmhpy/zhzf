@@ -469,6 +469,9 @@
 
       //查看文书
       viewDoc(row) {
+        row.url=this.$route.name;
+        row.caseBasicinfoId= this.caseBasicinfoId
+        this.$store.commit("setCurrentFileData", row);//保存文书信息
         iLocalStroage.removeItem("currentDocDataId");
         this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       },
@@ -501,6 +504,9 @@
 
       //多份文书预览pdf
     viewDocPdf(row) {
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       this.com_viewDocPdf(row,this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId)
     },
 

@@ -405,7 +405,7 @@ export default {
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { ...mapGetters(["caseId","currentFileData"]) },
   data() {
     return {
       validatePhone: validatePhone,
@@ -562,8 +562,7 @@ export default {
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
 
       if (
-        addMoreData.handelType == "isAddMore" &&
-        !iLocalStroage.get("currentDocDataId")
+        addMoreData.handelType == "isAddMore" &&iLocalStroage.get("currentDocDataId")
       ) {
         //设置询问笔录名称
         console.log("添加",addMoreData.approvalForm.executeHandle);
@@ -588,7 +587,7 @@ export default {
         }
       } else {
         console.log("修改");
-        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        let currentDocDataId = this.currentFileData.docDataId;
         if (currentDocDataId) {
           this.getDocDetailById(currentDocDataId);
         } else {

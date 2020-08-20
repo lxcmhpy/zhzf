@@ -1,116 +1,61 @@
 <template>
-  <div class="start_draw">
+  <div>
+    <el-tag :key="index" v-for="(tag,index) in dynamicTags" closable :disable-transitions="false" :style="tag.id?'background:red':''" @close="handleClose(tag)">
+      {{tag}}
+    </el-tag>
+    <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+    </el-input>
+    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
 
-    <a href="http://218.84.108.27:8888/zhzfxj/jsp/main/index.jsp" target="_blank">121212</a>
-    <!-- {{randomContent}}
-    <ul>
-      <li v-for='item in taskList' :key="item.name">{{item.name}}</li>
-    </ul>
-    <el-button @click="start">点击开始</el-button>
-    <el-button @click="end">点击结束</el-button> -->
-    <el-dropdown split-button type="primary">
-  默认尺寸
-  <el-dropdown-menu slot="dropdown">
-    <el-dropdown-item>黄金糕</el-dropdown-item>
-    <el-dropdown-item>狮子头</el-dropdown-item>
-    <el-dropdown-item>螺蛳粉</el-dropdown-item>
-    <el-dropdown-item>双皮奶</el-dropdown-item>
-    <el-dropdown-item>蚵仔煎</el-dropdown-item>
-  </el-dropdown-menu>
-</el-dropdown>
-
-<el-dropdown size="medium" split-button type="primary">
-  中等尺寸
-  <el-dropdown-menu slot="dropdown">
-    <el-dropdown-item>黄金糕</el-dropdown-item>
-    <el-dropdown-item>狮子头</el-dropdown-item>
-    <el-dropdown-item>螺蛳粉</el-dropdown-item>
-    <el-dropdown-item>双皮奶</el-dropdown-item>
-    <el-dropdown-item>蚵仔煎</el-dropdown-item>
-  </el-dropdown-menu>
-</el-dropdown>
-
-<el-dropdown size="small" split-button type="primary">
-  小型尺寸
-  <el-dropdown-menu slot="dropdown">
-    <el-dropdown-item>黄金糕</el-dropdown-item>
-    <el-dropdown-item>狮子头</el-dropdown-item>
-    <el-dropdown-item>螺蛳粉</el-dropdown-item>
-    <el-dropdown-item>双皮奶</el-dropdown-item>
-    <el-dropdown-item>蚵仔煎</el-dropdown-item>
-  </el-dropdown-menu>
-</el-dropdown>
-
-<el-dropdown size="mini" split-button type="primary">
-  超小尺寸
-  <el-dropdown-menu slot="dropdown">
-    <el-dropdown-item>黄金糕</el-dropdown-item>
-    <el-dropdown-item>狮子头</el-dropdown-item>
-    <el-dropdown-item>螺蛳粉</el-dropdown-item>
-    <el-dropdown-item>双皮奶</el-dropdown-item>
-    <el-dropdown-item>蚵仔煎</el-dropdown-item>
-  </el-dropdown-menu>
-</el-dropdown>
   </div>
 </template>
-<script>
 
+<script>
 export default {
   data() {
     return {
-      randomContent: '',
-      animate: false,
-      taskList: [
-        { name: "马云" },
-        { name: "雷军" },
-        { name: "王勤" }
-      ],
-      timer:''
-    }
-  },
-  created() {
+      dynamicTags: [{name:'标签一',id:'111'}, {name:'标签二',id:'111'},{name:'标签三',id:'111'}],
+      inputVisible: false,
+      inputValue: ''
+    };
   },
   methods: {
-    start() {
-      this.timer= setInterval(this.scroll, 100)
+    handleClose(tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
     },
-    end() {
-      clearInterval(this.timer);
-      this.timer = null;
+
+    showInput() {
+      this.inputVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
     },
-    scroll() {
-      this.animate = true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
-     setTimeout(() => {      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
-        this.randomContent = this.taskList[0]
-        this.taskList.push(this.taskList[0]);  // 将数组的第一个元素添加到数组的
-        this.taskList.shift();               //删除数组的第一个元素
-        this.animate = false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
-      }, 500)
+
+    handleInputConfirm() {
+      let inputValue = this.inputValue;
+      if (inputValue) {
+        this.dynamicTags.push(inputValue);
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
     }
   }
 }
 </script>
-
-
-<style scoped>
-* {
-  margin: 0;
-  padding: 0;
+<style>
+.el-tag + .el-tag {
+  margin-left: 10px;
 }
-#box {
-  width: 300px;
+.button-new-tag {
+  margin-left: 10px;
   height: 32px;
-  overflow: hidden;
-  padding-left: 30px;
-  border: 1px solid black;
-}
-.anim {
-  transition: all 0.5s;
-  margin-top: -30px;
-}
-#con1 li {
-  list-style: none;
   line-height: 30px;
-  height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
 }
 </style>

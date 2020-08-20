@@ -36,7 +36,7 @@
       <el-menu-item index="evidenceForm" >
         <div @mouseenter="mouseenterShowEmit('evidenceForm')" @click="goTo('case_handle_evidenceForm')">证据<br>目录</div>
       </el-menu-item>
-      <el-menu-item index="archiveCatalogue" :disabled = "disabledArchiveCatalogue">
+      <el-menu-item index="archiveCatalogue" :disabled = "disabledArchiveCatalogue" v-show="!IsLawEnforcementSupervision">
         <div v-if="!disabledArchiveCatalogue" @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('case_handle_archiveCatalogueDetail')">卷宗<br>目录</div>
         <div v-else>卷宗<br>目录</div>
        </el-menu-item>
@@ -44,7 +44,7 @@
         督办<br>记录
       </el-menu-item>
       <el-menu-item index="lawEnforcementSupervision_caseFileList" v-show="lawEnforcementSupervisionType =='majorCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
-        重大案件<br>送报材料
+        重大案件<br>报送材料
       </el-menu-item>
       <el-menu-item index="lawEnforcementSupervision_caseFileList" v-show="lawEnforcementSupervisionType =='adminCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
         行政复议<br>备案材料

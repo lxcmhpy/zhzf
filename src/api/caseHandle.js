@@ -1066,12 +1066,13 @@ export function AddEditTransferCaseApi(modelId) {
 
 //通过问答模板类型id查询问答模板
 export function findModelListByModelTypeIdApi(modelTypeId) {
-  let data = vm.$qs.stringify({modelTypeId: modelTypeId})
+  let data ={modelTypeId: modelTypeId}
+  console.log('查询', data)
   return request({
     // url: "/case/doc/caseRequestModel/findRequestListByModelId/" + modelTypeId,
-    url: "/case/doc/caseRequestModel/findModelListByModelTypeId/" + modelTypeId,
+    url: "/case/doc/caseRequestModel/findByCondition",
     method: "GET",
-    data: data,
+    params: data,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
@@ -1483,6 +1484,16 @@ export function findWarInfoByIdApi(data) {
 export function deleteEvFileApi(id) {
   return request({
     url: "/case/doc/evidence/deleteById/"+id,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+//环节回退
+export function linkBackApi(id) {
+  return request({
+    url: "/case/doc/caseBasicInfo/linkBackByCaseId/"+id,
     method: "get",
     showloading: false,
     cancelToken: setCancelSource()
