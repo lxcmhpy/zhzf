@@ -6,8 +6,9 @@
           <!-- <img :src="'./static/images/main/logo.png'" alt=""> -->
           <span> {{systemTitle}}</span>
         </div>
-        <div class="headMenu">
+        <div class="headMenu" v-show="!showMoreMenusFlag">
           <headMenu @selectHeadMenu="getSelectHeadMenu"></headMenu>
+          <div class="moreMenu" v-if="moreMenuIcon" @click="showMoreMenus" @mouseenter="showMoreMenus"><i class="el-icon-more"></i></div>
         </div>
         <div class="headerRight">
           <!-- <div>
@@ -65,6 +66,15 @@
           <div><i class="iconfont law-home"></i></div>
         </div>
       </el-header>
+       <transition name="fade">
+      <div class="thisMoreMenusBox" v-show="showMoreMenusFlag" @mouseleave="hideMoreMenus">
+        <div class="thisMoreMenus">
+         
+          <headMenuAll @selectHeadMenu="getSelectHeadMenu"></headMenuAll>
+        </div>
+        
+      </div> 
+      </transition>
       <el-container>
         <el-aside width="200px">
           <!-- :selectedHeadMenu="selectedHeadMenu" -->
@@ -101,6 +111,8 @@ import tabsMenu from "@/components/tabsMenu";
 import mainContent from "@/components/mainContent";
 import { mapGetters } from "vuex";
 import { menuList } from "@/common/data/menu";
+import headMenuAll from "@/components/headMenuAll";
+
 
 import { getCurrentUserApi, getMenuApi , loginOldSystemApi} from "@/api/login";
 import { getDictListDetailByNameApi } from "@/api/system";
@@ -117,17 +129,20 @@ export default {
       selectedHeadMenu: null,   //接收headMenu传来的选中的一级菜单
       userName:iLocalStroage.gets('userInfo').username,
       password:iLocalStroage.gets('userInfo').password,
-      oldSystemHref:''
+      oldSystemHref:'',
+      showMoreMenusFlag: true,
+      moreMenuIcon:false,
     };
   },
   components: {
     headMenu,
     subLeftMenu,
     tabsMenu,
-    mainContent
+    mainContent,
+    headMenuAll
   },
   computed: {
-    ...mapGetters(['systemTitle', 'headActiveNav'])
+    ...mapGetters(['systemTitle', 'headActiveNav','menu'])
   },
   inject: ["reload"],
   methods: {
@@ -156,6 +171,7 @@ export default {
 
     getSelectHeadMenu(name) {
       this.selectedHeadMenu = name;
+      this.showMoreMenusFlag = false;
     },
     router(name, route) {
       // debugger;
@@ -229,6 +245,10 @@ export default {
               params: to.params,
               headActiveNav: _this.headActiveNav
             });
+
+            if(this.menu.length > 7){
+              this.moreMenuIcon = true;
+            }
           },
           err => {
             console.log(err);
@@ -249,6 +269,14 @@ export default {
         throw new Error(err)
       })
     },
+    //显示更多菜单
+    showMoreMenus(){
+      this.showMoreMenusFlag = true;
+    },
+    //隐藏更多菜单
+    hideMoreMenus(){
+      this.showMoreMenusFlag = false;
+    },
     enterOld(){
       var name=iLocalStroage.gets('userInfo').encryptionUserName; //可以是一个可变的值
       var pwd=iLocalStroage.gets('userInfo').encryptionPassword; //可以是一个可变的值
@@ -268,7 +296,10 @@ export default {
   created() {
     //判断有没有menu
     this.initUser()
-    // this.getSystemData();
+    // this.getSystemData()
+    if(this.menu.length > 7){
+      this.moreMenuIcon = true;
+    }
 
   }
 };

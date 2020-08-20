@@ -560,6 +560,9 @@ export default {
       // } else {
       //   this.com_viewDoc(row);
       // }
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       console.log("查看");
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
@@ -576,6 +579,9 @@ export default {
     //预览pdf
     viewDocPdf(row) {
       console.log('row',row)
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,

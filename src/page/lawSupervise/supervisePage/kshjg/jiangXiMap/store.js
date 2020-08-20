@@ -1,5 +1,5 @@
 import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId } from "@/api/lawSupervise.js";
-import { getOrganDetailApi, getOrganIdApi } from "@/api/system.js";
+import { getOrganDetailApi } from "@/api/system.js";
 export default {
   methods: {
     /**
@@ -77,40 +77,33 @@ export default {
      * 获取路政管理局和分局的数据
      */
     getLoad(node) {
-      // 如果有点位，则打点，否则抛出异常
       if(node.propertyValue) {
         let latLng = node.propertyValue.split(',')
-        node.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
-        this.page.addPoint(node, latLng)
+        // 获取当前路政局数据
+        getOrganDetailApi({ id: node.id }).then(res => {
+          if(res.code === 200) {
+            return res.data
+          } else {
+            throw new Error("getOrganDetail():::::::接口数据错误")
+          }
+        }).then(data => {
+          data.propertyValue = node.propertyValue
+          data.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
+          // 手动给点位添加图层标识属性（希望后期能由后端添加）
+          data.layerName = node.label
+          this.page.addPoint(data, latLng)
+        })
       } else {
-        throw new Error("handleNodeClick(data):::::::::没有坐标")
+        throw new Error('没有点位')
       }
-
-      // 获取当前路政局数据
-      getOrganDetailApi({ id: node.id }).then(res => {
-        if(res.code === 200) {
-          return res.data
-        } else {
-          throw new Error("getOrganDetail():::::::接口数据错误")
-        }
-      }).then(data => {
-        this.searchWindowData.window3 = {
-          title: node.label,
-          info: {
-            address: data.address,
-            contactor: data.contactor,
-            telephone: data.telephone
-          },
-        }
-      })
     },
 
     /**
      * 获取监管机构数据
      */
-    getTheOrganTree(data) {
+    getTheOrganTree(poiontData) {
       const param = {
-        organId: data.id,
+        organId: poiontData.id,
         type: 0
       }
       getOrganTree(param).then(res => {
@@ -251,6 +244,7 @@ export default {
         })
       } else { // 当取消勾选时，清除对应图层点位
         this.page.cleanPoints(name)
+        this.map.removeOverlay(this.page.informationWindow)
       }
     },
 

@@ -332,7 +332,7 @@ export default {
     },
     submitForm(formName, type) {
       this.addForm.taskArea = '省交通运输厅领域'
-      if (this.addForm.checkEndTime > this.addForm.checkStartTime) {
+      if (this.addForm.checkEndTime < this.addForm.checkStartTime) {
         this.$message({ type: "error", message: '开始时间必须小于结束时间' });
         return
       }
@@ -387,7 +387,7 @@ export default {
       // this.addForm2.id = ''
       console.log('task', this.addForm2)
       console.log('checkResult', this.addForm2.checkResult)
-      if (this.addForm2.checkEndTime > this.addForm2.checkStartTime) {
+      if (this.addForm2.checkEndTime < this.addForm2.checkStartTime) {
         this.$message({ type: "error", message: '开始时间必须小于结束时间' });
         return
       }
