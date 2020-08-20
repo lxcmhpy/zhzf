@@ -69,7 +69,7 @@ export default {
   height: 350px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  background: #46aaff;
+  background: #00adb5;
   box-sizing: border-box;
   &-header {
     display: flex;
