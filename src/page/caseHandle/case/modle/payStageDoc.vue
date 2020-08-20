@@ -160,7 +160,7 @@
       casePageFloatBtns
     },
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId'])},
+    computed: {...mapGetters(['caseId','currentFileData'])},
     data() {
       return {
         docData: {
@@ -275,11 +275,13 @@
           this.com_getCaseBasicInfo(data.caseId, data.docId);
         } else {
          console.log('修改')
-          let currentDocDataId = iLocalStroage.get("currentDocDataId");
+          let currentDocDataId = this.currentFileData.docDataId;
           if (currentDocDataId) {
             this.getDocDetailById(currentDocDataId)
+            debugger
           } else {
             this.getDocDetailById(this.$route.params.docDataId)
+            debugger
             // this.docData.checknames=this.docData.checknames
           }
         }
@@ -473,7 +475,8 @@
           this.com_getCaseBasicInfo(data.caseId, data.docId);
         } else {
          console.log('修改')
-          let currentDocDataId = iLocalStroage.get("currentDocDataId");
+         
+          let currentDocDataId = this.currentFileData.docDataId;
           if (currentDocDataId) {
             this.getDocDetailById(currentDocDataId)
           } else {

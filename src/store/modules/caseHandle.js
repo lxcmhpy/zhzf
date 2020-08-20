@@ -26,6 +26,7 @@ const caseHandle = {
         docPdfStorageId:'',//文书pdf地址id
         IsLawEnforcementSupervision:'', //判断是否为执法监督
         lawEnforcementSupervisionType:'', //执法监督类型
+        currentFileData:'', //当前文书数据-回退用
     },
     mutations:{
         //设置caseId
@@ -76,7 +77,10 @@ const caseHandle = {
         setLawEnforcementSupervisionType(state,data){
             state.lawEnforcementSupervisionType = data;
         },
-        
+        //当前文书数据
+        setCurrentFileData(state,data) {
+            state.currentFileData = data
+        },
     },
     actions:{
         //获取执法门类

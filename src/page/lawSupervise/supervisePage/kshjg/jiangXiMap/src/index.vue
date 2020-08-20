@@ -149,6 +149,8 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
+      // 清空信息窗体
+      this.map.removeOverlay(this.page.informationWindow)
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
 
@@ -171,12 +173,9 @@ export default {
         this.$refs.Search.showCom = "Window4"
         // 如果有点位，则打点，否则抛出异常
         if(data.propertyValue) {
-          // 打点之前先清除通过 addPoints 打的多个点位
-          let pointsPlayer = ['执法人员','执法机构','执法车辆','执法船舶','非现场站点']
-          pointsPlayer.map(item => {
-            this.page.cleanPoints(item)
-          })
           let latLng = data.propertyValue.split(',')
+          // 手动给点位添加图层标识属性（希望后期能由后端添加）
+          data.layerName = data.label
           this.page.addPoint(data, latLng)
         } else {
           throw new Error("handleNodeClick(data):::::::::没有坐标")
@@ -185,25 +184,41 @@ export default {
     },
 
     /**
+     * 显示信息窗体
+     */
+    handleOverLay(data) {
+      let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName
+      this.page.addOverlay(data, content)
+    },
+
+    /**
      * 点击地图点位触发
      */
     handleClickPoint(data) {
+      console.log(data)
+      // 显示信息窗体
+      this.handleOverLay(data)
       // 当前点位是路政局
       if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+        this.searchWindowData.window3.title = data.name
+        this.searchWindowData.window3.info = {
+          address: data.address || '',
+          contactor: data.contactor || '',
+          telephone: data.telephone || ''
+        }
         this.getTheOrganTree(data)
       } else if (data.type === 4) {
         this.$refs.Search.showCom = "Window5"
         this.getWindow5(data)
       } else {
         // 显示弹出框
-        this.searchWindowData.window4.title = data.nickName
+        this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
         this.searchWindowData.window4.info = {
           organName: data.organName || '',
           mobile: data.mobile || ''
         }
         this.$refs.Search.showCom = "Window4"
       }
-      console.log(data)
     },
 
     /**

@@ -26,6 +26,7 @@ const getters = {
   docPdfStorageId:state => state.caseHandle.docPdfStorageId,
   IsLawEnforcementSupervision:state => state.caseHandle.IsLawEnforcementSupervision,
   lawEnforcementSupervisionType:state => state.caseHandle.lawEnforcementSupervisionType,
+  currentFileData:state => state.caseHandle.currentFileData,
   
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,

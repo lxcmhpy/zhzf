@@ -3,8 +3,7 @@
 
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
 
-      <div class="print_info indent_style" id="question_print">
-
+      <div class="print_info indent_style" id="question_print" style="min-height: 1117px;height: auto;">
         <div class="doc_topic">询问笔录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <span class="datapick_style">
@@ -426,7 +425,7 @@ export default {
   },
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
+  computed: { ...mapGetters(['caseId','currentFileData']) },
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -448,7 +447,7 @@ export default {
         this.com_getCaseBasicInfo(data.caseId,data.docId);
       }else{
         console.log('修改')
-        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        let currentDocDataId = this.currentFileData.docDataId;
         if(currentDocDataId){
           this.getDocDetailById(currentDocDataId)
         }else{
