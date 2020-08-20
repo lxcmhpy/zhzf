@@ -1,6 +1,6 @@
 <template>
   <div class="jiangXiMap">
-    <JkBaseHMap @init="init" :center="center" :zoom="zoom" />
+    <JkBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
     <TopInFo />
     <Search
       ref="Search"
@@ -42,6 +42,7 @@ export default {
   },
   data() {
     return {
+      layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}',
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
