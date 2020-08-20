@@ -130,7 +130,7 @@ export default {
       userName:iLocalStroage.gets('userInfo').username,
       password:iLocalStroage.gets('userInfo').password,
       oldSystemHref:'',
-      showMoreMenusFlag: true,
+      showMoreMenusFlag: false,
       moreMenuIcon:false,
     };
   },

@@ -140,6 +140,33 @@ export default {
     },
     // 根据查询条件查询考试信息列表
     getExamInfoList() {
+      let _this = this;
+      let data = {
+        year:'2020'
+      }
+       _this.$store.dispatch("getJxExamList", data).then(
+        res => {
+          this.tableLoading = false;
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
+        },
+        err => {
+          this.tableLoading = false;
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
+
+         _this.$store.dispatch("getJxExamMessage", data).then(
+        res => {
+          this.tableLoading = false;
+          _this.tableData = res.data.records;
+          _this.totalPage = res.data.total;
+        },
+        err => {
+          this.tableLoading = false;
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
       console.log("查询考试信息列表");
     },
     // 查看考勤详情

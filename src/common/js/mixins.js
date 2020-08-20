@@ -559,7 +559,7 @@ export const mixinGetCaseApiList = {
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
         if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
-          this.$refs.pleaseRemoveMDiaRef.showModal();
+          this.$refs.pleaseRemoveMDiaRef.showModal(); 
           return;
         }
         // 行政强制措施即将到期，请前往解除行政强制措施

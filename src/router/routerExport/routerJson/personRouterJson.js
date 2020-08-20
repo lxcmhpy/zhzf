@@ -116,10 +116,49 @@ export const personRouterJson = [
       {
         name: "comprehensiveStatistics",
         path: "/person",
+        component: MainContent,
         meta: {
           title: "综合统计"
         },
-      // component: () => import("@/page/person/certificate-data/certificateDataList.vue")
+        redirect: '/person-statistics',
+        children: [
+          {
+            name: "ageStatistic",
+            path: "/ageStatistics",
+            meta: { title: "人员年龄统计", loading: false },
+            component: () => import("@/page/person/person-statistics/ageStatistics/ageStatistics.vue")
+          },
+          {
+            name: "channelStatistic",
+            path: "/channelStatistics",
+            meta: { title: "分配渠道统计", loading: false },
+            component: () => import("@/page/person/person-statistics/channelStatistics/channelStatistics.vue")
+          },
+          {
+            name: "yearAdd",
+            path: "/yearAddStatistics",
+            meta: { title: "年度新增执法人员统计", loading: false },
+            component: () => import("@/page/person/person-statistics/yearAddStatistics/yearAddStatistics.vue")
+          },
+          {
+            name: "educatonStatistic",
+            path: "/educatonStatistics",
+            meta: { title: "文化程度统计", loading: false },
+            component: () => import("@/page/person/person-statistics/educatonStatistics/educatonStatistics.vue")
+          },
+          {
+            name: "branchStatistic",
+            path: "/branchStatistics",
+            meta: { title: "执法门类统计", loading: false },
+            component: () => import("@/page/person/person-statistics/branchStatistics/branchStatistics.vue")
+          },
+          {
+            name: "majorStatistic",
+            path: "/majorStatistics",
+            meta: { title: "专业类别统计", loading: false },
+            component: () => import("@/page/person/person-statistics/majorStatistics/majorStatistics.vue")
+          },
+        ]
       },
       {
         name: "comprehensiveQuery",
