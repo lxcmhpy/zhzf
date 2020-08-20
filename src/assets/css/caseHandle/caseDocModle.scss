@@ -16,14 +16,16 @@
         // width         : 720px;
         // height        : 1217px;
         width            : 790px;
-        height           : 1117px;
+        /* height           : 1117px; */
+        min-height: 1117px;
+        height: auto;
         position         : absolute;
         left             : calc(50% - 360px);
         // margin-left   : -360px;
         left             : 0;
         right            : 0;
         margin           : auto;
-        padding          : 81px 82px 0;
+        padding          : 81px 82px 22px;
         background       : #ffffff;
         box-sizing       : border-box;
 
