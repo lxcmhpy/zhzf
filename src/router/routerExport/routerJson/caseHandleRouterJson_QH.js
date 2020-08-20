@@ -10,7 +10,7 @@ export default [
     },
     {
         path: "/paymentReceipt",
-        name: "case_handle_paymentReceipt_QH",
+        name: "case_handle_WayPaymentCun_QH",
         meta: {
             title: "公路赔（补）偿通知书（存根）"
         },
@@ -18,9 +18,25 @@ export default [
     },
     {
         path: "/paymentReceipt",
-        name: "case_handle_paymentReceipt_QH",
+        name: "case_handle_WayPayment_QH",
         meta: {
             title: "公路赔（补）偿通知书"
+        },
+        component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
+    },
+    {
+        path: "/paymentReceipt",
+        name: "case_handle_WayPaymentList_QH",
+        meta: {
+            title: "公路路产损坏赔（补）偿清单"
+        },
+        component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
+    },
+    {
+        path: "/paymentReceipt",
+        name: "case_handle_paymentReport_QH",
+        meta: {
+            title: "公路赔（补）偿案件调查报告"
         },
         component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
     },
