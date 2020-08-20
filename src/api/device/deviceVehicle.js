@@ -120,13 +120,13 @@ export function deleteVehicles(data) {
 }
 
 export function listVehicle(data) {
-    return request({
-      url: "/device/device/info/listVehicle",
-      method: "get",
-      params: data,
-      showloading: true,
-      loadingType: 'loadPart',
-      baseUrlType: 'CAPTCHA_HOST',
-      cancelToken: setCancelSource()
-    });
-  }
+  return request({
+    url: "/device/device/info/listVehicle",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource()
+  });
+}
