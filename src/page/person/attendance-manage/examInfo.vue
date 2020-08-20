@@ -13,19 +13,12 @@
           <div>
             <div class="item">
               <el-form-item label="考试年份" prop="examYear">
-                <el-select
+                <el-date-picker
                   v-model="searchForm.examYear"
-                  placeholder="年份"
-                  remote
-                  @focus="getYear()"
-                >
-                  <el-option
-                    v-for="value in getYearList"
-                    :key="value.id"
-                    :label="value.name"
-                    :value="value.id"
-                  ></el-option>
-                </el-select>
+                  type="year"
+                  placeholder="选择年"
+                  :picker-options="pickerOptions"
+                ></el-date-picker>
               </el-form-item>
               <el-form-item label="姓名" prop="name">
                 <el-input v-model="searchForm.name"></el-input>
@@ -64,9 +57,20 @@
           element-loading-text="加载中..."
           style="width: 100%;height:100%;"
         >
-          <el-table-column prop="name" label="姓名" align="center" min-width="140px"></el-table-column>
+          <el-table-column prop="personName" label="姓名" align="center" min-width="140px"></el-table-column>
           <el-table-column prop="ministerialNo" label="执法证号" align="center"></el-table-column>
-          <el-table-column prop="examTotalScore" label="考试总成绩" align="center" min-width="140px;"></el-table-column>
+          <template v-for="(header, index) in tableHeader">
+            <el-table-column
+              :key="header.examId"
+              :label="header.examName"
+              align="center"
+              min-width="140px">
+              <template slot-scope="scope">
+                <span>{{ scope.row.examInfo[index] }}</span>  
+              </template>  
+            </el-table-column>
+          </template>
+          <el-table-column prop="examTotalScore" label="考试总成绩" align="center" min-width="140px"></el-table-column>
           <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="getDetailInfo(scope.row)">
@@ -98,76 +102,57 @@ export default {
       getYearList: [],
       searchForm: {
         examYear: "",
-        ministerialNo: '',
-        name: ''
+        ministerialNo: "",
+        name: "",
       },
-      tableData: [
-        {
-          name: "2020",
-          ministerialNo: '12345678',
-          examTotalScore: '100'
+      pickerOptions: {
+        disabledDate: (time) => {
+          let currentYear = new Date().getFullYear();
+          return time.getFullYear() > currentYear;
         },
-      ],
+      },
+      tableHeader: [],
+      tableData: [],
       tableLoading: false,
       currentPage: 0,
       totalPage: 0,
-      pageSize: 10
+      pageSize: 10,
     };
   },
   components: {},
   created() {
-    // 查询年份下拉
-    this.getYear();
     // 查询考试信息列表
     this.getExamInfoList();
   },
   methods: {
-    // 获取年份下拉选项
-    getYear() {
-      if (this.getYearList.length > 0) {
-        return false;
-      }
-      this.$store.dispatch("getYearMoudle", "年份").then((res) => {
-        if (res.code === 200) {
-          this.getYearList = [];
-          for (let i = res.data.minYear; i <= res.data.maxYear; i++) {
-            this.getYearList.push({ id: i, name: i });
-          }
-        } else {
-          console.info("没有查询到数据");
-        }
-      });
-    },
     // 根据查询条件查询考试信息列表
     getExamInfoList() {
-      let _this = this;
-      let data = {
-        year:'2020'
-      }
-       _this.$store.dispatch("getJxExamList", data).then(
-        res => {
+      this.tableLoading = true;
+      let data = Object.assign(this.searchForm, { current: this.currentPage, size: this.pageSize });
+      this.$store.dispatch("getJxExamList", data).then(
+        (res) => {
           this.tableLoading = false;
-          _this.tableData = res.data.records;
-          _this.totalPage = res.data.total;
+          this.tableHeader = res.data;
+          this.getTableList(data);
         },
-        err => {
+        (err) => {
           this.tableLoading = false;
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
-
-         _this.$store.dispatch("getJxExamMessage", data).then(
-        res => {
-          this.tableLoading = false;
-          _this.tableData = res.data.records;
-          _this.totalPage = res.data.total;
+    },
+    // 获取人员考试列表
+    getTableList(data){
+      this.$store.dispatch("getJxExamMesage", data).then(
+        (res) => {
+          this.tableData = res.data.records;
+          this.totalPage = res.data.total;
+          console.log(res);
         },
-        err => {
-          this.tableLoading = false;
+        (err) => {
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
-      console.log("查询考试信息列表");
     },
     // 查看考勤详情
     getDetailInfo(row) {
@@ -188,7 +173,7 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getExamInfoList();
-    }
+    },
   },
 };
 </script>
