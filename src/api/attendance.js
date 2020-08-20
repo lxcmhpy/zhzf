@@ -29,6 +29,17 @@ export function getAttendanceList(data){
     cancelToken: setCancelSource()
   })
 };
+// 考勤信息修改
+export function editAttendance(data){
+  return request({
+    url: "/attendance/edit",
+    method: "POST",
+    baseUrlType: 'ATTENDANCE',
+    data: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+};
 // 下载考勤模板
 export function downLoadAttendanceMode(){
   return request({
