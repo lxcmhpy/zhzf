@@ -1052,3 +1052,113 @@ export function repauseAllJobApi(){
     cancelToken:  setCancelSource(),
   });
 }
+//////////////////////////江西个性化//////////////////
+
+//考试列表查询
+export function getJxExamListApi(data){
+  return  request({
+    url:  "/person/jxStatistics/getExamList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//考试信息查询
+export function getJxExamMesageApi(data){
+  return  request({
+    url:  "/person/jxStatistics/examMesage",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+
+
+//培训列表查询
+export function getJxTrainListApi(data){
+  return  request({
+    url:  "/person/jxStatistics/getTrainList",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+
+
+//培训信息查询
+export function getJxTrainMessageApi(data){
+  return  request({
+    url:  "/person/jxStatistics/trainMesage",
+    method:  "get",
+    params: data,
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+///////////////人员统计/////////////////////
+//按年龄段统计
+export function statisticByAgeApi(){
+  return  request({
+    url:  "/statistics/byAge",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
+  });
+}
+//按分配渠道统计
+export function statisticByChannelApi(){
+  return  request({
+    url:  "/statistics/byChannel",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
+  });
+}
+//按年度新增
+export function statisticByYearAddApi(){
+  return  request({
+    url:  "/statistics/byYearAdd",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
+  });
+}
+
+//按文化程度
+export function statisticByEducationLevelApi(){
+  return  request({
+    url:  "/statistics/byEducationLevel",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
+  });
+}
+
+//按执法门类
+export function statisticByBranchApi(){
+  return  request({
+    url:  "/statistics/byBranch",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
+  });
+}
+
+//按专业
+export function statisticByMajorApi(){
+  return  request({
+    url:  "/statistics/byMajor",
+    method:  "get",
+    showloading: false,
+    cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
+  });
+}

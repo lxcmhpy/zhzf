@@ -11,7 +11,7 @@
   >
     <el-form
       ref="attendanceFormRef"
-      v-model="attendanceForm"
+      :model="attendanceForm"
       :rules="rules"
       label-width="120px"
       label-position="right"
@@ -63,7 +63,7 @@
 </template>
 <script>
 
-import { editDeductMarks } from "@/api/attendance";
+import { editAttendance } from "@/api/attendance";
 
 export default {
   data() {
@@ -110,10 +110,12 @@ export default {
         customClass: "loading-box",
         background: "rgba(234,237,244, 0.8)",
       });
-      editDeductMarks(this.attendanceForm).then(
+      const data = JSON.parse(JSON.stringify(this.attendanceForm));
+      editAttendance(data).then(
         (res) => {
           if (res.code === 200) {
             this.$message({ type: 'success', message: '修改成功' });
+            this.closeDialog();
           }
         },
         (err) => {
@@ -129,6 +131,7 @@ export default {
       for (const key in this.attendanceForm) {
         this.attendanceForm[key] = "";
       }
+      this.$parent.getAttendanceList();
     }
   }
 };

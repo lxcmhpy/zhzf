@@ -120,10 +120,10 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="inquestResult" :rules="fieldRules('inquestResult',propertyFeatures['inquestResult'])">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="3" maxLength='90' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquestResult'])"></el-input>
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="6" maxLength='500' placeholder="\" :disabled="fieldDisabled(propertyFeatures['inquestResult'])"></el-input>
               <span class="overflow_describe" style="text-indent:0">勘验情况及结果：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-              <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span v-for="i in 5" :key="i" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
           </div>
 
@@ -138,13 +138,17 @@
             <span class="write_line" style="width:170px"></span>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="24">
-            被邀请人签名：<span class="write_line" style="width:512px"></span>
+        <el-row :gutter="20">
+          <el-col :span="11" offset="13">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="write_line" style="width:170px"></span>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12" :offset="13">
+          <el-col :span="13">
+            被邀请人签名：<span class="write_line" style="width:190px"></span>
+          </el-col>
+          <el-col :span="11">
             记录人签名：<span class="write_line" style="width:190px"></span>
           </el-col>
         </el-row>

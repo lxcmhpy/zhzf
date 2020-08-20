@@ -219,12 +219,10 @@
           <div class="overflow_lins">
             <el-form-item prop="hearingRecord" :rules="fieldRules('hearingRecord',propertyFeatures['hearingRecord'])">
               <el-input class='overflow_lins_textarea' style="text-indent:5em" type='textarea'
-                        v-model="docData.hearingRecord" rows="3" maxLength='90' :disabled="fieldDisabled(propertyFeatures['hearingRecord'])"></el-input>
+                        v-model="docData.hearingRecord" rows="8" maxLength='5000' :disabled="fieldDisabled(propertyFeatures['hearingRecord'])"></el-input>
               <span class="overflow_describe" style="text-indent:0 !important">听证记录：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
-              <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
+              <span v-for="i in 7" :key="i" class="span_bg" @click="overFlowEdit">&nbsp;</span>
             </el-form-item>
           </div>
 
