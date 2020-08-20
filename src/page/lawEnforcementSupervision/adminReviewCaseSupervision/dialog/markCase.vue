@@ -9,15 +9,15 @@
   >
     <el-form
       :model="markCaseSearchForm"
-      ref="checkSearchForm"
+      ref="markCaseSearchForm"
       class="checkSearchForm"
       label-width="80px"
     >
       <div class="flexBox">
-        <el-form-item label="案件编号">
+        <el-form-item label="案件编号" prop="caseNumber">
           <el-input v-model="markCaseSearchForm.caseNumber"></el-input>
         </el-form-item>
-        <el-form-item label="执法领域">
+        <el-form-item label="执法领域" prop="zfmlId">
           <el-select v-model="markCaseSearchForm.zfmlId" placeholder="请选择">
               <el-option value label="全部"></el-option>
               <el-option
@@ -28,7 +28,7 @@
               ></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="当事人">
+        <el-form-item label="当事人" prop="party">
           <el-input v-model="markCaseSearchForm.party"></el-input>
         </el-form-item>
       </div>
@@ -61,12 +61,12 @@
       style="width: 100%"
       highlight-current-row
       height="300px"
-      @selection-change="handleSelectionChange"
+      @selection-change="handleSelectionChange" 
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="caseNumber" label="编号" align="center"></el-table-column>
       <el-table-column prop="zfml" label="执法领域" align="center"></el-table-column>
-      <el-table-column prop="party" label="当事人" align="center"></el-table-column>
+      <el-table-column prop="name" label="当事人" align="center"></el-table-column>
       <el-table-column prop="vehicleShipId" label="车船号牌" align="center"></el-table-column>
       <el-table-column prop="caseName" label="案由" align="center"></el-table-column>
       <el-table-column prop="organName" label="立案机构" align="center"></el-table-column>
@@ -129,6 +129,11 @@ export default {
       this.visible = false;
       this.$emit('getNewData');
     },
+    resetSearchForm() {
+        this.$refs["markCaseSearchForm"].resetFields();
+        this.acceptTimeArrayMark = [];
+        this.searchMarkCase();
+    },
     //更改每页显示的条数
     handleSizeChangeMarkCase(val) {
       this.pageSizeMarkCase = val;
@@ -155,7 +160,10 @@ export default {
         .then((res) => {
           console.log(res);
           this.totalMarkCase = res.data.total;
-          this.markCasetableData = res.data.records;
+          this.markCasetableData = res.data.records || [];
+          this.markCasetableData.forEach(item => {
+            item.name = item.party ? item.party : item.partyName;
+          })
         })
         .catch((err) => {
           throw new Error(err);
