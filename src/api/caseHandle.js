@@ -1489,3 +1489,13 @@ export function deleteEvFileApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//环节回退
+export function linkBackApi(id) {
+  return request({
+    url: "/case/doc/caseBasicInfo/linkBackByCaseId/"+id,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  });
+}

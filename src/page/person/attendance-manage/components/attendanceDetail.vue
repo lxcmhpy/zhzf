@@ -169,7 +169,6 @@ export default {
     },
     // 修改考情
     editAttendanceInfo(row) {
-      console.log(row);
       this.$refs.AttendanceEditRef.showModal(row);
     },
     // 批量导入考勤

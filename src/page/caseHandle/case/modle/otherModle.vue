@@ -3,7 +3,7 @@
 
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" label-width="80px">
 
-      <div class="print_info indent_style" id="question_print" style="min-height: 1117px;height: auto;">
+      <div class="print_info indent_style" id="question_print">
         <div class="doc_topic">询问笔录</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <span class="datapick_style">
