@@ -73,10 +73,12 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="presentMembersName" :rules="fieldRules('presentMembersName',propertyFeatures['presentMembersName'])">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.presentMembersName" rows="2" maxLength='90'
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.presentMembersName" rows="4" maxLength='200'
               :disabled="fieldDisabled(propertyFeatures['presentMembersName'])"></el-input>
               <span class="overflow_describe" style="text-indent: 0">出席人员姓名及职务：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
+              <span class="span_bg" >&nbsp;</span>
               <span class="span_bg" >&nbsp;</span>
             </el-form-item>
           </div>
@@ -96,12 +98,11 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="discussionRecord" :rules="fieldRules('discussionRecord',propertyFeatures['discussionRecord'])">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90'
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.discussionRecord" rows="10" maxLength='1500'
               :disabled="fieldDisabled(propertyFeatures['discussionRecord'])"></el-input>
               <span class="overflow_describe" style="text-indent: 0">讨论记录：</span>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
-              <span class="span_bg" >&nbsp;</span>
+              <span v-for="i in 9" :key="i" class="span_bg">&nbsp;</span>
             </el-form-item>
           </div>
         </div>
