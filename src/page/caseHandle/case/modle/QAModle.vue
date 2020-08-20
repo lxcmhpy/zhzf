@@ -209,9 +209,9 @@ export default {
     findModelList(modelTypeId){
       findModelListByModelTypeIdApi(modelTypeId).then(res=>{
         console.log(res);
-        this.modelList = res.data;
-        if(res.data[0]){
-          this.addBannerForm.template = res.data[0].id;
+        this.modelList = res.data.records;
+        if(res.data.records[0]){
+          this.addBannerForm.template = res.data.records[0].id;
         }else{
           this.addBannerForm.template = '';
         }

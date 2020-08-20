@@ -229,19 +229,19 @@ export default {
         checkMode: '',
         checkBasis: '',
         checkItem: '',
-        status: '',
-        checkContent: ''
+        checkContent: '',
+        status: '启用',
       },
       addForm2: {
         checkSubject: '',
         checkMode: '',
         checkBasis: '',
         checkItem: '',
-        status: '',
         checkContent: '',
         checkObject: '',
         itemType: '',
-        checkType: ''
+        checkType: '',
+        status: '启用',
       },
       dialogStatus: '',
       dialogStatus2: '',

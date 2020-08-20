@@ -253,7 +253,7 @@ export default {
         contactType: '',
         baseInfo: '',
         remark: '',
-        status: '',
+        status: '启用',
       },
       formLabelWidth: '100px',
       // dialogStatus: '',

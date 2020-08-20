@@ -33,7 +33,9 @@ export default {
           2.1457979350577466E-5, 1.0728989675288733E-5, 5.363305107141452E-6, 2.681652553570726E-6
         ]
       },
-      pointsLayerName: new Set(), // 多点点位的地图标识
+      pointsLayerName: new Set(), // 多点点位的图层标识
+      pointLayerName: new Set(), // 单点点位的图层标识
+      informationWindow: '', // 信息窗体
     }
   },
   beforeCreate() {
@@ -100,10 +102,21 @@ export default {
     },
 
     /**
+     * 通过图层标识清除所有单点
+     */
+    cleanPoint() {
+      this.pointLayerName.forEach(item => {
+        this.map.removeFeatureById(item)
+      })
+      this.pointLayerName.clear()
+    },
+
+    /**
      * 清除所有点位
      */
     cleanAll() {
-      this.map.removeFeatureByLayerName('layerName')
+      this.cleanPoint()
+      // 清除所有多点
       this.pointsLayerName.forEach(item => {
         this.map.removeFeatureByLayerName(item)
       })
@@ -112,11 +125,29 @@ export default {
     },
 
     /**
+     * 添加信息窗体
+     */
+    addOverlay(data, content) {
+      this.map.removeOverlay(this.informationWindow)
+      let latLng = data.propertyValue.split(',')
+      this.informationWindow = new HMap.Popover(this.map.getMap(), {
+        offset: [0, -45],
+        showCloser: true,
+        showMarkFeature: false,
+        showMinimize: false,
+      })
+      this.map.addOverlay(this.informationWindow)
+      this.informationWindow.show(latLng, content)
+    },
+
+    /**
      * 地图添加点位(单点)
      */
     addPoint(data, latLng) {
       // 打点之前清除地图点位
       this.cleanAll()
+      let _layerName = data.id
+      this.pointLayerName.add(_layerName)
       if(!latLng) throw new Error("addPoint():::::::::::没有坐标")
       const point = {
         attributes: {
@@ -126,7 +157,7 @@ export default {
         geometry: latLng
       }
       const options = {
-        layerName: 'layerName',
+        layerName: _layerName,
         zoomToExtent: true,
         style: {
           image: {
@@ -154,8 +185,9 @@ export default {
      * 地图添加点位(多点)
      */
     addPoints(arr) {
+      this.map.removeOverlay(this.informationWindow)
       // 清除单点点位
-      this.map.removeFeatureByLayerName('layerName')
+      this.cleanPoint()
 
       let _layerName = arr.layerName
       this.pointsLayerName.add(_layerName)
