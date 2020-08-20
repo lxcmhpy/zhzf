@@ -16,7 +16,7 @@
       <i class="iconfont law-save"></i>
       <br/>归档
     </el-button>
-    <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
+    <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]"> 
       <i class="iconfont law-save"></i>
       <br/>保存
     </el-button>

@@ -10,6 +10,8 @@
         </el-tooltip>
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
+        <el-button type="primary" size="medium" @click="linkBack">环节回退</el-button>
+
       </div>
       <div style="overflow-y:auto;">
         <!-- <div id="aa"><?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#d81e06" d="M999.041908 264.483956a65.537436 65.537436 0 0 0-28.728739-30.524286L542.524285 7.720849a65.986323 65.986323 0 0 0-61.946344 0L53.237945 232.613011a64.639663 64.639663 0 0 0-17.506576 15.711029 58.804138 58.804138 0 0 0-11.222163 14.36437A65.08855 65.08855 0 0 0 17.327021 291.866035v439.459934a68.230756 68.230756 0 0 0 36.808697 59.253025l426.89111 224.443275a72.270735 72.270735 0 0 0 30.524285 8.528844h4.937753a63.74189 63.74189 0 0 0 26.035419-6.733298l427.339997-224.443275a67.781869 67.781869 0 0 0 35.013151-59.253025V291.866035a65.986323 65.986323 0 0 0-5.835525-27.382079zM511.102227 505.98492v427.339997L103.962125 718.308259V282.888304l407.588988 224.443276h4.937753z"  /></svg></div> -->
@@ -39,7 +41,7 @@ import { mapGetters } from "vuex";
 import { svgData, imgList, linePosition, stateColor, lineStyle, graphData, mainLinkData, layoutCharts, legend } from './json/flowChart'
 import pleaseRemoveMDia from '@/page/caseHandle/components/pleaseRemoveMDia'
 import {
-  queryFlowBycaseIdApi,updateLinkInfoByCaseIdAndLinkTypeIdApi,
+  queryFlowBycaseIdApi,updateLinkInfoByCaseIdAndLinkTypeIdApi,linkBackApi,
 } from "@/api/caseHandle";
 export default {
   data() {
@@ -82,17 +84,7 @@ export default {
       }else if(this.currentFlow.data.flowName == '江西流程'){
          _this.graphData = graphData.commonGraphData_JX;
       }
-      // if(this.province == 'BZ'){  //标准版
-      //   if(_this.caseFlowData.flowName == "赔补偿流程"){
-      //     _this.graphData = graphData.compensationGraphData;
-      //   }else{
-      //     _this.graphData = graphData.commonGraphData;
-      //   }
-      // }else if(this.province == 'JX'){  //江西
-      //     _this.graphData = graphData.commonGraphData_JX;
-      // }
-      // console.log('_this.province',_this.province);
-      // console.log('_this.graphData',_this.graphData);
+
       
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
@@ -833,6 +825,16 @@ export default {
         this.$message('更改流程图状态失败！')
       }
       this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
+    },
+    //环节回退
+    async linkBack(){
+      try{
+        await linkBackApi(this.caseId); 
+        await this.getFlowStatusByCaseId(this.caseId);
+        this.$message({type:'success',message:'回退成功'})
+      }catch(err){
+        this.$message('回退失败！')
+      }
     }
   },
   created() {
