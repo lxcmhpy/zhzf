@@ -1089,7 +1089,7 @@ export function getJxTrainListApi(data){
 
 
 //培训信息查询
-export function getJxTrainMesageApi(data){
+export function getJxTrainMessageApi(data){
   return  request({
     url:  "/person/jxStatistics/trainMesage",
     method:  "get",
