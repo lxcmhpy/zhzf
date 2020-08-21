@@ -315,7 +315,7 @@
             <div class="item">
               <el-form-item label="与当事人关系">
                 <el-select v-model="driverOrAgentInfo.relationWithParty" @change="changeRelationWithParty(index)">
-                  <el-option v-for="item in index === 0?allRelationWithParty:allRelationWithParty_" :key="item.value"
+                  <el-option v-for="item in (index === 0?allRelationWithParty:allRelationWithParty_)" :key="item.value"
                              :label="item.label" :value="item.label"></el-option>
                 </el-select>
               </el-form-item>
