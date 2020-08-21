@@ -185,6 +185,7 @@ export default {
       this.selectCurrentTreeName = data.label;
       this.tableData = [];
       this.currentOrganId = data.id;
+      this.currentPage = 1;
       this.getSelectOrgan(this.currentOrganId);
     },
     nodeExpand(data, node, jq) {
