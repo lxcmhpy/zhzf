@@ -1,5 +1,6 @@
 <template>
-  <listCommon type="执法主体"></listCommon>
+  <!-- 执法主体 4-->
+  <listCommon type="4"></listCommon>
 </template>
 <script>
 import listCommon from "@/page/notice/components/listCommon";
