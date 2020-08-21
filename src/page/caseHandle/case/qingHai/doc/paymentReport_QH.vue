@@ -2,80 +2,77 @@
   <div class="print_box">
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="docData">
-        <div class="doc_topic">收费凭据表</div>
+        <div class="doc_topic">公路赔（补）偿案件调查报告</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
-            <td rowspan="2">案由</td>
-            <td rowspan="2" colspan="8" class="color_DBE4EF">
+            <td rowspan="3">案由</td>
+            <td rowspan="3" colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 5}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
             </td>
+            <td rowspan="3" style="width:40px">案件承办人</td>
+            <td>姓 名</td>
+            <td>证件号</td>
           </tr>
-          <tr></tr>
           <tr>
-            <td>
-              <p>案发时间</p>
-            </td>
-            <td colspan="8" class="color_DBE4EF">
-              <el-form-item prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])" class="pdf_datapick">
-                <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+            <td  class="color_DBE4EF">
+              <el-form-item prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
+                <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
+                  <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff2==item"></el-option>
+                </el-select>
               </el-form-item>
             </td>
-          </tr>
-          <tr>
-            <td>案发地点</td>
-            <td colspan="8" class="color_DBE4EF">
-              <el-form-item prop="payTime" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
-                <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td>缴费单位</td>
-            <td colspan="8" class="color_DBE4EF">
-              <el-form-item prop="payParty" :rules="fieldRules('payParty',propertyFeatures['payParty'])">
-                <el-input type="textarea" v-model="docData.payParty" :disabled="fieldDisabled(propertyFeatures['payParty'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
+            <td  class="color_DBE4EF">
+              <el-form-item prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+                <el-input type="textarea" clearable class="w-120" v-model="docData.certificateId1" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td>收费时间</td>
-            <td colspan="8" class="color_DBE4EF">
-              <el-form-item prop="payTime" :rules="fieldRules('payTime',propertyFeatures['payTime'])">
-                <el-date-picker v-model="docData.payTime" :disabled="fieldDisabled(propertyFeatures['payTime'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+            <td  class="color_DBE4EF">
+              <el-form-item prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
+                <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2" placeholder="请选择" :disabled="fieldDisabled(propertyFeatures['staff2'])">
+                  <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
+                </el-select>
+              </el-form-item>
+            </td>
+            <td  class="color_DBE4EF">
+              <el-form-item prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
+                <el-input type="textarea" v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
               </el-form-item>
             </td>
           </tr>
-          <tr style="height: 400px;">
-            <td>
-              <p class="center_similar">收</p>
-              <p class="center_similar">费</p>
-              <p class="center_similar">票</p>
-              <p class="center_similar">据</p>
-              <p class="center_similar">复</p>
-              <p class="center_similar">印</p>
-              <p class="center_similar">件</p>
-            </td>
-            <td colspan="8" class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
-              <!-- <div class="pdf_seal">
-                <p>粘贴人</p>
-              </div> -->
+          <tr style="height:300px">
+            <td colspan="9" class="color_DBE4EF">
+              赔（补）偿决定：
+              <el-form-item prop="note" style="width: calc(100% - 130px);">
+                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+              </el-form-item>
             </td>
           </tr>
-          <tr>
-            <td>
-              <p class="center_similar">备</p>
-              <p class="center_similar">注</p>
-              <!-- <p>备注</p> -->
-            </td>
-            <td colspan="8" class="color_DBE4EF table_seal">
+          <tr style="height:236px">
+            <td colspan="9" class="color_DBE4EF table_seal">
+              执行情况：<br />
               <el-form-item prop="note">
                 <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
               </el-form-item>
               <div class="pdf_seal">
-                <p>粘贴人:</p>
+                <p>签名：{{docData.approvePeo}}</p>
+                <p>
+                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
+                  <span v-else>年 月 日</span>
+                </p>
               </div>
+            </td>
+          </tr>
+          <tr style="height:150px">
+            <td colspan="9" class="color_DBE4EF">
+              备注：
+              <el-form-item prop="note" style="width: calc(100% - 50px);">
+                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+              </el-form-item>
             </td>
           </tr>
         </table>
@@ -95,8 +92,10 @@ import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
-// import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_QH } from '@/common/js/BASIC_DATA_QH.js';
+  import {
+    findCaseAllBindPropertyApi,
+  } from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -114,7 +113,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId, //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_QH.case_handle_paymentReport_QH_caseDocTypeId, //表单类型ID
         //表单数据
         docData: "",
         status: "",
@@ -167,12 +166,10 @@ export default {
       caseSourceText5: "",
       caseSourceText6: "",
       caseSourceCheckBox: [],
-      originalData: "",
-      // 是否带入电话
-      isPartyPhone: false,
       needDealData: true,
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
+      staffList:[]
     };
   },
   components: {
@@ -205,7 +202,13 @@ export default {
 
     //设置案件来源
     getDataAfter() {
-
+      this.staffList = this.docData.staff.split(',');
+      this.docData.staff1 = this.docData.staff.split(',')[0];
+      this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
+      if (this.staffList.length == 2) {
+        this.docData.staff2 = this.docData.staff.split(',')[1];
+        this.docData.certificateId2 = this.docData.certificateId.split(',')[1];
+      }
     },
     //获取案件基本信息
     getCaseInfo() {
@@ -229,11 +232,36 @@ export default {
         name: "case_handle_inforCollect",
         params: { editFlag: true }
       })
-    }
+    },
+    //修改人员
+    changeStaff1(val) {
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
+    },
+    changeStaff2(val) {
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      console.log(staffIndex);
+    },
+    //获取执法人员
+    getLawOfficer() {
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId
+      };
+      findCaseAllBindPropertyApi(data).then(res => {
+        console.log(res);
+        let data2 = JSON.parse(res.data.propertyData);
+        this.staffList = data2.staff.split(',');
+      }, err => {
+        console.log(err);
+      })
+    },
   },
   created() {
     // this.setData();
     // this.getCaseInfo();
+    this.getLawOfficer();
   }
 };
 </script>

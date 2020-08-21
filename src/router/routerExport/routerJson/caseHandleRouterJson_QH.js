@@ -9,35 +9,35 @@ export default [
         component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
     },
     {
-        path: "/paymentReceipt",
+        path: "/wayPaymentCun_QH",
         name: "case_handle_WayPaymentCun_QH",
         meta: {
             title: "公路赔（补）偿通知书（存根）"
         },
-        component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
+        component: () => import("@/page/caseHandle/case/qingHai/doc/wayPaymentCun_QH.vue")
     },
     {
-        path: "/paymentReceipt",
+        path: "/wayPayments_QH",
         name: "case_handle_WayPayment_QH",
         meta: {
             title: "公路赔（补）偿通知书"
         },
-        component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
+        component: () => import("@/page/caseHandle/case/qingHai/doc/wayPayment_QH.vue")
     },
     {
-        path: "/paymentReceipt",
+        path: "/wayPaymentList_QH",
         name: "case_handle_WayPaymentList_QH",
         meta: {
             title: "公路路产损坏赔（补）偿清单"
         },
-        component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
+        component: () => import("@/page/caseHandle/case/qingHai/doc/wayPaymentList_QH.vue")
     },
     {
-        path: "/paymentReceipt",
+        path: "/paymentReport_QH",
         name: "case_handle_paymentReport_QH",
         meta: {
             title: "公路赔（补）偿案件调查报告"
         },
-        component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
+        component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReport_QH.vue")
     },
 ]
