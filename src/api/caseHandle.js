@@ -1499,3 +1499,14 @@ export function linkBackApi(id) {
     cancelToken: setCancelSource()
   });
 }
+
+//根据案件类型查询审批角色列表 （青海）
+export function getApprovePeopleByCaseTypeApi(data) {
+  return request({
+    url: "/case/doc/linkData/findApproveRole3/" + data.caseBasicInfoId +'/'+data.docTypeId + '/'+data.flag,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
