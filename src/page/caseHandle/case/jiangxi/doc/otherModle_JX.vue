@@ -447,7 +447,7 @@ export default {
         this.com_getCaseBasicInfo(data.caseId,data.docId);
       }else{
         console.log('修改')
-        let currentDocDataId = this.currentFileData.docDataId;
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
         if(currentDocDataId){
           this.getDocDetailById(currentDocDataId)
         }else{
