@@ -37,6 +37,7 @@
               @click="showSomeSearchEmit"
             ></el-button>
             <el-button
+              size="small"
               class="addpdfs"
               style="background-color: #4573d0;color: #FFFFFF;"
               icon="el-icon-plus"
@@ -45,23 +46,24 @@
           </div>
         </div>
         <div v-if="addpdf_page">
-          <el-dialog title="添加线下案卷" :visible.sync="addpdf_page" width="30%">
+          <el-dialog title="添加线下案卷" :visible.sync="addpdf_page" width="32%">
             <div>
               <el-form ref="addpdf_form" :model="addpdf_form" label-width="100px">
                 <el-form-item label="案号">
-                  <el-input v-model="addpdf_form.name" width="20%"></el-input>
+                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
                 </el-form-item>
                 <el-form-item label="车/船号">
-                  <el-input v-model="addpdf_form.name" width="20%"></el-input>
+                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
                 </el-form-item>
                 <el-form-item label="当事人单位">
-                  <el-input v-model="addpdf_form.name" width="20%"></el-input>
+                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
                 </el-form-item>
                 <el-form-item label="违法行为">
-                  <el-input v-model="addpdf_form.name" width="20%"></el-input>
+                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
                 </el-form-item>
                 <el-form-item label="受案时间">
-                  <el-date-picker width="20%"
+                  <el-date-picker
+                    style="width:350px;"
                     v-model="addpdf_form.data1"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     format="yyyy-MM-dd HH:mm:ss"
@@ -70,7 +72,8 @@
                   ></el-date-picker>
                 </el-form-item>
                 <el-form-item label="结案时间">
-                  <el-date-picker width="20%"
+                  <el-date-picker
+                    style="width:350px;"
                     v-model="addpdf_form.data2"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     format="yyyy-MM-dd HH:mm:ss"
@@ -79,12 +82,13 @@
                   ></el-date-picker>
                 </el-form-item>
                 <el-form-item label="案件类型">
-                  <el-input v-model="addpdf_form.name"></el-input>
+                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
                 </el-form-item>
                 <el-form-item label="案卷上传">
                   <el-upload
                     class="upload-demo"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action
+                    :http-request="uploadfile_offlinepdf"
                     :on-preview="handlePreview"
                     :on-remove="handleRemove"
                     :before-remove="beforeRemove"
@@ -93,7 +97,6 @@
                     multiple
                     accept=".pdf"
                     :limit="30"
-                    :on-exceed="handleExceed"
                     :file-list="fileList"
                   >
                     <el-button size="small" type="primary">上传</el-button>
@@ -283,7 +286,28 @@ export default {
   },
   props: ["caseState"],
   methods: {
-    //新增pdf文件
+    //：http-request 文件上传
+    uploadfile_offlinepdf() {
+      console.log("param", param);
+      let fd = {
+        file: param.file,
+        category: "线下档案",
+        fileName: param.file.name,
+        status: "pdf卷宗", //传记录id
+        caseId: "fet43g445y56hwgv34g", //传记录id
+        docId: "cew43y3gyy6hu76rjki78t", //传文书id
+      };
+      console.log("fd", fd);
+      uploadCommon(fd).then(
+        (res) => {
+          console.log("res", res);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    //文件上传成功后
     uploadsuccesspdf(file, fileList) {},
     beforeuploadpdf(file) {
       console.log("file.type", file.type);
@@ -294,21 +318,21 @@ export default {
       }
       return isJPG;
     },
+    //文件移除列表
     handleRemove(file, fileList) {
       //console.log(file, fileList);
     },
+    //上传后页面预览
     handlePreview(file) {
-      console.log(file);
+      //console.log(file);
     },
-    handleExceed(files, fileList) {
-      
-    },
+    //文件移除前
     beforeRemove(file, fileList) {
       //return this.$confirm(`确定移除 ${ file.name }？`);
     },
+    //点击添加按钮
     addpdffile() {
       this.addpdf_page = true;
-      console.log(this.addpdf_page);
     },
     caseRecord() {},
     //展开
