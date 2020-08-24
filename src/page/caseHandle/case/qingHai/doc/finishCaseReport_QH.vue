@@ -187,7 +187,6 @@ export default {
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
-      debugger
       console.log(this.caseId)
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {

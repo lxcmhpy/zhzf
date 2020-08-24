@@ -169,7 +169,7 @@ export default {
      caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.$route.params.docId,     //文书类型ID
+        caseDoctypeId: '2955023b99943d7c21e54c5d84d82667',     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
