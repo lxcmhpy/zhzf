@@ -46,8 +46,6 @@
                 <el-table
                         :data="tableData"
                         stripe
-                        resizable
-                        border
                         style="width: 100%;height:100%"
                         @row-click="showDataDetail"
                 >
@@ -57,18 +55,14 @@
                         </template>
                     </el-table-column>
                     <!--列表字段-->
-                    <el-table-column prop="billNo" label="单据号" width="160"></el-table-column>
-                    <el-table-column prop="billDate" label="单据日期" width="120px"></el-table-column>
-                    <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                    <el-table-column prop="storageLocation" label="回收后存放位置"></el-table-column>
-                    <el-table-column prop="createName" label="处理人" width="120px"></el-table-column>
-                    <el-table-column label="操作" width="120">
+                    <el-table-column prop="billNo" label="单号" width="160" align="center"></el-table-column>
+                    <el-table-column prop="billDate" label="单据日期" width="120px" align="center"></el-table-column>
+                    <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+                    <el-table-column prop="storageLocation" label="回收后存放位置" align="center"></el-table-column>
+                    <el-table-column prop="createName" label="处理人" width="200px" align="center"></el-table-column>
+                    <el-table-column label="操作" width="120" align="center">
                         <template slot-scope="scope">
-                            <div style="width:160px">
-                                <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                <!--  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                                <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button> -->
-                            </div>
+                            <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
