@@ -7,6 +7,9 @@ import {
 import { getFile } from "@/api/upload";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
+import {
+  getDictListDetailByNameApi
+} from "@/api/system";
 export const mixinGetCaseApiList = {
   data() {
     return {
@@ -794,6 +797,19 @@ export const mixinGetCaseApiList = {
       }
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
+    //获取基本抽屉表数据
+    async initBaseDrawData(keysArr){
+      if(keysArr.includes('allRelationWithCase')){
+        let  data2 = await getDictListDetailByNameApi('与案件关系');
+        this.allRelationWithCase = data2.data;
+      }
+      if(keysArr.includes('allVehicleShipType')){
+        let  data2 = await getDictListDetailByNameApi('车辆类型');
+        this.allVehicleShipType = data2.data;
+      }
+      
+      
+    }
 
   },
   created() {

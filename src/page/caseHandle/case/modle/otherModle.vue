@@ -82,7 +82,8 @@
                 </el-form-item> -->
                 <el-form-item prop="inquiriedRelation" style="width:209px" :rules="fieldRules('inquiriedRelation',propertyFeatures['inquiriedRelation'])">
                 <el-select v-model="docData.inquiriedRelation" @change="changeRelationWithCase" :disabled="fieldDisabled(propertyFeatures['inquiriedRelation'])">
-                  <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
+                  <!-- <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option> -->
+                  <el-option v-for="item in allRelationWithCase" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
                 </el-form-item>
                 <!-- <u v-if="lineStyleFlag">{{docData.inquiriedRelation}}</u> -->
@@ -411,12 +412,12 @@ export default {
       },
       allRelationWithCase: [
         //与案件关系下拉框
-        { value: "0", label: "当事人" },
-        { value: "1", label: "驾驶人" },
-        { value: "2", label: "实际所有者" },
-        { value: "3", label: "证人" },
-        { value: "4", label: "承运人" },
-        { value: "5", label: "代理人" }
+        // { value: "0", label: "当事人" },
+        // { value: "1", label: "驾驶人" },
+        // { value: "2", label: "实际所有者" },
+        // { value: "3", label: "证人" },
+        // { value: "4", label: "承运人" },
+        // { value: "5", label: "代理人" }
       ],
       staffList:[],
       needDealData:true,
@@ -623,32 +624,32 @@ export default {
         this.docData.inquiriedTel = dailiData.tel;
         console.log(' this.docData.inquiriedSex', this.docData.inquiriedSex);
     },
-    switchRelate(relation){
-      let realRelation = '';
-      switch (relation) {
-        case "0":
-          realRelation = '当事人'
-          break;
-        case "1":
-          realRelation = '驾驶人'
-          break;
-        case "2":
-          realRelation = '实际所有者'
-          break;
-        case "3":
-          realRelation = '证人'
-          break;
-        case "4":
-          realRelation = '承运人'
-          break;
-        case "5":
-          realRelation = '代理人'
-          break;
-        default:
-          break;
-      }
-      return realRelation;
-    },
+    // switchRelate(relation){
+    //   let realRelation = '';
+    //   switch (relation) {
+    //     case "0":
+    //       realRelation = '当事人'
+    //       break;
+    //     case "1":
+    //       realRelation = '驾驶人'
+    //       break;
+    //     case "2":
+    //       realRelation = '实际所有者'
+    //       break;
+    //     case "3":
+    //       realRelation = '证人'
+    //       break;
+    //     case "4":
+    //       realRelation = '承运人'
+    //       break;
+    //     case "5":
+    //       realRelation = '代理人'
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    //   return realRelation;
+    // },
     //获取执法人员
     getLawOfficer(){
       let data = {
@@ -665,6 +666,7 @@ export default {
     }
   },
   mounted() {
+    this.initBaseDrawData(['allRelationWithCase'])
     this.getDocDataByCaseIdAndDocId();
      this.isOverStatus();
      this.getLawOfficer();
