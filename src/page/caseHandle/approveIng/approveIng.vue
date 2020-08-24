@@ -70,7 +70,7 @@ export default {
   },
   mixins: [mixinGetCaseApiList],
   components: {
-    caseListSearch,
+    caseListSearch, tansferAtentionDialog
   },
   computed: {
         ...mapGetters(["openTab"])
