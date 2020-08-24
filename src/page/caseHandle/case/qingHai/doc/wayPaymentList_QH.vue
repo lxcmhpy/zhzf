@@ -139,7 +139,7 @@
           </tr>
           <tr>
             <td colspan="7" class="color_DBE4EF remark">
-              <el-form-item label='备注:'>
+              <el-form-item label='备注:' :rules="fieldRules('adress',propertyFeatures['docNote'])">
                 <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -276,68 +276,6 @@ export default {
       addDocFormRef: {
         deliveryMaster: ''
       },
-      options: [{
-        value: '直接送达',
-        label: '直接送达'
-      }, {
-        value: '代理送达',
-        label: '代理送达'
-      }, {
-        value: '邮寄送达',
-        label: '邮寄送达'
-      }, {
-        value: '其他方式',
-        label: '其他方式'
-      }],
-      options2: [{
-        value: '抽样取证凭证',
-        label: '抽样取证凭证'
-      }, {
-        value: '证据登记保存清单',
-        label: '证据登记保存清单'
-      }, {
-        value: '解除证据登记保存决定书',
-        label: '解除证据登记保存决定书'
-      }, {
-        value: '行政强制措施决定书',
-        label: '行政强制措施决定书'
-      }, {
-        value: '延长行政强制措施期限通知书',
-        label: '延长行政强制措施期限通知书'
-      }, {
-        value: '解除行政强制措施决定书',
-        label: '解除行政强制措施决定书'
-      }, {
-        value: '听证通知书',
-        label: '听证通知书'
-      }, {
-        value: '当场行政处罚决定书',
-        label: '当场行政处罚决定书'
-      }, {
-        value: '责令改正违法行为通知书',
-        label: '责令改正违法行为通知书'
-      }, {
-        value: '分期（延期）缴纳罚款通知书',
-        label: '分期（延期）缴纳罚款通知书'
-      }, {
-        value: '违法行为通知书',
-        label: '违法行为通知书'
-      }, {
-        value: '行政处罚决定',
-        label: '行政处罚决定'
-      }, {
-        value: '催告书',
-        label: '催告书'
-      }, {
-        value: '行政强制执行决定书',
-        label: '行政强制执行决定书'
-      }, {
-        value: '代履行决定书',
-        label: '代履行决定书'
-      }, {
-        value: '中止（终结、恢复）行政强制执行通知书',
-        label: '中止（终结、恢复）行政强制执行通知书'
-      }],
       staffData: [],
     }
   },
@@ -361,11 +299,6 @@ export default {
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
-    // 获取多行编辑内容
-    // getOverFloeEditInfo(edit) {
-    //   console.log('回显', edit)
-    //   this.docData.illegalFactsEvidence = edit;
-    // },
     //提交
     submitData(handleType) {
       // debugger
@@ -481,10 +414,6 @@ export default {
         })
         .catch(_ => { });
     },
-    //删除当前添加行的数据
-    // handleRow(row) {
-
-    // },
     submitForm(formName) {
       console.log('数组11', this.tableDatas)
       let canAdd = true;
@@ -530,15 +459,7 @@ export default {
       }
 
       if (canAdd) {
-        // this.tableDatas.forEach(item=>{
-        //   item.deliveryMaster = item.deliveryMaster.join(',');
-        // })
-        // console.log('this.tableDatas',this.tableDatas)
-
         this.docData.deliveryCertificatelist = this.tableDatas;
-        //  this.docData.deliveryCertificatelist.forEach(item=>{
-        //    item.
-        //  })
         this.addVisible = false;
       }
 

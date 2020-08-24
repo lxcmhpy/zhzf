@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">收费凭据表</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -81,8 +81,13 @@
         </table>
       </el-form>
     </div>
-
-    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
+    <casePageFloatBtns
+      :pageDomId="'question_print'"
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+      @saveData="saveData"
+      @backHuanjie="submitData"
+    ></casePageFloatBtns>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
@@ -111,13 +116,16 @@ export default {
         partySex: '',
         partyAge: "",
       },
-      caseLinkDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId, //表单类型ID
-        //表单数据
+      caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
+        //文书数据
         docData: "",
-        status: "",
+        status: "",   //提交状态
+        note:"",//文书名字 
+        docDataId:"", //多份文书的id
+        linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         checkBox: [
@@ -197,12 +205,16 @@ export default {
       );
       console.log('获取数据', this.docData)
     },
-    // 提交表单
+    //保存文书信息
     saveData(handleType) {
-      //参数  提交类型 、formRef
-      this.com_submitCaseForm(handleType, "establishForm", true);
+      this.com_addDocData(handleType, "docForm");
     },
-
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
     //设置案件来源
     getDataAfter() {
 
