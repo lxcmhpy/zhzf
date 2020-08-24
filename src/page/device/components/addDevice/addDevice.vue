@@ -22,6 +22,16 @@
         <el-col :span="12">
           <el-form-item label="装备编号" prop="num">
             <el-input v-model="addDeviceForm.num" maxlength="2" placeholder="请输入"></el-input>
+            <el-popover
+              class="device-form-item-tips"
+              placement="top-end"
+              width="325"
+              trigger="click"
+              popper-class="form-tips-popper"
+              content="编号必须唯一，如不输入编号，系统将自动生成编号"
+            >
+              <img class="device-form-item-tips-img" slot="reference" :src="tipsUrl" />
+            </el-popover>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -112,7 +122,7 @@
         <div class="upload-device-image">
           <el-upload
             class="device-uploader"
-            action=""
+            action
             :show-file-list="false"
             :on-change="changeDeviceImage"
           >
@@ -154,8 +164,8 @@
         </el-col>
       </el-row>
       <el-form-item label="维保说明" prop="maintenanceIns">
-            <el-input v-model="addDeviceForm.maintenanceIns" placeholder="请输入"></el-input>
-          </el-form-item>
+        <el-input v-model="addDeviceForm.maintenanceIns" placeholder="请输入"></el-input>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取 消</el-button>
@@ -173,8 +183,9 @@ export default {
         num: "",
         type: "",
       },
-      imageUrl: '',
+      imageUrl: "",
       rules: {},
+      tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg",
     };
   },
   created() {},
@@ -184,7 +195,7 @@ export default {
       this.visible = true;
     },
     // 选择装备图片
-    changeDeviceImage(file, fileList){
+    changeDeviceImage(file, fileList) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     //提交
@@ -212,11 +223,11 @@ export default {
     closeDialog() {
       this.$refs["addDeviceFormRef"].resetFields();
       this.visible = false;
-      for(const key in this.addDeviceForm){
-          this.addDeviceForm[key] = '';
+      for (const key in this.addDeviceForm) {
+        this.addDeviceForm[key] = "";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -237,26 +248,35 @@ export default {
     margin-bottom: 18px;
     border-left: 4px solid #4573d0;
   }
-  .upload-device-image{
-      width: 176px;
-      height: 96px;
-      margin-top: 12px;
-      border: 1px dashed #a3a3a3;
-      .device-uploader{
-          width: 100%;
-        height: 100%;
-        text-align: center;
-        line-height: 96px;
-        font-size: 28px;
-        >>>.el-upload{
-            width: 100%;
-            .device-img{
-                display: block;
-                width: 176px;
-                height: 96px;
-            }
+  .upload-device-image {
+    width: 176px;
+    height: 96px;
+    margin-top: 12px;
+    border: 1px dashed #a3a3a3;
+    .device-uploader {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      line-height: 96px;
+      font-size: 28px;
+      >>> .el-upload {
+        width: 100%;
+        .device-img {
+          display: block;
+          width: 176px;
+          height: 96px;
         }
       }
+    }
+  }
+  .device-form-item-tips {
+    display: inline-block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 4px;
+    right: -40px;
+    cursor: pointer;
   }
 }
 </style>

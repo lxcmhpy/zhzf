@@ -55,6 +55,20 @@
                 </el-form-item>
               </div>
             </div>
+            <div class="row" v-if="showForQH">
+              <div class="col">
+                <el-form-item label="处理结果"  prop="closeResult">
+                  <el-input v-model="formData.closeResult" class="w-120" size="small" disabled></el-input>
+                </el-form-item>
+              </div>
+            </div>
+            <div class="row" v-if="showForQH">
+              <div class="col">
+                <el-form-item label="程序类型"  prop="closeResult">
+                  <el-input v-model="formData.programType" class="w-120" size="small" disabled></el-input>
+                </el-form-item>
+              </div>
+            </div>
           </div>
           <div class="border_blue"></div>
           <div class="content_form">
@@ -217,6 +231,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
+import {
+  queryFlowBycaseIdApi
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -232,6 +249,8 @@ export default {
         period:"",
         organName:iLocalStroage.gets("userInfo").organName,
         nickName:"",
+        closeResult:'',
+        programType:''
       },
     caseLinkDataForm: {
         id: "", //修改的时候用
@@ -309,6 +328,7 @@ export default {
       },
       mulvList:[],
       propertyFeatures:'',
+      showForQH:false,
     };
   },
   inject: ['reload'],
@@ -548,6 +568,19 @@ export default {
                 console.log(err);
               }
         )
+    },
+    //获取案件流程
+    async getFlowType(){
+      try{
+        this.currentFlow = await queryFlowBycaseIdApi(this.caseId);
+      }catch(err){
+        this.$message('获取案件流程失败！')
+      }
+      if(this.currentFlow.data.flowName == '青海赔补偿流程'){
+         this.showForQH = true;
+      }else {
+         this.showForQH = false;
+      }
     }
   },
   mounted() {
@@ -555,6 +588,7 @@ export default {
     this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     // this.getByMlCaseId(this.caseId)
     this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+    this.getFlowType();
     this.setFormData();
     this.$refs.caseSlideMenuRef.mouseenterShowEmit('archiveCatalogue')
     //在目录排序页面点击弹窗数据后返回的
