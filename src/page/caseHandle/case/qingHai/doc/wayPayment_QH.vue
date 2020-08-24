@@ -25,8 +25,8 @@
           </el-form-item>依法调查核实：
         </p>
         <p>
-          当事人<el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
-            <el-input type="textarea" v-model="docData.party" :disabled="fieldDisabled(propertyFeatures['party'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+          当事人<el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'])">
+            <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
           </el-form-item>于
           <el-form-item prop="causeName" :rules="fieldRules('causeName',propertyFeatures['causeName'])">
             <el-input type="textarea" v-model="docData.causeName" :disabled="fieldDisabled(propertyFeatures['causeName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
