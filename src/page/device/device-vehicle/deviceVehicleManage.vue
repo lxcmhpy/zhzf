@@ -73,13 +73,8 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item>
-                  <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                  <el-button
-                    type="primary"
-                    size="medium"
-                    icon="el-icon-refresh-left"
-                    @click="reset"
-                  ></el-button>
+                  <el-button size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
+                  <el-button size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -90,7 +85,7 @@
         <router-link :to="{ name: 'equipmentDetail', params: { id: 'add' }}">
           <el-button type="primary" size="medium" icon="el-icon-plus">新增</el-button>
         </router-link>
-        <el-button type="primary" size="medium" icon="el-icon-delete" @click="deleteBatch">删除</el-button>
+        <el-button type="success" size="medium" icon="el-icon-delete" @click="deleteBatch">删除</el-button>
       </el-row>
       <div class="tablePart">
         <el-table
@@ -105,13 +100,23 @@
           <el-table-column prop="vehicleNumber" label="车牌号" align="center"></el-table-column>
           <el-table-column prop="name" label="使用单位" align="center"></el-table-column>
           <el-table-column prop="vehicleCategory" label="车辆类别" align="center"></el-table-column>
-          <el-table-column prop="useCondition" label="使用状况" align="center"></el-table-column>
+          <el-table-column prop="useCondition" label="使用状况" align="center">
+            <template slot-scope="scope">
+              <span
+                :style="{'color': statusColor[scope.row.useCondition]}"
+              >{{scope.row.useCondition}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="使用证号" align="center">
             <template slot-scope="scope">
               <span v-if="scope.row.deviceUsePerVo">{{scope.row.deviceUsePerVo.usePermitNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="state" label="证件状态" align="center"></el-table-column>
+          <el-table-column prop="state" label="证件状态" align="center">
+            <template slot-scope="scope">
+              <span :style="{'color': statusColor[scope.row.state]}">{{scope.row.state}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="op" label="操作" align="center" width="100">
             <template slot-scope="scope">
               <router-link :to="{ name: 'equipmentDetail', params: { id: scope.row.id }}">
@@ -167,6 +172,14 @@ export default {
       caseIds: [],
       propertyIds: [],
       tableDataTree: [],
+      statusColor: {
+        待颁发: "#0074F5",
+        正常: "#05C051",
+        挂失: "#FF8000",
+        已年审: "#0BA5BF",
+        注销: "#999999",
+        报废: "#999999",
+      },
     };
   },
   mixins: [mixinGetCaseApiList],
@@ -268,6 +281,17 @@ export default {
   },
 };
 </script>
-<style lang="scss" src="@/assets/css/caseHandle/index.scss">
+<style>
+.el-button--success {
+  color: #fff;
+  background-color: #1aa08e;
+  border-color: #1aa08e;
+}
+.el-button--success:focus,
+.el-button--success:hover {
+  background: #30b8a5;
+  border-color: #30b8a5;
+  color: #fff;
+}
 </style>
 
