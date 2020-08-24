@@ -676,6 +676,7 @@ export const mixinGetCaseApiList = {
     },
     //查询文书或表单是否禁用及必填等
     searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {
+      console.log('caseBasicInfoIdAndtypeId',caseBasicInfoIdAndtypeId)
       findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res => {
         console.log('通过案件Id级文书类型Id查询案件基本信息及规则', res);
         let data = JSON.parse(res.data.propertyData);

@@ -57,7 +57,7 @@
                 </el-form>
             </div>
             <div class="tableHandle" style="margin-bottom: 10px;">
-                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
+                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增装备</el-button>
                 <el-button plain size="medium" icon="el-icon-document"  @click="copyClick">复制</el-button>
             </div>    
             <div class="tablePart">
@@ -65,9 +65,7 @@
                     :data="tableData"
                     ref="dataTable"
                     stripe
-                    resizable
-                    border
-                    style="width: 100%;height:100%"
+                    style="width: 100%;height:100%;"
                 >
                     <el-table-column
                         type="selection"
@@ -80,14 +78,34 @@
                         </template>
                     </el-table-column>
                     <!--列表字段-->
-                    <el-table-column prop="status" label="状态" width="70px"></el-table-column>
-                    <el-table-column prop="code" label="装备编码" width="120px"></el-table-column>
-                    <el-table-column prop="name" label="装备名称"></el-table-column>
-                    <el-table-column prop="deviceType" label="装备类型"></el-table-column>
-                    <el-table-column prop="brand" label="品牌型号" width="120px"></el-table-column>
-                    <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                    <el-table-column prop="userId" label="使用人" width="120px"></el-table-column>
-                    <el-table-column label="操作" width="160">
+                    <el-table-column prop="code" label="装备编码" align="center" width="120px"></el-table-column>
+                    <el-table-column prop="name" label="装备名称" align="center"></el-table-column>
+                    <el-table-column prop="status" label="状态" align="center" width="70px">
+                        <template slot-scope="scope">
+                            <span
+                                v-if="scope.row.status === '闲置'"
+                                style="color: #05C051;"
+                            >{{scope.row.status}}</span>
+                            <span
+                                v-else-if="scope.row.status === '在用'"
+                                style="color: #0074F5;"
+                            >{{scope.row.status}}</span>
+                            <span
+                                v-else-if="scope.row.status === '维修中'"
+                                style="color: #E84241;"
+                            >{{scope.row.status}}</span>
+                            <span
+                                v-else-if="scope.row.status === '调拨中'"
+                                style="color: #FF8000;"
+                            >{{scope.row.status}}</span>
+                            <span style="color: #999999;" v-else>{{scope.row.status}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="deviceType" label="装备类型" align="center"></el-table-column>
+                    <el-table-column prop="brand" label="品牌型号" width="120px" align="center"></el-table-column>
+                    <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+                    <el-table-column prop="userId" label="使用人" width="120px" align="center"></el-table-column>
+                    <el-table-column label="操作" width="160" align="center">
                         <template slot-scope="scope">
                             <div style="width:160px">
                                 <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
