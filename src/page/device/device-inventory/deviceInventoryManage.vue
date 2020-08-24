@@ -690,7 +690,7 @@
             },
             addFormPurchaseUnitClick(val) {
                 this.$refs.addFormPurchaseUnitTreeObj.$children[0].handleClose();
-                this.addForm.purchaseUnit  = val
+                this.$set(this.addForm,'purchaseUnit',val)
             },
             queryFormUseUnitClick(val) {
                 this.$refs.queryFormUseUnitTreeObj.$children[0].handleClose();
@@ -714,14 +714,14 @@
                         this.$message({type:'error',message:'请选择末级设备类型'})
                     }else{
                         this.$refs.addFormDeviceTypeTreeObj.$children[0].handleClose();
-                        this.addForm.deviceType  = val
+                        this.$set(this.addForm,'deviceType',val)
                     }
                 }
             },
             addFormUseUnitClick(val) {
                 if(val!=null){
                     this.$refs.addFormUseUnitTreeObj.$children[0].handleClose();
-                    this.addForm.useUnit  = val
+                    this.$set(this.addForm,'useUnit',val)
                     this.getUserDataList(val)
                     this.$set(this.addForm,'userId','')
                 }
