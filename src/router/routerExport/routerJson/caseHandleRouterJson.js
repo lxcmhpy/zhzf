@@ -580,6 +580,14 @@ export default [{
     component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
   },
   {
+    path: "/typeicalDetail",
+    name: "case_handle_typeicalDetail",
+    meta: {
+      title: "案例详情",
+    },
+    component: () => import("@/page/product-template/typical/typeicalDetail.vue")
+  },
+  {
     path: "/caseCenter-overWeightCase",
     name: "case_handle_caseCenter-overWeightCase",
     meta: {

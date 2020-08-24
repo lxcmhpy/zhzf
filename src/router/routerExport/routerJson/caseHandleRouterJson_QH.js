@@ -40,4 +40,12 @@ export default [
         },
         component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReport_QH.vue")
     },
+    {
+        path: "/compensationNoticeForm_QH",
+        name: "case_handle_compensationNoticeForm_QH",
+        meta: {
+          title: "公路赔（补）偿通知书"
+        },
+        component: () => import("@/page/caseHandle/case/qingHai/form/compensationNoticeForm_QH.vue")
+    },
 ]
