@@ -46,8 +46,8 @@
             </el-col>
             <el-col :span="3">
               <el-form-item label-width="10px">
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
+                <el-button size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
+                <el-button size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -64,7 +64,11 @@
           <el-table-column label="使用期限" align="center">
             <template slot-scope="scope">{{scope.row.beginDate}}~{{scope.row.endDate}}</template>
           </el-table-column>
-          <el-table-column prop="state" label="证件状态" align="center"></el-table-column>
+          <el-table-column prop="state" label="证件状态" align="center">
+            <template slot-scope="scope">
+              <span :style="{'color': statusColor[scope.row.state]}">{{scope.row.state}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="op" label="操作" align="center" width="100">
             <template slot-scope="scope">
               <!-- v-if="scope.row.state=='待颁发' || scope.row.state=='挂失' || scope.row.state=='已年审'" -->
@@ -280,6 +284,14 @@ export default {
         ],
       },
       tableDataTree: [],
+      statusColor: {
+        待颁发: "#0074F5",
+        正常: "#05C051",
+        挂失: "#FF8000",
+        已年审: "#0BA5BF",
+        注销: "#999999",
+        报废: "#999999",
+      },
     };
   },
   methods: {

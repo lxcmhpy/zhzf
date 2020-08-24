@@ -69,21 +69,19 @@
           <el-table
             :data="tableData"
             stripe
-            resizable
-            border
-            style="width: 100%;height:100%"
+            style="width: 100%;height:100%;"
             @selection-change="selectData"
             @row-click="showDataDetail"
           >
-            <el-table-column label="序号" width="70px">
+            <el-table-column label="序号" align="center" width="70px">
               <template slot-scope="scope">
                 {{scope.$index+1}}
               </template>
             </el-table-column>
-            <el-table-column prop="code" label="编码"></el-table-column>
-            <el-table-column prop="name" label="类型名称"></el-table-column>
-            <el-table-column prop="parentId" label="上级类型" :formatter="formatDeviceType"></el-table-column>
-            <el-table-column label="操作" width="160">
+            <el-table-column prop="code" label="编码" align="center"></el-table-column>
+            <el-table-column prop="name" label="类型名称" align="center"></el-table-column>
+            <el-table-column prop="parentId" label="上级类型" :formatter="formatDeviceType" align="center"></el-table-column>
+            <el-table-column label="操作" width="160" align="center">
               <template slot-scope="scope">
                 <div style="width:160px">
                   <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>

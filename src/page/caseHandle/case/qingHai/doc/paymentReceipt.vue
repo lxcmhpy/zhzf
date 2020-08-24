@@ -232,8 +232,8 @@ export default {
     }
   },
   created() {
-    // this.setData();
-    // this.getCaseInfo();
+    this.setData();
+    this.getCaseInfo();
   }
 };
 </script>
