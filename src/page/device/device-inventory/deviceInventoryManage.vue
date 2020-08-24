@@ -147,7 +147,7 @@
                         <el-row :gutter="20">
                             <el-col :span="12">
                                 <el-form-item label="装备编码" prop="code">
-                                    <el-input v-model="addForm.code" style="width: 100%;" :readonly="true"></el-input>
+                                    <el-input v-model="addForm.code" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
@@ -218,7 +218,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="购置价格" prop="purchasePrice">
+                                <el-form-item label="购置价格(元)" prop="purchasePrice">
                                     <el-input v-model="addForm.purchasePrice" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                                 </el-form-item>
                             </el-col>
@@ -690,7 +690,7 @@
             },
             addFormPurchaseUnitClick(val) {
                 this.$refs.addFormPurchaseUnitTreeObj.$children[0].handleClose();
-                this.addForm.purchaseUnit  = val
+                this.$set(this.addForm,'purchaseUnit',val)
             },
             queryFormUseUnitClick(val) {
                 this.$refs.queryFormUseUnitTreeObj.$children[0].handleClose();
@@ -714,14 +714,14 @@
                         this.$message({type:'error',message:'请选择末级设备类型'})
                     }else{
                         this.$refs.addFormDeviceTypeTreeObj.$children[0].handleClose();
-                        this.addForm.deviceType  = val
+                        this.$set(this.addForm,'deviceType',val)
                     }
                 }
             },
             addFormUseUnitClick(val) {
                 if(val!=null){
                     this.$refs.addFormUseUnitTreeObj.$children[0].handleClose();
-                    this.addForm.useUnit  = val
+                    this.$set(this.addForm,'useUnit',val)
                     this.getUserDataList(val)
                     this.$set(this.addForm,'userId','')
                 }

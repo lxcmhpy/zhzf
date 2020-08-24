@@ -96,14 +96,16 @@ export default {
         relieveDate: '',
       },
       handleType: 0, //0  暂存     1 提交
-      caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件ID
-        caseDoctypeId: this.$route.params.docId, //文书类型ID
+       caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
         //文书数据
         docData: "",
-        status: "", //提交状态
-        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
+        status: "",   //提交状态
+        note:"",//文书名字 
+        docDataId:"", //多份文书的id
+        linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },
       name: '',
       rules: {

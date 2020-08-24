@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">公路赔（补）偿通知书（存根）</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -60,8 +60,8 @@
             </td>
             <td class="color_DBE4EF">
               <p>时间：<el-form-item style="width:calc(100% - 56px)" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                  <el-input type="textarea" v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-                </el-form-item>
+                <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd"></el-date-picker>
+              </el-form-item>
               </p>
 
             </td>
@@ -169,13 +169,16 @@ export default {
         partySex: '',
         partyAge: "",
       },
-      caseLinkDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_QH.case_handle_paymentReport_QH_caseDocTypeId, //表单类型ID
-        //表单数据
+     caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
+        //文书数据
         docData: "",
-        status: "",
+        status: "",   //提交状态
+        note:"",//文书名字 
+        docDataId:"", //多份文书的id
+        linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         checkBox: [

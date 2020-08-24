@@ -46,6 +46,20 @@ let flowGraphData = {
         ],
         links:[]
     },
+
+    //青海赔补偿流程
+    compensationGraphData_QH : {
+        nodes:[
+          {id:"1",source: '1',target:"2",linkID: BASIC_DATA_SYS.establish_caseLinktypeId,name:"立案登记青海",linkName:'case_handle_establish',docId:BASIC_DATA_SYS.establish_huanjieAndDocId,position:{x: 1, y: 1}, itemStyleColor: "", attributes:{modularity_class:'lct_01'}},
+          {id:"2",source: "2",target:"3",linkID: BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,name:"调查类\n文书",linkName:'case_handle_caseDoc',position:{x: 1, y: 2},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+          {id:"3",source: "3",target:"4",linkID: BASIC_DATA_SYS.compensationNote_caseDoctypeId,name:"赔补偿\n通知",linkName:'case_handle_compensationNoticeForm_QH',position:{x: 1, y: 3},itemStyleColor: "",attributes:{modularity_class:'lct_03'}},
+          {id:"4",source: '4',target:"5",linkID: BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId,name:"当事人\n权利",linkName:'case_handle_compensationPartyRights',position:{x: 1, y: 4},itemStyleColor: "",attributes:{modularity_class:'lct_10'}},
+          {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId,name:"收缴赔\n补偿款",linkName:'case_handle_payCompensation',position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
+          {id:"6",source: "6",target:"6",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",linkName:'case_handle_finishCaseReport',docId:BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId,position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
+        ],
+        links:[]
+    },
+
     //江西案件流程
     commonGraphData_JX :{
         nodes:[
