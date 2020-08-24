@@ -960,7 +960,7 @@ export default {
             )
         },
         async findImageListByWorkNo(){
-            let res = await findImageListByWorkNo(this.obj.id,this.obj.workNo);
+            let res = await findImageListByWorkNo(this.obj.id,this.obj.workNo?this.obj.workNo:"");
             if(res.data.length==0){
                  this.errorMsg('图片未找到', 'error')
             }else{

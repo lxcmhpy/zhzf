@@ -555,7 +555,7 @@
                         <span class="titleflag">
                         </span>
                         <span class="title">现场照片/视频</span>
-                        <span class="right f12"> {{parseInt(acitveCar)+1}} / 5</span>
+                        <span class="right f12"> {{parseInt(acitveCar)+1}} / {{imgSize}}</span>
                     </div>
                     <ul class="list">
                         <!-- v-for="index in 2" :key="index" -->
@@ -705,7 +705,8 @@ export default {
             carInfo:{},
             vehicleInfo:{},
             ownerInfo:{},
-            videoUrl:''
+            videoUrl:'',
+            imgSize:0
         }
     },
     methods:{
@@ -844,15 +845,19 @@ export default {
             }
             getFileByCaseId(data).then(
                 res => {
+                    let size = 0;
                     res.data.forEach(p => {
                         if(p.status=='治超图片'){
                             this.imgList.push(p.storageId)
+                            size++
                         }else if(p.status=='治超视频'){
                             this.videoUrl=p.storageId
+                            size++
                         }else{
                             this.fileList.push(p)
                         }
                     });
+                    this.imgSize=size
                 },
                 error => {
                     console.log(error);
