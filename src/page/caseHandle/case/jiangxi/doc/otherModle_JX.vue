@@ -326,7 +326,7 @@ export default {
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.$route.params.docId,    //文书类型ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
@@ -425,7 +425,7 @@ export default {
   },
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId','currentFileData']) },
+  computed: { ...mapGetters(['caseId']) },
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {

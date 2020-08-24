@@ -293,7 +293,7 @@ export default {
       nowShowPdfIndex:0, //归档后当前显示的pdf的index
       archiveSuccess:false, //归档成功
       docData:{
-        beikaoDes:'',
+        beikaoDes:'本案卷共有文件材料  页，其中文字材料   页，照片  页，附图  张，其他（驾驶证、行驶证、营运证、从业资格证复印件）   页。',
         collator:'',
         checkMan:'',
         beikaoTime:''

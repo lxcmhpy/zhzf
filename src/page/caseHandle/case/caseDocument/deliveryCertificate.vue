@@ -53,6 +53,14 @@
               <td width="10%">送达方式</td>
               <td width="10%">送达人</td>
           </tr>
+          <tr v-if="docData.deliveryCertificatelist.length==0"  @click="handleAdd">
+              <td></td>
+              <td ></td>
+              <td></td>
+              <td></td>
+              <td ></td>
+              <td ></td>
+          </tr>
             <tr @click="handleAdd" v-for="(item,index) in docData.deliveryCertificatelist" :key="index" >
               <td>{{item.docName ? item.docName : ''}}</td>
               <td>{{item.receiver ? item.receiver : ''}}</td>
@@ -124,16 +132,16 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="送达日期" align="center">
+              <el-table-column label="送达日期" align="center" width="200">
                 <template slot-scope="scope">
-                  <el-date-picker v-model="scope.row.servedDate" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm">
+                  <el-date-picker  v-model="scope.row.servedDate" type="datetime" format="yyyy-MM-dd HH:mm" value-format="yyyy-MM-dd HH:mm" :clearable="true">
                   </el-date-picker>
                 </template>
               </el-table-column>
 
               <el-table-column prop="servedType" label="送达方式" align="center">
                 <template slot-scope="scope">
-                  <el-select v-model="scope.row.servedType">
+                  <el-select v-model="scope.row.servedType" :clearable="true">
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
@@ -338,11 +346,6 @@ export default {
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
-    // 获取多行编辑内容
-    // getOverFloeEditInfo(edit) {
-    //   console.log('回显', edit)
-    //   this.docData.illegalFactsEvidence = edit;
-    // },
     //提交
     submitData(handleType) {
        // debugger
@@ -354,9 +357,13 @@ export default {
   // 提交文书表单
     saveData(handleType, docForm) {
       let newdeliveryCertificatelist =JSON.parse(JSON.stringify(this.docData.deliveryCertificatelist));
-      newdeliveryCertificatelist.forEach(item=>{
-        item.deliveryMaster = item.deliveryMaster.join(',');
-      })
+      console.log('newdeliveryCertificatelist',newdeliveryCertificatelist)
+      if(newdeliveryCertificatelist.length >0 && newdeliveryCertificatelist[0].docName){
+        newdeliveryCertificatelist.forEach(item=>{
+          item.deliveryMaster = item.deliveryMaster.join(',');
+        })
+      }
+      
       let data = {
             caseId: this.caseId, //流程里的案件id
             caseNumber: this.docData.caseNumber,
@@ -506,8 +513,22 @@ export default {
     submitForm(formName){
       console.log('数组11',this.tableDatas)
       let canAdd = true;
+      console.log('this.docData.caseNumber',this.docData.caseNumber)
+      //是否为青海案件
+      let isQHcase = this.docData.caseNumber.includes('青')
       for(let i=0; i<this.tableDatas.length; i++){
         this.tableDatas[i].receiver='';
+        if(isQHcase){
+          if(!this.tableDatas[i].docName){
+              this.$message({
+                message: '送达文书名称不能为空！',
+                type: 'warning'
+              });
+            canAdd = false;
+            break;
+          }
+          
+        }else{
           if(!this.tableDatas[i].docName || !this.tableDatas[i].address || !this.tableDatas[i].servedDate || !this.tableDatas[i].servedType || !this.tableDatas[i].deliveryMaster){
             if(!this.tableDatas[i].docName){
               this.$message({
@@ -547,7 +568,9 @@ export default {
             break;
           }
         }
-
+          
+        }
+      console.log('canAdd',canAdd)
         if(canAdd){
           // this.tableDatas.forEach(item=>{
           //   item.deliveryMaster = item.deliveryMaster.join(',');
@@ -562,12 +585,13 @@ export default {
         }
 
 
-    console.log('数组',this.tableDatas)},
+      console.log('数组',this.tableDatas)
+    },
     getDataAfter() {
       console.log(this.docData.deliveryCertificatelist);
-      if (!this.docData.deliveryCertificatelist.length) {
-        this.docData.deliveryCertificatelist = [{ docName: '', receiver: '', address: '', servedDate: '', servedType: '', deliveryMaster: '' }]
-      }
+      // if (!this.docData.deliveryCertificatelist.length) {
+      //   this.docData.deliveryCertificatelist = [{ docName: '', receiver: '', address: '', servedDate: '', servedType: '', deliveryMaster: '' }]
+      // }
     },
     //选择执法人员
     chooseStaff(row){
@@ -614,11 +638,17 @@ export default {
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss">
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 </style>
-<style  scoped>
+<style lang="scss"  >
 .print_box .print_info tr td{
   white-space: inherit;
 
 }
+#deliverCertificate-print{
+  .el-date-editor.el-input, .el-date-editor.el-input__inner{
+  width: 100%;
+  }
+}
+
 /* .color_DBE4EF
   /deep/
   .el-form-item__content

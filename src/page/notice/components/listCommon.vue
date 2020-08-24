@@ -157,7 +157,6 @@ export default {
   },
   created() {},
   mounted() {
-    debugger;
     this.searchForm.type = this.type;
     this.getDataList({ type: this.type });
   },
