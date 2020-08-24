@@ -41,7 +41,7 @@
 </template>
 <script>
   import {
-     submitPdfByPersonApi,handleTJApproveDocApi,getLinkTypeInfoByIdApi,
+     submitPdfByPersonApi,handleTJApproveDocApi,getLinkTypeInfoByIdApi,queryFlowBycaseIdApi,getApprovePeopleByCaseTypeApi,
   } from "@/api/caseHandle";
   import {mapGetters} from "vuex";
 
@@ -83,11 +83,12 @@
         }
         if(currentFlow.data.flowName == '处罚流程'){
           data.flag = 0;
-        }else if(this.currentFlow.data.flowName == '赔补偿流程'){
+        }else if(currentFlow.data.flowName == '赔补偿流程'){
           data.flag = 1;
         }
         console.log('获取审批人员传参',data); 
-        this.$store.dispatch("getApprovePeople", data).then(
+        
+       getApprovePeopleByCaseTypeApi(data).then(
           res => {
             let data = res.data;
             console.log('审批人员',res.data)

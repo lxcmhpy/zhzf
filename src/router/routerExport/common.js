@@ -2,6 +2,7 @@ import MainContent from '@/components/mainContent'
 import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在后台返回，在文件里单独引入
 import caseHandleRouterJson from './routerJson/caseHandleRouterJson'
 import caseHandleRouterJson_JX from './routerJson/caseHandleRouterJson_JX'
+import caseHandleRouterJson_QH from './routerJson/caseHandleRouterJson_QH'
 import lawSuperviseJson from './routerJson/lawSuperviseJson'
 import caseCenterJson from './routerJson/caseCenterJson'
 import {
@@ -77,7 +78,9 @@ const route = [
         component: MainContent,
         children: [
           ...caseHandleRouterJson,
-          ...caseHandleRouterJson_JX
+          ...caseHandleRouterJson_JX,
+          ...caseHandleRouterJson_QH
+
         ]
       },
       ...lawSuperviseJson,

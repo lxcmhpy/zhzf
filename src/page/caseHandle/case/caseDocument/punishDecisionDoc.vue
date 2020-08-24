@@ -165,15 +165,15 @@
                 class="text_indent10 overflow_lins_textarea"
                 type="textarea"
                 v-model="formData.illegalFact"
-                rows="3"
-                maxlength="90"
+                rows="5"
+                maxlength="500"
                 :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
               ></el-input>
-              <span class="overflow_describe">违法事实及依据：</span>
+              <span class="overflow_describe">违法事实及证据：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span
-                v-for="item in overFlowEditList"
-                :key="item.id"
+                v-for="i in 4"
+                :key="i"
                 class="span_bg"
                 @click="overFlowEdit"
               >&nbsp;</span>
@@ -430,7 +430,7 @@ export default {
           { required: true, message: '行政处罚必须填写', trigger: 'blur' },
         ],
          illegalFact: [
-          { required: true, message: '违法事实及依据必须填写', trigger: 'blur' },
+          { required: true, message: '违法事实及证据必须填写', trigger: 'blur' },
         ],
         litigationOrgan: [
           { required: true, message: '行政诉讼机构必须填写', trigger: 'change' },

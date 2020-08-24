@@ -446,8 +446,7 @@ export default {
         this.caseDocDataForm.note = "询问笔录（"+myPeopleType+")(第"+addMoreData.askData.askNum +"次)";
         this.com_getCaseBasicInfo(data.caseId,data.docId);
       }else{
-        console.log('修改')
-        let currentDocDataId = this.currentFileData.docDataId;
+        let currentDocDataId = iLocalStroage.get("currentDocDataId");
         if(currentDocDataId){
           this.getDocDetailById(currentDocDataId)
         }else{

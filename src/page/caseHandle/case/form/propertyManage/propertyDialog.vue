@@ -103,7 +103,7 @@
       :visible.sync="propertyVisible"
       @close="propertyVisible = false"
       :close-on-click-modal="false"
-      width="50%"
+      width="600px"
     >
       <div>
         <el-form ref="handleForm" :model="dispose" label-width="90px">
@@ -120,7 +120,19 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row v-if="dispose.disposeWay=='其他'">
+          <el-row>
+            <el-col :span="3">
+              <el-form-item label>
+                <el-radio v-model="other" label="其他">其他</el-radio>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10" v-if="other=='其他'">
+              <el-form-item label>
+                <el-input v-model="dispose.disposeWay"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
             <el-col :span="24">
               <el-form-item label="备注">
                 <el-input type="textarea" v-model="dispose.disposeRemark" maxlength="30"></el-input>
@@ -162,10 +174,11 @@ export default {
         disposePersonId: "",
         disposePerson: "",
       },
+      other: "",
       caseData: "",
       isSaveLink: "",
       caseLinktypeId: "",
-      handleWayList: ["封存", "扣押", "退回当事人", "移交法院", "销毁", "其他"],
+      handleWayList: ["封存", "扣押", "退回当事人", "移交法院", "销毁"],
       multipleSelection: [],
       selectedData: [],
     };
@@ -268,6 +281,9 @@ export default {
 
         this.getCaseList2({});
       } else {
+        this.other = "";
+        this.dispose.disposeRemark = "";
+        this.dispose.disposeWay = "";
         this.propertyVisible = true;
       }
     },
