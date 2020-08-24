@@ -1,5 +1,6 @@
 <template>
-  <listCommon type="权责清单"></listCommon>
+  <!-- 权责清单 3-->
+  <listCommon type="3"></listCommon>
 </template>
 <script>
 import listCommon from "@/page/notice/components/listCommon";

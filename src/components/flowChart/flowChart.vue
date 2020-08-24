@@ -10,7 +10,7 @@
         </el-tooltip>
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
-        <el-button type="primary" size="medium" @click="linkBack">环节回退</el-button>
+        <!-- <el-button type="primary" size="medium" @click="linkBack">环节回退</el-button> -->
 
       </div>
       <div style="overflow-y:auto;">
@@ -83,6 +83,8 @@ export default {
          _this.graphData = graphData.compensationGraphData;
       }else if(this.currentFlow.data.flowName == '江西流程'){
          _this.graphData = graphData.commonGraphData_JX;
+      }else if(this.currentFlow.data.flowName == '青海赔补偿流程'){
+         _this.graphData = graphData.compensationGraphData_QH;
       }
 
       

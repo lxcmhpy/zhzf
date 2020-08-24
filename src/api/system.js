@@ -1256,3 +1256,39 @@ export function appDownloadApi() {
       cancelToken: setCancelSource()
   });
 }
+
+//获取行政区划
+export function getCountryApi(data) {
+    return request({
+      url: "/system/sys/country/listByPcode/"+data,
+      method: "get",
+      showloading: false,
+      loadingType:'loadPart',
+      cancelToken: setCancelSource()
+    });
+  }
+
+  //获取行政区划
+export function countryTreeApi(data) {
+    return request({
+      url: "/system/sys/country/treeByCondition",
+      method: "post",
+      showloading: false,
+      loadingType:'loadPart',
+      data: data,
+      cancelToken: setCancelSource()
+    });
+  }
+
+//批量查询抽屉表
+export function getDrawerListApi(data) {
+    return request({
+        url: "/system/sys/drawer/getDrawerList/",
+        method: "post",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        data: data,
+        cancelToken: setCancelSource()
+    })
+}

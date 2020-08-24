@@ -7,6 +7,9 @@ import {
 import { getFile } from "@/api/upload";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
+import {
+  getDictListDetailByNameApi
+} from "@/api/system";
 export const mixinGetCaseApiList = {
   data() {
     return {
@@ -676,6 +679,7 @@ export const mixinGetCaseApiList = {
     },
     //查询文书或表单是否禁用及必填等
     searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {
+      console.log('caseBasicInfoIdAndtypeId',caseBasicInfoIdAndtypeId)
       findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res => {
         console.log('通过案件Id级文书类型Id查询案件基本信息及规则', res);
         let data = JSON.parse(res.data.propertyData);
@@ -793,6 +797,19 @@ export const mixinGetCaseApiList = {
       }
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
+    //获取基本抽屉表数据
+    async initBaseDrawData(keysArr){
+      if(keysArr.includes('allRelationWithCase')){
+        let  data2 = await getDictListDetailByNameApi('与案件关系');
+        this.allRelationWithCase = data2.data;
+      }
+      if(keysArr.includes('allVehicleShipType')){
+        let  data2 = await getDictListDetailByNameApi('车辆类型');
+        this.allVehicleShipType = data2.data;
+      }
+      
+      
+    }
 
   },
   created() {

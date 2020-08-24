@@ -65,29 +65,41 @@
                 <el-table
                         :data="tableData"
                         stripe
-                        resizable
-                        border
                         style="width: 100%;height:100%"
                         @row-click="showDataDetail"
                 >
-                    <el-table-column label="序号" width="70px">
+                    <el-table-column label="序号" width="70px" align="center">
                         <template slot-scope="scope">
                             {{scope.$index+1}}
                         </template>
                     </el-table-column>
                     <!--列表字段-->
-                    <el-table-column prop="billType" label="单据类型" width="120px" :formatter="formatBillType"></el-table-column>
-                    <el-table-column prop="billNo" label="单据号" width="200px"></el-table-column>
-                    <el-table-column prop="vehicleNumber" label="车牌号" width="120px"></el-table-column>
-                    <el-table-column prop="useUnit" label="使用单位" ></el-table-column>
-                    <el-table-column prop="usePermitNumber" label="使用证号" width="200px"></el-table-column>
-                    <el-table-column prop="billDate" label="申请日期" width="120px"></el-table-column>
-                    <el-table-column prop="status" label="单据状态" width="120px" :formatter="formatStatus"></el-table-column>
-                    <el-table-column label="操作" width="160">
+                    <el-table-column prop="billNo" label="申请单号" width="200px" align="center"></el-table-column>
+                    <el-table-column prop="billType" label="申请类型" width="120px" :formatter="formatBillType" align="center"></el-table-column>
+                    <el-table-column prop="vehicleNumber" label="车牌号" width="120px" align="center"></el-table-column>
+                    <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+                    <el-table-column prop="usePermitNumber" label="使用证号" width="200px" align="center"></el-table-column>
+                    <el-table-column prop="billDate" label="申请日期" width="120px" align="center"></el-table-column>
+                    <el-table-column prop="status" label="申请状态" width="120px" align="center">
                         <template slot-scope="scope">
-                            <div style="width:160px">
-                                <el-button type="text" @click.stop @click="showDataDetail(scope.row)">审核</el-button>
-                            </div>
+                            <span
+                                v-if="scope.row.status === 1"
+                                style="color: #FF8000;"
+                            >{{formatStatus(scope.row)}}</span>
+                            <span
+                                v-else-if="scope.row.status === 2"
+                                style="color: #0074F5;"
+                            >{{formatStatus(scope.row)}}</span>
+                            <span
+                                v-else-if="scope.row.status === 3"
+                                style="color: #05C051;"
+                            >{{formatStatus(scope.row)}}</span>
+                            <span style="color: #E84241;" v-else>{{formatStatus(scope.row)}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="160" align="center">
+                        <template slot-scope="scope">
+                            <el-button type="text" @click.stop @click="showDataDetail(scope.row)">审核</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

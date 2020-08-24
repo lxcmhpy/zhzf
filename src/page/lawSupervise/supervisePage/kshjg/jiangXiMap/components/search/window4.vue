@@ -8,8 +8,8 @@
       <p>机构名称：{{window4.info.organName}}</p>
       <p v-if="window4.info.mobile">联系方式：{{window4.info.mobile}}</p>
       <div class="btns">
-        <div class="btnsBox" v-for="(item,index) of btnList" :key="index">
-          <i :class="item.class" />
+        <div class="btnsBox" v-for="(item,index) of btnList" :key="index" @click="handleClickBtns(index)">
+          <i :class="item.class" :style="(index===0 || index===1)?{color:window4.info.padStateColor} : index===2 ? {color:window4.info.peStateColor} : null" />
         </div>
       </div>
     </div>
@@ -30,8 +30,8 @@ export default {
   data() {
     return {
       btnList: [
-        { class: 'el-icon-phone blueC3' },
-        { class: 'iconfont law-shipin greenC3' },
+        { class: 'el-icon-phone' },
+        { class: 'iconfont law-shipin' },
         { class: 'iconfont law-jiankong' },
         { class: 'iconfont law-msg-box' },
         { class: 'iconfont law-xianlu' }
@@ -44,8 +44,15 @@ export default {
      */
     handlePersonGoBack() {
       this.page.showCom = "Window2"
+    },
+
+    /**
+     * 点击底部小图标
+     */
+    handleClickBtns(index) {
+      this.$emit('handleClickBtns', index, this.window4.info)
     }
-  }
+  },
 }
 </script>
 

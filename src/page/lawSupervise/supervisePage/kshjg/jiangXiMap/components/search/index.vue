@@ -22,6 +22,7 @@
           @handleNodeClick="handleNodeClick"
           @handlePerson="handlePerson"
           @clickImg="clickImg"
+          @handleClickBtns="handleClickBtns"
         />
       </keep-alive>
     </div>
@@ -220,6 +221,13 @@ export default {
         this.getPeople()
       }
     },
+
+    /**
+     * 点击底部小图标
+     */
+    handleClickBtns(index, data) {
+      this.$emit('handleClickBtns', index, data)
+    }
   }
 }
 </script>

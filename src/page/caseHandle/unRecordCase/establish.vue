@@ -5,7 +5,7 @@
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
-        <div class="doc_number">案号：{{formData.caseNumber}}</div>
+        <div class="doc_number">案号：</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>
@@ -185,7 +185,7 @@
               <el-form-item prop="caseSituation" :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])">
                 <el-input type='textarea' v-model="formData.caseSituation" 
                 :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
-                v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="200" placeholder="\"></el-input>
+                v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 7}" maxlength="500" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
