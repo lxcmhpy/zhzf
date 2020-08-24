@@ -809,7 +809,7 @@ export default {
           let data2 = JSON.parse(res.data.propertyData);
           this.staffList = data2.staff.split(',');
         }, err => {
-          console.length(err);
+          console.log(err);
         })
       },
       //根据用户的组织机构ID获取复议机构和诉讼机构

@@ -375,3 +375,13 @@ export  function  getCurrentAndNextOrganApi()  {
       cancelToken:  setCancelSource()
     });
   }
+
+export function findImageListByWorkNo(id,workNo){
+    return request({
+        url: "/zfjg/alarmVehicle/findImageListByWorkNo/" + id+"/"+workNo,
+        method: "get",
+        showloading: false,
+        baseUrlType:  'LAW_SUPERVISE_HOST',
+        cancelToken: setCancelSource()
+      });
+}  

@@ -1,5 +1,6 @@
 <template>
-  <listCommon type="检查结果"></listCommon>
+  <!-- 检查结果 5 -->
+  <listCommon type="5"></listCommon>
 </template>
 <script>
 import listCommon from "@/page/notice/components/listCommon";

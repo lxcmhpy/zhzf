@@ -659,7 +659,7 @@ export default {
           let data2 = JSON.parse(res.data.propertyData);
           this.staffList = data2.staff.split(',');
         },err=>{
-          console.length(err);
+          console.log(err);
         })
     }
   },

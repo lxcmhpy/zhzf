@@ -424,7 +424,7 @@ export default [
             component: () => import("@/page/caseHandle/electronicCaseFile/electronicCaseFileList.vue")
           },{
             name: "offlinefiles",
-            path: "/offlineiles",
+            path: "/offlinefiles",
             meta: {
               title: "线下案卷"
             },

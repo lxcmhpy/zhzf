@@ -26,23 +26,33 @@
           <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope" width="150">
-              <el-button size="small" type="text" @click="Edit_linepdf(scope.$index, scope.row)">编辑</el-button>
-              <el-button size="small" type="text" @click="Delete_linepdf(scope.$index, scope.row)">删除</el-button>
+              <el-button
+                size="small"
+                type="text"
+                style="float:left;"
+                @click="Edit_linepdf(scope.$index, scope.row)"
+              >编辑</el-button>
+              <el-button
+                size="small"
+                type="text"
+                style="float:left;"
+                @click="Delete_linepdf(scope.$index, scope.row)"
+              >删除</el-button>
               <el-upload
                 class="upload-demo"
-                action=""
+                action
                 :http-request="saveFile_pdf"
                 :on-remove="handleRemove_linepdf"
                 :before-remove="beforeRemovepdf"
                 :before-upload="beforeupload_linepdf"
                 :on-success="uploadsuccess_linepdf"
-                :show-file-list="true"
+                :show-file-list="false"
                 accept=".pdf"
                 multiple
                 :limit="30"
                 :file-list="fileList_pdf"
               >
-                <el-button size="small" type="text">上传</el-button>
+                <el-button size="small" style="margin-left:5px;float:left;" type="text">上传</el-button>
               </el-upload>
             </template>
           </el-table-column>
@@ -63,14 +73,14 @@
   </div>
 </template>
 <script>
+import { uploadCommon } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import caseListSearch from "@/components/caseListSearch/caseListSearchofflinefiles";
-import { uploadCommon } from "@/api/upload";
 export default {
   data() {
     return {
-    fileList_pdf:[],
+      fileList_pdf: [],
       tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -83,32 +93,34 @@ export default {
     caseListSearch,
   },
   methods: {
-      Edit_linepdf(){},
-      Delete_linepdf(){},
-    //数据列表table操作 上传
-    saveFile_pdf(param){
-        console.log("param",param)
-        var fd = new FormData()
-      fd.append("file", param.file);
-      fd.append("category", '线下档案');
-      fd.append("fileName", param.file.name);
-      fd.append('status', 'pdf卷宗')//传记录id
-      fd.append('caseId', "fet43g445y56hwgv34g")//传记录id
-      fd.append('docId', "cew43y3gyy6hu76rjki78t")//传文书id
-      console.log(fd)
-    //   uploadCommon(fd).then(
-    //     res => {
-    //       console.log("res",res);
-    //     },
-    //     error => {
-    //       console.log(error)
-    //     }
-    //   );
+    Edit_linepdf() {},
+    Delete_linepdf() {},
+    //：http-request 上传文件
+    saveFile_pdf(param) {
+      console.log("param", param);
+      let fd = {
+        file: param.file,
+        category: "线下档案",
+        fileName: param.file.name,
+        status: "pdf卷宗", //传记录id
+        caseId: "fet43g445y56hwgv34g", //传记录id
+        docId: "cew43y3gyy6hu76rjki78t", //传文书id
+      };
+      console.log("fd", fd);
+      uploadCommon(fd).then(
+        (res) => {
+          console.log("res", res);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-    //新增pdf文件
+    //pdf文件上传成功后
     uploadsuccess_linepdf(file, fileList) {
-        console.log(file,fileList )
+      console.log(file, fileList);
     },
+    //上传文件前
     beforeupload_linepdf(file) {
       console.log("file.type", file.type);
       const isJPG = file.name.lastIndexOf(".pdf") != -1;
@@ -118,9 +130,11 @@ export default {
       }
       return isJPG;
     },
+    //移除文件
     handleRemove_linepdf(file, fileList) {
       //console.log(file, fileList);
     },
+    //移除文件之前
     beforeRemovepdf(file, fileList) {
       //return this.$confirm(`确定移除 ${ file.name }？`);
     },

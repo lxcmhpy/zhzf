@@ -235,6 +235,7 @@
                                     <el-select v-model="addForm.userId" 
                                         style="width: 100%;" 
                                         clearable
+                                        filterable
                                         :disabled="this.formReadOnly">
                                         <el-option
                                             v-for="item in userList"
@@ -755,6 +756,7 @@
             addData() {
                 this.getUserDataList(this.userInfo.organId)
                 this.addForm = {useUnit:this.userInfo.organId};
+                this.imageUrl=''
                 this.title="新增装备"
                 this.formReadOnly = false
                 this.visible = true
