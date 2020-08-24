@@ -147,7 +147,7 @@
                         <el-row :gutter="20">
                             <el-col :span="12">
                                 <el-form-item label="装备编码" prop="code">
-                                    <el-input v-model="addForm.code" style="width: 100%;" :readonly="true"></el-input>
+                                    <el-input v-model="addForm.code" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
@@ -218,7 +218,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="购置价格" prop="purchasePrice">
+                                <el-form-item label="购置价格(元)" prop="purchasePrice">
                                     <el-input v-model="addForm.purchasePrice" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                                 </el-form-item>
                             </el-col>

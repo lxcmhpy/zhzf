@@ -25,7 +25,7 @@
             @setEdit="setEdit"
         />
         </el-tab-pane>
-        <el-tab-pane name="approve" label="审批单" v-if="commited">
+        <el-tab-pane name="approve" label="审批信息" v-if="commited">
           <ApprovalForm 
             :id="id" 
             :isApprove="isApprove" 
@@ -122,6 +122,7 @@ export default {
       background: #eaedf4;
     }
     .el-tabs__active-bar {
+      width: 56px !important;  
       box-sizing: content-box;
       top: 0;
       padding: 0 20px;
