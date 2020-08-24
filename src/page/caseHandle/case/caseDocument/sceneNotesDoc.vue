@@ -139,7 +139,8 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="scenePeopeRelation" :rules="fieldRules('scenePeopeRelation',propertyFeatures['scenePeopeRelation'])">
                   <el-select v-model="docData.scenePeopeRelation" :maxLength="maxLength" placeholder="\" @change="changeRelationWithCase" :disabled="fieldDisabled(propertyFeatures['scenePeopeRelation'])">
-                    <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <!-- <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.value"></el-option> -->
+                    <el-option v-for="item in allRelationWithCase" :key="item.id" :label="item.name" :value="item.name"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
@@ -490,24 +491,24 @@ export default {
         staffList: [],
         allRelationWithCase: [
           //与案件关系下拉框
-          {value: "0", label: "当事人"},
-          {value: "1", label: "驾驶人"},
-          {value: "2", label: "实际所有者"},
-          {value: "3", label: "证人"},
-          {value: "4", label: "承运人"},
-          {value: "5", label: "代理人"}
+          // {value: "0", label: "当事人"},
+          // {value: "1", label: "驾驶人"},
+          // {value: "2", label: "实际所有者"},
+          // {value: "3", label: "证人"},
+          // {value: "4", label: "承运人"},
+          // {value: "5", label: "代理人"}
         ],
 
       allVehicleShipType: [
-        {value: "1", label: "中小客车"},
-        {value: "2", label: "大客车"},
-        {value: "3", label: "小型货车"},
-        {value: "4", label: "中型货车"},
-        {value: "5", label: "大型货车"},
-        {value: "6", label: "特大型货车"},
-        {value: "7", label: "集装箱车"},
-        {value: "8", label: "摩托车"},
-        {value: "9", label: "拖拉机"}
+        // {value: "1", label: "中小客车"},
+        // {value: "2", label: "大客车"},
+        // {value: "3", label: "小型货车"},
+        // {value: "4", label: "中型货车"},
+        // {value: "5", label: "大型货车"},
+        // {value: "6", label: "特大型货车"},
+        // {value: "7", label: "集装箱车"},
+        // {value: "8", label: "摩托车"},
+        // {value: "9", label: "拖拉机"}
       ],
       originalDocData: '', //原始数据
       daiRuscenePeopelSex: false,  //是否为带入的数据
@@ -613,7 +614,7 @@ export default {
             name: this.docData.party,
             sex: this.docData.partySex,
             zhengjianNumber: this.docData.partyIdNo,
-            relationWithCase: "0",
+            relationWithCase: "当事人",
             company: this.docData.partyUnitPosition,
             position: this.docData.partyUnitPosition,
             tel: this.docData.partyTel,
@@ -648,7 +649,7 @@ export default {
       changeRelationWithCase(val) {
         console.log(val,this.originalDocData)
         let dailiData=this.originalDocData
-       if (val=='0') {
+       if (val=='当事人') {
           this.docData.scenePeopelName = dailiData.name;
           this.docData.scenePeopelSex = Number(dailiData.sex);
           this.docData.scenePeopelIdNo = dailiData.zhengjianNumber;
@@ -711,9 +712,15 @@ export default {
         }, err => {
           console.log(err);
         })
-      }
+      },
+      // async initDraw(){
+      //   let  data1 = await getDictListDetailByNameApi('与案件关系');
+      //   this.allRelationWithCase = data1.data;
+      // },
     },
     mounted() {
+      // await initAllRelationWithCase();
+      this.initBaseDrawData(['allRelationWithCase','allVehicleShipType'])
       this.getDocDataByCaseIdAndDocId();
       this.isOverStatus();
       this.getLawOfficer();

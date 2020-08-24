@@ -1500,6 +1500,60 @@ export function linkBackApi(id) {
   });
 }
 
+// 案件调阅查询
+export function getCaseReviewList(data) {
+  return request({
+    url: "/case/caseConsult/user/page",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 已结案案件查询
+export function getCloseCaseList(data) {
+  return request({
+    url: "/case/caseConsult/closeCasePage",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 申请调阅
+export function applyReviewCase(data) {
+  return request({
+    url: "/case/caseConsult/save",
+    method: "post",
+    data: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 调阅申请列表
+export function getApprovalCaseList(data) {
+  return request({
+    url: "/case/caseConsult/organ/page",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 调阅审批
+export function approverReviewCase(data) {
+  return request({
+    url: "/case/caseConsult/approver",
+    method: "post",
+    data: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
 //根据案件类型查询审批角色列表 （青海）
 export function getApprovePeopleByCaseTypeApi(data) {
   return request({
