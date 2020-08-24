@@ -760,7 +760,7 @@ export const mixinGetCaseApiList = {
         if(name == '立案登记'){
           routeName = 'case_handle_establish_JX'
         }
-      }else if(flowName == '赔补偿流程'){
+      }else if(flowName == '赔补偿流程' || flowName == '青海赔补偿流程'){
         if(name == '立案登记'){
           routeName = 'case_handle_establish'
         }
