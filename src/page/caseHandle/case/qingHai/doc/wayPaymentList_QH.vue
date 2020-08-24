@@ -109,11 +109,11 @@
 
           <tr @click="handleAdd" v-for="(item,index) in docData.deliveryCertificatelist" :key="index">
             <td>{{item.docName ? item.docName : ''}}</td>
-            <td>{{item.receiver ? item.receiver : ''}}</td>
-            <td>{{item.address ? item.address : ''}}</td>
-            <td>{{item.servedDate ? item.servedDate : ''}}</td>
-            <td>{{item.servedType ? item.servedType : ''}}</td>
-            <td>{{item.deliveryMaster ? item.deliveryMaster.join(',') : ''}}</td>
+            <td>{{item.unit ? item.unit : ''}}</td>
+            <td>{{item.amount ? item.amount : ''}}</td>
+            <td>{{item.stander ? item.stander : ''}}</td>
+            <td>{{item.total ? item.total : ''}}</td>
+            <td>{{item.notes ? item.notes: ''}}</td>
           </tr>
           <tr>
             <td>备注</td>
@@ -160,32 +160,32 @@
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column label="项目名称" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.docName"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="单位" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.receiver" :disabled="true"></el-input>
+                  <el-input v-model="scope.row.unit"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column prop="address" label="数量" align="center">
+              <el-table-column prop="amount" label="数量" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.amount"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="补偿标准" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.stander"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column prop="servedType" label="小计（元）" align="center">
+              <el-table-column prop="total" label="小计（元）" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.total"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column prop="deliveryMaster" label="备注" align="center" width="210px">
+              <el-table-column prop="notes" label="备注" align="center" width="210px">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.notes"></el-input>
                 </template>
               </el-table-column>
             </el-table>
@@ -462,16 +462,16 @@ export default {
       console.log(this.tableDatas)
       let length = this.tableDatas.length;
       if (length == 0) {
-        this.tableDatas.push({ 'servedType': '直接送达', 'servedDate': new Date().format('yyyy-MM-dd HH:mm') });
+        this.tableDatas.push({ });
       } else {
-        this.tableDatas.push({ 'servedType': '直接送达', 'servedDate': new Date().format('yyyy-MM-dd HH:mm') });
+        this.tableDatas.push({ });
       }
     },
     handleAdd(row) {
       // this.tableDatas = JSON.parse(JSON.stringify(this.docData.tableData));
       this.addVisible = true;
       if (this.tableDatas.length == 0) {
-        this.tableDatas.push({ 'servedType': '直接送达', 'servedDate': new Date().format('yyyy-MM-dd HH:mm') });
+        this.tableDatas.push({});
       }
     },
     handleClose(done) {
@@ -489,35 +489,34 @@ export default {
       console.log('数组11', this.tableDatas)
       let canAdd = true;
       for (let i = 0; i < this.tableDatas.length; i++) {
-        this.tableDatas[i].receiver = '';
-        if (!this.tableDatas[i].docName || !this.tableDatas[i].address || !this.tableDatas[i].servedDate || !this.tableDatas[i].servedType || !this.tableDatas[i].deliveryMaster) {
+        if (!this.tableDatas[i].docName || !this.tableDatas[i].amount || !this.tableDatas[i].unit || !this.tableDatas[i].stander || !this.tableDatas[i].total) {
           if (!this.tableDatas[i].docName) {
             this.$message({
-              message: '送达文书名称不能为空！',
+              message: '项目名称不能为空！',
               type: 'warning'
             });
           } else
-            if (!this.tableDatas[i].address) {
+            if (!this.tableDatas[i].amount) {
               this.$message({
-                message: '送达地点不能为空！',
+                message: '数量不能为空！',
                 type: 'warning'
               });
             } else
-              if (!this.tableDatas[i].servedDate) {
+              if (!this.tableDatas[i].unit) {
                 this.$message({
-                  message: '送达日期不能为空！',
+                  message: '单位不能为空！',
                   type: 'warning'
                 });
               } else
-                if (!this.tableDatas[i].servedType) {
+                if (!this.tableDatas[i].stander) {
                   this.$message({
-                    message: '送达方式不能为空！',
+                    message: '补偿标准不能为空！',
                     type: 'warning'
                   });
                 } else
-                  if (!this.tableDatas[i].deliveryMaster) {
+                  if (!this.tableDatas[i].total) {
                     this.$message({
-                      message: '送达人不能为空！',
+                      message: '小计不能为空！',
                       type: 'warning'
                     });
                   }
@@ -549,7 +548,7 @@ export default {
     getDataAfter() {
       console.log(this.docData.deliveryCertificatelist);
       if (!this.docData.deliveryCertificatelist.length) {
-        this.docData.deliveryCertificatelist = [{ docName: '', receiver: '', address: '', servedDate: '', servedType: '', deliveryMaster: '' }]
+        this.docData.deliveryCertificatelist = [{ docName: '', unit: '', amount: '', notes: '', total: '' }]
       }
     },
     //选择执法人员
@@ -583,12 +582,12 @@ export default {
   },
 
   mounted() {
-    // this.getDocDataByCaseIdAndDocId();
-    // this.getDataAfter();
+    this.getDocDataByCaseIdAndDocId();
+    this.getDataAfter();
   },
   created() {
-    // this.isOverStatus();
-    // this.getLawOfficer();
+    this.isOverStatus();
+    this.getLawOfficer();
   }
 }
 </script>

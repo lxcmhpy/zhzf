@@ -309,9 +309,9 @@ export default {
     },
   },
   created() {
-    // this.setData();
-    // this.getCaseInfo();
-    // this.getLawOfficer();
+    this.setData();
+    this.getCaseInfo();
+    this.getLawOfficer();
   }
 };
 </script>
