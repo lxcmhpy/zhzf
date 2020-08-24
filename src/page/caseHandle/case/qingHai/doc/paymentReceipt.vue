@@ -47,6 +47,14 @@
               </el-form-item>
             </td>
           </tr>
+          <tr>
+            <td>缴费单位</td>
+            <td colspan="8" class="color_DBE4EF">
+              <el-form-item prop="payNumber" :rules="fieldRules('payNumber',propertyFeatures['payNumber'])">
+                <el-input type="textarea" v-model="docData.payNumber" :disabled="fieldDisabled(propertyFeatures['payNumber'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
           <tr style="height: 400px;">
             <td>
               <p class="center_similar">收</p>
@@ -81,13 +89,7 @@
         </table>
       </el-form>
     </div>
-    <casePageFloatBtns
-      :pageDomId="'question_print'"
-      :formOrDocData="formOrDocData"
-      @submitData="submitData"
-      @saveData="saveData"
-      @backHuanjie="submitData"
-    ></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'question_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
@@ -123,9 +125,9 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
-        note:"",//文书名字 
-        docDataId:"", //多份文书的id
-        linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
+        note: "",//文书名字 
+        docDataId: "", //多份文书的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         checkBox: [

@@ -60,8 +60,8 @@
             </td>
             <td class="color_DBE4EF">
               <p>时间：<el-form-item style="width:calc(100% - 56px)" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                  <el-input type="textarea" v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-                </el-form-item>
+                <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd"></el-date-picker>
+              </el-form-item>
               </p>
 
             </td>

@@ -71,12 +71,13 @@
                 <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item> -->
               <p>
-              <el-form-item prop="vehicleType" style="width:calc(50% - 10px);" :rules="fieldRules('vehicleType',propertyFeatures['vehicleType'])">
-                <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-              </el-form-item>
-              <el-form-item prop="number" style="width:calc(50% - 10px);" :rules="fieldRules('number',propertyFeatures['number'])">
-                <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-              </el-form-item></p>
+                <el-form-item prop="vehicleType" style="width:calc(50% - 10px);" :rules="fieldRules('vehicleType',propertyFeatures['vehicleType'])">
+                  <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                </el-form-item>
+                <el-form-item prop="number" style="width:calc(50% - 10px);" :rules="fieldRules('number',propertyFeatures['number'])">
+                  <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                </el-form-item>
+              </p>
             </td>
           </tr>
           <tr>
@@ -98,7 +99,7 @@
             </td>
           </tr>
           <tr>
-            <td :rowspan="docData.deliveryCertificatelist.length+1">路产损失</td>
+            <td :rowspan="docData.deliveryCertificatelist.length+2">路产损失</td>
             <td>项目名称</td>
             <td>单位</td>
             <td>数量</td>
@@ -116,39 +117,56 @@
             <td>{{item.notes ? item.notes: ''}}</td>
           </tr>
           <tr>
-            <td>备注</td>
+            <td></td>
             <td>合计</td>
             <td></td>
             <td></td>
-            <td></td>
-            <td>￥</td>
+            <td>￥{{docData.total}}</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="7">
-              <div class="pdf_seal">
-                <br /><br /><br />
-                <span>交通运输执法部门(印章)</span><br>
-                <el-form-item prop="makeDate" class="pdf_datapick">
-                  <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
-                  </el-date-picker>
-                </el-form-item>
-              </div>
-            </td>
-
-          </tr>
-          <tr>
-            <td colspan="7" class="color_DBE4EF remark">
-              <el-form-item label='备注:' :rules="fieldRules('adress',propertyFeatures['docNote'])">
+            <td>备注</td>
+            <td colspan="6" class="color_DBE4EF remark">
+              <el-form-item prop="docNote" :rules="fieldRules('adress',propertyFeatures['docNote'])">
                 <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
-          <el-form-item prop="docLength" style="visibility:hidden">
+          <!-- <el-form-item prop="docLength" style="visibility:hidden">
             <el-input v-model="docData.docLength"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </table>
-
+        <p>
+          当事人（当事人代理人）：<el-form-item style="width:200px" prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'])">
+            <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+        </p>
+        <p>
+          执法人员： <el-form-item style="width:200px" prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
+            <el-input type="textarea" v-model="docData.staff1" :disabled="fieldDisabled(propertyFeatures['staff1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+          执法证号： <el-form-item style="width:200px" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+            <el-input type="textarea" v-model="docData.certificateId1" :disabled="fieldDisabled(propertyFeatures['certificateId1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+        </p>
+        <p>
+          执法人员： <el-form-item style="width:200px" prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
+            <el-input type="textarea" v-model="docData.staff2" :disabled="fieldDisabled(propertyFeatures['staff2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+          执法证号： <el-form-item style="width:200px" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
+            <el-input type="textarea" v-model="docData.certificateId2" :disabled="fieldDisabled(propertyFeatures['certificateId2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+        </p>
+        <div class="pdf_seal">
+          <span>交通运输执法部门(印章)</span>
+          <br />
+          <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+        </div>
       </el-form>
     </div>
 
@@ -395,9 +413,9 @@ export default {
       console.log(this.tableDatas)
       let length = this.tableDatas.length;
       if (length == 0) {
-        this.tableDatas.push({ });
+        this.tableDatas.push({});
       } else {
-        this.tableDatas.push({ });
+        this.tableDatas.push({});
       }
     },
     handleAdd(row) {
