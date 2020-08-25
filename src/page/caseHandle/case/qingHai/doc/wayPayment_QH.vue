@@ -91,6 +91,8 @@ export default {
       docData: {
         caseNumber: '',
         party: '',
+        checkParty:'',
+        partyName:'',
         saveDate: '',
         caseNumberCopy: '',
         relieveDate: '',

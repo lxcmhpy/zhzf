@@ -148,6 +148,16 @@
                             <el-col :span="12">
                                 <el-form-item label="装备编码" prop="code">
                                     <el-input v-model="addForm.code" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
+                                    <el-popover
+                                        class="device-form-item-tips"
+                                        placement="top-end"
+                                        width="325"
+                                        trigger="click"
+                                        popper-class="form-tips-popper"
+                                        content="编号必须唯一，如不输入编号，系统将自动生成编号"
+                                        >
+                                        <img class="device-form-item-tips-img" slot="reference" :src="tipsUrl" />
+                                    </el-popover>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
@@ -262,6 +272,16 @@
                                             :value="item.id"
                                         ></el-option>
                                     </el-select>
+                                    <el-popover
+                                        class="device-form-item-tips"
+                                        placement="top-end"
+                                        width="325"
+                                        trigger="click"
+                                        popper-class="form-tips-popper"
+                                        content="如使用人为空，资产默认为“闲置”状态"
+                                        >
+                                        <img class="device-form-item-tips-img" slot="reference" :src="tipsUrl" />
+                                    </el-popover>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -564,7 +584,8 @@
                 deviceTypeList:[],
                 logList:[],
                 host: '',
-                imageUrl:''
+                imageUrl:'',
+                tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg"
             };
         },
         components: {
@@ -902,6 +923,7 @@
 </style>
 <style lang="scss" scoped>
 .add-device-from {
+  padding-right: 36px;
   >>> .el-select,
   >>> .el-date-editor {
     display: block;
@@ -938,6 +960,22 @@
             }
         }
       }
+  }
+}
+.device-form-item-tips {
+    display: inline-block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 4px;
+    right: -40px;
+    cursor: pointer;
+  }
+.form-tips-popper.el-popover {
+  background: #303133;
+  color: #fff;
+  .popper__arrow::after {
+    border-top-color: #303133;
   }
 }
 .device-detail-dialog {

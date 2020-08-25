@@ -147,7 +147,7 @@
           </el-table-column>
           <el-table-column label="标签" align="center" width="50">
             <template slot-scope="scope">
-              <el-tooltip placement="top-start" effect="light">
+              <el-tooltip  v-if="scope.row.warContent" placement="top-start" effect="light">
                 <div slot="content" class="warn-li">
                   <li v-for="(item,index) in scope.row.warContent" :key="index">
                     <span v-if="item.warType=='1'"  style="color:#FF0000"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
@@ -159,6 +159,7 @@
                 <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
                 <div class="warn-box" v-if="scope.row.warType=='3'" style="background:#0084FF">警</div>
               </el-tooltip>
+              <div v-if="!scope.row.warType" style="color:#2B313E">-</div>
             </template>
           </el-table-column>
         </el-table>

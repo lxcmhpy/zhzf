@@ -215,6 +215,7 @@ export default {
         parentNodeName:data.userDeparment
       };
       this.getCurrentOrganAndChild();
+      this.getDepartment(data.organId)
       // this.rowData = data;
       this.addUserForm = data;
     },
@@ -258,6 +259,7 @@ export default {
     //获取选中的机构下的部门
     getDepartment(data1) {
       console.log(data1);
+      this.addUserForm.departmentId = "";
       let data = {
         organId: data1
       };

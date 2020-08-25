@@ -40,6 +40,16 @@
               <el-option label="类型1" value="1"></el-option>
               <el-option label="类型2" value="2"></el-option>
             </el-select>
+            <el-popover
+              class="device-form-item-tips"
+              placement="top-end"
+              width="325"
+              trigger="click"
+              popper-class="form-tips-popper"
+              content="编号必须唯一，如不输入编号，系统将自动生成编号"
+            >
+              <img class="device-form-item-tips-img" slot="reference" :src="tipsUrl" />
+            </el-popover>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -232,6 +242,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .add-device-from {
+  padding-right: 36px;
   >>> .el-select,
   >>> .el-date-editor {
     display: block;
