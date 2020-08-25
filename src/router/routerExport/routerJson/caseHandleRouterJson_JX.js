@@ -404,6 +404,24 @@ export default [
       title: "调阅申请"
     },
     component: () => import("@/page/caseHandle/caseReview/approvalReview.vue")
+  },
+  // 案件协查
+  {
+    name: "assistCase_JX",
+    path: "/assist-case_JX",
+    meta: {
+      title: "案件协查"
+    },
+    component: () => import("@/page/caseHandle/assistCase/assistCase.vue")
+  },
+  // 新增案件协查
+  {
+    name: "addAssistCase_JX",
+    path: "/add-assist-case_JX",
+    meta: {
+      title: "新增协查"
+    },
+    component: () => import("@/page/caseHandle/assistCase/addAssistCase.vue")
   }
 ]
 

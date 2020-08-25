@@ -147,7 +147,7 @@
           </el-table-column>
           <el-table-column label="标签" align="center" width="50">
             <template slot-scope="scope">
-              <el-tooltip placement="top-start" effect="light">
+              <el-tooltip  v-if="scope.row.warContent" placement="top-start" effect="light">
                 <div slot="content" class="warn-li">
                   <li v-for="(item,index) in scope.row.warContent" :key="index">
                     <span v-if="item.warType=='1'"  style="color:#FF0000"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
@@ -159,6 +159,7 @@
                 <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
                 <div class="warn-box" v-if="scope.row.warType=='3'" style="background:#0084FF">警</div>
               </el-tooltip>
+              <div v-if="!scope.row.warType" style="color:#2B313E">-</div>
             </template>
           </el-table-column>
         </el-table>
@@ -484,7 +485,7 @@ export default {
           if(currentFlow.data.flowName == '处罚流程'){
             docTypeId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
             linkId = this.BASIC_DATA_SYS.establish_caseLinktypeId;
-          }else if(currentFlow.data.flowName == '赔补偿流程'){
+          }else if(currentFlow.data.flowName == '赔补偿流程' || currentFlow.data.flowName == '青海赔补偿流程'){
             docTypeId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
             linkId = this.BASIC_DATA_SYS.establish_caseLinktypeId;
           }else if(currentFlow.data.flowName == '江西流程'){

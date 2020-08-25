@@ -63,5 +63,12 @@ export default [{
     },
     component: () => import("@/page/notice/website/websiteManagment.vue")
   },
-
+  {
+    path: "/imagesManagement",
+    name: "imagesManagement",
+    meta: {
+      title: "轮播图设置"
+    },
+    component: () => import("@/page/notice/trends/imagesManagement.vue")
+  },
 ]

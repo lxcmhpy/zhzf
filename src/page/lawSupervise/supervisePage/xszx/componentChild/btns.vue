@@ -337,16 +337,22 @@ export default {
         if(this.obj.status){
           this.pushNext()
         }else{
-          this.obj.status='审核中'
-          let _this = this;
-          saveAndUpdate(_this.obj).then(
-              res => {
-                _this.pushNext()
-              },
-              error => {
-                      return
-              }
-          )
+            if(this.obj.workNo){
+              this.obj.status='审核中'
+              let _this = this;
+              saveAndUpdate(_this.obj).then(
+                res => {
+                    _this.pushNext()
+                },
+                error => {
+                        return
+                }
+            )
+          }else{
+            this.$message({type: "error",message: "未获取到图片，不能保存!"});
+            return
+          }
+          
         }
       }else{
         this.pushNext()

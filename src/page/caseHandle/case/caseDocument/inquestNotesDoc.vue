@@ -418,8 +418,8 @@ export default {
           sex: this.docData.partySex,
           zhengjianNumber: this.docData.partyIdNo,
           age: this.docData.partyAge,
-          company: this.docData.partyUnitPosition,
-          position: this.docData.occupation,
+          company: this.docData.partyUnitPosition || '',
+          position: this.docData.occupation || '',
           tel: this.docData.partyTel,
           adress: this.docData.partyAddress,
         }
@@ -500,6 +500,7 @@ export default {
         this.docData.partyPeopleUnitAndPosition = dailiData.company + " " + dailiData.position;
       this.docData.partyPeopleAddress = dailiData.adress;
       this.docData.partyPeopleTel = dailiData.tel;
+      console.log('this.docData',this.docData)
       //设置禁用
       this.partyOriginalData = JSON.parse(JSON.stringify(this.docData));
       console.log('this.partyOriginalData', this.partyOriginalData);

@@ -83,7 +83,7 @@
         }
         if(currentFlow.data.flowName == '处罚流程'){
           data.flag = 0;
-        }else if(currentFlow.data.flowName == '赔补偿流程'){
+        }else if(currentFlow.data.flowName == '赔补偿流程'|| currentFlow.data.flowName == '青海赔补偿流程'){
           data.flag = 1;
         }
         console.log('获取审批人员传参',data); 

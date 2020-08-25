@@ -6,10 +6,10 @@ import {
   setCancelSource
 } from "@/common/js/cancelToken";
 
-// 加载公示信息列表
-export function findNoticeByPage(data) {
+// 加载轮播图列表
+export function findImages(data) {
   return request({
-    url: "/notice/zfdt/list",
+    url: "/notice/circulation/img/list",
     method: "get",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -18,10 +18,10 @@ export function findNoticeByPage(data) {
   })
 }
 
-// 新增、编辑
-export function saveOrUpdateNotice(data) {
+// 新增、编辑轮播图
+export function saveOrUpdate(data) {
   return request({
-    url: "/notice/zfdt/saveOrUpdate",
+    url: "/notice/circulation/img/saveOrUpdate",
     method: "post",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -31,23 +31,11 @@ export function saveOrUpdateNotice(data) {
 }
 
 // 通过Id查询
-export function findNoticeById(id) {
+export function deleteById(id) {
   return request({
-    url: "/notice/zfdt/findById/" + id,
+    url: "/notice/circulation/img/deleteById/" + id,
     method: "get",
     showloading: true,
-    baseUrlType: 'NOTICE_HOST',
-    cancelToken: setCancelSource()
-  })
-}
-
-// 通过Id查询
-export function deleteNoticeById(data) {
-  return request({
-    url: "/notice/zfdt/deleteById",
-    method: "post",
-    showloading: true,
-    data: data,
     baseUrlType: 'NOTICE_HOST',
     cancelToken: setCancelSource()
   })

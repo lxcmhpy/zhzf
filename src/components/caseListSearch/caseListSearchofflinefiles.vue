@@ -11,7 +11,7 @@
         label-width="100px"
       >
         <div :class="lineSearchSty">
-          <div class="item" v-if="caseState != 'unRecordCase'">
+          <div class="item">
             <el-form-item label="案号">
               <el-input v-model="caseSearchForm.caseNumber"></el-input>
             </el-form-item>
@@ -48,23 +48,29 @@
         <div v-if="addpdf_page">
           <el-dialog title="添加线下案卷" :visible.sync="addpdf_page" width="32%">
             <div>
-              <el-form ref="addpdf_form" :model="addpdf_form" label-width="100px">
-                <el-form-item label="案号">
-                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
+              <el-form
+                :model="addpdf_form"
+                :rules="rules"
+                ref="addpdf_form"
+                label-width="100px"
+                class="demo-ruleForm"
+              >
+                <el-form-item label="案号" prop="caseNumber">
+                  <el-input v-model="addpdf_form.caseNumber" style="width:350px;"></el-input>
                 </el-form-item>
-                <el-form-item label="车/船号">
-                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
+                <el-form-item label="车/船号" prop="vehicleShipId">
+                  <el-input v-model="addpdf_form.vehicleShipId" style="width:350px;"></el-input>
                 </el-form-item>
-                <el-form-item label="当事人单位">
-                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
+                <el-form-item label="当事人单位" prop="party">
+                  <el-input v-model="addpdf_form.party" style="width:350px;"></el-input>
                 </el-form-item>
-                <el-form-item label="违法行为">
-                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
+                <el-form-item label="违法行为" prop="illegalFacts">
+                  <el-input v-model="addpdf_form.illegalFacts" style="width:350px;"></el-input>
                 </el-form-item>
                 <el-form-item label="受案时间">
                   <el-date-picker
                     style="width:350px;"
-                    v-model="addpdf_form.data1"
+                    v-model="addpdf_form.acceptTime"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     format="yyyy-MM-dd HH:mm:ss"
                     type="datetime"
@@ -74,7 +80,7 @@
                 <el-form-item label="结案时间">
                   <el-date-picker
                     style="width:350px;"
-                    v-model="addpdf_form.data2"
+                    v-model="addpdf_form.endTime"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     format="yyyy-MM-dd HH:mm:ss"
                     type="datetime"
@@ -82,7 +88,7 @@
                   ></el-date-picker>
                 </el-form-item>
                 <el-form-item label="案件类型">
-                  <el-input v-model="addpdf_form.name" style="width:350px;"></el-input>
+                  <el-input v-model="addpdf_form.caseType" style="width:350px;"></el-input>
                 </el-form-item>
                 <el-form-item label="案卷上传">
                   <el-upload
@@ -107,117 +113,40 @@
 
             <span slot="footer" class="dialog-footer">
               <el-button @click="addpdf_page = false">取 消</el-button>
-              <el-button type="primary" @click="addpdf_page = false">确 定</el-button>
+              <el-button type="primary" @click="submitForm('addpdf_form')">确 定</el-button>
             </span>
           </el-dialog>
         </div>
-
-        <!-- <div v-if="caseState == 'waitDeal'">
-          <div class="item item2">
-            <el-form-item label="当事人/单位">
-              <el-input v-model="caseSearchForm.caseId"></el-input>
-            </el-form-item>
-          </div>
-        </div>-->
         <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
           <div class="item">
             <el-form-item label="案件类型">
-              <el-select v-model="caseSearchForm.caseType" placeholder="请选择">
-                <el-option
-                  v-for="item in caseTypeList"
-                  :key="item.id"
-                  :label="item.typeName"
-                  :value="item.typeName"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-          <div class="item" v-if="caseState == 'unRecordCase' || caseState == 'waitDeal'">
-            <el-form-item label="案件状态">
-              <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
-              <el-select v-model="caseSearchForm.caseStatus" placeholder="请选择">
-                <el-option
-                  v-for="item in caseStateList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-
-          <div class="item" v-if="caseState == 'waitDeal' || caseState == 'approveIng'">
-            <el-form-item label="当前环节" v-if="caseState == 'waitDeal'">
-              <el-select v-model="caseSearchForm.currentLinkName" placeholder="请选择">
-                <el-option
-                  v-for="item in linkList"
-                  :key="item.id"
-                  :label="item.linkName"
-                  :value="item.linkName"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="当前环节" v-if="caseState == 'approveIng'">
-              <el-select v-model="caseSearchForm.currentLinkName" placeholder="请选择">
-                <el-option
-                  v-for="(item,index) in approvalInglinkList"
-                  :key="index"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-
-          <div class="item" v-if="caseState == 'myApproval'">
-            <el-form-item label="申请人">
-              <el-input v-model="caseSearchForm.applicant"></el-input>
+              <el-input v-model="caseSearchForm.caseType"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="违法行为">
-              <el-input v-model="caseSearchForm.caseCauseName"></el-input>
+              <el-input v-model="caseSearchForm.illegalFacts"></el-input>
             </el-form-item>
           </div>
-          <div class="item" v-if="caseState != 'myApproval'">
+          <div class="item">
             <el-form-item label="受案时间">
               <el-date-picker
-                v-model="acceptTimeArray"
-                type="daterange"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                v-model="caseSearchForm.acceptTime"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                format="yyyy-MM-dd"
-                :default-time="['00:00:00', '23:59:59']"
+                format="yyyy-MM-dd HH:mm:ss"
+                type="datetime"
+                placeholder="选择日期时间"
               ></el-date-picker>
             </el-form-item>
           </div>
-          <div class="item" v-if="caseState == 'waitArchive'">
+          <div class="item">
             <el-form-item label="结案时间">
               <el-date-picker
-                v-model="endCaseTimeArray"
-                type="daterange"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                v-model="caseSearchForm.endTime"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                format="yyyy-MM-dd"
-                :default-time="['00:00:00', '23:59:59']"
-              ></el-date-picker>
-            </el-form-item>
-          </div>
-          <div class="item" v-if="caseState == 'myApproval'">
-            <el-form-item label="申请时间">
-              <el-date-picker
-                v-model="applyTimeArray"
-                type="daterange"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                format="yyyy-MM-dd"
-                :default-time="['00:00:00', '23:59:59']"
+                format="yyyy-MM-dd HH:mm:ss"
+                type="datetime"
+                placeholder="选择日期时间"
               ></el-date-picker>
             </el-form-item>
           </div>
@@ -227,6 +156,9 @@
   </div>
 </template>
 <script>
+import { uploadCommon } from "@/api/upload";
+import { addofflinefile, getSelectoffline } from "@/api/offlinefiles";
+import moment from "moment";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   getQueryLinkListApi,
@@ -236,41 +168,48 @@ import { getDictListDetailApi } from "@/api/system";
 export default {
   data() {
     return {
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      totalss: 0, //总页数
       fileList: [],
+      valuetable: {
+        tableData_offline: [],
+        pageSize: 10,
+        currentPage: 1,
+        totalss: 0,
+      },
       addpdf_form: {
-        name: "",
-        data1: "",
-        data2: "",
+        acceptTime: "",
+        endTime: "",
+        caseNumber: "",
+        caseType: "",
+        createTime: "",
+        id: "",
+        illegalFacts: "",
+        isUploadCase: "",
+        party: "",
+        vehicleShipId: "",
+      },
+      rules: {
+        caseNumber: [{ required: true, message: "请输入", trigger: "blur" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "blur" }],
+        party: [{ required: true, message: "请输入", trigger: "blur" }],
+        illegalFacts: [{ required: true, message: "请输入", trigger: "blur" }],
       },
       addpdf_page: false,
       caseSearchForm: {
+        acceptTime: "",
+        endTime: "",
         caseNumber: "",
+        caseType: "",
+        illegalFacts: "",
         party: "",
         vehicleShipId: "",
-        caseType: "",
-        caseCauseName: "",
-        caseStatus: "",
-        currentLinkName: "",
-        acceptStartTime: "",
-        acceptEndTime: "",
-        applicant: "",
-        applyStartTime: "",
-        applyEndTime: "",
-        endCaseStartTime: "",
-        endCaseEndTime: "",
       },
       acceptTimeArray: [],
       endCaseTimeArray: [],
       applyTimeArray: [],
       hideSomeSearch: true,
-      linkList: [], //环节
-      caseTypeList: [], //类型
-      caseStateList: [], //状态
-      dictId:
-        this.caseState == "waitDeal"
-          ? "ef38274ddea12be26e9a8c1bf23cd401"
-          : "324701f1633dd65ca79a28fbc79c1628",
-      approvalInglinkList: ["立案登记", "案件调查报告", "结案报告"],
     };
   },
   computed: {
@@ -286,23 +225,61 @@ export default {
   },
   props: ["caseState"],
   methods: {
+    //添加  确定
+    submitForm(addpdf_form) {
+      this.$refs[addpdf_form].validate((valid) => {
+        if (valid) {
+            this.addpdf_form.createTime=moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+            this.addpdf_form.isUploadCase=this.fileList.length > 0 ? 0 : 1;
+          console.log(this.addpdf_form);
+          addofflinefile(this.addpdf_form).then(
+            (res) => {
+              if (res.code === 200) {
+                this.$parent.getArchiveCase();
+                this.$message({ type: "success", message: "添加成功" });
+                this.addpdf_form.acceptTime = "";
+                this.addpdf_form.endTime = "";
+                this.addpdf_form.caseNumber = "";
+                this.addpdf_form.caseType = "";
+                this.addpdf_form.illegalFacts = "";
+                this.addpdf_form.party = "";
+                this.addpdf_form.vehicleShipId = "";
+                this.addpdf_page = false;
+              }
+
+              console.log("res", res);
+            },
+            (error) => {
+              this.$message({ type: "error", message: "添加失败" });
+              console.log(error);
+            }
+          );
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     //：http-request 文件上传
-    uploadfile_offlinepdf() {
+    uploadfile_offlinepdf(param) {
       console.log("param", param);
-      let fd = {
-        file: param.file,
-        category: "线下档案",
-        fileName: param.file.name,
-        status: "pdf卷宗", //传记录id
-        caseId: "fet43g445y56hwgv34g", //传记录id
-        docId: "cew43y3gyy6hu76rjki78t", //传文书id
-      };
+      var fd = new FormData();
+      fd.append("file", param.file);
+      fd.append("userId",JSON.parse(localStorage.getItem("userInfo")).id)
+      fd.append("category", "线下案卷");
+      fd.append("fileName", param.file.name);
+      fd.append("fileType", ".pdf");
+      fd.append("status", "线下pdf卷宗"); //传记录id
+      fd.append("caseId", param.file.name + new Date().getTime()); //传记录id
+      fd.append("docId", param.file.name + new Date().getTime()); //传记录id
       console.log("fd", fd);
       uploadCommon(fd).then(
         (res) => {
+          this.$message({ type: "success", message: "上传成功" });
           console.log("res", res);
         },
         (error) => {
+          this.$message({ type: "error", message: "上传失败" });
           console.log(error);
         }
       );
@@ -332,6 +309,7 @@ export default {
     },
     //点击添加按钮
     addpdffile() {
+      this.pdf_title = "添加线下案卷";
       this.addpdf_page = true;
     },
     caseRecord() {},
@@ -343,49 +321,33 @@ export default {
     caseRecordEmit() {
       this.$emit("caseRecord");
     },
-    //查询所有环节
-    getAllLinkList() {
-      getQueryLinkListApi().then(
-        (res) => {
-          this.linkList = res.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    //查询所有案件类型
-    getQueryCaseTypeList() {
-      let organId = iLocalStroage.gets("userInfo").organId;
-      getQueryCaseTypeByOrganIdApi(organId).then(
-        (res) => {
-          console.log("类型", res);
-          this.caseTypeList = res.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
     //搜索
     searchCaseEmit() {
       console.log("点击");
-      this.caseSearchForm.applyStartTime = this.applyTimeArray[0];
-      this.caseSearchForm.applyEndTime = this.applyTimeArray[1];
-
-      this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0];
-      this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1];
-
-      this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0];
-      this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1];
-
-      this.$emit("searchCase", this.caseSearchForm);
+      //this.$emit("searchCase", this.caseSearchForm);
+      console.log("this.caseSearchForm", this.caseSearchForm);
+      getSelectoffline(this.caseSearchForm).then(
+        (res) => {
+          let valuetable = {
+            tableData_offline: res.data.records,
+            pageSize: res.data.size,
+            currentPage: res.data.current,
+            totalss: res.data.total,
+          };
+          this.$emit("getinfobycondition", valuetable);
+          console.log("this.caseSearchForm.res", res);
+        },
+        (error) => {
+          this.$message({ type: "error", message: "添加失败" });
+          console.log(error);
+        }
+      );
     },
     //查询案件状态
     getQueryCaseStateList() {
       getDictListDetailApi(this.dictId).then(
         (res) => {
-          console.log("状态", res);
+          //console.log("状态", res);
           // this.options = res.data;
           this.caseStateList = res.data;
         },
@@ -396,9 +358,7 @@ export default {
     },
   },
   created() {
-    this.getAllLinkList();
-    this.getQueryCaseTypeList();
-    this.getQueryCaseStateList();
+
   },
 };
 </script>

@@ -3,7 +3,7 @@
     <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px">
       <div class="content_box"  style="background:#fff;margin-bottom:22px">
         <div class="content">
-          <div class="content_title">调查类文书</div>
+          <div class="content_title">赔补偿通知</div>
           <div class="border_blue"></div>
           <div class="content_form">
             <div class="row">
@@ -87,7 +87,7 @@
                  </el-form-item>
               </div>
             </div>
-            <div class="row" v-if="isParty">
+            <!-- <div class="row" v-if="isParty">
               <div class="col">
                 <el-form-item label="联系电话" prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
                   <el-input
@@ -102,15 +102,12 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <!-- <el-form-item label="所在单位">
-                  <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
-                </el-form-item> -->
                 <el-form-item label="单位及职务" prop="partyUnitPositionAndCom" :rules="fieldRules('partyUnitPositionAndCom',propertyFeatures['partyUnitPositionAndCom'],'',isParty)">
                      <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入"
                      :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitPositionAndCom'])"></el-input>
                  </el-form-item>
               </div>
-            </div>
+            </div> -->
             <div class="row" v-if="isParty">
               <div class="col">
                 <el-form-item label="联系地址" prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
@@ -407,8 +404,8 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件ID
-        // caseLinktypeId: this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, //表单类型ID
-        caseLinktypeId:'', ////表单类型ID
+        caseLinktypeId: this.BASIC_DATA_SYS.compensationNote_caseDoctypeId, //表单类型ID
+        // caseLinktypeId:'', ////表单类型ID
         //表单数据
         formData: "",
         status: ""
@@ -471,26 +468,8 @@ export default {
       // nextBtnDisab: true
       isParty: true, //当事人类型为个人
       originalData: "",
-      allVehicleShipType: [
-        // { value: "1", label: "中小客车" },
-        // { value: "2", label: "大客车" },
-        // { value: "3", label: "小型货车" },
-        // { value: "4", label: "中型货车" },
-        // { value: "5", label: "大型货车" },
-        // { value: "6", label: "特大型货车" },
-        // { value: "7", label: "集装箱车" },
-        // { value: "8", label: "摩托车" },
-        // { value: "9", label: "拖拉机" }
-      ],
-      allRelationWithCase: [
-        //与案件关系下拉框
-        // { value: "0", label: "当事人" },
-        // { value: "1", label: "驾驶人" },
-        // { value: "2", label: "实际所有者" },
-        // { value: "3", label: "证人" },
-        // { value: "4", label: "承运人" },
-        // { value: "5", label: "代理人" }
-      ],
+      allVehicleShipType: [],
+      allRelationWithCase: [],
       docTableDatasCopy: [],
       allAskDocList: [], //询问笔录
       askDocListNum:0,  //询问笔录次数
@@ -608,6 +587,7 @@ export default {
         // linkTypeId: this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
         linkTypeId: this.caseLinkDataForm.caseLinktypeId
       };
+    console.log('hahhhsh')
       this.com_getDocListByCaseIdAndFormId(data);
     },
     //返回到流程图
@@ -675,18 +655,18 @@ export default {
       await this.initDraw();
       await this.queryFlowBycaseId();
       //动态环节id
-      this.caseLinkDataForm.caseLinktypeId = this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+    //   this.caseLinkDataForm.caseLinktypeId = this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
       this.setFormData();
       //通过案件id和表单类型Id查询已绑定文书
       this.getDocListByCaseIdAndFormId();
     }
   },
-  activated() {
+//   activated() {
+//     this.initData()
+//   }
+  created() {
     this.initData()
   }
-  // created() {
-  //   this.initData()
-  // }
 };
 </script>
 

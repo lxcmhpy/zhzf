@@ -83,6 +83,8 @@ export default {
          _this.graphData = graphData.compensationGraphData;
       }else if(this.currentFlow.data.flowName == '江西流程'){
          _this.graphData = graphData.commonGraphData_JX;
+      }else if(this.currentFlow.data.flowName == '青海赔补偿流程'){
+         _this.graphData = graphData.compensationGraphData_QH;
       }
 
       

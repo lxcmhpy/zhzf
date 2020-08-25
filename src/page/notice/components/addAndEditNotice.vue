@@ -72,7 +72,7 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import iLocalStroage from "@/common/js/localStroage.js";
 import { upload } from "@/api/upload";
-import { saveOrUpdateNotice } from "@/api/notice/notice.js";
+import { saveOrUpdateNotice, findNoticeById } from "@/api/notice/notice.js";
 export default {
   components: {
     quillEditor,
@@ -88,8 +88,8 @@ export default {
         publishTime: "",
         type: "",
         id: "",
-        storageIds: [],
       },
+      storageId: [],
       rules: {
         title: [
           {
@@ -194,6 +194,7 @@ export default {
   },
   methods: {
     handleChange(file, fileList) {
+      debugger;
       this.fileList = fileList;
     },
     async saveFile(param) {
@@ -205,14 +206,18 @@ export default {
       fd.append("caseId", param.name + new Date().getTime()); //传记录id
       fd.append("docId", param.name + new Date().getTime()); //传记录id
       let res = await upload(fd);
-
-      this.addNoticeForm.storageIds.push(res.data[0].storageId);
+      debugger;
+      this.storageId.push(res.data[0].storageId);
     },
 
     async uploadFiles() {
       for (var i = 0; i < this.fileList.length; i++) {
         var param = this.fileList[i];
-        await this.saveFile(param);
+        if (param.storageId) {
+          this.storageId.push(param.storageId);
+        } else {
+          await this.saveFile(param);
+        }
       }
     },
 
@@ -227,21 +232,31 @@ export default {
       this.fileList = [];
       if (type == 1) {
         this.dialogTitle = "新增";
-        this.addNoticeForm.type = data.type;
+        this.addNoticeForm = {
+          title: "",
+          source: "",
+          content: "",
+          publishTime: "",
+          type: data.type,
+          id: "",
+        };
       } else if (type == 2) {
         this.dialogTitle = "修改";
-        this.addNoticeForm = data;
-        /* (this.addNoticeForm.title = data.title),
-          (this.addNoticeForm.noticeType = data.noticeType);
-        this.addNoticeForm.content = data.content;
-        this.addNoticeForm.id = data.id;
-        this.addNoticeForm.storageId = data.storageId;
-        if (data.storageId !== "") {
-          let fileData = {};
-          fileData.name = data.fileName;
-          fileData.url = data.storageId;
-          this.fileList.push(fileData);
-        } */
+        let _this = this;
+        findNoticeById(data.id).then(
+          (res) => {
+            _this.addNoticeForm = res.data;
+            _this.fileList = res.data.fileUploadVos;
+            if (_this.fileList.length > 0) {
+              _this.fileList.forEach((item) => {
+                item.name = item.fileName;
+              });
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       }
     },
     submit() {
@@ -254,13 +269,14 @@ export default {
         if (valid) {
           _this.uploadFiles().then((res) => {
             debugger;
+            _this.addNoticeForm.storageId = _this.storageId.join(":");
             saveOrUpdateNotice(_this.addNoticeForm).then(
               (res) => {
                 _this.$message({
                   type: "success",
                   message: "保存成功!",
                 });
-                _this.visible = false;
+                _this.closeDialog();
               },
               (err) => {
                 console.log(err);
@@ -272,6 +288,7 @@ export default {
     },
     closeDialog() {
       this.visible = false;
+      this.$emit("success");
     },
   },
   computed: {

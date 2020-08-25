@@ -230,7 +230,7 @@
                   v-model="formData.closeResult"
                   v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
+                  maxlength="500"
                   placeholder="\"
                   :disabled="fieldDisabled(propertyFeatures['closeResult'])"
                 ></el-input>
