@@ -380,7 +380,8 @@
               </div>
               <div class="item">
                 <!-- 需要完善验证 -->
-                <el-form-item label="与案件关系" class="is-required">
+                <!-- <el-form-item label="与案件关系" class="is-required"> -->
+                <el-form-item label="与案件关系">
                   <el-select
                     v-model="driverOrAgentInfo.relationWithCase"
                     :disabled="index==0&&relationWithPartyIsOne[index]"
@@ -415,7 +416,8 @@
               </div>
               <div class="item">
                 <!-- 需要完善验证 -->
-                <el-form-item label="与案件关系" class="is-required">
+                <!-- <el-form-item label="与案件关系" class="is-required"> -->
+                <el-form-item label="与案件关系">
                   <el-select v-model="driverOrAgentInfo.relationWithCase">
                     <el-option
                       v-for="item in allQYRelationWithCase"

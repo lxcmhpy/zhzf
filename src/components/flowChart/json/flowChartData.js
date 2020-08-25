@@ -44,7 +44,7 @@ let flowGraphData = {
           {id:"5",source: '5',target:"6",linkID: BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId,name:"收缴赔\n补偿款",linkName:'case_handle_payCompensation',position:{x: 1, y: 5},itemStyleColor: "",attributes:{modularity_class:'lct_11'}},
           {id:"6",source: "6",target:"6",linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,name:"结案登记",linkName:'case_handle_finishCaseReport',docId:BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId,position:{x: 1, y: 6},itemStyleColor: "",attributes:{modularity_class:'lct_14'}}
         ],
-        links:[]
+        links:[] 
     },
 
     //青海赔补偿流程

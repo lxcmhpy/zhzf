@@ -575,7 +575,7 @@ export function getDictListDetailByNameApi(name) {
     url: "/system/sys/drawer/findAllDrawerByName/" + name,
     method: "get",
     showloading: true,
-    loadingType: name =='系统标题'||name =='loginBg' ? 'loadFull' : 'loadPart',
+    loadingType: name =='系统标题'||name =='loginBg' ||name =='显示综合执法平台' ? 'loadFull' : 'loadPart',
     cancelToken: setCancelSource()
   });
 }

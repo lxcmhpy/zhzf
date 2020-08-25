@@ -158,9 +158,10 @@
   }
 
   .el-aside {
-    height: calc(100% - 68px);
+    height: 100%;
     overflow-x: hidden;
     border-bottom: 1px solid #363d4c;
+    padding-bottom: 68px;
     .el-menu {
       background  : $cats-black2B313E-color;
       border-right: 0;
