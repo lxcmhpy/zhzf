@@ -43,9 +43,8 @@
         </div>
       </div>
       <div class="tablePart">
-        <el-table ref="multipleTable" :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55">
-          </el-table-column>
+        <el-table ref="multipleTable" :data="tableData" stripe style="width: 100%" height="100%" @row-click="openDetails" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
           <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
           <el-table-column prop="stationName" label="岗位" align="center"></el-table-column>
@@ -68,7 +67,116 @@
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
       <publicInspectors :freshFlag='freshFlag'></publicInspectors>
     </div>
-
+    <el-dialog title='人员详情' :visible.sync="dialogFormVisible" style="width:auto">
+      <el-form ref="form" :model="personInfoDetailForm" label-width="155px">
+      <!--基本信息 -->
+        <div class="info_box">
+          <div class="info_content">
+            <div class="info_body">
+              <el-row :span="24">
+                <el-form-item label="执法人员照片：" prop="photoUrl">
+                  <img v-if="personInfoDetailForm.photoUrl" :src="baseUrl + personInfoDetailForm.photoUrl" onerror="@/../static/images/img/personInfo/upload_bg.png" alt="">
+                  <img v-else :src="personImg" alt="">
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="姓名：" prop="personName">{{personInfoDetailForm.personName}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="身份证号：" prop="idNo">{{personInfoDetailForm.idNo}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="执法岗位：" prop="stationName">{{personInfoDetailForm.stationName}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="民族：" prop="nationName">{{personInfoDetailForm.nationName}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="所学专业：" prop="majorName">{{personInfoDetailForm.majorName}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="文化程度：" prop="degreeName">{{personInfoDetailForm.degreeName}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="政治面貌：" prop="politicalStatusName">{{personInfoDetailForm.politicalStatusName}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="性别：" prop="sexName">{{personInfoDetailForm.sexName}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="出生日期：" prop="birthDate">{{personInfoDetailForm.birthDate}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="参加工作日期：" prop="workDate">{{personInfoDetailForm.workDate}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="入党日期：" prop="admissionDate">{{personInfoDetailForm.admissionDate}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="毕业学校：" prop="school">{{personInfoDetailForm.school}}</el-form-item>
+                  </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="参加执法工作日期：" prop="enfoceDate">{{personInfoDetailForm.enfoceDate}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="毕业证书编号：" prop="graduationNo">{{personInfoDetailForm.graduationNo}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="分配渠道：" prop="disChannelName">{{personInfoDetailForm.disChannelName}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="人员编制：" prop="staffingName">{{personInfoDetailForm.staffingName}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="执法区域：" prop="area">{{personInfoDetailForm.area}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="执法领域：" prop="branchName">{{personInfoDetailForm.branchName}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="资格证书编号：" prop="qualificationNo">{{personInfoDetailForm.qualificationNo}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="现持省内执法证号：" prop="provinceNo">{{personInfoDetailForm.provinceNo}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="现持部级执法证号：" prop="ministerialNo">{{personInfoDetailForm.ministerialNo}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="现持海事执法证号：" prop="maritimeNo">{{personInfoDetailForm.maritimeNo}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="用户职务：" prop="postName">{{personInfoDetailForm.postName}}</el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </div>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -96,21 +204,13 @@ export default {
         defaultDisplay: true,
         name: ''
       },
+      personImg: '@/../static/images/img/personInfo/upload_bg.png',
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       isShow: false,
       dialogFormVisible: false,
-      addForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
+      personInfoDetailForm: {},
       formLabelWidth: '100px',
       rules: {
         pass: [
@@ -160,7 +260,17 @@ export default {
       this.multipleSelection = val;
       console.log('multipleSelection', this.multipleSelection)
     },
-
+    openDetails(row){
+      console.log(row)
+      // this.$store.dispatch("getPersonDetailInfo", row.personId).then(res => {
+      //   if (res.code === 200) {
+      //     console.log(res)
+      //     this.openPersonTag("setPersonInfo", res.data, 0);
+      //   }
+      // });
+      this.dialogFormVisible=true;
+      this.personInfoDetailForm=row;
+    },
     resetSearchData(formName) {
       this.$refs[formName].resetFields();
       this.searchForm.defaultDisplay = true
@@ -256,5 +366,8 @@ export default {
   position: relative;
   top: 47%;
   cursor: pointer;
+}
+.fullscreen .el-form-item{
+  margin-bottom: 0;
 }
 </style>

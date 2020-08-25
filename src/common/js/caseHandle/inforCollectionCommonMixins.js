@@ -158,9 +158,10 @@ export const inforCollectionCommonMixins = {
         'otherInfo.vehiclefiledThing': [
           {required: true, message: "请输入装载物", trigger: "change"}
         ],
-        'driverOrAgentInfo.relationWithCase': [
-          {required: true, message: "请选择案件关系", trigger: "change"}
-        ],
+        //青海非必填
+        // 'driverOrAgentInfo.relationWithCase': [
+        //   {required: true, message: "请选择案件关系", trigger: "change"}
+        // ],
         illegalLaw: [
           {required: true, message: "请选择条款", trigger: "change"}
         ],

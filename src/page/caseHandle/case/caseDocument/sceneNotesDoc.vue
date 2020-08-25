@@ -199,7 +199,7 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item prop="vehicleShipType" :rules="fieldRules('vehicleShipType',propertyFeatures['vehicleShipType'])">
                   <el-select v-model="docData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
-                    <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in allVehicleShipType" :key="item.id" :label="item.name" :value="item.name"></el-option>
                   </el-select>
                 </el-form-item>
               </td>
