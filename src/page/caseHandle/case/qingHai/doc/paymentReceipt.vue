@@ -212,7 +212,7 @@ export default {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
-        docId: '2c9029cf6931aa5c01693381ac690018'
+        docId: this.$route.params.docId
       };
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
