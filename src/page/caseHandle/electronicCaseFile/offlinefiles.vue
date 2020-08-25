@@ -142,7 +142,7 @@
   </div>
 </template>
 <script>
-import { uploadCommon } from "@/api/upload";
+import { uploadCommon,uploadEvApi } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   getSelectoffline,
@@ -253,17 +253,27 @@ export default {
     //：http-request 上传文件
     saveFile_pdf(param) {
       console.log("param", param);
-      var fd = new FormData();
-      fd.append("file", param.file);
-      fd.append("category", "卷宗档案-线下档案");
-      fd.append("categoryAccurate", "线下档案");
-      fd.append("fileName", param.file.name);
-      fd.append("status", "线下pdf卷宗");
-      fd.append("caseId", param.file.name + new Date().getTime()); //传记录id
-      fd.append("docId", param.file.name + new Date().getTime()); //传记录id
-      fd.append("userId", JSON.parse(localStorage.getItem("userInfo")).id);
-      console.log("fd", fd);
-      uploadCommon(fd).then(
+      var fda = new FormData();
+      fda.append("file", param.file);
+      fda.append("category", "卷宗档案-线下档案");
+      fda.append("categoryAccurate", "线下档案");
+      fda.append("fileName", param.file.name);
+      fda.append("status", "线下pdf卷宗");
+      fda.append("caseId", param.file.name + new Date().getTime()); //传记录id
+      fda.append("docId", param.file.name + new Date().getTime()); //传记录id
+      fda.append("userId", JSON.parse(localStorage.getItem("userInfo")).id);
+      // let fda={
+      //   "file":param.file,
+      // "category":"卷宗档案-线下档案",
+      // "categoryAccurate":"线下档案",
+      // "fileName":param.file.name,
+      // "status":"线下pdf卷宗",
+      // "caseId":param.file.name + new Date().getTime(), 
+      // "docId":param.file.name + new Date().getTime(), 
+      // "userId":JSON.parse(localStorage.getItem("userInfo")).id
+      // };
+      console.log("fda", fda.values());
+      uploadEvApi(fda).then(
         (res) => {
           this.$message({ type: "success", message: "上传成功" });
           console.log("res", res);
@@ -280,30 +290,23 @@ export default {
     },
     //上传文件前
     beforeupload_linepdf(file) {
-      // console.log("file.type", file.type);
-      // const isJPG = file.name.lastIndexOf(".pdf") != -1;
-      // if (!isJPG) {
-      //   this.handleRemove_linepdf(file);
-      //   this.$message.error("上传文件只能是 pdf 格式!");
-      // }
-      // return isJPG;
+      console.log("file.type", file.type);
+      const isJPG = file.name.lastIndexOf(".pdf") != -1;
+      if (!isJPG) {
+        this.handleRemove_linepdf(file);
+        this.$message.error("上传文件只能是 pdf 格式!");
+      }
+      return isJPG;
     },
     //移除文件
     handleRemove_linepdf(file, fileList) {
-      //console.log(file, fileList);
+
     },
     //移除文件之前
     beforeRemovepdf(file, fileList) {
-      //return this.$confirm(`确定移除 ${ file.name }？`);
     },
     //获取已归档的数据
     getArchiveCase(searchData) {
-      // let data = searchData;
-      // data.flag = 5;
-      //data.userId = iLocalStroage.gets("userInfo").id;
-      // data.current = this.currentPage;
-      // data.size = this.pageSize;
-      // this.getCaseList(data);
       let dat = {
         current: this.currentPage,
         size: this.pageSize,
