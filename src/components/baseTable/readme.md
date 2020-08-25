@@ -1,3 +1,6 @@
+
+# 这是一个表格组件，集合连表单和分页栏，组件预览图见 index.png
+
 ## Form Attributes
 
 参数     | 说明 | 类型 | 可选值 | 默认值
@@ -33,9 +36,9 @@ handleSubmit  | 点击搜索触发 | form (表单对象)
 -------- | ----- |:-----:|:-----:|:-----:|----
 height  | 表格高度 | String | / | 299 | 否
 columns  | 表头 | Array | / | / | 是
-tableData  | table数据 | Array | / | / ｜ 是
-buttons  | 表格中的操作按钮 | Array | / | / ｜ 否
-pageData | 分页条相关参数 | Object | / | / ｜ 是
+tableData  | table数据 | Array | / | / | 是
+buttons  | 表格中的操作按钮 | Array | / | /|否
+pageData | 分页条相关参数 | Object | / | / |是
 
 ### PageData Attributes
 
@@ -53,7 +56,7 @@ handleClick  | 点击操作列按钮触发 | index,row,name |
 handleSizeChange | 切换每页显示的条数 | val (每页显示条数) |
 handleCurrentChange | 切换当前页 | val (当前页码) |
 
-> 组件使用示例
+> 组件使用示例：
 
 ```html
 <template>
