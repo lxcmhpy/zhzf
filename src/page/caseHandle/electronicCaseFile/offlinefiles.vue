@@ -24,9 +24,9 @@
               <span>{{scope.row.isUploadCase===0?"已上传":"未上传"}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
-          <el-table-column prop="endTime" label="结案时间" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
+          <el-table-column prop="acceptTime" label="受案时间" align="center" width="110"></el-table-column>
+          <el-table-column prop="endTime" label="结案时间" align="center" width="110"></el-table-column>
+          <el-table-column prop="caseType" label="案件类型" align="center" width="150"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope" width="150">
               <el-button
