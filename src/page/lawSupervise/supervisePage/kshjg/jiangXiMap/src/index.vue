@@ -271,6 +271,13 @@ export default {
         if(data.padStateColor) {
           this.showVideo = true
         }
+      } else if (index === 2) {
+        // 如果状态为在线（图标颜色为绿色），则打开视频窗口
+        this.$router.push("/static/js/videoinfo.html")
+        // "static/js/videoinfo.html"
+        if(data.peStateColor) {
+          this.showVideo = true
+        }
       }
       this.phoneVideoId = index
     }

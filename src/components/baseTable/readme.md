@@ -34,13 +34,16 @@ handleSubmit  | 点击搜索触发 | form (表单对象)
 
 参数     | 说明 | 类型 | 可选值 | 默认值 | 是否必传
 -------- | ----- |:-----:|:-----:|:-----:|----
-height  | 表格高度 | String | / | 299 | 否
+tableAttr  | 表格属性 | Object | / | / | 否
 columns  | 表头 | Array | / | / | 是
 tableData  | table数据 | Array | / | / | 是
 buttons  | 表格中的操作按钮 | Array | / | /|否
-pageData | 分页条相关参数 | Object | / | / |是
+pageAttr | 分页条相关参数 | Object | / | / |是
 
-### PageData Attributes
+>- tableAttr 里定义里表格高度 height， 是否单选 isRadio，是否多选 isSelection，是否显示序号列 isNumber; 默认只有高度，其他不显示.
+>- 注意： isRadio 和 isSelection 不能同时为 true， 否则会出错。
+
+### PageAttr Attributes
 
 参数     | 说明 | 类型 | 可选值 | 默认值
 -------- | ----- |:-----:|:-----:|:-----:
@@ -66,11 +69,14 @@ handleCurrentChange | 切换当前页 | val (当前页码) |
       @handleClick="handleClick"
       @handleSizeChange="handleSizeChange"
       @handleCurrentChange="handleCurrentChange"
+      @handleSubSelect="handleSubSelect"
+      @handleCloseSelect="handleCloseSelect"
+      :buttons="buttons"
       :inputList="inputList"
       :columns="columns"
       :tableData="tableData"
-      :buttons="buttons"
-      :pageData="pageData" />
+      :pageAttr="pageAttr"
+      :tableAttr="tableAttr" />
   </div>
 </template>
 
@@ -82,6 +88,12 @@ export default {
   },
   data() {
     return {
+      tableAttr: {
+        height: '299',
+        isRadio: true, // 显示单选框
+        isSelection: false, // 显示多选框
+        isNumber: true, // 显示序号列
+      },
       inputList: [
         {
           label: '姓名',
@@ -112,12 +124,6 @@ export default {
       ],
       columns: [
         {
-          label: "序号",
-          type: "index",
-          align: "center",
-          width: "100"
-        },
-        {
           label: "日期",
           prop: 'date',
         },
@@ -131,14 +137,6 @@ export default {
           width: "230"
         },
       ],
-      buttons: {
-        label: '操作',
-        align: "center",
-        list: [
-          { type: 'text', name: '编辑' },
-          { type: 'text', name: '删除' },
-        ]
-      },
       tableData: [
         {
           date: '2016-05-02',
@@ -163,7 +161,15 @@ export default {
           address: '上海市普陀区金沙江路 1518 弄'
         },
       ],
-      pageData: {
+      buttons: {
+        label: '操作',
+        align: "center",
+        list: [
+          { type: 'text', name: '编辑' },
+          { type: 'text', name: '删除' },
+        ]
+      },
+      pageAttr: {
         current: 1,
         size: 5,
         total: 100
@@ -197,6 +203,20 @@ export default {
      */
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+
+    /**
+     * 单选或复选后点击确定
+     */
+    handleSubSelect(row) {
+      console.log(row)
+    },
+
+    /**
+     * 点击取消按钮
+     */
+    handleCloseSelect() {
+      console.log('取消')
     }
   }
 }

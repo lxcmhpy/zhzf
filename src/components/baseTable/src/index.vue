@@ -50,9 +50,26 @@
 
     <!-- table 表格 -->
     <el-table
-      :height="height"
+      ref="multipleTable"
+      class="BaseTable-table"
+      empty-text
+      :height="tableAttr.height"
       :data="tableData"
-      style="width: 100%">
+      style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column
+        v-if="tableAttr.isSelection"
+        align="center"
+        type="selection"
+        width="60">
+      </el-table-column>
+      <el-table-column v-if="tableAttr.isRadio" align="center" label="单选" width="60">
+        <template slot-scope="scope">
+          <el-radio v-model="radio" :label="scope.$index" @change="change(scope.row)"></el-radio>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="tableAttr.isNumber" align="center" label="序号" type="index" width="100">
+      </el-table-column>
       <el-table-column
         v-for="item of columns"
         :type="item.type"
@@ -62,7 +79,7 @@
         :align="item.align"
         :width="item.width">
       </el-table-column>
-      <el-table-column :label="buttons.label" :align="buttons.align">
+      <el-table-column v-if="buttons" :label="buttons.label" :align="buttons.align">
         <template slot-scope="scope">
           <el-button
             v-for="item of buttons.list"
@@ -76,6 +93,10 @@
 
     <!-- 分页 -->
     <div class="BaseTable-pagination">
+      <div class="selectBtns">
+        <el-button size="small" type="primary" @click="handleSubSelect">确定</el-button>
+        <el-button size="small" type="primary" @click="handleCloseSelect">取消</el-button>
+      </div>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -112,11 +133,9 @@ export default {
     },
     buttons: {
       type: Object,
-      default() {
-        return {}
-      }
+      default: null
     },
-    pageData: {
+    pageAttr: {
       type: Object,
       default() {
         return {
@@ -126,24 +145,31 @@ export default {
         }
       }
     },
-    height: {
-      type: String,
-      default: "299"
+    tableAttr: {
+      type: Object,
+      default() {
+        return {
+          height: '299',
+        }
+      }
     }
   },
   computed: {
     current() {
-      return this.pageData.current
+      return this.pageAttr.current
     },
     size() {
-      return this.pageData.size
+      return this.pageAttr.size
     },
     total() {
-      return this.pageData.total
+      return this.pageAttr.total
     }
   },
   data() {
     return {
+      radioRow: '', // 单选时选中的行数据
+      multipleSelection: [], // 复选框选中的数据
+      radio: '',
       form: {}
     }
   },
@@ -193,6 +219,44 @@ export default {
      */
     handleCurrentChange(val) {
       this.$emit('handleCurrentChange', val)
+    },
+
+    /**
+     * 点击单选框
+     */
+    change(row) {
+      this.radioRow = row
+    },
+
+    /**
+     * 点击复选框
+     */
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+
+    /**
+     * 点击确定
+     */
+    handleSubSelect() {
+      if(this.tableAttr.isRadio) {
+        this.$emit('handleSubSelect', this.radioRow)
+      } else if (this.tableAttr.isSelection) {
+        this.$emit('handleSubSelect', this.multipleSelection)
+      }
+    },
+
+    /**
+     * 点击取消
+     */
+    handleCloseSelect() {
+      if(this.tableAttr.isRadio) {
+        this.radio = ''
+        this.radioRow = ''
+      } else if (this.tableAttr.isSelection) {
+        this.$refs.multipleTable.clearSelection()
+      }
+      this.$emit('handleCloseSelect')
     }
   },
   created() {
@@ -222,9 +286,29 @@ export default {
       }
     }
   }
+  &-table {
+    .el-radio {
+      .el-radio__label {
+        display: none;
+      }
+    }
+  }
   &-pagination {
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
     margin-top: 10px;
+    .selectBtns {
+      display: flex;
+      justify-content: flex-start;
+      .el-button {
+        border-radius: 4px;
+      }
+    }
+    .el-pagination__jump {
+      .el-input__inner {
+        border-radius: 4px;
+      }
+    }
   }
 }
 </style>
