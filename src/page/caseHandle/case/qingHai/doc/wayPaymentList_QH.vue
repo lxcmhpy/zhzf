@@ -198,7 +198,7 @@
               </el-table-column>
               <el-table-column prop="total" label="小计（元）" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.total"></el-input>
+                  <el-input v-model="scope.row.total" type="number"></el-input>
                 </template>
               </el-table-column>
               <el-table-column prop="notes" label="备注" align="center" width="210px">
@@ -410,6 +410,7 @@ export default {
 
       if (canAdd) {
         this.docData.deliveryCertificatelist = this.tableDatas;
+        this.autoTotal();
         this.addVisible = false;
       }
 
@@ -449,6 +450,14 @@ export default {
           console.log(err);
         }
       );
+    },
+    // 合计
+    autoTotal() {
+      console.log('tableDatas',this.tableDatas)
+      this.total=0
+      this.tableDatas.forEach(element => {
+        this.total+=element.total
+      });
     }
   },
 
