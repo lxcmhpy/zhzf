@@ -276,8 +276,21 @@
           </div>
         </div>
         <div v-show="partyTypePerson=='1'">
-          <div class="itemBig">
-            <el-form-item label="联系地址">
+        <div class="itemThird">
+            <el-form-item label="省/市/区">
+                <el-cascader 
+                    ref="areaCascader"
+                    v-model="inforForm.provincesAddressArray" 
+                    :options="provincesList" 
+                    @active-item-change="handleSelect"
+                    :props="{ expandTrigger:'hover',label:'name',value:'name'}" 
+                    filterable
+                    @change="handleSelect"
+                ></el-cascader>
+            </el-form-item>
+          </div>
+          <div class="itemThird">
+            <el-form-item label="详细地址">
               <el-input v-model="inforForm.partyAddress"></el-input>
             </el-form-item>
           </div>
@@ -497,8 +510,22 @@
             </div>
           </div>
           <div>
-            <div class="itemBig">
-              <el-form-item label="联系地址">
+           <div class="itemThird">
+                <el-form-item label="省/市/区">
+                    <el-cascader 
+                        :ref="subAreaCascader+index"
+                        v-model="driverOrAgentInfo.provincesAddress" 
+                        :options="provincesList" 
+                        @active-item-change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
+                        :props="{ expandTrigger:'hover',label:'name',value:'name'}" 
+                        filterable
+                        :disabled="index==0&&relationWithPartyIsOne[index]"
+                        @change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
+                    ></el-cascader>
+                </el-form-item>
+            </div>   
+            <div class="itemThird">
+              <el-form-item label="详细地址">
                 <el-input
                   v-model="driverOrAgentInfo.adress"
                   :disabled="index==0&&relationWithPartyIsOne[index]"
