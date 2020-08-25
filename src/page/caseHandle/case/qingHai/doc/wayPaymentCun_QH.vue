@@ -168,6 +168,12 @@ export default {
         party: "",
         partySex: '',
         partyAge: "",
+        note:'',
+        partyAddress:'',
+        partyManager:'',
+        carLocation:'',
+        number:'',
+        afdd:'',
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
@@ -250,7 +256,7 @@ export default {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
-        docId: '2c9029cf6931aa5c01693381ac690018'
+        docId: this.$route.params.docId
       };
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
@@ -346,7 +352,7 @@ export default {
   created() {
     // this.setData();
     // this.getCaseInfo();
-    this.getLawOfficer();
+    // this.getLawOfficer();
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
   }
