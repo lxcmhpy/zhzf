@@ -165,6 +165,8 @@ export default {
         party: "",
         partySex: '',
         partyAge: "",
+        certificateId1:'',
+        certificateId2:''
       },
      caseDocDataForm: {
         id: "",   //修改的时候用
@@ -327,9 +329,9 @@ export default {
       };
       findCaseAllBindPropertyApi(data).then(res => {
         console.log(res);
-        debugger
         let data2 = JSON.parse(res.data.propertyData);
         this.staffList = data2.staff.split(',');
+        
       }, err => {
         console.log(err);
       })
