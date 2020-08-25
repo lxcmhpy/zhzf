@@ -168,6 +168,12 @@ export default {
         party: "",
         partySex: '',
         partyAge: "",
+        note:'',
+        partyAddress:'',
+        partyManager:'',
+        carLocation:'',
+        number:'',
+        afdd:'',
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
