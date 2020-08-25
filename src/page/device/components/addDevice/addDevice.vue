@@ -280,3 +280,12 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.form-tips-popper.el-popover {
+  background: #303133;
+  color: #fff;
+  .popper__arrow::after {
+    border-top-color: #303133;
+  }
+}
+</style>
