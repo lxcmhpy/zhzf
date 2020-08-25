@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">公路赔（补）偿案件结案报告</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -17,28 +17,28 @@
             <td>证件号</td>
           </tr>
           <tr>
-            <td  class="color_DBE4EF">
+            <td class="color_DBE4EF">
               <el-form-item prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
                 <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
                   <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff2==item"></el-option>
                 </el-select>
               </el-form-item>
             </td>
-            <td  class="color_DBE4EF">
+            <td class="color_DBE4EF">
               <el-form-item prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
                 <el-input type="textarea" clearable class="w-120" v-model="docData.certificateId1" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td  class="color_DBE4EF">
+            <td class="color_DBE4EF">
               <el-form-item prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
                 <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2" placeholder="请选择" :disabled="fieldDisabled(propertyFeatures['staff2'])">
                   <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
                 </el-select>
               </el-form-item>
             </td>
-            <td  class="color_DBE4EF">
+            <td class="color_DBE4EF">
               <el-form-item prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
                 <el-input type="textarea" v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
               </el-form-item>
@@ -78,8 +78,7 @@
         </table>
       </el-form>
     </div>
-
-    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'question_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
@@ -93,9 +92,9 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 import { BASIC_DATA_QH } from '@/common/js/BASIC_DATA_QH.js';
-  import {
-    findCaseAllBindPropertyApi,
-  } from "@/api/caseHandle";
+import {
+  findCaseAllBindPropertyApi,
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
@@ -110,13 +109,16 @@ export default {
         partySex: '',
         partyAge: "",
       },
-      caseLinkDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_QH.case_handle_paymentReport_QH_caseDocTypeId, //表单类型ID
-        //表单数据
+      caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
+        //文书数据
         docData: "",
-        status: "",
+        status: "",   //提交状态
+        note: "",//文书名字 
+        docDataId: "", //多份文书的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         checkBox: [
@@ -169,7 +171,7 @@ export default {
       needDealData: true,
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
-      staffList:[]
+      staffList: []
     };
   },
   components: {
@@ -183,66 +185,123 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    setData() {
-      console.log('setData');
-      this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId);
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
-      console.log('获取数据', this.docData)
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      console.log(this.caseId)
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
     },
-    // 提交表单
+    addDocData(handleType) {
+      this.com_addDocData(handleType);
+      // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
+      // this.$router.push({
+      //   name: this.$route.params.url,
+      // });
+    },
+    //保存文书信息
     saveData(handleType) {
-      //参数  提交类型 、formRef
-      this.com_submitCaseForm(handleType, "establishForm", true);
+      this.com_addDocData(handleType, "docForm");
     },
-
-    //设置案件来源
-    getDataAfter() {
-      this.staffList = this.docData.staff.split(',');
-      this.docData.staff1 = this.docData.staff.split(',')[0];
-      this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
-      if (this.staffList.length == 2) {
-        this.docData.staff2 = this.docData.staff.split(',')[1];
-        this.docData.certificateId2 = this.docData.certificateId.split(',')[1];
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == '1') {
+        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    //获取案件基本信息
-    getCaseInfo() {
-      let data = {
-        id: this.caseId
-      };
-      this.$store.dispatch("getCaseBasicInfo", data)
-        .then(
-          res => {
-            console.log('获取案件信息', res);
-            this.editCaseInfo = {
-              id: res.data.id,
-              tempNo: res.data.tempNo
-            }
-          })
-        .catch(err => { console.log(err) })
-    },
-    //修改案件基本信息
-    gotoEditCase() {
-      this.$router.push({
-        name: "case_handle_inforCollect",
-        params: { editFlag: true }
-      })
-    },
-    //修改人员
-    changeStaff1(val) {
-      let staffIndex = this.docData.staff.split(',').indexOf(val);
-      this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
-    },
-    changeStaff2(val) {
-      let staffIndex = this.docData.staff.split(',').indexOf(val);
+
+    //更改执法人员2
+    changeStaff2() {
+      let staffIndex = this.staffList.indexOf(val);
       this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
+    getDataAfter() {
+      this.staffList = this.docData.staff.split(',');
+      this.docData.staff1 = this.staffList[0];
+      this.docData.staff2 = this.staffList[1];
+      this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
+      this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+
+    },
+    //根据类型
+    setDataForPelple() {
+      let selectPeo = JSON.parse(this.$route.params.addMoreData).askData.peopleAndRelationType;
+      //  console.log('addMoreData',selectPeo);
+
+      let selectPeo2 = selectPeo.split('-'); //[name,relation]
+      console.log('selectPeo2', selectPeo2);
+      let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
+      let dailiData = "";
+      dailiDataList.forEach(item => {
+        console.log('其他人', item);
+        if (item.relationWithCase == selectPeo2[1] && item.name == selectPeo2[0]) {
+          console.log('不是当事人')
+          dailiData = item;
+          console.log('dailiData22222', dailiData);
+          this.docData.inquiriedRelation = item.relationWithCase;
+
+          return;
+        }
+        // this.setDataForPelpleDetail(dailiData);
+
+      })
+      //当事人
+      if (!dailiData) {
+        console.log('是当事人')
+        dailiData = {
+          name: this.docData.party,
+          sex: this.docData.partySex,
+          zhengjianNumber: this.docData.partyIdNo,
+          age: this.docData.partyAge,
+          company: this.docData.partyUnitPosition,
+          position: this.docData.occupation,
+          tel: this.docData.partyTel,
+          adress: this.docData.partyAddress,
+        }
+
+        // this.docData.inquiriedRelation = "当事人";
+      }
+      //与案件关系选择以上都不是时
+      if (selectPeo2[0] == '以上均不是') {
+        console.log('以上均不是')
+        dailiData = {
+          name: '',
+          sex: '',
+          zhengjianNumber: '',
+          age: '',
+          company: '',
+          position: '',
+          tel: '',
+          adress: '',
+        }
+        // this.docData.inquiriedRelation = "";
+      }
+      this.setDataForPelpleDetail(dailiData);
+
+    },
+    setDataForPelpleDetail(dailiData) {
+      console.log('dailiData', dailiData);
+      this.docData.inquiried = dailiData.name;
+      this.docData.inquiriedSex = Number(dailiData.sex);
+      this.docData.inquiriedIdNo = dailiData.zhengjianNumber;
+      this.docData.inquiriedAge = dailiData.age,
+        this.docData.inquiriedUnitPosition = dailiData.company + " " + dailiData.position;
+      this.docData.inquiriedAddress = dailiData.adress;
+      this.docData.inquiriedTel = dailiData.tel;
+      console.log(' this.docData.inquiriedSex', this.docData.inquiriedSex);
+    },
+
     //获取执法人员
     getLawOfficer() {
       let data = {
@@ -256,13 +315,13 @@ export default {
       }, err => {
         console.log(err);
       })
-    },
+    }
   },
-  created() {
-    // this.setData();
-    // this.getCaseInfo();
+  mounted() {
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
     this.getLawOfficer();
-  }
+  },
 };
 </script>
  <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>

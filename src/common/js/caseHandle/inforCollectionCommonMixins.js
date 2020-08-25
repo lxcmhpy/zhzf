@@ -237,61 +237,61 @@ export const inforCollectionCommonMixins = {
       },
       allRelationWithParty: [
         //与当事人关系下拉框
-        {value: "0", label: "同一人"},
-        {value: "1", label: "近亲戚"},
-        {value: "2", label: "借用车辆"},
-        {value: "3", label: "雇佣关系"},
-        {value: "4", label: "车辆所有人"}
+        // {value: "0", label: "同一人"},
+        // {value: "1", label: "近亲戚"},
+        // {value: "2", label: "借用车辆"},
+        // {value: "3", label: "雇佣关系"},
+        // {value: "4", label: "车辆所有人"}
       ],
       allRelationWithParty_: [
         //与当事人关系下拉框
-        {value: "1", label: "近亲戚"},
-        {value: "2", label: "借用车辆"},
-        {value: "3", label: "雇佣关系"},
-        {value: "4", label: "车辆所有人"}
+        // {value: "1", label: "近亲戚"},
+        // {value: "2", label: "借用车辆"},
+        // {value: "3", label: "雇佣关系"},
+        // {value: "4", label: "车辆所有人"}
       ],
       allRelationWithCase: [
         //与案件关系下拉框
-        {value: "0", label: "当事人"},
-        {value: "1", label: "驾驶人"},
-        {value: "2", label: "实际所有者"},
-        {value: "3", label: "证人"},
-        {value: "4", label: "承运人"},
-        {value: "5", label: "代理人"}
+        // {value: "0", label: "当事人"},
+        // {value: "1", label: "驾驶人"},
+        // {value: "2", label: "实际所有者"},
+        // {value: "3", label: "证人"},
+        // {value: "4", label: "承运人"},
+        // {value: "5", label: "代理人"}
       ],
       allQYRelationWithParty: [
       //与当事人关系下拉框(企业组织)
-      { value: "2", label: "借用车辆" },
-      { value: "3", label: "雇佣关系" },
-      { value: "5", label: "其他" }
+      // { value: "2", label: "借用车辆" },
+      // { value: "3", label: "雇佣关系" },
+      // { value: "5", label: "其他" }
      ],
       allQYRelationWithCase: [
       //与案件关系下拉框(企业组织)
-      { value: "1", label: "驾驶人" },
-      { value: "3", label: "证人" },
-      { value: "4", label: "承运人" },
-      { value: "5", label: "代理人" }
+      // { value: "1", label: "驾驶人" },
+      // { value: "3", label: "证人" },
+      // { value: "4", label: "承运人" },
+      // { value: "5", label: "代理人" }
       ],
       allVehicleIdColor: [
         //车牌颜色下拉框
-        {value: "1", label: "黄色"},
-        {value: "2", label: "蓝色"},
-        {value: "3", label: "绿色"},
-        {value: "4", label: "黄绿"},
-        {value: "5", label: "黑色"},
-        {value: "6", label: "白色"},
-        {value: "7", label: "其他"}
+        // {value: "1", label: "黄色"},
+        // {value: "2", label: "蓝色"},
+        // {value: "3", label: "绿色"},
+        // {value: "4", label: "黄绿"},
+        // {value: "5", label: "黑色"},
+        // {value: "6", label: "白色"},
+        // {value: "7", label: "其他"}
       ],
       allVehicleShipType: [
-        {value: "中小客车", label: "中小客车"},
-        {value: "大客车", label: "大客车"},
-        {value: "小型货车", label: "小型货车"},
-        {value: "中型货车", label: "中型货车"},
-        {value: "大型货车", label: "大型货车"},
-        {value: "特大型货车", label: "特大型货车"},
-        {value: "集装箱车", label: "集装箱车"},
-        {value: "摩托车", label: "摩托车"},
-        {value: "拖拉机", label: "拖拉机"}
+        // {value: "中小客车", label: "中小客车"},
+        // {value: "大客车", label: "大客车"},
+        // {value: "小型货车", label: "小型货车"},
+        // {value: "中型货车", label: "中型货车"},
+        // {value: "大型货车", label: "大型货车"},
+        // {value: "特大型货车", label: "特大型货车"},
+        // {value: "集装箱车", label: "集装箱车"},
+        // {value: "摩托车", label: "摩托车"},
+        // {value: "拖拉机", label: "拖拉机"}
       ],
       dateShow: false, //是否显示时间提示语
       showTrailer: false, //是否显示挂车信息
@@ -1082,13 +1082,43 @@ export const inforCollectionCommonMixins = {
       }
     },
     //获取挂车类型数据
-    getTrailerType() {
-      getDictListDetailByNameApi('trailerType').then(res => {
-        console.log('挂车类型', res);
-        this.allTrailerTypeType = res.data;
-      }, err => {
-        console.log(err);
-      })
+    // getTrailerType() {
+    //   getDictListDetailByNameApi('trailerType').then(res => {
+    //     console.log('挂车类型', res);
+    //     this.allTrailerTypeType = res.data;
+    //   }, err => {
+    //     console.log(err);
+    //   })
+    // },
+    //初始化抽屉表
+    async initDrawData(){
+      try{
+        //获取挂车类型数据
+        let  data1 = await getDictListDetailByNameApi('trailerType');
+        this.allTrailerTypeType = data1.data;
+        //与案件关系
+        let  data2 = await getDictListDetailByNameApi('与案件关系');
+        this.allRelationWithCase = data2.data;
+        //与当事人关系
+        let  data3 = await getDictListDetailByNameApi('与当事人关系');
+        this.allRelationWithParty = data3.data;
+        this.allRelationWithParty_ =  this.allRelationWithParty.filter(item=>item.name !='同一人');
+        //与当事人关系(企业组织)
+        let  data4 = await getDictListDetailByNameApi('当事人关系(企业组织)');
+        this.allQYRelationWithParty = data4.data;
+        //与案件关系(企业组织)
+        let  data5 = await getDictListDetailByNameApi('与案件关系(企业组织)');
+        this.allQYRelationWithCase = data5.data;
+        //车牌颜色
+        let  data6 = await getDictListDetailByNameApi('车牌颜色');
+        this.allVehicleIdColor = data6.data;
+        //车辆类型
+        let  data7 = await getDictListDetailByNameApi('车辆类型');
+        this.allVehicleShipType = data7.data;
+      }catch(err){
+        throw new Error(err);
+      }
+      
     },
     //查询历史记录
     findHistoryBySign(sign) {
@@ -1278,7 +1308,8 @@ created() {
   this.getDirectionList();
   this.getLocationList();
   // this.findJudgFreedomList();
-  this.getTrailerType();
+  // this.getTrailerType();
+  this.initDrawData();
   this.findRouteManageByOrganId();
   // this.setLawPerson(
   //   [iLocalStroage.gets('userInfo').username]

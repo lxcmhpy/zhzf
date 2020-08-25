@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">公路赔（补）偿案件调查报告</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
@@ -128,8 +128,14 @@
         </table>
       </el-form>
     </div>
-
-    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
+    <casePageFloatBtns
+      :pageDomId="'question_print'"
+      :formOrDocData="formOrDocData"
+      @submitData="submitData"
+      @saveData="saveData"
+      @backHuanjie="submitData"
+    ></casePageFloatBtns>
+    <!-- <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns> -->
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
@@ -160,13 +166,16 @@ export default {
         partySex: '',
         partyAge: "",
       },
-      caseLinkDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_QH.case_handle_paymentReport_QH_caseDocTypeId, //表单类型ID
-        //表单数据
+     caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId: '2955023b99943d7c21e54c5d84d82667',     //文书类型ID
+        //文书数据
         docData: "",
-        status: "",
+        status: "",   //提交状态
+        note:"",//文书名字 
+        docDataId:"", //多份文书的id
+        linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         checkBox: [
@@ -208,7 +217,6 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: 'establish-print'
       },
-      huanjieAndDocId: this.BASIC_DATA_QH.establish_JX_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
       caseSourceText3: "",
@@ -233,55 +241,73 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    setData() {
-      console.log('setData');
-      this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId);
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
-      console.log('获取数据', this.docData)
+  //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      console.log(this.caseId)
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
     },
-    // 提交表单
+    addDocData(handleType) {
+      this.com_addDocData(handleType);
+    },
+    //保存文书信息
     saveData(handleType) {
-      //参数  提交类型 、formRef
-      this.com_submitCaseForm(handleType, "establishForm", true);
+      this.com_addDocData(handleType, "docForm");
     },
-
-    //设置案件来源
-    getDataAfter() {
-      this.staffList = this.docData.staff.split(',');
-      this.docData.staff1 = this.docData.staff.split(',')[0];
-      this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
-      if (this.staffList.length == 2) {
-        this.docData.staff2 = this.docData.staff.split(',')[1];
-        this.docData.certificateId2 = this.docData.certificateId.split(',')[1];
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == '1') {
+        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    //获取案件基本信息
-    getCaseInfo() {
-      let data = {
-        id: this.caseId
-      };
-      this.$store.dispatch("getCaseBasicInfo", data)
-        .then(
-          res => {
-            console.log('获取案件信息', res);
-            this.editCaseInfo = {
-              id: res.data.id,
-              tempNo: res.data.tempNo
-            }
-          })
-        .catch(err => { console.log(err) })
+
+    //更改执法人员2
+    changeStaff2() {
+      let staffIndex = this.staffList.indexOf(val);
+      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      console.log(staffIndex);
     },
-    //修改案件基本信息
-    gotoEditCase() {
-      this.$router.push({
-        name: "case_handle_inforCollect",
-        params: { editFlag: true }
+    getDataAfter() {
+      this.staffList = this.docData.staff.split(',');
+      this.docData.staff1 = this.staffList[0];
+      this.docData.staff2 = this.staffList[1];
+      this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
+      this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+
+    },
+    //根据类型
+    setDataForPelple() {
+      let selectPeo = JSON.parse(this.$route.params.addMoreData).askData.peopleAndRelationType;
+      //  console.log('addMoreData',selectPeo);
+
+      let selectPeo2 = selectPeo.split('-'); //[name,relation]
+      console.log('selectPeo2', selectPeo2);
+      let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
+      let dailiData = "";
+      dailiDataList.forEach(item => {
+        console.log('其他人', item);
+        if (item.relationWithCase == selectPeo2[1] && item.name == selectPeo2[0]) {
+          console.log('不是当事人')
+          dailiData = item;
+          console.log('dailiData22222', dailiData);
+          this.docData.inquiriedRelation = item.relationWithCase;
+
+          return;
+        }
+
       })
+
     },
     //修改人员
     changeStaff1(val) {
@@ -302,16 +328,16 @@ export default {
       findCaseAllBindPropertyApi(data).then(res => {
         console.log(res);
         let data2 = JSON.parse(res.data.propertyData);
-        this.staffList = data2.staff.split(',');
+        // this.staffList = data2.staff.split(',');
       }, err => {
         console.log(err);
       })
     },
   },
   created() {
-    // this.setData();
-    // this.getCaseInfo();
-    // this.getLawOfficer();
+    this.isOverStatus();
+    this.getDocDataByCaseIdAndDocId();
+    this.getLawOfficer();
   }
 };
 </script>

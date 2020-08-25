@@ -71,12 +71,13 @@
                 <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item> -->
               <p>
-              <el-form-item prop="vehicleType" style="width:calc(50% - 10px);" :rules="fieldRules('vehicleType',propertyFeatures['vehicleType'])">
-                <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-              </el-form-item>
-              <el-form-item prop="number" style="width:calc(50% - 10px);" :rules="fieldRules('number',propertyFeatures['number'])">
-                <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-              </el-form-item></p>
+                <el-form-item prop="vehicleType" style="width:calc(50% - 10px);" :rules="fieldRules('vehicleType',propertyFeatures['vehicleType'])">
+                  <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                </el-form-item>
+                <el-form-item prop="number" style="width:calc(50% - 10px);" :rules="fieldRules('number',propertyFeatures['number'])">
+                  <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                </el-form-item>
+              </p>
             </td>
           </tr>
           <tr>
@@ -98,7 +99,7 @@
             </td>
           </tr>
           <tr>
-            <td :rowspan="docData.deliveryCertificatelist.length+1">路产损失</td>
+            <td :rowspan="docData.deliveryCertificatelist.length+2">路产损失</td>
             <td>项目名称</td>
             <td>单位</td>
             <td>数量</td>
@@ -109,46 +110,63 @@
 
           <tr @click="handleAdd" v-for="(item,index) in docData.deliveryCertificatelist" :key="index">
             <td>{{item.docName ? item.docName : ''}}</td>
-            <td>{{item.receiver ? item.receiver : ''}}</td>
-            <td>{{item.address ? item.address : ''}}</td>
-            <td>{{item.servedDate ? item.servedDate : ''}}</td>
-            <td>{{item.servedType ? item.servedType : ''}}</td>
-            <td>{{item.deliveryMaster ? item.deliveryMaster.join(',') : ''}}</td>
+            <td>{{item.unit ? item.unit : ''}}</td>
+            <td>{{item.amount ? item.amount : ''}}</td>
+            <td>{{item.stander ? item.stander : ''}}</td>
+            <td>{{item.total ? item.total : ''}}</td>
+            <td>{{item.notes ? item.notes: ''}}</td>
           </tr>
           <tr>
-            <td>备注</td>
+            <td></td>
             <td>合计</td>
             <td></td>
             <td></td>
-            <td></td>
-            <td>￥</td>
+            <td>￥{{docData.total}}</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="7">
-              <div class="pdf_seal">
-                <br /><br /><br />
-                <span>交通运输执法部门(印章)</span><br>
-                <el-form-item prop="makeDate" class="pdf_datapick">
-                  <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
-                  </el-date-picker>
-                </el-form-item>
-              </div>
-            </td>
-
-          </tr>
-          <tr>
-            <td colspan="7" class="color_DBE4EF remark">
-              <el-form-item label='备注:'>
+            <td>备注</td>
+            <td colspan="6" class="color_DBE4EF remark">
+              <el-form-item prop="docNote" :rules="fieldRules('adress',propertyFeatures['docNote'])">
                 <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
-          <el-form-item prop="docLength" style="visibility:hidden">
+          <!-- <el-form-item prop="docLength" style="visibility:hidden">
             <el-input v-model="docData.docLength"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </table>
-
+        <p>
+          当事人（当事人代理人）：<el-form-item style="width:200px" prop="personName" :rules="fieldRules('personName',propertyFeatures['personName'])">
+            <el-input type="textarea" v-model="docData.personName" :disabled="fieldDisabled(propertyFeatures['personName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+        </p>
+        <p>
+          执法人员： <el-form-item style="width:200px" prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
+            <el-input type="textarea" v-model="docData.staff1" :disabled="fieldDisabled(propertyFeatures['staff1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+          执法证号： <el-form-item style="width:200px" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+            <el-input type="textarea" v-model="docData.certificateId1" :disabled="fieldDisabled(propertyFeatures['certificateId1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+        </p>
+        <p>
+          执法人员： <el-form-item style="width:200px" prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
+            <el-input type="textarea" v-model="docData.staff2" :disabled="fieldDisabled(propertyFeatures['staff2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+          执法证号： <el-form-item style="width:200px" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
+            <el-input type="textarea" v-model="docData.certificateId2" :disabled="fieldDisabled(propertyFeatures['certificateId2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          </el-form-item>
+        </p>
+        <div class="pdf_seal">
+          <span>交通运输执法部门(印章)</span>
+          <br />
+          <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="notice clear">
+          <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
+        </div>
       </el-form>
     </div>
 
@@ -160,32 +178,32 @@
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column label="项目名称" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.docName"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="单位" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.receiver" :disabled="true"></el-input>
+                  <el-input v-model="scope.row.unit"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column prop="address" label="数量" align="center">
+              <el-table-column prop="amount" label="数量" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.amount"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="补偿标准" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.stander"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column prop="servedType" label="小计（元）" align="center">
+              <el-table-column prop="total" label="小计（元）" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.total"></el-input>
                 </template>
               </el-table-column>
-              <el-table-column prop="deliveryMaster" label="备注" align="center" width="210px">
+              <el-table-column prop="notes" label="备注" align="center" width="210px">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.address"></el-input>
+                  <el-input v-model="scope.row.notes"></el-input>
                 </template>
               </el-table-column>
             </el-table>
@@ -198,7 +216,7 @@
         </div>
       </div>
     </el-dialog>
-    <casePageFloatBtns :pageDomId="'deliverCertificate-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
   </div>
 </template>
 <script>
@@ -241,7 +259,7 @@ export default {
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id--从流程进入删掉，先写死测试用
-        caseDoctypeId: '2c9029cf6931aa5c01693381ac690018', //表单类型IDer
+        caseDoctypeId: 'ce523795a2165d15a1c3d6cf29b2b18b', //表单类型IDer
         //表单数据
         docData: "",
         status: ""
@@ -276,79 +294,16 @@ export default {
       addDocFormRef: {
         deliveryMaster: ''
       },
-      options: [{
-        value: '直接送达',
-        label: '直接送达'
-      }, {
-        value: '代理送达',
-        label: '代理送达'
-      }, {
-        value: '邮寄送达',
-        label: '邮寄送达'
-      }, {
-        value: '其他方式',
-        label: '其他方式'
-      }],
-      options2: [{
-        value: '抽样取证凭证',
-        label: '抽样取证凭证'
-      }, {
-        value: '证据登记保存清单',
-        label: '证据登记保存清单'
-      }, {
-        value: '解除证据登记保存决定书',
-        label: '解除证据登记保存决定书'
-      }, {
-        value: '行政强制措施决定书',
-        label: '行政强制措施决定书'
-      }, {
-        value: '延长行政强制措施期限通知书',
-        label: '延长行政强制措施期限通知书'
-      }, {
-        value: '解除行政强制措施决定书',
-        label: '解除行政强制措施决定书'
-      }, {
-        value: '听证通知书',
-        label: '听证通知书'
-      }, {
-        value: '当场行政处罚决定书',
-        label: '当场行政处罚决定书'
-      }, {
-        value: '责令改正违法行为通知书',
-        label: '责令改正违法行为通知书'
-      }, {
-        value: '分期（延期）缴纳罚款通知书',
-        label: '分期（延期）缴纳罚款通知书'
-      }, {
-        value: '违法行为通知书',
-        label: '违法行为通知书'
-      }, {
-        value: '行政处罚决定',
-        label: '行政处罚决定'
-      }, {
-        value: '催告书',
-        label: '催告书'
-      }, {
-        value: '行政强制执行决定书',
-        label: '行政强制执行决定书'
-      }, {
-        value: '代履行决定书',
-        label: '代履行决定书'
-      }, {
-        value: '中止（终结、恢复）行政强制执行通知书',
-        label: '中止（终结、恢复）行政强制执行通知书'
-      }],
       staffData: [],
     }
   },
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
-      // debugger
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
-        docId: '2c9029cf6931aa5c01693381ac690018'
+        docId: this.$route.params.docId
       };
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
@@ -361,11 +316,6 @@ export default {
     overFlowEdit() {
       this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
     },
-    // 获取多行编辑内容
-    // getOverFloeEditInfo(edit) {
-    //   console.log('回显', edit)
-    //   this.docData.illegalFactsEvidence = edit;
-    // },
     //提交
     submitData(handleType) {
       // debugger
@@ -374,84 +324,17 @@ export default {
         name: this.$route.params.url
       });
     },
-    // 提交文书表单
-    saveData(handleType, docForm) {
-      let newdeliveryCertificatelist = JSON.parse(JSON.stringify(this.docData.deliveryCertificatelist));
-      newdeliveryCertificatelist.forEach(item => {
-        item.deliveryMaster = item.deliveryMaster.join(',');
-      })
-      let data = {
-        caseId: this.caseId, //流程里的案件id
-        caseNumber: this.docData.caseNumber,
-        caseName: this.docData.caseName,
-        servedOrg: this.docData.servedOrg,//送达单位
-        // server: this.docData.server,//受送达人
-        server: this.docData.server,
-        // collector: this.docData.collector,//代收人
-        collector: this.docData.collector,
-        deliveryCertificatelist: newdeliveryCertificatelist,//送达文书列表
-        docNote: this.docData.docNote,//备注
-        makeDate: this.docData.makeDate,
-
-      };
-      console.log('送达回证', data);
-      if (handleType == 1) {
-        // debugger
-        this.$refs['docForm'].validate((valid, noPass) => {
-          // debugger
-          if (valid) {
-            this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
-              res => {
-                console.log("23", res);
-                //  debugger
-                this.$message({
-                  type: "success",
-                  message: "提交成功"
-                });
-                this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-                // this.$router.push('deliverReceiptForm')
-                //提交成功后提交pdf到服务器，后打开pdf
-                console.log(res.data.id)
-                // debugger
-                this.printContent(res.data.id);
-              },
-              err => {
-                console.log(err);
-              }
-            );
-          } else {
-            //  debugger
-            // noPass[Object.keys(v)[0]]
-            let a = Object.values(noPass)[0];
-            console.log(a);
-            this.$message({
-              showClose: true,
-              message: a[0].message,
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
-            });
-            return false;
-          }
-
-        });
-      } else {
-
-        this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
-          res => {
-            console.log("暂存文书", res);
-            this.$message({
-              type: "success",
-              message: "暂存成功"
-            });
-            // this.reload();
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }
+    //保存文书信息
+    saveData(handleType) {
+      this.com_addDocData(handleType, "docForm");
     },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+
     //是否是完成状态
     isOverStatus() {
       if (this.$route.params.docStatus == '1') {
@@ -462,16 +345,16 @@ export default {
       console.log(this.tableDatas)
       let length = this.tableDatas.length;
       if (length == 0) {
-        this.tableDatas.push({ 'servedType': '直接送达', 'servedDate': new Date().format('yyyy-MM-dd HH:mm') });
+        this.tableDatas.push({});
       } else {
-        this.tableDatas.push({ 'servedType': '直接送达', 'servedDate': new Date().format('yyyy-MM-dd HH:mm') });
+        this.tableDatas.push({});
       }
     },
     handleAdd(row) {
       // this.tableDatas = JSON.parse(JSON.stringify(this.docData.tableData));
       this.addVisible = true;
       if (this.tableDatas.length == 0) {
-        this.tableDatas.push({ 'servedType': '直接送达', 'servedDate': new Date().format('yyyy-MM-dd HH:mm') });
+        this.tableDatas.push({});
       }
     },
     handleClose(done) {
@@ -481,43 +364,38 @@ export default {
         })
         .catch(_ => { });
     },
-    //删除当前添加行的数据
-    // handleRow(row) {
-
-    // },
     submitForm(formName) {
       console.log('数组11', this.tableDatas)
       let canAdd = true;
       for (let i = 0; i < this.tableDatas.length; i++) {
-        this.tableDatas[i].receiver = '';
-        if (!this.tableDatas[i].docName || !this.tableDatas[i].address || !this.tableDatas[i].servedDate || !this.tableDatas[i].servedType || !this.tableDatas[i].deliveryMaster) {
+        if (!this.tableDatas[i].docName || !this.tableDatas[i].amount || !this.tableDatas[i].unit || !this.tableDatas[i].stander || !this.tableDatas[i].total) {
           if (!this.tableDatas[i].docName) {
             this.$message({
-              message: '送达文书名称不能为空！',
+              message: '项目名称不能为空！',
               type: 'warning'
             });
           } else
-            if (!this.tableDatas[i].address) {
+            if (!this.tableDatas[i].amount) {
               this.$message({
-                message: '送达地点不能为空！',
+                message: '数量不能为空！',
                 type: 'warning'
               });
             } else
-              if (!this.tableDatas[i].servedDate) {
+              if (!this.tableDatas[i].unit) {
                 this.$message({
-                  message: '送达日期不能为空！',
+                  message: '单位不能为空！',
                   type: 'warning'
                 });
               } else
-                if (!this.tableDatas[i].servedType) {
+                if (!this.tableDatas[i].stander) {
                   this.$message({
-                    message: '送达方式不能为空！',
+                    message: '补偿标准不能为空！',
                     type: 'warning'
                   });
                 } else
-                  if (!this.tableDatas[i].deliveryMaster) {
+                  if (!this.tableDatas[i].total) {
                     this.$message({
-                      message: '送达人不能为空！',
+                      message: '小计不能为空！',
                       type: 'warning'
                     });
                   }
@@ -531,15 +409,7 @@ export default {
       }
 
       if (canAdd) {
-        // this.tableDatas.forEach(item=>{
-        //   item.deliveryMaster = item.deliveryMaster.join(',');
-        // })
-        // console.log('this.tableDatas',this.tableDatas)
-
         this.docData.deliveryCertificatelist = this.tableDatas;
-        //  this.docData.deliveryCertificatelist.forEach(item=>{
-        //    item.
-        //  })
         this.addVisible = false;
       }
 
@@ -549,7 +419,7 @@ export default {
     getDataAfter() {
       console.log(this.docData.deliveryCertificatelist);
       if (!this.docData.deliveryCertificatelist.length) {
-        this.docData.deliveryCertificatelist = [{ docName: '', receiver: '', address: '', servedDate: '', servedType: '', deliveryMaster: '' }]
+        this.docData.deliveryCertificatelist = [{ docName: '', unit: '', amount: '', notes: '', total: '' }]
       }
     },
     //选择执法人员
@@ -583,12 +453,12 @@ export default {
   },
 
   mounted() {
-    // this.getDocDataByCaseIdAndDocId();
-    // this.getDataAfter();
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
+    this.getDataAfter();
   },
   created() {
-    // this.isOverStatus();
-    // this.getLawOfficer();
+    this.getLawOfficer();
   }
 }
 </script>

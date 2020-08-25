@@ -109,7 +109,6 @@ export default {
     // 根据查询条件查询考情列表
     getStatisticalList() {
       let { attendanceYear } = this.searchForm;
-      console.log("查询考勤列表");
       this.tableLoading = true;
       attendanceYear = Moment(attendanceYear).format("YYYY");
       console.log(this.searchForm.attendanceYear);

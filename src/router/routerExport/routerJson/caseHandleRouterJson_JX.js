@@ -378,5 +378,50 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/jiangxi/doc/removeAdminCoerciveMeasureDoc_JX.vue")
   },
+  // 案件调阅
+  {
+    name: "caseReviewList_JX",
+    path: "/case-review-list_JX",
+    meta: {
+      title: "我的调阅列表"
+    },
+    component: () => import("@/page/caseHandle/caseReview/caseReview.vue")
+  },
+  // 添加调阅案件
+  {
+    path: "/addCaseReview_JX",
+    name: "case_handle_addCaseReview_JX",
+    meta: {
+      title: "添加调阅案件"
+    },
+    component: () => import("@/page/caseHandle/caseReview/addCaseReview.vue")
+  },
+  // 调阅申请
+  {
+    name: "approvalReview_JX",
+    path: "/approval-review_JX",
+    meta: {
+      title: "调阅申请"
+    },
+    component: () => import("@/page/caseHandle/caseReview/approvalReview.vue")
+  },
+  // 案件协查
+  {
+    name: "assistCase_JX",
+    path: "/assist-case_JX",
+    meta: {
+      title: "案件协查"
+    },
+    component: () => import("@/page/caseHandle/assistCase/assistCase.vue")
+  },
+  // 新增案件协查
+  {
+    name: "addAssistCase_JX",
+    path: "/add-assist-case_JX",
+    meta: {
+      title: "新增协查"
+    },
+    component: () => import("@/page/caseHandle/assistCase/addAssistCase.vue")
+  }
 ]
 

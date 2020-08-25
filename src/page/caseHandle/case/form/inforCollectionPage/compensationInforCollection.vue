@@ -371,9 +371,9 @@
                   >
                     <el-option
                       v-for="item in index === 0?allRelationWithParty:allRelationWithParty_"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.label"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -387,9 +387,9 @@
                   >
                     <el-option
                       v-for="item in allRelationWithCase"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.label"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -406,9 +406,9 @@
                   >
                     <el-option
                       v-for="item in allQYRelationWithParty"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -420,8 +420,8 @@
                     <el-option
                       v-for="item in allQYRelationWithCase"
                       :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -569,9 +569,9 @@
               <el-select v-model="inforForm.vehicleIdColor">
                 <el-option
                   v-for="item in allVehicleIdColor"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -583,9 +583,9 @@
               <el-select v-model="inforForm.vehicleShipType">
                 <el-option
                   v-for="item in allVehicleShipType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
