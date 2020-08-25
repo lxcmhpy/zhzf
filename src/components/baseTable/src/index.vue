@@ -204,6 +204,16 @@ export default {
 <style lang="scss">
 .BaseTable {
   &-form {
+    .el-form-item__content {
+      .el-input__inner {
+        border-radius: 4px;
+      }
+    }
+    .el-input {
+      .el-input__inner {
+        border-radius: 4px;
+      }
+    }
     .basetableBtnList {
       .el-form-item__content {
         .basetableButton.el-button {

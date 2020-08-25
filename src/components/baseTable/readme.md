@@ -53,7 +53,7 @@ handleClick  | 点击操作列按钮触发 | index,row,name |
 handleSizeChange | 切换每页显示的条数 | val (每页显示条数) |
 handleCurrentChange | 切换当前页 | val (当前页码) |
 
-> 组件使用示例
+> 组件使用示例：
 
 ```html
 <template>
