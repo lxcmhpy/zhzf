@@ -1,3 +1,4 @@
+
 # 这是一个表格组件，集合连表单和分页栏，组件预览图见 index.png
 
 ## Form Attributes
@@ -35,9 +36,9 @@ handleSubmit  | 点击搜索触发 | form (表单对象)
 -------- | ----- |:-----:|:-----:|:-----:|----
 height  | 表格高度 | String | / | 299 | 否
 columns  | 表头 | Array | / | / | 是
-tableData  | table数据 | Array | / | / ｜ 是
-buttons  | 表格中的操作按钮 | Array | / | / ｜ 否
-pageData | 分页条相关参数 | Object | / | / ｜ 是
+tableData  | table数据 | Array | / | / | 是
+buttons  | 表格中的操作按钮 | Array | / | /|否
+pageData | 分页条相关参数 | Object | / | / |是
 
 ### PageData Attributes
 
