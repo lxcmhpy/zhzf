@@ -229,19 +229,10 @@ export default {
     submitForm(addpdf_form) {
       this.$refs[addpdf_form].validate((valid) => {
         if (valid) {
-          let data = {
-            acceptTime: this.addpdf_form.acceptTime,
-            endTime: this.addpdf_form.endTime,
-            caseNumber: this.addpdf_form.caseNumber,
-            caseType: this.addpdf_form.caseType,
-            createTime: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-            illegalFacts: this.addpdf_form.illegalFacts,
-            isUploadCase: this.fileList.length > 0 ? 0 : 1,
-            party: this.addpdf_form.party,
-            vehicleShipId: this.addpdf_form.vehicleShipId,
-          };
-          console.log(data);
-          addofflinefile(data).then(
+            this.addpdf_form.createTime=moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+            this.addpdf_form.isUploadCase=this.fileList.length > 0 ? 0 : 1;
+          console.log(this.addpdf_form);
+          addofflinefile(this.addpdf_form).then(
             (res) => {
               if (res.code === 200) {
                 this.$parent.getArchiveCase();
