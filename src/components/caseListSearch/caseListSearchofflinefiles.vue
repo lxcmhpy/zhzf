@@ -274,6 +274,7 @@ export default {
       console.log("param", param);
       var fd = new FormData();
       fd.append("file", param.file);
+      fd.append("userId",JSON.parse(localStorage.getItem("userInfo")).id)
       fd.append("category", "线下案卷");
       fd.append("fileName", param.file.name);
       fd.append("fileType", ".pdf");
@@ -329,30 +330,6 @@ export default {
     caseRecordEmit() {
       this.$emit("caseRecord");
     },
-    //查询所有环节
-    getAllLinkList() {
-      getQueryLinkListApi().then(
-        (res) => {
-          this.linkList = res.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    //查询所有案件类型
-    getQueryCaseTypeList() {
-      let organId = iLocalStroage.gets("userInfo").organId;
-      getQueryCaseTypeByOrganIdApi(organId).then(
-        (res) => {
-          //console.log("类型", res);
-          this.caseTypeList = res.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
     //搜索
     searchCaseEmit() {
       console.log("点击");
@@ -390,9 +367,7 @@ export default {
     },
   },
   created() {
-    this.getAllLinkList();
-    this.getQueryCaseTypeList();
-    this.getQueryCaseStateList();
+
   },
 };
 </script>
