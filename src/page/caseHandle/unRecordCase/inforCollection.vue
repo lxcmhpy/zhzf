@@ -2388,7 +2388,7 @@
             console.log(err);
           }
        )},
-       initDrawer(){
+       initDrawer(){ 
            let data = []
            //案发地点-方向
            data.push({pid:'004cec030c349c3fcd119f3c2eee948f',fieldName:'directionList'})

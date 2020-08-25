@@ -60,14 +60,14 @@
             </td>
             <td class="color_DBE4EF">
               <p>时间：<el-form-item style="width:calc(100% - 56px)" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd"></el-date-picker>
-              </el-form-item>
+                  <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd"></el-date-picker>
+                </el-form-item>
               </p>
 
             </td>
             <td class="color_DBE4EF">
               <p>地点：<el-form-item style="width:calc(100% - 56px)" prop="afdd" v-if="!approval" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
-                  <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])"  :autosize="{ minRows: 1, maxRows: 3}"  :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
                 </el-form-item>
               </p>
 
@@ -169,16 +169,16 @@ export default {
         partySex: '',
         partyAge: "",
       },
-     caseDocDataForm: {
+      caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.$route.params.docId,     //文书类型ID
+        caseDoctypeId: '7499e317a812995c933d679b521416b2',     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
-        note:"",//文书名字 
-        docDataId:"", //多份文书的id
-        linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
+        note: "",//文书名字 
+        docDataId: "", //多份文书的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
         checkBox: [
@@ -220,7 +220,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: 'establish-print'
       },
-      huanjieAndDocId: this.BASIC_DATA_QH.establish_JX_huanjieAndDocId, //立案登记表的文书id
+      // huanjieAndDocId: this.BASIC_DATA_QH.establish_JX_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
       caseSourceText3: "",
@@ -245,21 +245,38 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    setData() {
-      console.log('setData');
-      this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId);
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
-      console.log('获取数据', this.docData)
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: '2c9029cf6931aa5c01693381ac690018'
+      };
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
     },
+    // setData() {
+    //   console.log('setData');
+    //   this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId);
+    //   this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+    //   this.com_getFormDataByCaseIdAndFormId(
+    //     this.caseLinkDataForm.caseBasicinfoId,
+    //     this.caseLinkDataForm.caseLinktypeId,
+    //     false
+    //   );
+    //   console.log('获取数据', this.docData)
+    // },
     // 提交表单
+
+    //保存文书信息
     saveData(handleType) {
-      //参数  提交类型 、formRef
-      this.com_submitCaseForm(handleType, "establishForm", true);
+      this.com_addDocData(handleType, "docForm");
+    },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
     },
 
     //设置案件来源
@@ -319,11 +336,19 @@ export default {
         console.log(err);
       })
     },
+        //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == '1') {
+        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+    },
   },
   created() {
-    this.setData();
-    this.getCaseInfo();
+    // this.setData();
+    // this.getCaseInfo();
     this.getLawOfficer();
+    this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
   }
 };
 </script>

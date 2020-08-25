@@ -137,8 +137,8 @@
           </el-form-item> -->
         </table>
         <p>
-          当事人（当事人代理人）：<el-form-item style="width:200px" prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'])">
-            <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+          当事人（当事人代理人）：<el-form-item style="width:200px" prop="personName" :rules="fieldRules('personName',propertyFeatures['personName'])">
+            <el-input type="textarea" v-model="docData.personName" :disabled="fieldDisabled(propertyFeatures['personName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
           </el-form-item>
         </p>
         <p>
@@ -216,7 +216,7 @@
         </div>
       </div>
     </el-dialog>
-    <casePageFloatBtns :pageDomId="'deliverCertificate-print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
   </div>
 </template>
 <script>
@@ -259,7 +259,7 @@ export default {
       caseDocDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: '', //案件id--从流程进入删掉，先写死测试用
-        caseDoctypeId: '2c9029cf6931aa5c01693381ac690018', //表单类型IDer
+        caseDoctypeId: 'ce523795a2165d15a1c3d6cf29b2b18b', //表单类型IDer
         //表单数据
         docData: "",
         status: ""
@@ -300,7 +300,6 @@ export default {
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
-      // debugger
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
@@ -325,84 +324,17 @@ export default {
         name: this.$route.params.url
       });
     },
-    // 提交文书表单
-    saveData(handleType, docForm) {
-      let newdeliveryCertificatelist = JSON.parse(JSON.stringify(this.docData.deliveryCertificatelist));
-      newdeliveryCertificatelist.forEach(item => {
-        item.deliveryMaster = item.deliveryMaster.join(',');
-      })
-      let data = {
-        caseId: this.caseId, //流程里的案件id
-        caseNumber: this.docData.caseNumber,
-        caseName: this.docData.caseName,
-        servedOrg: this.docData.servedOrg,//送达单位
-        // server: this.docData.server,//受送达人
-        server: this.docData.server,
-        // collector: this.docData.collector,//代收人
-        collector: this.docData.collector,
-        deliveryCertificatelist: newdeliveryCertificatelist,//送达文书列表
-        docNote: this.docData.docNote,//备注
-        makeDate: this.docData.makeDate,
-
-      };
-      console.log('送达回证', data);
-      if (handleType == 1) {
-        // debugger
-        this.$refs['docForm'].validate((valid, noPass) => {
-          // debugger
-          if (valid) {
-            this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
-              res => {
-                console.log("23", res);
-                //  debugger
-                this.$message({
-                  type: "success",
-                  message: "提交成功"
-                });
-                this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
-                // this.$router.push('deliverReceiptForm')
-                //提交成功后提交pdf到服务器，后打开pdf
-                console.log(res.data.id)
-                // debugger
-                this.printContent(res.data.id);
-              },
-              err => {
-                console.log(err);
-              }
-            );
-          } else {
-            //  debugger
-            // noPass[Object.keys(v)[0]]
-            let a = Object.values(noPass)[0];
-            console.log(a);
-            this.$message({
-              showClose: true,
-              message: a[0].message,
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
-            });
-            return false;
-          }
-
-        });
-      } else {
-
-        this.$store.dispatch("saveOrUpdateDeliverReceipt", data).then(
-          res => {
-            console.log("暂存文书", res);
-            this.$message({
-              type: "success",
-              message: "暂存成功"
-            });
-            // this.reload();
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }
+    //保存文书信息
+    saveData(handleType) {
+      this.com_addDocData(handleType, "docForm");
     },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
+
     //是否是完成状态
     isOverStatus() {
       if (this.$route.params.docStatus == '1') {
@@ -522,10 +454,10 @@ export default {
 
   mounted() {
     this.getDocDataByCaseIdAndDocId();
+    this.isOverStatus();
     this.getDataAfter();
   },
   created() {
-    this.isOverStatus();
     this.getLawOfficer();
   }
 }

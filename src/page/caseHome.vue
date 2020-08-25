@@ -484,7 +484,7 @@ export default {
           if(currentFlow.data.flowName == '处罚流程'){
             docTypeId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
             linkId = this.BASIC_DATA_SYS.establish_caseLinktypeId;
-          }else if(currentFlow.data.flowName == '赔补偿流程'){
+          }else if(currentFlow.data.flowName == '赔补偿流程' || currentFlow.data.flowName == '青海赔补偿流程'){
             docTypeId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
             linkId = this.BASIC_DATA_SYS.establish_caseLinktypeId;
           }else if(currentFlow.data.flowName == '江西流程'){

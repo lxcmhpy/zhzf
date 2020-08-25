@@ -87,7 +87,7 @@
                  </el-form-item>
               </div>
             </div>
-            <div class="row" v-if="isParty">
+            <!-- <div class="row" v-if="isParty">
               <div class="col">
                 <el-form-item label="联系电话" prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
                   <el-input
@@ -102,15 +102,12 @@
                 </el-form-item>
               </div>
               <div class="col">
-                <!-- <el-form-item label="所在单位">
-                  <el-input ref="partyUnitPosition" clearable class="w-120" v-model="formData.partyUnitPosition" size="small" placeholder="请输入" :disabled="originalData.partyUnitPosition ? true : false"></el-input>
-                </el-form-item> -->
                 <el-form-item label="单位及职务" prop="partyUnitPositionAndCom" :rules="fieldRules('partyUnitPositionAndCom',propertyFeatures['partyUnitPositionAndCom'],'',isParty)">
                      <el-input ref="partyUnitPositionAndCom" clearable class="w-120" v-model="formData.partyUnitPositionAndCom" size="small" placeholder="请输入"
                      :disabled="!isParty || fieldDisabled(propertyFeatures['partyUnitPositionAndCom'])"></el-input>
                  </el-form-item>
               </div>
-            </div>
+            </div> -->
             <div class="row" v-if="isParty">
               <div class="col">
                 <el-form-item label="联系地址" prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">

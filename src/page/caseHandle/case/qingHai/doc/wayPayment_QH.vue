@@ -25,8 +25,8 @@
           </el-form-item>依法调查核实：
         </p>
         <p>
-          当事人<el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
-            <el-input type="textarea" v-model="docData.party" :disabled="fieldDisabled(propertyFeatures['party'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+          当事人<el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'])">
+            <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
           </el-form-item>于
           <el-form-item prop="causeName" :rules="fieldRules('causeName',propertyFeatures['causeName'])">
             <el-input type="textarea" v-model="docData.causeName" :disabled="fieldDisabled(propertyFeatures['causeName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
@@ -42,7 +42,7 @@
         <p>
           当事人赔（补）偿人民币：
           <el-form-item prop="fine" :rules="fieldRules('fine',propertyFeatures['fine'])">
-            <el-input type="textarea" v-model="docData.party" :disabled="fieldDisabled(propertyFeatures['fine'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+            <el-input type="textarea" v-model="docData.fine" :disabled="fieldDisabled(propertyFeatures['fine'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
           </el-form-item>
         </p>
         <p>
@@ -94,12 +94,14 @@ export default {
         saveDate: '',
         caseNumberCopy: '',
         relieveDate: '',
+        partyAddress: '',
+        bankInfo:''
       },
       handleType: 0, //0  暂存     1 提交
        caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.$route.params.docId,     //文书类型ID
+        caseDoctypeId: '1d8e7525e724a2bd61cfec7f23a8fb15',     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态

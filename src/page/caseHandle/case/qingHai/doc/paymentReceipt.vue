@@ -121,7 +121,7 @@ export default {
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.$route.params.docId,     //文书类型ID
+        caseDoctypeId:'ce523795a2165d15a1c3d6cf29b2b18b',     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
@@ -207,6 +207,16 @@ export default {
       );
       console.log('获取数据', this.docData)
     },
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: '2c9029cf6931aa5c01693381ac690018'
+      };
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
+    },
     //保存文书信息
     saveData(handleType) {
       this.com_addDocData(handleType, "docForm");
@@ -243,11 +253,19 @@ export default {
         name: "case_handle_inforCollect",
         params: { editFlag: true }
       })
-    }
+    },
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == '1') {
+        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+    },
   },
   created() {
-    this.setData();
-    this.getCaseInfo();
+    // this.setData();
+    // this.getCaseInfo();
+    this.isOverStatus();
+    this.getDocDataByCaseIdAndDocId();
   }
 };
 </script>
