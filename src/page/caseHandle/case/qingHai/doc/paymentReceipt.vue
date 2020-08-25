@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">收费凭据表</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
@@ -47,6 +47,14 @@
               </el-form-item>
             </td>
           </tr>
+          <tr>
+            <td>缴费单位</td>
+            <td colspan="8" class="color_DBE4EF">
+              <el-form-item prop="payNumber" :rules="fieldRules('payNumber',propertyFeatures['payNumber'])">
+                <el-input type="textarea" v-model="docData.payNumber" :disabled="fieldDisabled(propertyFeatures['payNumber'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
           <tr style="height: 400px;">
             <td>
               <p class="center_similar">收</p>
@@ -81,8 +89,7 @@
         </table>
       </el-form>
     </div>
-
-    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'question_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
@@ -104,25 +111,29 @@ export default {
       docData: {
         caseTypeKey: "",//案件字
         caseNumber: "",
-        checkBox: [],
         caseName: "",
         afsj: "",
         party: "",
         partySex: '',
         partyAge: "",
+        payNumber:'',
+        payTime:'',
+        payParty:'',
+        afdd:'',
+        caseName:'',
       },
-      caseLinkDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId, //表单类型ID
-        //表单数据
+      caseDocDataForm: {
+        id: "",   //修改的时候用
+        caseBasicinfoId: '',   //案件ID
+        caseDoctypeId:'ce523795a2165d15a1c3d6cf29b2b18b',     //文书类型ID
+        //文书数据
         docData: "",
-        status: "",
+        status: "",   //提交状态
+        note: "",//文书名字 
+        docDataId: "", //多份文书的id
+        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
-        checkBox: [
-          { required: true, message: "案件来源不能为空", trigger: "change" }
-        ],
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" }
         ],
@@ -142,7 +153,6 @@ export default {
       nameLength: 23,
       adressLength: 23,
       maxLength: 12,
-      lineStyleFlag: false,
       approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入
       formOrDocData: {
         showBtn: [
@@ -162,15 +172,6 @@ export default {
       huanjieAndDocId: this.BASIC_DATA_QH.establish_JX_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
-      caseSourceText3: "",
-      caseSourceText4: "",
-      caseSourceText5: "",
-      caseSourceText6: "",
-      caseSourceCheckBox: [],
-      originalData: "",
-      // 是否带入电话
-      isPartyPhone: false,
-      needDealData: true,
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
     };
@@ -197,12 +198,26 @@ export default {
       );
       console.log('获取数据', this.docData)
     },
-    // 提交表单
-    saveData(handleType) {
-      //参数  提交类型 、formRef
-      this.com_submitCaseForm(handleType, "establishForm", true);
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
     },
-
+    //保存文书信息
+    saveData(handleType) {
+      this.com_addDocData(handleType, "docForm");
+    },
+    submitData(handleType) {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: this.$route.params.url
+      });
+    },
     //设置案件来源
     getDataAfter() {
 
@@ -229,11 +244,19 @@ export default {
         name: "case_handle_inforCollect",
         params: { editFlag: true }
       })
-    }
+    },
+    //是否是完成状态
+    isOverStatus() {
+      if (this.$route.params.docStatus == '1') {
+        this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+      }
+    },
   },
   created() {
     // this.setData();
     // this.getCaseInfo();
+    this.isOverStatus();
+    this.getDocDataByCaseIdAndDocId();
   }
 };
 </script>

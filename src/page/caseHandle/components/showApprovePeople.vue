@@ -41,7 +41,7 @@
 </template>
 <script>
   import {
-     submitPdfByPersonApi,handleTJApproveDocApi,getLinkTypeInfoByIdApi,
+     submitPdfByPersonApi,handleTJApproveDocApi,getLinkTypeInfoByIdApi,queryFlowBycaseIdApi,getApprovePeopleByCaseTypeApi,
   } from "@/api/caseHandle";
   import {mapGetters} from "vuex";
 
@@ -67,14 +67,28 @@
         this.visible = false;
       },
       //获取审核人员
-      getApprovePeople() {
+      async getApprovePeople() {
         let _this = this;
         let data = {
           caseBasicInfoId: this.caseId,
-          docTypeId:this.docId
+          docTypeId:this.docId,
+          flag:'', //处罚流程 0 赔补偿流程1
         }
-        console.log('获取审批人员传参',data);
-        this.$store.dispatch("getApprovePeople", data).then(
+        //先判断流程，后获取人员
+        let currentFlow = '';
+        try{
+          currentFlow = await queryFlowBycaseIdApi(this.caseId);
+        }catch(err){
+          this.$message('获取案件流程失败！')
+        }
+        if(currentFlow.data.flowName == '处罚流程'){
+          data.flag = 0;
+        }else if(currentFlow.data.flowName == '赔补偿流程'|| currentFlow.data.flowName == '青海赔补偿流程'){
+          data.flag = 1;
+        }
+        console.log('获取审批人员传参',data); 
+        
+       getApprovePeopleByCaseTypeApi(data).then(
           res => {
             let data = res.data;
             console.log('审批人员',res.data)

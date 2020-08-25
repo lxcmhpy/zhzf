@@ -80,8 +80,6 @@
                 <el-table
                         :data="tableData"
                         stripe
-                        resizable
-                        border
                         style="width: 100%;height:100%"
                         @row-click="showDataDetail"
                 >
@@ -91,22 +89,30 @@
                         </template>
                     </el-table-column>
                     <!--列表字段-->
-                    <el-table-column prop="status" label="状态" width="70px"></el-table-column>
-                    <el-table-column prop="billNo" label="单据号" width="160"></el-table-column>
-                    <el-table-column prop="billDate" label="单据日期" width="120px"></el-table-column>
-                    <el-table-column prop="transferUnit" label="调出单位" ></el-table-column>
-                    <el-table-column prop="createName" label="调出管理员" width="120px"></el-table-column>
-                    <el-table-column prop="useUnit" label="调入单位"></el-table-column>
-                    <el-table-column prop="userId" label="调入管理员" width="120px"></el-table-column>
-                    <el-table-column label="操作" width="180">
+                    <el-table-column prop="billNo" label="单号" width="160" align="center"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="70px" align="center">
                         <template slot-scope="scope">
-                            <div style="width:160px">
-                                <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                <el-button v-if="scope.row.status=='调拨中'" type="text" @click.stop @click="handleConfirm(scope.row)">确认</el-button>
-                                <el-button v-if="scope.row.status=='调拨中'" type="text" @click.stop @click="handleCancel(scope.row)">取消</el-button>
-                                <!--  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                                <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button> -->
-                            </div>
+                            <span
+                                v-if="scope.row.status === '调拨中'"
+                                style="color: #FF8000;"
+                            >{{scope.row.status}}</span>
+                            <span
+                                v-else-if="scope.row.status === '已完成'"
+                                style="color: #05C051;"
+                            >{{scope.row.status}}</span>
+                            <span style="color: #999999;" v-else>{{scope.row.status}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="billDate" label="单据日期" width="120px" align="center"></el-table-column>
+                    <el-table-column prop="transferUnit" label="调出单位" align="center"></el-table-column>
+                    <el-table-column prop="createName" label="调出管理员" width="150px" align="center"></el-table-column>
+                    <el-table-column prop="useUnit" label="调入单位" align="center"></el-table-column>
+                    <el-table-column prop="userId" label="调入管理员" width="150px" align="center"></el-table-column>
+                    <el-table-column label="操作" width="180" align="center">
+                        <template slot-scope="scope">
+                            <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
+                            <el-button v-if="scope.row.status=='调拨中'" type="text" @click.stop @click="handleConfirm(scope.row)">确认</el-button>
+                            <el-button v-if="scope.row.status=='调拨中'" type="text" @click.stop @click="handleCancel(scope.row)">取消</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

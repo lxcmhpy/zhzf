@@ -11,7 +11,7 @@ export function findNoticeByPage(data) {
   return request({
     url: "/notice/zfdt/list",
     method: "get",
-    showloading: false,
+    showloading: true,
     baseUrlType: 'NOTICE_HOST',
     params: data,
     cancelToken: setCancelSource()
@@ -23,7 +23,7 @@ export function saveOrUpdateNotice(data) {
   return request({
     url: "/notice/zfdt/saveOrUpdate",
     method: "post",
-    showloading: false,
+    showloading: true,
     baseUrlType: 'NOTICE_HOST',
     params: data,
     cancelToken: setCancelSource()
@@ -35,18 +35,19 @@ export function findNoticeById(id) {
   return request({
     url: "/notice/zfdt/findById/" + id,
     method: "get",
-    showloading: false,
+    showloading: true,
     baseUrlType: 'NOTICE_HOST',
     cancelToken: setCancelSource()
   })
 }
 
 // 通过Id查询
-export function deleteNoticeById(id) {
+export function deleteNoticeById(data) {
   return request({
-    url: "/notice/zfdt/deleteById/" + id,
-    method: "get",
-    showloading: false,
+    url: "/notice/zfdt/deleteById",
+    method: "post",
+    showloading: true,
+    data: data,
     baseUrlType: 'NOTICE_HOST',
     cancelToken: setCancelSource()
   })
