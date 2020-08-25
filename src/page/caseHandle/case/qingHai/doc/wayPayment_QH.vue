@@ -91,11 +91,19 @@ export default {
       docData: {
         caseNumber: '',
         party: '',
+        checkParty:'',
+        partyName:'',
         saveDate: '',
         caseNumberCopy: '',
         relieveDate: '',
         partyAddress: '',
-        bankInfo:''
+        bankInfo:'',
+        aplayParty:'',
+        fine:'',
+        illegaldecision:'',
+        causeName:'',
+        makeDate:'',
+        evidence:'',
       },
       handleType: 0, //0  暂存     1 提交
        caseDocDataForm: {

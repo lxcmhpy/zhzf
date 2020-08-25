@@ -23,6 +23,7 @@ const system = {
         headActiveNav:'', //当前选中的header
         btnlawId:'', //当前法规id
         systemTitle:'', //系统标题
+        showZHZFPT:false, //是否显示‘综合执法平台’
     },
     mutations: {
         SET_MENU(state, data) {
@@ -38,6 +39,9 @@ const system = {
         },
         set_systemTitle(state, data) {
             state.systemTitle = data;
+        },
+        setShowZHZFPT(state, data) {
+            state.showZHZFPT = data;
         },
 
     },
