@@ -95,7 +95,7 @@
             <td>赔补偿决定</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="payDecison" :rules="fieldRules('payDecison',propertyFeatures['payDecison'])">
-                <el-input type="textarea" v-model="docData.payDecison" :autosize="{ minRows: 5, maxRows: 9}" maxlength="500" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.payDecison" :disabled="fieldDisabled(propertyFeatures['payDecison'])" :autosize="{ minRows: 5, maxRows: 9}" maxlength="500" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -106,9 +106,9 @@
                 1.当事人收到本通知书之日起3日内可向本执法单位陈述申辩。逾期则视为当事人放弃其上述权利。
               </p>
               <p> 2.当事人收到本通知书之日起15日内到 <el-form-item prop="bankInfo" :rules="fieldRules('bankInfo',propertyFeatures['bankInfo'])">
-                  <el-input type="textarea" v-model="docData.bankInfo" :autosize="{ minRows: 1, maxRows:3}" maxlength="50" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.bankInfo" :disabled="fieldDisabled(propertyFeatures['bankInfo'])" :autosize="{ minRows: 1, maxRows:3}" maxlength="50" placeholder="\"></el-input>
                 </el-form-item>缴纳路产损坏赔偿费。如有疑义，可向<el-form-item prop="payResideParty" :rules="fieldRules('payResideParty',propertyFeatures['payResideParty'])">
-                  <el-input type="textarea" v-model="docData.payResideParty" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.payResideParty" :disabled="fieldDisabled(propertyFeatures['payResideParty'])" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" placeholder="\"></el-input>
                 </el-form-item>申请复核 。
               </p>
               <p>
@@ -129,8 +129,8 @@
           <tr style="height:80px">
             <td>备注</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="note">
-                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 3, maxRows: 3}" maxlength="30" placeholder="\"></el-input>
+              <el-form-item prop="note" :rules="fieldRules('bankInfo',propertyFeatures['note'])">
+                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 3, maxRows: 3}" maxlength="30" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -160,20 +160,27 @@ export default {
     return {
       // tableData: {},
       docData: {
-        caseTypeKey: "",//案件字
         caseNumber: "",
         checkBox: [],
         caseName: "",
         afsj: "",
         party: "",
-        partySex: '',
-        partyAge: "",
         note:'',
         partyAddress:'',
         partyManager:'',
         carLocation:'',
         number:'',
         afdd:'',
+        note:'',
+        payResideParty:'',
+        bankInfo:'',
+        payDecison:'',
+        illegalLaw:'',
+        illegalBasis:'',
+        caseSituation:'',
+        vehicleType:'',
+        number:'',
+        partyName:'',
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
