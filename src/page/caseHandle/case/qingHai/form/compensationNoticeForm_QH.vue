@@ -23,29 +23,29 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="当事人姓名" prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"></el-input>
+                <el-form-item label="当事人姓名" prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+                  <el-input ref="party" clearable class="w-120" v-model="formData.party" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="地址" prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
-                  <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"></el-input>
+                <el-form-item label="地址" prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'])">
+                  <el-input ref="partyAddress" clearable class="w-120" v-model="formData.partyAddress" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['partyAddress'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="单位名称" prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
-                  <el-input ref="partyName" clearable class="w-120" v-model="formData.partyName" size="small" placeholder="请输入" :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"></el-input>
+                <el-form-item label="单位名称" prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'])">
+                  <el-input ref="partyName" clearable class="w-120" v-model="formData.partyName" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['partyName'])"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item label="单位法定代表人" prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
-                  <el-input ref="partyManager" clearable class="w-120" v-model="formData.partyManager" size="small" placeholder="请输入" :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"></el-input>
+                <el-form-item label="单位法定代表人" prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'])">
+                  <el-input ref="partyManager" clearable class="w-120" v-model="formData.partyManager" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['partyManager'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -90,8 +90,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="afdd" label="路政执法单位" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
-                  <el-input v-model="formData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])"></el-input>
+                <el-form-item prop="afddparty" label="路政执法单位" :rules="fieldRules('afddparty',propertyFeatures['afddparty'])">
+                  <el-input v-model="formData.afddparty" :disabled="fieldDisabled(propertyFeatures['afddparty'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -263,6 +263,8 @@ export default {
         relationWithCase: "",
         partyUnitPosition: "",
         occupation: "",
+        afdd:"",
+        afddparty:""
       },
       caseLinkDataForm: {
         id: "", //修改的时候用

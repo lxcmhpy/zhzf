@@ -283,12 +283,18 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查对象" prop="checkObject">
-                <el-input v-model="addForm2.checkObject"></el-input>
+                <!-- <el-input v-model="addForm2.checkObject"></el-input> -->
+                <el-select v-model="addForm2.checkObject" placeholder="请选择">
+                  <el-option v-for="item in optionsJCDX" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="事项类别" prop="itemType">
-                <el-input v-model="addForm2.itemType"></el-input>
+                <!-- <el-input v-model="addForm2.itemType"></el-input> -->
+                <el-select v-model="addForm2.itemType" placeholder="请选择">
+                  <el-option v-for="item in optionsSXLB" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -364,7 +370,7 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, searchTaskDataApi, getCountByOrganNameApi } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, searchTaskDataApi, getCountByOrganNameApi, getAllCheckObject } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 import { mixinPerson } from "@/common/js/personComm";
@@ -439,6 +445,8 @@ export default {
       }
     };
     return {
+      optionsJCDX: [],
+      optionsSXLB: ['一般检查事项' ,'重点检查事项'],
       multipleSelection: [],
       searchForm: {
         checkSubject: "",
@@ -577,6 +585,13 @@ export default {
     }
   },
   methods: {
+    getAllCheckObject(){
+      getAllCheckObject().then(res=>{
+        if(res.code==200){
+          this.optionsJCDX=res.data;
+        }
+      })
+    },
     // 查询列表时
     getTableData() {
       let data = {
@@ -882,6 +897,7 @@ export default {
     },
   },
   mounted() {
+    this.getAllCheckObject();
     this.getTableData()
     // 获取抽屉
     this.getDrawerList([

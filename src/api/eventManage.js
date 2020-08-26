@@ -6,7 +6,7 @@ import { setCancelSource } from "@/common/js/cancelToken";
  */
 export function findData (data) {
   return request({
-    url: "http://192.168.1.8:8090/event/manage/list",
+    url: "/zfjg/event/manage/list",
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
@@ -20,7 +20,7 @@ export function findData (data) {
  */
 export function findById (id) {
   return request({
-    url: `http://192.168.1.8:8090/event/manage/findById/${id}`,
+    url: `/zfjg/event/manage/findById/${id}`,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
@@ -33,7 +33,7 @@ export function findById (id) {
  */
 export function assigned (data) {
   return request({
-    url: "http://192.168.1.8:8090/event/manage/zhipai",
+    url: "/zfjg/event/manage/zhipai",
     method: "post",
     showloading: false,
     data: data,
@@ -46,7 +46,7 @@ export function assigned (data) {
  */
 export function addUpdate (data) {
   return request({
-    url: "http://192.168.1.8:8090/event/manage/saveOrUpdate",
+    url: "/zfjg/event/manage/saveOrUpdate",
     method: "post",
     showloading: false,
     data: data,
@@ -59,7 +59,7 @@ export function addUpdate (data) {
  */
 export function deleteById (data) {
   return request({
-    url: "http://192.168.1.8:8090/event/manage/deleteById",
+    url: "/zfjg/event/manage/deleteById",
     method: "get",
     showloading: false,
     params: data,

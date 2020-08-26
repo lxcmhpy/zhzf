@@ -128,7 +128,7 @@
             <td>备注</td>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item prop="docNote" :rules="fieldRules('adress',propertyFeatures['docNote'])">
-                <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.docNote"  :disabled="fieldDisabled(propertyFeatures['docNote'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -160,8 +160,8 @@
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span>
           <br />
-          <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-form-item prop="makeDate" class="pdf_datapick" :rules="fieldRules('makeDate',propertyFeatures['makeDate'])">
+            <el-date-picker class="big_error" v-model="docData.makeDate"  :disabled="fieldDisabled(propertyFeatures['makeDate'])"  type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
         </div>
         <div class="notice clear">
@@ -253,7 +253,21 @@ export default {
         docNote: '',
         deliveryCertificatelist: [{}], //送达文书列表
         docLength: 0, //送达文书列表长度
-        makeDate: ''
+        makeDate: '',
+        staff1: '',
+        certificateId1: '',
+        staff2: '',
+        certificateId2: '',
+        docNote: '',
+        personName: '',
+        adress: '',
+        time: '',
+        vehicleType: '',
+        carLocation: '',
+        partyManager: '',
+        partyName: '',
+        partyAddress: '',
+        party: '',
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {

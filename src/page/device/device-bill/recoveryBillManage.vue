@@ -158,9 +158,6 @@
                             :data="itemList"
                             ref="deviceTable"
                             stripe
-                            resizable
-                            border
-
                         >
                             <el-table-column type="selection" width="40" align="center"></el-table-column>
                             <el-table-column label="序号" width="70px">
@@ -169,12 +166,12 @@
                                 </template>
                             </el-table-column>
                             <!--列表字段-->
-                            <el-table-column prop="code" label="装备编码" width="120px"></el-table-column>
-                            <el-table-column prop="name" label="装备名称"></el-table-column>
-                            <el-table-column prop="deviceType" label="装备类型"></el-table-column>
-                            <el-table-column prop="brand" label="品牌型号" width="120px"></el-table-column>
-                            <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                            <el-table-column prop="storageLocation" label="存放位置" width="120px"></el-table-column>
+                            <el-table-column prop="code" label="装备编码" width="120px" align="center"></el-table-column>
+                            <el-table-column prop="name" label="装备名称" align="center"></el-table-column>
+                            <el-table-column prop="deviceType" label="装备类型" align="center"></el-table-column>
+                            <el-table-column prop="brand" label="品牌型号" width="120px" align="center"></el-table-column>
+                            <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+                            <el-table-column prop="storageLocation" label="存放位置" width="120px" align="center"></el-table-column>
                         </el-table>
                     </div>
                 <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
