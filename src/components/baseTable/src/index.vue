@@ -135,34 +135,27 @@ export default {
       type: Object,
       default: null
     },
-    pageAttr: {
-      type: Object,
-      default() {
-        return {
-          current: 1,
-          size: 5,
-          total: 100
-        }
-      }
-    },
     tableAttr: {
       type: Object,
       default() {
         return {
           height: '299',
+          current: 1,
+          size: 5,
+          total: 100
         }
       }
     }
   },
   computed: {
     current() {
-      return this.pageAttr.current
+      return this.tableAttr.current
     },
     size() {
-      return this.pageAttr.size
+      return this.tableAttr.size
     },
     total() {
-      return this.pageAttr.total
+      return this.tableAttr.total
     }
   },
   data() {
