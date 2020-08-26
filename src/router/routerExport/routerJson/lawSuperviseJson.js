@@ -158,5 +158,26 @@ export default  [
         title: "事件管理",
       },
       component: () => import("@/page/lawSupervise/supervisePage/eventManage")
-  },
+  },{
+    path: "/emphasisVehicle",
+    name: "law_supervise_emphasisVehicle",
+    meta: {
+    title: "重点车辆",
+    },
+    component: () => import("@/page/lawSupervise/supervisePage/emphasis/vehicleManage")
+  },{
+    path: "/emphasisEnterprise",
+    name: "law_supervise_emphasisEnterprise",
+    meta: {
+    title: "重点企业",
+    },
+    component: () => import("@/page/lawSupervise/supervisePage/emphasis/enterpriseManage")
+  },{
+    path: "/emphasisPerson",
+    name: "law_supervise_emphasisPerson",
+    meta: {
+    title: "重点人员",
+    },
+    component: () => import("@/page/lawSupervise/supervisePage/emphasis/personManage")
+  }
 ]

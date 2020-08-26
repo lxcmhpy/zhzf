@@ -128,7 +128,7 @@
             <td>备注</td>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item prop="docNote" :rules="fieldRules('adress',propertyFeatures['docNote'])">
-                <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.docNote"  :disabled="fieldDisabled(propertyFeatures['docNote'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -138,30 +138,30 @@
         </table>
         <p>
           当事人（当事人代理人）：<el-form-item style="width:200px" prop="personName" :rules="fieldRules('personName',propertyFeatures['personName'])">
-            <el-input type="textarea" v-model="docData.personName" :disabled="fieldDisabled(propertyFeatures['personName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.personName" :disabled="fieldDisabled(propertyFeatures['personName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
         </p>
         <p>
           执法人员： <el-form-item style="width:200px" prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
-            <el-input type="textarea" v-model="docData.staff1" :disabled="fieldDisabled(propertyFeatures['staff1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.staff1" :disabled="fieldDisabled(propertyFeatures['staff1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
           执法证号： <el-form-item style="width:200px" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
-            <el-input type="textarea" v-model="docData.certificateId1" :disabled="fieldDisabled(propertyFeatures['certificateId1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.certificateId1" :disabled="fieldDisabled(propertyFeatures['certificateId1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
         </p>
         <p>
           执法人员： <el-form-item style="width:200px" prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
-            <el-input type="textarea" v-model="docData.staff2" :disabled="fieldDisabled(propertyFeatures['staff2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.staff2" :disabled="fieldDisabled(propertyFeatures['staff2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
           执法证号： <el-form-item style="width:200px" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
-            <el-input type="textarea" v-model="docData.certificateId2" :disabled="fieldDisabled(propertyFeatures['certificateId2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.certificateId2" :disabled="fieldDisabled(propertyFeatures['certificateId2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
         </p>
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span>
           <br />
-          <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-form-item prop="makeDate" class="pdf_datapick" :rules="fieldRules('makeDate',propertyFeatures['makeDate'])">
+            <el-date-picker class="big_error" v-model="docData.makeDate"  type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
         </div>
         <div class="notice clear">
@@ -198,7 +198,7 @@
               </el-table-column>
               <el-table-column prop="total" label="小计（元）" align="center">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.total"></el-input>
+                  <el-input v-model="scope.row.total" type="number"></el-input>
                 </template>
               </el-table-column>
               <el-table-column prop="notes" label="备注" align="center" width="210px">
@@ -253,7 +253,22 @@ export default {
         docNote: '',
         deliveryCertificatelist: [{}], //送达文书列表
         docLength: 0, //送达文书列表长度
-        makeDate: ''
+        makeDate: '',
+        staff1: '',
+        certificateId1: '',
+        staff2: '',
+        certificateId2: '',
+        docNote: '',
+        personName: '',
+        adress: '',
+        time: '',
+        vehicleType: '',
+        carLocation: '',
+        partyManager: '',
+        partyName: '',
+        partyAddress: '',
+        party: '',
+        number: '',
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -303,7 +318,7 @@ export default {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
-        docId: '2c9029cf6931aa5c01693381ac690018'
+        docId: this.$route.params.docId
       };
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
@@ -410,6 +425,7 @@ export default {
 
       if (canAdd) {
         this.docData.deliveryCertificatelist = this.tableDatas;
+        this.autoTotal();
         this.addVisible = false;
       }
 
@@ -449,6 +465,14 @@ export default {
           console.log(err);
         }
       );
+    },
+    // 合计
+    autoTotal() {
+      console.log('tableDatas',this.tableDatas)
+      this.total=0
+      this.tableDatas.forEach(element => {
+        this.total+=element.total
+      });
     }
   },
 

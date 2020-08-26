@@ -600,6 +600,18 @@ export function getDictListDetailByNameApi(name) {
         cancelToken: setCancelSource()
     });
 }
+
+//获取检查对象
+export function getAllCheckObject() {
+    return request({
+        url: "/xzjc/randomItem/getAllCheckObject/",
+        method: "get",
+        showloading: false,
+        loadingType: 'loadPart',
+        cancelToken: setCancelSource()
+    });
+}
+
 // 分页查询检查任务表数据
 export function getAllTaskApi(data) {
     return request({

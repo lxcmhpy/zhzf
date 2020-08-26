@@ -60,7 +60,7 @@
         <div class="pdf_seal" style="width:240px">
           <span @click="makeSeal">公路赔（补）偿执行单位（印章）</span>
           <br />
-          <el-form-item prop="makeDate" class="pdf_datapick">
+          <el-form-item prop="makeDate" class="pdf_datapick" :rules="fieldRules('makeDate',propertyFeatures['makeDate'])">
             <el-date-picker v-model="docData.makeDate" type="date" :disabled="fieldDisabled(propertyFeatures['makeDate'])" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
         </div>
@@ -91,11 +91,20 @@ export default {
       docData: {
         caseNumber: '',
         party: '',
+        checkParty:'',
+        caseName:'',
+        partyName:'',
         saveDate: '',
         caseNumberCopy: '',
         relieveDate: '',
         partyAddress: '',
-        bankInfo:''
+        bankInfo:'',
+        aplayParty:'',
+        fine:'',
+        illegaldecision:'',
+        causeName:'',
+        makeDate:'',
+        evidence:'',
       },
       handleType: 0, //0  暂存     1 提交
        caseDocDataForm: {

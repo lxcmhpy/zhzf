@@ -81,16 +81,16 @@
           你（单位）逾期仍不履行的，本机关将依法采取以下措施：
         </p>
         <p>
-          <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。
+          <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click">1.到期不缴纳罚款的，每日按罚款数额的百分之三加处罚款。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。
+          <input type="checkbox" name="measure" value="2" v-model="docData.checknames" @change="click">2.根据法律规定，将查封、扣押的财物拍卖抵缴罚款。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="3" v-model="checknames" @change="click">3.申请人民法院强制执行。
+          <input type="checkbox" name="measure" value="3" v-model="docData.checknames" @change="click">3.申请人民法院强制执行。
         </p>
         <p>
-          <input type="checkbox" name="measure" value="4" v-model="checknames" @change="click">4.依法代履行或者委托第三人：
+          <input type="checkbox" name="measure" value="4" v-model="docData.checknames" @change="click">4.依法代履行或者委托第三人：
           <span>
             <el-form-item :prop="wtInfoDisabled?'':'wtInfo'">
               <el-input v-model="docData.wtInfo" v-bind:disabled="wtInfoDisabled" :maxLength='maxLength'></el-input>
@@ -98,7 +98,7 @@
           </span>代履行。
         </p>
         <p>
-          <input type="checkbox"  name="measure" value="5" v-model="checknames" @change="click">5.其他强制执行方式：
+          <input type="checkbox"  name="measure" value="5" v-model="docData.checknames" @change="click">5.其他强制执行方式：
           <span>
             <el-form-item :prop="otherRemindWayDisabled?'':'otherRemindWay'">
               <el-input v-model="docData.otherRemindWay" v-bind:disabled="otherRemindWayDisabled" :maxLength='maxLength'></el-input>
@@ -188,6 +188,7 @@ export default {
         wtInfo: '',
         otherRemindWay: '',
         makeDate: '',
+        checknames: [],
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -247,7 +248,7 @@ export default {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'remindLetter_print',
       },
-      checknames: [],
+      // checknames: [],
       wtInfoDisabled: true,
       otherRemindWayDisabled: true,
       propertyFeatures:'',
@@ -302,7 +303,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      this.docData.checknames=this.checknames
+      // this.docData.checknames=this.checknames 
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
@@ -314,13 +315,13 @@ export default {
     click(){
       this.docData.wtInfo='';
       this.docData.otherRemindWay='';
-      if(this.checknames.length > 1){
-        this.checknames.shift();
+      if(this.docData.checknames.length > 1){
+        this.docData.checknames.shift();
       }
-      if(this.checknames == '4'){
+      if(this.docData.checknames == '4'){
         this.wtInfoDisabled = false;
         this.otherRemindWayDisabled = true;
-      }else if(this.checknames == '5'){
+      }else if(this.docData.checknames == '5'){
         this.wtInfoDisabled = true;
         this.otherRemindWayDisabled = false;
       }else{

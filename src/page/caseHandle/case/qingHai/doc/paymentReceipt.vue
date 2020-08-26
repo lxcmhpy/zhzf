@@ -78,8 +78,8 @@
               <!-- <p>备注</p> -->
             </td>
             <td colspan="8" class="color_DBE4EF table_seal">
-              <el-form-item prop="note">
-                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+              <el-form-item prop="note"  :rules="fieldRules('note',propertyFeatures['note'])">
+                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
               </el-form-item>
               <div class="pdf_seal">
                 <p>粘贴人:</p>
@@ -111,12 +111,17 @@ export default {
       docData: {
         caseTypeKey: "",//案件字
         caseNumber: "",
-        checkBox: [],
         caseName: "",
         afsj: "",
         party: "",
         partySex: '',
         partyAge: "",
+        payNumber:'',
+        payTime:'',
+        payParty:'',
+        afdd:'',
+        caseName:'',
+        note:'',
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
@@ -130,9 +135,6 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
-        checkBox: [
-          { required: true, message: "案件来源不能为空", trigger: "change" }
-        ],
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" }
         ],
@@ -152,7 +154,6 @@ export default {
       nameLength: 23,
       adressLength: 23,
       maxLength: 12,
-      lineStyleFlag: false,
       approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入
       formOrDocData: {
         showBtn: [
@@ -172,15 +173,6 @@ export default {
       huanjieAndDocId: this.BASIC_DATA_QH.establish_JX_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
-      caseSourceText3: "",
-      caseSourceText4: "",
-      caseSourceText5: "",
-      caseSourceText6: "",
-      caseSourceCheckBox: [],
-      originalData: "",
-      // 是否带入电话
-      isPartyPhone: false,
-      needDealData: true,
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
     };
@@ -212,7 +204,7 @@ export default {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
       let data = {
         caseId: this.caseId,
-        docId: '2c9029cf6931aa5c01693381ac690018'
+        docId: this.$route.params.docId
       };
       console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
