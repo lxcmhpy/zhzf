@@ -699,6 +699,7 @@ export const mixinGetCaseApiList = {
               }, 1500)
             }
           } else {
+            console.log('this.canGoNextLink',this.canGoNextLink)
             for (var key in data) {
               this.formData[key] = data[key].val ? data[key].val : this.formData[key];
             }

@@ -1292,3 +1292,13 @@ export function getDrawerListApi(data) {
         cancelToken: setCancelSource()
     })
 }
+//获取所有机构
+export  function  getAllGroupOrganApi()  {
+    return  request({
+      url:  "/system/sys/organ/getAllOrgan",
+      method:  "get",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource()
+    });
+  }

@@ -78,8 +78,8 @@
               <!-- <p>备注</p> -->
             </td>
             <td colspan="8" class="color_DBE4EF table_seal">
-              <el-form-item prop="note">
-                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+              <el-form-item prop="note"  :rules="fieldRules('note',propertyFeatures['note'])">
+                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
               </el-form-item>
               <div class="pdf_seal">
                 <p>粘贴人:</p>
@@ -121,6 +121,7 @@ export default {
         payParty:'',
         afdd:'',
         caseName:'',
+        note:'',
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
