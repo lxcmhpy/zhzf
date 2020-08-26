@@ -138,30 +138,30 @@
         </table>
         <p>
           当事人（当事人代理人）：<el-form-item style="width:200px" prop="personName" :rules="fieldRules('personName',propertyFeatures['personName'])">
-            <el-input type="textarea" v-model="docData.personName" :disabled="fieldDisabled(propertyFeatures['personName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.personName" :disabled="fieldDisabled(propertyFeatures['personName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
         </p>
         <p>
           执法人员： <el-form-item style="width:200px" prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
-            <el-input type="textarea" v-model="docData.staff1" :disabled="fieldDisabled(propertyFeatures['staff1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.staff1" :disabled="fieldDisabled(propertyFeatures['staff1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
           执法证号： <el-form-item style="width:200px" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
-            <el-input type="textarea" v-model="docData.certificateId1" :disabled="fieldDisabled(propertyFeatures['certificateId1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.certificateId1" :disabled="fieldDisabled(propertyFeatures['certificateId1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
         </p>
         <p>
           执法人员： <el-form-item style="width:200px" prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
-            <el-input type="textarea" v-model="docData.staff2" :disabled="fieldDisabled(propertyFeatures['staff2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.staff2" :disabled="fieldDisabled(propertyFeatures['staff2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
           执法证号： <el-form-item style="width:200px" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
-            <el-input type="textarea" v-model="docData.certificateId2" :disabled="fieldDisabled(propertyFeatures['certificateId2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+            <el-input type="textarea" v-model="docData.certificateId2" :disabled="fieldDisabled(propertyFeatures['certificateId2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
           </el-form-item>
         </p>
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span>
           <br />
           <el-form-item prop="makeDate" class="pdf_datapick" :rules="fieldRules('makeDate',propertyFeatures['makeDate'])">
-            <el-date-picker class="big_error" v-model="docData.makeDate"  :disabled="fieldDisabled(propertyFeatures['makeDate'])"  type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker class="big_error" v-model="docData.makeDate"  type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
         </div>
         <div class="notice clear">
@@ -268,6 +268,7 @@ export default {
         partyName: '',
         partyAddress: '',
         party: '',
+        number: '',
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
