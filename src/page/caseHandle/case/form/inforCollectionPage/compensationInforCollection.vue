@@ -714,7 +714,7 @@
             <el-table-column label="合计" align="center">
               <template
                 slot-scope="scope"
-              >{{pathLossList[scope.$index].quantity * pathLossList[scope.$index].roadLcPrice}}</template>
+              >{{(pathLossList[scope.$index].quantity * pathLossList[scope.$index].roadLcPrice).toFixed(2)}}</template>
             </el-table-column>
             <el-table-column label="备注" prop="roadLcNote" align="center">
               <template slot-scope="scope">
@@ -840,6 +840,7 @@ export default {
         total +=
           this.pathLossList[i].roadLcPrice * this.pathLossList[i].quantity;
       }
+      total = total.toFixed(2)
       return total;
     }
   },
