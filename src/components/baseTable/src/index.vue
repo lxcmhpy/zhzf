@@ -93,7 +93,7 @@
 
     <!-- 分页 -->
     <div class="BaseTable-pagination">
-      <div class="selectBtns">
+      <div class="selectBtns" v-if="tableAttr.isRadio || tableAttr.isSelection">
         <el-button size="small" type="primary" @click="handleSubSelect">确定</el-button>
         <el-button size="small" type="primary" @click="handleCloseSelect">取消</el-button>
       </div>
