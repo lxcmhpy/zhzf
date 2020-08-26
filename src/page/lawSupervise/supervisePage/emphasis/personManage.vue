@@ -239,6 +239,8 @@
                         this.changePartyIdType(this.addForm.personPassportNo)
                     }
                     callback();
+                }else{
+                    callback();
                 }
             };
             return {

@@ -1545,8 +1545,6 @@
             });
             _this.maxLawerLimit=Math.max(dataList)
             _this.minLawerLimit=Math.min(dataList)
-            debugger
-            
           },
           err => {
             console.log(err);

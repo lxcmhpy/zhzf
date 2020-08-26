@@ -1,7 +1,7 @@
 <template>
   <div class="BaseTable">
     <!-- 表单 -->
-    <el-form :inline="true" :model="form" class="BaseTable-form">
+    <el-form v-if="inputList.length !== 0" :inline="true" :model="form" class="BaseTable-form">
       <el-form-item
         v-for="(item, index) in inputList"
         :key="index"
@@ -53,22 +53,22 @@
       ref="multipleTable"
       class="BaseTable-table"
       empty-text
-      :height="tableAttr.height"
+      :height="height"
       :data="tableData"
       style="width: 100%"
       @selection-change="handleSelectionChange">
       <el-table-column
-        v-if="tableAttr.isSelection"
+        v-if="isSelection"
         align="center"
         type="selection"
         width="60">
       </el-table-column>
-      <el-table-column v-if="tableAttr.isRadio" align="center" label="单选" width="60">
+      <el-table-column v-if="isRadio" align="center" label="单选" width="60">
         <template slot-scope="scope">
           <el-radio v-model="radio" :label="scope.$index" @change="change(scope.row)"></el-radio>
         </template>
       </el-table-column>
-      <el-table-column v-if="tableAttr.isNumber" align="center" label="序号" type="index" width="100">
+      <el-table-column v-if="isNumber" align="center" label="序号" type="index" width="100">
       </el-table-column>
       <el-table-column
         v-for="item of columns"
@@ -79,24 +79,22 @@
         :align="item.align"
         :width="item.width">
       </el-table-column>
-      <el-table-column v-if="buttons" :label="buttons.label" :align="buttons.align">
+      <el-table-column v-if="buttons" :label="buttons.label" :align="buttons.align" :width="buttons.width">
         <template slot-scope="scope">
-          <el-button
-            v-for="item of buttons.list"
-            :key="item.name"
-            :type="item.type"
-            size="mini"
-            @click="handleClick(scope.$index, scope.row, item.name)">{{item.name}}</el-button>
+          <span v-for="item of buttons.list" :key="item.name" class="tableBtns">
+            <i v-if="item.type === 'icon'" :class="item.class" />
+            <el-button
+              v-else
+              :type="item.type"
+              size="mini"
+              @click="handleClick(scope.$index, scope.row, item.name)">{{item.name}}</el-button>
+          </span>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页 -->
     <div class="BaseTable-pagination">
-      <div class="selectBtns" v-if="tableAttr.isRadio || tableAttr.isSelection">
-        <el-button size="small" type="primary" @click="handleSubSelect">确定</el-button>
-        <el-button size="small" type="primary" @click="handleCloseSelect">取消</el-button>
-      </div>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -111,6 +109,7 @@
 </template>
 
 <script>
+import { findData } from "../store.js";
 export default {
   props: {
     inputList: {
@@ -125,56 +124,77 @@ export default {
         return []
       }
     },
-    tableData: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
     buttons: {
       type: Object,
       default: null
     },
-    tableAttr: {
-      type: Object,
-      default() {
-        return {
-          height: '299',
-          current: 1,
-          size: 5,
-          total: 100
-        }
-      }
-    }
-  },
-  computed: {
-    current() {
-      return this.tableAttr.current
+    height: {
+      type: String,
+      default: '299'
     },
-    size() {
-      return this.tableAttr.size
+    isSelection: {
+      type: Boolean,
+      default: false
     },
-    total() {
-      return this.tableAttr.total
+    isRadio: {
+      type: Boolean,
+      default: false
+    },
+    isNumber: {
+      type: Boolean,
+      default: false
+    },
+    url: {
+      type: String,
+      default: ''
+    },
+    baseUrlType: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      radioRow: '', // 单选时选中的行数据
-      multipleSelection: [], // 复选框选中的数据
       radio: '',
-      form: {}
+      form: {},
+      tableData: [],
+      current: 1,
+      size: 5,
+      total: 5 // 默认 5 条
     }
   },
   methods: {
     /**
-     * 初始化 form
+     * 获取数据，带 baseUrlType
+     */
+    findTableData(param, baseUrlType, url) {
+      findData(param, baseUrlType, url).then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("findData()::::::接口错误")
+        }
+      }).then(data => {
+        this.total = data.total
+        this.tableData = data.records
+      })
+    },
+
+    /**
+     * 初始化 form , 获取数据
      */
     init() {
-      const form = {}
+      let form = {}
       this.inputList.map(item => {
         form[item.prop] = ''
       })
+      this.form = form
+
+      const param = {
+        current: 1,
+        size: 5,
+      }
+      this.findTableData(param, this.baseUrlType, this.url)
     },
 
     /**
@@ -190,7 +210,20 @@ export default {
      * 查询
      */
     onSubmit() {
-      this.$emit('handleSubmit', this.form)
+      let param = {
+        current: 1,
+        size: this.size
+      }
+      Object.keys(this.form).map(key => {
+        // 如果当前值为时间选择框的值，则将其拆为 startDate endDate 两个属性
+        if(this.form[key] instanceof Array) {
+          param.startDate = this.form[key][0]
+          param.endDate = this.form[key][1]
+        } else {
+          param[key] = this.form[key]
+        }
+      })
+      this.findTableData(param, this.baseUrlType, this.url)
     },
 
     /**
@@ -204,53 +237,64 @@ export default {
      * 切换每页显示的条数
      */
     handleSizeChange(val) {
-      this.$emit('handleSizeChange', val)
+      this.size = val
+      this.current = 1
+
+      let param = {
+        current: 1,
+        size: val
+      }
+      Object.keys(this.form).map(key => {
+        // 如果当前值为时间选择框的值，则将其拆为 startDate endDate 两个属性
+        if(this.form[key] instanceof Array) {
+          param.startDate = this.form[key][0]
+          param.endDate = this.form[key][1]
+        } else {
+          param[key] = this.form[key]
+        }
+      })
+
+      this.findTableData(param, this.baseUrlType, this.url)
+      console.log(`每页 ${val} 条`);
     },
 
     /**
      * 切换页
      */
     handleCurrentChange(val) {
-      this.$emit('handleCurrentChange', val)
+      this.current = val
+      let param = {
+        current: val,
+        size: this.size
+      }
+
+      Object.keys(this.form).map(key => {
+        // 如果当前值为时间选择框的值，则将其拆为 startDate endDate 两个属性
+        if(this.form[key] instanceof Array) {
+          param.startDate = this.form[key][0]
+          param.endDate = this.form[key][1]
+        } else {
+          param[key] = this.form[key]
+        }
+      })
+
+      this.findTableData(param, this.baseUrlType, this.url)
+      console.log(`当前页: ${val}`);
     },
 
     /**
      * 点击单选框
      */
     change(row) {
-      this.radioRow = row
+      this.$emit('handleChange', row)
     },
 
     /**
      * 点击复选框
      */
     handleSelectionChange(val) {
-      this.multipleSelection = val
+      this.$emit('handleChange', val)
     },
-
-    /**
-     * 点击确定
-     */
-    handleSubSelect() {
-      if(this.tableAttr.isRadio) {
-        this.$emit('handleSubSelect', this.radioRow)
-      } else if (this.tableAttr.isSelection) {
-        this.$emit('handleSubSelect', this.multipleSelection)
-      }
-    },
-
-    /**
-     * 点击取消
-     */
-    handleCloseSelect() {
-      if(this.tableAttr.isRadio) {
-        this.radio = ''
-        this.radioRow = ''
-      } else if (this.tableAttr.isSelection) {
-        this.$refs.multipleTable.clearSelection()
-      }
-      this.$emit('handleCloseSelect')
-    }
   },
   created() {
     this.init()
@@ -285,18 +329,16 @@ export default {
         display: none;
       }
     }
-  }
-  &-pagination {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    .selectBtns {
-      display: flex;
-      justify-content: flex-start;
+    .tableBtns {
+      margin-right: 5px;
       .el-button {
         border-radius: 4px;
       }
     }
+  }
+  &-pagination {
+    text-align: right;
+    margin-top: 10px;
     .el-pagination__jump {
       .el-input__inner {
         border-radius: 4px;

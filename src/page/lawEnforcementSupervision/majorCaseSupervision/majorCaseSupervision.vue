@@ -43,6 +43,7 @@
                   :accordion="true"
                   :props="myprops"
                   :value="selectOrganId"
+                  filterable
                   @getValue="handleOrgan"
                 ></elSelectTree>
               </el-form-item>
@@ -84,7 +85,7 @@
             <div class="item">
               <el-form-item label="执法人员" prop="staffId">
                 <!-- <el-input v-model="caseSearchForm.staff"></el-input> -->
-                <el-select v-model="caseSearchForm.staffId" placeholder="请选择">
+                <el-select v-model="caseSearchForm.staffId" filterable clearable placeholder="请选择">
                   <el-option
                     v-for="item in allStaff"
                     :key="item.id"
