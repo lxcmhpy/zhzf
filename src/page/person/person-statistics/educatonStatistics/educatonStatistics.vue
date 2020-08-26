@@ -11,8 +11,11 @@
             :model="formInline"
           >
             <el-row>
-              <el-form-item label="省份" prop="personName">
-                <el-input v-model="formInline.personName"></el-input>
+              <el-form-item label="省份" prop="province">
+                <el-select v-model="formInline.province" placeholder="省份" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
+                <el-option>新疆</el-option>
+                <el-option>宁夏</el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="二级单位" prop="ministerialNo">
                 <el-input v-model="formInline.ministerialNo"></el-input>
@@ -32,13 +35,11 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="是否发证" prop="oName">
-                <!-- <el-select v-model="formInline.oid" placeholder="选择所属机构" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
-                <el-option
-                    v-for="value in oidsInfo" :key="value.id" :label="value.name" :value="value.id">
-                </el-option>
-                </el-select>-->
-                <el-input v-model="formInline.oName"></el-input>
+              <el-form-item label="是否发证" prop="province">
+                <el-select v-model="formInline.province" placeholder="是否发证" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
+                <el-option>是</el-option>
+                <el-option>否</el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label=" " label-width="13px">
                 <el-button

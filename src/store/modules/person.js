@@ -1183,9 +1183,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             },   
 /////////////////////////江西个性化/////////////////////
          //考试列表查询
-         getJxExamList({commit}){
+         getJxExamList({commit},data){
             return new Promise((resolve, reject) => {
-                getJxExamListApi().then(
+                getJxExamListApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1195,9 +1195,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             })
             }, 
          //考试信息查询
-         getJxExamMesage({commit}){
+         getJxExamMessage({commit},data){
             return new Promise((resolve, reject) => {
-                getJxExamMesageApi().then(
+                getJxExamMesageApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1207,9 +1207,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             })
             },     
           //培训信息查询
-          getJxTrainMessage({commit}){
+          getJxTrainMessage({commit},data){
             return new Promise((resolve, reject) => {
-                getJxTrainMessageApi().then(
+                getJxTrainMessageApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1219,9 +1219,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             })
             }, 
           //考试列表查询
-          getJxTrainList({commit}){
+          getJxTrainList({commit},data){
             return new Promise((resolve, reject) => {
-                getJxTrainListApi().then(
+                getJxTrainListApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1232,9 +1232,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             }, 
         ///////////////////////人员统计/////////////////////////
         //按年龄段统计
-        statisticByAge({commit}){
+        statisticByAge({commit},data){
             return new Promise((resolve, reject) => {
-                statisticByAgeApi().then(
+                statisticByAgeApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1244,9 +1244,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             })
             },
             //按渠道统计
-            statisticByChannel({commit}){
+            statisticByChannel({commit},data){
                 return new Promise((resolve, reject) => {
-                    statisticByChannelApi().then(
+                    statisticByChannelApi(data).then(
                     res => {
                         resolve(res);
                     },
@@ -1256,9 +1256,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
                 })
                 },
          //按年度新增
-         statisticByYearAdd({commit}){
+         statisticByYearAdd({commit},data){
             return new Promise((resolve, reject) => {
-                statisticByYearAddApi().then(
+                statisticByYearAddApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1268,9 +1268,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             })
             },        
         //按文化程度
-        statisticByEducationLevel({commit}){
+        statisticByEducationLevel({commit},data){
             return new Promise((resolve, reject) => {
-                statisticByEducationLevelApi().then(
+                statisticByEducationLevelApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1281,9 +1281,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             },  
 
          //按执法门类
-         statisticByBranchApi({commit}){
+         statisticByBranchApi({commit},data){
             return new Promise((resolve, reject) => {
-                statisticByBranchApi().then(
+                statisticByBranchApi(data).then(
                 res => {
                     resolve(res);
                 },
@@ -1293,9 +1293,9 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
             })
             },  
         //按专业
-        statisticByMajor({commit}){
+        statisticByMajor({commit},data){
             return new Promise((resolve, reject) => {
-                statisticByMajorApi().then(
+                statisticByMajorApi(data).then(
                 res => {
                     resolve(res);
                 },
