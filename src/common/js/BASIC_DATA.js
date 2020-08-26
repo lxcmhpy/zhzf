@@ -68,7 +68,7 @@ export const BASIC_DATA_SYS = {
     compensationNote_huanjieAndDocId:'0c18fe2ebe22e931eec3b0e256362e04',
     //收缴赔补偿款 环节id caseLinktypeId
     takeOverCompensation_caseDoctypeId:'7781e1f951303732c3388a325fb685dd',
-    //赔补偿案件 调查类文书 环节id caseLinktypeId
+    //赔补偿案件 调查类文书 环节id caseLinktypeId 
     compensationCaseDoc_caseLinktypeId:'1eb723efd23dfc7c28ebba2c6fc755c1',
     //赔补偿案件 当事人权利 环节id caseLinktypeId
     compensationPartyRights_caseLinktypeId:'2128e21c31b9debba6890bf66635e3f5',

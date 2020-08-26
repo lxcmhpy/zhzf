@@ -167,7 +167,10 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="检查对象" prop="checkObject">
-              <el-input type="text" v-model="addForm2.checkObject"></el-input>
+              <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
+              <el-select v-model="addForm2.checkObject" placeholder="请选择">
+                <el-option v-for="item in optionsJCDX" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -187,7 +190,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="抽查依据" prop="checkBasis">
+        <el-form-item label="检查依据" prop="checkBasis">
           <el-input type="textarea" v-model="addForm2.checkBasis"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
@@ -208,7 +211,7 @@
   </div>
 </template>
 <script>
-import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, delRandomItemApi, importItemExcelApi } from "@/api/inspection";
+import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, getAllCheckObject, delRandomItemApi, importItemExcelApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -229,19 +232,19 @@ export default {
         checkMode: '',
         checkBasis: '',
         checkItem: '',
-        status: '',
-        checkContent: ''
+        checkContent: '',
+        status: '启用',
       },
       addForm2: {
         checkSubject: '',
         checkMode: '',
         checkBasis: '',
         checkItem: '',
-        status: '',
         checkContent: '',
         checkObject: '',
         itemType: '',
-        checkType: ''
+        checkType: '',
+        status: '启用',
       },
       dialogStatus: '',
       dialogStatus2: '',
@@ -298,6 +301,7 @@ export default {
       optionsCCZT: [],
       optionsCCFS: [],
       optionsSXLB: [],
+      optionsJCDX: [],
       optionsCCLB: [],
       optionsCCSX: [],
     }
@@ -437,16 +441,22 @@ export default {
               case 5: _this.optionsCCSX = res.data; break;//抽查事项
             }
           },
-
           error => {
             // reject(error);
           })
       });
-
     },
+    getAllCheckObject(){
+      getAllCheckObject().then(res=>{
+        if(res.code==200){
+          this.optionsJCDX=res.data;
+        }
+      })
+    }
   },
   mounted() {
     this.getTableData()
+    this.getAllCheckObject();
     // 获取抽屉
     this.getDrawerList([{ name: '事项类别', option: 1 },
     { name: '抽查方式', option: 2 },

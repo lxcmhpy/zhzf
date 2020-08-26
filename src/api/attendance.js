@@ -10,7 +10,7 @@ let  vm  =  new  Vue();
 // 考勤统计列表
 export function getStatisticalList(data){
   return request({
-    url: "/attendance/statisticalList",
+    url: "/person/attendance/statisticalList",
     method: "get",
     baseUrlType: 'ATTENDANCE',
     params: data,
@@ -21,7 +21,7 @@ export function getStatisticalList(data){
 // 考勤统计列表
 export function getAttendanceList(data){
   return request({
-    url: "/attendance/list",
+    url: "/person/attendance/list",
     method: "get",
     baseUrlType: 'ATTENDANCE',
     params: data,
@@ -29,10 +29,21 @@ export function getAttendanceList(data){
     cancelToken: setCancelSource()
   })
 };
+// 考勤信息修改
+export function editAttendance(data){
+  return request({
+    url: "/person/attendance/edit",
+    method: "POST",
+    baseUrlType: 'ATTENDANCE',
+    data: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+};
 // 下载考勤模板
 export function downLoadAttendanceMode(){
   return request({
-      url: '/attendance/exportMode',
+      url: '/person/attendance/exportMode',
       method:  "get",
       baseUrlType: 'ATTENDANCE',
       showloading: false,
@@ -43,7 +54,7 @@ export function downLoadAttendanceMode(){
 // 批量导入考勤
 export function batchImportAttendance(data){
   return request({
-      url: '/attendance/import',
+      url: '/person/attendance/import',
       method:  "POST",
       baseUrlType: 'ATTENDANCE',
       data: data,
@@ -55,7 +66,7 @@ export function batchImportAttendance(data){
 // 扣分管理查询
 export function getDeductMarks(data){
   return request({
-    url: "/attendance/deductMarks",
+    url: "/person/attendance/deductMarks",
     method: "get",
     baseUrlType: 'ATTENDANCE',
     params: data,
@@ -66,7 +77,7 @@ export function getDeductMarks(data){
 // 扣分管理修改
 export function editDeductMarks(data){
   return request({
-    url: "/attendance/deductMarksEdit",
+    url: "/person/attendance/deductMarksEdit",
     method: "POST",
     baseUrlType: 'ATTENDANCE',
     params: data,

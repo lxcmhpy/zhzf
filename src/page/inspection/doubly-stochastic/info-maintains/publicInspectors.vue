@@ -405,6 +405,13 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // this.addForm.photo=this.addForm.photo||''
+          if (Date.parse(this.addForm.certStartTime) > Date.parse(this.addForm.certEndTime)) {
+            this.$message({
+              message: '开始时间不得大于截止时间',
+              type: 'error',
+            });
+            return;
+          }
           this.addForm.organName = iLocalStroage.gets("userInfo").organName
           this.$delete(this.addForm, 'photo')
           addPublicPersonApi(this.addForm).then(

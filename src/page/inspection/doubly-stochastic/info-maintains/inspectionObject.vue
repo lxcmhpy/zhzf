@@ -199,6 +199,7 @@ export default {
         contactNumber: '',
         regulatoryUnit: '',
         remark: '',
+        status: '启用',
       },
       formLabelWidth: '125px',
       dialogStatus: '',

@@ -176,18 +176,14 @@ export default {
     },
     //更改标准
     changeBz(val) {
-      let _this = this;    
       getDictListDetailByNameApi(val).then(
         res => {
-          console.log("chopsepath",res.data);
-            _this.allRoadType=res.data;
-            _this.pathLossSearchForm.roadLcType="";                
+          this.allRoadType = res.data;
         },
         err => {
           console.log(err);
         }
       );
-      
     },
     //是否禁止选择
     canSelectable(row, index) {
@@ -228,18 +224,9 @@ export default {
           }
         })
       })
-    },
-    //从数据字典获取路产标准
-    getRoadLcBz(){
-      let name = "公路路产所属标准";
-      getDictListDetailByNameApi(name).then(res=>{
-          this.allRoadLcBz=res.data;
-      })
     }
   },
-  mounted() {
-    this.getRoadLcBz();
-  }
+  mounted() {}
 };
 </script>
 <style lang="scss">

@@ -19,6 +19,11 @@ export default {
       type: Number,
       default: 5
     },
+    // 底图
+    layerUrl: {
+      type: String,
+      default: 'http://111.75.227.156:18967/arcgis/rest/services/jx_channel_mix_2019/MapServer/tile/{z}/{y}/{x}?key=OWUYmEyO'
+    }
   },
   data () {
     return {
@@ -79,9 +84,7 @@ export default {
               resolutions: this.mapConsts.resolutions
             },
             projection: 'EPSG:4326',
-            // layerUrl: 'http://111.75.227.156:18967/arcgis/rest/services/jx_channel_mix_2019/MapServer/tile/{z}/{y}/{x}?key=OWUYmEyO'
-            //layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JIANGXIQGBLUE/MapServer/tile/{z}/{y}/{x}'
-            layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}'
+            layerUrl: this.layerUrl
           }
         ]
       });

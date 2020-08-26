@@ -79,6 +79,8 @@ export const inforCollectionCommonMixins = {
         partySex: "",
         partyAge: "",
         partyTel: "",
+        provincesAddressArray: [],
+        provincesAddress:"",
         partyAddress: "",
         partyZipCode: "",
         partyUnitPosition: "",
@@ -156,9 +158,10 @@ export const inforCollectionCommonMixins = {
         'otherInfo.vehiclefiledThing': [
           {required: true, message: "请输入装载物", trigger: "change"}
         ],
-        'driverOrAgentInfo.relationWithCase': [
-          {required: true, message: "请选择案件关系", trigger: "change"}
-        ],
+        //青海非必填
+        // 'driverOrAgentInfo.relationWithCase': [
+        //   {required: true, message: "请选择案件关系", trigger: "change"}
+        // ],
         illegalLaw: [
           {required: true, message: "请选择条款", trigger: "change"}
         ],
@@ -225,6 +228,7 @@ export const inforCollectionCommonMixins = {
           age: "",
           tel: "",
           adress: "",
+          provincesAddress: [],
           adressCode: "",
           company: "",
           position: "",
@@ -237,61 +241,61 @@ export const inforCollectionCommonMixins = {
       },
       allRelationWithParty: [
         //与当事人关系下拉框
-        {value: "0", label: "同一人"},
-        {value: "1", label: "近亲戚"},
-        {value: "2", label: "借用车辆"},
-        {value: "3", label: "雇佣关系"},
-        {value: "4", label: "车辆所有人"}
+        // {value: "0", label: "同一人"},
+        // {value: "1", label: "近亲戚"},
+        // {value: "2", label: "借用车辆"},
+        // {value: "3", label: "雇佣关系"},
+        // {value: "4", label: "车辆所有人"}
       ],
       allRelationWithParty_: [
         //与当事人关系下拉框
-        {value: "1", label: "近亲戚"},
-        {value: "2", label: "借用车辆"},
-        {value: "3", label: "雇佣关系"},
-        {value: "4", label: "车辆所有人"}
+        // {value: "1", label: "近亲戚"},
+        // {value: "2", label: "借用车辆"},
+        // {value: "3", label: "雇佣关系"},
+        // {value: "4", label: "车辆所有人"}
       ],
       allRelationWithCase: [
         //与案件关系下拉框
-        {value: "0", label: "当事人"},
-        {value: "1", label: "驾驶人"},
-        {value: "2", label: "实际所有者"},
-        {value: "3", label: "证人"},
-        {value: "4", label: "承运人"},
-        {value: "5", label: "代理人"}
+        // {value: "0", label: "当事人"},
+        // {value: "1", label: "驾驶人"},
+        // {value: "2", label: "实际所有者"},
+        // {value: "3", label: "证人"},
+        // {value: "4", label: "承运人"},
+        // {value: "5", label: "代理人"}
       ],
       allQYRelationWithParty: [
       //与当事人关系下拉框(企业组织)
-      { value: "2", label: "借用车辆" },
-      { value: "3", label: "雇佣关系" },
-      { value: "5", label: "其他" }
+      // { value: "2", label: "借用车辆" },
+      // { value: "3", label: "雇佣关系" },
+      // { value: "5", label: "其他" }
      ],
       allQYRelationWithCase: [
       //与案件关系下拉框(企业组织)
-      { value: "1", label: "驾驶人" },
-      { value: "3", label: "证人" },
-      { value: "4", label: "承运人" },
-      { value: "5", label: "代理人" }
+      // { value: "1", label: "驾驶人" },
+      // { value: "3", label: "证人" },
+      // { value: "4", label: "承运人" },
+      // { value: "5", label: "代理人" }
       ],
       allVehicleIdColor: [
         //车牌颜色下拉框
-        {value: "1", label: "黄色"},
-        {value: "2", label: "蓝色"},
-        {value: "3", label: "绿色"},
-        {value: "4", label: "黄绿"},
-        {value: "5", label: "黑色"},
-        {value: "6", label: "白色"},
-        {value: "7", label: "其他"}
+        // {value: "1", label: "黄色"},
+        // {value: "2", label: "蓝色"},
+        // {value: "3", label: "绿色"},
+        // {value: "4", label: "黄绿"},
+        // {value: "5", label: "黑色"},
+        // {value: "6", label: "白色"},
+        // {value: "7", label: "其他"}
       ],
       allVehicleShipType: [
-        {value: "中小客车", label: "中小客车"},
-        {value: "大客车", label: "大客车"},
-        {value: "小型货车", label: "小型货车"},
-        {value: "中型货车", label: "中型货车"},
-        {value: "大型货车", label: "大型货车"},
-        {value: "特大型货车", label: "特大型货车"},
-        {value: "集装箱车", label: "集装箱车"},
-        {value: "摩托车", label: "摩托车"},
-        {value: "拖拉机", label: "拖拉机"}
+        // {value: "中小客车", label: "中小客车"},
+        // {value: "大客车", label: "大客车"},
+        // {value: "小型货车", label: "小型货车"},
+        // {value: "中型货车", label: "中型货车"},
+        // {value: "大型货车", label: "大型货车"},
+        // {value: "特大型货车", label: "特大型货车"},
+        // {value: "集装箱车", label: "集装箱车"},
+        // {value: "摩托车", label: "摩托车"},
+        // {value: "拖拉机", label: "拖拉机"}
       ],
       dateShow: false, //是否显示时间提示语
       showTrailer: false, //是否显示挂车信息
@@ -311,6 +315,8 @@ export const inforCollectionCommonMixins = {
       afddFlag: false,
       disableZcBtn: false, //暂存按钮禁用
       hasLatitudeAndLongitude:false, //案发坐标是否已经获取
+      provincesList: [],//行政区划
+      subAreaCascader:'subAreaCascader',
     };
   },
   components: {
@@ -416,6 +422,7 @@ export const inforCollectionCommonMixins = {
       this.inforForm.partyAge = "";
       this.inforForm.partyTel = "";
       this.inforForm.partyAddress = "";
+      this.inforForm.provincesAddressArray = [];
       this.inforForm.partyZipCode = "";
       this.inforForm.partyUnitPosition = "";
       this.inforForm.occupation = "";
@@ -432,6 +439,7 @@ export const inforCollectionCommonMixins = {
         this.driverOrAgentInfoList[0].age = "";
         this.driverOrAgentInfoList[0].tel = "";
         this.driverOrAgentInfoList[0].adress = "";
+        this.driverOrAgentInfoList[0].provincesAddress = "";
         this.driverOrAgentInfoList[0].adressCode = "";
         this.driverOrAgentInfoList[0].company = "";
         this.driverOrAgentInfoList[0].position = "";
@@ -453,6 +461,7 @@ export const inforCollectionCommonMixins = {
         this.driverOrAgentInfoList[index].age = this.inforForm.partyAge;
         this.driverOrAgentInfoList[index].tel = this.inforForm.partyTel;
         this.driverOrAgentInfoList[index].adress = this.inforForm.partyAddress;
+        this.driverOrAgentInfoList[index].provincesAddress = this.inforForm.provincesAddressArray;
         this.driverOrAgentInfoList[index].adressCode = this.inforForm.partyZipCode;
         this.driverOrAgentInfoList[index].company = this.inforForm.partyUnitPosition;
         this.driverOrAgentInfoList[index].position = this.inforForm.occupation;
@@ -467,6 +476,7 @@ export const inforCollectionCommonMixins = {
         this.driverOrAgentInfoList[index].age = "";
         this.driverOrAgentInfoList[index].tel = "";
         this.driverOrAgentInfoList[index].adress = "";
+        this.driverOrAgentInfoList[index].provincesAddress = "";
         this.driverOrAgentInfoList[index].adressCode = "";
         this.driverOrAgentInfoList[index].company = "";
         this.driverOrAgentInfoList[index].position = "";
@@ -623,6 +633,9 @@ export const inforCollectionCommonMixins = {
         this.inforForm.payTotal = this.payTotal;
         _this.inforForm.state = state;
         _this.inforForm.caseStatus = '未立案';
+        if(this.inforForm.provincesAddressArray && this.inforForm.provincesAddressArray.length>1){
+            this.inforForm.provincesAddress=JSON.stringify(this.inforForm.provincesAddressArray)
+        }
         _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
           res => {
             console.log(res);
@@ -682,6 +695,9 @@ export const inforCollectionCommonMixins = {
       this.inforForm.roadDamageList = this.pathLossList ? JSON.stringify(this.pathLossList) : '';
       this.inforForm.payTotal = this.payTotal;
       console.log(this.inforForm)
+      if(this.inforForm.provincesAddressArray && this.inforForm.provincesAddressArray.length>1){
+        this.inforForm.provincesAddress=JSON.stringify(this.inforForm.provincesAddressArray)
+      }
       this.inforForm.state = state;
       this.inforForm.caseStatus = '未立案';
       let _this = this
@@ -723,6 +739,36 @@ export const inforCollectionCommonMixins = {
       let _this = this
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
+            let dataArray = [];
+            _this.driverOrAgentInfoList = JSON.parse(res.data.agentPartyEcertId);
+            if(res.data.provincesAddress){
+                res.data.provincesAddressArray = JSON.parse(res.data.provincesAddress)
+                if(res.data.provincesAddressArray.length>1){
+                    let obj = {
+                        first:res.data.provincesAddressArray[0],
+                        second:res.data.provincesAddressArray[1]
+                    }
+                    if(res.data.provincesAddressArray.length==3){
+                        obj.three = res.data.provincesAddressArray[2]
+                    }
+                    dataArray.push(obj)
+                }
+            }
+            if(_this.driverOrAgentInfoList.length>0){
+                _this.driverOrAgentInfoList.forEach(p=>{
+                    if(p.provincesAddress && p.provincesAddress.length>1){
+                        let subObj = {
+                            first:p.provincesAddress[0],
+                            second:p.provincesAddress[1]
+                        }
+                        if(p.provincesAddress.length==3){
+                            subObj.three = p.provincesAddress[2]
+                        }
+                        dataArray.push(subObj)
+                    }
+                })
+            }
+            this.initProvincesList(dataArray)  
           _this.inforForm = res.data;
           this.handleCaseData(res.data);
         },
@@ -1082,13 +1128,43 @@ export const inforCollectionCommonMixins = {
       }
     },
     //获取挂车类型数据
-    getTrailerType() {
-      getDictListDetailByNameApi('trailerType').then(res => {
-        console.log('挂车类型', res);
-        this.allTrailerTypeType = res.data;
-      }, err => {
-        console.log(err);
-      })
+    // getTrailerType() {
+    //   getDictListDetailByNameApi('trailerType').then(res => {
+    //     console.log('挂车类型', res);
+    //     this.allTrailerTypeType = res.data;
+    //   }, err => {
+    //     console.log(err);
+    //   })
+    // },
+    //初始化抽屉表
+    async initDrawData(){
+      try{
+        //获取挂车类型数据
+        let  data1 = await getDictListDetailByNameApi('trailerType');
+        this.allTrailerTypeType = data1.data;
+        //与案件关系
+        let  data2 = await getDictListDetailByNameApi('与案件关系');
+        this.allRelationWithCase = data2.data;
+        //与当事人关系
+        let  data3 = await getDictListDetailByNameApi('与当事人关系');
+        this.allRelationWithParty = data3.data;
+        this.allRelationWithParty_ =  this.allRelationWithParty.filter(item=>item.name !='同一人');
+        //与当事人关系(企业组织)
+        let  data4 = await getDictListDetailByNameApi('当事人关系(企业组织)');
+        this.allQYRelationWithParty = data4.data;
+        //与案件关系(企业组织)
+        let  data5 = await getDictListDetailByNameApi('与案件关系(企业组织)');
+        this.allQYRelationWithCase = data5.data;
+        //车牌颜色
+        let  data6 = await getDictListDetailByNameApi('车牌颜色');
+        this.allVehicleIdColor = data6.data;
+        //车辆类型
+        let  data7 = await getDictListDetailByNameApi('车辆类型');
+        this.allVehicleShipType = data7.data;
+      }catch(err){
+        throw new Error(err);
+      }
+      
     },
     //查询历史记录
     findHistoryBySign(sign) {
@@ -1214,6 +1290,63 @@ export const inforCollectionCommonMixins = {
         return (data.inputValue.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
+    handleSelect (node) {
+        if(node){
+            let data = this.$refs['areaCascader'].panel.getNodeByValue(node[node.length - 1]).data;
+            if (data.childrenCount>0 && data.children.length == 0) {
+                this.$store.dispatch("getCountry",data.adCode).then(
+                    res => {
+                        data.children = res.data
+                    }
+                )
+            }else if(data.childrenCount==0){
+                this.inforForm.partyZipCode=data.postCode
+                this.changeDriverOrAgentInfo('')
+            }
+        }
+      },
+      handleSelectDriverOrAgent(node,index,info){
+          if(node){
+            let data = this.$refs['subAreaCascader'+index][0].panel.getNodeByValue(node[node.length - 1]).data;
+            if (data.childrenCount>0 && data.children.length == 0) {
+                this.$store.dispatch("getCountry",data.adCode).then(
+                    res => {
+                        res.data.forEach(p => {
+                        if (p.childrenCount > 0) {
+                            p.children = []
+                        }
+                        })
+                        data.children = res.data
+                    }
+                )
+            }else if (data.childrenCount==0){
+                info.adressCode=data.postCode
+            }
+        }
+      },
+    initProvincesList(data){
+        this.$store.dispatch("getCountryTree",data).then(
+            res => {
+                this.provincesList = res.data
+            }
+        )
+    },
+    getCountry (pCode) {
+        let params = pCode;
+        let _this = this
+        this.$store.dispatch("getCountry", params).then(
+          res => {
+            res.data.forEach(p => {
+                if (p.childrenCount > 0) {
+                    p.children = []
+                }
+            })
+            _this.provincesList = res.data
+          },
+          err => {
+            console.log(err);
+          }
+    )},
   },
 
   mounted() {
@@ -1278,7 +1411,8 @@ created() {
   this.getDirectionList();
   this.getLocationList();
   // this.findJudgFreedomList();
-  this.getTrailerType();
+  // this.getTrailerType();
+  this.initDrawData();
   this.findRouteManageByOrganId();
   // this.setLawPerson(
   //   [iLocalStroage.gets('userInfo').username]
@@ -1298,6 +1432,9 @@ created() {
   if (iLocalStroage.get("stageCaseId")) {
     this.fromSlide();
     // this.autoSava = false;
+  }
+  if(!this.$route.params.fromSlide && !iLocalStroage.get("stageCaseId")){
+    this.getCountry('100000');
   }
   this.findHistoryBySign("checkStastions");
   this.findHistoryBySign("checkWorker");

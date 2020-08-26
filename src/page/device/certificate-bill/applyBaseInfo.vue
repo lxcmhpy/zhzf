@@ -93,7 +93,7 @@
         <el-col :span="12">
           <el-form-item label="车牌号" prop="vehicleNumber">
             <el-input v-model="addForm.vehicleNumber" :readonly="true">
-              <el-button style="color: white;background-color: #4d89ff;" slot="append" @click="changeVehicle">选择</el-button>
+              <el-button style="color: #4573D0;" slot="append" @click="changeVehicle">选择</el-button>
             </el-input>
           </el-form-item>
         </el-col>
@@ -131,7 +131,7 @@
           <el-form-item label="使用证号" prop="usePermitNumber">
             <el-input v-model="addForm.usePermitNumber" placeholder="请输入">
               <el-button 
-                style="color: white;background-color: #4d89ff;" 
+                style="color: #4573D0;" 
                 slot="append" 
                 @click="getPerCode"
                 v-show="addForm.vehicleNumber"
@@ -216,7 +216,7 @@
             </el-button>
         </div>
       <div>
-        <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" @click="commitBill">
+        <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" style="margin-left:0;margin-top:10px;" @click="commitBill">
             <i class="iconfont law-save"></i>
             <br />提交
         </el-button>
@@ -384,7 +384,7 @@ export default {
         _this.addForm.fileList = []
         this.$refs['addFormRef'].validate(valid => {
             if (valid) {
-                checkNo(_this.addForm.usePermitNumber,_this.addForm.useUnit).then(
+                checkNo(_this.addForm.usePermitNumber,_this.addForm.useUnit,_this.addForm.id).then(
                     res=>{
                         if(res.code==200){
                             saveOrUpdateDeviceCertificateBill(_this.addForm).then(

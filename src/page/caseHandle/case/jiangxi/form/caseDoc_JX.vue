@@ -593,9 +593,6 @@ export default {
       //   this.com_viewDoc(row);
       // }
       console.log("查看");
-      row.url=this.$route.name;
-      row.caseBasicinfoId= this.caseBasicinfoId
-      this.$store.commit("setCurrentFileData", row);//保存文书信息
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     addMoreDoc(row) {
@@ -611,9 +608,6 @@ export default {
     //预览pdf
     viewDocPdf(row) {
       console.log('row',row)
-      row.url=this.$route.name;
-      row.caseBasicinfoId= this.caseBasicinfoId
-      this.$store.commit("setCurrentFileData", row);//保存文书信息
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -638,7 +632,7 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        // linkTypeId: this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+        // linkTypeId: (this.caseFlowData.flowName == "赔补偿流程" || this.caseFlowData.flowName == "青海赔补偿流程") ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
         linkTypeId: this.caseLinkDataForm.caseLinktypeId
       };
       this.com_getDocListByCaseIdAndFormId(data);
@@ -664,14 +658,14 @@ export default {
       //获取询问笔录的文书类型id
       let xunwenDocTypeId = '';
       for(let i=0;i<this.docTableDatasCopy.length;i++){
-        if (this.docTableDatasCopy[i].name == "询问笔录") {
+        if (this.docTableDatasCopy[i].docId == "fdfa1fe362f29bde2e09e04931977e3e") {
           xunwenDocTypeId = this.docTableDatasCopy[i].docId;
           break;
         }
       }
 
       this.docTableDatas.push({
-        name: "询问笔录",
+        name: "询问笔录【江西】",
         status: "询问",
         openRow: true,
         // url: "case_handle_othermodle",
@@ -680,7 +674,7 @@ export default {
       });
       let askDocListFinishNum = 0;
       this.docTableDatasCopy.forEach(item => {
-        if (item.name != "询问笔录") {
+        if (item.docId != "fdfa1fe362f29bde2e09e04931977e3e") {
           this.docTableDatas.push(item);
         } else {
           if(item.status === 0 || item.status === 1 || item.status === 2)

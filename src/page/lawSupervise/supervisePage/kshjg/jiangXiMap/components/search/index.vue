@@ -22,6 +22,7 @@
           @handleNodeClick="handleNodeClick"
           @handlePerson="handlePerson"
           @clickImg="clickImg"
+          @handleClickBtns="handleClickBtns"
         />
       </keep-alive>
     </div>
@@ -83,15 +84,18 @@ export default {
         { label: '执法船舶', type: 3, children: [] },
       ]
       arr.map(item => {
-        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
-          myNode.map(myNodeItem => {
-            // 给自定义节点添加 pid 属性， 值为父节点的 id
-            myNodeItem.pid = item.id
-          })
-          // 在 children 里添加自定义节点
-          item.children = myNode.concat(item.children)
-          // 递归调用
-          this.addNode(item.children)
+        console.log(item)
+        if(item !== null) {
+          if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
+            myNode.map(myNodeItem => {
+              // 给自定义节点添加 pid 属性， 值为父节点的 id
+              myNodeItem.pid = item.id
+            })
+            // 在 children 里添加自定义节点
+            item.children = myNode.concat(item.children)
+            // 递归调用
+            this.addNode(item.children)
+          }
         }
       })
       return arr
@@ -220,6 +224,13 @@ export default {
         this.getPeople()
       }
     },
+
+    /**
+     * 点击底部小图标
+     */
+    handleClickBtns(index, data) {
+      this.$emit('handleClickBtns', index, data)
+    }
   }
 }
 </script>

@@ -13,19 +13,12 @@
           <div>
             <div class="item">
               <el-form-item label="考试年份" prop="examYear">
-                <el-select
+                <el-date-picker
                   v-model="searchForm.examYear"
-                  placeholder="年份"
-                  remote
-                  @focus="getYear()"
-                >
-                  <el-option
-                    v-for="value in getYearList"
-                    :key="value.id"
-                    :label="value.name"
-                    :value="value.id"
-                  ></el-option>
-                </el-select>
+                  type="year"
+                  placeholder="选择年"
+                  :picker-options="pickerOptions"
+                ></el-date-picker>
               </el-form-item>
               <el-form-item label="姓名" prop="personName">
                 <el-input v-model="searchForm.personName"></el-input>
@@ -113,41 +106,23 @@ export default {
       searchForm: {
         personName:"",
         examYear: "",
-        ministerialNo: '',
-        name: ''
+        ministerialNo: "",
+        name: "",
       },
       tableData: [],
       examList:[],
       tableLoading: false,
       currentPage: 0,
       totalPage: 0,
-      pageSize: 10
+      pageSize: 10,
     };
   },
   components: {},
   created() {
-    // 查询年份下拉
-    this.getYear();
     // 查询考试信息列表
     this.getExamInfoList();
   },
   methods: {
-    // 获取年份下拉选项
-    getYear() {
-      if (this.getYearList.length > 0) {
-        return false;
-      }
-      this.$store.dispatch("getYearMoudle", "年份").then((res) => {
-        if (res.code === 200) {
-          this.getYearList = [];
-          for (let i = res.data.minYear; i <= res.data.maxYear; i++) {
-            this.getYearList.push({ id: i, name: i });
-          }
-        } else {
-          console.info("没有查询到数据");
-        }
-      });
-    },
     // 根据查询条件查询考试信息列表
     getExamInfoList() {
        let myDate = new Date();
@@ -166,7 +141,7 @@ export default {
           this.tableLoading = false;
           _this.examList = res.data;
         },
-        err => {
+        (err) => {
           this.tableLoading = false;
           this.$message({ type: "error", message: err.msg || "" });
         }
@@ -179,12 +154,10 @@ export default {
           this.setExamScore(res.data.records);
           _this.totalPage = res.data.total;
         },
-        err => {
-          this.tableLoading = false;
+        (err) => {
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
-      console.log("查询考试信息列表");
     },
     // 处理考试成绩
     setExamScore(data){
@@ -219,7 +192,7 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getExamInfoList();
-    }
+    },
   },
 };
 </script>

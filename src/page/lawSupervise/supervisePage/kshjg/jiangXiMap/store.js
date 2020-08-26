@@ -40,6 +40,12 @@ export default {
           item.type = node.type
           item.label = item.nickName
           item.parentLabel = node.label
+          // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
+          if(item.peState && item.peState===1) {
+            item.peStateColor = '#67C23A'
+          } else if (item.padState && item.padState === 1) {
+            item.padStateColor = '#409EFF'
+          }
           return item
         })
       })
@@ -68,6 +74,12 @@ export default {
           item.type = node.type
           item.label = item.vehicleNumber || item.shipNumber
           item.parentLabel = node.label
+          // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
+          if(item.peState && item.peState===1) {
+            item.peStateColor = '#67C23A'
+          } else if (item.padState && item.padState === 1) {
+            item.padStateColor = '#409EFF'
+          }
           return item
         })
       })
@@ -123,6 +135,7 @@ export default {
      * 获取人员在线情况
      */
     personClick (node) {
+      console.log(node)
       // 地图打点
       let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
       node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
@@ -131,7 +144,7 @@ export default {
       this.searchWindowData.window4.title = node.nickName
       this.searchWindowData.window4.info = {
         organName: node.organName,
-        mobile: node.mobile
+        mobile: node.mobile,
       }
       this.$refs.Search.showCom = "Window4"
     },

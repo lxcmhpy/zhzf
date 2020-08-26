@@ -16,7 +16,7 @@
       <i class="iconfont law-save"></i>
       <br/>归档
     </el-button>
-    <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
+    <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]"> 
       <i class="iconfont law-save"></i>
       <br/>保存
     </el-button>
@@ -36,12 +36,13 @@
       <i class="iconfont law-back"></i>
       <br/>返回
     </el-button>
-    <!-- pdf文书可修改，立案登记和结案登记不可修改 -->
-    <el-button type="primary" @click="backWenshuBtn" v-if="this.$route.name=='case_handle_myPDF'
-    &&currentFileData.path!='case_handle_establish'&&currentFileData.path!='case_handle_finishCaseReport'">
+    <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改-->
+    <!-- <el-button type="primary" @click="backWenshuBtn" v-if="this.$route.name=='case_handle_myPDF'
+    &&currentFileData.path!='case_handle_establish'&&currentFileData.path!='case_handle_finishCaseReport'
+    &&approvalState!='approvaling'">
       <i class="iconfont law-edit"></i>
       <br/>修改
-    </el-button>
+    </el-button>  -->
     <img src="" id="show">
   </div>
 </template>
@@ -62,7 +63,7 @@
     },
     props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId', 'docId','showQZBtn','currentFileData'])},
+    computed: {...mapGetters(['caseId', 'docId','showQZBtn','currentFileData','approvalState'])},
     methods: {
       //   打印方法
       async printContent() {

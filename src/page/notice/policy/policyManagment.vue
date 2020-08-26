@@ -1,5 +1,6 @@
 <template>
-  <listCommon type="政策公告"></listCommon>
+  <!-- 政策公告 1-->
+  <listCommon type="1"></listCommon>
 </template>
 <script>
 import listCommon from "@/page/notice/components/listCommon";

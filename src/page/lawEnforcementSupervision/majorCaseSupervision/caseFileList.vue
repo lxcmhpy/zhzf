@@ -6,7 +6,7 @@
         <div class="search">
           <el-form :inline="true" :model="evidenceForm" ref="evidenceForm" label-width="80px">
             <el-form-item>
-              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval">上传备案材料</el-button>
+              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="isMyOrgan">上传备案材料</el-button>
             </el-form-item>
             <el-form-item label="材料名称" prop="evName">
               <el-input v-model="evidenceForm.evName"></el-input>
@@ -63,7 +63,7 @@
               <el-button type="text" @click="getFileStream(scope.row,scope.row.evPath)">下载
                 <!-- <el-link type="primary" :underline="false" :href="host.PDF_HOST+scope.row.evPath" :download="scope.row.evName">下载</el-link> -->
               </el-button>
-              <el-button @click="deleteEvFile(scope.row.id)" type="text">删除</el-button>
+              <el-button @click="deleteEvFile(scope.row.id)" type="text" v-show="isMyOrgan">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -335,6 +335,7 @@
         },
         videoImgSrc:'',
         myVideoSrc:'',
+        isMyOrgan: true,
       };
     },
     computed: {...mapGetters(["caseId",'caseApproval','lawEnforcementSupervisionType'])},
@@ -623,6 +624,10 @@
             console.log("1456", res);
             this.userNameList = res.data.staff.split(',');
             console.log("this.userNameList", this.userNameList);
+            //上级机构查询时，不可以上传和删除
+            if(res.data.organId != iLocalStroage.gets('userInfo').organId){
+              this.isMyOrgan = false
+            }
           } else {
             console.log("fail");
           }

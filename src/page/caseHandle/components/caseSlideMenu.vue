@@ -7,13 +7,13 @@
       <el-menu-item index="caseInfo" v-show="!IsLawEnforcementSupervision" :disabled = "disabledCaseInfo" @click="goTo('case_handle_caseInfo')">
         案件<br>总览
       </el-menu-item>
-      <el-menu-item index="inforCollect" v-show="!IsLawEnforcementSupervision"  @click="goToInfoPage">
+      <el-menu-item index="inforCollect" v-show="!IsLawEnforcementSupervision && !noOperation"  @click="goToInfoPage">
         基本<br>信息
       </el-menu-item>
-      <el-menu-item index="flowChart" :disabled = "disabledFlow" @click="goTo('case_handle_flowChart')">
+      <el-menu-item index="flowChart" v-show="!noOperation" :disabled = "disabledFlow" @click="goTo('case_handle_flowChart')">
         案件<br>流程
       </el-menu-item>
-      <el-menu-item index="handleRecordForm" @click="goTo('case_handle_handleRecordForm')">
+      <el-menu-item index="handleRecordForm" v-show="!noOperation" @click="goTo('case_handle_handleRecordForm')">
         操作<br>记录
       </el-menu-item>
       <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish" v-show="!IsLawEnforcementSupervision || lawEnforcementSupervisionType =='archivesCaseSupervision'">
@@ -36,7 +36,7 @@
       <el-menu-item index="evidenceForm" >
         <div @mouseenter="mouseenterShowEmit('evidenceForm')" @click="goTo('case_handle_evidenceForm')">证据<br>目录</div>
       </el-menu-item>
-      <el-menu-item index="archiveCatalogue" :disabled = "disabledArchiveCatalogue">
+      <el-menu-item index="archiveCatalogue" :disabled = "disabledArchiveCatalogue" v-show="!IsLawEnforcementSupervision && !noOperation">
         <div v-if="!disabledArchiveCatalogue" @mouseenter="mouseenterShowEmit('archiveCatalogue')"  @click="goTo('case_handle_archiveCatalogueDetail')">卷宗<br>目录</div>
         <div v-else>卷宗<br>目录</div>
        </el-menu-item>
@@ -44,7 +44,7 @@
         督办<br>记录
       </el-menu-item>
       <el-menu-item index="lawEnforcementSupervision_caseFileList" v-show="lawEnforcementSupervisionType =='majorCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
-        重大案件<br>送报材料
+        重大案件<br>报送材料
       </el-menu-item>
       <el-menu-item index="lawEnforcementSupervision_caseFileList" v-show="lawEnforcementSupervisionType =='adminCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
         行政复议<br>备案材料
@@ -102,7 +102,7 @@ export default {
     }
   },
   props:['activeIndex'],
-  computed: { ...mapGetters(["caseApproval",'caseId','caseHandle','IsLawEnforcementSupervision','lawEnforcementSupervisionType']) },
+  computed: { ...mapGetters(["caseApproval",'caseId','caseHandle','IsLawEnforcementSupervision','lawEnforcementSupervisionType', 'noOperation']) },
   components: {
     archiveCatalogue,
     evidenceCatalogue,

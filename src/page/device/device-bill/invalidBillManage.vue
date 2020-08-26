@@ -46,28 +46,22 @@
                 <el-table
                         :data="tableData"
                         stripe
-                        resizable
-                        border
                         style="width: 100%;height:100%"
                         @row-click="showDataDetail"
                 >
-                    <el-table-column label="序号" width="70px">
+                    <el-table-column label="序号" width="70px" align="center">
                         <template slot-scope="scope">
                             {{scope.$index+1}}
                         </template>
                     </el-table-column>
                     <!--列表字段-->
-                    <el-table-column prop="billNo" label="单据号" width="160"></el-table-column>
-                    <el-table-column prop="billDate" label="单据日期" width="120px"></el-table-column>
-                    <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                    <el-table-column prop="createName" label="处理人" width="120px"></el-table-column>
-                    <el-table-column label="操作" width="120">
+                    <el-table-column prop="billNo" label="单号" width="160" align="center"></el-table-column>
+                    <el-table-column prop="billDate" label="单据日期" width="120px" align="center"></el-table-column>
+                    <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+                    <el-table-column prop="createName" label="处理人" width="200px" align="center"></el-table-column>
+                    <el-table-column label="操作" width="120" align="center">
                         <template slot-scope="scope">
-                            <div style="width:160px">
-                                <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
-                                <!--  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                                <el-button type="text" @click.stop @click="deleteRecord(scope.row)">删除</el-button> -->
-                            </div>
+                            <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -158,9 +152,6 @@
                         :data="itemList"
                         ref="deviceTable"
                         stripe
-                        resizable
-                        border
-
                     >
                         <el-table-column type="selection" width="40" align="center"></el-table-column>
                         <el-table-column label="序号" width="70px">
@@ -169,12 +160,12 @@
                             </template>
                         </el-table-column>
                         <!--列表字段-->
-                        <el-table-column prop="code" label="装备编码" width="120px"></el-table-column>
-                        <el-table-column prop="name" label="装备名称"></el-table-column>
-                        <el-table-column prop="deviceType" label="装备类型"></el-table-column>
-                        <el-table-column prop="brand" label="品牌型号" width="120px"></el-table-column>
-                        <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                        <el-table-column prop="storageLocation" label="存放位置" width="120px"></el-table-column>
+                        <el-table-column prop="code" label="装备编码" width="120px" align="center"></el-table-column>
+                        <el-table-column prop="name" label="装备名称" align="center"></el-table-column>
+                        <el-table-column prop="deviceType" label="装备类型" align="center"></el-table-column>
+                        <el-table-column prop="brand" label="品牌型号" width="120px" align="center"></el-table-column>
+                        <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+                        <el-table-column prop="storageLocation" label="存放位置" width="120px" align="center"></el-table-column>
                     </el-table>
                 </div>
                 <div slot="footer" class="dialog-footer" v-show="!this.formReadOnly">
