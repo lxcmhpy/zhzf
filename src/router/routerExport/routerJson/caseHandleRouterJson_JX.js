@@ -422,6 +422,15 @@ export default [
       title: "新增协查"
     },
     component: () => import("@/page/caseHandle/assistCase/addAssistCase.vue")
+  },
+  // 查看协查案件
+  {
+    name: "reviewAssistCase_JX",
+    path: "/review-assist-case_JX",
+    meta: {
+      title: "协查：案号"
+    },
+    component: () => import("@/page/caseHandle/assistCase/reviewAssistResult.vue")
   }
 ]
 

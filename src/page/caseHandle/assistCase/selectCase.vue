@@ -1,4 +1,5 @@
 <template>
+  <!-- 选择案件 -->
   <div class="com_searchAndpageBoxPadding">
     <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'">
       <div>
@@ -21,7 +22,6 @@
                 class="next_btn"
                 size="small"
                 @click="nextStep"
-                :disabled="!nextStepFlag"
               >下一步</el-button>
             </el-col>
           </el-row>
@@ -122,7 +122,9 @@ export default {
       this.getWaitHandleCase({});
     },
     // 下一步
-    nextStep() {},
+    nextStep() {
+      this.$emit('nextStep', 1);
+    },
     chexkCase(caseData) {
       console.log(caseData);
       this.caseData = caseData;

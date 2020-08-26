@@ -1,11 +1,8 @@
 <template>
-  <!-- 发起的协查列表 -->
+  <!-- 接收的协查列表 -->
   <div class="com_searchAndpageBoxPadding sponsored-case-wrap">
     <div :class="hideSomeSearch ? 'searchAndpageBox' : 'searchAndpageBox searchAndpageBox2'">
       <div class="handlePart caseHandleSearchPart">
-        <div v-if="assistType === 'sponsored'" class="item">
-          <el-button type="primary" size="medium" icon="el-icon-plus" @click="addAssistCase">新增协查</el-button>
-        </div>
         <div>
           <el-form
             :model="caseSearchForm"
@@ -134,12 +131,6 @@ import { getAssistCaseList } from "@/api/caseHandle";
 import { mapGetters } from "vuex";
 
 export default {
-  props: {
-    assistType: {
-      type: String,
-      default: 'sponsored'
-    }
-  },
   data() {
     return {
       hideSomeSearch: true,
@@ -169,11 +160,6 @@ export default {
       total: 0, //总页数
     };
   },
-  watch: {
-    assistType(val){
-      console.log('切换协查类型，发起的和接收的');
-    }
-  },
   components: {},
   computed: {
     UserInfo() {
@@ -198,16 +184,13 @@ export default {
     // 查看协查案件
     checkCase(row) {
       console.log(row);
-      this.$router.push({
-        path: '/review-assist-case_JX'
-      });
     },
     // 新增协查
-    addAssistCase(){
-      sessionStorage.setItem('AssistStep', 0);
+    addAssistCase() {
+      sessionStorage.setItem("AssistStep", 0);
       this.$router.push({
-        path: '/add-assist-case_JX'
-      })
+        path: "/add-assist-case_JX",
+      });
     },
     //更改每页显示的条数
     handleSizeChange(val) {

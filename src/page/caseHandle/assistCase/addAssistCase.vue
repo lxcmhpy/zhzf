@@ -9,29 +9,47 @@
           <el-step title="生成文书"></el-step>
         </el-steps>
       </div>
-
     </div>
     <!-- 选择案件 -->
-    <SelectCase />
+    <SelectCase v-if="stepActive === 0" @nextStep="nextStep" />
+    <!-- 协查详情 -->
+    <AssistDetail v-if="stepActive === 1" @nextStep="nextStep" />
+    <!-- 协助调查函 -->
+    <AssistReport v-if="stepActive === 2" @nextStep="nextStep" />
+    <!-- 生成报告 -->
+    <CreateReport v-if="stepActive === 3" />
   </div>
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import SelectCase from '@/page/caseHandle/assistCase/selectCase';
+import SelectCase from "@/page/caseHandle/assistCase/selectCase";
+import AssistDetail from "@/page/caseHandle/assistCase/assistDetail";
+import AssistReport from "@/page/caseHandle/assistCase/assistReport";
+import CreateReport from "@/page/caseHandle/assistCase/createReport";
 
 export default {
-  components: { SelectCase },
+  components: { SelectCase, AssistDetail, AssistReport, CreateReport },
   data() {
     return {
-        stepActive: 0
+      stepActive: 0,
     };
   },
   methods: {
+    // 下一步
+    nextStep(step){
+      this.stepActive = step;
+      sessionStorage.setItem('AssistStep', step);
+    },
+    // 页面刷新回到当前步骤
+    setCurrentStep(){
+      this.stepActive = sessionStorage.getItem('AssistStep') - 0;
+    }
   },
   created() {},
   mounted() {
+    this.setCurrentStep();
   }
-}
+};
 </script>
 <style lang="scss" src="@/assets/css/documentForm.scss"  scoped>
 </style>
@@ -101,9 +119,9 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.add-assist-step{
-    .steps{
-        width: auto;
-    }
+.add-assist-step {
+  .steps {
+    width: auto;
+  }
 }
 </style>
