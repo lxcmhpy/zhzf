@@ -37,7 +37,6 @@
           </el-row>
         </el-col>
       </el-row>
-
       <el-form-item label="配置类型" prop="configType">
         <el-radio v-model="addOrUpdateForm.configType" label="0">文书配置</el-radio>
         <el-radio v-model="addOrUpdateForm.configType" label="1">环节配置</el-radio>
@@ -137,8 +136,8 @@ export default {
       // gradeList: [],//指标项列表
       standerList: [],//条件列表
       timeList: ['时', '分', '秒', '天'],
-      taskTypeList: [{ label: '定时任务', value:'1' }],
-      warnTypeList: [{ label: '提醒', value: '3' },{ label: '预警', value: '2' },{ label: '报警', value: '1' }],
+      taskTypeList: [{ label: '定时任务', value: '1' }],
+      warnTypeList: [{ label: '提醒', value: '3' }, { label: '预警', value: '2' }, { label: '报警', value: '1' }],
       addList: [{}]
     };
   },
@@ -171,7 +170,11 @@ export default {
                 // _this.addOrUpdateForm.cycleTime1 == cycleTimeList[0]
               }
               _this.addList = res.data.sysWarInfoVoList
-              _this.changeType(_this.addList.indexInfo)
+              if (_this.addOrUpdateForm.configType == 0) {
+                _this.addList.forEach((element, index) => {
+                  _this.changeType(element.type, index)
+                });
+              }
               _this.visible = true;
             }
           },
@@ -263,16 +266,16 @@ export default {
         }
       });
     },
-    changeType(typeId,index) {
+    changeType(typeId, index) {
       let _this = this
       let data = {
         typeId: typeId
       }
       findAllSetListApi(data).then(
         res => {
-          console.log('列表', res)
-          _this.pdfFieldList[index] = res.data
-          console.log(this.pdfFieldList[index])
+          if (res.code == 200) {
+            _this.pdfFieldList.splice(index, 0, res.data)
+          }
         });
     }
   },
