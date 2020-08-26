@@ -832,10 +832,10 @@
         <div>
           <div class="itemOne">
             <el-form-item label="拟处罚金额">
-              <el-input v-model="inforForm.tempPunishAmount">
+              <el-input v-model="inforForm.tempPunishAmount" @input="changeTempPunishAmount">
                 <span slot="append">元</span>
-
               </el-input>
+            <p style="font-size:12px;color: #FF6600;">{{punishAmountAtention}}</p>
             </el-form-item>
           </div>
         </div>
@@ -1220,6 +1220,9 @@
         hasLatitudeAndLongitude:false, //案发坐标是否已经获取
         provincesList: [],//行政区划
         subAreaCascader:'subAreaCascader',
+        maxLawerLimit:'',
+        minLawerLimit:'',
+        punishAmountAtention:'',
       };
     },
     components: {
@@ -1519,6 +1522,7 @@
       },
       //查询自由裁量标准
       findJudgFreedomList(caseCauseId) {
+        let _this=this
         let data ={};
         let someCaseInfo = iLocalStroage.gets("someCaseInfo");
         if(someCaseInfo){
@@ -1534,7 +1538,15 @@
         findJudgFreedomListApi(data).then(
           res => {
             console.log(res);
-            this.judgFreedomList = res.data;
+            _this.judgFreedomList = res.data;
+            let dataList=[]
+            res.data.forEach(element => {
+              dataList.push(Number(element.lawerLimit))
+            });
+            _this.maxLawerLimit=Math.max(dataList)
+            _this.minLawerLimit=Math.min(dataList)
+            debugger
+            
           },
           err => {
             console.log(err);
@@ -1552,6 +1564,19 @@
           this.inforForm.discretionId = item.id;
         }
         this.inforForm.tempPunishAmount = item.lawerLimit;
+      },
+      // 修改自由裁量权
+      changeTempPunishAmount(){
+        this.punishAmountAtention=''
+        let tempPunishAmount = Number(this.inforForm.tempPunishAmount)
+        let maxLawerLimit = Number(this.maxLawerLimit)
+        let minLawerLimit = Number(this.minLawerLimit)
+        if(tempPunishAmount>maxLawerLimit){
+          this.punishAmountAtention='拟处罚金额已超过自由裁量标准上限'
+        }else
+        if(tempPunishAmount<minLawerLimit){
+          this.punishAmountAtention='拟处罚金额已低于自由裁量标准下限'}
+        
       },
       toNextPart() {
       },
