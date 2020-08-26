@@ -2413,6 +2413,7 @@
                 res => {
                     _this.directionList = res.data.directionList
                     _this.locationList = res.data.locationList
+                    console.log(' _this.locationList', _this.locationList)
                     _this.allTrailerTypeType = res.data.allTrailerTypeType
                     res.data.allRelationWithCase.forEach(p=>{
                         _this.allRelationWithCase.push({label:p.name,value:p.sort})

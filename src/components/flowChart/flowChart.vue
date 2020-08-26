@@ -646,6 +646,7 @@ export default {
       
       for(let item of adminCoerciveMeasure_caseLinktypeIdArr){
         if(linkArr.includes(item)){
+          
           this.showREBtn = true;
           break;
         }

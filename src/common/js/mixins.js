@@ -594,7 +594,7 @@ export const mixinGetCaseApiList = {
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
+        if (this.showREBtn && !this.alReadyFinishCoerciveM && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
@@ -699,7 +699,8 @@ export const mixinGetCaseApiList = {
               }, 1500)
             }
           } else {
-            console.log('this.canGoNextLink',this.canGoNextLink)
+            // alert('this.canGoNextLink',this.canGoNextLink)
+            this.canGoNextLink = false;
             for (var key in data) {
               this.formData[key] = data[key].val ? data[key].val : this.formData[key];
             }
