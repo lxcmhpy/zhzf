@@ -67,9 +67,13 @@ export const mixinGetCaseApiList = {
               endTime = new Date()
             }
 
-            let day = (endTime - new Date(item.acceptTime)) / nd;
-            day = Math.ceil(day)
-            item.caseDealTime = day + '天';
+            if(item.acceptTime){
+                let day = (endTime - new Date(item.acceptTime)) / nd;
+                day = Math.ceil(day)
+                item.caseDealTime = day + '天';
+            }else{
+                item.caseDealTime = '0天';
+            }
             // console.log(item.closeDate,'item.closeDate',day, '天', endTime, item.acceptTime, item.caseDealTime)
             // 处理预警标签
             item.warContent=JSON.parse(item.warContent)

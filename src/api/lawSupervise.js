@@ -150,6 +150,20 @@ export function getById(type,id) {
     });
   }
 
+  // 获取机构树
+  export function organSysTreeByCurrUser(){
+    return request({
+        // url: "/zfjg/queryLike",
+        url: "/system/sys/organ/findOrganPositionTreeByCurrUser",
+        // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
+        method: "get",
+        // params: data,
+        showloading: false,
+        baseUrlType:  'LAW_SUPERVISE_HOST',
+        cancelToken: setCancelSource()
+    });
+  }
+
   // 重点监管-车辆列表
   export function getVehicleList (data) {
     return request({

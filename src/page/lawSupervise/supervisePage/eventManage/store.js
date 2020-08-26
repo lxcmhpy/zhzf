@@ -1,5 +1,5 @@
 import { findData, deleteById, findById } from "@/api/eventManage";
-import { organTreeByCurrUser, getOrganTree } from "@/api/lawSupervise.js";
+import { getOrganTree } from "@/api/lawSupervise.js";
 
 export default {
   methods: {
@@ -7,7 +7,7 @@ export default {
      * 获取机构和人员数据
      */
     getTree() {
-      organTreeByCurrUser().then(res => {
+        this.$store.dispatch("getAllOrgan").then(res => {
         if(res.code === 200) {
           return res.data
         } else {
