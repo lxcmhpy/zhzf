@@ -38,9 +38,8 @@ tableAttr  | 表格属性 | Object | / | / | 否
 columns  | 表头 | Array | / | / | 是
 tableData  | table数据 | Array | / | / | 是
 buttons  | 表格中的操作按钮 | Array | / | /|否
-pageAttr | 分页条相关参数 | Object | / | / |是
 
-### PageAttr Attributes
+### tableAttr Attributes
 
 参数     | 说明 | 类型 | 可选值 | 默认值
 -------- | ----- |:-----:|:-----:|:-----:
@@ -48,16 +47,11 @@ height  | 表格高度 | String | / | 299
 isRadio  | 表格行可单选 | Boolean |  | false
 isSelection  | 表格行可多选 | Boolean | / | false
 isNumber | 显示序号列 ｜ Boolean ｜ / ｜ false
-
->- 注意： isRadio 和 isSelection 不能同时为 true， 否则会出错。
-
-### PageAttr Attributes
-
-参数     | 说明 | 类型 | 可选值 | 默认值
--------- | ----- |:-----:|:-----:|:-----:
 current  | 当前页码 | Number | / | 1
 size  | 每页显示条数 | Number | 5, 10, 20, 30 | 5
 total  | 总条数 | Number | / | 100
+
+>- 注意： isRadio 和 isSelection 不能同时为 true， 否则会出错。
 
 ### Table Events
 
@@ -101,6 +95,9 @@ export default {
         isRadio: true, // 显示单选框
         isSelection: false, // 显示多选框
         isNumber: true, // 显示序号列
+        current: 1,
+        size: 5,
+        total: 100
       },
       inputList: [
         {
@@ -177,11 +174,6 @@ export default {
           { type: 'text', name: '删除' },
         ]
       },
-      pageAttr: {
-        current: 1,
-        size: 5,
-        total: 100
-      }
     }
   },
   methods: {
