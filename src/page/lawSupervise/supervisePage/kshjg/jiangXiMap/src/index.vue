@@ -157,7 +157,9 @@ export default {
 
     /**
      * 点击节点回调函数
-     * 如果当前节点是执法人员、执法车辆、执法船舶，则发送请求获取子节点数据，否则获取当前机构信息
+     * 1.如果当前节点是执法人员、执法车辆、执法船舶，则发送请求获取子节点数据
+     * 2.当前节点没有子节点时打点
+     * 3.当前节点有子节点时获取当前节点信息并打点
      */
     handleNodeClick(data) {
       console.log(data)
@@ -166,12 +168,12 @@ export default {
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
 
-      if(data.type === 0) {
+      if(data.label === "执法人员") {
         this.getPeopleTree(data)
-      } else if (data.type === 2 || data.type === 3) { // 当前节点执法人员、执法车辆、执法船舶
+      } else if (data.label === "执法车辆" || data.label === "执法船舶") { // 当前节点执法人员、执法车辆、执法船舶
         this.getCarShipTree(data)
-        // 当前节点执法人员、执法车辆、执法船舶的子节点
-      } else if (data.parentLabel === '执法人员' || data.parentLabel === '执法车辆' || data.parentLabel === '执法船舶') {
+        // 当前节点没有子节点时
+      } else if (!data.hasOwnProperty('children') || data.children.length === 0) {
         if(data.propertyValue) {
           let latLng = data.propertyValue.split(',')
           data.imgUrl = this.imgUrl.get(data.type)
