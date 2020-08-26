@@ -120,7 +120,7 @@
           <tr style="height:80px">
             <td>备注</td>
             <td  colspan="4" class="color_DBE4EF">
-              <el-form-item prop="note">
+              <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'])">
                 <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 3, maxRows: 3}"  :disabled="fieldDisabled(propertyFeatures['note'])"  maxlength="30" placeholder="\"></el-input>
               </el-form-item>
             </td>
@@ -166,7 +166,19 @@ export default {
         partySex: '',
         partyAge: "",
         certificateId1:'',
-        certificateId2:''
+        certificateId2:'',
+        staff2:'',
+        staff1:'',
+        agencyOpinions:'',
+        evidence:'',
+        process:'',
+        number:'',
+        carLocation:'',
+        partyManager:'',
+        partyName:'',
+        partyAddress:'',
+        party:'',
+        note:'',
       },
      caseDocDataForm: {
         id: "",   //修改的时候用
