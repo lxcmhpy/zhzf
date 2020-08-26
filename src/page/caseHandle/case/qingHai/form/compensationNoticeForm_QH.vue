@@ -90,8 +90,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <el-form-item prop="afdd" label="路政执法单位" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
-                  <el-input v-model="formData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])"></el-input>
+                <el-form-item prop="afdd" label="路政执法单位" :rules="fieldRules('afddparty',propertyFeatures['afddparty'])">
+                  <el-input v-model="formData.afddparty" :disabled="fieldDisabled(propertyFeatures['afddparty'])"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -263,6 +263,8 @@ export default {
         relationWithCase: "",
         partyUnitPosition: "",
         occupation: "",
+        afdd:"",
+        afddparty:""
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
