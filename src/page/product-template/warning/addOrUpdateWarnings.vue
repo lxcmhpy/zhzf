@@ -46,7 +46,7 @@
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
           <el-form-item label="分项指标" v-if="addOrUpdateForm.configType!='1'">
-            <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type)">
+            <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type,index)">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -59,7 +59,7 @@
         <el-col :span="5" v-if="addOrUpdateForm.configType!='1'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
-              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
+              <el-option v-for="item in pdfFieldList[index]" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -263,7 +263,7 @@ export default {
         }
       });
     },
-    changeType(typeId) {
+    changeType(typeId,index) {
       let _this = this
       let data = {
         typeId: typeId
@@ -271,7 +271,8 @@ export default {
       findAllSetListApi(data).then(
         res => {
           console.log('列表', res)
-          _this.pdfFieldList = res.data
+          _this.pdfFieldList[index] = res.data
+          console.log(this.pdfFieldList[index])
         });
     }
   },

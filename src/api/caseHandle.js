@@ -1512,11 +1512,11 @@ export function getLinkTypeInfoByIdApi(id) {
 
 //分页查询定时器信息
 export function getWarInfoLlistApi(data) {
-  data = vm.$qs.stringify(data);
+  // data = vm.$qs.stringify(data);
   return request({
     url: "/case/sys/war/list",
     method: "get",
-    data: data,
+    params: data,
     showloading: false,
     cancelToken: setCancelSource()
   });
