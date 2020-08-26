@@ -15,13 +15,13 @@
           height="100%"
           highlight-current-row
         >
-          <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
+          <el-table-column prop="caseNumber" label="案号" align="center" width="100"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
           <el-table-column prop="party" label="当事人/单位" align="center" width="150"></el-table-column>
           <el-table-column prop="illegalFacts" label="违法行为" align="center"></el-table-column>
           <el-table-column prop="isUploadCase" label="是否上传卷宗" align="center" width="150">
             <template slot-scope="scope">
-              <span>{{scope.row.isUploadCase===0?"已上传":"未上传"}}</span>
+              <span>{{scope.row.isUploadCase==0?"已上传":"未上传"}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="acceptTime" label="受案时间" align="center" width="110"></el-table-column>
@@ -44,11 +44,8 @@
               <el-upload
                 class="upload-demo"
                 action
-                :http-request="saveFile_pdf"
-                :on-remove="handleRemove_linepdf"
-                :before-remove="beforeRemovepdf"
+                :http-request="file=>saveFile_pdf1(file,scope.row)"
                 :before-upload="beforeupload_linepdf"
-                :on-success="uploadsuccess_linepdf"
                 :show-file-list="false"
                 accept=".pdf"
                 :multiple="true"
@@ -116,12 +113,10 @@
               <el-upload
                 class="upload-demo"
                 action
-                :http-request="saveFile_pdf"
-                :on-remove="handleRemove_linepdf"
-                :before-remove="beforeRemovepdf"
+                :http-request="saveFile_pdf2"
+                :on-remove="Remove_linepdf"
                 :before-upload="beforeupload_linepdf"
-                :on-success="uploadsuccess_linepdf"
-                :show-file-list="false"
+                :show-file-list="true"
                 accept=".pdf"
                 :multiple="true"
                 :limit="30"
@@ -142,7 +137,7 @@
   </div>
 </template>
 <script>
-import { uploadCommon,uploadEvApi } from "@/api/upload";
+import { uploadCommon, deleteFileByIdApi } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   getSelectoffline,
@@ -170,6 +165,7 @@ export default {
         isUploadCase: "",
         party: "",
         vehicleShipId: "",
+        path: "",
       },
       rules: {
         caseNumber: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -177,7 +173,6 @@ export default {
         party: [{ required: true, message: "请输入", trigger: "blur" }],
         illegalFacts: [{ required: true, message: "请输入", trigger: "blur" }],
       },
-      rows: {},
       addpdf_page: false,
       fileList_pdf: [],
       tableData: [],
@@ -194,6 +189,14 @@ export default {
       this.$refs[addpdf_form].validate((valid) => {
         if (valid) {
           this.addpdf_form.isUploadCase = this.fileList.length > 0 ? 0 : 1;
+          let pathss = [];
+          console.log("edit_submitForm", this.fileList);
+          for (let y = 0; y < this.fileList.length; y++) {
+            pathss.push(
+              this.fileList[y].name + "/" + this.fileList[y].storageId
+            );
+          }
+          this.addpdf_form.path = pathss.join("_");
           console.log(this.addpdf_form);
           addofflinefile(this.addpdf_form).then(
             (res) => {
@@ -222,18 +225,23 @@ export default {
       });
     },
     Edit_linepdf(index, row) {
+      this.fileList = [];
       this.addpdf_page = true;
-      this.rows = row;
       console.log(row);
-      this.addpdf_form.acceptTime = row.acceptTime;
-      this.addpdf_form.endTime = row.endTime;
-      this.addpdf_form.caseNumber = row.caseNumber;
-      this.addpdf_form.caseType = row.caseType;
-      this.addpdf_form.id = row.id;
-      this.addpdf_form.illegalFacts = row.illegalFacts;
-      this.addpdf_form.party = row.party;
-      this.addpdf_form.vehicleShipId = row.vehicleShipId;
-      this.addpdf_form.isUploadCase = row.isUploadCase;
+      this.addpdf_form=row;
+      if (row.path != "" && row.path != null) {
+        let paths = row.path.split("_");
+        for (let i = 0; i < paths.length; i++) {
+          this.fileList.push({
+            name: paths[i].substring(0, paths[i].indexOf("/")),
+            url:
+              JSON.parse(localStorage.getItem("CURRENT_BASE_URL")).PDF_HOST +
+              paths[i].substring(paths[i].indexOf("/") + 1),
+            storageId: paths[i].substring(paths[i].indexOf("/") + 1),
+          });
+        }
+      }
+      console.log("this.fileList", this.fileList);
     },
     Delete_linepdf(index, row) {
       deleteofflinebyid(row.id).then(
@@ -249,34 +257,69 @@ export default {
           console.log(error);
         }
       );
+      let paths = row.path.split("_");
+      for (let t = 0; t < paths.length; t++) {
+        this.delete_pdfs(paths[t].substring(paths[t].indexOf("/") + 1), false);
+      }
+    },
+    delete_pdfs(id, mes) {
+      deleteFileByIdApi(id).then(
+        (res) => {
+          if (mes) {
+            this.$message({ type: "success", message: "文件已移除" });
+          }
+          console.log("删除pdf，文件");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
     //：http-request 上传文件
-    saveFile_pdf(param) {
-      console.log("param", param);
+    saveFile_pdf1(param, row) {
+      console.log(param, row);
       var fda = new FormData();
       fda.append("file", param.file);
-      fda.append("category", "卷宗档案-线下档案");
-      fda.append("categoryAccurate", "线下档案");
+      fda.append("category", "卷宗档案-线下案卷");
+      fda.append("categoryAccurate", "线下案卷");
       fda.append("fileName", param.file.name);
       fda.append("status", "线下pdf卷宗");
       fda.append("caseId", param.file.name + new Date().getTime()); //传记录id
       fda.append("docId", param.file.name + new Date().getTime()); //传记录id
       fda.append("userId", JSON.parse(localStorage.getItem("userInfo")).id);
-      // let fda={
-      //   "file":param.file,
-      // "category":"卷宗档案-线下档案",
-      // "categoryAccurate":"线下档案",
-      // "fileName":param.file.name,
-      // "status":"线下pdf卷宗",
-      // "caseId":param.file.name + new Date().getTime(), 
-      // "docId":param.file.name + new Date().getTime(), 
-      // "userId":JSON.parse(localStorage.getItem("userInfo")).id
-      // };
       console.log("fda", fda.values());
-      uploadEvApi(fda).then(
+      uploadCommon(fda).then(
         (res) => {
-          this.$message({ type: "success", message: "上传成功" });
-          console.log("res", res);
+          if (res.code == 200) {
+            this.$message({ type: "success", message: "上传成功" });
+            console.log("table列表上传", res);
+            let storageIds = "";
+            if (row.path == "" || row.path == null) {
+              storageIds = res.data[0].fileName + "/" + res.data[0].storageId;
+            } else {
+              storageIds =
+                row.path +
+                "_" +
+                res.data[0].fileName +
+                "/" +
+                res.data[0].storageId;
+            }
+            let adf = {
+              id: row.id,
+              path: storageIds,
+              isUploadCase: 0,
+            };
+            console.log("adf", adf);
+            addofflinefile(adf).then(
+              (res) => {
+                this.getArchiveCase();
+              },
+              (error) => {
+                this.$message({ type: "error", message: "添加失败" });
+                console.log(error);
+              }
+            );
+          }
         },
         (error) => {
           this.$message({ type: "error", message: "上传失败" });
@@ -284,26 +327,55 @@ export default {
         }
       );
     },
-    //pdf文件上传成功后
-    uploadsuccess_linepdf(file, fileList) {
-      console.log(file, fileList);
+    //：http-request 上传文件
+    saveFile_pdf2(param) {
+      console.log("param", param);
+      var fda = new FormData();
+      fda.append("file", param.file);
+      fda.append("category", "卷宗档案-线下案卷");
+      fda.append("categoryAccurate", "线下案卷");
+      fda.append("fileName", param.file.name);
+      fda.append("status", "线下pdf卷宗");
+      fda.append("caseId", param.file.name + new Date().getTime()); //传记录id
+      fda.append("docId", param.file.name + new Date().getTime()); //传记录id
+      fda.append("userId", JSON.parse(localStorage.getItem("userInfo")).id);
+      console.log("fda", fda.values());
+      uploadCommon(fda).then(
+        (res) => {
+          this.fileList.push({
+            name: res.data[0].fileName,
+            storageId: res.data[0].storageId,
+            url:
+              JSON.parse(localStorage.getItem("CURRENT_BASE_URL")).PDF_HOST +
+              res.data[0].storageId,
+          });
+          this.$message({ type: "success", message: "上传成功" });
+          console.log("编辑上传", this.fileList);
+        },
+        (error) => {
+          this.$message({ type: "error", message: "上传失败" });
+          console.log(error);
+        }
+      );
     },
     //上传文件前
     beforeupload_linepdf(file) {
       console.log("file.type", file.type);
       const isJPG = file.name.lastIndexOf(".pdf") != -1;
       if (!isJPG) {
-        this.handleRemove_linepdf(file);
         this.$message.error("上传文件只能是 pdf 格式!");
       }
       return isJPG;
     },
     //移除文件
-    handleRemove_linepdf(file, fileList) {
-
-    },
-    //移除文件之前
-    beforeRemovepdf(file, fileList) {
+    Remove_linepdf(file, fileList) {
+      console.log(file);
+      for (let k = 0; k < this.fileList.length; k++) {
+        if (this.fileList[k].storageId == file.storageId) {
+          this.fileList.splice(k, 1);
+        }
+      }
+      this.delete_pdfs(file.storageId, true);
     },
     //获取已归档的数据
     getArchiveCase(searchData) {
