@@ -14,6 +14,7 @@ export default {
         }
       }).then(data => {
         this.organId = data[0].id
+        this.searchWindowData.window2.option = data
       })
     },
 
@@ -22,7 +23,7 @@ export default {
      */
     getPeopleTree(node) {
       let param = {
-        organId: node.pid,
+        organId: node.id,
         type: node.type
       }
       getOrganTree(param).then(res => {
@@ -56,7 +57,7 @@ export default {
      */
     getCarShipTree(node) {
       let param = {
-        organId: node.pid,
+        organId: node.id,
         type: node.type
       }
       getZfjgLawSupervise(param).then(res => {
@@ -89,25 +90,24 @@ export default {
      * 获取路政管理局和分局的数据
      */
     getLoad(node) {
-      if(node.propertyValue) {
-        let latLng = node.propertyValue.split(',')
-        // 获取当前路政局数据
-        getOrganDetailApi({ id: node.id }).then(res => {
-          if(res.code === 200) {
-            return res.data
-          } else {
-            throw new Error("getOrganDetail():::::::接口数据错误")
-          }
-        }).then(data => {
-          data.propertyValue = node.propertyValue
+      // 获取当前路政局数据
+      getOrganDetailApi({ id: node.id }).then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("getOrganDetail():::::::接口数据错误")
+        }
+      }).then(data => {
+        if(data.propertyValue) {
+          let latLng = data.propertyValue.split(',')
           data.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
-          // 手动给点位添加图层标识属性（希望后期能由后端添加）
+          // 手动给点位添加图层标识属性
           data.layerName = node.label
           this.page.addPoint(data, latLng)
-        })
-      } else {
-        throw new Error('没有点位')
-      }
+        } else {
+          this.$message.error('没有坐标数据')
+        }
+      })
     },
 
     /**

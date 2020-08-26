@@ -70,6 +70,13 @@ export default {
             { name: "执法人员", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/ysgljg.png"},
           ]
         },
+        window2: {
+          defaultProps: {
+            children: 'children',
+            label: 'label'
+          },
+          option: []
+        },
         window3: {
           title: "",
           info: {},
@@ -150,9 +157,7 @@ export default {
 
     /**
      * 点击节点回调函数
-     * 1.如果当前节点是路政局，则获取路政局数据、地图打点
-     * 2.如果当前节点是自定义节点，发送请求获取子节点数据
-     * 3.如果当前节点没有下级，则地图打点并打开信息窗口
+     * 如果当前节点是执法人员、执法车辆、执法船舶，则发送请求获取子节点数据，否则获取当前机构信息
      */
     handleNodeClick(data) {
       console.log(data)
@@ -161,35 +166,48 @@ export default {
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
 
-      if(data.label === '执法人员') {
+      if(data.type === 0) {
         this.getPeopleTree(data)
-      } else if (data.label === '执法车辆' || data.label === '执法船舶') {
+      } else if (data.type === 2 || data.type === 3) { // 当前节点执法人员、执法车辆、执法船舶
         this.getCarShipTree(data)
-        // 当前节点为路政管理局和分局
-      } else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
-        this.getLoad(data)
-      } else {
-        // 添加点位图标
-        data.imgUrl = this.imgUrl.get(data.type)
-        // 显示弹出框
-        this.searchWindowData.window4.title = data.label
-        this.searchWindowData.window4.info = {
-          organName: data.organName || '',
-          mobile: data.mobile || '',
-          padStateColor: data.padStateColor || '',
-          peStateColor: data.peStateColor || ''
-        }
-        this.$refs.Search.showCom = "Window4"
-        // 如果有点位，则打点，否则抛出异常
+        // 当前节点执法人员、执法车辆、执法船舶的子节点
+      } else if (data.parentLabel === '执法人员' || data.parentLabel === '执法车辆' || data.parentLabel === '执法船舶') {
         if(data.propertyValue) {
           let latLng = data.propertyValue.split(',')
-          // 手动给点位添加图层标识属性（希望后期能由后端添加）
+          data.imgUrl = this.imgUrl.get(data.type)
+          // 手动给点位添加图层标识属性
           data.layerName = data.label
           this.page.addPoint(data, latLng)
         } else {
-          throw new Error("handleNodeClick(data):::::::::没有坐标")
+          this.$message.error('没有坐标数据')
         }
+      } else { // 机构节点
+        this.getLoad(data)
       }
+      // else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+      //   this.getLoad(data)
+      // } else {
+      //   // 添加点位图标
+      //   data.imgUrl = this.imgUrl.get(data.type)
+      //   // 显示弹出框
+      //   this.searchWindowData.window4.title = data.label
+      //   this.searchWindowData.window4.info = {
+      //     organName: data.organName || '',
+      //     mobile: data.mobile || '',
+      //     padStateColor: data.padStateColor || '',
+      //     peStateColor: data.peStateColor || ''
+      //   }
+      //   this.$refs.Search.showCom = "Window4"
+      //   // 如果有点位，则打点，否则抛出异常
+      //   if(data.propertyValue) {
+      //     let latLng = data.propertyValue.split(',')
+      //     // 手动给点位添加图层标识属性（希望后期能由后端添加）
+      //     data.layerName = data.label
+      //     this.page.addPoint(data, latLng)
+      //   } else {
+      //     throw new Error("handleNodeClick(data):::::::::没有坐标")
+      //   }
+      // }
     },
 
     /**
@@ -207,8 +225,16 @@ export default {
       console.log(data)
       // 显示信息窗体
       this.handleOverLay(data)
-      // 当前点位是路政局
-      if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+      // 如果点位属于执法人员，执法车辆或者执法人员
+      if(data.type === 0 || data.type === 2 || data.type === 3) {
+        // 显示弹出框
+        this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
+        this.searchWindowData.window4.info = data
+        this.$refs.Search.showCom = "Window4"
+      } else if (data.type === 4) { // 如果是非现场站点
+        this.$refs.Search.showCom = "Window5"
+        this.getWindow5(data)
+      } else {
         this.searchWindowData.window3.title = data.name
         this.searchWindowData.window3.info = {
           address: data.address || '',
@@ -216,18 +242,25 @@ export default {
           telephone: data.telephone || ''
         }
         this.getTheOrganTree(data)
-      } else if (data.type === 4) {
-        this.$refs.Search.showCom = "Window5"
-        this.getWindow5(data)
-      } else {
-        // 显示弹出框
-        this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
-        this.searchWindowData.window4.info = {
-          organName: data.organName || '',
-          mobile: data.mobile || ''
-        }
-        this.$refs.Search.showCom = "Window4"
       }
+      // 当前点位是路政局
+      // if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+      //   this.searchWindowData.window3.title = data.name
+      //   this.searchWindowData.window3.info = {
+      //     address: data.address || '',
+      //     contactor: data.contactor || '',
+      //     telephone: data.telephone || ''
+      //   }
+      //   this.getTheOrganTree(data)
+      // } else if (data.type === 4) {
+      //   this.$refs.Search.showCom = "Window5"
+      //   this.getWindow5(data)
+      // } else {
+      //   // 显示弹出框
+      //   this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
+      //   this.searchWindowData.window4.info = data
+      //   this.$refs.Search.showCom = "Window4"
+      // }
     },
 
     /**
@@ -266,6 +299,7 @@ export default {
      * 点击 window4 底部小图标
      */
     handleClickBtns(index, data) {
+      console.log(data)
       if(index === 0 || index === 1) {
         // 如果状态为在线（图标颜色为蓝色），则打开通话窗口
         if(data.padStateColor) {
@@ -273,10 +307,8 @@ export default {
         }
       } else if (index === 2) {
         // 如果状态为在线（图标颜色为绿色），则打开视频窗口
-        this.$router.push("/static/js/videoinfo.html")
-        // "static/js/videoinfo.html"
         if(data.peStateColor) {
-          this.showVideo = true
+          // this.showVideo = true
         }
       }
       this.phoneVideoId = index
