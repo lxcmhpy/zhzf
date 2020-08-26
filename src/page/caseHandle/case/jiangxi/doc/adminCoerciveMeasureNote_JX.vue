@@ -37,8 +37,8 @@
                   <el-date-picker
                     v-model="docData.enforceStartTime"
                     type="datetime"
-                    format="yyyy-MM-dd HH:mm"
-                    value-format="yyyy年MM月dd日HH时mm分"
+                    value-format="yyyy-MM-dd HH:mm"
+                    format="yyyy年MM月dd日HH时mm分"
                     style="width:235px"
                     :default-time="defaultStartTime" 
                     :disabled="fieldDisabled(propertyFeatures['enforceStartTime'])"

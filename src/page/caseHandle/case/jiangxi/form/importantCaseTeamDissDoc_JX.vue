@@ -15,7 +15,7 @@
             >
               <el-input
                 v-model="formData.caseName"
-                maxLength="32"
+                maxlength="32"
                 :disabled="fieldDisabled(propertyFeatures['caseName'])"
               ></el-input>
             </el-form-item>
@@ -33,8 +33,8 @@
               <el-date-picker
                 v-model="formData.discussionStartTime"
                 type="datetime"
-                format="yyyy-MM-dd HH:mm"
-                value-format="yyyy年MM月dd日HH时mm分"
+                value-format="yyyy-MM-dd HH:mm"
+                format="yyyy年MM月dd日HH时mm分"
                 :disabled="fieldDisabled(propertyFeatures['discussionStartTime'])"
               ></el-date-picker>
               <el-input
@@ -71,7 +71,7 @@
             >
               <el-input
                 v-model="formData.discussionPlace"
-                maxLength="30"
+                maxlength="30"
                 :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"
               ></el-input>
             </el-form-item>
@@ -287,7 +287,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 
 export default {
   components: {
-    casePageFloatBtns
+    casePageFloatBtns,
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
@@ -314,7 +314,7 @@ export default {
           message: "开始时间不得大于结束时间",
           type: "error",
           offset: 100,
-          customClass: "validateErrorTip"
+          customClass: "validateErrorTip",
         });
         return callback(new Error("开始时间不得大于结束时间"));
       }
@@ -337,7 +337,7 @@ export default {
         caseInformation: "",
         discussionOpinionAndReason: "",
         overWidthFlag: false,
-        conclussionOpinion: "" //多行编辑内容
+        conclussionOpinion: "", //多行编辑内容
       },
       handleType: 0, //0  暂存     1 提交
       caseLinkDataForm: {
@@ -346,57 +346,61 @@ export default {
         caseLinktypeId: this.BASIC_DATA_JX.importCaseDiss_JX_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
-        status: ""
+        status: "",
       },
       rules: {
         caseName: [
-          { required: true, message: "请输入案件名称", trigger: "blur" }
+          { required: true, message: "请输入案件名称", trigger: "blur" },
         ],
         discussionStartTime: [
           { required: true, message: "请输入开始讨论时间", trigger: "blur" },
-          { validator: validateStartTime, trigger: "blur" }
+          { validator: validateStartTime, trigger: "blur" },
         ],
         discussionEndTime: [
           { required: true, message: "请输入结束讨论时间", trigger: "blur" },
-          { validator: validateStartTime, trigger: "blur" }
+          { validator: validateStartTime, trigger: "blur" },
         ],
         discussionPlace: [
-          { required: true, message: "请输入地点", trigger: "blur" }
+          { required: true, message: "请输入地点", trigger: "blur" },
         ],
         presidingHearer: [
-          { required: true, message: "请输入主持人", trigger: "blur" }
+          { required: true, message: "请输入主持人", trigger: "blur" },
         ],
         presidingHearerPos: [
-          { required: true, message: "请输入职务", trigger: "blur" }
+          { required: true, message: "请输入职务", trigger: "blur" },
         ],
         recorder: [
-          { required: true, message: "请输入记录人", trigger: "blur" }
+          { required: true, message: "请输入记录人", trigger: "blur" },
         ],
         discussionReason: [
-          { required: true, message: "请输入集体讨论原因", trigger: "blur" }
+          { required: true, message: "请输入集体讨论原因", trigger: "blur" },
         ],
         discussionPeople: [
-          { required: true, message: "请输入参加人员", trigger: "blur" }
+          { required: true, message: "请输入参加人员", trigger: "blur" },
         ],
         attendPeople: [
-          { required: true, message: "请输入列席人员", trigger: "blur" }
+          { required: true, message: "请输入列席人员", trigger: "blur" },
         ],
         caseUnderTakePeople: [
-          { required: true, message: "请输入案件承办人员", trigger: "blur" }
+          { required: true, message: "请输入案件承办人员", trigger: "blur" },
         ],
         caseInformation: [
-          { required: true, message: "请输入案件汇报案件情况", trigger: "blur" }
+          {
+            required: true,
+            message: "请输入案件汇报案件情况",
+            trigger: "blur",
+          },
         ],
         conclussionOpinion: [
-          { required: true, message: "请输入结论性意见", trigger: "blur" }
+          { required: true, message: "请输入结论性意见", trigger: "blur" },
         ],
         discussionOpinionAndReason: [
           {
             required: true,
             message: "请输入参与讨论人员意见和理由",
-            trigger: "blur"
-          }
-        ]
+            trigger: "blur",
+          },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -414,12 +418,12 @@ export default {
           false,
           false,
           false,
-          false
+          false,
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "importantCaseTeamDissDoc-print"
+        pageDomId: "importantCaseTeamDissDoc-print",
       },
       huanjieAndDocId: this.BASIC_DATA_JX.importCaseDiss_JX_huanjieAndDocId,
-      propertyFeatures: ""
+      propertyFeatures: "",
     };
   },
 
@@ -437,7 +441,7 @@ export default {
     submitData(handleType) {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
-        name: this.$route.params.url
+        name: this.$route.params.url,
       });
     },
     //保存文书信息
@@ -457,17 +461,17 @@ export default {
           false,
           false,
           false,
-          true
+          true,
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    }
+    },
   },
   mounted() {
     this.setFormData();
   },
   created() {
     this.isOverStatus();
-  }
+  },
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
