@@ -40,7 +40,15 @@ tableData  | table数据 | Array | / | / | 是
 buttons  | 表格中的操作按钮 | Array | / | /|否
 pageAttr | 分页条相关参数 | Object | / | / |是
 
->- tableAttr 里定义里表格高度 height， 是否单选 isRadio，是否多选 isSelection，是否显示序号列 isNumber; 默认只有高度，其他不显示.
+### PageAttr Attributes
+
+参数     | 说明 | 类型 | 可选值 | 默认值
+-------- | ----- |:-----:|:-----:|:-----:
+height  | 表格高度 | String | / | 299
+isRadio  | 表格行可单选 | Boolean |  | false
+isSelection  | 表格行可多选 | Boolean | / | false
+isNumber | 显示序号列 ｜ Boolean ｜ / ｜ false
+
 >- 注意： isRadio 和 isSelection 不能同时为 true， 否则会出错。
 
 ### PageAttr Attributes
