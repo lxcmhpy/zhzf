@@ -11,7 +11,7 @@
       >
         <div class="itemBox">
           <div class="item">
-            <el-form-item label="案件编号" >
+            <el-form-item label="案件编号">
               <el-input v-model="archivesReviewManageForm.caseNumber" disabled></el-input>
             </el-form-item>
             <el-form-item label="案由">
@@ -56,12 +56,7 @@
                 :prop="'caseSortFormList.' + index + '.grade'"
                 :rules="{required:true,message:'考评分不能为空',trigger:'blur'}"
               >
-                <el-input
-                  v-model="item.grade"
-                  type="textarea"
-                  :rows="2"
-                  @keyup.native="deuncode()"
-                ></el-input>
+                <el-input v-model="item.grade" type="textarea" :rows="2" @keyup.native="deuncode()"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -80,18 +75,18 @@
         </div>
       </el-form>
     </div>
-     <!--快速入口 -->
+    <!--快速入口 -->
     <caseSlideMenu :activeIndex="'lawEnforcementSupervision_archivesReviewResult'"></caseSlideMenu>
   </div>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage"; 
+import iLocalStroage from "@/common/js/localStroage";
 import {
   queryCaseEvaluationManageApi,
   addCaseEvaluationSortApi,
   caseEvaluationSortByCaseIdApi,
 } from "@/api/lawEnforcementSupervision";
-  import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
+import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 
 export default {
   data() {
@@ -111,7 +106,7 @@ export default {
     };
   },
   components: {
-      caseSlideMenu,
+    caseSlideMenu,
   },
   methods: {
     //保存
@@ -120,14 +115,20 @@ export default {
         this.$message("至少填写一条");
         return;
       }
+      let _this = this;
       this.$refs["archivesReviewManageForm"].validate((valid, noPass) => {
         if (valid) {
-          addCaseEvaluationSortApi(this.archivesReviewManageForm)
+          addCaseEvaluationSortApi(_this.archivesReviewManageForm)
             .then((res) => {
               console.log(res);
-              this.$message({
+              _this.$message({
                 type: "success",
                 message: "保存成功",
+              });
+              _this.$store.dispatch("deleteTabs", _this.$route.name);
+              _this.$store.dispatch("deleteTabs", "archivesReview");
+              _this.$router.push({
+                name: "archivesReview",
               });
             })
             .catch((err) => {
@@ -150,7 +151,9 @@ export default {
       queryCaseEvaluationManageApi()
         .then((res) => {
           console.log(res);
-          this.archivesReviewManageForm.caseSortFormList = res.data.sort((a,b)=> a.sort-b.sort);
+          this.archivesReviewManageForm.caseSortFormList = res.data.sort(
+            (a, b) => a.sort - b.sort
+          );
         })
         .catch((err) => {
           throw new Error(err);
@@ -160,17 +163,16 @@ export default {
     getSumSort() {
       let sum = 0;
       for (let item of this.archivesReviewManageForm.caseSortFormList) {
-        if(item.grade)
-        sum += Number(item.grade);
+        if (item.grade) sum += Number(item.grade);
       }
-      console.log('sum'.sum)
+      console.log("sum".sum);
       this.archivesReviewManageForm.sumSort = sum;
     },
     //防抖函数
     deuncode() {
       var time1;
       clearTimeout(time1);
-      time1 = setTimeout(this.getSumSort,500)
+      time1 = setTimeout(this.getSumSort, 500);
       // var time1;
       // return function () {
       //   clearTimeout(time1);
@@ -186,8 +188,9 @@ export default {
         .then((res) => {
           console.log(res);
           this.archivesReviewManageForm = res.data;
-          this.archivesReviewManageForm.caseSortFormList =
-            res.data.caseSortVoList.sort((a,b)=> a.sort-b.sort);
+          this.archivesReviewManageForm.caseSortFormList = res.data.caseSortVoList.sort(
+            (a, b) => a.sort - b.sort
+          );
         })
         .catch((err) => {
           throw new Error(err);
@@ -206,7 +209,8 @@ export default {
       //添加
       this.canSave = true;
       this.archivesReviewManageForm.caseBasicinfoId = archivesReviewCaseData.id;
-      this.archivesReviewManageForm.caseNumber = archivesReviewCaseData.caseNumber;
+      this.archivesReviewManageForm.caseNumber =
+        archivesReviewCaseData.caseNumber;
       this.archivesReviewManageForm.caseName = archivesReviewCaseData.caseName;
       this.getCaseEvaluationManage();
     }
