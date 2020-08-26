@@ -11,8 +11,11 @@
             :model="formInline"
           >
             <el-row>
-              <el-form-item label="省份" prop="personName">
-                <el-input v-model="formInline.personName"></el-input>
+              <el-form-item label="省份" prop="province">
+                <el-select v-model="formInline.province" placeholder="省份" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
+                <el-option value="新疆">新疆</el-option>
+                <el-option value="宁夏">宁夏</el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="二级单位" prop="ministerialNo">
                 <el-input v-model="formInline.ministerialNo"></el-input>
@@ -32,13 +35,11 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="是否发证" prop="oName">
-                <!-- <el-select v-model="formInline.oid" placeholder="选择所属机构" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
-                <el-option
-                    v-for="value in oidsInfo" :key="value.id" :label="value.name" :value="value.id">
-                </el-option>
-                </el-select>-->
-                <el-input v-model="formInline.oName"></el-input>
+             <el-form-item label="是否发证" prop="certStatus">
+                <el-select v-model="formInline.certStatus" placeholder="是否发证" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
+                <el-option value="1">是</el-option>
+                <el-option value="0">否</el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label=" " label-width="13px">
                 <el-button
@@ -102,13 +103,11 @@ export default {
       branchIdsInfo: [], //执法领域列表
       oidsInfo: [], //所属机构列表
       formInline: {
-        personId: "",
-        personName: "", //姓名
         ministerialNo: "", //执法证号
-        oName: "", //所属机构
+        province: "", //省份
         branchName: "", //执法门类
-        post: "",
-        branchId: ""
+        branchId: "",
+        certStatus:"", //发证状态
       },
       tableData: [], //表格数据
       defaultExpandedKeys: [], //默认展开的key
@@ -126,15 +125,11 @@ export default {
     getPersonList() {
       let _this = this;
       let data = {
-        personName: _this.formInline.personName,
+        province: _this.formInline.province,
         ministerialNo: _this.formInline.ministerialNo,
         branchId: _this.formInline.branchId,
         oName: _this.formInline.oName,
         certStatus: _this.formInline.certStatus,
-        personType: _this.formInline.personType,
-        post: _this.formInline.post,
-        current: _this.currentPage,
-        size: _this.pageSize
       };
       this.tableLoading = true;
       _this.$store.dispatch("statisticByAge", data).then(

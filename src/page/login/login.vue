@@ -179,12 +179,12 @@ import { menuList } from "@/common/data/menu";
 import VueSimpleVerify from 'vue-simple-verify';
 // Vue.component('vue-simple-verify', VueSimpleVerify)
 import {
-  getCurrentUserApi, getHost
+  getCurrentUserApi, getHost, resetPasswordApi
 } from "@/api/login";
 import {
   getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi, appDownloadApi,
 } from "@/api/system";
-import {encryption} from "@/common/js/cryptoAes";
+import { encryption } from "@/common/js/cryptoAes";
 export default {
   data() {
     return {
@@ -414,8 +414,8 @@ export default {
             // 登录后默认跳转至host.json文件中配置的首页
             this.$router.push({ name: sessionStorage.getItem('HOME_PAGE_ROUTER_NAME') })
 
-            res.data.encryptionUserName=encryption(this.loginForm.username)
-            res.data.encryptionPassword=encryption(this.loginForm.password)
+            res.data.encryptionUserName = encryption(this.loginForm.username)
+            res.data.encryptionPassword = encryption(this.loginForm.password)
             iLocalStroage.sets('userInfo', res.data);
             // _this.getMenu();
           }
@@ -456,25 +456,30 @@ export default {
     },
     //重置密码
     resetPwd(resetForm) {
+
       let _this = this
       this.$refs[resetForm].validate((valid) => {
         if (valid) {
-          console.log(_this.resetForm)
           // 重置密码
-          _this.$store.dispatch("resetPassword", _this.resetForm).then(
+          resetPasswordApi(_this.resetForm).then(
             res => {
-              _this.$message({
-                type: "success",
-                message: "修改成功，请返回登录"
+              if (res.code == 200) {
+                _this.$message({
+                  type: "success",
+                  message: "修改成功，请返回登录"
 
-              });
-              console.log(res);
-
+                });
+                console.log(res);
+              } else {
+                this.$message({ type: 'error', message: res.message });
+              }
             },
             error => {
-              console.log(error);
+              this.$message({ type: 'error', message: '执法人员姓名输入错误' });
             }
-          );
+          ).catch(err => {
+            console.log(err)
+          })
         }
       });
     },
@@ -543,10 +548,10 @@ export default {
         throw new Error(error);
       }
       //是否显示‘综合执法平台’
-      try{
+      try {
         let dataRes = await getDictListDetailByNameApi('显示综合执法平台');
-        this.$store.commit('setShowZHZFPT', dataRes.data[0].name)   
-      }catch (error) {
+        this.$store.commit('setShowZHZFPT', dataRes.data[0].name)
+      } catch (error) {
         throw new Error(error);
       }
     },
@@ -559,8 +564,8 @@ export default {
         console.log(res);
         // let host = window.location.host;
         this.appDownHref = res.data;
-        console.log( this.appDownHref )
-      }).catch(err=>{
+        console.log(this.appDownHref)
+      }).catch(err => {
         throw new Error(err)
       })
     },
