@@ -12,7 +12,7 @@
                 <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 3, maxRows: 6}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
             </td>
-            <td rowspan="3" style="width:40px">案件承办人</td>
+            <td rowspan="3" style="width:40px">案件调查人员</td>
             <td>姓 名</td>
             <td>证件号</td>
           </tr>
@@ -126,6 +126,9 @@
             </td>
           </tr>
         </table>
+        <div class="notice clear">
+          <span>(报告一式两份，其中一份用于向上级备案，本页填写不下的可另附纸。)</span>
+        </div>
       </el-form>
     </div>
     <casePageFloatBtns

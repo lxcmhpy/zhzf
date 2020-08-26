@@ -95,6 +95,9 @@ export default {
         isRadio: true, // 显示单选框
         isSelection: false, // 显示多选框
         isNumber: true, // 显示序号列
+        current: 1,
+        size: 5,
+        total: 100
       },
       inputList: [
         {
@@ -171,11 +174,6 @@ export default {
           { type: 'text', name: '删除' },
         ]
       },
-      pageAttr: {
-        current: 1,
-        size: 5,
-        total: 100
-      }
     }
   },
   methods: {

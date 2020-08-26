@@ -463,8 +463,6 @@ export default {
           // 重置密码
           resetPasswordApi(_this.resetForm).then(
             res => {
-              console.log(res)
-              debugger
               if (res.code == 200) {
                 _this.$message({
                   type: "success",

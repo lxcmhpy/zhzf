@@ -140,7 +140,7 @@ export function getById(type,id) {
   export function organTreeByCurrUser(){
     return request({
         // url: "/zfjg/queryLike",
-        url: "/system/sys/organ/findOrganPositionTreeByCurrUser",
+        url: "/zfjg/sysOrgan/findOrganPositionTreeByCurrUser",
         // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
         method: "get",
         // params: data,
