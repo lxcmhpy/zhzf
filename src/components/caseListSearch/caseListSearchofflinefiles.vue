@@ -95,11 +95,7 @@
                     class="upload-demo"
                     action
                     :http-request="uploadfile_offlinepdf"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :before-remove="beforeRemove"
                     :before-upload="beforeuploadpdf"
-                    :on-success="uploadsuccesspdf"
                     multiple
                     accept=".pdf"
                     :limit="30"
@@ -168,6 +164,7 @@ import { getDictListDetailApi } from "@/api/system";
 export default {
   data() {
     return {
+      storageId:[],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalss: 0, //总页数
@@ -189,6 +186,7 @@ export default {
         isUploadCase: "",
         party: "",
         vehicleShipId: "",
+        path:""
       },
       rules: {
         caseNumber: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -229,9 +227,11 @@ export default {
     submitForm(addpdf_form) {
       this.$refs[addpdf_form].validate((valid) => {
         if (valid) {
+          console.log("this.storageId",this.storageId)
             this.addpdf_form.createTime=moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-            this.addpdf_form.isUploadCase=this.fileList.length > 0 ? 0 : 1;
-          console.log(this.addpdf_form);
+            this.addpdf_form.isUploadCase=this.storageId.length > 0 ? 0 : 1;
+            this.addpdf_form.path=this.storageId.join("_");
+          console.log("addpdf_form",this.addpdf_form);
           addofflinefile(this.addpdf_form).then(
             (res) => {
               if (res.code === 200) {
@@ -275,8 +275,9 @@ export default {
       console.log("fd", fd);
       uploadCommon(fd).then(
         (res) => {
+          this.storageId.push(res.data[0].fileName+"/"+res.data[0].storageId);
           this.$message({ type: "success", message: "上传成功" });
-          console.log("res", res);
+          console.log("添加 上传", res);
         },
         (error) => {
           this.$message({ type: "error", message: "上传失败" });
@@ -284,8 +285,6 @@ export default {
         }
       );
     },
-    //文件上传成功后
-    uploadsuccesspdf(file, fileList) {},
     beforeuploadpdf(file) {
       console.log("file.type", file.type);
       const isJPG = file.name.lastIndexOf(".pdf") != -1;
@@ -295,21 +294,9 @@ export default {
       }
       return isJPG;
     },
-    //文件移除列表
-    handleRemove(file, fileList) {
-      //console.log(file, fileList);
-    },
-    //上传后页面预览
-    handlePreview(file) {
-      //console.log(file);
-    },
-    //文件移除前
-    beforeRemove(file, fileList) {
-      //return this.$confirm(`确定移除 ${ file.name }？`);
-    },
     //点击添加按钮
     addpdffile() {
-      this.pdf_title = "添加线下案卷";
+      this.storageId=[];
       this.addpdf_page = true;
     },
     caseRecord() {},
