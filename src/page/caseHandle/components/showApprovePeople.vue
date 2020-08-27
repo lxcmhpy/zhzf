@@ -81,7 +81,7 @@
         }catch(err){
           this.$message('获取案件流程失败！')
         }
-        if(currentFlow.data.flowName == '处罚流程'){
+        if(currentFlow.data.flowName == '处罚流程' || currentFlow.data.flowName == '江西流程'){
           data.flag = 0;
         }else if(currentFlow.data.flowName == '赔补偿流程'|| currentFlow.data.flowName == '青海赔补偿流程'){
           data.flag = 1;

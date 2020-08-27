@@ -18,6 +18,16 @@ export const mixinsCommon = {
                 message: `${type}：${msg}`
             });
             return
+        },
+        catsMessage(data) {
+            this.$message({
+                iconClass: this.errorObj[data.type],
+                center: true,
+                customClass: data.type,
+                dangerouslyUseHTMLString: true,
+                message: `${data.message}`
+            });
+            return
         }
     }
 }
