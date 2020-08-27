@@ -6,13 +6,25 @@
           :model="searchForm"
           ref="searchForm"
           class="caseSearchForm"
-          label-width="50px"
+          label-width="80px"
           size="small"
         >
           <el-row>
-            <el-col :span="7">
-              <el-form-item label="标题" prop="title">
-                <el-input v-model="searchForm.title"></el-input>
+            <el-col :span="6">
+              <el-form-item label="信件编号" prop="letterNo">
+                <el-input v-model="searchForm.letterNo"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="信件标题" prop="letterTitle">
+                <el-input v-model="searchForm.letterTitle"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="状态" prop="state">
+                <el-select v-model="searchForm.state" placeholder="请选择" clearable>
+                  <el-option v-for="(item,key) in allStatus" :key="key" :label="item" :value="key"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -21,9 +33,6 @@
                 <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
-            <el-button type="primary" size="medium" icon="el-icon-plus" @click="onAdd">添加</el-button>
           </el-row>
         </el-form>
       </div>
@@ -35,33 +44,21 @@
           height="100%"
           highlight-current-row
         >
-          <el-table-column prop="title" label="标题" align="center"></el-table-column>
-          <el-table-column prop="图片" label="来源" align="center">
-            <template slot-scope="scope">
-              <el-image
-                style="width: 80px; height: 80px"
-                :src="host+scope.row.storageId"
-                fit="fill"
-              ></el-image>
-            </template>
+          <el-table-column prop="letterNo" label="信件编号" align="center"></el-table-column>
+          <el-table-column prop="letterTitle" label="信件标题" align="center"></el-table-column>
+          <el-table-column prop="sendName" label="来信人" align="center"></el-table-column>
+          <el-table-column prop="sendTime" label="来信时间" align="center"></el-table-column>
+          <el-table-column prop="isOpen" label="是否公开" align="center">
+            <template slot-scope="scope">{{scope.row.isOpen==1?"是":"否"}}</template>
           </el-table-column>
-          <el-table-column prop="orderNo" label="轮播次序" align="center"></el-table-column>
-          <el-table-column prop="state" label="启用状态" align="center">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.state"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                :active-value="1"
-                :inactive-value="0"
-                @change="changeState(scope.row)"
-              ></el-switch>
-            </template>
+          <el-table-column prop="state" label="状态" align="center">
+            <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="onEdit(scope.row)">修改</el-button>
-              <el-button type="text" @click="onDelete(scope.row)">删除</el-button>
+              <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
+              <el-button v-if="scope.row.state === 1" type="text" @click="onAccept(scope.row)">接件</el-button>
+              <el-button v-if="scope.row.state === 2" type="text" @click="onReply(scope.row)">回复</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -78,28 +75,28 @@
         ></el-pagination>
       </div>
     </div>
-    <imagesDialog ref="imagesDialog" @handle-data="onSubmit"></imagesDialog>
+    <complaintDialog ref="complaintDialog" @handle-data="onSubmit"></complaintDialog>
   </div>
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { findImages, saveOrUpdate, deleteById } from "@/api/notice/turnImages";
-import imagesDialog from "@/page/notice/trends/imagesDialog";
+import { findComplaints, saveOrUpdate, findById } from "@/api/notice/complaint";
+import complaintDialog from "@/page/notice/complaint/complaintDialog";
 
 export default {
-  components: { imagesDialog },
+  components: { complaintDialog },
   data() {
     return {
       searchForm: {
-        title: "",
+        letterNo: "",
+        letterTitle: "",
         state: "",
-        type: "",
       },
       tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总页数
-      host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+      allStatus: { 1: "待受理", 2: "已受理", 3: "已回复" },
     };
   },
   methods: {
@@ -109,7 +106,7 @@ export default {
       data.current = this.currentPage;
       data.size = this.pageSize;
       let _this = this;
-      findImages(data).then(
+      findComplaints(data).then(
         (res) => {
           _this.total = res.data.total;
           _this.tableData = res.data.records;
@@ -137,50 +134,20 @@ export default {
       this.$refs["searchForm"].resetFields();
       debugger;
     },
-    changeState(row) {
-      let res = saveOrUpdate(row);
-      this.$message({ type: "success", message: "操作成功!" });
+    onDetail(row) {
+      this.$refs.complaintDialog.showModal(1, row);
     },
-    onAdd() {
-      this.form = {
-        id: "",
-        title: "",
-        orderNo: "",
-        state: "",
-        dtId: "",
-      };
-      this.$refs.imagesDialog.showModal(1, this.form);
+    onAccept(row) {
+      this.$refs.complaintDialog.showModal(2, row);
     },
-    onEdit(row) {
-      this.$refs.imagesDialog.showModal(2, row);
+    async onReply(row) {
+      this.$refs.complaintDialog.showModal(3, row);
     },
     async onSubmit(data) {
       debugger;
       let res = saveOrUpdate(data);
-      this.$message({ type: "success", message: "保存成功!" });
+      this.$message({ type: "success", message: "操作成功!" });
       this.load();
-    },
-
-    async onDelete(row) {
-      let _this = this;
-      this.$confirm("确定要删除吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        iconClass: "el-icon-question",
-        customClass: "custom-confirm",
-      })
-        .then(() => {
-          deleteById(row.id).then(
-            (res) => {
-              _this.$message({ type: "success", message: "删除成功!" });
-              _this.load();
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        })
-        .catch(() => {});
     },
 
     load() {
