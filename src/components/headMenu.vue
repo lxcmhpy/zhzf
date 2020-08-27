@@ -42,6 +42,7 @@ import _ from "lodash";
         let index = _.findIndex(this.headMenuList,(chr)=>{
             return chr.name === key
         })
+        console.log(this.headMenuList[index])
         if (index >-1 &&this.headMenuList[index].path&& this.headMenuList[index].path !== 'null') {
             this.$router.push({ name: this.headMenuList[index].path });
         }
