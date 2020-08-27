@@ -152,7 +152,7 @@ export default {
     getQueryCaseTypeList() {
       getQueryCaseTypeListApi().then(
         res => {
-          this.caseTypeList = res.data;
+          this.caseTypeList = res.data.records;
         },
         error => {
           console.log(error)
