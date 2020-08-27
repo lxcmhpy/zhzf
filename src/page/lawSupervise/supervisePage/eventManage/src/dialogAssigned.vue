@@ -5,7 +5,7 @@
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" :value="form.disposeOrgan" />
       </el-form-item>
       <el-form-item label="人员" label-width="60px">
-        <el-select v-model="form.disposePerson" placeholder="请选择">
+        <el-select v-model="form.disposePerson" filterable multiple placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
             :key="item.value"
@@ -88,13 +88,15 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-      this.dialogAssignedVisible = false
+      this.form.disposePerson = JSON.stringify(this.form.disposePerson)
       assigned(this.form).then(res => {
         if(res.code === 200) {
+          this.dialogAssignedVisible = false
           this.$message({
             message: res.msg,
             type: "success"
           })
+          this.page.initPage()
         } else {
           this.$message.error(res.msg)
         }

@@ -227,6 +227,13 @@ export default {
       this.$refs.dialogAssigned.dialogAssignedVisible = true
       this.$refs.dialogAssigned.form.state = row.state
       this.$refs.dialogAssigned.form.id = row.id
+      if(row.disposeOrgan){
+        this.getPerson(row.disposeOrgan)
+        this.$refs.dialogAssigned.form.disposeOrgan = row.disposeOrgan
+        if(row.disposePerson){
+          this.$refs.dialogAssigned.form.disposePerson = JSON.parse(row.disposePerson)
+        }
+      }
     },
 
     /**
