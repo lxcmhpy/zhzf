@@ -198,7 +198,13 @@ export default {
         current: 1,
         size: 5,
       }
-      this.findTableData(param, this.baseUrlType, this.url)
+
+      // 如果有分页，则传入分页数据，否则不传
+      if(this.isPagination) {
+        this.findTableData(param, this.baseUrlType, this.url)
+      } else {
+        this.findTableData(this.baseUrlType, this.url)
+      }
     },
 
     /**
@@ -214,9 +220,13 @@ export default {
      * 查询
      */
     onSubmit() {
-      let param = {
-        current: 1,
-        size: this.size
+      let param = {}
+      // 如果有分页，则传入分页数据，否则不传
+      if(this.isPagination) {
+        param = {
+          current: 1,
+          size: this.size
+        }
       }
       Object.keys(this.form).map(key => {
         // 如果当前值为时间选择框的值，则将其拆为 startDate endDate 两个属性
