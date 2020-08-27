@@ -344,6 +344,7 @@ export default {
           width: 130px;
           height: 30px;
           padding: 0;
+          border: 0;
           .handleLatLng {
             background: #409EFF;
             width: 100%;
@@ -359,6 +360,8 @@ export default {
           .handleLatLng.already {
             background: #F2F6FC;
             color: #606266;
+            border: 1px solid #DCDFE6;
+            margin-left: -1px;
           }
         }
       }
