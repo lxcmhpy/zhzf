@@ -34,15 +34,12 @@ export function getCaseTypeApi(data) {
 
 //获取行业类别
 export function getIndustryCategoryApi(data) {
-  let params = {
-    pid: data
-  }
   return request({
     url: "/case/caseTemplate/lawCategory/getLawCategoryListVo",
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    params: params,
+    params: data,
     cancelToken: setCancelSource()
   });
 }

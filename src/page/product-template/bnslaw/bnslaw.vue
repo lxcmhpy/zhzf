@@ -78,9 +78,9 @@
           <el-form-item label="网站链接" prop="webLink">
             <el-input v-model="addBtnlawForm.webLink"></el-input>
           </el-form-item>
-          <el-form-item label="行业类型" prop="industryTypeId">
+          <el-form-item label="业务领域" prop="industryTypeId">
             <el-select v-model="addBtnlawForm.industryTypeId" placeholder="请选择">
-              <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateId"></el-option>
+              <el-option v-for="item in lawCateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="发布时间" prop="dtmDate">
@@ -124,7 +124,7 @@
           <el-form-item label="网站链接：" prop="webLink">
             {{addBtnlawForm.webLink}}
           </el-form-item>
-          <el-form-item label="行业类型：" prop="industryType">
+          <el-form-item label="业务领域：" prop="industryType">
             {{addBtnlawForm.industryType}}
           </el-form-item>
           <el-form-item label="发布时间：" prop="dtmDate">
@@ -160,6 +160,7 @@ import { mapGetters } from "vuex";
 import {
   getBnsLawListApi, addBnsLawApi, deleteBnslawApi, getDictListDetailByNameApi, getBnsLawByIdApi
 } from "@/api/system";
+import { getIndustryCategoryApi} from "@/api/caseHandle.js";
 import { uploadCommon, getFile } from "@/api/upload.js";
 export default {
   data() {
@@ -175,7 +176,7 @@ export default {
         dtmDate: '',
       },
       info: "",
-      dialogTitle: "添加法规",
+      dialogTitle: "",
       visible: false,
       dentailVisible: false,
       previewVisible: false,
@@ -203,7 +204,7 @@ export default {
         strNumber: [{ required: true, message: "发布文号必须填写", trigger: "blur" }],
         strOrgan: [{ required: true, message: "发布机关必须填写", trigger: "blur" }],
         drawerId: [{ required: true, message: "法规效力必须填写", trigger: "blur" }],
-        industryTypeId: [{ required: true, message: "行业类型必须填写", trigger: "blur" }],
+        industryTypeId: [{ required: true, message: "业务领域必须填写", trigger: "blur" }],
       },
       curRowIndex: '',
       pdfUrl: ''
@@ -298,9 +299,9 @@ export default {
         id: row.id
       };
       this.isAdd = true;
+      this.dialogTitle = "编辑法规";
       getBnsLawByIdApi(data).then(
         res => {
-          console.log("bnslaw", res);
           this.addBtnlawForm = res.data;
         });
       err => {
@@ -321,13 +322,15 @@ export default {
     selectIndustry(vId) {
       let obj = {};
       obj = this.lawCateList.find((item) => {
-        return item.cateId === vId;
+        return item.id === vId;
       });
-      return obj.cateName;
+      return obj.name;
     },
     //添加法规
     addBtnlaw() {
-      this.visible = true
+      this.visible = true;
+      this.isAdd = false;
+      this.dialogTitle = "新增法规";
     },
     addEditbtnlaw() {
       this.$refs["addBtnlawForm"].validate(valid => {
@@ -338,7 +341,6 @@ export default {
           let _this = this;
           addBnsLawApi(data).then(
             res => {
-              console.log("添加法规", res);
               if (res.code == '200') {
                 this.$message({ message: '添加成功', type: 'success' });
                 this.visible = false;
@@ -406,21 +408,27 @@ export default {
     },
     // 抽屉表
     getlawCateList() {
-      this.$store.dispatch("getEnforceLawType", "1").then(
-        res => {
-          console.log('getEnforceLawType', res)
-          this.lawCateList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      // this.$store.dispatch("getEnforceLawType", "1").then(
+      //   res => {
+      //     console.log('getEnforceLawType', res)
+      //     this.lawCateList = res.data;
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   }
+      // );
+      let dataCate = {};
+      getIndustryCategoryApi(dataCate).then(res => {
+        console.log("业务领域",res.data);
+       this.lawCateList = res.data;
+      }, err => {
+        console.log(err);
+      });
       getDictListDetailByNameApi('法规效力').then(res => {
-        console.log('法规效力', res)
         this.lawLimitList = res.data;
       }, err => {
         console.log(err);
-      })
+      });
     },
     uploadBtnlawVal(param) {
       console.log('选中的信息', this.curRowIndex)
