@@ -194,17 +194,15 @@ export default {
       })
       this.form = form
 
-      const param = {
-        current: 1,
-        size: 5,
-      }
-
+      let param = {}
       // 如果有分页，则传入分页数据，否则不传
       if(this.isPagination) {
-        this.findTableData(param, this.baseUrlType, this.url)
-      } else {
-        this.findTableData(this.baseUrlType, this.url)
+        param = {
+          current: 1,
+          size: 5,
+        }
       }
+      this.findTableData(param, this.baseUrlType, this.url)
     },
 
     /**
