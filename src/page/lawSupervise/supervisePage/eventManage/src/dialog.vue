@@ -3,7 +3,7 @@
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
-    <el-form ref="dialogForm" :model="form" :disabled="disabled">
+    <el-form ref="dialogForm" class="eventManage-dialog-dialogForm" :model="form" :disabled="disabled">
       <el-form-item label="事件名称:" :label-width="formLabelWidth">
         <el-input v-model="form.eventName" autocomplete="off"></el-input>
       </el-form-item>
@@ -19,20 +19,19 @@
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="事件坐标:" :label-width="formLabelWidth">
+      <el-form-item label="事件坐标:" :label-width="formLabelWidth" class="eventLagLng">
         <el-input v-model="form.eventAddress" readonly>
-            <template slot="append">
-                <div class="showMapBtn" title="点击获取坐标">
-                <label class="mustTip">*</label>
-                <el-button
-                    icon="iconfont law-weizhi"
-                    size="mini"
-                    @click="showMap"
-                    v-if="!hasLatitudeAndLongitude"
-                >请获取坐标</el-button>
-                <el-button icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
-                </div>
-            </template>
+          <div
+            class="handleLatLng"
+            slot="append"
+            @click="showMap"
+            v-if="!hasLatitudeAndLongitude"
+          ><i class="iconfont law-weizhi" />请获取坐标</div>
+          <div
+            v-else
+            class="handleLatLng already"
+            slot="append"
+          ><i class="iconfont law-weizhi" />已获取坐标</div>
         </el-input>
       </el-form-item>
       <el-form-item label="是否重点事件:" :label-width="formLabelWidth">
@@ -337,5 +336,33 @@ export default {
 <style lang="scss">
 .eventManage-dialog {
   overflow: hidden;
+  &-dialogForm {
+    .eventLagLng {
+      .el-input {
+        .el-input-group__append {
+          cursor: pointer;
+          width: 130px;
+          height: 30px;
+          padding: 0;
+          .handleLatLng {
+            background: #409EFF;
+            width: 100%;
+            height: 100%;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            i {
+              margin-right: 3px;
+            }
+          }
+          .handleLatLng.already {
+            background: #F2F6FC;
+            color: #606266;
+          }
+        }
+      }
+    }
+  }
 }
 </style>
