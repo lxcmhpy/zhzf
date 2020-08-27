@@ -149,6 +149,18 @@ export function findRecordlModleByNameApi(data) {
         cancelToken: setCancelSource()
     });
 }
+//分页查询模板
+export function findRecordlModleByPageApi(data) {
+    return request({
+        url: "/xzjc/template/queryByOrganIdAndUserId",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 //通过模板UUid查询模板字段
 export function findRecordlModleFieldByIdeApi(data) {
     return request({
@@ -588,6 +600,18 @@ export function getDictListDetailByNameApi(name) {
         cancelToken: setCancelSource()
     });
 }
+
+//获取检查对象
+export function getAllCheckObject() {
+    return request({
+        url: "/xzjc/randomItem/getAllCheckObject/",
+        method: "get",
+        showloading: false,
+        loadingType: 'loadPart',
+        cancelToken: setCancelSource()
+    });
+}
+
 // 分页查询检查任务表数据
 export function getAllTaskApi(data) {
     return request({

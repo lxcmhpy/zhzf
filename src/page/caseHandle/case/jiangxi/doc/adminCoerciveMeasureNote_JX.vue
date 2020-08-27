@@ -37,8 +37,8 @@
                   <el-date-picker
                     v-model="docData.enforceStartTime"
                     type="datetime"
-                    format="yyyy-MM-dd HH:mm"
-                    value-format="yyyy年MM月dd日HH时mm分"
+                    value-format="yyyy-MM-dd HH:mm"
+                    format="yyyy年MM月dd日HH时mm分"
                     style="width:235px"
                     :default-time="defaultStartTime" 
                     :disabled="fieldDisabled(propertyFeatures['enforceStartTime'])"
@@ -809,7 +809,7 @@ export default {
           let data2 = JSON.parse(res.data.propertyData);
           this.staffList = data2.staff.split(',');
         }, err => {
-          console.length(err);
+          console.log(err);
         })
       },
       //根据用户的组织机构ID获取复议机构和诉讼机构

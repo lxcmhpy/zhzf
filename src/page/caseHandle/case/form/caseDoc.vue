@@ -81,7 +81,8 @@
                 <el-form-item label="与案件关系" prop="relationWithCase" :rules="fieldRules('relationWithCase',propertyFeatures['relationWithCase'],'',isParty)">
                 <!-- <el-form-item label="与案件关系" prop="relationWithCase"> -->
                     <el-select ref="relationWithCase" v-model="formData.relationWithCase" :disabled="!isParty || fieldDisabled(propertyFeatures['relationWithCase'])">
-                      <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option>
+                      <!-- <el-option v-for="item in allRelationWithCase" :key="item.value" :label="item.label" :value="item.label"></el-option> -->
+                      <el-option v-for="item in allRelationWithCase" :key="item.id" :label="item.name" :value="item.name"></el-option>
                     </el-select>
                  </el-form-item>
               </div>
@@ -220,11 +221,17 @@
                 <el-form-item label="车辆类型" prop="vehicleShipType" :rules="fieldRules('vehicleShipType',propertyFeatures['vehicleShipType'])">
                   <!-- <el-input ref="vehicleShipType" clearable class="w-120" v-model="formData.vehicleShipType" size="small" placeholder="请输入" :disabled="originalData.vehicleShipType ? true : false"></el-input> -->
                   <el-select v-model="formData.vehicleShipType" :disabled="fieldDisabled(propertyFeatures['vehicleShipType'])">
-                    <el-option
+                    <!-- <el-option
                       v-for="item in allVehicleShipType"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
+                    ></el-option> -->
+                    <el-option
+                      v-for="item in allVehicleShipType"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -356,7 +363,9 @@ import chooseAskPeopleDia from "@/page/caseHandle/components/chooseAskPeopleDia"
 import resetDocDia from '@/page/caseHandle/components/resetDocDia'
 import iLocalStroage from "@/common/js/localStroage";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
-
+import {
+  getDictListDetailByNameApi
+} from "@/api/system";
 import {
   validateIDNumber,
   validatePhone,
@@ -463,24 +472,24 @@ export default {
       isParty: true, //当事人类型为个人
       originalData: "",
       allVehicleShipType: [
-        { value: "1", label: "中小客车" },
-        { value: "2", label: "大客车" },
-        { value: "3", label: "小型货车" },
-        { value: "4", label: "中型货车" },
-        { value: "5", label: "大型货车" },
-        { value: "6", label: "特大型货车" },
-        { value: "7", label: "集装箱车" },
-        { value: "8", label: "摩托车" },
-        { value: "9", label: "拖拉机" }
+        // { value: "1", label: "中小客车" },
+        // { value: "2", label: "大客车" },
+        // { value: "3", label: "小型货车" },
+        // { value: "4", label: "中型货车" },
+        // { value: "5", label: "大型货车" },
+        // { value: "6", label: "特大型货车" },
+        // { value: "7", label: "集装箱车" },
+        // { value: "8", label: "摩托车" },
+        // { value: "9", label: "拖拉机" }
       ],
       allRelationWithCase: [
         //与案件关系下拉框
-        { value: "0", label: "当事人" },
-        { value: "1", label: "驾驶人" },
-        { value: "2", label: "实际所有者" },
-        { value: "3", label: "证人" },
-        { value: "4", label: "承运人" },
-        { value: "5", label: "代理人" }
+        // { value: "0", label: "当事人" },
+        // { value: "1", label: "驾驶人" },
+        // { value: "2", label: "实际所有者" },
+        // { value: "3", label: "证人" },
+        // { value: "4", label: "承运人" },
+        // { value: "5", label: "代理人" }
       ],
       docTableDatasCopy: [],
       allAskDocList: [], //询问笔录
@@ -560,6 +569,9 @@ export default {
       // } else {
       //   this.com_viewDoc(row);
       // }
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       console.log("查看");
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
@@ -576,6 +588,9 @@ export default {
     //预览pdf
     viewDocPdf(row) {
       console.log('row',row)
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -649,10 +664,18 @@ export default {
           this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
       }
     },
+    async initDraw(){
+      let  data1 = await getDictListDetailByNameApi('与案件关系');
+      this.allRelationWithCase = data1.data;
+      //车辆类型
+      let  data2 = await getDictListDetailByNameApi('车辆类型');
+      this.allVehicleShipType = data2.data;
+    },
     async initData(){
+      await this.initDraw();
       await this.queryFlowBycaseId();
       //动态环节id
-      this.caseLinkDataForm.caseLinktypeId = this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+      this.caseLinkDataForm.caseLinktypeId = (this.caseFlowData.flowName == "赔补偿流程" || this.caseFlowData.flowName == "青海赔补偿流程") ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
       this.setFormData();
       //通过案件id和表单类型Id查询已绑定文书
       this.getDocListByCaseIdAndFormId();

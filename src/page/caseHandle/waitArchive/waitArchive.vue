@@ -24,22 +24,23 @@
           <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
           <el-table-column prop="closeDate" label="结案时间" align="center" width="100"></el-table-column>
           <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
-          <el-table-column label="标签" align="center" width="50">
+         <el-table-column label="标签" align="center" width="50">
             <template slot-scope="scope">
-              <el-tooltip placement="top-start" effect="light">
+              <el-tooltip  v-if="scope.row.warContent" placement="top-start" effect="light">
                 <div slot="content" class="warn-li">
                   <li v-for="(item,index) in scope.row.warContent" :key="index">
-                    <span v-if="item.warType=='1'"  style="color:#FF0000">{{item.warContent}}</span>
-                    <span v-if="item.warType=='2'"  style="color:#FF6600">{{item.warContent}}</span>
-                    <span v-if="item.warType=='3'"  style="color:#0084FF">{{item.warContent}}</span>
+                    <span v-if="item.warType=='1'"  style="color:#FF0000"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
+                    <span v-if="item.warType=='2'"  style="color:#FF6600"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
+                    <span v-if="item.warType=='3'"  style="color:#0084FF"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
                     </li>
                 </div>
                 <div class="warn-box" v-if="scope.row.warType=='1'" style="background:#FF0000">警</div>
                 <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
                 <div class="warn-box" v-if="scope.row.warType=='3'" style="background:#0084FF">警</div>
               </el-tooltip>
+              <div v-if="!scope.row.warType" style="color:#2B313E">-</div>
             </template>
-          </el-table-column>
+        </el-table-column>
         </el-table>
       </div>
       <div class="paginationBox" v-show="total">

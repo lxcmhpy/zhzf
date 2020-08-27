@@ -8,12 +8,12 @@
           </el-form-item>
           <el-form-item label="预警类型">
             <el-select v-model="searchForm.warType" placeholder="请选择">
-              <el-option v-for="item in warnTypeList" :key="item" :label="item" :value="item"></el-option>
+              <el-option v-for="item in warnTypeList" :key="item.value" :label="item.lable" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="任务类型">
             <el-select v-model="searchForm.taskType" placeholder="请选择">
-              <el-option v-for="item in taskTypeList" :key="item" :label="item" :value="item"></el-option>
+              <el-option v-for="item in taskTypeList" :key="item.value" :label="item.lable" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -70,8 +70,8 @@ export default {
         user: "",
         region: ""
       },
-      taskTypeList: ['定时任务'],
-      warnTypeList: ['提醒', '预警', '报警'],
+      taskTypeList: [{lable:'定时任务',value:1}],
+      warnTypeList: [{lable:'报警',value:1},{lable:'预警',value:2},{lable:'提醒',value:3}],
     };
   },
   components: {

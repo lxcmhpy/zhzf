@@ -46,8 +46,8 @@
             </el-col>
             <el-col :span="3">
               <el-form-item label-width="10px">
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
+                <el-button size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
+                <el-button size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -64,9 +64,14 @@
           <el-table-column label="使用期限" align="center">
             <template slot-scope="scope">{{scope.row.beginDate}}~{{scope.row.endDate}}</template>
           </el-table-column>
-          <el-table-column prop="state" label="证件状态" align="center"></el-table-column>
+          <el-table-column prop="state" label="证件状态" align="center">
+            <template slot-scope="scope">
+              <span :style="{'color': statusColor[scope.row.state]}">{{scope.row.state}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="op" label="操作" align="center" width="100">
             <template slot-scope="scope">
+              <!-- v-if="scope.row.state=='待颁发' || scope.row.state=='挂失' || scope.row.state=='已年审'" -->
               <el-button
                 v-if="scope.row.state=='待颁发' || scope.row.state=='挂失' || scope.row.state=='已年审'"
                 type="text"
@@ -277,22 +282,23 @@ export default {
         handlingDate: [
           { required: true, message: "请输入经办时间", trigger: "blur" },
         ],
-        tableDataTree: [],
+      },
+      tableDataTree: [],
+      statusColor: {
+        待颁发: "#0074F5",
+        正常: "#05C051",
+        挂失: "#FF8000",
+        已年审: "#0BA5BF",
+        注销: "#999999",
+        报废: "#999999",
       },
     };
   },
   methods: {
     // 获取机构树
-    getOidTreeData() {
-      let _this = this;
-      _this.$store.dispatch("findOrganTreeByCurrUser").then(
-        (res) => {
-          _this.tableDataTree = res.data;
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+    async getOidTreeData() {
+      let res = await this.$store.dispatch("findOrganTreeByCurrUser");
+      this.tableDataTree = res.data;
     },
     // 所属机构切换
     hindleChanged(val) {
@@ -336,9 +342,15 @@ export default {
     reset() {
       this.$refs["searchForm"].resetFields();
     },
-    openIssueDialog(row) {
+    async openIssueDialog(row) {
       this.deviceUsePer = row;
-      this.deviceUsePer.daterange = [row.beginDate, row.endDate];
+      debugger;
+      this.$set;
+      this.$set(this.deviceUsePer, "daterange", ["", ""]);
+      //   this.deviceUsePer.daterange = ["", ""];
+      if (row.beginDate) this.deviceUsePer.daterange[0] = row.beginDate;
+      if (row.endDate) this.deviceUsePer.daterange[1] = row.endDate;
+      await this.getOidTreeData();
       this.issueVisible = true;
     },
     openViewDialog(row) {
@@ -367,7 +379,6 @@ export default {
   },
   created() {
     this.getDataList({});
-    this.getOidTreeData();
   },
 };
 </script>

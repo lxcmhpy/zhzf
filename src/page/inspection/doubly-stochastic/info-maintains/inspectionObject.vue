@@ -199,6 +199,7 @@ export default {
         contactNumber: '',
         regulatoryUnit: '',
         remark: '',
+        status: '启用',
       },
       formLabelWidth: '125px',
       dialogStatus: '',
@@ -213,6 +214,9 @@ export default {
           { required: true, message: "必填项", trigger: "change" }
         ],
         socialCode: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        objectType: [
           { required: true, message: "必填项", trigger: "change" }
         ],
         idCard: [

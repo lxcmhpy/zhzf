@@ -15,13 +15,14 @@
         <component
           :is="showCom"
           :window1="config.window1"
-          :window2="window2"
+          :window2="config.window2"
           :window3="config.window3"
           :window4="config.window4"
           :window5="config.window5"
           @handleNodeClick="handleNodeClick"
           @handlePerson="handlePerson"
           @clickImg="clickImg"
+          @handleClickBtns="handleClickBtns"
         />
       </keep-alive>
     </div>
@@ -62,56 +63,10 @@ export default {
       inputModel: "",
       showCom: "",
       projectName: "",
-      window2: {
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        },
-        option: []
-      },
       placeholder: "",
     }
   },
   methods: {
-    /**
-     * 给获取到的每个节点的 children 添加 执法人员、执法车辆、执法船舶子节点
-     */
-    addNode(arr) {
-      let myNode = [
-        { label: '执法人员', type: 0, children: [] },
-        { label: '执法车辆', type: 2, children: [] },
-        { label: '执法船舶', type: 3, children: [] },
-      ]
-      arr.map(item => {
-        if(item.hasOwnProperty('children') && item.type!=0 && item.type!=2 && item.type!=3) {
-          myNode.map(myNodeItem => {
-            // 给自定义节点添加 pid 属性， 值为父节点的 id
-            myNodeItem.pid = item.id
-          })
-          // 在 children 里添加自定义节点
-          item.children = myNode.concat(item.children)
-          // 递归调用
-          this.addNode(item.children)
-        }
-      })
-      return arr
-    },
-
-    /**
-     * 获取数据
-     */
-    getTree() {
-      organTreeByCurrUser().then(res => {
-        if(res.code === 200) {
-          return res.data
-        } else {
-          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
-        }
-      }).then(data => {
-        this.window2.option = this.addNode(data)
-      })
-    },
-
     /**
      * 单独获取执法人员的数据，为了在执法人员专题下单独显示
      */
@@ -131,7 +86,7 @@ export default {
           this.$message.error('getWindow2People()::::::::接口数据错误');
         }
       }).then(data => {
-        this.window2.option = data.map(item => {
+        this.config.window2.option = data.map(item => {
           item.type = 0
           item.label = item.nickName
           return item
@@ -207,11 +162,26 @@ export default {
     },
 
     /**
+     * 获取树形数据
+     */
+    getTree() {
+      organTreeByCurrUser().then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
+        }
+      }).then(data => {
+        this.config.window2.option = data
+      })
+    },
+
+    /**
      * 点击专题图片，获取树形数据，下钻到树形窗口
      */
     clickImg(name) {
       this.projectName = name
-      this.window2.option = []
+      this.config.window2.option = []
       if(name === "执法机构") {
         this.placeholder = '搜索执法机构'
         this.getTree()
@@ -220,6 +190,13 @@ export default {
         this.getPeople()
       }
     },
+
+    /**
+     * 点击底部小图标
+     */
+    handleClickBtns(index, data) {
+      this.$emit('handleClickBtns', index, data)
+    }
   }
 }
 </script>
@@ -227,7 +204,7 @@ export default {
 <style lang="scss">
 .jiangXiMap-search {
   position: absolute;
-  top: 20px;
+  top: 40px;
   left: 30px;
   width: 369px;
   box-sizing: border-box;

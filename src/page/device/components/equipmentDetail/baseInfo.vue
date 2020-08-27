@@ -53,7 +53,7 @@
       </el-col>
       <el-col :span="24">
         <label class="item-label">报废期限</label>
-        <div class="item-text">{{form.scarpType +'/'+ form.scarpDeadline}}</div>
+        <div class="item-text">{{form.scarpDeadline +' '+ form.scarpType}}</div>
       </el-col>
       <el-col :span="12">
         <label class="item-label">使用证号</label>
@@ -204,12 +204,7 @@
           <el-col :span="14">
             <el-form-item label="报废期限">
               <el-select v-model="form.scarpType" placeholder="里程（公里）">
-                <el-option
-                  v-for="(value,index) in scarpTypes"
-                  :key="index"
-                  :label="value"
-                  :value="value"
-                ></el-option>
+                <el-option v-for="(value,key) in scarpTypes" :key="key" :label="key" :value="value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -324,7 +319,7 @@ export default {
       conditions: ["正常", "维修", "报废"],
       categorys: ["轿车", "越野车", "轻型货车"],
       standards: ["国六", "国五", "国四", "国三", "国二", "国一"],
-      scarpTypes: ["里程（公里）", "年限（年）", "长期"],
+      scarpTypes: { "里程（公里）": "公里", "年限（年）": "年", 长期: "长期" },
       startEdit: false,
       organList: [],
       orgTreeProps: {

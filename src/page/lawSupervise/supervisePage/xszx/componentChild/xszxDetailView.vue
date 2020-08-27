@@ -284,7 +284,7 @@
                     </tr>
                   </table>
 
-                  <div class="car-picture">
+                  <div class="car-picture" v-if="obj.belong=='XJ'">
                     <p>车辆图片2</p>
                     <!-- 车头照片 -->
                     <img
@@ -292,7 +292,7 @@
                       alt="link_01.jpg"
                     />
                   </div>
-                  <div class="car-picture">
+                  <div class="car-picture" v-if="obj.belong=='XJ'">
                     <p>车辆图片3</p>
                     <!-- 车尾照片 -->
                     <img
@@ -300,7 +300,7 @@
                       alt="link_02.jpg"
                     />
                   </div>
-                  <div class="car-picture">
+                  <div class="car-picture" v-if="obj.belong=='XJ'">
                     <p>车辆图片4</p>
                     <!-- 侧面照片 -->
                     <img
@@ -379,7 +379,7 @@
           <div class="box_title">
             <span class="titleflag"> </span>
             <span class="title">现场照片/视频</span>
-            <span class="right f12"> {{ parseInt(acitveCar) + 1 }} / 5</span>
+            <span class="right f12"> {{ parseInt(acitveCar) + 1 }} / {{imgSize}}</span>
           </div>
           <ul class="list">
             <li>
@@ -474,7 +474,8 @@ export default {
         mark: ""
       },
       videoUrl:'',
-      imgObj:{}
+      imgObj:{},
+      imgSize:0
     };
   },
   methods: {
@@ -511,14 +512,18 @@ export default {
             }
             getFileByCaseId(data).then(
                 res => {
+                    let size = 0;
                     res.data.forEach(p => {
                         if(p.status=='治超图片'){
                             this.imgList.push(p.storageId)
                             this.imgObj[p.name]=p.storageId
+                            size++
                         }else if(p.status=='治超视频'){
                             this.videoUrl=p.storageId
+                            size++
                         }
                     });
+                    this.imgSize=size
                 },
                 error => {
                     console.log(error);

@@ -110,6 +110,7 @@ export default {
       let _this = this;
       _this.$store.dispatch("findOrganTreeByCurrUser").then(
         (res) => {
+          debugger;
           _this.tableDataTree = res.data;
         },
         (err) => {
@@ -358,10 +359,10 @@ export default {
     this.getOidTreeData();
   },
   mounted() {
-    this.showChart1();
-    this.showChart2();
-    this.showChart3();
-    this.showChart4();
+    this.showChart1(null);
+    this.showChart2(null);
+    this.showChart3(null);
+    this.showChart4(null);
   },
 };
 </script>
@@ -377,7 +378,7 @@ export default {
 }
 .chart-box {
   width: 500px;
-  height: 400px;
+  height: 350px;
 }
 </style>
 

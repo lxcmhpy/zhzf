@@ -1,5 +1,5 @@
-import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId } from "@/api/lawSupervise.js";
-import { getOrganDetailApi, getOrganIdApi } from "@/api/system.js";
+import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId,getPeVideoUrl } from "@/api/lawSupervise.js";
+import { getOrganDetailApi } from "@/api/system.js";
 export default {
   methods: {
     /**
@@ -14,6 +14,7 @@ export default {
         }
       }).then(data => {
         this.organId = data[0].id
+        this.searchWindowData.window2.option = data
       })
     },
 
@@ -22,7 +23,7 @@ export default {
      */
     getPeopleTree(node) {
       let param = {
-        organId: node.pid,
+        organId: node.id,
         type: node.type
       }
       getOrganTree(param).then(res => {
@@ -40,6 +41,12 @@ export default {
           item.type = node.type
           item.label = item.nickName
           item.parentLabel = node.label
+          // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
+          if(item.peState && item.peState===1) {
+            item.peStateColor = '#67C23A'
+          } else if (item.padState && item.padState === 1) {
+            item.padStateColor = '#409EFF'
+          }
           return item
         })
       })
@@ -50,7 +57,7 @@ export default {
      */
     getCarShipTree(node) {
       let param = {
-        organId: node.pid,
+        organId: node.id,
         type: node.type
       }
       getZfjgLawSupervise(param).then(res => {
@@ -68,6 +75,12 @@ export default {
           item.type = node.type
           item.label = item.vehicleNumber || item.shipNumber
           item.parentLabel = node.label
+          // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
+          if(item.peState && item.peState===1) {
+            item.peStateColor = '#67C23A'
+          } else if (item.padState && item.padState === 1) {
+            item.padStateColor = '#409EFF'
+          }
           return item
         })
       })
@@ -77,15 +90,6 @@ export default {
      * 获取路政管理局和分局的数据
      */
     getLoad(node) {
-      // 如果有点位，则打点，否则抛出异常
-      if(node.propertyValue) {
-        let latLng = node.propertyValue.split(',')
-        node.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
-        this.page.addPoint(node, latLng)
-      } else {
-        throw new Error("handleNodeClick(data):::::::::没有坐标")
-      }
-
       // 获取当前路政局数据
       getOrganDetailApi({ id: node.id }).then(res => {
         if(res.code === 200) {
@@ -94,13 +98,14 @@ export default {
           throw new Error("getOrganDetail():::::::接口数据错误")
         }
       }).then(data => {
-        this.searchWindowData.window3 = {
-          title: node.label,
-          info: {
-            address: data.address,
-            contactor: data.contactor,
-            telephone: data.telephone
-          },
+        if(data.propertyValue) {
+          let latLng = data.propertyValue.split(',')
+          data.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
+          // 手动给点位添加图层标识属性
+          data.layerName = node.label
+          this.page.addPoint(data, latLng)
+        } else {
+          this.$message.error('没有坐标数据')
         }
       })
     },
@@ -108,9 +113,9 @@ export default {
     /**
      * 获取监管机构数据
      */
-    getTheOrganTree(data) {
+    getTheOrganTree(poiontData) {
       const param = {
-        organId: data.id,
+        organId: poiontData.id,
         type: 0
       }
       getOrganTree(param).then(res => {
@@ -130,6 +135,7 @@ export default {
      * 获取人员在线情况
      */
     personClick (node) {
+      console.log(node)
       // 地图打点
       let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
       node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
@@ -138,7 +144,7 @@ export default {
       this.searchWindowData.window4.title = node.nickName
       this.searchWindowData.window4.info = {
         organName: node.organName,
-        mobile: node.mobile
+        mobile: node.mobile,
       }
       this.$refs.Search.showCom = "Window4"
     },
@@ -251,6 +257,7 @@ export default {
         })
       } else { // 当取消勾选时，清除对应图层点位
         this.page.cleanPoints(name)
+        this.map.removeOverlay(this.page.informationWindow)
       }
     },
 
@@ -301,6 +308,14 @@ export default {
       } else {
         this.page.cleanAll()
       }
+    },
+    async clickPeVideo(id){
+        let res = await getPeVideoUrl(id);
+        var test = window.location.href;
+        var string = test.split("/");
+        var path = string[0] + "//" + string[2] + "/";
+        var ActivexURL = path + "/static/js/PeVideoInfo.html?videoUrl=" + res.data
+        window.location.href ="alert:"+ActivexURL
     },
   }
 }

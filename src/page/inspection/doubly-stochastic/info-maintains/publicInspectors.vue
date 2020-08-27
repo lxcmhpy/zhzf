@@ -312,6 +312,12 @@ export default {
         personName: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        birthDate: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
+        sex: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         idCard: [
           { required: true, message: "必填项", trigger: "change" },
           { validator: validateIDNumber, trigger: "change" }
@@ -346,7 +352,7 @@ export default {
         certType: [
           { required: true, message: "必填项", trigger: "change" }
         ],
-        company: [
+        nationName: [
           { required: true, message: "必填项", trigger: "change" }
         ],
         contactNum: [
@@ -399,6 +405,13 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // this.addForm.photo=this.addForm.photo||''
+          if (Date.parse(this.addForm.certStartTime) > Date.parse(this.addForm.certEndTime)) {
+            this.$message({
+              message: '开始时间不得大于截止时间',
+              type: 'error',
+            });
+            return;
+          }
           this.addForm.organName = iLocalStroage.gets("userInfo").organName
           this.$delete(this.addForm, 'photo')
           addPublicPersonApi(this.addForm).then(

@@ -26,6 +26,8 @@ const getters = {
   docPdfStorageId:state => state.caseHandle.docPdfStorageId,
   IsLawEnforcementSupervision:state => state.caseHandle.IsLawEnforcementSupervision,
   lawEnforcementSupervisionType:state => state.caseHandle.lawEnforcementSupervisionType,
+  currentFileData:state => state.caseHandle.currentFileData,
+  noOperation: state => state.caseHandle.noOperation,
   
   //监管
   offSiteManageId: state => state.supervise.offSiteManageId,
@@ -40,6 +42,7 @@ const getters = {
   // 系统管理
   btnlawId:state => state.system.btnlawId, //当前法规id
   systemTitle:state => state.system.systemTitle, //系统标题
+  showZHZFPT:state => state.system.showZHZFPT, //是否显示‘综合执法平台’
 
   
   // 行政检查

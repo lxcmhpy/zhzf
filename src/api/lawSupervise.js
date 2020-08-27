@@ -79,16 +79,6 @@ export function getById(type,id) {
     });
   }
 
-  export function getUserById(id) {
-      return request({
-        url: "/zfjg/user/findByOrganId/" + id,
-        method: "get",
-        showloading: false,
-        //   loadingType:'loadPart',
-        baseUrlType:  'LAW_SUPERVISE_HOST',
-        cancelToken: setCancelSource()
-      })
-  }
 //   /zfjg/superviseVehicle/findWeighingRecord/{name}
   export function queryListPage(data) {
     return request({
@@ -150,7 +140,7 @@ export function getById(type,id) {
   export function organTreeByCurrUser(){
     return request({
         // url: "/zfjg/queryLike",
-        url: "/system/sys/organ/findOrganPositionTreeByCurrUser",
+        url: "/zfjg/sysOrgan/findOrganPositionTreeByCurrUser",
         // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
         method: "get",
         // params: data,
@@ -159,15 +149,19 @@ export function getById(type,id) {
         cancelToken: setCancelSource()
     });
   }
-  // 获取监管机构详情
-  export function getOrganDetail (id) {
-      return request({
-        url: "/zfjg/organ/findById/"+id,
+
+  // 获取机构树
+  export function organSysTreeByCurrUser(){
+    return request({
+        // url: "/zfjg/queryLike",
+        url: "/system/sys/organ/findOrganPositionTreeByCurrUser",
+        // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
         method: "get",
+        // params: data,
         showloading: false,
         baseUrlType:  'LAW_SUPERVISE_HOST',
         cancelToken: setCancelSource()
-      })
+    });
   }
 
   // 重点监管-车辆列表
@@ -395,3 +389,164 @@ export  function  getCurrentAndNextOrganApi()  {
       cancelToken:  setCancelSource()
     });
   }
+
+export function findImageListByWorkNo(id,workNo){
+    return request({
+        url: "/zfjg/alarmVehicle/findImageListByWorkNo/" + id+"/"+workNo,
+        method: "get",
+        showloading: false,
+        baseUrlType:  'LAW_SUPERVISE_HOST',
+        cancelToken: setCancelSource()
+      });
+}  
+
+//查询重点企业
+export function queryEmphasisEnterprise(data) {
+    return request({
+        url: "/zfjg/emphasis/enterprise/list",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//保存重点企业
+export function saveOrUpdateEmphasisEnterprise (data) {
+    return request({
+        url: "/zfjg/emphasis/enterprise/saveOrUpdate",
+        method: "post",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        data:  data,
+        cancelToken: setCancelSource()
+    })
+}
+//根据ID查询重点企业
+export function findEmphasisEnterpriseById (id) {
+    return request({
+        url: "/zfjg/emphasis/enterprise/findById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//删除重点企业
+export function deleteEmphasisEnterpriseById(id) {
+    return request({
+        url: "/zfjg/emphasis/enterprise/deleteById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+
+//查询重点车辆
+export function queryEmphasisVehicle(data) {
+    return request({
+        url: "/zfjg/emphasis/vehicle/list",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//保存重点车辆
+export function saveOrUpdateEmphasisVehicle (data) {
+    return request({
+        url: "/zfjg/emphasis/vehicle/saveOrUpdate",
+        method: "post",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        data:  data,
+        cancelToken: setCancelSource()
+    })
+}
+//根据ID查询重点车辆
+export function findEmphasisVehicleById (id) {
+    return request({
+        url: "/zfjg/emphasis/vehicle/findById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//删除重点车辆
+export function deleteEmphasisVehicleById(id) {
+    return request({
+        url: "/zfjg/emphasis/vehicle/deleteById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+//查询重点人员
+export function queryEmphasisPerson(data) {
+    return request({
+        url: "/zfjg/emphasis/person/list",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//保存重点人员
+export function saveOrUpdateEmphasisPerson (data) {
+    return request({
+        url: "/zfjg/emphasis/person/saveOrUpdate",
+        method: "post",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        data:  data,
+        cancelToken: setCancelSource()
+    })
+}
+//根据ID查询重点人员
+export function findEmphasisPersonById (id) {
+    return request({
+        url: "/zfjg/emphasis/person/findById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:  'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//删除重点人员
+export function deleteEmphasisPersonById(id) {
+    return request({
+        url: "/zfjg/emphasis/person/deleteById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+//警翼拉流接口
+export function getPeVideoUrl(id) {
+    return request({
+        url: "/zfjg/peState/findUrlById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    })
+}

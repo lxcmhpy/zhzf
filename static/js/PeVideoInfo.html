@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>
+    PDF控件测试网页
+  </title>
+  <style>
+    .video {
+        width: 465px;
+        height: 410px;
+    }
+
+    .stop {
+        width: 75px;
+        height: 35px;
+        text-align: center;
+        line-height: 35px;
+        background: blue;
+        color: #fff;
+        border: 2px solid #ccc;
+        cursor: pointer;
+    }
+
+    .stop:hover {
+        background: #fff;
+        color: #000;
+    }
+</style>
+
+</head>
+
+<body onload="LoadPage()">
+    <!-- 播放视频调用方式 -->
+	<div class="video">
+		<object id="peplayer" classid="clsid:5BA3FF93-FE73-4008-BB7A-04133889BD1E" width="465" height="410">
+			<param name="Mode" value="1" />
+			<param value="transparent" name="wmode">
+		</object>
+	</div>
+    <script language="javascript">
+        var activex = '';
+        
+        function LoadPage() {
+            Playlive(1,'rtsp://58.250.250.106:10554/123456712345707.sdp%0%20%C:/media%C:/media%0%video%%金锁%|%11111110001110111111%');
+        }
+
+		// 视频拉流
+		function Playlive(type, url) {
+			// 视频分频 默认时候台提供，我们也有前端自定义的分频，前端自定义的优先级最高
+			var live_num = 1
+
+			activex = document.getElementById("peplayer");
+			if (activex) {
+				if ((typeof (activex.playsdp) == 'undefined')) {
+
+					console.log("请安装播放器！");
+					return;
+				}
+
+				if (type != 3) { //视频播放	 		
+					//开始播放，此函数创建直播窗口，如果调用了playstop，之后再要播放需要调用一次
+					activex.playbegin();
+					//设置通道 个数（直播窗口个数）支持 1，2，4
+					activex.setchannel(live_num);
+					//重新设置播放器的位置，400是左边距，115是右边距
+					// activex.setorg(400, 115);
+
+					//视频拉流
+                    activex.playsdp(url);
+                    window.opener=null;
+                    window.open('','_self','');
+                    window.close()
+				}
+
+				if (type == 3) { //语音播放
+					activex.playtalk(url);
+				}
+
+				//activex.playstop(); 停止视频直播窗口和进程
+			}
+		}
+    </script>
+
+<div id='myDiv' style="display:inline-block; vertical-align:top;height:740px;width:86%;padding:0;margin:0"></div>
+</body>
+
+</html>

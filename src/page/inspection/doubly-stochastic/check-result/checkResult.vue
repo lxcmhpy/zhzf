@@ -99,7 +99,7 @@
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text" :disabled="!scope.row.objectName">附件管理</el-button>
-              <el-button @click="checkMethod(scope.row)" type="text"  :disabled="!scope.row.objectName">检查</el-button>
+              <el-button @click="checkMethod(scope.row)" type="text" :disabled="!scope.row.objectName">检查</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -332,6 +332,10 @@ export default {
     },
     submitForm(formName, type) {
       this.addForm.taskArea = '省交通运输厅领域'
+      if (this.addForm.checkEndTime < this.addForm.checkStartTime) {
+        this.$message({ type: "error", message: '开始时间必须小于结束时间' });
+        return
+      }
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -383,6 +387,10 @@ export default {
       // this.addForm2.id = ''
       console.log('task', this.addForm2)
       console.log('checkResult', this.addForm2.checkResult)
+      if (this.addForm2.checkEndTime < this.addForm2.checkStartTime) {
+        this.$message({ type: "error", message: '开始时间必须小于结束时间' });
+        return
+      }
       let data = {
         checkEndTime: this.addForm2.checkEndTime,
         checkEvaluate: this.addForm2.checkEvaluate,
@@ -396,7 +404,7 @@ export default {
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.addForm2.taskStatus = '保存'
+            data.taskStatus = '保存'
 
             addCheckResultApi(data).then(
               res => {
@@ -422,8 +430,8 @@ export default {
           }
         });
       } else {
-        this.addForm.taskStatus = '暂存'
-        addTaskApi(this.addForm).then(
+        data.taskStatus = '暂存'
+        addTaskApi(data).then(
           res => {
             console.log(res)
             if (res.code == 200) {
@@ -481,8 +489,8 @@ export default {
             console.log(error)
           }
         )
-      }else{
-         _this.getByMlCaseId(row)
+      } else {
+        _this.getByMlCaseId(row)
       }
       this.dialogFormVisible2 = true
     },

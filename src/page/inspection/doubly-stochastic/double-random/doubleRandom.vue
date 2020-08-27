@@ -98,7 +98,7 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm()">
+      <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm()"  width="60%">
         <el-row>
           <el-col :span="18">
             <div class="random-table-title" style="min-width:100px;height:30px">{{ randomContent }}</div>
@@ -132,16 +132,18 @@
           <el-button type="primary" @click="dialogFormVisible = false">关闭</el-button>
         </div>
       </el-dialog>
-      <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()">
+      <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()"  width="60%">
         <el-table :data="randomResultList" stripe style="width: 100%" height="100%">
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
-          <el-table-column prop="legalPerson" label="检查人员" align="center"></el-table-column>
-          <el-table-column prop="matchExpert" label="检查专家" align="center"></el-table-column>
+          <el-table-column prop="legalPerson" label="法人名称" align="center"></el-table-column>
+          <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
+          <el-table-column prop="matchPerson" label="匹配人员" align="center"></el-table-column>
+          <el-table-column prop="matchExpert" label="匹配专家" align="center"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
           <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="submitForm('addForm')">确 定</el-button> -->
-          <el-button type="primary" @click="dialogFormVisible = false">关闭</el-button>
+          <el-button type="primary" @click="dialogResultVisible = false">关闭</el-button>
 
         </div>
       </el-dialog>

@@ -114,6 +114,7 @@ export default {
             status:'0',  //查询有效的证据
             // current: this.currentPage,
             // size: this.pageSize
+            category:'证据'
         };
         console.log("证据目录参数",data);
         let _this = this

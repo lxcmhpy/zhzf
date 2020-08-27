@@ -43,6 +43,7 @@
                   :accordion="true"
                   :props="myprops"
                   :value="selectOrganId"
+                  filterable
                   @getValue="handleOrgan"
                 ></elSelectTree>
               </el-form-item>
@@ -50,7 +51,7 @@
 
             <div class="item buttonItem">
               &nbsp;
-              <el-button type="primary" size="medium" @click="searchCase">查询</el-button>
+              <el-button type="primary" size="medium" @click="searchCase(1)">查询</el-button>
               <el-button type="primary" size="medium" @click="resetSearchForm">重置</el-button>
               <el-button
                 type
@@ -61,11 +62,6 @@
             </div>
           </div>
           <div :class="{hideSomeSearchClass:hideSomeSearch}">
-            <div class="item">
-              <el-form-item label="下级立案机构">
-                <el-input v-model="caseSearchForm.caseNumber2"></el-input>
-              </el-form-item>
-            </div>
             <div class="item">
               <el-form-item label="当事人" prop="party">
                 <el-input v-model="caseSearchForm.party"></el-input>
@@ -86,12 +82,10 @@
                 <el-input v-model="caseSearchForm.punishLaw"></el-input>
               </el-form-item>
             </div>
-          </div>
-          <div :class="{hideSomeSearchClass:hideSomeSearch}">
             <div class="item">
               <el-form-item label="执法人员" prop="staffId">
                 <!-- <el-input v-model="caseSearchForm.staff"></el-input> -->
-                <el-select v-model="caseSearchForm.staffId" placeholder="请选择">
+                <el-select v-model="caseSearchForm.staffId" filterable clearable placeholder="请选择">
                   <el-option
                     v-for="item in allStaff"
                     :key="item.id"
@@ -101,8 +95,11 @@
                 </el-select>
               </el-form-item>
             </div>
+          </div>
+          <div :class="{hideSomeSearchClass:hideSomeSearch}">
+            
             <div class="item">
-              <el-form-item label="违法行为代码" prop="caseCauseName">
+              <el-form-item label="违法行为" prop="caseCauseName">
                 <el-input v-model="caseSearchForm.caseCauseName"></el-input>
               </el-form-item>
             </div>
@@ -227,6 +224,10 @@ export default {
       majorCaseMoney: "",
       currentRowData: "",
       majorPunishAmountQy:'',
+      currentPage: 1, //当前页
+      pageSize: 10, //pagesize
+      total: 0, //总页数
+
     };
   },
   components: {
@@ -239,7 +240,8 @@ export default {
       this.currentRowData = row;
     },
     //查询列表
-    searchCase() {
+    searchCase(currentPage='') {
+      if(currentPage) this.currentPage = 1;
       this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0];
       this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1];
       let sentData = {

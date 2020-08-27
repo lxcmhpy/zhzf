@@ -240,6 +240,22 @@ export default [
             },
             component: () => import("@/page/product-template/warning/warningManage.vue")
           },
+          {
+            name: "typicalManage",
+            path: "typicalManage",
+            meta: {
+              title: "典型案例管理"
+            },
+            component: () => import("@/page/product-template/typical/typicalManage.vue")
+          },
+          {
+            name: "typicalList",
+            path: "typicalList",
+            meta: {
+              title: "典型案例列表"
+            },
+            component: () => import("@/page/product-template/typical/typicalList.vue")
+          },
         ]
       },
       {
@@ -408,13 +424,31 @@ export default [
         ]
       },
       {
-        name: "electronicCaseFile",
-        path: "/electronicCaseFile",
+        name: "caseFile",
+        path: "/caseFile",
+        component: MainContent,
         meta: {
-          title: "电子案卷"
+          title: "案卷档案"
         },
-        component: () => import("@/page/caseHandle/electronicCaseFile/electronicCaseFileList.vue")
+        children: [
+          {
+            name: "electronicCaseFile",
+            path: "/electronicCaseFile",
+            meta: {
+              title: "电子案卷"
+            },
+            component: () => import("@/page/caseHandle/electronicCaseFile/electronicCaseFileList.vue")
+          },{
+            name: "offlinefiles",
+            path: "/offlinefiles",
+            meta: {
+              title: "线下案卷"
+            },
+            component: () => import("@/page/caseHandle/electronicCaseFile/offlinefiles.vue")
+          }
+        ]
       },
+      
       {
         name: "自由裁量权管理",
         path: "discretion",

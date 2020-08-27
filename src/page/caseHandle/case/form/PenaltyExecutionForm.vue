@@ -608,6 +608,9 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       iLocalStroage.removeItem("currentDocDataId");
       if (row.name.indexOf('分期（延期）缴纳罚款通知书') == false && row.note == '') {
         // console.log("弹窗")
@@ -638,6 +641,9 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) {
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -675,8 +681,8 @@ export default {
           this.findPaymentVoucher(item, false);
         })
       }
-      // this.changeStepPay()
-      // this.changePerformance()
+      this.changeStepPay()
+      this.changePerformance()
 
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     },

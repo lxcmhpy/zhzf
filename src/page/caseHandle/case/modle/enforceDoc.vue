@@ -158,7 +158,7 @@ export default {
     casePageFloatBtns
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId']) },
+  computed: { ...mapGetters(['caseId','currentFileData']) },
   data() {
     return {
       docData: {
@@ -352,7 +352,7 @@ export default {
         this.click();
       } else {
         // this.getDocDetailById(this.$route.params.docDataId)
-        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        let currentDocDataId = this.currentFileData.docDataId;
         if(currentDocDataId){
           await this.getDocDetailById(currentDocDataId)
         }else{

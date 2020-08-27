@@ -19,13 +19,8 @@
               </el-col>
               <el-col :span="5">
                 <el-form-item label-width="10px">
-                  <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                  <el-button
-                    type="primary"
-                    size="medium"
-                    icon="el-icon-refresh-left"
-                    @click="reset"
-                  ></el-button>
+                  <el-button size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
+                  <el-button size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -34,7 +29,7 @@
       </div>
       <el-row style="margin-left:15px;">
         <el-button type="primary" size="medium" icon="el-icon-plus" @click="onAdd">新增</el-button>
-        <el-button type="warning" size="medium" icon="el-icon-delete" @click="onDelete">删除</el-button>
+        <el-button type="success" size="medium" icon="el-icon-delete" @click="onDelete">删除</el-button>
       </el-row>
       <div class="tablePart">
         <el-table
@@ -252,6 +247,8 @@ export default {
       this.$refs["handleForm"].validate((valid) => {
         if (valid) {
           debugger;
+          _this.form.startNumber = prefixIntrger(_this.form.startNumber, 8);
+          _this.form.endNumber = prefixIntrger(_this.form.endNumber, 8);
           saveOrUpdateNumber(_this.form).then(
             (res) => {
               _this.$message({ type: "success", message: "操作成功!" });
@@ -320,4 +317,21 @@ export default {
     this.getOidTreeData();
   },
 };
+
+function prefixIntrger(num, length) {
+  return (Array(length).join("0") + num).slice(-length);
+}
 </script>
+<style>
+.el-button--success {
+  color: #fff;
+  background-color: #1aa08e;
+  border-color: #1aa08e;
+}
+.el-button--success:focus,
+.el-button--success:hover {
+  background: #30b8a5;
+  border-color: #30b8a5;
+  color: #fff;
+}
+</style>

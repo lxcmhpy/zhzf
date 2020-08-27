@@ -109,7 +109,7 @@
           </span>，
         </p>
         <p>
-          <input type="checkbox" name="measure" value="1" v-model="checknames" @change="click">1.本机关于
+          <input type="checkbox" name="measure" value="1" v-model="docData.checknames" @change="click">1.本机关于
           <span>
             <el-form-item :prop="disabledOne?'placeholder':'serviceTime'" class="pdf_datapick">
               <el-date-picker v-model="docData.serviceTime" v-bind:disabled="disabledOne" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
@@ -133,7 +133,7 @@
           </span>的规定，
         </p>
         <p>
-          <input type="checkbox" name="measure" value="2" v-model="checknames" @change="click">2.需要立即清除道路、河道、航道或者公共场所的遗洒物、障碍物或者污染物，因你（单位）不能清除，依据《中华人民共和国行政强制法》第五十二条以及
+          <input type="checkbox" name="measure" value="2" v-model="docData.checknames" @change="click">2.需要立即清除道路、河道、航道或者公共场所的遗洒物、障碍物或者污染物，因你（单位）不能清除，依据《中华人民共和国行政强制法》第五十二条以及
           <span>
             <el-form-item :prop="disabledTwo?'placeholder':'punishBasisTwo'" class="width120">
               <el-input v-model="docData.punishBasisTwo" type="textarea" v-bind:class="{ over_flow:docData.punishBasisTwo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" v-bind:disabled="disabledTwo" :maxLength='maxLength'></el-input>
@@ -316,6 +316,7 @@ export default {
         reconsiderOrgan: '',
         enforceOrgan: '',
         makeDate: '',
+        checknames: [],
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -413,7 +414,7 @@ export default {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'enforceInsteadDoc-print',
       },
-      checknames: [],
+      
       disabledOne: true,
       disabledTwo: true,
 
@@ -475,7 +476,7 @@ export default {
         this.$message("请选择代履行人");
         return
       }
-      this.docData.checknames = this.checknames;
+      // this.docData.checknames = this.docData.checknames;
       // this.docData.peoples=this.peoples;
       console.log('this.docData', this.docData)
       this.com_addDocData(handleType, "docForm");
@@ -487,17 +488,17 @@ export default {
       }
     },
     click() {
-      console.log('this.checknames',this.checknames)
-      if (this.checknames.length > 1) {
-        this.checknames.shift();
+      console.log('this.docData.checknames',this.docData.checknames)
+      if (this.docData.checknames.length > 1) {
+        this.docData.checknames.shift();
       }
-      if (this.checknames == '1') {
+      if (this.docData.checknames == '1') {
         this.disabledOne = false;
         this.disabledTwo = true;
         this.docData.punishBasisTwo='';
         this.docData.caseNumberCopy=this.defultData.caseNumberCopy
         console.log('切换',this.docData.caseNumberCopy,this.defultData.caseNumberCopy)
-      } else if (this.checknames == '2') {
+      } else if (this.docData.checknames == '2') {
         this.disabledOne = true;
         this.disabledTwo = false;
 

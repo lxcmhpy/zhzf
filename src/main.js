@@ -14,6 +14,7 @@ import { router } from "./router/index";
 //引入全局变量
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
+import {BASIC_DATA_QH} from '@/common/js/BASIC_DATA_QH.js';
 
 import { messageOne } from '@/common/js/resetMessage';
 
@@ -28,6 +29,7 @@ Vue.prototype.$qs = qs;
 //注册全局变量
 Vue.prototype.BASIC_DATA_SYS = BASIC_DATA_SYS;
 Vue.prototype.BASIC_DATA_JX = BASIC_DATA_JX;
+Vue.prototype.BASIC_DATA_QH = BASIC_DATA_QH;
 
 
 

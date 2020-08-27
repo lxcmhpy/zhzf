@@ -16,7 +16,7 @@
       <i class="iconfont law-save"></i>
       <br/>归档
     </el-button>
-    <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]">
+    <el-button type="primary" @click="saveDataBtn(1)" v-if="formOrDocData.showBtn[1]"> 
       <i class="iconfont law-save"></i>
       <br/>保存
     </el-button>
@@ -36,6 +36,13 @@
       <i class="iconfont law-back"></i>
       <br/>返回
     </el-button>
+    <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改-->
+    <!-- <el-button type="primary" @click="backWenshuBtn" v-if="this.$route.name=='case_handle_myPDF'
+    &&currentFileData.path!='case_handle_establish'&&currentFileData.path!='case_handle_finishCaseReport'
+    &&approvalState!='approvaling'">
+      <i class="iconfont law-edit"></i>
+      <br/>修改
+    </el-button>  -->
     <img src="" id="show">
   </div>
 </template>
@@ -56,7 +63,7 @@
     },
     props: ['formOrDocData', 'storagePath'],
     mixins: [mixinGetCaseApiList],
-    computed: {...mapGetters(['caseId', 'docId','showQZBtn'])},
+    computed: {...mapGetters(['caseId', 'docId','showQZBtn','currentFileData','approvalState'])},
     methods: {
       //   打印方法
       async printContent() {
@@ -260,7 +267,31 @@
       },
       backHuanjieBtn() {
         this.$emit('backHuanjie');
-      }
+      },
+      backWenshuBtn(){
+        // 文书回退
+        this.$confirm('修改操作将替换掉当前文书（包括签名签章），','提示',{
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: 'el-icon-question',
+          customClass: 'custom-confirm'
+        }).then(() => {
+          console.log('回退')
+          console.log('currentFileData',this.currentFileData)
+          this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+          this.$router.push({
+            name: this.currentFileData.path,
+            params: {
+              id: this.currentFileData.id,
+              //案件ID
+              caseBasicinfoId: this.currentFileData.caseBasicinfoId,
+              docId: this.currentFileData.docId,
+              url: this.currentFileData.url
+            }
+          }); 
+
+            }).catch(() => {});
+            }
     },
     mounted() {
       //   this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='

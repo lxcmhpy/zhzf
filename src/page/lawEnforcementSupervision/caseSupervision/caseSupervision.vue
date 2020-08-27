@@ -50,7 +50,7 @@
 
             <div class="item buttonItem">
               &nbsp;
-              <el-button type="primary" size="medium" @click="searchCase">查询</el-button>
+              <el-button type="primary" size="medium" @click="searchCase(1)">查询</el-button>
               <el-button type="primary" size="medium" @click="resetSearchForm">重置</el-button>
               <el-button type="primary" size="medium" @click="showCaseCheck">案件抽查</el-button>
               <el-button
@@ -62,11 +62,11 @@
             </div>
           </div>
           <div :class="{hideSomeSearchClass:hideSomeSearch}">
-            <div class="item">
+            <!-- <div class="item">
               <el-form-item label="下级立案机构">
                 <el-input v-model="caseSearchForm.caseNumber2"></el-input>
               </el-form-item>
-            </div>
+            </div> -->
             <div class="item">
               <el-form-item label="当事人" prop="party">
                 <el-input v-model="caseSearchForm.party"></el-input>
@@ -87,8 +87,6 @@
                 <el-input v-model="caseSearchForm.punishLaw"></el-input>
               </el-form-item>
             </div>
-          </div>
-          <div :class="{hideSomeSearchClass:hideSomeSearch}">
             <div class="item">
               <el-form-item label="执法人员" prop="staffId">
                 <el-select v-model="caseSearchForm.staffId" placeholder="请选择">
@@ -101,13 +99,16 @@
                 </el-select>
               </el-form-item>
             </div>
+          </div>
+          <div :class="{hideSomeSearchClass:hideSomeSearch}">
+            
             <div class="item">
-              <el-form-item label="违法行为代码" prop="caseCauseName">
+              <el-form-item label="违法行为" prop="caseCauseName">
                 <el-input v-model="caseSearchForm.caseCauseName"></el-input>
               </el-form-item>
             </div>
             <div class="item">
-              <el-form-item label="受案时间">
+              <el-form-item label="受案时间" style="display:inline-block">
                 <el-date-picker
                   v-model="acceptTimeArray"
                   type="daterange"
@@ -117,8 +118,24 @@
                   value-format="yyyy-MM-dd HH:mm:ss"
                   format="yyyy-MM-dd"
                   :default-time="['00:00:00', '23:59:59']"
-                ></el-date-picker>
+                ></el-date-picker> 
+                <!-- <el-date-picker
+                  v-model="caseSearchForm.acceptStartTime"
+                  type="date"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker> -->
               </el-form-item>
+              <!-- <el-form-item label="至" style="display:inline-block">
+                <el-date-picker
+                  v-model="caseSearchForm.acceptEndTime"
+                  type="date"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-form-item> -->
             </div>
             <div class="item">
               <el-form-item label="案件状态">
@@ -213,7 +230,9 @@ export default {
         illegalLaw: "",
         partyType:'',
         sjNum:'',
-        caseNumber2:''
+        caseNumber2:'',
+        acceptStartTime:'',
+        acceptEndTime:''
       },
       hideSomeSearch: true,
       tableData: [],
@@ -239,7 +258,8 @@ export default {
   mixins: [caseSupervisionCommonMixins],
   methods: {
     //查询列表
-    searchCase() {
+    searchCase(currentPage='') {
+      if(currentPage) this.currentPage = 1;
       this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0];
       this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1];
       let sentData = {
