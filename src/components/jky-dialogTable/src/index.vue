@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :style="`width:${width}`"
+    :width="width"
     class="jky-dialogTable"
     :visible.sync="dialogVisible"
     :close-on-click-modal="false"
@@ -24,6 +24,7 @@
       :isNumber="isNumber"
       :url="url"
       :baseUrlType="baseUrlType"
+      :isPagination="isPagination"
       @handleClick="handleClick"
       @handleChange="handleChange" />
     <div slot="footer" class="dialog-footer">
@@ -42,7 +43,7 @@ export default {
   props: {
     width: {
       type: String,
-      default: '70%'
+      default: '1000px'
     },
     title: {
       type: String,
@@ -51,6 +52,10 @@ export default {
     dialogVisible: {
       type: Boolean,
       default: false
+    },
+    isPagination: {
+      type: Boolean,
+      default: true
     },
     inputList: {
       type: Array,
