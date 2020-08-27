@@ -5,51 +5,51 @@
         <div class="doc_topic">收费凭据表</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
-            <td rowspan="2">案由</td>
-            <td rowspan="2" colspan="8" class="color_DBE4EF">
-              <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+            <td colspan="4" class="color_DBE4EF">
+              <p>
+                案由:<el-form-item style="width: calc(100% - 45px);" prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
                 <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
+              </p>
             </td>
           </tr>
-          <tr></tr>
           <tr>
-            <td>
+            <td  style="width:40px">
               <p>案发时间</p>
             </td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])" class="pdf_datapick">
                 <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td>案发地点</td>
-            <td colspan="8" class="color_DBE4EF">
+            <td >案发地点</td>
+            <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payTime" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
                 <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td>缴费单位</td>
-            <td colspan="8" class="color_DBE4EF">
+            <td >缴费单位</td>
+            <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payParty" :rules="fieldRules('payParty',propertyFeatures['payParty'])">
                 <el-input type="textarea" v-model="docData.payParty" :disabled="fieldDisabled(propertyFeatures['payParty'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td>收费时间</td>
-            <td colspan="8" class="color_DBE4EF">
+            <td >收费时间</td>
+            <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payTime" :rules="fieldRules('payTime',propertyFeatures['payTime'])">
                 <el-date-picker v-model="docData.payTime" :disabled="fieldDisabled(propertyFeatures['payTime'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
           </tr>
           <tr>
-            <td>缴费单位</td>
-            <td colspan="8" class="color_DBE4EF">
+            <td colspan="3" >收费凭证号数</td>
+            <td  class="color_DBE4EF">
               <el-form-item prop="payNumber" :rules="fieldRules('payNumber',propertyFeatures['payNumber'])">
                 <el-input type="textarea" v-model="docData.payNumber" :disabled="fieldDisabled(propertyFeatures['payNumber'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
@@ -57,33 +57,32 @@
           </tr>
           <tr style="height: 400px;">
             <td>
-              <p class="center_similar">收</p>
-              <p class="center_similar">费</p>
-              <p class="center_similar">票</p>
-              <p class="center_similar">据</p>
-              <p class="center_similar">复</p>
-              <p class="center_similar">印</p>
-              <p class="center_similar">件</p>
+              <p colspan="3">收费票据复印件</p>
             </td>
-            <td colspan="8" class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
+            <td colspan="3"  class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
               <!-- <div class="pdf_seal">
                 <p>粘贴人</p>
               </div> -->
+              <div>
+                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="uploadImg">
+                  <img style="width:100%;height:100%" v-if="docData.picturesUrl" :src="docData.picturesUrl" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </div>
             </td>
           </tr>
           <tr>
-            <td>
-              <p class="center_similar">备</p>
-              <p class="center_similar">注</p>
+            <td >
+              <p colspan="3">备注</p>
               <!-- <p>备注</p> -->
             </td>
-            <td colspan="8" class="color_DBE4EF table_seal">
-              <el-form-item prop="note"  :rules="fieldRules('note',propertyFeatures['note'])">
-                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+            <td colspan="3" class="color_DBE4EF table_seal">
+              <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'])">
+                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 4, maxRows: 4}" maxlength="50" placeholder="\"></el-input>
               </el-form-item>
-              <div class="pdf_seal">
+              <!-- <div class="pdf_seal">
                 <p>粘贴人:</p>
-              </div>
+              </div> -->
             </td>
           </tr>
         </table>
@@ -104,6 +103,11 @@ import { mapGetters } from "vuex";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 // import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_QH } from '@/common/js/BASIC_DATA_QH.js';
+import { uploadCommon } from "@/api/upload.js";
+import {
+  queryResizeImageApi
+} from "@/api/caseHandle";
+import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
@@ -116,17 +120,19 @@ export default {
         party: "",
         partySex: '',
         partyAge: "",
-        payNumber:'',
-        payTime:'',
-        payParty:'',
-        afdd:'',
-        caseName:'',
-        note:'',
+        payNumber: '',
+        payTime: '',
+        payParty: '',
+        afdd: '',
+        caseName: '',
+        note: '',
+        picturesUrl: '',
+        picList: '',
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId:'ce523795a2165d15a1c3d6cf29b2b18b',     //文书类型ID
+        caseDoctypeId: 'dd12012464db04f33c8d31c658976fa9',     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
@@ -175,6 +181,7 @@ export default {
       isParty: true, //当事人类型为个人
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
+      imageUrl: ''
     };
   },
   components: {
@@ -252,6 +259,55 @@ export default {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 10;
+
+      if (!isJPG && !isPNG) {
+        this.$message.error('上传图片只能是 jpg/png 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 10MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    //上传图片
+    uploadImg(param) {
+        var fd = new FormData()
+        fd.append("file", param.file);
+        fd.append('caseId', this.caseId)
+        fd.append('docId', this.$route.params.docId);
+        // fd.append("evName", param.file.name);
+        fd.append("evType", param.file.type);
+        uploadCommon(fd).then(
+          res => {
+            console.log(res);
+            this.getBase64(res.data[0].storageId)
+            this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data[0].storageId
+          },
+          error => {
+          }
+        );
+
+    },
+    getBase64(storageId) {
+      queryResizeImageApi(storageId).then(res => {
+        console.log('获取base64', res);
+        if (res === false) {   //生成失败
+          this.$message.error('生成base64码失败！')
+          return;
+        } else {
+          // this.docData.pictures1 = res.data
+          let data = [{ 'pictures-1': res.data }]
+          this.docData.picList = JSON.stringify(data)
+          console.log('this.docData.pictures1', this.docData.picList)
+        }
+      }).catch(err => { console.log(err) })
+    },
   },
   created() {
     // this.setData();
@@ -273,3 +329,30 @@ export default {
   }
 }
 </style>
+<style>
+.avatar-uploader .el-upload {
+  /* border: 1px dashed #d9d9d9; */
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  margin-left: 150px;
+  font-size: 28px;
+  color: #8c939d;
+  width: 400px;
+  height: 400px;
+  line-height: 300px;
+  text-align: center;
+}
+.avatar {
+  /* width: 178px;
+  height: 178px; */
+  display: block;
+}
+</style>
+

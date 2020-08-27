@@ -124,6 +124,7 @@ export default {
               {name: '执法机构', type: 1},
               {name: '执法车辆', type: 2},
               {name: '执法船舶', type: 3},
+              {name: '事件地点', type: 5},
               {name: '非现场站点', type: 4},
             ]
           },
