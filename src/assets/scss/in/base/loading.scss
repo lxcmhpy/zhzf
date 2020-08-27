@@ -1,0 +1,180 @@
+// by:jingli
+// 全局加载：loadFull
+// 局部加载：loadPart
+@import "./variables.scss";
+
+@mixin loading($load: "loadFull") {
+    .cartoon-full {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 152px;
+        height: 90px;
+        opacity: 1;
+        z-index: 1003;
+        border-radius: 10px;
+        /*设置关键帧的播放时间*/
+        animation: turns2 0.8s infinite linear;
+
+        img {
+            width: 100px;
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            margin-left: -50px;
+            animation: spin1 1s linear infinite;
+            transform-origin: center;
+        }
+
+        img.rotate {
+            animation: spin1 1s linear infinite;
+        }
+
+        p {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            bottom: 25px;
+            color: #111;
+            font-size: 14px;
+        }
+
+        @keyframes turns2 {
+            from {
+                background: url("/static/images/gif/1.png");
+            }
+
+            50% {
+                background: url("/static/images/gif/2.png");
+            }
+
+            100% {
+                background: url("/static/images/gif/3.png");
+            }
+        }
+
+        @keyframes spin1 {
+            from {
+                transform: rotate(0);
+            }
+
+            70% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    }
+
+    .cartoon-part {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        width: 152px;
+        height: 90px;
+        opacity: 1;
+        z-index: 1003;
+        border-radius: 10px;
+        text-align: center;
+
+        img {
+            animation: changeCar 2s infinite linear;
+        }
+
+        p {
+            color: #4573d0;
+            font-size: 13px;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+        }
+
+        @keyframes changeCar {
+            0% {
+                width: 0px;
+                height: 0px;
+                opacity: 0;
+            }
+
+            10% {
+                width: 11px;
+                height: 8px;
+                opacity: 0.2;
+            }
+
+            20% {
+                width: 22px;
+                height: 16px;
+                opacity: 0.2;
+            }
+
+            40% {
+                width: 33px;
+                height: 24px;
+                opacity: 0.6;
+            }
+
+            70% {
+                width: 44px;
+                height: 32px;
+                opacity: 0.8;
+            }
+
+            100% {
+                width: 55px;
+                height: 40px;
+                opacity: 1;
+            }
+        }
+    }
+
+    @if $load== "loadFull" {
+        .cartoon {
+            display: none;
+        }
+
+        // 全屏，则半屏卡通动画隐藏
+        .cartoon-full {
+            display: block;
+        }
+    } @else if $load== "loadProgress" {
+        .cartoon {
+            display: none;
+        }
+        .cartoon-part {
+            display: block;
+            p {
+                display: none;
+            }
+        }
+        .progress-bar {
+            display: block;
+
+            .el-progress-bar {
+                // margin-left: -200px;
+            }
+
+            .el-progress-bar__inner {
+                // border-radius: 0px;
+            }
+
+            .el-progress-bar__outer {
+                // border-radius: 0px;
+                // color: #4573d0;
+                background-color: rgb(#636363, 0.7);
+            }
+        }
+    } @else {
+        .cartoon {
+            display: none;
+        }
+
+        .cartoon-part {
+            display: block;
+        }
+    }
+}

@@ -53,7 +53,7 @@
         <p>
           如不服本决定，可以在六十日内依法向
           <span>
-            <el-form-item prop="reconsiderationOrgan" >
+            <el-form-item prop="reconsiderationOrgan">
               <!-- <el-input v-model="formData.reconsiderationOrgan" :maxLength='maxLength' ></el-input> -->
               <el-select v-model="formData.reconsiderationOrgan" @change="changeType">
                 <el-option v-for="(item,index) in reconsiderationOptions" :key="index" :label="item" :value="item"></el-option>
@@ -210,21 +210,21 @@ export default {
       this.$refs.overflowInputRef.showModal(0, "", this.maxLengthOverLine);
     },
     setData() {
+      let _this = this
       if (this.inspectionFileId) {
         getDocumentById(this.inspectionFileId).then(
           res => {
             if (res.code == 200) {
-              this.docData = res.data
-              if (this.docData.docContent) {
-                this.formData = JSON.parse(this.docData.docContent)
-                if (!this.formData.docContent.party) {
-                  this.formData.party = this.docData.party || ''
-                  console.log('this.formData.party', this.formData.party)
-                  console.log('this.docData.party', this.docData.party)
-
-                }
+              _this.docData = res.data
+              if (_this.docData.docContent) {
+                _this.formData = JSON.parse(_this.docData.docContent)
               }
+              if (!_this.formData.party) {
+                _this.formData.party = _this.docData.party || ''
+                console.log('this.formData.party', _this.formData.party)
+                console.log('this.docData.party', _this.docData.party)
 
+              }
               console.log('this.formData', this.formData)
             } else {
               this.$message.error(res.msg);
@@ -238,7 +238,7 @@ export default {
     },
     // 提交表单
     saveData(handleType) {
-      let _this=this
+      let _this = this
       //参数  提交类型 、
       // this.printContent();
       this.$set(this.docData, 'docContent', JSON.stringify(this.formData))
@@ -362,8 +362,8 @@ export default {
             _this.enforcementOptions.push(organData.enforcementOrgan2)
           }
           //默认显示
-          _this.formData.reconsiderationOrgan =_this.formData.reconsiderationOrgan?_this.formData.reconsiderationOrgan:_this.reconsiderationOptions[0];
-          _this.formData.litigationOrgan =_this.formData.litigationOrgan?_this.formData.litigationOrgan:_this.enforcementOptions[0];
+          _this.formData.reconsiderationOrgan = _this.formData.reconsiderationOrgan ? _this.formData.reconsiderationOrgan : _this.reconsiderationOptions[0];
+          _this.formData.litigationOrgan = _this.formData.litigationOrgan ? _this.formData.litigationOrgan : _this.enforcementOptions[0];
 
         },
         err => {
@@ -385,7 +385,7 @@ export default {
         // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
       });
     },
-    changeType(){
+    changeType() {
       this.$forceUpdate()
     }
   },

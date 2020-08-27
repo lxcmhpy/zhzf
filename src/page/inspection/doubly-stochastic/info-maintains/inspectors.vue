@@ -1,5 +1,5 @@
 <template>
-  <div class="height100">
+  <div class="height100" id="inspectorBox">
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
       <div class="handlePart el-form-bottom0">
         <div class="search toggleBox search-mini" style="width:100%">
@@ -125,7 +125,7 @@
                 <el-col :span="12">
                   <el-form-item label="性别：">{{personInfoDetailForm.sexName}}</el-form-item>
                 </el-col>
-                
+
                 <el-col :span="12">
                   <el-form-item label="民族：">{{personInfoDetailForm.nationName}}</el-form-item>
                 </el-col>
@@ -140,8 +140,7 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item
-                    label="政治面貌：">{{personInfoDetailForm.politicalStatusName}}</el-form-item>
+                  <el-form-item label="政治面貌：">{{personInfoDetailForm.politicalStatusName}}</el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="用户职务：">{{personInfoDetailForm.postName}}</el-form-item>
@@ -157,12 +156,10 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item
-                    label="入党日期：">{{personInfoDetailForm.admissionDate}}</el-form-item>
+                  <el-form-item label="入党日期：">{{personInfoDetailForm.admissionDate}}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item
-                    label="参加执法工作日期：">{{personInfoDetailForm.enfoceDate}}</el-form-item>
+                  <el-form-item label="参加执法工作日期：">{{personInfoDetailForm.enfoceDate}}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
@@ -170,18 +167,15 @@
                   <el-form-item label="毕业学校：">{{personInfoDetailForm.school}}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item
-                    label="毕业证书编号：">{{personInfoDetailForm.graduationNo}}</el-form-item>
+                  <el-form-item label="毕业证书编号：">{{personInfoDetailForm.graduationNo}}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item
-                    label="分配渠道：">{{personInfoDetailForm.disChannelName}}</el-form-item>
+                  <el-form-item label="分配渠道：">{{personInfoDetailForm.disChannelName}}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item
-                    label="人员编制：">{{personInfoDetailForm.staffingName}}</el-form-item>
+                  <el-form-item label="人员编制：">{{personInfoDetailForm.staffingName}}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
@@ -194,28 +188,23 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item
-                    label="资格证书编号：">{{personInfoDetailForm.qualificationNo}}</el-form-item>
+                  <el-form-item label="资格证书编号：">{{personInfoDetailForm.qualificationNo}}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item
-                    label="现持省内执法证号：">{{personInfoDetailForm.provinceNo}}</el-form-item>
+                  <el-form-item label="现持省内执法证号：">{{personInfoDetailForm.provinceNo}}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item
-                    label="现持部级执法证号：">{{personInfoDetailForm.ministerialNo}}</el-form-item>
+                  <el-form-item label="现持部级执法证号：">{{personInfoDetailForm.ministerialNo}}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item
-                    label="现持海事执法证号：">{{personInfoDetailForm.maritimeNo}}</el-form-item>
+                  <el-form-item label="现持海事执法证号：">{{personInfoDetailForm.maritimeNo}}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item
-                    label="执法岗位：">{{personInfoDetailForm.stationName}}</el-form-item>
+                  <el-form-item label="执法岗位：">{{personInfoDetailForm.stationName}}</el-form-item>
                 </el-col>
               </el-row>
             </div>
@@ -402,22 +391,24 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
-<style lang="scss">
-.inspector-left {
-  float: left;
-  border-right: 1px solid #e4e7ed;
-  box-sizing: border-box;
-}
-.inspector-center {
-  width: 40px;
-  text-align: center;
-}
-.inspection-center-btn {
-  position: relative;
-  top: 47%;
-  cursor: pointer;
-}
-.fullscreen .el-form-item {
-  margin-bottom: 0;
+<style lang="scss" >
+#inspectorBox {
+  .inspector-left {
+    float: left;
+    border-right: 1px solid #e4e7ed;
+    box-sizing: border-box;
+  }
+  .inspector-center {
+    width: 40px;
+    text-align: center;
+  }
+  .inspection-center-btn {
+    position: relative;
+    top: 47%;
+    cursor: pointer;
+  }
+  .el-form-item {
+    margin-bottom: 0;
+  }
 }
 </style>

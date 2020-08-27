@@ -1,0 +1,490 @@
+@import "../in/base/variables.scss";
+
+.departOrUserTree {
+    width: 20%;
+    height: 100%;
+    float: left;
+    background: #F5F7FB;
+    box-sizing: border-box;
+    padding: 20px 0 20px 20px;
+    border-right: 1px solid #EEEEEE;
+
+    .el-input {
+        padding-right: 20px;
+        box-sizing: border-box;
+    }
+
+    .el-tree {
+        background: #F5F7FB;
+    }
+
+    .treeBox {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    p {
+        line-height: 30px;
+    }
+
+    .custom-tree-node {
+        span {
+            i {
+                color: $cats-blue0074F5-color;
+                margin-right: 5px;
+            }
+        }
+
+        .hasMarginLeft {
+            margin-left: 2px;
+        }
+    }
+
+    .searchDepartBox {
+        margin: 10px 0;
+
+        input {
+            height: 36px;
+        }
+
+        .el-input-group__append {
+            padding: 0 15px;
+            background: #eee;
+        }
+    }
+
+}
+
+.departTable {
+    width: 80%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    padding: 20px;
+    background: #fff;
+    overflow-y: scroll;
+
+    p {
+        line-height: 30px;
+
+        .editSelectNode {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    }
+
+    .handelBtn {
+        overflow: hidden;
+        margin-bottom: 20px;
+        margin-top: 10px;
+
+        &>div:nth-child(1) {
+            float: left;
+            line-height: 32px;
+            color: #5F6370;
+        }
+
+        &>div:nth-child(2) {
+            float: right;
+
+            &>div {
+                float: left;
+            }
+
+            .el-dropdown__caret-button {
+                padding-top: 9px;
+            }
+        }
+
+        .handelBtnDel {
+            margin-left: 10px;
+        }
+
+    }
+}
+
+.addOrganClass {
+    .item {
+        width: 48%;
+        position: relative;
+
+        .errorInput {
+            position: absolute;
+            top: 44px;
+            left: 100px;
+            color: #F56C6C;
+            font-size: 12px;
+        }
+    }
+
+    .part {
+        overflow: hidden;
+
+        &>div.item:nth-child(odd) {
+            float: right;
+        }
+
+        &>div.item:nth-child(even) {
+            float: left;
+        }
+
+        .titleP {
+            font-size: 16px;
+            padding-left: 4px;
+            border-left: 4px solid $cats-blue0074F5-color;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+    }
+
+}
+
+.errorTipForm {
+    .item {
+        position: relative;
+
+        .errorInput {
+            position: absolute;
+            top: 44px;
+            left: 80px;
+            color: #F56C6C;
+            font-size: 12px;
+        }
+    }
+}
+
+.demo-form-inline {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#userBox {
+    .userSearchPart {
+        overflow: hidden;
+
+        &>div {
+            float: left;
+        }
+
+        &>div:nth-child(1),
+        &>div:nth-child(2),
+        &>div:nth-child(3),
+        &>div:nth-child(4) {
+            width: 17%;
+        }
+
+        &>div:nth-child(5) {
+            width: 22%;
+        }
+
+        &>div:last-child {
+            width: 10%;
+
+            button {
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .userSearchPart:nth-child(2) {
+        overflow: hidden;
+
+        &>div {
+            float: right;
+        }
+
+        &>div:nth-child(1) {
+            width: 22%;
+            margin-left: 10px;
+
+            button {
+                margin-top: 5px;
+            }
+        }
+
+        &>div:nth-child(2) {
+            width: 25%;
+        }
+    }
+}
+
+#menuBox {
+    padding-top: 50px;
+
+    .handlePart {
+        width: 100%;
+        height: 50px;
+        top: 0;
+
+        .leftTitle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .rightTitle {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+        }
+    }
+}
+
+#logBox {
+    padding-top: 130px;
+}
+
+.zfml {
+    width: 30%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    padding: 20px;
+    padding-left: 20px;
+    border-right: 1px solid #EEEEEE;
+
+    .el-tree {
+        background: #F5F7FB;
+    }
+
+    .treeBox {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    p {
+        line-height: 30px;
+    }
+
+    .custom-tree-node {
+        span {
+            i {
+                color: $cats-blue0074F5-color;
+                margin-right: 5px;
+            }
+        }
+
+        .hasMarginLeft {
+            margin-left: 2px;
+        }
+    }
+
+    .searchDepartBox {
+        margin: 10px 0;
+
+        input {
+            height: 36px;
+        }
+
+        .el-input-group__append {
+            padding: 0 15px;
+            background: #eee;
+        }
+    }
+
+}
+
+.caseType {
+    width: 50%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    padding: 20px;
+    padding-left: 20px;
+    border-right: 1px solid #EEEEEE;
+
+    .el-tree {
+        background: #F5F7FB;
+    }
+
+    .treeBox {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    p {
+        line-height: 30px;
+    }
+
+}
+
+
+.el-table_column_right_1 {
+    text-align: right;
+    width: 260px;
+}
+
+.el-table_column_left_1 {
+    text-align: left;
+    width: 260px;
+}
+
+.el-table_column_left {
+    text-align: left;
+}
+
+.el-table_column_right {
+    text-align: right;
+}
+
+.el-table_column_center {
+    text-align: center;
+    height: 55px;
+}
+
+.el-table tr {
+    height: 35px;
+}
+
+.el-table td {
+    width: 240px;
+    height: 40px;
+}
+
+.el-select>.el-input el-input--suffix {
+    width: 202px;
+}
+
+.el-tabs__content {
+    margin-top: -15px;
+}
+
+.cats-layout .el-table .el-table__header {
+    border-top: 0px;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 400px;
+    height: 260px;
+    line-height: 260px;
+    text-align: center;
+}
+
+.avatar {
+    width: 400px;
+    height: 260px;
+    display: block;
+}
+
+.titleflag {
+    width: 4px;
+    height: 22px;
+    margin-right: 8px;
+    display: inline-block;
+    background: #4573D0;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 35px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+
+    >.font {
+        display: flex;
+        align-items: center;
+    }
+}
+
+// 证明材料上传
+.upload-material {
+    display: inline-block;
+    margin-left: 35px;
+
+    .el-upload-list--picture-card {
+        display: block;
+        width: 940px;
+
+        .el-upload-list__item {
+            width: 412px;
+            height: 240px;
+            margin-right: 40px;
+            background: rgba(216, 216, 216, 1);
+            border: 1px solid rgba(216, 216, 216, 1);
+
+            .el-upload-list-action {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                height: 34px;
+                line-height: 34px;
+                background: rgba(0, 0, 0, 1);
+                opacity: 0.57;
+                bottom: 0;
+                position: absolute;
+                padding: 0 10px;
+                box-sizing: border-box;
+                color: #fff;
+
+                .edit-select-file {
+                    display: flex;
+                    align-items: center;
+
+                    .item-handle-btn {
+                        cursor: pointer;
+                        margin-left: 10px;
+                    }
+
+                    >>>.el-upload--picture-card {
+                        width: auto;
+                        height: auto;
+                        background: none;
+                        border: none;
+                        line-height: 34px;
+                    }
+                }
+
+                .item-name {
+                    display: inline-block;
+                    width: 70%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+
+            &:hover .el-upload-list-action {
+                display: flex;
+            }
+        }
+    }
+}
+
+.upload-person-material {
+    >>>.el-upload--picture-card {
+        box-sizing: border-box;
+        border: none;
+        width: 136px;
+        height: 32px;
+        line-height: 32px;
+        margin: 18px auto;
+
+        .el-button {
+            width: 100%;
+            background: linear-gradient(180deg, rgba(248, 248, 248, 1) 0%, rgba(238, 238, 238, 1) 100%);
+            border: 1px solid rgba(221, 221, 221, 1);
+            color: #000;
+
+            &:hover {
+                background: rgba(238, 238, 238, 1);
+            }
+        }
+    }
+}

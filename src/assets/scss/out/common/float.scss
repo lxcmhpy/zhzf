@@ -1,0 +1,39 @@
+/*
+*   浮动篇
+*/
+/*
+*   1、块级元素浮动
+*/
+.cats-f-right {
+    float: right;
+}
+
+.cats-f-left {
+    float: left;
+}
+
+.cats-f-center {
+    margin: 0 auto;
+}
+
+/*
+*   2、内联元素浮动
+*/
+.cats-t-right {
+    text-align: right;
+}
+
+.cats-t-left {
+    text-align: left;
+}
+
+.cats-t-center {
+    text-align: center;
+}
+
+/*
+*   flex:横向布局
+*/
+.cats-flex-tile {
+    display: flex;
+}

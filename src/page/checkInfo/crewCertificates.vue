@@ -48,7 +48,7 @@
           </el-table-column>
           <el-table-column prop="ISSU_DATE" label="证书有效起止日期" align="center">
               <template slot-scope="scope">
-                      <span>{{(scope.row.ISSU_DATE).split(' ')[0]+" ~ "+(scope.row.ISSU_DATE).split(' ')[0]}}</span>
+                      <span>{{(scope.row.ISSU_DATE).split(' ')[0]+" ~ "+(scope.row.EXPIRY_DATE).split(' ')[0]}}</span>
                 </template>
           </el-table-column>
           <el-table-column prop="ISSU_ORG_CODE" label="签发机关" align="center"></el-table-column>
