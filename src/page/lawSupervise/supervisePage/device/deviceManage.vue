@@ -145,27 +145,19 @@
             <div class="part">
               <p class="titleP">设备说明</p>
               <el-row>
-                  <el-form-item label="所属机构">
-                    <el-popover placement="bottom" trigger="click" v-model="visiblePopover" :disabled="formReadOnly">
-                        <div class="departOrUserTree" style="width:426px">
-                            <div class="treeBox">
-                                <el-tree
-                                    highlight-current
-                                    class="filter-tree"
-                                    :data="getOrganList"
-                                    default-expand-all
-                                    :expand-on-click-node="false"
-                                    ref="tree"
-                                    @node-click="handleNodeClick1"
-                                >
-                                    <span class="custom-tree-node" slot-scope="{ node, data }">
-                                        <span><img class="tree-node-icon" :src="'./static/images/img/lawSupervise/icon_jc1.png'">{{data.label}}</span>
-                                    </span>
-                                </el-tree>
-                            </div>
-                        </div>
-                        <el-input v-model="addForm.organName" style="width:100%" slot="reference" readonly></el-input>
-                      </el-popover>
+                  <el-form-item label="所属机构" prop="organId">
+                      <elSelectTree
+                        ref="addFormUseUnitTreeObj"
+                        :options="getOrganList"
+                        :value="addForm.organId"
+                        :accordion="true"
+                        :props="orgTreeProps"
+                        :filterable="true"
+                        style="width: 100%;"
+                        :disabled="this.formReadOnly"
+                        @getValue="addFormUseUnitClick">
+                    </elSelectTree>
+                    <el-input style="display:none" v-model="addForm.organId"></el-input>
                   </el-form-item>
               </el-row>
               <el-row>
@@ -306,6 +298,7 @@
 <script>
 import { queryDeviceListPage,findDeviceById,saveOrUpdateDevice,deleteDeviceById,upload,deleteFileByIdApi,queryDeviceTypeAll,getCurrentAndNextOrganApi} from "@/api/lawSupervise.js";
 import iLocalStroage from '@/common/js/localStroage';
+import elSelectTree from '@/components/elSelectTree/elSelectTree';
   export default {
     watch: {
       filterText(val) {
@@ -374,9 +367,14 @@ import iLocalStroage from '@/common/js/localStroage';
         selectOrgan:{},
         title:'新增设备',
         visiblePopover: false,
+        orgTreeProps: {
+            label: "label",
+            value: "id"
+        },
       };
     },
     components: {
+        elSelectTree
     },
     methods: {
       /* validateDate(rule, value, callback) {
@@ -387,12 +385,17 @@ import iLocalStroage from '@/common/js/localStroage';
           callback(new Error("请选择设备有效期"));
         }
       }, */
-      handleNodeClick1(data) {
-        this.addForm.organName = data.label;
-        this.addForm.organId = data.id;
-        this.visiblePopover = false;
-        this.addForm.contactor = data.contactor
-        this.addForm.telephone = data.telephone
+      addFormUseUnitClick(val) {
+        this.$refs.addFormUseUnitTreeObj.$children[0].handleClose();
+        if(val){
+            let node = this.$refs.addFormUseUnitTreeObj.$refs.selectTree.getNode(val)
+            if(node){
+                this.$set(this.addForm,'organId',node.data.id)
+                this.$set(this.addForm,'organName',node.data.label)
+                this.$set(this.addForm,'contactor',node.data.contactor)
+                this.$set(this.addForm,'telephone',node.data.telephone)
+            }
+        }
       },
       //删除附件
       deleteFile(file, fileList,type){
