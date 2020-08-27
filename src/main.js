@@ -11,6 +11,7 @@ import qs from 'qs';
 import hasPermission from "@/common/js/hasPermission"
 import App from "./App";
 import { router } from "./router/index";
+import '@/common/js/directives.js';
 //引入全局变量
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
