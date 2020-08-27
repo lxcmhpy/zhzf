@@ -539,3 +539,14 @@ export function deleteEmphasisPersonById(id) {
         cancelToken: setCancelSource()
     })
 }
+//警翼拉流接口
+export function getPeVideoUrl(id) {
+    return request({
+        url: "/zfjg/peState/findUrlById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    })
+}
