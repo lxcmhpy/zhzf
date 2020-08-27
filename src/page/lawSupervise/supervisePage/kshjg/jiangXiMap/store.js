@@ -1,4 +1,4 @@
-import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId } from "@/api/lawSupervise.js";
+import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId,getPeVideoUrl } from "@/api/lawSupervise.js";
 import { getOrganDetailApi } from "@/api/system.js";
 export default {
   methods: {
@@ -308,6 +308,14 @@ export default {
       } else {
         this.page.cleanAll()
       }
+    },
+    async clickPeVideo(id){
+        let res = await getPeVideoUrl(id);
+        var test = window.location.href;
+        var string = test.split("/");
+        var path = string[0] + "//" + string[2] + "/";
+        var ActivexURL = path + "/static/js/PeVideoInfo.html?videoUrl=" + res.data
+        window.location.href ="alert:"+ActivexURL
     },
   }
 }
