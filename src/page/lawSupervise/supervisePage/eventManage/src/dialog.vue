@@ -12,11 +12,28 @@
       </el-form-item>
       <el-form-item label="事件时间:" :label-width="formLabelWidth">
         <el-date-picker
+          style="width:100%"
           v-model="form.eventDate"
           value-format="yyyy-MM-dd"
           type="date"
           placeholder="选择日期">
         </el-date-picker>
+      </el-form-item>
+      <el-form-item label="事件坐标:" :label-width="formLabelWidth">
+        <el-input v-model="form.eventAddress" readonly>
+            <template slot="append">
+                <div class="showMapBtn" title="点击获取坐标">
+                <label class="mustTip">*</label>
+                <el-button
+                    icon="iconfont law-weizhi"
+                    size="mini"
+                    @click="showMap"
+                    v-if="!hasLatitudeAndLongitude"
+                >请获取坐标</el-button>
+                <el-button icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
+                </div>
+            </template>
+        </el-input>
       </el-form-item>
       <el-form-item label="是否重点事件:" :label-width="formLabelWidth">
         <el-radio v-model="form.isemphasis" :label='1'>是</el-radio>
@@ -37,7 +54,7 @@
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
       </el-form-item>
       <el-form-item label="人员:" :label-width="formLabelWidth">
-        <el-select @change="handlePeopleChange" v-model="form.disposePerson" placeholder="请选择">
+        <el-select v-model="form.disposePerson" placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
             :key="item.value"
@@ -82,6 +99,7 @@
       <el-button v-if="!disabled" @click="dialogFormVisible = false">取 消</el-button>
       <el-button v-if="!disabled" type="primary" @click="handleSubmit">确 定</el-button>
     </div>
+    <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
   </el-dialog>
 </template>
 
@@ -90,8 +108,11 @@ import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { addUpdate } from "@/api/eventManage";
 import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js";
 import localStroage from '@/common/js/localStroage';
+import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
+import store from "../store.js";
 export default {
   inject: ['page'],
+  mixins: [store],
   props: {
     title: {
       type: String,
@@ -115,7 +136,8 @@ export default {
     }
   },
   components: {
-    ElSelectTree
+    ElSelectTree,
+    mapDiag,
   },
   data() {
     return {
@@ -140,10 +162,13 @@ export default {
         disposeOrgan: '', // 选择的机构 id
         disposePerson: '', // 选择的人员 id
         storageIds: [], // 附件 id 列表
+        eventAddress:'',
+        eventCoordinate:''
       },
       dialogImageUrl: '',
       dialogVisible: false,
-      disabled: false
+      disabled: false,
+      hasLatitudeAndLongitude: false, //案发坐标是否已经获取
     }
   },
   methods: {
@@ -177,8 +202,10 @@ export default {
      * 获取选择到的机构
      */
     getValue(val) {
+      this.$refs.elSelectTree.$children[0].handleClose();
       this.form.disposeOrgan = val
-      console.log(val)
+      this.$set(this.form,'disposePerson','')
+      this.getPerson(val)
     },
 
     /**
@@ -205,13 +232,13 @@ export default {
         data.map(item => {
           if(item.category === '1') {
             this.eventFileDataUp.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
               storageId: item.storageId,
               name: item.name
             })
           } else {
             this.eventFileDataDown.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
               storageId: item.storageId,
               name: item.name
             })
@@ -289,8 +316,21 @@ export default {
     },
     handleDownload(file) {
       console.log(file);
-    }
+    },
+    //显示地图
+    showMap() {
+      this.$refs.mapDiagRef.showModal();
+    },
+    //获取坐标
+    getLngLat(lngLatStr, address) {
+      this.form.eventCoordinate = lngLatStr;
+      this.form.eventAddress = address;
+      this.hasLatitudeAndLongitude = true;
+    },
   },
+  mounted(){
+
+  }
 }
 </script>
 

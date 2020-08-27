@@ -238,6 +238,8 @@ export default {
       this.$refs.dialog.dialogFormVisible = true
       // 启用表单
       this.$refs.dialog.disabled = false
+      this.$refs.dialog.hasLatitudeAndLongitude = false
+      this.config.peopleOptions=[]
     },
 
     /**

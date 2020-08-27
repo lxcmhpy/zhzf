@@ -5,7 +5,7 @@
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" :value="form.disposeOrgan" />
       </el-form-item>
       <el-form-item label="人员" label-width="60px">
-        <el-select @change="handlePeopleChange" v-model="form.disposePerson" placeholder="请选择">
+        <el-select v-model="form.disposePerson" placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
             :key="item.value"
@@ -25,8 +25,10 @@
 <script>
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { assigned } from "@/api/eventManage";
+import store from "../store.js";
 export default {
   inject: ['page'],
+  mixins: [store],
   components: {
     ElSelectTree
   },
@@ -76,8 +78,10 @@ export default {
      * 获取选择到的机构
      */
     getValue(val) {
+      this.$refs.elSelectTree.$children[0].handleClose();
       this.form.disposeOrgan = val
-      console.log(val)
+      this.$set(this.form,'disposePerson','')
+      this.getPerson(val)
     },
 
     /**
