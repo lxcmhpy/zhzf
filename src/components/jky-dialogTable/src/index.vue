@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    :style="`width:${width}`"
     class="jky-dialogTable"
     :visible.sync="dialogVisible"
     :close-on-click-modal="false"
@@ -39,6 +40,10 @@ export default {
     JkyBaseTable
   },
   props: {
+    width: {
+      type: String,
+      default: '70%'
+    },
     title: {
       type: String,
       default: ''

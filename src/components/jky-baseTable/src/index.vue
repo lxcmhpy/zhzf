@@ -179,7 +179,7 @@ export default {
           throw new Error("findData()::::::接口错误")
         }
       }).then(data => {
-        this.total = data.total || ''
+        this.total = data.total || 0
         this.tableData = data.records || data
       })
     },
