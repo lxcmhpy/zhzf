@@ -60,17 +60,17 @@
       <el-table-column
         v-if="isSelection"
         align="center"
-        type="selection"
-        width="60">
+        type="selection">
       </el-table-column>
-      <el-table-column v-if="isRadio" align="center" label="单选" width="60">
+      <el-table-column v-if="isRadio" align="center" label="单选">
         <template slot-scope="scope">
           <el-radio v-model="radio" :label="scope.$index" @change="change(scope.row)"></el-radio>
         </template>
       </el-table-column>
-      <el-table-column v-if="isNumber" align="center" label="序号" type="index" width="100">
+      <el-table-column v-if="isNumber" align="center" label="序号" type="index">
       </el-table-column>
       <el-table-column
+        :show-overflow-tooltip="true"
         v-for="item of columns"
         :type="item.type"
         :key="item.prop"
