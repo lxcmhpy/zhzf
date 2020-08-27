@@ -94,7 +94,7 @@
     </el-table>
 
     <!-- 分页 -->
-    <div class="jky-baseTable-pagination">
+    <div class="jky-baseTable-pagination" v-if="isPagination">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -112,6 +112,10 @@
 import { findData } from "../store.js";
 export default {
   props: {
+    isPagination: {
+      type: Boolean,
+      default: true
+    },
     inputList: {
       type: Array,
       default() {
@@ -175,8 +179,8 @@ export default {
           throw new Error("findData()::::::接口错误")
         }
       }).then(data => {
-        this.total = data.total
-        this.tableData = data.records
+        this.total = data.total || 0
+        this.tableData = data.records || data
       })
     },
 
@@ -190,9 +194,13 @@ export default {
       })
       this.form = form
 
-      const param = {
-        current: 1,
-        size: 5,
+      let param = {}
+      // 如果有分页，则传入分页数据，否则不传
+      if(this.isPagination) {
+        param = {
+          current: 1,
+          size: 5,
+        }
       }
       this.findTableData(param, this.baseUrlType, this.url)
     },
@@ -210,9 +218,13 @@ export default {
      * 查询
      */
     onSubmit() {
-      let param = {
-        current: 1,
-        size: this.size
+      let param = {}
+      // 如果有分页，则传入分页数据，否则不传
+      if(this.isPagination) {
+        param = {
+          current: 1,
+          size: this.size
+        }
       }
       Object.keys(this.form).map(key => {
         // 如果当前值为时间选择框的值，则将其拆为 startDate endDate 两个属性

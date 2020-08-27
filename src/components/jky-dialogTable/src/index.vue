@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    :width="width"
     class="jky-dialogTable"
     :visible.sync="dialogVisible"
     :close-on-click-modal="false"
@@ -14,6 +15,7 @@
       <i class="el-icon-close" @click="onClose" />
     </div>
     <JkyBaseTable
+      ref="JkyBaseTable"
       :inputList="inputList"
       :columns="columns"
       :buttons="buttons"
@@ -23,6 +25,7 @@
       :isNumber="isNumber"
       :url="url"
       :baseUrlType="baseUrlType"
+      :isPagination="isPagination"
       @handleClick="handleClick"
       @handleChange="handleChange" />
     <div slot="footer" class="dialog-footer">
@@ -39,6 +42,10 @@ export default {
     JkyBaseTable
   },
   props: {
+    width: {
+      type: String,
+      default: '1000px'
+    },
     title: {
       type: String,
       default: ''
@@ -46,6 +53,10 @@ export default {
     dialogVisible: {
       type: Boolean,
       default: false
+    },
+    isPagination: {
+      type: Boolean,
+      default: true
     },
     inputList: {
       type: Array,
@@ -86,6 +97,18 @@ export default {
     baseUrlType: {
       type: String,
       default: ''
+    }
+  },
+  watch: {
+    dialogVisible: {
+      handler(val) {
+        console.log(val)
+        if(val) {
+          if(this.$refs && this.$refs.JkyBaseTable) {
+            this.$refs.JkyBaseTable.init()
+          }
+        }
+      }
     }
   },
   methods: {

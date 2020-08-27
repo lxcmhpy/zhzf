@@ -6,7 +6,7 @@
         <el-form :inline="true" :model="caseCauseForm" label-width="130px"  ref="caseCauseForm">
             <el-form-item label="业务领域" prop="cateId">
               <el-select v-model="caseCauseForm.cateId" placeholder="请选择"  style="width:260px;" >
-                <el-option v-for="item in lawCateList" :key="item.cateId" :label="item.cateName" :value="item.cateId"></el-option>
+                <el-option v-for="item in lawCateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="违法行为内容" prop="content">
@@ -58,6 +58,7 @@
 
 <script>
 import {getCaseCauseListApi,deleteCaseCauseByIdApi} from "@/api/system";
+import { getIndustryCategoryApi} from "@/api/caseHandle.js";
 import addCaseCause from "./addCaseCause";
 import bindlawRegulations from "./bindlawRegulations";
 import lawRegulationsDetail from "./lawRegulationsDetail";
@@ -136,15 +137,22 @@ export default {
     },
     //获取执法门类
     getEnforceLawType() {
-      let _this = this
-      this.$store.dispatch("getEnforceLawType", "1").then(
-        res => {
-          _this.lawCateList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      // let _this = this
+      // this.$store.dispatch("getEnforceLawType", "1").then(
+      //   res => {
+      //     _this.lawCateList = res.data;
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   }
+      // );
+      let dataCate = {};
+      getIndustryCategoryApi(dataCate).then(res => {
+        console.log("业务领域",res.data);
+       this.lawCateList = res.data;
+      }, err => {
+        console.log(err);
+      });
     },
     detailCaseCause(data){
       this.$refs.lawRegulationsDetailRef.showModal(data);
