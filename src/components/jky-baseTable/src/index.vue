@@ -1,7 +1,7 @@
 <template>
-  <div class="BaseTable">
+  <div class="jky-baseTable">
     <!-- 表单 -->
-    <el-form v-if="inputList.length !== 0" :inline="true" :model="form" class="BaseTable-form">
+    <el-form v-if="inputList.length !== 0" :inline="true" :model="form" class="jky-baseTable-form">
       <el-form-item
         v-for="(item, index) in inputList"
         :key="index"
@@ -51,7 +51,7 @@
     <!-- table 表格 -->
     <el-table
       ref="multipleTable"
-      class="BaseTable-table"
+      class="jky-baseTable-table"
       empty-text
       :height="height"
       :data="tableData"
@@ -94,7 +94,7 @@
     </el-table>
 
     <!-- 分页 -->
-    <div class="BaseTable-pagination">
+    <div class="jky-baseTable-pagination">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -303,7 +303,7 @@ export default {
 </script>
 
 <style lang="scss">
-.BaseTable {
+.jky-baseTable {
   &-form {
     .el-form-item__content {
       .el-input__inner {

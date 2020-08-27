@@ -1,5 +1,5 @@
 <template>
-  <div class="jk-baseHMap"></div>
+  <div class="jky-baseHMap"></div>
 </template>
 
 <script>
@@ -236,7 +236,7 @@ export default {
 </script>
 
 <style lang="scss">
-.jk-baseHMap {
+.jky-baseHMap {
   width: 100%;
   height: 100%;
   .ol-viewport {
