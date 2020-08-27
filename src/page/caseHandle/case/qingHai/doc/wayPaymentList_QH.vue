@@ -117,8 +117,8 @@
             <td>{{item.notes ? item.notes: ''}}</td>
           </tr>
           <tr>
-            <td></td>
             <td>合计</td>
+            <td></td>
             <td></td>
             <td></td>
             <td>￥{{docData.total}}</td>
@@ -469,9 +469,9 @@ export default {
     // 合计
     autoTotal() {
       console.log('tableDatas',this.tableDatas)
-      this.total=0
+      this.docData.total=0
       this.tableDatas.forEach(element => {
-        this.total+=element.total
+        this.docData.total+=Number(element.total)
       });
     }
   },
