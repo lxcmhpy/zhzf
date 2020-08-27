@@ -31,6 +31,7 @@ valueFormat | value格式(表单项为时间选择器时启用) | String | / | /
 参数     | 说明 | 类型 | 可选值 | 默认值 | 是否必传
 -------- | ----- |:-----:|:-----:|:-----:|----
 height  | 表格高度 | String | / | 299 | 否
+isPagination | 是否显示分页栏 | Boolean | / | true | 否
 isRadio | 表格是否可单选 | Boolean | / | false | 否
 isSelection | 表格是否可多选 | Boolean | / | false | 否
 isNumber | 是否显示序号列 | Boolean | / | false | 否
