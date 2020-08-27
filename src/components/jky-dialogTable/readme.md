@@ -6,6 +6,7 @@
 -------- | ----- |:-----:|:-----:|:-----:|----
 title  | 对话框标题 | String | / | / | 否
 dialogVisible | 是否显示对话框 | Boolean | / | false | 是
+width | 组件宽度 | String | / | 1000px | 否
 
 ### Events
 

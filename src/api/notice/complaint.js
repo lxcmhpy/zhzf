@@ -6,10 +6,23 @@ import {
   setCancelSource
 } from "@/common/js/cancelToken";
 
-// 新增、编辑
+// 加载列表
+export function findComplaints(data) {
+  return request({
+    url: "/notice/complaint/list",
+    method: "get",
+    showloading: true,
+    baseUrlType: 'NOTICE_HOST',
+    params: data,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  })
+}
+
+// 新增、编辑轮播图
 export function saveOrUpdate(data) {
   return request({
-    url: "/notice/website/install/saveOrUpdate",
+    url: "/notice/complaint/saveOrUpdate",
     method: "post",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -20,9 +33,9 @@ export function saveOrUpdate(data) {
 }
 
 // 通过Id查询
-export function findWebsiteInfo() {
+export function findById(id) {
   return request({
-    url: "/notice/website/install/findWebsiteInfo",
+    url: "/notice/complaint/findById/" + id,
     method: "get",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',

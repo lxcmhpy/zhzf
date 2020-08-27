@@ -341,14 +341,28 @@
               style="width:100px"
               :rules="fieldRules('staff1',propertyFeatures['staff1'])"
             >
-              <el-input
+              <!-- <el-input
                 type="textarea"
                 v-model="docData.staff1"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
                 placeholder="\"
                 :disabled="fieldDisabled(propertyFeatures['staff1'])"
-              ></el-input>
+              ></el-input> -->
+               <el-select
+                v-model="docData.staff1"
+                :maxLength="maxLength"
+                @change="changeStaff1"
+                :disabled="fieldDisabled(propertyFeatures['staff1'])"
+              >
+                <el-option
+                  v-for="(item,index) in staffList"
+                  :key="index"
+                  :value="item"
+                  :label="item"
+                  :disabled="docData.staff2==item"
+                ></el-option>
+              </el-select>
             </el-form-item>
             <u v-if="lineStyleFlag">{{docData.staff1}}</u>、
             <el-form-item
@@ -809,8 +823,17 @@ export default {
         this.docData.inquiriedAddress = "";
       }
     },
+    //更改执法人员1
+    changeStaff1(val) {
+      let staffIndex = this.staffList.indexOf(val);
+      this.docData.certificateId1 = this.docData.certificateId.split(",")[
+        staffIndex
+      ];
+      console.log(staffIndex);
+    },
     //更改执法人员2
-    changeStaff2() {
+    changeStaff2(val) {
+      console.log(this.staffList.indexOf(val))
       let staffIndex = this.staffList.indexOf(val);
       this.docData.certificateId2 = this.docData.certificateId.split(",")[
         staffIndex
