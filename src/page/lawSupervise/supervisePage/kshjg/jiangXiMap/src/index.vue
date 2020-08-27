@@ -1,6 +1,6 @@
 <template>
   <div class="jiangXiMap">
-    <JkYBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
+    <JkyBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
     <TopInFo />
     <Search
       ref="Search"
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import JkYBaseHMap from "@/components/jky-baseHMap";
+import JkyBaseHMap from "@/components/jky-baseHMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
@@ -37,7 +37,7 @@ export default {
     }
   },
   components: {
-    JkYBaseHMap,
+    JkyBaseHMap,
     Search,
     Select,
     Drawer,

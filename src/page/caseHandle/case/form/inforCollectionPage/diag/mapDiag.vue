@@ -6,6 +6,7 @@
       width="50%"
       @close="closeDialog"
       :close-on-click-modal="false"
+      :modal-append-to-body='false'
     >
       <div class="mapCon">
         <el-amap

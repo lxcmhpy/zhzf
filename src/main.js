@@ -17,7 +17,7 @@ import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
 import {BASIC_DATA_QH} from '@/common/js/BASIC_DATA_QH.js';
 
 import { messageOne } from '@/common/js/resetMessage';
-
+import { mixinsCommon } from "@/common/js/mixinsCommon";
 Vue.use(ElementUI);
 Vue.use(hasPermission);
 Vue.prototype.$messageOne = messageOne;
@@ -30,7 +30,7 @@ Vue.prototype.$qs = qs;
 Vue.prototype.BASIC_DATA_SYS = BASIC_DATA_SYS;
 Vue.prototype.BASIC_DATA_JX = BASIC_DATA_JX;
 Vue.prototype.BASIC_DATA_QH = BASIC_DATA_QH;
-
+Vue.mixin(mixinsCommon);
 
 
 /* eslint-disable no-new */

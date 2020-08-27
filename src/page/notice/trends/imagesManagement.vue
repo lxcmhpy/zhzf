@@ -52,8 +52,9 @@
                 v-model="scope.row.state"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
-                active-value="1"
-                inactive-value="0"
+                :active-value="1"
+                :inactive-value="0"
+                @change="changeState(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>
@@ -98,12 +99,7 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总页数
-      //   form: {},
-      //   rules: {},
-      //   visible: false,
-      //   title: "",
       host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
-      //   dtTableData: [],
     };
   },
   methods: {
@@ -141,7 +137,10 @@ export default {
       this.$refs["searchForm"].resetFields();
       debugger;
     },
-
+    changeState(row) {
+      let res = saveOrUpdate(row);
+      this.$message({ type: "success", message: "操作成功!" });
+    },
     onAdd() {
       this.form = {
         id: "",
@@ -153,9 +152,10 @@ export default {
       this.$refs.imagesDialog.showModal(1, this.form);
     },
     onEdit(row) {
-      this.$refs.imagesDialog.showModal(3, row);
+      this.$refs.imagesDialog.showModal(2, row);
     },
     async onSubmit(data) {
+      debugger;
       let res = saveOrUpdate(data);
       this.$message({ type: "success", message: "保存成功!" });
       this.load();
@@ -163,7 +163,7 @@ export default {
 
     async onDelete(row) {
       let _this = this;
-      this.$confirm("确定要提交吗?", "提示", {
+      this.$confirm("确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         iconClass: "el-icon-question",

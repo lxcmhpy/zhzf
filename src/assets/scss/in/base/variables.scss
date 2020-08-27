@@ -1,0 +1,165 @@
+/*---------- 颜色变量-------------------- 颜色变量----------*/
+
+/* 主色调 */
+$cats-base-black-color : #252526;
+$cats-black2B313E-color: #2B313E;
+$cats-main-color : #000;
+$cats-font-color : #442b2d;
+$cats-font-black-color: #333;
+$cats-font-exam-color: #858585;
+$cats-font-exam1-color:#838D97;
+$cats-font-exam2-color: #808080;
+$cats-font-exam3-color:#383838;
+$cats-font-exam4-color: #646974;
+$cats-font-exam5-color: #7B7B7B;
+$cats-font-exam6-color: #DFDFDF;
+$cats-font1-color:#20232B;
+$cats-font2-color: rgba(32, 35, 43, 1);
+
+
+$cats-green52C1B6-color : #52C1B6;
+$cats-base-green-color: #4AAFA7;
+$cats-green51C5BC-color: #51C5BC;
+$cats-activeTopLine-color : #00adb5;
+$cats-green-color: #35d7e0;
+
+$cats-blue-color : #4573D0;
+$cats-blue0074F5-color : #0074F5;
+$cats-blue4D89FF-color : #4D89FF;
+$cats-blue1-color: #2691f2;
+$cats-blue2-color: #4A76D1;
+
+$cats-yellow-color: #F1C100;
+$cats-orange-color: #ffbe3a;
+
+$cats-grayEAEDF4-color : #EAEDF4;
+
+$cats-gray-color : #FAFAFA;
+$cats-grayF0-color : #F0F0F0;
+$cats-white-color : #FFFFFF;
+$cats-content-bg-color : #f8f9fe;
+$cats-line-color : #d8d8d8;
+$cats-content-bg-color : #f8f9fe;
+$cats-scrollbar-color: #dee2ef;
+$cats-mainBtn-color : #000;
+$cats-gray666-color : #666;
+$cats-grayccc-color: #ccc;
+$cats-table-header-color : #E3E3EC;
+$cats-table-header-bg : #E9EDF6;
+
+$cats-shadow-color: #d7d7d7;
+$cats-shadow1-color:rgba(94, 137, 181, 0.1);
+
+//非重点
+$cats-examBg-color: #ebedf4;
+$cats-examBg1-color: #EBEEF5;
+
+
+$cats-red-color : #c63d3a;
+$cats-font-hover-color : red;
+$cats-bg-color: #f44336;
+$cats-bg1-color: #e94440;
+$cats-bg2-color: #F2F3F5;
+$cats-bg3-color: #F4F8FF;
+$cats-bg4-color:rgba(123, 123, 123, 1);
+
+
+
+// 系统提示信息
+$cats-error-color: #c96d68;
+$cats-success-color: #73c968;
+
+$cats-btn-login-success-color: #50d870;
+
+//系统加载
+$cats-loadFull-color:rgba(234, 237, 244, 1);
+$cats-loadPart-color:rgba(234, 237, 244, 0.7);
+
+/*---------- 长度变量-------------------- 长度变量----------*/
+
+$cats-length380px: 380px;
+$cats-length750px: 750px;
+
+
+/*---------字体-------------*/
+
+
+@mixin fontSizeConvert ($size: 'base') {
+    $fontSize-XS: 12px;
+    $fontSize-S: 14px;
+    $fontSize-M: 16px;
+    $fontSize-L: 18px;
+    $fontSize-XL: 20px;
+    $fontSize-XXL: 22px;
+    $fontSize-XXXL: 24px;
+    $fontSize-XXXXL: 28px;
+
+    @if $size=='base' {
+        $fontSize-XS: $fontSize-XS;
+        $fontSize-S: $fontSize-S;
+        $fontSize-M: $fontSize-M;
+        $fontSize-L: $fontSize-L;
+        $fontSize-XL: $fontSize-XL;
+        $fontSize-XXL: $fontSize-XXL;
+        $fontSize-XXXL: $fontSize-XXXL;
+        $fontSize-XXXXL: $fontSize-XXXXL;
+    }
+
+    @else if $size=='medium' {
+        $fontSize-XS: $fontSize-XS + 2px;
+        $fontSize-S: $fontSize-S + 2px;
+        $fontSize-M: $fontSize-M + 2px;
+        $fontSize-L: $fontSize-L + 2px;
+        $fontSize-XL: $fontSize-XL + 2px;
+        $fontSize-XXL: $fontSize-XXL + 2px;
+        $fontSize-XXXL: $fontSize-XXXL + 2px;
+        $fontSize-XXXXL: $fontSize-XXXXL + 2px;
+    }
+
+    @else if $size=='large' {
+        $fontSize-XS: $fontSize-XS + 4px;
+        $fontSize-S: $fontSize-S + 4px;
+        $fontSize-M: $fontSize-S + 4px;
+        $fontSize-L: $fontSize-L + 4px;
+        $fontSize-XL: $fontSize-XL + 4px;
+        $fontSize-XXL: $fontSize-XXL + 4px;
+        $fontSize-XXXL: $fontSize-XXXL + 4px;
+        $fontSize-XXXXL: $fontSize-XXXXL + 4px;
+    }
+
+    @else if $size=='huge' {
+        $fontSize-XS: $fontSize-XS + 6px;
+        $fontSize-S: $fontSize-S + 6px;
+        $fontSize-M: $fontSize-M + 6px;
+        $fontSize-L: $fontSize-L + 6px;
+        $fontSize-XL: $fontSize-XL + 6px;
+        $fontSize-XXL: $fontSize-XXL + 6px;
+        $fontSize-XXXL: $fontSize-XXXL + 6px;
+        $fontSize-XXXXL: $fontSize-XXXXL + 6px;
+    }
+}
+
+/* 灰色  box阴影使用  */
+/* 圆角 */
+
+@mixin borderRadius($radius: 5px) {
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin addPrefix ($property, $value) {
+    -moz-#{$property}: $value;
+    -webkit-#{$property}: $value;
+    -o-#{$property}: $value;
+}
+
+@mixin addPrefixIE ($property, $value) {
+    -ms-#{$property}: $value;
+}
+
+/*
+*  基础变量设置
+*/
+// 字体变量
+@include fontSizeConvert('base');
