@@ -551,7 +551,8 @@ export default {
                 id:item.id,
                 num:index+1,
                 page:item.page,
-                paperSize:item.paperSize
+                paperSize:item.paperSize,
+                docId:item.docId,
             }
             data.push(param)
         })
