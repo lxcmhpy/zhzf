@@ -15,6 +15,7 @@
       <i class="el-icon-close" @click="onClose" />
     </div>
     <JkyBaseTable
+      ref="JkyBaseTable"
       :inputList="inputList"
       :columns="columns"
       :buttons="buttons"
@@ -96,6 +97,18 @@ export default {
     baseUrlType: {
       type: String,
       default: ''
+    }
+  },
+  watch: {
+    dialogVisible: {
+      handler(val) {
+        console.log(val)
+        if(val) {
+          if(this.$refs && this.$refs.JkyBaseTable) {
+            this.$refs.JkyBaseTable.init()
+          }
+        }
+      }
     }
   },
   methods: {
