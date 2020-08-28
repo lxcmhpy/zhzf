@@ -312,14 +312,14 @@ export default {
         if(data.padStateColor) {
           this.$store.commit('setDoing', '1');
           this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
-          window.PhoneCallModule.sipAudioCall("100013","app02");
+          window.PhoneCallModule.sipAudioCall(data.padsn,"app02");
         }
       } else if (index === 1) {
         // 如果状态为在线（图标颜色为蓝色），则打开视频通话窗口
         if(data.padStateColor) {
           this.$store.commit('setDoing', '2');
           this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
-          window.PhoneCallModule.sipVideoCall("100013","app02");
+          window.PhoneCallModule.sipVideoCall(data.padsn,"app02");
         }
       } else if (index === 2) {
         // 如果状态为在线（图标颜色为绿色），则打开视频窗口
