@@ -106,7 +106,7 @@
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { addUpdate } from "@/api/eventManage";
 import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js";
-import localStroage from '@/common/js/localStroage';
+import iLocalStroage from '@/common/js/localStroage';
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
 import store from "../store.js";
 export default {
