@@ -121,7 +121,7 @@
       </div>
     </div>
     <!-- 申请审批 -->
-    <ApplyReview ref="ApprovalReviewRef" />
+    <ApplyReview ref="ApprovalReviewRef" @reloadTable="getCaseReviewList()" />
   </div>
 </template>
 <script>
@@ -184,8 +184,22 @@ export default {
     },
     // 点击案号进行申请审批
     approvalCaseDialog(row) {
-        console.log(row)
-      this.$refs.ApprovalReviewRef.showModal(row, "approval");
+      if(row.consultStatus === 1){
+        this.$refs.ApprovalReviewRef.showModal(row, "approval");
+      } else {
+        let alertMsg = '';
+        switch (row.consultStatus) {
+          case 2:
+          case 3:
+            alertMsg = '该案件已审批，不能再次进行审批!';
+            break;
+          case 4:
+             alertMsg = '该案件调阅申请已过期，不能进行审批!';
+        }
+        this.$alert(alertMsg, "提示", {
+          confirmButtonText: "确定"
+        });
+      }
     },
     // 查看案卷
     reviewCase(row) {

@@ -6,7 +6,9 @@
           <el-row>
             <el-col :span="18">
               <div class="user-info">
-                <el-image :src="lessonDefaultPic" class="course-cover"></el-image>
+                <el-image :src="baseUrl +  lessonData.lessonPic" class="course-cover">
+                  <el-image slot="error" :src="lessonDefaultPic"></el-image>
+                </el-image>
                 <div class="user-work">
                   <p class="name">{{ lessonData.lessonName }}</p>
                   <p class="work">
@@ -126,6 +128,9 @@ export default {
     },
     UserInfo() {
       return iLocalStroage.gets("userInfo");
+    },
+    baseUrl(){
+      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   created() {

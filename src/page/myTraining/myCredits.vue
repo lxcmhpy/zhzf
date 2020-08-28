@@ -18,7 +18,7 @@
           </el-col>
           <el-col :span="8">
             <el-card class="credits-card">
-              <span class="top-left-title trained">培</span>
+              <span class="top-left-title trained">专</span>
               <div class="creddits-record">
                 <div class="num trained">
                   <p>{{trainTotalScores}}</p>
