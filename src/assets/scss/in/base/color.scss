@@ -1,0 +1,72 @@
+@import "./variables.scss";
+
+/*------------字体颜色设置------------字体颜色设置------------*/
+.blackC {
+    color: $cats-base-black-color
+}
+
+.blackC2 {
+    color: $cats-black2B313E-color;
+}
+
+.blueC {
+    color: $cats-blue-color;
+}
+
+.blueC3 {
+    color: $cats-blue4D89FF-color;
+}
+
+.greenC2 {
+    color: $cats-base-green-color;
+}
+
+.greenC3 {
+    color: $cats-green51C5BC-color;
+}
+
+.orangeC {
+    color: $cats-orange-color;
+}
+
+/*------------背景颜色设置------------背景颜色设置------------*/
+.blackBg {
+    background: $cats-black2B313E-color;
+}
+
+.blackBg2 {
+    background: $cats-black2B313E-color;
+}
+
+.blueBg {
+    background: $cats-blue-color;
+    color: $cats-white-color;
+}
+
+.blueBg3 {
+    background: $cats-blue4D89FF-color;
+}
+
+.greenBg2 {
+    background: $cats-base-green-color;
+    color: $cats-white-color;
+}
+
+.greenBg3 {
+    background: $cats-green51C5BC-color;
+    color: $cats-white-color;
+}
+
+.orangeBg {
+    background: $cats-orange-color;
+}
+
+.redBg {
+    background: $cats-red-color;
+}
+
+$cats-grayF0-color: #F0F0F0;
+
+.grayBg {
+    background: $cats-grayF0-color;
+}

@@ -1,5 +1,6 @@
 import { findData, deleteById, findById } from "@/api/eventManage";
-import { organTreeByCurrUser, getOrganTree } from "@/api/lawSupervise.js";
+import { getOrganTree } from "@/api/lawSupervise.js";
+import iLocalStroage from '@/common/js/localStroage';
 
 export default {
   methods: {
@@ -7,7 +8,7 @@ export default {
      * 获取机构和人员数据
      */
     getTree() {
-      organTreeByCurrUser().then(res => {
+        this.$store.dispatch("getAllOrgan").then(res => {
         if(res.code === 200) {
           return res.data
         } else {
@@ -15,30 +16,27 @@ export default {
         }
       }).then(data => {
         this.config.treeOptions = data
-
-        /**
-         * 单独获取执法人员的数据
-         */
-        let param = {
-          organId: data[0].id,
-          type: 0
-        }
-        getOrganTree(param).then(res => {
-          if(res.code === 200) {
-            return res.data
-          } else {
-            throw new Error("getOrganTree()::::::接口数据错误")
-          }
-        }).then(data => {
-          this.config.peopleOptions = data.map(item => {
-            item.label = item.nickName
-            item.value = item.id
-            return item
-          })
-        })
       })
     },
-
+    getPerson(organId){
+        let param = {
+            organId: organId,
+            type: 0
+          }
+          getOrganTree(param).then(res => {
+            if(res.code === 200) {
+              return res.data
+            } else {
+              throw new Error("getOrganTree()::::::接口数据错误")
+            }
+          }).then(data => {
+            this.config.peopleOptions = data.map(item => {
+              item.label = item.nickName
+              item.value = item.id
+              return item
+            })
+          })
+    },
     /**
      * 查询
      * 查询全部: {current:1, size:5}
@@ -72,14 +70,25 @@ export default {
         this.$nextTick(() => {
           this.$refs.dialog.setValue(data.disposeOrganName)
         })
+        if(data.disposePerson){
+          data.disposePerson = JSON.parse(data.disposePerson)
+        }
         // 给详情页赋值
         Object.keys(this.$refs.dialog.form).map(key => {
           this.$refs.dialog.form[key] = data[key]
         })
+        if(data.eventCoordinate){
+            this.$refs.dialog.hasLatitudeAndLongitude=true
+        }else{
+            this.$refs.dialog.hasLatitudeAndLongitude=false
+        }
+        if(data.disposeOrgan){
+            this.getPerson(data.disposeOrgan)
+        }
         if(data.eventFileDataUp.length > 0) {
           data.eventFileDataUp.map(item => {
             this.$refs.dialog.eventFileDataUp.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
               storageId: item.storageId,
               name: item.name
             })
@@ -88,7 +97,7 @@ export default {
         if(data.eventFileDataDown.length > 0) {
           data.eventFileDataDown.map(item => {
             this.$refs.dialog.eventFileDataDown.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
               storageId: item.storageId,
               name: item.name
             })

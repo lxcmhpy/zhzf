@@ -73,7 +73,7 @@
         <!-- <el-table-column type="selection" width="55" align="center"></el-table-column>-->
         <el-table-column prop="organName" label="机构名称" align="center"></el-table-column>
         <el-table-column prop="ip" label="IP地址" align="center"></el-table-column>
-        <el-table-column prop="type" label="功能名称" align="center"></el-table-column>
+        <el-table-column prop="type" label="功能名称" align="center" :formatter="formatType"></el-table-column>
         <el-table-column prop="operation" label="操作名称" align="center"></el-table-column>
         <el-table-column prop="username" label="操作人" align="center"></el-table-column>
         <el-table-column prop="createTime" label="时间" align="center"></el-table-column>
@@ -147,6 +147,13 @@ export default {
     };
   },
   methods: {
+     formatType(row){
+        let data = this.logType.filter(p=>p.value==row.type)
+        if(data && data.length>0){
+            return data[0].label
+        }
+        return ''
+     },
     //表单筛选
     getLogList(val) {
       this.currentPage = val

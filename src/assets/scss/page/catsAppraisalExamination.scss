@@ -1,0 +1,570 @@
+@import "../in/base/variables.scss";
+
+.contentCreenHome {
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 10;
+    position: fixed;
+    background-color: $cats-examBg-color;
+    letter-spacing: 1px;
+
+    .top {
+        background: url("/static/images/img/catsAppraisalExamination/banner.jpg");
+        width: 100%;
+        color: white;
+        text-align: center;
+
+        .title {
+            height: 166px;
+            height: auto;
+            background-size: 100% 100%;
+            line-height: 170px;
+            font-size: 53px;
+
+            // padding-left: 50px;
+            font-weight: bolder;
+            text-shadow: 0px 2px 0px white;
+            font-family: "宋体";
+            letter-spacing: 3px;
+            position: relative;
+
+            .txt_shadow {
+                position: absolute;
+                font-style: normal;
+                left: 0px;
+                font-family: "宋体";
+                text-shadow: 0px 2px 2px rgb(43, 43, 43, 0.7);
+                margin-top: 1px;
+                font-weight: bolder;
+            }
+        }
+
+        .num {
+            padding-top: 5px;
+            font-size: 60px;
+            padding-right: 10px;
+            text-shadow: 0px 2px 2px rgb(43, 43, 43, 0.7);
+        }
+    }
+
+    .container {
+        display: flex;
+        height: auto;
+        position: relative;
+
+        .title {
+            font-weight: bolder;
+            font-size: 18px;
+        }
+
+        .rightBox {
+            width: 385px;
+            margin-top: 33px;
+            flex-shrink: 0;
+            position: relative;
+
+            .people {
+                position: absolute;
+                top: -150px;
+                right: 30px;
+                width: 100%;
+                height: 60px;
+                color: white;
+
+                img {
+                    margin-left: 20px;
+                }
+
+                .peopleMessage {
+                    text-align: right;
+                    line-height: 30px;
+                    a {
+                        cursor: pointer;
+                        color: white;
+                    }
+                }
+            }
+
+            .list {
+                height: 345px;
+
+                a {
+                    color: $cats-font1-color;
+                }
+            }
+
+            .footer-banner {
+                padding: 17px;
+                overflow: hidden;
+
+                img {
+                    margin-top: 10px;
+                }
+
+                .lxfs {
+                    float: right;
+                    font-size: 14px;
+                    line-height: 25px;
+                    color: $cats-font-exam-color;
+
+                    h5 {
+                        font-size: 16px;
+                        line-height: 35px;
+                        font-weight: bolder;
+                        color: $cats-main-color;
+                    }
+
+                    .content {
+                        float: right;
+                    }
+                }
+            }
+        }
+
+        .leftBox {
+            flex: 1;
+            background-color: white;
+            //  margin: -105px 28px 50px 28px;
+            margin: 27px 28px 50px 28px;
+            padding: 30px 50px 30px 30px;
+            vertical-align: middle;
+            box-sizing: border-box;
+        }
+
+        .list {
+            overflow: hidden;
+            color: $cats-font-exam1-color;
+            font-size: 16px;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            height: 210px;
+            overflow-y: auto;
+
+            li {
+                display: block;
+                line-height: 40px;
+                margin-left: 23px;
+                cursor: pointer;
+
+                &.fontGray {
+                    color: $cats-font-black-color;
+
+                    .tz {
+                        font-weight: bolder;
+                    }
+                }
+
+                &.fontNormal {
+                    color: $cats-font-exam3-color;
+                }
+
+                &.line50 {
+                    .tz {
+                        line-height: 46px;
+                        height: 46px;
+                    }
+                }
+
+                div.c {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .tz {
+                        flex: 1;
+                        flex-shrink: 0;
+                        overflow: hidden;
+                        height: 40px;
+                    }
+
+                    .date {
+                        flex-shrink: 0;
+                        margin-right: 80px;
+                        margin-left: 50px;
+                    }
+
+                    .circle {
+                        margin-left: -14px;
+                        margin-right: 9px;
+                        display: inline-block;
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background-color: $cats-bg-color;
+                        margin-top: 18px;
+                    }
+
+                    .numIcon {
+                        margin-left: -14px;
+                        margin-right: 22px;
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                        background-color: $cats-blue1-color;
+                        margin-top: 12px;
+                        color: white;
+                        text-align: center;
+                    }
+
+                    .numRed {
+                        margin-left: -18px;
+                        margin-right: 24px;
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        line-height: 20px;
+                        font-size: 28px;
+                        font-weight: bolder;
+                        font-style: oblique;
+                        margin-top: 12px;
+                        color: $cats-bg1-color;
+                        text-align: center;
+                    }
+                }
+
+                em {
+                    font-style: normal;
+                    color: $cats-font-exam1-color;
+                }
+            }
+        }
+
+        .menuList {
+            color: $cats-font-exam1-color;
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 40px;
+            margin-top: 10px;
+
+            li {
+                width: 70px;
+                text-align: center;
+                margin-right: 80px;
+                cursor: pointer;
+
+                img:hover {
+                }
+
+                .menuBox {
+                    padding: 0px 2px;
+                    width: 66px;
+                    height: 66px;
+                    background-color: $cats-blue1-color;
+                    border-radius: 10px;
+                    text-align: center;
+                }
+
+                .text {
+                    margin-top: 7px;
+                    color: $cats-font-exam1-color;
+                    margin-bottom: 30px;
+                    line-height: 22px;
+                    letter-spacing: 1px;
+                }
+            }
+        }
+
+        .xtList {
+            display: flex;
+            flex-wrap: wrap;
+
+            li {
+                margin: 10px 0px 30px 50px;
+                color: white;
+                font-size: 18px;
+                position: relative;
+                cursor: pointer;
+
+                .name {
+                    top: 30px;
+                    position: absolute;
+                    width: 220px;
+                    left: 50%;
+                    margin-left: -110px;
+                    text-align: center;
+                    font-style: normal;
+                    letter-spacing: 2px;
+                }
+            }
+        }
+
+        .jcpf-style {
+            // background-color: $cats-blue1-color;
+            .menuBox {
+                background-color: $cats-blue1-color;
+                background-image: url("/static/images/img/catsAppraisalExamination/icon_pingfen.png");
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+
+        .bscl-style {
+            .menuBox {
+                background-color: $cats-green-color;
+                background-image: url("/static/images/img/catsAppraisalExamination/icon_baosong.png");
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+
+        .jcpz-style {
+            .menuBox {
+                background-color: $cats-blue1-color;
+                background-image: url("/static/images/img/catsAppraisalExamination/icon_jiancha.png");
+                background-repeat: no-repeat;
+                background-position: center center;
+            }
+        }
+
+        .noticeIcon {
+            background: url("/static/images/img/catsAppraisalExamination/icon_news.png")
+                center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -12px;
+        }
+
+        .applicationIcon {
+            background: url("/static/images/img/catsAppraisalExamination/icon_yingyong.png")
+                center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -14px;
+        }
+
+        .sysIcon {
+            background: url("/static/images/img/catsAppraisalExamination/icon_xiangguan.png")
+                center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -14px;
+        }
+
+        .downLoadIcon {
+            background: url("/static/images/img/catsAppraisalExamination/icon_xiazai.png")
+                center center no-repeat;
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            margin-right: 13px;
+            background-position: 0px center;
+            height: 40px;
+            vertical-align: -14px;
+        }
+    }
+
+    .right {
+        float: right;
+        color: $cats-font-exam1-color;
+    }
+}
+.p1 {
+    max-width: 1050px;
+    max-height: 80px;;
+    font-size: 25px;
+    font-weight: bolder;
+    color: #ec571f;
+    text-align: left;
+    line-height: 46px;
+    margin: 10px auto 20px;
+    font-family: "宋体";
+    text-shadow: 0px 1px 0px #ec571f;
+}
+.cats-layout .searchAndpageBox{
+    height: auto;
+    min-height: auto;
+}
+.uploadList {
+    max-width: 1050px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 50px;
+    .upload-demo {
+        text-align: center;
+        .el-upload__text {
+            line-height: 24px;
+            margin-top: -14px;
+            &::before {
+                content: "直接拖拽文件进入此区域也可上传";
+                font-size: 12px;
+            }
+        }
+        em {
+            display: block;
+            font-size: 16px;
+            color: #4573d0;
+        }
+    }
+    .el-button {
+        margin-left: 46%;
+    }
+    ul {
+        li {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-weight: 500;
+            color: #20232c;
+            border-bottom: 1px solid #dedede;
+            .download {
+                color: #4573d0;
+            }
+            .delete {
+                color: #4aafa7;
+            }
+        }
+    }
+}
+.blue {
+    background-color: #4573d0;
+    span {
+        color: white;
+    }
+}
+// 抽取
+.extractPage {
+    margin: 28px;
+    height: calc(70vh);
+
+    .com_extract_top {
+        height: 100%;
+    }
+
+    .com_searchPage_top.com_extract_top {
+        background: none;
+        top: 200px;
+        width: calc(100%-28px);
+        height: 100%;
+
+        .extractOrgan {
+            padding: 22px;
+            margin-right: 22px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: $cats-font-exam2-color;
+        }
+    }
+
+    .el-tabs__header {
+        margin: 0px;
+
+        .el-tabs__active-bar {
+            background: $cats-blue2-color;
+            top: 3px;
+        }
+
+        .el-tabs__item {
+            text-align: center;
+            padding-left: 0px;
+            padding-right: 0px;
+            top: 3px;
+
+            &.is-active {
+                background: white;
+                box-shadow: 0px 6px 4px 0px rgba(94, 137, 181, 0.1);
+            }
+        }
+
+        .el-tabs__nav-wrap::after {
+            height: 0px;
+        }
+    }
+
+    .shadow {
+        box-shadow: 0px 6px 4px 0px rgba(94, 137, 181, 0.1);
+        padding: 22px;
+        background: white;
+        margin-bottom: 22px;
+    }
+
+    .el-transfer {
+        display: flex;
+        height: 100%;
+
+        .el-transfer__buttons {
+            width: 90px;
+            flex-shrink: 0;
+            box-sizing: border-box;
+
+            button {
+                margin-left: 0px;
+                width: 100%;
+
+                .el-icon-arrow-left::before {
+                    content: "\e6dd";
+                    margin-left: -6px;
+                }
+
+                .el-icon-arrow-right::before {
+                    content: "\e6dc";
+                    margin-left: -6px;
+                }
+            }
+        }
+
+        .el-transfer-panel {
+            flex: 1;
+        }
+
+        .transfer-list {
+            width: 100%;
+            display: flex;
+            overflow: hidden;
+
+            li {
+                float: left;
+                box-sizing: border-box;
+                flex: 1;
+                text-align: center;
+                overflow: hidden;
+                margin: 0px;
+                margin-right: 1%;
+            }
+        }
+
+        .transfer-list-header-49 {
+            li {
+                width: 49%;
+            }
+
+            .first-li {
+                margin-left: -40px;
+            }
+        }
+
+        .left {
+            float: left;
+        }
+
+        .el-transfer-panel__body {
+            margin-top: 40px;
+        }
+
+        .el-transfer-panel__footer {
+            top: 40px;
+            line-height: 40px;
+            overflow: hidden;
+            background: $cats-examBg1-color;
+        }
+    }
+
+    .el-transfer-panel__item {
+        margin-right: 7px;
+        display: block;
+    }
+}

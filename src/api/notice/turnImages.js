@@ -14,6 +14,7 @@ export function findImages(data) {
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
     params: data,
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }
@@ -26,6 +27,7 @@ export function saveOrUpdate(data) {
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
     params: data,
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }
@@ -37,6 +39,7 @@ export function deleteById(id) {
     method: "get",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }

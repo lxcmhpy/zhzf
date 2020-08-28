@@ -15,9 +15,9 @@
       "plugins": ["transform-vue-jsx", "transform-es2015-modules-commonjs", "dynamic-import-node"]
     },
     // 解决热编译卡在75%的问题
-    "development": {
-      "plugins": ["dynamic-import-node"]
-    }
+     "development": {
+       "plugins": ["dynamic-import-node"]
+     }
   }
 }
 // {

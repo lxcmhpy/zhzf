@@ -150,6 +150,20 @@ export function getById(type,id) {
     });
   }
 
+  // 获取机构树
+  export function organSysTreeByCurrUser(){
+    return request({
+        // url: "/zfjg/queryLike",
+        url: "/system/sys/organ/findOrganPositionTreeByCurrUser",
+        // url: '/system/sys/organ/findOrganPositionTreeByCurrUser',
+        method: "get",
+        // params: data,
+        showloading: false,
+        baseUrlType:  'LAW_SUPERVISE_HOST',
+        cancelToken: setCancelSource()
+    });
+  }
+
   // 重点监管-车辆列表
   export function getVehicleList (data) {
     return request({
@@ -518,6 +532,17 @@ export function findEmphasisPersonById (id) {
 export function deleteEmphasisPersonById(id) {
     return request({
         url: "/zfjg/emphasis/person/deleteById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    })
+}
+//警翼拉流接口
+export function getPeVideoUrl(id) {
+    return request({
+        url: "/zfjg/peState/findUrlById/" +id,
         method: "get",
         showloading: true,
         loadingType:'loadPart',

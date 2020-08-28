@@ -24,9 +24,9 @@
           >
             <el-option
               v-for="item in lawCateList"
-              :key="item.cateId"
-              :label="item.cateName"
-              :value="item.cateId"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -83,6 +83,7 @@
 </template>
 <script>
 import { getLawCategoryApi, addCaseCauseApi } from "@/api/system";
+import { getIndustryCategoryApi} from "@/api/caseHandle.js";
 export default {
   data() {
     return {
@@ -122,7 +123,7 @@ export default {
         console.log(data);
         this.isAdd = true;
         this.dialogTitle = "新增";
-        // this.addCaseCauseForm = {};
+        this.addCaseCauseForm = {};
       } else if (type == 2) {
         console.log("111",data);
         this.isAdd = false;
@@ -157,15 +158,22 @@ export default {
     },
     //获取业务领域
     getEnforceLawType() {
-      let _this = this;
-      this.$store.dispatch("getEnforceLawType", "1").then(
-        res => {
-          _this.lawCateList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      // let _this = this;
+      // this.$store.dispatch("getEnforceLawType", "1").then(
+      //   res => {
+      //     _this.lawCateList = res.data;
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   }
+      // );
+      let dataCate = {};
+      getIndustryCategoryApi(dataCate).then(res => {
+        console.log("业务领域",res.data);
+       this.lawCateList = res.data;
+      }, err => {
+        console.log(err);
+      });
     },
     //新增修改
     addOrEditCaseCause(formName) {
@@ -204,9 +212,9 @@ export default {
     selectGet(vId){ 
         let obj = {};
         obj = this.lawCateList.find((item)=>{ 
-            return item.cateId === vId;
+            return item.id === vId;
         });
-        return obj.cateName;
+        return obj.name;
         },
     selectGetHyType(vId){ 
         let obj = {};

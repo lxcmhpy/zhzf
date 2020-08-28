@@ -1,92 +1,56 @@
+# 这是一个对话框嵌套表格的组件，表格用的 jky-baseTable 组件
 
-# 这是一个表格组件，集合连表单和分页栏，组件预览图见 index.png
-
-## Form Attributes
-
-参数     | 说明 | 类型 | 可选值 | 默认值  | 是否必传
--------- | ----- | ----- |:-----:|:-----:|----
-url  | 请求地址 | String | / | / | 是
-baseUrlType | 请求地址类型 | String | / | / | 否
-inputList  | 表单项 | Array | / | / | 否
-
-### InputList Attributes
-
-参数     | 说明 | 类型 | 可选值 | 默认值
--------- | ----- |:-----:|:-----:|:-----:
-label  | 表单项名称 | String | / | /
-prop  | 表单项属性 | String | / | /
-placeholder  | 占位符 | / | / | /
-disabled  | 是否禁用 | Boolean | true/false | false
-clearable | 是否可清空 | Boolean | true/false | /
-type | 表单项类型 | String | / | 输入框
-valueFormat | value格式(表单项为时间选择器时启用) | String | / | /
-
-```javascript
-// type 的可选值
-'year'、'month'、'date'、'dates'、'week'、'datetime'、'datetimerange'、'daterange'、'monthrange'"
-```
-
-## Table Attributes
+### Attributes
 
 参数     | 说明 | 类型 | 可选值 | 默认值 | 是否必传
 -------- | ----- |:-----:|:-----:|:-----:|----
-height  | 表格高度 | String | / | 299 | 否
-isRadio | 表格是否可单选 | Boolean | / | false | 否
-isSelection | 表格是否可多选 | Boolean | / | false | 否
-isNumber | 是否显示序号列 | Boolean | / | false | 否
-columns  | 表头 | Array | / | / | 是
-tableData  | table数据 | Array | / | / | 是
-buttons  | 表格中的操作按钮 | Array | / | /|否
+title  | 对话框标题 | String | / | / | 否
+dialogVisible | 是否显示对话框 | Boolean | / | false | 是
+width | 组件宽度 | String | / | 1000px | 否
 
->- 注意： isRadio 和 isSelection 不能同时为 true， 否则会出错。
-
-buttons 属性示例：
-
-```javascript
-buttons: {
-  label: '操作',
-  align: "center",
-  // width: '100',
-  list: [
-    { type: 'text', name: '编辑' },
-    { type: 'primary', name: '指派' },
-    { type: 'icon', class: 'el-icon-delete' },
-  ]
-},
-```
-
-### Table Events
+### Events
 
 事件名称 | 说明 | 回调参数
 -------- | ----- |:-----:|
-handleClick  | 点击操作列按钮触发 | index,row,name |
-handleChange | 选择行时触发  |   当前选择的数据 |
+handleSubmit  | 点击确定的回调 | - |
+open  | Dialog 打开的回调 | - |
+opened  | Dialog 打开动画结束时的回调 | - |
+close  | Dialog 关闭的回调 | - |
+closed  | Dialog 关闭动画结束时的回调 | - |
 
-> 组件使用示例：
+### 其他属性详见 jky-baseTable/readme.md
+
+### 本组件用法示例
 
 ```html
 <template>
   <div class="qsfTest">
-    <BaseTable
+    <el-button type="primary" @click="handleOpen">打开对话框</el-button>
+    <JkyDialogTable
       @handleClick="handleClick"
       @handleChange="handleChange"
+      @handleSubmit="handleSubmit"
+      @handleClose="handleClose"
       :buttons="buttons"
       :inputList="inputList"
       :columns="columns"
       :url="url"
       :isRadio="true"
-      :isNumber="true" />
+      :isNumber="true"
+      :dialogVisible="dialogVisible"
+      title="事件列表" />
   </div>
 </template>
 
 <script>
-import BaseTable from "@/components/baseTable"
+import JkyDialogTable from "@/components/jky-dialogTable";
 export default {
   components: {
-    BaseTable
+    JkyDialogTable
   },
   data() {
     return {
+      dialogVisible: false,
       url: "/case/road/roadLcDeploy/list",
       inputList: [
         {
@@ -106,13 +70,6 @@ export default {
             { value: 'hbj', label: '环保局' },
           ],
           clearable: true,
-          disabled: false
-        },
-        {
-          label: '日期时间',
-          prop: 'dateTime',
-          type: 'datetimerange',
-          valueFormat: 'yyyy-MM-dd HH:mm:ss',
           disabled: false
         },
       ],
@@ -144,7 +101,7 @@ export default {
       buttons: {
         label: '操作',
         align: "center",
-        // width: '100',
+        width: '150',
         list: [
           { type: 'text', name: '编辑' },
           { type: 'primary', name: '指派' },
@@ -167,6 +124,29 @@ export default {
     handleChange(data) {
       console.log(data)
     },
+
+    /**
+     * 点击确定
+     */
+    handleSubmit() {
+      this.dialogVisible = false
+      console.log('确定')
+    },
+
+    /**
+     * 点击取消
+     */
+    handleClose() {
+      this.dialogVisible = false
+      console.log('取消')
+    },
+
+    /**
+     * 打开对话框
+     */
+    handleOpen() {
+      this.dialogVisible = true
+    }
   }
 }
 </script>
@@ -175,8 +155,6 @@ export default {
 .qsfTest {
   box-sizing: border-box;
   padding: 20px;
-  background: #FFFFFF;
 }
 </style>
-
 ```

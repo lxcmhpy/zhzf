@@ -1,0 +1,20 @@
+@import './variables.scss';
+
+.el-button {
+    border-radius: 0px;
+}
+
+.btn-1.el-button--default {
+    border: 1px solid $cats-blue-color;
+    background: $cats-gray-color;
+
+    &:hover {
+        background: auto;
+        color: auto;
+    }
+
+    &:active {
+        // background: $cats-blue-color;
+        // color: $cats-gray-color;
+    }
+}

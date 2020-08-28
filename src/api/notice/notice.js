@@ -14,6 +14,7 @@ export function findNoticeByPage(data) {
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
     params: data,
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }
@@ -26,6 +27,7 @@ export function saveOrUpdateNotice(data) {
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
     params: data,
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }
@@ -37,6 +39,7 @@ export function findNoticeById(id) {
     method: "get",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }
@@ -49,6 +52,7 @@ export function deleteNoticeById(data) {
     showloading: true,
     data: data,
     baseUrlType: 'NOTICE_HOST',
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }

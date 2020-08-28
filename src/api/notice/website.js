@@ -14,6 +14,7 @@ export function saveOrUpdate(data) {
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
     params: data,
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }
@@ -25,6 +26,7 @@ export function findWebsiteInfo() {
     method: "get",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
 }
