@@ -307,17 +307,18 @@ export default {
      * 点击 window4 底部小图标
      */
     handleClickBtns(index, data) {
-      this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
       if(index === 0) {
         // 如果状态为在线（图标颜色为蓝色），则打开语音通话窗口
         if(data.padStateColor) {
           this.$store.commit('setDoing', '1');
+          this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
           window.PhoneCallModule.sipAudioCall("100013","app02");
         }
       } else if (index === 1) {
         // 如果状态为在线（图标颜色为蓝色），则打开视频通话窗口
         if(data.padStateColor) {
           this.$store.commit('setDoing', '2');
+          this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
           window.PhoneCallModule.sipVideoCall("100013","app02");
         }
       } else if (index === 2) {
