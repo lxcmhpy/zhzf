@@ -311,7 +311,7 @@ export default {
       } else if (index === 2) {
         // 如果状态为在线（图标颜色为绿色），则打开视频窗口
         if(data.peStateColor) {
-          // this.showVideo = true
+          this.clickPeVideo(data.sn)
         }
       }
       this.phoneVideoId = index
