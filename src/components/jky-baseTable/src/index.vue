@@ -112,6 +112,10 @@
 import { findData } from "../store.js";
 export default {
   props: {
+    reqAttr: {
+      type: Object,
+      default: {}
+    },
     isPagination: {
       type: Boolean,
       default: true
@@ -172,7 +176,7 @@ export default {
      * 获取数据，带 baseUrlType
      */
     findTableData(param, baseUrlType, url) {
-      findData(param, baseUrlType, url).then(res => {
+      findData(Object.assign(this.reqAttr, param), baseUrlType, url).then(res => {
         if(res.code === 200) {
           return res.data
         } else {

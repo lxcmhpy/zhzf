@@ -25,6 +25,7 @@
       :isNumber="isNumber"
       :url="url"
       :baseUrlType="baseUrlType"
+      :reqAttr="reqAttr"
       :isPagination="isPagination"
       @handleClick="handleClick"
       @handleChange="handleChange" />
@@ -53,6 +54,10 @@ export default {
     dialogVisible: {
       type: Boolean,
       default: false
+    },
+    reqAttr: {
+      type: Object,
+      default: {}
     },
     isPagination: {
       type: Boolean,
