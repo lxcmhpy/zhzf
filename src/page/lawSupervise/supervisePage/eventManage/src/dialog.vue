@@ -53,7 +53,7 @@
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
       </el-form-item>
       <el-form-item label="人员:" :label-width="formLabelWidth">
-        <el-select v-model="form.disposePerson" placeholder="请选择">
+        <el-select v-model="form.disposePerson" filterable multiple placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
             :key="item.value"
@@ -106,7 +106,7 @@
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { addUpdate } from "@/api/eventManage";
 import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js";
-import localStroage from '@/common/js/localStroage';
+import iLocalStroage from '@/common/js/localStroage';
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
 import store from "../store.js";
 export default {
@@ -285,6 +285,7 @@ export default {
         })
       }
       this.form.storageIds = upList.concat(downList)
+      this.form.disposePerson = JSON.stringify(this.form.disposePerson)
       addUpdate(this.form).then(res => {
         if(res.code === 200) {
           this.dialogFormVisible = false

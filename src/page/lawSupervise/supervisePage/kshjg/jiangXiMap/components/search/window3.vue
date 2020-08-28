@@ -16,6 +16,7 @@
         <div class="circleName" v-for="(item,index) of list" :key="index">
           <div
             class="flexCircle"
+            :style="item.padStateColor || item.peStateColor ? 'background:#00adb5;':'background:#909399;'"
             @click="handlePerson(item)"
           >{{item.nickName}}</div>
         </div>
@@ -132,7 +133,6 @@ export default {
           text-align: center;
           line-height: 40px;
           border-radius: 50%;
-          background:#00adb5;
           color: #fff;
           font-weight: 400;
           font-size: 12px;

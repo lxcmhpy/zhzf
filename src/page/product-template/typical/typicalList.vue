@@ -115,6 +115,8 @@ export default {
       this.$router.push({
         name: "case_handle_electronicFileDetail"
       });
+      let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
+      this.$store.commit("setCaseNumber", setCaseNumber);
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -152,7 +154,7 @@ export default {
     getQueryCaseTypeList() {
       getQueryCaseTypeListApi().then(
         res => {
-          this.caseTypeList = res.data;
+          this.caseTypeList = res.data.records;
         },
         error => {
           console.log(error)

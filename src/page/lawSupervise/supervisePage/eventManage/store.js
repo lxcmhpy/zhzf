@@ -70,6 +70,9 @@ export default {
         this.$nextTick(() => {
           this.$refs.dialog.setValue(data.disposeOrganName)
         })
+        if(data.disposePerson){
+          data.disposePerson = JSON.parse(data.disposePerson)
+        }
         // 给详情页赋值
         Object.keys(this.$refs.dialog.form).map(key => {
           this.$refs.dialog.form[key] = data[key]
