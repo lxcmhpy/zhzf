@@ -17,7 +17,11 @@
       @handleCheckAllChange="handleCheckAllChange"
     />
     <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
-    <PhoneVideo ref="phoneVideo" />
+    <externalVideoBtns
+      :doing="videoDoing"
+      @updateMakePhoneStatus="updateMakePhoneStatus"
+      :curWindow="curWindow">
+    </externalVideoBtns>
   </div>
 </template>
 
@@ -27,8 +31,9 @@ import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
 import TopInFo from "../components/topInfo/index.vue";
-import PhoneVideo from "@/components/phoneVideo/dialogPhoneVideo.vue";
+import externalVideoBtns from '../../../../componentCommon/externalVideoBtns.vue';
 import store from "../store.js";
+import { mapGetters } from "vuex";
 export default {
   mixins: [store],
   provide() {
@@ -36,16 +41,27 @@ export default {
       indexPage: this
     }
   },
+  computed: {
+    ...mapGetters(["makePhoneStatus", "doing"])
+  },
   components: {
     JkyBaseHMap,
     Search,
     Select,
     Drawer,
     TopInFo,
-    PhoneVideo
+    externalVideoBtns
+  },
+  watch: {
+    makePhoneStatus (val, oldVal) {
+      this.videoDoing = null;
+    },
   },
   data() {
     return {
+      videoDoing: null,
+      curWindow: null,
+      showVideo: false,
       layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}',
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
@@ -303,16 +319,25 @@ export default {
       console.log(data)
       if(index === 0 || index === 1) {
         // 如果状态为在线（图标颜色为蓝色），则打开通话窗口
-        if(data.padStateColor) {
-          this.$refs.phoneVideo.show = true
-        }
+        this.updateMakePhoneStatus('2')
+        // if(data.padStateColor) {
+
+        // }
       } else if (index === 2) {
         // 如果状态为在线（图标颜色为绿色），则打开视频窗口
         if(data.peStateColor) {
           this.clickPeVideo(data.sn)
         }
       }
-    }
+    },
+
+    updateMakePhoneStatus (code) {
+      this.videoDoing = code;
+      // this.makePhoneStatus = !this.makePhoneStatus;
+      this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
+      this.$store.commit('setDoing', code);
+      this.showVideo = true;
+    },
   },
   activated() {
     this.getTree()
