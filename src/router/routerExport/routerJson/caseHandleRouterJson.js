@@ -251,6 +251,7 @@ export default [{
     meta: {
       title: "信息采集",
       oneTab: true,
+      keepAlive: true
     },
     component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
   },
