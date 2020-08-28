@@ -17,7 +17,7 @@
       @handleCheckAllChange="handleCheckAllChange"
     />
     <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
-    <PhoneVideo v-if="showVideo" :id="phoneVideoId" />
+    <PhoneVideo ref="phoneVideo" />
   </div>
 </template>
 
@@ -27,7 +27,7 @@ import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
 import TopInFo from "../components/topInfo/index.vue";
-import PhoneVideo from "../components/phoneVideo/index.vue"
+import PhoneVideo from "@/components/phoneVideo/dialogPhoneVideo.vue";
 import store from "../store.js";
 export default {
   mixins: [store],
@@ -46,8 +46,6 @@ export default {
   },
   data() {
     return {
-      showVideo: false,
-      phoneVideoId: null,
       layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}',
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
@@ -306,7 +304,7 @@ export default {
       if(index === 0 || index === 1) {
         // 如果状态为在线（图标颜色为蓝色），则打开通话窗口
         if(data.padStateColor) {
-          this.showVideo = true
+          this.$refs.phoneVideo.show = true
         }
       } else if (index === 2) {
         // 如果状态为在线（图标颜色为绿色），则打开视频窗口
@@ -314,7 +312,6 @@ export default {
           this.clickPeVideo(data.sn)
         }
       }
-      this.phoneVideoId = index
     }
   },
   activated() {
