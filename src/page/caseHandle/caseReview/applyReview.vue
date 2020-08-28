@@ -318,6 +318,7 @@ export default {
       applyReviewCase(applyData).then((res) => {
         if (res.code === 200) {
           this.$message({ type: "success", message: "申请提交成功" });
+          this.$emit('reloadTable');
           this.closeDialog();
         }
       });
@@ -330,6 +331,7 @@ export default {
       approverReviewCase(approvalData).then((res) => {
         if (res.code === 200) {
           this.$message({ type: "success", message: "申请提交成功" });
+          this.$emit('reloadTable');
           this.closeDialog();
         }
       });
