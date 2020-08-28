@@ -17,23 +17,17 @@
       @handleCheckAllChange="handleCheckAllChange"
     />
     <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
-    <externalVideoBtns
-      :doing="videoDoing"
-      @updateMakePhoneStatus="updateMakePhoneStatus"
-      :curWindow="curWindow">
-    </externalVideoBtns>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import JkyBaseHMap from "@/components/jky-baseHMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
 import TopInFo from "../components/topInfo/index.vue";
-import externalVideoBtns from '../../../../componentCommon/externalVideoBtns.vue';
 import store from "../store.js";
-import { mapGetters } from "vuex";
 export default {
   mixins: [store],
   provide() {
@@ -41,27 +35,24 @@ export default {
       indexPage: this
     }
   },
-  computed: {
-    ...mapGetters(["makePhoneStatus", "doing"])
-  },
   components: {
     JkyBaseHMap,
     Search,
     Select,
     Drawer,
     TopInFo,
-    externalVideoBtns
   },
   watch: {
     makePhoneStatus (val, oldVal) {
       this.videoDoing = null;
     },
+
+  },
+  computed: {
+    ...mapGetters(["makePhoneStatus", "doing"])
   },
   data() {
     return {
-      videoDoing: null,
-      curWindow: null,
-      showVideo: false,
       layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}',
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
@@ -316,27 +307,23 @@ export default {
      * 点击 window4 底部小图标
      */
     handleClickBtns(index, data) {
-      console.log(data)
-      if(index === 0 || index === 1) {
-        // 如果状态为在线（图标颜色为蓝色），则打开通话窗口
-        this.updateMakePhoneStatus('2')
+      this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
+      if(index === 0) {
+        this.$store.commit('setDoing', '1');
+        window.PhoneCallModule.sipAudioCall("100013","app02");
+        // 如果状态为在线（图标颜色为蓝色），则打开语音通话窗口
         // if(data.padStateColor) {
-
         // }
+      } else if (index === 1) {
+        // 如果状态为在线（图标颜色为蓝色），则打开视频通话窗口
+        this.$store.commit('setDoing', '2');
+        window.PhoneCallModule.sipVideoCall("100013","app02");
       } else if (index === 2) {
         // 如果状态为在线（图标颜色为绿色），则打开视频窗口
         if(data.peStateColor) {
           this.clickPeVideo(data.sn)
         }
       }
-    },
-
-    updateMakePhoneStatus (code) {
-      this.videoDoing = code;
-      // this.makePhoneStatus = !this.makePhoneStatus;
-      this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
-      this.$store.commit('setDoing', code);
-      this.showVideo = true;
     },
   },
   activated() {
