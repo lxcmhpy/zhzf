@@ -195,6 +195,7 @@ export default {
             break;
           case 4:
              alertMsg = '该案件调阅申请已过期，不能进行审批!';
+             break;
         }
         this.$alert(alertMsg, "提示", {
           confirmButtonText: "确定"
