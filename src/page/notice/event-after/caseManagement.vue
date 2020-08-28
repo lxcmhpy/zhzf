@@ -1,5 +1,5 @@
 <template>
-  <div class="com_searchAndpageBoxPadding images-management">
+  <div class="com_searchAndpageBoxPadding case-management">
     <div class="searchAndpageBox searchAndpageBox2">
       <div class="handlePart caseHandleSearchPart">
         <el-form
@@ -11,8 +11,13 @@
         >
           <el-row>
             <el-col :span="6">
-              <el-form-item label="名称" prop="strName">
-                <el-input v-model="searchForm.strName"></el-input>
+              <el-form-item label="处罚决定书文号（案号）" prop="caseNumber">
+                <el-input v-model="searchForm.caseNumber"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="行政相对人名称" prop="party">
+                <el-input v-model="searchForm.party"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -47,11 +52,12 @@
         >
           >
           <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="strName" label="名称" align="center"></el-table-column>
-          <el-table-column prop="strNumber" label="文号" align="center"></el-table-column>
-          <el-table-column prop="strOrgan" label="发布机关" align="center"></el-table-column>
-          <el-table-column prop="dtmDate" label="发布日期" align="center"></el-table-column>
-          <el-table-column prop="shiDate" label="实施日期" align="center"></el-table-column>
+          <el-table-column prop="caseNumber" label="行政处罚决定书文号（案号）" align="center"></el-table-column>
+          <el-table-column prop="caseCauseName" label="处罚名称（违法行为）" align="center"></el-table-column>
+          <el-table-column prop="party" label="行政相对人名称（当事人）" align="center"></el-table-column>
+          <el-table-column prop="provinceNo" label="受案单位" align="center"></el-table-column>
+          <el-table-column prop="partyName" label="处罚单位" align="center"></el-table-column>
+          <el-table-column prop="punishDate" label="处罚时间" align="center"></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
@@ -83,25 +89,59 @@
     </div>
 
     <el-dialog
-      title="法规详情"
+      title="详情"
       :visible.sync="detailVisible"
       @close="detailVisible = false"
       :close-on-click-modal="false"
-      width="40%"
+      width="50%"
       class="detail-dialog"
     >
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="法规标题">{{form.strName}}</el-form-item>
-        <el-form-item label="发布文号">{{form.strNumber}}</el-form-item>
-        <el-form-item label="发布机关">{{form.strOrgan}}</el-form-item>
-        <el-form-item label="法规效力">{{form.drawerName}}</el-form-item>
-        <el-form-item label="网站链接">{{form.webLink}}</el-form-item>
-        <el-form-item label="行业类型">{{form.industryType}}</el-form-item>
-        <el-form-item label="发布时间">{{form.dtmDate}}</el-form-item>
-        <el-form-item label="实施时间">{{form.shiDate}}</el-form-item>
-        <el-form-item label="时效性">{{form.status===0?"有效":"1无效"}}</el-form-item>
-        <el-form-item label="题注">{{form.strNote}}</el-form-item>
-      </el-form>
+      <table class="table" width="100%" cellspacing="0">
+        <tr>
+          <td width="15%" class="title">行政处罚决定书文号</td>
+          <td width="35%">{{form.caseNumber}}</td>
+        </tr>
+        <tr>
+          <td class="title">处罚名称</td>
+          <td>{{form.caseCauseName}}</td>
+        </tr>
+        <tr>
+          <td class="title">处罚类型</td>
+          <td>{{form.punishType}}</td>
+        </tr>
+        <tr>
+          <td class="title">处罚事由</td>
+          <td>{{form.caseCauseNameCopy}}</td>
+        </tr>
+        <tr>
+          <td class="title">处罚依据</td>
+          <td>{{form.punishLaw}}</td>
+        </tr>
+        <tr>
+          <td class="title">行政相对人名称</td>
+          <td>{{form.party}}</td>
+        </tr>
+        <tr>
+          <td class="title">统一社会信用代码</td>
+          <td>{{form.socialCreditCode}}</td>
+        </tr>
+        <tr>
+          <td class="title">身份证号</td>
+          <td>{{form.partyIdNo}}</td>
+        </tr>
+        <tr>
+          <td class="title">处罚结果</td>
+          <td>{{form.punishDecision}}</td>
+        </tr>
+        <tr>
+          <td class="title">处罚决定日期</td>
+          <td>{{form.punishDate}}</td>
+        </tr>
+        <tr>
+          <td class="title">处罚单位</td>
+          <td>{{form.partyName}}</td>
+        </tr>
+      </table>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="detailVisible = false">关闭</el-button>
       </span>
@@ -127,14 +167,14 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  findBnslaws,
+  findCases,
   saveOrUpdate,
   saveOrUpdateBatch,
   findById,
   deleteByIds,
   update,
   updateBatch,
-} from "@/api/notice/bnslaw";
+} from "@/api/notice/case";
 import approve from "@/page/notice/components/approve";
 import JkyDialogTable from "@/components/jky-dialogTable";
 
@@ -143,7 +183,8 @@ export default {
   data() {
     return {
       searchForm: {
-        strName: "",
+        personName: "",
+        oId: "",
         state: "",
       },
       tableData: [],
@@ -153,41 +194,51 @@ export default {
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
       dialogVisible: false,
-      url: "/notice/bnslaw/show",
+      url: "/notice/case/show",
       baseUrlType: "NOTICE_HOST",
       inputList: [
         {
-          label: "名称",
-          prop: "strName",
-          placeholder: "请输入名称",
+          label: "处罚决定书文号（案号）",
+          prop: "caseNumber",
+          placeholder: "请输入",
+          disabled: false,
+        },
+        {
+          label: "行政相对人名称",
+          prop: "party",
           disabled: false,
         },
       ],
       columns: [
         {
-          label: "名称",
+          label: "行政处罚决定书文号（案号）",
           align: "center",
-          prop: "strName",
+          prop: "caseNumber",
         },
         {
-          label: "文号",
+          label: "处罚名称（违法行为）",
           align: "center",
-          prop: "strNumber",
+          prop: "caseCauseName",
         },
         {
-          label: "发布机关",
+          label: "行政相对人名称（当事人）",
           align: "center",
-          prop: "strOrgan",
+          prop: "party",
         },
         {
-          label: "发布日期",
+          label: "受案单位",
           align: "center",
           prop: "dtmDate",
         },
         {
-          label: "实施日期",
+          label: "处罚单位",
           align: "center",
-          prop: "shiDate",
+          prop: "partyName",
+        },
+        {
+          label: "处罚时间",
+          align: "center",
+          prop: "punishDate",
         },
       ],
       form: {},
@@ -201,7 +252,7 @@ export default {
       data.current = this.currentPage;
       data.size = this.pageSize;
       let _this = this;
-      findBnslaws(data).then(
+      findCases(data).then(
         (res) => {
           _this.total = res.data.total;
           _this.tableData = res.data.records;
@@ -350,9 +401,22 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.images-management {
-  .detail-dialog .el-form-item {
-    margin-bottom: 0px;
+.case-management {
+  table {
+    border: 1px solid #ecebeb;
+    min-height: 30px;
+    line-height: 30px;
+    text-align: left;
+    border-collapse: collapse;
+    padding: 2px;
+  }
+  table tr th,
+  table tr td {
+    border: 1px solid #ecebeb;
+    padding: 10px;
+  }
+  table .title {
+    font-weight: bold;
   }
 }
 </style>
