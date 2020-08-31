@@ -10,18 +10,18 @@ export default  [
         },
         children: [
           {
-            name: "联合查询",
-            path: "/zdycxtj-manage",
+            name: "lawCase",
+            path: "/lawCase",
             meta: {
-              title: "联合查询" 
+              title: "执法案件" 
             },
             component: () => import("@/page/cxtj/zdycxtj-manage/zdycxtj.vue")
           },
           {
-            name: "大屏",
-            path: "/dp-manage",
+            name: "personEqpt",
+            path: "/personEqpt",
             meta: {
-              title: "大屏"
+              title: "人员装备"
             },
             component: () => import("@/page/cxtj/dp-manage/dp.vue")
           }
