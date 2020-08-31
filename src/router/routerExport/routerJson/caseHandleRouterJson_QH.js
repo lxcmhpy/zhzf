@@ -54,7 +54,7 @@ export default [
         meta: {
           title: "公路赔（补）偿案件结案报告"
         },
-        component: () => import("@/page/caseHandle/case/qingHai/doc/finishCaseReport_QH.vue")
+        component: () => import("@/page/caseHandle/case/qingHai/form/finishCaseReport_QH.vue")
     },
     {
         path: "/publishReport_QH",

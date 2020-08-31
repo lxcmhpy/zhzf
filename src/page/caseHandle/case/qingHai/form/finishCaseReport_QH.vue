@@ -1,15 +1,15 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="establish-print">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form :rules="rules" ref="finishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">公路赔（补）偿案件结案报告</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td rowspan="3">案由</td>
             <td rowspan="3" colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 6}" maxlength="90" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 6}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td rowspan="3" style="width:40px">案件承办人</td>
@@ -19,28 +19,28 @@
           <tr>
             <td class="color_DBE4EF">
               <el-form-item prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
-                <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
-                  <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff2==item"></el-option>
+                <el-select v-model="formData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
+                  <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="formData.staff2==item"></el-option>
                 </el-select>
               </el-form-item>
             </td>
             <td class="color_DBE4EF">
               <el-form-item prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
-                <el-input type="textarea" clearable class="w-120" v-model="docData.certificateId1" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
+                <el-input type="textarea" clearable class="w-120" v-model="formData.certificateId1" size="small" placeholder="请输入" :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td class="color_DBE4EF">
               <el-form-item prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
-                <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2" placeholder="请选择" :disabled="fieldDisabled(propertyFeatures['staff2'])">
-                  <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="docData.staff1==item"></el-option>
+                <el-select v-model="formData.staff2" :maxLength='maxLength' @change="changeStaff2" placeholder="请选择" :disabled="fieldDisabled(propertyFeatures['staff2'])">
+                  <el-option v-for="(item,index) in staffList" :key="index" :value="item" :label="item" :disabled="formData.staff1==item"></el-option>
                 </el-select>
               </el-form-item>
             </td>
             <td class="color_DBE4EF">
               <el-form-item prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
-                <el-input type="textarea" v-model="docData.certificateId2" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
+                <el-input type="textarea" v-model="formData.certificateId2" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -48,7 +48,7 @@
             <td colspan="9" class="color_DBE4EF">
               赔（补）偿决定：
               <el-form-item prop="decision" :rules="fieldRules('decision',propertyFeatures['decision'])">
-                <el-input type="textarea" v-model="docData.decision" :rows="15" :disabled="fieldDisabled(propertyFeatures['decision'])" maxlength="300" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.decision" :rows="15" :disabled="fieldDisabled(propertyFeatures['decision'])" maxlength="300" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -56,12 +56,12 @@
             <td colspan="9" class="color_DBE4EF table_seal">
               执行情况：<br />
               <el-form-item prop="process" :rules="fieldRules('process',propertyFeatures['process'])">
-                <el-input type="textarea" v-model="docData.process" :rows="7" :disabled="fieldDisabled(propertyFeatures['process'])" maxlength="300" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.process" :rows="7" :disabled="fieldDisabled(propertyFeatures['process'])" maxlength="300" placeholder="\"></el-input>
               </el-form-item>
               <div class="pdf_seal">
-                <p>签名：{{docData.approvePeo}}</p>
+                <p>签名：{{formData.approvePeo}}</p>
                 <p>
-                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
+                  <span v-if="formData.approveTime">{{formData.approveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -71,7 +71,7 @@
             <td colspan="9" class="color_DBE4EF">
               备注：
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'])" style="width: calc(100% - 50px);">
-                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.note" :rows="4" maxlength="100" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -81,7 +81,7 @@
         </p>
       </el-form>
     </div>
-    <casePageFloatBtns :pageDomId="'question_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
   </div>
 </template>
@@ -102,7 +102,7 @@ export default {
   data() {
     return {
       // tableData: {},
-      docData: {
+      formData: {
         caseTypeKey: "",//案件字
         caseNumber: "",
         caseName: "",
@@ -117,16 +117,13 @@ export default {
         approveTime: '',
         note: "",
       },
-      caseDocDataForm: {
-        id: "",   //修改的时候用
-        caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: this.$route.params.docId,     //文书类型ID
-        //文书数据
-        docData: "",
-        status: "",   //提交状态
-        note: "",//文书名字 
-        docDataId: "", //多份文书的id
-        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
+      caseLinkDataForm: {
+        id: "", //修改的时候用
+        caseBasicinfoId: "", //案件id
+        caseLinktypeId: this.BASIC_DATA_QH.finishCaseReport_QH_caseLinktypeId, //表单类型ID
+        //表单数据
+        formData: "",
+        status: "",
       },
       rules: {
         checkBox: [
@@ -168,7 +165,7 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: 'establish-print'
       },
-      huanjieAndDocId: this.BASIC_DATA_QH.establish_JX_huanjieAndDocId, //立案登记表的文书id
+      huanjieAndDocId: this.BASIC_DATA_QH.finishCaseReport_QH_huanjieAndDocId, //立案登记表的文书id
       approvalOver: false,//审核完成
       isParty: true, //当事人类型为个人
       caseSourceText3: "",
@@ -193,17 +190,6 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      console.log(this.caseId)
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      let data = {
-        caseId: this.caseId,
-        docId: this.$route.params.docId
-      };
-      console.log(data);
-      this.com_getDocDataByCaseIdAndDocId(data);
-    },
     addDocData(handleType) {
       this.com_addDocData(handleType);
       // this.$store.dispatch("deleteTabs", this.$route.name);//关闭当前页签
@@ -231,15 +217,15 @@ export default {
     //更改执法人员2
     changeStaff2() {
       let staffIndex = this.staffList.indexOf(val);
-      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      this.formData.certificateId2 = this.formData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
     getDataAfter() {
-      this.staffList = this.docData.staff.split(',');
-      this.docData.staff1 = this.staffList[0];
-      this.docData.staff2 = this.staffList[1];
-      this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
-      this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+      this.staffList = this.formData.staff.split(',');
+      this.formData.staff1 = this.staffList[0];
+      this.formData.staff2 = this.staffList[1];
+      this.formData.certificateId1 = this.formData.certificateId.split(",")[0];
+      this.formData.certificateId2 = this.formData.certificateId.split(",")[1];
 
     },
     //根据类型
@@ -249,7 +235,7 @@ export default {
 
       let selectPeo2 = selectPeo.split('-'); //[name,relation]
       console.log('selectPeo2', selectPeo2);
-      let dailiDataList = JSON.parse(this.docData.agentPartyEcertId);
+      let dailiDataList = JSON.parse(this.formData.agentPartyEcertId);
       let dailiData = "";
       dailiDataList.forEach(item => {
         console.log('其他人', item);
@@ -257,7 +243,7 @@ export default {
           console.log('不是当事人')
           dailiData = item;
           console.log('dailiData22222', dailiData);
-          this.docData.inquiriedRelation = item.relationWithCase;
+          this.formData.inquiriedRelation = item.relationWithCase;
 
           return;
         }
@@ -268,17 +254,17 @@ export default {
       if (!dailiData) {
         console.log('是当事人')
         dailiData = {
-          name: this.docData.party,
-          sex: this.docData.partySex,
-          zhengjianNumber: this.docData.partyIdNo,
-          age: this.docData.partyAge,
-          company: this.docData.partyUnitPosition,
-          position: this.docData.occupation,
-          tel: this.docData.partyTel,
-          adress: this.docData.partyAddress,
+          name: this.formData.party,
+          sex: this.formData.partySex,
+          zhengjianNumber: this.formData.partyIdNo,
+          age: this.formData.partyAge,
+          company: this.formData.partyUnitPosition,
+          position: this.formData.occupation,
+          tel: this.formData.partyTel,
+          adress: this.formData.partyAddress,
         }
 
-        // this.docData.inquiriedRelation = "当事人";
+        // this.formData.inquiriedRelation = "当事人";
       }
       //与案件关系选择以上都不是时
       if (selectPeo2[0] == '以上均不是') {
@@ -293,30 +279,30 @@ export default {
           tel: '',
           adress: '',
         }
-        // this.docData.inquiriedRelation = "";
+        // this.formData.inquiriedRelation = "";
       }
       this.setDataForPelpleDetail(dailiData);
 
     },
     setDataForPelpleDetail(dailiData) {
       console.log('dailiData', dailiData);
-      this.docData.inquiried = dailiData.name;
-      this.docData.inquiriedSex = Number(dailiData.sex);
-      this.docData.inquiriedIdNo = dailiData.zhengjianNumber;
-      this.docData.inquiriedAge = dailiData.age,
-        this.docData.inquiriedUnitPosition = dailiData.company + " " + dailiData.position;
-      this.docData.inquiriedAddress = dailiData.adress;
-      this.docData.inquiriedTel = dailiData.tel;
-      console.log(' this.docData.inquiriedSex', this.docData.inquiriedSex);
+      this.formData.inquiried = dailiData.name;
+      this.formData.inquiriedSex = Number(dailiData.sex);
+      this.formData.inquiriedIdNo = dailiData.zhengjianNumber;
+      this.formData.inquiriedAge = dailiData.age,
+        this.formData.inquiriedUnitPosition = dailiData.company + " " + dailiData.position;
+      this.formData.inquiriedAddress = dailiData.adress;
+      this.formData.inquiriedTel = dailiData.tel;
+      console.log(' this.formData.inquiriedSex', this.formData.inquiriedSex);
     },
     //修改人员
     changeStaff1(val) {
-      let staffIndex = this.docData.staff.split(',').indexOf(val);
-      this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
+      let staffIndex = this.formData.staff.split(',').indexOf(val);
+      this.formData.certificateId1 = this.formData.certificateId.split(',')[staffIndex];
     },
     changeStaff2(val) {
-      let staffIndex = this.docData.staff.split(',').indexOf(val);
-      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      let staffIndex = this.formData.staff.split(',').indexOf(val);
+      this.formData.certificateId2 = this.formData.certificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
     //获取执法人员
@@ -332,13 +318,64 @@ export default {
       }, err => {
         console.log(err);
       })
+    },
+    setData() {
+      console.log('setData');
+      this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.establish_JX_caseLinktypeId);
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
+        false
+      );
+      console.log('获取数据', this.formData)
+      if (this.formData.partyTel == '') {
+        console.log('电话flag', this.isPartyPhone)
+        this.isPartyPhone = true;
+      }
+    },
+    // 提交表单
+    saveData(handleType) {
+      //参数  提交类型 、formRef
+      this.com_submitCaseForm(handleType, "finishForm", true);
+    },
+
+    //设置执法人员
+    getDataAfter() {
+      this.staffList = this.formData.staff ? this.formData.staff.split(',') : [];
+    },
+    //获取案件基本信息
+    getCaseInfo() {
+      let data = {
+        id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data)
+        .then(
+          res => {
+            console.log('获取案件信息', res);
+            this.editCaseInfo = {
+              id: res.data.id,
+              tempNo: res.data.tempNo
+            }
+          })
+        .catch(err => { console.log(err) })
+    },
+    //修改案件基本信息
+    gotoEditCase() {
+      this.$router.push({
+        name: "case_handle_inforCollect",
+        params: { editFlag: true }
+      })
     }
   },
   mounted() {
-    this.getDocDataByCaseIdAndDocId();
-    this.isOverStatus();
-    this.getLawOfficer();
+    // this.isOverStatus();
+    // this.getLawOfficer();
   },
+  created() {
+    this.setData();
+    this.getCaseInfo();
+  }
 };
 </script>
  <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
