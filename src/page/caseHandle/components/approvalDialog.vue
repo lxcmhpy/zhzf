@@ -164,7 +164,8 @@ export default {
           throw new Error(err);
         }
         flowName = currentFlow.data.flowName;
-        if (flowName == "处罚流程" || flowName == "赔补偿流程" || flowName == "青海赔补偿流程") {
+        if(['处罚流程','赔补偿流程','青海赔补偿流程','青海处罚流程'].includes(flowName)){
+        // if (flowName == "处罚流程" || flowName == "赔补偿流程" || flowName == "青海赔补偿流程") {
           try {
             await approvalPdfQzApi(data);
           } catch (err) {
