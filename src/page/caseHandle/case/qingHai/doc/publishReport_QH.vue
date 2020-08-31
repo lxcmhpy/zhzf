@@ -60,26 +60,9 @@ export default {
   computed: { ...mapGetters(['caseId']) },
   data() {
     return {
-      overFlowEditList: [{}, {}],
-      isOverflow: false,
-      isOverLine: false,
       docData: {
-        caseNumber: '',
-        party: '',
-        checkParty: '',
-        caseName: '',
-        partyName: '',
-        saveDate: '',
-        caseNumberCopy: '',
-        relieveDate: '',
-        partyAddress: '',
-        bankInfo: '',
-        aplayParty: '',
-        fine: '',
-        illegaldecision: '',
-        causeName: '',
+        publishInfo: '',
         makeDate: '',
-        evidence: '',
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -93,25 +76,9 @@ export default {
         docDataId: "", //多份文书的id
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
-      name: '',
       rules: {
-        // party: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
-        // saveDate: [
-        //   { required: true, message: '证据保存日期不能为空', trigger: 'change' },
-        // ],
-        // relieveDate: [
-        //   { required: true, message: '解除证据登记日期不能为空', trigger: 'change' },
-        // ],
-        // caseNumberCopy: [
-        //   { required: true, message: '证据登记编号不能为空', trigger: 'blur' },
-        // ]
-
       },
-      nameLength: 23,
-      adressLength: 23,
-      maxLengthOverLine: 122,
-      maxLength: 23,
-      // lineStyleFlag: false,
+   
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
         pageDomId: 'subOutputRank-print',
