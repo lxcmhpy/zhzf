@@ -17,8 +17,8 @@
         操作<br>记录
       </el-menu-item>
       <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish" v-show="!IsLawEnforcementSupervision || lawEnforcementSupervisionType =='archivesCaseSupervision'">
-        <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('case_handle_documentForm')">文书<br>列表</div>
-        <div v-else>文书<br>列表</div>
+        <div @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('case_handle_documentForm')">文书<br>列表</div>
+        <!-- <div v-else>文书<br>列表</div> -->
       </el-menu-item>
       <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish" v-show="IsLawEnforcementSupervision && lawEnforcementSupervisionType!=='archivesCaseSupervision'">
         <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('documentForm_supervision')" @click="mouseenterShowEmit('documentForm_supervision')">文书<br>列表</div>
@@ -66,9 +66,9 @@
       <!-- 卷宗目录 -->
     <archiveCatalogue ref="archiveCatalogueRef"></archiveCatalogue>
     <!-- 证据目录 -->
-    <evidenceCatalogue ref="evidenceCatalogueRef" @getEvidenceEmit="getEvidence"></evidenceCatalogue>
+    <evidenceCatalogue :fatherCom="fatherCom" ref="evidenceCatalogueRef" @getEvidenceEmit="getEvidence"></evidenceCatalogue>
     <!-- 文书列表 -->
-    <documentFormRef ref="documentFormRef"></documentFormRef>
+    <documentFormRef :fatherCom="fatherCom" ref="documentFormRef"></documentFormRef>
      <!-- 送达回证列表 -->
     <deliverReceiptFormRef ref="deliverReceiptFormRef"></deliverReceiptFormRef>
     <!--执法监督 文书列表 -->
@@ -101,7 +101,7 @@ export default {
       infoPage: "",
     }
   },
-  props:['activeIndex'],
+  props:['activeIndex', 'fatherCom'],
   computed: { ...mapGetters(["caseApproval",'caseId','caseHandle','IsLawEnforcementSupervision','lawEnforcementSupervisionType', 'noOperation']) },
   components: {
     archiveCatalogue,
@@ -118,10 +118,10 @@ export default {
     },
     goTo(name){
       console.log('name',name)
-      // if(this.caseApproval ) { 
+      // if(this.caseApproval ) {
       //   this.$message('暂不支持审批人员查看');
       // }else{
-       
+
       //   this.$router.push({
       //       name: name,
       //       params:{
@@ -197,7 +197,7 @@ export default {
             }
         );
       }
-      
+
     },
     menuCanUse(data){
       //案件状态（办理中，待归档）
@@ -208,7 +208,7 @@ export default {
       let establish_caseLinktypeIdArr = [this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId];
       if(data.caseStatus == "未立案"){
           this.disabledCaseInfo = true;
-      }else{ 
+      }else{
           console.log(this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.doingLink.split(',')));
           if(this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.doingLink.split(','))){
              this.disabledCaseInfo = false;
@@ -220,9 +220,9 @@ export default {
             }else{
               this.disabledCaseInfo = true;
             }
-          } 
+          }
       }
-     
+
       //文书列表、送达回证（两级立案审批通过后可用）方法：判断已完成有没有立案
       this.disabledBeforeEstablish = !this.hasDataInOtherArr(establish_caseLinktypeIdArr,data.completeLink.split(','));
       //控制案件流程 （信息采集保存后可用 方法：状态是不是1
