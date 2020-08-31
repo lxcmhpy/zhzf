@@ -17,8 +17,8 @@
                 <el-option value="宁夏">宁夏</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="二级单位" prop="ministerialNo">
-                <el-input v-model="formInline.ministerialNo"></el-input>
+              <el-form-item label="二级单位" prop="oName">
+                <el-input v-model="formInline.oName"></el-input>
               </el-form-item>
               <el-form-item label="所属门类" prop="branchId">
                 <el-select
@@ -37,8 +37,8 @@
               </el-form-item>
             <el-form-item label="是否发证" prop="certStatus">
                 <el-select v-model="formInline.certStatus" placeholder="是否发证" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
-                <el-option value="1">是</el-option>
-                <el-option value="0">否</el-option>
+                <el-option value="1">已发证</el-option>
+                <el-option value="0">未发证</el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label=" " label-width="13px">
@@ -105,8 +105,8 @@ export default {
       formInline: {
        ministerialNo: "", //执法证号
         province: "", //省份
-        branchName: "", //执法门类
-        branchId: "",
+        oid: "", //所属单位
+        branchId: "", //执法门类
         certStatus:"", //发证状态
       },
       tableData: [], //表格数据
@@ -126,9 +126,8 @@ export default {
     getPersonList() {
       let _this = this;
       let data = {
-        ministerialNo :_this.formInline.ministerialNo,
+        oName :_this.formInline.oName,
         province :_this.formInline.province,
-        branchName :_this.formInline.branchName,
         branchId :_this.formInline.branchId,
         certStatus :_this.formInline.certStatus
       };
