@@ -758,17 +758,13 @@ export const mixinGetCaseApiList = {
         this.$message('获取案件流程失败！')
       }
       flowName = currentFlow.data.flowName;
-      if(flowName == '处罚流程'){
+      if(flowName == '处罚流程' || flowName == '赔补偿流程' || flowName == '青海赔补偿流程' || flowName == '青海处罚流程'){
         if(name == '立案登记'){
           routeName = 'case_handle_establish'
         }
       }else if(flowName == '江西流程'){
         if(name == '立案登记'){
           routeName = 'case_handle_establish_JX'
-        }
-      }else if(flowName == '赔补偿流程' || flowName == '青海赔补偿流程'){
-        if(name == '立案登记'){
-          routeName = 'case_handle_establish'
         }
       }
       console.log('routeName',routeName)
