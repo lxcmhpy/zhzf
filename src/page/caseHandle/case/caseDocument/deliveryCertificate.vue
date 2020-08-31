@@ -274,7 +274,8 @@ export default {
         value: '其他方式',
         label: '其他方式'
       }],
-      options2: [{
+      options2: [
+        {
         value: '抽样取证凭证',
         label: '抽样取证凭证'
       }, {
