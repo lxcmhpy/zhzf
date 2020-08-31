@@ -235,6 +235,9 @@ export default {
      * 点击确定
      */
     handleSubmit(data) {
+      data.forEach((item) => {
+        item.strId = item.id;
+      });
       let _this = this;
       saveOrUpdateBatch(data).then(
         (res) => {
@@ -292,7 +295,7 @@ export default {
       if (flag) {
         this.$message({
           type: "error",
-          message: "只允许删除草稿及退回的记录!",
+          message: "只允许删除草稿状态或者退回状态的记录!",
         });
         return;
       }
