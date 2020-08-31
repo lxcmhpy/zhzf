@@ -1,7 +1,8 @@
 <template>
     <div class="cats-layout-page-content">
         <div class="searchAndpageBox toggleBox">
-            <div class="handlePart" style="margin-left: 0px;">
+            <!-- <div class="handlePart" style="margin-left: 0px;"> -->
+            <div>
                 <div class="search">
                     <el-form :label-position="labelPosition" :model="search" ref="form" label-width="160px"
                         :inline="true">

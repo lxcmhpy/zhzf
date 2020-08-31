@@ -1,4 +1,5 @@
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
+import {BASIC_DATA_QH} from '@/common/js/BASIC_DATA_QH.js';
 
 export const BASIC_DATA_JX = {
     //环节ID
@@ -148,6 +149,6 @@ export const BASIC_DATA_JX = {
     },
     //结案报告数组
     getFinishCaseReport_caseLinktypeIdArr : function(){
-        return [BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.finishCaseReport_JX_caseLinktypeId]
+        return [BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.finishCaseReport_JX_caseLinktypeId,BASIC_DATA_QH.finishCaseReport_QH_caseLinktypeId]
     },
 }

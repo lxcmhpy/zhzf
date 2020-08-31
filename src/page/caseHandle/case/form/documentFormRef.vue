@@ -4,35 +4,50 @@
       custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat"
       :visible.sync="visible"
       @close="closeDialog"
-      top="0px"
+      :top="fatherCom==='inforCollection' ? '95px':'0px'"
       width="405px"
       :modal="false"
       :show-close="false"
       :append-to-body="true"
     >
       <template slot="title">
-        <div class="catalogueTitle">
-          文书列表<span style="color:#E54241">（{{caseList.length}}）</span>
+        <div class="catalogueTitle" style="display:flex;justify-content:space-between;">
+          <div>文书列表<span style="color:#E54241">（{{caseList.length}}）</span></div>
+          <el-tooltip style="margin-right: 15px;" effect="dark" content="查看更多" placement="top">
+            <el-button type="text">详情</el-button>
+          </el-tooltip>
         </div>
       </template>
       <div class="userList a">
-        <el-checkbox-group v-model="checkedDocId">
-          <el-checkbox
+        <el-checkbox-group v-model="checkedDocId" class="checkboxGroup">
+          <el-tooltip
             v-for="(item,index) in caseList"
             :label="item.storageId"
-            :key="item.storageId">
-            <span class="name">{{index + 1}}</span>
-            <span class="name">{{item.docName}}</span>
-          </el-checkbox>
+            :key="item.storageId"
+            effect="dark"
+            content="查看文件"
+            placement="top-start">
+            <el-checkbox
+              class="checkboxItem">
+              <span class="name">{{index + 1}}</span>
+              <span class="name">{{item.docName}}</span>
+            </el-checkbox>
+          </el-tooltip>
         </el-checkbox-group>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-checkbox
-          :indeterminate="isIndeterminate"
-          v-model="checkAll"
-          @change="handleCheckAllChange"
-        ></el-checkbox>
-        <el-button @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
+      <span
+        slot="footer"
+        class="dialog-footer"
+        >
+        <el-tooltip effect="dark" content="批量打印" placement="top">
+          <el-checkbox
+            :style="fatherCom==='inforCollection' ? 'top: -68px':'top: 27px'"
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          ></el-checkbox>
+        </el-tooltip>
+        <el-button :style="fatherCom==='inforCollection' ? 'top: -80px':null" @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -94,6 +109,12 @@ import iLocalStroage from "@/common/js/localStroage";
       };
     },
     inject: ["reload"],
+    props: {
+      fatherCom: {
+        type: String,
+        default: ""
+      }
+    },
     // props: ["caseInfo"],
     computed: {...mapGetters(["caseId"])},
     methods: {
@@ -219,6 +240,26 @@ import iLocalStroage from "@/common/js/localStroage";
     }
   };
 </script>
+<style lang="scss">
+.archiveCatalogueBox {
+  .userList {
+    .checkboxGroup {
+      .checkboxItem {
+        height: 31px;
+        margin-bottom: 0;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        box-sizing: border-box;
+        padding-left: 10px;
+      }
+      .checkboxItem:hover {
+        background: #F1C100;
+      }
+    }
+  }
+}
+</style>
 <style scoped lang="scss">
   .fullscreen .archiveCatalogueBox {
     background: #EAEDF4;
@@ -270,12 +311,13 @@ import iLocalStroage from "@/common/js/localStroage";
     .el-checkbox {
       width: auto;
       left: 22px;
-      top: 22px;
       position: absolute;
     }
     .el-button {
+      position: absolute;
       width: 204px;
       height: 38px;
+      left: 60px;
     }
   }
 

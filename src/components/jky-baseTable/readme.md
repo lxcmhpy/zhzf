@@ -1,12 +1,13 @@
 
 # 这是一个表格组件，集合连表单和分页栏，组件预览图见 index.png
 
-## Form Attributes
+## Attributes
 
 参数     | 说明 | 类型 | 可选值 | 默认值  | 是否必传
 -------- | ----- | ----- |:-----:|:-----:|----
 url  | 请求地址 | String | / | / | 是
 baseUrlType | 请求地址类型 | String | / | / | 否
+reqAttr | 初始化时url的参数 | Object | / | / | 否
 inputList  | 表单项 | Array | / | / | 否
 
 ### InputList Attributes

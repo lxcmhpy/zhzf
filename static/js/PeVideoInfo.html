@@ -43,7 +43,17 @@
         var activex = '';
         
         function LoadPage() {
-            Playlive(1,'rtsp://58.250.250.106:10554/123456712345707.sdp%0%20%C:/media%C:/media%0%video%%金锁%|%11111110001110111111%');
+            var url = getParam(0);
+            Playlive(1,url);
+        }
+        function getParam(paramName) {
+            paramValue = "", isFound = !1;
+            if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+                arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;
+                paramValue = arrSource[paramName].substring(1, this.location.search.length).split("=")[1];
+            }
+            // alert(paramValue);
+            return paramValue == "" && (paramValue = null), paramValue;
         }
 
 		// 视频拉流

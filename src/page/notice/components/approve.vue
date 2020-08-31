@@ -50,7 +50,8 @@ export default {
   methods: {
     showModal(data) {
       this.dispose = data;
-      this.dispose.auditComment = "";
+      this.$set(this.dispose, "auditComment", "");
+      this.$set(this.dispose, "state", "");
       this.visible = true;
     },
     //关闭弹窗的时候清除数据
