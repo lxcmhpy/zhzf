@@ -48,4 +48,20 @@ export default [
         },
         component: () => import("@/page/caseHandle/case/qingHai/form/compensationNoticeForm_QH.vue")
     },
+    {
+        path: "/finishCaseReport_QH",
+        name: "case_handle_finishCaseReport_QH",
+        meta: {
+          title: "公路赔（补）偿案件结案报告"
+        },
+        component: () => import("@/page/caseHandle/case/qingHai/doc/finishCaseReport_QH.vue")
+    },
+    {
+        path: "/publishReport_QH",
+        name: "case_handle_publishReport_QH",
+        meta: {
+          title: "公告"
+        },
+        component: () => import("@/page/caseHandle/case/qingHai/doc/publishReport_QH.vue")
+    },
 ]

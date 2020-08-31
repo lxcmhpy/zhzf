@@ -13,7 +13,7 @@
               </el-form-item>
             </td>
             <td rowspan="3" style="width:40px">案件承办人</td>
-            <td>姓 名</td>
+            <td>姓名</td>
             <td>证件号</td>
           </tr>
           <tr>
@@ -47,16 +47,16 @@
           <tr style="height:300px">
             <td colspan="9" class="color_DBE4EF">
               赔（补）偿决定：
-              <el-form-item prop="note" style="width: calc(100% - 130px);">
-                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+              <el-form-item prop="decision" :rules="fieldRules('decision',propertyFeatures['decision'])" style="width: calc(100% - 130px);">
+                <el-input type="textarea" v-model="docData.decision" :autosize="{ minRows: 4, maxRows: 5}" :disabled="fieldDisabled(propertyFeatures['decision'])" maxlength="300" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr style="height:236px">
             <td colspan="9" class="color_DBE4EF table_seal">
               执行情况：<br />
-              <el-form-item prop="note">
-                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+              <el-form-item prop="process" :rules="fieldRules('process',propertyFeatures['process'])">
+                <el-input type="textarea" v-model="docData.process" :autosize="{ minRows: 4, maxRows: 5}" :disabled="fieldDisabled(propertyFeatures['process'])" maxlength="300" placeholder="\"></el-input>
               </el-form-item>
               <div class="pdf_seal">
                 <p>签名：{{docData.approvePeo}}</p>
@@ -70,12 +70,15 @@
           <tr style="height:150px">
             <td colspan="9" class="color_DBE4EF">
               备注：
-              <el-form-item prop="note" style="width: calc(100% - 50px);">
+              <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'])" style="width: calc(100% - 50px);">
                 <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
         </table>
+        <p>本报告一式两份，其中一份用于向上级备案，</p>
+        <p>本页填写不下的可加附纸，并在备注中说明。
+        </p>
       </el-form>
     </div>
     <casePageFloatBtns :pageDomId="'question_print'" :formOrDocData="formOrDocData" @submitData="submitData" @saveData="saveData" @backHuanjie="submitData"></casePageFloatBtns>
