@@ -11,12 +11,14 @@ import qs from 'qs';
 import hasPermission from "@/common/js/hasPermission"
 import App from "./App";
 import { router } from "./router/index";
+import '@/common/js/directives.js';
 //引入全局变量
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
+import {BASIC_DATA_QH} from '@/common/js/BASIC_DATA_QH.js';
 
 import { messageOne } from '@/common/js/resetMessage';
-
+import { mixinsCommon } from "@/common/js/mixinsCommon";
 Vue.use(ElementUI);
 Vue.use(hasPermission);
 Vue.prototype.$messageOne = messageOne;
@@ -28,7 +30,8 @@ Vue.prototype.$qs = qs;
 //注册全局变量
 Vue.prototype.BASIC_DATA_SYS = BASIC_DATA_SYS;
 Vue.prototype.BASIC_DATA_JX = BASIC_DATA_JX;
-
+Vue.prototype.BASIC_DATA_QH = BASIC_DATA_QH;
+Vue.mixin(mixinsCommon);
 
 
 /* eslint-disable no-new */

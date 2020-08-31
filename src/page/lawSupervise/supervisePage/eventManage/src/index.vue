@@ -66,7 +66,7 @@
           align="center"
           label="是否重点事件">
           <template slot-scope="scope">
-            <span>{{ scope.row.isemphasis ? '是' : '不是' }}</span>
+            <span>{{ scope.row.isemphasis ? '是' : '否' }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -227,6 +227,13 @@ export default {
       this.$refs.dialogAssigned.dialogAssignedVisible = true
       this.$refs.dialogAssigned.form.state = row.state
       this.$refs.dialogAssigned.form.id = row.id
+      if(row.disposeOrgan){
+        this.getPerson(row.disposeOrgan)
+        this.$refs.dialogAssigned.form.disposeOrgan = row.disposeOrgan
+        if(row.disposePerson){
+          this.$refs.dialogAssigned.form.disposePerson = JSON.parse(row.disposePerson)
+        }
+      }
     },
 
     /**
@@ -238,6 +245,8 @@ export default {
       this.$refs.dialog.dialogFormVisible = true
       // 启用表单
       this.$refs.dialog.disabled = false
+      this.$refs.dialog.hasLatitudeAndLongitude = false
+      this.config.peopleOptions=[]
     },
 
     /**

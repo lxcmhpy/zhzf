@@ -207,3 +207,47 @@ export function vaildateCardNum(rule, value, callback){
     }
     callback();
 }
+
+
+/** 验证是否整数 两数字并比较大小 */
+export function numCompareList(numList, symbolList, rule, value, callback) {
+    debugger;
+    // var re = /^[1-9]([0-9])*$/;
+    var re = /^([123456789]{1}\d*)|0$/;
+    if (!re.test(value)) {
+        callback(new Error('请输入整数'));
+    } else if (re.test(value)) {
+        for (var i = 0; i < numList.length; i++) {
+            let num = numList[i];
+            switch (symbolList[i]) {
+                case '<':
+                    num - value < 0 ? i == numList.length - 1 ? callback() : null : callback(new Error('输入数字大小限制'));
+                    break;
+                case '<=':
+                    num - value <= 0 ? i == numList.length - 1 ? callback() : null : callback(new Error('输入数字大小限制'));
+                    break;
+                case '=':
+                    num - value == 0 ? i == numList.length - 1 ? callback() : null : callback(new Error('输入数字大小限制'));
+                    break;
+                case '>':
+                    num - value > 0 ? i == numList.length - 1 ? callback() : null : callback(new Error('输入数字大小限制'));
+                    break;
+                case '>=':
+                    num - value >= 0 ? i == numList.length - 1 ? callback() : null : callback(new Error('输入数字大小限制'));
+                    break;
+                default:
+                    i == numList.length - 1 ? callback() : null
+            }
+        }
+    }
+}
+
+//公用验证方法
+export function validatePwd(rule, value, callback) {
+    let re = /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,16}$/;
+    if (!re.test(value)) {
+        callback(new Error('至少包含大写字母、小写字母、数字、特殊字符中三种类型，长度8~16位'));
+    } else {
+        callback();
+    }
+}

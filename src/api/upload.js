@@ -111,3 +111,59 @@ export function downLoadCommon(data) {
 }
 
 
+export let uploadFuncO = {
+
+  // 评议考核-上传文件
+  uploadPykh(data) {
+      return request({
+              url: "/pykh/file/upload",
+              method: "POST",
+              data: data,
+              contentType: 'multipart/form-data;',
+              showloading: true,
+              loadingType: 'loadProgress',
+              cancelToken: setCancelSource(),
+          }
+
+      );
+  }
+  // upload(data)  {
+  //   // 文件上传
+  //   return  request({
+  //     url:  "/case/sys/file/upload",
+  //     method:  "POST",
+  //     data: data,
+  //     contentType: 'multipart/form-data;',
+  //     showloading: true,
+  //     loadingType:'loadPart',
+  //     cancelToken:  setCancelSource(),
+  //   });
+  // },
+  // uploadEvApi(data)  {
+  //   // 上传证据
+  //   console.log("789",data);
+  //   return  request({
+  //     url:  "/case/sys/file/uploadEv",
+  //     method:  "POST",
+  //     data: data,
+  //     contentType: 'multipart/form-data;',
+  //     showloading: true,
+  //     loadingType:'loadPart',
+  //     cancelToken:  setCancelSource(),
+  //   });
+  // },
+  // uploadEvdence(data) {
+  //   // 上传2020-2-25 上传-
+  //   return  request({
+  //       url:  "/case/sys/file/uploadEvdence",
+  //       method:  "POST",
+  //       data: data,
+  //       contentType: 'multipart/form-data;',
+  //       showloading: true,
+  //       loadingType:'loadPart',
+  //       cancelToken:  setCancelSource(),
+  //     });
+  // }
+}
+
+

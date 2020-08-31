@@ -18,12 +18,7 @@
             <el-col :span="6">
               <el-form-item label="状态" prop="state">
                 <el-select v-model="searchForm.state" placeholder="请选择" clearable>
-                  <el-option
-                    v-for="(item,index) in allStatus"
-                    :key="index"
-                    :label="item"
-                    :value="item"
-                  ></el-option>
+                  <el-option v-for="(item,key) in allStatus" :key="key" :label="item" :value="key"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -41,17 +36,37 @@
         </el-form>
       </div>
       <div class="tablePart">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%" highlight-current-row>
+        <!-- @row-click="handleCurrentChange" -->
+        <el-table
+          ref="singleTable"
+          :data="tableData"
+          style="width: 100%"
+          height="100%"
+          highlight-current-row
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="55" class="selection" :selectable="checkboxInit"></el-table-column>
           <el-table-column prop="title" label="标题" align="center"></el-table-column>
           <el-table-column prop="source" label="来源" align="center"></el-table-column>
-          <el-table-column prop="lssueTime" label="发布日期" align="center"></el-table-column>
-          <el-table-column prop="state" label="状态" align="center"></el-table-column>
+          <el-table-column prop="publishTime" label="发布日期" align="center"></el-table-column>
+          <el-table-column prop="state" label="状态" align="center">
+            <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
+          </el-table-column>
           <el-table-column prop="remark" label="审核意见" align="center"></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <!-- v-if="scope.row.state=='待颁发' || scope.row.state=='挂失' || scope.row.state=='已年审'" -->
-              <el-button type="text" size="mini" @click="openIssueDialog(scope.row)">颁发</el-button>
-              <el-button type="text" size="mini" @click="openViewDialog(scope.row)">查看</el-button>
+              <!-- <el-button type="text" @click="openIssueDialog(scope.row)">预览</el-button> -->
+              <el-button
+                v-if="scope.row.state===1 || scope.row.state===4"
+                type="text"
+                @click="onEdit(scope.row)"
+              >修改</el-button>
+              <el-button
+                v-if="scope.row.state===1 || scope.row.state===4"
+                type="text"
+                @click="onSubmit(scope.row)"
+              >提交</el-button>
+              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -68,8 +83,8 @@
         ></el-pagination>
       </div>
     </div>
-    <addAndEditNotice ref="noticeDialog"></addAndEditNotice>
-    <approve ref="approveDialog"></approve>
+    <addAndEditNotice ref="noticeDialog" @success="load()"></addAndEditNotice>
+    <approve ref="approveDialog" @handle-data="handleData"></approve>
   </div>
 </template>
 <script>
@@ -78,7 +93,11 @@
 import iLocalStroage from "@/common/js/localStroage";
 import addAndEditNotice from "@/page/notice/components/addAndEditNotice";
 import approve from "@/page/notice/components/approve";
-import { findNoticeByPage } from "@/api/notice/notice";
+import {
+  findNoticeByPage,
+  deleteNoticeById,
+  saveOrUpdateNotice,
+} from "@/api/notice/notice";
 
 export default {
   //   mixins: { noticeCommonMixins },
@@ -94,15 +113,8 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总页数
-      allStatus: ["草稿", "待审核", "已通过", "已退回"],
-      //   organTreeData: [],
-      //   myprops: {
-      //     label: "label",
-      //     value: "id",
-      //   },
-      //   selectOrganId: "", //默认选中机构的id
-      //   acceptTimeArray: [],
-      //   allStaff: [],
+      allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
+      multipleSelection: [],
     };
   },
   components: {
@@ -153,13 +165,81 @@ export default {
     onEdit(row) {
       this.$refs.noticeDialog.showModal(2, row);
     },
-    onDelete() {},
+    async onSubmit(row) {
+      let _this = this;
+      this.$confirm("确定要提交吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: "el-icon-question",
+        customClass: "custom-confirm",
+      })
+        .then(() => {
+          let data = row;
+          data.state = 2;
+          saveOrUpdateNotice(data).then(
+            (res) => {
+              _this.$message({ type: "success", message: "操作成功!" });
+              //   _this.load();
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        })
+        .catch(() => {});
+    },
+    onApprove(row) {
+      this.$refs.approveDialog.showModal(row);
+    },
+    async handleData(data) {
+      let res = saveOrUpdateNotice(data);
+      _this.$message({ type: "success", message: "操作成功!" });
+    },
+    /* handleCurrentChange(row) {
+      if (this.multipleSelection.length > 0) {
+        if (this.multipleSelection[0].id == row.id) {
+          this.$refs.singleTable.setCurrentRow();
+          this.multipleSelection = [];
+        } else {
+          this.$refs.singleTable.setCurrentRow(row);
+          this.multipleSelection = [row];
+        }
+      } else {
+        this.$refs.singleTable.setCurrentRow(row);
+        this.multipleSelection = [row];
+      }
+    }, */
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    async onDelete() {
+      if (this.multipleSelection.length < 1) {
+        this.$message({ type: "warning", message: "请选择需要删除的记录" });
+        return;
+      }
+      let _this = this;
+      let ids = [];
+      this.multipleSelection.forEach((item) => {
+        ids.push(item.id);
+      });
+
+      let res = await deleteNoticeById(ids);
+      this.$message({ type: "success", message: "删除成功!" });
+      this.load();
+    },
+    checkboxInit(row, index) {
+      //不可勾选
+      if (row.state != 1 && row.state != 4) return 0;
+      else return 1; //可勾选
+    },
+    load() {
+      this.getDataList({ type: this.type });
+    },
   },
   created() {},
   mounted() {
-    debugger;
     this.searchForm.type = this.type;
-    this.getDataList({ type: this.type });
+    this.load();
   },
 };
 </script>

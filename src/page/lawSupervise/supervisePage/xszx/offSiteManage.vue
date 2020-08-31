@@ -164,9 +164,9 @@
                 <span v-else>{{scope.row.overload}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="isKEY" label="重点监管" width="120" align="center">
+            <el-table-column prop="important" label="重点监管" width="120" align="center">
               <template slot-scope="scope">
-                {{scope.row.isKEY=='是'?scope.row.isKEY:'/'}}
+                {{scope.row.important=='是'?scope.row.important:'/'}}
               </template>
             </el-table-column>
           </el-table>

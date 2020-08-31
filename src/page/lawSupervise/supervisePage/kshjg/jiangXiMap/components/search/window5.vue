@@ -18,9 +18,9 @@ export default {
     },
     tableData() {
       // 重点监管没数据，目前先写死
-      this.window5.data && this.window5.data.records && this.window5.data.records.map(item => {
+      /* this.window5.data && this.window5.data.records && this.window5.data.records.map(item => {
         item.important = "否"
-      })
+      }) */
       return this.window5.data.records || []
     }
   },

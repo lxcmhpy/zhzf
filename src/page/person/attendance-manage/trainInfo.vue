@@ -12,26 +12,19 @@
         >
           <div>
             <div class="item">
-              <el-form-item label="培训年份" prop="attendanceYear">
-                <el-select
-                  v-model="searchForm.attendanceYear"
-                  placeholder="年份"
-                  remote
-                  @focus="getYear()"
-                >
-                  <el-option
-                    v-for="value in getYearList"
-                    :key="value.id"
-                    :label="value.name"
-                    :value="value.id"
-                  ></el-option>
-                </el-select>
+              <el-form-item label="培训年份" prop="year">
+                <el-date-picker
+                  v-model="searchForm.year"
+                  type="year"
+                  placeholder="选择年"
+                  :picker-options="pickerOptions"
+                ></el-date-picker>
               </el-form-item>
-              <el-form-item label="姓名" prop="name">
-                <el-input v-model="searchForm.name"></el-input>
+              <el-form-item label="姓名" prop="personName">
+                <el-input v-model="searchForm.personName"></el-input>
               </el-form-item>
-              <el-form-item label="执法证号" prop="ministerialNo">
-                <el-input v-model="searchForm.ministerialNo"></el-input>
+              <el-form-item label="执法证号" prop="branchNo">
+                <el-input v-model="searchForm.branchNo"></el-input>
               </el-form-item>
               <el-form-item style="margin-top:1px; margin-left: 15px;">
                 <el-button
@@ -64,16 +57,16 @@
           element-loading-text="加载中..."
           style="width: 100%;height:100%;"
         >
-          <el-table-column prop="name" label="姓名" align="center" min-width="140px"></el-table-column>
-          <el-table-column prop="ministerialNo" label="执法证号" align="center"></el-table-column>
-          <el-table-column prop="trainTotalScore" label="培训总成绩" align="center" min-width="140px;"></el-table-column>
-          <el-table-column prop="opt" label="操作" align="center">
-            <template slot-scope="scope">
-              <el-button type="text" @click="getDetailInfo(scope.row)">
-                <i class="iconfont law-eye" />
-              </el-button>
-            </template>
-          </el-table-column>
+          <el-table-column prop="personName" label="姓名" align="center" min-width="140px"></el-table-column>
+          <el-table-column prop="branchNo" label="执法证号" align="center"></el-table-column>
+          <!-- <el-table-column prop="totalExamScore" label="培训总成绩" align="center" min-width="140px;"></el-table-column> -->
+         <template v-for="item in trainList">
+            <el-table-column :key="item.trainId" :prop="item.trainId" :label="item.trainName" align="center" min-width="140px;">
+              <template slot-scope="scope">
+                <div>{{ scope.row[item.trainId] }}</div>
+              </template>
+            </el-table-column>
+          </template>
         </el-table>
       </div>
       <div class="paginationBox">
@@ -97,50 +90,84 @@ export default {
     return {
       getYearList: [],
       searchForm: {
-        attendanceYear: "",
-        ministerialNo: '',
-        name: ''
+        year:"",
+        branchNo: '',
+        personName: ''
       },
       tableData: [
-        {
-          name: "2020",
-          ministerialNo: '12345678',
-          trainTotalScore: '100'
-        },
+       
       ],
       tableLoading: false,
+      trainList:[],
       currentPage: 0,
       totalPage: 0,
-      pageSize: 10
+      pageSize: 10,
+      pickerOptions: {
+        disabledDate: (time) => {
+          let currentYear = new Date().getFullYear();
+          return time.getFullYear() > currentYear;
+        },
+      }
     };
   },
   components: {},
   created() {
-    // 查询年份下拉
-    this.getYear();
+    let myDate = new Date();
+    this.searchForm.year = `${myDate.getFullYear()}`;
     // 查询考勤列表
     this.getTrainInfoList();
   },
   methods: {
-    // 获取年份下拉选项
-    getYear() {
-      if (this.getYearList.length > 0) {
-        return false;
-      }
-      this.$store.dispatch("getYearMoudle", "年份").then((res) => {
-        if (res.code === 200) {
-          this.getYearList = [];
-          for (let i = res.data.minYear; i <= res.data.maxYear; i++) {
-            this.getYearList.push({ id: i, name: i });
-          }
-        } else {
-          console.info("没有查询到数据");
-        }
-      });
-    },
     // 根据查询条件查询考情列表
     getTrainInfoList() {
+       let _this = this;
+      let data = {
+        personName:_this.searchForm.personName,
+        year:_this.searchForm.year,
+        branchNo:_this.searchForm.branchNo,
+        current: _this.currentPage,
+        size: _this.pageSize
+      };
+       _this.$store.dispatch("getJxTrainList", data).then(
+        res => {
+          this.tableLoading = false;
+          _this.trainList = res.data;
+        },
+        err => {
+          this.tableLoading = false;
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
+
+         _this.$store.dispatch("getJxTrainMessage", data).then(
+        res => {
+          this.tableLoading = false;
+          
+         // _this.tableData = res.data.records;
+           this.setExamScore(res.data.records);
+          _this.totalPage = res.data.total;
+        },
+        err => {
+          this.tableLoading = false;
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
+      console.log("查询考试信息列表");
       console.log("查询考勤列表");
+    },
+     // 处理考试成绩
+    setExamScore(data){
+      if(data && data.length){
+        data.forEach(item => {
+          if(item.trainInfo && item.trainInfo.length){
+            item.trainInfo.forEach(train => {
+              item[train.oldTrainId] = train.trainResult;
+            })
+          }
+        });
+        console.log(data);
+        this.tableData = data;
+      }
     },
     // 查看考勤详情
     getDetailInfo(row) {
@@ -178,6 +205,9 @@ export default {
 }
 >>> .el-select {
   margin-right: 0;
+}
+>>> .el-input__icon {
+  line-height: 32px;
 }
 .person-table {
   >>> .el-table__body-wrapper {

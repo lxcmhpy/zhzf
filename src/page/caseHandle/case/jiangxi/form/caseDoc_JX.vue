@@ -593,9 +593,6 @@ export default {
       //   this.com_viewDoc(row);
       // }
       console.log("查看");
-      row.url=this.$route.name;
-      row.caseBasicinfoId= this.caseBasicinfoId
-      this.$store.commit("setCurrentFileData", row);//保存文书信息
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     addMoreDoc(row) {
@@ -611,9 +608,6 @@ export default {
     //预览pdf
     viewDocPdf(row) {
       console.log('row',row)
-      row.url=this.$route.name;
-      row.caseBasicinfoId= this.caseBasicinfoId
-      this.$store.commit("setCurrentFileData", row);//保存文书信息
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -638,7 +632,7 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        // linkTypeId: this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+        // linkTypeId: (this.caseFlowData.flowName == "赔补偿流程" || this.caseFlowData.flowName == "青海赔补偿流程") ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
         linkTypeId: this.caseLinkDataForm.caseLinktypeId
       };
       this.com_getDocListByCaseIdAndFormId(data);

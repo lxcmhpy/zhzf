@@ -240,6 +240,22 @@ export default [
             },
             component: () => import("@/page/product-template/warning/warningManage.vue")
           },
+          {
+            name: "typicalManage",
+            path: "typicalManage",
+            meta: {
+              title: "典型案例管理"
+            },
+            component: () => import("@/page/product-template/typical/typicalManage.vue")
+          },
+          {
+            name: "typicalList",
+            path: "typicalList",
+            meta: {
+              title: "典型案例列表"
+            },
+            component: () => import("@/page/product-template/typical/typicalList.vue")
+          },
         ]
       },
       {
@@ -424,7 +440,7 @@ export default [
             component: () => import("@/page/caseHandle/electronicCaseFile/electronicCaseFileList.vue")
           },{
             name: "offlinefiles",
-            path: "/offlineiles",
+            path: "/offlinefiles",
             meta: {
               title: "线下案卷"
             },

@@ -464,7 +464,7 @@
                         <td class="color_ff w-1">车辆类型</td>
                         <td>{{obj.vehicleType}}</td>
                         <td class="color_ff w-1">重点监管</td>
-                        <td>{{obj.key?obj.key:'/'}}</td>
+                        <td>{{obj.important=='是'?obj.important:'/'}}</td>
                     </tr>
                     <tr>
                         <td class="color_ff w-1">车速（km/h）</td>
@@ -570,7 +570,7 @@
                   <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
                   </el-col>
                   <el-col :span="22">
-                    <img width="100%" :src="xjHost+imgIndexUrl">
+                    <img width="100%" :src="imgIndexUrl">
                   </el-col>
                   <el-col :span="1" style="margin-top: 200px;">
                     <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
@@ -591,7 +591,7 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">现场照片/视频</span>
-                    <span class="right f12"> {{parseInt(acitveCar)+1}} / 5</span>
+                    <span class="right f12"> {{parseInt(acitveCar)+1}} / {{imgSize}}</span>
                 </div>
                 <ul class="list">
                     <!-- v-for="index in 2" :key="index" -->
@@ -599,23 +599,14 @@
                          <!-- <img class="img" :src="'./static/images/img/temp/sp.jpg'" > -->
 
                          <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
-                            <el-carousel-item :key="0">
+                            <el-carousel-item :key="0" v-if="videoUrl">
                                 <video width="280px" height="180px" controls>
-                                    <source :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_V'" type="video/mp4">
+                                    <source :src="videoUrl" type="video/mp4">
                                 </video>
                             </el-carousel-item>
                             <el-carousel-item  v-for="(item,index) in imgList" :key="(index +1).toString()">
-                                <img width="280px" height="180px" @click="showImg(index)"  :src="xjHost+item">
+                                <img width="280px" height="180px" @click="showImg(index)"  :src="item">
                             </el-carousel-item>
-                             <!-- <el-carousel-item :key="2">
-                                 <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_F'">
-                            </el-carousel-item>
-                            <el-carousel-item :key="3">
-                                 <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_L'">
-                            </el-carousel-item>
-                            <el-carousel-item :key="4">
-                                 <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_S'">
-                            </el-carousel-item> -->
                         </el-carousel>
                           <!-- <i class="iconfont law-bofang"></i> -->
                     </li>
@@ -709,21 +700,9 @@
 </template>
 <script>
 import Vue from "vue";
-import {findAllDrawerById,getSiteById,getFileByCaseId,deleteFileByIdApi,upload} from '@/api/lawSupervise.js';
+import {findAllDrawerById,getSiteById,getFileByCaseId,deleteFileByIdApi,upload,findImageListByWorkNo} from '@/api/lawSupervise.js';
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import iLocalStroage from '@/common/js/localStroage';
-//   <el-carousel-item :key="1">
-//                                 <img width="280px" height="180px" @click="showImg('PHOTO_D')"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_D'">
-//                             </el-carousel-item>
-//                              <el-carousel-item :key="2">
-//                                  <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_F'">
-//                             </el-carousel-item>
-//                             <el-carousel-item :key="3">
-//                                  <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_L'">
-//                             </el-carousel-item>
-//                             <el-carousel-item :key="4">
-//                                  <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_S'">
-//                             </el-carousel-item>
 export default {
     props: ['obj'],
     data () {
@@ -732,12 +711,12 @@ export default {
             fileList: [],
             imgIndexUrl: null,
             imgList: [
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
+                /* '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
                 '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
+                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S' */
                 ],
-            xjHost: null,
+            videoUrl:'',    
             dialogIMGVisible: false,
             storageStr: '',
             dialogPDFVisible: false,
@@ -772,7 +751,8 @@ export default {
             carInfo:{},
             vehicleInfo:{},
             ownerInfo:{},
-            currentColor:''
+            currentColor:'',
+            imgSize:0
         }
     },
     methods:{
@@ -898,47 +878,45 @@ export default {
                     console.log('返回', res);
                     if(res.data){
                         let tableData=[];
-                        for(let index in res.data){
-                            let result = {};
-                            let jsonObj=res.data[index];
-                            for(let key in jsonObj){
-                                let keyval = jsonObj[key];
-                                key = key.replace(key[0],key[0].toUpperCase());
-                                result[key] = keyval;
-                            }
-                            _this.vehicleInfo = result
-                            _this.$store.dispatch("yyclCheck", {vehicleNo: result.VehicleNo,transCertificateCode: result.TransCertificateCode,vin:''}).then(
-                                res => {
-                                    console.log('返回', res)
-                                    if(res.data){
-                                        _this.carInfo = res.data[0]
-                                        _this.$store.dispatch("yehuCheck",{provinceCode:_this.vehicleInfo.ProvinceCode,
-                                            ownerName:_this.carInfo.OwnerName,
-                                            licenseCode:_this.carInfo.LicenseCode}).then(
-                                            res => {
-                                                console.log('返回', res)
-                                                if(res.data){
-                                                    _this.ownerInfo = res.data[0]
-                                                }else{
-                                                    _this.errorMsg('未查到企业信息', 'error')
-                                                    _this.ownerInfo = {}
-                                                }
-                                            },
-                                            err => {
-                                                console.log(err);
-                                            }
-                                        )
-                                    }else{
-                                        _this.errorMsg('未查到数据', 'error')
-                                        _this.carInfo = {}
-                                        _this.ownerInfo = {}
-                                    }
-                                },
-                                err => {
-                                    console.log(err);
-                                }
-                            );
+                        let result = {};
+                        let jsonObj=res.data[0];
+                        for(let key in jsonObj){
+                            let keyval = jsonObj[key];
+                            key = key.replace(key[0],key[0].toUpperCase());
+                            result[key] = keyval;
                         }
+                        _this.vehicleInfo = result
+                        _this.$store.dispatch("yyclCheck", {vehicleNo: result.VehicleNo,transCertificateCode: result.TransCertificateCode,vin:''}).then(
+                            res => {
+                                console.log('返回', res)
+                                if(res.data){
+                                    _this.carInfo = res.data[0]
+                                    _this.$store.dispatch("yehuCheck",{provinceCode:_this.vehicleInfo.ProvinceCode,
+                                        ownerName:_this.carInfo.OwnerName,
+                                        licenseCode:_this.carInfo.LicenseCode}).then(
+                                        res => {
+                                            console.log('返回', res)
+                                            if(res.data){
+                                                _this.ownerInfo = res.data[0]
+                                            }else{
+                                                _this.errorMsg('未查到企业信息', 'error')
+                                                _this.ownerInfo = {}
+                                            }
+                                        },
+                                        err => {
+                                            console.log(err);
+                                        }
+                                    )
+                                }else{
+                                    _this.errorMsg('未查到数据', 'error')
+                                    _this.carInfo = {}
+                                    _this.ownerInfo = {}
+                                }
+                            },
+                            err => {
+                                console.log(err);
+                            }
+                        );
                     }else{
                         _this.errorMsg('未查到数据', 'error')
                         _this.vehicleInfo = {}
@@ -980,13 +958,28 @@ export default {
                     return
                 }
             )
+        },
+        async findImageListByWorkNo(){
+            let res = await findImageListByWorkNo(this.obj.id,this.obj.workNo?this.obj.workNo:"");
+            if(res.data.length==0){
+                 this.errorMsg('图片未找到', 'error')
+            }else{
+                res.data.forEach(p=>{
+                    if(p.type=='image'){
+                        this.imgList.push(p.url)
+                    }else{
+                        this.videoUrl=p.url
+                    }
+                })
+                this.imgSize = res.data.length
+            }
         }
     },
     mounted () {
         this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
-        this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
         this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
         this.getSiteById()
+        this.findImageListByWorkNo()
         this.findAllDrawerById(BASIC_DATA_SYS.vehicleCheckColor, 'colorList');
         this.currentColor = this.obj.vehicleColor
     }

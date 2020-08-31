@@ -1057,21 +1057,23 @@ export function repauseAllJobApi(){
 //考试列表查询
 export function getJxExamListApi(data){
   return  request({
-    url:  "/person/jxStatistics/getExamList",
+    url:  "/jxStatistics/getExamList",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
   });
 }
 //考试信息查询
 export function getJxExamMesageApi(data){
   return  request({
-    url:  "/person/jxStatistics/examMesage",
+    url:  "/jxStatistics/examMesage",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
   });
 }
 
@@ -1079,11 +1081,12 @@ export function getJxExamMesageApi(data){
 //培训列表查询
 export function getJxTrainListApi(data){
   return  request({
-    url:  "/person/jxStatistics/getTrainList",
+    url:  "/jxStatistics/getTrainList",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
   });
 }
 
@@ -1091,73 +1094,80 @@ export function getJxTrainListApi(data){
 //培训信息查询
 export function getJxTrainMessageApi(data){
   return  request({
-    url:  "/person/jxStatistics/trainMesage",
+    url:  "/jxStatistics/trainMessage",
     method:  "get",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource(),
+    baseUrlType: 'JxGXH',
   });
 }
 ///////////////人员统计/////////////////////
 //按年龄段统计
-export function statisticByAgeApi(){
+export function statisticByAgeApi(data){
   return  request({
     url:  "/statistics/byAge",
     method:  "get",
     showloading: false,
+    params: data,
     cancelToken:  setCancelSource(),
     baseUrlType: 'JxGXH',
   });
 }
 //按分配渠道统计
-export function statisticByChannelApi(){
+export function statisticByChannelApi(data){
   return  request({
     url:  "/statistics/byChannel",
     method:  "get",
     showloading: false,
+    params: data,
     cancelToken:  setCancelSource(),
     baseUrlType: 'JxGXH',
   });
 }
 //按年度新增
-export function statisticByYearAddApi(){
+export function statisticByYearAddApi(data){
   return  request({
     url:  "/statistics/byYearAdd",
     method:  "get",
     showloading: false,
+    params: data,
     cancelToken:  setCancelSource(),
     baseUrlType: 'JxGXH',
   });
 }
 
 //按文化程度
-export function statisticByEducationLevelApi(){
+export function statisticByEducationLevelApi(data){
   return  request({
     url:  "/statistics/byEducationLevel",
     method:  "get",
     showloading: false,
+    params: data,
     cancelToken:  setCancelSource(),
     baseUrlType: 'JxGXH',
   });
 }
 
 //按执法门类
-export function statisticByBranchApi(){
+export function statisticByBranchApi(data){
   return  request({
     url:  "/statistics/byBranch",
     method:  "get",
     showloading: false,
+    params: data,
     cancelToken:  setCancelSource(),
     baseUrlType: 'JxGXH',
   });
 }
 
 //按专业
-export function statisticByMajorApi(){
+export function statisticByMajorApi(data){
   return  request({
     url:  "/statistics/byMajor",
     method:  "get",
     showloading: false,
+    params: data,
     cancelToken:  setCancelSource(),
     baseUrlType: 'JxGXH',
   });

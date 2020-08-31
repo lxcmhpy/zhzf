@@ -154,34 +154,39 @@
 
   .linkPart {
     width     : 100%;
-    background: $cats-gray-color;
     position  : fixed;
     top       : 92px;
-    height    : 60px;
+    height    : 62px;
     z-index   : 10;
     text-align: center;
+    background: linear-gradient(0deg, #EAEDF4, #FFFFFF);
+    box-shadow: 0px 6px 4px 0px rgba(39, 66, 122, 0.13);
 
     .linkPartCon {
-      margin-left: -200px;
-    }
-
-    a {
-      display       : inline-block;
-      padding       : 10px 20px;
-      vertical-align: middle;
-      margin-top    : 13px;
-      box-sizing    : border-box;
-      color         : #20232B;
-    }
-
-    .activeA {
-      background: #4573D0;
-      color     : #fff;
+      width: 1240px;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      a {
+        width: 123px;
+        height: 32px;
+        display       : inline-block;
+        line-height: 32px;
+        vertical-align: middle;
+        box-sizing    : border-box;
+        color         : #20232B;
+      }
+      .activeA {
+        background: #4573D0;
+        color     : #fff;
+      }
     }
   }
 
   .caseInfoForm {
     margin-top: 82px;
+    margin-right: 52px;
   }
 
   .caseSubmitBtn {
@@ -432,7 +437,7 @@
 
     &>div:nth-child(1) {
       width     : 30%;
-      margin-top: 10px;
+      margin-top: 0px;
     }
 
     &>div:nth-child(2) {

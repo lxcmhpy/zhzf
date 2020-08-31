@@ -57,7 +57,7 @@
                 </el-form>
             </div>
             <div class="tableHandle" style="margin-bottom: 10px;">
-                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增</el-button>
+                <el-button type="primary" size="medium" icon="el-icon-plus"  @click="addData">新增装备</el-button>
                 <el-button plain size="medium" icon="el-icon-document"  @click="copyClick">复制</el-button>
             </div>    
             <div class="tablePart">
@@ -65,9 +65,7 @@
                     :data="tableData"
                     ref="dataTable"
                     stripe
-                    resizable
-                    border
-                    style="width: 100%;height:100%"
+                    style="width: 100%;height:100%;"
                 >
                     <el-table-column
                         type="selection"
@@ -80,14 +78,34 @@
                         </template>
                     </el-table-column>
                     <!--列表字段-->
-                    <el-table-column prop="status" label="状态" width="70px"></el-table-column>
-                    <el-table-column prop="code" label="装备编码" width="120px"></el-table-column>
-                    <el-table-column prop="name" label="装备名称"></el-table-column>
-                    <el-table-column prop="deviceType" label="装备类型"></el-table-column>
-                    <el-table-column prop="brand" label="品牌型号" width="120px"></el-table-column>
-                    <el-table-column prop="useUnit" label="使用单位"></el-table-column>
-                    <el-table-column prop="userId" label="使用人" width="120px"></el-table-column>
-                    <el-table-column label="操作" width="160">
+                    <el-table-column prop="code" label="装备编码" align="center" width="120px"></el-table-column>
+                    <el-table-column prop="name" label="装备名称" align="center"></el-table-column>
+                    <el-table-column prop="status" label="状态" align="center" width="70px">
+                        <template slot-scope="scope">
+                            <span
+                                v-if="scope.row.status === '闲置'"
+                                style="color: #05C051;"
+                            >{{scope.row.status}}</span>
+                            <span
+                                v-else-if="scope.row.status === '在用'"
+                                style="color: #0074F5;"
+                            >{{scope.row.status}}</span>
+                            <span
+                                v-else-if="scope.row.status === '维修中'"
+                                style="color: #E84241;"
+                            >{{scope.row.status}}</span>
+                            <span
+                                v-else-if="scope.row.status === '调拨中'"
+                                style="color: #FF8000;"
+                            >{{scope.row.status}}</span>
+                            <span style="color: #999999;" v-else>{{scope.row.status}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="deviceType" label="装备类型" align="center"></el-table-column>
+                    <el-table-column prop="brand" label="品牌型号" width="120px" align="center"></el-table-column>
+                    <el-table-column prop="useUnit" label="使用单位" align="center"></el-table-column>
+                    <el-table-column prop="userId" label="使用人" width="120px" align="center"></el-table-column>
+                    <el-table-column label="操作" width="160" align="center">
                         <template slot-scope="scope">
                             <div style="width:160px">
                                 <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
@@ -129,7 +147,17 @@
                         <el-row :gutter="20">
                             <el-col :span="12">
                                 <el-form-item label="装备编码" prop="code">
-                                    <el-input v-model="addForm.code" style="width: 100%;" :readonly="true"></el-input>
+                                    <el-input v-model="addForm.code" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
+                                    <el-popover
+                                        class="device-form-item-tips"
+                                        placement="top-end"
+                                        width="325"
+                                        trigger="click"
+                                        popper-class="form-tips-popper"
+                                        content="编号必须唯一，如不输入编号，系统将自动生成编号"
+                                        >
+                                        <img class="device-form-item-tips-img" slot="reference" :src="tipsUrl" />
+                                    </el-popover>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
@@ -200,7 +228,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="购置价格" prop="purchasePrice">
+                                <el-form-item label="购置价格(元)" prop="purchasePrice">
                                     <el-input v-model="addForm.purchasePrice" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                                 </el-form-item>
                             </el-col>
@@ -235,6 +263,7 @@
                                     <el-select v-model="addForm.userId" 
                                         style="width: 100%;" 
                                         clearable
+                                        filterable
                                         :disabled="this.formReadOnly">
                                         <el-option
                                             v-for="item in userList"
@@ -243,6 +272,16 @@
                                             :value="item.id"
                                         ></el-option>
                                     </el-select>
+                                    <el-popover
+                                        class="device-form-item-tips"
+                                        placement="top-end"
+                                        width="325"
+                                        trigger="click"
+                                        popper-class="form-tips-popper"
+                                        content="如使用人为空，资产默认为“闲置”状态"
+                                        >
+                                        <img class="device-form-item-tips-img" slot="reference" :src="tipsUrl" />
+                                    </el-popover>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -545,7 +584,8 @@
                 deviceTypeList:[],
                 logList:[],
                 host: '',
-                imageUrl:''
+                imageUrl:'',
+                tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg"
             };
         },
         components: {
@@ -671,7 +711,7 @@
             },
             addFormPurchaseUnitClick(val) {
                 this.$refs.addFormPurchaseUnitTreeObj.$children[0].handleClose();
-                this.addForm.purchaseUnit  = val
+                this.$set(this.addForm,'purchaseUnit',val)
             },
             queryFormUseUnitClick(val) {
                 this.$refs.queryFormUseUnitTreeObj.$children[0].handleClose();
@@ -695,14 +735,14 @@
                         this.$message({type:'error',message:'请选择末级设备类型'})
                     }else{
                         this.$refs.addFormDeviceTypeTreeObj.$children[0].handleClose();
-                        this.addForm.deviceType  = val
+                        this.$set(this.addForm,'deviceType',val)
                     }
                 }
             },
             addFormUseUnitClick(val) {
                 if(val!=null){
                     this.$refs.addFormUseUnitTreeObj.$children[0].handleClose();
-                    this.addForm.useUnit  = val
+                    this.$set(this.addForm,'useUnit',val)
                     this.getUserDataList(val)
                     this.$set(this.addForm,'userId','')
                 }
@@ -755,6 +795,7 @@
             addData() {
                 this.getUserDataList(this.userInfo.organId)
                 this.addForm = {useUnit:this.userInfo.organId};
+                this.imageUrl=''
                 this.title="新增装备"
                 this.formReadOnly = false
                 this.visible = true
@@ -882,6 +923,7 @@
 </style>
 <style lang="scss" scoped>
 .add-device-from {
+  padding-right: 36px;
   >>> .el-select,
   >>> .el-date-editor {
     display: block;
@@ -911,13 +953,39 @@
         font-size: 28px;
         >>>.el-upload{
             width: 100%;
+            height: 100%;
             .device-img{
                 display: block;
                 width: 176px;
                 height: 96px;
             }
         }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 100%;
+            height: 100%;
+            margin-left: 0px;
+            text-align: center;
+            line-height:0px;
+        }
       }
+  }
+}
+.device-form-item-tips {
+    display: inline-block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 4px;
+    right: -40px;
+    cursor: pointer;
+  }
+.form-tips-popper.el-popover {
+  background: #303133;
+  color: #fff;
+  .popper__arrow::after {
+    border-top-color: #303133;
   }
 }
 .device-detail-dialog {

@@ -1,12 +1,13 @@
 <template>
   <div class="jiangXiMap">
-    <JkBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
+    <JkyBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
     <TopInFo />
     <Search
       ref="Search"
       :config="searchWindowData"
       @handleNodeClick="handleNodeClick"
       @handlePerson="handlePerson"
+      @handleClickBtns="handleClickBtns"
     />
     <Select
       ref="Select"
@@ -20,7 +21,8 @@
 </template>
 
 <script>
-import JkBaseHMap from "@/components/jk-baseHMap";
+import { mapGetters } from "vuex";
+import JkyBaseHMap from "@/components/jky-baseHMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
@@ -34,11 +36,20 @@ export default {
     }
   },
   components: {
-    JkBaseHMap,
+    JkyBaseHMap,
     Search,
     Select,
     Drawer,
-    TopInFo
+    TopInFo,
+  },
+  watch: {
+    makePhoneStatus (val, oldVal) {
+      this.videoDoing = null;
+    },
+
+  },
+  computed: {
+    ...mapGetters(["makePhoneStatus", "doing"])
   },
   data() {
     return {
@@ -63,6 +74,13 @@ export default {
             { name: "执法机构", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
             { name: "执法人员", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/ysgljg.png"},
           ]
+        },
+        window2: {
+          defaultProps: {
+            children: 'children',
+            label: 'label'
+          },
+          option: []
         },
         window3: {
           title: "",
@@ -111,6 +129,7 @@ export default {
               {name: '执法机构', type: 1},
               {name: '执法车辆', type: 2},
               {name: '执法船舶', type: 3},
+              {name: '事件地点', type: 5},
               {name: '非现场站点', type: 4},
             ]
           },
@@ -144,9 +163,9 @@ export default {
 
     /**
      * 点击节点回调函数
-     * 1.如果当前节点是路政局，则获取路政局数据、地图打点
-     * 2.如果当前节点是自定义节点，发送请求获取子节点数据
-     * 3.如果当前节点没有下级，则地图打点并打开信息窗口
+     * 1.如果当前节点是执法人员、执法车辆、执法船舶，则发送请求获取子节点数据
+     * 2.当前节点没有子节点时打点
+     * 3.当前节点有子节点时获取当前节点信息并打点
      */
     handleNodeClick(data) {
       console.log(data)
@@ -155,33 +174,48 @@ export default {
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
 
-      if(data.label === '执法人员') {
+      if(data.label === "执法人员") {
         this.getPeopleTree(data)
-      } else if (data.label === '执法车辆' || data.label === '执法船舶') {
+      } else if (data.label === "执法车辆" || data.label === "执法船舶") { // 当前节点执法人员、执法车辆、执法船舶
         this.getCarShipTree(data)
-        // 当前节点为路政管理局和分局
-      } else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
-        this.getLoad(data)
-      } else {
-        // 添加点位图标
-        data.imgUrl = this.imgUrl.get(data.type)
-        // 显示弹出框
-        this.searchWindowData.window4.title = data.label
-        this.searchWindowData.window4.info = {
-          organName: data.organName || '',
-          mobile: data.mobile || ''
-        }
-        this.$refs.Search.showCom = "Window4"
-        // 如果有点位，则打点，否则抛出异常
+        // 当前节点没有子节点时
+      } else if (!data.hasOwnProperty('children') || data.children.length === 0) {
         if(data.propertyValue) {
           let latLng = data.propertyValue.split(',')
-          // 手动给点位添加图层标识属性（希望后期能由后端添加）
+          data.imgUrl = this.imgUrl.get(data.type)
+          // 手动给点位添加图层标识属性
           data.layerName = data.label
           this.page.addPoint(data, latLng)
         } else {
-          throw new Error("handleNodeClick(data):::::::::没有坐标")
+          this.$message.error('没有坐标数据')
         }
+      } else { // 机构节点
+        this.getLoad(data)
       }
+      // else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+      //   this.getLoad(data)
+      // } else {
+      //   // 添加点位图标
+      //   data.imgUrl = this.imgUrl.get(data.type)
+      //   // 显示弹出框
+      //   this.searchWindowData.window4.title = data.label
+      //   this.searchWindowData.window4.info = {
+      //     organName: data.organName || '',
+      //     mobile: data.mobile || '',
+      //     padStateColor: data.padStateColor || '',
+      //     peStateColor: data.peStateColor || ''
+      //   }
+      //   this.$refs.Search.showCom = "Window4"
+      //   // 如果有点位，则打点，否则抛出异常
+      //   if(data.propertyValue) {
+      //     let latLng = data.propertyValue.split(',')
+      //     // 手动给点位添加图层标识属性（希望后期能由后端添加）
+      //     data.layerName = data.label
+      //     this.page.addPoint(data, latLng)
+      //   } else {
+      //     throw new Error("handleNodeClick(data):::::::::没有坐标")
+      //   }
+      // }
     },
 
     /**
@@ -199,8 +233,16 @@ export default {
       console.log(data)
       // 显示信息窗体
       this.handleOverLay(data)
-      // 当前点位是路政局
-      if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+      // 如果点位属于执法人员，执法车辆或者执法人员
+      if(data.type === 0 || data.type === 2 || data.type === 3) {
+        // 显示弹出框
+        this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
+        this.searchWindowData.window4.info = data
+        this.$refs.Search.showCom = "Window4"
+      } else if (data.type === 4) { // 如果是非现场站点
+        this.$refs.Search.showCom = "Window5"
+        this.getWindow5(data)
+      } else {
         this.searchWindowData.window3.title = data.name
         this.searchWindowData.window3.info = {
           address: data.address || '',
@@ -208,18 +250,25 @@ export default {
           telephone: data.telephone || ''
         }
         this.getTheOrganTree(data)
-      } else if (data.type === 4) {
-        this.$refs.Search.showCom = "Window5"
-        this.getWindow5(data)
-      } else {
-        // 显示弹出框
-        this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
-        this.searchWindowData.window4.info = {
-          organName: data.organName || '',
-          mobile: data.mobile || ''
-        }
-        this.$refs.Search.showCom = "Window4"
       }
+      // 当前点位是路政局
+      // if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
+      //   this.searchWindowData.window3.title = data.name
+      //   this.searchWindowData.window3.info = {
+      //     address: data.address || '',
+      //     contactor: data.contactor || '',
+      //     telephone: data.telephone || ''
+      //   }
+      //   this.getTheOrganTree(data)
+      // } else if (data.type === 4) {
+      //   this.$refs.Search.showCom = "Window5"
+      //   this.getWindow5(data)
+      // } else {
+      //   // 显示弹出框
+      //   this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
+      //   this.searchWindowData.window4.info = data
+      //   this.$refs.Search.showCom = "Window4"
+      // }
     },
 
     /**
@@ -253,9 +302,48 @@ export default {
     handleCheckAllChange(val) {
       this.getAllPoints(val)
     },
+
+    /**
+     * 点击 window4 底部小图标
+     */
+    handleClickBtns(index, data) {
+      if(index === 0) {
+        // 如果状态为在线（图标颜色为蓝色），则打开语音通话窗口
+        if(data.padStateColor) {
+          this.$store.commit('setDoing', '1');
+          this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
+          window.PhoneCallModule.sipAudioCall(data.padSn,"test");
+        }
+      } else if (index === 1) {
+        // 如果状态为在线（图标颜色为蓝色），则打开视频通话窗口
+        if(data.padStateColor) {
+          this.$store.commit('setDoing', '2');
+          this.$store.commit('setMakePhoneStatus', !this.makePhoneStatus);
+          window.PhoneCallModule.sipVideoCall(data.padSn,"test");
+        }
+      } else if (index === 2) {
+        // 如果状态为在线（图标颜色为绿色），则打开视频窗口
+        if(data.peStateColor) {
+          this.clickPeVideo(data.sn)
+        }
+      }
+    },
   },
   activated() {
     this.getTree()
+  },
+  mounted(){
+      this.$nextTick(() => {
+      //  debugger;
+      window.PhoneCallModule.initialize();
+      if (!window.PhoneCallModule.getRegistered()) {
+        // window.PhoneCallModule.sipRegister();
+        let displayName = 'ecds04';
+        let privateIdentity = '100006';
+        let password = '1234';
+        window.PhoneCallModule.sipRegister(displayName, privateIdentity, password);
+      }
+    })
   }
 }
 </script>

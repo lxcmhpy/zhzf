@@ -74,9 +74,13 @@ export function getNo(oid) {
     })
 }
 //检查证件号
-export function checkNo(no,oid) {
+export function checkNo(no,oid,billId) {
+    let url =  "/device/device/certificate/checkNo/" +no+"/"+oid;
+    if(billId){
+        url += "/"+billId;
+    }
     return request({
-        url: "/device/device/certificate/checkNo/" +no+"/"+oid,
+        url: url,
         method: "get",
         showloading: true,
         loadingType:'loadPart',

@@ -251,6 +251,7 @@ export default [{
     meta: {
       title: "信息采集",
       oneTab: true,
+      keepAlive: true
     },
     component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
   },
@@ -578,6 +579,14 @@ export default [{
       title: "卷宗详情",
     },
     component: () => import("@/page/caseHandle/electronicCaseFile/electronicFileDetail.vue")
+  },
+  {
+    path: "/typeicalDetail",
+    name: "case_handle_typeicalDetail",
+    meta: {
+      title: "案例详情",
+    },
+    component: () => import("@/page/product-template/typical/typeicalDetail.vue")
   },
   {
     path: "/caseCenter-overWeightCase",

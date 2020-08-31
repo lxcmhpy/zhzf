@@ -34,15 +34,12 @@ export function getCaseTypeApi(data) {
 
 //获取行业类别
 export function getIndustryCategoryApi(data) {
-  let params = {
-    pid: data
-  }
   return request({
     url: "/case/caseTemplate/lawCategory/getLawCategoryListVo",
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    params: params,
+    params: data,
     cancelToken: setCancelSource()
   });
 }
@@ -447,6 +444,77 @@ export function getQueryCaseTypeByOrganIdApi(organId) {
   return request({
     url: "/case/caseTemplate/LawCateConfiguration/findCaseTypeByOrganId/"+organId,
     method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//删除典型案件
+export function deleteByCaseId(organId) {
+  return request({
+    url: "/case/doc/typicalCase/deleteByCaseId/"+organId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据条件查询典型案例
+export function findTypicalCaseList(data) {
+  return request({
+    url: "/case/doc/typicalCase/findTypicalCaseList",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过案件Id查询典型案例
+export function findByCaseId(data) {
+  return request({
+    url: "/case/doc/typicalCase/findByCaseId/"+data,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//根据条件查询结案案件
+export function findClosCaseList(data) {
+  return request({
+    url: "/case/doc/typicalCase/findClosCaseList",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//添加或修改典型案例
+export function saveOrUpdateTypicalCase(data) {
+  let data2 = vm.$qs.stringify(data)
+  return request({
+    url: "/case/doc/typicalCase/saveOrUpdateTypicalCase",
+    method: "post",
+    data: data2,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//批量标记典型案例
+export function markTypicalCase(ids) {
+  return request({
+    url: "/case/doc/typicalCase/markTypicalCase",
+    method: "post",
+    data: 'ids='+ids,
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
@@ -1441,11 +1509,11 @@ export function getLinkTypeInfoByIdApi(id) {
 
 //分页查询定时器信息
 export function getWarInfoLlistApi(data) {
-  data = vm.$qs.stringify(data);
+  // data = vm.$qs.stringify(data);
   return request({
     url: "/case/sys/war/list",
     method: "get",
-    data: data,
+    params: data,
     showloading: false,
     cancelToken: setCancelSource()
   });
@@ -1496,6 +1564,71 @@ export function linkBackApi(id) {
     url: "/case/doc/caseBasicInfo/linkBackByCaseId/"+id,
     method: "get",
     showloading: false,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 案件调阅查询
+export function getCaseReviewList(data) {
+  return request({
+    url: "/case/caseConsult/user/page",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 已结案案件查询
+export function getCloseCaseList(data) {
+  return request({
+    url: "/case/caseConsult/closeCasePage",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 申请调阅
+export function applyReviewCase(data) {
+  return request({
+    url: "/case/caseConsult/save",
+    method: "post",
+    data: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 调阅申请列表
+export function getApprovalCaseList(data) {
+  return request({
+    url: "/case/caseConsult/organ/page",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 调阅审批
+export function approverReviewCase(data) {
+  return request({
+    url: "/case/caseConsult/approver",
+    method: "post",
+    data: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+//根据案件类型查询审批角色列表 （青海）
+export function getApprovePeopleByCaseTypeApi(data) {
+  return request({
+    url: "/case/doc/linkData/findApproveRole3/" + data.caseBasicInfoId +'/'+data.docTypeId + '/'+data.flag,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
     cancelToken: setCancelSource()
   });
 }

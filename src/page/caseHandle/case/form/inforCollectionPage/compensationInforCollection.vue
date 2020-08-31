@@ -276,8 +276,21 @@
           </div>
         </div>
         <div v-show="partyTypePerson=='1'">
-          <div class="itemBig">
-            <el-form-item label="联系地址">
+        <div class="itemThird">
+            <el-form-item label="省/市/区">
+                <el-cascader 
+                    ref="areaCascader"
+                    v-model="inforForm.provincesAddressArray" 
+                    :options="provincesList" 
+                    @active-item-change="handleSelect"
+                    :props="{ expandTrigger:'hover',label:'name',value:'name'}" 
+                    filterable
+                    @change="handleSelect"
+                ></el-cascader>
+            </el-form-item>
+          </div>
+          <div class="itemThird">
+            <el-form-item label="详细地址">
               <el-input v-model="inforForm.partyAddress"></el-input>
             </el-form-item>
           </div>
@@ -371,25 +384,26 @@
                   >
                     <el-option
                       v-for="item in index === 0?allRelationWithParty:allRelationWithParty_"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.label"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </div>
               <div class="item">
                 <!-- 需要完善验证 -->
-                <el-form-item label="与案件关系" class="is-required">
+                <!-- <el-form-item label="与案件关系" class="is-required"> -->
+                <el-form-item label="与案件关系">
                   <el-select
                     v-model="driverOrAgentInfo.relationWithCase"
                     :disabled="index==0&&relationWithPartyIsOne[index]"
                   >
                     <el-option
                       v-for="item in allRelationWithCase"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.label"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -406,22 +420,23 @@
                   >
                     <el-option
                       v-for="item in allQYRelationWithParty"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </div>
               <div class="item">
                 <!-- 需要完善验证 -->
-                <el-form-item label="与案件关系" class="is-required">
+                <!-- <el-form-item label="与案件关系" class="is-required"> -->
+                <el-form-item label="与案件关系">
                   <el-select v-model="driverOrAgentInfo.relationWithCase">
                     <el-option
                       v-for="item in allQYRelationWithCase"
                       :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -497,8 +512,22 @@
             </div>
           </div>
           <div>
-            <div class="itemBig">
-              <el-form-item label="联系地址">
+           <div class="itemThird">
+                <el-form-item label="省/市/区">
+                    <el-cascader 
+                        :ref="subAreaCascader+index"
+                        v-model="driverOrAgentInfo.provincesAddress" 
+                        :options="provincesList" 
+                        @active-item-change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
+                        :props="{ expandTrigger:'hover',label:'name',value:'name'}" 
+                        filterable
+                        :disabled="index==0&&relationWithPartyIsOne[index]"
+                        @change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
+                    ></el-cascader>
+                </el-form-item>
+            </div>   
+            <div class="itemThird">
+              <el-form-item label="详细地址">
                 <el-input
                   v-model="driverOrAgentInfo.adress"
                   :disabled="index==0&&relationWithPartyIsOne[index]"
@@ -569,9 +598,9 @@
               <el-select v-model="inforForm.vehicleIdColor">
                 <el-option
                   v-for="item in allVehicleIdColor"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -583,9 +612,9 @@
               <el-select v-model="inforForm.vehicleShipType">
                 <el-option
                   v-for="item in allVehicleShipType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -685,7 +714,7 @@
             <el-table-column label="合计" align="center">
               <template
                 slot-scope="scope"
-              >{{pathLossList[scope.$index].quantity * pathLossList[scope.$index].roadLcPrice}}</template>
+              >{{(pathLossList[scope.$index].quantity * pathLossList[scope.$index].roadLcPrice).toFixed(2)}}</template>
             </el-table-column>
             <el-table-column label="备注" prop="roadLcNote" align="center">
               <template slot-scope="scope">
@@ -811,6 +840,7 @@ export default {
         total +=
           this.pathLossList[i].roadLcPrice * this.pathLossList[i].quantity;
       }
+      total = total.toFixed(2)
       return total;
     }
   },

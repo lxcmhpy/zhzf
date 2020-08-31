@@ -11,9 +11,9 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="审核结果">
-              <el-radio-group v-model="dispose.result">
-                <el-radio label="通过">通过</el-radio>
-                <el-radio label="退回">退回</el-radio>
+              <el-radio-group v-model="dispose.state">
+                <el-radio label="3">通过</el-radio>
+                <el-radio label="4">退回</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -21,7 +21,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="意见">
-              <el-input type="textarea" v-model="dispose.remark" maxlength="30"></el-input>
+              <el-input type="textarea" v-model="dispose.auditComment" maxlength="30"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -41,13 +41,17 @@ export default {
     return {
       visible: false,
       dispose: {
-        result: "",
-        remark: "",
+        id: "",
+        state: "",
+        auditComment: "",
       },
     };
   },
   methods: {
     showModal(data) {
+      this.dispose = data;
+      this.$set(this.dispose, "auditComment", "");
+      this.$set(this.dispose, "state", "");
       this.visible = true;
     },
     //关闭弹窗的时候清除数据

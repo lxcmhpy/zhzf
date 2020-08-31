@@ -7,6 +7,9 @@ import {
 import { getFile } from "@/api/upload";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
+import {
+  getDictListDetailByNameApi
+} from "@/api/system";
 export const mixinGetCaseApiList = {
   data() {
     return {
@@ -64,9 +67,13 @@ export const mixinGetCaseApiList = {
               endTime = new Date()
             }
 
-            let day = (endTime - new Date(item.acceptTime)) / nd;
-            day = Math.ceil(day)
-            item.caseDealTime = day + '天';
+            if(item.acceptTime){
+                let day = (endTime - new Date(item.acceptTime)) / nd;
+                day = Math.ceil(day)
+                item.caseDealTime = day + '天';
+            }else{
+                item.caseDealTime = '0天';
+            }
             // console.log(item.closeDate,'item.closeDate',day, '天', endTime, item.acceptTime, item.caseDealTime)
             // 处理预警标签
             item.warContent=JSON.parse(item.warContent)
@@ -591,7 +598,7 @@ export const mixinGetCaseApiList = {
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
+        if (this.showREBtn && !this.alReadyFinishCoerciveM && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
@@ -676,6 +683,7 @@ export const mixinGetCaseApiList = {
     },
     //查询文书或表单是否禁用及必填等
     searchPropertyFeatures(caseBasicInfoIdAndtypeId, savedData = '', refreshDataForPdf = false) {
+      console.log('caseBasicInfoIdAndtypeId',caseBasicInfoIdAndtypeId)
       findBindPropertyRuleApi(caseBasicInfoIdAndtypeId).then(res => {
         console.log('通过案件Id级文书类型Id查询案件基本信息及规则', res);
         let data = JSON.parse(res.data.propertyData);
@@ -695,6 +703,8 @@ export const mixinGetCaseApiList = {
               }, 1500)
             }
           } else {
+            // alert('this.canGoNextLink',this.canGoNextLink)
+            this.canGoNextLink = false;
             for (var key in data) {
               this.formData[key] = data[key].val ? data[key].val : this.formData[key];
             }
@@ -756,7 +766,7 @@ export const mixinGetCaseApiList = {
         if(name == '立案登记'){
           routeName = 'case_handle_establish_JX'
         }
-      }else if(flowName == '赔补偿流程'){
+      }else if(flowName == '赔补偿流程' || flowName == '青海赔补偿流程'){
         if(name == '立案登记'){
           routeName = 'case_handle_establish'
         }
@@ -793,6 +803,19 @@ export const mixinGetCaseApiList = {
       }
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
+    //获取基本抽屉表数据
+    async initBaseDrawData(keysArr){
+      if(keysArr.includes('allRelationWithCase')){
+        let  data2 = await getDictListDetailByNameApi('与案件关系');
+        this.allRelationWithCase = data2.data;
+      }
+      if(keysArr.includes('allVehicleShipType')){
+        let  data2 = await getDictListDetailByNameApi('车辆类型');
+        this.allVehicleShipType = data2.data;
+      }
+      
+      
+    }
 
   },
   created() {

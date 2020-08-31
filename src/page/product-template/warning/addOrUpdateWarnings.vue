@@ -37,7 +37,6 @@
           </el-row>
         </el-col>
       </el-row>
-
       <el-form-item label="配置类型" prop="configType">
         <el-radio v-model="addOrUpdateForm.configType" label="0">文书配置</el-radio>
         <el-radio v-model="addOrUpdateForm.configType" label="1">环节配置</el-radio>
@@ -46,7 +45,7 @@
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
           <el-form-item label="分项指标" v-if="addOrUpdateForm.configType!='1'">
-            <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type)">
+            <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type,index)">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -59,7 +58,7 @@
         <el-col :span="5" v-if="addOrUpdateForm.configType!='1'">
           <el-form-item label="指标项" label-width="80px">
             <el-select v-model="item.indexInfo" placeholder="请选择">
-              <el-option v-for="item in pdfFieldList" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
+              <el-option v-for="item in pdfFieldList[index]" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -137,8 +136,8 @@ export default {
       // gradeList: [],//指标项列表
       standerList: [],//条件列表
       timeList: ['时', '分', '秒', '天'],
-      taskTypeList: [{ label: '定时任务', value:'1' }],
-      warnTypeList: [{ label: '提醒', value: '3' },{ label: '预警', value: '2' },{ label: '报警', value: '1' }],
+      taskTypeList: [{ label: '定时任务', value: '1' }],
+      warnTypeList: [{ label: '提醒', value: '3' }, { label: '预警', value: '2' }, { label: '报警', value: '1' }],
       addList: [{}]
     };
   },
@@ -171,7 +170,11 @@ export default {
                 // _this.addOrUpdateForm.cycleTime1 == cycleTimeList[0]
               }
               _this.addList = res.data.sysWarInfoVoList
-              _this.changeType(_this.addList.indexInfo)
+              if (_this.addOrUpdateForm.configType == 0) {
+                _this.addList.forEach((element, index) => {
+                  _this.changeType(element.type, index)
+                });
+              }
               _this.visible = true;
             }
           },
@@ -263,15 +266,16 @@ export default {
         }
       });
     },
-    changeType(typeId) {
+    changeType(typeId, index) {
       let _this = this
       let data = {
         typeId: typeId
       }
       findAllSetListApi(data).then(
         res => {
-          console.log('列表', res)
-          _this.pdfFieldList = res.data
+          if (res.code == 200) {
+            _this.pdfFieldList.splice(index, 0, res.data)
+          }
         });
     }
   },

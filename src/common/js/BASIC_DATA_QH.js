@@ -14,5 +14,4 @@ export const BASIC_DATA_QH = {
     case_handle_paymentReport_QH_caseDocTypeId: '2955023b99943d7c21e54c5d84d82667',
     //公路路产损坏赔（补）偿清单 文书ID
     case_handle_WayPaymentList_QH_caseDocTypeId: 'ce523795a2165d15a1c3d6cf29b2b18b',
-
 }

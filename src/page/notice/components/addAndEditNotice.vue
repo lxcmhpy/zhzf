@@ -23,7 +23,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="发布时间" prop="publishTime">
-            <el-input v-model="addNoticeForm.publishTime"></el-input>
+            <el-date-picker
+              v-model="addNoticeForm.publishTime"
+              type="date"
+              value-format="yyyy-MM-dd"
+              placeholder="选择日期"
+              style="width:100%"
+            ></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -41,16 +47,14 @@
       </el-row>
       <el-row>
         <el-form-item label="附件">
+          <!-- :http-request="saveFile" accept=".pdf" -->
           <el-upload
             class="upload-demo"
-            accept=".pdf"
-            ref="caseUpload"
-            :http-request="saveFile"
             action="https://jsonplaceholder.typicode.com/posts/"
-            multiple
             :file-list="fileList"
+            :on-change="handleChange"
           >
-            <el-button size="small" type="primary" v-show="true">点击上传</el-button>
+            <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
       </el-row>
@@ -67,8 +71,8 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import iLocalStroage from "@/common/js/localStroage.js";
-// import { uploadFuncO } from '@/api/upload'
-// import { addOrUpdateNoticeApi } from '@/api/pykh/appraisalExam.js'
+import { upload } from "@/api/upload";
+import { saveOrUpdateNotice, findNoticeById } from "@/api/notice/notice.js";
 export default {
   components: {
     quillEditor,
@@ -84,8 +88,8 @@ export default {
         publishTime: "",
         type: "",
         id: "",
-        storageIds: [],
       },
+      storageId: [],
       rules: {
         title: [
           {
@@ -188,36 +192,35 @@ export default {
       },
     };
   },
-  // inject: ['reload'],
   methods: {
-    // changehyType(val) {
-    //   if (val === "普通") {
-    //     this.showUpload = false;
-    //     this.addNoticeForm.storageId = "";
-    //     this.fileList = [];
-    //   } else {
-    //     this.showUpload = true;
-    //     this.addNoticeForm.content = "";
-    //   }
-    // },
-    saveFile(param) {
-      console.log(param);
+    handleChange(file, fileList) {
+      debugger;
+      this.fileList = fileList;
+    },
+    async saveFile(param) {
       var fd = new FormData();
-      fd.append("file", param.file);
+      fd.append("file", param.raw);
+      fd.append("fileName", param.name);
       fd.append("userId", iLocalStroage.gets("userInfo").id);
       fd.append("category", "公告");
-      //   fd.append("storageId", this.addNoticeForm.storageId);
-      let _this = this;
-      uploadFuncO.uploadPykh(fd).then((res) => {
-        if (res.code == 200) {
-          _this.addNoticeForm.storageIds.push(res.data);
-          _this.addNoticeForm.fileName = param.file.name;
-        } else {
-          _this.$message.error("出现异常，添加失败！");
-          _this.$refs.caseUpload.clearFiles();
-        }
-      });
+      fd.append("caseId", param.name + new Date().getTime()); //传记录id
+      fd.append("docId", param.name + new Date().getTime()); //传记录id
+      let res = await upload(fd);
+      debugger;
+      this.storageId.push(res.data[0].storageId);
     },
+
+    async uploadFiles() {
+      for (var i = 0; i < this.fileList.length; i++) {
+        var param = this.fileList[i];
+        if (param.storageId) {
+          this.storageId.push(param.storageId);
+        } else {
+          await this.saveFile(param);
+        }
+      }
+    },
+
     onEditorReady(editor) {
       // 准备编辑器
     },
@@ -229,50 +232,63 @@ export default {
       this.fileList = [];
       if (type == 1) {
         this.dialogTitle = "新增";
-        this.addNoticeForm.type = data.type;
+        this.addNoticeForm = {
+          title: "",
+          source: "",
+          content: "",
+          publishTime: "",
+          type: data.type,
+          id: "",
+        };
       } else if (type == 2) {
         this.dialogTitle = "修改";
-        this.addNoticeForm = data;
-        /* (this.addNoticeForm.title = data.title),
-          (this.addNoticeForm.noticeType = data.noticeType);
-        this.addNoticeForm.content = data.content;
-        this.addNoticeForm.id = data.id;
-        this.addNoticeForm.storageId = data.storageId;
-        if (data.storageId !== "") {
-          let fileData = {};
-          fileData.name = data.fileName;
-          fileData.url = data.storageId;
-          this.fileList.push(fileData);
-        } */
+        let _this = this;
+        findNoticeById(data.id).then(
+          (res) => {
+            _this.addNoticeForm = res.data;
+            _this.fileList = res.data.fileUploadVos;
+            if (_this.fileList.length > 0) {
+              _this.fileList.forEach((item) => {
+                item.name = item.fileName;
+              });
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       }
     },
     submit() {
       console.log(this.$refs.myQuillEditor.value);
     },
     //新增公告 修改公告
-    addOrEditNotice(formName) {
+    async addOrEditNotice(formName) {
       let _this = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          addOrUpdateNoticeApi(_this.addNoticeForm).then(
-            (res) => {
-              _this.catsMessage({
-                type: "success",
-                message: "保存成功!",
-              });
-              _this.visible = false;
-              // 回调函数
-              this.$emit("callBackFunc", true);
-            },
-            (err) => {
-              console.log(err);
-            }
-          );
+          _this.uploadFiles().then((res) => {
+            debugger;
+            _this.addNoticeForm.storageId = _this.storageId.join(":");
+            saveOrUpdateNotice(_this.addNoticeForm).then(
+              (res) => {
+                _this.$message({
+                  type: "success",
+                  message: "保存成功!",
+                });
+                _this.closeDialog();
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+          });
         }
       });
     },
     closeDialog() {
       this.visible = false;
+      this.$emit("success");
     },
   },
   computed: {

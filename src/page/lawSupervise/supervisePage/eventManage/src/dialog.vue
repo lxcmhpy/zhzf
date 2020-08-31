@@ -3,27 +3,43 @@
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
-    <el-form ref="dialogForm" :model="form" :disabled="disabled">
-      <el-form-item label="事件名称:" :label-width="formLabelWidth">
+    <el-form ref="dialogForm" class="eventManage-dialog-dialogForm" :model="form" :disabled="disabled" :rules="rules">
+      <el-form-item label="事件名称:" :label-width="formLabelWidth" prop="eventName">
         <el-input v-model="form.eventName" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="事件描述:" :label-width="formLabelWidth">
+      <el-form-item label="事件描述:" :label-width="formLabelWidth" prop="eventDescribe">
         <el-input v-model="form.eventDescribe" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="事件时间:" :label-width="formLabelWidth">
+      <el-form-item label="事件时间:" :label-width="formLabelWidth" prop="eventDate">
         <el-date-picker
+          style="width:100%"
           v-model="form.eventDate"
           value-format="yyyy-MM-dd"
           type="date"
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="事件坐标:" :label-width="formLabelWidth" class="eventLagLng" prop="eventAddress">
+        <el-input v-model="form.eventAddress" readonly>
+          <div
+            class="handleLatLng"
+            slot="append"
+            @click="showMap"
+            v-if="!hasLatitudeAndLongitude"
+          ><i class="iconfont law-weizhi" />请获取坐标</div>
+          <div
+            v-else
+            class="handleLatLng already"
+            slot="append"
+          ><i class="iconfont law-weizhi" />已获取坐标</div>
+        </el-input>
+      </el-form-item>
       <el-form-item label="是否重点事件:" :label-width="formLabelWidth">
         <el-radio v-model="form.isemphasis" :label='1'>是</el-radio>
         <el-radio v-model="form.isemphasis" :label='0'>否</el-radio>
       </el-form-item>
       <el-form-item label="事件状态:" :label-width="formLabelWidth">
-        <el-radio-group v-model="form.state">
+        <el-radio-group v-model="form.state" disabled>
           <el-radio :label="1">待处理</el-radio>
           <el-radio :label="2">处理中</el-radio>
           <el-radio :label="3">处理完毕</el-radio>
@@ -33,11 +49,11 @@
         <el-radio v-model="form.iscoordinator" :label='1'>是</el-radio>
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
-      <el-form-item label="机构:" :label-width="formLabelWidth">
+      <el-form-item label="机构:" :label-width="formLabelWidth" prop="disposeOrgan">
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
       </el-form-item>
-      <el-form-item label="人员:" :label-width="formLabelWidth">
-        <el-select @change="handlePeopleChange" v-model="form.disposePerson" placeholder="请选择">
+      <el-form-item label="人员:" :label-width="formLabelWidth" prop="disposePerson">
+        <el-select v-model="form.disposePerson" filterable multiple placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
             :key="item.value"
@@ -82,6 +98,7 @@
       <el-button v-if="!disabled" @click="dialogFormVisible = false">取 消</el-button>
       <el-button v-if="!disabled" type="primary" @click="handleSubmit">确 定</el-button>
     </div>
+    <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
   </el-dialog>
 </template>
 
@@ -89,9 +106,12 @@
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { addUpdate } from "@/api/eventManage";
 import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js";
-import localStroage from '@/common/js/localStroage';
+import iLocalStroage from '@/common/js/localStroage';
+import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
+import store from "../store.js";
 export default {
   inject: ['page'],
+  mixins: [store],
   props: {
     title: {
       type: String,
@@ -115,7 +135,8 @@ export default {
     }
   },
   components: {
-    ElSelectTree
+    ElSelectTree,
+    mapDiag,
   },
   data() {
     return {
@@ -140,10 +161,18 @@ export default {
         disposeOrgan: '', // 选择的机构 id
         disposePerson: '', // 选择的人员 id
         storageIds: [], // 附件 id 列表
+        eventAddress:'',
+        eventCoordinate:''
       },
       dialogImageUrl: '',
       dialogVisible: false,
-      disabled: false
+      disabled: false,
+      hasLatitudeAndLongitude: false, //案发坐标是否已经获取
+      rules:{
+          eventName:[{required: true, message: "请输入事件名称", trigger: "blur"}],
+          eventDate:[{required: true, message: "请输入事件时间", trigger: "blur"}],
+          eventAddress:[{required: true, message: "请输入事件坐标", trigger: "blur"}]
+      }
     }
   },
   methods: {
@@ -177,8 +206,10 @@ export default {
      * 获取选择到的机构
      */
     getValue(val) {
+      this.$refs.elSelectTree.$children[0].handleClose();
       this.form.disposeOrgan = val
-      console.log(val)
+      this.$set(this.form,'disposePerson','')
+      this.getPerson(val)
     },
 
     /**
@@ -205,13 +236,13 @@ export default {
         data.map(item => {
           if(item.category === '1') {
             this.eventFileDataUp.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
               storageId: item.storageId,
               name: item.name
             })
           } else {
             this.eventFileDataDown.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
               storageId: item.storageId,
               name: item.name
             })
@@ -246,31 +277,36 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-      let upList = [], downList = [];
-      if(this.eventFileDataUp.length > 0) {
-        upList = this.eventFileDataUp.map(item=>{
-          return item.storageId
+        this.$refs['dialogForm'].validate(valid => {
+            if (valid) {
+                let upList = [], downList = [];
+                if(this.eventFileDataUp.length > 0) {
+                    upList = this.eventFileDataUp.map(item=>{
+                        return item.storageId
+                    })
+                }
+                if(this.eventFileDataDown.length > 0) {
+                    downList = this.eventFileDataDown.map(item=>{
+                        return item.storageId
+                        this.form.storageIds.push(item.storageId)
+                    })
+                }
+                this.form.storageIds = upList.concat(downList)
+                this.form.disposePerson = JSON.stringify(this.form.disposePerson)
+                addUpdate(this.form).then(res => {
+                    if(res.code === 200) {
+                        this.dialogFormVisible = false
+                        this.$message({
+                            message: res.msg,
+                            type: "success"
+                        })
+                        this.page.initPage()
+                    } else {
+                        this.$message.error(res.msg)
+                    }
+                })
+            }
         })
-      }
-      if(this.eventFileDataDown.length > 0) {
-        downList = this.eventFileDataDown.map(item=>{
-          return item.storageId
-          this.form.storageIds.push(item.storageId)
-        })
-      }
-      this.form.storageIds = upList.concat(downList)
-      addUpdate(this.form).then(res => {
-        if(res.code === 200) {
-          this.dialogFormVisible = false
-          this.$message({
-            message: res.msg,
-            type: "success"
-          })
-          this.page.initPage()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
     },
 
     /**
@@ -289,13 +325,57 @@ export default {
     },
     handleDownload(file) {
       console.log(file);
-    }
+    },
+    //显示地图
+    showMap() {
+      this.$refs.mapDiagRef.showModal();
+    },
+    //获取坐标
+    getLngLat(lngLatStr, address) {
+      this.form.eventCoordinate = lngLatStr;
+      this.form.eventAddress = address;
+      this.hasLatitudeAndLongitude = true;
+    },
   },
+  mounted(){
+
+  }
 }
 </script>
 
 <style lang="scss">
 .eventManage-dialog {
   overflow: hidden;
+  &-dialogForm {
+    .eventLagLng {
+      .el-input {
+        .el-input-group__append {
+          cursor: pointer;
+          width: 130px;
+          height: 30px;
+          padding: 0;
+          border: 0;
+          .handleLatLng {
+            background: #409EFF;
+            width: 100%;
+            height: 100%;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            i {
+              margin-right: 3px;
+            }
+          }
+          .handleLatLng.already {
+            background: #F2F6FC;
+            color: #606266;
+            border: 1px solid #DCDFE6;
+            margin-left: -1px;
+          }
+        }
+      }
+    }
+  }
 }
 </style>
