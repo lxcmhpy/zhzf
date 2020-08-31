@@ -27,6 +27,16 @@
             </el-form-item>
           </div>
           <div class="item">
+            <el-form-item label="回答" prop="answer">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 1, maxRows: 4}"
+                placeholder="请输入回答"
+                v-model="addRequest.answer">
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
             <el-form-item label="排序" prop="sort">
               <el-input
                 type="textarea"
@@ -62,6 +72,7 @@ export default {
         id: "",
         modelId: "",
         request: "",
+        answer: "",
         sort: ""
       },
       rules: {
@@ -94,6 +105,7 @@ export default {
         this.addRequest.id = data.id;
         this.addRequest.modelId = data.modelId;
         this.addRequest.request = data.request;
+        this.addRequest.answer = data.answer;
         this.addRequest.sort = data.sort;
       }
     },

@@ -13,7 +13,7 @@ export default  [
             name: "联合查询",
             path: "/zdycxtj-manage",
             meta: {
-              title: "联合查询"
+              title: "联合查询" 
             },
             component: () => import("@/page/cxtj/zdycxtj-manage/zdycxtj.vue")
           },

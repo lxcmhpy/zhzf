@@ -313,7 +313,7 @@ export default {
       if (flag) {
         this.$message({
           type: "error",
-          message: "只允许删除草稿及退回的记录!",
+          message: "只允许删除草稿状态或者退回状态的记录!",
         });
         return;
       }

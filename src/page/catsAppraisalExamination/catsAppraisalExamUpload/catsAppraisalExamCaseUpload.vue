@@ -1,7 +1,8 @@
 <template>
     <div class="cats-layout-page-content">
         <div class="searchAndpageBox toggleBox">
-            <div class="handlePart" style="margin-left: 0px;">
+            <!-- <div class="handlePart" style="margin-left: 0px;"> -->
+            <div  style="margin-left: 0px;">
                 <viewNotice ref="viewNoticeRef"></viewNotice>
                 <div class="search">
                     <el-form :inline="true">
