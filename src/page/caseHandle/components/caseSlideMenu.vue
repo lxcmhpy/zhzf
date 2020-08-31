@@ -17,8 +17,8 @@
         操作<br>记录
       </el-menu-item>
       <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish" v-show="!IsLawEnforcementSupervision || lawEnforcementSupervisionType =='archivesCaseSupervision'">
-        <div @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('case_handle_documentForm')">文书<br>列表</div>
-        <!-- <div v-else>文书<br>列表</div> -->
+        <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('documentForm')" @click="goTo('case_handle_documentForm')">文书<br>列表</div>
+        <div v-else>文书<br>列表</div>
       </el-menu-item>
       <el-menu-item index="documentForm" :disabled = "disabledBeforeEstablish" v-show="IsLawEnforcementSupervision && lawEnforcementSupervisionType!=='archivesCaseSupervision'">
         <div v-if="!disabledBeforeEstablish" @mouseenter="mouseenterShowEmit('documentForm_supervision')" @click="mouseenterShowEmit('documentForm_supervision')">文书<br>列表</div>
