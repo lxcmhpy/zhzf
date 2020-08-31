@@ -9,7 +9,7 @@
             <td rowspan="3">案由</td>
             <td rowspan="3" colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 5}" maxlength="90" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 6}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
             </td>
             <td rowspan="3" style="width:40px">案件承办人</td>
@@ -47,8 +47,8 @@
           <tr style="height:300px">
             <td colspan="9" class="color_DBE4EF">
               赔（补）偿决定：
-              <el-form-item prop="decision" :rules="fieldRules('decision',propertyFeatures['decision'])" style="width: calc(100% - 130px);">
-                <el-input type="textarea" v-model="docData.decision" :autosize="{ minRows: 4, maxRows: 5}" :disabled="fieldDisabled(propertyFeatures['decision'])" maxlength="300" placeholder="\"></el-input>
+              <el-form-item prop="decision" :rules="fieldRules('decision',propertyFeatures['decision'])">
+                <el-input type="textarea" v-model="docData.decision" :rows="15" :disabled="fieldDisabled(propertyFeatures['decision'])" maxlength="300" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -56,7 +56,7 @@
             <td colspan="9" class="color_DBE4EF table_seal">
               执行情况：<br />
               <el-form-item prop="process" :rules="fieldRules('process',propertyFeatures['process'])">
-                <el-input type="textarea" v-model="docData.process" :autosize="{ minRows: 4, maxRows: 5}" :disabled="fieldDisabled(propertyFeatures['process'])" maxlength="300" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.process" :rows="7" :disabled="fieldDisabled(propertyFeatures['process'])" maxlength="300" placeholder="\"></el-input>
               </el-form-item>
               <div class="pdf_seal">
                 <p>签名：{{docData.approvePeo}}</p>
@@ -309,7 +309,16 @@ export default {
       this.docData.inquiriedTel = dailiData.tel;
       console.log(' this.docData.inquiriedSex', this.docData.inquiriedSex);
     },
-
+    //修改人员
+    changeStaff1(val) {
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
+    },
+    changeStaff2(val) {
+      let staffIndex = this.docData.staff.split(',').indexOf(val);
+      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      console.log(staffIndex);
+    },
     //获取执法人员
     getLawOfficer() {
       let data = {
