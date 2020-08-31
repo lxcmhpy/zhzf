@@ -105,12 +105,17 @@ export default {
       docData: {
         caseTypeKey: "",//案件字
         caseNumber: "",
-        checkBox: [],
         caseName: "",
-        afsj: "",
-        party: "",
-        partySex: '',
-        partyAge: "",
+        staff: '',
+        certificateId: "",
+        staff1: '',
+        certificateId1: "",
+        staff2: '',
+        certificateId2: "",
+        decision: "",
+        process: "",
+        approveTime: '',
+        note: "",
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
