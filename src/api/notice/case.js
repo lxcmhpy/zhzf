@@ -34,6 +34,7 @@ export function saveOrUpdate(data) {
 
 // 新增、编辑批量操作
 export function saveOrUpdateBatch(data) {
+  debugger;
   return request({
     url: "/notice/case/saveOrUpdateBatch",
     method: "post",

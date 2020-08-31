@@ -4,7 +4,7 @@
       custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat"
       :visible.sync="visible"
       @close="closeDialog"
-      top="0px"
+      :top="fatherCom==='inforCollection' ? '95px':'0px'"
       width="405px"
       :modal="false"
       :show-close="false"
@@ -26,13 +26,17 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+        >
         <el-checkbox
+          :style="fatherCom==='inforCollection' ? 'top: -68px':'22px'"
           :indeterminate="isIndeterminate"
           v-model="checkAll"
           @change="handleCheckAllChange"
         ></el-checkbox>
-        <el-button @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
+        <el-button :style="fatherCom==='inforCollection' ? 'top: -80px':null" @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -94,6 +98,12 @@ import iLocalStroage from "@/common/js/localStroage";
       };
     },
     inject: ["reload"],
+    props: {
+      fatherCom: {
+        type: String,
+        default: ""
+      }
+    },
     // props: ["caseInfo"],
     computed: {...mapGetters(["caseId"])},
     methods: {
@@ -270,12 +280,13 @@ import iLocalStroage from "@/common/js/localStroage";
     .el-checkbox {
       width: auto;
       left: 22px;
-      top: 22px;
       position: absolute;
     }
     .el-button {
+      position: absolute;
       width: 204px;
       height: 38px;
+      left: 60px;
     }
   }
 

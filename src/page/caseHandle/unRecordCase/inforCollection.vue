@@ -1091,7 +1091,7 @@
     <punishDiag ref="punishDiagRef" @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"></punishDiag>
     <!--快速入口 -->
 
-    <caseSlideMenu :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
+    <caseSlideMenu fatherCom="inforCollection" :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
     <!-- 置顶 -->
     <el-backtop
       target="#inforCollectionBox"
