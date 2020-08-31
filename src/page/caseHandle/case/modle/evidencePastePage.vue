@@ -77,12 +77,12 @@
           执法人员签名：
           <span class="write_line" style="width:150px"></span>
         </p>
-        <el-row :gutter="20">
+        <!-- <el-row :gutter="20">
           <el-col :span="24">
             当事人或代理人签名：
             <span class="write_line" style="width:300px"></span>
           </el-col>
-        </el-row>
+        </el-row> -->
     </div>
     </div>
        <div style="text-align:center"><el-button type="primary" @click="addPage">添加一页</el-button></div>

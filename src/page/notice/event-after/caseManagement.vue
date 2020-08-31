@@ -2,32 +2,26 @@
   <div class="com_searchAndpageBoxPadding case-management">
     <div class="searchAndpageBox searchAndpageBox2">
       <div class="handlePart caseHandleSearchPart">
-        <el-form
-          :model="searchForm"
-          ref="searchForm"
-          class="caseSearchForm"
-          label-width="50px"
-          size="small"
-        >
+        <el-form :model="searchForm" ref="searchForm" class="caseSearchForm" size="small">
           <el-row>
-            <el-col :span="6">
-              <el-form-item label="处罚决定书文号（案号）" prop="caseNumber">
+            <el-col :span="8">
+              <el-form-item label="处罚决定书文号（案号）" prop="caseNumber" label-width="170px">
                 <el-input v-model="searchForm.caseNumber"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-form-item label="行政相对人名称" prop="party">
+            <el-col :span="7">
+              <el-form-item label="行政相对人名称" prop="party" label-width="140px">
                 <el-input v-model="searchForm.party"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-form-item label="状态" prop="state">
+            <el-col :span="5">
+              <el-form-item label="状态" prop="state" label-width="50px">
                 <el-select v-model="searchForm.state" placeholder="请选择" clearable>
                   <el-option v-for="(item,key) in allStatus" :key="key" :label="item" :value="key"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="4">
               <el-form-item label-width="10px">
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
                 <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
@@ -52,9 +46,9 @@
         >
           >
           <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="caseNumber" label="行政处罚决定书文号（案号）" align="center"></el-table-column>
-          <el-table-column prop="caseCauseName" label="处罚名称（违法行为）" align="center"></el-table-column>
-          <el-table-column prop="party" label="行政相对人名称（当事人）" align="center"></el-table-column>
+          <el-table-column prop="caseNumber" label="行政处罚决定书文号（案号）" width="150" align="center"></el-table-column>
+          <el-table-column prop="caseCauseName" label="处罚名称（违法行为）" width="110" align="center"></el-table-column>
+          <el-table-column prop="party" label="行政相对人名称（当事人）" width="130" align="center"></el-table-column>
           <el-table-column prop="provinceNo" label="受案单位" align="center"></el-table-column>
           <el-table-column prop="partyName" label="处罚单位" align="center"></el-table-column>
           <el-table-column prop="punishDate" label="处罚时间" align="center"></el-table-column>
@@ -183,8 +177,8 @@ export default {
   data() {
     return {
       searchForm: {
-        personName: "",
-        oId: "",
+        caseNumber: "",
+        party: "",
         state: "",
       },
       tableData: [],
@@ -286,6 +280,9 @@ export default {
      * 点击确定
      */
     handleSubmit(data) {
+      data.forEach((item) => {
+        item.caseID = item.id;
+      });
       let _this = this;
       saveOrUpdateBatch(data).then(
         (res) => {
@@ -343,7 +340,7 @@ export default {
       if (flag) {
         this.$message({
           type: "error",
-          message: "只允许删除草稿及退回的记录!",
+          message: "只允许删除草稿状态或者退回状态的记录!",
         });
         return;
       }

@@ -683,12 +683,13 @@ export default {
       this.getDocListByCaseIdAndFormId();
     }
   },
-  activated() {
-    this.initData()
-  }
-  // created() {
+  // activated() {
+  //   alert(iLocalStroage.gets('userInfo').nickName)
   //   this.initData()
   // }
+  created() {
+    this.initData()
+  }
 };
 </script>
 

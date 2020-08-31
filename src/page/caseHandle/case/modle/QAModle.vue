@@ -203,7 +203,8 @@ export default {
       }
     },
     chooseQues(val){
-      this.addBannerForm.domains[this.editQuestIndex].question = val;
+      this.addBannerForm.domains[this.editQuestIndex].question = val.request;
+      this.addBannerForm.domains[this.editQuestIndex].answer = val.answer;
     },
     //通过问答模板类型id查询问答模板
     findModelList(modelTypeId){

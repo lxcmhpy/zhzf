@@ -56,6 +56,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import tansferAtentionDialog from "@/page/caseHandle/components/tansferAtentionDialog.vue";
 import { mapGetters } from "vuex";
+// import func from '../../../../vue-temp/vue-editor-bridge';
 export default {
   data() {
     return {
