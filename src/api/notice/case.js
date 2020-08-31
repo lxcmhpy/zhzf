@@ -7,9 +7,9 @@ import {
 } from "@/common/js/cancelToken";
 
 // 加载列表
-export function findBnslaws(data) {
+export function findCases(data) {
   return request({
-    url: "/notice/bnslaw/list",
+    url: "/notice/case/list",
     method: "get",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -19,10 +19,10 @@ export function findBnslaws(data) {
   })
 }
 
-// 新增、编辑轮播图
+// 新增、编辑
 export function saveOrUpdate(data) {
   return request({
-    url: "/notice/bnslaw/saveOrUpdate",
+    url: "/notice/case/saveOrUpdate",
     method: "post",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -35,7 +35,7 @@ export function saveOrUpdate(data) {
 // 新增、编辑批量操作
 export function saveOrUpdateBatch(data) {
   return request({
-    url: "/notice/bnslaw/saveOrUpdateBatch",
+    url: "/notice/case/saveOrUpdateBatch",
     method: "post",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -48,7 +48,7 @@ export function saveOrUpdateBatch(data) {
 // 通过Id查询
 export function findById(id) {
   return request({
-    url: "/notice/bnslaw/findById/" + id,
+    url: "/notice/case/findById/" + id,
     method: "get",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -57,10 +57,10 @@ export function findById(id) {
   })
 }
 
-// 多选删除公示政策
+// 多选删除
 export function deleteByIds(data) {
   return request({
-    url: "/notice/bnslaw/deleteById",
+    url: "/notice/case/deleteById",
     method: "post",
     showloading: true,
     data: data,
@@ -73,7 +73,7 @@ export function deleteByIds(data) {
 // 编辑操作
 export function update(data) {
   return request({
-    url: "/notice/bnslaw/updateByid",
+    url: "/notice/case/updateByid",
     method: "post",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
@@ -86,7 +86,7 @@ export function update(data) {
 // 批量编辑操作
 export function updateBatch(data) {
   return request({
-    url: "/notice/bnslaw/updateByids",
+    url: "/notice/case/updateByids",
     method: "post",
     showloading: true,
     baseUrlType: 'NOTICE_HOST',
