@@ -59,14 +59,6 @@
         >
           <el-table-column prop="personName" label="姓名" align="center" min-width="140px"></el-table-column>
           <el-table-column prop="branchNo" label="执法证号" align="center"></el-table-column>
-          <el-table-column prop="totalExamScore" label="考试总成绩" align="center" min-width="140px;"></el-table-column>
-          <!-- <div v-for="(item, $index) in examList" :key="item.examId">
-            <el-table-column :prop="item.examId" :label="item.examName" align="center" min-width="140px;">
-              <template slot-scope="scope">
-                <div>{{ scope.row[item.examId] }}</div>
-              </template>
-            </el-table-column>
-          </div> -->
           <template v-for="item in examList">
             <el-table-column :key="item.examId" :prop="item.examId" :label="item.examName" align="center" min-width="140px;">
               <template slot-scope="scope">
@@ -74,6 +66,7 @@
               </template>
             </el-table-column>
           </template>
+           <el-table-column prop="totalExamScore" label="考试总成绩" align="center" min-width="140px;"></el-table-column>
           <!-- <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="getDetailInfo(scope.row)">
