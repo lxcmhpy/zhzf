@@ -25,6 +25,7 @@ import myTrainingRouterJson from './routerJson/myTrainingRouterJson'
 import deviceRouterJson from './routerJson/deviceRouterJson'
 import lawEnforcementSupervisionRouterJson from './routerJson/lawEnforcementSupervisionRouterJson'
 import noticeRouterJson from './routerJson/noticeRouterJson'
+import fxypRouterJson from './routerJson/fxypRouterJson'
 
 // 不作为Main组件的子页面展示的页面单独写，如下
 const route = [
@@ -94,7 +95,8 @@ const route = [
       ...catsAppraisalExamUploadJson,
       ...deviceRouterJson,
       ...lawEnforcementSupervisionRouterJson,
-      ...noticeRouterJson
+      ...noticeRouterJson,
+      ...fxypRouterJson,
     ]
   },
   {

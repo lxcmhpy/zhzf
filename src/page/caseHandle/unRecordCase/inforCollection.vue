@@ -1091,7 +1091,7 @@
     <punishDiag ref="punishDiagRef" @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"></punishDiag>
     <!--快速入口 -->
 
-    <caseSlideMenu :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
+    <caseSlideMenu fatherCom="inforCollection" :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
     <!-- 置顶 -->
     <el-backtop
       target="#inforCollectionBox"
@@ -2987,8 +2987,9 @@ export default {
     }
     this.$refs.link_5.addEventListener("scroll", this.scrool5);
   },
+  activated() {this.initDrawer();},
   created() {
-    this.initDrawer();
+    // this.initDrawer();
     //this.getDirectionList();
     //this.getLocationList();
 

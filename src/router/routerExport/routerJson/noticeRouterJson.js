@@ -79,4 +79,20 @@ export default [{
     },
     component: () => import("@/page/notice/policy/lawsManagement.vue")
   },
+  {
+    path: "/personManagement",
+    name: "personManagement",
+    meta: {
+      title: "执法人员"
+    },
+    component: () => import("@/page/notice/event-before/personManagement.vue")
+  },
+  {
+    path: "/caseManagement",
+    name: "caseManagement",
+    meta: {
+      title: "执法案件"
+    },
+    component: () => import("@/page/notice/event-after/caseManagement.vue")
+  },
 ]

@@ -78,12 +78,12 @@ export default {
           console.log('fileName', _this.evidenceForm.evName);
           console.log('file', _this.evfile);
           console.log('caseId', _this.caseId);
-          console.log('docId', _this.linkId);
+          console.log('objectId', _this.linkId);
 
           fd.append("fileName", _this.evidenceForm.evName);
           fd.append("file", _this.evfile);
           fd.append("caseId", _this.caseId);
-          fd.append("docId", _this.linkId);
+          fd.append("objectId", _this.linkId);
           fd.append("category", '证据');
           fd.append("evName", _this.evidenceForm.evName);
           fd.append("evType", _this.evfile.type);

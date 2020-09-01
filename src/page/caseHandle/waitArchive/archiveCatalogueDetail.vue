@@ -421,7 +421,7 @@ export default {
           var fd = new FormData();
           fd.append("file", _that.formUpload.file);
           fd.append("caseId", _that.formUpload.caseId);
-          fd.append("docId", _that.formUpload.docId);
+          fd.append("objectId", _that.formUpload.docId);
           // fd.append("category", _that.formUpload.category);
           fd.append("userId", _that.formUpload.userId);
           fd.append("evName", _that.formUpload.evName);

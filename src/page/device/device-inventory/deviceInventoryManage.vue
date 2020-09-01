@@ -953,11 +953,21 @@
         font-size: 28px;
         >>>.el-upload{
             width: 100%;
+            height: 100%;
             .device-img{
                 display: block;
                 width: 176px;
                 height: 96px;
             }
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 100%;
+            height: 100%;
+            margin-left: 0px;
+            text-align: center;
+            line-height:0px;
         }
       }
   }

@@ -1,10 +1,10 @@
 <template>
   <el-dialog class="eventManage-dialogAssigned" title="选择指派人员" :visible.sync="dialogAssignedVisible">
-    <el-form :model="form">
-      <el-form-item label="机构" label-width="60px">
+    <el-form :model="form" :rules="rules" ref="dialogForm">
+      <el-form-item label="机构" label-width="60px" prop="disposeOrgan">
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" :value="form.disposeOrgan" />
       </el-form-item>
-      <el-form-item label="人员" label-width="60px">
+      <el-form-item label="人员" label-width="60px" prop="disposePerson">
         <el-select v-model="form.disposePerson" filterable multiple placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
@@ -64,6 +64,10 @@ export default {
         label: "label", // 显示名称
         children: "children", // 子级字段名
       },
+      rules:{
+          disposeOrgan:[{required: true, message: "请选择机构", trigger: "blur"}],
+          disposePerson:[{required: true, message: "请选择人员", trigger: "blur"}]
+      }
     }
   },
   methods: {
@@ -88,19 +92,23 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-      this.form.disposePerson = JSON.stringify(this.form.disposePerson)
-      assigned(this.form).then(res => {
-        if(res.code === 200) {
-          this.dialogAssignedVisible = false
-          this.$message({
-            message: res.msg,
-            type: "success"
-          })
-          this.page.initPage()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
+        this.$refs['dialogForm'].validate(valid => {
+            if (valid) {
+                this.form.disposePerson = JSON.stringify(this.form.disposePerson)
+                assigned(this.form).then(res => {
+                    if(res.code === 200) {
+                    this.dialogAssignedVisible = false
+                    this.$message({
+                        message: res.msg,
+                        type: "success"
+                    })
+                    this.page.initPage()
+                    } else {
+                    this.$message.error(res.msg)
+                    }
+                })
+            }
+        })
     },
   },
 }
