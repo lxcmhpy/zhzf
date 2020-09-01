@@ -2,7 +2,9 @@
 <template>
   <div class="year-inspection-detail">
     <el-timeline :reverse="reverse" class="record-line">
+      <p v-if="records.length<1" class="no-data">暂无数据</p>
       <el-timeline-item
+        v-else
         v-for="(record, index) in records"
         :key="index"
         :hide-timestamp="true"
@@ -275,6 +277,11 @@ export default {
       border-radius: 20px;
       background: #4573d0;
       color: #ffffff;
+    }
+    .no-data {
+      font-size: 18px;
+      color: #7b7b7b;
+      text-align: center;
     }
   }
   .avatar-uploader-icon {
