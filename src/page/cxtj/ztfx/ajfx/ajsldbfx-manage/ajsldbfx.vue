@@ -247,7 +247,7 @@ export default {
         console.log(err);
       };
     },
-     //赔补偿 发案
+     //赔补偿 案发
    searchfa(val) {
       this.currentPage = val;
       let data = {
