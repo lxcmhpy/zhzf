@@ -62,10 +62,10 @@ export default  [
         component: MainContent,
         children: [
           {
-            name: "发案原因分析",
+            name: "案发原因分析",
             path: "/fayyfx-manage",
             meta: {
-              title: "发案原因分析"
+              title: "案发原因分析"
             },
             component: () => import("@/page/glfx/ysglfx/fayyfx-manage/fayyfx.vue")
           },
@@ -146,10 +146,10 @@ export default  [
             component: () => import("@/page/cxtj/ztfx/ajfx/ajsldbfx-manage/ajsldbfx.vue")
           },
           {
-            name: "案件发案数量同比分析",
+            name: "案件案发数量同比分析",
             path: "/ajfasltbfx-manage",
             meta: {
-              title: "案件发案数量同比分析"
+              title: "案件案发数量同比分析"
             },
             component: () => import("@/page/cxtj/ztfx/ajfx/ajfasltbfx-manage/ajfasltbfx.vue")
           },
