@@ -111,4 +111,33 @@ import { mapGetters } from "vuex";
     }
   };
 </script>
+<style lang="scss">
+.el-menu {
+  .el-submenu {
+    .el-menu {
+      li {
+        padding-left: 54px !important;
+      }
+    }
+    .el-submenu__title {
+      .el-submenu__icon-arrow {
+        border: 6px solid;
+        border-color: #9FA3AF transparent transparent transparent;
+        font-size: 0;
+        margin-top: -1px;
+        -webkit-transform: rotateZ(-90deg);
+        -ms-transform: rotate(-90deg);
+        transform: rotateZ(-90deg);
+        transform-origin: 50% 25%;
+      }
+    }
+  }
+}
+//菜单展开
+.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
+  -webkit-transform: rotateZ(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotateZ(0deg);
+}
+</style>
 <style lang="scss" src="@/assets/css/main.scss"></style>
