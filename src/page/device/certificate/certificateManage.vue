@@ -245,15 +245,23 @@ import {
   queryCertificateList,
   saveOrUpdateCertificate,
   findCertificateById,
-  print
+  print,
 } from "@/api/device/deviceCertificate.js";
 import CertificateDetail from "@/page/device/components/equipmentDetail/certificateDetail";
 import ViewPDF from "@/page/device/components/viewPDF";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
 export default {
-  components: { CertificateDetail, elSelectTree,ViewPDF },
+  components: { CertificateDetail, elSelectTree, ViewPDF },
   data() {
+    var validateDaterange = (rule, value, callback) => {
+      debugger;
+      if (value[0] === "" || value[1] === "") {
+        callback(new Error("请输入使用期限"));
+      } else {
+        callback();
+      }
+    };
     return {
       searchForm: {
         vehicleNumber: "",
@@ -275,9 +283,7 @@ export default {
       },
       activeName: "first",
       rules: {
-        daterange: [
-          { required: true, message: "请输入使用期限 ", trigger: "blur" },
-        ],
+        daterange: [{ validator: validateDaterange, trigger: "blur" }],
         lssueTime: [
           { required: true, message: "请输入发证时间", trigger: "blur" },
         ],
@@ -365,9 +371,9 @@ export default {
     openViewDialog(row) {
       this.$refs.certificateDetailRef.showModal(row.id);
     },
-    async print(row){
-        let res = await print(row.id)
-        this.$refs.viewPDFRef.showModal(res.data)
+    async print(row) {
+      let res = await print(row.id);
+      this.$refs.viewPDFRef.showModal(res.data);
     },
     submitData() {
       let _this = this;

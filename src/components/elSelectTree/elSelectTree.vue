@@ -76,8 +76,8 @@ export default {
       type: Boolean,
       default: () => {
         return false;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -101,6 +101,8 @@ export default {
               ]; // 初始化显示
         this.$refs.selectTree.setCurrentKey(this.valueId); // 设置默认选中
         this.defaultExpandedKey = [this.valueId]; // 设置默认展开
+      } else {
+        this.valueTitle = "";
       }
       this.$nextTick(() => {
         let scrollWrap = document.querySelectorAll(
@@ -109,10 +111,10 @@ export default {
         let scrollBar = document.querySelectorAll(
           ".el-scrollbar .el-scrollbar__bar"
         );
-        if(scrollWrap){
-            scrollWrap.style.cssText =
+        if (scrollWrap) {
+          scrollWrap.style.cssText =
             "margin: 0px; max-height: none; overflow: hidden;";
-            scrollBar.forEach((ele) => (ele.style.width = 0));
+          scrollBar.forEach((ele) => (ele.style.width = 0));
         }
       });
     },
@@ -133,11 +135,11 @@ export default {
       this.initHandle();
     },
     // 可搜索下，输入值发生变化时
-    filterMethod(val){
+    filterMethod(val) {
       this.$refs.selectTree.filter(val);
     },
     // 过滤树节点
-     filterNode(value, data) {
+    filterNode(value, data) {
       if (!value) return true;
       return data[this.props.label].indexOf(value) !== -1;
     },
