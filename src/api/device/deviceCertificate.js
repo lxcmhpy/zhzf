@@ -53,3 +53,14 @@ export function findInfoAndHistory(id) {
     cancelToken: setCancelSource()
   });
 }
+//打印
+export function print(id) {
+    return request({
+      url: "/device/device/use/per/print/" + id,
+      method: "get",
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType: 'CAPTCHA_HOST',
+      cancelToken: setCancelSource()
+    });
+  }
