@@ -114,6 +114,11 @@ import { mapGetters } from "vuex";
 <style lang="scss">
 .el-menu {
   .el-submenu {
+    .el-menu {
+      li {
+        padding-left: 54px !important;
+      }
+    }
     .el-submenu__title {
       .el-submenu__icon-arrow {
         border: 6px solid;
@@ -130,9 +135,9 @@ import { mapGetters } from "vuex";
 }
 //菜单展开
 .el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
-    -webkit-transform: rotateZ(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotateZ(0deg);
+  -webkit-transform: rotateZ(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotateZ(0deg);
 }
 </style>
 <style lang="scss" src="@/assets/css/main.scss"></style>
