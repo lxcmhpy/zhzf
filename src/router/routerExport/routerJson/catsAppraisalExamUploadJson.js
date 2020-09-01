@@ -1,7 +1,7 @@
 export default [
     {
         path: "/catsAppraisalExamPersonUpload",
-        name: "catsAppraisalExamPersonUpload",
+        name: "catsAppraisalExamPersonUpload", 
         meta: {
             title: "人员报送"
         },

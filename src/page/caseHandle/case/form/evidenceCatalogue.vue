@@ -4,7 +4,7 @@
     custom-class="leftDialog leftDialog2 archiveCatalogueBox evidenceCatalogueBox"
     :visible.sync="visible"
     @close="closeDialog"
-    top="0px"
+    :top="fatherCom==='inforCollection' ? '95px':'0px'"
     width="405px"
     :modal="false"
     :show-close="false"
@@ -82,11 +82,17 @@ export default {
     };
   },
   inject: ["reload"],
+  props: {
+    fatherCom: {
+      type: String,
+      default: ""
+    }
+  },
   // props: ["caseInfo"],
   computed: { ...mapGetters(["caseId","caseApproval",'IsLawEnforcementSupervision']) },
   components: {
-        evidenceDetail, 
-        evidenceUploadSuccess       
+        evidenceDetail,
+        evidenceUploadSuccess
     },
   methods: {
     hidden(){
@@ -127,8 +133,8 @@ export default {
     },
     //显示证据详情
     evidenceDetail(data){
-        console.log("证据详情",data)        
-        this.$refs.evidenceDetailRef.showModal(data); 
+        console.log("证据详情",data)
+        this.$refs.evidenceDetailRef.showModal(data);
     },
     saveFile(param) {
       console.log("333",param);
@@ -139,8 +145,8 @@ export default {
       (this.form.userId = iLocalStroage.gets("userInfo").id),
       (this.form.evName = param.file.name);
       (this.form.evType = param.file.type);
-      this.insertEvi(); 
-      console.log("333",param);     
+      this.insertEvi();
+      console.log("333",param);
     },
     //插入证据
     insertEvi(id){
@@ -151,12 +157,12 @@ export default {
       fd.append("category", this.form.category);
       fd.append("userId", this.form.userId);
       fd.append("evName", this.form.evName);
-      // fd.append("evType", this.form.evType); 
+      // fd.append("evType", this.form.evType);
       fd.append("status", this.form.status);
       fd.append("remark", this.form.remark);
       fd.append("fileId", this.form.fileId);
       // fd.append("id", this.form.id);
-      
+
       //给证据类型赋值
       let fileType= this.$util.getFileType(this.form.file.name);
       console.log('给证据类型赋值',fileType);
@@ -168,13 +174,13 @@ export default {
       }else{
         this.form.evType = '其他附件'
       }
-      fd.append("evType", this.form.evType); 
-      
+      fd.append("evType", this.form.evType);
+
 
       let _this = this
       uploadEvdence(fd).then(res => {
         console.log("1111111",res);
-        
+
         if (res.code == 200){
           this.$refs.evidenceUploadSuccessRef.showModal(this.fileLength);
           _this.addVisible = false;
@@ -190,7 +196,7 @@ export default {
     }
   },
   mounted () {
-      
+
        let class1 =  document.getElementsByClassName("evidenceCatalogueBox");
       let class2 = class1[0].parentNode;
       class2.style.right = '60px';

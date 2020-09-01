@@ -371,7 +371,7 @@
             },
             //表单筛选
             async queryData() {
-                let obj = await findPykhBatchConfigByOrganId(this.search.organId);
+                let obj = await findPykhBatchConfigByOrganId(this.search.orgId);
                 this.tableData = obj.data;
             },
             //编辑
@@ -398,6 +398,7 @@
             },
             async findAllOrg() {
                 let obj = await findAllDepartment(this.organId);
+                console.log(obj.data)
                 this.orgList = obj.data;
             },
             onChange(val) {
@@ -408,6 +409,7 @@
         mounted() {
             let userInfo = iLocalStroage.gets("userInfo");
             this.organId = userInfo.organId;
+           
             if (this.organId === "1") {
                 this.findAllOrg();
                 if (this.$route.params.orgId !== undefined) {

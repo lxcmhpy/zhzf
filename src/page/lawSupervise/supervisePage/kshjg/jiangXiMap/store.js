@@ -1,5 +1,6 @@
 import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId,getPeVideoUrl } from "@/api/lawSupervise.js";
 import { getOrganDetailApi } from "@/api/system.js";
+import { findData } from "@/api/eventManage";
 export default {
   methods: {
     /**
@@ -205,6 +206,7 @@ export default {
         ['执法机构', 1],
         ['执法车辆', 2],
         ['执法船舶', 3],
+        ['事件地点', 5],
         ['非现场站点', 4],
       ])
       let param = {}, type = typeMap.get(name)
@@ -220,44 +222,53 @@ export default {
           // 获取告警车辆数据以备用
           this.getCarData()
         }
+      } else if (name === "事件地点") {
+        findData({current: 1, size: 2000000}).then(res => {
+          if(res.code === 200) {
+            return res.data
+          } else {
+            throw new Error("findData()::::::接口数据错误")
+          }
+        }).then(data => {
+          console.log(data.records)
+        })
       } else {
         param = {
           organId: this.organId,
           type: type
         }
-      }
-
-      // 当单选框被勾选时,获取图层数据
-      if(val) {
-        getZfjgLawSupervise(param).then(res => {
-          if(res.code === 200) {
-            this.$message({
-              message: '查询到'+res.data.length+'条数据',
-              type: 'success'
-            });
-            return res.data
-          } else {
-            this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-          }
-        }).then(data => {
-          // 手动给数据添加图层唯一标识
-          data.layerName = name
-          // 手动给非现场站点添加type
-          if(type === 4) {
-            data.map(item => {
-              item.type = type
-            })
-            // 给抽屉弹窗里塞入数据
-            this.drawerData.noEnforceData.option = data
-          }
-          // 添加点位图片
-          data.imgUrl = this.imgUrl.get(type)
-          // 调用地图打点方法
-          this.page.addPoints(data)
-        })
-      } else { // 当取消勾选时，清除对应图层点位
-        this.page.cleanPoints(name)
-        this.map.removeOverlay(this.page.informationWindow)
+        // 当单选框被勾选时,获取图层数据
+        if(val) {
+          getZfjgLawSupervise(param).then(res => {
+            if(res.code === 200) {
+              this.$message({
+                message: '查询到'+res.data.length+'条数据',
+                type: 'success'
+              });
+              return res.data
+            } else {
+              this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
+            }
+          }).then(data => {
+            // 手动给数据添加图层唯一标识
+            data.layerName = name
+            // 手动给非现场站点添加type
+            if(type === 4) {
+              data.map(item => {
+                item.type = type
+              })
+              // 给抽屉弹窗里塞入数据
+              this.drawerData.noEnforceData.option = data
+            }
+            // 添加点位图片
+            data.imgUrl = this.imgUrl.get(type)
+            // 调用地图打点方法
+            this.page.addPoints(data)
+          })
+        } else { // 当取消勾选时，清除对应图层点位
+          this.page.cleanPoints(name)
+          this.map.removeOverlay(this.page.informationWindow)
+        }
       }
     },
 

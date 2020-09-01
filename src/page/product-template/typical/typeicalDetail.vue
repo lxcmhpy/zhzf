@@ -44,7 +44,7 @@
                     <el-input disabled v-model="updateCaseTypeForm.caseName"></el-input>
                   </el-form-item>
                   <el-form-item label="案件点评" prop="reviews">
-                    <el-input v-model="updateCaseTypeForm.reviews" class="text-area" type="textarea" clearable rows="4"/>
+                    <el-input v-model="updateCaseTypeForm.reviews" class="text-area" type="textarea" maxlength="100" clearable rows="4"/>
                   </el-form-item>
                 </div>
               </el-form>

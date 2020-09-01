@@ -3,14 +3,14 @@
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
-    <el-form ref="dialogForm" class="eventManage-dialog-dialogForm" :model="form" :disabled="disabled">
-      <el-form-item label="事件名称:" :label-width="formLabelWidth">
+    <el-form ref="dialogForm" class="eventManage-dialog-dialogForm" :model="form" :disabled="disabled" :rules="rules">
+      <el-form-item label="事件名称:" :label-width="formLabelWidth" prop="eventName">
         <el-input v-model="form.eventName" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="事件描述:" :label-width="formLabelWidth">
+      <el-form-item label="事件描述:" :label-width="formLabelWidth" prop="eventDescribe">
         <el-input v-model="form.eventDescribe" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="事件时间:" :label-width="formLabelWidth">
+      <el-form-item label="事件时间:" :label-width="formLabelWidth" prop="eventDate">
         <el-date-picker
           style="width:100%"
           v-model="form.eventDate"
@@ -19,7 +19,7 @@
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="事件坐标:" :label-width="formLabelWidth" class="eventLagLng">
+      <el-form-item label="事件坐标:" :label-width="formLabelWidth" class="eventLagLng" prop="eventAddress">
         <el-input v-model="form.eventAddress" readonly>
           <div
             class="handleLatLng"
@@ -39,7 +39,7 @@
         <el-radio v-model="form.isemphasis" :label='0'>否</el-radio>
       </el-form-item>
       <el-form-item label="事件状态:" :label-width="formLabelWidth">
-        <el-radio-group v-model="form.state">
+        <el-radio-group v-model="form.state" disabled>
           <el-radio :label="1">待处理</el-radio>
           <el-radio :label="2">处理中</el-radio>
           <el-radio :label="3">处理完毕</el-radio>
@@ -49,11 +49,11 @@
         <el-radio v-model="form.iscoordinator" :label='1'>是</el-radio>
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
-      <el-form-item label="机构:" :label-width="formLabelWidth">
+      <el-form-item label="机构:" :label-width="formLabelWidth" prop="disposeOrgan">
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
       </el-form-item>
-      <el-form-item label="人员:" :label-width="formLabelWidth">
-        <el-select v-model="form.disposePerson" placeholder="请选择">
+      <el-form-item label="人员:" :label-width="formLabelWidth" prop="disposePerson">
+        <el-select v-model="form.disposePerson" filterable multiple placeholder="请选择">
           <el-option
             v-for="item in peopleOptions"
             :key="item.value"
@@ -106,7 +106,7 @@
 import ElSelectTree from "@/components/elSelectTree/elSelectTree.vue";
 import { addUpdate } from "@/api/eventManage";
 import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js";
-import localStroage from '@/common/js/localStroage';
+import iLocalStroage from '@/common/js/localStroage';
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
 import store from "../store.js";
 export default {
@@ -168,6 +168,11 @@ export default {
       dialogVisible: false,
       disabled: false,
       hasLatitudeAndLongitude: false, //案发坐标是否已经获取
+      rules:{
+          eventName:[{required: true, message: "请输入事件名称", trigger: "blur"}],
+          eventDate:[{required: true, message: "请输入事件时间", trigger: "blur"}],
+          eventAddress:[{required: true, message: "请输入事件坐标", trigger: "blur"}]
+      }
     }
   },
   methods: {
@@ -272,31 +277,36 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-      let upList = [], downList = [];
-      if(this.eventFileDataUp.length > 0) {
-        upList = this.eventFileDataUp.map(item=>{
-          return item.storageId
+        this.$refs['dialogForm'].validate(valid => {
+            if (valid) {
+                let upList = [], downList = [];
+                if(this.eventFileDataUp.length > 0) {
+                    upList = this.eventFileDataUp.map(item=>{
+                        return item.storageId
+                    })
+                }
+                if(this.eventFileDataDown.length > 0) {
+                    downList = this.eventFileDataDown.map(item=>{
+                        return item.storageId
+                        this.form.storageIds.push(item.storageId)
+                    })
+                }
+                this.form.storageIds = upList.concat(downList)
+                this.form.disposePerson = JSON.stringify(this.form.disposePerson)
+                addUpdate(this.form).then(res => {
+                    if(res.code === 200) {
+                        this.dialogFormVisible = false
+                        this.$message({
+                            message: res.msg,
+                            type: "success"
+                        })
+                        this.page.initPage()
+                    } else {
+                        this.$message.error(res.msg)
+                    }
+                })
+            }
         })
-      }
-      if(this.eventFileDataDown.length > 0) {
-        downList = this.eventFileDataDown.map(item=>{
-          return item.storageId
-          this.form.storageIds.push(item.storageId)
-        })
-      }
-      this.form.storageIds = upList.concat(downList)
-      addUpdate(this.form).then(res => {
-        if(res.code === 200) {
-          this.dialogFormVisible = false
-          this.$message({
-            message: res.msg,
-            type: "success"
-          })
-          this.page.initPage()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
     },
 
     /**

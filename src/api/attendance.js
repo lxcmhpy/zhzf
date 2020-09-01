@@ -12,7 +12,6 @@ export function getStatisticalList(data){
   return request({
     url: "/person/attendance/statisticalList",
     method: "get",
-    baseUrlType: 'ATTENDANCE',
     params: data,
     showloading: false,
     cancelToken: setCancelSource()
@@ -23,7 +22,6 @@ export function getAttendanceList(data){
   return request({
     url: "/person/attendance/list",
     method: "get",
-    baseUrlType: 'ATTENDANCE',
     params: data,
     showloading: false,
     cancelToken: setCancelSource()
@@ -34,7 +32,6 @@ export function editAttendance(data){
   return request({
     url: "/person/attendance/edit",
     method: "POST",
-    baseUrlType: 'ATTENDANCE',
     data: data,
     showloading: false,
     cancelToken: setCancelSource()
@@ -45,7 +42,6 @@ export function downLoadAttendanceMode(){
   return request({
       url: '/person/attendance/exportMode',
       method:  "get",
-      baseUrlType: 'ATTENDANCE',
       showloading: false,
       responseType:'blob',
       cancelToken:  setCancelSource()
@@ -56,7 +52,6 @@ export function batchImportAttendance(data){
   return request({
       url: '/person/attendance/import',
       method:  "POST",
-      baseUrlType: 'ATTENDANCE',
       data: data,
       contentType: 'multipart/form-data;',
       showloading: false,
@@ -68,7 +63,6 @@ export function getDeductMarks(data){
   return request({
     url: "/person/attendance/deductMarks",
     method: "get",
-    baseUrlType: 'ATTENDANCE',
     params: data,
     showloading: false,
     cancelToken: setCancelSource()
@@ -79,7 +73,6 @@ export function editDeductMarks(data){
   return request({
     url: "/person/attendance/deductMarksEdit",
     method: "POST",
-    baseUrlType: 'ATTENDANCE',
     params: data,
     showloading: false,
     cancelToken: setCancelSource()

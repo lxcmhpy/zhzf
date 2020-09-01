@@ -263,10 +263,8 @@
                                    label="车属地"></el-table-column>
                   <el-table-column width="78"
                                    align="center"
+                                   prop="important"
                                    label="重点监管">
-                    <template>
-                      <span>否</span>
-                    </template>
                   </el-table-column>
                 </el-table>
               </div>
@@ -608,7 +606,7 @@
                             <div class="flexBox">
                               <p><span class="bgCgray">过检时间：</span>{{row&&row.checkTime?row.checkTime.split(' ')[1]:''}}</p>
                               <!-- <p><span class="bgCgray">重点监管：</span><span class="redC">是</span></p> -->
-                              <p><span class="bgCgray">重点监管：</span><span>否</span></p>
+                              <p><span class="bgCgray">重点监管：</span>{{row.important}}</p>
                             </div>
                             <div class="flexBox">
                               <p><span class="bgCgray">历史告警（次）：</span>{{row.lscc}}</p>
@@ -741,10 +739,7 @@
                     <el-table-column prop="area"
                                      label="车属地">
                     </el-table-column>
-                    <el-table-column label="重点监管">
-                      <template>
-                        <div><i class="iconfont law-star orangeC"></i></div>
-                      </template>
+                    <el-table-column prop="important" label="重点监管">
                     </el-table-column>
                     <el-table-column prop="lscc"
                                      label="历史查处">

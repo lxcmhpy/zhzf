@@ -17,10 +17,10 @@
                 <el-option value="宁夏">宁夏</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="二级单位" prop="ministerialNo">
-                <el-input v-model="formInline.ministerialNo"></el-input>
+              <el-form-item label="二级单位" prop="oName">
+                <el-input v-model="formInline.oName"></el-input>
               </el-form-item>
-              <el-form-item label="所属门类" prop="branchId">
+              <el-form-item label="执法领域" prop="branchId">
                 <el-select
                   v-model="formInline.branchId"
                   placeholder="执法领域"
@@ -37,8 +37,8 @@
               </el-form-item>
              <el-form-item label="是否发证" prop="certStatus">
                 <el-select v-model="formInline.certStatus" placeholder="是否发证" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
-                <el-option value="1">是</el-option>
-                <el-option value="0">否</el-option>
+                <el-option value="1">已发证</el-option>
+                <el-option value="0">未发证</el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label=" " label-width="13px">
@@ -70,11 +70,11 @@
             element-loading-spinner="car-loading"
             element-loading-text="加载中..."
           >
-            <el-table-column prop="personName" label="年龄段" align="center"></el-table-column>
-            <el-table-column prop="sex" label="人数" :formatter="sexFormat" align="center"></el-table-column>
-            <el-table-column prop="ministerialNo" label="其中：男性" align="center"></el-table-column>
-            <el-table-column prop="oname" label="其中：女性" align="center"></el-table-column>
-            <el-table-column prop="branchName" label="占总人数百分比（%）" align="center"></el-table-column>
+            <el-table-column prop="ageStructure" label="年龄段" align="center"></el-table-column>
+            <el-table-column prop="total" label="人数"  align="center"></el-table-column>
+            <el-table-column prop="man" label="其中：男性" align="center"></el-table-column>
+            <el-table-column prop="woman" label="其中：女性" align="center"></el-table-column>
+            <el-table-column prop="mix" label="占总人数百分比（%）" align="center"></el-table-column>
           </el-table>
         </div>
         <!-- <div class="paginationBox" v-show="true">
@@ -103,7 +103,7 @@ export default {
       branchIdsInfo: [], //执法领域列表
       oidsInfo: [], //所属机构列表
       formInline: {
-        ministerialNo: "", //执法证号
+        oName: "", //所属单位
         province: "", //省份
         branchName: "", //执法门类
         branchId: "",
@@ -126,16 +126,15 @@ export default {
       let _this = this;
       let data = {
         province: _this.formInline.province,
-        ministerialNo: _this.formInline.ministerialNo,
-        branchId: _this.formInline.branchId,
         oName: _this.formInline.oName,
+        branchId: _this.formInline.branchId,
         certStatus: _this.formInline.certStatus,
       };
       this.tableLoading = true;
       _this.$store.dispatch("statisticByAge", data).then(
         res => {
           this.tableLoading = false;
-          _this.tableData = res.data.records;
+          _this.tableData = res.data;
           _this.totalPage = res.data.total;
         },
         err => {

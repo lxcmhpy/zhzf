@@ -42,7 +42,8 @@ export default {
     },
     chooseQuesEmit(){
          this.visible = false;
-        this.$emit("chooseQues",this.question);
+         let selectData = this.questionList.filter(p=>p.request==this.question);
+        this.$emit("chooseQues",selectData[0]);
     },
     //获取问题
     findQuestionList(modelId){

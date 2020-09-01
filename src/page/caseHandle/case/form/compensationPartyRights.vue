@@ -449,7 +449,7 @@
       //查询证据材料列表
       findEvidence() {
         let data = {
-          docId: this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId,
+          objectId: this.BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId,
           caseId: this.caseId,
         };
         let _this = this
