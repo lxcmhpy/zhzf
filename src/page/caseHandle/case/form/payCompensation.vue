@@ -390,7 +390,7 @@ export default {
       var fd = new FormData();
       fd.append("file", this.form.file);
       fd.append("caseId", this.form.caseId);
-      fd.append("docId", this.form.docId);
+      fd.append("objectId", this.form.docId);
       fd.append("category", this.form.category);
       fd.append("userId", this.form.userId);
       fd.append("evName", this.form.evName);

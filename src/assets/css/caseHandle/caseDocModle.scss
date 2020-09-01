@@ -607,8 +607,9 @@
         width   : 51px;
         height  : 100px;
         position: fixed;
-        right   : 70px;
-        bottom  : 167px;
+        right: 105px;
+        top: 614px;
+        // bottom  : 167px;
 
         &.float-btns .el-button {
             border-radius: 1px;
@@ -1085,32 +1086,32 @@
 .text_indent11 {
     .el-textarea__inner {
         text-indent: 12em;
-  
+
     }
 }
 .text_indent14 {
     .el-textarea__inner {
         text-indent: 14em;
-  
+
     }
 }
 .text_indent2 {
     .el-textarea__inner {
         text-indent: 4em;
-  
+
     }
 }
 .text_indent25 {
     .el-textarea__inner {
         text-indent: 25em;
-  
+
     }
 }
 
 .text_indent50 {
     .el-textarea__inner {
         text-indent: 50em;
-  
+
     }
 }
 

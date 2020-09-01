@@ -870,9 +870,9 @@ export default {
     //添加一行数据
     addTableData() {
       let length = this.tableDatas.length;
-      if (length == 6) {
+      if (length == 4) {
         this.$message({
-          message: "最多输入六行！",
+          message: "最多输入四行！",
           type: "warning",
         });
         return;

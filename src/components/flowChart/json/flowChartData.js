@@ -1,5 +1,7 @@
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
+import { BASIC_DATA_QH } from '@/common/js/BASIC_DATA_QH.js';
+
 // 规则  连线 target=source    target不是本身的话会有箭头
 let flowGraphData = {
   //标准案件流程
@@ -116,7 +118,7 @@ let flowGraphData = {
       { id: "3", source: "3", target: "4", linkID: BASIC_DATA_SYS.compensationNote_caseDoctypeId, name: "赔补偿\n通知", linkName: 'case_handle_compensationNoticeForm_QH', position: { x: 1, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_03' } },
       { id: "4", source: '4', target: "5", linkID: BASIC_DATA_SYS.compensationPartyRights_caseLinktypeId, name: "当事人\n权利", linkName: 'case_handle_compensationPartyRights', position: { x: 1, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'lct_10' } },
       { id: "5", source: '5', target: "6", linkID: BASIC_DATA_SYS.takeOverCompensation_caseDoctypeId, name: "收缴赔\n补偿款", linkName: 'case_handle_payCompensation', position: { x: 1, y: 5 }, itemStyleColor: "", attributes: { modularity_class: 'lct_11' } },
-      { id: "6", source: "6", target: "6", linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, name: "结案登记", linkName: 'case_handle_finishCaseReport', docId: BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, position: { x: 1, y: 6 }, itemStyleColor: "", attributes: { modularity_class: 'lct_14' } }
+      { id: "6", source: "6", target: "6", linkID: BASIC_DATA_QH.finishCaseReport_QH_caseLinktypeId, name: "结案登记", linkName: 'case_handle_finishCaseReport_QH', docId: BASIC_DATA_QH.finishCaseReport_QH_huanjieAndDocId, position: { x: 1, y: 6 }, itemStyleColor: "", attributes: { modularity_class: 'lct_14' } }
     ],
     links: []
   },
