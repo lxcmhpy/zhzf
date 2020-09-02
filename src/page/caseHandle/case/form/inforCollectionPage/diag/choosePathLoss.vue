@@ -44,8 +44,8 @@
         </div>
       </el-form>
       <div>
-        <el-table :data="tableData" ref="tableDataRef" stripe border @selection-change="handleSelectionChange" height="300">
-          <el-table-column type="selection" width="55" :selectable="canSelectable"></el-table-column>
+        <el-table :data="tableData" ref="tableDataRef" stripe border @selection-change="handleSelectionChange" :row-key="getRowKey" height="300">
+          <el-table-column type="selection" width="55" :selectable="canSelectable" :reserve-selection="true"></el-table-column>
           <el-table-column type="index" width="50" label="序号"></el-table-column>
           <el-table-column label="路产名称" prop="roadLcName"></el-table-column>
           <el-table-column label="类型" prop="roadLcType"></el-table-column>
@@ -86,6 +86,9 @@ export default {
       callback();
     };
     return {
+      getRowKey(row) {
+        return row.id
+      },
       visible: false,
       pathLossSearchForm: {
         roadLcBz: "",
@@ -107,7 +110,7 @@ export default {
   methods: {
     //选中
     handleSelectionChange(val) {
-      console.log(val);
+      console.log(val)
       this.selectRows = val;
     },
     //确认
@@ -125,7 +128,7 @@ export default {
       this.allRoadType = [];
       this.alreadyAddData = alreadyAddData;
       //查询所有的所属标准
-      
+
       let data1 = await getDictListDetailByNameApi('公路路产所属标准');
       this.allRoadLcBz = data1.data;
       this.searchPathLoss();
@@ -155,7 +158,7 @@ export default {
           // this.selectAlreadyData();
           //设置禁止选择
           // this.canSelectable();
-          
+
         })
         .catch(err => {
           console.log(err);
@@ -188,7 +191,7 @@ export default {
     //是否禁止选择
     canSelectable(row, index) {
       let canSelectableFlag = true;
-      
+
       for (let index2 in this.alreadyAddData) {
           console.log('item',this.alreadyAddData[index2]);
           console.log('row',row);
@@ -218,7 +221,7 @@ export default {
           if(item2.id == item.id){
             console.log('选中')
             this.$nextTick(function(){
-              this.$refs.tableDataRef.toggleRowSelection(item2,true); 
+              this.$refs.tableDataRef.toggleRowSelection(item2,true);
             })
             return;
           }

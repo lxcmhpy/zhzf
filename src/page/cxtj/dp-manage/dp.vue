@@ -136,10 +136,10 @@ export default {
   },
   methods:{
       ajpage(){
-           this.$router.push({ path:'/zdycxtj-manage'  })
+           this.$router.push({ path:'/lawCase'  })
       },
       zbpage(){
-           this.$router.push({ path:'/ndajlxslbzfx-manage'  })
+           this.$router.push({ path:'/personEqpt'  })
       },
     map() {
      var jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
@@ -1389,7 +1389,7 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
   created() {}
 };
 </script>
-<style>
+<style scoped>
 .body_bg{
   background-image: url("../../../../static/images/map/bg.png");
 }
@@ -1567,8 +1567,8 @@ font-weight:bold;
 color:rgba(4,241,248,1);
 line-height:61px;  
 }
-.fullscreen .el-main {
-    background:bottom;
+.body_bg .el-main {
+    background: none;
 }
 .main {
     background-image: url("../../../../static/images/map/边框.png");

@@ -103,11 +103,10 @@ export default {
     return {
       // tableData: {},
       formData: {
-        caseTypeKey: "",//案件字
         caseNumber: "",
         caseName: "",
-        staff: '',
-        certificateId: "",
+        defaultStaff: '',
+        defaultCertificateId: "",
         staff1: '',
         certificateId1: "",
         staff2: '',
@@ -217,15 +216,15 @@ export default {
     //更改执法人员2
     changeStaff2() {
       let staffIndex = this.staffList.indexOf(val);
-      this.formData.certificateId2 = this.formData.certificateId.split(',')[staffIndex];
+      this.formData.certificateId2 = this.formData.defaultCertificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
     getDataAfter() {
-      this.staffList = this.formData.staff.split(',');
+      this.staffList = this.formData.defaultStaff.split(',');
       this.formData.staff1 = this.staffList[0];
       this.formData.staff2 = this.staffList[1];
-      this.formData.certificateId1 = this.formData.certificateId.split(",")[0];
-      this.formData.certificateId2 = this.formData.certificateId.split(",")[1];
+      this.formData.certificateId1 = this.formData.defaultCertificateId.split(",")[0];
+      this.formData.certificateId2 = this.formData.defaultCertificateId.split(",")[1];
 
     },
     //根据类型
@@ -297,12 +296,12 @@ export default {
     },
     //修改人员
     changeStaff1(val) {
-      let staffIndex = this.formData.staff.split(',').indexOf(val);
-      this.formData.certificateId1 = this.formData.certificateId.split(',')[staffIndex];
+      let staffIndex = this.formData.defaultStaff.split(',').indexOf(val);
+      this.formData.certificateId1 = this.formData.defaultCertificateId.split(',')[staffIndex];
     },
     changeStaff2(val) {
-      let staffIndex = this.formData.staff.split(',').indexOf(val);
-      this.formData.certificateId2 = this.formData.certificateId.split(',')[staffIndex];
+      let staffIndex = this.formData.defaultStaff.split(',').indexOf(val);
+      this.formData.certificateId2 = this.formData.defaultCertificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
     //获取执法人员
@@ -314,7 +313,7 @@ export default {
       findCaseAllBindPropertyApi(data).then(res => {
         console.log(res);
         let data2 = JSON.parse(res.data.propertyData);
-        this.staffList = data2.staff.split(',');
+        this.staffList = data2.defaultStaff.split(',');
       }, err => {
         console.log(err);
       })
@@ -342,7 +341,7 @@ export default {
 
     //设置执法人员
     getDataAfter() {
-      this.staffList = this.formData.staff ? this.formData.staff.split(',') : [];
+      this.staffList = this.formData.defaultStaff ? this.formData.defaultStaff.split(',') : [];
     },
     //获取案件基本信息
     getCaseInfo() {

@@ -61,7 +61,7 @@
         border:0;
       }
     }
-    
+
   }
   #mainHeader {
     overflow  : hidden;
@@ -104,7 +104,7 @@
 
         &>.el-menu-item.is-active {
           color        : #fff;
-          border-bottom: 2px solid $cats-blue-color;
+          border-bottom: 3px solid $cats-blue-color;
         }
 
         .el-menu-item:focus,
@@ -119,9 +119,9 @@
         line-height: 60px;
         font-size: 25px;
       }
-      
+
     }
-    
+
 
     @media screen and (max-width: 1400px) {
       .headMenu {
@@ -364,7 +364,7 @@
     height: auto;
     background: #fff;
     position  : relative;
-
+    box-shadow: 0px 6px 4px 0px rgba(94, 137, 181, 0.1);
     .handlePart {
       // position: absolute;
       // top     : 20px;
@@ -389,7 +389,7 @@
       height       : calc(100% - 170px);
       overflow     : auto;
       /* margin-top: 15px; */
-      padding-top  : 15px;
+      // padding-top  : 15px;
       padding-bottom: 15px;
       box-sizing   : border-box;
     }

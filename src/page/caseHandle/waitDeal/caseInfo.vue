@@ -57,7 +57,7 @@
           <div class="border_blue"></div>
           <div class="content_form">
             <!-- 罚款类型案件 -->
-           
+
               <div class="row">
                 <div class="col">
                   <el-form-item label="执法人员">{{formData.staff}}</el-form-item>
@@ -74,7 +74,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <el-form-item label="赔偿金额" v-if="caseFlowData.flowName == '赔补偿流程' || caseFlowData.flowName == '青海赔补偿流程'">￥{{formData.tempPunishAmount}}</el-form-item>
+                  <el-form-item label="赔偿金额" v-if="caseFlowData.flowName == '赔补偿流程' || caseFlowData.flowName == '青海赔补偿流程'">￥{{formData.tempPunishAmount||formData.payTotal}}</el-form-item>
                   <el-form-item label="处罚金额" v-else>￥{{formData.tempPunishAmount}}</el-form-item>
                 </div>
                 <div class="col">
@@ -87,7 +87,7 @@
                   <el-form-item label="结案时间">{{formData.closeDate}}</el-form-item>
                 </div>
               </div>
-           
+
             <!-- 赔补偿类型案件 -->
           </div>
         </div>
@@ -261,7 +261,7 @@ export default {
     }
   },
   created() {
-    
+
   }
 };
 </script>
@@ -270,6 +270,15 @@ export default {
 @import "@/assets/css/documentForm.scss";
 </style>
 <style scoped>
+el-form {
+  margin-bottom: 40px;
+}
+#caseInfoBox {
+  width: calc(100% - 96px);
+}
+.btn-height63 {
+  right: 126px;
+}
 .el-form-item {
   margin-bottom: 0px;
 }

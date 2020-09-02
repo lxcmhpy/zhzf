@@ -633,12 +633,15 @@ export const inforCollectionCommonMixins = {
         this.inforForm.payTotal = this.payTotal;
         _this.inforForm.state = state;
         _this.inforForm.caseStatus = '未立案';
+        let oldPartyAddress = this.inforForm.partyAddress
         if(this.inforForm.provincesAddressArray && this.inforForm.provincesAddressArray.length>1){
             this.inforForm.provincesAddress=JSON.stringify(this.inforForm.provincesAddressArray)
+            this.inforForm.partyAddress = this.inforForm.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,'')+this.inforForm.partyAddress
         }
         _this.$store.dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm).then(
           res => {
             console.log(res);
+            _this.inforForm.partyAddress = oldPartyAddress
             _this.$message({
               type: "success",
               message: "提交成功!"
@@ -670,7 +673,7 @@ export const inforCollectionCommonMixins = {
             });
           },
           err => {
-
+            _this.inforForm.partyAddress = oldPartyAddress
             console.log(err);
           }
         );
@@ -695,8 +698,10 @@ export const inforCollectionCommonMixins = {
       this.inforForm.roadDamageList = this.pathLossList ? JSON.stringify(this.pathLossList) : '';
       this.inforForm.payTotal = this.payTotal;
       console.log(this.inforForm)
+      let oldPartyAddress = this.inforForm.partyAddress
       if(this.inforForm.provincesAddressArray && this.inforForm.provincesAddressArray.length>1){
         this.inforForm.provincesAddress=JSON.stringify(this.inforForm.provincesAddressArray)
+        this.inforForm.partyAddress = this.inforForm.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,'')+this.inforForm.partyAddress
       }
       this.inforForm.state = state;
       this.inforForm.caseStatus = '未立案';
@@ -706,6 +711,7 @@ export const inforCollectionCommonMixins = {
         .dispatch("saveOrUpdateCaseBasicInfo", this.inforForm)
         .then(
           res => {
+            this.inforForm.partyAddress = oldPartyAddress
             console.log(this.inforForm);
             if (this.inforForm.otherInfo) {
               this.inforForm.otherInfo = JSON.parse(this.inforForm.otherInfo)
@@ -726,6 +732,7 @@ export const inforCollectionCommonMixins = {
             }
           },
           err => {
+            this.inforForm.partyAddress = oldPartyAddress
             console.log(err);
           }
         );
@@ -743,6 +750,7 @@ export const inforCollectionCommonMixins = {
             _this.driverOrAgentInfoList = JSON.parse(res.data.agentPartyEcertId);
             if(res.data.provincesAddress){
                 res.data.provincesAddressArray = JSON.parse(res.data.provincesAddress)
+                res.data.partyAddress=res.data.partyAddress.replace(res.data.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,''),'')
                 if(res.data.provincesAddressArray.length>1){
                     let obj = {
                         first:res.data.provincesAddressArray[0],

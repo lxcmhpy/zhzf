@@ -1968,7 +1968,7 @@ export default {
           }
           _this.inforForm.afdd = afddSting;
         }
-
+        let oldPartyAddress = this.inforForm.partyAddress
         if (
           this.inforForm.provincesAddressArray &&
           this.inforForm.provincesAddressArray.length > 1
@@ -1976,12 +1976,14 @@ export default {
           this.inforForm.provincesAddress = JSON.stringify(
             this.inforForm.provincesAddressArray
           );
+          this.inforForm.partyAddress = this.inforForm.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,'')+this.inforForm.partyAddress
         }
         _this.$store
           .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
           .then(
             (res) => {
               console.log(res);
+              this.inforForm.partyAddress = oldPartyAddress
               _this.$message({
                 type: "success",
                 message: "提交成功!",
@@ -2019,6 +2021,7 @@ export default {
               });
             },
             (err) => {
+                this.inforForm.partyAddress = oldPartyAddress
               console.log(err);
             }
           );
@@ -2038,6 +2041,7 @@ export default {
       this.inforForm.otherInfo = JSON.stringify(this.inforForm.otherInfo);
       console.log(this.inforForm);
 
+      let oldPartyAddress = this.inforForm.partyAddress
       if (
         this.inforForm.provincesAddressArray &&
         this.inforForm.provincesAddressArray.length > 1
@@ -2045,6 +2049,7 @@ export default {
         this.inforForm.provincesAddress = JSON.stringify(
           this.inforForm.provincesAddressArray
         );
+        this.inforForm.partyAddress = this.inforForm.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,'')+this.inforForm.partyAddress
       }
 
       this.inforForm.state = state;
@@ -2054,6 +2059,7 @@ export default {
       this.$store.dispatch("saveOrUpdateCaseBasicInfo", this.inforForm).then(
         (res) => {
           console.log(this.inforForm);
+          this.inforForm.partyAddress = oldPartyAddress
           if (this.inforForm.otherInfo) {
             this.inforForm.otherInfo = JSON.parse(this.inforForm.otherInfo);
           }
@@ -2066,6 +2072,7 @@ export default {
           // this.autoSava = false;
         },
         (err) => {
+            this.inforForm.partyAddress = oldPartyAddress
           console.log(err);
         }
       );
@@ -2085,6 +2092,7 @@ export default {
             res.data.provincesAddressArray = JSON.parse(
               res.data.provincesAddress
             );
+            res.data.partyAddress=res.data.partyAddress.replace(res.data.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,''),'')
             if (res.data.provincesAddressArray.length > 1) {
               let obj = {
                 first: res.data.provincesAddressArray[0],

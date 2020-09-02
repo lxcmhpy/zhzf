@@ -68,7 +68,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "发案原因分析",
+          text: "案发原因分析",
           left: "center"
         },
         tooltip: {
@@ -93,7 +93,7 @@ export default {
         },
         series: [
           {
-            name: "发案原因",
+            name: "案发原因",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],

@@ -168,10 +168,12 @@ export default {
         party: "",
         partySex: '',
         partyAge: "",
+        defaultCertificateId:'',
         certificateId1:'',
         certificateId2:'',
         staff2:'',
         staff1:'',
+        defaultStaff:'',
         agencyOpinions:'',
         evidence:'',
         process:'',
@@ -292,15 +294,15 @@ export default {
     //更改执法人员2
     changeStaff2() {
       let staffIndex = this.staffList.indexOf(val);
-      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      this.docData.certificateId2 = this.docData.defaultCertificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
     getDataAfter() {
-      this.staffList = this.docData.staff.split(',');
+      this.staffList = this.docData.defaultStaff.split(',');
       this.docData.staff1 = this.staffList[0];
       this.docData.staff2 = this.staffList[1];
-      this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
-      this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+      this.docData.certificateId1 = this.docData.defaultCertificateId.split(",")[0];
+      this.docData.certificateId2 = this.docData.defaultCertificateId.split(",")[1];
 
     },
     //根据类型
@@ -328,12 +330,12 @@ export default {
     },
     //修改人员
     changeStaff1(val) {
-      let staffIndex = this.docData.staff.split(',').indexOf(val);
-      this.docData.certificateId1 = this.docData.certificateId.split(',')[staffIndex];
+      let staffIndex = this.docData.defaultStaff.split(',').indexOf(val);
+      this.docData.certificateId1 = this.docData.defaultCertificateId.split(',')[staffIndex];
     },
     changeStaff2(val) {
-      let staffIndex = this.docData.staff.split(',').indexOf(val);
-      this.docData.certificateId2 = this.docData.certificateId.split(',')[staffIndex];
+      let staffIndex = this.docData.defaultStaff.split(',').indexOf(val);
+      this.docData.certificateId2 = this.docData.defaultCertificateId.split(',')[staffIndex];
       console.log(staffIndex);
     },
     //获取执法人员
@@ -345,7 +347,7 @@ export default {
       findCaseAllBindPropertyApi(data).then(res => {
         console.log(res);
         let data2 = JSON.parse(res.data.propertyData);
-        this.staffList = data2.staff.split(',');
+        this.staffList = data2.defaultStaff.split(',');
         
       }, err => {
         console.log(err);
