@@ -74,7 +74,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <el-form-item label="赔偿金额" v-if="caseFlowData.flowName == '赔补偿流程' || caseFlowData.flowName == '青海赔补偿流程'">￥{{formData.tempPunishAmount}}</el-form-item>
+                  <el-form-item label="赔偿金额" v-if="caseFlowData.flowName == '赔补偿流程' || caseFlowData.flowName == '青海赔补偿流程'">￥{{formData.tempPunishAmount||formData.payTotal}}</el-form-item>
                   <el-form-item label="处罚金额" v-else>￥{{formData.tempPunishAmount}}</el-form-item>
                 </div>
                 <div class="col">
