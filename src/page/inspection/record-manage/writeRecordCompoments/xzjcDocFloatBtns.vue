@@ -77,7 +77,7 @@ export default {
       let websocket = null;
       //判断当前浏览器是否支持WebSocket
       if ('WebSocket' in window) {
-        let _url = "ws://124.192.215.4:8083/socket/" + fileId
+        let _url = "ws://124.192.215.6:8083/socket/" + fileId
         // let _url = "ws://172.16.170.44:8083/socket/" + fileId
         websocket = new WebSocket(_url);
       } else {

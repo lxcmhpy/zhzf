@@ -1632,3 +1632,56 @@ export function getApprovePeopleByCaseTypeApi(data) {
     cancelToken: setCancelSource()
   });
 }
+
+// 查询协查案件列表
+export function getCaseAssistanceList(data) {
+  return request({
+    url: "/case/doc/caseAssistance/queryCaseAssistanceListPage",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 查询案件列表
+export function getSelectCaseList(data) {
+  return request({
+    url: "/case/doc/caseAssistance/findSelectCaseList",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 获取协查案件详情
+export function getAssistCaseDetail(caseId) {
+  return request({
+    url: `/case/doc/caseAssistance/findById/${caseId}`,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 通过id删除协查案件
+export function deleteAssistCase(caseId) {
+  return request({
+    url: `/case/doc/caseAssistance/deleteById/${caseId}`,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 保存或修改协查案件
+export function saveAssistCase(data) {
+  return request({
+    url: "/case/doc/caseAssistance/saveOrUpdateCaseAssistance",
+    method: "post",
+    data: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

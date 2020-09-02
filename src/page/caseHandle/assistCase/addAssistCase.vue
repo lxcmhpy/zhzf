@@ -11,7 +11,7 @@
       </div>
     </div>
     <!-- 选择案件 -->
-    <SelectCase v-if="stepActive === 0" @nextStep="nextStep" />
+    <SelectCase v-if="stepActive === 0" @nextStep="nextStep" @selectedCase="setAssistCaseData" />
     <!-- 协查详情 -->
     <AssistDetail v-if="stepActive === 1" @nextStep="nextStep" />
     <!-- 协助调查函 -->
@@ -43,6 +43,10 @@ export default {
     // 页面刷新回到当前步骤
     setCurrentStep(){
       this.stepActive = sessionStorage.getItem('AssistStep') - 0;
+    },
+    // 记录案件数据到缓存
+    setAssistCaseData(caseData){
+      sessionStorage.setItem('AssistData', JSON.stringify({ case: caseData }));
     }
   },
   created() {},

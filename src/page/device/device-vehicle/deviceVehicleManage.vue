@@ -109,7 +109,7 @@
           </el-table-column>
           <el-table-column label="使用证号" align="center">
             <template slot-scope="scope">
-              <span v-if="scope.row.deviceUsePerVo">{{scope.row.deviceUsePerVo.usePermitNumber}}</span>
+              <span v-if="scope.row.usePermitNumber">{{scope.row.usePermitNumber}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="state" label="证件状态" align="center">

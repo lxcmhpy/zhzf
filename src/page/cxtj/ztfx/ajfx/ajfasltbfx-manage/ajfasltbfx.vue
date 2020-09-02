@@ -55,7 +55,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "发案同比图",
+          text: "案发同比图",
           left: "left"
         },
         tooltip: {
