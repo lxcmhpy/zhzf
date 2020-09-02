@@ -426,7 +426,7 @@ export default [
   // 查看协查案件
   {
     name: "reviewAssistCase_JX",
-    path: "/review-assist-case_JX",
+    path: "/review-assist-case_handle__JX/:id",
     meta: {
       title: "协查：案号"
     },

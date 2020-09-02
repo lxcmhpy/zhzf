@@ -114,6 +114,7 @@
         saveOrUpdatePykhBatchConfig,
         findPykhBatchConfigById
     } from "@/api/pykh/pykhBatchConfig.js";
+    import { judgmentOrganId } from '@/api/pykh/appraisalExam.js'
     import {
         findAllDepartment
     } from "@/api/pykh/catsAppraisalExamPersonUpload.js";
@@ -127,6 +128,7 @@
             return {
                 visible: false,
                 formReadOnly: false,
+                resultType:false,
                 search: {},
                 addForm: {},
                 rules: {
@@ -398,28 +400,32 @@
             },
             async findAllOrg() {
                 let obj = await findAllDepartment(this.organId);
-                console.log(obj.data)
                 this.orgList = obj.data;
             },
             onChange(val) {
-                this.search.organId = val;
+                this.search.orgId = val;
                 this.queryData();
+            },
+            async judgmentOrganIdFun(){
+                let result = await judgmentOrganId();
+                this.resultType=result.data;
+                if(this.resultType){
+                    this.findAllOrg();
+                    if (this.$route.params.orgId !== undefined) {
+                        this.search.orgId = this.$route.params.orgId;
+                        this.queryData();
+                    }
+                }else{
+                    this.search.organId = this.organId;
+                    this.queryData();
+                }
             }
         },
         mounted() {
             let userInfo = iLocalStroage.gets("userInfo");
             this.organId = userInfo.organId;
-           
-            if (this.organId === "1") {
-                this.findAllOrg();
-                if (this.$route.params.orgId !== undefined) {
-                    this.search.orgId = this.$route.params.orgId;
-                    this.queryData();
-                }
-            } else {
-                this.search.orgId = this.organId;
-                this.queryData();
-            }
+            this.judgmentOrganIdFun();
+            
         },
         created() {}
     };

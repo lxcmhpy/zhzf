@@ -182,6 +182,36 @@ export default  [
                 },
                 component: () => import("@/page/inspection/doubly-stochastic/double-random/doubleRandom.vue")
             },
+            // 勤务管理--排班管理
+            {
+                path: "/dutyScheduling",
+                name: "duty_scheduling",
+                meta: {
+                title: "排班管理",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/dutyManage/dutyScheduling.vue")
+            },
+            // 勤务管理--记录管理
+            {
+                path: "/dutyRecord",
+                name: "duty_record",
+                meta: {
+                title: "记录管理",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/dutyManage/dutyRecord.vue")
+            },
+            // 勤务管理--日志管理
+            {
+                path: "/dutyJournal",
+                name: "duty_journal",
+                meta: {
+                title: "日志管理",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/dutyManage/dutyJournal.vue")
+            }
         ]
     }, 
 ]

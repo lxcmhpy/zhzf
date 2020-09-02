@@ -21,6 +21,7 @@
                 type="primary"
                 class="next_btn"
                 size="small"
+                :disabled="!nextStepFlag"
                 @click="nextStep"
               >下一步</el-button>
             </el-col>
@@ -36,11 +37,9 @@
           @current-change="chexkCase"
           height="100%"
         >
-          <el-table-column prop="caseNumber" label="案号" align="center" width="200">
-            <template slot-scope="scope">{{scope.row.caseNumber||scope.row.tempNo}}</template>
-          </el-table-column>
+          <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
           <el-table-column label="当事人/单位" align="center" width="150">
-            <template slot-scope="scope">{{scope.row.party||scope.row.partyName}}</template>
+            <template slot-scope="scope">{{ scope.row.party || scope.row.partyName }}</template>
           </el-table-column>
           <el-table-column prop="vehicleShipId" label="车/船号" align="center" width="100"></el-table-column>
           <el-table-column prop="caseCauseName" label="违法行为" align="center">
@@ -52,8 +51,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="acceptTime" label="受案时间" align="center" width="150"></el-table-column>
-          <el-table-column prop="caseType" label="案件类型" align="center" width="100"></el-table-column>
-          <el-table-column prop="caseStatus" label="当前环节" align="center" width="100">
+          <el-table-column prop="caseType" label="案件类型" align="center" width="160"></el-table-column>
+          <el-table-column prop="currentLinkName" label="当前环节" align="center" width="160">
             <template slot-scope="scope">{{scope.row.currentLinkName}}</template>
           </el-table-column>
         </el-table>
@@ -77,8 +76,7 @@
 import caseListSearch from "@/components/caseListSearch/caseListSearch";
 import caseRegisterDiag from "../../caseHandle/unRecordCase/caseRegisterDiag";
 import iLocalStroage from "@/common/js/localStroage";
-import { mixinGetCaseApiList } from "@/common/js/mixins";
-import { selectTransferCaseApi } from "@/api/caseHandle";
+import { getSelectCaseList } from "@/api/caseHandle";
 
 export default {
   data() {
@@ -95,15 +93,28 @@ export default {
       caseData: {},
     };
   },
-  mixins: [mixinGetCaseApiList],
   components: {
     caseListSearch,
     caseRegisterDiag,
   },
+  created(){
+    this.getWaitHandleCase();
+  },
   methods: {
     //获取本机构全部的【待办理】（已立案、未结案的）的案件
     getWaitHandleCase() {
-      console.log("获取案件");
+      const queryData = Object.assign(this.searchCaseForm, {
+        current: this.currentPage,
+        size: this.pageSize,
+      });
+      getSelectCaseList(queryData).then(res => {
+        if(res.code === 200){
+          this.tableData = res.data.records;
+          this.total = res.data.total;
+        }
+      }, err => {
+        console.log(err);
+      })
     },
     // 精确查询案件
     searchWaitHandleCase() {
@@ -123,15 +134,14 @@ export default {
     },
     // 下一步
     nextStep() {
+      this.$emit('selectedCase', this.caseData);
       this.$emit('nextStep', 1);
     },
     chexkCase(caseData) {
-      console.log(caseData);
       this.caseData = caseData;
       this.nextStepFlag = true;
     },
-  },
-  created() {},
+  }
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>

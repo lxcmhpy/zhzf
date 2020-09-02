@@ -153,24 +153,25 @@ export default {
           }
         };
         this.$refs.updateOrganRef.showModal(2, data);
-      }
-      // 判断当前是否根节点，是则parentNode属性为null
-      if(this.nodeData.parent.parent) {
-        parentNode = {
-          parentNodeId: this.nodeData.parent.data.id,
-          parentNodeName: this.nodeData.parent.data.label
+      }else{
+        // 判断当前是否根节点，是则parentNode属性为null
+        if(this.nodeData.parent.data) {
+          parentNode = {
+            parentNodeId: this.nodeData.parent.data.id,
+            parentNodeName: this.nodeData.parent.data.label
+          }
+        } else {
+          parentNode = {
+            parentNodeId: "null",
+            parentNodeName: "null"
+          }
         }
-      } else {
-        parentNode = {
-          parentNodeId: "null",
-          parentNodeName: "null"
-        }
+        let data = {
+          id: this.theClickId,
+          parentNode: parentNode
+        };
+        this.$refs.updateOrganRef.showModal(2, data);
       }
-      let data = {
-        id: this.theClickId,
-        parentNode: parentNode
-      };
-      this.$refs.updateOrganRef.showModal(2, data);
     },
 
     filterNode(value, data) {
@@ -185,6 +186,7 @@ export default {
       this.selectCurrentTreeName = data.label;
       this.tableData = [];
       this.currentOrganId = data.id;
+      this.currentPage = 1;
       this.getSelectOrgan(this.currentOrganId);
     },
     nodeExpand(data, node, jq) {

@@ -32,15 +32,15 @@
         <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="bnslawNameCog" label="法规名称" align="center"></el-table-column>
           <el-table-column prop="bnsLawNoteCog" label="认定依据" align="center">
-            <el-table-column prop="itemCog" label="条" align="center" width="50"></el-table-column>
-            <el-table-column prop="clauseCog" label="款" align="center" width="50"></el-table-column>
-            <el-table-column prop="iitemCog" label="项" align="center" width="50"></el-table-column>
+            <el-table-column prop="itemCog" label="条" align="center" min-width="50"></el-table-column>
+            <el-table-column prop="clauseCog" label="款" align="center" min-width="50"></el-table-column>
+            <el-table-column prop="iitemCog" label="项" align="center" min-width="50"></el-table-column>
           </el-table-column>
           <el-table-column prop="bnslawNamePun" label="法规名称" align="center"></el-table-column>
           <el-table-column prop="bnsLawNoteCog" label="处罚依据" align="center">
-            <el-table-column prop="itemPun" label="条" align="center" width="50"></el-table-column>
-            <el-table-column prop="clausePun" label="款" align="center" width="50"></el-table-column>
-            <el-table-column prop="iitemPun" label="项" align="center" width="50"></el-table-column>
+            <el-table-column prop="itemPun" label="条" align="center" min-width="50"></el-table-column>
+            <el-table-column prop="clausePun" label="款" align="center" min-width="50"></el-table-column>
+            <el-table-column prop="iitemPun" label="项" align="center" min-width="50"></el-table-column>
           </el-table-column>
           <el-table-column prop="highLimit" label="最高罚款" align="center"></el-table-column>
           <el-table-column prop="lawerLimit" label="罚款下限" align="center"></el-table-column>
