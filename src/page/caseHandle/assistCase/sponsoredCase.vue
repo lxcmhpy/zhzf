@@ -26,7 +26,7 @@
                 </el-form-item>
               </div>
               <div class="item">
-                <el-form-item label="目标机构">
+                <el-form-item label="目标机构" prop="targetOrgan">
                   <el-input v-model="caseSearchForm.targetOrgan"></el-input>
                 </el-form-item>
               </div>
@@ -48,8 +48,8 @@
             </div>
             <div v-show="!hideSomeSearch">
               <div class="item">
-                <el-form-item label="处理状态" prop="handleType">
-                  <el-select v-model="caseSearchForm.handleType" placeholder="请选择">
+                <el-form-item label="处理状态" prop="status">
+                  <el-select v-model="caseSearchForm.status" placeholder="请选择">
                     <el-option label value></el-option>
                     <el-option label="已发送" :value="1"></el-option>
                     <el-option label="已完成" :value="2"></el-option>
@@ -57,8 +57,8 @@
                 </el-form-item>
               </div>
               <div class="item">
-                <el-form-item label="违法行为" prop="illegalActivities">
-                  <el-input v-model="caseSearchForm.illegalActivities"></el-input>
+                <el-form-item label="违法行为" prop="caseCauseName">
+                  <el-input v-model="caseSearchForm.caseCauseName"></el-input>
                 </el-form-item>
               </div>
               <div class="item">
@@ -93,19 +93,23 @@
       <div class="tablePart">
         <el-table :data="tableData" stripe style="width: 100%" highlight-current-row height="100%">
           <el-table-column prop="caseNumber" label="案号" align="center" width="200"></el-table-column>
-          <el-table-column prop="party" label="当事人/单位" align="center" width="150"></el-table-column>
-          <el-table-column prop="caseCauseNameCopy" label="违法行为" align="center" min-width="200px">
+          <el-table-column prop="party" label="当事人/单位" align="center" width="150">
+            <template slot-scope="scope">
+              <span>{{ scope.row.party || scope.row.partyName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="caseCauseName" label="违法行为" align="center" min-width="200px">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="top-start">
-                <div slot="content" style="max-width:420px">{{scope.row.caseCauseNameCopy}}</div>
-                <span>{{scope.row.caseCauseNameCopy}}</span>
+                <div slot="content" style="max-width:420px">{{scope.row.caseCauseName}}</div>
+                <span>{{scope.row.caseCauseName}}</span>
               </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column prop="targetOrgan" label="目标机构" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="closeDate" label="发起时间" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="handler" label="申请人" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="handleType" label="处理状态" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="createTime" label="发起时间" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="applicant" label="申请人" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="status" label="处理状态" align="center" min-width="100"></el-table-column>
           <el-table-column label="操作" width="120" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="checkCase(scope.row)">查看</el-button>
@@ -130,7 +134,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { getQueryCaseTypeByOrganIdApi } from "@/api/caseHandle";
-import { getAssistCaseList } from "@/api/caseHandle";
+import { getCaseAssistanceList } from "@/api/caseHandle";
 import { mapGetters } from "vuex";
 
 export default {
@@ -146,24 +150,17 @@ export default {
       caseSearchForm: {
         caseNumber: "",
         party: "",
+        partyName: "",
         vehicleShipId: "",
         caseType: "",
         targetOrgan: "",
-        handleType: "",
-        illegalActivities: "",
+        status: "",
+        caseCauseName: "",
         applicant: "",
         launchTime: "",
         assistStatus: "1",
       },
-      caseTypeList: [],
-      tableData: [
-        {
-          caseNumber: "部临〔2020〕00204号",
-          party: "张三",
-          caseCauseNameCopy: "车辆在公路上擅自超限行驶",
-          handleType: "待回复",
-        },
-      ],
+      tableData: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总页数
@@ -181,25 +178,41 @@ export default {
     },
   },
   created() {
-    // 查询案件类型
-    // this.getQueryCaseTypeList();
     // 查询列表
-    // this.getAssistCaseList();
+    this.getAssistCaseList();
   },
   methods: {
     // 查询协查案件列表
     getAssistCaseList() {
-      const queryData = Object.assign(this.caseSearchForm, {
+      const searchData = JSON.parse(JSON.stringify(this.caseSearchForm));
+      if(searchData.launchTime && searchData.launchTime.length){
+        searchData['createStartTime'] = searchData.launchTime[0];
+        searchData['createEndTime'] = searchData.launchTime[1];
+      }
+      const queryData = Object.assign(searchData, {
         current: this.currentPage,
         size: this.pageSize,
       });
-      console.log("查询协查列表");
+      this.tableData.splice(0, this.tableData.length);
+      getCaseAssistanceList(queryData).then(res => {
+        if (res.code === 200) {
+          this.tableData = res.data.records;
+          this.total = res.data.total;
+        }
+      }, err => {
+        console.log(err.msg);
+      })
     },
     // 查看协查案件
     checkCase(row) {
-      console.log(row);
+      let setCaseNumber = "协查: " + row.caseNumber;
+      this.$store.commit("setCaseNumber", setCaseNumber);
       this.$router.push({
-        path: '/review-assist-case_JX'
+        name: 'reviewAssistCase_JX',
+        params: {
+          tabTitle: setCaseNumber,
+          id: row.id
+        }
       });
     },
     // 新增协查
@@ -219,19 +232,7 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getAssistCaseList();
-    },
-    //查询所有案件类型
-    getQueryCaseTypeList() {
-      let organId = this.UserInfo.organId;
-      getQueryCaseTypeByOrganIdApi(organId).then(
-        (res) => {
-          this.caseTypeList = res.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
+    }
   },
 };
 </script>

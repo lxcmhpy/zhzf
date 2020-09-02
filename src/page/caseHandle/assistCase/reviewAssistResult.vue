@@ -11,7 +11,7 @@
                 <el-form-item label="案号" prop="caseNumber">{{caseData.caseNumber}}</el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="处理状态" prop="status">{{caseData.state == 1?'已发送':'已完成'}}</el-form-item>
+                <el-form-item label="处理状态" prop="status">{{caseData.status}}</el-form-item>
               </el-col>
             </el-row>
             <el-row>
@@ -22,7 +22,7 @@
                 <el-form-item label="涉案车/船号">{{caseData.vehicleShipId}}</el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="违法事实">{{caseData.wfss}}</el-form-item>
+            <el-form-item label="违法事实">{{caseData.caseCauseName}}</el-form-item>
             <el-form-item label="案发时间">{{caseData.afsj}}</el-form-item>
             <el-form-item label="案发地点">{{caseData.afdd}}</el-form-item>
             <el-form-item label="文书查看">
@@ -122,11 +122,15 @@
 <script>
 import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
-import { getCaseBasicInfoApi } from "@/api/caseHandle";
+import { getAssistCaseDetail } from "@/api/caseHandle";
 import { getFile } from "@/api/upload";
 
 export default {
-  computed: { ...mapGetters(["caseId"]) },
+  computed: {
+    caseId(){
+      return this.$route.params.id
+    }
+  },
   data() {
     return {
       caseData: {},
@@ -135,14 +139,14 @@ export default {
       fileList: [],
     };
   },
+  created(){
+    this.getCaseInfo();
+  },
   methods: {
     getCaseInfo() {
-      let data = { id: this.caseId };
-      getCaseBasicInfoApi(data).then(
+      getAssistCaseDetail(this.caseId).then(
         (res) => {
-          console.log(res);
           this.caseData = res.data;
-          console.log("案件信息", this.caseData);
         },
         (err) => {
           console.log(err);
@@ -165,11 +169,7 @@ export default {
         }
       );
     },
-  },
-  mounted() {},
-  created() {
-    // this.findFileList();
-  },
+  }
 };
 </script>
 <style lang="scss" src="@/assets/css/documentForm.scss"  scoped>

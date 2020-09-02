@@ -4,7 +4,7 @@
     <el-form
       :model="caseData"
       :rules="rules"
-      ref="caseData"
+      ref="caseDataRef"
       label-width="90px"
       class="demo-ruleForm"
     >
@@ -15,12 +15,15 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="案号" prop="caseNumber">
-                  部临〔2020〕000100205号
+                  {{ selectCase.caseNumber }}
                   <el-button plain size="small" style="margin-left: 30px;" @click="nextStep(0)">重新选择</el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item label="案由" prop="caseOfAction">当事人（姓名或单位名称）+ 违法行为</el-form-item>
+                <el-form-item
+                  label="案由"
+                  prop="caseOfAction"
+                >{{ `${selectCase.party || selectCase.partyName}${selectCase.caseCauseName}`}}</el-form-item>
               </el-col>
             </el-row>
           </div>
@@ -162,28 +165,41 @@
 </template>
 
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 import SelectTargetOrgan from "@/page/caseHandle/assistCase/selectTargetOrgan";
 
 export default {
   components: { SelectTargetOrgan },
-  computed: {},
+  computed: {
+    selectCase() {
+      const caseInfo = JSON.parse(sessionStorage.getItem("AssistData"));
+      return caseInfo.case;
+    },
+    UserInfo() {
+      return iLocalStroage.gets("userInfo");
+    },
+  },
   data() {
     return {
       caseData: {
         explain: "",
+        targetOrgan: "",
       },
       fileList: [],
       organType: "",
       lawOrganName: "",
       rules: {
         targetOrgan: [
-          { required: true, message: "请输入目标机构", trigger: "blur" },
+          { required: true, message: "请先选择机构类型再输入目标机构", trigger: "blur" },
         ],
         explain: [
           { required: true, message: "请输入协查说明", trigger: "blur" },
         ],
       },
     };
+  },
+  created() {
+    console.log(this.selectCase);
   },
   methods: {
     // 选择目标机构
@@ -197,17 +213,32 @@ export default {
       this.lawOrganName = "";
     },
     // 下一步
-    nextStep(step){
-      this.$emit('nextStep', step);
+    nextStep(step) {
+      if (step === 2) {
+        this.$refs.caseDataRef.validate((isVaild) => {
+          if (isVaild) {
+            this.nextSubmitForm();
+          }
+        });
+      } else {
+        this.$emit("nextStep", step);
+      }
+    },
+    // 上传附件同时缓存数据
+    nextSubmitForm() {
+      sessionStorage.setItem(
+        "AssistData",
+        JSON.stringify({ case: this.selectCase, detail: this.caseData })
+      );
+      this.$emit("nextStep", step);
     },
     // 目标机构赋值
     setTargetorgan(data) {
       this.caseData.targetOrgan = data.id;
       this.lawOrganName = data.label;
+      this.$refs.caseDataRef.clearValidate('targetOrgan');
     },
   },
-  mounted() {},
-  created() {},
 };
 </script>
 <style lang="scss" src="@/assets/css/documentForm.scss"  scoped></style>
