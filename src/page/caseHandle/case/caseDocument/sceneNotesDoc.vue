@@ -389,7 +389,7 @@
                     :max="1"
                     :disabled="fieldDisabled(propertyFeatures['readState'])"
                   >
-                    <el-checkbox label="0">上述笔录我已看过</el-checkbox>
+                    <el-checkbox label="0">上述笔录我已看过，已确认无误</el-checkbox>
                     <el-checkbox label="1">或已向我宣读过，情况属实无误。</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>

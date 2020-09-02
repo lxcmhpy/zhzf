@@ -181,10 +181,10 @@ export default {
   },
   methods:{
       ajpage(){
-           this.$router.push({ path:'/zdycxtj-manage'  })
+           this.$router.push({ path:'/lawCase'  })
       },
       zbpage(){
-           this.$router.push({ path:'/dp-manage'  })
+           this.$router.push({ path:'/personEqpt'  })
       },
     map() {
      var jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
@@ -1683,8 +1683,12 @@ font-weight:bold;
 color:#FFFFFF;
 line-height:61px;  
 }
-.fullscreen .el-main {
-    background:bottom;
+/* .fullscreen .el-main {
+    
+    background-position: bottom;
+} */
+.body_bg .el-main {
+    background: none;
 }
 .main {
     background-image: url("../../../../static/images/map/边框.png");
