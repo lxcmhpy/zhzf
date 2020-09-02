@@ -78,13 +78,13 @@
         </div>
         <div class="item">
           <el-form-item label="是否具有独立执法资格" label-width="160px" prop="isIndependentEnforce">
-            <el-radio-group v-model="addOrganForm.isIndependentEnforce">
+            <el-radio-group v-model="addOrganForm.isIndependentEnforce"  @change="changeIsIndependentEnforce">
               <el-radio label="是"></el-radio>
               <el-radio label="否"></el-radio>
             </el-radio-group>
           </el-form-item>
         </div>
-        <div class="item">
+        <div class="item"  v-show="enforcementBodyStatus=='1'">
           <el-form-item label="执法主体" prop="enforcementBody">
             <el-select v-model="addOrganForm.enforcementBody" placeholder>
                 <el-option
@@ -222,7 +222,7 @@ export default {
         reconsiderationOrgan2:'',
         enforcementOrgan1:'',
         enforcementOrgan2:'',
-        enforcementBody:''
+        enforcementBody:'',
         // propertyValue:{}
       },
       addValueForm:{
@@ -245,6 +245,7 @@ export default {
       attachedPropertyList: [],//附属属性列表
       attachedPropertyFlag: false,
       organArray: [],//执法主体
+      enforcementBodyStatus:'0',//执法主体是否显示，1显示，0不显示
     };
   },
 
@@ -275,6 +276,14 @@ export default {
       }
       this.getBasicData()
     },
+    changeIsIndependentEnforce(val){
+      if (val == "是") {
+        this.addOrganForm.enforcementBody = "";
+        this.enforcementBodyStatus = '0';
+      } else {
+        this.enforcementBodyStatus = '1';
+      }
+    },
     async getDictListDetailTb (val) {
         let list = await this.$store.dispatch("getDictListDetailTb", val);
         return list.data
@@ -283,7 +292,7 @@ export default {
       let _this = this
       getCurrentAndNextOrganApi(this.parentNode.parentNodeId).then(  
                  res => {
-                  console.log("属性值", res);
+                  console.log("执法主体选项值", res);
                    _this.organArray = res.data;
                 },
                 err => {
@@ -299,7 +308,7 @@ export default {
         //   职权取得方式
         this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
         //   执法主体
-        this.organArray = await this.getCurrentAndNextOrgan();
+        this.getCurrentAndNextOrgan();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

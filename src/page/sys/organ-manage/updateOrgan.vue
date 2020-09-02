@@ -74,13 +74,13 @@
         </div>
         <div class="item">
           <el-form-item label="是否具有独立执法资格" label-width="160px" prop="isIndependentEnforce">
-            <el-radio-group v-model="addOrganForm.isIndependentEnforce">
+            <el-radio-group v-model="addOrganForm.isIndependentEnforce"  @change="changeIsIndependentEnforce">
               <el-radio label="是"></el-radio>
               <el-radio label="否"></el-radio>
             </el-radio-group>
           </el-form-item>
         </div>
-        <div class="item">
+        <div class="item"  v-show="enforcementBodyStatus=='1'">
           <el-form-item label="执法主体" prop="enforcementBody">
             <el-select v-model="addOrganForm.enforcementBody" placeholder>
                 <el-option
@@ -239,6 +239,7 @@ export default {
       attachedPropertyFlag: false,
       attachedPropertyValueList:[],
       organArray: [],//执法主体
+      enforcementBodyStatus:'0',//执法主体是否显示，1显示，0不显示
     };
   },
 
@@ -269,12 +270,21 @@ export default {
       }
       this.getBasicData()
     },
+    changeIsIndependentEnforce(val){
+      if (val == "是") {
+        this.addOrganForm.enforcementBody = "";
+        this.enforcementBodyStatus = '0';
+      } else {
+        this.enforcementBodyStatus = '1';
+      }
+    },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
       this.$refs["addOrganForm"].resetFields();
       this.$refs["addValueForm"].resetFields();
       this.errorOrganName = false;
+      this.enforcementBodyStatus = '0';
     },
     //聚焦清除错误信息
     focusOrganName() {
@@ -309,7 +319,7 @@ export default {
         if (valid && !this.errorOrganName) {
           _this.addOrganForm.pid = _this.parentNode.parentNodeId;
           _this.addOrganForm.id = _this.handelType == 0 ? '' :  _this.organId;
-          console.log("数据", this.addOrganForm);
+          console.log("数据", _this.addOrganForm);
           _this.$store.dispatch("addOrgan", _this.addOrganForm).then(
             res => {
               console.log('this.organId',_this.addOrganForm.pid);
@@ -364,6 +374,9 @@ export default {
           _this.addOrganForm = res.data;
           _this.parentNode.parentNodeId = res.data.pid;
           _this.parentNode.parentNodeName = res.data.pidName;
+          if (res.data.isIndependentEnforce == "否") {
+            this.enforcementBodyStatus = '1';
+          } 
         },
         err => {
           console.log(err);
@@ -415,7 +428,7 @@ export default {
       let _this = this
       getCurrentAndNextOrganApi(this.parentNode.parentNodeId).then(  
                  res => {
-                  console.log("属性值", res);
+                  console.log("执法主体选项值", res);
                    _this.organArray = res.data;
                 },
                 err => {
@@ -431,7 +444,7 @@ export default {
         //   职权取得方式
         this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
         //   执法主体
-        this.organArray = await this.getCurrentAndNextOrgan();
+        this.getCurrentAndNextOrgan();
     }
     //获取字典值
     // async getDictKeyList(val){
