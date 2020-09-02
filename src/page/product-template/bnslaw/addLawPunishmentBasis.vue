@@ -78,6 +78,7 @@ export default {
         cfbz: "",
         highLimit: "",
         bnslawIdPun: "",
+        id:"",
         bnslawLawName: "" //先写死
       },
       getBnslawList:[],
@@ -99,6 +100,7 @@ export default {
       this.visible = true;
       if (type == 1) {
         this.isAdd = true;
+        this.addPageForm ={};
         this.addPageForm.bnslawLawName = this.btnlawId;
       } else if (type == 0) {
         this.isAdd = false;

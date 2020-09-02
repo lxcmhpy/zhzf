@@ -41,6 +41,7 @@ export default {
         iitemCog: '',
         bnsLawNoteCog: '',
         clauseCog: '',
+        id:'',
         bnslawIdCog: ''
       },
       getBnslawList:[],
@@ -57,6 +58,7 @@ export default {
       // this.dictData = row.row;
       if (type == 1) {
         this.addPageForm.bnslawNameCog = row.strName;
+        this.addPageForm.id = "";
       } else if (type == 0) {
         getLawCognizanceByIdApi(row.row.id).then(
         res => {
