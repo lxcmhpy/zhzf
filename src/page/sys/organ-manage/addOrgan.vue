@@ -76,12 +76,24 @@
 
           </el-form-item>
         </div>
-        <div class="item" style="width: 100%">
+        <div class="item">
           <el-form-item label="是否具有独立执法资格" label-width="160px" prop="isIndependentEnforce">
             <el-radio-group v-model="addOrganForm.isIndependentEnforce">
               <el-radio label="是"></el-radio>
               <el-radio label="否"></el-radio>
             </el-radio-group>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="执法主体" prop="enforcementBody">
+            <el-select v-model="addOrganForm.enforcementBody" placeholder>
+                <el-option
+                  v-for="item in organArray"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
           </el-form-item>
         </div>
       </div>
@@ -184,6 +196,7 @@
 <script>
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA';
 import {getAttachedPropertyByConditionApi,addAttachedPropertyValueApi} from "@/api/caseHandle";
+import {getCurrentAndNextOrganApi} from "@/api/system";
 export default {
   data() {
     return {
@@ -209,6 +222,7 @@ export default {
         reconsiderationOrgan2:'',
         enforcementOrgan1:'',
         enforcementOrgan2:'',
+        enforcementBody:''
         // propertyValue:{}
       },
       addValueForm:{
@@ -229,7 +243,8 @@ export default {
       organNatureArray: [], //机构性质
       organTypeArray: [],
       attachedPropertyList: [],//附属属性列表
-      attachedPropertyFlag: false
+      attachedPropertyFlag: false,
+      organArray: [],//执法主体
     };
   },
 
@@ -254,6 +269,7 @@ export default {
         this.dialogTitle = "修改机构";
         this.organId = data.id;
         this.parentNode = data.parentNode;
+        console.log(this.parentNode);
         this.getOrganDetail(data.id);
         this.isDisabled = false;
       }
@@ -263,13 +279,27 @@ export default {
         let list = await this.$store.dispatch("getDictListDetailTb", val);
         return list.data
     },
+    async getCurrentAndNextOrgan() {
+      let _this = this
+      getCurrentAndNextOrganApi(this.parentNode.parentNodeId).then(  
+                 res => {
+                  console.log("属性值", res);
+                   _this.organArray = res.data;
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+    },
     async getBasicData () {
         //   机构类型
-        this.organTypeArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organTypeId)
+        this.organTypeArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organTypeId);
         //   机构性质
         this.organNatureArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organNature);
         //   职权取得方式
         this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
+        //   执法主体
+        this.organArray = await this.getCurrentAndNextOrgan();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

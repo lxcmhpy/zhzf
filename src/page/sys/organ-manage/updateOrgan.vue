@@ -72,12 +72,24 @@
             </el-select>
           </el-form-item>
         </div>
-        <div class="item" style="width: 100%">
+        <div class="item">
           <el-form-item label="是否具有独立执法资格" label-width="160px" prop="isIndependentEnforce">
             <el-radio-group v-model="addOrganForm.isIndependentEnforce">
               <el-radio label="是"></el-radio>
               <el-radio label="否"></el-radio>
             </el-radio-group>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="执法主体" prop="enforcementBody">
+            <el-select v-model="addOrganForm.enforcementBody" placeholder>
+                <el-option
+                  v-for="item in organArray"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
           </el-form-item>
         </div>
       </div>
@@ -179,6 +191,7 @@
 <script>
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA';
 import {getAttachedPropertyByConditionApi,getAttachedPropertyAnsValueApi,addAttachedPropertyValueApi} from "@/api/caseHandle";
+import {getCurrentAndNextOrganApi} from "@/api/system";
 export default {
   inject: ["page"],
   data() {
@@ -199,7 +212,13 @@ export default {
         fundingSource: "",
         legalBasis: "",
         mainPowers: "",
-
+        bank:'',
+        account:'',
+        reconsiderationOrgan1:'',
+        reconsiderationOrgan2:'',
+        enforcementOrgan1:'',
+        enforcementOrgan2:'',
+        enforcementBody:''
       },
       addValueForm:{
         propertyValue:{}
@@ -218,7 +237,8 @@ export default {
       organTypeArray: [],
       attachedPropertyList: [],//附属属性列表
       attachedPropertyFlag: false,
-      attachedPropertyValueList:[]
+      attachedPropertyValueList:[],
+      organArray: [],//执法主体
     };
   },
 
@@ -391,6 +411,18 @@ export default {
         let list = await this.$store.dispatch("getDictListDetailTb", val);
         return list.data
     },
+    async getCurrentAndNextOrgan() {
+      let _this = this
+      getCurrentAndNextOrganApi(this.parentNode.parentNodeId).then(  
+                 res => {
+                  console.log("属性值", res);
+                   _this.organArray = res.data;
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+    },
     async getBasicData () {
         //   机构类型
         this.organTypeArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organTypeId)
@@ -398,6 +430,8 @@ export default {
         this.organNatureArray = await this.getDictListDetailTb(BASIC_DATA_SYS.organNature);
         //   职权取得方式
         this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
+        //   执法主体
+        this.organArray = await this.getCurrentAndNextOrgan();
     }
     //获取字典值
     // async getDictKeyList(val){
