@@ -453,20 +453,23 @@ export default {
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
+          let _this=this
           console.log('获取案件信息', res);
           let staff = res.data.staff.split(',');
           let certificateId = res.data.certificateId.split(',');
           staff.forEach((item, index) => {
-            this.staffData.push({ name: item, certificateId: certificateId[index] })
+            _this.staffData.push({ name: item, certificateId: certificateId[index] })
           })
           let roadDamageList=JSON.parse(res.data.roadDamageList)
           if (roadDamageList.length > 0) {
-            this.docData.deliveryCertificatelist=[]
+            _this.docData.deliveryCertificatelist=[]
+            _this.docData.total=0
             roadDamageList.forEach(element => {
-              this.docData.deliveryCertificatelist.push({ docName: element.roadLcName, unit: element.roadLcUnit, amount: element.quantity, notes: element.roadLcNote, total: element.quantity * element.roadLcPrice })
+              _this.docData.deliveryCertificatelist.push({ docName: element.roadLcName, unit: element.roadLcUnit, amount: element.quantity, notes: element.roadLcNote, total: element.quantity * element.roadLcPrice })
+              _this.docData.total+=element.quantity * element.roadLcPrice
             });
           } else {
-            this.docData.deliveryCertificatelist = [{ docName: '', unit: '', amount: '', notes: '', total: '' }]
+            _this.docData.deliveryCertificatelist = [{ docName: '', unit: '', amount: '', notes: '', total: '' }]
           }
 
         },
