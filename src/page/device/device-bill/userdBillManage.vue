@@ -310,8 +310,10 @@
             },
             deleteDevice(){
                 if(this.$refs.deviceTable.selection.length>0){
+                    let _this = this
                     this.$refs.deviceTable.selection.forEach(p => {
-                        this.itemList.splice(p,1)
+                        let index = _this.itemList.findIndex(item=>item.id===p.id);
+                        _this.itemList.splice(index,1)
                     });
                 }else{
                     this.$message({

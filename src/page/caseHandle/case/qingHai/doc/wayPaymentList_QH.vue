@@ -269,7 +269,9 @@ export default {
         partyAddress: '',
         party: '',
         number: '',
+        defaultRoadDamageList: '',
       },
+
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
         id: "", //修改的时候用
@@ -435,7 +437,13 @@ export default {
     getDataAfter() {
       console.log(this.docData.deliveryCertificatelist);
       if (!this.docData.deliveryCertificatelist.length) {
+        if(this.docData.defaultRoadDamageList){
+          JSON.parse(this.docData.defaultRoadDamageList).forEach(element => {
+            this.docData.deliveryCertificatelist.push({ docName: element.roadLcName, unit:element.roadLcUnit, amount: element.quantity, notes: element.roadLcNote, total: element.quantity*element.roadLcPrice })
+          });
+        }else{
         this.docData.deliveryCertificatelist = [{ docName: '', unit: '', amount: '', notes: '', total: '' }]
+        }
       }
     },
     //选择执法人员
