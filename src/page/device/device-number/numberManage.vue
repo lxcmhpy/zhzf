@@ -231,7 +231,12 @@ export default {
       this.$refs.elSelectTreeObj1.$children[0].handleClose();
     },
     onAdd() {
-      this.form = {};
+      this.form = {
+        organizationId: "",
+        startNumber: "",
+        endNumber: "",
+        remark: "",
+      };
       this.visible = true;
     },
     onEdit(row) {

@@ -59,21 +59,14 @@
         >
           <el-table-column prop="personName" label="姓名" align="center" min-width="140px"></el-table-column>
           <el-table-column prop="branchNo" label="执法证号" align="center"></el-table-column>
-          <el-table-column prop="totalExamScore" label="考试总成绩" align="center" min-width="140px;"></el-table-column>
-          <!-- <div v-for="(item, $index) in examList" :key="item.examId">
-            <el-table-column :prop="item.examId" :label="item.examName" align="center" min-width="140px;">
-              <template slot-scope="scope">
-                <div>{{ scope.row[item.examId] }}</div>
-              </template>
-            </el-table-column>
-          </div> -->
-          <template v-for="(item, $index) in examList">
+          <template v-for="item in examList">
             <el-table-column :key="item.examId" :prop="item.examId" :label="item.examName" align="center" min-width="140px;">
               <template slot-scope="scope">
                 <div>{{ scope.row[item.examId] }}</div>
               </template>
             </el-table-column>
           </template>
+           <el-table-column prop="totalExamScore" label="考试总成绩" align="center" min-width="140px;"></el-table-column>
           <!-- <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="getDetailInfo(scope.row)">
@@ -115,19 +108,24 @@ export default {
       currentPage: 0,
       totalPage: 0,
       pageSize: 10,
+      pickerOptions: {
+        disabledDate: (time) => {
+          let currentYear = new Date().getFullYear();
+          return time.getFullYear() > currentYear;
+        },
+      }
     };
   },
   components: {},
   created() {
+    let myDate = new Date();
+    this.searchForm.examYear = `${myDate.getFullYear()}`;
     // 查询考试信息列表
     this.getExamInfoList();
   },
   methods: {
     // 根据查询条件查询考试信息列表
     getExamInfoList() {
-       let myDate = new Date();
-      let tYear = myDate.getFullYear();
-      this.searchForm.examYear = tYear;
       let _this = this;
       let data = {
         personName:_this.searchForm.personName,
@@ -209,6 +207,9 @@ export default {
 }
 >>> .el-select {
   margin-right: 0;
+}
+>>> .el-input__icon {
+  line-height: 32px;
 }
 .person-table {
   >>> .el-table__body-wrapper {

@@ -55,7 +55,6 @@
           <el-table-column prop="remark" label="审核意见" align="center"></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <!-- v-if="scope.row.state=='待颁发' || scope.row.state=='挂失' || scope.row.state=='已年审'" -->
               <!-- <el-button type="text" @click="openIssueDialog(scope.row)">预览</el-button> -->
               <el-button
                 v-if="scope.row.state===1 || scope.row.state===4"
@@ -67,7 +66,7 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
             </template>
           </el-table-column>
         </el-table>

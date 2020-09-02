@@ -9,7 +9,8 @@
     @open="open"
     @opened="opened"
     @close="close"
-    @closed="closed">
+    @closed="closed"
+  >
     <div slot="title" class="dialog-title">
       <span>{{title}}</span>
       <i class="el-icon-close" @click="onClose" />
@@ -25,9 +26,11 @@
       :isNumber="isNumber"
       :url="url"
       :baseUrlType="baseUrlType"
+      :reqAttr="reqAttr"
       :isPagination="isPagination"
       @handleClick="handleClick"
-      @handleChange="handleChange" />
+      @handleChange="handleChange"
+    />
     <div slot="footer" class="dialog-footer">
       <el-button @click="onClose">取 消</el-button>
       <el-button type="primary" @click="onSubmit">确 定</el-button>
@@ -36,139 +39,149 @@
 </template>
 
 <script>
-import JkyBaseTable from '@/components/jky-baseTable';
+import JkyBaseTable from "@/components/jky-baseTable";
 export default {
   components: {
-    JkyBaseTable
+    JkyBaseTable,
   },
   props: {
     width: {
       type: String,
-      default: '1000px'
+      default: "1000px",
     },
     title: {
       type: String,
-      default: ''
+      default: "",
     },
     dialogVisible: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    reqAttr: {
+      type: Object,
+      default: {},
     },
     isPagination: {
       type: Boolean,
-      default: true
+      default: true,
     },
     inputList: {
       type: Array,
       default() {
-        return []
-      }
+        return [];
+      },
     },
     columns: {
       type: Array,
       default() {
-        return []
-      }
+        return [];
+      },
     },
     buttons: {
       type: Object,
-      default: null
+      default: null,
     },
     height: {
       type: String,
-      default: '299'
+      default: "299",
     },
     isSelection: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isRadio: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isNumber: {
       type: Boolean,
-      default: false
+      default: false,
     },
     url: {
       type: String,
-      default: ''
+      default: "",
     },
     baseUrlType: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
+  },
+  data() {
+    return {
+      multipleSelection: [],
+    };
   },
   watch: {
     dialogVisible: {
       handler(val) {
-        console.log(val)
-        if(val) {
-          if(this.$refs && this.$refs.JkyBaseTable) {
-            this.$refs.JkyBaseTable.init()
+        console.log(val);
+        if (val) {
+          if (this.$refs && this.$refs.JkyBaseTable) {
+            this.$refs.JkyBaseTable.init();
           }
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     /**
      * 点击表格按钮
      */
     handleClick(index, row, name) {
-      this.$emit('handleClick', index, row, name)
+      this.$emit("handleClick", index, row, name);
     },
 
     /**
      * 点击单选框或者复选框
      */
     handleChange(val) {
-      this.$emit('handleChange', val)
+      this.multipleSelection = val;
+      this.$emit("handleChange", val);
     },
 
     /**
      * 点击确定
      */
     onSubmit() {
-      this.$emit('handleSubmit')
+      this.$emit("handleSubmit", this.multipleSelection);
     },
 
     /**
      * 点击取消
      */
     onClose() {
-      this.$emit('handleClose')
+      this.$emit("handleClose");
     },
 
     /**
      * Dialog 打开的回调
      */
     open() {
-      this.$emit('open')
+      this.$emit("open");
     },
 
     /**
      * Dialog 打开动画结束时的回调
      */
     opened() {
-      this.$emit('opened')
+      this.$emit("opened");
     },
 
     /**
      * Dialog 关闭的回调
      */
     close() {
-      this.$emit('close')
+      this.$emit("close");
     },
 
     /**
      * Dialog 关闭动画结束时的回调
      */
     closed() {
-      this.$emit('closed')
+      this.$emit("closed");
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

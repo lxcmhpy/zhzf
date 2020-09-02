@@ -6,7 +6,7 @@
           :model="searchForm"
           ref="searchForm"
           class="caseSearchForm"
-          label-width="80px"
+          label-width="50px"
           size="small"
         >
           <el-row>
@@ -31,8 +31,8 @@
           </el-row>
           <el-row>
             <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
-            <el-button type="primary" size="medium" @click="onDelete">删除</el-button>
-            <el-button type="primary" size="medium" @click="onApprove">批量审核</el-button>
+            <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
+            <el-button type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
           </el-row>
         </el-form>
       </div>
@@ -43,7 +43,10 @@
           style="width: 100%"
           height="100%"
           highlight-current-row
+          @selection-change="handleSelectionChange"
         >
+          >
+          <el-table-column type="selection" width="50" align="center"></el-table-column>
           <el-table-column prop="strName" label="名称" align="center"></el-table-column>
           <el-table-column prop="strNumber" label="文号" align="center"></el-table-column>
           <el-table-column prop="strOrgan" label="发布机关" align="center"></el-table-column>
@@ -61,7 +64,7 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -79,8 +82,32 @@
       </div>
     </div>
 
+    <el-dialog
+      title="法规详情"
+      :visible.sync="detailVisible"
+      @close="detailVisible = false"
+      :close-on-click-modal="false"
+      width="40%"
+      class="detail-dialog"
+    >
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="法规标题">{{form.strName}}</el-form-item>
+        <el-form-item label="发布文号">{{form.strNumber}}</el-form-item>
+        <el-form-item label="发布机关">{{form.strOrgan}}</el-form-item>
+        <el-form-item label="法规效力">{{form.drawerName}}</el-form-item>
+        <el-form-item label="网站链接">{{form.webLink}}</el-form-item>
+        <el-form-item label="行业类型">{{form.industryType}}</el-form-item>
+        <el-form-item label="发布时间">{{form.dtmDate}}</el-form-item>
+        <el-form-item label="实施时间">{{form.shiDate}}</el-form-item>
+        <el-form-item label="时效性">{{form.status===0?"有效":"1无效"}}</el-form-item>
+        <el-form-item label="题注">{{form.strNote}}</el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="detailVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
+
     <JkyDialogTable
-      @handleChange="handleCheckChange"
       @handleSubmit="handleSubmit"
       @handleClose="dialogVisible = false"
       :inputList="inputList"
@@ -93,11 +120,21 @@
       :isPagination="false"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
+
+    <approve ref="approveDialogBatch" @handle-data="handleDataBatch"></approve>
   </div>
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { findBnslaws, saveOrUpdate, findById } from "@/api/notice/bnslaw";
+import {
+  findBnslaws,
+  saveOrUpdate,
+  saveOrUpdateBatch,
+  findById,
+  deleteByIds,
+  update,
+  updateBatch,
+} from "@/api/notice/bnslaw";
 import approve from "@/page/notice/components/approve";
 import JkyDialogTable from "@/components/jky-dialogTable";
 
@@ -114,7 +151,7 @@ export default {
       pageSize: 10, //pagesize
       total: 0, //总页数
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
-      mutipleSelection: [],
+      multipleSelection: [],
       dialogVisible: false,
       url: "/notice/bnslaw/show",
       baseUrlType: "NOTICE_HOST",
@@ -153,6 +190,8 @@ export default {
           prop: "shiDate",
         },
       ],
+      form: {},
+      detailVisible: false,
     };
   },
   methods: {
@@ -188,23 +227,32 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
-      debugger;
     },
-    // onAdd() {
-    //   this.dialogVisible = true;
-    // },
-    handleCheckChange(data) {
-      this.mutipleSelection = data;
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
     },
     /**
      * 点击确定
      */
-    handleSubmit() {
-      this.dialogVisible = false;
+    handleSubmit(data) {
+      data.forEach((item) => {
+        item.strId = item.id;
+      });
+      let _this = this;
+      saveOrUpdateBatch(data).then(
+        (res) => {
+          _this.$message({ type: "success", message: "操作成功!" });
+          _this.load();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
 
     onDetail(row) {
-      this.$refs.complaintDialog.showModal(1, row);
+      this.form = row;
+      this.detailVisible = true;
     },
     async onSubmit(row) {
       let _this = this;
@@ -217,7 +265,7 @@ export default {
         .then(() => {
           let data = row;
           data.state = 2;
-          saveOrUpdate(data).then(
+          update(data).then(
             (res) => {
               _this.$message({ type: "success", message: "操作成功!" });
               //   _this.load();
@@ -229,23 +277,71 @@ export default {
         })
         .catch(() => {});
     },
-    onDelete() {
-      //   this.$refs.approveDialog.showModal(row);
+    async onDeleteBatch() {
+      let ids = [];
+      if (this.multipleSelection.length < 1) {
+        this.$message({ type: "warning", message: "请选择记录!" });
+        return;
+      }
+      let flag = false; //标记是否有不满足提交的记录，如不满足，则返回，不允许操作
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        let item = this.multipleSelection[i];
+        if (item.state !== 1 && item.state !== 4) {
+          flag = true;
+          break;
+        }
+        ids.push(item.id);
+      }
+      if (flag) {
+        this.$message({
+          type: "error",
+          message: "只允许删除草稿状态或者退回状态的记录!",
+        });
+        return;
+      }
+      let res = await deleteByIds(ids);
+      this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     onApprove(row) {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = saveOrUpdateNotice(data);
-      _this.$message({ type: "success", message: "操作成功!" });
+      let res = update(data);
+      this.$message({ type: "success", message: "操作成功!" });
     },
-    async onSubmit(data) {
-      debugger;
-      let res = saveOrUpdate(data);
+    onApproveBatch() {
+      if (this.multipleSelection.length < 1) {
+        this.$message({ type: "warning", message: "请选择记录!" });
+        return;
+      }
+      let flag = false; //标记是否有不满足提交的记录，如不满足，则返回，不允许操作
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        let item = this.multipleSelection[i];
+        if (item.state !== 2) {
+          flag = true;
+          break;
+        }
+      }
+      if (flag) {
+        this.$message({
+          type: "error",
+          message: "只允许操作待审核的记录!",
+        });
+        return;
+      }
+      this.$refs.approveDialogBatch.showModal({});
+    },
+    async handleDataBatch(data) {
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        let item = this.multipleSelection[i];
+        item.state = data.state;
+        item.auditComment = data.auditComment;
+      }
+      let res = await updateBatch(this.multipleSelection);
       this.$message({ type: "success", message: "操作成功!" });
       this.load();
     },
-
     load() {
       this.getDataList({});
     },
@@ -256,4 +352,11 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.images-management {
+  .detail-dialog .el-form-item {
+    margin-bottom: 0px;
+  }
+}
+</style>
 

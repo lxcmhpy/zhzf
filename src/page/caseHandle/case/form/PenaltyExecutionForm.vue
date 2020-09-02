@@ -427,7 +427,7 @@ export default {
         false
       )
     },
-    
+
     //保存表单数据
     submitCaseDoc(handleType) {
       console.log("分期", this.formData.stepPay)
@@ -956,5 +956,10 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"]{
   -moz-appearance: textfield;
+}
+</style>
+<style scoped>
+.btn-height63 {
+  bottom: 160px;
 }
 </style>

@@ -193,6 +193,8 @@ export default {
       width: 410px;
       height: 240px;
       line-height: 240px;
+      text-align: center;
+      margin-left:0px;
     }
     .avatar {
       width: 410px;

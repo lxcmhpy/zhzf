@@ -66,7 +66,7 @@
           align="center"
           label="是否重点事件">
           <template slot-scope="scope">
-            <span>{{ scope.row.isemphasis ? '是' : '不是' }}</span>
+            <span>{{ scope.row.isemphasis ? '是' : '否' }}</span>
           </template>
         </el-table-column>
         <el-table-column

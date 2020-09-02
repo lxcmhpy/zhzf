@@ -675,18 +675,21 @@ export default {
       await this.initDraw();
       await this.queryFlowBycaseId();
       //动态环节id
-      this.caseLinkDataForm.caseLinktypeId = (this.caseFlowData.flowName == "赔补偿流程" || this.caseFlowData.flowName == "青海赔补偿流程") ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+      this.caseLinkDataForm.caseLinktypeId = 
+        (this.caseFlowData.flowName == "赔补偿流程" || this.caseFlowData.flowName == "青海赔补偿流程") 
+        ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
       this.setFormData();
       //通过案件id和表单类型Id查询已绑定文书
       this.getDocListByCaseIdAndFormId();
     }
   },
-  activated() {
-    this.initData()
-  }
-  // created() {
+  // activated() {
+  //   alert(iLocalStroage.gets('userInfo').nickName)
   //   this.initData()
   // }
+  created() {
+    this.initData()
+  }
 };
 </script>
 
