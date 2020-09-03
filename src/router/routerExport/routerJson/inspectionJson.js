@@ -182,6 +182,25 @@ export default  [
                 },
                 component: () => import("@/page/inspection/doubly-stochastic/double-random/doubleRandom.vue")
             },
+            // 路警联合----start----------------------------------------------------------------------------------------------
+            {
+                path: "/inspection_overWeightForm",
+                name: "inspection_overWeightForm",
+                meta: {
+                title: "超限超载记录",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/overWeightForm.vue")
+            },
+            {
+                path: "/inspection_overWeightList",
+                name: "inspection_overWeightList",
+                meta: {
+                title: "超限记录列表",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/overWeightList.vue")
+            },
             // 勤务管理--排班管理
             {
                 path: "/dutyScheduling",
