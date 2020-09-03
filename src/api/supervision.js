@@ -7,11 +7,12 @@ let  vm  =  new  Vue();
 // 日志管理列表
 export function getCheChecklogPageList(data){
   return request({
-    url: "/check/checklog/cheChecklogPageList",
+    url: "/checklog/cheChecklogPageList",
     method: "get",
     params: data,
     showloading: false,
-    cancelToken: setCancelSource()
+    cancelToken: setCancelSource(),
+    baseUrlType:"XC"
   })
 }
 
