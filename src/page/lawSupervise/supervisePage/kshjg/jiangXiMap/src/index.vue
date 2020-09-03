@@ -72,8 +72,8 @@ export default {
         window1: {
           title: "专题查询",
           list: [
-            { name: "执法机构", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/zfbm.png"},
-            { name: "执法人员", imgUrl: "http://111.75.227.156:18904/static/images/experience/basedata/ysgljg.png"},
+            { name: "执法机构", imgUrl: "/static/images/img/lawSupervise/zfbm.png"},
+            { name: "执法人员", imgUrl: "/static/images/img/lawSupervise/ysgljg.png"},
           ]
         },
         window2: {

@@ -67,9 +67,6 @@ export default {
           throw new Error("findById()::::::::接口数据错误")
         }
       }).then(data => {
-        this.$nextTick(() => {
-          this.$refs.dialog.setValue(data.disposeOrganName)
-        })
         if(data.disposePerson){
           data.disposePerson = JSON.parse(data.disposePerson)
         }
