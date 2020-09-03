@@ -170,6 +170,7 @@ export default {
       hasLatitudeAndLongitude: false, //案发坐标是否已经获取
       rules:{
           eventName:[{required: true, message: "请输入事件名称", trigger: "blur"}],
+          eventDescribe:[{required: true, message: "请输入事件描述", trigger: "blur"}],
           eventDate:[{required: true, message: "请输入事件时间", trigger: "blur"}],
           eventAddress:[{required: true, message: "请输入事件坐标", trigger: "blur"}]
       }

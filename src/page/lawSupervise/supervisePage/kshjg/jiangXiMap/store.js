@@ -223,7 +223,7 @@ export default {
           this.getCarData()
         }
       } else if (name === "事件地点") {
-        findData({current: 1, size: 2000000}).then(res => {
+        findData({current: 1, size: 2000000,isemphasis:1}).then(res => {
           if(res.code === 200) {
             return res.data
           } else {
