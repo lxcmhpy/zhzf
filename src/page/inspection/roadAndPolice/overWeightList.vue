@@ -1,78 +1,112 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" style="overflow: hidden;">
-      <!-- <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle" v-if="isHome">新增模板</el-button> -->
-      <div class="search-input-right-box" style="margin-bottom:24px">
-        文书名称
-        <span class="search-input-right">
-          <el-input v-model="searchModleName"></el-input>
-        </span>
-        <el-button icon="el-icon-search" type="primary" size="medium" @click="searchListByName"></el-button>
+      <div class="handlePart">
+        <div class="search toggleBox">
+          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
+            <el-form :inline="true" :model="searchForm" class ref="searchForm">
+              <el-form-item label-width="0">
+                <el-button size="medium" class="commonBtn searchBtn" type="primary" @click="addRecordDialog()">添加记录</el-button>
+              </el-form-item>
+              <el-form-item label="业务类型" prop='domain'>
+                <el-select v-model="searchForm.domain" placeholder="请选择">
+                  <el-option v-for="(item,index) in domainList" :key="index" :label="item.name" :value="item.name"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="处置状态" prop='domain'>
+                <el-select v-model="searchForm.domain" placeholder="请选择">
+                  <el-option v-for="(item,index) in statusList" :key="index" :label="item.name" :value="item.name"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="车牌号" prop='title'>
+                <el-input v-model="searchForm.title" placeholder="请输入车牌号"></el-input>
+              </el-form-item>
+            </el-form>
+            <div class="search-btns">
+              <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="getTableData()"></el-button>
+              <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="resetForm('searchForm')"></el-button>
+              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+              </el-button>
+            </div>
+          </div>
+        </div>
       </div>
+
       <div class="tablePart" style="clear: both;">
-        <el-table :data="modleList" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+        <el-table :data="recordList" stripe style="width: 100%" height="100%">
           <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
-          <el-table-column prop="docName" label="记录文书" align="center"></el-table-column>
-          <el-table-column prop="updateTime" label="保存日期" align="center">
-            <template slot-scope="scope">
-              {{scope.row.updateTime?scope.row.updateTime.substring(0,10):''}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="status" label="状态" align="center"></el-table-column>
+          <el-table-column prop="docName" label="车牌号" align="center"></el-table-column>
+          <el-table-column prop="docName" label="类型" align="center"></el-table-column>
+          <el-table-column prop="docName" label="检测站" align="center"></el-table-column>
+          <el-table-column prop="docName" label="初检车货总重" align="center"></el-table-column>
+          <el-table-column prop="docName" label="初检超载率" align="center"></el-table-column>
+          <el-table-column prop="status" label="处置状态" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
-              <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
-              <span v-if="scope.row.status=='完成'">
-                <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-                <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button>
-              </span>
-              <span v-else>
-                <el-button :disabled="!inspectionFileEdit" @click="editRecord(scope.row)" type="text">编辑</el-button>
-                <el-upload :disabled="!inspectionFileEdit" style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList" accept="image/*">
-                  <el-button :disabled="!inspectionFileEdit" type="text" @click="currentFileId=scope.row.id">上传</el-button>
-                </el-upload>
-              </span>
+              <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
+              <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <!-- <div class="paginationBox">
+      <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
-      </div> -->
+      </div>
+      <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+        <el-form :inline="true" :model="recordType" class ref="recordType" :rules="typerule">
+          <el-form-item prop='type'>
+            <el-radio-group v-model="recordType.type">
+              <el-radio :label="3">备选项</el-radio>
+              <el-radio :label="6">备选项</el-radio>
+              <el-radio :label="9">备选项</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addRecord('recordType')">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
-    <el-button type="primary" style="    width: 70px;    height: 40px;position: fixed;    top: 115px;left: 240px;" @click="back">返回</el-button>
   </div>
 </template>
 <script>
-import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
-import { getDocListById, changeFileStatus, getDocListByName, delDocumentById, updatePicPath } from "@/api/inspection";
-import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
-import Vue from 'vue'
-import { mapGetters } from "vuex";
+import { getDocListById, changeFileStatus, delDocumentById, getDictListDetailByNameApi } from "@/api/inspection";
 export default {
 
   data() {
     return {
-      isHome: true,
-      searchModleName: '',
       compData: [],
       viewFlag: [],
-      modleList: [],
-      modleSaveList: [],//收藏列表
-      modleSaveListDefaut: [],//收藏列表
+      recordList: [],
       currentFileId: '',
-      modleSaveListFlag: true,
-      showSave: true,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       fileList: [],
-      editFlag: true,
+      domainList: [],
+      statusList: [],
+      searchForm: {
+        domain: "",
+        status: '',
+        createUser: iLocalStroage.gets("userInfo").nickName,
+        otherUser: '',
+        title: '',
+        defaultDisplay: true,
+        name: ''
+      },
+      isShow: false,
+      dialogVisible: false,
+      recordType: {
+        type: ''
+      },
+      typerule: {
+        type: [
+          { required: true, message: '请选择记录类型', trigger: 'blur' }
+        ],
+      }
     }
-  },
-  computed: {
-    ...mapGetters(["inspectionOrderId", "inspectionFileEdit"])
   },
   methods: {
     addNewModle() {
@@ -87,17 +121,6 @@ export default {
           return false;
         }
       });
-    },
-    //查询
-    getAddModle(list) {
-      console.log("getAddModle", list);
-      this.searchList()
-    },
-    //查询
-    getPreviewList(list) {
-      console.log("getPreviewList", list);
-      setTimeout(() => {
-      }, 100);
     },
     // 选择模板
     editRecord(item) {
@@ -152,7 +175,7 @@ export default {
                 type: "success",
                 message: res.msg
               });
-              this.searchList()
+              this.getTableData()
             }
           },
           error => {
@@ -162,149 +185,34 @@ export default {
       })
 
     },
-    uploadImg(param) {
-      //上传图片
-      console.log(param);
-      const isGt2M = param.file.size / 1024 / 1024 > 10;
-      if (isGt2M) {
-        this.$message({
-          message: "上传文件大小不能超过 10MB!",
-          type: "warning",
-        });
-        return
-      }
-      let fileType = param.file.type.split('/')[0]
-      if (fileType != 'image') {
-        this.$message({
-          message: "请选择图片文件!",
-          type: "warning",
-        });
-        // fileList.splice(fileIndex, 1);
-        return
-      }
-      let currentFileId = this.currentFileId
-      var fd = new FormData()
-      fd.append("file", param.file);
-      fd.append("category", '行政检查');
-      fd.append("fileName", param.file.name);
-      fd.append('status', '文书')//传记录id
-      fd.append('caseId', this.inspectionOrderId)//传记录id
-      fd.append('docId', currentFileId)//传文书id
-      uploadCommon(fd).then(
-        // upload(fd).then(
-        res => {
-          console.log(res);
-          // 保存-修改状态
-          let data = {
-            id: currentFileId,
-            picPath: res.data[0].storagePath,
-            picStorageId: res.data[0].storageId
-          }
-          updatePicPath(data).then(
-            res => {
-              if (res.code == 200) {
-                this.$message({
-                  type: "success",
-                  message: res.msg
-                });
-                this.searchList()
-              } else {
-                this.$message.error(res.msg);
-              }
-            },
-            error => {
-
-            })
-
-        },
-        error => {
-          console.log(error)
-        }
-      );
-
-    },
     // 预览
     preview() {
       this.$refs.previewRef.showModal(this.compData);
     },
-    handleChange(val) {
-      console.log(val);
-    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    searchList() {
-      let data = this.inspectionOrderId
+    getTableData() {
+      let data = {
+        name: this.searchForm.name,
+        company: this.searchForm.company,
+        taskArea: this.searchForm.taskArea,
+        taskName: this.searchForm.taskName,
+        checkSubject: this.searchForm.checkSubject,
+        checkType: this.searchForm.taskArea == '省交通运输厅领域' ? this.searchForm.checkType : '',
+        current: this.currentPage,
+        size: this.pageSize,
+      };
       getDocListById(data).then(
         res => {
           console.log(res)
-          if (res.data) {
-            this.modleList = res.data
-            this.modleList.forEach(element => {
-              element.showFlag = true
-            });
+          if (res.code == 200) {
+            this.recordList = res.data
           }
         },
         error => {
           // reject(error);
         })
-    },
-    searchSaveList() {
-      let data = iLocalStroage.gets("userInfo").id
-      findUserCollectTemplateApi(data).then(
-        res => {
-          console.log(res)
-          if (res.data) {
-            this.modleSaveList = res.data
-            this.modleSaveListDefaut = JSON.parse(JSON.stringify(res.data));
-          }
-        },
-        error => {
-          // reject(error);
-        })
-    },
-    searchListByName() {
-
-      if (this.searchModleName == '') {
-        this.showSave = true;
-        this.modleSaveList = JSON.parse(JSON.stringify(this.modleSaveListDefaut))
-        this.searchList()
-      } else {
-        this.showSave = false
-
-        this.modleSaveList = []
-        let data = {
-          docName: this.searchModleName,
-          orderId: this.inspectionOrderId,
-        }
-        getDocListByName(data).then(
-          res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.modleList = res.data || []
-              if (res.data.length != 0) {
-
-              } else {
-                // this.$message({ message: '暂无内容', type: 'warning' });
-              }
-            }
-          },
-          error => {
-            // reject(error);
-          })
-      }
-
-    },
-    changeUp(item) {
-      console.log(item)
-      this.modleList[item].showFlag = !this.modleList[item].showFlag
-
-      console.log(this.modleList.slice())
-      this.modleList = this.modleList.slice()//更新视图
-
-    },
-    handleSelectionChange(item) {
-
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -317,34 +225,45 @@ export default {
       this.currentPage = val;
       this.getTableData();
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    addRecordDialog() {
+      this.dialogVisible = true
     },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    back() {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: 'inspection_writeInfoRecord',
-        params: {
-          id: this.inspectionOrderId,
-          addOrEiditFlag: 'view'
+    addRecord(formName) {
+      console.log('提那');
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log('yanzheng')
+          this.$router.push({
+            name: 'inspection_overWeightForm'
+          });
         }
-        // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
+      })
+    },
+    getDrawerList(data) {
+      let _this = this
+      data.forEach(element => {
+        getDictListDetailByNameApi(element.name).then(
+          res => {
+            switch (element.option) {
+              case 1: _this.domainList = res.data; break;//业务类型
+              case 2: _this.statusList = res.data; break;//处置状态
+            }
+          },
+
+          error => {
+            // reject(error);
+          })
       });
-    }
+
+    },
   },
   mounted() {
-    this.searchList();
-    // this.searchSaveList();
+    this.getTableData();
+    this.getDrawerList([
+      { name: '路警联合-业务类型', option: 1 },
+      { name: '路警联合-处置状态', option: 2 }])
   }
 }
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
+<style lang="scss" src="@/assets/css/searchPage.scss"></style>
