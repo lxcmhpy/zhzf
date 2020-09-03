@@ -122,7 +122,26 @@ export default  [
                 },
                 component: () => import("@/page/inspection/record-manage/file/xzjcPDF.vue")
             },
-            // 双随机
+            // 文书属性配置-----start---------------------------------------------------------------------------------
+            {
+                path: "/inspection_fileTypeBind",
+                name: "inspection_fileTypeBind",
+                meta: {
+                title: "属性配置",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/bindManage/fileTypeBind.vue")
+            },
+            {
+                path: "/inspection_fileManage",
+                name: "inspection_fileManage",
+                meta: {
+                title: "文书配置",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/bindManage/fileManage.vue")
+            },
+            // 双随机-----start----------------------------------------------------------------------------------------------
             {
                 // 信息维护
                 path: "/infoMaintains",

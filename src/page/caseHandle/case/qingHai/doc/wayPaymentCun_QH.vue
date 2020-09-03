@@ -60,7 +60,7 @@
             </td>
             <td class="color_DBE4EF">
               <p>时间：<el-form-item style="width:calc(100% - 56px)" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                  <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd"></el-date-picker>
+                  <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日 HH:mm" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
                 </el-form-item>
               </p>
 
