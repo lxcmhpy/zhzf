@@ -41,7 +41,7 @@ export default {
      * 获取顶部最新数据
      */
     getData() {
-      let params = { current:1, size:10000 }
+      let params = { current:1, size:10000,isemphasis:1 }
       findData(params).then(res => {
         if(res.code === 200) {
           return res.data
