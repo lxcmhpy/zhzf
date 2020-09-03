@@ -224,24 +224,26 @@ export default {
           this.getCarData()
         }
       } else if (type === 5) {
-        findData({current: 1, size: 2000000}).then(res => {
-          if(res.code === 200) {
-            return res.data.records
-          } else {
-            throw new Error("findData()::::::接口数据错误")
-          }
-        }).then(data => {
-          data.map(item => {
-            item.type = 5
-            item.propertyValue = item.eventCoordinate
+        if(val) {
+          findData({current: 1, size: 2000000}).then(res => {
+            if(res.code === 200) {
+              return res.data.records
+            } else {
+              throw new Error("findData()::::::接口数据错误")
+            }
+          }).then(data => {
+            data.map(item => {
+              item.type = 5
+              item.propertyValue = item.eventCoordinate
+            })
+            // 手动给数据添加图层唯一标识
+            data.layerName = name
+            // 添加点位图片
+            data.imgUrl = this.imgUrl.get(type)
+            // 调用地图打点方法
+            this.page.addPoints(data)
           })
-          // 手动给数据添加图层唯一标识
-          data.layerName = name
-          // 添加点位图片
-          data.imgUrl = this.imgUrl.get(type)
-          // 调用地图打点方法
-          this.page.addPoints(data)
-        })
+        }
       } else {
         param = {
           organId: this.organId,
