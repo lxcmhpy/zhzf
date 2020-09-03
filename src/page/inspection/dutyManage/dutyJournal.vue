@@ -70,13 +70,11 @@
         </div>
       </div>
       <div class="tableHandle">
-        <el-button
-          type="primary"
-          icon="el-icon-plus"
-          size="medium"
-        >新增</el-button>
-        <el-button type="info" icon="el-icon-delete-solid" size="medium">删除</el-button>
-        <el-button type="warning" size="medium"><i class="icon-handover"></i>交接班</el-button>
+        <el-button type="primary" icon="el-icon-plus" size="medium" @click="addJournalFun">新增</el-button>
+        <el-button type="info" icon="el-icon-delete-solid" size="medium" @click="deleteJournalFun">删除</el-button>
+        <el-button type="warning" size="medium" @click="handoverFun">
+          <i class="icon-handover"></i>交接班
+        </el-button>
       </div>
       <div class="tablePart">
         <el-table
@@ -132,9 +130,13 @@
         ></el-pagination>
       </div>
     </div>
+    <!-- 新增日志选择执法门类 -->
+    <selectLawCategory ref="selectLawCategoryRef" />
   </div>
 </template>
 <script>
+import SelectLawCategory from "@/page/inspection/dutyManage/components/selectLawCategory.vue";
+
 export default {
   data() {
     return {
@@ -149,7 +151,7 @@ export default {
           inspectionRoute: "安楚高速K1+466M至 K2+678M",
           staff: "张三,李四,王五",
           taskType: "路巡",
-          taskStatus: "已完成"
+          taskStatus: "已完成",
         },
         {
           oname: "34235534",
@@ -159,30 +161,62 @@ export default {
           inspectionRoute: "西站立交桥附近",
           staff: "王世恩,李书友",
           taskType: "网巡",
-          taskStatus: "未完成"
-        }
+          taskStatus: "未完成",
+        },
       ],
       selectList: [],
       tableLoading: false,
       currentPage: 1, //当前页
-      pageSize: 10,   //pagesize
-      totalPage: 0,   //总页数
+      pageSize: 10, //pagesize
+      totalPage: 0, //总页数
     };
   },
-  components: {},
+  components: { SelectLawCategory },
   created() {},
   methods: {
     // 获取日志列表
-    getJournalList(){
-      const queryData = Object.assign(this.searchForm, { current: this.currentPage, size: this.pageSize });
+    getJournalList() {
+      const queryData = Object.assign(this.searchForm, {
+        current: this.currentPage,
+        size: this.pageSize,
+      });
       console.log(queryData);
     },
+    // 新增
+    addJournalFun() {
+      this.$refs.selectLawCategoryRef.showModal();
+    },
+    // 删除
+    deleteJournalFun(){
+      if (this.selectList.length === 0) {
+        this.$message({ type: 'warning', message: '请选择要删除的日志' });
+      } else {
+        this.$confirm("确定要删除吗?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: 'custom-question',
+          customClass: 'custom-confirm'
+        }).then(() => {
+          console.log('删除成功');
+        }).catch(() => {});
+      }
+    },
+    // 交接班
+    handoverFun(){
+      this.$router.push({
+        name: "journal_handover",
+        params: { page: "handover" },
+      });
+    },
     // 查看交接班
-    checkConcat(row){
-      console.log(row);
+    checkConcat(row) {
+      this.$router.push({
+        name: "journal_handover",
+        params: { page: "handover" },
+      });
     },
     // 修改日志
-    editJournalInfo(row){
+    editJournalInfo(row) {
       console.log(row);
     },
     // 日志查询
@@ -234,11 +268,12 @@ export default {
 }
 .tableHandle {
   margin-bottom: 10px;
-  .icon-handover{
+  .icon-handover {
     display: block;
     width: 14px;
     height: 14px;
-    background: url('../../../../static/images/img/personInfo/icon_jiaojieb.svg') no-repeat;
+    background: url("../../../../static/images/img/personInfo/icon_jiaojieb.svg")
+      no-repeat;
     float: left;
     margin-right: 5px;
   }

@@ -1,4 +1,5 @@
 <template>
+  <!-- 添加日志选择执法门类 -->
   <el-dialog
     :title="dialogTitle"
     :visible.sync="visible"
@@ -21,7 +22,7 @@
               v-for="item in businessOptions"
               :key="item.cateId"
               :label="item.cateName"
-              :value="item.cateName"
+              :value="item.cateId"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -29,12 +30,11 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button type="primary" @click="submit">保 存</el-button>
+      <el-button type="primary" @click="submit">确 定</el-button>
     </div>
   </el-dialog>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   props: {},
@@ -44,7 +44,7 @@ export default {
       addJournalForm: {
         businessType: ""
       },
-      lawPersonList: [],
+      businessOptions: [],
       rules: {
         businessType: [
           { required: true, message: "请选择门类", trigger: "change" }
@@ -55,35 +55,28 @@ export default {
       schedulingDay: "",
     };
   },
-  computed: {
-    UserInfo() {
-      return iLocalStroage.gets("userInfo");
-    },
-  },
+  computed: {},
   created() {
-    this.searchLawPerson();
+    this.getEnforceLawType();
   },
   methods: {
-    // 是否用车
-    changeUseCar() {
-      this.addJournalForm.licensePlate = "";
-    },
-    // 排班时间变化
-    timeChange() {
-      console.log(this.addJournalForm.schedulingTime);
+    // 获取执法门类
+    getEnforceLawType() {
+      this.$store.dispatch("getEnforceLawType", "1").then(
+        (res) => {
+          this.businessOptions = res.data;
+        },
+        (err) => {}
+      );
     },
     //提交
     submit() {
       this.$refs.addJournalRef.validate((valid) => {
         if (valid) {
-          const loading = this.$loading({
-            lock: true,
-            text: "正在保存",
-            spinner: "car-loading",
-            customClass: "loading-box",
-            background: "rgba(234,237,244, 0.8)",
+          this.$router.push({
+            name: 'add_duty_journal',
+            params: { type: this.addJournalForm.businessType, page: 'journal' }
           });
-          loading.close();
           this.closeDialog();
         } else {
           return false;
@@ -103,22 +96,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
->>> .el-select,
->>> .el-date-editor {
+>>> .el-select{
   display: block;
-}
->>> .el-date-editor.el-input,
->>> .el-date-editor.el-input__inner {
-  display: block;
-  width: 100%;
-}
->>> .el-range-editor.el-input__inner {
-  display: inline-block;
-  padding: 0 15px;
-  height: 32px;
-  line-height: 32px;
-  .el-range-input {
-    height: 28px;
-  }
 }
 </style>
