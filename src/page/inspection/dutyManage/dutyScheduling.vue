@@ -16,7 +16,7 @@
           </el-select>
         </div>
         <div class="scheduling-handle-wrap">
-          <el-button icon="el-icon-plus" plain>新增</el-button>
+          <el-button icon="el-icon-plus" plain @click="addSchedulingFun">新增</el-button>
           <el-button icon="el-icon-edit" plain>修改</el-button>
         </div>
         <!-- 排班列表 -->
@@ -26,7 +26,7 @@
               <span class="item-index">第一组</span>
               <span class="item-handle-btn">
                 <span class="iconfont law-guiji"></span>
-                <span class="el-icon-delete"></span>
+                <span class="el-icon-delete" @click="deleteScheduling"></span>
               </span>
             </div>
             <div class="scheduling-content">
@@ -47,10 +47,13 @@
         </div>
       </div>
     </div>
+    <!-- 新增排班 -->
+    <AddScheduling ref="AddSchedulingRef" :businessOptions="businessOptions" />
   </div>
 </template>
 <script>
 import Calendar from "@/components/calendar/calendar.vue";
+import AddScheduling from '@/page/inspection/dutyManage/components/addScheduling';
 
 export default {
   data() {
@@ -60,7 +63,7 @@ export default {
       businessOptions: [],
     };
   },
-  components: { Calendar },
+  components: { Calendar, AddScheduling },
   created() {
     this.getEnforceLawType();
   },
@@ -68,7 +71,22 @@ export default {
     // 日历选择日期
     setSelectedDay(data) {
       this.dutyDay = data.replace(/\//g, "-");
-      console.log(this.dutyDay);
+    },
+    // 新增排班
+    addSchedulingFun(){
+      const data = { day: this.dutyDay, businessType: this.businessType };
+      this.$refs.AddSchedulingRef.showModal('add', data);
+    },
+    // 删除排班
+    deleteScheduling(){
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: 'custom-question',
+        customClass: 'custom-confirm'
+      }).then(() => {
+        console.log('删除成功');
+      }).catch(() => {});
     },
     // 获取业务类型
     getEnforceLawType() {
