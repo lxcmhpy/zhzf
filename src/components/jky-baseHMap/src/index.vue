@@ -188,44 +188,50 @@ export default {
      * 地图添加点位(多点)
      */
     addPoints(arr) {
-      this.map.removeOverlay(this.informationWindow)
-      // 清除单点点位
-      this.cleanPoint()
+      if(arr) {
+        this.map.removeOverlay(this.informationWindow)
+        // 清除单点点位
+        this.cleanPoint()
 
-      let _layerName = arr.layerName
-      this.pointsLayerName.add(_layerName)
-      let points = arr.map(item => {
-        return {
-          attributes: {
-            id: item.id,
-            data: item, // 带入当前点位信息
+        let _layerName = arr.layerName
+        this.pointsLayerName.add(_layerName)
+        let points = arr.map(item => {
+          let point = (item && item.propertyValue && item.propertyValue.split(',')) || []
+          // 点位数据正常
+          if(point.length === 2) {
+            return {
+              attributes: {
+                id: item.id,
+                data: item, // 带入当前点位信息
+              },
+              geometry: point
+            }
+          }
+        })
+        const options = {
+          layerName: _layerName,
+          zoomToExtent: true,
+          style: {
+            image: {
+              type: 'icon',
+              image: {
+                imageSrc: arr.imgUrl || '',
+                imageAnchor: [0.5, 1]
+              }
+            }
           },
-          geometry: (item && item.propertyValue && item.propertyValue.split(',')) || []
-        }
-      })
-      const options = {
-        layerName: _layerName,
-        zoomToExtent: true,
-        style: {
-          image: {
-            type: 'icon',
+          selectStyle: {
             image: {
-              imageSrc: arr.imgUrl || '',
-              imageAnchor: [0.5, 1]
-            }
-          }
-        },
-        selectStyle: {
-          image: {
-            type: 'icon',
-            image: {
-              imageSrc: arr.imgUrl || '',
-              imageAnchor: [0.5, 1]
+              type: 'icon',
+              image: {
+                imageSrc: arr.imgUrl || '',
+                imageAnchor: [0.5, 1]
+              }
             }
           }
         }
+        this.map.addPoints(points, options)
       }
-      this.map.addPoints(points, options)
     },
   },
   created() {

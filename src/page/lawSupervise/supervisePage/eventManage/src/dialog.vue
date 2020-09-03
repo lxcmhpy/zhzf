@@ -50,7 +50,13 @@
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
       <el-form-item label="机构:" :label-width="formLabelWidth" prop="disposeOrgan">
-        <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
+        <ElSelectTree 
+            ref="elSelectTree" 
+            @getValue="getValue" 
+            :options="treeOptions" 
+            :props="treeProps" 
+            :value="form.disposeOrgan"
+        />
       </el-form-item>
       <el-form-item label="人员:" :label-width="formLabelWidth" prop="disposePerson">
         <el-select v-model="form.disposePerson" filterable multiple placeholder="请选择">

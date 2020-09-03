@@ -143,10 +143,11 @@ export default {
       this.page.addPoint(node, latLng)
       // 显示弹出框
       this.searchWindowData.window4.title = node.nickName
-      this.searchWindowData.window4.info = {
-        organName: node.organName,
-        mobile: node.mobile,
-      }
+      this.searchWindowData.window4.info = [
+        { title: "姓名", value: node.nickName },
+        { title: "联系方式", value: node.mobile },
+        { title: "机构名称", value: node.organName },
+      ]
       this.$refs.Search.showCom = "Window4"
     },
 
@@ -210,32 +211,48 @@ export default {
         ['非现场站点', 4],
       ])
       let param = {}, type = typeMap.get(name)
-      if(name === '非现场站点') {
-        // 显示抽屉组件
-        this.isShowDrawer = true
-        param = {
-          size: 20,
-          type: type
-        }
-        // 当单选框被勾选时
+      if (type === 5) {
         if(val) {
-          // 获取告警车辆数据以备用
-          this.getCarData()
+          findData({current: 1, size: 2000000}).then(res => {
+            if(res.code === 200) {
+              return res.data.records
+            } else {
+              throw new Error("findData()::::::接口数据错误")
+            }
+          }).then(data => {
+            data.map(item => {
+              item.type = 5
+              item.propertyValue = item.eventCoordinate
+            })
+            // 手动给数据添加图层唯一标识
+            data.layerName = name
+            // 添加点位图片
+            data.imgUrl = this.imgUrl.get(type)
+            // 调用地图打点方法
+            this.page.addPoints(data)
+          })
+        } else { // 当取消勾选时，清除对应图层点位
+          this.page.cleanPoints(name)
+          this.map.removeOverlay(this.page.informationWindow)
         }
-      } else if (name === "事件地点") {
-        findData({current: 1, size: 2000000,isemphasis:1}).then(res => {
-          if(res.code === 200) {
-            return res.data
-          } else {
-            throw new Error("findData()::::::接口数据错误")
-          }
-        }).then(data => {
-          console.log(data.records)
-        })
       } else {
-        param = {
-          organId: this.organId,
-          type: type
+        if(type === 4) {
+          // 显示抽屉组件
+          this.isShowDrawer = true
+          param = {
+            size: 10000,
+            type: type
+          }
+          // 当单选框被勾选时
+          if(val) {
+            // 获取告警车辆数据以备用
+            this.getCarData()
+          }
+        } else {
+          param = {
+            organId: this.organId,
+            type: type
+          }
         }
         // 当单选框被勾选时,获取图层数据
         if(val) {
@@ -283,13 +300,18 @@ export default {
           { name: '执法车辆', type: 2 },
           { name: '执法船舶', type: 3 },
           { name: '非现场站点', type: 4 },
+          { name: '事件地点', type: 5 },
         ]
         let allPromise = typeMap.map(item => {
-          let param = {
-            organId: this.organId,
-            type: item.type
+          if(item.type === 5) {
+            return findData({current: 1, size: 2000000})
+          } else {
+            let param = {
+              organId: this.organId,
+              type: item.type
+            }
+            return getZfjgLawSupervise(param)
           }
-          return getZfjgLawSupervise(param)
         })
 
         // 显示抽屉组件
@@ -298,6 +320,7 @@ export default {
         this.getCarData()
 
         Promise.all(allPromise).then(res => {
+          console.log(res)
           res.map((item,index) => {
             if(index === 4) {
               // 手动给非现场站点添加type
@@ -306,6 +329,20 @@ export default {
               })
               // 给抽屉弹窗里塞入数据
               this.drawerData.noEnforceData.option = item.data
+            } else if (index === 5) {
+              // 获取到点位信息
+              let arr = item.data.records
+              // 给点位数据添加 propertyValue 属性
+              arr.map(arrItem => {
+                arrItem.type = 5
+                arrItem.propertyValue = arrItem.eventCoordinate
+              })
+              // 手动给数据添加图层唯一标识
+              arr.layerName = typeMap[index].name
+              // 添加点位图片
+              arr.imgUrl = this.imgUrl.get(typeMap[index].type)
+              // 调用地图打点方法
+              this.page.addPoints(arr)
             }
 
             // 手动给数据添加图层唯一标识
