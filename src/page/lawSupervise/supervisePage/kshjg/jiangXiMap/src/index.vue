@@ -62,6 +62,7 @@ export default {
         [2, '/static/images/img/lawSupervise/map_jingche.png'],
         [3, '/static/images/img/lawSupervise/map_cbo.png'],
         [4, '/static/images/img/lawSupervise/map_o_gud.png'],
+        [5, '/static/images/img/lawSupervise/map_didian.png']
       ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
@@ -222,7 +223,7 @@ export default {
      * 显示信息窗体
      */
     handleOverLay(data) {
-      let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName
+      let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName || data.eventName
       this.page.addOverlay(data, content)
     },
 
@@ -234,10 +235,37 @@ export default {
       // 显示信息窗体
       this.handleOverLay(data)
       // 如果点位属于执法人员，执法车辆或者执法人员
-      if(data.type === 0 || data.type === 2 || data.type === 3) {
+      if(data.type === 0) {
         // 显示弹出框
-        this.searchWindowData.window4.title = data.vehicleNumber || data.label || data.shipNumber || data.nickName
-        this.searchWindowData.window4.info = data
+        this.searchWindowData.window4.title = data.nickName
+        this.searchWindowData.window4.info = [
+          { title: "姓名", value: data.nickName },
+          { title: "联系方式", value: data.mobile },
+          { title: "机构名称", value: data.organName },
+        ]
+        this.searchWindowData.window4.info.peStateColor = data.peStateColor || ''
+        this.searchWindowData.window4.info.padStateColor = data.padStateColor || ''
+        this.$refs.Search.showCom = "Window4"
+      } else if (data.type === 2) {
+        this.searchWindowData.window4.title = data.vehicleNumber
+        this.searchWindowData.window4.info = [
+          { title: "车牌号", value: data.vehicleNumber },
+          { title: "机构名称", value: data.organName },
+        ]
+        this.$refs.Search.showCom = "Window4"
+      } else if (data.type === 3) {
+        this.searchWindowData.window4.title = data.shipNumber
+        this.searchWindowData.window4.info = [
+          { title: "机构名称", value: data.organName },
+        ]
+        this.$refs.Search.showCom = "Window4"
+      } else if (data.type === 5) {
+        this.searchWindowData.window4.title = data.eventName
+        this.searchWindowData.window4.info = [
+          { title: "事件名称", value: data.eventName },
+          { title: "时间", value: data.eventDate },
+          { title: "地点", value: data.eventAddress },
+        ]
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 4) { // 如果是非现场站点
         this.$refs.Search.showCom = "Window5"
