@@ -182,6 +182,25 @@ export default  [
                 },
                 component: () => import("@/page/inspection/doubly-stochastic/double-random/doubleRandom.vue")
             },
+            // 路警联合----start----------------------------------------------------------------------------------------------
+            {
+                path: "/inspection_overWeightForm",
+                name: "inspection_overWeightForm",
+                meta: {
+                title: "超限超载记录",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/overWeightForm.vue")
+            },
+            {
+                path: "/inspection_overWeightList",
+                name: "inspection_overWeightList",
+                meta: {
+                title: "超限记录列表",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/overWeightList.vue")
+            },
             // 勤务管理--排班管理
             {
                 path: "/dutyScheduling",
@@ -211,6 +230,36 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/dutyManage/dutyJournal.vue")
+            },
+            // 日志管理--添加日志
+            {
+                path: "/addDutyJournal/:type/:page",
+                name: "add_duty_journal",
+                meta: {
+                title: "添加日志",
+                oneTab: true,
+                },
+                component: () => import("@/page/inspection/dutyManage/components/addJournalPage.vue")
+            },
+            // 日志管理--交接班
+            {
+                path: "/journalHandover/:page",
+                name: "journal_handover",
+                meta: {
+                title: "交接班",
+                oneTab: true,
+                },
+                component: () => import("@/page/inspection/dutyManage/components/addJournalPage.vue")
+            },
+            // 日志管理--路政详情
+            {
+                path: "/journalRoadDetail/:page",
+                name: "journal_road_detail",
+                meta: {
+                title: "路政详情",
+                oneTab: true,
+                },
+                component: () => import("@/page/inspection/dutyManage/components/addJournalPage.vue")
             }
         ]
     }, 
