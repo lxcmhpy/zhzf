@@ -211,19 +211,7 @@ export default {
         ['非现场站点', 4],
       ])
       let param = {}, type = typeMap.get(name)
-      if(name === '非现场站点') {
-        // 显示抽屉组件
-        this.isShowDrawer = true
-        param = {
-          size: 20,
-          type: type
-        }
-        // 当单选框被勾选时
-        if(val) {
-          // 获取告警车辆数据以备用
-          this.getCarData()
-        }
-      } else if (type === 5) {
+      if (type === 5) {
         if(val) {
           findData({current: 1, size: 2000000}).then(res => {
             if(res.code === 200) {
@@ -243,11 +231,28 @@ export default {
             // 调用地图打点方法
             this.page.addPoints(data)
           })
+        } else { // 当取消勾选时，清除对应图层点位
+          this.page.cleanPoints(name)
+          this.map.removeOverlay(this.page.informationWindow)
         }
       } else {
-        param = {
-          organId: this.organId,
-          type: type
+        if(type === 4) {
+          // 显示抽屉组件
+          this.isShowDrawer = true
+          param = {
+            size: 10000,
+            type: type
+          }
+          // 当单选框被勾选时
+          if(val) {
+            // 获取告警车辆数据以备用
+            this.getCarData()
+          }
+        } else {
+          param = {
+            organId: this.organId,
+            type: type
+          }
         }
         // 当单选框被勾选时,获取图层数据
         if(val) {
