@@ -15,6 +15,8 @@
 <script>
 import Dialog from "./dialog.vue";
 import { findData, findById } from "@/api/eventManage";
+import { getOrganTree } from "@/api/lawSupervise.js";
+import iLocalStroage from '@/common/js/localStroage';
 export default {
   components: {
     Dialog
@@ -22,6 +24,7 @@ export default {
   data() {
     return {
       list: [],
+      pdfHost:'',
     }
   },
   methods: {
@@ -65,13 +68,19 @@ export default {
         }
       }).then(data => {
         // 给详情页赋值
+        if(data.disposePerson){
+          data.disposePerson = JSON.parse(data.disposePerson)
+        }
         Object.keys(this.$refs.dialog.form).map(key => {
           this.$refs.dialog.form[key] = data[key]
         })
+        if(data.disposeOrgan){
+            this.getPerson(data.disposeOrgan)
+        }
         if(data.eventFileDataUp.length > 0) {
           data.eventFileDataUp.map(item => {
             this.$refs.dialog.eventFileDataUp.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: this.pdfHost+item.storageId,
               storageId: item.storageId,
               name: item.name
             })
@@ -80,7 +89,7 @@ export default {
         if(data.eventFileDataDown.length > 0) {
           data.eventFileDataDown.map(item => {
             this.$refs.dialog.eventFileDataDown.push({
-              url: 'http://124.192.215.10:9332/'+item.storageId,
+              url: this.pdfHost+item.storageId,
               storageId: item.storageId,
               name: item.name
             })
@@ -88,9 +97,29 @@ export default {
         }
       })
     },
+    getPerson(organId){
+        let param = {
+            organId: organId,
+            type: 0
+          }
+          getOrganTree(param).then(res => {
+            if(res.code === 200) {
+              return res.data
+            } else {
+              throw new Error("getOrganTree()::::::接口数据错误")
+            }
+          }).then(data => {
+            this.$refs.dialog.peopleOptions = data.map(item => {
+              item.label = item.nickName
+              item.value = item.id
+              return item
+            })
+          })
+    },
   },
   created() {
     this.getData()
+    this.pdfHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST
   }
 }
 </script>
