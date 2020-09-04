@@ -36,6 +36,7 @@ import Window3 from "./window3.vue";
 import Window4 from "./window4.vue";
 import Window5 from "./window5.vue";
 import { organTreeByCurrUser, getOrganTree } from "@/api/lawSupervise.js";
+import { findData } from "@/api/eventManage";
 export default {
   provide() {
     return {
@@ -89,6 +90,13 @@ export default {
         this.config.window2.option = data.map(item => {
           item.type = 0
           item.label = item.nickName
+          // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
+          if(item.peState && item.peState===1) {
+            item.peStateColor = '#67C23A'
+          } 
+          if (item.padState && item.padState === 1) {
+            item.padStateColor = '#409EFF'
+          }
           return item
         })
       })
@@ -126,14 +134,43 @@ export default {
             this.$message.error('getOrganTree()::::::::接口数据错误');
           }
         }).then(data => {
-          this.window2.option = data.map(item => {
+          this.config.window2.option = data.map(item => {
             item.type = 0
             item.label = item.nickName
+            // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
+            if(item.peState && item.peState===1) {
+                item.peStateColor = '#67C23A'
+            } 
+            if (item.padState && item.padState === 1) {
+                item.padStateColor = '#409EFF'
+            }
             return item
           })
         })
       } else if (this.projectName === "执法机构") {
-
+        let params = {
+          key: this.inputModel,
+          organId: this.indexPage.organId,
+          type: 1
+        }
+        let _this = this;
+        getOrganTree(params).then(res => {
+            if(res.code === 200) {
+                this.$message({
+                    message: '查询到'+res.data.length+'条数据',
+                    type: 'success'
+                });
+                return res.data
+            } else {
+                this.$message.error('getOrganTree()::::::::接口数据错误');
+            }
+        }).then(data => {
+          this.config.window2.option = data.map(item => {
+            item.type = 1
+            item.label = item.name
+            return item
+          })
+        })
       }
     },
 
@@ -188,8 +225,31 @@ export default {
       } else if (name === "执法人员") {
         this.placeholder = '搜索执法人员'
         this.getPeople()
+      } else if (name === "事件") {
+        this.placeholder = '搜索事件'
+        this.getEventData()
+      } else if (name === "非现场站点") {
+        this.placeholder = '搜索非现场站点'
+        this.getPeople()
       }
     },
+
+    getEventData() {
+      findData({current: 1, size: 2000000}).then(res => {
+            if(res.code === 200) {
+              return res.data.records
+            } else {
+              throw new Error("findData()::::::接口数据错误")
+            }
+          }).then(data => {
+            this.config.window2.option = data.map(item => {
+              item.type = 5
+              item.label = item.eventName
+              item.propertyValue = item.eventCoordinate
+            })
+          })
+    },
+
 
     /**
      * 点击底部小图标

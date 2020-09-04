@@ -165,24 +165,20 @@ export default {
       for (let item of this.archivesReviewManageForm.caseSortFormList) {
         if (item.grade) sum += Number(item.grade);
       }
-      console.log("sum".sum);
+      console.log(`sum${sum}${new Date()}`);
       this.archivesReviewManageForm.sumSort = sum;
     },
-    //防抖函数
-    deuncode() {
+    //防抖函数 防止短时间内多次计算，提高性能
+    deuncode:(function() {
       var time1;
-      clearTimeout(time1);
-      time1 = setTimeout(this.getSumSort, 500);
-      // var time1;
-      // return function () {
-      //   clearTimeout(time1);
-      //   console.log("this", this);
-      //   time1 = setTimeout(function () {
-      //     console.log("time");
-      //     this.getSumSort();
-      //   }, 500);
-      // };
-    },
+      return function () {
+        clearTimeout(time1);
+        let that = this;
+        time1 = setTimeout(function () {
+          that.getSumSort();
+        }, 500);
+      };
+    })(),
     getcaseEvaluationResult(id) {
       caseEvaluationSortByCaseIdApi(id)
         .then((res) => {

@@ -739,6 +739,7 @@ export default {
     // let data = {};
     let role = iLocalStroage.gets("userInfo").roles;
     let isApprovalPeople = false;
+    console.log('role',role)
     //判断是不是审批人员
     role.forEach(item => {
       isApprovalPeople = ["法制审查", "部门负责人", "经办机构负责人"].includes(

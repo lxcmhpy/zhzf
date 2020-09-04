@@ -196,7 +196,8 @@ export default {
         name: 'startTrained',
         params: {
           trainName: train.trainName,
-          trainperId: train.trainperId
+          trainperId: train.trainperId,
+          trainId: train.trainId
         }
       })
     },

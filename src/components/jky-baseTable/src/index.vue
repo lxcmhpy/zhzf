@@ -1,7 +1,7 @@
 <template>
   <div class="jky-baseTable">
     <!-- 表单 -->
-    <el-form v-if="inputList.length !== 0" :inline="true" :model="form" class="jky-baseTable-form">
+    <el-form v-if="inputList.length > 0" :inline="true" :model="form" class="jky-baseTable-form">
       <el-form-item
         v-for="(item, index) in inputList"
         :key="index"
@@ -114,7 +114,9 @@ export default {
   props: {
     reqAttr: {
       type: Object,
-      default: {}
+      default() {
+        return {}
+      }
     },
     isPagination: {
       type: Boolean,
@@ -138,7 +140,7 @@ export default {
     },
     height: {
       type: String,
-      default: '299'
+      default: null
     },
     isSelection: {
       type: Boolean,

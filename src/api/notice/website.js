@@ -19,7 +19,7 @@ export function saveOrUpdate(data) {
   })
 }
 
-// 通过Id查询
+// 查询网站设置信息
 export function findWebsiteInfo() {
   return request({
     url: "/notice/website/install/findWebsiteInfo",

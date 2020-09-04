@@ -5,7 +5,7 @@
         <el-form
           :model="searchForm"
           ref="searchForm"
-          class="caseSearchForm"
+          style="width:100%"
           label-width="80px"
           size="small"
         >
@@ -44,7 +44,7 @@
           height="100%"
           highlight-current-row
         >
-          <el-table-column prop="letterNo" label="信件编号" align="center"></el-table-column>
+          <el-table-column prop="letterNo" label="信件编号" align="center" width="160"></el-table-column>
           <el-table-column prop="letterTitle" label="信件标题" align="center"></el-table-column>
           <el-table-column prop="sendName" label="来信人" align="center"></el-table-column>
           <el-table-column prop="sendTime" label="来信时间" align="center"></el-table-column>

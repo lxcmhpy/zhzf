@@ -7,7 +7,7 @@
             <el-form :inline="true" :model="searchForm" ref="searchFormRef" class="search-form">
               <el-row>
                 <el-form-item label="执法机构" prop="lawOrgan">
-                  <el-input v-model="searchForm.lawOrgan" placeholder></el-input>
+                  <el-input v-model="searchForm.oid" placeholder></el-input>
                 </el-form-item>
                 <el-form-item label="排班人员" prop="schedulingPer">
                   <el-input v-model="searchForm.schedulingPer" placeholder></el-input>
@@ -135,8 +135,8 @@
   </div>
 </template>
 <script>
+import { getCheChecklogPageList} from '@/api/supervision';
 import SelectLawCategory from "@/page/inspection/dutyManage/components/selectLawCategory.vue";
-
 export default {
   data() {
     return {
@@ -175,12 +175,20 @@ export default {
   created() {},
   methods: {
     // 获取日志列表
-    getJournalList() {
-      const queryData = Object.assign(this.searchForm, {
-        current: this.currentPage,
-        size: this.pageSize,
+    getJournalList(){
+      // const queryData = Object.assign(this.searchForm, { current: this.currentPage, size: this.pageSize });
+      // console.log(queryData);
+      let data={
+
+      };
+       getCheChecklogPageList(data).then(res => {
+        if (res.code == "200") {
+          this.tableData = res.data.records;
+          this.totalPage = res.data.total;
+        }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
       });
-      console.log(queryData);
     },
     // 新增
     addJournalFun() {
