@@ -6,12 +6,12 @@
       </div>
       <div class="scheduling-wrap">
         <div class="select-business-type">
-          <el-select v-model="businessType" placeholder="请选择">
+          <el-select v-model="businessIndex" placeholder="请选择" @change="onBusinessChange">
             <el-option
-              v-for="item in businessOptions"
+              v-for="(item, index) in businessOptions"
               :key="item.cateId"
               :label="item.cateName"
-              :value="item.cateName"
+              :value="index"
             ></el-option>
           </el-select>
         </div>
@@ -21,26 +21,26 @@
         </div>
         <!-- 排班列表 -->
         <div class="scheduling-list-wrap">
-          <div class="duty-item-box">
+          <div v-for="(schedule,index) in scheduleList" :key="index" class="duty-item-box">
             <div class="duty-item-top">
               <span class="item-index">第一组</span>
               <span class="item-handle-btn">
                 <span class="iconfont law-guiji"></span>
-                <span class="el-icon-delete" @click="deleteScheduling"></span>
+                <span class="el-icon-delete" @click="deleteScheduling(schedule.scheduleId)"></span>
               </span>
             </div>
             <div class="scheduling-content">
               <p class="cnt-item">
                 <span class="cnt-label">执法班次</span>
-                <span class="cnt-text">2020-09-01 23:00:00<span style="margin:0 15px;">至</span>2020-09-01 13:00:00</span>
+                <span class="cnt-text">{{schedule.startTime}}<span style="margin:0 15px;">至</span>{{schedule.endTime}}</span>
               </p>
               <p class="cnt-item">
                 <span class="cnt-label">执法人员</span>
-                <span class="cnt-text">附明朝; 刘辉说; 如俄日</span>
+                <span class="cnt-text">{{schedule.lawEnforcementOfficials}}</span>
               </p>
               <p class="cnt-item">
                 <span class="cnt-label">巡查路线</span>
-                <span class="cnt-text">云南省马连道道路6号院1层</span>
+                <span class="cnt-text">{{schedule.patrolRoute}}</span>
               </p>
             </div>
           </div>
@@ -54,13 +54,15 @@
 <script>
 import Calendar from "@/components/calendar/calendar.vue";
 import AddScheduling from '@/page/inspection/dutyManage/components/addScheduling';
+import { getScheduleListApi, deleteCheScheduleApi } from "@/api/supervision";
 
 export default {
   data() {
     return {
       dutyDay: "",
-      businessType: "",
+      businessIndex: 0,
       businessOptions: [],
+      scheduleList: [],
     };
   },
   components: { Calendar, AddScheduling },
@@ -71,21 +73,35 @@ export default {
     // 日历选择日期
     setSelectedDay(data) {
       this.dutyDay = data.replace(/\//g, "-");
+      this.getScheduleList();
     },
     // 新增排班
     addSchedulingFun(){
-      const data = { day: this.dutyDay, businessType: this.businessType };
+      const curBusiness = this.businessOptions[this.businessIndex] || {};
+      const data = { day: this.dutyDay, cateId: curBusiness.cateId, cateName: curBusiness.cateName };
       this.$refs.AddSchedulingRef.showModal('add', data);
     },
     // 删除排班
-    deleteScheduling(){
+    deleteScheduling(scheduleId){
       this.$confirm("确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         iconClass: 'custom-question',
         customClass: 'custom-confirm'
       }).then(() => {
-        console.log('删除成功');
+        deleteCheScheduleApi(scheduleId).then(
+          (res) => {
+            if (res.code == 200) {
+              console.log('删除成功');
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.getScheduleList();
+            }
+          },
+          (err) => {}
+        );
       }).catch(() => {});
     },
     // 获取业务类型
@@ -94,9 +110,28 @@ export default {
         (res) => {
           this.businessOptions = res.data;
           this.businessType = res.data[0].cateName;
+          
+          this.getScheduleList();
         },
         (err) => {}
       );
+    },
+    onBusinessChange(){
+      this.getScheduleList();
+    },
+    //获取排班列表
+    getScheduleList(){
+      const curBusiness = this.businessOptions[this.businessIndex] || {};
+      const params = { size: -1, cateId: curBusiness.cateId, startTime: this.dutyDay }
+      getScheduleListApi(params).then(
+        res => {
+          if (res.code == 200) {
+            this.scheduleList = res.data.records;
+          }
+        },
+        error => {
+          // reject(error);
+        });
     },
   },
 };

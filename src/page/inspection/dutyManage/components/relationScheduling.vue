@@ -9,16 +9,17 @@
     class="relation-scheduling-dialog"
   >
     <div class="scheduling-list-panel">
+      <div v-for="(item,index) in tableData"></div>
       <el-radio-group v-model="relationData" class="scheduling-group">
         <el-radio :label="1" class="scheduling-radio-item">
-          <span class="radio-item-index">第一组</span>
+          <span class="radio-item-index">第{{index}}组</span>
           <p class="radio-cnt">
             <span class="item-label">执法班次</span>
-            <span class="item-text">2010-09-12 09:00:00 至 2010-09-13 10:13:20</span>
+            <span class="item-text">{{startTime}} 至 {{endTime}}</span>
           </p>
           <p class="radio-cnt">
             <span class="item-label">执法人员</span>
-            <span class="item-text">李喵喵； 张三</span>
+            <span class="item-text">{{lawEnforcementOfficials}}</span>
           </p>
           <p class="radio-cnt">
             <span class="item-label">巡查路线</span>
@@ -34,12 +35,14 @@
   </el-dialog>
 </template>
 <script>
+import { getCheChecklogPageList} from '@/api/supervision';
 export default {
   props: {},
   data() {
     return {
       visible: false,
       relationData: "",
+      tableData:[],
     };
   },
   computed: {},
@@ -49,6 +52,14 @@ export default {
     submit() {},
     showModal(type, data) {
       this.visible = true;
+       getCheChecklogPageList(data).then(res => {
+        if (res.code == "200") {
+          this.tableData = res.data.records;
+          this.totalPage = res.data.total;
+        }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

@@ -15,70 +15,80 @@
       :rules="rules"
     >
       <el-row>
-        <el-form-item label="排班门类" prop="businessType" required>
-          <el-select v-model="addSchedulingForm.businessType" placeholder="请选择" disabled>
+        <el-form-item label="排班门类" prop="cateId" required>
+          <el-select v-model="addSchedulingForm.cateId" placeholder="请选择" disabled>
             <el-option
               v-for="item in businessOptions"
               :key="item.cateId"
               :label="item.cateName"
-              :value="item.cateName"
+              :value="item.cateId"
             ></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label=" " prop="checkType">
-          <el-radio v-model="addSchedulingForm.checkType" label="1">路巡</el-radio>
-          <el-radio v-model="addSchedulingForm.checkType" label="2">网巡</el-radio>
+        <el-form-item label=" " prop="patrolType">
+          <el-radio v-model="addSchedulingForm.patrolType" label="路巡">路巡</el-radio>
+          <el-radio v-model="addSchedulingForm.patrolType" label="网巡">网巡</el-radio>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="排班时间" prop="schedulingTime">
-          <el-time-picker
+        <el-form-item label="排班时间" prop="scheduleTime">
+          <!-- <el-time-picker
             is-range
-            v-model="addSchedulingForm.schedulingTime"
+            v-model="addSchedulingForm.scheduleTime"
             range-separator="至"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
             format="HH:mm:ss"
             value-format="HH:mm:ss"
             @change="timeChange"
-          ></el-time-picker>
+          ></el-time-picker> -->
+          <el-date-picker
+            v-model="addSchedulingForm.scheduleTime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="yyyy-MM-dd HH:mm:ss"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            >
+          </el-date-picker>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="是否用车" prop="isUseCar" required>
           <el-select v-model="addSchedulingForm.isUseCar" @change="changeUseCar">
             <el-option key="1" label="是" value="1"></el-option>
-            <el-option key="2" label="否" value="2"></el-option>
+            <el-option key="0" label="否" value="0"></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row v-if="addSchedulingForm.isUseCar === '1'">
-        <el-form-item label=" " prop="licensePlate">
-          <el-input v-model="addSchedulingForm.licensePlate" placeholder="请输入巡查车辆车牌号"></el-input>
+        <el-form-item label="  " prop="plateNumbers">
+          <el-input v-model="addSchedulingForm.plateNumbers" placeholder="请输入巡查车辆车牌号"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="执法人员" prop="lawEnforcementPer">
-          <el-select v-model="addSchedulingForm.lawEnforcementPer" multiple>
+          <el-select v-model="addSchedulingForm.lawPersonListIndex" multiple>
             <el-option
-              v-for="item in lawPersonList"
+              v-for="(item, index) in lawPersonList"
               :key="item.id"
               :label="item.lawOfficerName"
-              :value="item.lawOfficerName"
+              :value="index"
             ></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="排班人员" prop="schedulingPer">
-          <el-input v-model="addSchedulingForm.schedulingPer" disabled></el-input>
+        <el-form-item label="排班人员" prop="schedulePersonnel">
+          <el-input v-model="addSchedulingForm.schedulePersonnel" disabled></el-input>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="巡查路线" prop="inspectionRoute">
-          <el-input v-model="addSchedulingForm.inspectionRoute"></el-input>
+        <el-form-item label="巡查路线" prop="patrolRoute">
+          <el-input v-model="addSchedulingForm.patrolRoute"></el-input>
         </el-form-item>
       </el-row>
     </el-form>
@@ -91,6 +101,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { vaildateCardNum } from "@/common/js/validator";
+import { addCheScheduleApi } from "@/api/supervision";
 
 export default {
   props: {
@@ -103,35 +114,38 @@ export default {
     return {
       visible: false,
       addSchedulingForm: {
-        businessType: "",
-        checkType: "1",
-        schedulingTime: "",
+        cateId: "",
+        cateName: "",
+        patrolType: "路巡",
         isUseCar: "1",
-        licensePlate: "",
-        lawEnforcementPer: "",
-        schedulingPer: "",
-        inspectionRoute: "",
+        plateNumbers: "",
+        lawPersonListIndex: [],
+        schedulePersonnel: "",
+        schedulePersonnelId: "",
+        patrolRoute: "",
+        scheduleTime: []
       },
       lawPersonList: [],
       rules: {
-        schedulingTime: [
+        scheduleTime: [
           { required: true, message: "排班时间不能为空", trigger: "blur" },
         ],
-        licensePlate: [
+        plateNumbers: [
           { required: true, message: "巡查车牌号不能为空", trigger: "blur" },
           { validator: vaildateCardNum, trigger: "blur" },
         ],
-        lawEnforcementPer: [
+        lawPersonListIndex: [
           { required: true, message: "执法人员不能为空", trigger: "change" },
         ],
-        schedulingPer: [{ required: true, trigger: "blur" }],
-        inspectionRoute: [
+        schedulePersonnel: [{ required: true, trigger: "blur" }],
+        patrolRoute: [
           { required: true, message: "巡查路线不能为空", trigger: "blur" },
         ],
       },
       dialogTitle: "新增排班", //弹出框title
       handelType: 0, //添加 0  修改2
       schedulingDay: "",
+      curUser: {}
     };
   },
   computed: {
@@ -149,7 +163,8 @@ export default {
     },
     // 排班时间变化
     timeChange() {
-      console.log(this.addSchedulingForm.schedulingTime);
+      console.log(this.addSchedulingForm.scheduleTime);
+      
     },
     // 查询执法人员
     searchLawPerson() {
@@ -164,7 +179,8 @@ export default {
     },
     //提交
     submit() {
-      this.$refs.addCourseRef.validate((valid) => {
+
+      this.$refs.addSchedulingRef.validate((valid) => {
         if (valid) {
           const loading = this.$loading({
             lock: true,
@@ -173,6 +189,30 @@ export default {
             customClass: "loading-box",
             background: "rgba(234,237,244, 0.8)",
           });
+          this.addSchedulingForm.startTime = this.addSchedulingForm.scheduleTime[0];
+          this.addSchedulingForm.endTime = this.addSchedulingForm.scheduleTime[1];
+          const lawPersonListIndex = this.addSchedulingForm.lawPersonListIndex;
+
+          this.addSchedulingForm.lawEnforcementOfficials = "";
+          this.addSchedulingForm.lawEnforcementOfficialsIds = "";
+          this.addSchedulingForm.lawPersonListIndex.forEach(i => {
+            this.addSchedulingForm.lawEnforcementOfficials += (this.lawPersonList[i].lawOfficerName + ";");
+            this.addSchedulingForm.lawEnforcementOfficialsIds += (this.lawPersonList[i].id + ";");
+          });
+
+          const data = JSON.parse(JSON.stringify(this.addSchedulingForm));
+          addCheScheduleApi(data).then(
+            (res) => {
+              if(res.code == 200){
+                this.$message({
+                  type: "success",
+                  message: res.msg
+                });
+                this.$parent.getScheduleList();
+              }
+            },
+            (err) => { }
+          );
           loading.close();
           this.closeDialog();
         } else {
@@ -182,11 +222,14 @@ export default {
     },
     showModal(type, data) {
       if (type === "add") {
-        this.addSchedulingForm.checkType = "1";
+        this.addSchedulingForm.patrolType = "路巡";
         this.addSchedulingForm.isUseCar = "1";
       }
-      this.addSchedulingForm.businessType = data.businessType;
-      this.addSchedulingForm.schedulingPer = this.UserInfo.nickName;
+      this.addSchedulingForm.cateId = data.cateId;
+      this.addSchedulingForm.cateName = data.cateName;
+      this.addSchedulingForm.schedulePersonnel = this.UserInfo.nickName;
+      this.addSchedulingForm.schedulePersonnelId = this.UserInfo.id;
+      this.addSchedulingForm.oid = this.UserInfo.organId;
       this.schedulingDay = data.day;
       this.visible = true;
       this.$nextTick(() => {
