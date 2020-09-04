@@ -1,7 +1,8 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" style="overflow: hidden;">
-      <!-- <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle" v-if="isHome">新增模板</el-button> -->
+      <el-button type="primary" size="medium" @click="back">返回</el-button>
+      <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle" v-if="isHome">添加记录</el-button>
       <div class="search-input-right-box" style="margin-bottom:24px">
         文书名称
         <span class="search-input-right">
@@ -36,11 +37,18 @@
           </el-table-column>
         </el-table>
       </div>
-      <!-- <div class="paginationBox">
+      <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
-      </div> -->
+      </div>
+      <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
-    <el-button type="primary" style="    width: 70px;    height: 40px;position: fixed;    top: 115px;left: 240px;" @click="back">返回</el-button>
+
   </div>
 </template>
 <script>
@@ -69,6 +77,7 @@ export default {
       totalPage: 0, //总页数
       fileList: [],
       editFlag: true,
+      dialogVisible: false,
     }
   },
   computed: {
@@ -76,7 +85,7 @@ export default {
   },
   methods: {
     addNewModle() {
-      this.$refs.addModleRef.showModal();
+      this.dialogVisible = true
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -130,38 +139,39 @@ export default {
       });
 
     },
-    // 修改模板
-    editModle(item) {
-      console.log('选中的模板', item)
-      this.$store.commit("set_inspection_fileId", item.id)
-      this.$refs.addModleRef.showModal(item);
-    },
-    // 删除模板
-    delModle(item) {
-      console.log('选中的模板', item)
-      this.$confirm('确认删除当前记录文书？', "删除记录文书", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        delDocumentById(item).then(
-          res => {
-            console.log(res)
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.searchList()
-            }
-          },
-          error => {
-            // reject(error);
-          })
+    // // 修改模板
+    // editModle(item) {
+    //   console.log('选中的模板', item)
+    //   this.$store.commit("set_inspection_fileId", item.id)
+    //   this.$refs.addModleRef.showModal(item);
+    //   this.dialogVisible=true
+    // },
+    // // 删除模板
+    // delModle(item) {
+    //   console.log('选中的模板', item)
+    //   this.$confirm('确认删除当前记录文书？', "删除记录文书", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   }).then(() => {
+    //     delDocumentById(item).then(
+    //       res => {
+    //         console.log(res)
+    //         if (res.code == 200) {
+    //           this.$message({
+    //             type: "success",
+    //             message: res.msg
+    //           });
+    //           this.searchList()
+    //         }
+    //       },
+    //       error => {
+    //         // reject(error);
+    //       })
 
-      })
+    //   })
 
-    },
+    // },
     uploadImg(param) {
       //上传图片
       console.log(param);
