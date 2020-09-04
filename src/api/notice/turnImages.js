@@ -32,12 +32,25 @@ export function saveOrUpdate(data) {
   })
 }
 
-// 通过Id查询
+// 通过Id删除
 export function deleteById(id) {
   return request({
     url: "/notice/circulation/img/deleteById/" + id,
     method: "get",
     showloading: true,
+    baseUrlType: 'NOTICE_HOST',
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  })
+}
+
+// 批量删除
+export function deleteByIds(data) {
+  return request({
+    url: "/notice/circulation/img/deleteByIds",
+    method: "post",
+    showloading: true,
+    data: data,
     baseUrlType: 'NOTICE_HOST',
     loadingType: 'loadPart',
     cancelToken: setCancelSource()

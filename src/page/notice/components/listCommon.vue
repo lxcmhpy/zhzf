@@ -5,7 +5,7 @@
         <el-form
           :model="searchForm"
           ref="searchForm"
-          class="caseSearchForm"
+          style="width:100%"
           label-width="50px"
           size="small"
         >
@@ -29,7 +29,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="onAdd">添加</el-button>
             <el-button type="primary" size="medium" icon="el-icon-delete" @click="onDelete">删除</el-button>
           </el-row>
@@ -55,7 +55,7 @@
           <el-table-column prop="remark" label="审核意见" align="center"></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <!-- <el-button type="text" @click="openIssueDialog(scope.row)">预览</el-button> -->
+              <el-button type="text" @click="openPreview(scope.row)">预览</el-button>
               <el-button
                 v-if="scope.row.state===1 || scope.row.state===4"
                 type="text"
@@ -155,6 +155,9 @@ export default {
     reset() {
       this.$refs["searchForm"].resetFields();
       debugger;
+    },
+    openPreview(row) {
+      this.$refs.noticeDialog.showModal(2, row);
     },
     onAdd() {
       let data = {

@@ -5,7 +5,7 @@
         <el-form
           :model="searchForm"
           ref="searchForm"
-          class="caseSearchForm"
+          style="width:100%"
           label-width="50px"
           size="small"
         >
@@ -22,8 +22,9 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="onAdd">添加</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-delete" @click="onDeleteBatch">删除</el-button>
           </el-row>
         </el-form>
       </div>
@@ -34,7 +35,9 @@
           style="width: 100%"
           height="100%"
           highlight-current-row
+          @selection-change="handleSelectionChange"
         >
+          <el-table-column type="selection" width="50" align="center"></el-table-column>
           <el-table-column prop="title" label="标题" align="center"></el-table-column>
           <el-table-column prop="图片" label="来源" align="center">
             <template slot-scope="scope">
@@ -60,8 +63,8 @@
           </el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="onEdit(scope.row)">修改</el-button>
-              <el-button type="text" @click="onDelete(scope.row)">删除</el-button>
+              <el-button type="text" @click="onEdit(scope.row)" :disabled="scope.row.state===1">修改</el-button>
+              <el-button type="text" @click="onDelete(scope.row)" :disabled="scope.row.state===1">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -83,7 +86,12 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { findImages, saveOrUpdate, deleteById } from "@/api/notice/turnImages";
+import {
+  findImages,
+  saveOrUpdate,
+  deleteById,
+  deleteByIds,
+} from "@/api/notice/turnImages";
 import imagesDialog from "@/page/notice/trends/imagesDialog";
 
 export default {
@@ -100,6 +108,7 @@ export default {
       pageSize: 10, //pagesize
       total: 0, //总页数
       host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+      multipleSelection: [],
     };
   },
   methods: {
@@ -137,6 +146,9 @@ export default {
       this.$refs["searchForm"].resetFields();
       debugger;
     },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     changeState(row) {
       let res = saveOrUpdate(row);
       this.$message({ type: "success", message: "操作成功!" });
@@ -151,6 +163,32 @@ export default {
       };
       this.$refs.imagesDialog.showModal(1, this.form);
     },
+    async onDeleteBatch() {
+      let ids = [];
+      if (this.multipleSelection.length < 1) {
+        this.$message({ type: "warning", message: "请选择记录!" });
+        return;
+      }
+      let flag = false; //标记是否有不满足提交的记录，如不满足，则返回，不允许操作
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        let item = this.multipleSelection[i];
+        if (item.state === 1) {
+          flag = true;
+          break;
+        }
+        ids.push(item.id);
+      }
+      if (flag) {
+        this.$message({
+          type: "error",
+          message: "只允许删除未启用状态的记录!",
+        });
+        return;
+      }
+      let res = await deleteByIds(ids);
+      this.$message({ type: "success", message: "操作成功!" });
+      this.load();
+    },
     onEdit(row) {
       this.$refs.imagesDialog.showModal(2, row);
     },
@@ -158,6 +196,7 @@ export default {
       debugger;
       let res = saveOrUpdate(data);
       this.$message({ type: "success", message: "保存成功!" });
+      debugger;
       this.load();
     },
 

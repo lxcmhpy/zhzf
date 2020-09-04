@@ -5,7 +5,7 @@
         <el-form
           :model="searchForm"
           ref="searchForm"
-          class="caseSearchForm"
+          style="width:100%"
           label-width="50px"
           size="small"
         >
@@ -34,7 +34,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
             <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
             <el-button type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
@@ -259,6 +259,7 @@ export default {
       let _this = this;
       saveOrUpdateBatch(data).then(
         (res) => {
+          _this.dialogVisible = false;
           _this.$message({ type: "success", message: "操作成功!" });
           _this.load();
         },
