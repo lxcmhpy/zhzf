@@ -59,7 +59,9 @@ export default {
     },
     reqAttr: {
       type: Object,
-      default: {},
+      default() {
+        return {}
+      }
     },
     isPagination: {
       type: Boolean,
@@ -83,7 +85,7 @@ export default {
     },
     height: {
       type: String,
-      default: "299",
+      default: null,
     },
     isSelection: {
       type: Boolean,
