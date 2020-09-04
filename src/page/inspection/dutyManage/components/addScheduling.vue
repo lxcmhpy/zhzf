@@ -101,7 +101,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { vaildateCardNum } from "@/common/js/validator";
-import { addCheScheduleApi } from "@/api/supervision";
+import { addCheScheduleApi, updateCheScheduleApi } from "@/api/supervision";
 
 export default {
   props: {
@@ -143,7 +143,7 @@ export default {
         ],
       },
       dialogTitle: "新增排班", //弹出框title
-      handelType: 0, //添加 0  修改2
+      handelType: "add", //添加 add  修改 edit
       schedulingDay: "",
       curUser: {}
     };
@@ -196,23 +196,40 @@ export default {
           this.addSchedulingForm.lawEnforcementOfficials = "";
           this.addSchedulingForm.lawEnforcementOfficialsIds = "";
           this.addSchedulingForm.lawPersonListIndex.forEach(i => {
-            this.addSchedulingForm.lawEnforcementOfficials += (this.lawPersonList[i].lawOfficerName + ";");
-            this.addSchedulingForm.lawEnforcementOfficialsIds += (this.lawPersonList[i].id + ";");
+            this.addSchedulingForm.lawEnforcementOfficials += `${this.lawPersonList[i].lawOfficerName};`;
+            this.addSchedulingForm.lawEnforcementOfficialsIds += `${this.lawPersonList[i].id};`;
           });
 
           const data = JSON.parse(JSON.stringify(this.addSchedulingForm));
-          addCheScheduleApi(data).then(
-            (res) => {
-              if(res.code == 200){
-                this.$message({
-                  type: "success",
-                  message: res.msg
-                });
-                this.$parent.getScheduleList();
-              }
-            },
-            (err) => { }
-          );
+
+          if(this.handelType == "add"){
+            addCheScheduleApi(data).then(
+              (res) => {
+                if(res.code == 200){
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.$parent.getScheduleList();
+                }
+              },
+              (err) => { }
+            );
+          }else{
+            updateCheScheduleApi(data).then(
+              (res) => {
+                if(res.code == 200){
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.$parent.getScheduleList();
+                  this.$parent.clearSelectSchedule();
+                }
+              },
+              (err) => { }
+            );
+          }
           loading.close();
           this.closeDialog();
         } else {
@@ -221,19 +238,35 @@ export default {
       });
     },
     showModal(type, data) {
+      let formData = {};
+      this.handelType = type;
       if (type === "add") {
-        this.addSchedulingForm.patrolType = "路巡";
-        this.addSchedulingForm.isUseCar = "1";
+        formData.patrolType = "路巡";
+        formData.isUseCar = "0";
+        this.dialogTitle = "新增排班";
+        formData.cateId = data.cateId;
+        formData.cateName = data.cateName;
+        formData.schedulePersonnel = this.UserInfo.nickName;
+        formData.schedulePersonnelId = this.UserInfo.id;
+        formData.oid = this.UserInfo.organId;
+      }else{
+        Object.assign(formData, data);
+        this.dialogTitle = "修改排班";
+        formData.scheduleTime = [data.startTime, data.endTime];
+        const lawEnforcementOfficialsIds = data.lawEnforcementOfficialsIds.split(";");
+        formData.lawPersonListIndex = [];
+        this.lawPersonList && this.lawPersonList.forEach((item, index) => {
+          if(lawEnforcementOfficialsIds.indexOf(item.id) > -1){
+            formData.lawPersonListIndex.push(index);
+          }
+        });
       }
-      this.addSchedulingForm.cateId = data.cateId;
-      this.addSchedulingForm.cateName = data.cateName;
-      this.addSchedulingForm.schedulePersonnel = this.UserInfo.nickName;
-      this.addSchedulingForm.schedulePersonnelId = this.UserInfo.id;
-      this.addSchedulingForm.oid = this.UserInfo.organId;
+      
       this.schedulingDay = data.day;
+
       this.visible = true;
       this.$nextTick(() => {
-        this.$refs['addSchedulingRef'].resetFields();
+        this.addSchedulingForm = formData;
       })
     },
     //关闭弹窗的时候清除数据
