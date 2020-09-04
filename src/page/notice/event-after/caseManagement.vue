@@ -90,52 +90,55 @@
       width="50%"
       class="detail-dialog"
     >
-      <table class="table" width="100%" cellspacing="0">
-        <tr>
-          <td width="15%" class="title">行政处罚决定书文号</td>
-          <td width="35%">{{form.caseNumber}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚名称</td>
-          <td>{{form.caseCauseName}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚类型</td>
-          <td>{{form.punishType}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚事由</td>
-          <td>{{form.caseCauseNameCopy}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚依据</td>
-          <td>{{form.punishLaw}}</td>
-        </tr>
-        <tr>
-          <td class="title">行政相对人名称</td>
-          <td>{{form.party}}</td>
-        </tr>
-        <tr>
-          <td class="title">统一社会信用代码</td>
-          <td>{{form.socialCreditCode}}</td>
-        </tr>
-        <tr>
-          <td class="title">身份证号</td>
-          <td>{{form.partyIdNo}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚结果</td>
-          <td>{{form.punishDecision}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚决定日期</td>
-          <td>{{form.punishDate}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚单位</td>
-          <td>{{form.subjectName}}</td>
-        </tr>
-      </table>
+      <div style="height:400px;overflow: auto;">
+        <table class="table" width="100%" cellspacing="0">
+          <tr>
+            <td width="15%" class="title">行政处罚决定书文号</td>
+            <td width="35%">{{form.caseNumber}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚名称</td>
+            <td>{{form.caseCauseName}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚类型</td>
+            <td>{{form.punishType}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚事由</td>
+            <td>{{form.caseInfo}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚依据</td>
+            <td>{{form.punishLaw}}</td>
+          </tr>
+          <tr>
+            <td class="title">行政相对人名称</td>
+            <td>{{form.party}}</td>
+          </tr>
+          <tr>
+            <td class="title">统一社会信用代码</td>
+            <td>{{form.socialCreditCode}}</td>
+          </tr>
+          <tr>
+            <td class="title">身份证号</td>
+            <td>{{form.partyIdNo}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚结果</td>
+            <td>{{form.punishDecision}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚决定日期</td>
+            <td>{{form.punishDate}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚单位</td>
+            <td>{{form.subjectName}}</td>
+          </tr>
+        </table>
+      </div>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="detailVisible = false">关闭</el-button>
       </span>
@@ -152,6 +155,7 @@
       :dialogVisible="dialogVisible"
       title="新增"
       :isPagination="true"
+      height="330"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 
@@ -280,8 +284,10 @@ export default {
      * 点击确定
      */
     handleSubmit(data) {
+      debugger;
       data.forEach((item) => {
         item.caseID = item.id;
+        if (item.docData) item.caseInfo = JSON.parse(item.docData).illegalFact;
       });
       let _this = this;
       saveOrUpdateBatch(data).then(
@@ -395,6 +401,8 @@ export default {
   created() {},
   mounted() {
     this.load();
+    debugger;
+    let userinfo = iLocalStroage.gets("userInfo");
   },
 };
 </script>

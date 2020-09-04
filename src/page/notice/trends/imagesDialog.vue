@@ -62,7 +62,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { findNoticeByPage } from "@/api/notice/notice";
-import { upload, deleteFileByIdApi } from "@/api/upload";
+import { upload, deleteFileByIdApi } from "@/api/notice/upload";
 export default {
   data() {
     return {

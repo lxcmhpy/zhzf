@@ -24,7 +24,9 @@
             </tr>
             <tr>
               <td>信件内容</td>
-              <td colspan="3">{{form.letterContent}}</td>
+              <td colspan="3">
+                <div v-html="form.letterContent"></div>
+              </td>
             </tr>
             <tr>
               <td>是否公开</td>

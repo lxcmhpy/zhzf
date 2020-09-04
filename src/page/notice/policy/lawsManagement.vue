@@ -118,6 +118,7 @@
       :dialogVisible="dialogVisible"
       title="新增"
       :isPagination="false"
+      height="350"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 
