@@ -53,6 +53,7 @@ export  function  addOrganApi(data)  {
     reconsiderationOrgan2:data.reconsiderationOrgan2,
     enforcementOrgan1:data.enforcementOrgan1,
     enforcementOrgan2:data.enforcementOrgan2,
+    enforcementBody:data.enforcementBody,
   };
   let  data2  =  vm.$qs.stringify(addOrganForm);
   return  request({

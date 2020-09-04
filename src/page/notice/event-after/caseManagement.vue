@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding case-management">
     <div class="searchAndpageBox searchAndpageBox2">
       <div class="handlePart caseHandleSearchPart">
-        <el-form :model="searchForm" ref="searchForm" class="caseSearchForm" size="small">
+        <el-form :model="searchForm" ref="searchForm" style="width:100%" size="small">
           <el-row>
             <el-col :span="8">
               <el-form-item label="处罚决定书文号（案号）" prop="caseNumber" label-width="170px">
@@ -28,7 +28,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
             <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
             <el-button type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
@@ -49,8 +49,8 @@
           <el-table-column prop="caseNumber" label="行政处罚决定书文号（案号）" width="150" align="center"></el-table-column>
           <el-table-column prop="caseCauseName" label="处罚名称（违法行为）" width="110" align="center"></el-table-column>
           <el-table-column prop="party" label="行政相对人名称（当事人）" width="130" align="center"></el-table-column>
-          <el-table-column prop="provinceNo" label="受案单位" align="center"></el-table-column>
-          <el-table-column prop="partyName" label="处罚单位" align="center"></el-table-column>
+          <el-table-column prop="organName" label="受案单位" align="center"></el-table-column>
+          <el-table-column prop="subjectName" label="处罚单位" align="center"></el-table-column>
           <el-table-column prop="punishDate" label="处罚时间" align="center"></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
@@ -133,7 +133,7 @@
         </tr>
         <tr>
           <td class="title">处罚单位</td>
-          <td>{{form.partyName}}</td>
+          <td>{{form.subjectName}}</td>
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
@@ -151,7 +151,7 @@
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
-      :isPagination="false"
+      :isPagination="true"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 
@@ -222,12 +222,12 @@ export default {
         {
           label: "受案单位",
           align: "center",
-          prop: "dtmDate",
+          prop: "organName",
         },
         {
           label: "处罚单位",
           align: "center",
-          prop: "partyName",
+          prop: "subjectName",
         },
         {
           label: "处罚时间",
@@ -286,6 +286,7 @@ export default {
       let _this = this;
       saveOrUpdateBatch(data).then(
         (res) => {
+          _this.dialogVisible = false;
           _this.$message({ type: "success", message: "操作成功!" });
           _this.load();
         },
