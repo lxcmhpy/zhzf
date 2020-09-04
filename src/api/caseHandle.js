@@ -1680,7 +1680,24 @@ export function saveAssistCase(data) {
   return request({
     url: "/case/doc/caseAssistance/saveOrUpdateCaseAssistance",
     method: "post",
-    data: data,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}
+
+// 获取协查案件上传附件
+export function getAssistFile(data) {
+  return request({
+    url: "/case/sys/file/queryFileUploadListByCondition",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    params: data,
     showloading: true,
     cancelToken: setCancelSource()
   });

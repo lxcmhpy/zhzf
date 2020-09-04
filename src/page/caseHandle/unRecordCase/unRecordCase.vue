@@ -135,10 +135,10 @@ export default {
             this.$message('获取案件流程失败！')
           }
       
-          if(currentFlow.data.flowName == '处罚流程' || currentFlow.data.flowName == '赔补偿流程' || currentFlow.data.flowName == '青海赔补偿流程' || currentFlow.data.flowName == '赔补偿流程' || currentFlow.data.flowName == '青海处罚流程'){
+          if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH',].indexOf(currentFlow.data.flowUrl)!=-1){
             docTypeId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
             linkId = this.BASIC_DATA_SYS.establish_caseLinktypeId;
-          }else if(currentFlow.data.flowName == '江西流程'){
+          }else if(currentFlow.data.flowUrl == 'commonGraphData_JX'){
             docTypeId = this.BASIC_DATA_JX.establish_JX_huanjieAndDocId;
             linkId = this.BASIC_DATA_JX.establish_JX_caseLinktypeId;
           }

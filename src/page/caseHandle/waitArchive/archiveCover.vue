@@ -3,7 +3,8 @@
     <el-form ref="archiveCoverForm" :rules="rules" :model="formData" label-width="105px" v-show="showCover=='cover'">
       <div class="content_box">
         <div class="content">
-          <div class="content_title">青海公路路政执法案件</div>
+          <!-- <div class="content_title">青海公路路政执法案件</div> -->
+          <div class="content_title">{{formData.title}}</div>
           <div class="border_blue"></div>
           <div class="content_form">
             <el-form-item label="logo">
@@ -576,7 +577,7 @@ export default {
       }catch(err){
         this.$message('获取案件流程失败！')
       }
-      if(this.currentFlow.data.flowName == '青海赔补偿流程'){
+      if(this.currentFlow.data.flowUrl == 'compensationGraphData_QH'){
          this.showForQH = true;
       }else {
          this.showForQH = false;
