@@ -220,7 +220,8 @@ export default {
       console.log(staffIndex);
     },
     getDataAfter() {
-      this.staffList = this.formData.defaultStaff.split(',');
+      console.log('this.formData',this.formData);
+      this.staffList = this.formData.staff.split(',');
       this.formData.staff1 = this.staffList[0];
       this.formData.staff2 = this.staffList[1];
       this.formData.certificateId1 = this.formData.defaultCertificateId.split(",")[0];
@@ -331,7 +332,8 @@ export default {
       if (this.formData.partyTel == '') {
         console.log('电话flag', this.isPartyPhone)
         this.isPartyPhone = true;
-      }
+      };
+      this.getDataAfter();
     },
     // 提交表单
     saveData(handleType) {
@@ -340,7 +342,7 @@ export default {
     },
 
     //设置执法人员
-    getDataAfter() {
+    getDataAfter2() {
       this.staffList = this.formData.defaultStaff ? this.formData.defaultStaff.split(',') : [];
     },
     //获取案件基本信息
