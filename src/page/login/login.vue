@@ -404,7 +404,7 @@ export default {
           console.log("当前用户信息", res);
           // debuggerdebugger
 
-          if (res.data.passwordStatus == '0' && false) {
+          if (res.data.passwordStatus == '0') {
             // 判断是否修改过密码
             this.$message({ message: '当前账号首次登录，请重新设置密码', type: 'warning' });
             this.editFlag = true
