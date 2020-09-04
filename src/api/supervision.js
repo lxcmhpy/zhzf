@@ -16,3 +16,53 @@ export function getCheChecklogPageList(data){
   })
 }
 
+//获取排班管理接口
+export function getScheduleListApi(data){
+  return request({
+      url: "/schedule/cheSchedulePageList",
+      method: "get",
+      params: data,
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType: 'DUTY_HOST',
+      cancelToken: setCancelSource()
+  });
+}
+
+//删除排班管理
+export function deleteCheScheduleApi(scheduleId){
+  return request({
+    url: "/schedule/deleteCheScheduleById/" + scheduleId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'DUTY_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
+//保存排班管理
+export function addCheScheduleApi(data){
+  return request({
+      url: "/schedule/addCheSchedule",
+      method: "post",
+      data: data,
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType: 'DUTY_HOST',
+      cancelToken: setCancelSource()
+  });
+}
+
+//修改排班管理
+export function updateCheScheduleApi(data){
+  return request({
+      url: "/schedule/updateCheSchedule",
+      method: "post",
+      data: data,
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType: 'DUTY_HOST',
+      cancelToken: setCancelSource()
+  });
+}
