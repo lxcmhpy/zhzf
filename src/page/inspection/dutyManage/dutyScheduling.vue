@@ -17,13 +17,19 @@
         </div>
         <div class="scheduling-handle-wrap">
           <el-button icon="el-icon-plus" plain @click="addSchedulingFun">新增</el-button>
-          <el-button icon="el-icon-edit" plain>修改</el-button>
+          <el-button icon="el-icon-edit" plain @click="editSchedulingFun">修改</el-button>
         </div>
         <!-- 排班列表 -->
         <div class="scheduling-list-wrap">
-          <div v-for="(schedule,index) in scheduleList" :key="index" class="duty-item-box">
+          <div 
+            v-for="(schedule,index) in scheduleList" 
+            :key="index" 
+            class="duty-item-box"
+            :class="{'active': selectSchedule.scheduleId && selectSchedule.scheduleId === schedule.scheduleId}"
+            @click="onScheduleClick(schedule)"
+            >
             <div class="duty-item-top">
-              <span class="item-index">第一组</span>
+              <span class="item-index">第 {{ index + 1 }} 组</span>
               <span class="item-handle-btn">
                 <span class="iconfont law-guiji"></span>
                 <span class="el-icon-delete" @click="deleteScheduling(schedule.scheduleId)"></span>
@@ -63,6 +69,7 @@ export default {
       businessIndex: 0,
       businessOptions: [],
       scheduleList: [],
+      selectSchedule: {},//当前所选排班
     };
   },
   components: { Calendar, AddScheduling },
@@ -80,6 +87,16 @@ export default {
       const curBusiness = this.businessOptions[this.businessIndex] || {};
       const data = { day: this.dutyDay, cateId: curBusiness.cateId, cateName: curBusiness.cateName };
       this.$refs.AddSchedulingRef.showModal('add', data);
+    },
+    editSchedulingFun(){
+      if(this.selectSchedule.scheduleId){
+        this.$refs.AddSchedulingRef.showModal('edit', this.selectSchedule);
+      }else{
+        this.$message({
+          type: "warning",
+          message: "请选择排班！"
+        });
+      }
     },
     // 删除排班
     deleteScheduling(scheduleId){
@@ -133,6 +150,13 @@ export default {
           // reject(error);
         });
     },
+    onScheduleClick(schedule){
+      console.log(schedule,'click');
+      this.selectSchedule = schedule;
+    },
+    clearSelectSchedule(){
+      this.selectSchedule = {};
+    }
   },
 };
 </script>
@@ -221,6 +245,12 @@ export default {
               background: rgba(69, 115, 208, .5);
             }
           }
+        }
+        &:hover{
+          background: rgba(140, 172, 235, 0.5);
+        }
+        &.active {
+          background: rgba(69, 115, 208, 0.5);
         }
       }
     }

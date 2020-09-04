@@ -19,7 +19,7 @@ export function getCheChecklogPageList(data){
 //获取排班管理接口
 export function getScheduleListApi(data){
   return request({
-      url: "/schedule/cheSchedulePageList",
+      url: "/check/schedule/cheSchedulePageList",
       method: "get",
       params: data,
       showloading: true,
@@ -32,7 +32,7 @@ export function getScheduleListApi(data){
 //删除排班管理
 export function deleteCheScheduleApi(scheduleId){
   return request({
-    url: "/schedule/deleteCheScheduleById/" + scheduleId,
+    url: "/check/schedule/deleteCheScheduleById/" + scheduleId,
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
@@ -44,7 +44,7 @@ export function deleteCheScheduleApi(scheduleId){
 //保存排班管理
 export function addCheScheduleApi(data){
   return request({
-      url: "/schedule/addCheSchedule",
+      url: "/check/schedule/addCheSchedule",
       method: "post",
       data: data,
       showloading: true,
@@ -57,7 +57,7 @@ export function addCheScheduleApi(data){
 //修改排班管理
 export function updateCheScheduleApi(data){
   return request({
-      url: "/schedule/updateCheSchedule",
+      url: "/check/schedule/updateCheSchedule",
       method: "post",
       data: data,
       showloading: true,
