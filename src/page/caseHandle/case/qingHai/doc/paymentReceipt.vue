@@ -103,7 +103,7 @@ import { mapGetters } from "vuex";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 // import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_QH } from '@/common/js/BASIC_DATA_QH.js';
-import { uploadCommon } from "@/api/upload.js";
+import { uploadCommon,uploadEvdence } from "@/api/upload.js";
 import {
   queryResizeImageApi
 } from "@/api/caseHandle";
@@ -196,7 +196,6 @@ export default {
   mixins: [mixinGetCaseApiList],
   methods: {
     setData() {
-      console.log('setData');
       this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_QH.case_handle_paymentReceipt_QH_caseDocTypeId);
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;
       this.com_getFormDataByCaseIdAndFormId(
@@ -204,7 +203,6 @@ export default {
         this.caseLinkDataForm.caseLinktypeId,
         false
       );
-      console.log('获取数据', this.docData)
     },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -213,7 +211,6 @@ export default {
         caseId: this.caseId,
         docId: this.$route.params.docId
       };
-      console.log(data);
       this.com_getDocDataByCaseIdAndDocId(data);
     },
     //保存文书信息
@@ -238,7 +235,6 @@ export default {
       this.$store.dispatch("getCaseBasicInfo", data)
         .then(
           res => {
-            console.log('获取案件信息', res);
             this.editCaseInfo = {
               id: res.data.id,
               tempNo: res.data.tempNo
@@ -281,13 +277,12 @@ export default {
         fd.append("file", param.file);
         fd.append('caseId', this.caseId)
         fd.append('docId', this.$route.params.docId);
-        // fd.append("evName", param.file.name);
+        fd.append("evName", param.file.name);
         fd.append("evType", param.file.type);
-        uploadCommon(fd).then(
+        uploadEvdence(fd).then(
           res => {
-            console.log(res);
-            this.getBase64(res.data[0].storageId)
-            this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data[0].storageId
+            this.getBase64(res.data.storageId)
+            this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId
           },
           error => {
           }
@@ -296,7 +291,6 @@ export default {
     },
     getBase64(storageId) {
       queryResizeImageApi(storageId).then(res => {
-        console.log('获取base64', res);
         if (res === false) {   //生成失败
           this.$message.error('生成base64码失败！')
           return;
@@ -304,7 +298,6 @@ export default {
           // this.docData.pictures1 = res.data
           let data = [{ 'pictures-1': res.data }]
           this.docData.picList = JSON.stringify(data)
-          console.log('this.docData.pictures1', this.docData.picList)
         }
       }).catch(err => { console.log(err) })
     },

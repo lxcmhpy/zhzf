@@ -548,12 +548,12 @@ export default {
         throw new Error(error);
       }
       //是否显示‘综合执法平台’
-      try {
-        let dataRes = await getDictListDetailByNameApi('显示综合执法平台');
-        this.$store.commit('setShowZHZFPT', dataRes.data[0].name)
-      } catch (error) {
-        throw new Error(error);
-      }
+      // try {
+      //   let dataRes = await getDictListDetailByNameApi('显示综合执法平台');
+      //   this.$store.commit('setShowZHZFPT', dataRes.data[0].name)
+      // } catch (error) {
+      //   throw new Error(error);
+      // }
     },
     loadImg() {
       this.$store.dispatch("setLoadingState", { flag: false });

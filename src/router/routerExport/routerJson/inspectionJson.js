@@ -122,7 +122,26 @@ export default  [
                 },
                 component: () => import("@/page/inspection/record-manage/file/xzjcPDF.vue")
             },
-            // 双随机
+            // 文书属性配置-----start---------------------------------------------------------------------------------
+            {
+                path: "/inspection_fileTypeBind",
+                name: "inspection_fileTypeBind",
+                meta: {
+                title: "属性配置",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/bindManage/fileTypeBind.vue")
+            },
+            {
+                path: "/inspection_fileManage",
+                name: "inspection_fileManage",
+                meta: {
+                title: "文书配置",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/bindManage/fileManage.vue")
+            },
+            // 双随机-----start----------------------------------------------------------------------------------------------
             {
                 // 信息维护
                 path: "/infoMaintains",
@@ -163,6 +182,35 @@ export default  [
                 },
                 component: () => import("@/page/inspection/doubly-stochastic/double-random/doubleRandom.vue")
             },
+            // 路警联合----start----------------------------------------------------------------------------------------------
+            {
+                path: "/inspection_overWeightForm",
+                name: "inspection_overWeightForm",
+                meta: {
+                title: "超限超载记录",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/overWeightForm.vue")
+            },
+            {
+                path: "/inspection_overWeightList",
+                name: "inspection_overWeightList",
+                meta: {
+                title: "超限记录列表",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/overWeightList.vue")
+            },
+            {
+                path: "/inspection_imageMange",
+                name: "inspection_imageMange",
+                meta: {
+                title: "照片证据列表",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/imageMange.vue")
+            },
+            // 路警联合----end----------------------------------------------------------------------------------------------
             // 勤务管理--排班管理
             {
                 path: "/dutyScheduling",
@@ -192,6 +240,36 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/dutyManage/dutyJournal.vue")
+            },
+            // 日志管理--添加日志
+            {
+                path: "/addDutyJournal/:type/:page",
+                name: "add_duty_journal",
+                meta: {
+                title: "添加日志",
+                oneTab: true,
+                },
+                component: () => import("@/page/inspection/dutyManage/components/addJournalPage.vue")
+            },
+            // 日志管理--交接班
+            {
+                path: "/journalHandover/:page",
+                name: "journal_handover",
+                meta: {
+                title: "交接班",
+                oneTab: true,
+                },
+                component: () => import("@/page/inspection/dutyManage/components/addJournalPage.vue")
+            },
+            // 日志管理--路政详情
+            {
+                path: "/journalRoadDetail/:page",
+                name: "journal_road_detail",
+                meta: {
+                title: "路政详情",
+                oneTab: true,
+                },
+                component: () => import("@/page/inspection/dutyManage/components/addJournalPage.vue")
             }
         ]
     }, 

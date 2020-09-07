@@ -91,15 +91,16 @@
                   label="已缴金额"
                   :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])"
                 >
-                  <el-input
-                    clearable
-                    class="w-120"
+                  <el-input-number
+                    :precision="2"
+                    style="width:100%;"
+                    :controls="false"
                     v-model.number="formData.paidAmount"
                     size="small"
                     placeholder="-"
                     @change=" checkAmountAndPerformance"
                     :disabled="fieldDisabled(propertyFeatures['paidAmount'])"
-                  ></el-input>
+                  ></el-input-number>
                 </el-form-item>
               </div>
               <div class="col">

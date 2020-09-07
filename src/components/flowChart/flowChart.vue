@@ -77,15 +77,15 @@ export default {
       }catch(err){
         this.$message('获取案件流程失败！')
       }
-      if(this.currentFlow.data.flowName == '处罚流程'){
+      if(this.currentFlow.data.flowUrl == 'commonGraphData'){
          _this.graphData = graphData.commonGraphData;
-      }else if(this.currentFlow.data.flowName == '赔补偿流程'){
+      }else if(this.currentFlow.data.flowUrl == 'compensationGraphData'){
          _this.graphData = graphData.compensationGraphData;
-      }else if(this.currentFlow.data.flowName == '江西流程'){
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
          _this.graphData = graphData.commonGraphData_JX;
-      }else if(this.currentFlow.data.flowName == '青海赔补偿流程'){
+      }else if(this.currentFlow.data.flowUrl == 'compensationGraphData_QH'){
          _this.graphData = graphData.compensationGraphData_QH;
-      }else if(this.currentFlow.data.flowName == '青海处罚流程'){
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
          _this.graphData = graphData.commonGraphData_QH;
       }
 
@@ -101,7 +101,7 @@ export default {
           //是否显示解除（延长）强制措施按钮
           _this.showRemoveOrExtendBtn(res.data.completeLink);
           //是否显示行政强制措施按钮
-          if(this.currentFlow.data.flowName == '江西流程'){
+          if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){ //江西流程
             _this.showAdminCoerciveMeasureBtnByFlow(res.data);
           }
           //显示强制时间
@@ -608,7 +608,7 @@ export default {
       //执法监督不可点击
       if(this.IsLawEnforcementSupervision) return;
 
-      if(this.currentFlow.data.flowName == '处罚流程'){
+      if(this.currentFlow.data.flowUrl == 'commonGraphData' || this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
         let updataLinkData = {
           caseId:this.caseId,
           linkTypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
@@ -619,7 +619,7 @@ export default {
           this.$message('更改流程图状态失败！')
         }
         this.$router.push({ name: 'case_handle_removeOrPrelong' }) 
-      }else if(this.currentFlow.data.flowName == '江西流程'){
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){//江西流程
         let updataLinkData = {
           caseId:this.caseId,
           linkTypeId:this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId

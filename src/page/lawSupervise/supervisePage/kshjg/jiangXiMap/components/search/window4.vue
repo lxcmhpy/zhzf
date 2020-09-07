@@ -5,8 +5,9 @@
       <span class="personGoBack" @click="handlePersonGoBack">返回</span>
     </header>
     <div class="search-window4-info">
-      <p>机构名称：{{window4.info.organName}}</p>
-      <p v-if="window4.info.mobile">联系方式：{{window4.info.mobile}}</p>
+      <p v-for="item in list" :key="item.value">
+        {{item.title}}: {{item.value}}
+      </p>
       <div class="btns">
         <div class="btnsBox" v-for="(item,index) of btnList" :key="index" @click="handleClickBtns(index)">
           <i :class="item.class" :style="(index===0 || index===1)?{color:window4.info.padStateColor} : index===2 ? {color:window4.info.peStateColor} : null" />
@@ -25,6 +26,11 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  computed: {
+    list() {
+      return (this.window4 && this.window4.info) || []
     }
   },
   data() {

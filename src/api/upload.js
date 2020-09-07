@@ -1,5 +1,8 @@
 import  request  from  "@/common/js/request";
 import  {setCancelSource}  from  "@/common/js/cancelToken";
+import  Vue  from  "vue";
+
+let  vm  =  new  Vue();
 // 文件上传
 export  function  upload(data)  {
   console.log('文件上传api',data);
@@ -92,6 +95,18 @@ export function deleteFileByIdApi(fileId) {
 export function uploadCommon(data) {
   return  request({
     url:  "/case/sys/file/uploadCommon",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+//通过条件分页查询附件-case
+export function findCommonFileApi(data) {
+  data = vm.$qs.stringify(data);
+  return  request({
+    url:  "/case/sys/file/queryFileUploadCondition",
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',

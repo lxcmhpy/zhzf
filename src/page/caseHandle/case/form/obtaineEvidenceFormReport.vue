@@ -525,7 +525,7 @@ export default {
     async initData(){
       //查询是哪个流程
       let currentFlow = await queryFlowBycaseIdApi(this.caseId);
-      if(currentFlow.data.flowName == '江西流程'){
+      if(currentFlow.data.flowUrl == 'commonGraphData_JX'){
         this.isShow = false;
       }else{
         this.isShow = true;

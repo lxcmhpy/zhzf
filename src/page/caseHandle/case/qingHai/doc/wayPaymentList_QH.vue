@@ -128,7 +128,7 @@
             <td>备注</td>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item prop="docNote" :rules="fieldRules('adress',propertyFeatures['docNote'])">
-                <el-input type='textarea' v-model="docData.docNote"  :disabled="fieldDisabled(propertyFeatures['docNote'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.docNote" :disabled="fieldDisabled(propertyFeatures['docNote'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -161,7 +161,7 @@
           <span>交通运输执法部门(印章)</span>
           <br />
           <el-form-item prop="makeDate" class="pdf_datapick" :rules="fieldRules('makeDate',propertyFeatures['makeDate'])">
-            <el-date-picker class="big_error" v-model="docData.makeDate"  type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
         </div>
         <div class="notice clear">
@@ -436,15 +436,6 @@ export default {
     },
     getDataAfter() {
       console.log(this.docData.deliveryCertificatelist);
-      if (!this.docData.deliveryCertificatelist.length) {
-        if(this.docData.defaultRoadDamageList){
-          JSON.parse(this.docData.defaultRoadDamageList).forEach(element => {
-            this.docData.deliveryCertificatelist.push({ docName: element.roadLcName, unit:element.roadLcUnit, amount: element.quantity, notes: element.roadLcNote, total: element.quantity*element.roadLcPrice })
-          });
-        }else{
-        this.docData.deliveryCertificatelist = [{ docName: '', unit: '', amount: '', notes: '', total: '' }]
-        }
-      }
     },
     //选择执法人员
     chooseStaff(row) {
@@ -462,12 +453,25 @@ export default {
       };
       this.$store.dispatch("getCaseBasicInfo", data).then(
         res => {
+          let _this=this
           console.log('获取案件信息', res);
           let staff = res.data.staff.split(',');
           let certificateId = res.data.certificateId.split(',');
           staff.forEach((item, index) => {
-            this.staffData.push({ name: item, certificateId: certificateId[index] })
+            _this.staffData.push({ name: item, certificateId: certificateId[index] })
           })
+          let roadDamageList=JSON.parse(res.data.roadDamageList)
+          if (roadDamageList.length > 0) {
+            _this.docData.deliveryCertificatelist=[]
+            _this.docData.total=0
+            roadDamageList.forEach(element => {
+              _this.docData.deliveryCertificatelist.push({ docName: element.roadLcName, unit: element.roadLcUnit, amount: element.quantity, notes: element.roadLcNote, total: element.quantity * element.roadLcPrice })
+              _this.docData.total+=element.quantity * element.roadLcPrice
+            });
+          } else {
+            _this.docData.deliveryCertificatelist = [{ docName: '', unit: '', amount: '', notes: '', total: '' }]
+          }
+
         },
         err => {
           console.log(err);
@@ -476,10 +480,10 @@ export default {
     },
     // 合计
     autoTotal() {
-      console.log('tableDatas',this.tableDatas)
-      this.docData.total=0
+      console.log('tableDatas', this.tableDatas)
+      this.docData.total = 0
       this.tableDatas.forEach(element => {
-        this.docData.total+=Number(element.total)
+        this.docData.total += Number(element.total)
       });
     }
   },

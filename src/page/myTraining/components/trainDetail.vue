@@ -55,7 +55,7 @@ export default {
         customClass: "loading-box",
         background: "rgba(234,237,244, 0.8)"
       });
-      getTrainCourseDetail({ trainperId: this.$route.params.trainperId }).then(
+      getTrainCourseDetail({ trainperId: this.$route.params.trainperId,trainId:this.$route.params.trainId}).then(
         res => {
           loading.close();
           if (res.code === 200) {

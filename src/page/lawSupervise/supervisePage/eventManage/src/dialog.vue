@@ -50,7 +50,13 @@
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
       <el-form-item label="机构:" :label-width="formLabelWidth" prop="disposeOrgan">
-        <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" />
+        <ElSelectTree 
+            ref="elSelectTree" 
+            @getValue="getValue" 
+            :options="treeOptions" 
+            :props="treeProps" 
+            :value="form.disposeOrgan"
+        />
       </el-form-item>
       <el-form-item label="人员:" :label-width="formLabelWidth" prop="disposePerson">
         <el-select v-model="form.disposePerson" filterable multiple placeholder="请选择">
@@ -170,6 +176,7 @@ export default {
       hasLatitudeAndLongitude: false, //案发坐标是否已经获取
       rules:{
           eventName:[{required: true, message: "请输入事件名称", trigger: "blur"}],
+          eventDescribe:[{required: true, message: "请输入事件描述", trigger: "blur"}],
           eventDate:[{required: true, message: "请输入事件时间", trigger: "blur"}],
           eventAddress:[{required: true, message: "请输入事件坐标", trigger: "blur"}]
       }

@@ -155,7 +155,6 @@ export default {
   render() {
     return (
       <div class="jk-mapSelect">
-        {this.renderCascader()}
         {this.renderDropdown()}
         {this.renderFull()}
       </div>

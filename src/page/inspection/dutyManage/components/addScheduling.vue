@@ -8,39 +8,87 @@
     class="add-scheduling-dialog"
   >
     <el-form
-      :model="addCourseForm"
+      :model="addSchedulingForm"
       label-position="right"
       label-width="110px"
-      ref="addCourseRef"
+      ref="addSchedulingRef"
       :rules="rules"
     >
       <el-row>
-        <el-form-item label="排班门类" prop="couName" class="form-class">
-          <el-input v-model="addCourseForm.couName" disabled></el-input>
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <el-form-item label="是否用车" prop="couType">
-          <el-select v-model="addCourseForm.couType" @change="changeType">
-            <el-option key="1" label="是" value="1"></el-option>
-            <el-option key="2" label="否" value="2"></el-option>
+        <el-form-item label="排班门类" prop="cateId" required>
+          <el-select v-model="addSchedulingForm.cateId" placeholder="请选择" disabled>
+            <el-option
+              v-for="item in businessOptions"
+              :key="item.cateId"
+              :label="item.cateName"
+              :value="item.cateId"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="课件观看时长" prop="couTimeHou">
-          <el-time-picker
-            v-model="addCourseForm.couTimeHou"
-            default-value="00:00:00"
-            format="HH:mm:ss"
-            value-format="HH:mm:ss"
-            @blur="setCouTime"></el-time-picker>
-          <!-- <el-input v-model="addCourseForm.couTime" @input="trimCoutime()"></el-input> -->
+        <el-form-item label=" " prop="patrolType">
+          <el-radio v-model="addSchedulingForm.patrolType" label="路巡">路巡</el-radio>
+          <el-radio v-model="addSchedulingForm.patrolType" label="网巡">网巡</el-radio>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="学分" prop="couCredits" class="form-class">
-          <el-input v-model="addCourseForm.couCredits" @input="trim()"></el-input>
+        <el-form-item label="排班时间" prop="scheduleTime">
+          <!-- <el-time-picker
+            is-range
+            v-model="addSchedulingForm.scheduleTime"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+            format="HH:mm:ss"
+            value-format="HH:mm:ss"
+            @change="timeChange"
+          ></el-time-picker> -->
+          <el-date-picker
+            v-model="addSchedulingForm.scheduleTime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            format="yyyy-MM-dd HH:mm:ss"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            >
+          </el-date-picker>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="是否用车" prop="isUseCar" required>
+          <el-select v-model="addSchedulingForm.isUseCar" @change="changeUseCar">
+            <el-option key="1" label="是" value="1"></el-option>
+            <el-option key="0" label="否" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row v-if="addSchedulingForm.isUseCar === '1'">
+        <el-form-item label="  " prop="plateNumbers">
+          <el-input v-model="addSchedulingForm.plateNumbers" placeholder="请输入巡查车辆车牌号"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="执法人员" prop="lawEnforcementPer">
+          <el-select v-model="addSchedulingForm.lawPersonListIndex" multiple>
+            <el-option
+              v-for="(item, index) in lawPersonList"
+              :key="item.id"
+              :label="item.lawOfficerName"
+              :value="index"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="排班人员" prop="schedulePersonnel">
+          <el-input v-model="addSchedulingForm.schedulePersonnel" disabled></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="巡查路线" prop="patrolRoute">
+          <el-input v-model="addSchedulingForm.patrolRoute"></el-input>
         </el-form-item>
       </el-row>
     </el-form>
@@ -51,54 +99,137 @@
   </el-dialog>
 </template>
 <script>
+import iLocalStroage from "@/common/js/localStroage";
+import { vaildateCardNum } from "@/common/js/validator";
+import { addCheScheduleApi, updateCheScheduleApi } from "@/api/supervision";
 
 export default {
+  props: {
+    businessOptions: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       visible: false,
-      addCourseForm: {
-        lessonId: '',
-        couName: "", // 课程名称
-        couType: "", // 课程类型
-        couTimeHou: "00:00:00", // 观看时长
-        couTime: '',
-        couCredits: "", // 学分
-        path: '',
-        name: '',
-        id: '',
-        couId: ''
+      addSchedulingForm: {
+        cateId: "",
+        cateName: "",
+        patrolType: "路巡",
+        isUseCar: "1",
+        plateNumbers: "",
+        lawPersonListIndex: [],
+        schedulePersonnel: "",
+        schedulePersonnelId: "",
+        patrolRoute: "",
+        scheduleTime: []
       },
+      lawPersonList: [],
       rules: {
-        couName: [
-          { required: true, message: "课程名称不能为空", trigger: "blur" }
+        scheduleTime: [
+          { required: true, message: "排班时间不能为空", trigger: "blur" },
         ],
-        couType: [
-          { required: true, message: "课程类型不能为空", trigger: "change" }
+        plateNumbers: [
+          { required: true, message: "巡查车牌号不能为空", trigger: "blur" },
+          { validator: vaildateCardNum, trigger: "blur" },
         ],
-        couTimeHou: [
-          { required: true, validator: validateCouTimeHou, trigger: "blur" }
+        lawPersonListIndex: [
+          { required: true, message: "执法人员不能为空", trigger: "change" },
         ],
-        couCredits: [
-          { required: true, message: "学分不能为空", trigger: "blur" }
-        ]
+        schedulePersonnel: [{ required: true, trigger: "blur" }],
+        patrolRoute: [
+          { required: true, message: "巡查路线不能为空", trigger: "blur" },
+        ],
       },
-      dialogTitle: "", //弹出框title
-      handelType: 0, //添加 0  修改2
+      dialogTitle: "新增排班", //弹出框title
+      handelType: "add", //添加 add  修改 edit
+      schedulingDay: "",
+      curUser: {}
     };
   },
-  created(){},
+  computed: {
+    UserInfo() {
+      return iLocalStroage.gets("userInfo");
+    },
+  },
+  created() {
+    this.searchLawPerson();
+  },
   methods: {
+    // 是否用车
+    changeUseCar() {
+      this.addSchedulingForm.licensePlate = "";
+    },
+    // 排班时间变化
+    timeChange() {
+      console.log(this.addSchedulingForm.scheduleTime);
+      
+    },
+    // 查询执法人员
+    searchLawPerson() {
+      this.$store.dispatch("findLawOfficerList", this.UserInfo.organId).then(
+        (res) => {
+          this.lawPersonList = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
     //提交
     submit() {
-      this.$refs.addCourseRef.validate(valid => {
+
+      this.$refs.addSchedulingRef.validate((valid) => {
         if (valid) {
           const loading = this.$loading({
             lock: true,
             text: "正在保存",
             spinner: "car-loading",
             customClass: "loading-box",
-            background: "rgba(234,237,244, 0.8)"
+            background: "rgba(234,237,244, 0.8)",
           });
+          this.addSchedulingForm.startTime = this.addSchedulingForm.scheduleTime[0];
+          this.addSchedulingForm.endTime = this.addSchedulingForm.scheduleTime[1];
+          const lawPersonListIndex = this.addSchedulingForm.lawPersonListIndex;
+
+          this.addSchedulingForm.lawEnforcementOfficials = "";
+          this.addSchedulingForm.lawEnforcementOfficialsIds = "";
+          this.addSchedulingForm.lawPersonListIndex.forEach(i => {
+            this.addSchedulingForm.lawEnforcementOfficials += `${this.lawPersonList[i].lawOfficerName};`;
+            this.addSchedulingForm.lawEnforcementOfficialsIds += `${this.lawPersonList[i].id};`;
+          });
+
+          const data = JSON.parse(JSON.stringify(this.addSchedulingForm));
+
+          if(this.handelType == "add"){
+            addCheScheduleApi(data).then(
+              (res) => {
+                if(res.code == 200){
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.$parent.getScheduleList();
+                }
+              },
+              (err) => { }
+            );
+          }else{
+            updateCheScheduleApi(data).then(
+              (res) => {
+                if(res.code == 200){
+                  this.$message({
+                    type: "success",
+                    message: res.msg
+                  });
+                  this.$parent.getScheduleList();
+                  this.$parent.clearSelectSchedule();
+                }
+              },
+              (err) => { }
+            );
+          }
           loading.close();
           this.closeDialog();
         } else {
@@ -107,75 +238,49 @@ export default {
       });
     },
     showModal(type, data) {
+      let formData = {};
+      this.handelType = type;
+      if (type === "add") {
+        formData.patrolType = "路巡";
+        formData.isUseCar = "0";
+        this.dialogTitle = "新增排班";
+        formData.cateId = data.cateId;
+        formData.cateName = data.cateName;
+        formData.schedulePersonnel = this.UserInfo.nickName;
+        formData.schedulePersonnelId = this.UserInfo.id;
+        formData.oid = this.UserInfo.organId;
+      }else{
+        Object.assign(formData, data);
+        this.dialogTitle = "修改排班";
+        formData.scheduleTime = [data.startTime, data.endTime];
+        const lawEnforcementOfficialsIds = data.lawEnforcementOfficialsIds.split(";");
+        formData.lawPersonListIndex = [];
+        this.lawPersonList && this.lawPersonList.forEach((item, index) => {
+          if(lawEnforcementOfficialsIds.indexOf(item.id) > -1){
+            formData.lawPersonListIndex.push(index);
+          }
+        });
+      }
+      
+      this.schedulingDay = data.day;
+
       this.visible = true;
+      this.$nextTick(() => {
+        this.addSchedulingForm = formData;
+      })
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.$refs["addCourseRef"].resetFields();
-      this.uploadAccept = '';
-      this.currentType = '';
-      this.coursewareFileList.splice(0, this.coursewareFileList.length);
-      for (const key in this.addCourseForm) {
-        this.addCourseForm[key] = "";
+      this.$refs["addSchedulingRef"].resetFields();
+      for (const key in this.addSchedulingForm) {
+        this.addSchedulingForm[key] = "";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
-.add-scheduling-dialog {
-  .upload-btn {
-    padding: 10px 24px;
-    background: linear-gradient(
-      180deg,
-      rgba(248, 248, 248, 1) 0%,
-      rgba(238, 238, 238, 1) 100%
-    );
-    color: #20232b;
-    border: none;
-    border-left: 1px solid rgba(221, 221, 221, 1);
-    &:hover {
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(229, 234, 246, 1) 100%
-      );
-    }
-  }
-  .upload-course-file {
-    position: relative;
-    width: 100%;
-    height: 32px;
-    line-height: 32px;
-    border: 1px solid rgba(221, 221, 221, 1);
-    display: flex;
-    align-items: center;
-    .upload-progress {
-      flex: 1;
-      >>> .el-progress-bar__outer,
-      >>> .el-progress-bar__inner {
-        border-radius: 0;
-      }
-      >>> .el-progress-bar__outer {
-        background: rgba(195, 226, 225, 1);
-      }
-      >>> .el-progress-bar__inner {
-        background: rgba(74, 175, 167, 1);
-      }
-      .file-name-view{
-        padding: 0 14px;
-        overflow     : hidden;
-        text-overflow: ellipsis;
-        white-space  : nowrap;
-      }
-    }
-  }
-  .upload-import-text {
-    color: #999;
-    line-height: 28px;
-  }
-}
 >>> .el-select,
 >>> .el-date-editor {
   display: block;
@@ -184,5 +289,14 @@ export default {
 >>> .el-date-editor.el-input__inner {
   display: block;
   width: 100%;
+}
+>>> .el-range-editor.el-input__inner {
+  display: inline-block;
+  padding: 0 15px;
+  height: 32px;
+  line-height: 32px;
+  .el-range-input {
+    height: 28px;
+  }
 }
 </style>

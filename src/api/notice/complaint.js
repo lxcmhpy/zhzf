@@ -6,7 +6,7 @@ import {
   setCancelSource
 } from "@/common/js/cancelToken";
 
-// 加载列表
+// 加载投诉列表
 export function findComplaints(data) {
   return request({
     url: "/notice/complaint/list",

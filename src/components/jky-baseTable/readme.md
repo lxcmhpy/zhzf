@@ -37,7 +37,6 @@ isRadio | 表格是否可单选 | Boolean | / | false | 否
 isSelection | 表格是否可多选 | Boolean | / | false | 否
 isNumber | 是否显示序号列 | Boolean | / | false | 否
 columns  | 表头 | Array | / | / | 是
-tableData  | table数据 | Array | / | / | 是
 buttons  | 表格中的操作按钮 | Array | / | /|否
 
 >- 注意： isRadio 和 isSelection 不能同时为 true， 否则会出错。

@@ -118,8 +118,11 @@ export default {
     },
     //获取行业类别 根据执法门类
     getIndustryCategory() {
-      let _this = this
-      this.$store.dispatch("getIndustryCategory", this.illegalActSearchForm.categoryId).then(
+      let _this = this;
+      let data={
+        pid:_this.illegalActSearchForm.categoryId,
+      }
+      this.$store.dispatch("getIndustryCategory", data).then(
         res => {
           _this.industryCategoryList = res.data;
           _this.getIllegaAct();

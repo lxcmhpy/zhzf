@@ -2,7 +2,7 @@
   <div class="print_box" id="assistReport">
     <el-form
       :rules="rules"
-      ref="docForm"
+      ref="docFormRef"
       :inline-message="true"
       :inline="true"
       :model="reportData"
@@ -12,20 +12,22 @@
         <div class="doc_topic">协助调查函</div>
         <div class="doc_number">
           案号：
-          <span class="assist-span-bg">鄂武港航罚[2020]00001号</span>
+          <span class="assist-span-bg">{{ reportData.caseNumber }}</span>
         </div>
         <div class="datapick_style">
           <p class="line-h-16">
-            <span class="assist-span-bg">目标机构名称</span>:
+            <span class="assist-span-bg">{{ reportData.targetOrgan }}</span>:
           </p>
         </div>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="caseDescription">
+            <el-form-item
+              prop="caseName"
+            >
               <el-input
                 class="text_indent6 overflow_lins_textarea"
                 type="textarea"
-                v-model="reportData.caseDescription"
+                v-model="reportData.caseName"
                 rows="2"
                 maxlength="100"
                 placeholder="\"
@@ -60,34 +62,44 @@
         </div>
 
         <div style="margin-top: 40px;">
-            <p>
-              联系人：
-              <el-form-item prop="organContactor" style="width:200px">
-                <!-- <el-input
+          <p>
+            联系人：
+            <el-form-item
+              prop="organContactor"
+              style="width:200px"
+            >
+              <!-- <el-input
                   type="textarea"
                   v-model="reportData.organContactor"
                   v-bind:class="{ over_flow: reportData.organContactor && reportData.organContactor.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   placeholder
-                ></el-input> -->
-                <span class="span_bg span_bg_top" style="line-height:18px;" @click="addContactor">{{ reportData.organContactor }}</span>
-              </el-form-item>
-            </p>
-          </div>
-          <div>
-            <p>
-              联系电话：
-              <el-form-item prop="organTel" style="width:180px">
-                <el-input
-                  type="textarea"
-                  v-model="reportData.organTel"
-                  v-bind:class="{ over_flow: reportData.organTel && reportData.organTel.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
-                  placeholder
-                ></el-input>
-              </el-form-item>
-            </p>
-          </div>
+              ></el-input>-->
+              <span
+                class="span_bg span_bg_top"
+                style="line-height:18px;"
+                @click="addContactor"
+              >{{ reportData.organContactor }}</span>
+            </el-form-item>
+          </p>
+        </div>
+        <div>
+          <p>
+            联系电话：
+            <el-form-item
+              prop="organTel"
+              style="width:180px"
+            >
+              <el-input
+                type="textarea"
+                v-model="reportData.organTel"
+                v-bind:class="{ over_flow: reportData.organTel && reportData.organTel.length>14?true:false }"
+                :autosize="{ minRows: 1, maxRows: 3}"
+                placeholder
+              ></el-input>
+            </el-form-item>
+          </p>
+        </div>
         <div class="pdf_seal" style="margin: 60px 0 120px;">
           <span>交通运输执法部门(印章)</span>
           <br />
@@ -108,7 +120,7 @@
     </el-form>
     <!-- 选择联系人 -->
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson"></chooseLawPerson>
-    
+
     <div class="assist-right-btn">
       <el-button class="assist-step-btn" plain @click="nextStep(1)">上一步</el-button>
       <el-button class="assist-step-btn" type="primary" @click="nextStep(3)">下一步</el-button>
@@ -116,6 +128,7 @@
   </div>
 </template>
 <script>
+import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson";
@@ -125,17 +138,19 @@ import { findCaseAllBindPropertyApi } from "@/api/caseHandle";
 
 export default {
   components: { chooseLawPerson },
+  mixins: [mixinGetCaseApiList],
   data() {
     return {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
       reportData: {
-        caseNumber: "",
-        caseDescription: "案件案由", // 案由
+        caseNumber: "", // 案号
+        targetOrgan: "", // 目标机构名称
+        caseName: "", // 案由
         assistProblem: "", // 需要协查的问题
-        organContactor: "",
-        organTel: "",
-        makeDate: "",
+        organContactor: "", // 联系人
+        organTel: "", // 联系电话
+        makeDate: "", // 时间
       },
       editCaseInfo: true,
       num4: 1,
@@ -146,30 +161,55 @@ export default {
       illegalFactsEvidence: "",
       value1: "",
       rules: {
-        askRecordNumber: [
-          { required: true, message: "询问次数不能为空", trigger: "blur" },
+        caseName: [
+          { required: true, message: "案由不能为空", trigger: "blur" },
         ],
-        inquiryAddress: [
-          { required: true, message: "地点不能为空", trigger: "blur" },
+        assistProblem: [
+          {
+            required: true,
+            message: "需要协查的问题不能为空",
+            trigger: "blur",
+          },
         ],
-        inquiryStaff: [
-          { required: true, message: "询问人不能为空", trigger: "blur" },
+        organContactor: [
+          { required: true, message: "联系人不能为空", trigger: "blur" },
         ],
-        recordStaff: [
-          { required: true, message: "记录人不能为空", trigger: "change" },
+        makeDate: [
+          { required: true, message: "时间不能为空", trigger: "blur" },
         ],
-        inquiried: [
-          { required: true, message: "被询问人不能为空", trigger: "blur" },
-        ],
-        inquiriedRelation: [
-          { required: true, message: "与案件关系不能为空", trigger: "blur" },
+        organTel: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
         ],
       },
+      propertyFeatures: "", //字段属性配置
     };
   },
   inject: ["reload"],
-  computed: { ...mapGetters([]) },
+  computed: {
+    selectCase() {
+      const caseInfo = JSON.parse(sessionStorage.getItem("AssistData"));
+      return caseInfo;
+    },
+    ...mapGetters([]),
+  },
+  created() {
+    this.showCaseBaseInfo();
+  },
   methods: {
+    // 从案件详情带过来数据回显
+    showCaseBaseInfo() {
+      if (this.selectCase.detail && !this.selectCase.report) {
+        this.reportData.caseNumber = this.selectCase.case.caseNumber;
+        this.reportData.targetOrgan = this.selectCase.detail.targetOrgan;
+        this.reportData.caseName = `${
+          this.selectCase.case.party || this.selectCase.case.partyName
+        }${this.selectCase.case.caseCauseName}`;
+      }
+      if (this.selectCase.report) {
+        this.reportData = this.selectCase.report;
+      }
+    },
     // 编辑案件信息
     editCaseInfoFun() {
       this.editCaseInfo = true;
@@ -185,7 +225,6 @@ export default {
       };
       findCaseAllBindPropertyApi(data).then(
         (res) => {
-          console.log(res);
           let data2 = JSON.parse(res.data.propertyData);
           this.staffList = data2.staff.split(",");
         },
@@ -196,40 +235,42 @@ export default {
     },
     //选择执法人员
     addContactor() {
-      this.$refs.chooseLawPersonRef.showModal(this.lawPersonListId, this.alreadyChooseLawPerson);
+      this.$refs.chooseLawPersonRef.showModal(
+        this.lawPersonListId,
+        this.alreadyChooseLawPerson
+      );
     },
-    
+
     //设置执法人员
     setLawPerson(userlist) {
       this.alreadyChooseLawPerson = userlist;
       this.lawPersonListId = [];
       let nameList = [];
 
-      this.alreadyChooseLawPerson.forEach(item => {
+      this.alreadyChooseLawPerson.forEach((item) => {
         this.lawPersonListId.push(item.id);
         nameList.push(item.lawOfficerName);
       });
 
-      this.reportData.organContactor = nameList.join(',');
-
+      this.reportData.organContactor = nameList.join(",");
     },
     // 默认设置联系人为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
-          res => {
+          (res) => {
             let currentUserData = {};
             this.lawPersonListId = [];
             this.alreadyChooseLawPerson = [];
 
-            res.data.forEach(item => {
-              if (
-                item.userId == iLocalStroage.gets("userInfo").id
-              ) {
+            res.data.forEach((item) => {
+              if (item.userId == iLocalStroage.gets("userInfo").id) {
                 currentUserData.id = item.id;
                 currentUserData.lawOfficerName = item.lawOfficerName;
-                currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0]
+                currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(
+                  ","
+                )[0];
                 this.alreadyChooseLawPerson.push(currentUserData);
                 this.lawPersonListId.push(currentUserData.id);
 
@@ -237,24 +278,73 @@ export default {
               }
             });
           },
-          err => {
+          (err) => {
             console.log(err);
           }
         );
     },
 
     // 下一步
-    nextStep(step){
-      this.$emit('nextStep', step);
+    nextStep(step) {
+      if(step === 1){
+        this.$emit("nextStep", step);
+        return false;
+      }
+      this.$refs.docFormRef.validate((valid, noPass) => {
+        if (valid) {
+          // 生成文书
+          const reportData = JSON.parse(JSON.stringify(this.reportData));
+          for(let key in reportData){
+            reportData[key] = reportData[key].trim();
+          }
+          let docData = {
+            caseBasicinfoId: this.selectCase.case.caseId,
+            caseDoctypeId: "b7dd17dc97767e0ce8826c968b74ac89",
+            docData: JSON.stringify(reportData),
+            status: 1,
+          };
+          this.$store.dispatch("addDocData", docData).then(
+            (res) => {
+              this.saveReportData();
+              this.$emit("nextStep", step);
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        } else {
+          let a = Object.values(noPass)[0];
+          this.$message({
+            showClose: true,
+            message: a[0].message,
+            type: "error",
+            offset: 100,
+            customClass: "validateErrorTip",
+          });
+          return false;
+        }
+      });
+    },
+    // 缓存协查报告数据
+    saveReportData(){
+      const reportData = {
+        applicant: this.reportData.organContactor,
+        targetOrgan: this.reportData.targetOrgan,
+        createStartTime: this.reportData.makeDate
+      };
+      sessionStorage.setItem(
+        "AssistData",
+        JSON.stringify({ case: this.selectCase.case, detail: this.selectCase.detail, report: reportData })
+      );
     },
     // 获取当前日期
-    getCurrentDay(){
+    getCurrentDay() {
       const date = new Date();
       const year = date.getFullYear();
       const month = date.getMonth() + 1;
       const day = date.getDate();
       this.reportData.makeDate = `${year}-${month}-${day}`;
-    }
+    },
   },
   mounted() {
     this.getCurrentDay();

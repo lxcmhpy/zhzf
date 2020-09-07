@@ -18,6 +18,10 @@
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="事件坐标:" :label-width="formLabelWidth">
+        <el-input v-model="form.eventAddress" readonly>
+        </el-input>
+      </el-form-item>
       <el-form-item label="是否重点事件:" :label-width="formLabelWidth">
         <el-radio v-model="form.isemphasis" :label='1'>是</el-radio>
         <el-radio v-model="form.isemphasis" :label='0'>否</el-radio>
@@ -37,7 +41,14 @@
         <el-input v-model="form.disposeOrganName"></el-input>
       </el-form-item>
       <el-form-item label="人员:" :label-width="formLabelWidth">
-        <el-input v-model="form.disposePersonName"></el-input>
+        <el-select v-model="form.disposePerson" filterable multiple>
+            <el-option
+                v-for="item in peopleOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="事件附件:" :label-width="formLabelWidth">
         <el-upload
@@ -73,8 +84,6 @@
 </template>
 
 <script>
-import { addUpdate } from "@/api/eventManage";
-import { upload, deleteFileByIdApi } from "@/api/lawSupervise.js";
 import localStroage from '@/common/js/localStroage';
 export default {
   data() {
@@ -93,15 +102,17 @@ export default {
         id: "", // 当前行 id，为空则新增，否则为编辑
         eventName: '',
         eventDescribe: '',
+        eventAddress:'',
         eventDate: '',
         isemphasis: 1,
         iscoordinator: 1,
         state: 1,
         disposeOrganName: '',
-        disposePersonName: '',
+        disposePerson:''
       },
       dialogImageUrl: '',
       dialogVisible: false,
+      peopleOptions:[],
     }
   },
   methods: {

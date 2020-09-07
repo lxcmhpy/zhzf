@@ -9,7 +9,7 @@
         <div>
           <el-form
             :model="caseSearchForm"
-            ref="caseSearchForm"
+            ref="caseSearchFormRef"
             class="caseSearchForm"
             label-width="110px"
           >
@@ -25,9 +25,14 @@
                   <el-input v-model="caseSearchForm.party"></el-input>
                 </el-form-item>
               </div>
-              <div class="item">
+              <div v-if="assistType === 'sponsored'" class="item">
                 <el-form-item label="目标机构" prop="targetOrgan">
                   <el-input v-model="caseSearchForm.targetOrgan"></el-input>
+                </el-form-item>
+              </div>
+              <div v-if="assistType === 'received'" class="item">
+                <el-form-item label="发起机构" prop="launchOrgan">
+                  <el-input v-model="caseSearchForm.launchOrgan"></el-input>
                 </el-form-item>
               </div>
               <div class="item">
@@ -51,8 +56,8 @@
                 <el-form-item label="处理状态" prop="status">
                   <el-select v-model="caseSearchForm.status" placeholder="请选择">
                     <el-option label value></el-option>
-                    <el-option label="已发送" :value="1"></el-option>
-                    <el-option label="已完成" :value="2"></el-option>
+                    <el-option label="待回复" value="0"></el-option>
+                    <el-option label="已完成" value="1"></el-option>
                   </el-select>
                 </el-form-item>
               </div>
@@ -74,7 +79,7 @@
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
-                    value-format="yyyy-MM-dd"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     format="yyyy-MM-dd"
                   ></el-date-picker>
                 </el-form-item>
@@ -85,9 +90,13 @@
       </div>
       <div class="switch-filter">
         <span class="switch-filter-label">筛选：</span>
-        <el-radio-group v-model="caseSearchForm.assistStatus" size="medium">
-          <el-radio-button label="1">待回复</el-radio-button>
-          <el-radio-button label="2">已完成</el-radio-button>
+        <el-radio-group
+          v-model="caseSearchForm.status"
+          size="medium"
+          @change="currentPage = 1; getAssistCaseList();"
+        >
+          <el-radio-button label="0">待回复</el-radio-button>
+          <el-radio-button label="1">已完成</el-radio-button>
         </el-radio-group>
       </div>
       <div class="tablePart">
@@ -106,10 +115,27 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="targetOrgan" label="目标机构" align="center" min-width="150"></el-table-column>
+          <el-table-column
+            v-if="assistType === 'sponsored'"
+            prop="targetOrgan"
+            label="目标机构"
+            align="center"
+            min-width="150"
+          ></el-table-column>
+          <el-table-column
+            v-if="assistType === 'received'"
+            prop="launchOrgan"
+            label="发起机构"
+            align="center"
+            min-width="150"
+          ></el-table-column>
           <el-table-column prop="createTime" label="发起时间" align="center" min-width="150"></el-table-column>
           <el-table-column prop="applicant" label="申请人" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="status" label="处理状态" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="status" label="处理状态" align="center" min-width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.status === '1' ? '已完成' : '待回复' }}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" width="120" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="checkCase(scope.row)">查看</el-button>
@@ -141,8 +167,8 @@ export default {
   props: {
     assistType: {
       type: String,
-      default: 'sponsored'
-    }
+      default: "sponsored",
+    },
   },
   data() {
     return {
@@ -154,11 +180,11 @@ export default {
         vehicleShipId: "",
         caseType: "",
         targetOrgan: "",
-        status: "",
+        launchOrgan: "",
+        status: "0",
         caseCauseName: "",
         applicant: "",
         launchTime: "",
-        assistStatus: "1",
       },
       tableData: [],
       currentPage: 1, //当前页
@@ -167,9 +193,10 @@ export default {
     };
   },
   watch: {
-    assistType(val){
-      console.log('切换协查类型，发起的和接收的');
-    }
+    assistType(val) {
+      this.$refs.caseSearchFormRef.resetFields();
+      this.getAssistCaseList();
+    },
   },
   components: {},
   computed: {
@@ -185,42 +212,55 @@ export default {
     // 查询协查案件列表
     getAssistCaseList() {
       const searchData = JSON.parse(JSON.stringify(this.caseSearchForm));
-      if(searchData.launchTime && searchData.launchTime.length){
-        searchData['createStartTime'] = searchData.launchTime[0];
-        searchData['createEndTime'] = searchData.launchTime[1];
+      if (searchData.launchTime && searchData.launchTime.length) {
+        searchData["createStartTime"] = searchData.launchTime[0];
+        searchData["createEndTime"] = searchData.launchTime[1];
+      }
+      delete searchData.launchTime;
+      // 发起的
+      if (this.assistType === "sponsored") {
+        searchData.launchOrgan = this.UserInfo.organName;
+      }
+      // 接收的
+      if (this.assistType === "received") {
+        searchData.targetOrgan = this.UserInfo.organName;
       }
       const queryData = Object.assign(searchData, {
         current: this.currentPage,
         size: this.pageSize,
       });
       this.tableData.splice(0, this.tableData.length);
-      getCaseAssistanceList(queryData).then(res => {
-        if (res.code === 200) {
-          this.tableData = res.data.records;
-          this.total = res.data.total;
+      getCaseAssistanceList(queryData).then(
+        (res) => {
+          if (res.code === 200) {
+            this.tableData = res.data.records;
+            this.total = res.data.total;
+          }
+        },
+        (err) => {
+          console.log(err.msg);
         }
-      }, err => {
-        console.log(err.msg);
-      })
+      );
     },
     // 查看协查案件
     checkCase(row) {
       let setCaseNumber = "协查: " + row.caseNumber;
       this.$store.commit("setCaseNumber", setCaseNumber);
       this.$router.push({
-        name: 'reviewAssistCase_JX',
+        name: "reviewAssistCase_JX",
         params: {
           tabTitle: setCaseNumber,
-          id: row.id
-        }
+          id: row.id,
+          type: this.assistType,
+        },
       });
     },
     // 新增协查
-    addAssistCase(){
-      sessionStorage.setItem('AssistStep', 0);
+    addAssistCase() {
+      sessionStorage.setItem("AssistStep", 0);
       this.$router.push({
-        path: '/add-assist-case_JX'
-      })
+        path: "/add-assist-case_JX",
+      });
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -232,7 +272,7 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getAssistCaseList();
-    }
+    },
   },
 };
 </script>
@@ -257,6 +297,7 @@ export default {
 .sponsored-case-wrap {
   .switch-filter {
     line-height: 32px;
+    margin-bottom: 20px;
     .switch-filter-label {
       font-size: 14px;
       display: inline-block;

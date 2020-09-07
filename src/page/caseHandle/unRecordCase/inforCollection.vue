@@ -2995,7 +2995,11 @@ export default {
     }
     this.$refs.link_5.addEventListener("scroll", this.scrool5);
   },
-  activated() {this.initDrawer();},
+  activated() {
+      if(this.directionList.length==0){
+          this.initDrawer()
+      }
+  },
   created() {
     // this.initDrawer();
     //this.getDirectionList();

@@ -1,0 +1,119 @@
+<template>
+  <!-- 现场记录 -->
+  <el-dialog
+    title="现场记录"
+    :visible.sync="visible"
+    @close="closeDialog"
+    :close-on-click-modal="false"
+    width="64%"
+    class="relation-record-dialog"
+  >
+    <el-table
+      ref="journalTableRef"
+      :data="tableData"
+      resizable
+      stripe
+      v-loading="tableLoading"
+      element-loading-spinner="car-loading"
+      element-loading-text="加载中..."
+      style="width: 100%;height:100%;"
+      @selection-change="selectRecord"
+    >
+      <el-table-column type="selection" align="center"></el-table-column>
+      <el-table-column prop="journalNo" label="记录编号" align="left" width="100px"></el-table-column>
+      <el-table-column prop="inspectionTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
+      <el-table-column prop="companyName" label="定位地点" align="center" min-width="220px"></el-table-column>
+      <el-table-column prop="routeName" label="路段名称" align="center" min-width="180px"></el-table-column>
+      <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px"></el-table-column>
+      <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
+      <el-table-column prop="lawPerson" label="案件编号" align="center" min-width="140px"></el-table-column>
+    </el-table>
+      <div class="paginationBox">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          background
+          :page-sizes="[10, 20, 30, 40, 50]"
+          layout="prev, pager, next,sizes,jumper"
+          :total="totalPage"
+        ></el-pagination>
+      </div>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="closeDialog">取 消</el-button>
+      <el-button type="primary" @click="submit" :disabled="selectList.length === 0">关 联</el-button>
+    </div>
+  </el-dialog>
+</template>
+<script>
+export default {
+  props: {},
+  data() {
+    return {
+      visible: false,
+      selectList: [],
+      tableLoading: false,
+      tableData: [
+        {
+          journalNo: "11111111",
+          checkType: "安全检查",
+          checkCategory: "公路巡查",
+          inspectionTime: "2020-08-03 14:00 2020-08-03 18:00",
+          companyName: "云南省公路路政总队昆磨支队",
+          routeName: "S210     红砖厂路",
+          routeInfo: "K100+50m至K100+55m",
+          routeSituation: "正常",
+          lawPerson: "CN325345436"
+        },
+        {
+          journalNo: "34235534",
+          checkType: "安全检查",
+          checkCategory: "公路巡查",
+          inspectionTime: "2020-08-03 14:00 2020-08-03 18:00",
+          companyName: "北京市交通运输管理局",
+          routeName: "S210     红砖厂路",
+          routeInfo: "K100+50m至K100+55m",
+          routeSituation: "正常",
+          lawPerson: "CN325345436"
+        },
+      ],
+      currentPage: 1, //当前页
+      pageSize: 10,   //pagesize
+      totalPage: 0,   //总页数
+    };
+  },
+  computed: {},
+  created() {},
+  methods: {
+    // 获取现场记录列表
+    getRecordList(){
+        console.log('查询列表');
+    },
+    //更改每页显示的条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getRecordList();
+    },
+    //更换页码
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getRecordList();
+    },
+    // 选择关联记录
+    selectRecord(val){
+      this.selectList = val;
+    },
+    // 关联
+    submit() {},
+    showModal(type, data) {
+      this.visible = true;
+    },
+    //关闭弹窗的时候清除数据
+    closeDialog() {
+      this.visible = false;
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+</style>

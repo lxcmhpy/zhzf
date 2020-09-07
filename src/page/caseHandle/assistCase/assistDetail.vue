@@ -15,7 +15,7 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item label="案号" prop="caseNumber">
-                  {{ selectCase.caseNumber }}
+                  {{ selectCase.case.caseNumber }}
                   <el-button plain size="small" style="margin-left: 30px;" @click="nextStep(0)">重新选择</el-button>
                 </el-form-item>
               </el-col>
@@ -23,7 +23,7 @@
                 <el-form-item
                   label="案由"
                   prop="caseOfAction"
-                >{{ `${selectCase.party || selectCase.partyName}${selectCase.caseCauseName}`}}</el-form-item>
+                >{{ `${selectCase.case.party || selectCase.case.partyName}${selectCase.case.caseCauseName}`}}</el-form-item>
               </el-col>
             </el-row>
           </div>
@@ -60,8 +60,10 @@
                 class="upload-assist-file"
                 action
                 :limit="3"
+                :multiple="true"
                 :auto-upload="false"
                 :file-list="fileList"
+                :on-change="handleChange"
               >
                 <el-button size="small" type="primary">选取文件</el-button>
                 <span slot="tip" class="upload-tips">(最多上传3个附件)</span>
@@ -167,13 +169,14 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import SelectTargetOrgan from "@/page/caseHandle/assistCase/selectTargetOrgan";
+import { uploadCommon } from "@/api/upload";
 
 export default {
   components: { SelectTargetOrgan },
   computed: {
     selectCase() {
       const caseInfo = JSON.parse(sessionStorage.getItem("AssistData"));
-      return caseInfo.case;
+      return caseInfo;
     },
     UserInfo() {
       return iLocalStroage.gets("userInfo");
@@ -190,7 +193,11 @@ export default {
       lawOrganName: "",
       rules: {
         targetOrgan: [
-          { required: true, message: "请先选择机构类型再输入目标机构", trigger: "blur" },
+          {
+            required: true,
+            message: "请先选择机构类型再输入目标机构",
+            trigger: "blur",
+          },
         ],
         explain: [
           { required: true, message: "请输入协查说明", trigger: "blur" },
@@ -199,7 +206,12 @@ export default {
     };
   },
   created() {
-    console.log(this.selectCase);
+    if (this.selectCase.detail) {
+      this.caseData.explain = this.selectCase.detail.explain;
+      this.caseData.targetOrgan = this.selectCase.detail.targetOrgan;
+      this.organType = this.selectCase.detail.organType;
+      this.fileList = this.selectCase.detail.fileList;
+    }
   },
   methods: {
     // 选择目标机构
@@ -212,23 +224,74 @@ export default {
       this.caseData.targetOrgan = "";
       this.lawOrganName = "";
     },
+    // 选择附件
+    handleChange(file, fileList){
+      this.fileList = fileList;
+    },
     // 下一步
     nextStep(step) {
       if (step === 2) {
         this.$refs.caseDataRef.validate((isVaild) => {
           if (isVaild) {
-            this.nextSubmitForm();
+            this.uploadFile(step);
           }
         });
       } else {
         this.$emit("nextStep", step);
       }
     },
+    // 上传附件
+    uploadFile(step) {
+      if (this.fileList && this.fileList.length) {
+        var fd = new FormData();
+        this.fileList.forEach(item => {
+          if(item.status === 'ready'){
+            fd.append('file', item.raw)
+          }
+        })
+        fd.append("userId", this.UserInfo.id);
+        fd.append("category", "协查案件-发起");
+        fd.append("fileType", ".pdf");
+        fd.append("caseId", this.selectCase.case.caseId);
+        const loading = this.$loading({
+          lock: true,
+          text: "正在上传",
+          spinner: "car-loading",
+          customClass: "loading-box",
+          background: "rgba(234,237,244, 0.8)",
+        });
+        uploadCommon(fd).then(
+          (res) => {
+            loading.close();
+            this.$message({ type: "success", message: "附件上传成功" });
+            this.nextSubmitForm(step);
+          },
+          (error) => {
+            loading.close();
+            this.$message({ type: "error", message: "附件上传失败" });
+          }
+        );
+      } else {
+        this.nextSubmitForm(step);
+      }
+    },
     // 上传附件同时缓存数据
-    nextSubmitForm() {
+    nextSubmitForm(step) {
+      const copyData = JSON.parse(JSON.stringify(this.caseData));
+      copyData.organType = this.organType;
+      copyData.fileList = [];
+      if(this.fileList && this.fileList.length){
+        this.fileList.forEach(item => {
+          item.status = 'success';
+          copyData.fileList.push(item);
+        })
+      }
+      if (copyData.organType === "1") {
+        copyData.targetOrgan = this.lawOrganName;
+      }
       sessionStorage.setItem(
         "AssistData",
-        JSON.stringify({ case: this.selectCase, detail: this.caseData })
+        JSON.stringify({ case: this.selectCase.case, detail: copyData })
       );
       this.$emit("nextStep", step);
     },
@@ -236,7 +299,7 @@ export default {
     setTargetorgan(data) {
       this.caseData.targetOrgan = data.id;
       this.lawOrganName = data.label;
-      this.$refs.caseDataRef.clearValidate('targetOrgan');
+      this.$refs.caseDataRef.clearValidate("targetOrgan");
     },
   },
 };
