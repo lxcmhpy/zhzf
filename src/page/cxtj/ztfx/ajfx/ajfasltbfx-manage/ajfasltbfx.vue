@@ -64,7 +64,7 @@ export default {
         legend: {
           // left: "center",
           // top: "bottom",
-          data: [(this.value3-1)+"年每月案发数量", (this.value3)+"每月案发数量"]
+          data: [(this.value3-1)+"年每月案发数量", (this.value3)+"年每月案发数量"]
         },
         grid: {
           left: "3%",
