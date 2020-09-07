@@ -9,10 +9,10 @@ import {
 // 加载轮播图列表
 export function findImages(data) {
   return request({
-    url: "/notice/circulation/img/list",
+    url: "/notice/notice/circulation/img/list",
     method: "get",
     showloading: true,
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     params: data,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
@@ -22,10 +22,10 @@ export function findImages(data) {
 // 新增、编辑轮播图
 export function saveOrUpdate(data) {
   return request({
-    url: "/notice/circulation/img/saveOrUpdate",
+    url: "/notice/notice/circulation/img/saveOrUpdate",
     method: "post",
     showloading: true,
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     params: data,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
@@ -35,10 +35,10 @@ export function saveOrUpdate(data) {
 // 通过Id删除
 export function deleteById(id) {
   return request({
-    url: "/notice/circulation/img/deleteById/" + id,
+    url: "/notice/notice/circulation/img/deleteById/" + id,
     method: "get",
     showloading: true,
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
@@ -47,11 +47,11 @@ export function deleteById(id) {
 // 批量删除
 export function deleteByIds(data) {
   return request({
-    url: "/notice/circulation/img/deleteByIds",
+    url: "/notice/notice/circulation/img/deleteByIds",
     method: "post",
     showloading: true,
     data: data,
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
