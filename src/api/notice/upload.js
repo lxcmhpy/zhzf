@@ -9,24 +9,24 @@ let vm = new Vue();
 export function upload(data) {
   debugger;
   return request({
-    url: "/sys/file/uploadCommon",
+    url: "/notice/sys/file/uploadCommon",
     method: "POST",
     data: data,
     contentType: 'multipart/form-data;',
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource(),
   });
 }
 //根据主键ID删除附件
 export function deleteFileByIdApi(fileId) {
   return request({
-    url: "/sys/file/delete/" + fileId,
+    url: "/notice/sys/file/delete/" + fileId,
     method: "GET",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource(),
   });
 }

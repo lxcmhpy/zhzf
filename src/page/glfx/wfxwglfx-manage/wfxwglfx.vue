@@ -25,7 +25,7 @@ import {
 export default {
   data() {
     return {
-      value3: "",
+      value3: "2019",
       value2: "",
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -56,7 +56,7 @@ export default {
           trigger: "axis"
         },
         legend: {
-          data: ["2018年每月结案数量", "2019年每月结案数量"]
+          data: [(this.value3-1)+"年每月结案数量", this.value3+"年每月结案数量"]
         },
         grid: {
           left: "3%",
@@ -87,13 +87,13 @@ export default {
         },
         series: [
           {
-            name: "2018年每月结案数量",
+            name: (this.value3-1)+"年每月结案数量",
             type: "line",
             stack: "总量",
             data: this.data1
           },
           {
-            name: "2019年每月结案数量",
+            name: this.value3+"年每月结案数量",
             type: "line",
             stack: "总量",
             data: this.data2
@@ -102,9 +102,9 @@ export default {
       });
     
     },
- search() {    
+ search(val) {    
       let data = {
-        year:'2018'
+        year:val
       };
       let _this = this;
       // this.$store.dispatch("wfxwglfx", data).then(res => {
@@ -140,9 +140,9 @@ export default {
         console.log(err);
       };
     },
-    search2() {    
+    search2(val) {    
       let data = {
-        year:'2019'
+        year:val
       };
       let _this = this;
       // this.$store.dispatch("wfxwglfx", data).then(res => {
@@ -177,10 +177,14 @@ export default {
         console.log(err);
       };
     },
+    select(val){
+     this.search(val-1);
+     this.search2(val);
+   }
   },
   mounted() {
-    this.search();
-     this.search2();
+    this.search(2018);
+     this.search2(2019);
   },
   created() {
     
