@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-import { upload, deleteFileByIdApi } from "@/api/upload";
+import { upload, deleteFileById } from "@/api/device/device.js";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: {
@@ -160,7 +160,7 @@ export default {
     //删除附件
     async deleteFile(url) {
       let _this = this;
-      let res = await deleteFileByIdApi(url);
+      let res = await deleteFileById(url);
       this.$message({
         type: "success",
         message: "操作成功!",

@@ -66,7 +66,11 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button
+                v-if="scope.row.state===2 && canApprove"
+                type="text"
+                @click="onApprove(scope.row)"
+              >审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -118,6 +122,7 @@ export default {
       total: 0, //总页数
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
+      canApprove: false,
     };
   },
   components: {
@@ -255,6 +260,12 @@ export default {
   },
   created() {},
   mounted() {
+    let user = iLocalStroage.gets("userInfo");
+    let _this = this;
+    user.roles.forEach((item) => {
+      if (item.name === "信息公示审核") _this.canApprove = true;
+    });
+    debugger;
     this.searchForm.type = this.type;
     this.load();
   },
