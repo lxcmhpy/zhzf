@@ -83,7 +83,7 @@ function setDayDate(y, m, d, t1, t2){
     if(d === t2){
         lunar['lunarF'] = solarTerm[mm * 2 + 1];
     }
-    lunar['id'] = `${y}/${m > 10 ? m : '0' + m}/${d > 10 ? d : '0' + d}`;
+    lunar['id'] = `${y}/${m >= 10 ? m : '0' + m}/${d >= 10 ? d : '0' + d}`;
     return Object.assign(lunar, { day: d });
 }
 

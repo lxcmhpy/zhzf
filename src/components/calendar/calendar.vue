@@ -88,7 +88,7 @@ export default {
       let data = getCalendar(year, month, date);
       this.selectData.selectYear = `${year}`;
       this.selectData.selectMonth = `${month}`;
-      this.selectDay = `${year}/${month > 10 ? month : '0' + month}/${day > 10 ? day : '0' + day}`;
+      this.selectDay = `${year}/${month >= 10 ? month : '0' + month}/${day >= 10 ? day : '0' + day}`;
       this.calendarData = data;
       this.$emit('selectedDay', this.selectDay);
     },
