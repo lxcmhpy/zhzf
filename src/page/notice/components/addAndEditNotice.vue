@@ -71,7 +71,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import iLocalStroage from "@/common/js/localStroage.js";
-import { upload } from "@/api/upload";
+import { upload } from "@/api/notice/upload";
 import { saveOrUpdateNotice, findNoticeById } from "@/api/notice/notice.js";
 export default {
   components: {

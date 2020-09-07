@@ -577,7 +577,7 @@ export default {
       }catch(err){
         this.$message('获取案件流程失败！')
       }
-      if(this.currentFlow.data.flowName == '青海赔补偿流程'){
+      if(this.currentFlow.data.flowUrl == 'compensationGraphData_QH'){
          this.showForQH = true;
       }else {
          this.showForQH = false;

@@ -6,33 +6,22 @@
         <el-form :model="form" :rules="rules" ref="form" label-width="110px">
           <input hidden v-model="form.id" />
           <el-row>
-            <el-col :span="24">
+            <el-col :span="12">
               <el-form-item label="网站标题图片">
-                <!-- <el-input v-model="form.titleImg"></el-input> -->
-                <!-- <el-upload
+                <el-upload
                   class="avatar-uploader"
                   action="#"
                   :show-file-list="false"
-                  :on-preview="handlePictureCardPreview"
                   :http-request="saveImageFile"
-                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
                 >
-                  <img v-if="inspection.storageId" :src="host+inspection.storageId" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>-->
-                <el-upload
-                  class="upload-demo"
-                  action="#"
-                  :http-request="saveImageFile"
-                  :on-remove="(file, fileList)=>deleteFile(file, fileList)"
-                  :file-list="fileList"
-                  list-type="picture"
-                  :multiple="false"
-                  :limit="1"
-                >
-                  <el-button size="small" type="primary">点击上传</el-button>&nbsp;&nbsp;
-                  <span slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                  <el-image v-if="form.titleImg" :src="host+form.titleImg" fit="fill"></el-image>
+                  <i v-else class="el-icon-plus"></i>
                 </el-upload>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label-width="10px">
+                <span class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -151,7 +140,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage.js";
-import { upload, deleteFileByIdApi } from "@/api/upload";
+import { upload, deleteFileByIdApi } from "@/api/notice/upload";
 import { saveOrUpdate, findWebsiteInfo } from "@/api/notice/website.js";
 export default {
   data() {
@@ -176,6 +165,16 @@ export default {
   },
   methods: {
     saveImageFile(param) {
+      let _this = this;
+      if (this.form.titleImg) {
+        this.deleteFile().then((res) => {
+          _this.saveFile(param);
+        });
+      } else {
+        _this.saveFile(param);
+      }
+    },
+    saveFile(param) {
       var fd = new FormData();
       fd.append("file", param.file);
       fd.append("category", "公示系统");
@@ -194,17 +193,22 @@ export default {
       );
     },
     //删除附件
-    deleteFile(file, fileList) {
-      let _this = this;
-      deleteFileByIdApi(file.storageId).then(
-        (res) => {
-          _this.form.titleImg = "";
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+    //删除附件
+    async deleteFile() {
+      let res = await deleteFileByIdApi(this.form.titleImg);
+      this.form.titleImg = "";
     },
+    // deleteFile(file, fileList) {
+    //   let _this = this;
+    //   deleteFileByIdApi(file.storageId).then(
+    //     (res) => {
+    //       _this.form.titleImg = "";
+    //     },
+    //     (err) => {
+    //       console.log(err);
+    //     }
+    //   );
+    // },
     async save() {
       let res = await saveOrUpdate(this.form);
       this.$message({

@@ -36,7 +36,7 @@
                     class="commonBtn searchBtn"
                     title="搜索"
                     icon="iconfont law-sousuo"
-                    @click="currentPage = 1; getJournalList();"
+                    @click="searchRecordList();"
                   ></el-button>
                   <el-button
                     size="medium"
@@ -75,16 +75,10 @@
       </div>
       <div class="tableHandle">
         <el-button type="primary" icon="el-icon-plus" size="medium" @click="addRecordFun">新增</el-button>
-        <el-button
-          type="info"
-          size="medium"
-        ><i class="icon-daochu"></i>导出</el-button>
-        <el-button
-          plain
-          icon="el-icon-delete-solid"
-          size="medium"
-          @click="deleteRecordlFun"
-        >删除</el-button>
+        <el-button type="info" size="medium">
+          <i class="icon-daochu"></i>导出
+        </el-button>
+        <el-button plain icon="el-icon-delete-solid" size="medium" @click="deleteRecordlFun">删除</el-button>
       </div>
       <div class="tablePart">
         <el-table
@@ -99,30 +93,37 @@
           style="width: 100%;height:100%;"
           @selection-change="selectJournal"
         >
-          <el-table-column type="selection" align="center"></el-table-column>
-          <el-table-column prop="oname" label="执法机构" align="left" min-width="160px"></el-table-column>
-          <el-table-column prop="schedulingStaff" label="排班人员" align="center"></el-table-column>
-          <el-table-column prop="fillInTime" label="填报日期" align="center" width="150px;"></el-table-column>
-          <el-table-column prop="vehicleShipId" label="车牌/船舶号" align="center" width="120px"></el-table-column>
-          <el-table-column prop="inspectionRoute" label="巡查地点/线路" align="center" min-width="180px"></el-table-column>
-          <el-table-column prop="staff" label="执法人员" align="center"></el-table-column>
-          <el-table-column prop="taskType" label="任务类型" align="center"></el-table-column>
-          <el-table-column prop="taskStatus" label="任务状态" align="center">
+          <el-table-column type="selection" align="center" fixed="left"></el-table-column>
+          <el-table-column prop="journalNo" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
+          <el-table-column prop="checkType" label="检查类型" align="left" width="100px"></el-table-column>
+          <el-table-column prop="checkCategory" label="检查门类" align="left" width="100px"></el-table-column>
+          <el-table-column prop="inspectionTime" label="巡查时间" align="center" width="140px"></el-table-column>
+          <el-table-column prop="companyName" label="单位名称" align="center" min-width="200px"></el-table-column>
+          <el-table-column prop="routeName" label="路段名称" align="center" min-width="180px"></el-table-column>
+          <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px"></el-table-column>
+          <el-table-column prop="routeSituation" label="路段情况" align="center" width="100px">
             <template slot-scope="scope">
               <span
-                v-if="scope.row.taskStatus === '已完成'"
+                v-if="scope.row.routeSituation === '正常'"
                 style="color: #05C051;"
-              >{{scope.row.taskStatus}}</span>
+              >{{scope.row.routeSituation}}</span>
               <span
-                v-else-if="scope.row.taskStatus === '未完成'"
+                v-else-if="scope.row.routeSituation === '异常'"
                 style="color: #E84241;"
-              >{{scope.row.taskStatus}}</span>
-              <span v-else>{{scope.row.taskStatus}}</span>
+              >{{scope.row.routeSituation}}</span>
+              <span v-else>{{scope.row.routeSituation}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="opt" label="操作" align="center">
+          <el-table-column prop="lawPerson" label="执法人员" align="center" min-width="160px"></el-table-column>
+          <el-table-column prop="isFilingCase" label="是否立案" align="center" width="100px">
             <template slot-scope="scope">
-              <el-button type="text" @click="checkConcat(scope.row)">交接班</el-button>
+              <span v-if="scope.row.isFilingCase === '0'">否</span>
+              <el-button v-else type="text">查看案件</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="opt" label="操作" align="center" width="160px" fixed="right">
+            <template slot-scope="scope">
+              <el-button type="text" @click="checkConcat(scope.row)">新增</el-button>
               <el-button type="text" @click="editJournalInfo(scope.row)">修改</el-button>
             </template>
           </el-table-column>
@@ -140,12 +141,9 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- 新增日志选择执法门类 -->
-    <selectLawCategory ref="selectLawCategoryRef" />
   </div>
 </template>
 <script>
-import SelectLawCategory from "@/page/inspection/dutyManage/components/selectLawCategory.vue";
 
 export default {
   data() {
@@ -154,24 +152,28 @@ export default {
       searchForm: {},
       tableData: [
         {
-          oname: "东部支队XXX大队的 XX中队",
-          schedulingStaff: "张三",
-          fillInTime: "2020-03-15",
-          vehicleShipId: "云A123456",
-          inspectionRoute: "安楚高速K1+466M至 K2+678M",
-          staff: "张三,李四,王五",
-          taskType: "路巡",
-          taskStatus: "已完成",
+          journalNo: "111111111",
+          checkType: "安全检查",
+          checkCategory: "公路巡查",
+          inspectionTime: "2020-03-15 09:30 2020-03-15 16:49",
+          companyName: "北京市交通运输管理局",
+          routeName: "S210 红砖厂路",
+          routeInfo: "K100+50m至K100+55m",
+          routeSituation: "正常",
+          lawPerson: "付明超;刘传敏;李小宇",
+          isFilingCase: "0",
         },
         {
-          oname: "34235534",
-          schedulingStaff: "公路巡查",
-          fillInTime: "2020-03-15",
-          vehicleShipId: "云A654321",
-          inspectionRoute: "西站立交桥附近",
-          staff: "王世恩,李书友",
-          taskType: "网巡",
-          taskStatus: "未完成",
+          journalNo: "22222222",
+          checkType: "日常巡查",
+          checkCategory: "服务区巡查",
+          inspectionTime: "2020-03-15 09:30 2020-03-15 16:49",
+          companyName: "北京市交通运输管理局",
+          routeName: "S120  樱花路",
+          routeInfo: "K130+105m至K130+115m",
+          routeSituation: "异常",
+          lawPerson: "付明超；张三",
+          isFilingCase: "1",
         },
       ],
       selectList: [],
@@ -181,11 +183,11 @@ export default {
       totalPage: 0, //总页数
     };
   },
-  components: { SelectLawCategory },
+  components: {  },
   created() {},
   methods: {
     // 获取日志列表
-    getJournalList() {
+    getRecordList() {
       const queryData = Object.assign(this.searchForm, {
         current: this.currentPage,
         size: this.pageSize,
@@ -194,7 +196,10 @@ export default {
     },
     // 新增
     addRecordFun() {
-      this.$refs.selectLawCategoryRef.showModal();
+      this.$router.push({
+        name: 'record_detail',
+        params: { page: 'add' }
+      });
     },
     // 删除
     deleteRecordlFun() {
@@ -231,21 +236,25 @@ export default {
     editJournalInfo(row) {
       console.log(row);
     },
-    // 日志查询
+    searchRecordList() {
+      this.currentPage = 1;
+      this.getRecordList();
+    },
+    // 重置日志查询
     resetSearch() {
       this.$refs["searchFormRef"].resetFields();
       this.currentPage = 1;
-      this.getJournalList();
+      this.getRecordList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getJournalList();
+      this.getRecordList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getJournalList();
+      this.getRecordList();
     },
     // 获取选中的日志
     selectJournal(val) {

@@ -75,7 +75,7 @@
                   <el-form-item label="当前环节">{{formData.currentLinkName}}</el-form-item>
                 </div>
               </div>
-              <div class="row" v-if="caseFlowData.flowName != '赔补偿流程'">
+              <div class="row" v-if="caseFlowData.flowUrl != 'compensationGraphData'">
                 <div class="col">
                   <el-form-item label="处罚类型">{{formData.punishType}}</el-form-item>
                 </div>
@@ -83,7 +83,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <el-form-item label="赔偿金额" v-if="caseFlowData.flowName == '赔补偿流程'">￥{{formData.tempPunishAmount}}</el-form-item>
+                  <el-form-item label="赔偿金额" v-if="caseFlowData.flowUrl == 'compensationGraphData'">￥{{formData.tempPunishAmount}}</el-form-item>
                   <el-form-item label="处罚金额" v-else>￥{{formData.tempPunishAmount}}</el-form-item>
                 </div>
                 <div class="col">

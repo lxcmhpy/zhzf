@@ -45,7 +45,7 @@ export default {
         let currentFlow = '';
         try{
           currentFlow = await queryFlowBycaseIdApi(this.caseId);
-          if(currentFlow.data.flowName == '江西流程'){
+          if(currentFlow.data.flowUrl == 'commonGraphData_JX'){
             this.$router.push({name:'case_handle_coerciveMeasureDoc_JX'})
           }else{
             this.$router.push({name:'case_handle_removeOrPrelong'})

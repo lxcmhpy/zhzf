@@ -12,7 +12,7 @@
           <el-input v-model="updateCaseTypeForm.caseNumber" disabled></el-input>
         </el-form-item>
         <el-form-item
-          label="执法领域"
+          label="业务领域"
           prop="zfml">
           <el-select
             v-model="updateCaseTypeForm.zfml"
