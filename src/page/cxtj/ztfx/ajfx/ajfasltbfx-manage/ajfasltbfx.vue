@@ -8,7 +8,7 @@
               <el-date-picker
                 v-model="value3"
                 type="year"
-              
+               value-format="yyyy" @change="select"
               ></el-date-picker>
             </el-form-item>
           </el-form>
@@ -29,7 +29,7 @@ import {
 export default {
   data() {
     return {
-      value3: "",
+      value3: "2019",
       value2: "",
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -64,7 +64,7 @@ export default {
         legend: {
           // left: "center",
           // top: "bottom",
-          data: ["2018年每月案发数量", "2019年每月案发数量"]
+          data: [(this.value3-1)+"年每月案发数量", (this.value3)+"每月案发数量"]
         },
         grid: {
           left: "3%",
@@ -95,7 +95,7 @@ export default {
         },
         series: [
           {
-            name: "2018年每月案发数量",
+            name: (this.value3-1)+"年每月案发数量",
             type: "line",
             stack: "总量",
             data: this.data1,
@@ -107,7 +107,7 @@ export default {
             }
           },
           {
-            name: "2019年每月案发数量",
+            name: (this.value3)+"年每月案发数量",
             type: "line",
             stack: "总量",
             data: this.data2,
@@ -123,9 +123,8 @@ export default {
     },
 
    search(val) {
-      this.currentPage = val;
       let data = {
-        year:2018
+        year:val
       };
       let _this = this;
       // this.$store.dispatch("ajfasltbfx", data).then(res => {
@@ -161,9 +160,8 @@ export default {
       };
     },
     search2(val) {
-      this.currentPage = val;
       let data = {
-        year:2019
+        year:val
       };
       let _this = this;
       // this.$store.dispatch("ajfasltbfx", data).then(res => {
@@ -195,11 +193,14 @@ export default {
         console.log(err);
       };
     },
-    
+     select(val){
+     this.search(val-1);
+     this.search2(val);
+   }
   },
   mounted() {
-    this.search();
-    this.search2();
+    this.search(2018);
+    this.search2(2019);
   },
   created() {
   

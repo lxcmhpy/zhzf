@@ -60,7 +60,12 @@
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="auditComment" label="审核意见" align="center"></el-table-column>
+          <el-table-column
+            prop="auditComment"
+            label="审核意见"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
@@ -128,7 +133,6 @@
       :inputList="inputList"
       :columns="columns"
       :url="url"
-      :baseUrlType="baseUrlType"
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
@@ -169,8 +173,7 @@ export default {
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
       dialogVisible: false,
-      url: "/notice/personinfo/show",
-      baseUrlType: "NOTICE_HOST",
+      url: "/notice/notice/personinfo/show",
       inputList: [
         {
           label: "姓名",

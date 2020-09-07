@@ -356,6 +356,11 @@ export const mixinGetCaseApiList = {
     },
     //查看或新增环节下的文书
     async com_viewDoc(row,caseLinkTypeId, addMoreData = {}) {
+      // 文书修改
+      row.url=this.$route.name;
+      row.caseBasicinfoId= this.caseBasicinfoId
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
+
       console.log('addMoreData minis',addMoreData)
       console.log("新增文书",row);
       console.log('this.isSaveLink',this.isSaveLink)
@@ -636,6 +641,9 @@ export const mixinGetCaseApiList = {
          console.log("1111111111",resdata.party.val);
         this.propertyFeatures = resdata;
       })
+      if(this.needClick){
+        this.click()
+      }
     },
     //查询环节是否生成了pdf
     async searchHuanjiePdf(data, linkID) {

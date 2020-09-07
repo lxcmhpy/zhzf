@@ -80,7 +80,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { findComplaints, saveOrUpdate, findById } from "@/api/notice/complaint";
+import { findComplaints, findById, update } from "@/api/notice/complaint";
 import complaintDialog from "@/page/notice/complaint/complaintDialog";
 
 export default {
@@ -145,7 +145,7 @@ export default {
     },
     async onSubmit(data) {
       debugger;
-      let res = saveOrUpdate(data);
+      let res = await update(data);
       this.$message({ type: "success", message: "操作成功!" });
       this.load();
     },
