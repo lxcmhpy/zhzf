@@ -31,7 +31,7 @@
                   <el-form-item label="案件编号">
                     <el-input disabled v-model="updateCaseTypeForm.caseNumber"></el-input>
                   </el-form-item>
-                  <el-form-item label="执法领域">
+                  <el-form-item label="业务领域">
                     <el-input disabled v-model="updateCaseTypeForm.zfml"></el-input>
                   </el-form-item>
                   <el-form-item label="案件类型">
@@ -138,7 +138,6 @@ export default {
       this.dialogVisible = false;
     },
     showModel(){
-      console.log(this.caseId)
       let data=this.caseId;
       this.updateCaseTypeForm.caseNumber = data.caseNumber;
       this.updateCaseTypeForm.reviews = data.reviews;

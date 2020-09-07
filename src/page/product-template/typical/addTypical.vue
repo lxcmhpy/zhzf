@@ -15,7 +15,7 @@
               <el-input v-model="dicSearchForm.caseNumber"></el-input>
             </el-form-item>
             <el-form-item
-              label="执法领域"
+              label="业务领域"
               prop="zfml">
               <el-select
                 v-model="dicSearchForm.zfml"
@@ -68,7 +68,7 @@
         <el-table :data="tableData" @selection-change="changeFun" stripe style="width: 100%" height="100%">
           <el-table-column type="selection"></el-table-column>
           <el-table-column prop="caseNumber" label="编号" align="center"></el-table-column>
-          <el-table-column prop="zfml" label="执法领域" align="center"></el-table-column>
+          <el-table-column prop="zfml" label="业务领域" align="center"></el-table-column>
           <el-table-column prop="party" label="当事人" align="center"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车船号牌" align="center"></el-table-column>
           <el-table-column prop="caseName" label="案由" align="center"></el-table-column>
@@ -118,7 +118,7 @@ export default {
       organList:[],//受案机构
       selectLoading: false,
       caseTypeList:[],//案件类型
-      branchInfo:['公路路政','道路运政','水路运政','航道运政','港口行政','航道行政','海事行政','工程质量安全监督','其他'],//执法领域
+      branchInfo:['公路路政','道路运政','水路运政','航道运政','港口行政','航道行政','海事行政','工程质量安全监督','其他'],//业务领域
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -254,7 +254,6 @@ export default {
     },
     changeFun(val) {
       this.checkBoxData = val;
-      console.log(this.checkBoxData)
     }
   },
   created() {
