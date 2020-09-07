@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="31px" height="35px" viewBox="0 0 31 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>icon_dis_wenshu</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="5.22添加-路政-路段异常文书未做备份-2" transform="translate(-1063.000000, -255.000000)">
+            <g id="编组-2" transform="translate(1008.250000, 107.000000)">
+                <g id="编组-3" transform="translate(27.422136, 133.000000)">
+                    <g id="icon_dis_wenshu" transform="translate(25.577864, 15.953079)">
+                        <rect id="矩形" fill="#000000" fill-rule="nonzero" opacity="0" x="0" y="0" width="34" height="34"></rect>
+                        <path d="M4.834375,0 C3.346875,0 2.125,1.221875 2.125,2.709375 L2.125,31.290625 C2.125,32.778125 3.346875,34 4.834375,34 L29.165625,34 C30.653125,34 31.875,32.778125 31.875,31.290625 L31.875,10.784375 L21.834375,0 L4.834375,0 Z" id="路径" fill="#A3ADC2" fill-rule="nonzero"></path>
+                        <path d="M31.875,10.8375 L31.875,11.36875 L25.075,11.36875 C25.075,11.36875 21.728125,10.678125 21.834375,7.809375 C21.834375,7.809375 21.940625,10.8375 25.021875,10.8375 L31.875,10.8375 Z" id="路径" fill="#6B0D12" fill-rule="nonzero"></path>
+                        <path d="M21.834375,0 L21.834375,7.75625 C21.834375,8.659375 22.41875,10.8375 25.075,10.8375 L31.875,10.8375 L21.834375,0 Z" id="路径" fill="#FFFFFF" fill-rule="nonzero"></path>
+                        <text id="文书" opacity="0.801736" font-family="PingFangSC-Regular, PingFang SC" font-size="10" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="7" y="21.8375">文书</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

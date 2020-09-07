@@ -135,114 +135,134 @@
               </el-col>
             </el-row>
             <!-- 路段信息为异常时显示 -->
-            <el-row class="abnormal-situation-info">
-              <h4 class="abnormal-title">异常情况1</h4>
-              <el-col :span="12">
-                <el-form-item label="一级分类" prop="roadSituation">
-                  <el-select v-model="inspectRecordForm.roadSituation" placeholder="请选择">
-                    <el-option label="路产情况" value="1"></el-option>
-                    <el-option label="路面情况" value="2"></el-option>
-                    <el-option label="建筑控制区情况" value="3"></el-option>
-                    <el-option label="其他" value="4"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="二级分类" prop="roadNumber">
-                  <el-select v-model="inspectRecordForm.roadNumber" placeholder="请选择">
-                    <el-option label="二级分类1" value="1"></el-option>
-                    <el-option label="二级分类2" value="2"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <!-- 三级分类根据分级配置判断是否显示 -->
-              <el-col v-if="false" :span="12">
-                <el-form-item label="三级分类" prop="roadName">
-                  <el-select v-model="inspectRecordForm.roadName" placeholder="请选择">
-                    <el-option label="三级分类1" value="1"></el-option>
-                    <el-option label="三级分类2" value="2"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="处理情况" prop="travelDirection">
-                  <el-select v-model="inspectRecordForm.travelDirection" placeholder="请选择">
-                    <el-option label="现场处理" value="1"></el-option>
-                    <el-option label="电话通知" value="2"></el-option>
-                    <el-option label="信息推送" value="3"></el-option>
-                    <el-option label="送达处理" value="4"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="处理方式" prop="travelDirection">
-                  <el-select v-model="inspectRecordForm.travelDirection" placeholder="请选择">
-                    <el-option label="方式1" value="1"></el-option>
-                    <el-option label="方式2" value="2"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="处理结果" prop="travelDirection">
-                  <el-select v-model="inspectRecordForm.travelDirection" placeholder="请选择">
-                    <el-option label="处理完成" value="1"></el-option>
-                    <el-option label="处理中" value="2"></el-option>
-                    <el-option label="待处理" value="3"></el-option>
-                    <el-option label="立案" value="4"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="是否立案" prop="travelDirection">
-                  <el-select v-model="inspectRecordForm.travelDirection" placeholder="请选择">
-                    <el-option label="是" value="1"></el-option>
-                    <el-option label="否" value="0"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col v-if="inspectRecordForm.roadSituation === '1'" :span="24">
-                <el-form-item label="问题摘要" prop="problemAbstract" class="problem-abstract-panel">
-                  <div class="abstract-top-handle">
-                    <el-select v-model="inspectRecordForm.abstractTemplate" placeholder="模板选择">
-                      <el-option label="模板1" value="1"></el-option>
-                      <el-option label="模板2" value="2"></el-option>
-                    </el-select>
-                    <el-button type="text">自动生成</el-button>
-                  </div>
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 4, maxRows: 6}"
-                    placeholder="请输入内容"
-                    v-model="inspectRecordForm.problemAbstract"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-              <template>
+            <template v-if="inspectRecordForm.roadSituation === '0'">
+              <el-row
+                class="abnormal-situation-info"
+                v-for="(abnormal, index) in inspectRecordForm.abnormalSituation"
+                :key="index"
+              >
+                <h4 class="abnormal-title">
+                  异常情况{{ index + 1 }}
+                  <el-button type="text" class="del-abnormal-btn" @click="deleteAbnormal(index)">
+                    <i class="el-icon-delete"></i>删除
+                  </el-button>
+                </h4>
                 <el-col :span="12">
-                  <el-form-item label="程序类型" prop="travelDirection">
-                    <el-select v-model="inspectRecordForm.travelDirection" placeholder="请选择">
-                      <el-option label="一般程序" value="1"></el-option>
-                      <el-option label="简易程序" value="2"></el-option>
+                  <el-form-item label="一级分类" prop="firstLevel">
+                    <el-select v-model="abnormal.firstLevel" placeholder="请选择">
+                      <el-option label="路产情况" value="1"></el-option>
+                      <el-option label="路面情况" value="2"></el-option>
+                      <el-option label="建筑控制区情况" value="3"></el-option>
+                      <el-option label="其他" value="4"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="案件类型" prop="travelDirection">
-                    <el-select v-model="inspectRecordForm.travelDirection" placeholder="请选择">
-                      <el-option label="处罚" value="1"></el-option>
-                      <el-option label="赔补偿" value="2"></el-option>
+                  <el-form-item label="二级分类" prop="secondLevel">
+                    <el-select v-model="abnormal.secondLevel" placeholder="请选择">
+                      <el-option label="二级分类1" value="1"></el-option>
+                      <el-option label="二级分类2" value="2"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <!-- 三级分类根据分级配置判断是否显示 -->
+                <el-col v-if="false" :span="12">
+                  <el-form-item label="三级分类" prop="threeLevel">
+                    <el-select v-model="abnormal.threeLevel" placeholder="请选择">
+                      <el-option label="三级分类1" value="1"></el-option>
+                      <el-option label="三级分类2" value="2"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="处理情况" prop="handleSituation">
+                    <el-select v-model="abnormal.handleSituation" placeholder="请选择">
+                      <el-option label="现场处理" value="1"></el-option>
+                      <el-option label="电话通知" value="2"></el-option>
+                      <el-option label="信息推送" value="3"></el-option>
+                      <el-option label="送达处理" value="4"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="处理方式" prop="handleType">
+                    <el-select v-model="abnormal.handleType" placeholder="请选择">
+                      <el-option label="方式1" value="1"></el-option>
+                      <el-option label="方式2" value="2"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="处理结果" prop="handleResult">
+                    <el-select v-model="abnormal.handleResult" placeholder="请选择">
+                      <el-option label="处理完成" value="1"></el-option>
+                      <el-option label="处理中" value="2"></el-option>
+                      <el-option label="待处理" value="3"></el-option>
+                      <el-option label="立案" value="4"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="是否立案" prop="isFilingCase">
+                    <el-select v-model="abnormal.isFilingCase" placeholder="请选择">
+                      <el-option label="是" value="1"></el-option>
+                      <el-option label="否" value="0"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item label="违法行为" prop="travelDirection">
-                    <el-input v-model="inspectRecordForm.travelDirection"></el-input>
+                  <el-form-item label="问题摘要" prop="problemAbstract" class="problem-abstract-panel">
+                    <div class="abstract-top-handle">
+                      <el-select v-model="inspectRecordForm.abstractTemplate" placeholder="模板选择">
+                        <el-option label="模板1" value="1"></el-option>
+                        <el-option label="模板2" value="2"></el-option>
+                      </el-select>
+                      <el-button type="text">自动生成</el-button>
+                    </div>
+                    <el-input
+                      type="textarea"
+                      :autosize="{ minRows: 4, maxRows: 6}"
+                      placeholder="请输入内容"
+                      v-model="inspectRecordForm.problemAbstract"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
-              </template>
-            </el-row>
-            <div class="abnormal-add-btn">
-              <el-button type="primary" icon="el-icon-plus" size="medium">新增</el-button>
+                <template v-if="abnormal.isFilingCase === '1'">
+                  <el-col :span="12">
+                    <el-form-item
+                      label="程序类型"
+                      prop="programType"
+                      :rules="[{ required: true, message: '请选择程序类型', trigger: 'change' }]"
+                    >
+                      <el-select v-model="abnormal.programType" placeholder="请选择">
+                        <el-option label="一般程序" value="1"></el-option>
+                        <el-option label="简易程序" value="2"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item
+                      label="案件类型"
+                      prop="caseType"
+                      :rules="[{ required: true, message: '请选择案件类型', trigger: 'change' }]"
+                    >
+                      <el-select v-model="abnormal.caseType" placeholder="请选择">
+                        <el-option label="处罚" value="1"></el-option>
+                        <el-option label="赔补偿" value="2"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item label="违法行为" prop="illegalActivities">
+                      <el-input v-model="abnormal.illegalActivities"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </template>
+              </el-row>
+            </template>
+            <!-- 新增异常情况 -->
+            <div v-if="inspectRecordForm.roadSituation === '0'" class="abnormal-add-btn">
+              <el-button type="primary" icon="el-icon-plus" size="medium" @click="addAbnormal">新增</el-button>
             </div>
           </el-form>
         </el-card>
@@ -281,7 +301,29 @@
         </el-card>
       </el-col>
       <el-col :span="7">
-        <el-card shadow="never" style="height: 100%;">文书列表</el-card>
+        <el-card shadow="never" style="height: 100%;">
+          <h3 class="form-tab-title">文书列表</h3>
+          <el-tabs v-model="activeOffical" class="offical-top-tab" :stretch="true" @tab-click="officalTabClick">
+            <el-tab-pane label="已做文书" name="1"></el-tab-pane>
+            <el-tab-pane label="未做文书" name="0"></el-tab-pane>
+          </el-tabs>
+          <el-checkbox-group v-model="checkedOffical">
+            <ul class="offical-list-panel">
+              <li>
+                <el-checkbox label="1">
+                  <img :src="activeOffical === '1' ? acOfficalUrl: dsOfficalUrl" />
+                  《责令整改通知书》
+                </el-checkbox>
+              </li>
+              <li>
+                <el-checkbox label="2">
+                  <img :src="activeOffical === '1' ? acOfficalUrl: dsOfficalUrl" />
+                  《安全隐患告知函》
+                </el-checkbox>
+              </li>
+            </ul>
+          </el-checkbox-group>
+        </el-card>
       </el-col>
     </el-row>
     <!-- 添加附件 -->
@@ -301,6 +343,21 @@ export default {
         category: "",
         checkType: "",
         roadSituation: "1",
+        abnormalSituation: [
+          {
+            firstLevel: "",
+            secondLevel: "",
+            threeLevel: "",
+            handleSituation: "",
+            handleType: "",
+            handleResult: "",
+            isFilingCase: "",
+            problemAbstract: "",
+            programType: "",
+            caseType: "",
+            illegalActivities: "",
+          },
+        ],
       },
       rules: {
         inspectionTime: [
@@ -317,6 +374,8 @@ export default {
         ],
       },
       tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg",
+      acOfficalUrl: "@/../static/images/img/personInfo/icon_ac_wenshu.svg",
+      dsOfficalUrl: "@/../static/images/img/personInfo/icon_dis_wenshu.svg",
       tableData: [
         {
           id: "1",
@@ -341,6 +400,9 @@ export default {
           files: [],
         },
       ],
+      officialList: [],
+      activeOffical: "1",
+      checkedOffical: [],
     };
   },
   computed: {
@@ -356,6 +418,40 @@ export default {
     addEnclosure(type) {
       this.$refs.AddRecordFileRef.showModal(type);
     },
+    // 新增异常情况
+    addAbnormal() {
+      let abnormal = {
+        firstLevel: "",
+        secondLevel: "",
+        threeLevel: "",
+        handleSituation: "",
+        handleType: "",
+        handleResult: "",
+        isFilingCase: "",
+        problemAbstract: "",
+        programType: "",
+        caseType: "",
+        illegalActivities: "",
+      };
+      this.inspectRecordForm.abnormalSituation.push(abnormal);
+    },
+    // 删除异常情况
+    deleteAbnormal(index) {
+      this.$confirm(`确定删除异常情况${index + 1}吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        iconClass: "custom-question",
+        customClass: "custom-confirm",
+      })
+        .then(() => {
+          this.inspectRecordForm.abnormalSituation.splice(index, 1);
+        })
+        .catch(() => {});
+    },
+    // 切换文书tab
+    officalTabClick(){
+      this.checkedOffical.splice(0, this.checkedOffical.length);
+    }
   },
 };
 </script>
@@ -398,9 +494,13 @@ export default {
         color: #e84241;
         line-height: 38px;
         padding-left: 30px;
+        .del-abnormal-btn {
+          float: right;
+          color: #7b7b7b;
+        }
       }
     }
-    .abnormal-add-btn{
+    .abnormal-add-btn {
       padding: 30px 20px;
       margin: 0 -20px -20px;
       background: #f6f8fc;
@@ -507,6 +607,46 @@ export default {
       line-height: 40px;
       text-align: center;
       color: #7b7b7b;
+    }
+  }
+  .offical-top-tab {
+    >>> .el-tabs__header {
+      display: flex;
+      justify-content: center;
+      border-bottom: 2px solid #e4e7ed;
+    }
+    >>> .el-tabs__nav-wrap::after {
+      display: none;
+    }
+    >>> .el-tabs__item {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    >>> .el-tabs__active-bar {
+      height: 4px;
+    }
+  }
+  .offical-list-panel {
+    border: 1px solid #d1d5de;
+    border-bottom: none;
+    > li {
+      padding: 16px;
+      border-bottom: 1px solid #d1d5de;
+      font-size: 16px;
+      color: #7b7b7b;
+      >>> .el-checkbox {
+        display: block;
+        .el-checkbox__label {
+          font-size: 16px;
+          line-height: 36px;
+          >img{
+            display: block;
+            width: 36px;
+            height: 36px;
+            float: left;
+          }
+        }
+      }
     }
   }
 }
