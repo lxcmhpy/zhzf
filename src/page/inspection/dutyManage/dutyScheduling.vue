@@ -79,6 +79,7 @@ export default {
   methods: {
     // 日历选择日期
     setSelectedDay(data) {
+      console.log(data)
       this.dutyDay = data.replace(/\//g, "-");
       this.getScheduleList();
     },

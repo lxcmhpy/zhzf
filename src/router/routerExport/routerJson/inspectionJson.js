@@ -270,6 +270,16 @@ export default  [
                 oneTab: true,
                 },
                 component: () => import("@/page/inspection/dutyManage/components/addJournalPage.vue")
+            },
+            // 记录管理--添加记录
+            {
+                path: "/recordDetail/:page",
+                name: "record_detail",
+                meta: {
+                title: "现场记录",
+                oneTab: true,
+                },
+                component: () => import("@/page/inspection/dutyManage/components/recordDetail.vue")
             }
         ]
     }, 
