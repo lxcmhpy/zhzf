@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "WC",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -90,7 +90,7 @@
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
     "CHECK_API": "http://172.16.170.91:8081",
-    "XZJC_HOST": "http://localhost:8099",
+    "XZJC_HOST": "http://172.16.169.37:8099",
     "EXAM": "http://59.110.216.138:9050",
     "test": "http://172.16.169.37:9003",
     "OLDSYSTEM_HOST": "http://172.16.169.39:8100"

@@ -10,7 +10,7 @@
         </el-tooltip>
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
-        <!-- <el-button type="primary" size="medium" @click="linkBack">环节回退</el-button> -->
+        <el-button type="primary" size="medium" @click="linkBack" v-if="showLinkBackBtn">环节回退</el-button>
 
       </div>
       <div style="overflow-y:auto;">
@@ -29,6 +29,7 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'flowChart'"></caseSlideMenu>
     <pleaseRemoveMDia ref="pleaseRemoveMDiaRef"></pleaseRemoveMDia>
+    <flowLinkBackDia ref="flowLinkBackDiaRef" @backSuccess="backSuccess"></flowLinkBackDia>
   </div>
 </template>
 <script>
@@ -43,6 +44,8 @@ import pleaseRemoveMDia from '@/page/caseHandle/components/pleaseRemoveMDia'
 import {
   queryFlowBycaseIdApi,updateLinkInfoByCaseIdAndLinkTypeIdApi,linkBackApi,
 } from "@/api/caseHandle";
+import flowLinkBackDia from './flowLinkBackDia'
+
 export default {
   data() {
     return {
@@ -63,6 +66,7 @@ export default {
       measureDateEndTime: '', //解除（延长）强制措施截止时间
       showAdminCoerciveMeasureBtn:false,
       currentFlow:'',
+      showLinkBackBtn:false,  //环节回退按钮
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -106,6 +110,8 @@ export default {
           }
           //显示强制时间
           _this.getMeasuerTime();
+          //是否显示回退按钮
+          _this.isShowLinkBackBtn(res.data);
 
         },
         err => {
@@ -831,14 +837,64 @@ export default {
       }
       this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
     },
-    //环节回退
-    async linkBack(){
-      try{
-        await linkBackApi(this.caseId); 
-        await this.getFlowStatusByCaseId(this.caseId);
-        this.$message({type:'success',message:'回退成功'})
-      }catch(err){
-        this.$message('回退失败！')
+    //显示环节回退弹窗
+    linkBack(){
+      // try{
+      //   await linkBackApi(this.caseId); 
+      //   await this.getFlowStatusByCaseId(this.caseId);
+      //   this.$message({type:'success',message:'回退成功'})
+      // }catch(err){
+      //   this.$message('回退失败！')
+      // }
+      this.$refs.flowLinkBackDiaRef.showModal();
+    },
+    //回退成功
+    async backSuccess(){
+       await this.getFlowStatusByCaseId(this.caseId);
+       this.$message({type:'success',message:'回退成功'})
+       this.$refs.flowLinkBackDiaRef.closeDialog();
+    },
+    //是否显示环节回退按钮
+    isShowLinkBackBtn(data){
+      console.log(data);
+      // if(data.doingLink.includes(this.BASIC_DATA_JX.establish_JX_caseLinktypeId)){
+      //   this.showLinkBackBtn = false;
+      // }else{
+      //   this.showLinkBackBtn = true;
+      // }
+
+      let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
+      //立案登记下一环节状态
+      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId]
+      let establishDoing,establishNextComplet= false;
+      //立案登记为进行中
+      for(let item of establish_caseLinktypeIdArr){
+        if(data.doingLink.includes(item)){
+          establishDoing = true;
+          break;
+        }
+      }
+      //立案登记下一环节状态为已完成
+      for(let item of establishAfterLink_caseLinktypeIdArr){
+        if(data.completeLink.includes(item)){
+          establishNextComplet = true;
+          break;
+        }
+      }
+      
+
+      // if(establishDoing){
+      //   this.showLinkBackBtn = false;
+      // }else{
+      //   this.showLinkBackBtn = true;
+      // }
+      console.log('establishDoing',establishDoing)
+      console.log('establishNextComplet',establishNextComplet)
+
+      if(!establishDoing && establishNextComplet){
+        this.showLinkBackBtn = true;
+      }else{
+        this.showLinkBackBtn = false;
       }
     }
   },
@@ -852,6 +908,7 @@ export default {
     echarts,
     caseSlideMenu,
     pleaseRemoveMDia,
+    flowLinkBackDia,
   }
 }
 </script>

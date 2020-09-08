@@ -29,20 +29,20 @@
             <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
           </el-form-item>于
           <el-form-item prop="causeName" :rules="fieldRules('causeName',propertyFeatures['causeName'])">
-            <el-input type="textarea" v-model="docData.causeName" :disabled="fieldDisabled(propertyFeatures['causeName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+            <el-input type="textarea" v-model="docData.causeName" :disabled="fieldDisabled(propertyFeatures['causeName'])" :autosize="{ minRows: 1, maxRows: 3}" maxLength="300"></el-input>
           </el-form-item>
         </p>
         <p>
           上述事实,由<el-form-item prop="evidence" :rules="fieldRules('evidence',propertyFeatures['evidence'])">
-            <el-input type="textarea" v-model="docData.evidence" :disabled="fieldDisabled(propertyFeatures['evidence'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+            <el-input type="textarea" v-model="docData.evidence" :disabled="fieldDisabled(propertyFeatures['evidence'])" :autosize="{ minRows: 1, maxRows: 3}" maxLength="100"></el-input>
           </el-form-item>予以佐证。本单位认为，当事人<el-form-item prop="illegaldecision" :rules="fieldRules('illegaldecision',propertyFeatures['illegaldecision'])">
-            <el-input type="textarea" v-model="docData.illegaldecision" :disabled="fieldDisabled(propertyFeatures['illegaldecision'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+            <el-input type="textarea" v-model="docData.illegaldecision" :disabled="fieldDisabled(propertyFeatures['illegaldecision'])" :autosize="{ minRows: 1, maxRows: 3}" maxLength="200"></el-input>
           </el-form-item>规定，本单位依法做出如下公路赔（补）偿处理决定：
         </p>
         <p>
           当事人赔（补）偿人民币：
           <el-form-item prop="fine" :rules="fieldRules('fine',propertyFeatures['fine'])">
-            <el-input type="textarea" v-model="docData.fine" :disabled="fieldDisabled(propertyFeatures['fine'])" :autosize="{ minRows: 1, maxRows: 3}" :maxLength="maxLength"></el-input>
+            <el-input type="textarea" v-model="docData.fine" :disabled="fieldDisabled(propertyFeatures['fine'])" :autosize="{ minRows: 1, maxRows: 3}" maxLength="100"></el-input>
           </el-form-item>
         </p>
         <p>
@@ -76,6 +76,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // 验证规则
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   components: {
@@ -177,8 +178,10 @@ export default {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    makeSeal() {
-
+    makeSeal() {},
+    getDataAfter() {
+      this.docData.checkParty = iLocalStroage.gets("userInfo").organName;
+      console.log('this.docData.checkParty',this.docData.checkParty)
     }
 
   },
