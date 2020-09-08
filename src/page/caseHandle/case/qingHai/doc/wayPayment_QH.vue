@@ -76,6 +76,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 // 验证规则
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   components: {
@@ -177,8 +178,10 @@ export default {
         this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    makeSeal() {
-
+    makeSeal() {},
+    getDataAfter() {
+      this.docData.checkParty = iLocalStroage.gets("userInfo").organName;
+      console.log('this.docData.checkParty',this.docData.checkParty)
     }
 
   },
