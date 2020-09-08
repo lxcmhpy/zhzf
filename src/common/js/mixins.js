@@ -550,7 +550,6 @@ export const mixinGetCaseApiList = {
         let isHuanjieDoc = false;
         //可以通过判断是否生成了pdf判断是单文书表单还是单纯的表单
         let fielRes = await getFile({docId: data.docId,caseId: this.caseId,});
-
         //判断是单文书环节还是文书
         let huanjieData = await getLinkTypeInfoByIdApi(data.linkID);
 

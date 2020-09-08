@@ -353,8 +353,8 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="身份证号" prop="IdCard">
-              <el-input v-model="secondCheck.IdCard"></el-input>
+            <el-form-item label="身份证号" prop="idCard">
+              <el-input v-model="secondCheck.idCard"></el-input>
             </el-form-item>
           </div>
         </div>
