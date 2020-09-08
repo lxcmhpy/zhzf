@@ -270,11 +270,11 @@
           <div class="enclosure-file-table">
             <h3 class="form-tab-title">
               附件信息
-              <el-button type="text" class="add-enclosure-file" @click="addEnclosure('type')">
+              <el-button v-if="PageType !== 'view'" type="text" class="add-enclosure-file" @click="addEnclosure('type')">
                 <i class="add-file-type-icon">+</i>添加
               </el-button>
             </h3>
-            <el-table :data="tableData" style="width: 100%">
+            <el-table v-if="PageType !== 'view'" :data="tableData" style="width: 100%">
               <el-table-column type="expand">
                 <template slot-scope="scope">
                   <div v-if="scope.row.files && scope.row.files.length">
@@ -297,45 +297,65 @@
                 <el-button type="text" @click="addEnclosure('file')">添加</el-button>
               </el-table-column>
             </el-table>
+            <!-- 查看附件信息 -->
+            <AbnormalFile v-if="PageType === 'view'" :abnormalFileList="abnormalFileList" />
           </div>
         </el-card>
       </el-col>
       <el-col :span="7">
         <el-card shadow="never" style="height: 100%;">
           <h3 class="form-tab-title">文书列表</h3>
-          <el-tabs v-model="activeOffical" class="offical-top-tab" :stretch="true" @tab-click="officalTabClick">
+          <el-tabs
+            v-model="activeOffical"
+            class="offical-top-tab"
+            :stretch="true"
+            @tab-click="officalTabClick"
+          >
             <el-tab-pane label="已做文书" name="1"></el-tab-pane>
             <el-tab-pane label="未做文书" name="0"></el-tab-pane>
           </el-tabs>
-          <el-checkbox-group v-model="checkedOffical">
+          <el-checkbox-group v-model="checkedOffical" @change="handleCheckedOffical">
             <ul class="offical-list-panel">
-              <li>
-                <el-checkbox label="1">
+              <li v-for="offical in officialList" :key="offical.label">
+                <el-checkbox :label="offical.label">
                   <img :src="activeOffical === '1' ? acOfficalUrl: dsOfficalUrl" />
-                  《责令整改通知书》
-                </el-checkbox>
-              </li>
-              <li>
-                <el-checkbox label="2">
-                  <img :src="activeOffical === '1' ? acOfficalUrl: dsOfficalUrl" />
-                  《安全隐患告知函》
+                  {{ offical.name }}
                 </el-checkbox>
               </li>
             </ul>
           </el-checkbox-group>
+          <div class="print-offical-btn">
+            <el-checkbox
+              :indeterminate="isIndeterminate"
+              v-model="checkAllOffical"
+              @change="handleCheckAllChange"
+            ></el-checkbox>
+            <el-button type="primary" icon="el-icon-printer">打印文书</el-button>
+          </div>
         </el-card>
       </el-col>
     </el-row>
+    <!-- 添加或修改时保存 -->
+    <div class="float-btns">
+      <el-button class="edit_btn" type="primary" @click="saveRecordInfo">
+        <i class="iconfont law-save"></i>
+        <br />保存
+      </el-button>
+    </div>
     <!-- 添加附件 -->
     <AddRecordFile ref="AddRecordFileRef" />
+    <!-- 查看附件 -->
+    <ReviewAbnormalFile ref="ReviewAbnormalFileRef" />
   </div>
 </template>
 
 <script>
 import AddRecordFile from "@/page/inspection/dutyManage/components/addRecordFile.vue";
+import ReviewAbnormalFile from "@/page/inspection/dutyManage/components/reviewAbnormalFile.vue";
+import AbnormalFile from "@/page/inspection/dutyManage/components/abnormalFileList.vue";
 
 export default {
-  components: { AddRecordFile },
+  components: { AddRecordFile, AbnormalFile, ReviewAbnormalFile },
   data() {
     return {
       inspectRecordForm: {
@@ -376,6 +396,7 @@ export default {
       tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg",
       acOfficalUrl: "@/../static/images/img/personInfo/icon_ac_wenshu.svg",
       dsOfficalUrl: "@/../static/images/img/personInfo/icon_dis_wenshu.svg",
+      musicFileUrl: "@/../static/images/img/personInfo/icon_music.svg",
       tableData: [
         {
           id: "1",
@@ -400,9 +421,19 @@ export default {
           files: [],
         },
       ],
-      officialList: [],
+      officialList: [
+        { label: "1", name: "《责令整改通知书》" },
+        { label: "2", name: "《安全隐患告知函》" },
+      ],
       activeOffical: "1",
       checkedOffical: [],
+      checkAllOffical: false,
+      isIndeterminate: false,
+      abnormalFileList: [
+        { type: "img", src: "http://124.192.215.10:9332/14,27fefbdd30ab", name: '图片文件.png' },
+        { type: "audio", src: "@/../static/sounds/ringtone.wav", name: '音频文件.wav' },
+        { type: "video", src: "http://124.192.215.10:9332/11,2804579f39a3", name: '视频文件.mp4' },
+      ],
     };
   },
   computed: {
@@ -449,9 +480,29 @@ export default {
         .catch(() => {});
     },
     // 切换文书tab
-    officalTabClick(){
+    officalTabClick() {
       this.checkedOffical.splice(0, this.checkedOffical.length);
-    }
+    },
+    // 选择文书
+    handleCheckedOffical(value) {
+      let checkedCount = value.length;
+      this.checkAllOffical = checkedCount === this.officialList.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.officialList.length;
+    },
+    // 全选文书
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? ["1", "2"] : [];
+      this.isIndeterminate = false;
+    },
+    // 保存
+    saveRecordInfo() {
+      console.log("保存记录");
+    },
+    // 查看附件
+    viewAbnormalFile(file) {
+      this.$refs.ReviewAbnormalFileRef.showModal(file.type, file.src);
+    },
   },
 };
 </script>
@@ -530,6 +581,7 @@ export default {
       font-size: 14px;
       color: #7b7b7b;
       width: 7%;
+      margin: 0 2px;
     }
   }
   .problem-abstract-panel {
@@ -629,6 +681,7 @@ export default {
   .offical-list-panel {
     border: 1px solid #d1d5de;
     border-bottom: none;
+    margin-top: 15px;
     > li {
       padding: 16px;
       border-bottom: 1px solid #d1d5de;
@@ -639,7 +692,7 @@ export default {
         .el-checkbox__label {
           font-size: 16px;
           line-height: 36px;
-          >img{
+          > img {
             display: block;
             width: 36px;
             height: 36px;
@@ -649,6 +702,42 @@ export default {
       }
     }
   }
+  .print-offical-btn {
+    height: 40px;
+    line-height: 40px;
+    margin: 20px 0;
+    >>> .el-checkbox {
+      width: 10%;
+      text-align: center;
+    }
+    >>> .el-button {
+      width: 88%;
+      padding: 15px;
+    }
+  }
+  .float-btns {
+    width: 48px;
+    height: 100px;
+    position: fixed;
+    right: 50px;
+    bottom: 70px;
+    z-index: 100;
+
+    &.float-btns .el-button {
+      border-radius: 1px;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      text-align: center;
+    }
+
+    .iconfont {
+      display: inline-block;
+      margin-bottom: 4px;
+      margin-left: 4px;
+    }
+  }
+
 }
 </style>
 <style lang="scss">
