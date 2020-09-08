@@ -8,18 +8,18 @@
               <el-form-item label-width="0">
                 <el-button size="medium" class="commonBtn searchBtn" type="primary" @click="addRecordDialog()">添加记录</el-button>
               </el-form-item>
-              <el-form-item label="业务类型" prop='domain'>
-                <el-select v-model="searchForm.domain" placeholder="请选择">
+              <el-form-item label="业务类型" prop='checkType'>
+                <el-select v-model="searchForm.checkType" placeholder="请选择">
                   <el-option v-for="(item,index) in domainList" :key="index" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="处置状态" prop='domain'>
-                <el-select v-model="searchForm.domain" placeholder="请选择">
+              <el-form-item label="处置状态" prop='fileStatus'>
+                <el-select v-model="searchForm.fileStatus" placeholder="请选择">
                   <el-option v-for="(item,index) in statusList" :key="index" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="车牌号" prop='title'>
-                <el-input v-model="searchForm.title" placeholder="请输入车牌号"></el-input>
+              <el-form-item label="车牌号" prop='vehicleShipId'>
+                <el-input v-model="searchForm.vehicleShipId" placeholder="请输入车牌号"></el-input>
               </el-form-item>
             </el-form>
             <div class="search-btns">
@@ -35,21 +35,25 @@
       <div class="tablePart" style="clear: both;">
         <el-table :data="recordList" stripe style="width: 100%" height="100%">
           <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
-          <el-table-column prop="docName" label="车牌号" align="center"></el-table-column>
+          <el-table-column prop="vehicleShipId" label="车牌号" align="center"></el-table-column>
           <el-table-column prop="docName" label="类型" align="center"></el-table-column>
-          <el-table-column prop="docName" label="检测站" align="center"></el-table-column>
-          <el-table-column prop="docName" label="初检车货总重" align="center"></el-table-column>
-          <el-table-column prop="docName" label="初检超载率" align="center"></el-table-column>
-          <el-table-column prop="status" label="处置状态" align="center"></el-table-column>
+          <el-table-column prop="detectStation" label="检测站" align="center"></el-table-column>
+          <el-table-column prop="totalWeight" label="初检车货总重" align="center"></el-table-column>
+          <el-table-column prop="overRatio" label="初检超载率" align="center"></el-table-column>
+          <el-table-column prop="fileStatus" label="处置状态" align="center">
+            <template slot-scope="scope">
+              {{scope.row.fileStatus?'已归档':'进行中'}}
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-              <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button>
+              <!-- <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button> -->
             </template>
           </el-table-column>
         </el-table>
       </div>
-        <!-- <div class="paginationBox">
+      <!-- <div class="paginationBox">
           <div v-if="total > 10">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="form.current" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="form.size"></el-pagination>
           </div>
@@ -62,9 +66,12 @@
         <el-form :inline="true" :model="recordType" class ref="recordType" :rules="typerule">
           <el-form-item prop='type'>
             <el-radio-group v-model="recordType.type">
-              <el-radio :label="3">备选项</el-radio>
-              <el-radio :label="6">备选项</el-radio>
-              <el-radio :label="9">备选项</el-radio>
+              <el-radio label="特种车">特种车</el-radio>
+              <el-radio label="大件许可">大件许可</el-radio>
+              <el-radio label="绿通车">绿通车</el-radio>
+              <el-radio label="危化车">危化车</el-radio>
+              <el-radio label="危化车">危化车</el-radio>
+              <el-radio label="路警联合">路警联合</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -78,7 +85,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { getDocListById, changeFileStatus, delDocumentById, getDictListDetailByNameApi } from "@/api/inspection";
+import { getPcQueryCarInfoApi, changeFileStatus, delDocumentById, getDictListDetailByNameApi } from "@/api/inspection";
 export default {
 
   data() {
@@ -87,7 +94,7 @@ export default {
       viewFlag: [],
       recordList: [],
       currentFileId: '',
-      total:0,
+      total: 0,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -95,13 +102,9 @@ export default {
       domainList: [],
       statusList: [],
       searchForm: {
-        domain: "",
-        status: '',
-        createUser: iLocalStroage.gets("userInfo").nickName,
-        otherUser: '',
-        title: '',
-        defaultDisplay: true,
-        name: ''
+        vehicleShipId: "",
+        fileStatus: "",
+        checkType: "",
       },
       isShow: false,
       dialogVisible: false,
@@ -198,23 +201,23 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.getTableData()
     },
     getTableData() {
+      this.recordList =[]
       let data = {
-        name: this.searchForm.name,
-        company: this.searchForm.company,
-        taskArea: this.searchForm.taskArea,
-        taskName: this.searchForm.taskName,
-        checkSubject: this.searchForm.checkSubject,
-        checkType: this.searchForm.taskArea == '省交通运输厅领域' ? this.searchForm.checkType : '',
+        checkType: this.searchForm.checkType,
+        fileStatus: this.searchForm.fileStatus,
+        vehicleShipId: this.searchForm.vehicleShipId,
         current: this.currentPage,
         size: this.pageSize,
       };
-      getDocListById(data).then(
+      getPcQueryCarInfoApi(data).then(
         res => {
           console.log(res)
           if (res.code == 200) {
-            this.recordList = res.data
+            this.recordList = res.data.records
+            this.total = res.data.total
           }
         },
         error => {
