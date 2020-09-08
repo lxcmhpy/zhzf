@@ -37,9 +37,7 @@
     </el-button>
     <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
     <span v-if="currentFileData">
-      <el-button type="primary" @click="backWenshuBtn" v-if="this.$route.name=='case_handle_myPDF'
-    &&currentFileData.path!='case_handle_establish'&&currentFileData.path!='case_handle_finishCaseReport'
-    &&approvalState!='approvaling'&&caseLinktypeId==doingLinkId">
+      <el-button type="primary"  style="margin-top: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
         <i class="iconfont law-edit"></i>
         <br />修改
       </el-button>
@@ -66,7 +64,17 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId']) },
+  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId']),
+  isCanEdit(){
+    console.log('111111111111111111111111111111111111111111111111',this.$route.name=='case_handle_myPDF'
+    &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
+    &&this.approvalState!='approvaling'&&this.caseLinktypeId==this.doingLinkId)
+    let data=    this.$route.name=='case_handle_myPDF'
+    &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
+    &&this.approvalState!='approvaling'&&this.caseLinktypeId==this.doingLinkId
+    return data
+;
+  } },
   methods: {
     //   打印方法
     async printContent() {
