@@ -58,6 +58,9 @@
                     <p v-if="exam.examStatus == '3'" class="status-box wait">已结束</p>
                   </div>
                 </div>
+                <div v-if="examineeData.length === 0" class="no-exam-data">
+                  暂无考试信息
+                </div>
               </div>
             </div>
           </el-col>
@@ -478,6 +481,10 @@ export default {
     .componey {
       font-size: 20px;
     }
+  }
+  .no-exam-data{
+    line-height: 120px;
+    text-align: center;
   }
 }
 .count-contain {
