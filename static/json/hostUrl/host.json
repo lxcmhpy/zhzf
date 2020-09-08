@@ -3,28 +3,30 @@
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
-    "HOME_PAGE_ROUTER_NAME":"catsAppraisalExamination//评议考核，case_handle_home_index //案件办理law_supervise_lawSupervise//监管",
+    "HOME_PAGE_ROUTER_NAME": "catsAppraisalExamination//评议考核，case_handle_home_index //案件办理law_supervise_lawSupervise//监管",
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
     "PDF_HOST": "文件服务器地址",
     "QZ_ACTIVEX_HOST": "96:8083",
     "LAW_SUPERVISE_HOST": "综合监管/事务中心 96:9000",
     "VIDEO_HOST": "综合监管语音通话",
-    "CHECK_API":"信息检查 91:8081",
-    "XZJC_HOST":"行政检查 168.38:8099",
+    "CHECK_API": "信息检查 91:8081",
+    "XZJC_HOST": "行政检查 168.38:8099",
     "XJ_IMG_HOST": "新疆图片视频地址",
-    "OLDSYSTEM_HOST": "新疆3.2系统登录ip"
+    "OLDSYSTEM_HOST": "新疆3.2系统登录ip",
+    "NOTICE_WEB_HOST": "执法信息公示网站ip"
   },
   "TEST": {
-    "CAPTCHA_HOST": "http://124.192.215.4:9000",
+    "CAPTCHA_HOST": "http://192.168.110.175:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.4:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API":"http://124.192.215.11:8081",
-    "XZJC_HOST":"http://124.192.215.4:9000",
-    "EXAM":"http://124.192.215.4:9050",
-    "XC":"http://127.0.0.1:9993"
+    "CHECK_API": "http://124.192.215.11:8081",
+    "XZJC_HOST": "http://124.192.215.4:9000",
+    "EXAM": "http://124.192.215.4:9050",
+    "XC": "http://127.0.0.1:9993",
+    "NOTICE_WEB_HOST": "http://127.0.0.1:8076"
   },
   "NW": {
     "CAPTCHA_HOST": "http://172.16.170.96:9000",
@@ -33,17 +35,17 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.96:9000/",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.96:9000/",
+    "EXAM": "http://59.110.216.138:9050"
   },
-  "XBW":{
+  "XBW": {
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
     "PDF_HOST": "http://39.105.229.204:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://127.0.0.1:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081"
+    "CHECK_API": "http://172.16.170.91:8081"
   },
   "ZHW": {
     "CAPTCHA_HOST": "http://59.110.216.138:9000",
@@ -51,8 +53,8 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.164.105:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "SGX": {
     "CAPTCHA_HOST": "http://172.16.169.42:9000",
@@ -60,9 +62,9 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.50:9000/",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.50:9000/",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "LOCAL": {
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
@@ -70,7 +72,7 @@
     "LAW_SUPERVISE_HOST": "http://127.0.0.1:9000",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081"
+    "CHECK_API": "http://172.16.170.91:8081"
   },
   "wj": {
     "CAPTCHA_HOST": "http://172.16.169.44:9000",
@@ -78,7 +80,7 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081"
+    "CHECK_API": "http://172.16.170.91:8081"
   },
   "WC": {
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
@@ -87,11 +89,11 @@
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://localhost:8099",
-    "EXAM":"http://59.110.216.138:9050",
-    "test":"http://172.16.169.37:9003",
-    "OLDSYSTEM_HOST":"http://172.16.169.39:8100"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://localhost:8099",
+    "EXAM": "http://59.110.216.138:9050",
+    "test": "http://172.16.169.37:9003",
+    "OLDSYSTEM_HOST": "http://172.16.169.39:8100"
   },
   "JX": {
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
@@ -99,9 +101,9 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.50:9000",
-    "EXAM":"http://172.16.170.50:9000"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.50:9000",
+    "EXAM": "http://172.16.170.50:9000"
   },
   "GS": {
     "CAPTCHA_HOST": "http://172.16.170.59:9020",
@@ -109,9 +111,9 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.50:9000",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.50:9000",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "GSW": {
     "CAPTCHA_HOST": "http://124.192.215.5:9020",
@@ -119,9 +121,9 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.50:9000",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.50:9000",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "JXW": {
     "CAPTCHA_HOST": "http://124.192.215.6:9000",
@@ -129,9 +131,9 @@
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.6:9000",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
-    "CHECK_API":"http://124.192.215.11:8081",
-    "XZJC_HOST":"http://124.192.215.6:9000",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://124.192.215.11:8081",
+    "XZJC_HOST": "http://124.192.215.6:9000",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "xj": {
     "CAPTCHA_HOST": "http://218.84.108.29:9461",
@@ -140,10 +142,10 @@
     "LAW_SUPERVISE_HOST": "http://218.84.108.29:9461/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API":"http://124.192.215.11:8081",
-    "XZJC_HOST":"http://218.84.108.29:9461",
-    "EXAM":"http://218.84.108.29:9461/exam",
-    "OLDSYSTEM_HOST":"http://218.84.108.27:8888"
+    "CHECK_API": "http://124.192.215.11:8081",
+    "XZJC_HOST": "http://218.84.108.29:9461",
+    "EXAM": "http://218.84.108.29:9461/exam",
+    "OLDSYSTEM_HOST": "http://218.84.108.27:8888"
   },
   "QD": {
     "CAPTCHA_HOST": "http://172.16.170.55:9000",
@@ -151,9 +153,9 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.44:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.55:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.55:9000/",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.55:9000/",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "QDW": {
     "CAPTCHA_HOST": "http://124.192.215.10:9000",
@@ -161,9 +163,9 @@
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.10:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
-    "CHECK_API":"http://124.192.215.11:8081",
-    "XZJC_HOST":"http://124.192.215.10:9000",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://124.192.215.11:8081",
+    "XZJC_HOST": "http://124.192.215.10:9000",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "QH": {
     "CAPTCHA_HOST": "http://172.16.170.92:9000",
@@ -171,9 +173,9 @@
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.50:9000",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.50:9000",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "QHW": {
     "CAPTCHA_HOST": "http://124.192.215.9:9000",
@@ -181,30 +183,30 @@
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.9:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
-    "CHECK_API":"http://124.192.215.11:8081",
-    "XZJC_HOST":"http://124.192.215.9:9000",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://124.192.215.11:8081",
+    "XZJC_HOST": "http://124.192.215.9:9000",
+    "EXAM": "http://59.110.216.138:9050"
   },
-   "sc": {
+  "sc": {
     "CAPTCHA_HOST": "http://172.16.170.72:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API":"http://172.16.170.91:8081",
-    "XZJC_HOST":"http://172.16.170.72:9000/",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "XZJC_HOST": "http://172.16.170.72:9000/",
+    "EXAM": "http://59.110.216.138:9050"
   },
-   "scw": {
+  "scw": {
     "CAPTCHA_HOST": "http://124.192.215.12:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "QZ_ACTIVEX_HOST": "http://124.192.215.4:8083/",
     "LAW_SUPERVISE_HOST": "http://124.192.215.12:9000/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API":"http://124.192.215.11:8081",
-    "XZJC_HOST":"http://124.192.215.12:9000",
-    "EXAM":"http://59.110.216.138:9050"
+    "CHECK_API": "http://124.192.215.11:8081",
+    "XZJC_HOST": "http://124.192.215.12:9000",
+    "EXAM": "http://59.110.216.138:9050"
   },
   "tj": {
     "CAPTCHA_HOST": "http://47.94.5.164:9000",

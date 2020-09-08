@@ -108,7 +108,7 @@ import {
   findAnnualByVehicleId,
 } from "@/api/device/deviceVehicle.js";
 import iLocalStroage from "@/common/js/localStroage";
-import { upload, getFileByCaseId, deleteFileByIdApi } from "@/api/upload";
+import { upload, deleteFileById } from "@/api/device/device.js";
 export default {
   components: {},
   data() {
@@ -211,7 +211,7 @@ export default {
     //删除附件
     deleteFile(file, fileList) {
       let _this = this;
-      deleteFileByIdApi(file.storageId).then(
+      deleteFileById(file.storageId).then(
         (res) => {
           _this.inspection.storageId = "";
         },

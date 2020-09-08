@@ -110,6 +110,7 @@ export default {
     },
     // 鼠标移入
     changeActive(index) {
+    this.closeAllDialog()
       // $event.currentTarget.className = "active";
       console.log('移入', index,this.formOrDocData.pageDomId)
       switch (index) {
@@ -122,13 +123,18 @@ export default {
     removeActive(index) {
       // $event.currentTarget.className = "";
       console.log('移出', index)
-      switch (index) {
-        case 1: this.$refs.documentSideMenuRef.closeDialog(); break;
-        case 2: this.$refs.relativeRecordRef.closeDialog(); break;
-        case 3: this.$refs.operationRecordRef.closeDialog(); break;
-        default: break;
-      }
-    }
+    //   switch (index) {
+    //     case 1: this.$refs.documentSideMenuRef.closeDialog(); break;
+    //     case 2: this.$refs.relativeRecordRef.closeDialog(); break;
+    //     case 3: this.$refs.operationRecordRef.closeDialog(); break;
+    //     default: break;
+    //   }
+    },
+    closeAllDialog(){
+         this.$refs.documentSideMenuRef.closeDialog();
+         this.$refs.relativeRecordRef.closeDialog();
+         this.$refs.operationRecordRef.closeDialog();
+    },
   },
   mounted() {
 

@@ -15,6 +15,7 @@
         </el-upload> -->
         <el-form ref="form" :model="form">
           <!-- <img :src="host+form.evPath" width="430px" height="400" align="center"/> -->
+          <img v-if="form.storageId" :src="host+form.storageId"  width="430px" height="400" align="center"/>
           <img v-if="form.evType =='照片'" :src="host+form.evPath"  width="430px" height="400" align="center"/>
           <video v-if="form.evType =='音视频'" :src="host+form.evPath" controls="controls" width="400px" height="380">your browser does not support the video tag</video>
         </el-form>
@@ -82,6 +83,7 @@ export default {
                 evPath: data.evPath,
                 evType: data.evType,
                 userName: data.userName,
+                storageId: data.storageId,
                 createTime: data.createTime,
                 recordPlace: data.recordPlace,
                 status: data.status,

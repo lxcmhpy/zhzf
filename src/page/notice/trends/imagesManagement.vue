@@ -38,11 +38,11 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="title" label="标题" align="center"></el-table-column>
+          <el-table-column prop="title" label="标题" width="400" align="center"></el-table-column>
           <el-table-column prop="图片" label="来源" align="center">
             <template slot-scope="scope">
               <el-image
-                style="width: 80px; height: 80px"
+                style="width: 120px; height: 80px"
                 :src="host+scope.row.storageId"
                 fit="fill"
               ></el-image>
@@ -193,10 +193,9 @@ export default {
       this.$refs.imagesDialog.showModal(2, row);
     },
     async onSubmit(data) {
-      debugger;
-      let res = saveOrUpdate(data);
+      this.$refs.imagesDialog.closeDialog();
+      let res = await saveOrUpdate(data);
       this.$message({ type: "success", message: "保存成功!" });
-      debugger;
       this.load();
     },
 

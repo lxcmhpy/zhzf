@@ -238,6 +238,7 @@
         isChange: false,
         propertyFeatures: '',
         isParty: true,
+        needClick:true,
       }
     },
 
@@ -278,10 +279,8 @@
           let currentDocDataId = this.currentFileData.docDataId;
           if (currentDocDataId) {
             this.getDocDetailById(currentDocDataId)
-            debugger
           } else {
             this.getDocDetailById(this.$route.params.docDataId)
-            debugger
             // this.docData.checknames=this.docData.checknames
           }
         }

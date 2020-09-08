@@ -52,7 +52,7 @@
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="remark" label="审核意见" align="center"></el-table-column>
+          <el-table-column prop="remark" label="审核意见" align="center" :show-overflow-tooltip="true"></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="openPreview(scope.row)">预览</el-button>
@@ -66,7 +66,11 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button
+                v-if="scope.row.state===2 && canApprove"
+                type="text"
+                @click="onApprove(scope.row)"
+              >审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -93,6 +97,9 @@
 import iLocalStroage from "@/common/js/localStroage";
 import addAndEditNotice from "@/page/notice/components/addAndEditNotice";
 import approve from "@/page/notice/components/approve";
+import Vue from "vue";
+
+let vm = new Vue();
 import {
   findNoticeByPage,
   deleteNoticeById,
@@ -115,6 +122,7 @@ export default {
       total: 0, //总页数
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
+      canApprove: false,
     };
   },
   components: {
@@ -157,7 +165,18 @@ export default {
       debugger;
     },
     openPreview(row) {
-      this.$refs.noticeDialog.showModal(2, row);
+      let data = {
+        content: row.content,
+        files: JSON.stringify(row.fileUploadVos),
+        title: row.title,
+        source: row.source,
+        time: row.publishTime,
+      };
+      window.open(
+        iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
+          "#/details?" +
+          vm.$qs.stringify(data)
+      );
     },
     onAdd() {
       let data = {
@@ -241,6 +260,12 @@ export default {
   },
   created() {},
   mounted() {
+    let user = iLocalStroage.gets("userInfo");
+    let _this = this;
+    user.roles.forEach((item) => {
+      if (item.name === "信息公示审核") _this.canApprove = true;
+    });
+    debugger;
     this.searchForm.type = this.type;
     this.load();
   },
