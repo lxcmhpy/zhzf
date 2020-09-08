@@ -201,6 +201,8 @@ export default {
           }
           this.examineeData = examList;
         });
+      } else {
+        loading.close();
       }
     },
     // 根据当前时间设置考试状态
