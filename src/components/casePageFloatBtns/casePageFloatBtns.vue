@@ -66,10 +66,7 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId']),
   isCanEdit(){
-    console.log('111111111111111111111111111111111111111111111111',this.$route.name=='case_handle_myPDF'
-    &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
-    &&this.approvalState!='approvaling'&&this.caseLinktypeId==this.doingLinkId)
-    let data=    this.$route.name=='case_handle_myPDF'
+    let data= this.$route.name=='case_handle_myPDF'
     &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
     &&this.approvalState!='approvaling'&&this.caseLinktypeId==this.doingLinkId
     return data
