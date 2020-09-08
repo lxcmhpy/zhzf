@@ -264,7 +264,9 @@ export default {
         partyUnitPosition: "",
         occupation: "",
         afdd:"",
-        afddparty:""
+        afddparty:"",
+        illegalFact:"",
+        punishDecision:"",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用

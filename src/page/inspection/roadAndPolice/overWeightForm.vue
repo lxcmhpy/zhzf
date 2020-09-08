@@ -9,12 +9,12 @@
         <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)">处罚决定</a>
       </div>
     </div>
-    <el-form :model="carInfo" :rules="rules" ref="carInfo" label-width="100px" :disabled="isHandleCase" style="margin-top: 82px;">
+    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" :disabled="isHandleCase" style="margin-top: 82px;">
       <div class="caseFormBac" id="link_1" ref="link_1" @mousewheel="scrool1">
         <p>车辆信息</p>
         <div>
           <div class="item">
-            <el-form-item label="车牌颜色">
+            <el-form-item label="车牌颜色" prop="vehicleIdColor">
               <el-select v-model="carInfo.vehicleIdColor">
                 <el-option v-for="(item,index) in allVehicleIdColor" :key="index" :label="item.name" :value="item.name"></el-option>
               </el-select>
@@ -22,7 +22,9 @@
           </div>
           <div class="item">
             <el-form-item label="车辆号牌" prop="vehicleShipId">
-              <el-input v-model="carInfo.vehicleShipId" placeholder="车辆号牌"></el-input>
+              <el-input v-model="carInfo.vehicleShipId" placeholder="车辆号牌">
+                <el-button slot="append" icon="el-icon-search" @click="searchNumber"></el-button>
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -100,7 +102,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="drivePerson" :rules="rules" ref="drivePerson" label-width="100px" :disabled="isHandleCase">
+    <el-form :model="drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
         <p>驾驶员/企业信息</p>
         <div>
@@ -152,7 +154,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="firstCheck" :rules="rules" ref="firstCheck" label-width="100px" :disabled="isHandleCase">
+    <el-form :model="firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>初检记录</p>
         <div>
@@ -274,7 +276,7 @@
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="执法人员" id="lawPersonBox" prop="checkPerson">
+            <el-form-item label="初检人员" id="lawPersonBox" prop="checkPerson">
               <el-select ref="lawPersonListId" v-model="firstCheck.checkPerson" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
@@ -282,9 +284,19 @@
             </el-form-item>
           </div>
         </div>
+        <div>
+          <div class="itemOne">
+            <el-form-item label="初检结果" id="lawPersonBox" prop="checkResult">
+              <el-radio-group v-model="firstCheck.checkResult">
+                <el-radio :label="1">超限超载</el-radio>
+                <el-radio :label="2">未超载</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </div>
+        </div>
       </div>
     </el-form>
-    <el-form :model="secondCheck" :rules="rules" ref="secondCheck" label-width="100px" :disabled="isHandleCase">
+    <el-form :model="secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">
         <p>卸载/复检记录</p>
         <div>
@@ -374,6 +386,11 @@
           <div class="item">
             <el-form-item label="超限比例" prop="overRatio">
               <el-input v-model="secondCheck.overRatio"></el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-form-item label="复检结果" prop="checkResult">
+              <el-input v-model="secondCheck.checkResult"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -539,7 +556,7 @@ export default {
         totalLength: '',
         totalWide: '',
         totalHeight: '',
-        checkResult: '',
+        checkResult: '1',
         checkPerson: '',
       },
       secondCheck: {
@@ -553,7 +570,7 @@ export default {
         IdCard: '',
         phone: '',
         address: '',
-        unloadWeight:'',
+        unloadWeight: '',
         secondCheckWeight: '',
         checkNumber: '',
         overRatio: '',
@@ -627,66 +644,39 @@ export default {
       routeList: [],
       directionList: [],
       locationList: [],
-      rules: {
-        caseSource: [{ required: true, message: "请选择", trigger: "change" }],
-        afsj: [{ validator: validateTime, trigger: "change" }],
-        acceptTime: [
-          { required: true, message: "请选择时间", trigger: "change" },
-          { required: true, validator: validateTime, trigger: "change" },
-        ],
+      carInfoRules: {
+        vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
+        loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
+        startPlace: [{ required: true, message: "请输入", trigger: "change" }],
+        endPlace: [{ required: true, message: "请输入", trigger: "change" }],
+      },
+      drivePersonRules: {
         party: [
           // { required: true, message: "请输入", trigger: "blur" },
           { required: true, validator: validatePart, trigger: "blur" },
         ],
-        partyName: [
-          // { required: true, message: "请输入", trigger: "blur" },
-          { required: true, validator: validatePartName, trigger: "blur" },
-        ],
-        lawPersonListId: [
-          {
-            required: true,
-            validator: validateLawPersonNumber,
-            trigger: "change",
-          },
-        ],
-        "otherInfo.checkTime": [
-          { required: true, message: "请输入检测时间", trigger: "change" },
-        ],
-        "otherInfo.vehiclefiledThing": [
-          { required: true, message: "请输入装载物", trigger: "change" },
-        ],
-        illegalLaw: [
-          { required: true, message: "请选择违法条款", trigger: "change" },
-        ],
-        punishLaw: [
-          { required: true, message: "请选择处罚依据", trigger: "change" },
-        ],
-        partyAge: [{ validator: validateAge, trigger: "blur" }],
-        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
-        partyZipCode: [{ validator: validateZIP, trigger: "blur" }],
-        partyTel: [{ validator: validatePhone, trigger: "blur" }],
-        partyUnitTel: [{ validator: validatePhone, trigger: "blur" }],
-        highwayRoute: [
-          {
-            required: true,
-            message: "请选择本机构路线编号",
-            trigger: "change",
-          },
-        ],
-        direction: [
-          { required: true, message: "请选择方向", trigger: "change" },
-        ],
-        position: [
-          { required: true, message: "请选择位置", trigger: "change" },
-        ],
-        distance: [
-          { required: true, message: "请输入米数", trigger: "change" },
-        ],
-        pileNumber: [
-          { required: true, message: "请输入公里数", trigger: "change" },
-        ],
-        vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
-        trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
+        partyTel: [{ required: true, message: "请输入", trigger: "change" },
+        { validator: validatePhone, trigger: "blur" }],
+        partyIdNo: [{ required: true, message: "请输入", trigger: "change" },
+        { validator: checkIdNoPassSort, trigger: "blur" }],
+        partyAddress: [{ required: true, message: "请输入", trigger: "change" }],
+      },
+      firstCheckRules: {
+        totalWeight: [{ required: true, message: "请输入", trigger: "change" }],
+        overRatio: [{ required: true, message: "请输入", trigger: "change" }],
+        overWeight: [{ required: true, message: "请输入", trigger: "change" }],
+        checkResult: [{ required: true, message: "请选择", trigger: "change" }],
+      },
+      secondCheckRules: {
+        fenPlateColor: [{ required: true, message: "请选择", trigger: "change" }],
+        fenPlate: [{ required: true, message: "请输入", trigger: "change" }],
+        fenTonnage: [{ required: true, message: "请输入", trigger: "change" }],
+        fenPerson: [{ required: true, message: "请输入", trigger: "change" }],
+        IdCard: [{ required: true, message: "请输入", trigger: "change" }],
+        secondCheckWeight: [{ required: true, message: "请输入", trigger: "change" }],
+        unloadWeight: [{ required: true, message: "请输入", trigger: "change" }],
+        overRatio: [{ required: true, message: "请输入", trigger: "change" }],
+        checkResult: [{ required: true, message: "请输入", trigger: "change" }],
       },
       alreadyChooseLawPerson: [],
       partyTypePerson: "1", //判断要显示的部分
@@ -972,8 +962,10 @@ export default {
 
     },
     weightLimit() { },
-    fileEiditFlag() { },
     saveFileData() { },
+    searchNumber() {
+      // 查询车辆号牌
+    },
   },
 
   mounted() {

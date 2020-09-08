@@ -27,6 +27,7 @@ const getters = {
   IsLawEnforcementSupervision:state => state.caseHandle.IsLawEnforcementSupervision,
   lawEnforcementSupervisionType:state => state.caseHandle.lawEnforcementSupervisionType,
   currentFileData:state => state.caseHandle.currentFileData,
+  doingLinkId:state => state.caseHandle.doingLinkId,
   noOperation: state => state.caseHandle.noOperation,
   
   //监管

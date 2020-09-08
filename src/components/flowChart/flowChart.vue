@@ -93,7 +93,7 @@ export default {
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
           console.log('流程图', res)
-         
+         this.$store.commit("setDoingLinkId", res.data.doingLink);//保存正在进行的环节ID
           _this.data = res.data;
           _this.updateLinkData()
           _this.updateGraphData()

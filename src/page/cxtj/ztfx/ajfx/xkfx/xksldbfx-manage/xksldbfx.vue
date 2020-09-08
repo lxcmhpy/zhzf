@@ -173,7 +173,7 @@ export default {
     this.drawLine2();
   },
   created() {
-   this.fxypList();
+  //  this.fxypList();
   }
 };
 </script>

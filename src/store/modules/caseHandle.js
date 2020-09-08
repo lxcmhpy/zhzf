@@ -27,7 +27,8 @@ const caseHandle = {
         IsLawEnforcementSupervision:'', //判断是否为执法监督
         lawEnforcementSupervisionType:'', //执法监督类型
         currentFileData:'', //当前文书数据-回退用
-        noOperation: false // 只能预览无操作权限
+        noOperation: false, // 只能预览无操作权限
+        doingLinkId:'',//当前正在进行的环节
     },
     mutations:{
         //设置caseId
@@ -82,6 +83,10 @@ const caseHandle = {
         //当前文书数据
         setCurrentFileData(state,data) {
             state.currentFileData = data
+        },
+        //当前环节是否进行中
+        setDoingLinkId(state,data) {
+            state.doingLinkId = data
         },
         // 设置能否操作
         setNoOperation(state, data){
