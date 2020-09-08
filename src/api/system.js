@@ -1284,7 +1284,7 @@ export function countryTreeApi(data) {
 //批量查询抽屉表
 export function getDrawerListApi(data) {
     return request({
-        url: "/system/sys/drawer/getDrawerList/",
+        url: "/system/sys/drawer/getDrawerList",
         method: "post",
         showloading: true,
         loadingType:'loadPart',

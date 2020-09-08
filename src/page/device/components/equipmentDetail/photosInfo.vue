@@ -37,7 +37,7 @@
 <script>
 import VehiclePhotos from "@/page/device/components/equipmentDetail/vehiclePhotos";
 import OtherPhotos from "@/page/device/components/equipmentDetail/otherPhotos";
-import { getFileByCaseId } from "@/api/upload";
+import { findImageByCaseId } from "@/api/device/device.js";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: { VehiclePhotos, OtherPhotos },
@@ -91,7 +91,7 @@ export default {
   methods: {
     async getFiles() {
       let _this = this;
-      let res = await getFileByCaseId({ caseId: this.$route.params.id });
+      let res = await findImageByCaseId({ caseId: this.$route.params.id });
       debugger;
       res.data.forEach((item) => {
         let flag = item.docId.charAt(item.docId.length - 1) + "";
