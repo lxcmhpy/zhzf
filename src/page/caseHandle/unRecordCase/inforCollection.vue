@@ -2155,7 +2155,9 @@ export default {
       console.log("坐标是否获取", this.hasLatitudeAndLongitude);
       //超限信息
       if (data.otherInfo != "") {
-        this.inforForm.otherInfo = JSON.parse(data.otherInfo);
+        // this.inforForm.otherInfo = JSON.parse(data.otherInfo);
+        // debugger
+        this.$set(this.inforForm, 'otherInfo', JSON.parse(data.otherInfo));
       }
       if (data.caseCauseName == "车辆在公路上擅自超限行驶") {
         this.showOverrun = true;

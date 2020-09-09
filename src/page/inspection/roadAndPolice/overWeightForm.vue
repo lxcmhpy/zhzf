@@ -102,18 +102,18 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled="isHandleCase">
+    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
         <p>驾驶员/企业信息</p>
         <div>
           <div class="item">
             <el-form-item label="姓名" prop="party">
-              <el-input ref="party" v-model="drivePerson.party"></el-input>
+              <el-input ref="party" v-model="carInfo.drivePerson.party"></el-input>
             </el-form-item>
           </div>
           <div class="item appendSelect">
             <el-form-item label="身份证号" prop="partyIdNo">
-              <el-input ref="partyIdNo" placeholder="请输入身份证号" v-model="drivePerson.partyIdNo" class="input-with-select hasMargintop">
+              <el-input ref="partyIdNo" placeholder="请输入身份证号" v-model="carInfo.drivePerson.partyIdNo" class="input-with-select hasMargintop">
               </el-input>
             </el-form-item>
           </div>
@@ -121,31 +121,31 @@
         <div>
           <div class="item">
             <el-form-item label="联系电话" prop="partyTel">
-              <el-input ref="partyTel" v-model="drivePerson.partyTel"></el-input>
+              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="联系地址" prop="partyAddress">
-              <el-input v-model="drivePerson.partyAddress"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyAddress"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="职务" prop="occupation">
-              <el-input v-model="drivePerson.occupation"></el-input>
+              <el-input v-model="carInfo.drivePerson.occupation"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="企业名称" prop="partyUnitPosition">
-              <el-input v-model="drivePerson.partyUnitPosition"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyUnitPosition"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemOne">
             <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
-              <el-select ref="lawPersonListId" v-model="drivePerson.lawOfficer" multiple @remove-tag="removeLawPersontag">
+              <el-select ref="lawPersonListId" v-model="carInfo.drivePerson.lawOfficer" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
@@ -154,13 +154,13 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled="isHandleCase">
+    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled="isHandleCase">
       <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>初检记录</p>
         <div>
           <div class="itemOne">
             <el-form-item label="初测单号" prop="oddNumber">
-              <el-input v-model="firstCheck.oddNumber">
+              <el-input v-model="carInfo.firstCheck.oddNumber">
                 <template slot="append">查询</template>
               </el-input>
             </el-form-item>
@@ -169,21 +169,21 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" prop="totalWeight">
-              <el-input v-model="firstCheck.totalWeight">
+              <el-input v-model="carInfo.firstCheck.totalWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="车货限重" prop="weightLimit">
-              <el-input v-model="firstCheck.weightLimit">
+              <el-input v-model="carInfo.firstCheck.weightLimit">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <!-- <div class="item">
             <el-form-item label="驱动轴" prop="axisType">
-              <el-radio-group v-model="firstCheck.axisType">
+              <el-radio-group v-model="carInfo.firstCheck.axisType">
                 <el-radio label="单轴"></el-radio>
                 <el-radio label="双轴"></el-radio>
               </el-radio-group>
@@ -193,14 +193,14 @@
         <div>
           <div class="item">
             <el-form-item label="超限质量" prop="overWeight">
-              <el-input v-model="firstCheck.overWeight">
+              <el-input v-model="carInfo.firstCheck.overWeight">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="超限比例" prop="overRatio">
-              <el-input v-model="firstCheck.overRatio">
+              <el-input v-model="carInfo.firstCheck.overRatio">
               </el-input>
             </el-form-item>
           </div>
@@ -208,21 +208,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长" prop="totalLength">
-              <el-input v-model="firstCheck.totalLength" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.totalLength" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="firstCheck.lengthLimit" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.lengthLimit" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="firstCheck.overLength" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.overLength" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -231,21 +231,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总宽" prop="totalWide">
-              <el-input v-model="firstCheck.totalWide" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.totalWide" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="firstCheck.widthLimit" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.widthLimit" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="firstCheck.overWidth" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.overWidth" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -254,21 +254,21 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总高" prop="totalHeight">
-              <el-input v-model="firstCheck.totalHeight" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.totalHeight" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="firstCheck.heightLimit" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.heightLimit" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="firstCheck.overHeight" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.overHeight" placeholder="/">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -277,7 +277,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="初检人员" id="lawPersonBox" prop="checkPerson">
-              <el-select ref="lawPersonListId" v-model="firstCheck.checkPerson" multiple @remove-tag="removeLawPersontag">
+              <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPerson" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
@@ -287,7 +287,7 @@
         <div>
           <div class="itemOne">
             <el-form-item label="初检结果" id="lawPersonBox" prop="checkResult">
-              <el-radio-group v-model="firstCheck.checkResult">
+              <el-radio-group v-model="carInfo.firstCheck.checkResult">
                 <el-radio :label="1">超限超载</el-radio>
                 <el-radio :label="2">未超载</el-radio>
               </el-radio-group>
@@ -533,32 +533,34 @@ export default {
         endPlace: '',
         trailerIdNo: '',
         trailerColor: '',
+        drivePerson: {
+          party: '',
+          partyIdNo: '',
+          partyTel: '',
+          partyAddress: '',
+          occupation: '',
+          partyUnitPosition: '',
+          lawOfficer: '',
+        },
+        firstCheck: {
+          oddNumber: '',
+          vehicleShipId: '',
+          vehicleShipType: '',
+          axisType: '',
+          axisNum: '',
+          totalWeight: '',
+          weightLimit: '',
+          overWeight: '',
+          overRatio: '',
+          totalLength: '',
+          totalWide: '',
+          totalHeight: '',
+          checkResult: '1',
+          checkPerson: '',
+        },
       },
-      drivePerson: {
-        party: '',
-        partyIdNo: '',
-        partyTel: '',
-        partyAddress: '',
-        occupation: '',
-        partyUnitPosition: '',
-        lawOfficer: '',
-      },
-      firstCheck: {
-        oddNumber: '',
-        vehicleShipId: '',
-        vehicleShipType: '',
-        axisType: '',
-        axisNum: '',
-        totalWeight: '',
-        weightLimit: '',
-        overWeight: '',
-        overRatio: '',
-        totalLength: '',
-        totalWide: '',
-        totalHeight: '',
-        checkResult: '1',
-        checkPerson: '',
-      },
+
+
       secondCheck: {
         oddNumber: '',
         unloadMode: '',

@@ -940,3 +940,16 @@ export function getCheckResultByIdsApi(data) {
         cancelToken: setCancelSource()
     });
 }
+
+// PC分页查询超限超载记录
+export function getPcQueryCarInfoApi(data) {
+    return request({
+        url: "/xzjc/carInfo/pcQueryCarInfo",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
