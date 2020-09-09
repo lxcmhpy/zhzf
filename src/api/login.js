@@ -135,7 +135,6 @@ export function loginOldSystemApi(data) {
     method: "POST",
     data:data,
     showloading: false,
-    baseUrlType:'OLDSYSTEM_HOST',
     loadingType:'loadFull',
     cancelToken: setCancelSource()
   });

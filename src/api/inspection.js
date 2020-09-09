@@ -953,3 +953,17 @@ export function getPcQueryCarInfoApi(data) {
         cancelToken: setCancelSource()
     });
 }
+
+//添加或修改车辆信息表
+export function saveOrUpdateCarInfoApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/carInfo/mySaveOrUpdate",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}

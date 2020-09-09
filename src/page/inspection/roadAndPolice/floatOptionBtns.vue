@@ -2,7 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px">
-    <el-button type="primary" @click="submitDataBtn(1)" v-if="formOrDocData.showBtn[0]&&inspectionFileEdit">
+    <el-button type="primary" @click="submitDataBtn(1)">
       <i class="iconfont law-save"></i>
       <br />保存
     </el-button>
@@ -342,7 +342,8 @@ export default {
     }
   },
   mounted() {
-    
+    //   this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='
+    //     + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '13,10a8b0e21ded'
   }
 }
 </script>
