@@ -107,7 +107,7 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog title="上传附件" :visible.sync="dialogFormVisible" @close="resetFileForm()">
+      <el-dialog title="上传附件" :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetFileForm()">
         <div class="search-btns" style="margin-bottom:20px">
           <el-upload accept=".pdf" :show-file-list="false" class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" multiple :limit="3" :file-list="fileList">
             <el-button size="small" type="primary">选取文件</el-button>
@@ -140,7 +140,7 @@
           <el-button type="primary" @click="submitForm('addForm',1)">保存</el-button>
         </div> -->
       </el-dialog>
-      <el-dialog title="检查" :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
+      <el-dialog title="检查" :close-on-click-modal="false" :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
         <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
           <el-row>
             <el-col :span="12">
