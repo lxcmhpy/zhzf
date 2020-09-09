@@ -97,7 +97,7 @@
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
       <publicInspectors :freshFlag="freshFlag"></publicInspectors>
     </div>
-    <el-dialog title="人员详情" :visible.sync="dialogFormVisible" style="width:auto">
+    <el-dialog title="人员详情" :close-on-click-modal="false" :visible.sync="dialogFormVisible" style="width:auto">
       <el-form ref="form" :model="personInfoDetailForm" label-width="155px">
         <!--基本信息 -->
         <div class="info_box">

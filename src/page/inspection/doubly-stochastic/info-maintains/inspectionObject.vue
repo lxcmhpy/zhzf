@@ -73,7 +73,7 @@
     <div class="paginationBox">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
     </div>
-    <el-dialog :title='dialogStatus+"检查对象"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+    <el-dialog :title='dialogStatus+"检查对象"' :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
       <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
         <el-form-item label="对象名称" prop="objectName">
           <el-input v-model="addForm.objectName"></el-input>
