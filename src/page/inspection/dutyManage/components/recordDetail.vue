@@ -14,9 +14,9 @@
             <h3 class="form-tab-title">基本信息</h3>
             <el-row :gutter="20">
               <el-col :span="24">
-                <el-form-item label="巡查时间" prop="inspectionTime">
+                <el-form-item label="巡查时间" prop="checkTime">
                   <el-date-picker
-                    v-model="inspectRecordForm.inspectionTime"
+                    v-model="inspectRecordForm.checkTime"
                     type="datetimerange"
                     range-separator="至"
                     start-placeholder="开始日期"
@@ -27,27 +27,32 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="检查门类" prop="category">
-                  <el-select v-model="inspectRecordForm.category" placeholder="请选择">
-                    <el-option label="公路巡查" value="1"></el-option>
-                    <el-option label="服务去巡查" value="2"></el-option>
-                    <el-option label="其他" value="2"></el-option>
+                <el-form-item label="检查门类" prop="checkCategory">
+                  <el-select v-model="inspectRecordForm.checkCategory" placeholder="请选择">
+                    <el-option
+                      v-for="item in checkCategoryList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="检查类型" prop="checkType">
                   <el-select v-model="inspectRecordForm.checkType" placeholder="请选择">
-                    <el-option label="安全检查" value="1"></el-option>
-                    <el-option label="日常巡查" value="2"></el-option>
-                    <el-option label="整改督办" value="3"></el-option>
-                    <el-option label="其他" value="4"></el-option>
+                    <el-option
+                      v-for="item in checkTypeList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="填报地点" prop="filingPlace">
-                  <el-input v-model="inspectRecordForm.filingPlace" placeholder="请输入">
+                <el-form-item label="填报地点" prop="address">
+                  <el-input v-model="inspectRecordForm.address" placeholder="请输入">
                     <i slot="suffix" class="el-icon-location-outline"></i>
                   </el-input>
                 </el-form-item>
@@ -65,16 +70,16 @@
             <el-row>
               <h3 class="form-tab-title">检查内容</h3>
               <el-col :span="12">
-                <el-form-item label="路段情况" prop="roadSituation">
-                  <el-select v-model="inspectRecordForm.roadSituation" placeholder="请选择">
+                <el-form-item label="路段情况" prop="roadCondition">
+                  <el-select v-model="inspectRecordForm.roadCondition" placeholder="请选择" @change="roadConditionChange">
                     <el-option label="正常" value="1"></el-option>
-                    <el-option label="异常" value="0"></el-option>
+                    <el-option label="异常" value="2"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="路线编号" prop="roadNumber">
-                  <el-select v-model="inspectRecordForm.roadNumber" placeholder="请选择">
+                <el-form-item label="路线编号" prop="roadNum">
+                  <el-select v-model="inspectRecordForm.roadNum" placeholder="请选择">
                     <el-option label="S10" value="1"></el-option>
                     <el-option label="S20" value="2"></el-option>
                   </el-select>
@@ -89,8 +94,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="行驶方向" prop="travelDirection">
-                  <el-select v-model="inspectRecordForm.travelDirection" placeholder="请选择">
+                <el-form-item label="行驶方向" prop="drivingDirection">
+                  <el-select v-model="inspectRecordForm.drivingDirection" placeholder="请选择">
                     <el-option label="上行" value="1"></el-option>
                     <el-option label="下行" value="2"></el-option>
                   </el-select>
@@ -98,30 +103,34 @@
               </el-col>
               <el-col :span="24">
                 <el-form-item label="路段信息" prop="roadInfo" class="road-info-input">
-                  <el-input v-model="inspectRecordForm.startKm" placeholder="请输入">
+                  <el-input v-model="inspectRecordForm.startKilometer" placeholder="请输入">
                     <i slot="prefix" class="input-tips">K</i>
                   </el-input>
                   <span class="road-info-join">+</span>
-                  <el-input v-model="inspectRecordForm.startMm" placeholder="请输入">
+                  <el-input v-model="inspectRecordForm.startMeter" placeholder="请输入">
                     <i slot="suffix" class="input-tips">M</i>
                   </el-input>
                   <span class="road-info-split">至</span>
-                  <el-input v-model="inspectRecordForm.endKm" placeholder="请输入">
+                  <el-input v-model="inspectRecordForm.endKilometer" placeholder="请输入">
                     <i slot="prefix" class="input-tips">K</i>
                   </el-input>
                   <span class="road-info-join">+</span>
-                  <el-input v-model="inspectRecordForm.endMm" placeholder="请输入">
+                  <el-input v-model="inspectRecordForm.endMeter" placeholder="请输入">
                     <i slot="suffix" class="input-tips">M</i>
                   </el-input>
                 </el-form-item>
               </el-col>
               <!-- 路段信息正常时显示 -->
-              <el-col v-if="inspectRecordForm.roadSituation === '1'" :span="24">
-                <el-form-item label="问题摘要" prop="problemAbstract" class="problem-abstract-panel">
+              <el-col v-if="inspectRecordForm.roadCondition === '1'" :span="24">
+                <el-form-item label="描述" prop="describes" class="problem-abstract-panel">
                   <div class="abstract-top-handle">
                     <el-select v-model="inspectRecordForm.abstractTemplate" placeholder="模板选择">
-                      <el-option label="模板1" value="1"></el-option>
-                      <el-option label="模板2" value="2"></el-option>
+                      <el-option
+                        v-for="item in normalRecordTemp"
+                        :key="item.templateId"
+                        :label="item.name"
+                        :value="item.templateId"
+                      ></el-option>
                     </el-select>
                     <el-button type="text">自动生成</el-button>
                   </div>
@@ -129,16 +138,16 @@
                     type="textarea"
                     :autosize="{ minRows: 4, maxRows: 6}"
                     placeholder="请输入内容"
-                    v-model="inspectRecordForm.problemAbstract"
+                    v-model="inspectRecordForm.describes"
                   ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <!-- 路段信息为异常时显示 -->
-            <template v-if="inspectRecordForm.roadSituation === '0'">
+            <template v-if="inspectRecordForm.roadCondition === '2'">
               <el-row
                 class="abnormal-situation-info"
-                v-for="(abnormal, index) in inspectRecordForm.abnormalSituation"
+                v-for="(abnormal, index) in inspectRecordForm.listAbn"
                 :key="index"
               >
                 <h4 class="abnormal-title">
@@ -148,8 +157,8 @@
                   </el-button>
                 </h4>
                 <el-col :span="12">
-                  <el-form-item label="一级分类" prop="firstLevel">
-                    <el-select v-model="abnormal.firstLevel" placeholder="请选择">
+                  <el-form-item label="一级分类" prop="firstProcessType">
+                    <el-select v-model="abnormal.firstProcessType" placeholder="请选择">
                       <el-option label="路产情况" value="1"></el-option>
                       <el-option label="路面情况" value="2"></el-option>
                       <el-option label="建筑控制区情况" value="3"></el-option>
@@ -158,8 +167,8 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="二级分类" prop="secondLevel">
-                    <el-select v-model="abnormal.secondLevel" placeholder="请选择">
+                  <el-form-item label="二级分类" prop="secondProcessType">
+                    <el-select v-model="abnormal.secondProcessType" placeholder="请选择">
                       <el-option label="二级分类1" value="1"></el-option>
                       <el-option label="二级分类2" value="2"></el-option>
                     </el-select>
@@ -167,16 +176,16 @@
                 </el-col>
                 <!-- 三级分类根据分级配置判断是否显示 -->
                 <el-col v-if="false" :span="12">
-                  <el-form-item label="三级分类" prop="threeLevel">
-                    <el-select v-model="abnormal.threeLevel" placeholder="请选择">
+                  <el-form-item label="三级分类" prop="thirdProcessType">
+                    <el-select v-model="abnormal.thirdProcessType" placeholder="请选择">
                       <el-option label="三级分类1" value="1"></el-option>
                       <el-option label="三级分类2" value="2"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="处理情况" prop="handleSituation">
-                    <el-select v-model="abnormal.handleSituation" placeholder="请选择">
+                  <el-form-item label="处理情况" prop="process">
+                    <el-select v-model="abnormal.process" placeholder="请选择">
                       <el-option label="现场处理" value="1"></el-option>
                       <el-option label="电话通知" value="2"></el-option>
                       <el-option label="信息推送" value="3"></el-option>
@@ -185,16 +194,16 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="处理方式" prop="handleType">
-                    <el-select v-model="abnormal.handleType" placeholder="请选择">
+                  <el-form-item label="处理方式" prop="processMode">
+                    <el-select v-model="abnormal.processMode" placeholder="请选择">
                       <el-option label="方式1" value="1"></el-option>
                       <el-option label="方式2" value="2"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="处理结果" prop="handleResult">
-                    <el-select v-model="abnormal.handleResult" placeholder="请选择">
+                  <el-form-item label="处理结果" prop="processResults">
+                    <el-select v-model="abnormal.processResults" placeholder="请选择">
                       <el-option label="处理完成" value="1"></el-option>
                       <el-option label="处理中" value="2"></el-option>
                       <el-option label="待处理" value="3"></el-option>
@@ -203,19 +212,23 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="是否立案" prop="isFilingCase">
-                    <el-select v-model="abnormal.isFilingCase" placeholder="请选择">
+                  <el-form-item label="是否立案" prop="isCase">
+                    <el-select v-model="abnormal.isCase" placeholder="请选择">
                       <el-option label="是" value="1"></el-option>
                       <el-option label="否" value="0"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item label="问题摘要" prop="problemAbstract" class="problem-abstract-panel">
+                  <el-form-item label="问题摘要" prop="templateId" class="problem-abstract-panel">
                     <div class="abstract-top-handle">
-                      <el-select v-model="inspectRecordForm.abstractTemplate" placeholder="模板选择">
-                        <el-option label="模板1" value="1"></el-option>
-                        <el-option label="模板2" value="2"></el-option>
+                      <el-select v-model="abnormal.templateId" placeholder="模板选择">
+                        <el-option
+                          v-for="item in abnormalRecordTemp"
+                          :key="item.templateId"
+                          :label="item.name"
+                          :value="item.templateId"
+                        ></el-option>
                       </el-select>
                       <el-button type="text">自动生成</el-button>
                     </div>
@@ -227,7 +240,7 @@
                     ></el-input>
                   </el-form-item>
                 </el-col>
-                <template v-if="abnormal.isFilingCase === '1'">
+                <template v-if="abnormal.isCase === '1'">
                   <el-col :span="12">
                     <el-form-item
                       label="程序类型"
@@ -253,15 +266,15 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
-                    <el-form-item label="违法行为" prop="illegalActivities">
-                      <el-input v-model="abnormal.illegalActivities"></el-input>
+                    <el-form-item label="违法行为" prop="caseCauseId">
+                      <el-input v-model="abnormal.caseCauseId"></el-input>
                     </el-form-item>
                   </el-col>
                 </template>
               </el-row>
             </template>
             <!-- 新增异常情况 -->
-            <div v-if="inspectRecordForm.roadSituation === '0'" class="abnormal-add-btn">
+            <div v-if="inspectRecordForm.roadCondition === '2'" class="abnormal-add-btn">
               <el-button type="primary" icon="el-icon-plus" size="medium" @click="addAbnormal">新增</el-button>
             </div>
           </el-form>
@@ -353,43 +366,44 @@
 import AddRecordFile from "@/page/inspection/dutyManage/components/addRecordFile.vue";
 import ReviewAbnormalFile from "@/page/inspection/dutyManage/components/reviewAbnormalFile.vue";
 import AbnormalFile from "@/page/inspection/dutyManage/components/abnormalFileList.vue";
+import { getCheRecordTempPageListApi, addCheRecordApi, getCheRecordDetailApi } from '@/api/supervision'
 
 export default {
   components: { AddRecordFile, AbnormalFile, ReviewAbnormalFile },
   data() {
     return {
       inspectRecordForm: {
-        inspectionTime: "",
-        category: "",
+        checkTime: "",
+        checkCategory: "",
         checkType: "",
-        roadSituation: "1",
-        abnormalSituation: [
+        roadCondition: "1",
+        listAbn: [
           {
-            firstLevel: "",
-            secondLevel: "",
-            threeLevel: "",
-            handleSituation: "",
-            handleType: "",
-            handleResult: "",
-            isFilingCase: "",
+            firstProcessType: "",
+            secondProcessType: "",
+            thirdProcessType: "",
+            process: "",
+            processMode: "",
+            processResults: "",
+            isCase: "",
             problemAbstract: "",
             programType: "",
             caseType: "",
-            illegalActivities: "",
+            caseCauseId: "",
           },
         ],
       },
       rules: {
-        inspectionTime: [
+        checkTime: [
           { required: true, message: "巡查时间不能为空", trigger: "blur" },
         ],
-        category: [
+        checkCategory: [
           { required: true, message: "请选择检查门类", trigger: "change" },
         ],
         checkType: [
           { required: true, message: "请选择检查类型", trigger: "change" },
         ],
-        roadSituation: [
+        roadCondition: [
           { required: true, message: "请选择路段情况", trigger: "change" },
         ],
       },
@@ -434,15 +448,30 @@ export default {
         { type: "audio", src: "@/../static/sounds/ringtone.wav", name: '音频文件.wav' },
         { type: "video", src: "http://124.192.215.10:9332/11,2804579f39a3", name: '视频文件.mp4' },
       ],
+      normalRecordTemp: [],//正常记录模板list
+      abnormalRecordTemp: [],//异常
     };
   },
   computed: {
     PageType() {
       return this.$route.params.page;
     },
+    checkTypeList() {
+      return this.$route.params.checkTypeList;
+    },
+    checkCategoryList() {
+      return this.$route.params.checkCategoryList;
+    },
+    rowData() {
+      return this.$route.params.cheRecord;
+    }
   },
   created() {
     console.log(this.PageType);
+    this.getCheRecordTempPageList();
+    if(this.PageType === "edit") {
+      this.getCheRecordDetail(this.rowData);
+    }
   },
   methods: {
     // 添加附件
@@ -452,19 +481,19 @@ export default {
     // 新增异常情况
     addAbnormal() {
       let abnormal = {
-        firstLevel: "",
-        secondLevel: "",
-        threeLevel: "",
-        handleSituation: "",
-        handleType: "",
-        handleResult: "",
-        isFilingCase: "",
+        firstProcessType: "",
+        secondProcessType: "",
+        thirdProcessType: "",
+        process: "",
+        processMode: "",
+        processResults: "",
+        isCase: "",
         problemAbstract: "",
         programType: "",
         caseType: "",
-        illegalActivities: "",
+        caseCauseId: "",
       };
-      this.inspectRecordForm.abnormalSituation.push(abnormal);
+      this.inspectRecordForm.listAbn.push(abnormal);
     },
     // 删除异常情况
     deleteAbnormal(index) {
@@ -475,7 +504,10 @@ export default {
         customClass: "custom-confirm",
       })
         .then(() => {
-          this.inspectRecordForm.abnormalSituation.splice(index, 1);
+          this.inspectRecordForm.listAbn.splice(index, 1);
+          if(this.inspectRecordForm.listAbn == 0) {
+            this.inspectRecordForm.roadCondition = "1";
+          }
         })
         .catch(() => {});
     },
@@ -497,12 +529,79 @@ export default {
     },
     // 保存
     saveRecordInfo() {
-      console.log("保存记录");
+      console.log("保存记录", this.inspectRecordForm);
+      this.$refs.inspectRecordFormRef.validate((valid) => {
+        if (valid) {
+          const loading = this.$loading({
+            lock: true,
+            text: "正在保存",
+            spinner: "car-loading",
+            customClass: "loading-box",
+            background: "rgba(234,237,244, 0.8)",
+          });
+
+          this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
+          this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
+          addCheRecordApi(this.inspectRecordForm).then(
+            res => {
+              if(res.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: "保存成功!"
+                });
+              }
+            },
+            err => { console.error(err) }
+          );
+          loading.close();
+        } else {
+          return false;
+        }
+      });
+      
     },
     // 查看附件
     viewAbnormalFile(file) {
       this.$refs.ReviewAbnormalFileRef.showModal(file.type, file.src);
     },
+    //模板查询
+    getCheRecordTempPageList(){
+      const params = { size: -1 }
+      getCheRecordTempPageListApi(params).then(
+        res => {
+          if(res.code == 200) {
+            this.normalRecordTemp = res.data.records.filter(t => t.roadCondition == "1");
+            this.abnormalRecordTemp = res.data.records.filter(t => t.roadCondition == "2");
+          }else{
+            console.error(res);
+          }
+        },
+        err => { console.log(err) }
+      );
+    },
+    //道路情况
+    roadConditionChange(value){
+      if(value == "1") {//正常
+        this.inspectRecordForm.listAbn = []
+      }else{//异常
+        if(this.inspectRecordForm.listAbn.length == 0) {
+          this.addAbnormal();
+        }
+      }
+    },
+    getCheRecordDetail(cheRecord) {
+      getCheRecordDetailApi(cheRecord).then(
+        res => {
+          if(res.code == 200){
+            this.inspectRecordForm = res.data;
+            this.inspectRecordForm.checkTime = [ res.data.checkStartTime, res.data.checkEndTime ];
+          }else{
+            console.error(res);
+          }
+        },
+        err => { console.error(err) }
+      );
+    }
   },
 };
 </script>
