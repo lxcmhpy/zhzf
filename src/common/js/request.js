@@ -61,7 +61,7 @@ service.interceptors.request.use(
         showFullScreenLoading(loadingType);
       }
       if (getToken("TokenKey")) {
-        if(config.baseUrlType === 'EXAM'){
+        if(config.tokenType === 'EXAM'){
           config.headers["Authorization_k"] = "Bearer " + getToken("TokenKey");
         }else{
           config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
