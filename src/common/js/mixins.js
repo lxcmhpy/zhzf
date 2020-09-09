@@ -596,6 +596,21 @@ export const mixinGetCaseApiList = {
               this.$message('更改流程图状态失败！')
             }
             this.$router.push({ name: data2.nextLink })
+           
+           
+            // let fileres = '';
+            // try{
+            //   fileres = await getFile({docId: data2.docId,caseId: this.caseId,});
+            // }catch(err){
+            //   this.$message('查询环节是否生成了pdf失败!')
+            // }
+            // console.log('查询环节是否生成了pdf', res);
+            
+            //   if (fileres.data.length > 0) {
+            //     this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, caseLinktypeId: data.linkID } })
+            //   }else{
+            //     this.$router.push({ name: data2.nextLink })
+            //   }
           }
         }
       } else if (data.curLinkState == 'doing') {  //进行中的环节

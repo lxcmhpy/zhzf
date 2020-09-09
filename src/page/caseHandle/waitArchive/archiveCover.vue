@@ -59,13 +59,13 @@
             <div class="row" v-if="showForQH">
               <div class="col">
                 <el-form-item label="处理结果"  prop="closeResult">
-                  <el-input v-model="formData.closeResult" class="w-120" size="small" disabled></el-input>
+                  <el-input v-model="formData.closeResult" class="w-120" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="showForQH">
               <div class="col">
-                <el-form-item label="程序类型"  prop="closeResult">
+                <el-form-item label="程序类型"  prop="programType">
                   <el-input v-model="formData.programType" class="w-120" size="small" disabled></el-input>
                 </el-form-item>
               </div>
@@ -336,7 +336,11 @@ export default {
         ],
         organName: [
           { required: true, message: "执法机关不能为空", trigger: "blur" }
-        ]
+        ],
+        closeResult: [
+          { required: true, message: "处理结果不能为空", trigger: "blur" }
+        ],
+        
       },
       nowShowPdfIndex:0, //归档后当前显示的pdf的index
       archiveSuccess:false, //归档成功

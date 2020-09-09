@@ -20,7 +20,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 import {
- linkBackApi,
+ linkBackApi,getCaseBasicInfoApi,
 } from "@/api/caseHandle";
 export default {
   data() {
@@ -43,8 +43,13 @@ export default {
     //回退
     async linkBackSure(){
         try{
-            await linkBackApi(this.caseId); 
-            this.$emit('backSuccess');
+            let  caseRes= await getCaseBasicInfoApi({id: this.caseId})
+            if (caseRes.data.caseStatus == "待审批" || caseRes.data.caseStatus == "审批中") {
+                this.$message('当前环节审批中，不允许回退！')
+            }else{
+              await linkBackApi(this.caseId); 
+              this.$emit('backSuccess');
+            } 
         }catch(err){
             this.$message('回退失败！')
         }

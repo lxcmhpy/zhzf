@@ -136,8 +136,8 @@
           </el-form-item>
         </div>
         <div class="item">
-          <el-form-item label="前端组件" prop="component">
-            <el-input ref="component" v-model="addItemObj.component"></el-input>
+          <el-form-item label="前端组件">
+            <el-input v-model="addItemObj.component"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -145,6 +145,7 @@
             <el-input v-model="addItemObj.sortOrder"></el-input>
           </el-form-item>
         </div>
+       
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="isShowDialog = false">取 消</el-button>
@@ -195,7 +196,8 @@
           label: "title",
           value: "id"
         },
-        parentData: []
+        parentData: [],
+        haha:''
       };
     },
     components: {},
