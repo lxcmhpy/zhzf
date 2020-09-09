@@ -3001,7 +3001,7 @@ export default {
       }
   },
   created() {
-    // this.initDrawer();
+    this.initDrawer();
     //this.getDirectionList();
     //this.getLocationList();
 
@@ -3058,7 +3058,7 @@ export default {
     console.log("this.autoSava", this.autoSava);
     if (this.autoSava && to.name != "login") {
       //退出登录不自动暂存
-      // this.stageInfo(0);
+      this.stageInfo(0);
     }
 
     next((vm) => {

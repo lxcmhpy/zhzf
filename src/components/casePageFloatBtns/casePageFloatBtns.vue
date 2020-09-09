@@ -1,7 +1,7 @@
 <template>
 
   <!-- 悬浮按钮 -->
-  <div class="float-btns" style="bottom:250px">
+  <div class="float-btns" style="bottom:250px;">
     <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
       <i class="iconfont law-approval"></i>
       <br />签章
@@ -36,12 +36,13 @@
       <br />返回
     </el-button>
     <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
-    <!-- <el-button type="primary" @click="backWenshuBtn" v-if="this.$route.name=='case_handle_myPDF'
-    &&currentFileData.path!='case_handle_establish'&&currentFileData.path!='case_handle_finishCaseReport'
-    &&approvalState!='approvaling'&&caseLinktypeId==doingLinkId">
-      <i class="iconfont law-edit"></i>
-      <br />修改
-    </el-button> -->
+    <span v-if="currentFileData">
+      <el-button type="primary"  style="margin-top: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
+        <i class="iconfont law-edit"></i>
+        <br />修改
+      </el-button>
+    </span>
+
     <img src="" id="show">
   </div>
 </template>
@@ -51,7 +52,7 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
-import { queryFlowBycaseIdApi, updateDocStatusById } from "@/api/caseHandle";
+import { queryFlowBycaseIdApi, updateDocStatusById, getLinkTypeInfoByIdApi } from "@/api/caseHandle";
 import { nextTick } from 'vuedraggable';
 
 export default {
@@ -63,7 +64,14 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId','docPdfStorageId']) },
+  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId']),
+  isCanEdit(){
+    let data= this.$route.name=='case_handle_myPDF'
+    &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
+    &&this.approvalState!='approvaling'&&this.caseLinktypeId==this.doingLinkId
+    return data
+;
+  } },
   methods: {
     //   打印方法
     async printContent() {
@@ -270,7 +278,7 @@ export default {
     },
     backWenshuBtn() {
       // 文书回退
-      let _this=this
+      let _this = this
       this.$confirm('修改操作将替换掉当前文书（包括签名签章），', '提示', {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -278,31 +286,62 @@ export default {
         customClass: 'custom-confirm'
       }).then(() => {
         console.log('回退')
-        let data = {
-          docPdfStorageId: _this.docPdfStorageId,
-          linkTypeId: _this.caseLinktypeId
-        }
-        debugger
-        updateDocStatusById(data).then(
-          res => {
 
+        //判断是单文书环节还是文书
+
+        getLinkTypeInfoByIdApi(_this.caseLinktypeId).then(
+          res => {
+            if (res.code == 200) {
+              let huanjieData = res
+              console.log('查询环节是否生成了pdf', huanjieData);
+              let isHuanjieDoc = false
+              if (huanjieData.data.isPdf == 0) isHuanjieDoc = true;
+              let data = {
+                storageId: _this.docPdfStorageId,
+                linkTypeId: isHuanjieDoc ? _this.caseLinktypeId : ''
+              }
+              updateDocStatusById(data).then(
+                res => {
+                  if (res.code == 200) { }
+                  else {
+                    _this.$message({
+                      type: "error",
+                      message: res.msg,
+                    });
+                  }
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+              console.log('currentFileData', this.currentFileData)
+              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+              this.$router.push({
+                name: this.currentFileData.path,
+                params: {
+                  id: this.currentFileData.id,
+                  //案件ID
+                  caseBasicinfoId: this.currentFileData.caseBasicinfoId,
+                  docId: this.currentFileData.docId,
+                  url: this.currentFileData.url
+                }
+              });
+            }
+            else {
+              _this.$message({
+                type: "error",
+                message: res.msg,
+              });
+            }
           },
           err => {
             console.log(err);
           }
         );
-        console.log('currentFileData', this.currentFileData)
-        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-        this.$router.push({
-          name: this.currentFileData.path,
-          params: {
-            id: this.currentFileData.id,
-            //案件ID
-            caseBasicinfoId: this.currentFileData.caseBasicinfoId,
-            docId: this.currentFileData.docId,
-            url: this.currentFileData.url
-          }
-        });
+
+
+
+
 
       }).catch(() => { });
     }

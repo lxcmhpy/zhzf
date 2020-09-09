@@ -857,11 +857,7 @@ export default {
     //是否显示环节回退按钮
     isShowLinkBackBtn(data){
       console.log(data);
-      // if(data.doingLink.includes(this.BASIC_DATA_JX.establish_JX_caseLinktypeId)){
-      //   this.showLinkBackBtn = false;
-      // }else{
-      //   this.showLinkBackBtn = true;
-      // }
+    
 
       let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
       //立案登记下一环节状态
@@ -874,9 +870,9 @@ export default {
           break;
         }
       }
-      //立案登记下一环节状态为已完成
+      //立案登记下一环节状态为已完成或进行中
       for(let item of establishAfterLink_caseLinktypeIdArr){
-        if(data.completeLink.includes(item)){
+        if(data.completeLink.includes(item) || data.doingLink.includes(item)){
           establishNextComplet = true;
           break;
         }
@@ -896,6 +892,7 @@ export default {
       }else{
         this.showLinkBackBtn = false;
       }
+      
     }
   },
   created() {

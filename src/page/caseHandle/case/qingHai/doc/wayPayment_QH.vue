@@ -144,6 +144,7 @@ export default {
       },
       isPdf: '',
       propertyFeatures: '', //字段属性配置
+      needDealData:true,
     }
   },
   methods: {
