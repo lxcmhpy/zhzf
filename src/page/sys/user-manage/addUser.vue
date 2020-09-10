@@ -237,11 +237,17 @@ export default {
       // this.addUserForm.ministerial = row.ministerial;
       // this.addUserForm.maritime = row.maritime;
       // this.addUserForm.other = row.other;
+      this.parentNode={
+        parentNodeId:row.organId,
+        parentNodeName:row.userDeparment
+      };
+      this.getCurrentOrganAndChild();
+      this.getDepartment(row.organId)
       this.addUserForm = row;
       this.isDisabled = true;
     },
     //获取当前机构及其子机构
-    getCurrentOrganAndChild() {
+    getCurrentOrganAndChild() {  
       let _this = this
       this.$store.dispatch("getCurrentAndNextOrgan",this.parentNode.parentNodeId).then(
         res => {
