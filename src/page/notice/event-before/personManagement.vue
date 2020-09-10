@@ -101,7 +101,7 @@
       :visible.sync="detailVisible"
       @close="detailVisible = false"
       :close-on-click-modal="false"
-      width="30%"
+      width="35%"
       class="detail-dialog"
     >
       <table class="table" width="100%" cellspacing="0">
@@ -334,8 +334,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = update(data);
+      let res = await update(data);
       this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     onApproveBatch() {
       if (this.multipleSelection.length < 1) {
@@ -386,22 +387,24 @@ export default {
 </script>
 <style lang="scss" scoped>
 .person-management {
-  table {
-    border: 1px solid #ecebeb;
-    min-height: 30px;
-    line-height: 30px;
-    text-align: center;
-    border-collapse: collapse;
-    padding: 2px;
-  }
-  table tr th,
-  table tr td {
-    border: 1px solid #ecebeb;
-    padding: 10px;
-  }
-  table .title {
-    font-weight: bold;
-    background-color: #fbfafa;
+  .detail-dialog {
+    .table {
+      border: 1px solid #ecebeb;
+      min-height: 30px;
+      line-height: 30px;
+      text-align: left;
+      border-collapse: collapse;
+      padding: 2px;
+    }
+    .table tr th,
+    .table tr td {
+      border: 1px solid #ecebeb;
+      padding: 10px;
+    }
+    .table .title {
+      font-weight: bold;
+      background: #f8f6f6;
+    }
   }
 }
 </style>

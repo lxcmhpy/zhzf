@@ -513,7 +513,10 @@ util.getFileType = function (fileName) {
 }
 
 util.com_getFileStream = async function (storageId) {
-  let fileStreamRes = await getFileStreamByStorageIdApi(storageId);
+  let fileStreamRes;
+  try{
+    fileStreamRes = await getFileStreamByStorageIdApi(storageId);
+  }catch(err){throw new Error(err);}
   let url = null;
   if (window.createObjectURL != undefined) { // basic
     url = window.createObjectURL(fileStreamRes);

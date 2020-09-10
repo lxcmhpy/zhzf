@@ -124,7 +124,7 @@
               <el-col v-if="inspectRecordForm.roadCondition === '1'" :span="24">
                 <el-form-item label="描述" prop="describes" class="problem-abstract-panel">
                   <div class="abstract-top-handle">
-                    <el-select v-model="inspectRecordForm.abstractTemplate" placeholder="模板选择">
+                    <el-select v-model="inspectRecordForm.desTemplateId" placeholder="模板选择">
                       <el-option
                         v-for="item in normalRecordTemp"
                         :key="item.templateId"
@@ -132,7 +132,7 @@
                         :value="item.templateId"
                       ></el-option>
                     </el-select>
-                    <el-button type="text">自动生成</el-button>
+                    <el-button type="text" @click="generateDescribes">自动生成</el-button>
                   </div>
                   <el-input
                     type="textarea"
@@ -230,13 +230,13 @@
                           :value="item.templateId"
                         ></el-option>
                       </el-select>
-                      <el-button type="text">自动生成</el-button>
+                      <el-button type="text" @click="problemAbstractGenerate(index)">自动生成</el-button>
                     </div>
                     <el-input
                       type="textarea"
                       :autosize="{ minRows: 4, maxRows: 6}"
                       placeholder="请输入内容"
-                      v-model="inspectRecordForm.problemAbstract"
+                      v-model="abnormal.problemAbstract"
                     ></el-input>
                   </el-form-item>
                 </el-col>
@@ -287,27 +287,33 @@
                 <i class="add-file-type-icon">+</i>添加
               </el-button>
             </h3>
-            <el-table v-if="PageType !== 'view'" :data="tableData" style="width: 100%">
+            <el-table v-if="PageType !== 'view'" :data="listAtt" style="width: 100%">
               <el-table-column type="expand">
                 <template slot-scope="scope">
-                  <div v-if="scope.row.files && scope.row.files.length">
-                    <ul v-for="file in scope.row.files" :key="file.id" class="file-children-table">
-                      <li style="width: 60px;">{{ file.index }}</li>
-                      <li style="width: calc(100% - 220px);color: #7b7b7b;">{{ file.name }}</li>
+                  <div v-if="scope.row.children && scope.row.children.length">
+                    <ul v-for="(attach, index) in scope.row.children" :key="attach.id" class="file-children-table">
+                      <li style="width: 60px;">{{ `${scope.$index + 1}.${index + 1}` }}</li>
+                      <li style="width: calc(100% - 220px);color: #7b7b7b;">{{ attach.name }}</li>
                       <li style="width: 160px;">
                         <el-button type="text">查看</el-button>
                         <el-button type="text">下载</el-button>
-                        <el-button type="text">删除</el-button>
+                        <el-button type="text" @click="removeAttach(attach, scope.row)">删除</el-button>
                       </li>
                     </ul>
                   </div>
                   <div v-else class="no-enclose-file">暂无数据</div>
                 </template>
               </el-table-column>
-              <el-table-column label="序号" prop="index" width="60px" align="center"></el-table-column>
-              <el-table-column label="材料名称" prop="materialName" align="center"></el-table-column>
+              <el-table-column label="序号" prop="index" width="60px" align="center">
+                <template slot-scope="scope">
+                  <span >{{scope.$index + 1}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="材料名称" prop="name" align="center"></el-table-column>
               <el-table-column label="操作" width="160px" fixed="right" align="center">
-                <el-button type="text" @click="addEnclosure('file')">添加</el-button>
+                <template slot-scope="scope">
+                  <el-button type="text" @click="addEnclosure('file', scope.row)">添加</el-button>
+                </template>
               </el-table-column>
             </el-table>
             <!-- 查看附件信息 -->
@@ -356,7 +362,7 @@
       </el-button>
     </div>
     <!-- 添加附件 -->
-    <AddRecordFile ref="AddRecordFileRef" />
+    <AddRecordFile ref="AddRecordFileRef" @addAttach="addAttach"/>
     <!-- 查看附件 -->
     <ReviewAbnormalFile ref="ReviewAbnormalFileRef" />
   </div>
@@ -411,30 +417,7 @@ export default {
       acOfficalUrl: "@/../static/images/img/personInfo/icon_ac_wenshu.svg",
       dsOfficalUrl: "@/../static/images/img/personInfo/icon_dis_wenshu.svg",
       musicFileUrl: "@/../static/images/img/personInfo/icon_music.svg",
-      tableData: [
-        {
-          id: "1",
-          index: "1",
-          materialName: "图像",
-          files: [
-            { id: "1", index: "1.1", name: "现场图片1" },
-            { id: "2", index: "1.2", name: "现场图片2" },
-            { id: "3", index: "1.3", name: "现场图片3" },
-          ],
-        },
-        {
-          id: "2",
-          index: "2",
-          materialName: "音频",
-          files: [],
-        },
-        {
-          id: "3",
-          index: "3",
-          materialName: "视频",
-          files: [],
-        },
-      ],
+      listAtt: [],
       officialList: [
         { label: "1", name: "《责令整改通知书》" },
         { label: "2", name: "《安全隐患告知函》" },
@@ -450,6 +433,7 @@ export default {
       ],
       normalRecordTemp: [],//正常记录模板list
       abnormalRecordTemp: [],//异常
+      curParentAttach: {},//当前所选附件分类
     };
   },
   computed: {
@@ -475,7 +459,8 @@ export default {
   },
   methods: {
     // 添加附件
-    addEnclosure(type) {
+    addEnclosure(type, parent) {
+      this.curParentAttach = parent;
       this.$refs.AddRecordFileRef.showModal(type);
     },
     // 新增异常情况
@@ -549,6 +534,8 @@ export default {
                   type: "success",
                   message: "保存成功!"
                 });
+                this.$router.go(-1);
+                this.$store.dispatch("deleteTabs", this.$route.name);
               }
             },
             err => { console.error(err) }
@@ -585,22 +572,56 @@ export default {
         this.inspectRecordForm.listAbn = []
       }else{//异常
         if(this.inspectRecordForm.listAbn.length == 0) {
+          this.inspectRecordForm.describes = "";
+          this.inspectRecordForm.desTemplateId = "";
           this.addAbnormal();
         }
       }
     },
+    //获取记录详情
     getCheRecordDetail(cheRecord) {
       getCheRecordDetailApi(cheRecord).then(
         res => {
           if(res.code == 200){
             this.inspectRecordForm = res.data;
             this.inspectRecordForm.checkTime = [ res.data.checkStartTime, res.data.checkEndTime ];
+            this.listAtt = this.inspectRecordForm.listAtt;
           }else{
             console.error(res);
           }
         },
         err => { console.error(err) }
       );
+    },
+    //添加删除附件
+    addAttach(attach) {
+      if(attach.type === '0'){
+        attach.children = [];
+        this.listAtt.push(attach);
+      }else{
+        this.curParentAttach.children.push(attach);
+      }
+    },
+    //删除附件
+    removeAttach(attach, parentAttach) {
+      parentAttach.children.splice(parentAttach.children.indexOf(attach),1);
+    },
+    //模板生成描述
+    generateDescribes() {
+      const tmp = this.normalRecordTemp.find(t => t.templateId == this.inspectRecordForm.desTemplateId);
+      this.inspectRecordForm.describes = this.generateContent(tmp.content);
+    },
+    //异常摘要生成
+    problemAbstractGenerate(listAbnIndex) {
+      const curAbn = this.inspectRecordForm.listAbn[listAbnIndex];
+      const tmp = this.abnormalRecordTemp.find(t => t.templateId == curAbn.templateId);
+      this.inspectRecordForm.listAbn[listAbnIndex].problemAbstract = this.generateContent(tmp.content);
+    },
+    generateContent(content) {
+      for (const key in this.inspectRecordForm) {
+        content = content.replace(`{${key}}`, this.inspectRecordForm[key]);
+      }
+      return content;
     }
   },
 };
