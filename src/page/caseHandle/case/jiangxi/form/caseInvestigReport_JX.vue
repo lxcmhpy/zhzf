@@ -42,7 +42,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.acceptTime"
-                  v-bind:class="{ over_flow:formData.acceptTime.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.acceptTime && formData.acceptTime.length>14?true:false }"
                   :autosize="{ minRows: 2, maxRows: 4}"
                   :disabled="fieldDisabled(propertyFeatures['acceptTime'])"
                 ></el-input>
@@ -138,7 +138,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyName"
-                  v-bind:class="{ over_flow:formData.partyName.length>25?true:false }"
+                  v-bind:class="{ over_flow:formData.partyName && formData.partyName.length>25?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="30"
                   placeholder="\"
@@ -274,7 +274,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.lawOfficeOpinions"
-                  v-bind:class="{ over_flow:formData.lawOfficeOpinions.length>33?true:false }"
+                  v-bind:class="{ over_flow:formData.lawOfficeOpinions && formData.lawOfficeOpinions.length>33?true:false }"
                   :rows="5"
                 ></el-input>
               </el-form-item>
@@ -330,7 +330,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.note"
-                  v-bind:class="{ over_flow:formData.note.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.note && formData.note.length>14?true:false }"
                   :autosize="{ minRows: 2, maxRows: 4}"
                   :disabled="fieldDisabled(propertyFeatures['note'])"
                 ></el-input>

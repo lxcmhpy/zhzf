@@ -639,7 +639,7 @@ export default {
       this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
     },
     //预览pdf
-    viewDocPdf(row) {
+    viewDocPdf(row) { 
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -648,6 +648,16 @@ export default {
         status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
         docDataId: row.docDataId
       };
+      if(row.docProcessStatus == '待审批'){
+        this.$store.commit('setApprovalState', 'approvalBefore');
+        this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.punishDecisionDoc_JX_caseLinktypeId);
+        this.$store.commit("setDocDataId", row.docDataId);
+        this.$store.commit("setDocId", row.docId);
+      }else if(row.docProcessStatus == '审批中'){
+        this.$store.commit('setApprovalState', 'submitApproval');
+      }else{
+         this.$store.commit('setApprovalState', '');
+      }
       this.$store.dispatch("deleteTabs", this.$route.name);
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },

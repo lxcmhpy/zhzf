@@ -4,7 +4,9 @@
 // } from "@/api/login";
 // import iLocalStroage from "@/common/js/localStroage";
 // import {menuList} from "@/common/data/menu";
-
+import {
+  getFileStreamByStorageIdApi,
+} from "@/api/caseHandle";
 //公用方法
 let util = {};
 
@@ -12,7 +14,7 @@ let util = {};
  *
  * 时间戳转日期时间
  */
-util.timeStampToDate = function(timeStamp) {
+util.timeStampToDate = function (timeStamp) {
   const time = new Date(timeStamp)
   const year = time.getFullYear()
   const month = time.getMonth() + 1
@@ -20,13 +22,13 @@ util.timeStampToDate = function(timeStamp) {
   let hour = time.getHours()
   let minute = time.getMinutes()
   let second = time.getSeconds()
-  if(hour < 10) {
+  if (hour < 10) {
     hour = `0${hour}`
   }
-  if(minute < 10) {
+  if (minute < 10) {
     minute = `0${minute}`
   }
-  if(second < 10) {
+  if (second < 10) {
     second = `0${second}`
   }
   return `${year}.${month}.${day} ${hour}:${minute}:${second}`
@@ -36,11 +38,11 @@ util.timeStampToDate = function(timeStamp) {
  *
  * 数字金额转化为汉字金额
  */
-util.upMoney = function(n){
+util.upMoney = function (n) {
   let fraction = ['角', '分'];
   let digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
-  let unit = [ ['元', '万', '亿'], ['', '拾', '佰', '仟'] ];
-  let head = n < 0? '欠': '';
+  let unit = [['元', '万', '亿'], ['', '拾', '佰', '仟']];
+  let head = n < 0 ? '欠' : '';
   n = Math.abs(n);
   let s = '';
   for (let i = 0; i < fraction.length; i++) {
@@ -55,7 +57,7 @@ util.upMoney = function(n){
       p = digit[n % 10] + unit[1][j] + p;
       n = Math.floor(n / 10);
     }
-    s = p.replace(/(零.)*零$/, '').replace(/^$/, '零')  + unit[0][i] + s;
+    s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s;
   }
   return head + s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整');
 }
@@ -65,15 +67,15 @@ util.upMoney = function(n){
  * 计算字符串实际长度，一个汉字长度为2，字母长度为1
  * 利用正则把字符串全转为字母长度，一个汉字占两个字符长度，一个字母占一个字符长度，中文符号占两个字符长度，英文符号占一个字符长度，然后计算长度
  */
-util.getCodeLength = function(str) {
-  return str.replace(/[\u0391-\uFFE5]/g,"aa").length
+util.getCodeLength = function (str) {
+  return str.replace(/[\u0391-\uFFE5]/g, "aa").length
 }
 
-util.alert = function(content) {
+util.alert = function (content) {
   window.alert(content);
 };
 
-util.isEmpty = function(a) {
+util.isEmpty = function (a) {
   if (!a) {
     // "",null,undefined,NaN
     return true;
@@ -95,7 +97,7 @@ util.isEmpty = function(a) {
 // getDay(0);//当天日期
 // getDay(-7);//7天前日期
 // getDay(-3);//3天前日期
-util.getRecentDay = function(day) {
+util.getRecentDay = function (day) {
   let today = new Date();
   let targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
   today.setTime(targetday_milliseconds); //注意，这行是关键代码
@@ -106,7 +108,7 @@ util.getRecentDay = function(day) {
   tDate = util.doHandleMonth(tDate);
   return tYear + "-" + tMonth + "-" + tDate;
 };
-util.dayOver = function(day1, day2) {
+util.dayOver = function (day1, day2) {
   day1 = new Date(day1.replace(/-/g, "/"));
   day2 = new Date(day2.replace(/-/g, "/")); //当前日期：2017-04-24
   let days = day2.getTime() - day1.getTime();
@@ -115,7 +117,7 @@ util.dayOver = function(day1, day2) {
 };
 
 //mouth补足
-util.doHandleMonth = function(month) {
+util.doHandleMonth = function (month) {
   var m = month;
   if (month.toString().length == 1) {
     m = "0" + month;
@@ -124,7 +126,7 @@ util.doHandleMonth = function(month) {
 };
 
 //获取当前时间，格式YYYY-MM-DD
-util.getFormatDate = function(date) {
+util.getFormatDate = function (date) {
   // var date = new Date();
   var seperator1 = "-";
   var year = date.getFullYear();
@@ -140,7 +142,7 @@ util.getFormatDate = function(date) {
   return currentdate;
 };
 //获取当前时间，格式YYYY-MM-DD 00:00:00
-util.getFormatDate1 = function(time) {
+util.getFormatDate1 = function (time) {
   //	 return new Date(parseInt(date) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
   var date = new Date(time * 1000);
   var seperator1 = "/";
@@ -169,7 +171,7 @@ util.getFormatDate1 = function(time) {
   return currentdate;
 };
 // 处理数据格式  加K、B、M、 保留一位小树
-util.transformValue = function(val) {
+util.transformValue = function (val) {
   let endVal = 0;
   let unit = "";
   if (val < 1000) {
@@ -187,7 +189,7 @@ util.transformValue = function(val) {
   return endVal + unit;
 };
 //每三位加分隔号
-util.thousand = function(value) {
+util.thousand = function (value) {
   if (util.isEmpty(value)) {
     value = "-";
   } else {
@@ -196,7 +198,7 @@ util.thousand = function(value) {
   return value;
 };
 // 用千位分割符处理数据  s数字 type代表需要保留的小树位数，0没有小树位  1 1位小树
-util.thousandBitSeparator = function(s, type) {
+util.thousandBitSeparator = function (s, type) {
   if (/[^0-9\.]/.test(s)) return "0.00";
   if (s == null || s == "null" || s == "") return "0.00";
   s = s.toString().replace(/^(\d*)$/, "$1.");
@@ -214,7 +216,7 @@ util.thousandBitSeparator = function(s, type) {
   return s;
 };
 //名字随机命名 len为位数 例如10
-util.randomString = function(len) {
+util.randomString = function (len) {
   len = len || 32;
   var chars = "0123456789abcdefhijkmnprstwxyz";
   var maxPos = chars.length;
@@ -231,7 +233,7 @@ util.randomString = function(len) {
  * @param endTime 格式'2018-01-01 00:00:00'
  * @returns day 返回Number
  */
-util.dayInterval = function(startTime, endTime) {
+util.dayInterval = function (startTime, endTime) {
   let stime = Date.parse(new Date(startTime));
   let etime = endTime ? Date.parse(new Date(endTime)) : new Date();
   let usedTime = etime - stime; //两个时间戳相差的毫秒数
@@ -243,7 +245,7 @@ util.dayInterval = function(startTime, endTime) {
  * 空数据代替符合返回'-'
  * @param {*} val
  */
-util.emptySymbol = function(val) {
+util.emptySymbol = function (val) {
   val = util.isEmpty(val) ? "-" : val;
   return val;
 };
@@ -253,7 +255,7 @@ util.emptySymbol = function(val) {
  * @param val 格式'2018-01-01 00:00:00' / '2018-01-01'
  * @returns daytime 时间戳
  */
-util.dayToTimestamp = function(val) {
+util.dayToTimestamp = function (val) {
   let timestamp = Date.parse(new Date(val));
   timestamp = timestamp / 1000;
   return timestamp;
@@ -264,16 +266,16 @@ util.dayToTimestamp = function(val) {
  * @param val 时间戳
  * @returns daytime 格式'2018-01-01 00:00:00'
  */
-util.timestampToDay = function(val) {
+util.timestampToDay = function (val) {
   // let newDate = new Date(val);
   // return newDate.format("yyyy-MM-dd hh:mm:ss");
-  let newDate =new Date(parseInt(val) * 1000);
+  let newDate = new Date(parseInt(val) * 1000);
   return newDate.format("yyyy-MM-dd hh:mm:ss");
 };
-util.timestampToDay2 = function(val) {
+util.timestampToDay2 = function (val) {
   // let newDate = new Date(val);
   // return newDate.format("yyyy-MM-dd hh:mm:ss");
-  let newDate =new Date(parseInt(val) * 1000);
+  let newDate = new Date(parseInt(val) * 1000);
   return newDate.format("yyyy-MM-dd hh:mm");
 };
 
@@ -281,7 +283,7 @@ util.timestampToDay2 = function(val) {
 
 
 // 首字母大写  处理字符串    用法：$util.uppercase(name)
-util.uppercase = function(str) {
+util.uppercase = function (str) {
   var reg = new RegExp(
     "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
   );
@@ -293,19 +295,19 @@ util.uppercase = function(str) {
   }
 };
 // 首字母大写  处理字符串数组
-util.alluppercase = function(arr) {
+util.alluppercase = function (arr) {
   arr = arr.map(util.uppercase);
   return arr;
 };
 
 // 全部字母大写
-util.allStrUpperCase = function(str) {
+util.allStrUpperCase = function (str) {
   str = str.toUpperCase();
   return str;
 };
 
 // 去除前后[]
-util.removeParenthesis = function(str) {
+util.removeParenthesis = function (str) {
   str = str.substr(1, str.length);
   str = str.substr(0, str.length - 1);
   //  str =str.substr(1,str.length-2);
@@ -317,7 +319,7 @@ util.removeParenthesis = function(str) {
 
 
 //产生随机数，_idx为位数
-util.addNumber = function(_idx) {
+util.addNumber = function (_idx) {
   var str = "";
   for (var i = 0; i < _idx; i++) {
     str += Math.floor(Math.random() * 10);
@@ -326,7 +328,7 @@ util.addNumber = function(_idx) {
 };
 
 //产生随机id
-util.getRandomId = function() {
+util.getRandomId = function () {
   let time = new Date().valueOf(); //时间戳
   let num = util.addNumber(6).toString();
   return time + num;
@@ -335,57 +337,57 @@ util.getRandomId = function() {
 
 
 //产生随机数(字母数字)
-util.getRandomString=function(len){
+util.getRandomString = function (len) {
   len = len || 32;
   var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var maxPos = $chars.length;
   var randomString = '';
   for (let i = 0; i < len; i++) {
-      //0~32的整数
-      randomString += $chars.charAt(Math.floor(Math.random() * (maxPos + 1)));
+    //0~32的整数
+    randomString += $chars.charAt(Math.floor(Math.random() * (maxPos + 1)));
   }
   return randomString;
 }
 
 //将1 2 数字转换为 一级 二级等
-util.transformNumberToJi =function(num){
+util.transformNumberToJi = function (num) {
   var numStr = '';
-   switch (num){
-      case 1:
-        numStr = "一级";
-        break;
-      case 2:
-        numStr = "二级";
-        break;
-      case 3:
-        numStr = "三级";
-        break;
-      case 4:
-        numStr = "四级";
-        break;
-      case 5:
-        numStr = "五级";
-        break;
-      case 6:
-        numStr = "六级";
-        break;
-      case 7:
-        numStr = "七级";
-        break;
-      case 8:
-        numStr = "八级";
-        break;
-      default:
-          numStr = "二十级";
-    }
+  switch (num) {
+    case 1:
+      numStr = "一级";
+      break;
+    case 2:
+      numStr = "二级";
+      break;
+    case 3:
+      numStr = "三级";
+      break;
+    case 4:
+      numStr = "四级";
+      break;
+    case 5:
+      numStr = "五级";
+      break;
+    case 6:
+      numStr = "六级";
+      break;
+    case 7:
+      numStr = "七级";
+      break;
+    case 8:
+      numStr = "八级";
+      break;
+    default:
+      numStr = "二十级";
+  }
   return numStr
 }
 
 
-util.openURL = function(pdfPath){
+util.openURL = function (pdfPath) {
   console.log('openURL')
   var test = window.location.href;
-  var string =test.split("/");
+  var string = test.split("/");
   // path = string[0]+"//"+string[2]+"/"+string[3];
   // var ActivexURL=path + "/jsp/zfba/aztDzqz/iWebEditor.html?pdfPath="+pdfPath;
   var ActivexURL = './index.vue';
@@ -443,7 +445,7 @@ util.openURL = function(pdfPath){
 
 // }
 
-util.getFileType = function(fileName) {
+util.getFileType = function (fileName) {
   // 后缀获取
   let suffix = '';
   // 获取类型结果
@@ -510,6 +512,22 @@ util.getFileType = function(fileName) {
   return 'other';
 }
 
+util.com_getFileStream = async function (storageId) {
+  let fileStreamRes = await getFileStreamByStorageIdApi(storageId);
+  let url = null;
+  if (window.createObjectURL != undefined) { // basic
+    url = window.createObjectURL(fileStreamRes);
+  } else if (window.webkitURL != undefined) { // webkit or chrome
+    try {
+      url = window.webkitURL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  } else if (window.URL != undefined) { // mozilla(firefox)
+    try {
+      url = window.URL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  }
+  return url;
+}
 
 
 
