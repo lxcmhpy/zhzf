@@ -36,6 +36,17 @@ export function updateRecordApi(data){
 }
 
 // 删除日志管理
+export function getRecordListApi(data){
+  return request({
+    url: "/check/template/cheRecordTemplatePageList",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+
+// 删除日志管理
 export function deleteRecordApi(checklogId){
   return request({
     url: "/check/checklog/deleteCheChecklogById/"+checklogId,
