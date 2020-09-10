@@ -15,12 +15,12 @@
       :rules="rules"
     >
       <el-row>
-        <el-form-item label="材料名称" prop="materialName">
-          <el-input v-model="addEnclosureTypeForm.materialName" placeholder="请输入"></el-input>
+        <el-form-item label="材料名称" prop="name">
+          <el-input v-model="addEnclosureTypeForm.name" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item v-if="addType === 'file'" label="上传附件" prop="materialName">
+        <el-form-item v-if="addType === 'file'" label="上传附件" prop="path">
           <el-upload
-            action
+            action="https://jsonplaceholder.typicode.cmo/posts/"
             :auto-upload="false"
             :file-list="fileList"
             :on-change="fileChange"
@@ -33,7 +33,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
-      <el-button type="primary" @click="submit">保 存</el-button>
+      <el-button type="primary" @click="submit">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -41,6 +41,7 @@
 import iLocalStroage from "@/common/js/localStroage";
 import { vaildateCardNum } from "@/common/js/validator";
 import { addCheScheduleApi, updateCheScheduleApi } from "@/api/supervision";
+import { uploadCommon } from '@/api/upload';
 
 export default {
   props: { },
@@ -48,11 +49,11 @@ export default {
     return {
       visible: false,
       addEnclosureTypeForm: {
-        materialName: "",
+        name: ""
       },
       fileList: [],
       rules: {
-        materialName: [
+        name: [
           { required: true, message: "请输入材料名称", trigger: "blur" },
         ],
       },
@@ -68,29 +69,38 @@ export default {
   methods: {
     //提交
     submit() {
-      this.$refs.addEnclosureTypeRef.validate((valid) => {
-        if (valid) {
-          const loading = this.$loading({
-            lock: true,
-            text: "正在保存",
-            spinner: "car-loading",
-            customClass: "loading-box",
-            background: "rgba(234,237,244, 0.8)",
-          });
+        this.$refs.addEnclosureTypeRef.validate((valid) => {
+          if (valid) {
+            var params = new FormData();
+            const attach = JSON.parse(JSON.stringify(this.addEnclosureTypeForm))
+            attach.type = this.addType === 'type'  ? "0" : "1";
 
-          loading.close();
-          this.closeDialog();
-        } else {
-          return false;
-        }
-      });
+            if(this.addType != 'type'){
+              params.append("file", this.fileList[0].raw);
+              uploadCommon(params).then(
+                res => {
+                  attach.path = res.data[0].storagePath;
+                  console.log(attach)
+                  this.$emit("addAttach", attach);
+                },
+                err => { console.error(err) }
+              );
+            }else{
+              this.$emit("addAttach", attach);
+            }
+            
+            this.closeDialog();
+          } else {
+            return false;
+          }
+        });
     },
     showModal(type, data) {
       this.addType = type;
       this.visible = true;
     },
     // 选择文件变化
-    fileChange(file, fileList) {
+    async fileChange(file, fileList) {
       const isGt5M = file.size / 1024 / 1024 > 5;
       if (isGt5M) {
         this.$message({
@@ -100,6 +110,8 @@ export default {
       }
       fileList.splice(0, 1, file);
       this.fileList.splice(0, 1, file);
+
+
     },
     // 删除文件
     removeFile(){
@@ -109,7 +121,7 @@ export default {
     closeDialog() {
       this.visible = false;
       this.fileList.splice(0, this.fileList.length);
-      this.addEnclosureTypeForm.materialName = "";
+      this.addEnclosureTypeForm.name = "";
     },
   },
 };
