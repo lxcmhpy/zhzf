@@ -29,6 +29,14 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="标识链接">
+                <template slot="label">
+                  <el-col :span="10">
+                    <img src="/static/images/img/notice/logo_pic_2.png" height="40" />
+                  </el-col>
+                  <el-col :span="14">
+                    <span>标识链接</span>
+                  </el-col>
+                </template>
                 <el-input v-model="form.titleLink"></el-input>
               </el-form-item>
             </el-col>
@@ -97,7 +105,17 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="标识链接" prop="titleLink">{{form.titleLink}}</el-form-item>
+              <el-form-item>
+                <template slot="label">
+                  <el-col :span="10">
+                    <img src="/static/images/img/notice/logo_pic_2.png" height="40" />
+                  </el-col>
+                  <el-col :span="14">
+                    <span>标识链接</span>
+                  </el-col>
+                </template>
+                {{form.titleLink}}
+              </el-form-item>
             </el-col>
           </el-row>
           <el-row>
@@ -143,6 +161,7 @@
 import iLocalStroage from "@/common/js/localStroage.js";
 import { upload, deleteFileByIdApi } from "@/api/notice/upload";
 import { saveOrUpdate, findWebsiteInfo } from "@/api/notice/website.js";
+import Util from "@/api/notice/util";
 export default {
   data() {
     return {
@@ -162,6 +181,7 @@ export default {
       isEdit: false,
       host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
       fileList: [],
+      imgUrl: "",
     };
   },
   methods: {
@@ -225,6 +245,10 @@ export default {
       let res = await findWebsiteInfo();
       if (res.data) {
         this.form = res.data;
+        debugger;
+        // Util.com_getFileStream(this.form.titleImg).then((res) => {
+        //   this.imgUrl = res;
+        // });
       } else {
         this.isEdit = true;
       }
