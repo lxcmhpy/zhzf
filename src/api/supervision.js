@@ -3,28 +3,76 @@ import  {setCancelSource}  from  "@/common/js/cancelToken";
 import  Vue  from  "vue";
 
 let  vm  =  new  Vue();
-
 // 日志管理列表
 export function getCheChecklogPageList(data){
   return request({
-    url: "/checklog/cheChecklogPageList",
+    url: "/check/checklog/cheChecklogPageList",
     method: "get",
     params: data,
     showloading: false,
     cancelToken: setCancelSource(),
-    baseUrlType:"XC"
   })
 }
 
+// 新增日志管理
+export function saveRecordApi(data){
+  return request({
+    url: "/check/checklog/addCheChecklog",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+// 修改日志管理
+export function updateRecordApi(data){
+  return request({
+    url: "/check/checklog/updateCheChecklog",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+
+// 删除日志管理
+export function deleteRecordApi(checklogId){
+  return request({
+    url: "/check/checklog/deleteCheChecklogById/"+checklogId,
+    method: "get",
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+//获取关联记录列表
+export function getCheRecordLogApi(data){
+  return request({
+    url: "/template/getCheRecordLog",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+
+//解除关联
+export function delCheRecordTemplateApi(data){
+  return request({
+    url: "/template/delCheRecordTemplate",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
 //获取排班管理接口
 export function getScheduleListApi(data){
   return request({
-      url: "/check/schedule/cheSchedulePageList",
+      url: "/schedule/cheSchedulePageList",
       method: "get",
       params: data,
       showloading: true,
       loadingType: 'loadPart',
-      baseUrlType: 'DUTY_HOST',
       cancelToken: setCancelSource()
   });
 }
@@ -36,7 +84,6 @@ export function deleteCheScheduleApi(scheduleId){
     method: "get",
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DUTY_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -49,7 +96,6 @@ export function addCheScheduleApi(data){
       data: data,
       showloading: true,
       loadingType: 'loadPart',
-      baseUrlType: 'DUTY_HOST',
       cancelToken: setCancelSource()
   });
 }
@@ -62,7 +108,16 @@ export function updateCheScheduleApi(data){
       data: data,
       showloading: true,
       loadingType: 'loadPart',
-      baseUrlType: 'DUTY_HOST',
       cancelToken: setCancelSource()
   });
+}
+// 现场记录
+export function getRecordListApi(data){
+  return request({
+    url: "/check/record/cheRecordPageList",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource(),
+  })
 }
