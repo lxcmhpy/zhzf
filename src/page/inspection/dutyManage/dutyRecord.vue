@@ -104,8 +104,8 @@
         >
           <el-table-column type="selection" align="center" fixed="left"></el-table-column>
           <el-table-column prop="recordNum" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
-          <el-table-column prop="checkType" label="检查类型" align="left" width="100px"></el-table-column>
-          <el-table-column prop="checkCategory" label="检查门类" align="left" width="100px"></el-table-column>
+          <el-table-column prop="checkTypeName" label="检查类型" align="left" width="100px"></el-table-column>
+          <el-table-column prop="checkCategoryName" label="检查门类" align="left" width="100px"></el-table-column>
           <el-table-column prop="inspectionTime" label="巡查时间" align="center" width="220px">
             <template slot-scope="scope" class="person-table-onerow">
               <div >{{scope.row.checkStartTime}}</div>

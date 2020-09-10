@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "JXW",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -11,7 +11,7 @@
     "XJ_IMG_HOST": "新疆图片视频地址"
   },
   "TEST": {
-    "CAPTCHA_HOST": "http://192.168.110.175:9000",
+    "CAPTCHA_HOST": "http://124.192.215.4:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",

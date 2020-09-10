@@ -26,7 +26,7 @@ export function saveOrUpdateNotice(data) {
     method: "post",
     showloading: true,
     baseUrlType: 'CAPTCHA_HOST',
-    params: data,
+    data: data,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })

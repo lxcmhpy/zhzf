@@ -8,7 +8,8 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
     queryPersonCertApi,getApproveApi,getQueryArDataByPersonIdApi,unLossDocApi,queryByOidApi,queryApproveProcessPageApi,updateApApi,getCertNoApi,changeCertByEndDateApi,examInfoPageListApi,addExamInfoApi
     ,getProvinceCode,deleteExamInfoByIdApi,updateExamInfoApi,deleteTrainInfoByIdApi,updateTrainInfoApi,addTrainInfoApi,trainInfoPageListApi, initAllApprove, personEdabled,uploadMaterial,
     savePersonMaterial, getAllOrigin, savePersonPhoto,getScheduleJobPageApi,addScheduleJobApi,updateScheduleJobApi,cacheQuestionRedisApi,resumeScheduleJobInfoApi,deleteScheduleJobApi,repauseAllJobApi,pauseAllJobApi,
-    resumejobApi,pausejobApi,getJxExamListApi,getJxExamMesageApi,getJxTrainListApi,getJxTrainMessageApi,statisticByAgeApi,statisticByChannelApi,statisticByYearAddApi,statisticByEducationLevelApi,statisticByBranchApi,statisticByMajorApi
+    resumejobApi,pausejobApi,getJxExamListApi,getJxExamMesageApi,getJxTrainListApi,getJxTrainMessageApi,statisticByAgeApi,statisticByChannelApi,statisticByYearAddApi,statisticByEducationLevelApi,statisticByBranchApi,statisticByMajorApi,
+    deleteVersionApi,addVersionApi,updateVersionApi,getVersionApi
   } from "@/api/person";
   
   const person = {
@@ -1303,7 +1304,56 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
                     reject(error);
                 })
             })
-            },        
+            },
+      //////版本更新
+      //新增版本信息
+      addVersionModel({commit},data){
+        return new Promise((resolve, reject) => {
+            addVersionApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+        })
+        },
+    //修改版本信息
+    updateVersionModel({commit},data){
+        return new Promise((resolve, reject) => {
+            updateVersionApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+        })
+        },
+    //删除版本信息
+    deleteVersionModel({commit},data){
+        return new Promise((resolve, reject) => {
+            deleteVersionApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+        })
+        },  
+        //删除版本信息
+    getVersionModel({commit},data){
+        return new Promise((resolve, reject) => {
+            getVersionApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+        })
+        },           
   }
   }
   export default person

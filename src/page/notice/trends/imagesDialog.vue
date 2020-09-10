@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item label="关联动态">
           <el-input v-model="form.dtId" style="display:none"></el-input>
-          <el-table ref="singleTable" :data="tableData" highlight-current-row style="width: 100%">
+          <el-table ref="singleTable" :data="tableData" highlight-current-row height="200">
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
             <el-table-column prop="source" label="来源" align="center"></el-table-column>
             <el-table-column prop="publishTime" label="发布日期" align="center"></el-table-column>
@@ -172,19 +172,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 .images-dialog {
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-    text-align: center;
-    border: 1px dashed #cccccc;
-  }
-  .avatar {
-    width: 80px;
-    height: 80px;
-    display: block;
+  .avatar-uploader {
+    >>> .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 150px;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      border: 1px dashed #cccccc;
+      margin-left: 0px;
+    }
+    .avatar {
+      width: 150px;
+      height: 80px;
+      display: block;
+    }
   }
 }
 </style>

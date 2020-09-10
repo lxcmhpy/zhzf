@@ -1231,7 +1231,6 @@ export  function updatePassWordApi(data)  {
     data: data,
     showloading: true,
     loadingType: 'loadMain',
-    baseUrlType:  'XZJC_HOST',
     cancelToken: setCancelSource()
   });
 }
