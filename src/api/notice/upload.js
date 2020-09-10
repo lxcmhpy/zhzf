@@ -30,3 +30,16 @@ export function deleteFileByIdApi(fileId) {
     cancelToken: setCancelSource(),
   });
 }
+
+//获取文件流
+export function getFileStreamByStorageIdApi(storageId) {
+  return request({
+    url: "/notice/sys/file/getFileStreamByStorageId/" + storageId,
+    method: "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    responseType: 'blob',
+    cancelToken: setCancelSource()
+  });
+}
