@@ -278,12 +278,12 @@
         <div v-show="partyTypePerson=='1'">
         <div class="itemThird">
             <el-form-item label="省/市/区">
-                <el-cascader 
+                <el-cascader
                     ref="areaCascader"
-                    v-model="inforForm.provincesAddressArray" 
-                    :options="provincesList" 
+                    v-model="inforForm.provincesAddressArray"
+                    :options="provincesList"
                     @active-item-change="handleSelect"
-                    :props="{ expandTrigger:'hover',label:'name',value:'name'}" 
+                    :props="{ expandTrigger:'hover',label:'name',value:'name'}"
                     filterable
                     @change="handleSelect"
                 ></el-cascader>
@@ -514,18 +514,18 @@
           <div>
            <div class="itemThird">
                 <el-form-item label="省/市/区">
-                    <el-cascader 
+                    <el-cascader
                         :ref="subAreaCascader+index"
-                        v-model="driverOrAgentInfo.provincesAddress" 
-                        :options="provincesList" 
+                        v-model="driverOrAgentInfo.provincesAddress"
+                        :options="provincesList"
                         @active-item-change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
-                        :props="{ expandTrigger:'hover',label:'name',value:'name'}" 
+                        :props="{ expandTrigger:'hover',label:'name',value:'name'}"
                         filterable
                         :disabled="index==0&&relationWithPartyIsOne[index]"
                         @change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
                     ></el-cascader>
                 </el-form-item>
-            </div>   
+            </div>
             <div class="itemThird">
               <el-form-item label="详细地址">
                 <el-input
@@ -708,13 +708,13 @@
             <el-table-column label="单价(元)" prop="roadLcPrice" align="center"></el-table-column>
             <el-table-column label="数量" width="150" align="center">
               <template slot-scope="scope">
-                <el-input-number v-model="pathLossList[scope.$index].quantity" :min="1" size="mini"></el-input-number>
+                <el-input-number v-model="scope.row.quantity" :min="1" size="mini"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column label="合计" align="center">
               <template
                 slot-scope="scope"
-              >{{(pathLossList[scope.$index].quantity * pathLossList[scope.$index].roadLcPrice).toFixed(2)}}</template>
+              >{{((scope.row.quantity||0) * (scope.row.roadLcPrice||0)).toFixed(2)}}</template>
             </el-table-column>
             <el-table-column label="备注" prop="roadLcNote" align="center">
               <template slot-scope="scope">
@@ -836,12 +836,17 @@ export default {
   computed: {
     payTotal() {
       let total = 0;
-      for (var i in this.pathLossList) {
-        total +=
-          this.pathLossList[i].roadLcPrice * this.pathLossList[i].quantity;
-      }
-      total = total.toFixed(2)
-      return total;
+      // for (var i in this.pathLossList) {
+      //   total +=
+      //     this.pathLossList[i].roadLcPrice * this.pathLossList[i].quantity;
+      // }
+      this.pathLossList.map(item => {
+        // total 为单价乘以数量，如果单价或者数量为 null， 则默认为0
+        let quantity = item.quantity || 0
+        let roadLcPrice = item.roadLcPrice || 0
+        total += roadLcPrice * quantity
+      })
+      return total.toFixed(2);
     }
   },
   methods: {
@@ -855,16 +860,26 @@ export default {
     deletePathLoss(lossIndex) {
       this.pathLossList.splice(lossIndex, 1);
     },
+    // 数组去重（数组元素为对象时）
+    unique(arr) {
+      let result = [];
+      let newArr = arr.map(item => {
+        return JSON.stringify(item)
+      })
+      result = [...new Set(newArr)]
+      return result.map(item => { return JSON.parse(item) })
+    },
     //选中的路损
     selectRoadData(data) {
       //   data.forEach(item=>{
       //       item.quantity = 1;
       //   })
-      this.pathLossList = [...this.pathLossList, ...data];
-      this.pathLossList.map((v, i) => {
-        let quantity = v.quantity || 0;
-        this.$set(v, "quantity", quantity);
-      });
+      this.pathLossList = this.unique([...this.pathLossList, ...data]);
+      // this.pathLossList.map((v, i) => {
+      //   let quantity = v.quantity || 0;
+      //   this.$set(v, "quantity", quantity);
+      // });
+      console.log(this.pathLossList)
     },
     changeCaseSource(item) {
         if(item.value === "投诉举报"){
