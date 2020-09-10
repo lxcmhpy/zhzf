@@ -1162,3 +1162,52 @@ export function statisticByMajorApi(data){
     cancelToken:  setCancelSource()
   });
 }
+/////版本更新
+//新增版本信息
+export function addVersionApi(data){
+  return  request({
+    url:  "/person/editionUpdate/addEditionMsg",
+    method:  "get",
+    showloading: false,
+    params: data,
+    baseUrlType:"XC",
+    cancelToken:  setCancelSource()
+  });
+}
+
+//修改版本信息
+export function updateVersionApi(data){
+  return  request({
+    url:  "/person/editionUpdate/updateEditionMsg",
+    method:  "get",
+    showloading: false,
+    params: data,
+    baseUrlType:"XC",
+    cancelToken:  setCancelSource()
+  });
+}
+
+//删除版本信息
+export function deleteVersionApi(data){
+  return  request({
+    url:  "/person/editionUpdate/delEditionMsg",
+    method:  "get",
+    showloading: false,
+    params: data,
+    baseUrlType:"XC",
+    cancelToken:  setCancelSource()
+  });
+}
+
+//查询列表
+export function getVersionApi(data){
+  return  request({
+    url:  "/person/editionUpdate/selEditionMsgPage",
+    method:  "get",
+    showloading: false,
+    params: data,
+    baseUrlType:"XC",
+    cancelToken:  setCancelSource()
+    
+  });
+}

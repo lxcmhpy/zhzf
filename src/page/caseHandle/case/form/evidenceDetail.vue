@@ -6,8 +6,8 @@
         <div style="float: left;width: 45%">
          
         <el-form ref="form" :model="form">
-          <img v-if="form.evType =='照片'" :src="host+form.evPath"  width="350px" height="400" align="center"/>
-          <video v-if="form.evType =='音视频'" :src="host+form.evPath" controls="controls" width="350px" height="400">your browser does not support the video tag</video>
+          <img v-if="form.evType =='照片'" :src="myFileUrl"  width="350px" height="400" align="center"/>
+          <video v-if="form.evType =='音视频'" :src="myFileUrl" controls="controls" width="350px" height="400">your browser does not support the video tag</video>
           <div v-if="form.evType=='其他附件'" style="text-align: center;margin-top:100px;">
               <div><i class="el-icon-document" style="font-size:45px;"></i></div>
               <div style="margin: 15px;line-height: 35px">{{form.evName}}</div>
@@ -66,6 +66,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+
 export default {
     data(){        
         return{
@@ -80,8 +81,9 @@ export default {
               note:'',
               status:''
             },
-            host:""
-        }
+            host:"",
+            myFileUrl:''
+          }
     },
     methods:{
         showModal(data) {
@@ -99,6 +101,9 @@ export default {
                 status: data.status,
                 note: data.note
             };
+            this.$util.com_getFileStream(data.evPath).then(res=>{
+             this.myFileUrl = res
+            });
         },
     },
     mounted(){
