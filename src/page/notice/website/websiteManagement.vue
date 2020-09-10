@@ -15,13 +15,14 @@
                   :http-request="saveImageFile"
                 >
                   <el-image v-if="form.titleImg" :src="host+form.titleImg" fit="fill"></el-image>
-                  <i v-else class="el-icon-plus"></i>
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label-width="10px">
-                <span class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                <span v-if="!form.titleImg" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                <span v-else class="el-upload__tip">点击图片更换，只能上传jpg/png文件，且不超过500kb</span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -235,3 +236,22 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.website-management {
+  .avatar-uploader {
+    >>> .el-upload {
+      width: 100%;
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        border: 1px dashed #cccccc;
+        margin-left: 0px;
+      }
+    }
+  }
+}
+</style>

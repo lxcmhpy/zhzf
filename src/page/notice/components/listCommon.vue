@@ -164,19 +164,34 @@ export default {
       this.$refs["searchForm"].resetFields();
       debugger;
     },
-    openPreview(row) {
-      let data = {
-        content: row.content,
-        files: JSON.stringify(row.fileUploadVos),
-        title: row.title,
-        source: row.source,
-        time: row.publishTime,
+    openPreview(item) {
+      //   let data = {
+      //     content: row.content,
+      //     files: JSON.stringify(row.fileUploadVos),
+      //     title: row.title,
+      //     source: row.source,
+      //     time: row.publishTime,
+      //   };
+      let oldRouter = {
+        name: this.$route.name,
+        // path: this.$route.path
       };
-      window.open(
-        iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
-          "#/details?" +
-          vm.$qs.stringify(data)
-      );
+      this.$router.push({
+        path: "/details",
+        query: {
+          content: item.content,
+          files: JSON.stringify(item.fileUploadVos),
+          title: item.title,
+          source: item.source,
+          time: item.publishTime,
+          oldRouter: JSON.stringify(oldRouter),
+        },
+      });
+      //   window.open(
+      //     iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
+      //       "#/details?" +
+      //       vm.$qs.stringify(data)
+      //   );
     },
     onAdd() {
       let data = {
@@ -214,8 +229,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = saveOrUpdateNotice(data);
-      _this.$message({ type: "success", message: "操作成功!" });
+      let res = await saveOrUpdateNotice(data);
+      this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     /* handleCurrentChange(row) {
       if (this.multipleSelection.length > 0) {
