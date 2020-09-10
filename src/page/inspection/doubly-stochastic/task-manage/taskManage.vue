@@ -69,6 +69,7 @@
           <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <!-- <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column> -->
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
+          <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
           <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column><!-- 显示模板标题 -->
@@ -92,7 +93,7 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog :title='dialogStatus+"省交通运输厅领域任务"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')" width="70%">
+      <el-dialog :title='dialogStatus+"省交通运输厅领域任务"' :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetForm('addForm')" width="70%">
         <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm" :disabled="!eidtFlag">
           <el-row>
             <el-col :span="12">
@@ -219,7 +220,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="timeList">
+          <el-form-item label="抽查时限" prop="timeList" style="width:500px">
             <el-date-picker v-model="addForm.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -244,6 +245,15 @@
               <el-form-item label="抽查事项" prop="checkItem">
                 <el-select v-model="addForm2.checkItem" placeholder="请选择">
                   <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="检查类型" prop="checkType">
+                <el-select v-model="addForm2.checkType" placeholder="请选择">
+                  <el-option v-for="item in optionsJCLX" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -355,7 +365,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="timeList">
+          <el-form-item label="抽查时限" prop="timeList" style="width:500px">
             <el-date-picker v-model="addForm2.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -446,7 +456,7 @@ export default {
     };
     return {
       optionsJCDX: [],
-      optionsSXLB: ['一般检查事项' ,'重点检查事项'],
+      optionsSXLB: ['一般检查事项', '重点检查事项'],
       multipleSelection: [],
       searchForm: {
         checkSubject: "",
@@ -585,10 +595,10 @@ export default {
     }
   },
   methods: {
-    getAllCheckObject(){
-      getAllCheckObject().then(res=>{
-        if(res.code==200){
-          this.optionsJCDX=res.data;
+    getAllCheckObject() {
+      getAllCheckObject().then(res => {
+        if (res.code == 200) {
+          this.optionsJCDX = res.data;
         }
       })
     },
@@ -809,6 +819,9 @@ export default {
     },
     // 获取机构下的人员
     getPerson() {
+      let data = {
+        organName: iLocalStroage.gets("userInfo").organName,
+      };
       findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(
         res => {
           this.LawOfficerList = res.data

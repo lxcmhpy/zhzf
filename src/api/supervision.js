@@ -11,8 +11,7 @@ export function getCheChecklogPageList(data){
     method: "get",
     params: data,
     showloading: false,
-    cancelToken: setCancelSource(),
-    baseUrlType:"XC"
+    cancelToken: setCancelSource()
   })
 }
 

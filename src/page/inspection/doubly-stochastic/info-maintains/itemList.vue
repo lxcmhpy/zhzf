@@ -100,7 +100,7 @@
     <div class="paginationBox">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
     </div>
-    <el-dialog :title='dialogStatus+"省厅检查事项"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+    <el-dialog :title='dialogStatus+"省厅检查事项"' :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
       <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
         <el-row>
           <el-col :span="12">
@@ -139,7 +139,7 @@
         <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title='dialogStatus2+"市场领域检查事项"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
+    <el-dialog :title='dialogStatus2+"市场领域检查事项"' :close-on-click-modal="false" :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
       <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
         <el-row>
           <el-col :span="12">
