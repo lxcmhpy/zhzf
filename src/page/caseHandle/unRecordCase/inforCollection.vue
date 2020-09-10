@@ -2155,7 +2155,9 @@ export default {
       console.log("坐标是否获取", this.hasLatitudeAndLongitude);
       //超限信息
       if (data.otherInfo != "") {
-        this.inforForm.otherInfo = JSON.parse(data.otherInfo);
+        // this.inforForm.otherInfo = JSON.parse(data.otherInfo);
+        // debugger
+        this.$set(this.inforForm, 'otherInfo', JSON.parse(data.otherInfo));
       }
       if (data.caseCauseName == "车辆在公路上擅自超限行驶") {
         this.showOverrun = true;
@@ -2995,9 +2997,13 @@ export default {
     }
     this.$refs.link_5.addEventListener("scroll", this.scrool5);
   },
-  activated() {this.initDrawer();},
+  activated() {
+      if(this.directionList.length==0){
+          this.initDrawer()
+      }
+  },
   created() {
-    // this.initDrawer();
+    this.initDrawer();
     //this.getDirectionList();
     //this.getLocationList();
 
@@ -3054,7 +3060,7 @@ export default {
     console.log("this.autoSava", this.autoSava);
     if (this.autoSava && to.name != "login") {
       //退出登录不自动暂存
-      // this.stageInfo(0);
+      this.stageInfo(0);
     }
 
     next((vm) => {

@@ -8,16 +8,24 @@
               <el-row>
                 <el-form-item label="检查门类" prop="checkCategory">
                   <el-select v-model="searchForm.checkCategory" placeholder="请选择">
-                    <el-option label="全部" value="全部"></el-option>
-                    <el-option label="路巡" value="1"></el-option>
-                    <el-option label="网巡" value="2"></el-option>
+                    <el-option label="全部" value=""></el-option>
+                    <el-option
+                      v-for="item in checkCategoryList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="检查类型" prop="checkType">
                   <el-select v-model="searchForm.checkType" placeholder="请选择">
                     <el-option label="全部" value="全部"></el-option>
-                    <el-option label="路巡" value="1"></el-option>
-                    <el-option label="网巡" value="2"></el-option>
+                    <el-option
+                      v-for="item in checkTypeList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="是否立案" prop="registerCase">
@@ -36,7 +44,7 @@
                     class="commonBtn searchBtn"
                     title="搜索"
                     icon="iconfont law-sousuo"
-                    @click="currentPage = 1; getJournalList();"
+                    @click="searchRecordList();"
                   ></el-button>
                   <el-button
                     size="medium"
@@ -66,6 +74,7 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    @change="checkTimeChange"
                   ></el-date-picker>
                 </el-form-item>
               </el-row>
@@ -75,16 +84,10 @@
       </div>
       <div class="tableHandle">
         <el-button type="primary" icon="el-icon-plus" size="medium" @click="addRecordFun">新增</el-button>
-        <el-button
-          type="info"
-          size="medium"
-        ><i class="icon-daochu"></i>导出</el-button>
-        <el-button
-          plain
-          icon="el-icon-delete-solid"
-          size="medium"
-          @click="deleteRecordlFun"
-        >删除</el-button>
+        <el-button type="info" size="medium">
+          <i class="icon-daochu"></i>导出
+        </el-button>
+        <el-button plain icon="el-icon-delete-solid" size="medium" @click="deleteRecordlFun">删除</el-button>
       </div>
       <div class="tablePart">
         <el-table
@@ -99,30 +102,47 @@
           style="width: 100%;height:100%;"
           @selection-change="selectJournal"
         >
-          <el-table-column type="selection" align="center"></el-table-column>
-          <el-table-column prop="oname" label="执法机构" align="left" min-width="160px"></el-table-column>
-          <el-table-column prop="schedulingStaff" label="排班人员" align="center"></el-table-column>
-          <el-table-column prop="fillInTime" label="填报日期" align="center" width="150px;"></el-table-column>
-          <el-table-column prop="vehicleShipId" label="车牌/船舶号" align="center" width="120px"></el-table-column>
-          <el-table-column prop="inspectionRoute" label="巡查地点/线路" align="center" min-width="180px"></el-table-column>
-          <el-table-column prop="staff" label="执法人员" align="center"></el-table-column>
-          <el-table-column prop="taskType" label="任务类型" align="center"></el-table-column>
-          <el-table-column prop="taskStatus" label="任务状态" align="center">
-            <template slot-scope="scope">
-              <span
-                v-if="scope.row.taskStatus === '已完成'"
-                style="color: #05C051;"
-              >{{scope.row.taskStatus}}</span>
-              <span
-                v-else-if="scope.row.taskStatus === '未完成'"
-                style="color: #E84241;"
-              >{{scope.row.taskStatus}}</span>
-              <span v-else>{{scope.row.taskStatus}}</span>
+          <el-table-column type="selection" align="center" fixed="left"></el-table-column>
+          <el-table-column prop="recordNum" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
+          <el-table-column prop="checkTypeName" label="检查类型" align="left" width="100px"></el-table-column>
+          <el-table-column prop="checkCategoryName" label="检查门类" align="left" width="100px"></el-table-column>
+          <el-table-column prop="inspectionTime" label="巡查时间" align="center" width="220px">
+            <template slot-scope="scope" class="person-table-onerow">
+              <div >{{scope.row.checkStartTime}}</div>
+              <div >{{scope.row.checkEndTime}}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="opt" label="操作" align="center">
+          <el-table-column prop="oname" label="单位名称" align="center" min-width="200px"></el-table-column>
+          <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
+          <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px">
             <template slot-scope="scope">
-              <el-button type="text" @click="checkConcat(scope.row)">交接班</el-button>
+              <div >K{{scope.row.startKilometer}}+{{scope.row.startMeter}}m</div>
+              <div >K{{scope.row.endKilometer}}+{{scope.row.endMeter}}m</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="roadCondition" label="路段情况" align="center" width="100px">
+            <template slot-scope="scope">
+              <span
+                v-if="scope.row.roadCondition === '1'"
+                style="color: #05C051;"
+              >正常</span>
+              <span
+                v-else-if="scope.row.roadCondition === '2'"
+                style="color: #E84241;"
+              >异常</span>
+              <span v-else>{{scope.row.routeSituation}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="personIds" label="执法人员" align="center" min-width="160px"></el-table-column>
+          <el-table-column prop="isFilingCase" label="是否立案" align="center" width="100px">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isFilingCase === '0'">否</span>
+              <el-button v-else type="text">查看案件</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="opt" label="操作" align="center" width="160px" fixed="right">
+            <template slot-scope="scope">
+              <el-button type="text" @click="checkConcat(scope.row)">新增</el-button>
               <el-button type="text" @click="editJournalInfo(scope.row)">修改</el-button>
             </template>
           </el-table-column>
@@ -136,65 +156,73 @@
           background
           :page-sizes="[10, 20, 30, 40, 50]"
           layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
-    <!-- 新增日志选择执法门类 -->
-    <selectLawCategory ref="selectLawCategoryRef" />
   </div>
 </template>
 <script>
-import SelectLawCategory from "@/page/inspection/dutyManage/components/selectLawCategory.vue";
+
+import { getCheRecordPageListApi, deleteCheRecordByIdsApi } from '@/api/supervision';
+import { getDictListDetailByNameApi } from '@/api/system';
 
 export default {
   data() {
     return {
       isShow: false,
       searchForm: {},
-      tableData: [
-        {
-          oname: "东部支队XXX大队的 XX中队",
-          schedulingStaff: "张三",
-          fillInTime: "2020-03-15",
-          vehicleShipId: "云A123456",
-          inspectionRoute: "安楚高速K1+466M至 K2+678M",
-          staff: "张三,李四,王五",
-          taskType: "路巡",
-          taskStatus: "已完成",
-        },
-        {
-          oname: "34235534",
-          schedulingStaff: "公路巡查",
-          fillInTime: "2020-03-15",
-          vehicleShipId: "云A654321",
-          inspectionRoute: "西站立交桥附近",
-          staff: "王世恩,李书友",
-          taskType: "网巡",
-          taskStatus: "未完成",
-        },
-      ],
+      tableData: [],
       selectList: [],
       tableLoading: false,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      totalPage: 0, //总页数
+      total: 0, //总数
+      checkCategoryList: [],//检查门类select
+      checkTypeList: []//检查类型select
     };
   },
-  components: { SelectLawCategory },
-  created() {},
+  components: {  },
+  created() {
+    this.getRecordList();
+    this.initCheckDictData();
+  },
   methods: {
-    // 获取日志列表
-    getJournalList() {
+    //获取巡查检查门类，检查类型
+    async initCheckDictData() {
+      const checkCategoryData = await getDictListDetailByNameApi('巡查-检查门类');
+      const checkTypeData = await getDictListDetailByNameApi('巡查-检查类型');
+      this.checkCategoryList = checkCategoryData.data;
+      this.checkTypeList = checkTypeData.data;
+    },
+    // 获取记录列表
+    getRecordList() {
       const queryData = Object.assign(this.searchForm, {
         current: this.currentPage,
         size: this.pageSize,
       });
       console.log(queryData);
+      getCheRecordPageListApi(queryData).then(
+        (res) => {
+          if(res.code == 200){
+            this.tableData = res.data.records;
+            this.total = res.data.total;
+          }else{
+            this.$message({
+              type: "warning",
+              message: res
+            });
+          }
+        },
+        (err) => {}
+      );
     },
     // 新增
     addRecordFun() {
-      this.$refs.selectLawCategoryRef.showModal();
+      this.$router.push({
+        name: 'record_detail',
+        params: { page: 'add', checkCategoryList: this.checkCategoryList, checkTypeList: this.checkTypeList }
+      });
     },
     // 删除
     deleteRecordlFun() {
@@ -208,7 +236,25 @@ export default {
           customClass: "custom-confirm",
         })
           .then(() => {
-            console.log("删除成功");
+            const ids = this.selectList.map(s => s.recordId);
+            deleteCheRecordByIdsApi({ids}).then(
+              res => {
+                if(res.code == 200){ 
+                  this.$message({
+                    type: "success",
+                    message: "删除成功！"
+                  });
+                  this.searchRecordList();
+                }else{
+                  this.$message({
+                    type: "warning",
+                    message: res
+                  });
+                }
+              },
+              err => {}
+            )
+            console.log("删除成功",selectIds);
           })
           .catch(() => {});
       }
@@ -230,27 +276,40 @@ export default {
     // 修改日志
     editJournalInfo(row) {
       console.log(row);
+      this.$router.push({
+        name: 'record_detail',
+        params: { page: 'edit', checkCategoryList: this.checkCategoryList, checkTypeList: this.checkTypeList, cheRecord: row }
+      });
+
     },
-    // 日志查询
+    searchRecordList() {
+      this.currentPage = 1;
+      this.getRecordList();
+    },
+    // 重置日志查询
     resetSearch() {
       this.$refs["searchFormRef"].resetFields();
       this.currentPage = 1;
-      this.getJournalList();
+      this.getRecordList();
     },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getJournalList();
+      this.getRecordList();
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getJournalList();
+      this.getRecordList();
     },
     // 获取选中的日志
     selectJournal(val) {
       this.selectList = val;
     },
+    checkTimeChange(){
+      this.searchForm.checkStartTime = this.searchForm.checkTime[0];
+      this.searchForm.checkEndTime = this.searchForm.checkTime[1]
+    }
   },
 };
 </script>
@@ -274,6 +333,14 @@ export default {
   margin-right: 0;
 }
 .person-table {
+  &-onerow {
+    float: left;
+    >div {
+      overflow: hidden;/*超出部分隐藏*/
+      white-space: nowrap;/*不换行*/
+      text-overflow:ellipsis;/*超出部分文字以...显示*/
+    }
+  }
   >>> .el-table__body-wrapper {
     padding-bottom: 0;
   }

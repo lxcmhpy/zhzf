@@ -123,7 +123,7 @@ let flowGraphData = {
     links: []
   },
   //青海处罚案件流程
-  commonGraphData_QH: {
+  commonGraphData_QH: { 
     nodes: [
       { id: "1", source: '1', target: "2_1", linkID: BASIC_DATA_SYS.establish_caseLinktypeId, name: "立案登记", linkName: 'case_handle_establish', docId: BASIC_DATA_SYS.establish_huanjieAndDocId, position: { x: 1, y: 1 }, itemStyleColor: "", attributes: { modularity_class: 'lct_01' } },
       { id: "temp1_1", source: '1', target: "temp1_1", linkID: 'temp1_1', name: "", position: { x: 1, y: 1.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },

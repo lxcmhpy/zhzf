@@ -9,10 +9,10 @@ import {
 // 加载公示信息列表
 export function findNoticeByPage(data) {
   return request({
-    url: "/notice/zfdt/list",
+    url: "/notice/notice/zfdt/list",
     method: "get",
     showloading: true,
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     params: data,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
@@ -22,11 +22,11 @@ export function findNoticeByPage(data) {
 // 新增、编辑
 export function saveOrUpdateNotice(data) {
   return request({
-    url: "/notice/zfdt/saveOrUpdate",
+    url: "/notice/notice/zfdt/saveOrUpdate",
     method: "post",
     showloading: true,
-    baseUrlType: 'NOTICE_HOST',
-    params: data,
+    baseUrlType: 'CAPTCHA_HOST',
+    data: data,
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
@@ -35,10 +35,10 @@ export function saveOrUpdateNotice(data) {
 // 通过Id查询
 export function findNoticeById(id) {
   return request({
-    url: "/notice/zfdt/findById/" + id,
+    url: "/notice/notice/zfdt/findById/" + id,
     method: "get",
     showloading: true,
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })
@@ -47,11 +47,11 @@ export function findNoticeById(id) {
 // 通过Id查询
 export function deleteNoticeById(data) {
   return request({
-    url: "/notice/zfdt/deleteById",
+    url: "/notice/notice/zfdt/deleteById",
     method: "post",
     showloading: true,
     data: data,
-    baseUrlType: 'NOTICE_HOST',
+    baseUrlType: 'CAPTCHA_HOST',
     loadingType: 'loadPart',
     cancelToken: setCancelSource()
   })

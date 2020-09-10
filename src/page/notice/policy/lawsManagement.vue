@@ -32,7 +32,7 @@
           <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
             <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
-            <el-button type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
+            <el-button v-if="canApprove" type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
           </el-row>
         </el-form>
       </div>
@@ -47,15 +47,25 @@
         >
           >
           <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="strName" label="名称" align="center"></el-table-column>
-          <el-table-column prop="strNumber" label="文号" align="center"></el-table-column>
-          <el-table-column prop="strOrgan" label="发布机关" align="center"></el-table-column>
+          <el-table-column prop="strName" label="名称" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="strNumber" label="文号" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column
+            prop="strOrgan"
+            label="发布机关"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="dtmDate" label="发布日期" align="center"></el-table-column>
           <el-table-column prop="shiDate" label="实施日期" align="center"></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="auditComment" label="审核意见" align="center"></el-table-column>
+          <el-table-column
+            prop="auditComment"
+            label="审核意见"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
@@ -64,7 +74,11 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button
+                v-if="scope.row.state===2 && canApprove"
+                type="text"
+                @click="onApprove(scope.row)"
+              >审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -87,10 +101,10 @@
       :visible.sync="detailVisible"
       @close="detailVisible = false"
       :close-on-click-modal="false"
-      width="40%"
+      width="45%"
       class="detail-dialog"
     >
-      <el-form ref="form" :model="form" label-width="80px">
+      <!-- <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="法规标题">{{form.strName}}</el-form-item>
         <el-form-item label="发布文号">{{form.strNumber}}</el-form-item>
         <el-form-item label="发布机关">{{form.strOrgan}}</el-form-item>
@@ -101,7 +115,52 @@
         <el-form-item label="实施时间">{{form.shiDate}}</el-form-item>
         <el-form-item label="时效性">{{form.status===0?"有效":"1无效"}}</el-form-item>
         <el-form-item label="题注">{{form.strNote}}</el-form-item>
-      </el-form>
+      </el-form>-->
+      <div style="height:400px;overflow: auto;">
+        <table class="table" width="100%" cellspacing="0">
+          <tr>
+            <td width="15%" class="title">法规标题</td>
+            <td width="35%">{{form.strName}}</td>
+          </tr>
+          <tr>
+            <td class="title">发布文号</td>
+            <td>{{form.strNumber}}</td>
+          </tr>
+          <tr>
+            <td class="title">发布机关</td>
+            <td>{{form.strOrgan}}</td>
+          </tr>
+          <tr>
+            <td class="title">法规效力</td>
+            <td>{{form.drawerName}}</td>
+          </tr>
+          <tr>
+            <td class="title">网站链接</td>
+            <td>{{form.webLink}}</td>
+            <!-- <td><a :href="form.webLink" target="_blank">{{form.webLink}}</a></td> -->
+          </tr>
+          <tr>
+            <td class="title">行业类型</td>
+            <td>{{form.industryType}}</td>
+          </tr>
+          <tr>
+            <td class="title">发布时间</td>
+            <td>{{form.dtmDate}}</td>
+          </tr>
+          <tr>
+            <td class="title">实施时间</td>
+            <td>{{form.shiDate}}</td>
+          </tr>
+          <tr>
+            <td class="title">时效性</td>
+            <td>{{form.status===0?"有效":"1无效"}}</td>
+          </tr>
+          <tr>
+            <td class="title">题注</td>
+            <td>{{form.strNote}}</td>
+          </tr>
+        </table>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="detailVisible = false">关闭</el-button>
       </span>
@@ -113,11 +172,11 @@
       :inputList="inputList"
       :columns="columns"
       :url="url"
-      :baseUrlType="baseUrlType"
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
       :isPagination="false"
+      height="350"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 
@@ -153,8 +212,7 @@ export default {
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
       dialogVisible: false,
-      url: "/notice/bnslaw/show",
-      baseUrlType: "NOTICE_HOST",
+      url: "/notice/notice/bnslaw/show",
       inputList: [
         {
           label: "名称",
@@ -192,6 +250,7 @@ export default {
       ],
       form: {},
       detailVisible: false,
+      canApprove: false,
     };
   },
   methods: {
@@ -308,8 +367,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = update(data);
+      let res = await update(data);
       this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     onApproveBatch() {
       if (this.multipleSelection.length < 1) {
@@ -349,6 +409,12 @@ export default {
   },
   created() {},
   mounted() {
+    debugger;
+    let user = iLocalStroage.gets("userInfo");
+    let _this = this;
+    user.roles.forEach((item) => {
+      if (item.name === "信息公示审核") _this.canApprove = true;
+    });
     this.load();
   },
 };
@@ -357,6 +423,25 @@ export default {
 .images-management {
   .detail-dialog .el-form-item {
     margin-bottom: 0px;
+  }
+  .detail-dialog {
+    .table {
+      border: 1px solid #ecebeb;
+      min-height: 30px;
+      line-height: 30px;
+      text-align: left;
+      border-collapse: collapse;
+      padding: 2px;
+    }
+    .table tr th,
+    .table tr td {
+      border: 1px solid #ecebeb;
+      padding: 10px;
+    }
+    .table .title {
+      font-weight: bold;
+      background: #f8f6f6;
+    }
   }
 }
 </style>

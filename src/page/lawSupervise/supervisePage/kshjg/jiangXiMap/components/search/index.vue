@@ -35,7 +35,7 @@ import Window2 from "./window2.vue";
 import Window3 from "./window3.vue";
 import Window4 from "./window4.vue";
 import Window5 from "./window5.vue";
-import { organTreeByCurrUser, getOrganTree } from "@/api/lawSupervise.js";
+import { organTreeByCurrUser, getOrganTree,getZfjgLawSupervise } from "@/api/lawSupervise.js";
 import { findData } from "@/api/eventManage";
 export default {
   provide() {
@@ -171,6 +171,52 @@ export default {
             return item
           })
         })
+      }else if (this.projectName === "事件") {
+        let params = {
+          eventName: this.inputModel
+        }
+        let _this = this;
+        findData(params).then(res => {
+            if(res.code === 200) {
+                this.$message({
+                    message: '查询到'+res.data.records.length+'条数据',
+                    type: 'success'
+                });
+                return res.data.records
+            } else {
+                this.$message.error('getOrganTree()::::::::接口数据错误');
+            }
+        }).then(data => {
+          this.config.window2.option = data.map(item => {
+              item.type = 5
+              item.label = item.eventName
+              item.propertyValue = item.eventCoordinate
+              return item
+          })
+        })
+      }else if (this.projectName === "非现场站点") {
+        let params = {
+          key: this.inputModel,
+          type: 4
+        }
+        let _this = this;
+        getZfjgLawSupervise(params).then(res => {
+            if(res.code === 200) {
+                this.$message({
+                    message: '查询到'+res.data.length+'条数据',
+                    type: 'success'
+                });
+                return res.data
+            } else {
+                this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
+            }
+        }).then(data => {
+          this.config.window2.option = data.map(item => {
+              item.type = 4
+              item.label = item.name
+              return item
+          })
+        })
       }
     },
 
@@ -230,7 +276,7 @@ export default {
         this.getEventData()
       } else if (name === "非现场站点") {
         this.placeholder = '搜索非现场站点'
-        this.getPeople()
+        this.getSite()
       }
     },
 
@@ -246,8 +292,26 @@ export default {
               item.type = 5
               item.label = item.eventName
               item.propertyValue = item.eventCoordinate
+              return item
             })
           })
+    },
+
+    getSite() {
+      let param = {
+        type: 4
+      }
+      getZfjgLawSupervise(param).then(res => {
+        if(res.code === 200) {
+          return res.data
+        }
+      }).then(data => {
+        this.config.window2.option = data.map(item => {
+          item.type = 4
+          item.label = item.name
+          return item
+        })
+      })
     },
 
 

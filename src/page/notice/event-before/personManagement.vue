@@ -37,7 +37,7 @@
           <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
             <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
-            <el-button type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
+            <el-button v-if="canApprove" type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
           </el-row>
         </el-form>
       </div>
@@ -60,7 +60,12 @@
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="auditComment" label="审核意见" align="center"></el-table-column>
+          <el-table-column
+            prop="auditComment"
+            label="审核意见"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
@@ -69,7 +74,11 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button
+                v-if="scope.row.state===2 && canApprove"
+                type="text"
+                @click="onApprove(scope.row)"
+              >审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -92,7 +101,7 @@
       :visible.sync="detailVisible"
       @close="detailVisible = false"
       :close-on-click-modal="false"
-      width="30%"
+      width="35%"
       class="detail-dialog"
     >
       <table class="table" width="100%" cellspacing="0">
@@ -128,7 +137,6 @@
       :inputList="inputList"
       :columns="columns"
       :url="url"
-      :baseUrlType="baseUrlType"
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
@@ -169,8 +177,7 @@ export default {
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
       dialogVisible: false,
-      url: "/notice/personinfo/show",
-      baseUrlType: "NOTICE_HOST",
+      url: "/notice/notice/personinfo/show",
       inputList: [
         {
           label: "姓名",
@@ -213,6 +220,7 @@ export default {
       ],
       form: {},
       detailVisible: false,
+      canApprove: false,
     };
   },
   methods: {
@@ -326,8 +334,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = update(data);
+      let res = await update(data);
       this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     onApproveBatch() {
       if (this.multipleSelection.length < 1) {
@@ -367,28 +376,35 @@ export default {
   },
   created() {},
   mounted() {
+    let user = iLocalStroage.gets("userInfo");
+    let _this = this;
+    user.roles.forEach((item) => {
+      if (item.name === "信息公示审核") _this.canApprove = true;
+    });
     this.load();
   },
 };
 </script>
 <style lang="scss" scoped>
 .person-management {
-  table {
-    border: 1px solid #ecebeb;
-    min-height: 30px;
-    line-height: 30px;
-    text-align: center;
-    border-collapse: collapse;
-    padding: 2px;
-  }
-  table tr th,
-  table tr td {
-    border: 1px solid #ecebeb;
-    padding: 10px;
-  }
-  table .title {
-    font-weight: bold;
-    background-color: #fbfafa;
+  .detail-dialog {
+    .table {
+      border: 1px solid #ecebeb;
+      min-height: 30px;
+      line-height: 30px;
+      text-align: left;
+      border-collapse: collapse;
+      padding: 2px;
+    }
+    .table tr th,
+    .table tr td {
+      border: 1px solid #ecebeb;
+      padding: 10px;
+    }
+    .table .title {
+      font-weight: bold;
+      background: #f8f6f6;
+    }
   }
 }
 </style>

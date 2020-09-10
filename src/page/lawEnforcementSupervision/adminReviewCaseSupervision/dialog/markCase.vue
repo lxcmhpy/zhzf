@@ -17,7 +17,7 @@
         <el-form-item label="案件编号" prop="caseNumber">
           <el-input v-model="markCaseSearchForm.caseNumber"></el-input>
         </el-form-item>
-        <el-form-item label="执法领域" prop="zfmlId">
+        <el-form-item label="业务领域" prop="zfmlId">
           <el-select v-model="markCaseSearchForm.zfmlId" placeholder="请选择">
               <el-option value label="全部"></el-option>
               <el-option
@@ -65,7 +65,7 @@
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="caseNumber" label="编号" align="center"></el-table-column>
-      <el-table-column prop="zfml" label="执法领域" align="center"></el-table-column>
+      <el-table-column prop="zfml" label="业务领域" align="center"></el-table-column>
       <el-table-column prop="name" label="当事人" align="center"></el-table-column>
       <el-table-column prop="vehicleShipId" label="车船号牌" align="center"></el-table-column>
       <el-table-column prop="caseName" label="案由" align="center"></el-table-column>

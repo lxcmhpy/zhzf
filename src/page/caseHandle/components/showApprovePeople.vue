@@ -81,9 +81,9 @@
         }catch(err){
           this.$message('获取案件流程失败！')
         }
-        if(currentFlow.data.flowName == '处罚流程' || currentFlow.data.flowName == '江西流程' || currentFlow.data.flowName == '青海处罚流程'){
+        if(currentFlow.data.flowUrl == 'commonGraphData' || currentFlow.data.flowUrl == 'commonGraphData_JX' || currentFlow.data.flowUrl == 'commonGraphData_QH'){
           data.flag = 0;
-        }else if(currentFlow.data.flowName == '赔补偿流程'|| currentFlow.data.flowName == '青海赔补偿流程'){
+        }else if(currentFlow.data.flowUrl == 'compensationGraphData'|| currentFlow.data.flowUrl == 'compensationGraphData_QH'){
           data.flag = 1;
         }
         console.log('获取审批人员传参',data); 

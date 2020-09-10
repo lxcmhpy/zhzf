@@ -74,6 +74,8 @@ export default {
           list: [
             { name: "执法机构", imgUrl: "/static/images/img/lawSupervise/zfbm.png"},
             { name: "执法人员", imgUrl: "/static/images/img/lawSupervise/ysgljg.png"},
+            { name: "事件", imgUrl: "/static/images/img/lawSupervise/ysgljg.png"},
+            { name: "非现场站点", imgUrl: "/static/images/img/lawSupervise/ysgljg.png"},
           ]
         },
         window2: {

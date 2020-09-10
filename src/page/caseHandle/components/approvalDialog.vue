@@ -156,23 +156,22 @@ export default {
         };
 
         let currentFlow,
-          flowName = "";
+          flowUrl = "";
         try {
           currentFlow = await queryFlowBycaseIdApi(this.caseId);
         } catch (err) {
           this.$message("获取案件流程失败！");
           throw new Error(err);
         }
-        flowName = currentFlow.data.flowName;
-        if(['处罚流程','赔补偿流程','青海赔补偿流程','青海处罚流程'].includes(flowName)){
-        // if (flowName == "处罚流程" || flowName == "赔补偿流程" || flowName == "青海赔补偿流程") {
+        flowUrl = currentFlow.data.flowUrl;
+        if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH'].includes(flowUrl)){
           try {
             await approvalPdfQzApi(data);
           } catch (err) {
             this.$message("审批后签章失败！");
             throw new Error(err);
           }
-        } else if (flowName == "江西流程") {
+        } else if (flowUrl == "commonGraphData_JX") {
           try {
             await approvalPdfQzJxApi(data);
           } catch (err) {

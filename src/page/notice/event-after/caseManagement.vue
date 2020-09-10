@@ -31,7 +31,7 @@
           <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
             <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
-            <el-button type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
+            <el-button v-if="canApprove" type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
           </el-row>
         </el-form>
       </div>
@@ -47,7 +47,13 @@
           >
           <el-table-column type="selection" width="50" align="center"></el-table-column>
           <el-table-column prop="caseNumber" label="行政处罚决定书文号（案号）" width="150" align="center"></el-table-column>
-          <el-table-column prop="caseCauseName" label="处罚名称（违法行为）" width="110" align="center"></el-table-column>
+          <el-table-column
+            prop="caseCauseName"
+            label="处罚名称（违法行为）"
+            width="110"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="party" label="行政相对人名称（当事人）" width="130" align="center"></el-table-column>
           <el-table-column prop="organName" label="受案单位" align="center"></el-table-column>
           <el-table-column prop="subjectName" label="处罚单位" align="center"></el-table-column>
@@ -55,7 +61,12 @@
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="auditComment" label="审核意见" align="center"></el-table-column>
+          <el-table-column
+            prop="auditComment"
+            label="审核意见"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
@@ -64,7 +75,11 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button
+                v-if="scope.row.state===2 && canApprove"
+                type="text"
+                @click="onApprove(scope.row)"
+              >审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,52 +105,55 @@
       width="50%"
       class="detail-dialog"
     >
-      <table class="table" width="100%" cellspacing="0">
-        <tr>
-          <td width="15%" class="title">行政处罚决定书文号</td>
-          <td width="35%">{{form.caseNumber}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚名称</td>
-          <td>{{form.caseCauseName}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚类型</td>
-          <td>{{form.punishType}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚事由</td>
-          <td>{{form.caseCauseNameCopy}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚依据</td>
-          <td>{{form.punishLaw}}</td>
-        </tr>
-        <tr>
-          <td class="title">行政相对人名称</td>
-          <td>{{form.party}}</td>
-        </tr>
-        <tr>
-          <td class="title">统一社会信用代码</td>
-          <td>{{form.socialCreditCode}}</td>
-        </tr>
-        <tr>
-          <td class="title">身份证号</td>
-          <td>{{form.partyIdNo}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚结果</td>
-          <td>{{form.punishDecision}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚决定日期</td>
-          <td>{{form.punishDate}}</td>
-        </tr>
-        <tr>
-          <td class="title">处罚单位</td>
-          <td>{{form.subjectName}}</td>
-        </tr>
-      </table>
+      <div style="height:400px;overflow: auto;">
+        <table class="table" width="100%" cellspacing="0">
+          <tr>
+            <td width="15%" class="title">行政处罚决定书文号</td>
+            <td width="35%">{{form.caseNumber}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚名称</td>
+            <td>{{form.caseCauseName}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚类型</td>
+            <td>{{form.punishType}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚事由</td>
+            <td>{{form.caseInfo}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚依据</td>
+            <td>{{form.punishLaw}}</td>
+          </tr>
+          <tr>
+            <td class="title">行政相对人名称</td>
+            <td>{{form.party}}</td>
+          </tr>
+          <tr>
+            <td class="title">统一社会信用代码</td>
+            <td>{{form.socialCreditCode}}</td>
+          </tr>
+          <tr>
+            <td class="title">身份证号</td>
+            <td>{{form.partyIdNo}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚结果</td>
+            <td>{{form.punishDecision}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚决定日期</td>
+            <td>{{form.punishDate}}</td>
+          </tr>
+          <tr>
+            <td class="title">处罚单位</td>
+            <td>{{form.subjectName}}</td>
+          </tr>
+        </table>
+      </div>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="detailVisible = false">关闭</el-button>
       </span>
@@ -147,11 +165,11 @@
       :inputList="inputList"
       :columns="columns"
       :url="url"
-      :baseUrlType="baseUrlType"
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
       :isPagination="true"
+      height="330"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 
@@ -188,8 +206,7 @@ export default {
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
       dialogVisible: false,
-      url: "/notice/case/show",
-      baseUrlType: "NOTICE_HOST",
+      url: "/notice/notice/case/show",
       inputList: [
         {
           label: "处罚决定书文号（案号）",
@@ -237,6 +254,7 @@ export default {
       ],
       form: {},
       detailVisible: false,
+      canApprove: false,
     };
   },
   methods: {
@@ -280,8 +298,10 @@ export default {
      * 点击确定
      */
     handleSubmit(data) {
+      debugger;
       data.forEach((item) => {
         item.caseID = item.id;
+        if (item.docData) item.caseInfo = JSON.parse(item.docData).illegalFact;
       });
       let _this = this;
       saveOrUpdateBatch(data).then(
@@ -353,8 +373,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = update(data);
+      let res = await update(data);
       this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     onApproveBatch() {
       if (this.multipleSelection.length < 1) {
@@ -394,27 +415,35 @@ export default {
   },
   created() {},
   mounted() {
+    let user = iLocalStroage.gets("userInfo");
+    let _this = this;
+    user.roles.forEach((item) => {
+      if (item.name === "信息公示审核") _this.canApprove = true;
+    });
     this.load();
   },
 };
 </script>
 <style lang="scss" scoped>
 .case-management {
-  table {
-    border: 1px solid #ecebeb;
-    min-height: 30px;
-    line-height: 30px;
-    text-align: left;
-    border-collapse: collapse;
-    padding: 2px;
-  }
-  table tr th,
-  table tr td {
-    border: 1px solid #ecebeb;
-    padding: 10px;
-  }
-  table .title {
-    font-weight: bold;
+  .detail-dialog {
+    .table {
+      border: 1px solid #ecebeb;
+      min-height: 30px;
+      line-height: 30px;
+      text-align: left;
+      border-collapse: collapse;
+      padding: 2px;
+    }
+    .table tr th,
+    .table tr td {
+      border: 1px solid #ecebeb;
+      padding: 10px;
+    }
+    .table .title {
+      font-weight: bold;
+      background: #f8f6f6;
+    }
   }
 }
 </style>

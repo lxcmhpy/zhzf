@@ -95,4 +95,12 @@ export default [{
     },
     component: () => import("@/page/notice/event-after/caseManagement.vue")
   },
+  //   {
+  //     path: "/details",
+  //     name: "details",
+  //     meta: {
+  //       title: "预览"
+  //     },
+  //     component: () => import("@/page/notice/components/details")
+  //   },
 ]

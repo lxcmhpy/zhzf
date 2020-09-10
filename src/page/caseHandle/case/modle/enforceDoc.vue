@@ -227,7 +227,8 @@ export default {
       disabledThree: true,
       disabledFour: true,
       propertyFeatures:'',
-      a:{try:['1','2']}
+      a:{try:['1','2']},
+      needClick:true
     }
   },
 

@@ -293,10 +293,14 @@ export default {
       this.$refs.docFormRef.validate((valid, noPass) => {
         if (valid) {
           // 生成文书
+          const reportData = JSON.parse(JSON.stringify(this.reportData));
+          for(let key in reportData){
+            reportData[key] = reportData[key].trim();
+          }
           let docData = {
             caseBasicinfoId: this.selectCase.case.caseId,
             caseDoctypeId: "b7dd17dc97767e0ce8826c968b74ac89",
-            docData: JSON.stringify(this.reportData),
+            docData: JSON.stringify(reportData),
             status: 1,
           };
           this.$store.dispatch("addDocData", docData).then(

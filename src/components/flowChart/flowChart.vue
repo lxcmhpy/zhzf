@@ -10,7 +10,7 @@
         </el-tooltip>
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
-        <!-- <el-button type="primary" size="medium" @click="linkBack">环节回退</el-button> -->
+        <el-button type="primary" size="medium" @click="linkBack" v-if="showLinkBackBtn">环节回退</el-button>
 
       </div>
       <div style="overflow-y:auto;">
@@ -29,6 +29,7 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'flowChart'"></caseSlideMenu>
     <pleaseRemoveMDia ref="pleaseRemoveMDiaRef"></pleaseRemoveMDia>
+    <flowLinkBackDia ref="flowLinkBackDiaRef" @backSuccess="backSuccess"></flowLinkBackDia>
   </div>
 </template>
 <script>
@@ -43,6 +44,8 @@ import pleaseRemoveMDia from '@/page/caseHandle/components/pleaseRemoveMDia'
 import {
   queryFlowBycaseIdApi,updateLinkInfoByCaseIdAndLinkTypeIdApi,linkBackApi,
 } from "@/api/caseHandle";
+import flowLinkBackDia from './flowLinkBackDia'
+
 export default {
   data() {
     return {
@@ -63,6 +66,7 @@ export default {
       measureDateEndTime: '', //解除（延长）强制措施截止时间
       showAdminCoerciveMeasureBtn:false,
       currentFlow:'',
+      showLinkBackBtn:false,  //环节回退按钮
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -77,15 +81,15 @@ export default {
       }catch(err){
         this.$message('获取案件流程失败！')
       }
-      if(this.currentFlow.data.flowName == '处罚流程'){
+      if(this.currentFlow.data.flowUrl == 'commonGraphData'){
          _this.graphData = graphData.commonGraphData;
-      }else if(this.currentFlow.data.flowName == '赔补偿流程'){
+      }else if(this.currentFlow.data.flowUrl == 'compensationGraphData'){
          _this.graphData = graphData.compensationGraphData;
-      }else if(this.currentFlow.data.flowName == '江西流程'){
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
          _this.graphData = graphData.commonGraphData_JX;
-      }else if(this.currentFlow.data.flowName == '青海赔补偿流程'){
+      }else if(this.currentFlow.data.flowUrl == 'compensationGraphData_QH'){
          _this.graphData = graphData.compensationGraphData_QH;
-      }else if(this.currentFlow.data.flowName == '青海处罚流程'){
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
          _this.graphData = graphData.commonGraphData_QH;
       }
 
@@ -93,7 +97,7 @@ export default {
       this.$store.dispatch("getFlowStatusByCaseId", id).then(
         res => {
           console.log('流程图', res)
-         
+         this.$store.commit("setDoingLinkId", res.data.doingLink);//保存正在进行的环节ID
           _this.data = res.data;
           _this.updateLinkData()
           _this.updateGraphData()
@@ -101,11 +105,13 @@ export default {
           //是否显示解除（延长）强制措施按钮
           _this.showRemoveOrExtendBtn(res.data.completeLink);
           //是否显示行政强制措施按钮
-          if(this.currentFlow.data.flowName == '江西流程'){
+          if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){ //江西流程
             _this.showAdminCoerciveMeasureBtnByFlow(res.data);
           }
           //显示强制时间
           _this.getMeasuerTime();
+          //是否显示回退按钮
+          _this.isShowLinkBackBtn(res.data);
 
         },
         err => {
@@ -608,7 +614,7 @@ export default {
       //执法监督不可点击
       if(this.IsLawEnforcementSupervision) return;
 
-      if(this.currentFlow.data.flowName == '处罚流程'){
+      if(this.currentFlow.data.flowUrl == 'commonGraphData' || this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
         let updataLinkData = {
           caseId:this.caseId,
           linkTypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
@@ -619,7 +625,7 @@ export default {
           this.$message('更改流程图状态失败！')
         }
         this.$router.push({ name: 'case_handle_removeOrPrelong' }) 
-      }else if(this.currentFlow.data.flowName == '江西流程'){
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){//江西流程
         let updataLinkData = {
           caseId:this.caseId,
           linkTypeId:this.BASIC_DATA_JX.removeOrPrelong_JX_caseLinktypeId
@@ -831,15 +837,62 @@ export default {
       }
       this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
     },
-    //环节回退
-    async linkBack(){
-      try{
-        await linkBackApi(this.caseId); 
-        await this.getFlowStatusByCaseId(this.caseId);
-        this.$message({type:'success',message:'回退成功'})
-      }catch(err){
-        this.$message('回退失败！')
+    //显示环节回退弹窗
+    linkBack(){
+      // try{
+      //   await linkBackApi(this.caseId); 
+      //   await this.getFlowStatusByCaseId(this.caseId);
+      //   this.$message({type:'success',message:'回退成功'})
+      // }catch(err){
+      //   this.$message('回退失败！')
+      // }
+      this.$refs.flowLinkBackDiaRef.showModal();
+    },
+    //回退成功
+    async backSuccess(){
+       await this.getFlowStatusByCaseId(this.caseId);
+       this.$message({type:'success',message:'回退成功'})
+       this.$refs.flowLinkBackDiaRef.closeDialog();
+    },
+    //是否显示环节回退按钮
+    isShowLinkBackBtn(data){
+      console.log(data);
+    
+
+      let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
+      //立案登记下一环节状态
+      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId]
+      let establishDoing,establishNextComplet= false;
+      //立案登记为进行中
+      for(let item of establish_caseLinktypeIdArr){
+        if(data.doingLink.includes(item)){
+          establishDoing = true;
+          break;
+        }
       }
+      //立案登记下一环节状态为已完成或进行中
+      for(let item of establishAfterLink_caseLinktypeIdArr){
+        if(data.completeLink.includes(item) || data.doingLink.includes(item)){
+          establishNextComplet = true;
+          break;
+        }
+      }
+      
+
+      // if(establishDoing){
+      //   this.showLinkBackBtn = false;
+      // }else{
+      //   this.showLinkBackBtn = true;
+      // }
+      console.log('establishDoing',establishDoing)
+      console.log('establishNextComplet',establishNextComplet)
+
+      if(!establishDoing && establishNextComplet){
+        this.showLinkBackBtn = true;
+      }else{
+        this.showLinkBackBtn = false;
+      }
+      
     }
   },
   created() {
@@ -852,6 +905,7 @@ export default {
     echarts,
     caseSlideMenu,
     pleaseRemoveMDia,
+    flowLinkBackDia,
   }
 }
 </script>

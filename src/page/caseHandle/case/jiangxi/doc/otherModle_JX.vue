@@ -718,17 +718,17 @@ export default {
         this.com_getCaseBasicInfo(data.caseId, data.docId);
       } else {
         console.log("修改");
-        let currentDocDataId = iLocalStroage.get("currentDocDataId");
+        let currentDocDataId = iLocalStroage.get("currentDocDataId")||this.currentFileData.docDataId;
         if (currentDocDataId) {
           this.getDocDetailById(currentDocDataId);
         } else {
           this.getDocDetailById(this.$route.params.docDataId);
         }
       }
-
-      this.docData.inquiriedRelation = addMoreData.askData.otherPeopleRelation;
+      if(addMoreData.askData){
+            this.docData.inquiriedRelation = addMoreData.askData.otherPeopleRelation;
+      }
       // this.getDocDetailById(this.$route.params.docDataId)
-
       this.docData.qaList.push({
         question: "",
         answer: "",

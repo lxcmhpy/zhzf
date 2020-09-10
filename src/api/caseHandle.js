@@ -1702,3 +1702,13 @@ export function getAssistFile(data) {
     cancelToken: setCancelSource()
   });
 }
+// 修改文书状态并删除生成的PDF
+export function updateDocStatusById(data) {
+  return request({
+    url: "/case/file/uploadHistory/updateDocStatusById",
+    method: "post",
+    data: vm.$qs.stringify(data),
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

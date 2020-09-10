@@ -264,7 +264,9 @@ export default {
         partyUnitPosition: "",
         occupation: "",
         afdd:"",
-        afddparty:""
+        afddparty:"",
+        illegalFact:"",
+        punishDecision:"",
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -449,7 +451,6 @@ export default {
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
       let data = {
-        // linkTypeId: this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
         linkTypeId: this.caseLinkDataForm.caseLinktypeId
       };
       console.log('hahhhsh')
@@ -519,8 +520,7 @@ export default {
     async initData() {
       await this.initDraw();
       await this.queryFlowBycaseId();
-      //动态环节id
-      //   this.caseLinkDataForm.caseLinktypeId = this.caseFlowData.flowName == "赔补偿流程" ? this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId : this.BASIC_DATA_SYS.caseDoc_caseLinktypeId //环节ID
+      
       this.setFormData();
       //通过案件id和表单类型Id查询已绑定文书
       this.getDocListByCaseIdAndFormId();
