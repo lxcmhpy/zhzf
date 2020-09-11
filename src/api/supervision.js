@@ -35,10 +35,10 @@ export function updateRecordApi(data){
   })
 }
 
-// 删除日志管理
+// 获取记录列表
 export function getRecordListApi(data){
   return request({
-    url: "/check/template/cheRecordTemplatePageList",
+    url: "/check/record/cheRecordPageList",
     method: "get",
     params: data,
     showloading: false,
@@ -58,7 +58,7 @@ export function deleteRecordApi(checklogId){
 //获取关联记录列表
 export function getCheRecordLogApi(data){
   return request({
-    url: "/template/getCheRecordLog",
+    url: "/check/record/getCheRecordLog",
     method: "get",
     params: data,
     showloading: false,
@@ -69,17 +69,29 @@ export function getCheRecordLogApi(data){
 //解除关联
 export function delCheRecordTemplateApi(data){
   return request({
-    url: "/template/delCheRecordTemplate",
+    url: "/check/record/delCheRecordTemplate",
     method: "get",
     params: data,
     showloading: false,
     cancelToken: setCancelSource()
   })
 }
+
+//交接班
+export function addCheShiftchangeApi(data){
+  return request({
+    url: "/check/shiftchange/addCheShiftchange",
+    method: "get",
+    params: data,
+    showloading: false,
+    cancelToken: setCancelSource()
+  })
+}
+
 //获取排班管理接口
 export function getScheduleListApi(data){
   return request({
-      url: "/schedule/cheSchedulePageList",
+      url: "/check/schedule/cheSchedulePageList",
       method: "get",
       params: data,
       showloading: true,
@@ -126,52 +138,48 @@ export function updateCheScheduleApi(data){
 //记录管理分页列表
 export function getCheRecordPageListApi(data){
   return request({
-    // url: "/check/record/cheRecordPageList",
-    url: "/record/cheRecordPageList",
+     url: "/check/record/cheRecordPageList",
+   // url: "/record/cheRecordPageList",
     method: "get",
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-    baseUrlType:"DUTY_HOST"
   })
 }
 
 //删除记录
 export function deleteCheRecordByIdsApi(data){
   return request({
-    // url: "/check/record/deleteCheRecordByIds",
-    url: "/record/deleteCheRecordByIds",
+     url: "/check/record/deleteCheRecordByIds",
+    //url: "/record/deleteCheRecordByIds",
     method: "post",
     data: data,
     showloading: true,
     cancelToken: setCancelSource(),
-    baseUrlType:"DUTY_HOST"
   })
 }
 
 //查询记录模板
 export function getCheRecordTempPageListApi(data){
   return request({
-    // url: "/check/template/cheRecordTemplatePageList",
-    url: "/template/cheRecordTemplatePageList",
+     url: "/check/template/cheRecordTemplatePageList",
+    //url: "/template/cheRecordTemplatePageList",
     method: "get",
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-    baseUrlType:"DUTY_HOST"
   })
 }
 
 //保存记录
 export function addCheRecordApi(data){
   return request({
-    // url: "/check/record/addCheRecord",
-    url: "/record/addCheRecord",
+     url: "/check/record/addCheRecord",
+   // url: "/record/addCheRecord",
     method: "post",
     data: data,
     showloading: true,
     loadingType: 'loadPart',
-    baseUrlType: 'DUTY_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -179,12 +187,11 @@ export function addCheRecordApi(data){
 //查询记录详情
 export function getCheRecordDetailApi(data) {
   return request({
-    // url: "/check/record/updateCheRecord",
-    url: "/record/updateCheRecord",
+     url: "/check/record/updateCheRecord",
+    //url: "/record/updateCheRecord",
     method: "get",
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-    baseUrlType:"DUTY_HOST"
   })
 }

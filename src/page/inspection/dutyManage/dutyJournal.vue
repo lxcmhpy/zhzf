@@ -45,18 +45,18 @@
               <el-row v-if="isShow">
                 <el-form-item label="任务类型" prop="patrolType">
                   <el-select v-model="searchForm.patrolType" placeholder="请选择">
-                    <el-option label="全部" value="全部"></el-option>
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="路巡" value="1"></el-option>
                     <el-option label="网巡" value="2"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="任务状态" prop="status">
+                <!-- <el-form-item label="任务状态" prop="status">
                   <el-select v-model="searchForm.status" placeholder="请选择">
-                    <el-option label="全部" value="全部"></el-option>
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="未完成" value="未完成"></el-option>
                     <el-option label="已完成" value="已完成"></el-option>
                   </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="填报时间" prop="createTime">
                   <el-date-picker
                     v-model="searchForm.createTime"
@@ -97,8 +97,8 @@
           <el-table-column prop="plateNumbers" label="车牌/船舶号" align="center" width="120px"></el-table-column>
           <el-table-column prop="patrolRoute" label="巡查地点/线路" align="center" min-width="180px"></el-table-column>
           <el-table-column prop="lawEnforcementOfficials" label="执法人员" align="center"></el-table-column>
-          <el-table-column prop="patrolType" label="任务类型" align="center"></el-table-column>
-          <el-table-column prop="status" label="任务状态" align="center">
+          <el-table-column prop="patrolType" label="任务类型" align="center" :formatter="getPatroType"></el-table-column>
+          <!-- <el-table-column prop="status" label="任务状态" align="center">
             <template slot-scope="scope">
               <span
                 v-if="scope.row.taskStatus === '已完成'"
@@ -110,7 +110,7 @@
               >{{scope.row.taskStatus}}</span>
               <span v-else>{{scope.row.taskStatus}}</span>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="text" @click="checkConcat(scope.row)">交接班</el-button>
@@ -189,6 +189,13 @@ export default {
         this.$message({ type: 'error', message: err.msg || '' });
       });
     },
+    getPatroType(row, column){
+      if (row.patrolType === '0') {
+        return '路巡'
+      } else if (row.patrolType === '1') {
+        return '网巡'
+      } 
+    },
     // 新增
     addJournalFun() {
       this.$refs.selectLawCategoryRef.showModal("1","");
@@ -218,23 +225,30 @@ export default {
     },
     // 交接班
     handoverFun(){
-      this.$router.push({
-        name: "journal_handover",
-        params: { page: "handover" },
+        if (this.selectList.length === 0) {
+        this.$message({ type: 'warning', message: '请选择一条日志' });
+      } else if(this.selectList.length > 1){
+        this.$message({ type: 'warning', message: '每次只能选择一条日志' });
+      }else{
+         this.$router.push({
+          name: "journal_handover",
+        params: { page: "handover",checklogId:this.selectList[0],handelType:"3" },
       });
+      }
+     
     },
     // 查看交接班
     checkConcat(row) {
       this.$router.push({
         name: "journal_handover",
-        params: { page: "handover" },
+        params: { page: "handover",checklogId:row.checklogId,handelType:"4"},
       });
     },
     // 修改日志
     editJournalInfo(row) {
       this.$router.push({
             name: 'add_duty_journal',
-            params: { type: "11111",checklogId:row.checklogId, page: 'journal' }
+            params: { type: "11111",checklogId:row.checklogId, page: 'journal',handelType:"2" }
           });
     },
     // 日志查询
