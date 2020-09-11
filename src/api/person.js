@@ -67,7 +67,6 @@ export  function  getAllPersonApi(data)  {
       method:  "get",
       params: data,
       showloading: false,
-      baseUrlType:  'LAW_SUPERVISE_HOST',
       cancelToken:  setCancelSource()
     });
 }
