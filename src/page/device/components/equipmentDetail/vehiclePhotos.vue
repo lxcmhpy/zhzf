@@ -96,7 +96,6 @@ export default {
       editAble: false,
       vehicleId: "",
       flag: "",
-      baseUrl: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
     };
   },
   computed: {},
@@ -194,7 +193,7 @@ export default {
       height: 240px;
       line-height: 240px;
       text-align: center;
-      margin-left:0px;
+      margin-left: 0px;
     }
     .avatar {
       width: 410px;

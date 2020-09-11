@@ -84,11 +84,6 @@ export default {
       otherFileList: [],
     };
   },
-  computed: {
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    },
-  },
   methods: {
     async getFiles() {
       let _this = this;

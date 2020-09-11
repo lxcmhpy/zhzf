@@ -119,7 +119,7 @@ export default {
           _this.total = res.data.total;
           _this.tableData = [];
           res.data.records.forEach((item) => {
-            _this.$util.com_getDeviceFileStream(item.storageId).then((res) => {
+            Util.com_getFileStream(item.storageId).then((res) => {
               item.url = res;
               _this.tableData.push(item);
             });

@@ -135,7 +135,6 @@ export default {
           { required: true, message: "请输入检验机构", trigger: "blur" },
         ],
       },
-      host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
       dialogImageUrl: "",
       dialogImageVisible: false,
     };
