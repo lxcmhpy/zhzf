@@ -29,7 +29,7 @@
             </el-col>
             <el-col :span="7">
               <label class="item-label">年检标志:</label>
-              <el-image style="width: 102px; height: 102px" :src="host+record.storageId" fit="fill"></el-image>
+              <el-image style="width: 102px; height: 102px" :src="record.url" fit="fill"></el-image>
             </el-col>
             <el-col :span="7">
               <el-button type="primary" size="medium" @click="onEdit(record.id)">修改</el-button>
@@ -83,7 +83,7 @@
               :http-request="saveImageFile"
               :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
             >
-              <img v-if="inspection.storageId" :src="host+inspection.storageId" class="avatar" />
+              <img v-if="inspection.storageId" :src="url" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -202,6 +202,11 @@ export default {
       upload(fd).then(
         (res) => {
           _this.inspection.storageId = res.data[0].storageId;
+          _this.$util
+            .com_getDeviceFileStream(res.data[0].storageId)
+            .then((res) => {
+              _this.inspection.url = res;
+            });
         },
         (error) => {
           console.log(error);
@@ -221,13 +226,23 @@ export default {
       );
     },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = this.host + file.storageId;
+      this.dialogImageUrl = file.url;
       this.dialogImageVisible = true;
     },
     //获取数据
     async getData() {
       let res = await findAnnualByVehicleId(this.$route.params.id);
-      this.records = res.data;
+
+      if (res.data) {
+        let _this = this;
+        this.records = [];
+        await res.data.forEach((item) => {
+          _this.$util.com_getDeviceFileStream(item.storageId).then((res) => {
+            item.url = res;
+            _this.records.push(item);
+          });
+        });
+      }
     },
   },
   mounted() {
