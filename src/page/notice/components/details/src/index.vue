@@ -28,7 +28,10 @@
         <div class="downTarget">
           <div>
             <p class="itemTarget" v-for="(item,index) of files" :key="index">
-              <a :href="item.storagePath">{{index+1 + '.' +item.fileName }}</a>
+              <el-button
+                type="text"
+                @click="download(item.storageId)"
+              >{{index+1 + '.' +item.fileName }}</el-button>
             </p>
           </div>
         </div>
@@ -42,6 +45,7 @@
 <script>
 import Header from "./header.vue";
 import Footer from "./footer.vue";
+import iLocalStroage from "@/common/js/localStroage";
 import { findWebsiteInfo } from "@/api/notice/website.js";
 export default {
   components: {
@@ -76,6 +80,14 @@ export default {
     },
   },
   methods: {
+    download(fieldId) {
+      let a = document.createElement("a");
+      a.href =
+        iLocalStroage.gets("CURRENT_BASE_URL").CAPTCHA_HOST +
+        "/notice/sys/file/download/" +
+        fieldId;
+      a.click();
+    },
     async getData() {
       let res = await findWebsiteInfo();
       if (res.data) {

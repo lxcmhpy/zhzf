@@ -52,7 +52,12 @@
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="remark" label="审核意见" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column
+            prop="auditComment"
+            label="审核意见"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
               <router-link
@@ -171,21 +176,14 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
-      debugger;
+      this.load();
     },
     openPreview(item) {
-      //   let data = {
-      //     content: row.content,
-      //     files: JSON.stringify(row.fileUploadVos),
-      //     title: row.title,
-      //     source: row.source,
-      //     time: row.publishTime,
-      //   };
       let oldRouter = {
         name: this.$route.name,
         // path: this.$route.path
       };
-      this.$router.push({
+      let route = this.$router.resolve({
         path: "/details",
         query: {
           content: item.content,
@@ -196,11 +194,7 @@ export default {
           oldRouter: JSON.stringify(oldRouter),
         },
       });
-      //   window.open(
-      //     iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
-      //       "#/details?" +
-      //       vm.$qs.stringify(data)
-      //   );
+      window.open(route.href, "_blank");
     },
     onAdd() {
       let data = {
