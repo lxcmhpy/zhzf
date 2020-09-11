@@ -123,13 +123,6 @@
                     </table>
                 </div>
             </div>
-        <el-dialog title="PDF展示" :visible.sync="dialogPDFVisible" append-to-body width="770px">
-                <div>
-                    <embed name="plugin" id="plugin" :src="storageStr"
-                    type="application/pdf" internalinstanceid="29" class="print_info"
-                    style="padding: 0px; width: 730px; height:1100px; position: relative;">
-                </div>
-            </el-dialog>
             <el-dialog :visible.sync="dialogIMGVisible" append-to-body width="90%">
                 <div>
                     <el-row>
@@ -137,7 +130,7 @@
                         <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
                         </el-col>
                         <el-col :span="22">
-                            <img width="100%" :src="pHost+imgIndexUrl">
+                            <img width="100%" :src="imgIndexUrl">
                         </el-col>
                         <el-col :span="1" style="margin-top: 200px;">
                             <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
@@ -168,11 +161,11 @@
                             <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
                                 <el-carousel-item :key="0" v-if="videoUrl">
                                     <video width="280px" height="180px" controls>
-                                        <source :src="pHost+videoUrl" type="video/mp4">
+                                        <source :src="videoUrl" type="video/mp4">
                                     </video>
                                 </el-carousel-item>
                                 <el-carousel-item  v-for="(item,index) in imgList" :key="(index +1).toString()">
-                                    <img width="280px" height="180px" @click="showImg(index)"  :src="pHost+item">
+                                    <img width="280px" height="180px" @click="showImg(index)"  :src="item">
                                 </el-carousel-item>
                                 <!-- <el-carousel-item :key="2">
                                     <img width="280px" height="180px" @click="dialogIMGVisible = true"  :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_F'">
@@ -211,7 +204,7 @@
                         <li>
                             <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
                                 <el-carousel-item  v-for="(item,index) in fileList" :key="(index +1).toString()">
-                                    <img v-if="item.status == '图片'" width="280px" height="180px" :src="pHost+'/'+item.storageId">
+                                    <img v-if="item.status == '图片'" width="280px" height="180px" :src="item.url">
                                     <div v-else style="text-align: center;padding: 25px;">
                                         <div><i class="el-icon-document" style="font-size:45px;"></i></div>
                                         <div style="margin: 15px;line-height: 25px">{{item.fileName}}</div>
@@ -268,11 +261,8 @@ export default {
             imgIndexUrl: null,
             imgList: [],
             dialogIMGVisible: false,
-            storageStr: '',
-            dialogPDFVisible: false,
             acitveCar: 0,
             dialogIMGVisible1: false,
-            pHost: null,
             videoUrl:'',
             remarks:''
         }
@@ -314,11 +304,18 @@ export default {
                 res => {
                     res.data.forEach(p => {
                         if(p.status=='治超图片'){
-                            this.imgList.push(p.storageId)
+                            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
+                                this.imgList.push(res)
+                            });
                         }else if(p.status=='治超视频'){
-                            this.videoUrl=p.storageId
+                            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
+                                this.videoUrl=res
+                            });
                         }else{
-                            this.fileList.push(p)
+                            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
+                                p.url=res
+                                this.fileList.push(p)
+                            });
                         }
                     });
                 },
@@ -361,8 +358,6 @@ export default {
         }
     },
     mounted () {
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
-        this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
          this.getDetailById(this.$route.params.offSiteManageId);
     },
     components: {

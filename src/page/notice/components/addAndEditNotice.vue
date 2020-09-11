@@ -268,7 +268,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           _this.uploadFiles().then((res) => {
-            debugger;
             _this.addNoticeForm.storageId = _this.storageId.join(":");
             saveOrUpdateNotice(_this.addNoticeForm).then(
               (res) => {
