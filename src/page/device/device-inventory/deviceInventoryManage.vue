@@ -583,7 +583,6 @@
                 organList:[],
                 deviceTypeList:[],
                 logList:[],
-                host: '',
                 imageUrl:'',
                 tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg"
             };
@@ -814,6 +813,7 @@
             },
             findDeviceInventoryById(id){
                 let _this = this
+                this.imageUrl=''
                 findDeviceInventoryById(id).then(
                     res => {
                         _this.addForm = res.data
@@ -825,7 +825,9 @@
                         _this.detailVisible = false
                         _this.visible = true
                         if(_this.addForm.storageId){
-                            _this.imageUrl=_this.host+_this.addForm.storageId+"?t=" + Math.random()
+                            _this.$util.com_getDeviceFileStream(_this.addForm.storageId).then(res=>{
+                                _this.imageUrl = res
+                            });
                         }
                     },
                     err => {
@@ -835,13 +837,16 @@
             },
             findByIdAndLog(row){
                 let _this = this
+                this.imageUrl=''
                 findByIdAndLog(row.id).then(
                     res => {
                         _this.addForm = res.data
                         _this.logList = res.data.logList
                         _this.addForm.logList = []
                         if(_this.addForm.storageId){
-                            _this.imageUrl=_this.host+_this.addForm.storageId+"?t=" + Math.random()
+                             _this.$util.com_getDeviceFileStream(_this.addForm.storageId).then(res=>{
+                                _this.imageUrl = res
+                            });
                         }
                     },
                     err => {
@@ -912,7 +917,6 @@
         mounted() {
             this.userInfo = iLocalStroage.gets("userInfo");
             this.init()
-            this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
         },
         created() {
         }

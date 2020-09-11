@@ -861,7 +861,8 @@ export default {
 
       let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
       //立案登记下一环节状态
-      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId]
+                                                                                                                   
+      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId,this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId]
       let establishDoing,establishNextComplet= false;
       //立案登记为进行中
       for(let item of establish_caseLinktypeIdArr){

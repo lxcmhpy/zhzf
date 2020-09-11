@@ -55,7 +55,16 @@
           <el-table-column prop="remark" label="审核意见" align="center" :show-overflow-tooltip="true"></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="openPreview(scope.row)">预览</el-button>
+              <router-link
+                target="_blank"
+                :to="{path:'/details',query:{content: scope.row.content,
+          files: JSON.stringify(scope.row.fileUploadVos),
+          title: scope.row.title,
+          source: scope.row.source,
+          time: scope.row.publishTime}}"
+              >
+                <el-button type="text">预览</el-button>
+              </router-link>
               <el-button
                 v-if="scope.row.state===1 || scope.row.state===4"
                 type="text"
@@ -164,19 +173,34 @@ export default {
       this.$refs["searchForm"].resetFields();
       debugger;
     },
-    openPreview(row) {
-      let data = {
-        content: row.content,
-        files: JSON.stringify(row.fileUploadVos),
-        title: row.title,
-        source: row.source,
-        time: row.publishTime,
+    openPreview(item) {
+      //   let data = {
+      //     content: row.content,
+      //     files: JSON.stringify(row.fileUploadVos),
+      //     title: row.title,
+      //     source: row.source,
+      //     time: row.publishTime,
+      //   };
+      let oldRouter = {
+        name: this.$route.name,
+        // path: this.$route.path
       };
-      window.open(
-        iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
-          "#/details?" +
-          vm.$qs.stringify(data)
-      );
+      this.$router.push({
+        path: "/details",
+        query: {
+          content: item.content,
+          files: JSON.stringify(item.fileUploadVos),
+          title: item.title,
+          source: item.source,
+          time: item.publishTime,
+          oldRouter: JSON.stringify(oldRouter),
+        },
+      });
+      //   window.open(
+      //     iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
+      //       "#/details?" +
+      //       vm.$qs.stringify(data)
+      //   );
     },
     onAdd() {
       let data = {
@@ -214,8 +238,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = saveOrUpdateNotice(data);
-      _this.$message({ type: "success", message: "操作成功!" });
+      let res = await saveOrUpdateNotice(data);
+      this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     /* handleCurrentChange(row) {
       if (this.multipleSelection.length > 0) {

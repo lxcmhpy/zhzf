@@ -162,7 +162,8 @@
                   :on-preview="handlePictureCardPreview"
                   :http-request="saveImageFile"
                   :file-list="imageList"
-                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
+                  :on-remove="deleteFile"
+                  :on-change="changeDeviceImage"
                 >
                   <i class="el-icon-picture-outline"></i>
                 </el-upload>
@@ -240,7 +241,8 @@ import SelectVehicle from '@/page/device/components/selectVehicle';
 import {
     tree,
     upload,
-    deleteFileById
+    deleteFileById,
+    findImageByCaseId
 } from "@/api/device/device.js";
 import { 
     findDeviceCertificateBillById,
@@ -271,15 +273,15 @@ export default {
                 value: "id"
             },
             userInfo:{},
-            host:'',
             organList:[],
+            imageList:[]
         };
     },
     props: {
       billTypeName: String,
       billType: String,
       addForm:Object,
-      imageList:Array,
+      id:String,
       isEdit:Boolean,
     },
   created() {
@@ -314,10 +316,10 @@ export default {
         this.$set(this.addForm,'usePermitNumber',res.data)
     },
     //删除附件
-    deleteFile(file, fileList,type){
+    deleteFile(file, fileList){
         let _this = this
-        deleteFileByIdApi(file.storageId).then(res=>{
-            _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
+        deleteFileById(file.storageId).then(res=>{
+           _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
         },err=>{
             console.log(err)
         })
@@ -325,7 +327,7 @@ export default {
     saveImageFile(param){
         this.saveFile(param,'图片')
     },
-    saveFile (param,type) {
+    async saveFile (param,type) {
         var fd = new FormData()
         fd.append("file", param.file);
         fd.append("category", '执法装备证件单');
@@ -334,18 +336,26 @@ export default {
         fd.append('caseId', param.file.name+new Date().getTime())//传记录id
         fd.append('docId', param.file.name+new Date().getTime())//传记录id
         let _this = this
-        upload(fd).then(
-            res => {
-                _this.imageList.push({
-                    url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
-                    storageId:res.data[0].storageId,
-                    name:res.data[0].fileName
-                });
-            },
-            error => {
-                console.log(error)
+        let res = await upload(fd)
+        this.imageList.forEach(p=>{
+            if(p.uid===param.file.uid){
+                p.storageId=res.data[0].storageId
             }
-        );
+        })
+    },
+    // 选择装备图片
+    changeDeviceImage(file, fileList) {
+      const fileIndex = fileList.findIndex((item) => item.uid === file.uid);
+      const isGt2M = file.size / 1024 / 1024 > 2;
+      if (isGt2M) {
+        this.$message({
+          message: "上传图片大小不能超过 2MB!",
+          type: "warning",
+        });
+        fileList.splice(fileIndex, 1);
+      } else {
+        this.imageList = fileList
+      }
     },
     changeVehicle(){
         this.$refs.selectVehicleRef.showModal(this.billType,this.organList);
@@ -395,6 +405,7 @@ export default {
                                     });
                                     _this.addForm.status=1
                                     _this.addForm.id=res.data
+                                    _this.getImageListByCaseId(_this.addForm.id)
                                     _this.$emit('setEdit', false)
                                 },
                                 err => {
@@ -423,9 +434,21 @@ export default {
         this.$set(this.addForm,'declarationUnit',val)
         this.$set(this.addForm,'declarationUnitName',this.$refs.addFormDeclarationUnitTreeObj.valueTitle)
     },
+    async getImageListByCaseId(){
+        let res = await findImageByCaseId(this.id);
+        this.imageList=[]
+        res.data.forEach(p=>{
+            if(p.category == "执法装备证件单"){
+                this.$util.com_getDeviceFileStream(p.storageId).then(res=>{
+                    p.url = res
+                    this.imageList.push(p)
+                });
+            }
+        })
+    }
   },
   mounted(){
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+      this.getImageListByCaseId()
   },
 };
 </script>

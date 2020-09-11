@@ -35,7 +35,7 @@
             </el-table-column>
             <el-table-column prop="evPath" align="center">
               <template slot-scope="scope">
-          　　　　<img :src="host+scope.row.evPath" width="200" height="120"/>
+          　　　　<img :src="scope.row.myFileUrl" width="200" height="120"/>
           　　</template>
             </el-table-column>
         </el-table>
@@ -45,25 +45,24 @@
        <el-button size="small" type="primary" @click="chooseSure">确定</el-button>
     </span>
   </el-dialog>
-  <!-- <evidenceDetail ref="evidenceDetailRef"></evidenceDetail> -->
 
-  <!-- <evidenceUploadSuccess ref="evidenceUploadSuccessRef" @getEvidenceEmit="getEviList"></evidenceUploadSuccess> -->
 </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-// import evidenceDetail from "./evidenceDetail";
-// import evidenceUploadSuccess from "./evidenceUploadSuccess";
+
 import iLocalStroage from "@/common/js/localStroage.js";
 import {
  uploadEvApi,
  findFileByIdApi,
  uploadEvdence
 } from "@/api/upload";
+import {
+ getEvidenceApi
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
-      host:"",
       visible: false,
       eviList:[],
       evfile:"",
@@ -88,12 +87,7 @@ export default {
     };
   },
   inject: ["reload"],
-  // props: ["caseInfo"],
   computed: { ...mapGetters(["caseId"]) },
-//   components: {
-//         evidenceDetail, 
-//         evidenceUploadSuccess       
-//     },
   methods: {
     hidden(){
       this.visible = false;
@@ -109,7 +103,7 @@ export default {
       this.visible = false;
     },
     //查询证据列表
-    getEviList() {
+    async getEviList() {
         let data = {
             caseId:this.caseId,
             // evName:this.evidenceForm.evName,
@@ -118,10 +112,13 @@ export default {
         };
         console.log("证据目录参数",data);
         let _this = this
-        this.$store.dispatch("getEvidence", data).then(res => {
-            _this.eviList = res.data.records;
-            console.log('this.currentPicData',this.currentPicData)
-            if(this.currentPicData.picSrc){
+        let getEvidenceRes = await getEvidenceApi(data);
+        for(let eviListItem of getEvidenceRes.data.records){
+          let getFileStreamRes = await this.$util.com_getFileStream(eviListItem.evPath)
+          eviListItem.myFileUrl = getFileStreamRes
+        }
+         _this.eviList = getEvidenceRes.data.records;
+        if(this.currentPicData.picSrc){
                 this.eviList.forEach(item=>{
                   if(this.currentPicData.picSrc==item.evPath){
                     console.log('选中');
@@ -131,28 +128,28 @@ export default {
                   }
                 })
             }
-              // if (picData) {
-              //   this.eviList.forEach(item=>{
-              //     if(picData.id==item.id){
-              //       console.log('选中');
-              //       this.$nextTick(function(){
-              //         this.$refs.myTable.toggleRowSelection(item,true);
-              //       })
-              //     }
-              //   })
-              // } 
-           
 
+        // this.$store.dispatch("getEvidence", data).then(res => {
+        //     _this.eviList = res.data.records ;
+        //     console.log('_this.eviList',_this.eviList)
+        //     console.log('this.currentPicData',this.currentPicData)
+        //     if(this.currentPicData.picSrc){
+        //         this.eviList.forEach(item=>{
+        //           if(this.currentPicData.picSrc==item.evPath){
+        //             console.log('选中');
+        //             this.$nextTick(function(){
+        //               this.$refs.myTable.toggleRowSelection(item,true);
+        //             })
+        //           }
+        //         })
+        //     }
             
-            console.log("111",_this.eviList);
-        });
+            
+        //     console.log("111",_this.eviList);
+        // });
 
     },
-    //显示证据详情
-    // evidenceDetail(data){
-    //     console.log("证据详情",data)        
-    //     this.$refs.evidenceDetailRef.showModal(data); 
-    // },
+    
     saveFile(param) {
       console.log(param);
       (this.form.file = param.file),
@@ -224,7 +221,6 @@ export default {
     }
   },
   mounted () {
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
   }
 };
 </script>
