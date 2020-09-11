@@ -305,7 +305,7 @@ export default {
                     res.data.forEach(p => {
                         if(p.status=='治超图片'){
                             this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
-                                this.imageList.push(res)
+                                this.imgList.push(res)
                             });
                         }else if(p.status=='治超视频'){
                             this.$util.com_getZfjgFileStream(p.storageId).then(res=>{

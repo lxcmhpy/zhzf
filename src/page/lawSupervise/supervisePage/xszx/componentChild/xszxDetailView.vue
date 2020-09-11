@@ -453,7 +453,6 @@
 </template>
 
 <script>
-import iLocalStroage from "@/common/js/localStroage";
 import {getFileByCaseId} from "@/api/lawSupervise.js";
 export default {
   props: ["obj"],
