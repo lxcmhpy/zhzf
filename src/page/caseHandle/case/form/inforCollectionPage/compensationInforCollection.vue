@@ -838,7 +838,7 @@ export default {
     payTotal() {
       let total = 0;
       this.pathLossList.map(item => {
-        // total 为单价乘以数量，如果单价或者数量为 null， 则默认为0
+        // total 为单价乘以数量,roadLcPrice为单价，quantity为数量
         total += item.roadLcPrice * item.quantity
       })
       return total.toFixed(2);
