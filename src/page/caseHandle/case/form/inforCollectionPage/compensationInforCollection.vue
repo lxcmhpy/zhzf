@@ -708,13 +708,14 @@
             <el-table-column label="单价(元)" prop="roadLcPrice" align="center"></el-table-column>
             <el-table-column label="数量" width="150" align="center">
               <template slot-scope="scope">
-                <el-input-number v-model="scope.row.quantity" :min="1" size="mini"></el-input-number>
+                <!-- el-input-number 标签不能加 mini="1",否则回将数量为 0 的转换为 1，从而出现bug -->
+                <el-input-number v-model="scope.row.quantity" size="mini"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column label="合计" align="center">
               <template
                 slot-scope="scope"
-              >{{((scope.row.quantity||0) * (scope.row.roadLcPrice||0)).toFixed(2)}}</template>
+              >{{(scope.row.quantity * scope.row.roadLcPrice).toFixed(2)}}</template>
             </el-table-column>
             <el-table-column label="备注" prop="roadLcNote" align="center">
               <template slot-scope="scope">
@@ -836,15 +837,9 @@ export default {
   computed: {
     payTotal() {
       let total = 0;
-      // for (var i in this.pathLossList) {
-      //   total +=
-      //     this.pathLossList[i].roadLcPrice * this.pathLossList[i].quantity;
-      // }
       this.pathLossList.map(item => {
         // total 为单价乘以数量，如果单价或者数量为 null， 则默认为0
-        let quantity = item.quantity || 0
-        let roadLcPrice = item.roadLcPrice || 0
-        total += roadLcPrice * quantity
+        total += item.roadLcPrice * item.quantity
       })
       return total.toFixed(2);
     }
@@ -871,14 +866,7 @@ export default {
     },
     //选中的路损
     selectRoadData(data) {
-      //   data.forEach(item=>{
-      //       item.quantity = 1;
-      //   })
       this.pathLossList = this.unique([...this.pathLossList, ...data]);
-      // this.pathLossList.map((v, i) => {
-      //   let quantity = v.quantity || 0;
-      //   this.$set(v, "quantity", quantity);
-      // });
       console.log(this.pathLossList)
     },
     changeCaseSource(item) {

@@ -110,8 +110,16 @@ export default {
   methods: {
     //选中
     handleSelectionChange(val) {
+      // 如果当前选中的数量或单价为空，则默认为0
+      this.selectRows = val.map(item => {
+        if(!item.quantity) {
+          item.quantity = 0
+        } else if (!item.roadLcPrice) {
+          item.roadLcPrice = 0
+        }
+        return item
+      })
       console.log(val)
-      this.selectRows = val;
     },
     //确认
     selectSure() {
