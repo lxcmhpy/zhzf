@@ -16,7 +16,7 @@ export function saveOrUpdateRecordModleApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -29,7 +29,7 @@ export function findMoleByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -41,7 +41,7 @@ export function removeMoleByIdApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -53,7 +53,7 @@ export function removeMoleCollectByIdApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -66,7 +66,7 @@ export function findCommonFieldApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -78,7 +78,7 @@ export function findAllCommonFieldApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -89,7 +89,7 @@ export function findAllCommonGroupFieldApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -100,7 +100,7 @@ export function findAllCandidateFieldApi() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -111,7 +111,7 @@ export function findAllCandidateFieldApi() {
 //         method: "get",
 //         showloading: true,
 //         loadingType: 'loadPart',
-//         baseUrlType:  'XZJC_HOST',
+//         baseUrlType:  'CAPTCHA_HOST',
 //         cancelToken: setCancelSource()
 //     });
 // }
@@ -123,7 +123,7 @@ export function findRecordModleByPersonApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -134,7 +134,7 @@ export function findUserCollectTemplateApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -145,7 +145,7 @@ export function findRecordlModleByNameApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -157,7 +157,7 @@ export function findRecordlModleByPageApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -168,7 +168,7 @@ export function findRecordlModleFieldByIdeApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -179,7 +179,7 @@ export function findRecordModleByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -190,7 +190,7 @@ export function findRecordModleTimeByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -202,7 +202,7 @@ export function findRecordModleByNameIdApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -213,7 +213,7 @@ export function findAllModleNameApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -225,7 +225,7 @@ export function findRecordListApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -239,7 +239,7 @@ export function saveOrUpdateRecordApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -250,7 +250,7 @@ export function removeRecordByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -261,7 +261,7 @@ export function findRecordByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -272,7 +272,7 @@ export function findMyRecordByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -283,7 +283,7 @@ export function getDocumentNameList() {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -294,7 +294,7 @@ export function getDocListById(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -307,7 +307,7 @@ export function saveOrUpdateDocument(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -318,7 +318,7 @@ export function getDocumentById(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -330,7 +330,7 @@ export function getDocListByName(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -341,7 +341,7 @@ export function getTemplateDocList(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -354,7 +354,7 @@ export function changeFileStatus(data) {
         // data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -367,7 +367,7 @@ export function updatePicPath(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -378,7 +378,7 @@ export function documentRevoke(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -389,7 +389,7 @@ export function delDocumentById(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -401,7 +401,7 @@ export function delDocumentModifyOrderById(data) {
         method: "post",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -435,7 +435,7 @@ export function getAllPublicPersonApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -446,7 +446,7 @@ export function getAllPublicPersonByOrganNameApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -458,7 +458,7 @@ export function delPersonApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -471,7 +471,7 @@ export function addPublicPersonApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -485,7 +485,7 @@ export function addMorePublicPersonApi(data) {
         showloading: true,
         async: false,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -497,7 +497,7 @@ export function getAllExpertApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -510,7 +510,7 @@ export function addExpertApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -522,7 +522,7 @@ export function delExpertApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -534,7 +534,7 @@ export function getAllRandomObjectApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -546,7 +546,7 @@ export function delRandomObjectApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -559,7 +559,7 @@ export function addInspectionObjectApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -571,7 +571,7 @@ export function getAllRandomItemApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -583,7 +583,7 @@ export function getIsRandomNameApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -595,7 +595,7 @@ export function delRandomItemApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -608,7 +608,7 @@ export function addItemListApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -643,7 +643,7 @@ export function getAllTaskApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -654,7 +654,7 @@ export function delTaskApi(data) {
         method: "get",
         params: data,
         showloading: true,
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -667,7 +667,7 @@ export function addTaskApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -679,7 +679,7 @@ export function findByAddressCode(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -693,7 +693,7 @@ export function importExpertExcelApi(data) {
         contentType: 'multipart/form-data;',
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource(),
     });
 }
@@ -706,7 +706,7 @@ export function importObjectExcelApi(data) {
         contentType: 'multipart/form-data;',
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource(),
     });
 }
@@ -719,7 +719,7 @@ export function importItemExcelApi(data) {
         contentType: 'multipart/form-data;',
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource(),
     });
 }
@@ -732,7 +732,7 @@ export function importPersonExcelApi(data) {
         contentType: 'multipart/form-data;',
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource(),
     });
 }
@@ -746,7 +746,7 @@ export function exportExpertApi() {
         showloading: true,
         loadingType: 'loadPart',
         responseType:'blob',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -759,7 +759,7 @@ export function exportObjectApi() {
         showloading: true,
         loadingType: 'loadPart',
         responseType:'blob',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -772,7 +772,7 @@ export function exportItemApi() {
         showloading: true,
         loadingType: 'loadPart',
         responseType:'blob',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -786,7 +786,7 @@ export function exportPersonApi(data) {
         showloading: true,
         loadingType: 'loadPart',
         responseType:'blob',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -812,7 +812,7 @@ export function searchTaskDataApi(data) {
         method: "get",
         params: data,
         showloading: true,
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -824,7 +824,7 @@ export function getCountByOrganNameApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -837,7 +837,7 @@ export function getRandomResultByPageApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -847,7 +847,7 @@ export function getExtractResultApi(data) {
         url: "/xzjc/randomTask/getExtractResult",
         method: "get",
         params: data,
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -861,7 +861,7 @@ export function addRandomResultApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -873,7 +873,7 @@ export function addRandomResultMoreApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -884,7 +884,7 @@ export function resetRandomByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -895,7 +895,7 @@ export function getRandomByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -906,7 +906,7 @@ export function getCheckResultByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -920,7 +920,7 @@ export function addCheckResultApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -933,7 +933,7 @@ export function getCheckResultByPageApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -945,7 +945,7 @@ export function getCheckResultByTwoIdApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -959,7 +959,7 @@ export function getCheckResultByIdsApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -972,7 +972,7 @@ export function getPcQueryCarInfoApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -986,7 +986,7 @@ export function saveOrUpdateCarInfoApi(data) {
         data: data,
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -998,7 +998,7 @@ export function findCarInfoByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -1010,7 +1010,7 @@ export function findCarInfoFileByIdApi(data) {
         method: "get",
         showloading: true,
         loadingType: 'loadPart',
-        baseUrlType: 'XZJC_HOST',
+        baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
