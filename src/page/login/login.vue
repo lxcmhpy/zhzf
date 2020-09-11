@@ -149,11 +149,8 @@
                 <div>
                   <el-button type="primary" @click="editPwd('eidtForm')">修改密码</el-button>
                 </div>
-
               </el-form>
-
             </div>
-
           </div>
           <div class="footer">
             <center>
@@ -184,7 +181,7 @@ import {
 import {
   getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi, appDownloadApi,
 } from "@/api/system";
-import { encryption } from "@/common/js/cryptoAes";
+import { encryption ,encrypt} from "@/common/js/cryptoAes";
 export default {
   data() {
     return {
@@ -325,7 +322,12 @@ export default {
         if (valid) {
           // 验证码
           if (_this.success) {
-            let values = _this.loginForm;
+            // let values = _this.loginForm;
+            let values={
+              username: _this.loginForm.username,
+              password: encrypt(_this.loginForm.password), 
+              code: ''
+            }
             values.captchaId = _this.captchaId;
 
             _this.$store.dispatch("loginIn", values).then(

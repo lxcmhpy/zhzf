@@ -7,13 +7,16 @@
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
+      <div v-if="!inspectionOverWeightId">
+        请先保存表单
+      </div>
       <div class="userList a">
         <!-- <el-checkbox-group v-model="checkedDocId"> -->
-          <li v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
-            <span class="name">{{index + 1}}、</span>
-            <span class="name">{{item.docName}}</span>
-            <span class="name" style="margin-left:20px;color:bule">{{item.status?item.status:'未完成'}}</span>
-          </li>
+        <li v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
+          <span class="name">{{index + 1}}、</span>
+          <span class="name">{{item.docName}}</span>
+          <span class="name" style="margin-left:20px;color:bule">{{item.status?item.status:'未完成'}}</span>
+        </li>
         <!-- </el-checkbox-group> -->
       </div>
       <!-- <span slot="footer" class="dialog-footer">
@@ -25,7 +28,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { getTemplateDocList,getDocListById } from "@/api/inspection";
+import { getTemplateDocList, getDocListById } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -47,7 +50,7 @@ export default {
   },
   inject: ["reload"],
   // props: ["caseInfo"],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { ...mapGetters(["caseId", 'inspectionOverWeightId']) },
   methods: {
     showModal(pageDomId) {
       this.visible = true;
@@ -59,29 +62,33 @@ export default {
     },
     //获取文书列表
     getByMlCaseId(pageDomId) {
-      this.getData = true;
-      let _this = this
-      if (this.$route.params.addOrEiditFlag!='add') {
-        getDocListById(pageDomId||this.$route.params.id).then(
-          res => {
-            console.log(res);
-            _this.caseList = res.data;
-          },
-          error => {
-            console.log(error);
-          }
-        );
-      } else {
-        getTemplateDocList(this.$route.params.id).then(
-          res => {
-            console.log(res);
-            _this.caseList = res.data;
-          },
-          error => {
-            console.log(error);
-          }
-        );
+      if (this.inspectionOverWeightId) {
+        console.log(this.inspectionOverWeightId)
+        this.getData = true;
+        let _this = this
+        if (this.$route.params.addOrEiditFlag != 'add') {
+          getDocListById(pageDomId || this.$route.params.id).then(
+            res => {
+              console.log(res);
+              _this.caseList = res.data;
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        } else {
+          getTemplateDocList(this.$route.params.id).then(
+            res => {
+              console.log(res);
+              _this.caseList = res.data;
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
       }
+
 
     },
 

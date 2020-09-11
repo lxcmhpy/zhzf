@@ -295,7 +295,7 @@
               <el-form-item label="检查对象" prop="checkObject">
                 <!-- <el-input v-model="addForm2.checkObject"></el-input> -->
                 <el-select v-model="addForm2.checkObject" placeholder="请选择">
-                  <el-option v-for="item in optionsJCDX" :key="item" :label="item" :value="item"></el-option>
+                  <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>

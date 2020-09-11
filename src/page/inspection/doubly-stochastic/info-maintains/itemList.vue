@@ -172,7 +172,7 @@
             <el-form-item label="检查对象" prop="checkObject">
               <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
               <el-select v-model="addForm2.checkObject" placeholder="请选择">
-                <el-option v-for="item in optionsJCDX" :key="item" :label="item" :value="item"></el-option>
+                <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -449,6 +449,7 @@ export default {
               case 4: _this.optionsCCLB = res.data; break;//抽查类别
               case 5: _this.optionsCCSX = res.data; break;//抽查事项
               case 6: _this.optionsCCSXMC = res.data; break;//抽查事项名称
+              case 7: _this.optionsJCDX = res.data; break;//检查对象
             }
           },
           error => {
@@ -495,6 +496,7 @@ export default {
     { name: '抽查类别', option: 4 },
     { name: '抽查事项', option: 5 },
     { name: '抽查事项名称', option: 6 },
+    { name: '检查对象', option: 7 },
     ])
   }
 }

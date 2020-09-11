@@ -145,11 +145,12 @@
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
-              <el-select ref="lawPersonListId" v-model="carInfo.drivePerson.lawOfficerId" multiple @remove-tag="removeLawPersontag">
+            <el-form-item label="执法人员" id="lawPersonBox" prop="lawOfficer">
+              <el-input v-model="carInfo.drivePerson.lawOfficer"></el-input>
+              <!-- <el-select ref="lawPersonListId" v-model="carInfo.drivePerson.lawOfficerId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
-              </el-select>
-              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
+              </el-select> -->
+              <el-button icon="el-icon-plus" @click="addLawPerson('drivePerson',alreadyChooseLawPerson)"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -170,14 +171,14 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" prop="totalWeight">
-              <el-input v-model="carInfo.firstCheck.totalWeight">
+              <el-input v-model="carInfo.firstCheck.totalWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="车货限重" prop="weightLimit">
-              <el-input v-model="carInfo.firstCheck.weightLimit">
+              <el-input v-model="carInfo.firstCheck.weightLimit" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -194,14 +195,14 @@
         <div>
           <div class="item">
             <el-form-item label="超限质量" prop="overWeight">
-              <el-input v-model="carInfo.firstCheck.overWeight">
+              <el-input v-model="carInfo.firstCheck.overWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="超限比例" prop="overRatio">
-              <el-input v-model="carInfo.firstCheck.overRatio">
+              <el-input v-model="carInfo.firstCheck.overRatio" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
               </el-input>
             </el-form-item>
           </div>
@@ -209,14 +210,14 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长" prop="totalLength">
-              <el-input v-model="carInfo.firstCheck.totalLength" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.totalLength" placeholder="/" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.lengthLimit" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.lengthLimit" placeholder="/" disabled>
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -232,14 +233,14 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总宽" prop="totalWide">
-              <el-input v-model="carInfo.firstCheck.totalWide" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.totalWide" placeholder="/" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.widthLimit" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.widthLimit" placeholder="/" disabled>
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -255,14 +256,14 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总高" prop="totalHeight">
-              <el-input v-model="carInfo.firstCheck.totalHeight" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.totalHeight" placeholder="/" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.heightLimit" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.heightLimit" placeholder="/" disabled>
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -278,10 +279,11 @@
         <div>
           <div class="itemOne">
             <el-form-item label="初检人员" id="lawPersonBox" prop="checkPerson">
-              <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
+              <el-input v-model="carInfo.firstCheck.checkPerson"></el-input>
+              <!-- <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
-              </el-select>
-              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
+              </el-select> -->
+              <el-button icon="el-icon-plus" @click="addLawPerson('firstCheck',alreadyChooseLawPerson2)"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -344,7 +346,7 @@
             </div>
             <div class="item">
               <el-form-item label="分装吨位" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenTonnage':'pachor'">
-                <el-input v-model="carInfo.secondCheck.fenTonnage"></el-input>
+                <el-input v-model="carInfo.secondCheck.fenTonnage" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -376,19 +378,19 @@
         <div>
           <div class="item">
             <el-form-item label="复检质量" prop="secondCheckWeight">
-              <el-input v-model="carInfo.secondCheck.secondCheckWeight"></el-input>
+              <el-input v-model="carInfo.secondCheck.secondCheckWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="卸载质量" prop="unloadWeight">
-              <el-input v-model="carInfo.secondCheck.unloadWeight"></el-input>
+              <el-input v-model="carInfo.secondCheck.unloadWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="超限比例" prop="overRatio">
-              <el-input v-model="carInfo.secondCheck.overRatio"></el-input>
+              <el-input v-model="carInfo.secondCheck.overRatio" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
             </el-form-item>
           </div>
           <div class="item">
@@ -400,10 +402,11 @@
         <div>
           <div class="itemOne">
             <el-form-item label="执法人员" id="lawPersonBox" prop="checkPerson">
-              <el-select ref="lawPersonListId" v-model="carInfo.secondCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
+              <el-input v-model="carInfo.secondCheck.checkPerson"></el-input>
+              <!-- <el-select ref="lawPersonListId" v-model="carInfo.secondCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
-              </el-select>
-              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
+              </el-select> -->
+              <el-button icon="el-icon-plus" @click="addLawPerson('secondCheck',alreadyChooseLawPerson3)"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -442,7 +445,8 @@
 </template>
 <script>
 import util from "@/common/js/util";
-import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson";
+// import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson";
+import chooseLawPerson from "@/page/inspection/record-manage/chooseModlePerson";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
 import floatBtns from './floatMenu.vue';
 import iLocalStroage from "@/common/js/localStroage";
@@ -582,7 +586,7 @@ export default {
           checkPerson: '',
           checkPersonId: '',
         },
-        penaltyDecision: ''
+        penaltyDecision: {}
       },
 
 
@@ -691,6 +695,8 @@ export default {
         phone: [{ validator: validatePhone, trigger: "blur" }],
       },
       alreadyChooseLawPerson: [],
+      alreadyChooseLawPerson2: [],
+      alreadyChooseLawPerson3: [],
       partyTypePerson: "1", //判断要显示的部分
       allVehicleIdColor: [],//车牌颜色下拉框
       allVehicleShipType: [],
@@ -720,7 +726,8 @@ export default {
         '初检记录未填写完整，请检查！',
         '卸载/复检记录未填写完整，请检查！',
       ],
-      optionsXZFS: []
+      optionsXZFS: [],
+      currentPerson: '',
     };
   },
   components: {
@@ -762,34 +769,36 @@ export default {
         }
       }
     },
-
     //选择执法人员
-    addLawPerson() {
-      this.$refs.chooseLawPersonRef.showModal(
-        this.lawPersonListId,
-        this.alreadyChooseLawPerson
-      );
+    addLawPerson(item, valueList) {
+      this.currentPerson = item
+      console.log('valueList',valueList)
+      this.$refs.chooseLawPersonRef.showModal(valueList);
     },
     //设置执法人员
     setLawPerson(userlist) {
       console.log("选择的执法人员", userlist);
       // this.lawPersonList = userlist;
-      this.alreadyChooseLawPerson = userlist;
-      this.lawPersonListId = [];
-      let staffIdArr = [];
-      let staffArr = [];
       let certificateIdArr = [];
-
-      this.alreadyChooseLawPerson.forEach((item) => {
-        this.lawPersonListId.push(item.id);
-        //给表单数据赋值
-        staffIdArr.push(item.id);
-        staffArr.push(item.lawOfficerName);
-        certificateIdArr.push(item.selectLawOfficerCard);
+      userlist.forEach(item => {
+        //   //给表单数据赋值
+        // certificateIdArr.push(item.selectLawOfficerCard);//执法账号
+        certificateIdArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执企业组织信息员
       });
-      this.inforForm.staffId = staffIdArr.join(",");
-      this.inforForm.staff = staffArr.join(",");
-      this.inforForm.certificateId = certificateIdArr.join(",");
+      console.log(this.currentPerson)
+      if (this.currentPerson == 'drivePerson') {
+        this.alreadyChooseLawPerson = userlist;
+        this.carInfo.drivePerson.lawOfficer = certificateIdArr.join(',')
+      }
+      if (this.currentPerson == 'firstCheck') {
+        this.alreadyChooseLawPerson2 = userlist;
+        this.carInfo.firstCheck.checkPerson = certificateIdArr.join(',')
+      }
+      if (this.currentPerson == 'secondCheck') {
+        this.alreadyChooseLawPerson3 = userlist;
+        this.carInfo.secondCheck.checkPerson= certificateIdArr.join(',')
+      }
+
     },
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
@@ -1050,7 +1059,7 @@ export default {
       saveOrUpdateCarInfoApi(data).then(
         res => {
           if (res.code == 200) {
-
+            this.$store.commit("set_inspection_OverWeightId", data.id)
           } else {
             this.$message.error(res.msg);
           }

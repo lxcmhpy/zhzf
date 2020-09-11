@@ -7,6 +7,9 @@
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
+       <div v-if="!inspectionOverWeightId">
+        请先保存表单
+      </div>
       <div class="userList a">
         <el-checkbox-group v-model="checkedDocId">
           <el-checkbox v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
@@ -46,7 +49,7 @@ export default {
   },
   inject: ["reload"],
   // props: ["caseInfo"],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { ...mapGetters(["caseId", 'inspectionOverWeightId']) },
   methods: {
     showModal() {
       //      console.log('show');
