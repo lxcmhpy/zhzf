@@ -214,7 +214,7 @@
                                     :key="(index +1).toString()">
                     <img width="100%"
                          height="135px"
-                         :src="pHost+'/'+item.storageId">
+                         :src="item.url">
                   </el-carousel-item>
                 </el-carousel>
               </div>
@@ -1071,7 +1071,6 @@ export default {
       ryList: null,
       time: Date.parse(new Date()),
       popoverVisible: false,
-      pHost: '',
       showMore: false
     };
   },
@@ -1991,7 +1990,12 @@ export default {
       new Promise((resolve, reject) => {
         findImageByCaseId(obj.id).then(
           res => {
-            _this.$set(_this.curWindow.other, 'imageList', res.data);
+              res.data.forEach(item=>{
+                _this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
+                    item.url = res
+                });
+              })
+              _this.$set(_this.curWindow.other, 'imageList', res.data);
           },
           error => {
             //  _this.errorMsg(error.toString(), 'error')
@@ -2252,7 +2256,6 @@ export default {
   created () {
     // this.searchPageAll(6, 'gjclList');
     this.searchPageAllGJ(6, 'gjclList');
-    this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
   },
   mixins: [lawSuperviseMixins, mixinsCommon],
   components: {

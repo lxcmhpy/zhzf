@@ -636,6 +636,7 @@
                         action=""
                         :http-request="saveFile"
                         :file-list="fileList"
+                        :on-change="changeImage"
                         :show-file-list="false">
                         <el-button size="mini" type="primary" icon="el-icon-plus" title="添加"></el-button>
                     </el-upload>
@@ -645,7 +646,7 @@
                     <li>
                         <el-carousel ref="carousel" height="200px" @click.native="dialogZJCLVisible = true" indicator-position="outside" >
                             <el-carousel-item  v-for="(item,index) in fileList" :key="(index +1).toString()">
-                                <img v-if="item.status == '图片'" width="280px" height="180px" :src="pHost+'/'+item.storageId">
+                                <img v-if="item.status == '图片'" width="280px" height="180px" :src="item.url">
                                 <div v-else style="text-align: center;padding: 25px;">
                                     <div><i class="el-icon-document" style="font-size:45px;"></i></div>
                                     <div style="margin: 15px;line-height: 25px">{{item.fileName}}</div>
@@ -760,7 +761,10 @@ export default {
             this.dialogIMGVisible = true;
             this.imgIndexUrl = this.imgList[index];
         },
-        saveFile (param) {
+        changeImage(file, fileList) {
+            this.fileList = fileList
+        },
+        async saveFile (param) {
             var testmsg=/^image\/(jpeg|png|jpg)$/.test(param.file.type)
             let type = "图片";
             if (!testmsg) {
@@ -774,23 +778,12 @@ export default {
             fd.append('status', type)//传记录id
             fd.append('caseId', this.obj.workNo)//传记录id
             fd.append('docId', this.obj.workNo + this.index.toString())//传记录id
-            // uploadMaterial(fd).then(
-            upload(fd).then(
-                res => {
-                    this.fileList.push(res.data[0]);
-                    console.log(res);
-                },
-                error => {
-                    console.log(error)
+            let res = await upload(fd)
+            this.fileList.forEach(p=>{
+                if(p.uid===param.file.uid){
+                    p.storageId=res.data[0].storageId
                 }
-            );
-            // debugger;
-            // this.formUpload.file = params.file
-        },
-        //下载证据材料
-        downZJCL () {
-            let activeIndex = this.$refs.carousel.activeIndex;
-            let f = this.fileList[activeIndex];
+            })
         },
         //删除证据材料
         delZJCL () {
@@ -798,7 +791,6 @@ export default {
             let activeIndex = this.$refs.carousel.activeIndex;
             let f = this.fileList[activeIndex];
             deleteFileByIdApi(f.storageId).then(res => {
-                console.log(res);
                 this.fileList.splice(activeIndex,1);
             }, err => {
                 console.log(err)
@@ -976,8 +968,7 @@ export default {
         }
     },
     mounted () {
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
-        this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
+        this.storageStr = '';
         this.getSiteById()
         this.findImageListByWorkNo()
         this.findAllDrawerById(BASIC_DATA_SYS.vehicleCheckColor, 'colorList');

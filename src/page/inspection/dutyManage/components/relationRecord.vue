@@ -54,30 +54,7 @@ export default {
       visible: false,
       selectList: [],
       tableLoading: false,
-      tableData: [
-        {
-          journalNo: "11111111",
-          checkType: "安全检查",
-          checkCategory: "公路巡查",
-          inspectionTime: "2020-08-03 14:00 2020-08-03 18:00",
-          companyName: "云南省公路路政总队昆磨支队",
-          routeName: "S210     红砖厂路",
-          routeInfo: "K100+50m至K100+55m",
-          routeSituation: "正常",
-          lawPerson: "CN325345436"
-        },
-        {
-          journalNo: "34235534",
-          checkType: "安全检查",
-          checkCategory: "公路巡查",
-          inspectionTime: "2020-08-03 14:00 2020-08-03 18:00",
-          companyName: "北京市交通运输管理局",
-          routeName: "S210     红砖厂路",
-          routeInfo: "K100+50m至K100+55m",
-          routeSituation: "正常",
-          lawPerson: "CN325345436"
-        },
-      ],
+      tableData: [],
       currentPage: 1, //当前页
       pageSize: 10,   //pagesize
       totalPage: 0,   //总页数

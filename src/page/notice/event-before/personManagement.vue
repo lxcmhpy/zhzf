@@ -140,7 +140,7 @@
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
-      :isPagination="false"
+      :isPagination="true"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 

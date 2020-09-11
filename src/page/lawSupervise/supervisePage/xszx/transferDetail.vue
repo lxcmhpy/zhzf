@@ -310,7 +310,6 @@ export default {
         return {
             obj: null,
             visible: false,
-            pHost: null,
             imgList: [],
             videoUrl:'',
             acitveCar: 0,
@@ -374,7 +373,6 @@ export default {
     },
     mounted () {
         this.getDetailById(this.$route.params.offSiteManageId);
-        this.pHost = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST;
     },
     computed: {
         // ...mapGetters(["offSiteManageId"])
