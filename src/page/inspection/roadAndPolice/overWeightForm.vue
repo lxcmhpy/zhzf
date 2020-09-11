@@ -146,10 +146,10 @@
         <div>
           <div class="itemOne">
             <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
-              <!-- <el-select ref="lawPersonListId" v-model="carInfo.drivePerson.lawOfficer" multiple @remove-tag="removeLawPersontag">
+              <el-select ref="lawPersonListId" v-model="carInfo.drivePerson.lawOfficerId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
-              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button> -->
+              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -278,10 +278,10 @@
         <div>
           <div class="itemOne">
             <el-form-item label="初检人员" id="lawPersonBox" prop="checkPerson">
-              <!-- <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPerson" multiple @remove-tag="removeLawPersontag">
+              <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
-              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button> -->
+              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -311,64 +311,66 @@
         <div>
           <div class="itemOne">
             <el-form-item label="卸载方式" prop="unloadMode">
-              <el-input v-model="carInfo.secondCheck.unloadMode"></el-input>
-              <!-- <el-select v-model="carInfo.secondCheck.checkWorker">
-                <el-option v-for="item in RecentCheckWorkers" :key="item.value" :label="item.label" :value="item.value"></el-option>
-              </el-select>-->
-            </el-form-item>
-          </div>
-        </div>
-        <div>
-          <div class="item">
-            <el-form-item label="分装车辆" prop="fenPlateColor">
-              <el-select v-model="carInfo.secondCheck.fenPlateColor">
-                <el-option v-for="(item,index) in allVehicleIdColor" :key="index" :label="item.name" :value="item.name"></el-option>
-              </el-select>
-              <!-- <el-autocomplete style="width: 100%" v-model="carInfo.secondCheck.checkWorker" :fetch-suggestions="queryCheckWorker"></el-autocomplete> -->
-            </el-form-item>
-          </div>
-          <div class="item">
-            <el-form-item label="分装车号" prop="fenPlate">
-              <el-input v-model="carInfo.secondCheck.fenPlate"></el-input>
-            </el-form-item>
-          </div>
-        </div>
-        <div>
-          <div class="item">
-            <el-form-item label="车辆类型" prop="fenCarType">
-              <el-select v-model="carInfo.secondCheck.fenCarType">
-                <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.name" :value="item.value"></el-option>
+              <!-- <el-input v-model="carInfo.secondCheck.unloadMode"></el-input> -->
+              <el-select v-model="carInfo.secondCheck.unloadMode">
+                <el-option v-for="(item,index)  in optionsXZFS" :key="index" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </div>
-          <div class="item">
-            <el-form-item label="分装吨位" prop="fenTonnage">
-              <el-input v-model="carInfo.secondCheck.fenTonnage"></el-input>
-            </el-form-item>
-          </div>
         </div>
-        <div>
-          <div class="item">
-            <el-form-item label="分装承运人" prop="fenPerson">
-              <el-input v-model="carInfo.secondCheck.fenPerson"></el-input>
-            </el-form-item>
+        <div v-if="carInfo.secondCheck.unloadMode=='分装'">
+          <div>
+            <div class="item">
+              <el-form-item label="分装车辆" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPlateColor':'pachor'">
+                <el-select v-model="carInfo.secondCheck.fenPlateColor">
+                  <el-option v-for="(item,index) in allVehicleIdColor" :key="index" :label="item.name" :value="item.name"></el-option>
+                </el-select>
+                <!-- <el-autocomplete style="width: 100%" v-model="carInfo.secondCheck.checkWorker" :fetch-suggestions="queryCheckWorker"></el-autocomplete> -->
+              </el-form-item>
+            </div>
+            <div class="item">
+              <el-form-item label="分装车号" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPlate':'pachor'">
+                <el-input v-model="carInfo.secondCheck.fenPlate"></el-input>
+              </el-form-item>
+            </div>
           </div>
-          <div class="item">
-            <el-form-item label="身份证号" prop="idCard">
-              <el-input v-model="carInfo.secondCheck.idCard"></el-input>
-            </el-form-item>
+          <div>
+            <div class="item">
+              <el-form-item label="车辆类型" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenCarType':'pachor'">
+                <el-select v-model="carInfo.secondCheck.fenCarType">
+                  <el-option v-for="item in allVehicleShipType" :key="item.value" :label="item.name" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+            <div class="item">
+              <el-form-item label="分装吨位" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenTonnage':'pachor'">
+                <el-input v-model="carInfo.secondCheck.fenTonnage"></el-input>
+              </el-form-item>
+            </div>
           </div>
-        </div>
-        <div>
-          <div class="item">
-            <el-form-item label="联系电话" prop="phone">
-              <el-input ref="partyTel" v-model="carInfo.secondCheck.phone"></el-input>
-            </el-form-item>
+          <div>
+            <div class="item">
+              <el-form-item label="分装承运人" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPerson':'pachor'">
+                <el-input v-model="carInfo.secondCheck.fenPerson"></el-input>
+              </el-form-item>
+            </div>
+            <div class="item">
+              <el-form-item label="身份证号" :prop="carInfo.secondCheck.unloadMode=='分装'?'idCard':'pachor'">
+                <el-input v-model="carInfo.secondCheck.idCard"></el-input>
+              </el-form-item>
+            </div>
           </div>
-          <div class="item">
-            <el-form-item label="联系地址" prop="address">
-              <el-input v-model="carInfo.secondCheck.address"></el-input>
-            </el-form-item>
+          <div>
+            <div class="item">
+              <el-form-item label="联系电话" :prop="carInfo.secondCheck.unloadMode=='分装'?'phone':'pachor'">
+                <el-input ref="partyTel" v-model="carInfo.secondCheck.phone"></el-input>
+              </el-form-item>
+            </div>
+            <div class="item">
+              <el-form-item label="联系地址" :prop="carInfo.secondCheck.unloadMode=='分装'?'address':'pachor'">
+                <el-input v-model="carInfo.secondCheck.address"></el-input>
+              </el-form-item>
+            </div>
           </div>
         </div>
         <div>
@@ -398,10 +400,10 @@
         <div>
           <div class="itemOne">
             <el-form-item label="执法人员" id="lawPersonBox" prop="checkPerson">
-              <!-- <el-select ref="lawPersonListId" v-model="carInfo.secondCheck.checkPerson" multiple @remove-tag="removeLawPersontag">
+              <el-select ref="lawPersonListId" v-model="carInfo.secondCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select>
-              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button> -->
+              <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -449,7 +451,7 @@ import { mapGetters } from "vuex";
 import { validateIDNumber, checkPassport, validateAge, validateZIP, validatePhone, vaildateCardNum, } from "@/common/js/validator";
 import { findLawOfficerListApi, } from "@/api/caseHandle";
 import { findRouteManageByOrganIdApi, } from "@/api/system";
-import { saveOrUpdateCarInfoApi, getDictListDetailByNameApi } from "@/api/inspection";
+import { saveOrUpdateCarInfoApi, getDictListDetailByNameApi, findCarInfoByIdApi } from "@/api/inspection";
 export default {
   data() {
     //选择个人试验证
@@ -520,6 +522,8 @@ export default {
       brandList: [], //品牌
       carInfo: {
         id: '',
+        checkType: '路警联合',
+        detectStation: '',//监测站
         vehicleIdColor: '',
         vehicleShipId: '',
         vehicleShipType: '',
@@ -540,6 +544,7 @@ export default {
           occupation: '',
           partyUnitPosition: '',
           lawOfficer: '',
+          lawOfficerId: '',
         },
         firstCheck: {
           oddNumber: '',
@@ -556,6 +561,7 @@ export default {
           totalHeight: '',
           checkResult: 1,
           checkPerson: '',
+          checkPersonId: '',
         },
 
         secondCheck: {
@@ -574,7 +580,9 @@ export default {
           checkNumber: '',
           overRatio: '',
           checkPerson: '',
+          checkPersonId: '',
         },
+        penaltyDecision: ''
       },
 
 
@@ -680,7 +688,7 @@ export default {
         unloadWeight: [{ required: true, message: "请输入", trigger: "change" }],
         overRatio: [{ required: true, message: "请输入", trigger: "change" }],
         checkResult: [{ required: true, message: "请输入", trigger: "change" }],
-        phone:[{ validator: validatePhone, trigger: "blur" }],
+        phone: [{ validator: validatePhone, trigger: "blur" }],
       },
       alreadyChooseLawPerson: [],
       partyTypePerson: "1", //判断要显示的部分
@@ -712,6 +720,7 @@ export default {
         '初检记录未填写完整，请检查！',
         '卸载/复检记录未填写完整，请检查！',
       ],
+      optionsXZFS: []
     };
   },
   components: {
@@ -720,7 +729,7 @@ export default {
     floatBtns,
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId", "openTab", "caseHandle"]) },
+  computed: { ...mapGetters(["caseId", "openTab", "caseHandle", "inspectionOverWeightId"]) },
   methods: {
     /**
      *
@@ -968,6 +977,7 @@ export default {
             switch (element.option) {
               case 1: _this.allVehicleIdColor = res.data; break;//车牌颜色
               case 2: _this.allVehicleShipType = res.data; break;//车辆类型
+              case 3: _this.optionsXZFS = res.data; break;//车辆类型
             }
           },
           error => {
@@ -982,6 +992,7 @@ export default {
       // 查询车辆号牌
     },
     saveDataBtn(handleType) {
+      let _this = this
       if (handleType == 0) {
         // 保存
         // 隐藏保存、签章按钮，显示撤销、删除按钮
@@ -993,27 +1004,28 @@ export default {
       }
       if (handleType == 1) {
         // 归档
-        // this.$refs['carInfo','drivePerson'].validate(valid => {
-        // if (valid) {
-        //   console.log('yanzheng')
-
-        // }
         this.resultArr = [];
         let that = this;
+        console.log('rejectObj', this.rejectObj)
+
         this.formArr.forEach((item, index) => {
           //根据表单的ref校验
+          console.log(this.rejectObj[index])
           this.refForm(item, this.rejectObj[index])
         })
         Promise.all(this.resultArr).then(function () {
           //验证全部通过
+          _this.carInfo.fileStatus = 1
+          _this.saveMethod()
         }).catch(function (data) {
           //验证失败 提示reject失败状态的值
-          that.$message.error(data);
+          that.$message.error('请先完善表单内容');
         });
 
       }
     },
     refForm(formName, err) {
+      console.log('err', err)
       let that = this;
       let result = new Promise(function (resolve, reject) {
         that.$refs[formName].validate((valid) => {
@@ -1027,13 +1039,13 @@ export default {
       that.resultArr.push(result)
     },
     saveMethod() {
-      debugger
       let data = JSON.parse(JSON.stringify(this.carInfo))
       data.drivePerson = JSON.stringify(data.drivePerson)
       data.firstCheck = JSON.stringify(data.firstCheck)
       data.secondCheck = JSON.stringify(data.secondCheck)
+      data.penaltyDecision = JSON.stringify(data.penaltyDecision)
       console.log('data', data)
-      data.id =data.id?data.id:this.genID(32)
+      data.id = data.id ? data.id : this.genID()
       debugger
       saveOrUpdateCarInfoApi(data).then(
         res => {
@@ -1047,16 +1059,35 @@ export default {
 
         })
     },
-    // 生成id
-    genID(length) {
-      return Number(Math.random().toString().substr(3, length) + Date.now()).toString(16);
+    genID() {
+      var originStr = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+        originChar = '0123456789abcdef',
+        len = originChar.length;
+      return originStr.replace(/x/g, function (match) {
+        return originChar.charAt(Math.floor(Math.random() * len))
+      })
     },
+    getData() {
+      let _this = this
+      findCarInfoByIdApi(this.inspectionOverWeightId.id).then(
+        res => {
+          if (res.code == 200) {
+            _this.carInfo = res.data
+          } else {
+            this.$message.error(res.msg);
+          }
+        },
+        error => {
+
+        })
+    }
   },
 
   mounted() {
     this.getDrawerList([
       { name: '车牌颜色', option: 1 },
-      { name: '车辆类型', option: 2 }])
+      { name: '车辆类型', option: 2 },
+      { name: '路警联合-卸载方式', option: 3 },])
 
     // 鼠标滚动
     this.$refs.link_1.addEventListener("scroll", this.scrool1);
@@ -1064,10 +1095,14 @@ export default {
     this.$refs.link_3.addEventListener("scroll", this.scrool3);
     this.$refs.link_4.addEventListener("scroll", this.scrool4);
     this.$refs.link_5.addEventListener("scroll", this.scrool5);
+    if (this.inspectionOverWeightId.id) {
+      this.getData()
+    }
 
   },
   created() {
     this.findRouteManageByOrganId();
+
   },
   beforeRouteLeave(to, from, next) {
     console.log("to", to);

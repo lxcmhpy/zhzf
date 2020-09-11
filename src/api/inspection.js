@@ -439,6 +439,17 @@ export function getAllPublicPersonApi(data) {
         cancelToken: setCancelSource()
     });
 }
+// 根据机构查询所有公开执法人员
+export function getAllPublicPersonByOrganNameApi(data) {
+    return request({
+        url: "/xzjc/randomPerson/queryAllPersonByOrganName/"+data.organName,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 // 根据UUID删除检查对象表数据
 export function delPersonApi(data) {
     return request({
@@ -564,6 +575,18 @@ export function getAllRandomItemApi(data) {
         cancelToken: setCancelSource()
     });
 }
+// 根据抽查类别或者抽查事项查询当前事项是否有启用的
+export function getIsRandomNameApi(data) {
+    return request({
+        url: "xzjc/randomItem/queryByCheckDomainAndTaskName",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
 // 根据UUID删除事项清单表数据
 export function delRandomItemApi(data) {
     return request({
@@ -604,7 +627,7 @@ export function getDictListDetailByNameApi(name) {
 //获取检查对象
 export function getAllCheckObject() {
     return request({
-        url: "/xzjc/randomItem/getAllCheckObject/",
+        url: "/xzjc/randomItem/getAllCheckObject",
         method: "get",
         showloading: false,
         loadingType: 'loadPart',
@@ -961,6 +984,30 @@ export function saveOrUpdateCarInfoApi(data) {
         url: "/xzjc/carInfo/mySaveOrUpdate",
         method: "post",
         data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//根据UUID获取车辆信息表数据
+export function findCarInfoByIdApi(data) {
+    return request({
+        url: "/xzjc/carInfo/myGetById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'XZJC_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+//查找当前记录相关文书
+export function findCarInfoFileByIdApi(data) {
+    // 用初检记录id
+    return request({
+        url: "/xzjc/document/getDocListById/" + data,
+        method: "get",
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType: 'XZJC_HOST',
