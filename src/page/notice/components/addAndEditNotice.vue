@@ -300,10 +300,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .edit_container,
->>> .quill-editor {
+.quill-editor {
   height: 200px;
   display: inline-block;
 
+  >>> .ql-container.ql-snow {
+    min-height: 200px;
+    border: 1px solid #ccc;
+  }
   .ql-snow .ql-picker.ql-size .ql-picker-label::before,
   .ql-snow .ql-picker.ql-size .ql-picker-item::before {
     content: "14px";

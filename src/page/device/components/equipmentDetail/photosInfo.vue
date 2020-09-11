@@ -91,7 +91,7 @@ export default {
   methods: {
     async getFiles() {
       let _this = this;
-      let res = await findImageByCaseId({ caseId: this.$route.params.id });
+      let res = await findImageByCaseId(this.$route.params.id);
       debugger;
       res.data.forEach((item) => {
         let flag = item.docId.charAt(item.docId.length - 1) + "";
