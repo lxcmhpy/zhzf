@@ -1,20 +1,20 @@
 <template v-if="caseInfo">
   <div>
-    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true" style="top:60px;right:60px;">
+    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true">
       <template slot="title">
         <div class="catalogueTitle">
-          操作记录列表
+          文书列表
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
       <div class="userList a">
-        暂未开发
-        <!-- <el-checkbox-group v-model="checkedDocId">
-          <el-checkbox v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
-            <span class="name">{{index + 1}}</span>
+        <!-- <el-checkbox-group v-model="checkedDocId"> -->
+          <li v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
+            <span class="name">{{index + 1}}、</span>
             <span class="name">{{item.docName}}</span>
-          </el-checkbox>
-        </el-checkbox-group> -->
+            <span class="name" style="margin-left:20px;color:bule">{{item.status?item.status:'未完成'}}</span>
+          </li>
+        <!-- </el-checkbox-group> -->
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
@@ -25,7 +25,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { findByCaseBasicInfoIdApi, findByCaseIdAndDocIdApi, findVoByDocCaseIdApi } from "@/api/caseHandle";
+import { getTemplateDocList,getDocListById } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -49,45 +49,42 @@ export default {
   // props: ["caseInfo"],
   computed: { ...mapGetters(["caseId"]) },
   methods: {
-    showModal() {
-      //      console.log('show');
-
+    showModal(pageDomId) {
       this.visible = true;
-      // if (!this.getData) this.getByMlCaseId();
-
-
+      if (!this.getData) this.getByMlCaseId(pageDomId);
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
-    //获取已完成文书列表
-    getByMlCaseId() {
+    //获取文书列表
+    getByMlCaseId(pageDomId) {
       this.getData = true;
       let _this = this
-      findVoByDocCaseIdApi(this.caseId).then(
-        res => {
-          console.log(res);
-          _this.caseList = res.data;
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      if (this.$route.params.addOrEiditFlag!='add') {
+        getDocListById(pageDomId||this.$route.params.id).then(
+          res => {
+            console.log(res);
+            _this.caseList = res.data;
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      } else {
+        getTemplateDocList(this.$route.params.id).then(
+          res => {
+            console.log(res);
+            _this.caseList = res.data;
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+
     },
-    // getByMlCaseId() {
-    //   let _this = this
-    //   findByCaseBasicInfoIdApi(this.caseId).then(
-    //     res => {
-    //         debugger
-    //       console.log(res);
-    //       _this.caseList = res.data;
-    //     },
-    //     error => {
-    //       console.log(error);
-    //     }
-    //   );
-    // },
+
     routerArchiveCatalogueDetail() {
       let _thats = this
       this.docSrc = this.host + this.checkedDocId[0];

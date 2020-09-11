@@ -86,7 +86,8 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="time" :rules="fieldRules('time',propertyFeatures['time'])">
-                <el-input type="textarea" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <!--<el-input type="textarea" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>-->
+                <el-date-picker style="width: 200px" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
             <td>

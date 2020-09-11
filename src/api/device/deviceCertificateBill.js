@@ -124,7 +124,7 @@ export function approveBill (data) {
 }
 
 //获取文件流
-export function getFileStreamByStorageIdApi(storageId) {
+export function getFileStreamByStorageId(storageId) {
     return request({
       url: "/device/sys/file/getFileStreamByStorageId/"+storageId,
       method: "get",

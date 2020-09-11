@@ -129,16 +129,16 @@
             <el-col :span="12">
               <el-form-item label="操作人员" prop="operatePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.operatePerson" multiple filterable @change="changeAdmin">
-                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">公开执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.personName" :value="item.personName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="监督人员" prop="supervisePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.supervisePerson" multiple filterable @change="changeAdmin">
-                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">公开执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.personName" :value="item.personName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -276,16 +276,16 @@
             <el-col :span="12">
               <el-form-item label="操作人员" prop="operatePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.operatePerson" multiple filterable @change="changeAdmin">
-                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">公开执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.personName" :value="item.personName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="监督人员" prop="supervisePerson">
                 <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm2.supervisePerson" multiple filterable @change="changeAdmin">
-                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">本机构执法人员({{LawOfficerList.length}})</span>
-                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
+                  <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">公开执法人员({{LawOfficerList.length}})</span>
+                  <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.personName" :value="item.personName" placeholder="请添加"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -380,7 +380,7 @@
   </div>
 </template>
 <script>
-import { addTaskApi, getDictListDetailByNameApi, searchTaskDataApi, getCountByOrganNameApi, getAllCheckObject } from "@/api/inspection";
+import { addTaskApi, getDictListDetailByNameApi, searchTaskDataApi, getCountByOrganNameApi,getAllPublicPersonByOrganNameApi} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { findLawOfficerListApi } from "@/api/caseHandle";
 import { mixinPerson } from "@/common/js/personComm";
@@ -595,13 +595,6 @@ export default {
     }
   },
   methods: {
-    getAllCheckObject() {
-      getAllCheckObject().then(res => {
-        if (res.code == 200) {
-          this.optionsJCDX = res.data;
-        }
-      })
-    },
     // 查询列表时
     getTableData() {
       let data = {
@@ -635,6 +628,7 @@ export default {
       data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
+      data.expertNum = data.expertNum ? expertNum : 0;
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -692,6 +686,7 @@ export default {
       data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
+      data.expertNum = data.expertNum ? expertNum : 0;
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -822,7 +817,7 @@ export default {
       let data = {
         organName: iLocalStroage.gets("userInfo").organName,
       };
-      findLawOfficerListApi(iLocalStroage.gets("userInfo").organId).then(
+      getAllPublicPersonByOrganNameApi(data).then(
         res => {
           this.LawOfficerList = res.data
         },
@@ -861,6 +856,8 @@ export default {
               this.$set(_this.addForm2, `checkBasis`, res.data.checkBasis || '');
               this.$set(_this.addForm2, `checkContent`, res.data.checkContent || '');
               this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject || '');
+              this.$set(_this.addForm2, `checkItem`, res.data.checkItem || '');
+              this.$set(_this.addForm2, `checkType`, res.data.checkType || '');
             }
           },
           error => {
@@ -899,6 +896,7 @@ export default {
               case 4: _this.optionsCCSX = res.data; break;//抽查事项
               case 5: _this.optionsSSLB = res.data; break;//事项类别
               case 6: _this.optionsRWMCJG = res.data; break;//任务名称-监管领域
+              case 7: _this.optionsJCDX = res.data; break;//检查对象
             }
           },
 
@@ -910,7 +908,6 @@ export default {
     },
   },
   mounted() {
-    this.getAllCheckObject();
     this.getTableData()
     // 获取抽屉
     this.getDrawerList([
@@ -920,6 +917,7 @@ export default {
       { name: '抽查事项', option: 4 },
       { name: '事项类别', option: 5 },
       { name: '抽查类别', option: 6 },
+      { name: '检查对象', option: 7 },
     ])
     this.getPerson()
   }

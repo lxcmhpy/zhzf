@@ -55,7 +55,16 @@
           <el-table-column prop="remark" label="审核意见" align="center" :show-overflow-tooltip="true"></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="openPreview(scope.row)">预览</el-button>
+              <router-link
+                target="_blank"
+                :to="{path:'/details',query:{content: scope.row.content,
+          files: JSON.stringify(scope.row.fileUploadVos),
+          title: scope.row.title,
+          source: scope.row.source,
+          time: scope.row.publishTime}}"
+              >
+                <el-button type="text">预览</el-button>
+              </router-link>
               <el-button
                 v-if="scope.row.state===1 || scope.row.state===4"
                 type="text"

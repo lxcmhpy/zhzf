@@ -1,20 +1,19 @@
 <template v-if="caseInfo">
   <div>
-    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true" style="top:60px;right:60px;">
+    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true"  style="top:60px;right:60px">
       <template slot="title">
         <div class="catalogueTitle">
-          操作记录列表
+          照片证据列表
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
       <div class="userList a">
-        暂未开发
-        <!-- <el-checkbox-group v-model="checkedDocId">
+        <el-checkbox-group v-model="checkedDocId">
           <el-checkbox v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
             <span class="name">{{index + 1}}</span>
             <span class="name">{{item.docName}}</span>
           </el-checkbox>
-        </el-checkbox-group> -->
+        </el-checkbox-group>
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
