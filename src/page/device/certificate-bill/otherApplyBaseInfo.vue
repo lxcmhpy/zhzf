@@ -297,7 +297,7 @@
             </el-button>
         </div>
       <div>
-        <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" @click="commitBill">
+        <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" style="margin-left:0;margin-top:10px;" @click="commitBill">
             <i class="iconfont law-save"></i>
             <br />提交
         </el-button>
