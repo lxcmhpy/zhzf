@@ -1,6 +1,6 @@
 <template>
   <div class="entry-exam">
-    <div v-if="!startCountDown" class="page-contain">
+    <div v-if="!startCountDown" class="page-contain">examineePersonInfo.photoUrl
       <el-card class="box-card outer-card">
         <el-row>
           <el-col :span="8">
@@ -8,7 +8,7 @@
               <div class="examinee-photo">
                 <img
                   v-if="examineePersonInfo.photoUrl"
-                  :src="baseUrl + examineePersonInfo.photoUrl || personImg"
+                  :src="photoUrl"
                   width="214px"
                   height="298px"
                 />
@@ -112,22 +112,28 @@ export default {
       startCount: true,
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
       currentSysTime: new Date().getTime(),
-      differenceTime: 0
+      differenceTime: 0,
+      photoUrl: ''
     };
   },
   computed: {
     examineeName() {
       return this.$route.query.name;
     },
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
   created() {
     this.getSystemTime();
     this.getExamineeInfo();
   },
   methods: {
+    // 获取用户照片
+    getPersonPhoto() {
+      if (this.examineePersonInfo.photoUrl) {
+        this.$util.com_getFileStream(this.examineePersonInfo.photoUrl).then((res) => {
+          this.photoUrl = res;
+        });
+      }
+    },
     // 获取系统当前时间
     getSystemTime() {
       this.$store.dispatch("getSystemDate").then(
@@ -157,6 +163,7 @@ export default {
           if (res.code === 200) {
             this.examineePersonInfo = res.data.personInfo;
             this.setExamStatus(res.data.personExamInfo, loading);
+            this.getPersonPhoto();
           }
         },
         err => {

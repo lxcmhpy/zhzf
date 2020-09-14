@@ -28,6 +28,7 @@ import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
 import TopInFo from "../components/topInfo/index.vue";
 import store from "../store.js";
+import iLocalStroage from '@/common/js/localStroage';
 export default {
   mixins: [store],
   provide() {
@@ -53,7 +54,7 @@ export default {
   },
   data() {
     return {
-      layerUrl: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}',
+      layerUrl: '',
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
@@ -363,6 +364,8 @@ export default {
     this.getTree()
   },
   mounted(){
+      debugger
+      this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST;
       this.$nextTick(() => {
       //  debugger;
       window.PhoneCallModule.initialize();

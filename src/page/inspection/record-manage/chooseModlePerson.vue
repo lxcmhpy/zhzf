@@ -90,6 +90,7 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.checkedUser=[]
       this.staffNameOrCode = "";
     },
     //全选
@@ -137,7 +138,6 @@ export default {
           });
         });
       }
-
       console.log('this.checkedUser', this.checkedUser)
     },
     //删掉已选中的人员

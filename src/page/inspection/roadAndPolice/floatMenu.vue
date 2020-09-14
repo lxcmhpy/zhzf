@@ -106,10 +106,8 @@ export default {
     // 鼠标移入
     changeActive(index) {
       this.closeAllDialog()
-      // $event.currentTarget.className = "active";
-      console.log('移入', index, this.formOrDocData.pageDomId)
       switch (index) {
-        case 1: this.$refs.documentSideMenuRef.showModal(this.formOrDocData.pageDomId); break;
+        case 1: this.$refs.documentSideMenuRef.showModal(this.inspectionOverWeightId.firstcheckId?this.inspectionOverWeightId.firstcheckId:''); break;
         case 2: this.$refs.relativeRecordRef.showModal(); break;
         case 3: this.$refs.operationRecordRef.showModal(); break;
         default: break;

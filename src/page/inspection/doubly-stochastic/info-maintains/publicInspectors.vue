@@ -177,8 +177,26 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="单位" prop="company">
+            <!-- <el-form-item label="单位" prop="company">
               <el-input v-model="addForm.company"></el-input>
+            </el-form-item> -->
+            <el-form-item label="单位" prop="company" class="lawPersonBox-aline organClass">
+              <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
+                <div class="departOrUserTree" style="width:350px;height:436px">
+                  <div class="treeBox">
+                    <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
+                      <span class="custom-tree-node" slot-scope="{ node,data }">
+                        <span>
+                          <i :class="data.children && data.children.length>0 ? 'iconfont law-icon_shou_bag' : ''"></i>
+                          <span :class="data.children ? '' : 'hasMarginLeft'">{{ node.label }}</span>
+                        </span>
+                      </span>
+                    </el-tree>
+                  </div>
+                </div>
+                <el-input slot="reference" v-model="addForm.company" placeholder="请选择机构" :disabled="true" style="width:100%">
+                </el-input>
+              </el-popover>
             </el-form-item>
           </el-col>
         </el-row>
@@ -297,8 +315,32 @@ export default {
       isShow: false,
       dialogFormVisible: false,
       addForm: {
-        name: '',
+        personName: '',
         birthDate: '',
+        sex: '',
+        idCard: '',
+        nationName: '',
+        politicalStatusName: '',
+        highestEducation: '',
+        majorName: '',
+        contactNum: '',
+        phoneNum: '',
+        lawOfficeType: '',
+        userRank: '',
+        staffingName: '',
+        company: '',
+        branchName: '',
+        lawArea: '',
+        certType: '',
+        certNumber: '',
+        issueAuthority: '',
+        certStartTime: '',
+        certEndTime: '',
+        isSupervisor: '',
+        isLawProfession: '',
+        stationStatusName: '',
+        remark: '',
+        name: '',
         certStartTime: '',
         certEndTime: '',
         delivery: false,
@@ -372,6 +414,13 @@ export default {
       optionsZFRYXZ: [],
       optionsZFZLX: [],
       optionsJDJCZL: [],
+      defaultExpandedKeys: [],
+      organData: [],//机构列表
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      visiblePopover: false,
     }
   },
   methods: {
@@ -384,7 +433,7 @@ export default {
         personName: this.searchForm.personName,
         stationStatusName: this.searchForm.stationStatusName,
         // workStatus: this.searchForm.stationStatusName,
-        organName: iLocalStroage.gets("userInfo").organName,
+        company: iLocalStroage.gets("userInfo").organName,
         // oName: '固原综合执法支队',
         current: this.currentPage,
         size: this.pageSize,
@@ -412,7 +461,7 @@ export default {
             });
             return;
           }
-          this.addForm.organName = iLocalStroage.gets("userInfo").organName
+          // this.addForm.organName = iLocalStroage.gets("userInfo").organName
           this.$delete(this.addForm, 'photo')
           addPublicPersonApi(this.addForm).then(
             res => {
@@ -446,7 +495,7 @@ export default {
       // let currentFileId = this.currentFileId
       var fd = new FormData()
       fd.append("file", param.file);
-      fd.append("organName", iLocalStroage.gets("userInfo").organName);
+      // fd.append("organName", iLocalStroage.gets("userInfo").organName);
       importPersonExcelApi(fd).then(res => {
         if (res.code === 200) {
           this.$message({ type: "success", message: res.msg });
@@ -498,9 +547,49 @@ export default {
       });
 
     },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    // 获取机构
+    getAllOrgan(organId) {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
+            : res.data[0].label;
+          if (res.data[0].children && res.data[0].children.length > 0) {
+            res.data[0].children.forEach(item => {
+              _this.defaultExpandedKeys.push(item.id);
+            });
+          }
+          _this.organData = res.data;
+          if (organId == "root") {
+            _this.currentOrganId = res.data[0].id;
+          } else {
+            _this.currentOrganId = organId;
+          }
+        },
+        err => {
+        }
+      );
+    },
+    handleNodeClick1(data) {
+      this.addForm.company = data.label;
+      // this.addForm.regulatoryUnitId = data.id;
+      this.visiblePopover = false;
+    },
+    nodeExpand(data, node, jq) {
+      console.log(data);
+      console.log(node);
+      console.log(jq);
+    },
   },
   mounted() {
     this.getTableData()
+    this.getAllOrgan()
     // 获取抽屉
     this.getDrawerList([{ name: '在岗情况', option: 1 },
     { name: '人员信息-民族', option: 2 },
@@ -517,3 +606,4 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
+<style lang="scss" src="@/assets/css/systemManage.scss"></style>
