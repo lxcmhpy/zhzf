@@ -40,6 +40,7 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.selectRoleList= [];
     },
     //根据机构获取角色列表
     getRoleList(organId) {
@@ -49,7 +50,9 @@ export default {
         res => {
           console.log(res.data);
           _this.roleList = res.data;
-          //this.findBindRole();
+          if(_this.userIds.length==1){
+            this.findBindRole(_this.userIds[0]);
+          }
         },
         err => {
           console.log(err);
@@ -82,7 +85,7 @@ export default {
     //查询绑定的角色
     findBindRole(id) {
       let _this = this
-      this.$store.dispatch("queryUserBindRole", this.userId).then(
+      this.$store.dispatch("queryUserBindRole", id).then(
         res => {
           console.log(res);
           res.data.forEach(item => {
