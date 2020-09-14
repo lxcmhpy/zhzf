@@ -19,6 +19,19 @@ export function findNoticeByPage(data) {
   })
 }
 
+// 加载未关联轮播图动态列表
+export function findLBTNotice(data) {
+  return request({
+    url: "/notice/notice/zfdt/lblist",
+    method: "get",
+    showloading: true,
+    baseUrlType: 'CAPTCHA_HOST',
+    params: data,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  })
+}
+
 // 新增、编辑
 export function saveOrUpdateNotice(data) {
   return request({
