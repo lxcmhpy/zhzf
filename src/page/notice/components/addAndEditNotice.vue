@@ -50,9 +50,10 @@
           <!-- :http-request="saveFile" accept=".pdf" -->
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             :file-list="fileList"
             :on-change="handleChange"
+            :http-request="saveFile"
           >
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
@@ -199,25 +200,26 @@ export default {
     },
     async saveFile(param) {
       var fd = new FormData();
-      fd.append("file", param.raw);
-      fd.append("fileName", param.name);
+      fd.append("file", param.file);
+      fd.append("category", "公示系统");
+      fd.append("fileName", param.file.name);
       fd.append("userId", iLocalStroage.gets("userInfo").id);
-      fd.append("category", "公告");
-      fd.append("caseId", param.name + new Date().getTime()); //传记录id
-      fd.append("docId", param.name + new Date().getTime()); //传记录id
+      fd.append("caseId", param.file.name + new Date().getTime()); //传记录id
+      fd.append("docId", param.file.name + new Date().getTime()); //传记录id
       let res = await upload(fd);
-      debugger;
       this.storageId.push(res.data[0].storageId);
     },
 
-    async uploadFiles() {
+    uploadFiles() {
+      debugger;
       for (var i = 0; i < this.fileList.length; i++) {
         var param = this.fileList[i];
         if (param.storageId) {
           this.storageId.push(param.storageId);
-        } else {
-          await this.saveFile(param);
         }
+        // else {
+        //   await this.saveFile(param);
+        // }
       }
     },
 
@@ -267,21 +269,23 @@ export default {
       let _this = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          _this.uploadFiles().then((res) => {
-            _this.addNoticeForm.storageId = _this.storageId.join(":");
-            saveOrUpdateNotice(_this.addNoticeForm).then(
-              (res) => {
-                _this.$message({
-                  type: "success",
-                  message: "保存成功!",
-                });
-                _this.closeDialog();
-              },
-              (err) => {
-                console.log(err);
-              }
-            );
-          });
+          //   _this.uploadFiles().then((res) => {
+          _this.uploadFiles();
+          debugger;
+          _this.addNoticeForm.storageId = _this.storageId.join(":");
+          saveOrUpdateNotice(_this.addNoticeForm).then(
+            (res) => {
+              _this.$message({
+                type: "success",
+                message: "保存成功!",
+              });
+              _this.closeDialog();
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+          //   });
         }
       });
     },
@@ -301,80 +305,94 @@ export default {
 .edit_container,
 .quill-editor {
   height: 200px;
+  line-height: 28px;
   display: inline-block;
 
   >>> .ql-container.ql-snow {
     min-height: 200px;
     border: 1px solid #ccc;
   }
-  .ql-snow .ql-picker.ql-size .ql-picker-label::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item::before {
-    content: "14px";
-  }
+}
+</style>
+<style>
+.edit_container,
+.quill-editor {
+  height: 200px;
+  line-height: 28px;
+  display: inline-block;
+}
 
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
-    content: "10px";
-  }
+.ql-snow strong {
+  font-weight: bold;
+}
 
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
-    content: "18px";
-  }
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: "14px";
+}
 
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
-    content: "32px";
-  }
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
+  content: "10px";
+}
 
-  .ql-snow .ql-picker.ql-header .ql-picker-label::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item::before {
-    content: "文本";
-  }
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
+  content: "18px";
+}
 
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
-    content: "标题1";
-  }
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
+  content: "32px";
+}
 
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
-    content: "标题2";
-  }
+.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+  content: "文本";
+}
 
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
-    content: "标题3";
-  }
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content: "标题1";
+}
 
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
-    content: "标题4";
-  }
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content: "标题2";
+}
 
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
-    content: "标题5";
-  }
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content: "标题3";
+}
 
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
-    content: "标题6";
-  }
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  content: "标题4";
+}
 
-  .ql-snow .ql-picker.ql-font .ql-picker-label::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item::before {
-    content: "标准字体";
-  }
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+  content: "标题5";
+}
 
-  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {
-    content: "衬线字体";
-  }
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+  content: "标题6";
+}
 
-  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
-    content: "等宽字体";
-  }
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: "标准字体";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {
+  content: "衬线字体";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
+  content: "等宽字体";
 }
 </style>

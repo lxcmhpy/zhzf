@@ -61,7 +61,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { findNoticeByPage } from "@/api/notice/notice";
+import { findLBTNotice } from "@/api/notice/notice";
 import { upload, deleteFileByIdApi } from "@/api/notice/upload";
 import Util from "@/api/notice/util";
 export default {
@@ -101,7 +101,7 @@ export default {
       data.current = this.currentPage;
       data.size = this.pageSize;
       let _this = this;
-      findNoticeByPage(data).then(
+      findLBTNotice(data).then(
         (res) => {
           _this.total = res.data.total;
           _this.tableData = res.data.records;

@@ -159,7 +159,7 @@ export default {
       this.form = {
         id: "",
         title: "",
-        orderNo: "",
+        orderNo: this.total + 1,
         state: "",
         dtId: "",
       };
