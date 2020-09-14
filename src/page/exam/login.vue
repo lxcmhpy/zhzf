@@ -161,7 +161,7 @@ export default {
   computed: {
     ajaxUrl() {
       const BASEURL = iLocalStroage.gets("CURRENT_BASE_URL");
-      return BASEURL["EXAM"];
+      return BASEURL["CAPTCHA_HOST"];
     },
   },
   methods: {
@@ -180,7 +180,7 @@ export default {
             this.kaptchaInfo.kaptcha = res.data.kaptcha;
             this.kaptchaInfo.uuid = res.data.uuid;
             this.loginForm.uuid = res.data.uuid;
-            this.captchaImg = `${this.ajaxUrl}/examLogin/captchaImg?kaptcha=${res.data.kaptcha}&uuid=${res.data.uuid}`;
+            this.captchaImg = `${this.ajaxUrl}/exam/examLogin/captchaImg?kaptcha=${res.data.kaptcha}&uuid=${res.data.uuid}`;
           }
         },
         (err) => {

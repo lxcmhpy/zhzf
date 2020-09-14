@@ -656,7 +656,8 @@ export function findPersonAndRelationByCaseIdApi(params) {
 export function findAskNumApi(params) {
   let data = {
     caseId: params.caseId,
-    name: params.name
+    name: params.name,
+    docTypeId:params.docTypeId
   }
   return request({
     url: "/case/doc/data/findByCaseIdAndName",
@@ -1705,8 +1706,9 @@ export function getAssistFile(data) {
 // 修改文书状态并删除生成的PDF
 export function updateDocStatusById(data) {
   return request({
-    url: "/case/file/uploadHistory/updateDocStatusById/"+data.docPdfStorageId+'/'+data.linkTypeId,
-    method: "get",
+    url: "/case/file/uploadHistory/updateDocStatusById",
+    method: "post",
+    data: vm.$qs.stringify(data),
     showloading: true,
     cancelToken: setCancelSource()
   });

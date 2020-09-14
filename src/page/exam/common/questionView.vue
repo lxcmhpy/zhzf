@@ -67,8 +67,8 @@
         </el-col>
         <el-col v-if="question.questionPicture" :span="8">
           <div class="stem-img">
-            <el-image :src="baseUrl + question.questionPicture"></el-image>
-            <a class="view-img" @click="viewImage(question.questionPicture)">查看大图</a>
+            <el-image :src="questionPicture"></el-image>
+            <a class="view-img" @click="viewImage(questionPicture)">查看大图</a>
           </div>
         </el-col>
       </el-row>
@@ -134,7 +134,8 @@ export default {
       answer: "1",
       dialogImageUrl: "",
       dialogVisible: false,
-      questionLevelNume: ["简单", "一般", "困难"]
+      questionLevelNume: ["简单", "一般", "困难"],
+      questionPicture: ''
     };
   },
   computed: {
@@ -156,15 +157,20 @@ export default {
       }
       return txt;
     },
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
-  mounted() {},
+  mounted() {
+    this.getImageUrl();
+  },
   methods: {
+    // 获取题目图片
+    getImageUrl(){
+      this.$util.com_getFileStream(this.question.questionPicture).then( res => {
+        this.questionPicture = res;
+      });
+    },
     // 查看大图
     viewImage(src) {
-      this.dialogImageUrl = this.baseUrl + src;
+      this.dialogImageUrl = src;
       this.dialogVisible = true;
     },
     // 获取正确答案

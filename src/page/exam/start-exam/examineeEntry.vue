@@ -1,6 +1,6 @@
 <template>
   <div class="entry-exam">
-    <div v-if="!startCountDown" class="page-contain">
+    <div v-if="!startCountDown" class="page-contain">examineePersonInfo.photoUrl
       <el-card class="box-card outer-card">
         <el-row>
           <el-col :span="8">
@@ -8,7 +8,7 @@
               <div class="examinee-photo">
                 <img
                   v-if="examineePersonInfo.photoUrl"
-                  :src="baseUrl + examineePersonInfo.photoUrl || personImg"
+                  :src="photoUrl"
                   width="214px"
                   height="298px"
                 />
@@ -57,6 +57,9 @@
                     <p v-if="exam.examStatus == '0'" class="status-box wait">未开始</p>
                     <p v-if="exam.examStatus == '3'" class="status-box wait">已结束</p>
                   </div>
+                </div>
+                <div v-if="examineeData.length === 0" class="no-exam-data">
+                  暂无考试信息
                 </div>
               </div>
             </div>
@@ -109,22 +112,28 @@ export default {
       startCount: true,
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
       currentSysTime: new Date().getTime(),
-      differenceTime: 0
+      differenceTime: 0,
+      photoUrl: ''
     };
   },
   computed: {
     examineeName() {
       return this.$route.query.name;
     },
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
   created() {
     this.getSystemTime();
     this.getExamineeInfo();
   },
   methods: {
+    // 获取用户照片
+    getPersonPhoto() {
+      if (this.examineePersonInfo.photoUrl) {
+        this.$util.com_getFileStream(this.examineePersonInfo.photoUrl).then((res) => {
+          this.photoUrl = res;
+        });
+      }
+    },
     // 获取系统当前时间
     getSystemTime() {
       this.$store.dispatch("getSystemDate").then(
@@ -154,6 +163,7 @@ export default {
           if (res.code === 200) {
             this.examineePersonInfo = res.data.personInfo;
             this.setExamStatus(res.data.personExamInfo, loading);
+            this.getPersonPhoto();
           }
         },
         err => {
@@ -201,6 +211,8 @@ export default {
           }
           this.examineeData = examList;
         });
+      } else {
+        loading.close();
       }
     },
     // 根据当前时间设置考试状态
@@ -476,6 +488,10 @@ export default {
     .componey {
       font-size: 20px;
     }
+  }
+  .no-exam-data{
+    line-height: 120px;
+    text-align: center;
   }
 }
 .count-contain {

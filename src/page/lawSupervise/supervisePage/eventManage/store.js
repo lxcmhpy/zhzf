@@ -84,21 +84,19 @@ export default {
         }
         if(data.eventFileDataUp.length > 0) {
           data.eventFileDataUp.map(item => {
-            this.$refs.dialog.eventFileDataUp.push({
-              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
-              storageId: item.storageId,
-              name: item.name
-            })
+            this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
+                item.url = res
+                this.$refs.dialog.eventFileDataUp.push(item)
+            });
           })
         }
         if(data.eventFileDataDown.length > 0) {
-          data.eventFileDataDown.map(item => {
-            this.$refs.dialog.eventFileDataDown.push({
-              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
-              storageId: item.storageId,
-              name: item.name
+            data.eventFileDataDown.map(item => {
+                this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
+                    item.url = res
+                    this.$refs.dialog.eventFileDataDown.push(item)
+                });
             })
-          })
         }
       })
     },

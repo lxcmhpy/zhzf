@@ -63,7 +63,8 @@
         <el-table-column prop="checkItem" label="抽查事项名称" align="center"></el-table-column>
         <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
         <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
-        <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
+        <!-- <el-table-column prop="checkType" label="抽查内容" align="center"></el-table-column> -->
+        <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
         <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -100,32 +101,62 @@
     <div class="paginationBox">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
     </div>
-    <el-dialog :title='dialogStatus+"省厅检查事项"' :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+    <el-dialog :title='dialogStatus+"省交通厅领域检查事项"' :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
       <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="抽查主体" prop="checkSubject">
-              <el-select v-model="addForm.checkSubject" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            <el-form-item label="抽查事项" prop="checkItem">
+              <el-select v-model="addForm.checkItem" placeholder="请选择" @change="changeCheckType(addForm.checkItem,'省交通运输厅领域')">
+                <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="抽查方式" prop="checkMode">
+            <el-form-item label="抽查类别" prop="checkType">
+              <el-select v-model="addForm.checkType" placeholder="请选择">
+                <el-option v-for="item in optionsCCLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="事项类别" prop="itemType">
+              <el-select v-model="addForm.itemType" placeholder="请选择">
+                <el-option v-for="item in optionsSXLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="检查对象" prop="checkObject">
+              <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
+              <el-select v-model="addForm.checkObject" placeholder="请选择">
+                <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="检查方式" prop="checkMode">
               <el-select v-model="addForm.checkMode" placeholder="请选择">
                 <el-option v-for="item in optionsCCFS" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="检查主体" prop="checkSubject">
+              <el-select v-model="addForm.checkSubject" placeholder="请选择">
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-form-item label="抽查事项名称" prop="checkItem">
-          <el-input type="textarea" v-model="addForm.checkItem"></el-input>
-        </el-form-item>
-        <el-form-item label="抽查依据" prop="checkBasis">
+        <el-form-item label="检查依据" prop="checkBasis">
           <el-input type="textarea" v-model="addForm.checkBasis"></el-input>
         </el-form-item>
-        <el-form-item label="抽查内容" prop="checkContent">
-          <el-input type="textarea" v-model="addForm.checkContent"></el-input>
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" v-model="addForm.remark"></el-input>
         </el-form-item>
         <el-form-item prop="status">
           <el-radio-group v-model="addForm.status">
@@ -139,18 +170,18 @@
         <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title='dialogStatus2+"市场领域检查事项"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
+    <el-dialog :title='dialogStatus2+"市场领域检查事项"' :close-on-click-modal="false" :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')">
       <el-form :model="addForm2" :label-width="formLabelWidth" :rules="rules2" ref="addForm2">
         <el-row>
           <el-col :span="12">
             <el-form-item label="抽查类别" prop="checkType">
-              <el-select v-model="addForm2.checkType" placeholder="请选择">
+              <el-select v-model="addForm2.checkType" placeholder="请选择" @change="changeCheckType(addForm2.checkType,'省市场监管领域')">
                 <el-option v-for="item in optionsCCLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="抽查事项" prop="checkSubject">
+            <el-form-item label="抽查事项" prop="checkItem">
               <el-select v-model="addForm2.checkItem" placeholder="请选择">
                 <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
@@ -169,7 +200,7 @@
             <el-form-item label="检查对象" prop="checkObject">
               <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
               <el-select v-model="addForm2.checkObject" placeholder="请选择">
-                <el-option v-for="item in optionsJCDX" :key="item" :label="item" :value="item"></el-option>
+                <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -204,14 +235,14 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm2('addForm2')">确 定</el-button>
+        <el-button @click="dialogFormVisible2 = false">取消</el-button>
+        <el-button type="primary" @click="submitForm2('addForm2')">确定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, getAllCheckObject, delRandomItemApi, importItemExcelApi } from "@/api/inspection";
+import { addItemListApi, getAllRandomItemApi, getDictListDetailByNameApi, getAllCheckObject, delRandomItemApi, importItemExcelApi, getIsRandomNameApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
@@ -230,6 +261,8 @@ export default {
       addForm: {
         checkSubject: '',
         checkMode: '',
+        checkType:'',
+        checkObject:'',
         checkBasis: '',
         checkItem: '',
         checkContent: '',
@@ -245,57 +278,58 @@ export default {
         itemType: '',
         checkType: '',
         status: '启用',
+        remark: ''
       },
       dialogStatus: '',
       dialogStatus2: '',
       formLabelWidth: '120px',
       rules: {
         checkSubject: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkMode: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkBasis: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkItem: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         status: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkContent: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ]
       },
       rules2: {
         checkSubject: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkMode: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
-        checkBasis:[
-          { required: true, message: "必填项", trigger: "change"}
+        checkBasis: [
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkItem: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         status: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkContent: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkObject: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         itemType: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
         checkType: [
-          { required: true, message: "必填项", trigger: "change"}
+          { required: true, message: "必填项", trigger: "change" }
         ],
       },
       optionsCCZT: [],
@@ -304,6 +338,7 @@ export default {
       optionsJCDX: [],
       optionsCCLB: [],
       optionsCCSX: [],
+      optionsCCSXMC: [],
     }
   },
   methods: {
@@ -352,6 +387,8 @@ export default {
                 this.dialogFormVisible = false
                 this.currentPage = 1;
                 this.getTableData()
+              } else {
+                this.$message({ type: "error", message: err.msg || '' });
               }
             },
             error => {
@@ -377,6 +414,8 @@ export default {
                 this.dialogFormVisible2 = false
                 this.currentPage = 1;
                 this.getTableData()
+              } else {
+                this.$message({ type: "error", message: err.msg || '' });
               }
             },
             error => {
@@ -439,6 +478,8 @@ export default {
               case 3: _this.optionsCCZT = res.data; break;//抽查主体
               case 4: _this.optionsCCLB = res.data; break;//抽查类别
               case 5: _this.optionsCCSX = res.data; break;//抽查事项
+              case 6: _this.optionsCCSXMC = res.data; break;//抽查事项名称
+              case 7: _this.optionsJCDX = res.data; break;//检查对象
             }
           },
           error => {
@@ -446,23 +487,46 @@ export default {
           })
       });
     },
-    getAllCheckObject(){
-      getAllCheckObject().then(res=>{
-        if(res.code==200){
-          this.optionsJCDX=res.data;
+    getAllCheckObjects() {
+      getAllCheckObject().then(res => {
+        if (res.code == 200) {
+          this.optionsJCDX = res.data;
         }
       })
+    },
+    changeCheckType(taskName, checkDomain) {
+      let _this = this
+      let data = {
+        taskName: taskName,
+        checkDomain: checkDomain
+      }
+      getIsRandomNameApi(data).then(
+        res => {
+          if (res.code == 200 && res.data == false) {
+
+          } else {
+            this.$message({ type: "error", message: '请先停用重名选项后再选择！' });
+            _this.addForm.checkItem = ''
+            _this.addForm2.checkType = ''
+          }
+
+        },
+        error => {
+          // reject(error);
+        })
     }
   },
   mounted() {
     this.getTableData()
-    this.getAllCheckObject();
+    this.getAllCheckObjects();
     // 获取抽屉
     this.getDrawerList([{ name: '事项类别', option: 1 },
     { name: '抽查方式', option: 2 },
     { name: '抽查主体', option: 3 },
     { name: '抽查类别', option: 4 },
     { name: '抽查事项', option: 5 },
+    { name: '抽查事项名称', option: 6 },
+    { name: '检查对象', option: 7 },
     ])
   }
 }

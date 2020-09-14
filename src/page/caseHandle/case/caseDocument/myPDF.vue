@@ -28,7 +28,7 @@
   import {mapGetters} from "vuex";
 
   import {
-    updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,
+    updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,getDocDetailByIdApi,
   } from "@/api/caseHandle";
   import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 
@@ -163,27 +163,63 @@
       },
 
       //获取当前是几级审批
-      findCurrentApproval(){
+      async findCurrentApproval(){
         if(this.storagePath.length == 0){
           this.$messageOne.info({showClose: true, message: '未获取到PDF文件！'})
           return;
         }
         console.log('文书数据idthis.docDataId',this.docDataId)
-        getCurrentApproveApi(this.docDataId).then(res=>{
-          console.log('几级审批',res);
-          let caseData={
+
+        //获取文书的审批意见时间
+        let docDataRes= await getDocDetailByIdApi(this.docDataId);
+        console.log('docDataRes',docDataRes);
+        let currentDocData = JSON.parse(docDataRes.data.docData);
+        console.log('currentDocData',currentDocData)
+        let oldApprovalOpion,oldApprovalTime = '';
+
+        let currentApproveRes = await getCurrentApproveApi(this.docDataId);
+        console.log('几级审批',currentApproveRes);
+        // if(currentApproveRes.data.currentIndex == 1){  //一级审批
+        //     if(currentDocData.approveOpinions) {
+        //       oldApprovalOpion = currentDocData.approveOpinions;
+        //       oldApprovalTime = currentDocData.approveTime;
+        //     }
+        // }else if(currentApproveRes.data.currentIndex == 2){
+        //     if(currentDocData.secondApproveOpinions) {
+        //       oldApprovalOpion = currentDocData.secondApproveOpinions;
+        //       oldApprovalTime = currentDocData.secondApproveTime;
+        //     }
+        // }else if(currentApproveRes.data.currentIndex == 3){
+        //     if(currentDocData.thirdApproveOpinions) {
+        //       oldApprovalOpion = currentDocData.thirdApproveOpinions;
+        //       oldApprovalTime = currentDocData.thirdApproveTime;
+        //     }
+        // }
+
+        let caseData={
             caseId:this.caseId,
-            currentApproval:res.data.currentIndex, //当前是几级审批
-            approvalNumber:res.data.amount   //共几级审批
-          }
-          this.$refs.approvalDialogRef.showModal(caseData);
-        }).catch(err=>{console.log(err)})
+            currentApproval:currentApproveRes.data.currentIndex, //当前是几级审批
+            approvalNumber:currentApproveRes.data.amount ,  //共几级审批
+            oldApprovalOpion:oldApprovalOpion, //环节回退或修改文书之后自动带入旧的审批
+            oldApprovalTime:oldApprovalOpion
+        }
+        this.$refs.approvalDialogRef.showModal(caseData);
+
+        // getCurrentApproveApi(this.docDataId).then(res=>{
+        //   console.log('几级审批',res);
+        //   let caseData={
+        //     caseId:this.caseId,
+        //     currentApproval:res.data.currentIndex, //当前是几级审批
+        //     approvalNumber:res.data.amount   //共几级审批
+        //   }
+        //   this.$refs.approvalDialogRef.showModal(caseData);
+        // }).catch(err=>{console.log(err)})
       },
       //根据stroagId请求文件流
       getFileStream(storageId){
         //设置地址
         this.$store.commit("setDocPdfStorageId", storageId);
-        getFileStreamByStorageIdApi(storageId).then(res=>{
+        getFileStreamByStorageIdApi(storageId).then(res=>{ 
         // getFileStreamByStorageIdApi('12,13ac7d04e13f').then(res=>{
 
           console.log(res);

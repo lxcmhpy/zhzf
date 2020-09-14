@@ -16,5 +16,5 @@ selenium-debug.log
 *.zip
 *.rar
 dist/*
-*.json
 package-lock.json
+report.*.*.*.*.*.json

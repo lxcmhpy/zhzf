@@ -101,10 +101,10 @@
       :visible.sync="detailVisible"
       @close="detailVisible = false"
       :close-on-click-modal="false"
-      width="40%"
+      width="45%"
       class="detail-dialog"
     >
-      <el-form ref="form" :model="form" label-width="80px">
+      <!-- <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="法规标题">{{form.strName}}</el-form-item>
         <el-form-item label="发布文号">{{form.strNumber}}</el-form-item>
         <el-form-item label="发布机关">{{form.strOrgan}}</el-form-item>
@@ -115,7 +115,52 @@
         <el-form-item label="实施时间">{{form.shiDate}}</el-form-item>
         <el-form-item label="时效性">{{form.status===0?"有效":"1无效"}}</el-form-item>
         <el-form-item label="题注">{{form.strNote}}</el-form-item>
-      </el-form>
+      </el-form>-->
+      <div style="height:400px;overflow: auto;">
+        <table class="table" width="100%" cellspacing="0">
+          <tr>
+            <td width="15%" class="title">法规标题</td>
+            <td width="35%">{{form.strName}}</td>
+          </tr>
+          <tr>
+            <td class="title">发布文号</td>
+            <td>{{form.strNumber}}</td>
+          </tr>
+          <tr>
+            <td class="title">发布机关</td>
+            <td>{{form.strOrgan}}</td>
+          </tr>
+          <tr>
+            <td class="title">法规效力</td>
+            <td>{{form.drawerName}}</td>
+          </tr>
+          <tr>
+            <td class="title">网站链接</td>
+            <td>{{form.webLink}}</td>
+            <!-- <td><a :href="form.webLink" target="_blank">{{form.webLink}}</a></td> -->
+          </tr>
+          <tr>
+            <td class="title">行业类型</td>
+            <td>{{form.industryType}}</td>
+          </tr>
+          <tr>
+            <td class="title">发布时间</td>
+            <td>{{form.dtmDate}}</td>
+          </tr>
+          <tr>
+            <td class="title">实施时间</td>
+            <td>{{form.shiDate}}</td>
+          </tr>
+          <tr>
+            <td class="title">时效性</td>
+            <td>{{form.status===0?"有效":"1无效"}}</td>
+          </tr>
+          <tr>
+            <td class="title">题注</td>
+            <td>{{form.strNote}}</td>
+          </tr>
+        </table>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="detailVisible = false">关闭</el-button>
       </span>
@@ -241,6 +286,7 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.load();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -322,8 +368,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = update(data);
+      let res = await update(data);
       this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     onApproveBatch() {
       if (this.multipleSelection.length < 1) {
@@ -377,6 +424,25 @@ export default {
 .images-management {
   .detail-dialog .el-form-item {
     margin-bottom: 0px;
+  }
+  .detail-dialog {
+    .table {
+      border: 1px solid #ecebeb;
+      min-height: 30px;
+      line-height: 30px;
+      text-align: left;
+      border-collapse: collapse;
+      padding: 2px;
+    }
+    .table tr th,
+    .table tr td {
+      border: 1px solid #ecebeb;
+      padding: 10px;
+    }
+    .table .title {
+      font-weight: bold;
+      background: #f8f6f6;
+    }
   }
 }
 </style>

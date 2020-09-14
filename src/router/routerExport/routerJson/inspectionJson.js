@@ -210,6 +210,16 @@ export default  [
                 },
                 component: () => import("@/page/inspection/roadAndPolice/imageMange.vue")
             },
+            {
+                // 文书-列表
+                path: "/inspectionRAPFiles/id=:id",
+                name: "inspection_inspectionRAPFiles",
+                meta: {
+                title: "记录文书列表",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/roadAndPolice/compoment/fileList.vue")
+            },
             // 路警联合----end----------------------------------------------------------------------------------------------
             // 勤务管理--排班管理
             {
@@ -280,7 +290,18 @@ export default  [
                 oneTab: true,
                 },
                 component: () => import("@/page/inspection/dutyManage/components/recordDetail.vue")
-            }
+            },
+
+            // 记录管理--添加记录
+            {
+                path: "/serialManage",
+                name: "serial-manage",
+                meta: {
+                title: "日志管理",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/serial-number/serialManage.vue")
+            },
         ]
     }, 
 ]

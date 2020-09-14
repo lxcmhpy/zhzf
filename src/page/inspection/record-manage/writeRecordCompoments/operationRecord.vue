@@ -8,12 +8,13 @@
         </div>
       </template>
       <div class="userList a">
-        <el-checkbox-group v-model="checkedDocId">
+        暂未开发
+        <!-- <el-checkbox-group v-model="checkedDocId">
           <el-checkbox v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
             <span class="name">{{index + 1}}</span>
             <span class="name">{{item.docName}}</span>
           </el-checkbox>
-        </el-checkbox-group>
+        </el-checkbox-group> -->
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>

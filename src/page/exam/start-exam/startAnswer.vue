@@ -23,7 +23,7 @@
               <!-- <span class="count-down">{{ countTime.minutes }}</span>
               <span class="count-unit" style="margin-right:8px;">分</span>
               <span class="count-down">{{ countTime.second }}</span>
-              <span class="count-unit">秒</span> -->
+              <span class="count-unit">秒</span>-->
               <span class="count-down">{{ countTime.minutes }}:{{ countTime.second }}</span>
             </div>
           </div>
@@ -72,7 +72,7 @@
               <div class="examinee-photo">
                 <img
                   v-if="examPerInfo.personInfo.photoUrl"
-                  :src="baseUrl + examPerInfo.personInfo.photoUrl"
+                  :src="photoUrl"
                   width="100px"
                   height="140px"
                 />
@@ -149,7 +149,7 @@ export default {
       marked: false,
       countTime: {
         minutes: "",
-        second: ""
+        second: "",
       },
       questionNumList: [],
       intervalTime: null,
@@ -159,49 +159,58 @@ export default {
       currentGraph: {},
       questionFontSize: 16,
       fontSizeClone: 16,
-      disabledHandPaper: false
+      disabledHandPaper: false,
+      photoUrl: "",
     };
   },
   computed: {
     examPerInfo() {
       return JSON.parse(sessionStorage.getItem("ExamUserInfo"));
     },
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
   created() {
     this.getSystemTime();
     this.getQuestionInfo();
+    this.getPersonPhoto();
   },
   methods: {
+    // 获取用户照片
+    getPersonPhoto() {
+      if (this.examPerInfo.personInfo.photoUrl) {
+        this.$util.com_getFileStream(this.examPerInfo.personInfo.photoUrl).then((res) => {
+          this.photoUrl = res;
+        });
+      }
+    },
     // 控制字体大小
-    reduceFontsize(){
+    reduceFontsize() {
       this.questionFontSize -= 1;
-      this.questionFontSize = this.questionFontSize < 16 ? 16 : this.questionFontSize;
+      this.questionFontSize =
+        this.questionFontSize < 16 ? 16 : this.questionFontSize;
       this.fontSizeClone = this.questionFontSize - 0;
     },
-    addFontsize(){
+    addFontsize() {
       this.questionFontSize += 1;
-      this.questionFontSize = this.questionFontSize - 0 > 30 ? 30 : this.questionFontSize;
+      this.questionFontSize =
+        this.questionFontSize - 0 > 30 ? 30 : this.questionFontSize;
       this.fontSizeClone = this.questionFontSize - 0;
     },
-    fontSizeFocus(){
+    fontSizeFocus() {
       this.fontSizeClone = this.questionFontSize - 0;
     },
-    setFontSize(){
+    setFontSize() {
       const currentVal = this.questionFontSize - 0;
-      if(typeof currentVal !== 'number' || isNaN(currentVal)){
+      if (typeof currentVal !== "number" || isNaN(currentVal)) {
         this.questionFontSize = this.fontSizeClone;
-      }else{
+      } else {
         this.questionFontSize = Math.round(this.questionFontSize);
         this.fontSizeClone = this.questionFontSize;
       }
-      if(this.questionFontSize > 32){
+      if (this.questionFontSize > 32) {
         this.questionFontSize = 32;
         this.fontSizeClone = 32;
       }
-      if(this.questionFontSize < 16){
+      if (this.questionFontSize < 16) {
         this.questionFontSize = 16;
         this.fontSizeClone = 16;
       }
@@ -209,13 +218,13 @@ export default {
     // 获取系统当前时间
     getSystemTime() {
       this.$store.dispatch("getSystemDate").then(
-        res => {
+        (res) => {
           if (res) {
             this.currentSysTime = res;
             this.startCountDown(res);
           }
         },
-        err => {
+        (err) => {
           console.log(err);
         }
       );
@@ -224,17 +233,17 @@ export default {
     getQuestionInfo() {
       const examInfo = {
         examperId: this.$route.query.pId,
-        examId: this.$route.query.eId
+        examId: this.$route.query.eId,
       };
       const loading = this.$loading({
         lock: true,
         text: "正在获取题目",
         spinner: "car-loading",
         customClass: "loading-box",
-        background: "rgba(234,237,244, 0.8)"
+        background: "rgba(234,237,244, 0.8)",
       });
       this.$store.dispatch("startQuestion", examInfo).then(
-        res => {
+        (res) => {
           loading.close();
           if (res.code === 200 && res.data.firstQuestion) {
             this.questionData = res.data;
@@ -246,11 +255,11 @@ export default {
             this.$message({ type: "error", message: "获取题目失败" });
           }
         },
-        err => {
+        (err) => {
           loading.close();
           this.$alert(err.msg || "获取题目失败", "提示", {
             confirmButtonText: "确定",
-            customClass: "custom-confirm"
+            customClass: "custom-confirm",
           })
             .then(() => {
               this.logoutSystem();
@@ -264,7 +273,7 @@ export default {
     // 右侧试题分类统计
     setAllQuestionNum(graph) {
       if (graph && graph.length) {
-        graph.forEach(item => {
+        graph.forEach((item) => {
           if (item.examResultList && item.examResultList.length) {
             this.questionNumList = this.questionNumList.concat(
               item.examResultList
@@ -285,7 +294,10 @@ export default {
       let endTime = new Date(this.examPerInfo.examInfo.examEnd).getTime();
       // 限制交卷时间内我要交卷按钮禁止点击
       let limitTime = 0;
-      if(this.examPerInfo.examInfo.timeLimit && this.examPerInfo.examInfo.timeLimit > 0){
+      if (
+        this.examPerInfo.examInfo.timeLimit &&
+        this.examPerInfo.examInfo.timeLimit > 0
+      ) {
         limitTime = this.examPerInfo.examInfo.timeLimit * 60 * 1000;
       }
       let diffTime = endTime - newTime;
@@ -301,10 +313,12 @@ export default {
         // 获取当前时间，考试结束时间
         let newTime = this.currentSysTime;
         // 限制交卷时间内禁止点击我要交卷
-        if(limitTime && !this.disabledHandPaper){
-            let examBegin = new Date(this.examPerInfo.examInfo.examBegin.replace(/-/g,"/")).getTime();
-            let examTimeLen = newTime - examBegin;
-            this.disabledHandPaper = examTimeLen - limitTime > 0;
+        if (limitTime && !this.disabledHandPaper) {
+          let examBegin = new Date(
+            this.examPerInfo.examInfo.examBegin.replace(/-/g, "/")
+          ).getTime();
+          let examTimeLen = newTime - examBegin;
+          this.disabledHandPaper = examTimeLen - limitTime > 0;
         }
         // 对结束时间进行处理渲染到页面
         let endTime = new Date(examEnd).getTime();
@@ -315,7 +329,7 @@ export default {
             confirmButtonText: "确定",
             iconClass: "custom-remind",
             customClass: "custom-confirm",
-            showCancelButton: false
+            showCancelButton: false,
           })
             .then(() => {
               this.logoutSystem();
@@ -377,10 +391,10 @@ export default {
         text: "正在获取题目",
         spinner: "car-loading",
         customClass: "loading-box",
-        background: "rgba(234,237,244, 0.8)"
+        background: "rgba(234,237,244, 0.8)",
       });
       this.$store.dispatch("getpersonExamQuestionNext", answer).then(
-        res => {
+        (res) => {
           loading.close();
           if (res.code === 200) {
             this.$refs.questionItem.clearAnswer();
@@ -402,7 +416,7 @@ export default {
             }
           }
         },
-        err => {
+        (err) => {
           loading.close();
           // this.$message({ type: "error", message: err.msg || "" });
           this.quitExam(err.msg);
@@ -420,7 +434,7 @@ export default {
       const personAnswer = [];
       const optionId = [];
       if (answer.listPo && answer.listPo.length) {
-        answer.listPo.forEach(item => {
+        answer.listPo.forEach((item) => {
           if (item.optionKey === "1") {
             personAnswer.push(item.optionNum);
             optionId.push(item.pqOptionId);
@@ -435,17 +449,18 @@ export default {
     // 我要交卷
     handPaper() {
       const answered = this.questionNumList.filter(
-        item => item.answer && item.answer.length
+        (item) => item.answer && item.answer.length
       );
       this.$confirm(
-        `已答${answered.length}道题，还有${this.questionNumList.length -
-          answered.length}道未答，您确认交卷吗？`,
+        `已答${answered.length}道题，还有${
+          this.questionNumList.length - answered.length
+        }道未答，您确认交卷吗？`,
         "提示",
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           iconClass: "custom-question",
-          customClass: "custom-confirm"
+          customClass: "custom-confirm",
         }
       )
         .then(() => {
@@ -454,12 +469,12 @@ export default {
             text: "正在交卷",
             spinner: "car-loading",
             customClass: "loading-box",
-            background: "rgba(234,237,244, 0.8)"
+            background: "rgba(234,237,244, 0.8)",
           });
           const answer = this.handleSubmitData();
           answer.preOrNext = `${this.currentGraph.orderNo},${this.currentGraph.orderNo}`;
           this.$store.dispatch("getpersonExamQuestionNext", answer).then(
-            res => {
+            (res) => {
               if (res.code === 200) {
                 if (answer.orderNo === this.questionNumList.length) {
                   this.nextDisabled = true;
@@ -469,7 +484,7 @@ export default {
                 loading.close();
               }
             },
-            err => {
+            (err) => {
               loading.close();
               // this.$message({ type: "error", message: err.msg || "" });
               this.quitExam(err.msg);
@@ -482,20 +497,20 @@ export default {
     savePaper(loading) {
       const submitData = {
         examperId: this.$route.query.pId,
-        examId: this.$route.query.eId
+        examId: this.$route.query.eId,
       };
       this.$store.dispatch("getexamResultSubmit", submitData).then(
-        res => {
+        (res) => {
           loading.close();
           this.quitExam("交卷成功，您的得分是", res.data.data);
         },
-        err => {
+        (err) => {
           loading.close();
           this.$confirm("提交失败，请稍后再试！", "提示", {
             confirmButtonText: "确定",
             iconClass: "custom-question",
             customClass: "custom-confirm",
-            showCancelButton: false
+            showCancelButton: false,
           }).catch(() => {});
         }
       );
@@ -503,16 +518,16 @@ export default {
     // 获取题目失败或被强制收卷跳转页面
     quitExam(msg, score) {
       let messageHtml = msg;
-      if(score !== undefined){
-        messageHtml =  `<div style="text-align:center;"><p style="font-weight:560;">${msg}</p>
+      if (score !== undefined) {
+        messageHtml = `<div style="text-align:center;"><p style="font-weight:560;">${msg}</p>
           <p style="font-size: 58px;font-weight:600;;color:#17C062; margin-top:30px;">${score}</p></div>`;
       }
       this.$confirm(messageHtml, "提示", {
         confirmButtonText: "确定",
-        iconClass: score !== undefined ? '' : "iconfont law-success",
+        iconClass: score !== undefined ? "" : "iconfont law-success",
         customClass: "custom-confirm",
         showCancelButton: false,
-        dangerouslyUseHTMLString: true
+        dangerouslyUseHTMLString: true,
       })
         .then(() => {
           sessionStorage.removeItem("ExamUserInfo");
@@ -520,8 +535,8 @@ export default {
           this.$router.push({
             path: "/examineeEntry",
             query: {
-              name: sessionStorage.getItem("ExamName")
-            }
+              name: sessionStorage.getItem("ExamName"),
+            },
           });
         })
         .catch(() => {});
@@ -538,20 +553,20 @@ export default {
       this.$store
         .dispatch("signOutSystem", sessionStorage.getItem("ExamName"))
         .then(
-          res => {
+          (res) => {
             this.$router.push("/examLogin");
           },
-          err => {
+          (err) => {
             this.$message({ type: "error", message: err.msg || "" });
             this.$router.push("/examLogin");
           }
         );
-    }
+    },
   },
   mounted() {},
   destroyed() {
     clearInterval(this.intervalTime);
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -703,9 +718,9 @@ export default {
             width: 100%;
             height: 58px;
             font-size: 18px;
-            &.is-disabled{
-              background: #DCDFE6;
-              border: 1px solid #DCDFE6;
+            &.is-disabled {
+              background: #dcdfe6;
+              border: 1px solid #dcdfe6;
             }
           }
         }
@@ -735,7 +750,7 @@ export default {
               height: 30px;
               line-height: 30px;
               font-size: 16px;
-              color: #FA8000;
+              color: #fa8000;
               font-weight: bold;
               // background: rgba(247, 158, 15, 1);
               // box-shadow: 0px 1px 3px 0px rgba(101, 70, 20, 0.2);
@@ -743,21 +758,21 @@ export default {
               // margin-right: 8px;
             }
           }
-          .set-font-panel{
+          .set-font-panel {
             display: inline-block;
             margin-left: 20px;
-            >>>.el-input-group__prepend,
-            >>>.el-input-group__append{
+            >>> .el-input-group__prepend,
+            >>> .el-input-group__append {
               padding: 0 16px;
               cursor: pointer;
-              color: #7B7B7B;
+              color: #7b7b7b;
               font-size: 16px;
               outline: none;
-              &:hover{
-                background: #F9F9F9;
+              &:hover {
+                background: #f9f9f9;
               }
             }
-            >>>.el-input__inner{
+            >>> .el-input__inner {
               width: 60px;
               text-align: center;
             }

@@ -82,7 +82,7 @@
                   <el-col :span="4">
                     <el-image
                       class="course-cover-img"
-                      :src="scope.row.lessonPic ? baseUrl + scope.row.lessonPic : ''"
+                      :src="scope.row.lessonPic"
                     >
                       <div slot="error" class="image-slot">
                         <i class="el-icon-picture-outline"></i>
@@ -184,11 +184,7 @@ export default {
     };
   },
   components: { addCourse, coursewareManage, coursewarePreview },
-  computed: {
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed: {},
   created(){
     this.getCourseList();
   },
@@ -334,6 +330,9 @@ export default {
             this.tableData = res.data.records;
             this.totalPage = res.data.total;
             this.tableLoading = false;
+            this.tableData.forEach((item, index) => {
+              this.createImageUrl(item.lessonPic, index);
+            })
           }
         },
         err => {
@@ -341,6 +340,12 @@ export default {
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
+    },
+    // 获取图片文件流
+    createImageUrl(id, index){
+      this.$util.com_getFileStream(id).then( res => {
+        this.tableData[index].lessonPic = res;
+      });
     },
     // 删除课程
     deleteCourse() {

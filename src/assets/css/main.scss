@@ -12,7 +12,7 @@
     background:#20232B;
     width: 100%;
     top: 60px;
-    z-index: 5;
+    z-index: 11;
     padding: 7px 0 37px ;
     box-sizing: border-box;
   }
@@ -879,5 +879,19 @@ textarea{
   .el-checkbox-button, .el-checkbox-button__inner{
     width: 100%;
     margin-top: 10px;
+  }
+}
+.notice-icon-list{
+  width: 530px;
+  li{
+    width: 30%;
+    height: 100px;
+    float: left;
+    text-align: center;
+    display: inline-block;
+    line-height: 36px;
+    i{
+      font-size: 36px;
+    }
   }
 }

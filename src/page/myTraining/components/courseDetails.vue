@@ -6,7 +6,7 @@
           <el-row>
             <el-col :span="18">
               <div class="user-info">
-                <el-image :src="baseUrl +  lessonData.lessonPic" class="course-cover">
+                <el-image :src="lessonData.lessonPic" class="course-cover">
                   <el-image slot="error" :src="lessonDefaultPic"></el-image>
                 </el-image>
                 <div class="user-work">
@@ -129,9 +129,6 @@ export default {
     UserInfo() {
       return iLocalStroage.gets("userInfo");
     },
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
   created() {
     this.getCourserInfo();
@@ -155,6 +152,11 @@ export default {
           loading.close();
           if (res.code === 200) {
             this.lessonData = res.data.data;
+            if(this.lessonData.lessonPic){
+              this.$util.com_getFileStream(this.lessonData.lessonPic).then( res => {
+                this.lessonData.lessonPic = res;
+              });
+            }
             this.setCourseData(res.data.data.listVo);
           }
         },

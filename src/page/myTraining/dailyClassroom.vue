@@ -96,9 +96,6 @@ export default {
     UserInfo() {
       return iLocalStroage.gets("userInfo");
     },
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
   created(){
     this.getDailyLesson();
@@ -121,7 +118,9 @@ export default {
             this.totalPage = res.data.data.total;
             this.tableData.forEach(item => {
               if(item.lessonPic){
-                item.lessonPic = this.baseUrl + item.lessonPic;
+                this.$util.com_getFileStream(item.lessonPic).then( res => {
+                  item.lessonPic = res;
+                });
               }
             });
           }

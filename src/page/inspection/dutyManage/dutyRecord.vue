@@ -8,16 +8,24 @@
               <el-row>
                 <el-form-item label="检查门类" prop="checkCategory">
                   <el-select v-model="searchForm.checkCategory" placeholder="请选择">
-                    <el-option label="全部" value="全部"></el-option>
-                    <el-option label="路巡" value="1"></el-option>
-                    <el-option label="网巡" value="2"></el-option>
+                    <el-option label="全部" value=""></el-option>
+                    <el-option
+                      v-for="item in checkCategoryList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="检查类型" prop="checkType">
                   <el-select v-model="searchForm.checkType" placeholder="请选择">
                     <el-option label="全部" value="全部"></el-option>
-                    <el-option label="路巡" value="1"></el-option>
-                    <el-option label="网巡" value="2"></el-option>
+                    <el-option
+                      v-for="item in checkTypeList"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="是否立案" prop="registerCase">
@@ -66,6 +74,7 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    @change="checkTimeChange"
                   ></el-date-picker>
                 </el-form-item>
               </el-row>
@@ -94,27 +103,37 @@
           @selection-change="selectJournal"
         >
           <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-          <el-table-column prop="journalNo" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
-          <el-table-column prop="checkType" label="检查类型" align="left" width="100px"></el-table-column>
-          <el-table-column prop="checkCategory" label="检查门类" align="left" width="100px"></el-table-column>
-          <el-table-column prop="inspectionTime" label="巡查时间" align="center" width="140px"></el-table-column>
-          <el-table-column prop="companyName" label="单位名称" align="center" min-width="200px"></el-table-column>
-          <el-table-column prop="routeName" label="路段名称" align="center" min-width="180px"></el-table-column>
-          <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px"></el-table-column>
-          <el-table-column prop="routeSituation" label="路段情况" align="center" width="100px">
+          <el-table-column prop="recordNum" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
+          <el-table-column prop="checkTypeName" label="检查类型" align="left" width="100px"></el-table-column>
+          <el-table-column prop="checkCategoryName" label="检查门类" align="left" width="100px"></el-table-column>
+          <el-table-column prop="inspectionTime" label="巡查时间" align="center" width="220px">
+            <template slot-scope="scope" class="person-table-onerow">
+              <div >{{scope.row.checkStartTime}}</div>
+              <div >{{scope.row.checkEndTime}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="oname" label="单位名称" align="center" min-width="200px"></el-table-column>
+          <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
+          <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px">
+            <template slot-scope="scope">
+              <div >K{{scope.row.startKilometer}}+{{scope.row.startMeter}}m</div>
+              <div >K{{scope.row.endKilometer}}+{{scope.row.endMeter}}m</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="roadCondition" label="路段情况" align="center" width="100px">
             <template slot-scope="scope">
               <span
-                v-if="scope.row.routeSituation === '正常'"
+                v-if="scope.row.roadCondition === '1'"
                 style="color: #05C051;"
-              >{{scope.row.routeSituation}}</span>
+              >正常</span>
               <span
-                v-else-if="scope.row.routeSituation === '异常'"
+                v-else-if="scope.row.roadCondition === '2'"
                 style="color: #E84241;"
-              >{{scope.row.routeSituation}}</span>
+              >异常</span>
               <span v-else>{{scope.row.routeSituation}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="lawPerson" label="执法人员" align="center" min-width="160px"></el-table-column>
+          <el-table-column prop="personIds" label="执法人员" align="center" min-width="160px"></el-table-column>
           <el-table-column prop="isFilingCase" label="是否立案" align="center" width="100px">
             <template slot-scope="scope">
               <span v-if="scope.row.isFilingCase === '0'">否</span>
@@ -137,7 +156,7 @@
           background
           :page-sizes="[10, 20, 30, 40, 50]"
           layout="prev, pager, next,sizes,jumper"
-          :total="totalPage"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
@@ -145,60 +164,64 @@
 </template>
 <script>
 
+import { getCheRecordPageListApi, deleteCheRecordByIdsApi } from '@/api/supervision';
+import { getDictListDetailByNameApi } from '@/api/system';
+
 export default {
   data() {
     return {
       isShow: false,
       searchForm: {},
-      tableData: [
-        {
-          journalNo: "111111111",
-          checkType: "安全检查",
-          checkCategory: "公路巡查",
-          inspectionTime: "2020-03-15 09:30 2020-03-15 16:49",
-          companyName: "北京市交通运输管理局",
-          routeName: "S210 红砖厂路",
-          routeInfo: "K100+50m至K100+55m",
-          routeSituation: "正常",
-          lawPerson: "付明超;刘传敏;李小宇",
-          isFilingCase: "0",
-        },
-        {
-          journalNo: "22222222",
-          checkType: "日常巡查",
-          checkCategory: "服务区巡查",
-          inspectionTime: "2020-03-15 09:30 2020-03-15 16:49",
-          companyName: "北京市交通运输管理局",
-          routeName: "S120  樱花路",
-          routeInfo: "K130+105m至K130+115m",
-          routeSituation: "异常",
-          lawPerson: "付明超；张三",
-          isFilingCase: "1",
-        },
-      ],
+      tableData: [],
       selectList: [],
       tableLoading: false,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
-      totalPage: 0, //总页数
+      total: 0, //总数
+      checkCategoryList: [],//检查门类select
+      checkTypeList: []//检查类型select
     };
   },
   components: {  },
-  created() {},
+  created() {
+    this.getRecordList();
+    this.initCheckDictData();
+  },
   methods: {
-    // 获取日志列表
+    //获取巡查检查门类，检查类型
+    async initCheckDictData() {
+      const checkCategoryData = await getDictListDetailByNameApi('巡查-检查门类');
+      const checkTypeData = await getDictListDetailByNameApi('巡查-检查类型');
+      this.checkCategoryList = checkCategoryData.data;
+      this.checkTypeList = checkTypeData.data;
+    },
+    // 获取记录列表
     getRecordList() {
       const queryData = Object.assign(this.searchForm, {
         current: this.currentPage,
         size: this.pageSize,
       });
       console.log(queryData);
+      getCheRecordPageListApi(queryData).then(
+        (res) => {
+          if(res.code == 200){
+            this.tableData = res.data.records;
+            this.total = res.data.total;
+          }else{
+            this.$message({
+              type: "warning",
+              message: res
+            });
+          }
+        },
+        (err) => {}
+      );
     },
     // 新增
     addRecordFun() {
       this.$router.push({
         name: 'record_detail',
-        params: { page: 'add' }
+        params: { page: 'add', checkCategoryList: this.checkCategoryList, checkTypeList: this.checkTypeList }
       });
     },
     // 删除
@@ -213,7 +236,25 @@ export default {
           customClass: "custom-confirm",
         })
           .then(() => {
-            console.log("删除成功");
+            const ids = this.selectList.map(s => s.recordId);
+            deleteCheRecordByIdsApi({ids}).then(
+              res => {
+                if(res.code == 200){ 
+                  this.$message({
+                    type: "success",
+                    message: "删除成功！"
+                  });
+                  this.searchRecordList();
+                }else{
+                  this.$message({
+                    type: "warning",
+                    message: res
+                  });
+                }
+              },
+              err => {}
+            )
+            console.log("删除成功",selectIds);
           })
           .catch(() => {});
       }
@@ -235,6 +276,11 @@ export default {
     // 修改日志
     editJournalInfo(row) {
       console.log(row);
+      this.$router.push({
+        name: 'record_detail',
+        params: { page: 'edit', checkCategoryList: this.checkCategoryList, checkTypeList: this.checkTypeList, cheRecord: row }
+      });
+
     },
     searchRecordList() {
       this.currentPage = 1;
@@ -260,6 +306,10 @@ export default {
     selectJournal(val) {
       this.selectList = val;
     },
+    checkTimeChange(){
+      this.searchForm.checkStartTime = this.searchForm.checkTime[0];
+      this.searchForm.checkEndTime = this.searchForm.checkTime[1]
+    }
   },
 };
 </script>
@@ -283,6 +333,14 @@ export default {
   margin-right: 0;
 }
 .person-table {
+  &-onerow {
+    float: left;
+    >div {
+      overflow: hidden;/*超出部分隐藏*/
+      white-space: nowrap;/*不换行*/
+      text-overflow:ellipsis;/*超出部分文字以...显示*/
+    }
+  }
   >>> .el-table__body-wrapper {
     padding-bottom: 0;
   }

@@ -98,7 +98,7 @@
       <div class="paginationBox">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
       </div>
-      <el-dialog title='抽取' :visible.sync="dialogFormVisible" @close="resetForm()"  width="60%">
+      <el-dialog title='抽取' :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetForm()" width="60%">
         <el-row>
           <el-col :span="18">
             <div class="random-table-title" style="min-width:100px;height:30px">{{ randomContent }}</div>
@@ -132,7 +132,7 @@
           <el-button type="primary" @click="dialogFormVisible = false">关闭</el-button>
         </div>
       </el-dialog>
-      <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()"  width="60%">
+      <el-dialog title='抽取结果' :visible.sync="dialogResultVisible" @close="resetForm()" width="60%">
         <el-table :data="randomResultList" stripe style="width: 100%" height="100%">
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="legalPerson" label="法人名称" align="center"></el-table-column>
@@ -223,7 +223,8 @@ export default {
       isNameTrue: false,
       isPersonNameTrue: false,
       isObjectTrue: false,
-      isFinishFlag: false
+      isFinishFlag: false,
+      errorFlag: false
     }
   },
   methods: {
@@ -285,6 +286,14 @@ export default {
     },
     // 抽取效果开始
     startRandom() {
+      console.log(this.addForm)
+      if (this.addForm.personNum && this.addForm.objectNum) {
+        this.$message({
+          type: "error",
+          message: '请核对抽查对象数和抽查人员数均大于0,再进行抽取！'
+        });
+        return;
+      }
       let _this = this
       // 数据效果
       this.isRandomFlag = false
@@ -292,7 +301,7 @@ export default {
 
       console.log(this.addForm)
       let data = {
-        expertNum: this.addForm.expertNum,//	抽查专家数
+        expertNum: this.addForm.expertNum||0,//	抽查专家数
         objectNum: this.addForm.checkObjectNum,//抽查对象数
         organName: iLocalStroage.gets("userInfo").organName,//机构名称
         personNum: this.addForm.lawEnforceNum,//	抽查人员数
@@ -327,13 +336,11 @@ export default {
             if (res.data.randomObjectVoList.length > 0 & personVoList.length > 0) {
               res.data.randomObjectVoList.forEach((element, index) => {
                 if (expertVoList.length > 0) {
-                    data2.push(Object.assign(element, personVoList[index], expertVoList[index]))
+                  data2.push(Object.assign(element, personVoList[index], expertVoList[index]))
                 } else {
                   data2.push(Object.assign(element, personVoList[index]))
                 }
               });
-              console.log('data2',data2)
-              debugger
               // 结束抽取
               setTimeout(() => {
                 _this.randomList = data2
@@ -369,13 +376,16 @@ export default {
         error => {
           clearInterval(this.timer);//销毁计时器
           this.timer = null;
+          this.errorFlag = true;
+          this.isFinishFlag = true;
+          this.isRandomFlag = true;
           // reject(error);
         })
     },
     scroll() {
       this.animate = true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
       setTimeout(() => {      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
-        this.randomContent = this.taskList[0]
+        this.randomContent = this.errorFlag ? "" : this.taskList[0]
         this.taskList.push(this.taskList[0]);  // 将数组的第一个元素添加到数组的
         this.taskList.shift();               //删除数组的第一个元素
         this.animate = false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动

@@ -41,7 +41,7 @@
                     <div v-show="errorPwd" class="error-pwd">{{errorPwd}}</div>
                   </el-collapse-transition>
                 </div>
-                <el-form-item class="codeInputBox">
+                <el-form-item class="codeInputBox" v-if="isShow">
                   <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
@@ -149,11 +149,8 @@
                 <div>
                   <el-button type="primary" @click="editPwd('eidtForm')">修改密码</el-button>
                 </div>
-
               </el-form>
-
             </div>
-
           </div>
           <div class="footer">
             <center>
@@ -184,7 +181,7 @@ import {
 import {
   getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi, appDownloadApi,
 } from "@/api/system";
-import { encryption } from "@/common/js/cryptoAes";
+import { encryption ,encrypt} from "@/common/js/cryptoAes";
 export default {
   data() {
     return {
@@ -264,6 +261,7 @@ export default {
       systemTitleLogin: null,
       loginImgSrc: '',
       appDownHref: '',
+      isShow: true,//是否有登录滑动验证
     };
   },
   computed: { ...mapGetters(['systemTitle']) },
@@ -323,9 +321,17 @@ export default {
       // _this.getMenu();
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if(!_this.isShow){
+            _this.success=true;
+          }
           // 验证码
           if (_this.success) {
-            let values = _this.loginForm;
+            // let values = _this.loginForm;
+            let values={
+              username: _this.loginForm.username,
+              password: encrypt(_this.loginForm.password), 
+              code: ''
+            }
             values.captchaId = _this.captchaId;
 
             _this.$store.dispatch("loginIn", values).then(
@@ -577,6 +583,7 @@ export default {
   },
   mounted() {
     this.showLogin = true;
+    this.isShow = true;
   },
   components: {
     VueSimpleVerify
