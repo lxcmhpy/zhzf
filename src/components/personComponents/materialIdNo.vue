@@ -10,7 +10,7 @@
       <ul v-if="idNoFiles && idNoFiles.length" class="el-upload-list el-upload-list--picture-card">
         <li v-for="(item, $index) in idNoFiles" :key="item.uid" tabindex="0" class="el-upload-list__item is-ready">
           <img v-if="item.status === 'ready'" :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
-          <img v-if="item.isSave || item.status === 'success'" :src="baseUrl + item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
+          <img v-if="item.isSave || item.status === 'success'" :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
           <div v-if="editAble" class="el-upload-list-action">
             <span class="item-name">{{ item.name }}</span>
             <div class="edit-select-file">
@@ -54,11 +54,6 @@ export default {
         }
       },
       required: true
-    },
-    baseUrl: {
-      type: String,
-      default: '',
-      required: true
     }
   },
   data() {
@@ -96,20 +91,20 @@ export default {
     showUploadImg() {
       this.multiple = true
       if (this.idPic.idcardFront) {
-        this.idNoFiles.push({
-          url: this.idPic.idcardFront,
-          uid: 0,
-          isSave: true
-        })
+        const frontObj = { url: '', uid: 0, isSave: true };
+        this.$util.com_getFileStream(this.idPic.idcardFront).then((res) => {
+          frontObj.url = res;
+        });
+        this.idNoFiles.push(frontObj);
         this.personImage.idcardFront = this.idPic.idcardFront
         this.multiple = false
       }
       if (this.idPic.idcardBack) {
-        this.idNoFiles.push({
-          url: this.idPic.idcardBack,
-          uid: 1,
-          isSave: true
-        })
+        const backObj = { url: '', uid: 1, isSave: true };
+        this.$util.com_getFileStream(this.idPic.idcardBack).then((res) => {
+          backObj.url = res;
+        });
+        this.idNoFiles.push(backObj);
         this.personImage.idcardBack = this.idPic.idcardBack
         this.multiple = false
       }
@@ -149,11 +144,7 @@ export default {
     },
     // 点击图片弹出预览
     previewImg(item) {
-      if (item.isSave || item.status === 'success') {
-        this.dialogImageUrl = this.baseUrl + item.url
-      } else {
-        this.dialogImageUrl = item.url
-      }
+      this.dialogImageUrl = item.url
       this.dialogVisible = true
     },
     // 删除图片

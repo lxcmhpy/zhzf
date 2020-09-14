@@ -11,7 +11,7 @@
       <ul v-if="degreeFiles && degreeFiles.length" class="el-upload-list el-upload-list--picture-card">
         <li v-for="(item, $index) in degreeFiles" :key="item.uid" tabindex="0" class="el-upload-list__item is-ready">
           <img v-if="item.status === 'ready'" :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
-          <img v-if="item.isSave || item.status === 'success'" :src="baseUrl + item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
+          <img v-if="item.isSave || item.status === 'success'" :src="item.url" alt="" class="el-upload-list__item-thumbnail" @click="previewImg(item)">
           <div v-if="params.type !== 'view' && editAble" class="el-upload-list-action">
             <span class="item-name">{{ item.name }}</span>
             <div class="edit-select-file">
@@ -61,11 +61,6 @@ export default {
       default: '',
       required: true
     },
-    baseUrl: {
-      type: String,
-      default: '',
-      required: true
-    }
   },
   data() {
     return {
@@ -93,12 +88,12 @@ export default {
       if (this.savePic) {
         const imgs = this.savePic.split('###')
         imgs.forEach((item, index) => {
-          this.degreeFiles.push({
-            url: item,
-            uid: index,
-            isSave: true
-          })
           this.eduPics.push(item)
+          const imgObj = { url: '', uid: index, isSave: true };
+          this.$util.com_getFileStream(item).then( res => {
+            imgObj.url = res;
+          });
+          this.degreeFiles.push(imgObj);
         })
       }
     },
@@ -130,11 +125,12 @@ export default {
     },
     // 点击图片弹出预览
     previewImg(item) {
-      if (item.isSave || item.status === 'success') {
-        this.dialogImageUrl = this.baseUrl + item.url
-      } else {
-        this.dialogImageUrl = item.url
-      }
+      // if (item.isSave || item.status === 'success') {
+      //   this.dialogImageUrl = this.baseUrl + item.url
+      // } else {
+      //   this.dialogImageUrl = item.url
+      // }
+      this.dialogImageUrl = item.url
       this.dialogVisible = true
     },
     // 删除图片
@@ -194,13 +190,19 @@ export default {
                 })
                 _this.degreeFiles.forEach((item, index) => {
                   item.status = 'success'
-                  item.url = _this.eduPics[index]
+                  this.$util.com_getFileStream(_this.eduPics[index]).then( res => {
+                    item.url = res;
+                  });
+                  // item.url = _this.eduPics[index]
                 })
               } else {
                 changeIndex.forEach(item => {
                   _this.eduPics.splice(item, 1, res.data[0].storageId)
                   _this.degreeFiles[item].status = 'success'
-                  _this.degreeFiles[item].url = res.data[0].storageId
+                  this.$util.com_getFileStream(res.data[0].storageId).then( res => {
+                    _this.degreeFiles[item].url = res;
+                  });
+                  // _this.degreeFiles[item].url = res.data[0].storageId
                 })
               }
               const saveFile = {

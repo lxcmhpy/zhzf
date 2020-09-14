@@ -897,14 +897,14 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长">
-              <el-input v-model="inforForm.otherInfo.allLength" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.allLength" placeholder="/" @input="countOverLength">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="长度限值">
-              <el-input v-model="inforForm.otherInfo.lengthLimit" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.lengthLimit" placeholder="/" @input="countOverLength">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -920,14 +920,14 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总宽">
-              <el-input v-model="inforForm.otherInfo.allWidth" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.allWidth" placeholder="/" @input="countOverWidth">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="宽度限值">
-              <el-input v-model="inforForm.otherInfo.widthLimit" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.widthLimit" placeholder="/" @input="countOverWidth">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -943,14 +943,14 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货高度">
-              <el-input v-model="inforForm.otherInfo.allHeight" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.allHeight" placeholder="/" @input="countOverHeight">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="高度限值">
-              <el-input v-model="inforForm.otherInfo.heightLimit" placeholder="/">
+              <el-input v-model="inforForm.otherInfo.heightLimit" placeholder="/" @input="countOverHeight">
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -2941,6 +2941,40 @@ export default {
           }
         );
       }, */
+      //超限长宽高限值自动计算
+      countOverLength(){
+        if ( this.inforForm.otherInfo.lengthLimit && this.inforForm.otherInfo.allLength ) {
+          if ( this.inforForm.otherInfo.lengthLimit < this.inforForm.otherInfo.allLength ) {
+            this.inforForm.otherInfo.overLength = this.inforForm.otherInfo.allLength - this.inforForm.otherInfo.lengthLimit;
+          } else {
+            this.inforForm.otherInfo.overLength = "0";
+          }
+        }else{
+          this.inforForm.otherInfo.overLength = "";
+        }
+      },
+      countOverWidth(){
+        if ( this.inforForm.otherInfo.widthLimit && this.inforForm.otherInfo.allWidth ) {
+          if ( this.inforForm.otherInfo.widthLimit < this.inforForm.otherInfo.allWidth ) {
+            this.inforForm.otherInfo.overWidth = this.inforForm.otherInfo.allWidth - this.inforForm.otherInfo.widthLimit;
+          } else {
+            this.inforForm.otherInfo.overWidth = "0";
+          }
+        }else{
+          this.inforForm.otherInfo.overWidth = "";
+        }
+      },
+      countOverHeight(){
+        if ( this.inforForm.otherInfo.heightLimit && this.inforForm.otherInfo.allHeight ) {
+          if ( this.inforForm.otherInfo.heightLimit < this.inforForm.otherInfo.allHeight ) {
+            this.inforForm.otherInfo.overHeight = this.inforForm.otherInfo.allHeight - this.inforForm.otherInfo.heightLimit;
+          } else {
+            this.inforForm.otherInfo.overHeight = "0";
+          }
+        }else{
+          this.inforForm.otherInfo.overHeight = "";
+        }
+      }
   },
 
   mounted() {

@@ -12,7 +12,7 @@ export function getZfjgLawSupervise(data) {
     params:data,
     showloading: false,
     // loadingType:'loadFull',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -23,7 +23,7 @@ export function getBySiteId(sitedId) {
       method: "get",
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
 }
@@ -34,7 +34,7 @@ export function findWeighingRecord(name) {
       method: "get",
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
 }
@@ -44,7 +44,7 @@ export function getCountStatus () {
         url: "/zfjg/superviseVehicle/countStatus",
         method: "get",
         showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -54,7 +54,7 @@ export function getById(type,id) {
       method: "get",
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
   }
@@ -64,7 +64,7 @@ export function getById(type,id) {
       method: "get",
       showloading: false,
     //   loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
   }
@@ -74,7 +74,7 @@ export function getById(type,id) {
       method: "get",
       showloading: false,
     //   loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
   }
@@ -87,7 +87,7 @@ export function getById(type,id) {
       params: data,
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
   }
@@ -108,7 +108,7 @@ export function getById(type,id) {
       method: "get",
       params: data,
       showloading: false,
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       cancelToken: setCancelSource()
     });
   }
@@ -119,7 +119,7 @@ export function getById(type,id) {
 //         url: "/zfjg/organ/organTree/"+id,
 //         method: "get",
 //         showloading: false,
-//         baseUrlType:  'LAW_SUPERVISE_HOST',
+//         baseUrlType:  'CAPTCHA_HOST',
 //         cancelToken: setCancelSource()
 //     });
 //   }
@@ -132,7 +132,7 @@ export function getById(type,id) {
         method: "get",
         params: data,
         showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
   }
@@ -145,7 +145,7 @@ export function getById(type,id) {
         method: "get",
         // params: data,
         showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
   }
@@ -159,7 +159,7 @@ export function getById(type,id) {
         method: "get",
         // params: data,
         showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });
   }
@@ -170,7 +170,7 @@ export function getById(type,id) {
         url: "/zfjg/keyVehicle/queryKeyVehiclePage",
         method: "get",
         showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         params: data,
         cancelToken: setCancelSource()
       })
@@ -182,7 +182,7 @@ export function saveAndUpdate (data) {
         url: "/zfjg/superviseVehicle/saveAndUpdate",
         method: "post",
         showloading: true,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         data:  vm.$qs.stringify(data),
         cancelToken: setCancelSource()
       })
@@ -194,7 +194,7 @@ export function queryAlarmVehiclePage (data) {
         method: "get",
         showloading: true,
         loadingType:'loadPart',
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         params: data,
         cancelToken: setCancelSource()
       })
@@ -204,7 +204,7 @@ export function findAlarmVehicleById (data) {
         url: "/zfjg/alarmVehicle/findById/" + data,
         method: "get",
         showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         // params: data,
         cancelToken: setCancelSource()
       })
@@ -215,7 +215,7 @@ export function transerCase (id) {
         url: "/zfjg/superviseVehicle/transferCase/" + id,
         method: "get",
         showloading: true,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         // params: data,
         cancelToken: setCancelSource()
       })
@@ -228,7 +228,7 @@ export function queryDeviceListPage(data) {
     params: data,
     showloading: true,
     loadingType:'loadPart',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -238,7 +238,7 @@ export function findDeviceById (id,typeCode) {
     method: "get",
     showloading: true,
     loadingType:'loadPart',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -248,7 +248,7 @@ export function saveOrUpdateDevice (data) {
       method: "post",
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       data:  vm.$qs.stringify(data),
       cancelToken: setCancelSource()
     })
@@ -302,7 +302,7 @@ export function queryDeviceTypeAll(data) {
     params: data,
     showloading: true,
     loadingType:'loadPart',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -312,7 +312,7 @@ export function saveOrUpdateDeviceType (data) {
       method: "post",
       showloading: true,
       loadingType:'loadPart',
-      baseUrlType:  'LAW_SUPERVISE_HOST',
+      baseUrlType:  'CAPTCHA_HOST',
       data:  vm.$qs.stringify(data),
       cancelToken: setCancelSource()
     })
@@ -323,7 +323,7 @@ export function findDeviceTypeById (id) {
     method: "get",
     showloading: true,
     loadingType:'loadPart',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -333,7 +333,7 @@ export function findDeviceTypeByName (name) {
     method: "get",
     showloading: true,
     loadingType:'loadPart',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -343,7 +343,7 @@ export function findDeviceTypeNewCode () {
     method: "get",
     showloading: true,
     loadingType:'loadPart',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -353,7 +353,7 @@ export function getSiteById(id) {
     method: "get",
     showloading: false,
   //   loadingType:'loadPart',
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -375,7 +375,7 @@ export function getCountry(data) {
     url: "/zfjg/country/listByPcode/" + data,
     method: "get",
     showloading: false,
-    baseUrlType:  'LAW_SUPERVISE_HOST',
+    baseUrlType:  'CAPTCHA_HOST',
     cancelToken: setCancelSource()
   });
 }
@@ -395,7 +395,7 @@ export function findImageListByWorkNo(id,workNo){
         url: "/zfjg/alarmVehicle/findImageListByWorkNo/" + id+"/"+workNo,
         method: "get",
         showloading: false,
-        baseUrlType:  'LAW_SUPERVISE_HOST',
+        baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
       });
 }  
@@ -550,3 +550,16 @@ export function getPeVideoUrl(id) {
         cancelToken: setCancelSource()
     })
 }
+
+//获取文件流
+export function getZfjgFileStreamByStorageId(storageId) {
+    return request({
+      url: "/zfjg/sys/file/getFileStreamByStorageId/"+storageId,
+      method: "get",
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType:  'CAPTCHA_HOST',
+      responseType:'blob',
+      cancelToken: setCancelSource()
+    });
+  }

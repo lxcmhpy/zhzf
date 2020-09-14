@@ -41,11 +41,7 @@
           <el-table-column prop="title" label="标题" width="400" align="center"></el-table-column>
           <el-table-column prop="图片" label="来源" align="center">
             <template slot-scope="scope">
-              <el-image
-                style="width: 120px; height: 80px"
-                :src="host+scope.row.storageId"
-                fit="fill"
-              ></el-image>
+              <el-image style="width: 120px; height: 80px" :src="scope.row.url" fit="fill"></el-image>
             </template>
           </el-table-column>
           <el-table-column prop="orderNo" label="轮播次序" align="center"></el-table-column>
@@ -93,6 +89,7 @@ import {
   deleteByIds,
 } from "@/api/notice/turnImages";
 import imagesDialog from "@/page/notice/trends/imagesDialog";
+import Util from "@/api/notice/util";
 
 export default {
   components: { imagesDialog },
@@ -107,7 +104,6 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       total: 0, //总页数
-      host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
       multipleSelection: [],
     };
   },
@@ -121,7 +117,13 @@ export default {
       findImages(data).then(
         (res) => {
           _this.total = res.data.total;
-          _this.tableData = res.data.records;
+          _this.tableData = [];
+          res.data.records.forEach((item) => {
+            Util.com_getFileStream(item.storageId).then((res) => {
+              item.url = res;
+              _this.tableData.push(item);
+            });
+          });
         },
         (error) => {
           console.log(error);
@@ -144,7 +146,7 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
-      debugger;
+      this.load();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;

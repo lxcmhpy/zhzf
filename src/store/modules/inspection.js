@@ -10,6 +10,7 @@ const inspection = {
         inspectionFileId: '', //当前文书id
         inspectionTempleteId: '', //行政检查模板id
         inspectionFileEdit: '', //行政检查模板id
+        inspectionOverWeightId: '', //行政检查超限记录id
     },
     mutations: {
         set_inspection_orderId(state, data) {
@@ -23,6 +24,9 @@ const inspection = {
         },
         set_inspection_fileEdit(state, data) {
             state.inspectionFileEdit = data;
+        },
+        set_inspection_OverWeightId(state, data) {
+            state.inspectionOverWeightId = data;
         },
 
     },

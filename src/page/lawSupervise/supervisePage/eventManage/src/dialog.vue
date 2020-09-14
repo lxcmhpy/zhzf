@@ -242,17 +242,15 @@ export default {
       }).then(data => {
         data.map(item => {
           if(item.category === '1') {
-            this.eventFileDataUp.push({
-              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
-              storageId: item.storageId,
-              name: item.name
-            })
+            this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
+                item.url = res
+                this.eventFileDataUp.push(item)
+            });
           } else {
-            this.eventFileDataDown.push({
-              url: iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
-              storageId: item.storageId,
-              name: item.name
-            })
+            this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
+                item.url = res
+                this.eventFileDataDown.push(item)
+            });
           }
         })
       })

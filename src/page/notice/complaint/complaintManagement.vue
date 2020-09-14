@@ -132,7 +132,7 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
-      debugger;
+      this.load();
     },
     onDetail(row) {
       this.$refs.complaintDialog.showModal(1, row);

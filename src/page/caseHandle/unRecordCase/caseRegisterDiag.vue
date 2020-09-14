@@ -318,17 +318,19 @@ export default {
             // let currentUserData = {};
             // _this.lawPersonListId = [];
             // _this.alreadyChooseLawPerson = [];
-
+            let thisUserIsLaw = false;
             res.data.forEach(item => {
               if (
                 item.userId == iLocalStroage.gets("userInfo").id
               ) {
+                thisUserIsLaw = true;
                 this.staff = item.lawOfficerName;
                 this.staffId = item.id;
                 this.certificateId = item.lawOfficerCards.split(",")[0];
                 this.getCaseInfor(inforName);
               }
             });
+            if(!thisUserIsLaw) this.$message('当前用户不是执法人员！')
           },
           err => {
             console.log(err);
