@@ -22,7 +22,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import JkyBaseHMap from "@/components/jky-baseHMap";
+import JkyBaseHMap from "@/components/jky-baseAMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
