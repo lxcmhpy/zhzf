@@ -44,7 +44,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportObject','检查对象表.xls')">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('检查对象表.xls')">导出所有对象</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -61,6 +61,7 @@
         <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
         <el-table-column prop="contactNumber" label="联系电话" align="center"></el-table-column>
         <el-table-column prop="superviseType" label="监管类型" align="center"></el-table-column>
+        <el-table-column prop="regulatoryUnit" label="监管单位" align="center"></el-table-column>
         <el-table-column prop="remark" label="备注" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -133,7 +134,7 @@
         </el-row>
         <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox-aline organClass">
           <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
-            <div class="departOrUserTree" style="width:600px">
+            <div class="departOrUserTree" style="width:600px;height:436px">
               <div class="treeBox">
                 <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
                   <span class="custom-tree-node" slot-scope="{ node,data }">
@@ -172,7 +173,8 @@
   </div>
 </template>
 <script>
-import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi, findByAddressCode, importObjectExcelApi } from "@/api/inspection";
+import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi,
+ findByAddressCode, importObjectExcelApi ,exportObjectApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
@@ -254,6 +256,7 @@ export default {
       let data = {
         projectName: this.searchForm.projectName,
         objectName: this.searchForm.objectName,
+        regulatoryUnit: iLocalStroage.gets("userInfo").organName,
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -274,7 +277,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = JSON.parse(JSON.stringify(_this.addForm))
-          data.adminDivision = _this.addForm.adminDivision.join(',')
+          data.adminDivision = _this.addForm.adminDivision?_this.addForm.adminDivision.join(','):''
           addInspectionObjectApi(data).then(
             res => {
               if (res.code == 200) {
@@ -350,7 +353,7 @@ export default {
     },
     editClick(row) {
       let data = JSON.parse(JSON.stringify(row))
-      data.adminDivision = data.adminDivision.split(',')
+      data.adminDivision = data.adminDivision ? data.adminDivision.split(',') : ''
       this.editMethod(data)
     },
     handleChange(value) {
@@ -409,6 +412,24 @@ export default {
       console.log(node);
       console.log(jq);
     },
+    // 导出
+    exportMethod(fileName) {
+      let data = {
+        organName: iLocalStroage.gets("userInfo").organName
+      }
+      exportObjectApi(data).then(res => {
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        //其他浏览器
+        let link = document.createElement('a'); // 创建a标签
+        link.style.display = 'none';
+        link.setAttribute('download', fileName)//必须要重命名
+        let objectUrl = URL.createObjectURL(res);
+        link.href = objectUrl;
+        link.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      ).catch(err => { console.log(err); throw new Error(err) })
+    },
   },
   mounted() {
     this.getTableData()
@@ -422,3 +443,4 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
+<style lang="scss" src="@/assets/css/systemManage.scss"></style>
