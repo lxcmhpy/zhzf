@@ -432,14 +432,5 @@ export default [
     },
     component: () => import("@/page/caseHandle/assistCase/reviewAssistResult.vue")
   },
-  // qsfTest
-  {
-    name: "qsfTest",
-    path: "/qsfTest",
-    meta: {
-      title: "高德测试地图"
-    },
-    component: () => import("@/page/qsfTest")
-  }
 ]
 

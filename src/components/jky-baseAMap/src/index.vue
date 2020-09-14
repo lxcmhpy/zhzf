@@ -28,6 +28,7 @@ export default {
         zoom: this.zoom,//级别
         resizeEnable: true, // 地图中心点默认为当前位置
       });
+      this.$emit("init", this.map, this)
     },
 
     /**
@@ -53,7 +54,7 @@ export default {
       let markerList = data.map(item => {
         let marker = new AMap.Marker({
           position: item.propertyValue.split(',') || [],   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: item.title,
+          // title: item.title,
           icon: item.icon,
           offset: new AMap.Pixel(0,0), // 设置点标记偏移量
           anchor:'bottom-center', // 设置锚点方位
@@ -81,6 +82,14 @@ export default {
           this.map.remove(marker)
         }
       })
+    },
+
+    /**
+     * 清除地图所有点位
+     */
+    cleanAll() {
+      this.map.remove(this.marker)
+      this.map.remove(this.markerList)
     },
 
     /**

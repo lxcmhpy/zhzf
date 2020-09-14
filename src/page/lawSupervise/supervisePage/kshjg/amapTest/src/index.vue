@@ -1,6 +1,6 @@
 <template>
   <div class="jiangXiMap">
-    <JkyBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
+    <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" />
     <TopInFo />
     <Search
       ref="Search"
@@ -22,7 +22,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import JkyBaseHMap from "@/components/jky-baseHMap";
+import JkyBaseAMap from "@/components/jky-baseAMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
@@ -37,7 +37,7 @@ export default {
     }
   },
   components: {
-    JkyBaseHMap,
+    JkyBaseAMap,
     Search,
     Select,
     Drawer,
@@ -54,7 +54,6 @@ export default {
   },
   data() {
     return {
-      layerUrl: '',
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
@@ -67,8 +66,6 @@ export default {
       ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
-      zoom: 3,
-      center: [115.871344, 28.710709],
       searchWindowData: {
         window1: {
           title: "专题查询",
@@ -160,9 +157,6 @@ export default {
     init(_map, _this) {
       this.map = _map
       this.page = _this
-      _map.on('feature:onselect', event => {
-        this.handleClickPoint(event.value.N.data)
-      });
     },
 
     /**
@@ -364,8 +358,6 @@ export default {
     this.getTree()
   },
   mounted(){
-      debugger
-      this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST;
       this.$nextTick(() => {
       //  debugger;
       window.PhoneCallModule.initialize();

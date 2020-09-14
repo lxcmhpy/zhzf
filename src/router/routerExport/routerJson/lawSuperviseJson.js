@@ -30,7 +30,18 @@ export default  [
           keepAlive: true
         },
         component: () => import("@/page/lawSupervise/supervisePage/kshjg/jiangXiMap"),
-      }
+      },
+      {
+        //高德地图测试
+        path: '/amapTest',
+        name: 'amapTest',
+        meta: {
+          title: "江西可视化地图",
+          oneTab:true,
+          keepAlive: true
+        },
+        component: () => import("@/page/lawSupervise/supervisePage/kshjg/amapTest"),
+      },
       // {
       //     path: "/offSiteDetectionOverload",
       //     name: "law_supervise_offSiteDetectionOverload",
