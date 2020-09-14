@@ -69,18 +69,18 @@
                     <span class="titleflag">
                     </span>
                     <span class="title">现场照片/视频</span>
-                    <span class="right f12"> {{parseInt(acitveCar)+1}} / 5</span>
+                    <span class="right f12">  {{ parseInt(acitveCar) + 1 }} / {{imgSize}}</span>
                 </div>
                 <ul class="list">
                     <li >
                          <el-carousel height="200px" @change="setActiveItem" :setActiveItem="setActiveItem" :autoplay="true" indicator-position="outside" :interval="5000">
-                            <el-carousel-item :key="0">
+                            <el-carousel-item :key="0"  v-if="videoUrl!=''">
                                 <video width="280px" height="180px" controls>
-                                    <source :src="xjHost+'/api/ecds/GetCarPicture?work_no='+obj.workNo+'&photo=PHOTO_V'" type="video/mp4">
+                                    <source :src="videoUrl" type="video/mp4">
                                 </video>
                             </el-carousel-item>
                             <el-carousel-item  v-for="(item,index) in imgList" :key="(index +1).toString()">
-                                <img width="280px" height="180px" @click="showImg(index)"  :src="xjHost+item">
+                                <img width="280px" height="180px" @click="showImg(index)"  :src="item">
                             </el-carousel-item>
                         </el-carousel>
                     </li>
@@ -92,7 +92,7 @@
                             <el-button @click="preview" icon="el-icon-arrow-left" circle title="上一个"></el-button>
                             </el-col>
                             <el-col :span="22">
-                                <img width="100%" :src="xjHost+imgIndexUrl">
+                                <img width="100%" :src="imgIndexUrl">
                             </el-col>
                             <el-col :span="1" style="margin-top: 200px;">
                                 <el-button @click="next" icon="el-icon-arrow-right" circle title="下一个" class="right"></el-button>
@@ -126,18 +126,13 @@
 </template>
 
 <script>
-import iLocalStroage from '@/common/js/localStroage';
+import {getFileByCaseId} from "@/api/lawSupervise.js";
 export default {
     props: ['obj'],
     data () {
         return {
             imgIndexUrl: null,
-            imgList: [
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_D',
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_F',
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_L',
-                '/api/ecds/GetCarPicture?work_no='+this.obj.workNo+'&photo=PHOTO_S'
-                ],
+            imgList: [],
             xjHost: null,
             dialogIMGVisible: false,
             acitveCar: 0,
@@ -148,7 +143,9 @@ export default {
                 name: '',
                 mobile: '',
                 mark: ''
-            }
+            },
+            videoUrl:'',
+            imgSize:0
         }
     },
     methods: {
@@ -177,14 +174,44 @@ export default {
             if (this.acitveCar == 5) {
                 this.acitveCar = 0;
             }
+        },
+        //通过案件ID和文书ID查询附件
+        findFileList() {
+            let data = {
+                caseId: this.obj.workNo
+            }
+            getFileByCaseId(data).then(
+                res => {
+                    let size = 0;
+                    res.data.forEach(p => {
+                        if(p.status=='治超图片'){
+                            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
+                                this.imgList.push(res)
+                            });
+                            size++
+                        }else if(p.status=='治超视频'){
+                            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
+                                this.videoUrl=res
+                            });
+                            size++
+                        }
+                    });
+                    this.imgSize=size
+                },
+                error => {
+                    console.log(error);
+                }
+            )
         }
     },
     mounted () {
-        // http://172.16.170.54:9332/14,16d92a05edcd   old:9,10a727c3ada3
-        this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + this.obj.storageId;
-        // debugger;
-        // this.storageStr = iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '14,16d92a05edcd';
-        this.xjHost = iLocalStroage.gets('CURRENT_BASE_URL').XJ_IMG_HOST;
+        debugger
+        this.findFileList();
+        if(this.obj.storageId){
+            this.$util.com_getZfjgFileStream(this.obj.storageId).then(res=>{
+                this.storageStr = res
+            });
+        }
     }
 }
 </script>

@@ -19,8 +19,8 @@
                 class="overflow_lins_textarea"
                 type="textarea"
                 v-model="docData.sh"
-                rows="10"
-                maxlength="150"
+                rows="16"
+                maxlength="600"
                 :disabled="fieldDisabled(propertyFeatures['sh'])"
               ></el-input>
               <span class="overflow_describe" style="text-indent:0 !important">示意图简述</span>

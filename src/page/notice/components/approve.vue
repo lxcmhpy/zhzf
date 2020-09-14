@@ -60,10 +60,10 @@ export default {
     },
 
     handleData() {
-      //   if (!this.dispose.disposeWay) {
-      //     this.$message({ type: "error", message: "请选择处理方式" });
-      //     return;
-      //   }
+      if (!this.dispose.state) {
+        this.$message({ type: "error", message: "请选择审批结果" });
+        return;
+      }
       this.$emit("handle-data", this.dispose);
       this.closeDialog();
     },

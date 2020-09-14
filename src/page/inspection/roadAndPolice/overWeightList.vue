@@ -15,7 +15,7 @@
               </el-form-item>
               <el-form-item label="处置状态" prop='fileStatus'>
                 <el-select v-model="searchForm.fileStatus" placeholder="请选择">
-                  <el-option v-for="(item,index) in statusList" :key="index" :label="item.name" :value="item.name"></el-option>
+                  <el-option v-for="(item,index) in statusList" :key="index" :label="item.name" :value="item.value"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="车牌号" prop='vehicleShipId'>
@@ -36,13 +36,13 @@
         <el-table :data="recordList" stripe style="width: 100%" height="100%">
           <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
           <el-table-column prop="vehicleShipId" label="车牌号" align="center"></el-table-column>
-          <el-table-column prop="docName" label="类型" align="center"></el-table-column>
+          <el-table-column prop="checkType" label="类型" align="center"></el-table-column>
           <el-table-column prop="detectStation" label="检测站" align="center"></el-table-column>
           <el-table-column prop="totalWeight" label="初检车货总重" align="center"></el-table-column>
           <el-table-column prop="overRatio" label="初检超载率" align="center"></el-table-column>
           <el-table-column prop="fileStatus" label="处置状态" align="center">
             <template slot-scope="scope">
-              {{scope.row.fileStatus?'已归档':'进行中'}}
+              {{scope.row.fileStatus==0?'进行中':'已归档'}}
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
@@ -66,12 +66,17 @@
         <el-form :inline="true" :model="recordType" class ref="recordType" :rules="typerule">
           <el-form-item prop='type'>
             <el-radio-group v-model="recordType.type">
-              <el-radio label="特种车">特种车</el-radio>
-              <el-radio label="大件许可">大件许可</el-radio>
-              <el-radio label="绿通车">绿通车</el-radio>
-              <el-radio label="危化车">危化车</el-radio>
-              <el-radio label="危化车">危化车</el-radio>
-              <el-radio label="路警联合">路警联合</el-radio>
+              <ul class="notice-icon-list">
+                <li v-for="(item,index) in checkList" :key="index">
+                  <i class="iconfont law-icon_cheliang"></i><br/>
+                  <el-radio :label="item" >{{item}}</el-radio>
+                </li>
+                <!-- <el-radio label="大件许可">大件许可</el-radio>
+                <el-radio label="绿通车">绿通车</el-radio>
+                <el-radio label="危化车">危化车</el-radio>
+                <el-radio label="路警联合">路警联合</el-radio> -->
+              </ul>
+
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -100,7 +105,8 @@ export default {
       totalPage: 0, //总页数
       fileList: [],
       domainList: [],
-      statusList: [],
+      statusList: [{ name: '进行中', value: 0 }, { name: '已归档', value: 1 }],
+      checkList: ['特种车', '大件许可','绿通车', '不足1t','危化车','路警联合'],
       searchForm: {
         vehicleShipId: "",
         fileStatus: "",
@@ -157,11 +163,10 @@ export default {
     viewRecord(item) {
       this.$store.commit("set_inspection_fileId", item.id)
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$store.commit("set_inspection_OverWeightId", { id: item.id, firstcheckId: item.firstCheckId });
       this.$router.push({
-        name: "inspection_myPDF",
-        params: { id: item.id, storagePath: item.pdfStorageId || item.picStorageId }
+        name: "inspection_overWeightForm",
       });
-
     },
     // 修改模板
     editModle(item) {
@@ -204,7 +209,7 @@ export default {
       this.getTableData()
     },
     getTableData() {
-      this.recordList =[]
+      this.recordList = []
       let data = {
         checkType: this.searchForm.checkType,
         fileStatus: this.searchForm.fileStatus,
@@ -243,8 +248,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log('yanzheng')
+          this.$store.commit("set_inspection_OverWeightId", '');
           this.$router.push({
-            name: 'inspection_overWeightForm'
+            name: 'inspection_overWeightForm',
           });
         }
       })
@@ -256,7 +262,7 @@ export default {
           res => {
             switch (element.option) {
               case 1: _this.domainList = res.data; break;//业务类型
-              case 2: _this.statusList = res.data; break;//处置状态
+              // case 2: _this.statusList = res.data; break;//处置状态
             }
           },
 

@@ -9,7 +9,7 @@
             :billTypeName="billTypeName" 
             :billType="billType" 
             :addForm="data"
-            :imageList="imageList"
+            :id="id"
             :isEdit="isEdit"
             @afterCommit="afterCommit"
             @setEdit="setEdit"
@@ -19,7 +19,7 @@
             :billTypeName="billTypeName" 
             :billType="billType" 
             :addForm="data"
-            :imageList="imageList"
+            :id="id"
             :isEdit="isEdit"
             @afterCommit="afterCommit"
             @setEdit="setEdit"
@@ -53,7 +53,6 @@ export default {
         url:'',
         billTypeName:'',
         data:{},
-        imageList:[],
         isEdit:true,
         id:'',
         isApprove:false,
@@ -73,17 +72,17 @@ export default {
       },
       setEdit(value){
           this.isEdit= value
-      }
+      },
   },
     mounted () {
+        
+    },
+    created(){
         if(this.$route.params.billType !== undefined){
             this.billType=this.$route.params.billType
             this.url=this.$route.params.url
             this.billTypeName=this.$route.params.billTypeName
             this.data=this.$route.params.data
-            if(this.$route.params.imageList){
-                this.imageList=this.$route.params.imageList
-            }
             this.isEdit=this.$route.params.isEdit
             this.isApprove=this.$route.params.isApprove
             if(this.data.id){
