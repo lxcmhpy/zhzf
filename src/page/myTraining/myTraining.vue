@@ -178,10 +178,9 @@ export default {
       getAllTrainPage(data).then(
         res => {
           this.tableLoading = false;
-          if (res.code === 200 && res.data) {
+          if (res.code === 200 && typeof(res.data.data) !== 'string') {
             this.tableData = res.data.data;
             this.totalPage = res.data.data.length;
-            console.log(this.totalPage);
           }
         },
         err => {
@@ -229,6 +228,9 @@ export default {
   >>>.el-card, >>>.el-card__body{
     height: 100%;
     position: relative;
+  }
+  >>>.el-input__icon {
+    line-height: 32px;
   }
 }
 .batch-manage {

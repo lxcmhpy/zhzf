@@ -184,11 +184,7 @@ export default {
     };
   },
   components: { addCourse, coursewareManage, coursewarePreview },
-  computed: {
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed: {},
   created(){
     this.getCourseList();
   },

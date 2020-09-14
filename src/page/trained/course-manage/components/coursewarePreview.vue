@@ -158,6 +158,9 @@ export default {
       this.currentCourse.cpId = course.cpId;
       this.currentCourse.couId = course.couId;
       this.currentCourse.src = this.baseUrl + course.path;
+      // this.$util.com_getFileStream(course.path).then( res => {
+      //   this.currentCourse.src = res;
+      // });
 
       this.currentCourse.flag = course.flag;
       this.currentCourse.accTime = course.unitTime;
