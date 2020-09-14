@@ -881,3 +881,17 @@ textarea{
     margin-top: 10px;
   }
 }
+.notice-icon-list{
+  width: 530px;
+  li{
+    width: 30%;
+    height: 100px;
+    float: left;
+    text-align: center;
+    display: inline-block;
+    line-height: 36px;
+    i{
+      font-size: 36px;
+    }
+  }
+}

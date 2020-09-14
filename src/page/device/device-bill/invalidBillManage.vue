@@ -132,12 +132,12 @@
                                 accept=".jpg, .png"
                                 class="device-uploader"
                                 :http-request="saveImageFile"
-                                :file-list="imageList"
                                 :on-remove="deleteFile"
                                 :disabled="this.formReadOnly"
                                 :show-file-list="false"
+                                :on-change="changeDeviceImage"
                             >
-                                <img v-if="addForm.storageId" :src="host+addForm.storageId" class="device-img" />
+                                <img v-if="imageUrl" :src="imageUrl" class="device-img" />
                                 <i v-else class="el-icon-picture-outline avatar-uploader-icon"></i>
                             </el-upload>
                             </div>
@@ -229,8 +229,7 @@
                 organList:[],
                 deviceList:[],
                 itemList:[],
-                host: '',
-                imageList:[]
+                imageUrl: '',
             };
         },
         components: {
@@ -238,6 +237,9 @@
             SelectEquipment
         },
         methods: {
+            changeDeviceImage(file, fileList){
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
             saveImageFile (param) {
                 var fd = new FormData()
                 fd.append("file", param.file);
@@ -253,11 +255,6 @@
                 upload(fd).then(
                     res => {
                         _this.addForm.storageId = res.data[0].storageId
-                        _this.imageList.push({
-                            url:_this.host+'/'+res.data[0].storageId,
-                            storageId:res.data[0].storageId,
-                            name:res.data[0].fileName
-                        });
                     },
                     error => {
                         console.log(error)
@@ -268,7 +265,6 @@
             deleteFile(file, fileList){
                 let _this = this
                 deleteFileById(file.storageId).then(res=>{
-                    _this.imageList.splice(_this.imageList.findIndex(item => item.storageId === file.storageId), 1)
                 },err=>{
                     console.log(err)
                 })
@@ -370,8 +366,8 @@
                     billDate:new Date().format('yyyy-MM-dd'),
                     useUnit:this.userInfo.organId
                 }
-		this.itemList=[]
-                this.imageList=[]
+		        this.itemList=[]
+                this.imageUrl=''
                 this.title="新增报废"
                 this.formReadOnly = false
                 this.visible = true
@@ -390,12 +386,18 @@
             },
             findDeviceBillById(row){
                 let _this = this
+                this.imageUrl=''
                 findDeviceBillById(row.id).then(
                     res => {
                         _this.addForm = res.data
                         _this.itemList = res.data.itemList
                         _this.addForm.itemList = []
                         _this.visible=true
+                        if(_this.addForm.storageId){
+                            _this.$util.com_getDeviceFileStream(_this.addForm.storageId).then(res=>{
+                                _this.imageUrl = res
+                            });
+                        }
                     },
                     err => {
                         console.log(err);
@@ -451,7 +453,6 @@
         mounted() {
             this.userInfo = iLocalStroage.gets("userInfo");
             this.init()
-            this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
         },
         created() {
         }

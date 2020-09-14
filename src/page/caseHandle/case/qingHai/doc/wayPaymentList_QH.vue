@@ -86,7 +86,8 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="time" :rules="fieldRules('time',propertyFeatures['time'])">
-                <el-input type="textarea" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <!--<el-input type="textarea" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>-->
+                <el-date-picker style="width: 200px" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
             <td>
@@ -143,7 +144,9 @@
         </p>
         <p>
           执法人员： <el-form-item style="width:200px" prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
-            <el-input type="textarea" v-model="docData.staff1" :disabled="fieldDisabled(propertyFeatures['staff1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
+            <el-select v-model="docData.staff1" prop="staff1" :maxLength='maxLength' @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
+                  <el-option v-for="(item,index) in staffData" :key="index" :value="index" :label="item.name" :disabled="docData.staff2==item.name"></el-option>
+            </el-select>
           </el-form-item>
           执法证号： <el-form-item style="width:200px" prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
             <el-input type="textarea" v-model="docData.certificateId1" :disabled="fieldDisabled(propertyFeatures['certificateId1'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
@@ -151,7 +154,9 @@
         </p>
         <p>
           执法人员： <el-form-item style="width:200px" prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
-            <el-input type="textarea" v-model="docData.staff2" :disabled="fieldDisabled(propertyFeatures['staff2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
+             <el-select v-model="docData.staff2" :maxLength='maxLength' @change="changeStaff2" placeholder="请选择" :disabled="fieldDisabled(propertyFeatures['staff2'])">
+                  <el-option v-for="(item,index) in staffData" :key="index" :value="index" :label="item.name" :disabled="docData.staff1==item.name"></el-option>
+                </el-select>
           </el-form-item>
           执法证号： <el-form-item style="width:200px" prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
             <el-input type="textarea" v-model="docData.certificateId2" :disabled="fieldDisabled(propertyFeatures['certificateId2'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength"></el-input>
@@ -460,6 +465,11 @@ export default {
           staff.forEach((item, index) => {
             _this.staffData.push({ name: item, certificateId: certificateId[index] })
           })
+          _this.docData.staff1=_this.staffData[0].name;
+          console.log("_this.staffData[0].name",_this.staffData[0].name)
+          _this.docData.certificateId1=_this.staffData[0].certificateId;
+          _this.docData.staff2=_this.staffData[1].name;
+          _this.docData.certificateId2=_this.staffData[1].certificateId;
           let roadDamageList=JSON.parse(res.data.roadDamageList)
           if (roadDamageList.length > 0) {
             _this.docData.deliveryCertificatelist=[]
@@ -477,6 +487,14 @@ export default {
           console.log(err);
         }
       );
+    },
+    //修改人员
+    changeStaff1(val) {
+      console.log(this.staffData[val])
+      this.docData.certificateId1 = this.staffData[val].certificateId;
+    },
+    changeStaff2(val) {
+      this.docData.certificateId2 =  this.staffData[val].certificateId;;
     },
     // 合计
     autoTotal() {

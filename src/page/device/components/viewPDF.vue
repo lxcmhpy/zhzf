@@ -14,7 +14,7 @@
 
 <script>
 import { 
-    getFileStreamByStorageIdApi
+    getFileStreamByStorageId
 } from "@/api/device/deviceCertificateBill.js";
 export default {
   data () {

@@ -578,13 +578,6 @@ export const mixinGetCaseApiList = {
 
 
         if (!beforeFinishLink.includes(data.linkID)) {
-          //更改流程图状态
-          // try{
-          //   await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
-          // }catch(err){
-          //   this.$message('更改流程图状态失败！')
-          // }
-          // this.$router.push({ name: data2.nextLink })
           this.unLockStateRoute(updataLinkData, data2, data)
         } else {
           if ((completeLinkArr.indexOf(this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId) >= 0 && completeLinkArr.indexOf(this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId) == -1)

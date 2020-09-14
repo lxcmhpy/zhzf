@@ -19,7 +19,7 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])" class="pdf_datapick">
-                <el-date-picker v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+                <el-date-picker style="width:250px" v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
           </tr>
@@ -43,7 +43,7 @@
             <td >收费时间</td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payTime" :rules="fieldRules('payTime',propertyFeatures['payTime'])">
-                <el-date-picker v-model="docData.payTime" :disabled="fieldDisabled(propertyFeatures['payTime'])" type="datetime" format="yyyy年MM月dd日" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+                <el-date-picker style="width:250px" v-model="docData.payTime" :disabled="fieldDisabled(propertyFeatures['payTime'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
           </tr>
@@ -136,7 +136,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
-        note: "",//文书名字 
+        note: "",//文书名字
         docDataId: "", //多份文书的id
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
@@ -259,11 +259,10 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isPNG = file.type === 'image/png';
+      const isJPG = file.type === 'image/jpeg' ||  file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 10;
 
-      if (!isJPG && !isPNG) {
+      if (!isJPG) {
         this.$message.error('上传图片只能是 jpg/png 格式!');
       }
       if (!isLt2M) {

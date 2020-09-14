@@ -275,6 +275,26 @@ export default [
           title: "测试"
         }
       },
+
+      {
+        name: "versionUpdate",
+        path: "/version-maintenance",
+        component: MainContent,
+        children: [
+          {
+            name: "app-version",
+            path: "/appVersion",
+            meta: {
+              title: "移动端版本维护"
+            },
+            component: () => import("@/page/version-maintenance/appVersion/versionDetial.vue")
+          }
+        ],
+        meta: {
+          title: "版本维护"
+        }
+      },
+
       {
         name: "personSysManage",
         path: "/person",

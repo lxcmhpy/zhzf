@@ -14,20 +14,29 @@
                   :show-file-list="false"
                   :http-request="saveImageFile"
                 >
-                  <el-image v-if="form.titleImg" :src="host+form.titleImg" fit="fill"></el-image>
-                  <i v-else class="el-icon-plus"></i>
+                  <el-image v-if="form.titleImg" :src="imgUrl" fit="fill"></el-image>
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label-width="10px">
-                <span class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                <span v-if="!form.titleImg" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
+                <span v-else class="el-upload__tip">点击图片更换，只能上传jpg/png文件，且不超过500kb</span>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="标识链接">
+                <template slot="label">
+                  <el-col :span="10">
+                    <img src="/static/images/img/notice/logo_pic_2.png" height="40" />
+                  </el-col>
+                  <el-col :span="14">
+                    <span>标识链接</span>
+                  </el-col>
+                </template>
                 <el-input v-model="form.titleLink"></el-input>
               </el-form-item>
             </el-col>
@@ -90,13 +99,23 @@
             <el-col :span="12">
               <el-form-item label="网站标题图片">
                 <!-- <img src=""> -->
-                <el-image :src="host+form.titleImg" fit="fill"></el-image>
+                <el-image :src="imgUrl" fit="fill"></el-image>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="标识链接" prop="titleLink">{{form.titleLink}}</el-form-item>
+              <el-form-item>
+                <template slot="label">
+                  <el-col :span="10">
+                    <img src="/static/images/img/notice/logo_pic_2.png" height="40" />
+                  </el-col>
+                  <el-col :span="14">
+                    <span>标识链接</span>
+                  </el-col>
+                </template>
+                {{form.titleLink}}
+              </el-form-item>
             </el-col>
           </el-row>
           <el-row>
@@ -142,6 +161,7 @@
 import iLocalStroage from "@/common/js/localStroage.js";
 import { upload, deleteFileByIdApi } from "@/api/notice/upload";
 import { saveOrUpdate, findWebsiteInfo } from "@/api/notice/website.js";
+import Util from "@/api/notice/util";
 export default {
   data() {
     return {
@@ -159,8 +179,8 @@ export default {
       },
       rules: {},
       isEdit: false,
-      host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
       fileList: [],
+      imgUrl: "",
     };
   },
   methods: {
@@ -186,6 +206,9 @@ export default {
       upload(fd).then(
         (res) => {
           _this.form.titleImg = res.data[0].storageId;
+          Util.com_getFileStream(this.form.titleImg).then((res) => {
+            this.imgUrl = res;
+          });
         },
         (error) => {
           console.log(error);
@@ -198,17 +221,6 @@ export default {
       let res = await deleteFileByIdApi(this.form.titleImg);
       this.form.titleImg = "";
     },
-    // deleteFile(file, fileList) {
-    //   let _this = this;
-    //   deleteFileByIdApi(file.storageId).then(
-    //     (res) => {
-    //       _this.form.titleImg = "";
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //     }
-    //   );
-    // },
     async save() {
       let res = await saveOrUpdate(this.form);
       this.$message({
@@ -224,6 +236,9 @@ export default {
       let res = await findWebsiteInfo();
       if (res.data) {
         this.form = res.data;
+        Util.com_getFileStream(this.form.titleImg).then((res) => {
+          this.imgUrl = res;
+        });
       } else {
         this.isEdit = true;
       }
@@ -235,3 +250,22 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.website-management {
+  .avatar-uploader {
+    >>> .el-upload {
+      width: 100%;
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        border: 1px dashed #cccccc;
+        margin-left: 0px;
+      }
+    }
+  }
+}
+</style>

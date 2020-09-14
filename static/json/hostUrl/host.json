@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "JXW",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -8,10 +8,11 @@
     "PDF_HOST": "文件服务器地址 d",
     "VIDEO_HOST": "综合监管语音通话",
     "CHECK_API": "信息检查 91:8081",
-    "XJ_IMG_HOST": "新疆图片视频地址"
+    "XJ_IMG_HOST": "新疆图片视频地址",
+    "MAP_HOST": "监管地图地址"
   },
   "TEST": {
-    "CAPTCHA_HOST": "http://192.168.110.175:9000",
+    "CAPTCHA_HOST": "http://124.192.215.4:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
@@ -22,7 +23,7 @@
     "PDF_HOST": "http://172.16.170.54:9332/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
-    "CHECK_API": "http://172.16.170.91:8081",
+    "CHECK_API": "http://172.16.170.91:8081"
   },
   "XBW": {
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
@@ -65,7 +66,8 @@
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
-    "CHECK_API": "http://172.16.170.91:8081"
+    "CHECK_API": "http://172.16.170.91:8081",
+    "MAP_HOST": "http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}"
   },
   "GS": {
     "CAPTCHA_HOST": "http://172.16.170.59:9020",
@@ -83,7 +85,8 @@
     "CAPTCHA_HOST": "http://124.192.215.6:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
-    "CHECK_API": "http://124.192.215.11:8081"
+    "CHECK_API": "http://124.192.215.11:8081",
+    "MAP_HOST": "http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}"
   },
   "xj": {
     "CAPTCHA_HOST": "http://218.84.108.29:9461",

@@ -75,7 +75,7 @@ export default {
         if (valid) {
           this.$router.push({
             name: 'add_duty_journal',
-            params: { type: this.addJournalForm.businessType, page: 'journal' }
+            params: { type: this.addJournalForm.businessType, page: 'journal',handelType:"1" }
           });
           this.closeDialog();
         } else {

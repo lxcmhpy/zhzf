@@ -170,7 +170,6 @@
                     }
                 },
                 timeList: ['', ''],
-                host:''
             };
         },
         components: {
@@ -222,13 +221,10 @@
                 let _this = this
                 findDeviceCertificateBillById(row.id).then(
                     res => {
-                        let imageList = []
                         let pdfId = ''
                         if(res.data.fileList){
                             res.data.fileList.forEach(p=>{
-                                p.url=this.host+p.storageId
                                 if(p.category == "执法装备证件单"){
-                                    imageList.push(p)
                                 }else{
                                     pdfId = p.storageId
                                 }
@@ -246,7 +242,6 @@
                             billTypeName:this.formatBillType({billType:res.data.billType}),
                             url: this.$route.name,
                             data:res.data,
-                            imageList:imageList,
                             isEdit:false,
                             isApprove:true,
                             status:status,
@@ -276,7 +271,6 @@
         },
         mounted() {
             this.userInfo = iLocalStroage.gets("userInfo");
-            this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
             this.init()
         },
         created() {

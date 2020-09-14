@@ -11,7 +11,7 @@
     <div class="scheduling-list-panel">
       <div v-for="(item,index) in tableData">
       <el-radio-group v-model="relationData" class="scheduling-group">
-        <el-radio :label="1" class="scheduling-radio-item">
+        <el-radio :label="index" class="scheduling-radio-item">
           <span class="radio-item-index">第{{index+1}}组</span>
           <p class="radio-cnt">
             <span class="item-label">执法班次</span>
@@ -50,13 +50,22 @@ export default {
   created() {},
   methods: {
     // 关联
-    submit() {},
-    showModal(type, data) {
+    submit() {
+      let data= [];
+      data=this.tableData[this.relationData];
+      this.$emit("returnData",data);
+      this.visible = false;
+    },
+
+    showModal(businessType) {
       this.visible = true;
+      let data={
+        businessType:businessType
+      }
        getScheduleListApi(data).then(res => {
         if (res.code == "200") {
           this.tableData = res.data.records;
-          this.totalPage = res.data.total;
+          //this.totalPage = res.data.total;
         }
       }, err => {
         this.$message({ type: 'error', message: err.msg || '' });
