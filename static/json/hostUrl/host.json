@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "SGX",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -57,7 +57,7 @@
     "EXAM": "http://59.110.216.138:9050"
   },
   "SGX": {
-    "CAPTCHA_HOST": "http://172.16.169.42:9000",
+    "CAPTCHA_HOST": "http://192.168.0.113:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "QZ_ACTIVEX_HOST": "http://172.16.170.96:8083/",
     "LAW_SUPERVISE_HOST": "http://172.16.170.96:9000/",
