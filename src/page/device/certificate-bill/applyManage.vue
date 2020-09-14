@@ -75,6 +75,9 @@ export default {
       },
   },
     mounted () {
+        
+    },
+    created(){
         if(this.$route.params.billType !== undefined){
             this.billType=this.$route.params.billType
             this.url=this.$route.params.url

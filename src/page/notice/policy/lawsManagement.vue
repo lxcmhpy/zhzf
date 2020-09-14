@@ -286,6 +286,7 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.load();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
