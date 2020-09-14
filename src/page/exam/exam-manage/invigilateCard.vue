@@ -35,7 +35,7 @@
               <td rowspan="5" style="width: 160px;vertical-align: top;">
                 <img
                   v-if="addExamBatchForm.photoUrl"
-                  :src="baseUrl + addExamBatchForm.photoUrl"
+                  :src="addExamBatchForm.photoUrl"
                   width="100%"
                   height="224px"
                 />
@@ -103,11 +103,7 @@ export default {
       cardPdf: ""
     };
   },
-  computed: {
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed: {},
   methods: {
     showModal(type, row, examMsg) {
       this.visible = true;
@@ -116,7 +112,6 @@ export default {
       this.addExamBatchForm.idNo = row.idNo;
       this.addExamBatchForm.oname = row.oname;
       this.addExamBatchForm.roomName = row.roomName;
-      this.addExamBatchForm.photoUrl = row.photoUrl;
       this.addExamBatchForm.examName = examMsg.examName;
       this.addExamBatchForm.examVenues = examMsg.examVenues;
       this.addExamBatchForm.examTime =
@@ -133,6 +128,11 @@ export default {
       this.addExamBatchForm.examBegin = examMsg.examBegin.substring(0, 10);
       this.addExamBatchForm.examEnd = examMsg.examEnd;
       this.addExamBatchForm.examperId = row.examperId;
+      if(row.photoUrl){
+        this.$util.com_getFileStream(row.photoUrl).then( res => {
+          this.addExamBatchForm.photoUrl = res;
+        });
+      }
     },
     // 打印本页
     printCard() {

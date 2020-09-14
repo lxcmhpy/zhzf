@@ -16,8 +16,13 @@
         <span>【字体：大 中 小 】</span>
       </div>
       <div class="line"></div>
-      <div class="content" ref="content">
+      <!-- <div class="content" ref="content">
         <div v-html="content"></div>
+      </div>-->
+      <div class="ql-container ql-snow" ref="content">
+        <div class="ql-editor">
+          <div v-html="content"></div>
+        </div>
       </div>
       <!-- 下载链接 -->
       <div class="downLoad" v-if="files.length">
@@ -26,10 +31,11 @@
           <span>附件下载</span>
         </header>
         <div class="downTarget">
-          <div>
-            <p class="itemTarget" v-for="(item,index) of files" :key="index">
-              <a :href="item.storagePath">{{index+1 + '.' +item.fileName }}</a>
-            </p>
+          <div class="itemTarget" v-for="(item,index) of files" :key="index">
+            <el-button
+              type="text"
+              @click="download(item.storageId)"
+            >{{index+1 + '.' +item.fileName }}</el-button>
           </div>
         </div>
       </div>
@@ -42,6 +48,10 @@
 <script>
 import Header from "./header.vue";
 import Footer from "./footer.vue";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import iLocalStroage from "@/common/js/localStroage";
 import { findWebsiteInfo } from "@/api/notice/website.js";
 export default {
   components: {
@@ -76,6 +86,14 @@ export default {
     },
   },
   methods: {
+    download(fieldId) {
+      let a = document.createElement("a");
+      a.href =
+        iLocalStroage.gets("CURRENT_BASE_URL").CAPTCHA_HOST +
+        "/notice/sys/file/download/" +
+        fieldId;
+      a.click();
+    },
     async getData() {
       let res = await findWebsiteInfo();
       if (res.data) {
@@ -151,7 +169,6 @@ export default {
         padding: 20px 18px 0 18px;
         overflow: auto;
         .itemTarget {
-          margin-bottom: 20px;
           a {
             font-size: 14px;
             font-family: "PingFangSC, PingFangSC-Regular";
@@ -160,6 +177,14 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .ql-container.ql-snow {
+    border: 0px;
+
+    strong {
+      font-weight: bold;
     }
   }
 }

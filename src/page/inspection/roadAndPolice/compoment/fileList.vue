@@ -3,7 +3,7 @@
     <div class="searchAndpageBox" style="overflow: hidden;">
       <!-- <el-button icon="el-icon-plus" type="primary" size="medium" @click="addNewModle" v-if="isHome">新增模板</el-button> -->
       <!-- <el-form-item> -->
-        <el-button type="primary" size="medium" @click="goBack">返回</el-button>
+      <el-button type="primary" size="medium" @click="goBack">返回</el-button>
       <!-- </el-form-item> -->
       <div class="search-input-right-box" style="margin-bottom:24px">
         文书名称
@@ -24,18 +24,21 @@
           <el-table-column prop="status" label="状态" align="center"></el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
-              <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
-              <span v-if="scope.row.status=='完成'">
-                <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
-                <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">撤销</el-button>
-              </span>
-              <span v-else>
-                <el-button :disabled="scope.row.required==0?false:true" @click="editRecord(scope.row)" type="text">编辑</el-button>
-                <el-upload :disabled="scope.row.required==0?false:true" style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList" accept="image/*">
-                  <el-button :disabled="scope.row.required==0?false:true" type="text" @click="currentFileId=scope.row.id">上传</el-button>
-                </el-upload>
-              </span>
+              <el-tooltip class="item" effect="dark" content="暂未开发" placement="top-start">
+                <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
+                <span v-if="scope.row.status=='完成'">
+                  <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
+                  <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">撤销</el-button>
+                </span>
+                <span v-else>
+                  <el-button :disabled="true" @click="editRecord(scope.row)" type="text">编辑</el-button>
+                  <el-upload :disabled="true" style="width: auto;display: inline-block;" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :http-request="uploadImg" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList" accept="image/*">
+                    <el-button :disabled="true" type="text" @click="currentFileId=scope.row.id">上传</el-button>
+                  </el-upload>
+                </span>
+              </el-tooltip>
             </template>
+
           </el-table-column>
         </el-table>
       </div>
@@ -249,7 +252,6 @@ export default {
             res2 => {
               console.log(res2)
               if (res2.code == 200) {
-                debugger
                 this.modleList = res2.data
               }
             },
@@ -277,7 +279,7 @@ export default {
         })
     },
     searchListByName() {
-      let _this=this
+      let _this = this
 
       if (this.searchModleName == '') {
         this.modleSaveList = JSON.parse(JSON.stringify(this.modleSaveListDefaut))
@@ -341,9 +343,9 @@ export default {
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
-    goBack(){
-       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-       this.$router.push({
+    goBack() {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
         name: 'inspection_overWeightForm',
       });
     }

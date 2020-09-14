@@ -63,7 +63,8 @@
         <el-table-column prop="checkItem" label="抽查事项名称" align="center"></el-table-column>
         <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
         <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
-        <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
+        <!-- <el-table-column prop="checkType" label="抽查内容" align="center"></el-table-column> -->
+        <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
         <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -100,35 +101,62 @@
     <div class="paginationBox">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
     </div>
-    <el-dialog :title='dialogStatus+"省厅检查事项"' :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
+    <el-dialog :title='dialogStatus+"省交通厅领域检查事项"' :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetForm('addForm')">
       <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="抽查主体" prop="checkSubject">
-              <el-select v-model="addForm.checkSubject" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            <el-form-item label="抽查事项" prop="checkItem">
+              <el-select v-model="addForm.checkItem" placeholder="请选择" @change="changeCheckType(addForm.checkItem,'省交通运输厅领域')">
+                <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="抽查方式" prop="checkMode">
+            <el-form-item label="抽查类别" prop="checkType">
+              <el-select v-model="addForm.checkType" placeholder="请选择">
+                <el-option v-for="item in optionsCCLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="事项类别" prop="itemType">
+              <el-select v-model="addForm.itemType" placeholder="请选择">
+                <el-option v-for="item in optionsSXLB" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="检查对象" prop="checkObject">
+              <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
+              <el-select v-model="addForm.checkObject" placeholder="请选择">
+                <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="检查方式" prop="checkMode">
               <el-select v-model="addForm.checkMode" placeholder="请选择">
                 <el-option v-for="item in optionsCCFS" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="检查主体" prop="checkSubject">
+              <el-select v-model="addForm.checkSubject" placeholder="请选择">
+                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-form-item label="抽查事项名称" prop="checkItem">
-          <!-- <el-input type="textarea" v-model="addForm.checkItem"></el-input> -->
-          <el-select v-model="addForm.checkItem" placeholder="请选择" @change="changeCheckType(addForm.checkItem,'省交通运输厅领域')">
-            <el-option v-for="item in optionsCCSXMC" :key="item.id" :label="item.name" :value="item.name"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="抽查依据" prop="checkBasis">
+        <el-form-item label="检查依据" prop="checkBasis">
           <el-input type="textarea" v-model="addForm.checkBasis"></el-input>
         </el-form-item>
-        <el-form-item label="抽查内容" prop="checkContent">
-          <el-input type="textarea" v-model="addForm.checkContent"></el-input>
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" v-model="addForm.remark"></el-input>
         </el-form-item>
         <el-form-item prop="status">
           <el-radio-group v-model="addForm.status">
@@ -172,7 +200,7 @@
             <el-form-item label="检查对象" prop="checkObject">
               <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
               <el-select v-model="addForm2.checkObject" placeholder="请选择">
-                <el-option v-for="item in optionsJCDX" :key="item" :label="item" :value="item"></el-option>
+                <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -233,6 +261,8 @@ export default {
       addForm: {
         checkSubject: '',
         checkMode: '',
+        checkType:'',
+        checkObject:'',
         checkBasis: '',
         checkItem: '',
         checkContent: '',
@@ -248,7 +278,7 @@ export default {
         itemType: '',
         checkType: '',
         status: '启用',
-        remark:''
+        remark: ''
       },
       dialogStatus: '',
       dialogStatus2: '',
@@ -357,7 +387,7 @@ export default {
                 this.dialogFormVisible = false
                 this.currentPage = 1;
                 this.getTableData()
-              }else{
+              } else {
                 this.$message({ type: "error", message: err.msg || '' });
               }
             },
@@ -384,7 +414,7 @@ export default {
                 this.dialogFormVisible2 = false
                 this.currentPage = 1;
                 this.getTableData()
-              }else{
+              } else {
                 this.$message({ type: "error", message: err.msg || '' });
               }
             },
@@ -449,6 +479,7 @@ export default {
               case 4: _this.optionsCCLB = res.data; break;//抽查类别
               case 5: _this.optionsCCSX = res.data; break;//抽查事项
               case 6: _this.optionsCCSXMC = res.data; break;//抽查事项名称
+              case 7: _this.optionsJCDX = res.data; break;//检查对象
             }
           },
           error => {
@@ -495,6 +526,7 @@ export default {
     { name: '抽查类别', option: 4 },
     { name: '抽查事项', option: 5 },
     { name: '抽查事项名称', option: 6 },
+    { name: '检查对象', option: 7 },
     ])
   }
 }

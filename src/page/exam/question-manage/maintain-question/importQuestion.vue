@@ -44,11 +44,7 @@ export default {
       uploadSuccess: false
     };
   },
-  computed: {
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed: {},
   created() {},
   methods: {
     showModal(outlineId) {

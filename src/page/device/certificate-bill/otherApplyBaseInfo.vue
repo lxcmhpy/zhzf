@@ -291,13 +291,13 @@
     <!-- 操作按钮 -->
     <div class="float-btns">
         <div>
-            <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" @click="editInfo">
+            <el-button v-if="!isEdit && (addForm.status==1 || addForm.status==0)" class="edit_btn" type="primary" @click="editInfo">
                 <i class="iconfont law-edit"></i>
                 <br />修改
             </el-button>
         </div>
       <div>
-        <el-button v-if="!isEdit && addForm.status==1" class="edit_btn" type="primary" @click="commitBill">
+        <el-button v-if="!isEdit && (addForm.status==1 || addForm.status==0)" class="edit_btn" type="primary" style="margin-left:0;margin-top:10px;" @click="commitBill">
             <i class="iconfont law-save"></i>
             <br />提交
         </el-button>

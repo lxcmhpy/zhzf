@@ -68,8 +68,8 @@
             <el-radio-group v-model="recordType.type">
               <ul class="notice-icon-list">
                 <li v-for="(item,index) in checkList" :key="index">
-                  <i class="iconfont law-icon_cheliang"></i><br/>
-                  <el-radio :label="item" >{{item}}</el-radio>
+                  <i class="iconfont law-icon_cheliang"></i><br />
+                  <el-radio :label="item">{{item}}</el-radio>
                 </li>
                 <!-- <el-radio label="大件许可">大件许可</el-radio>
                 <el-radio label="绿通车">绿通车</el-radio>
@@ -104,9 +104,10 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       fileList: [],
-      domainList: [],
+      domainList: [{ name: '全部', value: 0 }, { name: '路警联合', value: 1 }, { name: '绿通车', value: 2 },
+      { name: '危化品', value: 3 }, { name: '大件许可', value: 14 }, { name: '不足1吨', value: 5 }, { name: '特种车', value: 6 },],
       statusList: [{ name: '进行中', value: 0 }, { name: '已归档', value: 1 }],
-      checkList: ['特种车', '大件许可','绿通车', '不足1t','危化车','路警联合'],
+      checkList: ['特种车', '大件许可', '绿通车', '不足1t', '危化车', '路警联合'],
       searchForm: {
         vehicleShipId: "",
         fileStatus: "",
@@ -247,11 +248,16 @@ export default {
       console.log('提那');
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log('yanzheng')
-          this.$store.commit("set_inspection_OverWeightId", '');
-          this.$router.push({
-            name: 'inspection_overWeightForm',
-          });
+          if (this.recordType.type == '路警联合') {
+            console.log('yanzheng')
+            this.$store.commit("set_inspection_OverWeightId", '');
+            this.$router.push({
+              name: 'inspection_overWeightForm',
+            });
+          }
+          else {
+            this.$message({ type: "error", message: '暂未开发' })
+          }
         }
       })
     },
@@ -262,7 +268,7 @@ export default {
           res => {
             switch (element.option) {
               case 1: _this.domainList = res.data; break;//业务类型
-              // case 2: _this.statusList = res.data; break;//处置状态
+              case 2: _this.statusList = res.data; break;//处置状态
             }
           },
 
@@ -275,9 +281,9 @@ export default {
   },
   mounted() {
     this.getTableData();
-    this.getDrawerList([
-      { name: '路警联合-业务类型', option: 1 },
-      { name: '路警联合-处置状态', option: 2 }])
+    // this.getDrawerList([
+    //   { name: '路警联合-业务类型', option: 1 },
+    //   { name: '路警联合-处置状态', option: 2 }])
   }
 }
 </script>

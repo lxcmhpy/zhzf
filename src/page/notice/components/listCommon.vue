@@ -45,14 +45,19 @@
           highlight-current-row
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="55" class="selection" :selectable="checkboxInit"></el-table-column>
+          <el-table-column type="selection" width="55" class="selection"></el-table-column>
           <el-table-column prop="title" label="标题" align="center"></el-table-column>
           <el-table-column prop="source" label="来源" align="center"></el-table-column>
           <el-table-column prop="publishTime" label="发布日期" align="center"></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="remark" label="审核意见" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column
+            prop="auditComment"
+            label="审核意见"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
               <router-link
@@ -171,21 +176,14 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
-      debugger;
+      this.load();
     },
     openPreview(item) {
-      //   let data = {
-      //     content: row.content,
-      //     files: JSON.stringify(row.fileUploadVos),
-      //     title: row.title,
-      //     source: row.source,
-      //     time: row.publishTime,
-      //   };
       let oldRouter = {
         name: this.$route.name,
         // path: this.$route.path
       };
-      this.$router.push({
+      let route = this.$router.resolve({
         path: "/details",
         query: {
           content: item.content,
@@ -196,11 +194,7 @@ export default {
           oldRouter: JSON.stringify(oldRouter),
         },
       });
-      //   window.open(
-      //     iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
-      //       "#/details?" +
-      //       vm.$qs.stringify(data)
-      //   );
+      window.open(route.href, "_blank");
     },
     onAdd() {
       let data = {
@@ -260,25 +254,37 @@ export default {
       this.multipleSelection = val;
     },
     async onDelete() {
+      let ids = [];
       if (this.multipleSelection.length < 1) {
         this.$message({ type: "warning", message: "请选择需要删除的记录" });
         return;
       }
-      let _this = this;
-      let ids = [];
-      this.multipleSelection.forEach((item) => {
+      let flag = false; //标记是否有不满足提交的记录，如不满足，则返回，不允许操作
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        let item = this.multipleSelection[i];
+        if (item.state !== 1 && item.state !== 4) {
+          flag = true;
+          break;
+        }
         ids.push(item.id);
-      });
+      }
+      if (flag) {
+        this.$message({
+          type: "error",
+          message: "只允许删除草稿状态或者退回状态的记录!",
+        });
+        return;
+      }
 
       let res = await deleteNoticeById(ids);
       this.$message({ type: "success", message: "删除成功!" });
       this.load();
     },
-    checkboxInit(row, index) {
-      //不可勾选
-      if (row.state != 1 && row.state != 4) return 0;
-      else return 1; //可勾选
-    },
+    // checkboxInit(row, index) {
+    //   //不可勾选
+    //   if (row.state != 1 && row.state != 4) return 0;
+    //   else return 1; //可勾选
+    // },
     load() {
       this.getDataList({ type: this.type });
     },

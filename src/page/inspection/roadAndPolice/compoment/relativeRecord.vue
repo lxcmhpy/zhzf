@@ -1,19 +1,19 @@
 <template v-if="caseInfo">
   <div>
-    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true"  style="top:60px;right:60px">
+    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true" style="top:60px;right:60px">
       <template slot="title">
         <div class="catalogueTitle">
           照片证据列表
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
-      <div class="userList a">
-        <el-checkbox-group v-model="checkedDocId">
-          <el-checkbox v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
-            <span class="name">{{index + 1}}</span>
-            <span class="name">{{item.docName}}</span>
-          </el-checkbox>
-        </el-checkbox-group>
+      <div v-if="!inspectionOverWeightId">
+        请先保存表单
+      </div>
+      <div class="userList">
+        <li v-for="item in tableData" :label="item.storageId" :key="item.storageId" style="margin-bottom:20px;cursor   : pointer;">
+          <img :src="host+item.storageId" width="100%" height="auto" @click.stop="imgDetail(scope.row)" />
+        </li>
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
@@ -26,6 +26,7 @@
 import { mapGetters } from "vuex";
 import { findByCaseBasicInfoIdApi, findByCaseIdAndDocIdApi, findVoByDocCaseIdApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
+import { uploadCommon, findCommonFileApi } from "@/api/upload";
 export default {
   data() {
     return {
@@ -35,26 +36,42 @@ export default {
       pdfVisible: false,
       host: "",
       checkedDocId: [],
+      tableData: [],
       indexPdf: 0,
       nowShowPdfIndex: 0,
       docSrc: '', //文书的pdf地址
       isIndeterminate: true,
       checkAll: false,
       getData: false,
+      host: ''
+
 
     };
   },
   inject: ["reload"],
   // props: ["caseInfo"],
-  computed: { ...mapGetters(["caseId"]) },
+  computed: { ...mapGetters(["caseId", 'inspectionOverWeightId']) },
   methods: {
     showModal() {
       //      console.log('show');
 
       this.visible = true;
       // if (!this.getData) this.getByMlCaseId();
+      console.log('show');
+      if (this.inspectionOverWeightId.id) {
 
-
+        let data = {
+          caseId: this.inspectionOverWeightId.id,
+          current: 1,
+          size: 20,
+        };
+        console.log("证据目录参数", data);
+        let _this = this;
+        findCommonFileApi(data).then((res) => {
+          console.log("res", res);
+          _this.tableData = res.data.records;
+        });
+      }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -161,7 +178,7 @@ export default {
     },
   },
   mounted() {
-    // this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
+    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     let class1 = document.getElementsByClassName("documentFormCat");
     let class2 = class1[0].parentNode;
     class2.style.right = '60px';

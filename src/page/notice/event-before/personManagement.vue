@@ -140,7 +140,7 @@
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
-      :isPagination="false"
+      :isPagination="true"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 
@@ -256,6 +256,7 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.load();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;

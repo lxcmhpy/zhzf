@@ -9,18 +9,8 @@
   >
     <div class="examinee-info">
       <div>
-        <img
-          v-if="photoUrl"
-          :src="baseUrl + photoUrl"
-          width="160px"
-          height="224px"
-        />
-        <img
-          v-else
-          :src="personImg"
-          width="160px"
-          height="224px"
-        />
+        <img v-if="photoUrl" :src="photoUrl" width="160px" height="224px" />
+        <img v-else :src="personImg" width="160px" height="224px" />
       </div>
       <div class="name-info">
         <p>
@@ -78,7 +68,7 @@ export default {
       idNo: "",
       photoUrl: "",
       examData: {
-        operationId:'',
+        operationId: "",
         examId: "",
         roomId: "",
         invigilatorId: "",
@@ -87,23 +77,19 @@ export default {
         rollingTime: "",
         operationDescription: "",
         type: "",
-        happenTime: ""
+        happenTime: "",
       },
       paramDate: {
         invigilatorId: "",
         examId: "",
-        examperId: ""
+        examperId: "",
       },
       tableData: [],
       tableLoading: false,
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
     };
   },
-  computed: {
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed: {},
   methods: {
     //新增/修改
     addNote(data, type) {
@@ -111,43 +97,43 @@ export default {
     },
     deleteNote(row) {
       let _this = this;
-      _this .$confirm("确认删除吗？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            iconClass: "el-icon-question",
-            customClass: "custom-confirm"
-          })
-          .then(() => {
-               this.$store.dispatch("deleteExamRecordInfo", row.operationId).then(
-        res => {
-          if (res.code == "200") {
-            this.getNoteMsg();
-          }
-        },
-        err => {
-          this.$message({ type: "error", message: err.msg || "" });
-        }
-      );
-          })
-          .catch(() => {});
- 
+      _this
+        .$confirm("确认删除吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: "el-icon-question",
+          customClass: "custom-confirm",
+        })
+        .then(() => {
+          this.$store.dispatch("deleteExamRecordInfo", row.operationId).then(
+            (res) => {
+              if (res.code == "200") {
+                this.getNoteMsg();
+              }
+            },
+            (err) => {
+              this.$message({ type: "error", message: err.msg || "" });
+            }
+          );
+        })
+        .catch(() => {});
     },
     // 考场信息
     getNoteMsg() {
       let data = {
         invigilatorId: this.paramDate.invigilatorId,
         examId: this.paramDate.examId,
-        examperId: this.paramDate.examperId
+        examperId: this.paramDate.examperId,
       };
       this.tableLoading = true;
       this.$store.dispatch("examRecordQueryInfo", data).then(
-        res => {
+        (res) => {
           this.tableLoading = false;
           if (res.code == "200") {
             this.tableData = res.data.data;
           }
         },
-        err => {
+        (err) => {
           this.tableLoading = false;
           this.$message({ type: "error", message: err.msg || "" });
         }
@@ -161,13 +147,18 @@ export default {
       this.paramDate.invigilatorId = data1.invigilatorId;
       this.paramDate.examId = data1.examId;
       this.paramDate.examperId = data.examperId;
+      if (data.photoUrl) {
+        this.$util.com_getFileStream(data.photoUrl).then((res) => {
+          this.photoUrl = res;
+        });
+      }
       this.visible = true;
       this.getNoteMsg();
     },
     closeDialog() {
       this.visible = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
