@@ -104,7 +104,7 @@ export default {
       this.getParamList();
     },
     resetLog() {
-      this.$refs["updateParamPageRef"].resetFields();
+      this.$refs["paramFormRef"].resetFields();
       this.currentPage = 1;
       this.getParamList();
     },
