@@ -751,11 +751,12 @@ export function exportExpertApi() {
     });
 }
 // 添导出所有对象表数据
-export function exportObjectApi() {
+export function exportObjectApi(data) {
+    data = vm.$qs.stringify(data);
     return request({
         url: "/xzjc/randomObject/excelExport",
         method: "post",
-        // data: data,
+        data: data,
         showloading: true,
         loadingType: 'loadPart',
         responseType:'blob',

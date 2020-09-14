@@ -130,8 +130,8 @@
             <el-table-column prop="checkCategoryName" label="检查门类" align="center" width="150px;"></el-table-column>
             <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="280px"></el-table-column>
             <el-table-column prop="oname" label="单位名称" align="center" min-width="220px"></el-table-column>
-            <el-table-column prop="address" label="路段名称" align="center" min-width="180px"></el-table-column>
-            <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px"></el-table-column>
+            <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
+            <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px"></el-table-column>
             <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
             <el-table-column prop="lawPerson" label="执法人员" align="center" min-width="140px"></el-table-column>
             <el-table-column prop="opt" label="是否立案" align="center" fixed="right" width="140px">

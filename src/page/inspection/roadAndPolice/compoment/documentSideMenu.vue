@@ -4,20 +4,18 @@
       <template slot="title">
         <div class="catalogueTitle">
           文书列表
-          <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
+          <!-- <span style="color:#E54241">（{{fileList.length}}）</span> -->
         </div>
       </template>
       <div v-if="!inspectionOverWeightId">
         请先保存表单
       </div>
-      <div class="userList a">
-        <!-- <el-checkbox-group v-model="checkedDocId"> -->
-        <li v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
+      <div class="userList caseAndEvidenceListDiaClass">
+        <li v-for="(item,index) in fileList" :label="item.storageId" :key="item.storageId" style="font-size: 16px;line-height: 36px;cursor: pointer;">
           <span class="name">{{index + 1}}、</span>
           <span class="name">{{item.docName}}</span>
           <span class="name" style="margin-left:20px;color:bule">{{item.status?item.status:'未完成'}}</span>
         </li>
-        <!-- </el-checkbox-group> -->
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
@@ -28,13 +26,13 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { getTemplateDocList, getDocListById } from "@/api/inspection";
+import { getTemplateDocList, getDocListById, findCarInfoFileByIdApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
       visible: false,
-      caseList: [],
+      fileList: [],
       mlList: [],
       pdfVisible: false,
       host: "",
@@ -54,7 +52,7 @@ export default {
   methods: {
     showModal(pageDomId) {
       this.visible = true;
-      if (!this.getData) this.getByMlCaseId(pageDomId);
+      if (pageDomId) this.getByMlCaseId(pageDomId);
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -62,33 +60,16 @@ export default {
     },
     //获取文书列表
     getByMlCaseId(pageDomId) {
-      if (this.inspectionOverWeightId) {
-        console.log(this.inspectionOverWeightId)
-        this.getData = true;
-        let _this = this
-        if (this.$route.params.addOrEiditFlag != 'add') {
-          getDocListById(pageDomId || this.$route.params.id).then(
-            res => {
-              console.log(res);
-              _this.caseList = res.data;
-            },
-            error => {
-              console.log(error);
-            }
-          );
-        } else {
-          getTemplateDocList(this.$route.params.id).then(
-            res => {
-              console.log(res);
-              _this.caseList = res.data;
-            },
-            error => {
-              console.log(error);
-            }
-          );
-        }
-      }
-
+      findCarInfoFileByIdApi(pageDomId).then(
+        res => {
+          console.log(res)
+          if (res.code == 200) {
+            this.fileList = res.data
+          }
+        },
+        error => {
+          // reject(error);
+        })
 
     },
 
@@ -152,10 +133,8 @@ export default {
     },
     //全选
     handleCheckAllChange(val) {
-      //      debugger
-      //      console.log(val);
       if (val) {
-        this.caseList.forEach(item => {
+        this.fileList.forEach(item => {
           //复选框存入id
           this.checkedDocId.push(item.storageId);
         });

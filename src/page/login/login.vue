@@ -41,7 +41,7 @@
                     <div v-show="errorPwd" class="error-pwd">{{errorPwd}}</div>
                   </el-collapse-transition>
                 </div>
-                <el-form-item class="codeInputBox">
+                <el-form-item class="codeInputBox" v-if="isShow">
                   <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
@@ -261,6 +261,7 @@ export default {
       systemTitleLogin: null,
       loginImgSrc: '',
       appDownHref: '',
+      isShow: true,//是否有登录滑动验证
     };
   },
   computed: { ...mapGetters(['systemTitle']) },
@@ -320,6 +321,9 @@ export default {
       // _this.getMenu();
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if(!_this.isShow){
+            _this.success=true;
+          }
           // 验证码
           if (_this.success) {
             // let values = _this.loginForm;
@@ -579,6 +583,7 @@ export default {
   },
   mounted() {
     this.showLogin = true;
+    this.isShow = true;
   },
   components: {
     VueSimpleVerify

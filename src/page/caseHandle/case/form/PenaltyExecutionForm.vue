@@ -305,7 +305,7 @@ export default {
         correct: "",
         performance: "",
         paidAmount: 0,
-        toPayAmount: '零元整(0元)',
+        toPayAmount: 0,
         stepPay: "",
         note: "",
         payEvidence: "", //缴费凭证id
@@ -725,6 +725,7 @@ export default {
       console.log('this.formData.tempPunishAmount', this.formData.tempPunishAmount)
       if (this.formData.tempPunishAmount) {
         this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
+        this.handleChangePaidAmount(this.formData.paidAmount)
       }
       this.formData.performWay = this.formData.performWay ? this.formData.performWay : "线下缴费";
       this.isOnlinePay = this.formData.performWay == "线下缴费" ? false : true;

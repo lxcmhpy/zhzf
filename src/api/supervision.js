@@ -91,7 +91,7 @@ export function addCheShiftchangeApi(data){
 //获取排班管理接口
 export function getScheduleListApi(data){
   return request({
-      url: "/check/schedule/cheSchedulePageList",
+      url: "/schedule/cheSchedulePageList",
       method: "get",
       params: data,
       showloading: true,
@@ -114,7 +114,7 @@ export function deleteCheScheduleApi(scheduleId){
 //保存排班管理
 export function addCheScheduleApi(data){
   return request({
-      url: "/check/schedule/addCheSchedule",
+      url: "/schedule/addCheSchedule",
       method: "post",
       data: data,
       showloading: true,
@@ -126,7 +126,7 @@ export function addCheScheduleApi(data){
 //修改排班管理
 export function updateCheScheduleApi(data){
   return request({
-      url: "/check/schedule/updateCheSchedule",
+      url: "/schedule/updateCheSchedule",
       method: "post",
       data: data,
       showloading: true,
@@ -193,5 +193,53 @@ export function getCheRecordDetailApi(data) {
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
+  })
+}
+
+//查询处理等级
+export function getCheProcessTypeTreeApi() {
+  return request({
+    // url: "/check/cheProcessType/tree",
+    url: "/cheProcessType/tree",
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
+  })
+}
+
+//根据处理等级获取处理情况
+export function getProcessTypeApi(processTypeId) {
+  return request({
+    // url: "/check/cheProcessType/tree",
+    url: "/cheProcess/list/" + processTypeId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
+  })
+}
+
+//获取处理下级
+export function getProcessApi(processId) {
+  return request({
+    // url: "/check/cheProcessType/tree",
+    url: "/cheProcess/child/" + processId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
+  })
+}
+
+//根据处理等级获取处理情况
+export function getProcessTypeTreeApi(processTypeId) {
+  return request({
+    // url: "/check/cheProcessType/tree",
+    url: "/cheProcess/tree/" + processTypeId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
   })
 }
