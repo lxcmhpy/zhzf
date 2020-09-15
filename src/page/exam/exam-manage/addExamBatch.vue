@@ -15,7 +15,7 @@
     >
       <el-row>
         <el-form-item label="考试名称" prop="examName" class="form-class">
-          <el-input v-model="addExamBatchForm.examName"></el-input>
+          <el-input v-model="addExamBatchForm.examName" maxlength="25"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -44,7 +44,7 @@
       </el-row>
       <el-row>
         <el-form-item label="考试人数" prop="examSum" class="form-class">
-          <el-input v-model="addExamBatchForm.examSum" @input="trim('examSum')"></el-input>
+          <el-input v-model="addExamBatchForm.examSum" @input="trim('examSum')" maxlength="6"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -76,13 +76,14 @@
           <el-input
             v-model="addExamBatchForm.timeLimit"
             @input="trim('timeLimit')"
-            placeholder="限制交卷时间"
+            placeholder="限制交卷时间，单位(分钟)"
+            maxlength="3"
           ></el-input>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="考试地点" prop="examVenues" class="form-class">
-          <el-input v-model="addExamBatchForm.examVenues"></el-input>
+          <el-input v-model="addExamBatchForm.examVenues" maxlength="25"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -100,6 +101,8 @@
   </el-dialog>
 </template>
 <script>
+import { numType, isSpecialChar } from "@/common/js/validator";
+
 export default {
   data() {
     const validateExamBegin = (rule, value, callback) => {
@@ -183,6 +186,7 @@ export default {
       rules: {
         examName: [
           { required: true, message: "考试名称不能为空", trigger: "blur" },
+          { validator: isSpecialChar, trigger: 'blur' }
         ],
         examType: [
           { required: true, message: "考试类型不能为空", trigger: "change" },
@@ -192,6 +196,7 @@ export default {
         ],
         examSum: [
           { required: true, message: "考试人数不能为空", trigger: "blur" },
+          { validator: numType, trigger: 'blur' }
         ],
         examBegin: [
           { required: true, validator: validateExamBegin, trigger: "blur" },
@@ -204,6 +209,7 @@ export default {
         ],
         examVenues: [
           { required: true, message: "考试地点不能为空", trigger: "blur" },
+          { validator: isSpecialChar, trigger: 'blur' }
         ],
       },
       dialogTitle: "", //弹出框title
