@@ -146,18 +146,18 @@ export default {
         }
       );
     },
-    //查询所有案件类型
-    getQueryCaseTypeList() {
-      getQueryCaseTypeListApi().then(
-        res => {
-          console.log('类型', res);
-          this.caseTypeList = res.data.records;
-        },
-        error => {
-          console.log(error)
-        }
-      );
-    },
+    // //查询所有案件类型
+    // getQueryCaseTypeList() {
+    //   getQueryCaseTypeListApi().then(
+    //     res => {
+    //       console.log('类型', res);
+    //       this.caseTypeList = res.data.records;
+    //     },
+    //     error => {
+    //       console.log(error)
+    //     }
+    //   );
+    // },
     //搜索
     searchCaseEmit() {
       console.log('点击')
@@ -190,7 +190,7 @@ export default {
   },
   created() {
     this.getAllLinkList();
-    this.getQueryCaseTypeList();
+    // this.getQueryCaseTypeList();
     // this.getQueryCaseStateList();
   }
 };
