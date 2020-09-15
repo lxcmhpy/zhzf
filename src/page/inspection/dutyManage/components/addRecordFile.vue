@@ -77,6 +77,7 @@ export default {
 
             if(this.addType != 'type'){
               params.append("file", this.fileList[0].raw);
+              
               uploadCommon(params).then(
                 res => {
                   attach.path = res.data[0].storagePath;
