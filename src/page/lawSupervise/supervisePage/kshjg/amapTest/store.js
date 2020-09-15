@@ -102,10 +102,9 @@ export default {
         }
       }).then(data => {
         if(node.propertyValue) {
-          let latLng = node.propertyValue.split(',') || []
           data.propertyValue = node.propertyValue
           data.icon = '/static/images/img/lawSupervise/map_jigou.png'
-          this.page.addPoint(data, latLng)
+          this.page.addPoint(data)
         } else {
           this.$message.error('没有坐标数据')
         }
@@ -139,9 +138,9 @@ export default {
     personClick (node) {
       console.log(node)
       // 地图打点
-      let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
+      data.propertyValue = node.propertyValue
       node.icon = "/static/images/img/lawSupervise/icon_jc11.png"
-      this.page.addPoint(node, latLng)
+      this.page.addPoint(node)
       // 显示弹出框
       this.searchWindowData.window4.title = node.nickName
       this.searchWindowData.window4.info = [
