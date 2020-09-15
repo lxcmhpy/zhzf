@@ -350,7 +350,7 @@ export default {
       let _this = this;
       if (this.multipleSelection.length > 0) {
         this.multipleSelection.forEach((element) => {
-          element.organName = iLocalStroage.gets("userInfo").organName;
+          element.company = iLocalStroage.gets("userInfo").organName;
           // 删除是否在岗
           if (element.stationStatusName) {
             this.$delete(element, "stationStatusName");

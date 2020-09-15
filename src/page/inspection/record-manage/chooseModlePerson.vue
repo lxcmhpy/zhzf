@@ -83,14 +83,20 @@ export default {
 
     },
     showModal(inforCollectLawPerson) {
+      console.log('inforCollectLawPerson', inforCollectLawPerson)
+      this.checkedUser = []
+      this.checkedUserId = []
+      this.alreadyChooseLawPerson = []
       this.visible = true;
       this.searchLawPerson(inforCollectLawPerson);
 
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
+      this.checkedUser = []
+      this.checkedUserId = []
+      this.alreadyChooseLawPerson = []
       this.visible = false;
-      this.checkedUser=[]
       this.staffNameOrCode = "";
     },
     //全选
@@ -124,7 +130,7 @@ export default {
     handleCheckedUserChange(val) {
       console.log(val);
       console.log(this.checkedUserId);
-      // debugger
+      debugger
       let _this = this
       if (val) {
         this.checkedUser = [];
@@ -167,6 +173,8 @@ export default {
     },
     //查询执法人员
     searchLawPerson(inforCollectLawPerson) {
+      debugger
+      console.log('inforCollectLawPerson1', inforCollectLawPerson)
       let _this = this
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
@@ -214,9 +222,14 @@ export default {
               }
             });
             if (this.alreadyChooseLawPerson) {
+              console.log('alreadyChooseLawPerson', this.alreadyChooseLawPerson)
+
               this.checkedUser = this.alreadyChooseLawPerson;
             }
-            _this.handleCheckedUserChange(this.checkedUserId);
+            if (this.checkedUser.length > 0) {
+              _this.handleCheckedUserChange(this.checkedUserId);
+
+            }
           },
           err => {
             console.log(err);
