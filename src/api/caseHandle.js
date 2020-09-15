@@ -656,7 +656,8 @@ export function findPersonAndRelationByCaseIdApi(params) {
 export function findAskNumApi(params) {
   let data = {
     caseId: params.caseId,
-    name: params.name
+    name: params.name,
+    docTypeId:params.docTypeId
   }
   return request({
     url: "/case/doc/data/findByCaseIdAndName",

@@ -860,10 +860,11 @@ export default {
     
 
       let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
+      let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
       //立案登记下一环节状态
                                                                                                                    
-      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId,this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId]
-      let establishDoing,establishNextComplet= false;
+      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId,this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId];
+      let establishDoing,establishNextComplet,finishCaseReport = false;
       //立案登记为进行中
       for(let item of establish_caseLinktypeIdArr){
         if(data.doingLink.includes(item)){
@@ -878,17 +879,15 @@ export default {
           break;
         }
       }
-      
+      //结案报告已完成
+      for(let item of finishCaseReport_caseLinktypeIdArr){
+        if(data.completeLink.includes(item)){
+          finishCaseReport = true;
+          break;
+        }
+      }
 
-      // if(establishDoing){
-      //   this.showLinkBackBtn = false;
-      // }else{
-      //   this.showLinkBackBtn = true;
-      // }
-      console.log('establishDoing',establishDoing)
-      console.log('establishNextComplet',establishNextComplet)
-
-      if(!establishDoing && establishNextComplet){
+      if(!establishDoing && establishNextComplet && !finishCaseReport){
         this.showLinkBackBtn = true;
       }else{
         this.showLinkBackBtn = false;

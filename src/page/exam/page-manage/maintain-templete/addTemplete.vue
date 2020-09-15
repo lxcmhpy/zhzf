@@ -279,21 +279,21 @@ export default {
       }
     },
     showModal(row, type) {
-      let _this = this;
-      _this.visible = true;
-      _this.handelType = type;
-      _this.addTempleteForm.templeteName = "";
-      _this.addTempleteForm.templeteId = "";
+      this.visible = true;
+      this.handelType = type;
+      this.addTempleteForm.templeteName = "";
+      this.addTempleteForm.templeteId = "";
       if (type == 1) {
         //新增
-        _this.dialogTitle = "新增模板";
+        this.dialogTitle = "新增模板";
       } else if (type == 2) {
         //修改,查看
-        _this.dialogTitle = "修改模板";
-        _this.addTempleteForm.templeteName = row.templeteName;
-        _this.addTempleteForm.templeteId = row.templeteId;
-        _this.getTempletMsg(row);
+        this.dialogTitle = "修改模板";
+        this.addTempleteForm.templeteName = row.templeteName;
+        this.addTempleteForm.templeteId = row.templeteId;
+        this.getTempletMsg(row);
       }
+      console.log(this.$refs);
     },
     //查询模板节段信息
     getTempletMsg(row) {
@@ -327,7 +327,12 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.tableData = [];
+      if (this.tableData.length) {
+        this.tableData.forEach((item, index) => {
+          delete this.$refs[`segment${index}`]
+        })
+      }
+      this.tableData.splice(0, this.tableData.length);
       this.dataSources = [];
       this.addTempleteForm.templeteName = "";
       this.addTempleteForm.templeteId = "";

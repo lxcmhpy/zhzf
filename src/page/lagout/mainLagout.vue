@@ -36,6 +36,7 @@
               trigger="hover"
               style="padding:0"
               popper-class="padding0"
+              @hide="hideMoreMenusIfHave"
             >
               <div class="info_top">
                 <li>
@@ -305,6 +306,10 @@ export default {
       this.oldSystemHref =
         "../../../static/js/loginOldSystem.html?user=" + name + "&pwd=" + pwd;
     },
+    //个人信息弹框隐藏时触发
+    hideMoreMenusIfHave(){
+      this.showMoreMenusFlag = false;
+    }
   },
   watch: {
     $route(to, from) {

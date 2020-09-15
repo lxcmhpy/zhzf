@@ -290,7 +290,18 @@ export default  [
                 oneTab: true,
                 },
                 component: () => import("@/page/inspection/dutyManage/components/recordDetail.vue")
-            }
+            },
+
+            // 记录管理--添加记录
+            {
+                path: "/serialManage",
+                name: "serial-manage",
+                meta: {
+                title: "日志管理",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/serial-number/serialManage.vue")
+            },
         ]
     }, 
 ]

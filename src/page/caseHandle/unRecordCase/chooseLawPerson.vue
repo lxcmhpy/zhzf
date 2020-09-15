@@ -101,13 +101,28 @@ export default {
         let _this = this
         findStaffListApi(data).then(res=>{
             _this.userList = res.data;
-            _this.userList.forEach(item => {
+            _this.selectedNumber = [];
+            _this.userList.forEach((item,index) => {
               //执法证号下拉框
               item.lawOfficerCardsAndId = {
                 id: item.id,
                 lawOfficerCards: item.lawOfficerCards.split(",")
               };
+              for(let item2 of this.checkedUser){
+                  if(item.id == item2.id){
+                      _this.selectedNumber[index] = item2.selectLawOfficerCard
+                  }else{
+                    _this.selectedNumber[index] = item.lawOfficerCardsAndId.lawOfficerCards[0]
+                  }
+              }
             });
+            // _this.userList.forEach((item,index) => {}
+
+            
+            console.log('_this.selectedNumber',_this.selectedNumber)
+            console.log('this.checkedUser',this.checkedUser)
+            
+            
             this.saveCheckedUserBeforSearch = this.checkedUser;
       },err=>{
         console.log(err);
