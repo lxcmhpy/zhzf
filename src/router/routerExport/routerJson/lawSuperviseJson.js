@@ -42,6 +42,16 @@ export default  [
         },
         component: () => import("@/page/lawSupervise/supervisePage/kshjg/amapTest"),
       },
+      {
+        //称重数据手工同步
+        path: '/weightDataSync',
+        name: 'weightDataSync',
+        meta: {
+          title: "称重数据手工同步",
+          oneTab:true,
+        },
+        component: () => import("@/page/lawSupervise/supervisePage/weightDataSync/syncManage"),
+      },
       // {
       //     path: "/offSiteDetectionOverload",
       //     name: "law_supervise_offSiteDetectionOverload",
