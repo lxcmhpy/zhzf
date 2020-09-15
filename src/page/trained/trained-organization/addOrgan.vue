@@ -15,12 +15,12 @@
     >
       <el-row>
         <el-form-item label="机构名称" prop="toName" class="form-class">
-          <el-input v-model="addOrganForm.toName"></el-input>
+          <el-input v-model="addOrganForm.toName" maxlength="25"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="联系人" prop="contact" class="form-class">
-          <el-input v-model="addOrganForm.contact"></el-input>
+          <el-input v-model="addOrganForm.contact" maxlength="25"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -41,7 +41,7 @@
   </el-dialog>
 </template>
 <script>
-import { validatePhone } from '@/common/js/validator';
+import { validatePhone, isSpecialChar } from '@/common/js/validator';
 import { addTrainedOrgan } from '@/api/trained';
 
 export default {
@@ -58,10 +58,12 @@ export default {
       },
       rules: {
         toName: [
-          { required: true, message: "机构名称不能为空", trigger: "blur" }
+          { required: true, message: "机构名称不能为空", trigger: "blur" },
+          { validator: isSpecialChar, trigger: 'blur' }
         ],
         contact: [
-          { required: true, message: "联系人不能为空", trigger: "blur" }
+          { required: true, message: "联系人不能为空", trigger: "blur" },
+          { validator: isSpecialChar, trigger: 'blur' }
         ],
         contactNo: [
           { required: true, message: "请输入联系方式", trigger: "blur" },
