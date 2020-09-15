@@ -433,9 +433,11 @@ export default {
       let tempPunishAmount = ''
       console.log("this.totalMoney",this.totalMoney);
       console.log("this.formData.tempPunishAmount",this.formData.tempPunishAmount);
-      if(typeof this.totalMoney !== 'number' && typeof this.formData.tempPunishAmount !=='number'){
-      this.totalMoney=this.RMBToNumber(this.totalMoney.replace("元",""));
-      this.formData.tempPunishAmount=this.RMBToNumber(this.formData.tempPunishAmount.replace("元",""));
+      if( Number(this.totalMoney) =="NAN"){
+        if(typeof this.totalMoney !== 'number' && typeof this.formData.tempPunishAmount !=='number'){
+        this.totalMoney=this.RMBToNumber(this.totalMoney.replace("元",""));
+        this.formData.tempPunishAmount=this.RMBToNumber(this.formData.tempPunishAmount.replace("元",""));
+        }
       }
       if(this.fieldDisabled(this.propertyFeatures['tempPunishAmount'])) {
         tempPunishAmount = Number(this.totalMoney)
@@ -724,8 +726,7 @@ export default {
     getDataAfter() {
       console.log('this.formData.tempPunishAmount', this.formData.tempPunishAmount)
       if (this.formData.tempPunishAmount) {
-        this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0;
-        this.handleChangePaidAmount(this.formData.paidAmount)
+        this.formData.paidAmount = this.formData.paidAmount ? this.formData.paidAmount : 0; 
       }
       this.formData.performWay = this.formData.performWay ? this.formData.performWay : "线下缴费";
       this.isOnlinePay = this.formData.performWay == "线下缴费" ? false : true;
@@ -739,7 +740,6 @@ export default {
       }
       this.changeStepPay()
       this.changePerformance()
-
       //分期延期缴纳单选按钮默认不选，  选中后列表中展示分期延期缴纳罚款通知书 执行情况为催告时  列表中展示催告书
     },
     //上传缴费凭证
@@ -996,7 +996,7 @@ export default {
     },
     'formData.tempPunishAmount'(val){
       this.totalMoney = this.formData.tempPunishAmount;
-      this.handleChangePaidAmount();
+      this.handleChangePaidAmount(Number(this.formData.paidAmount));
     }
   }
 };
