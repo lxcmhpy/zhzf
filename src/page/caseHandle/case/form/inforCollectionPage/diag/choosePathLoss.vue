@@ -44,8 +44,8 @@
         </div>
       </el-form>
       <div>
-        <el-table :data="tableData" ref="tableDataRef" stripe border @selection-change="handleSelectionChange" :row-key="getRowKey" height="300">
-          <el-table-column type="selection" width="55" :selectable="canSelectable" :reserve-selection="true"></el-table-column>
+        <el-table :data="tableData" ref="tableDataRef" stripe border @selection-change="handleSelectionChange" height="300">
+          <el-table-column type="selection" width="55" :selectable="canSelectable"></el-table-column>
           <el-table-column type="index" width="50" label="序号"></el-table-column>
           <el-table-column label="路产名称" prop="roadLcName"></el-table-column>
           <el-table-column label="类型" prop="roadLcType"></el-table-column>
@@ -86,9 +86,6 @@ export default {
       callback();
     };
     return {
-      getRowKey(row) {
-        return row.id
-      },
       visible: false,
       pathLossSearchForm: {
         roadLcBz: "",
