@@ -35,7 +35,7 @@ export default {
      * 地图打点函数(单个点位打点)
      */
     addPoint(data) {
-      this.cleanAll()
+      this.cleanPoint()
       this.map.setZoomAndCenter(18, data.position) // 当前点位设为地图中心点，并调整缩放等级
       let marker = new AMap.Marker({
         position: data.propertyValue.split(',') || [], //位置
@@ -119,14 +119,6 @@ export default {
           this.markerList.splice(index, 1)
         }
       })
-    },
-
-    /**
-     * 清除地图所有点位
-     */
-    cleanAll() {
-      this.map.remove(this.marker)
-      this.map.remove(this.markerList)
     },
 
     /**
