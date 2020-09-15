@@ -26,7 +26,7 @@
                 <el-row>
                   <el-col :span="12">
                     <el-form-item label="真实姓名" prop="personName">
-                      <el-input v-model="personInfoDetailForm.personName"></el-input>
+                      <el-input v-model="personInfoDetailForm.personName" maxlength="25"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
@@ -170,8 +170,11 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="毕业证书编号" prop="graduationNo">
-                      <el-input v-model="personInfoDetailForm.graduationNo"></el-input>
+                    <el-form-item
+                      label="毕业证书编号"
+                      prop="graduationNo"
+                    >
+                      <el-input v-model="personInfoDetailForm.graduationNo" maxlength="18"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -326,9 +329,10 @@
                     <el-form-item
                       label="执法区域"
                       prop="area"
-                      :rules="{ required: rules.branchName !== undefined, message: '执法区域不能为空', trigger: 'blur'}"
+                      :rules="[ { required: rules.branchName !== undefined, message: '执法区域不能为空', trigger: 'blur'},
+                      { validator: isSpecialChar, trigger: 'blur' }]"
                     >
-                      <el-input v-model="personInfoDetailForm.area"></el-input>
+                      <el-input v-model="personInfoDetailForm.area" maxlength="25"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -353,20 +357,29 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="省内执法证号" prop="provinceNo">
-                      <el-input v-model="personInfoDetailForm.provinceNo"></el-input>
+                    <el-form-item
+                      label="省内执法证号"
+                      prop="provinceNo"
+                    >
+                      <el-input v-model="personInfoDetailForm.provinceNo" maxlength="25"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="部级执法证号" prop="ministerialNo">
+                    <el-form-item
+                      label="部级执法证号"
+                      prop="ministerialNo"
+                    >
                       <el-input v-model="personInfoDetailForm.ministerialNo" maxlength="8"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="海事执法证号" prop="maritimeNo">
-                      <el-input v-model="personInfoDetailForm.maritimeNo"></el-input>
+                    <el-form-item
+                      label="海事执法证号"
+                      prop="maritimeNo"
+                    >
+                      <el-input v-model="personInfoDetailForm.maritimeNo" maxlength="25"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -585,7 +598,7 @@
   </div>
 </template>
 <script>
-import { validateLawCertNo, validateIDNumber } from "@/common/js/validator";
+import { validateLawCertNo, validateIDNumber, isSpecialChar } from "@/common/js/validator";
 import { mixinPerson } from "@/common/js/personComm";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
 import UploadPersonAvatar from "@/components/personComponents/uploadPersonAvatar";
@@ -607,6 +620,7 @@ export default {
   },
   data() {
     return {
+      isSpecialChar: isSpecialChar,
       pageType: "",
       tableDataTree: [], //所属机构下拉列表值***
       props: {
@@ -687,6 +701,7 @@ export default {
             message: "姓名必须填写",
             trigger: "blur",
           },
+          { validator: isSpecialChar, trigger: 'blur' }
         ],
         idNo: [
           {
@@ -761,6 +776,10 @@ export default {
             trigger: "change",
           },
         ],
+        graduationNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
+        ministerialNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
+        maritimeNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
+        provinceNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
       },
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
       selectLoading: false,
@@ -774,9 +793,6 @@ export default {
     uploadDisabled: function () {
       let _this = this;
       return _this.photoList.length > 0;
-    },
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     },
   },
   watch: {
@@ -825,11 +841,6 @@ export default {
       }
       this.personInfoDetailForm["sexName"] = info.sex === "0" ? "男" : "女";
       if (info.photoUrl) {
-        // this.personImg =
-        //   info.photoUrl.indexOf(this.baseUrl) > -1
-        //     ? info.photoUrl
-        //     : this.baseUrl + info.photoUrl;
-
         // 获取头像图片流
         this.$util.com_getFileStream(info.photoUrl).then((res) => {
           this.personImg = res;

@@ -229,7 +229,7 @@ export default {
             this.page.addPoints(data)
           })
         } else { // 当取消勾选时，清除对应图层点位
-          this.page.cleanPoints(name)
+          this.page.cleanPoints(this.imgUrl.get(type))
         }
       } else {
         if(type === 4) {
@@ -276,7 +276,7 @@ export default {
             this.page.addPoints(data)
           })
         } else { // 当取消勾选时，清除对应图层点位
-          this.page.cleanPoints(name)
+          this.page.cleanPoints(this.imgUrl.get(type))
         }
       }
     },
