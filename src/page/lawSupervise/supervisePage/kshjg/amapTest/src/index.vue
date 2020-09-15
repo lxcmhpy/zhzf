@@ -167,8 +167,6 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
-      // 清空信息窗体
-      this.map.removeOverlay(this.page.informationWindow)
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
 
@@ -180,9 +178,7 @@ export default {
       } else if (!data.hasOwnProperty('children') || data.children.length === 0) {
         if(data.propertyValue) {
           let latLng = data.propertyValue.split(',')
-          data.imgUrl = this.imgUrl.get(data.type)
-          // 手动给点位添加图层标识属性
-          data.layerName = data.label
+          data.icon = this.imgUrl.get(data.type)
           this.page.addPoint(data, latLng)
         } else {
           this.$message.error('没有坐标数据')
@@ -315,7 +311,7 @@ export default {
      */
     handleEcforce(data) {
       // 添加点位图标
-      data.imgUrl = this.imgUrl.get(data.type)
+      data.icon = this.imgUrl.get(data.type)
 
       let latLng = data.propertyValue.split(',')
       this.page.addPoint(data, latLng)

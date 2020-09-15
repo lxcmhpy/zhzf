@@ -102,10 +102,8 @@ export default {
         }
       }).then(data => {
         if(data.propertyValue) {
-          let latLng = data.propertyValue.split(',')
-          data.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
-          // 手动给点位添加图层标识属性
-          data.layerName = node.label
+          let latLng = data.propertyValue.split(',') || []
+          data.icon = '/static/images/img/lawSupervise/map_jigou.png'
           this.page.addPoint(data, latLng)
         } else {
           this.$message.error('没有坐标数据')
@@ -141,7 +139,7 @@ export default {
       console.log(node)
       // 地图打点
       let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
-      node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
+      node.icon = "/static/images/img/lawSupervise/icon_jc11.png"
       this.page.addPoint(node, latLng)
       // 显示弹出框
       this.searchWindowData.window4.title = node.nickName
@@ -227,8 +225,6 @@ export default {
               item.propertyValue = item.eventCoordinate || []
               item.icon = this.imgUrl.get(type)
             })
-            // 手动给数据添加图层唯一标识
-            data.layerName = name
             // 调用地图打点方法
             this.page.addPoints(data)
           })
@@ -267,18 +263,15 @@ export default {
               this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
             }
           }).then(data => {
-            // 手动给数据添加图层唯一标识
-            data.layerName = name
             // 手动给非现场站点添加type
             if(type === 4) {
               data.map(item => {
                 item.type = type
+                item.icon = this.imgUrl.get(type)
               })
               // 给抽屉弹窗里塞入数据
               this.drawerData.noEnforceData.option = data
             }
-            // 添加点位图片
-            data.imgUrl = this.imgUrl.get(type)
             // 调用地图打点方法
             this.page.addPoints(data)
           })
@@ -331,25 +324,21 @@ export default {
             } else if (index === 5) {
               // 获取到点位信息
               let arr = item.data.records
-              // 给点位数据添加 propertyValue 属性
+              // 给点位数据添加 propertyValue 属性和 icon
               arr.map(arrItem => {
                 arrItem.type = 5
                 arrItem.propertyValue = arrItem.eventCoordinate
+                arrItem.icon = this.imgUrl.get(typeMap[index].type)
               })
-              // 手动给数据添加图层唯一标识
-              arr.layerName = typeMap[index].name
-              // 添加点位图片
-              arr.imgUrl = this.imgUrl.get(typeMap[index].type)
               // 调用地图打点方法
               this.page.addPoints(arr)
+            } else {
+              item.data.map(point => {
+                point.icon = this.imgUrl.get(typeMap[index].type)
+              })
+              // 调用地图打点方法
+              this.page.addPoints(item.data)
             }
-
-            // 手动给数据添加图层唯一标识
-            item.data.layerName = typeMap[index].name
-            // 添加点位图片
-            item.data.imgUrl = this.imgUrl.get(typeMap[index].type)
-            // 调用地图打点方法
-            this.page.addPoints(item.data)
           })
         })
       } else {
