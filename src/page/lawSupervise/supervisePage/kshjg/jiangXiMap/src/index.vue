@@ -364,7 +364,6 @@ export default {
     this.getTree()
   },
   mounted(){
-      debugger
       this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST;
       this.$nextTick(() => {
       //  debugger;

@@ -407,8 +407,8 @@ export default {
     top: 47%;
     cursor: pointer;
   }
-  .el-form-item {
-    margin-bottom: 0;
-  }
+  // .el-form-item {
+  //   margin-bottom: 0;
+  // }
 }
 </style>

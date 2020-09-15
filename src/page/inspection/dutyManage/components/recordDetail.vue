@@ -58,12 +58,20 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="执法人员" prop="lawOfficials">
-                  <el-input v-model="inspectRecordForm.lawOfficials" placeholder="请输入">
+                <el-form-item label="执法人员" prop="lawPersonListIndex">
+                  <el-select v-model="inspectRecordForm.lawPersonListIndex" multiple>
+                    <el-option
+                      v-for="(item, index) in lawPersonList"
+                      :key="item.id"
+                      :label="item.lawOfficerName"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
+                  <!-- <el-input v-model="inspectRecordForm.lawOfficials" placeholder="请输入">
                     <template slot="append">
                       <el-button type="text">查验</el-button>
                     </template>
-                  </el-input>
+                  </el-input>-->
                 </el-form-item>
               </el-col>
             </el-row>
@@ -71,7 +79,11 @@
               <h3 class="form-tab-title">检查内容</h3>
               <el-col :span="12">
                 <el-form-item label="路段情况" prop="roadCondition">
-                  <el-select v-model="inspectRecordForm.roadCondition" placeholder="请选择" @change="roadConditionChange">
+                  <el-select
+                    v-model="inspectRecordForm.roadCondition"
+                    placeholder="请选择"
+                    @change="roadConditionChange"
+                  >
                     <el-option label="正常" value="1"></el-option>
                     <el-option label="异常" value="2"></el-option>
                   </el-select>
@@ -79,17 +91,28 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="路线编号" prop="roadNum">
-                  <el-select v-model="inspectRecordForm.roadNum" placeholder="请选择">
-                    <el-option label="S10" value="1"></el-option>
-                    <el-option label="S20" value="2"></el-option>
+                  <el-select
+                    v-model="inspectRecordForm.roadNum"
+                    @change="routeChange(item)"
+                    placeholder="请选择"
+                  >
+                    <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="路段名称" prop="roadName">
-                  <el-select v-model="inspectRecordForm.roadName" placeholder="请选择">
-                    <el-option label="路段1" value="1"></el-option>
-                    <el-option label="路段2" value="2"></el-option>
+                <el-form-item label="路段名称" prop="sectionIndex">
+                  <el-select
+                    v-model="inspectRecordForm.sectionIndex"
+                    @change="sectionChange"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item,index) in sectionList"
+                      :key="item.id"
+                      :label="item.sectionName"
+                      :value="index"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -158,56 +181,100 @@
                 </h4>
                 <el-col :span="12">
                   <el-form-item label="一级分类" prop="firstProcessType">
-                    <el-select v-model="abnormal.firstProcessType" placeholder="请选择">
-                      <el-option label="路产情况" value="1"></el-option>
-                      <el-option label="路面情况" value="2"></el-option>
-                      <el-option label="建筑控制区情况" value="3"></el-option>
-                      <el-option label="其他" value="4"></el-option>
+                    <el-select
+                      v-model="abnormal.firstProcessType"
+                      @change="processTypeChange(index,1)"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in cheProcesTypeTree"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col
+                  v-if="abnormal.firstType !== undefined && abnormal.firstType !== null && cheProcesTypeTree[abnormal.firstType]['children'].length > 0"
+                  :span="12"
+                >
                   <el-form-item label="二级分类" prop="secondProcessType">
-                    <el-select v-model="abnormal.secondProcessType" placeholder="请选择">
-                      <el-option label="二级分类1" value="1"></el-option>
-                      <el-option label="二级分类2" value="2"></el-option>
+                    <el-select
+                      v-model="abnormal.secondProcessType"
+                      @change="processTypeChange(index,2)"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in cheProcesTypeTree[abnormal.firstType]['children']"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <!-- 三级分类根据分级配置判断是否显示 -->
-                <el-col v-if="false" :span="12">
+                <el-col
+                  v-if="abnormal.firstType !== undefined && abnormal.firstType !== null && abnormal.secondType !== undefined && abnormal.secondType !== null  && cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType] && cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType]['children'] && cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType]['children'].length > 0"
+                  :span="12"
+                >
                   <el-form-item label="三级分类" prop="thirdProcessType">
-                    <el-select v-model="abnormal.thirdProcessType" placeholder="请选择">
-                      <el-option label="三级分类1" value="1"></el-option>
-                      <el-option label="三级分类2" value="2"></el-option>
+                    <el-select
+                      v-model="abnormal.thirdProcessType"
+                      @change="processTypeChange(index,3)"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType]['children']"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="处理情况" prop="process">
-                    <el-select v-model="abnormal.process" placeholder="请选择">
-                      <el-option label="现场处理" value="1"></el-option>
-                      <el-option label="电话通知" value="2"></el-option>
-                      <el-option label="信息推送" value="3"></el-option>
-                      <el-option label="送达处理" value="4"></el-option>
+                    <el-select
+                      v-model="abnormal.process"
+                      @change="processChange(index,1)"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in abnormal.processList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col v-if="abnormal.processList && abnormal.process && abnormal.processModeList && abnormal.processModeList.length > 0" :span="12">
                   <el-form-item label="处理方式" prop="processMode">
-                    <el-select v-model="abnormal.processMode" placeholder="请选择">
-                      <el-option label="方式1" value="1"></el-option>
-                      <el-option label="方式2" value="2"></el-option>
+                    <el-select
+                      v-model="abnormal.processMode"
+                      @change="processChange(index,2)"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in abnormal.processModeList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col v-if="abnormal.processList && abnormal.process && abnormal.process && abnormal.processResultsList &&  abnormal.processResultsList.length > 0" :span="12">
                   <el-form-item label="处理结果" prop="processResults">
                     <el-select v-model="abnormal.processResults" placeholder="请选择">
-                      <el-option label="处理完成" value="1"></el-option>
-                      <el-option label="处理中" value="2"></el-option>
-                      <el-option label="待处理" value="3"></el-option>
-                      <el-option label="立案" value="4"></el-option>
+                      <el-option
+                        v-for="item in abnormal.processResultsList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -242,32 +309,38 @@
                 </el-col>
                 <template v-if="abnormal.isCase === '1'">
                   <el-col :span="12">
-                    <el-form-item
-                      label="程序类型"
-                      prop="programType"
+                    <el-form-item label="程序类型" 
                       :rules="[{ required: true, message: '请选择程序类型', trigger: 'change' }]"
-                    >
-                      <el-select v-model="abnormal.programType" placeholder="请选择">
-                        <el-option label="一般程序" value="1"></el-option>
-                        <el-option label="简易程序" value="2"></el-option>
+                      :prop="'listAbn.'+ index + '.programType'">
+                      <el-select
+                        v-model="abnormal.programType"
+                        placeholder="请选择"
+                        @change="programTypeChange(index)"
+                      >
+                        <el-option label="一般程序" value="0"></el-option>
+                        <el-option label="简易程序" value="1"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item
-                      label="案件类型"
-                      prop="caseType"
+                    <el-form-item label="案件类型" 
                       :rules="[{ required: true, message: '请选择案件类型', trigger: 'change' }]"
-                    >
-                      <el-select v-model="abnormal.caseType" placeholder="请选择">
-                        <el-option label="处罚" value="1"></el-option>
-                        <el-option label="赔补偿" value="2"></el-option>
+                      :prop="'listAbn.'+ index + '.caseTypeId'">
+                      <el-select v-model="abnormal.caseTypeId" placeholder="请选择">
+                        <el-option
+                          v-for="(item,index) in caseTypeList"
+                          :key="index"
+                          :label="item.caseTypeName"
+                          :value="item.caseTypeId"
+                        ></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
-                    <el-form-item label="违法行为" prop="caseCauseId">
-                      <el-input v-model="abnormal.caseCauseId"></el-input>
+                    <el-form-item label="违法行为" prop="caseCauseName" class="case-abnormal-input">
+                      <el-input v-model="abnormal.caseCauseName" @click="chooseIllegalAct(index)">
+                        <el-button slot="append" @click="chooseIllegalAct(index)"></el-button>
+                      </el-input>
                     </el-form-item>
                   </el-col>
                 </template>
@@ -283,7 +356,12 @@
           <div class="enclosure-file-table">
             <h3 class="form-tab-title">
               附件信息
-              <el-button v-if="PageType !== 'view'" type="text" class="add-enclosure-file" @click="addEnclosure('type')">
+              <el-button
+                v-if="PageType !== 'view'"
+                type="text"
+                class="add-enclosure-file"
+                @click="addEnclosure('type')"
+              >
                 <i class="add-file-type-icon">+</i>添加
               </el-button>
             </h3>
@@ -291,7 +369,11 @@
               <el-table-column type="expand">
                 <template slot-scope="scope">
                   <div v-if="scope.row.children && scope.row.children.length">
-                    <ul v-for="(attach, index) in scope.row.children" :key="attach.id" class="file-children-table">
+                    <ul
+                      v-for="(attach, index) in scope.row.children"
+                      :key="attach.id"
+                      class="file-children-table"
+                    >
                       <li style="width: 60px;">{{ `${scope.$index + 1}.${index + 1}` }}</li>
                       <li style="width: calc(100% - 220px);color: #7b7b7b;">{{ attach.name }}</li>
                       <li style="width: 160px;">
@@ -306,7 +388,7 @@
               </el-table-column>
               <el-table-column label="序号" prop="index" width="60px" align="center">
                 <template slot-scope="scope">
-                  <span >{{scope.$index + 1}}</span>
+                  <span>{{scope.$index + 1}}</span>
                 </template>
               </el-table-column>
               <el-table-column label="材料名称" prop="name" align="center"></el-table-column>
@@ -362,20 +444,38 @@
       </el-button>
     </div>
     <!-- 添加附件 -->
-    <AddRecordFile ref="AddRecordFileRef" @addAttach="addAttach"/>
+    <AddRecordFile ref="AddRecordFileRef" @addAttach="addAttach" />
     <!-- 查看附件 -->
     <ReviewAbnormalFile ref="ReviewAbnormalFileRef" />
+    <!-- 违规行为 -->
+    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
   </div>
 </template>
 
 <script>
+import iLocalStroage from "@/common/js/localStroage";
 import AddRecordFile from "@/page/inspection/dutyManage/components/addRecordFile.vue";
 import ReviewAbnormalFile from "@/page/inspection/dutyManage/components/reviewAbnormalFile.vue";
 import AbnormalFile from "@/page/inspection/dutyManage/components/abnormalFileList.vue";
-import { getCheRecordTempPageListApi, addCheRecordApi, getCheRecordDetailApi } from '@/api/supervision'
+import chooseillegalAct from "@/page/chooseIllegegaDialog.vue";
+import {
+  getCheRecordTempPageListApi,
+  addCheRecordApi,
+  getCheRecordDetailApi,
+  getCheProcessTypeTreeApi,
+  getProcessTypeApi,
+  getProcessApi,
+  getProcessTypeTreeApi
+} from "@/api/supervision";
+import { findRouteManageByOrganIdApi, getSectionListApi } from "@/api/system";
 
 export default {
-  components: { AddRecordFile, AbnormalFile, ReviewAbnormalFile },
+  components: {
+    AddRecordFile,
+    AbnormalFile,
+    ReviewAbnormalFile,
+    chooseillegalAct,
+  },
   data() {
     return {
       inspectRecordForm: {
@@ -383,6 +483,7 @@ export default {
         checkCategory: "",
         checkType: "",
         roadCondition: "1",
+        lawPersonListIndex: [],
         listAbn: [
           {
             firstProcessType: "",
@@ -399,6 +500,11 @@ export default {
           },
         ],
       },
+      //默认业务领域
+      cate: {
+        zfmlId: "1002000100000000",
+        zfml: "公路路政",
+      },
       rules: {
         checkTime: [
           { required: true, message: "巡查时间不能为空", trigger: "blur" },
@@ -412,6 +518,12 @@ export default {
         roadCondition: [
           { required: true, message: "请选择路段情况", trigger: "change" },
         ],
+        roadNum: [
+          { required: true, message: "请选择路线编号", trigger: "change" },
+        ],
+        sectionIndex: [
+          { required: true, message: "请选择路段", trigger: "change" },
+        ]
       },
       tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg",
       acOfficalUrl: "@/../static/images/img/personInfo/icon_ac_wenshu.svg",
@@ -427,13 +539,36 @@ export default {
       checkAllOffical: false,
       isIndeterminate: false,
       abnormalFileList: [
-        { type: "img", src: "http://124.192.215.10:9332/14,27fefbdd30ab", name: '图片文件.png' },
-        { type: "audio", src: "@/../static/sounds/ringtone.wav", name: '音频文件.wav' },
-        { type: "video", src: "http://124.192.215.10:9332/11,2804579f39a3", name: '视频文件.mp4' },
+        {
+          type: "img",
+          src: "http://124.192.215.10:9332/14,27fefbdd30ab",
+          name: "图片文件.png",
+        },
+        {
+          type: "audio",
+          src: "@/../static/sounds/ringtone.wav",
+          name: "音频文件.wav",
+        },
+        {
+          type: "video",
+          src: "http://124.192.215.10:9332/11,2804579f39a3",
+          name: "视频文件.mp4",
+        },
       ],
-      normalRecordTemp: [],//正常记录模板list
-      abnormalRecordTemp: [],//异常
-      curParentAttach: {},//当前所选附件分类
+      normalRecordTemp: [], //正常记录模板list
+      abnormalRecordTemp: [], //异常
+      curParentAttach: {}, //当前所选附件分类
+      curAbnormalIndex: {}, //当前所选记录异常索引
+      lawPersonList: [], //执法人员列表
+      caseTypeList: [], //案件类型
+      routeList: [], //路线
+      sectionList: [], //路段
+      cheProcesTypeTree: [], //处理等级树
+      secondProcesTypeTree: [], //二级处理等级
+      thirdProcesTypeTree: [], //三级树
+      processList: [], //处理情况list
+      processModeList: [], //处理方式list
+      processResultsList: [], //处理结果list
     };
   },
   computed: {
@@ -448,14 +583,20 @@ export default {
     },
     rowData() {
       return this.$route.params.cheRecord;
-    }
+    },
+    UserInfo() {
+      return iLocalStroage.gets("userInfo");
+    },
   },
   created() {
     console.log(this.PageType);
     this.getCheRecordTempPageList();
-    if(this.PageType === "edit") {
+    if (this.PageType === "edit") {
       this.getCheRecordDetail(this.rowData);
     }
+    this.searchLawPerson();
+    this.findRouteManageByOrganId();
+    this.getCheProcessTypeTree();
   },
   methods: {
     // 添加附件
@@ -490,7 +631,7 @@ export default {
       })
         .then(() => {
           this.inspectRecordForm.listAbn.splice(index, 1);
-          if(this.inspectRecordForm.listAbn == 0) {
+          if (this.inspectRecordForm.listAbn == 0) {
             this.inspectRecordForm.roadCondition = "1";
           }
         })
@@ -525,53 +666,86 @@ export default {
             background: "rgba(234,237,244, 0.8)",
           });
 
+          this.inspectRecordForm.cateId = this.cate.zfmlId;
+          this.inspectRecordForm.cateName = this.cate.zfml;
           this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
           this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
+          this.inspectRecordForm.listAbn.forEach(a => {
+            a.programTypeName = a.programTypeName == "0" ? "一般程序" : "简易程序";
+          })
+          const lawPersonListIndex = this.inspectRecordForm.lawPersonListIndex;
+          let listPer = [];
+          this.inspectRecordForm.personIds = "";
+          this.inspectRecordForm.personName = "";
+          this.inspectRecordForm.certificateId = "";
+          this.inspectRecordForm.lawPersonListIndex.forEach((i) => {
+            let per = {
+              personId: this.lawPersonList[i].userId,
+              personName: this.lawPersonList[i].lawOfficerName,
+              createId: this.UserInfo.id,
+            };
+            listPer.push(per);
+
+            this.inspectRecordForm.personIds += `${per.personId},`;
+            this.inspectRecordForm.personName += `${per.personName},`;
+            this.inspectRecordForm.certificateId += `${this.lawPersonList[i].lawOfficerCards},`;
+          });
+          this.inspectRecordForm.listPer = listPer;
+
           addCheRecordApi(this.inspectRecordForm).then(
-            res => {
-              if(res.code == 200) {
+            (res) => {
+              if (res.code == 200) {
                 this.$message({
                   type: "success",
-                  message: "保存成功!"
+                  message: "保存成功!",
                 });
                 this.$router.go(-1);
                 this.$store.dispatch("deleteTabs", this.$route.name);
               }
             },
-            err => { console.error(err) }
+            (err) => {
+              console.error(err);
+            }
           );
           loading.close();
         } else {
           return false;
         }
       });
-      
     },
     // 查看附件
     viewAbnormalFile(file) {
       this.$refs.ReviewAbnormalFileRef.showModal(file.type, file.src);
     },
     //模板查询
-    getCheRecordTempPageList(){
-      const params = { size: -1 }
+    getCheRecordTempPageList() {
+      const params = { size: -1 };
       getCheRecordTempPageListApi(params).then(
-        res => {
-          if(res.code == 200) {
-            this.normalRecordTemp = res.data.records.filter(t => t.roadCondition == "1");
-            this.abnormalRecordTemp = res.data.records.filter(t => t.roadCondition == "2");
-          }else{
+        (res) => {
+          if (res.code == 200) {
+            this.normalRecordTemp = res.data.records.filter(
+              (t) => t.roadCondition == "1"
+            );
+            this.abnormalRecordTemp = res.data.records.filter(
+              (t) => t.roadCondition == "2"
+            );
+          } else {
             console.error(res);
           }
         },
-        err => { console.log(err) }
+        (err) => {
+          console.log(err);
+        }
       );
     },
     //道路情况
-    roadConditionChange(value){
-      if(value == "1") {//正常
-        this.inspectRecordForm.listAbn = []
-      }else{//异常
-        if(this.inspectRecordForm.listAbn.length == 0) {
+    roadConditionChange(value) {
+      if (value == "1") {
+        //正常
+        this.inspectRecordForm.listAbn = [];
+      } else {
+        //异常
+        if (this.inspectRecordForm.listAbn.length == 0) {
           this.inspectRecordForm.describes = "";
           this.inspectRecordForm.desTemplateId = "";
           this.addAbnormal();
@@ -581,48 +755,304 @@ export default {
     //获取记录详情
     getCheRecordDetail(cheRecord) {
       getCheRecordDetailApi(cheRecord).then(
-        res => {
-          if(res.code == 200){
-            this.inspectRecordForm = res.data;
-            this.inspectRecordForm.checkTime = [ res.data.checkStartTime, res.data.checkEndTime ];
-            this.listAtt = this.inspectRecordForm.listAtt;
-          }else{
+        (res) => {
+          if (res.code == 200) {
+            let formData = {};
+            formData = res.data;
+            formData.checkTime = [
+              res.data.checkStartTime,
+              res.data.checkEndTime,
+            ];
+            this.listAtt = formData.listAtt;
+            //回填执法人员
+            const listPer = formData.listPer;
+            const lawPersonListIndex = [];
+            listPer &&
+              listPer.forEach((p) => {
+                this.lawPersonList.map((lp, index) => {
+                  if (lp.userId == p.personId) {
+                    lawPersonListIndex.push(index);
+                  }
+                });
+              });
+            formData.lawPersonListIndex = lawPersonListIndex;
+            
+            this.inspectRecordForm = formData;
+            if(this.inspectRecordForm.roadNum){
+              this.routeChange(this.inspectRecordForm.roadNum);
+            }
+
+            formData.listAbn && formData.listAbn.forEach((a, index) => {
+              if(a.firstProcessType) {
+                a["firstType"] = this.cheProcesTypeTree.findIndex(t => t.id === a.firstProcessType);
+              }
+              if(a.secondProcessType && a.firstProcessType){
+                a["secondType"] = this.cheProcesTypeTree[a["firstType"]]["children"].findIndex(t => t.id === a.secondProcessType)
+              }
+
+              this.getProcessType(index,a.thirdProcessType ? a.thirdProcessType : a.secondProcessType ? a.secondProcessType : a.firstProcessType);
+
+              this.programTypeChange(index);
+            });
+            this.inspectRecordForm = formData;
+
+          } else {
             console.error(res);
           }
         },
-        err => { console.error(err) }
+        (err) => {
+          console.error(err);
+        }
       );
     },
     //添加删除附件
     addAttach(attach) {
-      if(attach.type === '0'){
+      if (attach.type === "0") {
         attach.children = [];
         this.listAtt.push(attach);
-      }else{
+      } else {
         this.curParentAttach.children.push(attach);
       }
     },
     //删除附件
     removeAttach(attach, parentAttach) {
-      parentAttach.children.splice(parentAttach.children.indexOf(attach),1);
+      parentAttach.children.splice(parentAttach.children.indexOf(attach), 1);
     },
     //模板生成描述
     generateDescribes() {
-      const tmp = this.normalRecordTemp.find(t => t.templateId == this.inspectRecordForm.desTemplateId);
+      const tmp = this.normalRecordTemp.find(
+        (t) => t.templateId == this.inspectRecordForm.desTemplateId
+      );
+      if(this.inspectRecordForm.checkTime){
+        this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
+        this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
+      }
       this.inspectRecordForm.describes = this.generateContent(tmp.content);
     },
     //异常摘要生成
     problemAbstractGenerate(listAbnIndex) {
       const curAbn = this.inspectRecordForm.listAbn[listAbnIndex];
-      const tmp = this.abnormalRecordTemp.find(t => t.templateId == curAbn.templateId);
-      this.inspectRecordForm.listAbn[listAbnIndex].problemAbstract = this.generateContent(tmp.content);
+      const tmp = this.abnormalRecordTemp.find(
+        (t) => t.templateId == curAbn.templateId
+      );
+      this.inspectRecordForm.listAbn[
+        listAbnIndex
+      ].problemAbstract = this.generateContent(tmp.content);
     },
     generateContent(content) {
       for (const key in this.inspectRecordForm) {
         content = content.replace(`{${key}}`, this.inspectRecordForm[key]);
       }
       return content;
-    }
+    },
+    // 查询执法人员
+    searchLawPerson() {
+      this.$store.dispatch("findLawOfficerList", this.UserInfo.organId).then(
+        (res) => {
+          this.lawPersonList = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    //程序类型选择
+    programTypeChange(abnormalIndex) {
+      this.curAbnormalIndex = abnormalIndex;
+      this.inspectRecordForm.listAbn[abnormalIndex].caseType = "";
+
+      this.caseTypeList = [];
+      let data = {
+        programType: this.inspectRecordForm.listAbn[abnormalIndex].programType,
+        cateId: this.cate.zfmlId,
+        organId: this.UserInfo.organId,
+      };
+      let _this = this;
+      this.$store.dispatch("getCaseType", data).then(
+        (res) => {
+          console.log("案件类型", res);
+          _this.caseTypeList = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    //选择违法行为弹窗
+    chooseIllegalAct(abnormalIndex) {
+      this.curAbnormalIndex = abnormalIndex;
+      if (this.cate.zfmlId) {
+        let lawCate = {
+          cateId: this.cate.zfmlId,
+          cateName: this.cate.zfml,
+          hyTypeId: "",
+          resourse: "establish",
+        };
+        this.$refs.chooseillegalActRef.showModal(lawCate);
+      }
+    },
+    //设置违法行为
+    setIllegaAct(val) {
+      const abnormal = this.inspectRecordForm.listAbn[this.curAbnormalIndex];
+      let curAbnormal = {};
+      Object.assign(curAbnormal, abnormal, { caseCauseId: val.id, caseCauseName:val.strContent });
+      this.inspectRecordForm.listAbn.splice(
+        this.curAbnormalIndex,
+        1,
+        curAbnormal
+      );
+    },
+    //查找路线
+    findRouteManageByOrganId() {
+      let data = { organId: this.UserInfo.organId };
+      findRouteManageByOrganIdApi(data).then(
+        (res) => {
+          this.routeList = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    routeChange(routeName) {
+      const params = { size: -1, routeName };
+      getSectionListApi(params).then(
+        (res) => {
+          if (res.code == 200) {
+            this.sectionList = res.data.records;
+            if(this.inspectRecordForm.roadName){
+              this.inspectRecordForm.sectionIndex = this.sectionList.findIndex(s => s.sectionName == this.inspectRecordForm.roadName);
+            }
+          }
+        },
+        (error) => {
+          console.log(err);
+        }
+      );
+    },
+    //选择路段
+    sectionChange() {
+      const curSection = this.sectionList[this.inspectRecordForm.sectionIndex];
+      this.inspectRecordForm.roadName = curSection.sectionName;
+      this.inspectRecordForm.startKilometer = curSection.startingPileK;
+      this.inspectRecordForm.startMeter = curSection.startingPileM;
+      this.inspectRecordForm.endKilometer = curSection.enddingPileK;
+      this.inspectRecordForm.endMeter = curSection.enddingPileM;
+    },
+    //获取处理等级树
+    getCheProcessTypeTree() {
+      getCheProcessTypeTreeApi().then(
+        (res) => {
+          this.cheProcesTypeTree = res.data.filter((t) => t.levels === "1");
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    processTypeChange(abnormalIndex, levels) {
+      let typeAttr = "";
+      let typeIndex = null;
+      let processType = "";
+
+      this.inspectRecordForm.listAbn[abnormalIndex].process = "";
+      this.inspectRecordForm.listAbn[abnormalIndex].processMode = "";
+      this.inspectRecordForm.listAbn[abnormalIndex].processResults = "";
+      switch (levels) {
+        case 1:
+          typeAttr = "firstType";
+          typeIndex = this.cheProcesTypeTree.findIndex(
+            (item) =>
+              item.id ===
+              this.inspectRecordForm.listAbn[abnormalIndex]["firstProcessType"]
+          );
+          this.inspectRecordForm.listAbn[abnormalIndex]["secondProcessType"] =
+            "";
+          this.inspectRecordForm.listAbn[abnormalIndex]["thirdProcessType"] =
+            "";
+          processType = this.inspectRecordForm.listAbn[abnormalIndex][
+            "firstProcessType"
+          ];
+          break;
+        case 2:
+          typeAttr = "secondType";
+          let perIndex = this.inspectRecordForm.listAbn[abnormalIndex]['firstType'];
+          if (
+            this.cheProcesTypeTree[perIndex]["children"] &&
+            this.cheProcesTypeTree[perIndex]["children"].length
+          ) {
+            typeIndex = this.cheProcesTypeTree[perIndex][
+              "children"
+            ].findIndex(
+              (item) =>
+                item.id ===
+                this.inspectRecordForm.listAbn[abnormalIndex][
+                  "secondProcessType"
+                ]
+            );
+          }
+          this.inspectRecordForm.listAbn[abnormalIndex]["thirdProcessType"] =
+            "";
+          processType = this.inspectRecordForm.listAbn[abnormalIndex][
+            "secondProcessType"
+          ];
+          break;
+        case 3:
+          processType = this.inspectRecordForm.listAbn[abnormalIndex][
+            "thirdProcessType"
+          ];
+          break;
+      }
+      if(typeAttr){
+        this.inspectRecordForm.listAbn[abnormalIndex][typeAttr] = typeIndex;
+      }
+      this.getProcessType(abnormalIndex,processType);
+    },
+    //获取处理情况
+    getProcessType(abnormalIndex,processTypeId) {
+      getProcessTypeTreeApi(processTypeId).then(
+        (res) => {
+          const abnormal = this.inspectRecordForm.listAbn[abnormalIndex];
+          let curAbnormal = {};
+          Object.assign(curAbnormal, abnormal, { processList: res.data });
+          
+          if(curAbnormal.process){
+            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process);
+          }
+
+          if(curAbnormal.processMode) {
+            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode);
+          }
+          
+          this.inspectRecordForm.listAbn.splice(abnormalIndex, 1, curAbnormal);
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    },
+    processChange(abnormalIndex, processType) {
+      const curAbnormal = this.inspectRecordForm.listAbn[abnormalIndex];
+      let index = "";
+      let processAttr = "";
+      curAbnormal.processResults = "";
+      curAbnormal.processResultsList = [];
+      switch (processType) {
+        case 1:
+          curAbnormal.processMode = "";
+          curAbnormal.processRes = "";
+          index = curAbnormal.processList.findIndex(p => p.id === curAbnormal.process);
+          curAbnormal.processModeList = curAbnormal.processList[index]["children"]
+          break;
+        case 2:
+          curAbnormal.processRes = "";
+          index = curAbnormal.processModeList.findIndex(p => p.id === curAbnormal.processMode);
+          curAbnormal.processResultsList = curAbnormal.processModeList[index]['children'];
+          break;
+      }
+      this.inspectRecordForm.listAbn[abnormalIndex][processAttr] = index;
+      
+    },
   },
 };
 </script>
@@ -857,7 +1287,25 @@ export default {
       margin-left: 4px;
     }
   }
+  .case-abnormal-input {
+    >>> .el-input-group__append {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 0;
+      opacity: 0;
+      height: 100%;
+      cursor: pointer;
 
+      button {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
 }
 </style>
 <style lang="scss">

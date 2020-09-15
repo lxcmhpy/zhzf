@@ -1,5 +1,5 @@
 {
-  "CURRENT": "NW",
+  "CURRENT": "JX",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -19,7 +19,7 @@
     "CHECK_API": "http://124.192.215.11:8081"
   },
   "NW": {
-    "CAPTCHA_HOST": "http://172.16.169.34:9000",
+    "CAPTCHA_HOST": "http://172.16.170.96:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
