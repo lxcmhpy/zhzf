@@ -1,6 +1,6 @@
 <template>
   <div class="jiangXiMap">
-    <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" />
+    <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" />
     <TopInFo />
     <Search
       ref="Search"

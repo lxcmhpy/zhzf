@@ -35,6 +35,7 @@ export default {
      * 地图打点函数(单个点位打点)
      */
     addPoint(data) {
+      this.cleanAll()
       this.map.setZoomAndCenter(18, data.position) // 当前点位设为地图中心点，并调整缩放等级
       let marker = new AMap.Marker({
         position: data.propertyValue.split(',') || [], //位置
@@ -51,6 +52,7 @@ export default {
      * 地图打点函数(多个点位打点)
      */
     addPoints(data) {
+      this.cleanPoint()
       let markerList = data.map(item => {
         let marker = new AMap.Marker({
           position: item.propertyValue.split(',') || [],   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
@@ -62,8 +64,42 @@ export default {
         marker.on('click', () => {this.clickPoint(item)});
         return marker
       })
+      this.map.setZoomAndCenter(9, this.getPointsCenter(data)) // 设中心点，并调整缩放等级
       this.map.add(markerList);
       this.markerList = markerList
+    },
+
+    /**
+     * 求多个点位的中位数
+     */
+    getPointsCenter(data) {
+      if(data.length === 0) return false;
+      let lng = [], lat =[], lnglat = [];
+      data.map(item => {
+        if(item.propertyValue) {
+          if(item.propertyValue.split(',').length === 2) {
+            lng.push(Number(item.propertyValue.split(',')[0]))
+            lat.push(Number(item.propertyValue.split(',')[1]))
+          }
+        }
+      })
+      lng.sort((a,b) => { return a -b })
+      lat.sort((a,b) => { return a -b })
+      if(lng.length % 2 === 0) {
+        let leftIndex = (lng.length / 2) -1
+        let rightIndex = lng.length / 2
+        lnglat[0] = (lng[leftIndex] + lng[rightIndex]) / 2
+      } else if (lng.length % 2 === 1) {
+        lnglat[0] = lng[Math.floor(lng.length / 2)]
+      }
+      if(lat.length % 2 === 0) {
+        let leftIndex = (lat.length / 2) -1
+        let rightIndex = lat.length / 2
+        lnglat[1] = (lat[leftIndex] + lat[rightIndex]) / 2
+      } else if (lat.length % 2 === 1) {
+        lnglat[1] = lat[Math.floor(lat.length / 2)]
+      }
+      return lnglat
     },
 
     /**
@@ -76,12 +112,8 @@ export default {
     /**
      * 通过图层标识清除多个点位
      */
-    cleanPoints(layerName) {
-      this.markerList.map(marker => {
-        if(marker["Ce"].title === layerName) {
-          this.map.remove(marker)
-        }
-      })
+    cleanPoints() {
+      this.map.remove(this.markerList)
     },
 
     /**
