@@ -45,7 +45,7 @@ export default {
           // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
           if(item.peState && item.peState===1) {
             item.peStateColor = '#67C23A'
-          } 
+          }
           if (item.padState && item.padState === 1) {
             item.padStateColor = '#409EFF'
           }
@@ -80,7 +80,7 @@ export default {
           // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
           if(item.peState && item.peState===1) {
             item.peStateColor = '#67C23A'
-          } 
+          }
           if (item.padState && item.padState === 1) {
             item.padStateColor = '#409EFF'
           }
@@ -101,12 +101,9 @@ export default {
           throw new Error("getOrganDetail():::::::接口数据错误")
         }
       }).then(data => {
-        if(node.propertyValue) {
-          let latLng = node.propertyValue.split(',')
-          data.propertyValue = node.propertyValue
-          data.imgUrl = '/static/images/img/lawSupervise/map_jigou.png'
-          // 手动给点位添加图层标识属性
-          data.layerName = node.label
+        if(data.propertyValue) {
+          let latLng = data.propertyValue.split(',') || []
+          data.icon = '/static/images/img/lawSupervise/map_jigou.png'
           this.page.addPoint(data, latLng)
         } else {
           this.$message.error('没有坐标数据')
@@ -142,7 +139,7 @@ export default {
       console.log(node)
       // 地图打点
       let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
-      node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
+      node.icon = "/static/images/img/lawSupervise/icon_jc11.png"
       this.page.addPoint(node, latLng)
       // 显示弹出框
       this.searchWindowData.window4.title = node.nickName
@@ -182,12 +179,7 @@ export default {
           throw new Error("findImageByCaseId:::::接口错误")
         }
       }).then(data => {
-        data.forEach(p=>{
-            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
-                p.url = res
-                this.searchWindowData.window5.imgList.push(p)
-            });
-        })
+        this.searchWindowData.window5.imgList = data
       })
     },
 
@@ -230,18 +222,14 @@ export default {
           }).then(data => {
             data.map(item => {
               item.type = 5
-              item.propertyValue = item.eventCoordinate
+              item.propertyValue = item.eventCoordinate || []
+              item.icon = this.imgUrl.get(type)
             })
-            // 手动给数据添加图层唯一标识
-            data.layerName = name
-            // 添加点位图片
-            data.imgUrl = this.imgUrl.get(type)
             // 调用地图打点方法
             this.page.addPoints(data)
           })
         } else { // 当取消勾选时，清除对应图层点位
           this.page.cleanPoints(name)
-          this.map.removeOverlay(this.page.informationWindow)
         }
       } else {
         if(type === 4) {
@@ -275,24 +263,20 @@ export default {
               this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
             }
           }).then(data => {
-            // 手动给数据添加图层唯一标识
-            data.layerName = name
             // 手动给非现场站点添加type
             if(type === 4) {
               data.map(item => {
                 item.type = type
+                item.icon = this.imgUrl.get(type)
               })
               // 给抽屉弹窗里塞入数据
               this.drawerData.noEnforceData.option = data
             }
-            // 添加点位图片
-            data.imgUrl = this.imgUrl.get(type)
             // 调用地图打点方法
             this.page.addPoints(data)
           })
         } else { // 当取消勾选时，清除对应图层点位
           this.page.cleanPoints(name)
-          this.map.removeOverlay(this.page.informationWindow)
         }
       }
     },
@@ -340,25 +324,21 @@ export default {
             } else if (index === 5) {
               // 获取到点位信息
               let arr = item.data.records
-              // 给点位数据添加 propertyValue 属性
+              // 给点位数据添加 propertyValue 属性和 icon
               arr.map(arrItem => {
                 arrItem.type = 5
                 arrItem.propertyValue = arrItem.eventCoordinate
+                arrItem.icon = this.imgUrl.get(typeMap[index].type)
               })
-              // 手动给数据添加图层唯一标识
-              arr.layerName = typeMap[index].name
-              // 添加点位图片
-              arr.imgUrl = this.imgUrl.get(typeMap[index].type)
               // 调用地图打点方法
               this.page.addPoints(arr)
+            } else {
+              item.data.map(point => {
+                point.icon = this.imgUrl.get(typeMap[index].type)
+              })
+              // 调用地图打点方法
+              this.page.addPoints(item.data)
             }
-
-            // 手动给数据添加图层唯一标识
-            item.data.layerName = typeMap[index].name
-            // 添加点位图片
-            item.data.imgUrl = this.imgUrl.get(typeMap[index].type)
-            // 调用地图打点方法
-            this.page.addPoints(item.data)
           })
         })
       } else {

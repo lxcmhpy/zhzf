@@ -69,10 +69,12 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId", "docId", "showQZBtn", "docDataId"]) },
   methods: {
-    showModal(data) {
+    async showModal(data) {
       console.log(data);
       this.visible = true;
       this.caseData = data;
+      this.approvalForm.approveOpinions = data.oldApprovalOpion ? data.oldApprovalOpion : '同意';
+      this.approvalForm.approvalTime = data.oldApprovalTime ? data.oldApprovalTime : new Date().format("yyyy年MM月dd日");
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -97,6 +99,7 @@ export default {
         approveOpinions: this.approvalForm.approveOpinions,
         jsonApproveData: "",
       };
+      
 
       if (this.caseData.currentApproval == "1") {
         //一级审批
@@ -168,14 +171,14 @@ export default {
           try {
             await approvalPdfQzApi(data);
           } catch (err) {
-            this.$message("审批后签章失败！");
+            this.$message("审批签章失败！");
             throw new Error(err);
           }
         } else if (flowUrl == "commonGraphData_JX") {
           try {
             await approvalPdfQzJxApi(data);
           } catch (err) {
-            this.$message("审批后签章失败！");
+            this.$message("审批签章失败！");
             throw new Error(err);
           }
         }
@@ -190,7 +193,7 @@ export default {
         _this.$store.commit("setApprovalState", "approvalOver");
         _this.$emit("getNewData");
       } catch (err) {
-        this.$message("审核失败！");
+        this.$message("审批失败！");
         throw new Error(err);
       }
     },

@@ -62,7 +62,7 @@ export default {
             {this._l(this.imgList, item => {
               return (
                 <el-carousel-item>
-                  <img src={`${item.url}`} />
+                  <img src={`http://124.192.215.10:9332//${item.storageId}`} />
                 </el-carousel-item>
               )
             })}
