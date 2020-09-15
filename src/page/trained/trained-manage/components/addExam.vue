@@ -15,7 +15,7 @@
     >
       <el-row>
         <el-form-item label="考试名称" prop="teName" class="form-class">
-          <el-input v-model="addMockExamForm.teName"></el-input>
+          <el-input v-model="addMockExamForm.teName" maxlength="25"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -47,7 +47,7 @@
       </el-row>
       <el-row>
         <el-form-item label="考试人数" prop="teNum" class="form-class">
-          <el-input v-model="addMockExamForm.teNum" @input="trim()"></el-input>
+          <el-input v-model="addMockExamForm.teNum" @input="trim()" maxlength="6"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -66,6 +66,7 @@
 </template>
 <script>
 import { editMockExamInfo } from '@/api/trained'
+import { numType, isSpecialChar } from '@/common/js/validator';
 
 export default {
   data() {
@@ -83,16 +84,18 @@ export default {
       },
       rules: {
         teName: [
-          { required: true, message: "考试名称不能为空", trigger: "blur" }
+          { required: true, message: "考试名称不能为空", trigger: "blur" },
+          { validator: isSpecialChar, trigger: 'blur' }
         ],
         teType: [
           { required: true, message: "考试类型不能为空", trigger: "change" }
         ],
         orderType: [
-          { required: true, message: "试题排序不能为空", trigger: "blur" }
+          { required: true, message: "试题排序不能为空", trigger: "change" }
         ],
         teNum: [
-          { required: true, message: "考试人数不能为空", trigger: "blur" }
+          { required: true, message: "考试人数不能为空", trigger: "blur" },
+          { validator: numType, trigger: 'blur' }
         ]
       },
       dialogTitle: "", //弹出框title
