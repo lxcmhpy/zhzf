@@ -101,8 +101,9 @@ export default {
           throw new Error("getOrganDetail():::::::接口数据错误")
         }
       }).then(data => {
-        if(data.propertyValue) {
-          let latLng = data.propertyValue.split(',') || []
+        if(node.propertyValue) {
+          let latLng = node.propertyValue.split(',') || []
+          data.propertyValue = node.propertyValue
           data.icon = '/static/images/img/lawSupervise/map_jigou.png'
           this.page.addPoint(data, latLng)
         } else {
@@ -179,7 +180,12 @@ export default {
           throw new Error("findImageByCaseId:::::接口错误")
         }
       }).then(data => {
-        this.searchWindowData.window5.imgList = data
+        data.forEach(p=>{
+            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
+                p.url = res
+                this.searchWindowData.window5.imgList.push(p)
+            });
+        })
       })
     },
 
