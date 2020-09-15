@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "SGX",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -38,7 +38,7 @@
     "CHECK_API": "http://172.16.170.91:8081"
   },
   "SGX": {
-    "CAPTCHA_HOST": "http://172.16.169.42:9000",
+    "CAPTCHA_HOST": "http://192.168.0.106:9000",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API": "http://172.16.170.91:8081"

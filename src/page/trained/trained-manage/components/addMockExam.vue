@@ -15,7 +15,7 @@
     >
       <el-row>
         <el-form-item label="考试名称" prop="examName" class="form-class">
-          <el-input v-model="addExamBatchForm.examName"></el-input>
+          <el-input v-model="addExamBatchForm.examName" maxlength="25"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -48,7 +48,7 @@
       </el-row>
       <el-row>
         <el-form-item label="考试人数" prop="examSum" class="form-class">
-          <el-input v-model="addExamBatchForm.examSum" @input="trim()"></el-input>
+          <el-input v-model="addExamBatchForm.examSum" @input="trim()" maxlength="6"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -66,6 +66,8 @@
   </el-dialog>
 </template>
 <script>
+import { numType, isSpecialChar } from '@/common/js/validator';
+
 export default {
   data() {
     return {
@@ -82,10 +84,12 @@ export default {
       },
       rules: {
         examName: [
-          { required: true, message: "考试名称不能为空", trigger: "blur" }
+          { required: true, message: "考试名称不能为空", trigger: "blur" },
+          { validator: isSpecialChar, trigger: 'blur' }
         ],
         examSum: [
-          { required: true, message: "考试人数不能为空", trigger: "blur" }
+          { required: true, message: "考试人数不能为空", trigger: "blur" },
+          { validator: numType, trigger: 'blur' }
         ]
       },
       dialogTitle: "", //弹出框title

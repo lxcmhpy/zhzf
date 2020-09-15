@@ -473,6 +473,7 @@ export default {
       },
       isShow: false,
       addForm: {
+        taskName: '',
         name: '',
         sex: '',
         expertNum: '',
@@ -485,7 +486,6 @@ export default {
         checkRange: '',
         checkObjectNum: '',
         lawEnforceNum: '',
-        expertNum: '',
         timeList: '',
         operatePerson: '',
         supervisePerson: '',
@@ -493,9 +493,9 @@ export default {
         status: '',
       },
       addForm2: {
+        taskName: '',
         name: '',
         sex: '',
-        expertNum: '',
         company: '',
         itemType: '',
         checkSubject: '',
@@ -653,7 +653,7 @@ export default {
       data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
-      data.expertNum = data.expertNum ? expertNum : 0;
+      data.expertNum = data.expertNum ? data.expertNum : 0;
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -711,7 +711,7 @@ export default {
       data.checkMode = data.checkMode ? data.checkMode.join(',') : '';
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
-      data.expertNum = data.expertNum ? expertNum : 0;
+      data.expertNum = data.expertNum ? data.expertNum : 0;
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -957,7 +957,7 @@ export default {
       { name: '抽查方式', option: 3 },
       { name: '抽查事项', option: 4 },
       { name: '事项类别', option: 5 },
-      { name: '抽查类别', option: 6 },
+      { name: '任务管理-抽查事项', option: 6 },
       { name: '检查对象', option: 7 },
       { name: '抽查事项名称', option: 8 },
     ])
