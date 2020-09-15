@@ -245,6 +245,7 @@ export default {
       formData: {
         caseNumber: "",
         caseCauseName: "",
+        afsj: "",
         party: "",
         partySex: "",
         partyIdNo: "",
