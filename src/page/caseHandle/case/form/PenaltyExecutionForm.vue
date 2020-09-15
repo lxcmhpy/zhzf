@@ -430,7 +430,6 @@ export default {
      * 根据已缴金额计算待缴金额
      */
     handleChangePaidAmount(val) {
-      debugger
       let tempPunishAmount = ''
       console.log("this.totalMoney",this.totalMoney);
       console.log("this.formData.tempPunishAmount",this.formData.tempPunishAmount);
