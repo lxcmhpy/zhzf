@@ -66,7 +66,7 @@ export default {
       })
       this.map.setZoomAndCenter(9, this.getPointsCenter(data)) // 设中心点，并调整缩放等级
       this.map.add(markerList);
-      this.markerList = markerList
+      this.markerList.push(markerList)
     },
 
     /**
@@ -112,8 +112,13 @@ export default {
     /**
      * 通过图层标识清除多个点位
      */
-    cleanPoints() {
-      this.map.remove(this.markerList)
+    cleanPoints(icon) {
+      this.markerList.map((markers,index) => {
+        if(markers[0]["Ce"].icon === icon) {
+          this.map.remove(markers)
+          this.markerList.splice(index, 1)
+        }
+      })
     },
 
     /**
