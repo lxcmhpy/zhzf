@@ -1789,6 +1789,7 @@ export default {
     },
     //添加挂车
     addTrailer() {
+      this.inforForm.trailerColor='1'
       this.showTrailer = true;
     },
     //点击处罚依据显示弹窗
