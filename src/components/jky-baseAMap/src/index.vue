@@ -35,10 +35,11 @@ export default {
      * 地图打点函数(单个点位打点)
      */
     addPoint(data) {
-      this.cleanAll()
-      this.map.setZoomAndCenter(18, data.position) // 当前点位设为地图中心点，并调整缩放等级
+      this.cleanPoint()
+      let position = data.propertyValue.split(',') || []
+      this.map.setZoomAndCenter(18, position) // 当前点位设为地图中心点，并调整缩放等级
       let marker = new AMap.Marker({
-        position: data.propertyValue.split(',') || [], //位置
+        position: position, //位置
         icon: data.icon,
         offset: new AMap.Pixel(0,0), // 设置点标记偏移量
         anchor:'bottom-center', // 设置锚点方位
@@ -66,7 +67,7 @@ export default {
       })
       this.map.setZoomAndCenter(9, this.getPointsCenter(data)) // 设中心点，并调整缩放等级
       this.map.add(markerList);
-      this.markerList = markerList
+      this.markerList.push(markerList)
     },
 
     /**
@@ -112,16 +113,13 @@ export default {
     /**
      * 通过图层标识清除多个点位
      */
-    cleanPoints() {
-      this.map.remove(this.markerList)
-    },
-
-    /**
-     * 清除地图所有点位
-     */
-    cleanAll() {
-      this.map.remove(this.marker)
-      this.map.remove(this.markerList)
+    cleanPoints(icon) {
+      this.markerList.map((markers,index) => {
+        if(markers[0]["Ce"].icon === icon) {
+          this.map.remove(markers)
+          this.markerList.splice(index, 1)
+        }
+      })
     },
 
     /**

@@ -101,10 +101,10 @@ export default {
           throw new Error("getOrganDetail():::::::接口数据错误")
         }
       }).then(data => {
-        if(data.propertyValue) {
-          let latLng = data.propertyValue.split(',') || []
+        if(node.propertyValue) {
+          data.propertyValue = node.propertyValue
           data.icon = '/static/images/img/lawSupervise/map_jigou.png'
-          this.page.addPoint(data, latLng)
+          this.page.addPoint(data)
         } else {
           this.$message.error('没有坐标数据')
         }
@@ -138,9 +138,9 @@ export default {
     personClick (node) {
       console.log(node)
       // 地图打点
-      let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
+      data.propertyValue = node.propertyValue
       node.icon = "/static/images/img/lawSupervise/icon_jc11.png"
-      this.page.addPoint(node, latLng)
+      this.page.addPoint(node)
       // 显示弹出框
       this.searchWindowData.window4.title = node.nickName
       this.searchWindowData.window4.info = [
@@ -179,7 +179,12 @@ export default {
           throw new Error("findImageByCaseId:::::接口错误")
         }
       }).then(data => {
-        this.searchWindowData.window5.imgList = data
+        data.forEach(p=>{
+            this.$util.com_getZfjgFileStream(p.storageId).then(res=>{
+                p.url = res
+                this.searchWindowData.window5.imgList.push(p)
+            });
+        })
       })
     },
 
@@ -229,7 +234,7 @@ export default {
             this.page.addPoints(data)
           })
         } else { // 当取消勾选时，清除对应图层点位
-          this.page.cleanPoints()
+          this.page.cleanPoints(this.imgUrl.get(type))
         }
       } else {
         if(type === 4) {
@@ -276,7 +281,7 @@ export default {
             this.page.addPoints(data)
           })
         } else { // 当取消勾选时，清除对应图层点位
-          this.page.cleanPoints()
+          this.page.cleanPoints(this.imgUrl.get(type))
         }
       }
     },

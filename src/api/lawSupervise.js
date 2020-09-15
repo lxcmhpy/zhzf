@@ -563,3 +563,15 @@ export function getZfjgFileStreamByStorageId(storageId) {
       cancelToken: setCancelSource()
     });
   }
+
+  //江西根据时间同步称重数据
+  export function collectVehicleWeightEntry(startTime,endTime) {
+    return  request({
+      url:  "/hcr/hcr/collectVehicleWeightEntry/"+startTime+"/"+endTime,
+      method:  "GET",
+      showloading: true,
+      baseUrlType:  'CAPTCHA_HOST',
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource(),
+    });
+  }
