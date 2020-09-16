@@ -128,6 +128,7 @@ export const inforCollectionCommonMixins = {
         distance:0,
         distance2:0,
         latitudeAndLongitude:'', //案发坐标
+        afdd: "",//案发地点
       },
       routeList: [],
       directionList: [],
@@ -588,6 +589,7 @@ export const inforCollectionCommonMixins = {
       // this.searchLawPerson();
       // console.log('searchLawPerson', this.allUserList)
       // console.log("lawPersonList", this.lawPersonList)
+      let _this = this;
       if(!this.inforForm.latitudeAndLongitude){
         this.$message('请获取坐标！');
         return;
@@ -596,8 +598,31 @@ export const inforCollectionCommonMixins = {
         this.$message('请添加路损清单！');
         return;
       }
+      // 拼接案发地点
+      if (_this.inforForm.zfmlId === "1002000100000000") {
+        let afddSting =
+          _this.inforForm.highwayRoute +
+          _this.inforForm.direction +
+          "k" +
+          _this.inforForm.pileNumber +
+          "+" +
+          _this.inforForm.distance;
+        if (_this.inforForm.distance2 || _this.inforForm.pileNumber2) {
+          afddSting =
+            afddSting +
+            "至" +
+            "k" +
+            _this.inforForm.pileNumber2 +
+            "+" +
+            _this.inforForm.distance2 +
+            " " +
+            _this.inforForm.position;
+        } else {
+          afddSting = afddSting + " " + _this.inforForm.position;
+        }
+        _this.inforForm.afdd = afddSting;
+      }
       console.log("表单数据", this.inforForm)
-      let _this = this
       //        this.$refs["inforForm"].validate(valid => {
       let result = true
       for (var field in _this.rules) {
@@ -1123,9 +1148,10 @@ export const inforCollectionCommonMixins = {
     },
 
     blur2(val) {
-      var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
+      // var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
+      var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(\d{11})$)/;  
       if (!reg.test(val) && val) {
-        this.$message('手机号不正确')
+        this.$message('联系电话格式错误')
       }
       // callback();
     },

@@ -504,6 +504,9 @@ export default {
           margin: 14px 0;
           color: #7B7B7B;
         }
+        .cell{
+          display: block;
+        }
       }
     }
   }

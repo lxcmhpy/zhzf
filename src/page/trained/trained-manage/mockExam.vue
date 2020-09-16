@@ -14,24 +14,6 @@
                 <el-form-item label="考试名称" prop="teName">
                   <el-input v-model="batchManageForm.teName"  placeholder="考试名称"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="开始时间" prop="examBegin">
-                  <el-date-picker
-                    v-model="batchManageForm.examBegin"
-                    format="yyyy-MM-dd"
-                    value-format="yyyy-MM-dd"
-                    placeholder="请选择开始时间"
-                    clearable
-                  ></el-date-picker>
-                </el-form-item>
-                <el-form-item label="结束时间" prop="examEnd">
-                  <el-date-picker
-                    v-model="batchManageForm.examEnd"
-                    format="yyyy-MM-dd"
-                    value-format="yyyy-MM-dd"
-                    placeholder="请选择结束时间"
-                    clearable
-                  ></el-date-picker>
-                </el-form-item> -->
                 <el-form-item style="margin-left:20px;">
                   <el-button
                     title="搜索"
@@ -339,6 +321,9 @@ export default {
         .exam-info{
           margin: 14px 0;
           color: #7B7B7B;
+        }
+        .cell{
+          display: block;
         }
       }
     }

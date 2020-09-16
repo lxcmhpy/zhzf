@@ -64,4 +64,12 @@ export default [
         },
         component: () => import("@/page/caseHandle/case/qingHai/doc/publishReport_QH.vue")
     },
+    {
+      path: "/sceneNotesDoc_QH",
+      name: "case_handle_sceneNotesDoc_QH",
+      meta: {
+        title: "现场笔录——青海"
+      },
+      component: () => import("@/page/caseHandle/case/qingHai/doc/sceneNotesDoc_QH.vue")
+    },
 ]

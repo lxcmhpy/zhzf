@@ -76,9 +76,9 @@
           </div>
           <div class="footer">
             <center>
-              <span class="blue">使用教程</span>
+              <span class="blue-text">使用教程</span>
               |
-              <span class="blue">帮助中心</span>
+              <span class="blue-text">帮助中心</span>
             </center>
           </div>
         </div>
@@ -112,9 +112,9 @@
           </div>
           <div class="footer">
             <center>
-              <span class="blue">使用教程</span>
+              <span class="blue-text">使用教程</span>
               |
-              <span class="blue">帮助中心</span>
+              <span class="blue-text">帮助中心</span>
             </center>
           </div>
         </div>
@@ -155,9 +155,9 @@
           </div>
           <div class="footer">
             <center>
-              <span class="blue">使用教程</span>
+              <span class="blue-text">使用教程</span>
               |
-              <span class="blue">帮助中心</span>
+              <span class="blue-text">帮助中心</span>
             </center>
           </div>
         </div>

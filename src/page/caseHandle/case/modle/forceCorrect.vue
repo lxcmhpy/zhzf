@@ -31,7 +31,6 @@
           <div class="overflow_lins">
             <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
               <el-input
-                :disabled="fieldDisabled(propertyFeatures['caseName'])"
                 class="overflow_lins_textarea"
                 type="textarea"
                 v-model="formData.caseName"

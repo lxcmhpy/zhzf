@@ -1166,11 +1166,10 @@ export function statisticByMajorApi(data){
 //新增版本信息
 export function addVersionApi(data){
   return  request({
-    url:  "/person/editionUpdate/addEditionMsg",
+    url:  "/system/sys/editionUpdate/addEditionMsg",
     method:  "get",
     showloading: false,
     params: data,
-    baseUrlType:"XC",
     cancelToken:  setCancelSource()
   });
 }
@@ -1178,11 +1177,10 @@ export function addVersionApi(data){
 //修改版本信息
 export function updateVersionApi(data){
   return  request({
-    url:  "/person/editionUpdate/updateEditionMsg",
+    url:  "/system/sys/editionUpdate/updateEditionMsg",
     method:  "get",
     showloading: false,
     params: data,
-    baseUrlType:"XC",
     cancelToken:  setCancelSource()
   });
 }
@@ -1190,11 +1188,10 @@ export function updateVersionApi(data){
 //删除版本信息
 export function deleteVersionApi(data){
   return  request({
-    url:  "/person/editionUpdate/delEditionMsg",
+    url:  "/system/sys/editionUpdate/delEditionMsg",
     method:  "get",
     showloading: false,
     params: data,
-    baseUrlType:"XC",
     cancelToken:  setCancelSource()
   });
 }
@@ -1202,11 +1199,10 @@ export function deleteVersionApi(data){
 //查询列表
 export function getVersionApi(data){
   return  request({
-    url:  "/person/editionUpdate/selEditionMsgPage",
+    url:  "/system/sys/editionUpdate/selEditionMsgPage",
     method:  "get",
     showloading: false,
     params: data,
-    baseUrlType:"XC",
     cancelToken:  setCancelSource()
     
   });
