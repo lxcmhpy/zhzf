@@ -15,6 +15,7 @@
             <span class="title" :class="!check  ? 'checkText' : '' " @click="changeType(2)">二维码</span>
             <div class="formC1" v-if="check">
 
+
               <el-form :model="loginForm" :rules="rules" ref="loginForm" class="demo-ruleForm">
                 <el-form-item prop="username">
                   <el-input placeholder="请输入用户名" v-model="loginForm.username">
@@ -53,12 +54,12 @@
                 </div>
                 <div class="login_btm">
                   <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link>
-                  <el-link type="primary" :underline="false" class="left_float margin24 wechat_box">
-                    <span @click="weChat">微信公众号</span>
-                    <div class="wechat" v-if="weChatFlag">
+                  <div class="left_float margin24 wechat_box">
+                    <span @mouseenter="enter" @mouseleave="leave" class="wechat-text">微信公众号</span>
+                    <div class="wechat" v-show="weChatFlag">
                       <img src="../../../static/images/img/login/weChat.png" alt="">
                     </div>
-                  </el-link>
+                  </div>
                   <el-link type="primary" :underline="false" class="right_float" @click="resetChange(true)">忘记密码</el-link>
 
                 </div>
@@ -452,9 +453,15 @@ export default {
       }, 30000);
     },
     // 微信公众号
-    weChat() {
-      console.log('we')
-      this.weChatFlag = !this.weChatFlag;
+    // weChat() {
+    //   console.log('we')
+    //   this.weChatFlag = !this.weChatFlag;
+    // },
+    enter(){
+      this.weChatFlag = true
+    },
+    leave(){
+      this.weChatFlag = false
     },
     // 忘记密码
     resetChange(flag) {
@@ -601,5 +608,6 @@ export default {
 </style>
 <style lang="scss" src="@/assets/css/verify.scss">
 </style>
+
 
 
