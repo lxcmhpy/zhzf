@@ -331,6 +331,7 @@ export default {
             this.totalPage = res.data.total;
             this.tableLoading = false;
             this.tableData.forEach((item, index) => {
+              item['picId'] = item.lessonPic;
               this.createImageUrl(item.lessonPic, index);
             })
           }
