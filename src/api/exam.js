@@ -763,9 +763,8 @@ export function autoDispatchApi (data){
 // 查询答题结果
 export function getExamAnswerReport(data){
     return request({
-        url: "/examResult/getExamReportInfo",
+        url: "/exam/examResult/getExamReportInfo",
         method: "get",
-        baseUrlType: 'EXAM',
         params: data,
         showloading: false,
         cancelToken: setCancelSource()

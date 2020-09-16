@@ -7,15 +7,15 @@
             <el-form-item label="参数名称" prop="paramName">
               <el-input v-model="paramForm.paramName"></el-input>
             </el-form-item>
-            <el-form-item label="参数值" prop="paramValue">
+            <!-- <el-form-item label="参数值" prop="paramValue">
               <el-input v-model="paramForm.paramValue"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="参数说明" prop="paramComment">
               <el-input v-model="paramForm.paramComment"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="info" icon="el-icon-search" size="medium" @click="currentPage = 1;getParamList();">查询</el-button>
-              <el-button type="primary" size="medium" @click="resetLog">重置</el-button>
+              <el-button type="primary" size="medium" @click="resetLog()">重置</el-button>
             </el-form-item>
           </el-form>
         </div>

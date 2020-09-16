@@ -530,14 +530,14 @@ export default {
 .question-table {
   height: calc(100% - 194px);
   // min-height: 240px;
-  &.noHandle {
-    height: calc(100% - 130px);
-  }
   >>> .el-table__row {
     .el-table-column--selection {
       vertical-align: top;
       .cell {
         margin-top: 15px;
+        .el-checkbox{
+          display: block;
+        }
       }
     }
   }

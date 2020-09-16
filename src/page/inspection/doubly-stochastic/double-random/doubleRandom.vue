@@ -90,7 +90,7 @@
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.checkStatus==1">抽取</el-button>
-              <el-button type="text" @click="viewMethod(scope.row)">查看</el-button>
+              <el-button type="text" @click="viewMethod(scope.row)" >查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -124,6 +124,11 @@
           <el-table-column label="检查专家" align="center">
             <template slot-scope="scope">
               <span v-if="isNameTrue">{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button type="primary" size="medium" v-if="isReRandom" @click="reRadom(scope.row)">重新抽取</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -221,6 +226,7 @@ export default {
       randomResult: [],
       currentId: '',
       isNameTrue: false,
+      isReRandom: false,
       isPersonNameTrue: false,
       isObjectTrue: false,
       isFinishFlag: false,
@@ -405,6 +411,7 @@ export default {
         // 最后显示的值
         this.randomContent = endValue || '';
         this.isNameTrue = true;
+        this.isReRandom = true;
         this.isFinishFlag = true
       }, 2100)
     },
@@ -414,6 +421,7 @@ export default {
       this.timer = null;
       this.isRandomFlag = true
       this.isNameTrue = false
+      this.isReRandom = false
       this.isPersonNameTrue = false
       this.isObjectTrue = false
       this.isFinishFlag = false
@@ -472,6 +480,9 @@ export default {
       this.isRandomFlag = true
       this.randomResultList = []
       this.randomList = []
+    },
+    reRadom(row){
+      console.log(row)
     },
     saveRandom() {
       let _this = this

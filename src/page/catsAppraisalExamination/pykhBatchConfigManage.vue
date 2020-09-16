@@ -373,7 +373,7 @@
             },
             //表单筛选
             async queryData() {
-                let obj = await findPykhBatchConfigByOrganId(this.search.orgId);
+                let obj = await findPykhBatchConfigByOrganId(this.search.organId);
                 this.tableData = obj.data;
             },
             //编辑
@@ -403,7 +403,7 @@
                 this.orgList = obj.data;
             },
             onChange(val) {
-                this.search.orgId = val;
+                this.search.organId = val;
                 this.queryData();
             },
             async judgmentOrganIdFun(){
@@ -416,7 +416,6 @@
                         this.queryData();
                     }
                 }else{
-                    this.search.organId = this.organId;
                     this.queryData();
                 }
             }
@@ -424,6 +423,7 @@
         mounted() {
             let userInfo = iLocalStroage.gets("userInfo");
             this.organId = userInfo.organId;
+            this.search.organId = this.organId;
             this.judgmentOrganIdFun();
             
         },
