@@ -197,9 +197,10 @@ export function addExamPersonApi(data){
 //移除参考人员
 export function removeExamPersonApi(examperId){
     return request({
-        url: "/exam/examPerson/deleteExamPersonById/"+examperId,
-        method: "get",
-        data: vm.$qs.stringify(examperId),
+        url: "/exam/examPerson/deleteExamPersonById",
+        method: "post",
+        // data: vm.$qs.stringify(examperId),
+        data: examperId,
         showloading: false,
         cancelToken: setCancelSource()
     })
