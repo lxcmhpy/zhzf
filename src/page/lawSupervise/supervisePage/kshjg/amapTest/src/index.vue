@@ -237,6 +237,8 @@ export default {
         ]
         this.searchWindowData.window4.info.peStateColor = data.peStateColor || ''
         this.searchWindowData.window4.info.padStateColor = data.padStateColor || ''
+        this.searchWindowData.window4.info.sn = data.sn || ''
+        this.searchWindowData.window4.info.padSn = data.padSn || ''
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 2) {
         this.searchWindowData.window4.title = data.vehicleNumber

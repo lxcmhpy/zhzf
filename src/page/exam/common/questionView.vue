@@ -164,9 +164,11 @@ export default {
   methods: {
     // 获取题目图片
     getImageUrl(){
-      this.$util.com_getFileStream(this.question.questionPicture).then( res => {
-        this.questionPicture = res;
-      });
+      if (this.question.questionPicture) {
+        this.$util.com_getFileStream(this.question.questionPicture).then( res => {
+          this.questionPicture = res;
+        });
+      }
     },
     // 查看大图
     viewImage(src) {
