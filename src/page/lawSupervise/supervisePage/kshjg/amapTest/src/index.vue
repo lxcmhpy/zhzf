@@ -1,6 +1,6 @@
 <template>
   <div class="jiangXiMap">
-    <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" />
+    <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" />
     <TopInFo />
     <Search
       ref="Search"
@@ -166,9 +166,8 @@ export default {
      * 3.当前节点有子节点时获取当前节点信息并打点
      */
     handleNodeClick(data) {
-      console.log(data)
       // 清空右侧复选框
-      this.$refs.Select.checkedCities = []
+      // this.$refs.Select.checkedCities = []
 
       if(data.label === "执法人员") {
         this.getPeopleTree(data)
@@ -177,15 +176,15 @@ export default {
         // 当前节点没有子节点时
       } else if (!data.hasOwnProperty('children') || data.children.length === 0) {
         if(data.propertyValue) {
-          let latLng = data.propertyValue.split(',')
           data.icon = this.imgUrl.get(data.type)
-          this.page.addPoint(data, latLng)
+          this.page.addPoint(data)
         } else {
           this.$message.error('没有坐标数据')
         }
       } else { // 机构节点
         this.getLoad(data)
       }
+      console.log(data)
       // else if(data.id === "03b7c79d442eb0d66b364a6242adb7f5" || data.id === "d56d4294b546fc7fe94ec56b0ce45a6a") {
       //   this.getLoad(data)
       // } else {
@@ -238,6 +237,8 @@ export default {
         ]
         this.searchWindowData.window4.info.peStateColor = data.peStateColor || ''
         this.searchWindowData.window4.info.padStateColor = data.padStateColor || ''
+        this.searchWindowData.window4.info.sn = data.sn || ''
+        this.searchWindowData.window4.info.padSn = data.padSn || ''
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 2) {
         this.searchWindowData.window4.title = data.vehicleNumber
@@ -312,9 +313,7 @@ export default {
     handleEcforce(data) {
       // 添加点位图标
       data.icon = this.imgUrl.get(data.type)
-
-      let latLng = data.propertyValue.split(',')
-      this.page.addPoint(data, latLng)
+      this.page.addPoint(data)
     },
 
     /**

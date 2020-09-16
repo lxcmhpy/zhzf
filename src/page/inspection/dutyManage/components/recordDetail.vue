@@ -93,7 +93,7 @@
                 <el-form-item label="路线编号" prop="roadNum">
                   <el-select
                     v-model="inspectRecordForm.roadNum"
-                    @change="routeChange(item)"
+                    @change="routeChange()"
                     placeholder="请选择"
                   >
                     <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
@@ -692,6 +692,9 @@ export default {
           });
           this.inspectRecordForm.listPer = listPer;
 
+          //添加附件
+          this.inspectRecordForm.listAtt = this.listAtt;
+
           addCheRecordApi(this.inspectRecordForm).then(
             (res) => {
               if (res.code == 200) {
@@ -915,6 +918,7 @@ export default {
       );
     },
     routeChange(routeName) {
+      routeName = routeName ? routeName : this.inspectRecordForm.roadNum;
       const params = { size: -1, routeName };
       getSectionListApi(params).then(
         (res) => {
@@ -1015,16 +1019,17 @@ export default {
           const abnormal = this.inspectRecordForm.listAbn[abnormalIndex];
           let curAbnormal = {};
           Object.assign(curAbnormal, abnormal, { processList: res.data });
-          
+
           if(curAbnormal.process){
-            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process);
+            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'];
           }
 
           if(curAbnormal.processMode) {
-            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode);
+            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode)['children'];
           }
-          
-          this.inspectRecordForm.listAbn.splice(abnormalIndex, 1, curAbnormal);
+          const list = this.inspectRecordForm.listAbn;
+          list.splice(abnormalIndex, 1, curAbnormal);
+          this.$set(this.inspectRecordForm,listAbn,list);
         },
         (err) => {
           console.error(err);

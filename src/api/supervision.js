@@ -42,7 +42,7 @@ export function getRecordListApi(data){
     method: "get",
     params: data,
     showloading: false,
-    cancelToken: setCancelSource()
+    cancelToken: setCancelSource(),
   })
 }
 
@@ -138,12 +138,13 @@ export function updateCheScheduleApi(data){
 //记录管理分页列表
 export function getCheRecordPageListApi(data){
   return request({
-     url: "/check/record/cheRecordPageList",
-   // url: "/record/cheRecordPageList",
+    //  url: "/check/record/cheRecordPageList",
+   url: "/record/cheRecordPageList",
     method: "get",
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
   })
 }
 
@@ -162,37 +163,40 @@ export function deleteCheRecordByIdsApi(data){
 //查询记录模板
 export function getCheRecordTempPageListApi(data){
   return request({
-     url: "/check/template/cheRecordTemplatePageList",
-    //url: "/template/cheRecordTemplatePageList",
+    //  url: "/check/template/cheRecordTemplatePageList",
+    url: "/template/cheRecordTemplatePageList",
     method: "get",
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
   })
 }
 
 //保存记录
 export function addCheRecordApi(data){
   return request({
-     url: "/check/record/addCheRecord",
-   // url: "/record/addCheRecord",
+    //  url: "/check/record/addCheRecord",
+   url: "/record/addCheRecord",
     method: "post",
     data: data,
     showloading: true,
     loadingType: 'loadPart',
-    cancelToken: setCancelSource()
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
   });
 }
 
 //查询记录详情
 export function getCheRecordDetailApi(data) {
   return request({
-     url: "/check/record/updateCheRecord",
-    //url: "/record/updateCheRecord",
+    //  url: "/check/record/updateCheRecord",
+    url: "/record/updateCheRecord",
     method: "get",
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
   })
 }
 
@@ -284,5 +288,41 @@ export function updateCheParameterInfoApi(data) {
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
+
+//获取记录模板树
+export function getCheRecordTemplateTreeApi() {
+  return request({
+    // url: "/check/template/getCheRecordTemplateTree",
+    url: "/template/getCheRecordTemplateTree",
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
+  })
+}
+
+//添加记录模板
+export function saveCheRecordTemplateApi(data) {
+  return request({
+    //  url: "/check/template/addCheRecordTemplate",
+    url: "/template/saveCheRecordTemplate",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
+  });
+}
+
+//删除记录模板
+export function deleteCheRecordTemplateByIdApi(templateById) {
+  return request({
+    // url: "/check/template/deleteCheRecordTemplateById",
+    url: "/template/deleteCheRecordTemplateById/" + templateById,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    baseUrlType:"DUTY_HOST"
   })
 }

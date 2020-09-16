@@ -77,13 +77,21 @@ export default {
 
             if(this.addType != 'type'){
               params.append("file", this.fileList[0].raw);
+              const loading = this.$loading({
+                lock: true,
+                text: "正在上传",
+                spinner: "car-loading",
+                customClass: "loading-box",
+                background: "rgba(234,237,244, 0.8)",
+              });
               uploadCommon(params).then(
                 res => {
                   attach.path = res.data[0].storagePath;
                   console.log(attach)
                   this.$emit("addAttach", attach);
+                  loading.close();
                 },
-                err => { console.error(err) }
+                err => { console.error(err);loading.close();; }
               );
             }else{
               this.$emit("addAttach", attach);

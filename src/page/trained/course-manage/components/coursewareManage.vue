@@ -29,7 +29,7 @@
             :max-height="380"
             @selection-change="selectionCourse"
           >
-            <el-table-column type="selection" label align="center" width="40px"></el-table-column>
+            <el-table-column type="selection" label align="center" width="58px"></el-table-column>
             <el-table-column prop="couName" label="课件名称" align="left" min-width="120px"></el-table-column>
             <el-table-column prop="couTypeName" label="课件类型" align="center">
               <template slot-scope="scope">

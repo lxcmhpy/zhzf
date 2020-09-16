@@ -392,7 +392,7 @@ export default {
             _this.$store.dispatch("applyApprove", _this.selectUserIdList).then(
               res => {
                 if (res.code === 200) {
-                  _this.$message({ type: "success", message: "审批成功!" });
+                  _this.$message({ type: "success", message: "申请审批成功!" });
                   //重新加载页面数据
                   _this.getPersonList();
                 }

@@ -821,7 +821,19 @@ export function searchTaskDataApi(data) {
 //查询检查对象的数量、本机构下执法人员的数量、检查专家的数量
 export function getCountByOrganNameApi(data) {
     return request({
-        url: "/xzjc/randomTask/getCountByOrganName/" + data,
+        url: "/xzjc/randomTask/getCountByOrganId/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//获取所有启用状态的对象、本机构下的所有人员和所有启用状态的专家
+export function getAllSourceDataByOrganNameApi(data) {
+    return request({
+        url: "/xzjc/randomTask/getAllSourceData/" + data,
         method: "get",
         showloading: true,
         loadingType: 'loadPart',

@@ -13,7 +13,7 @@
       </el-row>
       <el-row>
         <el-form-item label="大纲名称" prop="outlineName" class="form-class">
-          <el-input v-model="addMaintainOutlineForm.outlineName" ></el-input>
+          <el-input v-model="addMaintainOutlineForm.outlineName" maxlength="25"></el-input>
         </el-form-item>
       </el-row>
     </el-form>
@@ -26,6 +26,7 @@
   </el-dialog>
 </template>
 <script>
+import { isSpecialChar } from "@/common/js/validator";
 
 export default {
   data(){
@@ -39,7 +40,10 @@ export default {
         outlineName: ""
       },
       rules: {
-        outlineName: [{ required: true, message: "大纲名称不能为空", trigger: "blur" }],
+        outlineName: [
+          { required: true, message: "大纲名称不能为空", trigger: "blur" },
+          { validator: isSpecialChar, trigger: 'blur' }
+        ],
       },
       dialogTitle: "", //弹出框title
       handelType: 0 //添加 0  修改2  查看3

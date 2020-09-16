@@ -77,7 +77,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="案件发生时间" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['afsj'])" size="small" style="width:240px" v-model="formData.afsj" type="date" format="yyyy-MM-dd" placeholder="    年    月    日"></el-date-picker>
+                  <el-date-picker :disabled="fieldDisabled(propertyFeatures['afsj'])" size="small" style="width:240px" v-model="formData.afsj" type="date" format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
               </div>
             </div>
@@ -245,6 +245,7 @@ export default {
       formData: {
         caseNumber: "",
         caseCauseName: "",
+        afsj: "",
         party: "",
         partySex: "",
         partyIdNo: "",
