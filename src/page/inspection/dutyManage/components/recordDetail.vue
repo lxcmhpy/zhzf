@@ -1021,11 +1021,11 @@ export default {
           Object.assign(curAbnormal, abnormal, { processList: res.data });
 
           if(curAbnormal.process){
-            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process);
+            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'];
           }
 
           if(curAbnormal.processMode) {
-            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode);
+            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode)['children'];
           }
           const list = this.inspectRecordForm.listAbn;
           list.splice(abnormalIndex, 1, curAbnormal);
