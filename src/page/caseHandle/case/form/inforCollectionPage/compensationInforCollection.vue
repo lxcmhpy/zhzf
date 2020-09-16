@@ -709,7 +709,7 @@
             <el-table-column label="数量" width="150" align="center">
               <template slot-scope="scope">
                 <!-- el-input-number 标签不能加 mini="1",否则回将数量为 0 的转换为 1，从而出现bug -->
-                <el-input-number v-model="scope.row.quantity" size="mini"></el-input-number>
+                <el-input-number v-model="scope.row.quantity" size="mini" :min="1"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column label="合计" align="center">
