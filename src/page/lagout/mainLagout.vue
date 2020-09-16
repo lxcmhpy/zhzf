@@ -325,7 +325,7 @@ export default {
     //判断有没有menu
     this.initUser();
     // this.getSystemData()
-    if (this.menu.length > 7) {
+    if (this.menu&&this.menu.length > 7) {
       this.moreMenuIcon = true;
     }
   },
