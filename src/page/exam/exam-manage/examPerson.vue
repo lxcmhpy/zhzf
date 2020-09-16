@@ -214,15 +214,16 @@ export default {
           type: "warning",
           message: "请选择一条考生信息"
         });
-      } else if (_this.selectUserIdList.length > 1) {
-        _this.$message({
-          type: "warning",
-          message: "只能选择一条考生信息"
-        });
-      } else {
-        let examperId = _this.selectUserIdList[0];
+      }
+      // else if (_this.selectUserIdList.length > 1) {
+      //   _this.$message({
+      //     type: "warning",
+      //     message: "只能选择一条考生信息"
+      //   });
+      // }
+      else {
         let data = {
-          examperId: examperId
+          ids: _this.selectUserIdList
         };
         _this
           .$confirm("确认移除吗？", "提示", {
@@ -232,7 +233,7 @@ export default {
             customClass: "custom-confirm"
           })
           .then(() => {
-            _this.$store.dispatch("removeExamPerson", examperId).then(
+            _this.$store.dispatch("removeExamPerson", data).then(
               res => {
                 if (res.code === 200) {
                   _this.$message({ type: "success", message: "移除成功!" });
@@ -348,6 +349,11 @@ export default {
   .person-table {
     >>> .el-table__body-wrapper {
       padding-bottom: 0;
+    }
+    >>>.cell{
+      .el-checkbox{
+        display: block;
+      }
     }
   }
 }

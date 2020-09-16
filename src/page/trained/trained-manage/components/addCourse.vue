@@ -30,7 +30,7 @@
             :max-height="380"
             @selection-change="selectionCourse"
           >
-            <el-table-column type="selection" label align="center" width="40px"></el-table-column>
+            <el-table-column type="selection" label align="center" width="60px"></el-table-column>
             <el-table-column prop="lessonName" label="课程名称" min-width="120px" align="left" fixed="left"></el-table-column>
             <el-table-column prop="lessonType" label="课程类型" align="center" width="120px" :formatter="setTypeName"></el-table-column>
             <el-table-column prop="lessonCredits" label="学分" width="80px" align="center"></el-table-column>
