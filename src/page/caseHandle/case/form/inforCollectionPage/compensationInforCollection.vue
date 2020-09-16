@@ -708,8 +708,8 @@
             <el-table-column label="单价(元)" prop="roadLcPrice" align="center"></el-table-column>
             <el-table-column label="数量" width="150" align="center">
               <template slot-scope="scope">
-                <!-- el-input-number 标签不能加 mini="1",否则回将数量为 0 的转换为 1，从而出现bug -->
-                <el-input-number v-model="scope.row.quantity" size="mini"></el-input-number>
+                <!-- el-input-number 标签不能加 min="1",否则回将数量为 0 的转换为 1，从而出现bug -->
+                <el-input-number v-model="scope.row.quantity" :min="0" size="mini"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column label="合计" align="center">
