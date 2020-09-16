@@ -59,7 +59,7 @@
       </div>
     </div>
     <div class="tablePart" v-if="searchForm.checkDomain=='省交通运输厅领域'">
-      <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+      <el-table :data="tableData"  key="table1" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="checkItem" label="抽查事项名称" align="center"></el-table-column>
         <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
         <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
@@ -76,7 +76,7 @@
       </el-table>
     </div>
     <div class="tablePart" v-if="searchForm.checkDomain=='省市场监管领域'">
-      <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+      <el-table :data="tableData"  key="table2" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
         <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
         <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
@@ -131,7 +131,7 @@
             <el-form-item label="检查对象" prop="checkObject">
               <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
               <el-select v-model="addForm.checkObject" placeholder="请选择">
-                <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCDXJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -147,7 +147,7 @@
           <el-col :span="12">
             <el-form-item label="检查主体" prop="checkSubject">
               <el-select v-model="addForm.checkSubject" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCZTJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -200,7 +200,7 @@
             <el-form-item label="检查对象" prop="checkObject">
               <!-- <el-input type="text" v-model="addForm2.checkObject"></el-input> -->
               <el-select v-model="addForm2.checkObject" placeholder="请选择">
-                <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCDXSC" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -216,7 +216,7 @@
           <el-col :span="12">
             <el-form-item label="检查主体" prop="checkSubject">
               <el-select v-model="addForm2.checkSubject" placeholder="请选择">
-                <el-option v-for="item in optionsCCZT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                <el-option v-for="item in optionsCCZTSC" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -332,10 +332,12 @@ export default {
           { required: true, message: "必填项", trigger: "change" }
         ],
       },
-      optionsCCZT: [],
+      optionsCCZTJT: [],
+      optionsCCZTSC: [],
       optionsCCFS: [],
       optionsSXLB: [],
-      optionsJCDX: [],
+      optionsCCDXJT: [],
+      optionsCCDXSC: [],
       optionsCCLBJT: [],
       optionsCCLBSC: [],
       optionsCCSXJT: [],
@@ -476,11 +478,13 @@ export default {
             switch (element.option) {
               case 1: _this.optionsSXLB = res.data; break;//事项类别
               case 2: _this.optionsCCFS = res.data; break;//抽查方式
-              case 3: _this.optionsCCZT = res.data; break;//抽查主体
+              case 3: _this.optionsCCZTSC = res.data; break;//抽查主体-市场
+              case 3: _this.optionsCCZTJT = res.data; break;//抽查主体-交通
               case 4: _this.optionsCCLBSC = res.data; break;//抽查类别-市场
               case 5: _this.optionsCCSXJT = res.data; break;//抽查事项-交通
               case 6: _this.optionsCCSXSC = res.data; break;//抽查事项-市场
-              case 7: _this.optionsJCDX = res.data; break;//检查对象
+              case 7: _this.optionsCCDXSC = res.data; break;//抽查对象-市场
+              case 9: _this.optionsCCDXJT = res.data; break;//抽查对象-交通
               case 8: _this.optionsCCLBJT = res.data; break;//抽查类别-交通
 
             }
@@ -525,11 +529,13 @@ export default {
     // 获取抽屉
     this.getDrawerList([{ name: '事项类别', option: 1 },
     { name: '抽查方式', option: 2 },
-    { name: '抽查主体', option: 3 },
+    { name: '抽查主体-市场', option: 3 },
+    { name: '抽查主体-交通', option: 10 },
     { name: '抽查类别-市场', option: 4 },
     { name: '抽查事项-交通', option: 5 },
     { name: '抽查事项-市场', option: 6 },
-    { name: '检查对象', option: 7 },
+    { name: '抽查对象-市场', option: 7 },
+    { name: '抽查对象-交通', option: 9 },
     { name: '抽查类别-交通', option: 8 },
     ])
   }
