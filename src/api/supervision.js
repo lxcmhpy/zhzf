@@ -288,7 +288,8 @@ export function updateCheParameterInfoApi(data) {
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-
+  })
+}
 //获取记录模板树
 export function getCheRecordTemplateTreeApi() {
   return request({
