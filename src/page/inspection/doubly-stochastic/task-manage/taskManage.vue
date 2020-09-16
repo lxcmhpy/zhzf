@@ -99,14 +99,14 @@
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
                 <el-select v-model="addForm.taskName" placeholder="请选择" @change="changeTaskName(1)">
-                  <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                  <el-option v-for="item in optionsCCLBJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="抽查事项" prop="checkItem">
                 <el-select v-model="addForm.checkItem" placeholder="请选择">
-                  <el-option v-for="item in optionsRWMCJG" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                  <el-option v-for="item in optionsCCSXJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -244,14 +244,14 @@
             <el-col :span="12">
               <el-form-item label="任务名称" prop="taskName">
                 <el-select v-model="addForm2.taskName" placeholder="请选择" @change="changeTaskName(2)">
-                  <el-option v-for="item in optionsCCSX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                  <el-option v-for="item in optionsCCLBSC" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="抽查事项" prop="checkItem">
                 <el-select v-model="addForm2.checkItem" placeholder="请选择">
-                  <el-option v-for="item in optionsRWMCJG" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                  <el-option v-for="item in optionsCCSXSC" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -398,8 +398,8 @@ export default {
     var validateCheckObjectNum = (rule, value, callback) => {
       if (!value) {
         callback(new Error('必填项'));
-      } else if (value <= 0) {
-        callback(new Error('必须大于0'));
+      } else if (value <= Math.ceil(this.addForm.checkObjectNumAll*0.3)) {
+        callback(new Error('须大于总数的三分之一'));
       } else if (value > this.addForm.checkObjectNumAll) {
         callback(new Error('必须小于总数'));
       } else {
@@ -409,8 +409,8 @@ export default {
     var validateCheckObjectNum2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('必填项'));
-      } else if (value <= 0) {
-        callback(new Error('必须大于0'));
+      } else if (value <= Math.ceil(this.addForm.checkObjectNumAll*0.3)) {
+        callback(new Error('须大于总数的三分之一'));
       } else if (value > this.addForm2.checkObjectNumAll) {
         callback(new Error('必须小于总数'));
       } else {
@@ -609,12 +609,13 @@ export default {
       optionsJCLX: [],
       optionsZZMM: [],
       optionsZYLY: [],
-      optionsCCSX: [],
-      optionsRWMC: [],
-      optionsRWMCJG: [],
+      optionsCCLBJT: [],
+      optionsCCLBSC: [],
+      // optionsRWMC: [],
+      optionsCCSXSC: [],
+      optionsCCSXJT: [],
       optionsCCFS: [],
       optionsSSLB: [],
-      optionsCCSXMC: [],
       LawOfficerList: [],//执法人员列表
       alreadyChooseAdminPerson: [],//已选择管理人员列表
     }
@@ -927,14 +928,15 @@ export default {
         getDictListDetailByNameApi(element.name).then(
           res => {
             switch (element.option) {
-              case 1: _this.optionsRWMC = res.data; break;//任务名称
+              // case 1: _this.optionsRWMC = res.data; break;//任务名称
               case 2: _this.optionsJCLX = res.data; break;//检查类型
               case 3: _this.optionsCCFS = res.data; break;//抽查方式
-              case 4: _this.optionsCCSX = res.data; break;//抽查事项
+              case 4: _this.optionsCCLBSC = res.data; break;//抽查类别-市场
+              case 10: _this.optionsCCLBJT = res.data; break;//抽查类别-交通
               case 5: _this.optionsSSLB = res.data; break;//事项类别
-              case 6: _this.optionsRWMCJG = res.data; break;//任务名称-监管领域
+              case 6: _this.optionsCCSXJT = res.data; break;//抽查事项-交通
               case 7: _this.optionsJCDX = res.data; break;//检查对象
-              case 8: _this.optionsCCSXMC = res.data; break;//检查对象
+              case 9: _this.optionsCCSXSC = res.data; break;//抽查事项-市场
 
               // 刘传敏
               // 1、信息维护、事项清单，交通厅领域：抽查事项名称，取“抽查类别”这个数据字典的值。 抽查内容，取“抽查事项”这个数据字典的值。  
@@ -952,14 +954,15 @@ export default {
     this.getTableData()
     // 获取抽屉
     this.getDrawerList([
-      { name: '任务名称', option: 1 },
+      // { name: '任务名称', option: 1 },
       { name: '检查类型', option: 2 },
       { name: '抽查方式', option: 3 },
-      { name: '抽查事项', option: 4 },
+      { name: '抽查类别-市场', option: 4 },
       { name: '事项类别', option: 5 },
-      { name: '任务管理-抽查事项', option: 6 },
+      { name: '抽查事项-交通', option: 6 },
       { name: '检查对象', option: 7 },
-      { name: '抽查事项名称', option: 8 },
+      { name: '抽查事项-市场', option: 9 },
+      { name: '抽查类别-交通', option: 10 },
     ])
     this.getPerson()
   }
