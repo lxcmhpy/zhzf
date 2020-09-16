@@ -137,7 +137,7 @@
                   <span v-if="scope.row.status == '0'" class="tableHandelcase">
                     <!-- 未完成 -->
                     <i class="iconfont law-edit" @click="viewDoc(scope.row)"></i>
-                    <i class="iconfont law-delete" @click="delDocDataByDocId(scope.row)"></i>
+                    <i class="iconfont law-delete" @click="deleteDocByIdApi(scope.row)"></i>
                   </span>
                   <span v-if="scope.row.status === ''" class="tableHandelcase">
                     <!-- 无状态 -->
@@ -346,11 +346,7 @@
         this.$store.commit("setCurrentFileData", row);//保存文书信息
         this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
       },
-      //清空文书
-      delDocDataByDocId(data) {
-//      console.log("清空文书",data);
-        this.$refs.resetDocDiaRef.showModal(data);
-      },
+      
       //预览pdf
       viewDocPdf(row) {
         row.url=this.$route.name;
@@ -374,14 +370,20 @@
         }
         this.com_getDocListByCaseIdAndFormId(data)
       },
+      //清空文书
+      // deleteDocByIdApi(data) {
+      // //      console.log("清空文书",data);
+      //   this.$refs.resetDocDiaRef.showModal(data);
+      // },
       //删除
-      delDocDataByDocId(data) {
-        this.$store.dispatch("delDocDataByDocId", data).then(
+      deleteDocByIdApi(data) {
+      console.log(" -> data", data)
+        
+        this.$store.dispatch("deleteDocByIdApi", data.docDataId).then(
           res => {
-//          console.log('删除', res)
-
+            console.log('删除', res)
             // this.docTableDatas = res.data;
-            // console.log('文书列表', this.docTableDatas)
+            this.getDocListByCaseIdAndFormId();
           },
           err => {
             console.log(err);
