@@ -230,7 +230,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="timeList" style="width:500px">
+          <el-form-item label="抽查时限" prop="timeList" style="width:500px;margin-top:10px">
             <el-date-picker v-model="addForm.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -378,7 +378,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="timeList" style="width:500px">
+          <el-form-item label="抽查时限" prop="timeList" style="width:500px;margin-top:10px">
             <el-date-picker v-model="addForm2.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -405,7 +405,7 @@ export default {
       if (!value) {
         callback(new Error('必填项'));
       } else if (value <= Math.ceil(this.addForm.checkObjectNumAll * 0.3)) {
-        callback(new Error('须大于总数的三分之一'));
+        callback(new Error('不得少于总对象数的30%'));
       } else if (value > this.addForm.checkObjectNumAll) {
         callback(new Error('必须小于总数'));
       } else {
@@ -415,8 +415,8 @@ export default {
     var validateCheckObjectNum2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('必填项'));
-      } else if (value <= Math.ceil(this.addForm.checkObjectNumAll * 0.3)) {
-        callback(new Error('须大于总数的三分之一'));
+      } else if (value <= Math.ceil(this.addForm2.checkObjectNumAll * 0.3)) {
+        callback(new Error('不得少于总对象数的30%'));
       } else if (value > this.addForm2.checkObjectNumAll) {
         callback(new Error('必须小于总数'));
       } else {
@@ -949,8 +949,8 @@ export default {
               case 7: _this.optionsCCDXJT = res.data; break;//抽查对象-交通
               case 11: _this.optionsCCDXSC = res.data; break;//抽查对象-市场
               case 9: _this.optionsCCSXSC = res.data; break;//抽查事项-市场
-              case 9: _this.optionsCCZTJT = res.data; break;//抽查主体-交通
-              case 9: _this.optionsCCZTSC = res.data; break;//抽查主体-市场
+              case 13: _this.optionsCCZTJT = res.data; break;//抽查主体-交通
+              case 12: _this.optionsCCZTSC = res.data; break;//抽查主体-市场
 
               // 刘传敏
               // 1、信息维护、事项清单，交通厅领域：抽查事项名称，取“抽查类别”这个数据字典的值。 抽查内容，取“抽查事项”这个数据字典的值。  
@@ -978,7 +978,7 @@ export default {
       { name: '抽查对象-市场', option: 11 },
       { name: '抽查事项-市场', option: 9 },
       { name: '抽查类别-交通', option: 10 },
-      { name: '抽查主体-交通', option: 11 },
+      { name: '抽查主体-交通', option: 13 },
       { name: '抽查主体-市场', option: 12 },
     ])
     this.getPerson()

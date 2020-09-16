@@ -4,7 +4,7 @@
   <div class="float-btns" style="bottom:250px;">
       <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
     <span v-if="currentFileData">
-      <el-button type="primary"  style="margin-top: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
+      <el-button type="primary"  style="margin-bottom: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
         <i class="iconfont law-edit"></i>
         <br />修改
       </el-button>
