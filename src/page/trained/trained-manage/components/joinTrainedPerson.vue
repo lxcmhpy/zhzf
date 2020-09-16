@@ -367,6 +367,9 @@ export default {
     >>> .el-table__body-wrapper {
       padding-bottom: 0;
     }
+    >>>.el-checkbox{
+      display: block;
+    }
   }
 }
 .search-form {

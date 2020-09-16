@@ -2,6 +2,13 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px;">
+      <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
+    <span v-if="currentFileData">
+      <el-button type="primary"  style="margin-bottom: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
+        <i class="iconfont law-edit"></i>
+        <br />修改
+      </el-button>
+    </span>
     <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
       <i class="iconfont law-approval"></i>
       <br />签章
@@ -35,13 +42,7 @@
       <i class="iconfont law-back"></i>
       <br />返回
     </el-button>
-    <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
-    <span v-if="currentFileData">
-      <el-button type="primary"  style="margin-top: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
-        <i class="iconfont law-edit"></i>
-        <br />修改
-      </el-button>
-    </span>
+  
 
     <img src="" id="show">
   </div>
@@ -66,6 +67,7 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId']),
   isCanEdit(){
+    console.log('caseLinktypeId',this.caseLinktypeId,this.doingLinkId)
     let data= this.$route.name=='case_handle_myPDF'
     &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
     &&this.approvalState!='approvaling'&&this.caseLinktypeId==this.doingLinkId
