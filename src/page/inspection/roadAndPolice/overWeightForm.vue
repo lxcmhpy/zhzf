@@ -536,7 +536,6 @@ export default {
         },
         firstCheck: {
           oddNumber: '',
-          vehicleShipId: '',
           vehicleShipType: '',
           axisType: '',
           axisNum: '',
@@ -577,6 +576,8 @@ export default {
       directionList: [],
       locationList: [],
       carInfoRules: {
+        vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
+        trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
         vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
         loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
         startPlace: [{ required: true, message: "请输入", trigger: "change" }],
@@ -593,6 +594,7 @@ export default {
         partyAddress: [{ required: true, message: "请输入", trigger: "change" }],
       },
       firstCheckRules: {
+        vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
         totalWeight: [{ required: true, message: "请输入", trigger: "change" }],
         overRatio: [{ required: true, message: "请输入", trigger: "change" }],
         overWeight: [{ required: true, message: "请输入", trigger: "change" }],
@@ -657,7 +659,7 @@ export default {
     //选择执法人员
     addLawPerson(item, valueList) {
       this.currentPerson = item
-      console.log('valueList', valueList,valueList.length)
+      console.log('valueList', valueList, valueList.length)
       this.$refs.chooseLawPersonRef.showModal(valueList);
     },
     //设置执法人员
