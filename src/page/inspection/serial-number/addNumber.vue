@@ -32,9 +32,9 @@
           <el-input v-model="addStationForm.codeInfo" placeholder="业务类型"></el-input>
         </el-form-item>
       </el-row>
-      <el-form-item label="当前账号:" prop="currNo">
+      <!-- <el-form-item label="当前账号:" prop="currNo">
           <el-input v-model="addStationForm.currNo" placeholder="当前账号"></el-input>
-        </el-form-item>
+        </el-form-item> -->
       </el-row>
       <!-- <el-form-item label="机构id:" prop="organId">
           <el-input v-model="addStationForm.organId"></el-input>

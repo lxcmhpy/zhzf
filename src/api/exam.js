@@ -199,8 +199,8 @@ export function removeExamPersonApi(examperId){
     return request({
         url: "/exam/examPerson/deleteExamPersonById",
         method: "post",
-        // data: vm.$qs.stringify(examperId),
-        data: examperId,
+        data: vm.$qs.stringify(examperId),
+        // data: examperId,
         showloading: false,
         cancelToken: setCancelSource()
     })
