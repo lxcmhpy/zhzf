@@ -138,8 +138,8 @@
 
         <div class="pdf_seal">
           <span >交通运输执法部门(印章)</span><br>
-          <el-form-item prop="signatureDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.signatureDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
+          <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -192,7 +192,7 @@
           organZipCode: '',
           organContactor: '',
           organTel: '',
-          signatureDate: '',
+          makeDate: '',
           radio: []
         },
         radio: '1',
