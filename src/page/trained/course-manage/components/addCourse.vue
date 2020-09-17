@@ -81,7 +81,8 @@ export default {
         lessonId: "",
         lessonName: "", // 课程名称
         lessonType: "", // 课程类型
-        lessonComment: "" // 课程描述
+        lessonComment: "", // 课程描述
+        picId: ''
       },
       rules: {
         lessonName: [
@@ -95,11 +96,7 @@ export default {
       handelType: 0 //添加 0  修改2
     };
   },
-  computed:{
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed:{},
   methods: {
     changeType(event) {
       this.addCourseForm.lessonType = event;
@@ -151,10 +148,12 @@ export default {
     saveCourseInfo(loading) {
       let successMsg = this.handelType == "2" ? "修改成功!" : "添加成功";
       let editType = this.handelType == "2" ? "edit" : "";
-      if(this.addCourseForm.lessonPic){
-        this.addCourseForm.lessonPic = this.addCourseForm.lessonPic.replace(this.baseUrl, '');
+      const courseData = JSON.parse(JSON.stringify(this.addCourseForm));
+      if (courseData.picId) {
+        courseData.lessonPic = courseData.picId;
+        delete courseData.picId
       }
-      addCourseInfo(this.addCourseForm, editType).then(
+      addCourseInfo(courseData, editType).then(
         res => {
           this.$emit("getCourseList");
           this.$message({ type: "success", message: successMsg });
@@ -217,8 +216,12 @@ export default {
         for (const key in this.addCourseForm) {
           this.addCourseForm[key] = row[key];
         }
-        if(row.lessonPic){
-          this.descImages.push({ url: this.baseUrl + row.lessonPic, status: 'success' });
+        if(row.picId){
+          let picObj = { url: '', status: 'success' };
+          this.$util.com_getFileStream(row.picId).then( res => {
+            picObj.url = res;
+          });
+          this.descImages.push(picObj);
         }
       }
     },

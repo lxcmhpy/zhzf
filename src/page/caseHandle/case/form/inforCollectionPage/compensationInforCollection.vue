@@ -709,7 +709,7 @@
             <el-table-column label="数量" width="150" align="center">
               <template slot-scope="scope">
                 <!-- el-input-number 标签不能加 min="1",否则回将数量为 0 的转换为 1，从而出现bug -->
-                <el-input-number v-model="scope.row.quantity" :min="0" size="mini"></el-input-number>
+                <el-input-number v-model="scope.row.quantity" :min="1" size="mini"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column label="合计" align="center">
@@ -866,8 +866,11 @@ export default {
     },
     //选中的路损
     selectRoadData(data) {
-      this.pathLossList = this.unique([...this.pathLossList, ...data]);
-      console.log(this.pathLossList)
+      this.pathLossList = [...this.pathLossList, ...data];
+      this.pathLossList.map((v, i) => {
+        let quantity = v.quantity || 1;
+        this.$set(v, "quantity", quantity);
+      });
     },
     changeCaseSource(item) {
         if(item.value === "投诉举报"){

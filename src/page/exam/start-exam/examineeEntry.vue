@@ -1,6 +1,6 @@
 <template>
   <div class="entry-exam">
-    <div v-if="!startCountDown" class="page-contain">examineePersonInfo.photoUrl
+    <div v-if="!startCountDown" class="page-contain">
       <el-card class="box-card outer-card">
         <el-row>
           <el-col :span="8">

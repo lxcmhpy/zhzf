@@ -434,6 +434,7 @@ export default {
         stationStatusName: this.searchForm.stationStatusName,
         // workStatus: this.searchForm.stationStatusName,
         company: iLocalStroage.gets("userInfo").organName,
+        organId: iLocalStroage.gets("userInfo").organId,
         // oName: '固原综合执法支队',
         current: this.currentPage,
         size: this.pageSize,
