@@ -39,7 +39,7 @@
                   v-else
                   type="text"
                   @click="handleCurrentChange(scope.row)"
-                  :disabled="scope.row.organName"
+                  :disabled="scope.row.organName && scope.row.id !== selected"
                 >选择</el-button>
               </template>
             </el-table-column>
@@ -83,12 +83,14 @@ export default {
       total: 0, //总页数
       searchForm: {},
       imgUrl: "",
+      selected: "",
     };
   },
   methods: {
     showModal(type, data) {
       this.title = type === 1 ? "新增" : "编辑";
       this.form = data;
+      this.selected = this.form.dtId;
       if (this.form.storageId)
         Util.com_getFileStream(this.form.storageId).then((res) => {
           this.imgUrl = res;
