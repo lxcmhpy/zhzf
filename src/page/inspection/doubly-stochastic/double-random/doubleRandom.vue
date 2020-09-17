@@ -501,6 +501,7 @@ export default {
       this.isRandomFlag = true
       this.randomResultList = []
       this.randomList = []
+      this.getTableData()
     },
     reRadom(scope) {
       let _this = this
