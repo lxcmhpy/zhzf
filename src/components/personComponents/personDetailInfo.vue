@@ -598,7 +598,7 @@
   </div>
 </template>
 <script>
-import { validateLawCertNo, validateIDNumber, isSpecialChar } from "@/common/js/validator";
+import { validateIDNumber, isSpecialChar } from "@/common/js/validator";
 import { mixinPerson } from "@/common/js/personComm";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
 import UploadPersonAvatar from "@/components/personComponents/uploadPersonAvatar";
@@ -1055,18 +1055,10 @@ export default {
               _this.showSelectTree = true;
               _this.pageType = "0";
               _this.stationChange(_this.personInfoDetailForm.stationId);
-            } else {
-              _this.catsMessage({
-                type: "warning",
-                message: "该人员不能修改信息",
-              });
             }
           },
           (err) => {
-            _this.catsMessage({
-              type: "error",
-              message: err.msg || "",
-            });
+            console.log(err);
           }
         );
     },
