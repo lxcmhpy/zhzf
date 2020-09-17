@@ -69,7 +69,7 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId", "docId", "showQZBtn", "docDataId"]) },
   methods: {
-    async showModal(data) {
+    async showModal(data) { 
       console.log(data);
       this.visible = true;
       this.caseData = data;
