@@ -44,13 +44,19 @@
         </div>
         <div>
           <div class="item">
-            <el-form-item label="车辆轴数" prop="axisNum">
+            <el-form-item label="车辆轴数" prop="axisNum" style="width:69%;display: inline-block;">
               <el-select placeholder="请选择" v-model="carInfo.axisNum" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
                 <el-option label="4" value="4"></el-option>
                 <el-option label="5" value="5"></el-option>
                 <el-option label="6" value="6"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label-width="0" prop="axisNum" style="width:29%;display: inline-block;">
+              <el-select placeholder="请选择驱动轴" v-model="carInfo.axisType">
+                <el-option label="双轴" value="双轴"></el-option>
+                <el-option label="单轴" value="单轴"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -517,6 +523,7 @@ export default {
         vehicleShipType: '',
         transportNum: '',
         axisNum: '',
+        axisType: '',
         businessStatus: '',
         businessScope: '',
         loadGoods: '',
@@ -539,6 +546,7 @@ export default {
           vehicleShipType: '',
           axisType: '',
           axisNum: '',
+          axisType: '',
           totalWeight: '',
           weightLimit: '',
           overWeight: '',
@@ -942,6 +950,7 @@ export default {
       data.drivePerson = JSON.stringify(data.drivePerson)
       data.firstCheck = JSON.stringify(data.firstCheck)
       data.secondCheck = JSON.stringify(data.secondCheck)
+      data.penaltyDecision = data.penaltyDecision ? data.penaltyDecision : {}
       data.penaltyDecision = JSON.stringify(data.penaltyDecision)
       console.log('data', data)
       data.id = data.id ? data.id : this.carinfoId
@@ -949,6 +958,11 @@ export default {
         res => {
           if (res.code == 200) {
             this.$store.commit("set_inspection_OverWeightId", data.id)
+            this.getData(data.id)
+            this.$message({
+              type: "success",
+              message: res.msg
+            });
           } else {
             this.$message.error(res.msg);
           }
@@ -965,13 +979,13 @@ export default {
         return originChar.charAt(Math.floor(Math.random() * len))
       })
     },
-    getData() {
+    getData(id) {
       let _this = this
-      findCarInfoByIdApi(this.inspectionOverWeightId.id).then(
+      findCarInfoByIdApi(this.inspectionOverWeightId.id||id).then(
         res => {
           if (res.code == 200) {
             _this.carInfo = res.data
-            this.carinfoId = this.inspectionOverWeightId.id
+            this.carinfoId = this.inspectionOverWeightId.id ||id
             this.getFile()
           } else {
             this.$message.error(res.msg);
