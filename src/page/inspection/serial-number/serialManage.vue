@@ -4,7 +4,7 @@
       <div class="handlePart">
         <div class="search">
           <el-form :inline="true" :model="stationForm" ref="stationFormRef">
-            <el-form-item label="业务编号" prop="codeInfo">
+            <el-form-item label="业务类型编号" prop="codeInfo">
               <el-input v-model="stationForm.codeInfo"></el-input>
             </el-form-item>
             <!-- <el-form-item label="" prop="sufName">
@@ -35,13 +35,13 @@
         >
           <el-table-column type="selection" align="center"></el-table-column>
           <el-table-column prop="id" v-if="false" label></el-table-column>
+          <el-table-column prop="codeInfo" label="业务类型编码" align="center"></el-table-column>
           <el-table-column prop="preName" label="前缀" align="center"></el-table-column>
           <el-table-column prop="dateFormat" label="日期格式" align="center"></el-table-column>
           <el-table-column prop="numLength" label="长度" align="center"></el-table-column>
           <el-table-column prop="sufName" label="后缀" align="center"></el-table-column>
-          <el-table-column prop="codeInfo" label="code类型" align="center"></el-table-column>
           <el-table-column prop="currNo" label="当前使用账号" align="center"></el-table-column>
-          <el-table-column prop="organId" label="机构ID" align="center"></el-table-column>
+          <el-table-column prop="organName" label="机构名称" align="center"></el-table-column>
           <!-- <el-table-column prop="isLce" label="是否执法" align="center" :formatter="isLceInfo"></el-table-column> -->
           <el-table-column prop="opt" label="操作项" align="center">
             <template slot-scope="scope">
@@ -81,6 +81,7 @@ export default {
         codeInfo:"",//不同业务用于生成指定的流水号:case_code
         currNo:"",//当前使用账号
         organId:"",//机构Id
+        organName:"",//机构名称
         dateFormat:"",//日期格式
       },
       currentPage: 1, //当前页
@@ -133,6 +134,7 @@ export default {
           .then(() => {
             deleteCheParameterInfoApi(row.id).then(res => {
             if (res.code == "200") {
+               this.$message({ type: 'success', message: "删除成功" });
               this.getStationList();
             }
           }, err => {

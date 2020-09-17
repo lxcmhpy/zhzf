@@ -85,6 +85,7 @@
                     <p class="course-desc">{{scope.row.remark || ''}}</p>
                     <p class="exam-info">
                       <span class="m-r-30"><i class="iconfont law-shijian"></i>培训时间：{{ scope.row.beginTime }} - {{ scope.row.endTime }}</span>
+                      <span>培训类型：{{ scope.row.trainType }}</span>
                       <span><i class="el-icon-coin"></i>总学分：<span class="num">{{ scope.row.trainCredit }}</span></span>
                       <i class="split">|</i>
                       <span>合格学分：<span class="num">{{ scope.row.qualifiedCredits }}</span></span>
