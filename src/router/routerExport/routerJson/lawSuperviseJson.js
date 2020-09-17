@@ -32,15 +32,15 @@ export default  [
         component: () => import("@/page/lawSupervise/supervisePage/kshjg/jiangXiMap"),
       },
       {
-        //高德地图测试
-        path: '/amapTest',
-        name: 'amapTest',
+        //高德地图
+        path: '/aMap',
+        name: 'aMap',
         meta: {
-          title: "江西可视化地图",
+          title: "可视化地图",
           oneTab:true,
           keepAlive: true
         },
-        component: () => import("@/page/lawSupervise/supervisePage/kshjg/amapTest"),
+        component: () => import("@/page/lawSupervise/supervisePage/kshjg/amap"),
       },
       {
         //称重数据手工同步
