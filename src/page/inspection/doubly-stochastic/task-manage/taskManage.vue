@@ -41,13 +41,13 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+        <el-table :data="tableData" key="table1" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkStandard" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
-          <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
@@ -64,7 +64,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
+      <div class="tablePart" key="table2" v-if="searchForm.taskArea=='省市场监管领域'">
         <el-table :data="tableData" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <!-- <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column> -->
@@ -123,7 +123,10 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查主体" prop="checkSubject">
-                <el-input v-model="addForm.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
+                <el-select v-model="addForm.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出">
+                  <el-option v-for="item in optionsCCZTJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                </el-select>
+                <!-- <el-input v-model="addForm.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input> -->
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -157,7 +160,7 @@
               <el-form-item label="检查对象" prop="checkObject">
                 <!-- <el-input v-model="addForm.checkObject"></el-input> -->
                 <el-select v-model="addForm.checkObject" placeholder="请选择">
-                  <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                  <el-option v-for="item in optionsCCDXJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -227,7 +230,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="timeList" style="width:500px">
+          <el-form-item label="抽查时限" prop="timeList" style="width:500px;margin-top:10px">
             <el-date-picker v-model="addForm.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -268,7 +271,10 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="检查主体" prop="checkSubject">
-                <el-input v-model="addForm2.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input>
+                <el-select v-model="addForm2.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出">
+                  <el-option v-for="item in optionsCCZTSC" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                </el-select>
+                <!-- <el-input v-model="addForm2.checkSubject" placeholder="选择检查任务名称后有数据的会自动带出"></el-input> -->
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -302,7 +308,7 @@
               <el-form-item label="检查对象" prop="checkObject">
                 <!-- <el-input v-model="addForm2.checkObject"></el-input> -->
                 <el-select v-model="addForm2.checkObject" placeholder="请选择">
-                  <el-option v-for="item in optionsJCDX" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                  <el-option v-for="item in optionsCCDXSC" :key="item.id" :label="item.name" :value="item.name"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -372,7 +378,7 @@
               </el-form-item>
             </el-col>
           </el-row> -->
-          <el-form-item label="抽查时限" prop="timeList" style="width:500px">
+          <el-form-item label="抽查时限" prop="timeList" style="width:500px;margin-top:10px">
             <el-date-picker v-model="addForm2.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -398,8 +404,8 @@ export default {
     var validateCheckObjectNum = (rule, value, callback) => {
       if (!value) {
         callback(new Error('必填项'));
-      } else if (value <= Math.ceil(this.addForm.checkObjectNumAll*0.3)) {
-        callback(new Error('须大于总数的三分之一'));
+      } else if (value <= Math.ceil(this.addForm.checkObjectNumAll * 0.3)) {
+        callback(new Error('不得少于总对象数的30%'));
       } else if (value > this.addForm.checkObjectNumAll) {
         callback(new Error('必须小于总数'));
       } else {
@@ -409,8 +415,8 @@ export default {
     var validateCheckObjectNum2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('必填项'));
-      } else if (value <= Math.ceil(this.addForm.checkObjectNumAll*0.3)) {
-        callback(new Error('须大于总数的三分之一'));
+      } else if (value <= Math.ceil(this.addForm2.checkObjectNumAll * 0.3)) {
+        callback(new Error('不得少于总对象数的30%'));
       } else if (value > this.addForm2.checkObjectNumAll) {
         callback(new Error('必须小于总数'));
       } else {
@@ -463,7 +469,8 @@ export default {
     };
     return {
       optionsCCLB: [],
-      optionsJCDX: [],
+      optionsCCDXJT: [],
+      optionsCCDXSC: [],
       optionsSXLB: ['一般检查事项', '重点检查事项'],
       multipleSelection: [],
       searchForm: {
@@ -549,9 +556,9 @@ export default {
         checkSubject: [
           { required: true, message: "必填项", trigger: "change" }
         ],
-        checkType: [
-          { required: true, message: "必填项", trigger: "change" }
-        ],
+        // checkType: [
+        //   { required: true, message: "必填项", trigger: "change" }
+        // ],
         checkObjectNum: [
           { validator: validateCheckObjectNum, trigger: "change" },
         ],
@@ -614,6 +621,8 @@ export default {
       // optionsRWMC: [],
       optionsCCSXSC: [],
       optionsCCSXJT: [],
+      optionsCCZTJT: [],
+      optionsCCZTSC: [],
       optionsCCFS: [],
       optionsSSLB: [],
       LawOfficerList: [],//执法人员列表
@@ -877,6 +886,7 @@ export default {
               this.$set(_this.addForm, `checkSubject`, res.data.checkSubject || '');
               this.$set(_this.addForm, `checkType`, res.data.checkType || '');
               this.$set(_this.addForm, `itemType`, res.data.itemType || '');
+              this.$set(_this.addForm, `checkItem`, res.data.checkItem || '');
 
             }
           },
@@ -894,7 +904,8 @@ export default {
               this.$set(_this.addForm2, `checkContent`, res.data.checkContent || '');
               this.$set(_this.addForm2, `checkSubject`, res.data.checkSubject || '');
               this.$set(_this.addForm2, `checkType`, res.data.checkType || '');
-              this.$set(_this.addForm, `itemType`, res.data.itemType || '');
+              this.$set(_this.addForm2, `itemType`, res.data.itemType || '');
+              this.$set(_this.addForm2, `checkItem`, res.data.checkItem || '');
 
             }
           },
@@ -904,7 +915,7 @@ export default {
     },
     getCountByOrganName(type) {
       let _this = this
-      let data = iLocalStroage.gets("userInfo").organName
+      let data = iLocalStroage.gets("userInfo").organId
       getCountByOrganNameApi(data).then(
         res => {
           if (type == 1) {
@@ -933,10 +944,13 @@ export default {
               case 3: _this.optionsCCFS = res.data; break;//抽查方式
               case 4: _this.optionsCCLBSC = res.data; break;//抽查类别-市场
               case 10: _this.optionsCCLBJT = res.data; break;//抽查类别-交通
-              case 5: _this.optionsSSLB = res.data; break;//事项类别
+              // case 5: _this.optionsSSLB = res.data; break;//事项类别
               case 6: _this.optionsCCSXJT = res.data; break;//抽查事项-交通
-              case 7: _this.optionsJCDX = res.data; break;//检查对象
+              case 7: _this.optionsCCDXJT = res.data; break;//抽查对象-交通
+              case 11: _this.optionsCCDXSC = res.data; break;//抽查对象-市场
               case 9: _this.optionsCCSXSC = res.data; break;//抽查事项-市场
+              case 13: _this.optionsCCZTJT = res.data; break;//抽查主体-交通
+              case 12: _this.optionsCCZTSC = res.data; break;//抽查主体-市场
 
               // 刘传敏
               // 1、信息维护、事项清单，交通厅领域：抽查事项名称，取“抽查类别”这个数据字典的值。 抽查内容，取“抽查事项”这个数据字典的值。  
@@ -958,11 +972,14 @@ export default {
       { name: '检查类型', option: 2 },
       { name: '抽查方式', option: 3 },
       { name: '抽查类别-市场', option: 4 },
-      { name: '事项类别', option: 5 },
+      // { name: '事项类别', option: 5 },
       { name: '抽查事项-交通', option: 6 },
-      { name: '检查对象', option: 7 },
+      { name: '抽查对象-交通', option: 7 },
+      { name: '抽查对象-市场', option: 11 },
       { name: '抽查事项-市场', option: 9 },
       { name: '抽查类别-交通', option: 10 },
+      { name: '抽查主体-交通', option: 13 },
+      { name: '抽查主体-市场', option: 12 },
     ])
     this.getPerson()
   }

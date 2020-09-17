@@ -70,7 +70,7 @@ export default {
     }
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId','province','IsLawEnforcementSupervision']) },
+  computed: { ...mapGetters(['caseId','province','IsLawEnforcementSupervision',]) },
   methods: {
     async getFlowStatusByCaseId(id) {
       //   console.log(id)
@@ -852,6 +852,7 @@ export default {
     async backSuccess(){
        await this.getFlowStatusByCaseId(this.caseId);
        this.$message({type:'success',message:'回退成功'})
+       this.$store.commit("setDoingLinkId",this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId);//保存正在进行的环节ID
        this.$refs.flowLinkBackDiaRef.closeDialog();
     },
     //是否显示环节回退按钮

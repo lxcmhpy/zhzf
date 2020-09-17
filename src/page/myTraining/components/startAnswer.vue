@@ -60,7 +60,7 @@
               <div class="examinee-photo">
                 <img
                   v-if="personInfo.photoUrl"
-                  :src="baseUrl + personInfo.photoUrl"
+                  :src="personInfo.photoUrl"
                   width="100px"
                   height="140px"
                 />
@@ -172,14 +172,19 @@ export default {
     examPerInfo() {
       return JSON.parse(sessionStorage.getItem("ExamUserInfo"));
     },
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
   created() {
     this.getQuestionInfo();
   },
   methods: {
+    // 获取用户照片
+    getPersonPhoto() {
+      if (this.personInfo.photoUrl) {
+        this.$util.com_getFileStream(this.personInfo.photoUrl).then((res) => {
+          this.personInfo.photoUrl = res;
+        });
+      }
+    },
     // 获取考试内容
     getQuestionInfo() {
       const loading = this.$loading({
@@ -204,6 +209,7 @@ export default {
             this.setAllQuestionNum(res.data.graphInfo);
             this.timeLength = res.data.userTime || 0;
             this.countDownFun();
+            this.getPersonPhoto();
           } else {
             this.$message({ type: "error", message: "获取题目失败" });
           }

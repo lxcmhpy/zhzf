@@ -616,6 +616,7 @@ export const mixinGetCaseApiList = {
       }
       console.log('查询环节是否生成了pdf', fileres);
       if (fileres.data.length > 0) {
+        this.$store.commit("setDoingLinkId", data.linkID);//保存正在进行的环节ID
         this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, caseLinktypeId: data.linkID } })
       } else {
         this.$router.push({ name: data2.nextLink })

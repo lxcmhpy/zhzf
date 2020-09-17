@@ -145,6 +145,19 @@
             <el-input v-model="addOrganForm.enforcementOrgan2"></el-input>
           </el-form-item>
         </div>
+        <div>
+          <el-form-item label="行政区划" prop="administrativeDivision">
+            <el-cascader
+                ref="areaCascader"
+                v-model="addOrganForm.administrativeDivisionArray"
+                :options="provincesList"
+                @active-item-change="handleSelect"
+                :props="{ expandTrigger:'hover',label:'name',value:'name'}"
+                filterable
+                @change="handleSelect"
+              ></el-cascader>
+          </el-form-item>
+        </div>
       </div>
       <div class="part">
         <p class="titleP">三定要求</p>
@@ -218,7 +231,9 @@ export default {
         reconsiderationOrgan2:'',
         enforcementOrgan1:'',
         enforcementOrgan2:'',
-        enforcementBody:''
+        enforcementBody:'',
+        administrativeDivision:'',
+        administrativeDivisionArray: [],
       },
       addValueForm:{
         propertyValue:{}
@@ -240,6 +255,7 @@ export default {
       attachedPropertyValueList:[],
       organArray: [],//执法主体
       enforcementBodyStatus:'0',//执法主体是否显示，1显示，0不显示
+      provincesList: [], //行政区划
     };
   },
 
@@ -320,6 +336,13 @@ export default {
           _this.addOrganForm.pid = _this.parentNode.parentNodeId;
           _this.addOrganForm.id = _this.handelType == 0 ? '' :  _this.organId;
           console.log("数据", _this.addOrganForm);
+          if (_this.addOrganForm.administrativeDivisionArray 
+            && _this.addOrganForm.administrativeDivisionArray.length > 1
+          ) {
+            _this.addOrganForm.administrativeDivision = JSON.stringify(
+                _this.addOrganForm.administrativeDivisionArray
+            );
+          }
           _this.$store.dispatch("addOrgan", _this.addOrganForm).then(
             res => {
               console.log('this.organId',_this.addOrganForm.pid);
@@ -372,6 +395,25 @@ export default {
         res => {
           console.log("机构", res);
           _this.addOrganForm = res.data;
+
+          let dataArray = [];
+          if (res.data.administrativeDivision) {
+            res.data.administrativeDivisionArray = JSON.parse(
+              res.data.administrativeDivision
+            );
+            if (res.data.administrativeDivisionArray.length > 1) {
+              let obj = {
+                first: res.data.administrativeDivisionArray[0],
+                second: res.data.administrativeDivisionArray[1],
+              };
+              if (res.data.administrativeDivisionArray.length == 3) {
+                obj.three = res.data.administrativeDivisionArray[2];
+              }
+              dataArray.push(obj);
+            }
+          }
+          this.initProvincesList(dataArray);
+
           _this.parentNode.parentNodeId = res.data.pid;
           _this.parentNode.parentNodeName = res.data.pidName;
           if (res.data.isIndependentEnforce == "否") {
@@ -445,7 +487,24 @@ export default {
         this.accessToAuthorityArray = await this.getDictListDetailTb(BASIC_DATA_SYS.accessToAuthority);
         //   执法主体
         this.getCurrentAndNextOrgan();
-    }
+    },
+    handleSelect(node) {
+      if (node) {
+        let data = this.$refs["areaCascader"].panel.getNodeByValue(
+          node[node.length - 1]
+        ).data;
+        if (data.childrenCount > 0 && data.children.length == 0) {
+          this.$store.dispatch("getCountry", data.adCode).then((res) => {
+            data.children = res.data;
+          });
+        }
+      }
+    },
+    initProvincesList(data) {
+      this.$store.dispatch("getCountryTree", data).then((res) => {
+        this.provincesList = res.data;
+      });
+    },
     //获取字典值
     // async getDictKeyList(val){
     //   this.$store.dispatch("getDictListDetail", val).then(

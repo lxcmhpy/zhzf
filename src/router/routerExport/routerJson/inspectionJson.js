@@ -241,6 +241,16 @@ export default  [
                 },
                 component: () => import("@/page/inspection/dutyManage/dutyRecord.vue")
             },
+            // 行政检查--记录描述配置
+            {
+                path: "/recordDescription",
+                name: "record_description",
+                meta: {
+                title: "记录描述配置",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/dutyManage/recordDescription.vue")
+            },
             // 勤务管理--日志管理
             {
                 path: "/dutyJournal",
@@ -297,7 +307,7 @@ export default  [
                 path: "/serialManage",
                 name: "serial-manage",
                 meta: {
-                title: "日志管理",
+                title: "流水号管理",
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/serial-number/serialManage.vue")

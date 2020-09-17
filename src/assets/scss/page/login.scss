@@ -334,7 +334,12 @@
 
             .wechat_box {
                 width: 140px;
-
+                height: 164px;
+                .wechat-text{
+                    cursor: pointer;
+                    color:#409EFF;
+                    font-size: 14px;
+                }
                 .wechat {
                     clear: both;
                     width: 150px;

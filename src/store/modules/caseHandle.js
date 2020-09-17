@@ -1,7 +1,7 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi,findDocCatalogByCaseIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
-    submitPdfApi,approvalPdfApi,approvalPdfQzApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
+    submitPdfApi,approvalPdfApi,approvalPdfQzApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,deleteDocByIdApi,getApprovePeopleApi,
     findByCondition,findByMlCaseIdNew,saveOrUpdateDocCatalogList,getCaseTypeListApi,getCatalogListApi,addOrEditCatalogApi,
     deleteCatalogApi,
     //-----------------长软start-----------
@@ -223,6 +223,18 @@ const caseHandle = {
         delDocDataByDocId({ commit }, data) {
             return new Promise((resolve, reject) => {
                 delDocDataByDocIdApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除文书
+        deleteDocByIdApi({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                deleteDocByIdApi(data).then(
                     res => {
                         resolve(res);
                     },

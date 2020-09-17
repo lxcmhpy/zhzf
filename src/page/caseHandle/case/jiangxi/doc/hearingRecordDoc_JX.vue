@@ -296,6 +296,8 @@
           hearingClerks: "",
           staff: "",
           staffId: "",
+          staff1: "",
+          staffId1: "",
           staff2: "",
           staffId2: "",
           party: "",
