@@ -179,29 +179,23 @@
 
         let currentApproveRes = await getCurrentApproveApi(this.docDataId);
         console.log('几级审批',currentApproveRes);
-        // if(currentApproveRes.data.currentIndex == 1){  //一级审批
-        //     if(currentDocData.approveOpinions) {
-        //       oldApprovalOpion = currentDocData.approveOpinions;
-        //       oldApprovalTime = currentDocData.approveTime;
-        //     }
-        // }else if(currentApproveRes.data.currentIndex == 2){
-        //     if(currentDocData.secondApproveOpinions) {
-        //       oldApprovalOpion = currentDocData.secondApproveOpinions;
-        //       oldApprovalTime = currentDocData.secondApproveTime;
-        //     }
-        // }else if(currentApproveRes.data.currentIndex == 3){
-        //     if(currentDocData.thirdApproveOpinions) {
-        //       oldApprovalOpion = currentDocData.thirdApproveOpinions;
-        //       oldApprovalTime = currentDocData.thirdApproveTime;
-        //     }
-        // }
+        if(currentApproveRes.data.currentIndex == "1"){  //一级审批
+              oldApprovalOpion = currentDocData.old_approveOpinions; 
+              oldApprovalTime = currentDocData.old_approveTime;
+        }else if(currentApproveRes.data.currentIndex == "2"){
+              oldApprovalOpion = currentDocData.old_secondApproveOpinions;
+              oldApprovalTime = currentDocData.old_secondApproveTime;
+        }else if(currentApproveRes.data.currentIndex == "3"){
+              oldApprovalOpion = currentDocData.old_thirdApproveOpinions;
+              oldApprovalTime = currentDocData.old_thirdApproveTime;
+        }
 
         let caseData={
             caseId:this.caseId,
             currentApproval:currentApproveRes.data.currentIndex, //当前是几级审批
             approvalNumber:currentApproveRes.data.amount ,  //共几级审批
             oldApprovalOpion:oldApprovalOpion, //环节回退或修改文书之后自动带入旧的审批
-            oldApprovalTime:oldApprovalOpion
+            oldApprovalTime:oldApprovalTime
         }
         this.$refs.approvalDialogRef.showModal(caseData);
 

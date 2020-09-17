@@ -95,12 +95,12 @@ export default [{
     },
     component: () => import("@/page/notice/event-after/caseManagement.vue")
   },
-  //   {
-  //     path: "/details",
-  //     name: "details",
-  //     meta: {
-  //       title: "预览"
-  //     },
-  //     component: () => import("@/page/notice/components/details")
-  //   },
+  {
+    path: "/complaintStatistic",
+    name: "complaintStatistic",
+    meta: {
+      title: "投诉高发时段统计"
+    },
+    component: () => import("@/page/notice/complaint/complaintStatistic")
+  },
 ]
