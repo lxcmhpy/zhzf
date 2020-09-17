@@ -35,13 +35,14 @@
           <el-table-column prop="appVersion" label="版本名称" align="center"></el-table-column>
           <el-table-column prop="appVersionCode" label="版本号" align="center"></el-table-column>
           <el-table-column prop="appUpgrade" label="下载地址" align="center"></el-table-column>
-          <el-table-column prop="appMessage" label="更新内容" align="center"></el-table-column>
           <el-table-column prop="appForcedUpgrade" label="是否强制更新" align="center" :formatter = "format"></el-table-column>
           <el-table-column prop="createTime" label="更新时间" align="center"></el-table-column>
           <el-table-column prop="modifyId" label="操作人" align="center"></el-table-column>
           <el-table-column prop="modifyTime" label="操作日期" align="center"></el-table-column>
+          <el-table-column prop="appMessage" label="更新内容" align="center"></el-table-column>
           <el-table-column prop="opt" label="操作项" align="center">
             <template slot-scope="scope">
+              <el-button @click="editVersion1(scope.row)" type="text">查看</el-button>
               <el-button @click="editVersion(scope.row)" type="text">修改</el-button>
               <el-button type="text" @click="deleteVersionById(scope.row)">删除</el-button>
             </template>
@@ -90,6 +91,9 @@ export default {
     //修改人员信息
     editVersion(row) {
       this.$refs.addVersionCompRef.showModal(2, row);
+    },
+    editVersion1(row) {
+      this.$refs.addVersionCompRef.showModal(3, row);
     },
     //根据id删除单个人员信息
     deleteVersionById(row) {

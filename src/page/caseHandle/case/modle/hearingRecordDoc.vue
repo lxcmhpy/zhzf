@@ -320,6 +320,16 @@
         });
         return callback(new Error("开始时间不得大于结束时间"));
       }
+      if(this.docData.noticeMakeDate && Date.parse(this.docData.hearingStartTime)>Date.parse(this.docData.noticeMakeDate)){
+        this.$message({
+              showClose: true,
+              message: '开始时间不得小于听证通知书签章日期',
+              type: 'error',
+              offset: 100,
+              customClass: 'validateErrorTip'
+        });
+        return callback(new Error("开始时间不得小于听证通知书签章日期"));
+      }
       callback();
     };
       return {
@@ -330,13 +340,15 @@
           caseName: "",
           hearingOrgan: "",
           hearingPlace: "",
-          hearingStartTime: "",
+          hearingStartTime: new Date(),
           hearingEndTime: "",
           persidingHearer: "",
           hearingOfficer: "",
           hearingClerks: "",
           staff: "",
           staffId: "",
+          staff1: "",
+          staffId1: "",
           staff2: "",
           staffId2: "",
           party: "",
@@ -358,7 +370,8 @@
           persidingHearerSign: "",
           hearingClerksSign: "",
           hearingOtherSign: "",
-          hearingRecord: "" //听证记录
+          hearingRecord: "", //听证记录,
+          noticeMakeDate: "",//听证通知书签章日期
         },
         handleType: 0, //0  暂存     1 提交
         caseDocDataForm: {
@@ -385,11 +398,11 @@
           ],
           hearingStartTime: [
             {required: true, message: '请输入听证开始时间', trigger: 'blur'},
-            { validator:validateStartTime , trigger: "blur" }
+            { validator:validateStartTime , trigger: "change" }
           ],
           hearingEndTime: [
             {required: true, message: '请输入听证结束时间', trigger: 'blur'},
-            { validator:validateStartTime , trigger: "blur" }
+            { validator:validateStartTime , trigger: "change" }
           ],
           persidingHearer: [
             {required: true, message: '请输入主持人姓名', trigger: 'blur'},

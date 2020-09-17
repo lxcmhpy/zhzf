@@ -4,15 +4,15 @@
       <div class="handlePart">
         <div class="search">
           <el-form :inline="true" :model="stationForm" ref="stationFormRef">
-            <el-form-item label="岗位名称" prop="name">
-              <el-input v-model="stationForm.name"></el-input>
+            <el-form-item label="业务类型编号" prop="codeInfo">
+              <el-input v-model="stationForm.codeInfo"></el-input>
             </el-form-item>
-            <el-form-item label="是否执法" prop="isLce">
-              <el-select v-model="stationForm.isLce" placeholder="是否执法">
+            <!-- <el-form-item label="" prop="sufName">
+              <el-select v-model="stationForm.">
                 <el-option label="能执法" value="0"></el-option>
                 <el-option label="不能执法" value="1"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-button type="info" icon="el-icon-search" size="medium" @click="currentPage = 1; getStationList();">查询</el-button>
               <el-button type="primary" size="medium" @click="resetLog">重置</el-button>
@@ -35,8 +35,14 @@
         >
           <el-table-column type="selection" align="center"></el-table-column>
           <el-table-column prop="id" v-if="false" label></el-table-column>
-          <el-table-column prop="name" label="岗位名称" align="center"></el-table-column>
-          <el-table-column prop="isLce" label="是否执法" align="center" :formatter="isLceInfo"></el-table-column>
+          <el-table-column prop="codeInfo" label="业务类型编码" align="center"></el-table-column>
+          <el-table-column prop="preName" label="前缀" align="center"></el-table-column>
+          <el-table-column prop="dateFormat" label="日期格式" align="center"></el-table-column>
+          <el-table-column prop="numLength" label="长度" align="center"></el-table-column>
+          <el-table-column prop="sufName" label="后缀" align="center"></el-table-column>
+          <el-table-column prop="currNo" label="当前使用账号" align="center"></el-table-column>
+          <el-table-column prop="organName" label="机构名称" align="center"></el-table-column>
+          <!-- <el-table-column prop="isLce" label="是否执法" align="center" :formatter="isLceInfo"></el-table-column> -->
           <el-table-column prop="opt" label="操作项" align="center">
             <template slot-scope="scope">
               <el-button @click="stationInfo(scope.row,1)" type="text">修改</el-button>
@@ -61,15 +67,22 @@
     <addStationPage @getAddStationPage="getStationList" ref="addStationPageRef"></addStationPage>
   </div>
 </template>
-    
+  
 <script>
+ import {getCheParameterInfoPageListApi,deleteCheParameterInfoApi} from '@/api/supervision';
 import addStationPage from "./addNumber";
 export default {
   data() {
     return {
       stationForm: {
-        name: "",
-        isLce: ""
+        preName: "",//前缀
+        sufName: "",//后缀
+        numLength:"",//几位数字
+        codeInfo:"",//不同业务用于生成指定的流水号:case_code
+        currNo:"",//当前使用账号
+        organId:"",//机构Id
+        organName:"",//机构名称
+        dateFormat:"",//日期格式
       },
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -119,19 +132,14 @@ export default {
           customClass: "custom-confirm"
         })
           .then(() => {
-            _this.$store.dispatch("getStationDeleteById", row.id).then(
-              res => {
-                _this.$message({
-                  type: "success",
-                  message: "删除成功!"
-                });
-                //重新加载页面数据
-                _this.getStationList();
-              },
-              err => {
-                console.log(err);
-              }
-            );
+            deleteCheParameterInfoApi(row.id).then(res => {
+            if (res.code == "200") {
+               this.$message({ type: 'success', message: "删除成功" });
+              this.getStationList();
+            }
+          }, err => {
+            this.$message({ type: 'error', message: err.msg || '' });
+          });
           })
           .catch(() => {});
       } else {
@@ -142,18 +150,17 @@ export default {
       //获取查询列表
       let _this = this;
       let data = {
-        name: _this.stationForm.name,
-        isLce: _this.stationForm.isLce,
+         codeInfo: _this.stationForm.codeInfo,
         current: _this.currentPage,
         size: _this.pageSize
       };
-      _this.$store.dispatch("getStationList", data).then(res => {
-        _this.tableData = res.data.records;
-        _this.totalPage = res.data.total;
-      });
-      err => {
-        console.log(err);
-      };
+   getCheParameterInfoPageListApi(data).then(res => {
+            if (res.code == "200") {
+              this.tableData = res.data.records;
+            }
+          }, err => {
+            this.$message({ type: 'error', message: err.msg || '' });
+          });
     },
     isLceInfo(row) {
       if (row.isLce == "0") {

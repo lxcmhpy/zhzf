@@ -247,7 +247,49 @@ export function getProcessTypeTreeApi(processTypeId) {
     baseUrlType:"DUTY_HOST"
   })
 }
+///流水号
+//添加流水号
+export function getCheParameterInfoApi(data) {
+  return request({
+     url: "/check/cheParameter/getCheParameterInfo",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource(),
+  })
+}
 
+//删除流水号
+export function deleteCheParameterInfoApi(id) {
+  return request({
+     url: "/check/cheParameter/deleteCheParameterInfo/"+id,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+  })
+}
+
+//分页查询流水号
+export function getCheParameterInfoPageListApi(data) {
+  return request({
+     url: "/check/cheParameter/getCheParameterInfoPageList",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource(),
+  })
+}
+
+//修改流水号
+export function updateCheParameterInfoApi(data) {
+  return request({
+     url: "/check/cheParameter/updateCheParameterInfo",
+    method: "get",
+    params: data,
+    showloading: true,
+    cancelToken: setCancelSource(),
+  })
+}
 //获取记录模板树
 export function getCheRecordTemplateTreeApi() {
   return request({

@@ -214,9 +214,9 @@
         <div class="pdf_seal">
           <span>{{formData.organName}}</span>
           <br />
-          <el-form-item prop="signatureDate" class="pdf_datapick">
+          <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker
-              v-model="formData.signatureDate"
+              v-model="formData.makeDate"
               type="date"
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
@@ -268,6 +268,7 @@ export default {
         payTotal: "",
         totalAmount: "",
         bank: "",
+        makeDate: "",
       },
       tableData: [],
       needDealData: true,

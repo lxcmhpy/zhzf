@@ -479,7 +479,7 @@ export default {
               case 1: _this.optionsSXLB = res.data; break;//事项类别
               case 2: _this.optionsCCFS = res.data; break;//抽查方式
               case 3: _this.optionsCCZTSC = res.data; break;//抽查主体-市场
-              case 3: _this.optionsCCZTJT = res.data; break;//抽查主体-交通
+              case 10: _this.optionsCCZTJT = res.data; break;//抽查主体-交通
               case 4: _this.optionsCCLBSC = res.data; break;//抽查类别-市场
               case 5: _this.optionsCCSXJT = res.data; break;//抽查事项-交通
               case 6: _this.optionsCCSXSC = res.data; break;//抽查事项-市场
