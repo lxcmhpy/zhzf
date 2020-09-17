@@ -8,7 +8,7 @@
               <el-input v-model="dicSearchForm.name" placeholder="输入名称"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDictList">查询</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDictList(1)">查询</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="resetForm('dicSearchForm')">重置</el-button>
@@ -79,9 +79,9 @@ export default {
   inject: ["reload"],
   methods: {
     //获取字典列表
-    getDictList() {
+    getDictList(current) {
       let data = {
-        current: this.currentPage,
+        current: current,
         size: this.pageSize,
         name: this.dicSearchForm.name
       };
@@ -101,7 +101,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.currentPage = 1;
-      this.getDictList();
+      this.getDictList(1);
     },
     //获取字典值
     getDictVal(row) {
@@ -134,12 +134,12 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getDictList();
+      this.getDictList(1);
     },
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getDictList();
+      this.getDictList(val);
     },
     //获取字典值
     getDictKeyList(data) {
@@ -180,7 +180,7 @@ export default {
     }
   },
   created() {
-    this.getDictList();
+    this.getDictList(1);
   }
 };
 </script>
