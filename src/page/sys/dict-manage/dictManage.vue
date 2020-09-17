@@ -118,7 +118,7 @@ export default {
       let data = {
         id: "",
         pid: "",
-        leng: this.tableData.length
+        leng: this.totalPage
       };
       this.$refs.addEditDictRef.showModal(0, data, "list");
     },
