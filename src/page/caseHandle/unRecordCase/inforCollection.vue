@@ -166,15 +166,17 @@
             <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
           </div>-->
         </div>
+
+
         <div v-if="inforForm.zfmlId === '1002000100000000' ">
-          <div class="gongLiBox1">K</div>
-          <div class="itemFive">
+          <span class="gongLiBox1">K</span>
+          <span class="itemFive">
             <el-form-item prop="pileNumber" label-width="0px">
               <el-input v-model="inforForm.pileNumber" placeholder="公里数"></el-input>
             </el-form-item>
-          </div>
-          <div class="gongLiBox2">+</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox2">+</span>
+          <span class="itemFive">
             <el-form-item label-width="0px" prop="distance">
               <el-input
                 v-model="inforForm.distance"
@@ -184,16 +186,16 @@
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-          </div>
-          <div class="gongLiBox3">至</div>
-          <div class="gongLiBox3">K</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox3">至</span>
+          <span class="gongLiBox3">K</span>
+          <span class="itemFive">
             <el-form-item prop="pileNumber2" label-width="0px">
               <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
             </el-form-item>
-          </div>
-          <div class="gongLiBox2">+</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox2">+</span>
+          <span class="itemFive">
             <el-form-item label-width="0px" prop="distance2">
               <el-input
                 v-model="inforForm.distance2"
@@ -203,8 +205,10 @@
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-          </div>
+          </span>
         </div>
+
+
         <div>
           <div class="itemOne">
             <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
@@ -3106,7 +3110,7 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss">
-/* @import "@/assets/css/caseHandle/index.scss"; */
+//  @import "@/assets/css/caseHandle/index.scss"; 
 </style>
 <style lang="scss">
 .error-color {

@@ -102,7 +102,7 @@ export default {
         source: [
           {
             required: true,
-            message: "请选择公告类型",
+            message: "请输入来源",
             trigger: "change",
           },
         ],
