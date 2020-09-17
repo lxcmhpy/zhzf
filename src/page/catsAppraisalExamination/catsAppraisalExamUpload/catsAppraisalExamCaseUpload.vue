@@ -549,6 +549,7 @@
                     amountInvolved: '',
                     businessArea: ''
                 }
+                this.cityDivisionList=[];
                 // this.$refs.form.resetFields()
             },
             update(data) {
