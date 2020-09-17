@@ -183,7 +183,7 @@
                 class="color_DBE4EF table_seal"
                 style="white-space: pre-wrap;word-break:break-all"
               >
-                {{docData.approveOptions}}
+                {{docData.approveOpinions}}
                 <div class="pdf_seal">
                   <p>负责人签名：{{docData.approvePeo}}</p>
                   <p>
@@ -251,7 +251,7 @@ export default {
         hearingResult:'',
         presidentSign:'',
         presidentTime:'',
-        approveOptions:'',
+        approveOpinions:'',
         approvePeo:'',
         approveTime:'',
         note: '',
