@@ -92,7 +92,7 @@ export function addCheShiftchangeApi(data){
 //获取排班管理接口
 export function getScheduleListApi(data){
   return request({
-      url: "/schedule/cheSchedulePageList",
+      url: "/check/schedule/cheSchedulePageList",
       method: "get",
       params: data,
       showloading: true,
@@ -115,7 +115,7 @@ export function deleteCheScheduleApi(scheduleId){
 //保存排班管理
 export function addCheScheduleApi(data){
   return request({
-      url: "/schedule/addCheSchedule",
+      url: "/check/schedule/addCheSchedule",
       method: "post",
       data: data,
       showloading: true,
@@ -127,7 +127,7 @@ export function addCheScheduleApi(data){
 //修改排班管理
 export function updateCheScheduleApi(data){
   return request({
-      url: "/schedule/updateCheSchedule",
+      url: "/check/schedule/updateCheSchedule",
       method: "post",
       data: data,
       showloading: true,
@@ -145,15 +145,15 @@ export function getCheRecordPageListApi(data){
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   })
 }
 
 //删除记录
 export function deleteCheRecordByIdsApi(data){
   return request({
-    //  url: "/check/record/deleteCheRecordByIds",
-    url: "/record/deleteCheRecordByIds",
+     url: "/check/record/deleteCheRecordByIds",
+    //url: "/record/deleteCheRecordByIds",
     method: "post",
     data: data,
     showloading: true,
@@ -170,7 +170,7 @@ export function getCheRecordTempPageListApi(data){
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   })
 }
 
@@ -184,7 +184,7 @@ export function addCheRecordApi(data){
     showloading: true,
     loadingType: 'loadPart',
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   });
 }
 
@@ -197,7 +197,7 @@ export function getCheRecordDetailApi(data) {
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   })
 }
 
@@ -209,45 +209,149 @@ export function getCheProcessTypeTreeApi() {
     method: "get",
     showloading: true,
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   })
 }
 
 //根据处理等级获取处理情况
 export function getProcessTypeApi(processTypeId) {
   return request({
-    url: "/check/cheProcessType/tree",
+    url: "/check/cheProcess/list/" + processTypeId,
     // url: "/cheProcess/list/" + processTypeId,
     method: "get",
     showloading: true,
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   })
 }
 
 //获取处理下级
 export function getProcessApi(processId) {
   return request({
-    url: "/check/cheProcessType/tree",
+    url: "/check/cheProcess/child/" + processId,
     // url: "/cheProcess/child/" + processId,
     method: "get",
     showloading: true,
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   })
 }
 
 //根据处理等级获取处理情况
 export function getProcessTypeTreeApi(processTypeId) {
   return request({
-    url: "/check/cheProcessType/tree",
+    url: "/check/cheProcess/tree/" + processTypeId,
     // url: "/cheProcess/tree/" + processTypeId,
     method: "get",
     showloading: true,
     cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
+    //baseUrlType:"DUTY_HOST"
   })
 }
+
+//获取记录模板树
+export function getCheRecordTemplateTreeApi() {
+  return request({
+    url: "/check/template/getCheRecordTemplateTree",
+    // url: "/template/getCheRecordTemplateTree",
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  })
+}
+
+//添加记录模板
+export function saveCheRecordTemplateApi(data) {
+  return request({
+    url: "/check/template/saveCheRecordTemplate",
+    // url: "/template/saveCheRecordTemplate",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  });
+}
+
+//删除记录模板
+export function deleteCheRecordTemplateByIdApi(templateById) {
+  return request({
+    url: "/check/template/deleteCheRecordTemplateById/" + templateById,
+    // url: "/template/deleteCheRecordTemplateById/" + templateById,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  })
+}
+
+//添加处理情况分类
+export function saveCheProcessTypeApi(data) {
+  return request({
+     url: "/check/cheProcessType/saveCheProcessType",
+    // url: "/cheProcessType/saveCheProcessType",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  });
+}
+
+//删除处理情况分类
+export function deleteCheProcessTypeByIdApi(processTypeId) {
+  return request({
+    url: "/check/cheProcessType/deleteCheProcessTypeById/" + processTypeId,
+    // url: "/cheProcessType/deleteCheProcessTypeById/" + processTypeId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  })
+}
+
+//保存处理情况
+export function saveProessApi(data){
+  return request({
+     url: "/check/cheProcess/saveProess",
+    // url: "/cheProcess/saveProess",
+    method: "post",
+    data: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  });
+}
+
+//删除处理情况
+export function deleteProcessApi(ids){
+  return request({
+    url: "/check/cheProcess/deleteProcess",
+    // url: "/cheProcess/deleteProcess",
+    method: "post",
+    data: {ids},
+    showloading: true,
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  })
+}
+
+//根据分类等级查询处理分类
+export function getProcessTypeByLevelsApi(levels) {
+  return request({
+    url: "/check/cheProcessType/levels/" + levels,
+    // url: "/cheProcessType/levels/" + levels,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    //baseUrlType:"DUTY_HOST"
+  })
+}
+
 ///流水号
 //添加流水号
 export function getCheParameterInfoApi(data) {
@@ -289,95 +393,5 @@ export function updateCheParameterInfoApi(data) {
     params: data,
     showloading: true,
     cancelToken: setCancelSource(),
-  })
-}
-//获取记录模板树
-export function getCheRecordTemplateTreeApi() {
-  return request({
-    url: "/check/template/getCheRecordTemplateTree",
-    // url: "/template/getCheRecordTemplateTree",
-    method: "get",
-    showloading: true,
-    cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
-  })
-}
-
-//添加记录模板
-export function saveCheRecordTemplateApi(data) {
-  return request({
-    url: "/check/template/addCheRecordTemplate",
-    // url: "/template/saveCheRecordTemplate",
-    method: "post",
-    data: data,
-    showloading: true,
-    loadingType: 'loadPart',
-    cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
-  });
-}
-
-//删除记录模板
-export function deleteCheRecordTemplateByIdApi(templateById) {
-  return request({
-    url: "/check/template/deleteCheRecordTemplateById" + templateById,
-    // url: "/template/deleteCheRecordTemplateById/" + templateById,
-    method: "get",
-    showloading: true,
-    cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
-  })
-}
-
-//添加处理情况分类
-export function saveCheProcessTypeApi(data) {
-  return request({
-    url: "/check/cheProcessType/saveCheProcessType",
-    // url: "/cheProcessType/saveCheProcessType",
-    method: "post",
-    data: data,
-    showloading: true,
-    loadingType: 'loadPart',
-    cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
-  });
-}
-
-//删除处理情况分类
-export function deleteCheProcessTypeByIdApi(processTypeId) {
-  return request({
-    url: "/check/cheProcessType/deleteCheProcessTypeById" + processTypeId,
-    // url: "/cheProcessType/deleteCheProcessTypeById/" + processTypeId,
-    method: "get",
-    showloading: true,
-    cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
-  })
-}
-
-//保存处理情况
-export function saveProessApi(data){
-  return request({
-    url: "/check/cheProcess/saveProess",
-    // url: "/cheProcess/saveProess",
-    method: "post",
-    data: data,
-    showloading: true,
-    loadingType: 'loadPart',
-    cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
-  });
-}
-
-//删除处理情况
-export function deleteProcessApi(ids){
-  return request({
-    url: "/check/cheProcess/deleteProcess",
-    // url: "/cheProcess/deleteProcess",
-    method: "post",
-    data: {ids},
-    showloading: true,
-    cancelToken: setCancelSource(),
-    // baseUrlType:"DUTY_HOST"
   })
 }

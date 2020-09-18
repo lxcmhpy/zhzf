@@ -757,7 +757,8 @@ export default {
     },
     //获取记录详情
     getCheRecordDetail(cheRecord) {
-      getCheRecordDetailApi(cheRecord).then(
+      const { recordId } = cheRecord;
+      getCheRecordDetailApi({recordId}).then(
         (res) => {
           if (res.code == 200) {
             let formData = {};
