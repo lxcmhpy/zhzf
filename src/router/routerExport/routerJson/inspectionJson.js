@@ -251,6 +251,16 @@ export default  [
                 },
                 component: () => import("@/page/inspection/dutyManage/recordDescription.vue")
             },
+            // 行政检查--情况分类配置
+            {
+                path: "/conditionClassify",
+                name: "condition_classify",
+                meta: {
+                title: "情况分类配置",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/dutyManage/conditionClassify.vue")
+            },
             // 勤务管理--日志管理
             {
                 path: "/dutyJournal",
