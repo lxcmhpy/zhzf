@@ -65,7 +65,7 @@
         <div slot="footer" class="dialog-footer">
           <el-upload class="upload-demo" :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple>
             <el-button size="small" type="primary">选择文件</el-button>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb
+            <div class="el-upload__tip" slot="tip">只能上传图片文件，且不大于10M
             </div>
           </el-upload>
         </div>
