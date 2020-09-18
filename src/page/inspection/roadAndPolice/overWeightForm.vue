@@ -22,7 +22,7 @@
           </div>
           <div class="item">
             <el-form-item label="车辆号牌" prop="vehicleShipId">
-              <el-input v-model="carInfo.vehicleShipId" placeholder="车辆号牌">
+              <el-input v-model="carInfo.vehicleShipId" placeholder="请输入车辆号牌">
                 <el-button slot="append" icon="el-icon-search" @click="searchNumber"></el-button>
               </el-input>
             </el-form-item>
@@ -401,6 +401,7 @@
           </div>
           <div class="item">
             <el-form-item label="复检结果" prop="checkResult">
+
               <el-input v-model="carInfo.secondCheck.checkResult"></el-input>
             </el-form-item>
           </div>
@@ -530,7 +531,7 @@ export default {
         startPlace: '',
         endPlace: '',
         trailerIdNo: '',
-        trailerColor: '',
+        trailerColor: '黄色',
         drivePerson: {
           party: '',
           partyIdNo: '',
