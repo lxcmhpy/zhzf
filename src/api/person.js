@@ -75,7 +75,7 @@ export  function  getAllPersonApi(data)  {
 export  function  addPersonApi(data)  {
   return  request({
     url:  "/person/person/addPerson",
-    method:  "get",
+    method:  "post",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource()
@@ -86,7 +86,7 @@ export  function  addPersonApi(data)  {
 export  function  updatePersonApi(data)  {
   return  request({
     url:  "/person/person/updatePerson",
-    method:  "get",
+    method:  "post",
     params: data,
     showloading: false,
     cancelToken:  setCancelSource()
