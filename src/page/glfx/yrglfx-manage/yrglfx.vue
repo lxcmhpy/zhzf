@@ -89,7 +89,8 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: this.data1,
+            //data: this.data1,
+            data: ['银川交通厅','吴忠综合执法支队','石嘴山综合执法支队','固原市综合执法支队','中卫市综合执法支队'],
             axisTick: {
               alignWithLabel: true
             }
@@ -131,10 +132,10 @@ export default {
             center: ["50%", "60%"],
             data: [
               { value: 310, name: "24岁以下" },
-              { value: 335, name: "25-29岁" },             
+              { value: 335, name: "25-29岁" },
               { value: 234, name: "30-34岁" },
               { value: 310, name: "35-39岁" },
-              { value: 335, name: "40-44岁" },             
+              { value: 335, name: "40-44岁" },
               { value: 234, name: "45-49岁" },
               { value: 234, name: "50-54岁" },
               { value: 234, name: "55岁以上" },
@@ -266,8 +267,8 @@ export default {
       // this.$store.dispatch("ryglfx", data).then(res => {
       ryglfx(data).then(res => {
         console.log(res);
-         this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
-          this.data1=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
+         this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
+          this.data1=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
            this.drawLine1();
       });
       err => {
