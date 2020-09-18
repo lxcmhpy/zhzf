@@ -148,7 +148,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="监督人员" prop="supervisePerson">
-                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.supervisePerson" multiple filterable  allow-create  @change="changeAdmin">
+                <el-select ref="templateAdminIdList" value-key="userId" v-model="addForm.supervisePerson" multiple filterable allow-create @change="changeAdmin">
                   <span class="el-select-dropdown__item" style="background:#eaedf4;height: 34px;display: block;">公开执法人员({{LawOfficerList.length}})</span>
                   <el-option v-for="item in LawOfficerList" :key="item.id" :label="item.lawOfficerName" :value="item.lawOfficerName" placeholder="请添加"></el-option>
                 </el-select>
@@ -636,6 +636,7 @@ export default {
         checkSubject: this.searchForm.checkSubject,
         taskName: this.searchForm.taskName,
         taskArea: this.searchForm.taskArea,
+        organName : iLocalStroage.gets("userInfo").organName,//机构名称
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -664,6 +665,7 @@ export default {
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
       data.expertNum = data.expertNum ? data.expertNum : 0;
+      data.organName = iLocalStroage.gets("userInfo").organName;//机构名称
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -722,6 +724,7 @@ export default {
       data.supervisePerson = data.supervisePerson ? data.supervisePerson.join(',') : '';
       data.operatePerson = data.operatePerson ? data.operatePerson.join(',') : '';
       data.expertNum = data.expertNum ? data.expertNum : 0;
+      data.organName = iLocalStroage.gets("userInfo").organName;//机构名称
       if (type) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

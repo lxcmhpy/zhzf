@@ -824,14 +824,16 @@ export default {
     },
     //模板生成描述
     generateDescribes() {
+      const from = this.inspectRecordForm;
       const tmp = this.normalRecordTemp.find(
-        (t) => t.templateId == this.inspectRecordForm.desTemplateId
+        (t) => t.templateId == from.desTemplateId
       );
-      if(this.inspectRecordForm.checkTime){
-        this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
-        this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
+      if(from.checkTime){
+        from.checkStartTime = from.checkTime[0];
+        from.checkEndTime = from.checkTime[1];
       }
-      this.inspectRecordForm.describes = this.generateContent(tmp.content);
+      from.describes = this.generateContent(tmp.content);
+      this.inspectRecordForm = JSON.parse(JSON.stringify(from));
     },
     //异常摘要生成
     problemAbstractGenerate(listAbnIndex) {

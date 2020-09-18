@@ -304,6 +304,7 @@ export default {
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.checkType,
         taskArea: this.searchForm.taskArea,
+        organName : iLocalStroage.gets("userInfo").organName,//机构名称
         current: this.currentPage,
         size: this.pageSize,
       };
