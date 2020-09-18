@@ -6,6 +6,9 @@
     :close-on-click-modal="false"
     width="35%"
   >
+  <li v-for="item in roleList" :key='item.id'>{{item.name}}</li><br>
+  <li v-for="item in selectRoleList" :key='item.id'>{{item.name}}</li>
+
     <el-checkbox-group v-model="selectRoleList">
       <el-checkbox v-for="(item,index) in roleList" :key="index" :label="item.id">{{item.name}}</el-checkbox>
     </el-checkbox-group>
@@ -61,11 +64,21 @@ export default {
     },
     //绑定角色
     bindRoleSure() {
+      let _this = this
+      let compare=''
+      this.roleList.forEach(element => {
+        compare=compare+element.id+','
+      });
+      // 排除列表中没有的角色
+      let onlyList=[]
+      _this.selectRoleList.forEach(element => {
+        if(compare.indexOf(element)!=-1)
+           onlyList.push(element)
+      });
       let data = {
         userIds: this.userIds.join(','),
-        roleIds: this.selectRoleList.join(",")
+        roleIds: onlyList.join(",")
       };
-      let _this = this
       this.$store.dispatch("userBindRole", data).then(
         res => {
           console.log(res);
