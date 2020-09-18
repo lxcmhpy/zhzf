@@ -60,8 +60,8 @@
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.checkStatus==1">抽取</el-button>
-              <el-button type="text" @click="viewMethod(scope.row)">查看</el-button>
+              <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.extractStatus==1">抽取</el-button>
+              <el-button type="text" @click="viewMethod(scope.row)" :disabled="scope.row.extractStatus==0">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -89,8 +89,8 @@
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.checkStatus==1">抽取</el-button>
-              <el-button type="text" @click="viewMethod(scope.row)" >查看</el-button>
+              <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.extractStatus==1">抽取</el-button>
+              <el-button type="text" @click="viewMethod(scope.row)" :disabled="scope.row.extractStatus==0">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -128,7 +128,7 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" size="medium" v-if="isReRandom" @click="reRadom(scope.row)">重新抽取</el-button>
+              <el-button type="primary" size="medium" v-if="isReRandom" @click="reRadom(scope)">重新抽取</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -158,7 +158,7 @@
 <script>
 import {
   getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi, getExtractResultApi, addRandomResultApi,
-  resetRandomByIdApi, getRandomByIdApi, addRandomResultMoreApi
+  resetRandomByIdApi, getRandomByIdApi, addRandomResultMoreApi, getAllSourceDataByOrganNameApi
 } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
@@ -216,7 +216,7 @@ export default {
       optionsZC: [],
       optionsZZMM: [],
       optionsZYLY: [],
-      taskList: ['qw', '第三方', '七二', '输入法', '房德罡', '挨个', '台湾人', '阿达', '阿斯顿发生', '的非官方'],
+      taskList: [],
       randomContent: '',
       timer: '',
       isRandomFlag: true,
@@ -307,9 +307,9 @@ export default {
 
       console.log(this.addForm)
       let data = {
-        expertNum: this.addForm.expertNum||0,//	抽查专家数
+        expertNum: this.addForm.expertNum || 0,//	抽查专家数
         objectNum: this.addForm.checkObjectNum,//抽查对象数
-        organName: iLocalStroage.gets("userInfo").organName,//机构名称
+        organId: iLocalStroage.gets("userInfo").organId,//机构名称id
         personNum: this.addForm.lawEnforceNum,//	抽查人员数
       }
       getExtractResultApi(data).then(
@@ -458,8 +458,29 @@ export default {
     },
     editMethod(row) {
       this.addForm = JSON.parse(JSON.stringify(row))
-      this.dialogFormVisible = true
+      this.getLoopData()
+      this.dialogFormVisible = true;
       this.currentId = row.id
+    },
+    getLoopData() {
+      getAllSourceDataByOrganNameApi(iLocalStroage.gets("userInfo").organId).then(
+        res => {
+          console.log(res)
+          let data = []
+          res.data.randomObjectVoList.forEach(element => {
+            data.push(element.objectName)
+          });
+          res.data.randomPersonVoList.forEach(element => {
+            data.push(element.personName)
+          });
+          res.data.randomExpertVoList.forEach(element => {
+            data.push(element.name)
+          });
+          this.taskList = data
+        },
+        error => {
+          // reject(error);
+        })
     },
     viewMethod(row) {
       this.addForm = JSON.parse(JSON.stringify(row))
@@ -480,9 +501,36 @@ export default {
       this.isRandomFlag = true
       this.randomResultList = []
       this.randomList = []
+      this.getTableData()
     },
-    reRadom(row){
-      console.log(row)
+    reRadom(scope) {
+      let _this = this
+      console.log(scope.row, scope.$index)
+      let data = {
+        expertNum: this.addForm.expertNum || 0,//	抽查专家数
+        objectNum: 1,//抽查对象数
+        organId: iLocalStroage.gets("userInfo").organId,//机构名称id
+        personNum: this.addForm.lawEnforceNum,//	抽查人员数
+      }
+      getExtractResultApi(data).then(
+        res => {
+          let personNameList = []
+          let nameList = []
+          console.log(res.data.expertVoList[0])
+          res.data.personVoList[0].forEach(element => {
+            personNameList.push(element.personName)
+          });
+          if (this.addForm.expertNum > 0) {
+            res.data.expertVoList[0].forEach(element => {
+              nameList.push(element.name)
+            });
+          }
+          let newData = res.data.randomObjectVoList[0]
+          newData.personName = personNameList.join(',')
+          newData.name = nameList.join(',')
+          console.log(_this.randomList)
+          this.$set(_this.randomList, scope.$index, newData)
+        })
     },
     saveRandom() {
       let _this = this

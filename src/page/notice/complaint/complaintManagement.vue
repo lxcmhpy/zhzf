@@ -47,7 +47,9 @@
           <el-table-column prop="letterNo" label="信件编号" align="center" width="160"></el-table-column>
           <el-table-column prop="letterTitle" label="信件标题" align="center"></el-table-column>
           <el-table-column prop="sendName" label="来信人" align="center"></el-table-column>
-          <el-table-column prop="sendTime" label="来信时间" align="center"></el-table-column>
+          <el-table-column prop="sendTime" label="来信时间" align="center">
+            <template slot-scope="scope">{{scope.row.sendTime.substring(0,10)}}</template>
+          </el-table-column>
           <el-table-column prop="isOpen" label="是否公开" align="center">
             <template slot-scope="scope">{{scope.row.isOpen==1?"是":"否"}}</template>
           </el-table-column>

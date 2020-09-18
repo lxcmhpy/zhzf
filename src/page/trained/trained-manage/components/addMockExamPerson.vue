@@ -100,7 +100,7 @@
         element-loading-spinner="car-loading"
         element-loading-text="加载中..."
       >
-        <el-table-column type="selection" width="40" align="center"></el-table-column>
+        <el-table-column type="selection" width="58" align="center"></el-table-column>
         <el-table-column prop="personName" label="姓名" align="left" min-width="100px"></el-table-column>
         <el-table-column
           prop="sexName"

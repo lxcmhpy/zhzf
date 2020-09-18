@@ -45,7 +45,7 @@
           <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
-          <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
@@ -109,7 +109,7 @@
       </div>
       <el-dialog title="上传附件" :close-on-click-modal="false" :visible.sync="dialogFormVisible" @close="resetFileForm()">
         <div class="search-btns" style="margin-bottom:20px">
-          <el-upload accept=".pdf" :show-file-list="false" class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" multiple :limit="3" :file-list="fileList">
+          <el-upload :show-file-list="false" class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveFile" multiple :limit="3" :file-list="fileList">
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
         </div>
@@ -578,13 +578,13 @@ export default {
         });
         fileList.splice(fileIndex, 1);
       }
-      if (file.raw.type != 'application/pdf') {
-        this.$message({
-          message: "请选择pdf文件!",
-          type: "warning",
-        });
-        fileList.splice(fileIndex, 1);
-      }
+      // if (file.raw.type != 'application/pdf') {
+      //   this.$message({
+      //     message: "请选择pdf文件!",
+      //     type: "warning",
+      //   });
+      //   fileList.splice(fileIndex, 1);
+      // }
 
     },
     saveFile(param) {
@@ -597,14 +597,14 @@ export default {
         });
         return
       }
-      if (param.file.type != 'application/pdf') {
-        this.$message({
-          message: "请选择pdf文件!",
-          type: "warning",
-        });
-        // fileList.splice(fileIndex, 1);
-        return
-      }
+      // if (param.file.type != 'application/pdf') {
+      //   this.$message({
+      //     message: "请选择pdf文件!",
+      //     type: "warning",
+      //   });
+      //   // fileList.splice(fileIndex, 1);
+      //   return
+      // }
       var fd = new FormData()
       fd.append("file", param.file);
       fd.append("userId", iLocalStroage.gets("userInfo").nickName);

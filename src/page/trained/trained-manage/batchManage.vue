@@ -453,7 +453,7 @@ export default {
           margin: 14px 0;
           color: #7b7b7b;
         }
-        .cell{
+        .cell, .el-checkbox{
           display: block;
         }
       }

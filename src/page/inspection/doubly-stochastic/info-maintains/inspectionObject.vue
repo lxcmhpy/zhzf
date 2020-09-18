@@ -257,6 +257,7 @@ export default {
         projectName: this.searchForm.projectName,
         objectName: this.searchForm.objectName,
         regulatoryUnit: iLocalStroage.gets("userInfo").organName,
+        organId: iLocalStroage.gets("userInfo").organId,
         current: this.currentPage,
         size: this.pageSize,
       };

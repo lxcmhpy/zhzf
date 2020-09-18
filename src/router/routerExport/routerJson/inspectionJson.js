@@ -317,7 +317,7 @@ export default  [
                 path: "/serialManage",
                 name: "serial-manage",
                 meta: {
-                title: "日志管理",
+                title: "流水号管理",
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/serial-number/serialManage.vue")

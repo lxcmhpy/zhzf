@@ -91,9 +91,9 @@
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span>
           <br />
-          <el-form-item prop="signatureDate" class="pdf_datapick">
+          <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker
-              v-model="docData.signatureDate"
+              v-model="docData.makeDate"
               type="date"
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
@@ -233,7 +233,7 @@ export default {
         caseNumberCopy: "",
         clause: "",
         removeDate: "",
-        signatureDate: "",
+        makeDate: "",
         resList: []
       },
       tableData: [],
