@@ -67,7 +67,7 @@
                   <el-radio-group
                     v-model="baseInfoForm.isUseCar"
                     @change="baseInfoForm.carNum === ''"
-                    :disabled="PageType === 'handover'"
+                    disabled
                   >
                     <el-radio label="1">是</el-radio>
                     <el-radio label="2">否</el-radio>
@@ -77,7 +77,7 @@
                     v-model="baseInfoForm.carNum"
                     placeholder="请输入车牌号"
                     class="car-number-input"
-                    :disabled="PageType === 'handover'"
+                    disabled
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -95,9 +95,9 @@
                   <el-input
                     v-model="baseInfoForm.inspectionLength"
                     class="inspection-length-input"
-                    :disabled="PageType === 'handover'"
+                    disabled
                   >
-                    <template slot="append">km</template>
+                    <template slot="append" >km</template>
                   </el-input>
                 </el-form-item>
               </el-col>
@@ -418,10 +418,10 @@ export default {
       this.baseInfoForm.lawEnforcementOfficials = data.lawEnforcementOfficials;
       this.baseInfoForm.patrolRoute =data.patrolRoute;
       this.baseInfoForm.scheduleId = data.scheduleId;
+      this.baseInfoForm.carNum = data.plateNumbers;
     },
     //返回关联记录数据
     getReturnDataRecord(data){
-      alert(JSON.stringify(data))
      this.tableData =data;
      data.forEach(element => {
        this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
@@ -456,7 +456,15 @@ export default {
           customClass: "custom-confirm",
         })
           .then(() => {
-        let data={
+           if(this.handelType==='1'){
+             this.tableData.forEach((element,index) => {
+               if(element.recordId === this.selectList[0]){
+                   this.tableData.splice(index,1)
+               }
+             });
+              
+           }else{
+              let data={
           checklogId:this.checklogId,
           templateId:this.selectList[0]
          }
@@ -467,6 +475,8 @@ export default {
          }, err => {
            this.$message({ type: 'error', message: err.msg || '' });
          });
+           }
+        
           })
           .catch(() => {});
       }
