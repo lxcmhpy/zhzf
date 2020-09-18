@@ -216,7 +216,7 @@ export function getCheProcessTypeTreeApi() {
 //根据处理等级获取处理情况
 export function getProcessTypeApi(processTypeId) {
   return request({
-    url: "/check/cheProcessType/tree" + processTypeId,
+    url: "/check/cheProcess/list/" + processTypeId,
     // url: "/cheProcess/list/" + processTypeId,
     method: "get",
     showloading: true,
@@ -228,7 +228,7 @@ export function getProcessTypeApi(processTypeId) {
 //获取处理下级
 export function getProcessApi(processId) {
   return request({
-    url: "/check/cheProcessType/tree" + processId,
+    url: "/check/cheProcess/child/" + processId,
     // url: "/cheProcess/child/" + processId,
     method: "get",
     showloading: true,
@@ -240,7 +240,7 @@ export function getProcessApi(processId) {
 //根据处理等级获取处理情况
 export function getProcessTypeTreeApi(processTypeId) {
   return request({
-    url: "/check/cheProcessType/tree" + processTypeId,
+    url: "/check/cheProcess/tree/" + processTypeId,
     // url: "/cheProcess/tree/" + processTypeId,
     method: "get",
     showloading: true,
@@ -264,7 +264,7 @@ export function getCheRecordTemplateTreeApi() {
 //添加记录模板
 export function saveCheRecordTemplateApi(data) {
   return request({
-    url: "/check/template/addCheRecordTemplate",
+    url: "/check/template/saveCheRecordTemplate",
     // url: "/template/saveCheRecordTemplate",
     method: "post",
     data: data,
@@ -278,7 +278,7 @@ export function saveCheRecordTemplateApi(data) {
 //删除记录模板
 export function deleteCheRecordTemplateByIdApi(templateById) {
   return request({
-    url: "/check/template/deleteCheRecordTemplateById" + templateById,
+    url: "/check/template/deleteCheRecordTemplateById/" + templateById,
     // url: "/template/deleteCheRecordTemplateById/" + templateById,
     method: "get",
     showloading: true,
@@ -304,7 +304,7 @@ export function saveCheProcessTypeApi(data) {
 //删除处理情况分类
 export function deleteCheProcessTypeByIdApi(processTypeId) {
   return request({
-    url: "/check/cheProcessType/deleteCheProcessTypeById" + processTypeId,
+    url: "/check/cheProcessType/deleteCheProcessTypeById/" + processTypeId,
     // url: "/cheProcessType/deleteCheProcessTypeById/" + processTypeId,
     method: "get",
     showloading: true,
@@ -343,7 +343,7 @@ export function deleteProcessApi(ids){
 //根据分类等级查询处理分类
 export function getProcessTypeByLevelsApi(levels) {
   return request({
-    url: "/check/cheProcessType/levels" + levels,
+    url: "/check/cheProcessType/levels/" + levels,
     // url: "/cheProcessType/levels/" + levels,
     method: "get",
     showloading: true,
