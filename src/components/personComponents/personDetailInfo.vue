@@ -598,7 +598,7 @@
   </div>
 </template>
 <script>
-import { validateLawCertNo, validateIDNumber, isSpecialChar } from "@/common/js/validator";
+import { validateIDNumber, isSpecialChar } from "@/common/js/validator";
 import { mixinPerson } from "@/common/js/personComm";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
 import UploadPersonAvatar from "@/components/personComponents/uploadPersonAvatar";
@@ -776,10 +776,10 @@ export default {
             trigger: "change",
           },
         ],
-        graduationNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
-        ministerialNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
-        maritimeNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
-        provinceNo: [ { validator: isSpecialChar, trigger: 'blur' } ],
+        graduationNo: [ { required: false, validator: isSpecialChar, trigger: 'blur' } ],
+        ministerialNo: [ { required: false, validator: isSpecialChar, trigger: 'blur' } ],
+        maritimeNo: [ { required: false, validator: isSpecialChar, trigger: 'blur' } ],
+        provinceNo: [ { required: false, validator: isSpecialChar, trigger: 'blur' } ],
       },
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
       selectLoading: false,
@@ -837,7 +837,7 @@ export default {
     // 人员信息回显
     showPersonInfo(info) {
       for (const key in this.personInfoDetailForm) {
-        this.personInfoDetailForm[key] = info[key];
+        this.personInfoDetailForm[key] = info[key] || '';
       }
       this.personInfoDetailForm["sexName"] = info.sex === "0" ? "男" : "女";
       if (info.photoUrl) {
@@ -1055,18 +1055,10 @@ export default {
               _this.showSelectTree = true;
               _this.pageType = "0";
               _this.stationChange(_this.personInfoDetailForm.stationId);
-            } else {
-              _this.catsMessage({
-                type: "warning",
-                message: "该人员不能修改信息",
-              });
             }
           },
           (err) => {
-            _this.catsMessage({
-              type: "error",
-              message: err.msg || "",
-            });
+            console.log(err);
           }
         );
     },

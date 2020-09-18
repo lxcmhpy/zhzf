@@ -76,7 +76,7 @@
           <tr style="height:80px">
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="caseSituation" :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])">
-                <el-input type="textarea" v-model="docData.caseSituation" :disabled="fieldDisabled(propertyFeatures['caseSituation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.caseSituation" :disabled="fieldDisabled(propertyFeatures['caseSituation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="200" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>

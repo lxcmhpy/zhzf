@@ -314,11 +314,18 @@ export default {
         xAxis: {
           type: "category",
           data: legendData,
+          interval: 0,
         },
         yAxis: {
           type: "value",
           splitLine: {
             show: false,
+          },
+          min: function (value) {
+            return value.min;
+          },
+          max: function (value) {
+            return value.max;
           },
         },
         series: [

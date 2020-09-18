@@ -55,7 +55,8 @@ router.beforeEach((to, from, next) => {
                     next({name: 'examLogin'});
                 }else{
                     // store.commit('CLEAR_ALL_CACHE');
-                    alert(to.path)
+                    // alert(to.path)
+                    console.log("to.path", to.path)
                     next({name: "login"});
                 }
             }

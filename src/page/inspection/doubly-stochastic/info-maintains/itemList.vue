@@ -59,7 +59,7 @@
       </div>
     </div>
     <div class="tablePart" v-if="searchForm.checkDomain=='省交通运输厅领域'">
-      <el-table :data="tableData"  key="table1" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+      <el-table :data="tableData" key="table1" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="checkItem" label="抽查事项名称" align="center"></el-table-column>
         <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
         <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
@@ -76,7 +76,7 @@
       </el-table>
     </div>
     <div class="tablePart" v-if="searchForm.checkDomain=='省市场监管领域'">
-      <el-table :data="tableData"  key="table2" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
+      <el-table :data="tableData" key="table2" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="checkType" label="抽查类别" align="center"></el-table-column>
         <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
         <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
@@ -105,19 +105,20 @@
       <el-form :model="addForm" :label-width="formLabelWidth" :rules="rules" ref="addForm">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="抽查事项" prop="checkItem">
-              <el-select v-model="addForm.checkItem" placeholder="请选择" @change="changeCheckType(addForm.checkItem,'省交通运输厅领域')">
-                <el-option v-for="item in optionsCCSXJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="抽查类别" prop="checkType">
-              <el-select v-model="addForm.checkType" placeholder="请选择">
+              <el-select v-model="addForm.checkType" placeholder="请选择" @change="changeCheckType(addForm.checkType,'省交通运输厅领域')">
                 <el-option v-for="item in optionsCCLBJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="抽查事项" prop="checkItem">
+              <el-select v-model="addForm.checkItem" placeholder="请选择" >
+                <el-option v-for="item in optionsCCSXJT" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -261,8 +262,8 @@ export default {
       addForm: {
         checkSubject: '',
         checkMode: '',
-        checkType:'',
-        checkObject:'',
+        checkType: '',
+        checkObject: '',
         checkBasis: '',
         checkItem: '',
         checkContent: '',

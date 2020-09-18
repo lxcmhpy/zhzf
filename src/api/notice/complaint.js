@@ -56,3 +56,15 @@ export function findById(id) {
     cancelToken: setCancelSource()
   })
 }
+
+// 统计
+export function countByHour(data) {
+  return request({
+    url: "/notice/notice/complaint/countByHour/" + data.startTime + "/" + data.endTime,
+    method: "get",
+    showloading: true,
+    baseUrlType: 'CAPTCHA_HOST',
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  })
+}

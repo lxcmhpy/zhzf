@@ -178,7 +178,7 @@ export default {
      * 获取数据，带 baseUrlType
      */
     findTableData(param, baseUrlType, url) {
-      findData(Object.assign(this.reqAttr, param), baseUrlType, url).then(res => {
+      findData(Object.assign(param, this.reqAttr), baseUrlType, url).then(res => {
         if(res.code === 200) {
           return res.data
         } else {
@@ -218,6 +218,7 @@ export default {
       Object.keys(this.form).map(key => {
         this.form[key] = ''
       })
+      this.init()
     },
 
     /**
