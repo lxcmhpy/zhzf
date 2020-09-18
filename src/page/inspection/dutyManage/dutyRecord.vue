@@ -133,7 +133,11 @@
               <span v-else>{{scope.row.routeSituation}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="personIds" label="执法人员" align="center" min-width="160px"></el-table-column>
+          <el-table-column prop="personIds" label="执法人员" align="center" min-width="160px">
+              <template slot-scope="scope">
+                <span v-for="per in scope.row.listPer" :key="per.id" >{{per.personName}};</span>
+              </template>
+          </el-table-column>
           <el-table-column prop="isFilingCase" label="是否立案" align="center" width="100px">
             <template slot-scope="scope">
               <span v-if="scope.row.isFilingCase === '0'">否</span>

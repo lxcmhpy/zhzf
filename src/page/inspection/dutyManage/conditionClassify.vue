@@ -4,6 +4,9 @@
             <el-col :span="5" class="record-condition-tree">
                 <el-card shadow="never" style="height: 100%;">
                     <h3 class="form-tab-title">现场情况分类</h3>
+                    <el-button class="condition-tree-addButton" type="primary" size="mini" icon="el-icon-plus" @click="appendTreeNode">
+                        新增
+                    </el-button>
                     <el-input
                         class="record-condition-search"
                         placeholder="输入关键字进行过滤"
@@ -18,6 +21,7 @@
                         current-node-key
                         highlight-current
                         default-expand-all
+                        :expand-on-click-node="false"
                         :filter-node-method="filterNode"
                         :render-content="renderNode"
                         @node-click="nodeClick"
@@ -45,14 +49,14 @@
                                             v-for="item in processList" 
                                             :key="item.id"
                                             @dblclick.stop="processDbClick(item)"
-                                            @click="processClick(item)">
-                                            <input type="checkbox" v-model="item.checked" :checked="item.checked"> 
+                                            @click.stop="processClick(item)">
+                                            <input type="checkbox" v-model="item.checked" :checked="item.checked"  @click.stop="" @dblclick.stop=""> 
                                             &nbsp;{{item.name}}
                                             <i v-if="item.children.length > 0" class="el-icon-arrow-right"></i>
                                         </li>
                                     </ul>
                                     <span v-else class="process-data-none">暂无数据</span>
-                                    <el-button class="process-add-button" @click="appendProcess(1)">添加</el-button>
+                                    <el-button class="process-add-button" @click="appendProcess(1)">新增</el-button>
                                 </div>
                             </el-card>
                         </el-col>
@@ -65,14 +69,14 @@
                                         v-for="item in processModeList" 
                                         :key="item.id"
                                         @dblclick.stop="processDbClick(item)"
-                                        @click="processClick(item)">
-                                        <input type="checkbox" v-model="item.checked" :checked="item.checked"> 
+                                        @click.stop="processClick(item)">
+                                        <input type="checkbox" v-model="item.checked" :checked="item.checked" @click.stop="" @dblclick.stop=""> 
                                         &nbsp;{{item.name}}
                                         <i v-if="item.children.length > 0" class="el-icon-arrow-right"></i>
                                     </li>
                                 </ul>
                                 <span v-else class="process-data-none">暂无数据</span>
-                                <el-button class="process-add-button" @click="appendProcess(2)">添加</el-button>
+                                <el-button class="process-add-button" @click="appendProcess(2)">新增</el-button>
                             </el-card>
                         </el-col>
                         <el-col :span="9" class="record-condition-classify">
@@ -84,14 +88,14 @@
                                         v-for="item in processResultList" 
                                         :key="item.id"
                                         @dblclick.stop="processDbClick(item)"
-                                        @click="processClick(item)">
-                                        <input type="checkbox" v-model="item.checked" :checked="item.checked"> 
+                                        @click.stop="processClick(item)">
+                                        <input type="checkbox" v-model="item.checked" :checked="item.checked"  @click.stop="" @dblclick.stop=""> 
                                         &nbsp;  {{item.name}}
                                         <i v-if="item.children.length > 0" class="el-icon-arrow-right"></i>
                                     </li>
                                 </ul>
                                 <span v-else class="process-data-none">暂无数据</span>
-                                <el-button class="process-add-button" @click="appendProcess(3)">添加</el-button>
+                                <el-button class="process-add-button" @click="appendProcess(3)">新增</el-button>
                             </el-card>
                         </el-col>
                     </el-row>
@@ -153,7 +157,6 @@ export default {
                         </span>
                     </span>
                     <span>
-                        { data.levels < 3 && <el-button style="font-size: 12px;" type="text" on-click={ () => this.appendTreeNode(data) }>添加</el-button>}
                         <el-button style="font-size: 12px;" type="text" on-click={ () => this.editTreeNode(data, node.parent) }>修改</el-button>
                         <el-button style="font-size: 12px;" type="text" on-click={ () => this.removeTreeNode(data) }>删除</el-button>
                     </span>
@@ -268,28 +271,28 @@ export default {
                     this.processModeList = process.children;
                     this.processResultList = this.processModeList.length > 0 && this.processModeList[0].children;
 
-                    const clickProcessIndex = this.processList.findIndex(p => p.id === process.id);
-                    const clickProcess = this.processList[clickProcessIndex];
-                    clickProcess.checked = !clickProcess.checked;
-                    this.$set(this.processList,clickProcessIndex,clickProcess);
+                    // const clickProcessIndex = this.processList.findIndex(p => p.id === process.id);
+                    // const clickProcess = this.processList[clickProcessIndex];
+                    // clickProcess.checked = !clickProcess.checked;
+                    // this.$set(this.processList,clickProcessIndex,clickProcess);
                     break;
                 case "2":
                     this.curResult = undefined;
                     this.curMode = process;
                     this.processResultList = process.children;
 
-                    const clickModeIndex = this.processModeList.findIndex(p => p.id === process.id);
-                    const clickMode = this.processModeList[clickModeIndex];
-                    clickMode.checked = !clickMode.checked;
-                    this.$set(this.processModeList,clickModeIndex,clickMode);
+                    // const clickModeIndex = this.processModeList.findIndex(p => p.id === process.id);
+                    // const clickMode = this.processModeList[clickModeIndex];
+                    // clickMode.checked = !clickMode.checked;
+                    // this.$set(this.processModeList,clickModeIndex,clickMode);
                     break;
                 case "3":
                     this.curResult = process;
 
-                    const clickResultIndex = this.processResultList.findIndex(p => p.id === process.id);
-                    const clickResult = this.processResultList[clickResultIndex];
-                    clickResult.checked = !clickResult.checked;
-                    this.$set(this.processResultList,clickResultIndex,clickResult);
+                    // const clickResultIndex = this.processResultList.findIndex(p => p.id === process.id);
+                    // const clickResult = this.processResultList[clickResultIndex];
+                    // clickResult.checked = !clickResult.checked;
+                    // this.$set(this.processResultList,clickResultIndex,clickResult);
                     break;
             }
         },
@@ -393,6 +396,8 @@ export default {
             border-left: 4px solid #4573d0;
         }
         .record-condition-tree {
+            position: relative;
+
             .record-description-search {
     
                 >>> .el-button {
@@ -410,6 +415,12 @@ export default {
                     font-size: 14px;
                     padding-right: 8px;
                 }
+            }
+
+            .condition-tree-addButton{
+                position: absolute;
+                right: 20px;
+                top: 20px;
             }
         }
 

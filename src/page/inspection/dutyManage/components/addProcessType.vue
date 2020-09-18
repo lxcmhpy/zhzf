@@ -15,18 +15,32 @@
             :rules="rules"
         >
             <el-row>
-                <el-form-item label="类型名称" prop="name">
-                    <el-input v-model="processTypeForm.name"></el-input>
+                <el-form-item label="分类等级" prop="levels">
+                    <el-select :disabled="handelType == 'edit'" v-model="processTypeForm.levels" @change="levelsChange" placeholder="请选择">
+                        <el-option
+                            v-for="item in levelsList"
+                            :key="item.value"
+                            :label="item.name"
+                            :value="item.value"
+                            ></el-option>
+                    </el-select>
                 </el-form-item>
             </el-row>
-            <el-row v-if="processTypeForm.pName">
-                <el-form-item label="上级分类">
-                    <el-input disabled v-model="processTypeForm.pName"></el-input>
+            <el-row v-if="processTypeForm.levels && processTypeForm.levels != '1'">
+                <el-form-item label="上级分类" prop="parentId">
+                    <el-select :disabled="handelType == 'edit'" v-model="processTypeForm.parentId" placeholder="请选择">
+                        <el-option
+                            v-for="item in parentTypeList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
+                            ></el-option>
+                    </el-select>
                 </el-form-item>
             </el-row>
             <el-row>
-                <el-form-item label="分类等级" prop="levels">
-                    <el-input disabled v-model="processTypeForm.levels"></el-input>
+                <el-form-item label="类型名称" prop="name">
+                    <el-input v-model="processTypeForm.name"></el-input>
                 </el-form-item>
             </el-row>
         </el-form>
@@ -37,22 +51,32 @@
     </el-dialog>
 </template>
 <script>
-import { saveCheProcessTypeApi } from "@/api/supervision";
+import { saveCheProcessTypeApi, getProcessTypeByLevelsApi } from "@/api/supervision";
 
 export default {
     data() {
         return {
         visible: false,
         processTypeForm: {
-            name: ""
+            name: null,
+            levels: "",
+            parentId: ""
         },
         rules: {
             name: [
             { required: true, message: "分类名称不能为空", trigger: "blur" },
-            ]
+            ],
+            levels: [
+            { required: true, message: "分类等级不能为空", trigger: "blur" },
+            ],
+            parentId: [
+            { required: true, message: "上级分类不能为空", trigger: "blur" },
+            ],
         },
         dialogTitle: "新增情况分类", //弹出框title
         handelType: "add", //添加 add  修改 edit
+        levelsList: [{name: "一级分类", value: "1"}, {name: "二级分类", value: "2"}, {name: "三级分类", value: "3"}],
+        parentTypeList: [],
         };
     },
     computed: {
@@ -96,15 +120,37 @@ export default {
             }
         });
         },
-        
+        levelsChange() {
+            const levels = this.processTypeForm.levels;
+            this.processTypeForm.parentId = "";
+            if(levels && levels != "1"){
+                //获取所有上级处理类型
+                this.getProcessTypeByLevels(parseInt(levels) - 1);
+            }
+        },
+        getProcessTypeByLevels(levels) {
+            getProcessTypeByLevelsApi(levels).then(
+                res => {
+                    if(res.code == 200){
+                        this.parentTypeList = res.data;
+                    }else{
+                        console.error(res);
+                    }
+                },
+                err => console.error(err)
+            );
+        },
         showModal(type, data) {
             this.visible = true;
+            this.handelType = type;
             //添加
             if(type === "add") {
-                const fromData = { pName: data.name, levels: parseInt(data.levels) + 1, parentId: data.id};
-                this.processTypeForm = fromData;
+                // const fromData = { pName: data.name, levels: parseInt(data.levels) + 1, parentId: data.id};
+                this.$refs["addProcessTypeRef"].resetFields();
                 this.dialogTitle = "新增情况分类"
             }else{//修改
+                const levels = parseInt(data.levels);
+                levels != 1 && this.getProcessTypeByLevels(levels - 1);
                 const fromData = data;
                 this.dialogTitle = "修改情况分类"
                 this.processTypeForm = fromData;
