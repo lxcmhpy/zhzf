@@ -30,9 +30,7 @@
                     <el-row class="record-condition-header">
                         <h3 class="form-tab-title">处理情况</h3>
                         <el-breadcrumb separator-class="el-icon-arrow-right">
-                            <el-breadcrumb-item>详情</el-breadcrumb-item>
-                            <el-breadcrumb-item>详情</el-breadcrumb-item>
-                            <el-breadcrumb-item>详情</el-breadcrumb-item>
+                            <el-breadcrumb-item v-for="name in breadcrumbList" :key="name">{{name}}</el-breadcrumb-item>
                         </el-breadcrumb>
                         <el-button class="record-condition-detail-delete" plain icon="el-icon-delete-solid" size="medium" @click="deleteProcessFun">删除</el-button>
                     </el-row>
@@ -130,6 +128,7 @@ export default {
         curMode: undefined,//当前处理方式
         curResult: undefined,//当前处理结果
         curTypeNode: undefined,//当前情况分类
+        breadcrumbList: [],//右侧面包屑
     }
 },
     computed: {
@@ -181,13 +180,28 @@ export default {
             this.$refs.addProcessTypeRef.showModal('edit', JSON.parse(JSON.stringify(nodeData)));
         },
         //节点点击
-        nodeClick(data) {
+        nodeClick(data,node) {
             this.curTypeNode = data;
-            console.log(data,'node');
+            console.log(data,'nodedata');
+            console.log(node,'node');
             this.curProcess = undefined;
             this.curMode = undefined;
             this.curResult = undefined;
             this.getProcessData(data.id);
+
+            this.breadcrumbList = [];
+            this.getBreadcrumbList(node);
+        },
+        getBreadcrumbList(node) {
+            if(node.data.name){
+                this.breadcrumbList.unshift(node.data.name);
+            }
+            if(node.parent){
+                this.getBreadcrumbList(node.parent)
+            }else{
+                console.log(this.breadcrumbList,"this.breadcrumbList")
+                return;
+            }
         },
         getProcessData(processTypeId) {
             getProcessTypeTreeApi(processTypeId).then(
