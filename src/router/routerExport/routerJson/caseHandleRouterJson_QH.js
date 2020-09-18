@@ -72,4 +72,12 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/qingHai/doc/sceneNotesDoc_QH.vue")
     },
+    {
+        path: "/compensationInquestRecord",
+        name: "case_handle_compensationInquestRecord",
+        meta: {
+          title: "公路赔（补）偿案件勘验检查笔录"
+        },
+        component: () => import("@/page/caseHandle/case/qingHai/doc/compensationInquestRecord.vue")
+    },
 ]
