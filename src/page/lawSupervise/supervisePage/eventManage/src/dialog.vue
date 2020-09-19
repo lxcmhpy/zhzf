@@ -1,4 +1,5 @@
 <template>
+    <div>
   <el-dialog class="eventManage-dialog" :title="title" :visible.sync="dialogFormVisible" top="0" @close="handleCloseDialog">
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
@@ -104,8 +105,9 @@
       <el-button v-if="!disabled" @click="dialogFormVisible = false">取 消</el-button>
       <el-button v-if="!disabled" type="primary" @click="handleSubmit">确 定</el-button>
     </div>
-    <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
   </el-dialog>
+    <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
+    </div>
 </template>
 
 <script>
