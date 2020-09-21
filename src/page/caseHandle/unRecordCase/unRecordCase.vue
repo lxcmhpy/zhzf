@@ -102,6 +102,7 @@ export default {
     //跳转立案登记
     async handleCase(row) {
       console.log(row);
+      iLocalStroage.removeItem("someCaseInfo")
       let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
       this.$store.commit("setIsLawEnforcementSupervision", false);

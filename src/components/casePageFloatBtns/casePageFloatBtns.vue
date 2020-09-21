@@ -234,19 +234,6 @@ export default {
       //   this.com_addDocData(handleType, this.formOrDocData.formRef);
       // }
     },
-    getFile() {
-      this.$store.dispatch("getFile", {
-        docId: '5cad5b54eb97a15250672a4c397cee56',
-        caseId: '297708bcd8e80872febb61577329194f'
-      }).then(
-        res => {
-          console.log(res[0].storagePath)
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
     //保存文书信息
     //  addDocData(handleType){
     //   let _this = this

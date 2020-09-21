@@ -94,7 +94,8 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: this.data1,
+            //data: this.data1,
+            data: [{name:'宁夏交通运输厅',value:34},{name:'石嘴山市执法队',value:12},{name:'固原市执法队',value:22},{name:'银川交通厅',value:32},{name:'中卫市执法队',value:6}],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -135,7 +136,8 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: this.data2,
+            //data: this.data2,
+            data: ['宁夏交通运输厅','银川交通厅','石嘴山市执法队','固原市执法队','中卫市执法队'],
           }
         ],
         yAxis: [
@@ -233,8 +235,8 @@ export default {
         console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];  
-                
+              map[item[0]]=item[1];
+
          });
         console.log(map);
         var arr=[];
@@ -245,8 +247,8 @@ export default {
          ];
           this.drawLine1();
 
-          this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
-          this.data3=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
+          this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
+          this.data3=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
            this.drawLine2();
       });
       err => {
@@ -261,18 +263,18 @@ export default {
       let _this = this;
       // this.$store.dispatch("dzhbafxry", data).then(res => {
       dzhbafxry(data).then(res => {
-      
+
         console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];  
-                
+              map[item[0]]=item[1];
+
          });
         console.log(map);
-        
 
-          this.data4=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
-          this.data5=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
+
+          this.data4=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
+          this.data5=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
            this.drawLine3();
       });
       err => {
@@ -287,7 +289,7 @@ export default {
     // this.drawLine3();
   },
   created() {
-    
+
   }
 };
 </script>

@@ -12,7 +12,7 @@
     background:#20232B;
     width: 100%;
     top: 60px;
-    z-index: 11;
+    z-index: 1111;
     padding: 7px 0 37px ;
     box-sizing: border-box;
   }
@@ -772,7 +772,7 @@ textarea{
 }
 .noborder-card{
   .el-tabs--border-card{
-    border: 0; 
+    border: 0;
     -webkit-box-shadow: 0 0px 0px #ccc;
     box-shadow: 0 0px 0px #ccc;
   }
@@ -787,7 +787,7 @@ textarea{
     // border-top-color:#4a76d1 !important;
     border-top: 3px solid #4a76d1 !important;
     border-right-color: #EAEDF4;
-    border-left-color: #EAEDF4; 
+    border-left-color: #EAEDF4;
   }
 }
 .tabs-content{
@@ -865,7 +865,7 @@ textarea{
   text-align: center;
   color: #20232b;
   line-height: 20px;
-  
+
 }
 .file-name-list:hover{
   border: 1px solid #0074f5;
