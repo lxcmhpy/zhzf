@@ -24,7 +24,7 @@
               <el-col :span="6" >
                 <div id="chart2" style="width: 600px; height: 400px;margin-top:60px" ></div>
               </el-col>
-            </el-row>          
+            </el-row>
           </el-col>
         </el-row>
       </div>
@@ -39,6 +39,8 @@ import echarts from "echarts";
 import "echarts/map/js/china.js";
 import "echarts/map/js/province/jiangxi.js";
 import "echarts/map/json/province/jiangxi.json";
+import "echarts/map/js/province/ningxia.js";
+import "echarts/map/json/province/ningxia.json";
 import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "echarts/lib/chart/heatmap";
@@ -71,13 +73,13 @@ export default {
       isShow: false,
       data1:[],
       data2:[],
-      
+
     };
   },
   methods: {
     drawLine1() {
       let myChart = echarts.init(document.getElementById("chart1"));
-    
+
       myChart.setOption({
         backgroundColor: "#FFFFFF",
       title: {
@@ -88,54 +90,48 @@ export default {
       tooltip: {
         trigger: "item"
       },
- 
+
       //左侧小导航图标
       visualMap: {
         min: 0,
-        max: 100,
+        max: 200,
         text: ["高", "低"],
         inRange: {
           color: ["lightskyblue", "yellow", "orangered"]
         }
       },
- 
+
       //配置属性
-      series: [
-        {
-          name: "案发数量",
-          type: "map",
-          mapType: "江西",
-          roam: true,
-          label: {
-            normal: {
-              show: false //省份名称
+        series: [
+          {
+            name: "案发数量",
+            type: "map",
+            mapType: "宁夏",
+            roam: true,
+            label: {
+              normal: {
+                show: false //省份名称
+              },
+              emphasis: {
+                show: false
+              }
             },
-            emphasis: {
-              show: false
-            }
-          },
-          data: [
-            { name: "南昌市", value: "209" },
-            { name: "九江市", value:  "181"},
-            { name: "上饶市", value: "154" },
-            { name: "抚州市", value: "144" },
-            { name: "宜春市", value: "135" },
-            { name: "吉安市", value: "117"},
-            { name: "赣州市", value: "74" },
-            { name: "景德镇市", value: "72" },
-            { name: "萍乡市", value: "67" },
-            { name: "新余市", value: "55" },
-            { name: "鹰潭市", value: "26" },
-          ] //数据
-        }
-      ]
+            data: [
+              { name: "银川市", value: "215" },
+              { name: "石嘴山市", value: "131"},
+              { name: "吴忠市", value: "84" },
+              { name: "中卫市", value: "56" },
+              { name: "固原市", value: "10" }
+            ] //数据
+          }
+        ]
       });
     },
     drawLine2() {
       this.chartColumn = echarts.init(document.getElementById("chart2"));
       // var xData =["南昌市","九江市","上饶市","抚州市","宜春市","吉安市","赣州市","景德镇市","萍乡市","新余市","鹰潭市",];
       // var yData =[209,181,154,144,135,117,74,72,67,55,26];
-      const data = [209,181,154,144,135,117,74,72,67,55,26]
+      const data = [209,181,154,144,68]
       const sideData = data;
       this.chartColumn.setOption({
        backgroundColor: "",
@@ -147,7 +143,7 @@ export default {
         }
     },
     xAxis: {
-        data: ["南昌市","九江市","上饶市","抚州市","宜春市","吉安市","赣州市","景德镇市","萍乡市","新余市","鹰潭市"],
+        data: ["银川市","石嘴山市","吴忠市","中卫市","固原市"],
         //坐标轴
         axisLine: {
             lineStyle: {
@@ -160,11 +156,11 @@ export default {
             textStyle: {
                 color: 'black',
             },
-            interval: 0,  
-            formatter:function(value)  
-            {  
-                return value.split("").join("\n");  
-            }  
+            interval: 0,
+            formatter:function(value)
+            {
+                return value.split("").join("\n");
+            }
         }
     },
     yAxis: {
@@ -222,7 +218,7 @@ export default {
         // },
         data: data,
         // barGap: 0
-    }, 
+    },
     ]
 
       });
@@ -237,14 +233,14 @@ export default {
         console.log(res);
         //  var map={};
         //  res.forEach(item =>{
-        //       map[item[0]]=item[1];  
-                
+        //       map[item[0]]=item[1];
+
         //  });
         // console.log(map);
-        
 
-          this.data1=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
-          this.data2=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
+
+          this.data1=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
+          this.data2=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
            this.drawLine2();
       });
       err => {
