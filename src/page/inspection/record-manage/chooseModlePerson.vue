@@ -221,7 +221,6 @@ export default {
             });
             if (this.alreadyChooseLawPerson) {
               console.log('alreadyChooseLawPerson', this.alreadyChooseLawPerson)
-
               this.checkedUser = this.alreadyChooseLawPerson;
             }
             if (this.checkedUser.length > 0) {
