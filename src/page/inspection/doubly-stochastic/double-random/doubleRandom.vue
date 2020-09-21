@@ -243,6 +243,7 @@ export default {
         taskName: this.searchForm.taskName,
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.taskArea == '省交通运输厅领域' ? this.searchForm.checkType : '',
+        organName : iLocalStroage.gets("userInfo").organName,//机构名称
         current: this.currentPage,
         size: this.pageSize,
       };

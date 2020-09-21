@@ -17,7 +17,8 @@
         <el-form-item label="日期格式:" prop="dateFormat">
               <el-select v-model="addStationForm.dateFormat" placeholder="日期格式">
                 <el-option label="YYYY" value="YYYY"></el-option>
-                <el-option label="YYYY-MM" value="YYYY-MM"></el-option>
+                <el-option label="YYYYMM" value="YYYYMM"></el-option>
+                <el-option label="YYYYMMDD" value="YYYYMMDD"></el-option>
               </el-select>
         </el-form-item>
           <el-form-item label="长度" prop="numLength" >
@@ -25,6 +26,7 @@
                 <el-option label="2" value="2"></el-option>
                 <el-option label="4" value="4"></el-option>
                 <el-option label="6" value="6"></el-option>
+                <el-option label="8" value="8"></el-option>
               </el-select>
         </el-form-item>
       </el-row>

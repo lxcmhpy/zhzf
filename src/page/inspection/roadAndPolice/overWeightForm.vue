@@ -401,14 +401,16 @@
           </div>
           <div class="item">
             <el-form-item label="复检结果" prop="checkResult">
-
-              <el-input v-model="carInfo.secondCheck.checkResult"></el-input>
+              <el-radio-group v-model="carInfo.secondCheck.checkResult">
+                <el-radio label="未超载（最小）">未超载（最小）</el-radio>
+                <el-radio label="超限超载">超限超载</el-radio>
+              </el-radio-group>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="执法人员" id="lawPersonBox" prop="checkPerson">
+            <el-form-item label="复检人员" id="lawPersonBox" prop="checkPerson">
               <el-input v-model="carInfo.secondCheck.checkPerson"></el-input>
               <!-- <el-select ref="lawPersonListId" v-model="carInfo.secondCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
@@ -519,7 +521,7 @@ export default {
         id: '',
         checkType: '路警联合',
         detectStation: '检测站1',//监测站
-        vehicleIdColor: '',
+        vehicleIdColor: '黄色',
         vehicleShipId: '',
         vehicleShipType: '',
         transportNum: '',
@@ -531,7 +533,7 @@ export default {
         startPlace: '',
         endPlace: '',
         trailerIdNo: '',
-        trailerColor: '黄色',
+        trailerColor: '',
         drivePerson: {
           party: '',
           partyIdNo: '',
@@ -958,7 +960,7 @@ export default {
       saveOrUpdateCarInfoApi(data).then(
         res => {
           if (res.code == 200) {
-            this.$store.commit("set_inspection_OverWeightId", data.id)
+            this.$store.commit("set_inspection_OverWeightId",  { id: data.id})
             this.getData(data.id)
             this.$message({
               type: "success",
@@ -982,11 +984,11 @@ export default {
     },
     getData(id) {
       let _this = this
-      findCarInfoByIdApi(this.inspectionOverWeightId.id||id).then(
+      findCarInfoByIdApi(this.inspectionOverWeightId.id || id).then(
         res => {
           if (res.code == 200) {
             _this.carInfo = res.data
-            this.carinfoId = this.inspectionOverWeightId.id ||id
+            this.carinfoId = this.inspectionOverWeightId.id || id
             this.getFile()
           } else {
             this.$message.error(res.msg);

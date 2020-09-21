@@ -60,7 +60,7 @@ export default {
     showModal(businessType) {
       this.visible = true;
       let data={
-        businessType:businessType
+        cateId:businessType
       }
        getScheduleListApi(data).then(res => {
         if (res.code == "200") {

@@ -6,9 +6,6 @@
     :close-on-click-modal="false"
     width="35%"
   >
-  <li v-for="item in roleList" :key='item.id'>{{item.name}}</li><br>
-  <li v-for="item in selectRoleList" :key='item.id'>{{item.name}}</li>
-
     <el-checkbox-group v-model="selectRoleList">
       <el-checkbox v-for="(item,index) in roleList" :key="index" :label="item.id">{{item.name}}</el-checkbox>
     </el-checkbox-group>
