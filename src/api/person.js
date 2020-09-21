@@ -74,7 +74,7 @@ export  function  getAllPersonApi(data)  {
 //添加用户信息
 export  function  addPersonApi(data)  {
   return  request({
-    url:  "/person/person/addPerson",
+    url:  "/person/person/infoAddPerson",
     method:  "post",
     params: data,
     showloading: false,
@@ -85,7 +85,7 @@ export  function  addPersonApi(data)  {
 //修改用户用户信息
 export  function  updatePersonApi(data)  {
   return  request({
-    url:  "/person/person/updatePerson",
+    url:  "/person/person/infoUpdatePerson",
     method:  "post",
     params: data,
     showloading: false,
