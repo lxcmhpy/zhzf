@@ -31,6 +31,7 @@
   import {
     updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,getDocDetailByIdApi,updateDocStatusById,
   } from "@/api/caseHandle";
+
   import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 
   export default {
