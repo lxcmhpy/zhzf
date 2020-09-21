@@ -1,5 +1,5 @@
-import Mock from "mockjs";
-import homeApi from "./home";
+// import Mock from "mockjs";
+// import homeApi from "./home";
 
 //设置200-2000毫秒延迟数据
 // Mock.setup({
@@ -7,4 +7,4 @@ import homeApi from "./home";
 // });
 
 //首页相关
-Mock.mock(/\/home\/getData/, "get", homeApi.getStatisticalData);
+// Mock.mock(/\/home\/getData/, "get", homeApi.getStatisticalData);

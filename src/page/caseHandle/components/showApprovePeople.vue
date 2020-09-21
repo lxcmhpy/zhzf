@@ -55,7 +55,7 @@
       };
     },
     inject: ["reload"],
-    computed: {...mapGetters(['caseId','docId','docDataId','caseLinktypeId','docPdfStorageId'])},
+    computed: {...mapGetters(['caseId','docId','docDataId','caseLinktypeId','docPdfStorageId','caseLinkName'])},
     methods: {
       showModal(data) {
         this.visible = true;
@@ -143,7 +143,10 @@
                   name: "case_handle_flowChart"
             });
           }else{  //1 环节不生成pdf
-            _this.$router.go(-2)
+            // _this.$router.go(-2)
+            _this.$router.push({
+                  name: this.caseLinkName
+            });
           }
         }catch(err){
           _this.$message('提交失败');
