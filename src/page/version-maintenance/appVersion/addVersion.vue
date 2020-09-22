@@ -39,7 +39,7 @@
              <div v-if="handelType == 3">
                   <el-row>
                     <el-form-item label="创建时间" prop="createTime">
-                        <el-input  v-model="createTime"></el-input>
+                        <el-input  v-model="addVersionForm.createTime"></el-input>
                     </el-form-item>
                   </el-row>  
                  <el-row>
@@ -84,8 +84,9 @@ export default {
                 appForcedUpgrade: "1",  //是否强制跟新  0：否  1：是
                 modifyId:"",
                 modifyTime:"",
+                createTime:"",
             },
-            createTime:"",
+            
             rules: {
                 appVersion: [{ required: true, message: "版本名称必须填写", trigger: "blur" }],
                 appVersionCode: [{ required: true, message: "版本号必须填写", trigger: "blur" }],
@@ -125,9 +126,14 @@ export default {
                 };
             }else if(_this.handelType==2){
                 var data = {
-
+                appId:_this.addVersionForm.appId,
+				appVersion:_this.addVersionForm.appVersion,
+                appVersionCode:_this.addVersionForm.appVersionCode,
+                appMessage:_this.addVersionForm.appMessage,
+                appUpgrade:_this.addVersionForm.appUpgrade,
+                appForcedUpgrade:_this.addVersionForm.appForcedUpgrade,
                 }
-                _this.$store.dispatch("updateVersionModel", _this.addVersionForm).then(res => {
+                _this.$store.dispatch("updateVersionModel", data).then(res => {
                     _this.$emit("getVersionList");
                     _this.$message({
                         type: "success",
@@ -162,7 +168,7 @@ export default {
                 _this.addVersionForm.appMessage=row.appMessage;
                 _this.addVersionForm.appUpgrade=row.appUpgrade;
                 _this.addVersionForm.appForcedUpgrade=row.appForcedUpgrade;
-                _this.createTime=row.createTime;
+                _this.appForcedUpgrade.createTime=row.createTime;
                 _this.addVersionForm.modifyId=row.modifyId;
                 _this.addVersionForm.modifyTime=row.modifyTime;
             }
