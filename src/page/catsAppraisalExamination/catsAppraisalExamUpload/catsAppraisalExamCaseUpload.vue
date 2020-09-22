@@ -69,7 +69,7 @@
                         }}</span>
                         卷
                     </div>
-                    <el-button-group class="cats-f-right">
+                    <el-button-group class="cats-f-right" style="margin-top:10px;">
                         <template v-for="(item, index) in btnList">
                             <el-button size="small" :type="btnCheckIndex == index ? 'primary' : ''"
                                 @click="showIndex(index)" :key="index">
@@ -403,7 +403,7 @@
                     '工程质量监督管理'
                     
                 ],
-                caseTypeList: ['行政处罚', '行政强制'],
+                caseTypeList: ['处罚或强制', '行政许可'],
                 handleTypeList: ['罚款'],
                 tjData: {
                     ajCfBsjs: '',
@@ -635,7 +635,7 @@
                             message: '您有必填字段未填写！'
                         });
 
-                        _this.closeLoading()
+                        // _this.closeLoading()
                         return false
                     }
                 })
@@ -691,6 +691,10 @@
                 })
             },
             clickBaosong() {
+                if(this.dataList.length==0){
+                    this.$message.error('没有案卷可以报送');
+                    return;
+                }
                 confirmSubmissionCase(this.organId).then(res => {
                     if (res.code == 200) {
                         this.catsMessage({
