@@ -586,7 +586,7 @@ export default {
         partyIdNo: [{ required: true, message: "请输入", trigger: "change" },
         { validator: checkIdNoPassSort, trigger: "blur" }],
         partyAddress: [{ required: true, message: "请输入", trigger: "change" }],
-        lawOfficer:[{ required: true, message: "请选择", trigger: "change" },
+        lawOfficer: [{ required: true, message: "请选择", trigger: "change" },
         { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       firstCheckRules: {
@@ -681,7 +681,19 @@ export default {
         this.alreadyChooseLawPerson.forEach((item) => {
           this.lawPersonListId.push(item.id);
         });
-
+        // 初检、复检继承驾驶人信息中的执法人员
+        this.lawPersonListId2 = [];
+        this.alreadyChooseLawPerson2 = userlist;
+        this.carInfo.firstCheck.checkPerson = certificateIdArr.join(',')
+        this.alreadyChooseLawPerson2.forEach((item) => {
+          this.lawPersonListId2.push(item.id);
+        });
+        this.lawPersonListId3 = [];
+        this.alreadyChooseLawPerson3 = userlist;
+        this.carInfo.secondCheck.checkPerson = certificateIdArr.join(',')
+        this.alreadyChooseLawPerson3.forEach((item) => {
+          this.lawPersonListId3.push(item.id);
+        });
       }
       if (this.currentPerson == 'firstCheck') {
         this.lawPersonListId2 = [];
