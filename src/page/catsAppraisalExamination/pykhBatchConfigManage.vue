@@ -64,7 +64,7 @@
                                 :readonly="formReadOnly"></el-input>
                         </el-form-item>
                         <br />
-                        <el-form-item label="行政处罚" prop="ajCfBsjs">
+                        <el-form-item label="处罚或强制" prop="ajCfBsjs">
                             <el-input v-model="addForm.ajCfBsjs" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
@@ -73,7 +73,7 @@
                             </el-input>
                         </el-form-item>
                         <br />
-                        <el-form-item label="行政强制" prop="ajQzBsjs">
+                        <el-form-item label="行政许可" prop="ajQzBsjs">
                             <el-input v-model="addForm.ajQzBsjs" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
@@ -119,7 +119,7 @@
         findAllDepartment
     } from "@/api/pykh/catsAppraisalExamPersonUpload.js";
     import {
-        numType,
+        numType1,
         numCompareList
     } from "@/common/js/validator";
     import iLocalStroage from "@/common/js/localStroage";
@@ -302,7 +302,7 @@
                             trigger: "blur"
                         },
                         {
-                            validator: numType,
+                            validator: numType1,
                             trigger: "blur"
                         }
                     ],
@@ -335,7 +335,7 @@
                             trigger: "blur"
                         },
                         {
-                            validator: numType,
+                            validator: numType1,
                             trigger: "blur"
                         }
                     ]
