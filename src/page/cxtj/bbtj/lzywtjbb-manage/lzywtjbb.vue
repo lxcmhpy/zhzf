@@ -126,7 +126,7 @@ export default {
       totalPage: 0, //总页数
       tableData: [
         {
-          tbdw:'南昌路政管理局',
+          tbdw:'银川路政管理局',
           zt:'已上报',
           nd:'2019',
           yd:'7',
@@ -135,7 +135,7 @@ export default {
           sbr:'刘新',
           sbrq:'2019-07-02',
         },{
-          tbdw:'九江路政管理局',
+          tbdw:'中卫路政管理局',
           zt:'未填报',
           nd:'2019',
           yd:'8',

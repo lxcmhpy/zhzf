@@ -20,7 +20,7 @@
       @selection-change="selectRecord"
     >
       <el-table-column type="selection" align="center"></el-table-column>
-      <el-table-column prop="journalNo" label="记录编号" align="left" width="100px"></el-table-column>
+      <el-table-column prop="recordNum" label="记录编号" align="left" width="100px"></el-table-column>
       <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
       <el-table-column prop="address" label="定位地点" align="center" min-width="220px"></el-table-column>
       <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>

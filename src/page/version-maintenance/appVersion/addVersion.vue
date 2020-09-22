@@ -82,10 +82,11 @@ export default {
                 appMessage: "",//更新内容
                 appUpgrade:"", //下载地址
                 appForcedUpgrade: "1",  //是否强制跟新  0：否  1：是
-                createTime:"",
                 modifyId:"",
                 modifyTime:"",
+                createTime:"",
             },
+            
             rules: {
                 appVersion: [{ required: true, message: "版本名称必须填写", trigger: "blur" }],
                 appVersionCode: [{ required: true, message: "版本号必须填写", trigger: "blur" }],
@@ -124,7 +125,15 @@ export default {
                         console.log(err);
                 };
             }else if(_this.handelType==2){
-                _this.$store.dispatch("updateVersionModel", _this.addVersionForm).then(res => {
+                var data = {
+                appId:_this.addVersionForm.appId,
+				appVersion:_this.addVersionForm.appVersion,
+                appVersionCode:_this.addVersionForm.appVersionCode,
+                appMessage:_this.addVersionForm.appMessage,
+                appUpgrade:_this.addVersionForm.appUpgrade,
+                appForcedUpgrade:_this.addVersionForm.appForcedUpgrade,
+                }
+                _this.$store.dispatch("updateVersionModel", data).then(res => {
                     _this.$emit("getVersionList");
                     _this.$message({
                         type: "success",
@@ -159,7 +168,7 @@ export default {
                 _this.addVersionForm.appMessage=row.appMessage;
                 _this.addVersionForm.appUpgrade=row.appUpgrade;
                 _this.addVersionForm.appForcedUpgrade=row.appForcedUpgrade;
-                _this.addVersionForm.createTime=row.createTime;
+                _this.appForcedUpgrade.createTime=row.createTime;
                 _this.addVersionForm.modifyId=row.modifyId;
                 _this.addVersionForm.modifyTime=row.modifyTime;
             }

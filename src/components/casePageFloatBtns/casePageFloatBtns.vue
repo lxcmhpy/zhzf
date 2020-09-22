@@ -9,6 +9,11 @@
         <br />修改
       </el-button>
     </span>
+    <!-- 立案登记的修改按钮 -->
+    <el-button type="primary"  style="margin-bottom: 10px;" @click="editEstablish" v-if="approvalState=='approvalEstabishNoPass'">
+      <i class="iconfont law-edit"></i>
+      <br />修改
+    </el-button>
     <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
       <i class="iconfont law-approval"></i>
       <br />签章
@@ -65,7 +70,7 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId']),
+  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId','caseApproval']),
   isCanEdit(){
     console.log('caseLinktypeId',this.caseLinktypeId,this.doingLinkId)
     let data= this.$route.name=='case_handle_myPDF'
@@ -333,6 +338,10 @@ export default {
 
 
       }).catch(() => { });
+    },
+    //返回立案登记表单
+    editEstablish(){
+      this.$emit('editEstablish');
     }
   },
   mounted() {

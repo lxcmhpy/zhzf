@@ -331,6 +331,7 @@
                     <span v-if="scope.row.status == '1' || scope.row.status == '2'">
                       <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
                       <template v-if="scope.row.docProcessStatus=='审批中'">审批中</template>
+                      <template v-if="scope.row.docProcessStatus=='已驳回'">已驳回</template>
                       <template v-if="scope.row.docProcessStatus==''|| scope.row.docProcessStatus=='已完成'">已完成</template>
                     </span>
                     <span v-if="scope.row.status == '0'">暂存</span>

@@ -357,7 +357,7 @@
                   <span>{{++scope.$index}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="证据材料名称名称" align="center">
+              <el-table-column label="证据材料名称" align="center">
                 <template slot-scope="scope">
                   <el-input maxlength="15" v-model="scope.row.name"></el-input>
                 </template>
@@ -560,7 +560,8 @@ export default {
         {value: "2",label: "份"},
         {value: "3",label: "套"},
         {value: "4",label: "个"},
-        {value: "5",label: "件"}
+        {value: "5",label: "件"},
+        {value: "6",label: "张"},
       ],
       huanjieAndDocId: this.BASIC_DATA_JX.caseInvestig_JX_huanjieAndDocId, //案件调查报告的文书id
       approvalOver: false, //审核完成
