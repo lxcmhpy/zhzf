@@ -1021,8 +1021,6 @@ export function findCarInfoFileByIdApi(data) {
     return request({
         url: "/xzjc/document/getDocListById/" + data,
         method: "get",
-        showloading: true,
-        loadingType: 'loadPart',
         baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });

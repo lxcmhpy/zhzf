@@ -124,7 +124,7 @@
             <td colspan="3">
               <p>勘验人1</p>
             </td>
-            <td colspan="3">
+            <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="staff1"
                   :rules="fieldRules('staff1',propertyFeatures['staff1'])"
@@ -168,7 +168,7 @@
             <td colspan="3">
               <p>勘验人2</p>
             </td>
-            <td colspan="3">
+            <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="staff2"
                   :rules="fieldRules('staff2',propertyFeatures['staff2'])"
@@ -213,7 +213,7 @@
             <td colspan="3">
               <p>当事人</p>
             </td>
-            <td colspan="3">
+            <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="partyPeople"
                   :rules="fieldRules('partyPeople',propertyFeatures['partyPeople'])"
@@ -250,7 +250,7 @@
             <td colspan="2">
               <p>当事人代表</p>
             </td>
-            <td colspan="3">
+            <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="pNamePeople"
                   :rules="fieldRules('pNamePeople',propertyFeatures['pNamePeople'])"
@@ -285,7 +285,7 @@
             <td colspan="3">
               <p>被邀请人</p>
             </td>
-            <td colspan="3">
+            <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="invited"
                   :rules="fieldRules('invited',propertyFeatures['invited'])"
@@ -320,7 +320,7 @@
             <td colspan="3">
               <p>记录人</p>
             </td>
-            <td colspan="3">
+            <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="recorder"
                   :rules="fieldRules('recorder',propertyFeatures['recorder'])"
@@ -385,12 +385,12 @@
           </tr>
           <tr></tr><tr></tr><tr></tr><tr></tr>
           <tr>
-            <td colspan="10" style="border-right-width:0px"><p>勘验人</p></td>
-            <td colspan="8" style="border-left-width:0px"><p>记录人</p></td>
+            <td colspan="11" class="text_left" style="border-right-width:0px"><p>勘验人</p></td>
+            <td colspan="7" class="text_left" style="border-left-width:0px"><p>记录人</p></td>
           </tr>
           <tr>
-            <td colspan="10" style="border-right-width:0px"><p>被邀请人</p></td>
-            <td colspan="8" style="border-left-width:0px"><p>当事人</p></td>
+            <td colspan="11" class="text_left" style="border-right-width:0px"><p>被邀请人</p></td>
+            <td colspan="7" class="text_left" style="border-left-width:0px"><p>当事人</p></td>
           </tr>
         </table>
         <div class="notice clear">
@@ -408,20 +408,14 @@
   </div>
 </template>
 <script>
-import showApprovePeople from "@/page/caseHandle/components/showApprovePeople";
-import approvalDialog from "@/page/caseHandle/components/approvalDialog";
-import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
-import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
-
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import {
-  validateIDNumber,
-  validatePhone,
-  validateZIP,
-} from "@/common/js/validator";
-import { BASIC_DATA_QH } from "@/common/js/BASIC_DATA_QH.js";
+import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
+import { queryUserListByOrganIdApi } from "@/api/system";
+import { findLawOfficerApi } from "@/api/caseHandle";
+import iLocalStroage from "@/common/js/localStroage";
 import { findCaseAllBindPropertyApi } from "@/api/caseHandle";
+import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 export default {
   data() {
     //验证开始时间
@@ -463,8 +457,6 @@ export default {
       callback();
     };
     return {
-      validatePhone: validatePhone,
-      validateIDNumber: validateIDNumber,
       docData: {
         caseNumber: "",
         caseName: "",
@@ -816,6 +808,7 @@ export default {
       findLawOfficerApi(data).then(
         (res) => {
           let staffInfo = res.data;
+          console.log("staffInfo",staffInfo);
           if (num == 1) {
             this.docData.staffUnitAndPosition1 = staffInfo.organName;
           } else {
@@ -843,6 +836,10 @@ export default {
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
 #compensationInquestRecord_print {
+  .text_left {
+    text-align     : left;
+    text-align-last: left;
+  }
   .dataTimeReplaceBox {
     position: relative;
     .el-form-item__content .el-date-editor--datetime {
@@ -858,17 +855,14 @@ export default {
     }
   }
   .prolong_table {
-  table-layout: fixed;
-  td,
-  p,
-  .el-textarea__inner {
-    white-space: normal;
-    word-wrap: break-word;
-    word-break: break-all;
+    table-layout: fixed;
+    td,
+    p,
+    .el-textarea__inner {
+      white-space: normal;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
   }
-  // .el-textarea__inner {
-  //   max-height: 200px;
-  // }
-}
 }
 </style>

@@ -1472,6 +1472,7 @@ export function getFileStreamByStorageIdApi(storageId) {
     showloading: true,
     loadingType: 'loadPart',
     responseType:'blob',
+    contentType: 'application/json',
     cancelToken: setCancelSource()
   });
 }

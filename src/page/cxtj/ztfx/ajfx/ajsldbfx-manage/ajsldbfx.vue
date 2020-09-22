@@ -6,13 +6,13 @@
           <el-form-item label="立案机构" prop>
             <el-select size="small" v-model="state" placeholder="立案机构">
               <el-option label="全部" value></el-option>
-              
+
             </el-select>
           </el-form-item>
           <el-form-item label="执法门类" prop>
             <el-select size="small" v-model="state" placeholder="执法门类">
               <el-option label="全部" value></el-option>
-             
+
             </el-select>
           </el-form-item>
         </el-form>
@@ -98,7 +98,8 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: this.t1
+            //data: this.t1
+            data: ['银川交通厅','吴忠综合执法支队','石嘴山综合执法支队','固原市综合执法支队','中卫市综合执法支队'],
           }
         ],
         yAxis: [
@@ -110,7 +111,8 @@ export default {
           {
             name: "案发数",
             type: "bar",
-            data: this.data1,
+            //data: this.data1,
+            data:[18,2,19,27,16],
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
@@ -127,7 +129,8 @@ export default {
           {
             name: "结案数",
             type: "bar",
-            data: this.data2,
+            //data: this.data2,
+            data:[36,15,16,7,20],
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
@@ -173,7 +176,8 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: this.t2
+            //data: this.t2
+            data: ['银川交通厅','吴忠综合执法支队','石嘴山综合执法支队','固原市综合执法支队','中卫市综合执法支队'],
           }
         ],
         yAxis: [
@@ -185,7 +189,8 @@ export default {
           {
             name: "案发数",
             type: "bar",
-            data: this.data3,
+            //data: this.data3,
+            data:[16,32,19,7,20],
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
@@ -202,7 +207,8 @@ export default {
           {
             name: "结案数",
             type: "bar",
-            data: this.data4,
+            //data: this.data4,
+            data: [32,11,8,20,3],
             barWidth: 30,
             //配置样式
             itemStyle: {
@@ -227,19 +233,19 @@ export default {
       let _this = this;
       // this.$store.dispatch("ajsldbfxpbc", data).then(res => {
       ajsldbfxpbc(data).then(res => {
-      
+
         // console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];       
+              map[item[0]]=item[1];
          });
         // console.log(map);
-          this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
+          this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"];
           this.data2=
           [map["交通运输部"]=undefined?0:map["交通运输部"],
           map["固原综合执法支队"]=undefined?0:map["固原综合执法支队"],
           map["江西交通厅"]=undefined?0:map["江西交通厅"],
-          map["新疆交通厅"]=undefined?0:map["新疆交通厅"]]; 
+          map["新疆交通厅"]=undefined?0:map["新疆交通厅"]];
 
           // this.drawLine1();
       });
@@ -259,12 +265,12 @@ export default {
        console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];       
+              map[item[0]]=item[1];
          });
         console.log(map);
-           this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data1=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-          
+           this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"];
+          this.data1=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]];
+
           this.drawLine1();
       });
       err => {
@@ -283,15 +289,15 @@ export default {
         console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];       
+              map[item[0]]=item[1];
          });
-        console.log(map);      
-           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data4=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-         
-         
+        console.log(map);
+           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"];
+          this.data4=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]];
 
-          
+
+
+
           // this.drawLine2();
       });
       err => {
@@ -310,15 +316,15 @@ export default {
       console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];       
+              map[item[0]]=item[1];
          });
-        console.log(map);      
-           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data3=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-      
-         
+        console.log(map);
+           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"];
+          this.data3=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]];
 
-          
+
+
+
           this.drawLine2();
       });
       err => {
@@ -326,7 +332,7 @@ export default {
       };
     },
   },
-  
+
   mounted() {
     this.search();
     this.searchfa();
@@ -334,7 +340,7 @@ export default {
     this.search2fa();
   },
   created() {
-   
+
   }
 };
 </script>

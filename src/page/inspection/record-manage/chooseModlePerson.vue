@@ -84,9 +84,9 @@ export default {
     },
     showModal(inforCollectLawPerson) {
       console.log('inforCollectLawPerson', inforCollectLawPerson)
-      this.checkedUser = []
-      this.checkedUserId = []
-      this.alreadyChooseLawPerson = []
+      // this.checkedUser = []
+      // this.checkedUserId = []
+      // this.alreadyChooseLawPerson = []
       this.visible = true;
       this.searchLawPerson(inforCollectLawPerson);
 
@@ -130,7 +130,6 @@ export default {
     handleCheckedUserChange(val) {
       console.log(val);
       console.log(this.checkedUserId);
-      debugger
       let _this = this
       if (val) {
         this.checkedUser = [];
@@ -173,7 +172,6 @@ export default {
     },
     //查询执法人员
     searchLawPerson(inforCollectLawPerson) {
-      debugger
       console.log('inforCollectLawPerson1', inforCollectLawPerson)
       let _this = this
       this.$store
@@ -223,7 +221,6 @@ export default {
             });
             if (this.alreadyChooseLawPerson) {
               console.log('alreadyChooseLawPerson', this.alreadyChooseLawPerson)
-
               this.checkedUser = this.alreadyChooseLawPerson;
             }
             if (this.checkedUser.length > 0) {
