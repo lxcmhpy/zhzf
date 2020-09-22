@@ -69,7 +69,7 @@ export function randomSamplingCaseByPage(oId, batchId) {
 export function confirmSubmissionCase(oId) {
     return request({
         url: "/pykh/case/confirmSubmissionCase/" + oId,
-        method: "post",
+        method: "get",
         showloading: true,
         loadingType: 'loadPart',
         cancelToken: setCancelSource()
