@@ -512,7 +512,6 @@ export default {
         this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
       }
       console.log(this.formData.illegalLaw)
-      debugger
       // 需要在系统中绑定-目前绑定报错
       this.formData.illegalLaw='根据'+this.formData.illegalLaw+'规定，当事人应当赔（补）偿如下：当事人'+this.formData.party+'应缴纳公路路产赔补偿人民币：'
       +this.combined(this.formData.payTotal)
