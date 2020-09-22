@@ -1445,11 +1445,7 @@
 
       drawRight1() {
         let that = this
-        that.$http.get("/home/getData").then(res => {
-          if(res.status == 200){
-            that.carsData.xAxis = res.data.data.cars.date;
-            that.carsData.series = res.data.data.cars.data;
-          }
+
           /*涉案外埠车辆排名*/
           that.chartColumn = echarts.init(document.getElementById("clpm"));
           let option={
@@ -1468,7 +1464,13 @@
               right: '8%'
             },
             xAxis: {
-              data: that.carsData.xAxis,
+              data:  [
+                "湖南省",
+                "福建省",
+                "云南省",
+                "山东省",
+                "山西省"
+              ],
               axisTick: {
                 show: false
               },
@@ -1553,7 +1555,7 @@
                   opacity: 1
                 }
               },
-              data: that.carsData.series,
+              data: [12,32,40,11,20],
               z: 10
             }]
           };
@@ -1561,18 +1563,11 @@
           /*年度案发趋势*/
           this.chartColumn = echarts.init(document.getElementById("ndafqs"));
           const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF']
-          const xData = []
-          res.data.data.afqs.forEach((item,index)=>{
-            xData.push(item.date)
-          })
-          const oldData = []
-          res.data.data.afqs.forEach((item,index)=>{
-            oldData.push(item.new)
-          })
-          const newData = []
-          res.data.data.afqs.forEach((item,index)=>{
-            newData.push(item.active)
-          })
+          const xData = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+          const oldData = [12,10,20,32,17,8,36,25,13,10,32,11]
+
+          const newData = [22,16,11,13,34,20,16,10,33,22,10,6]
+
           this.chartColumn.setOption({
             backgroundColor: '',
             title: {
@@ -1756,19 +1751,10 @@
           });
 
          /*案发地*/
-        const afd_xData = []
-        res.data.data.afd.forEach((item,index)=>{
-          afd_xData.push(item.name)
-        })
-        const afd_series = []
-        res.data.data.afd.forEach((item,index)=>{
-          afd_series.push(item.value)
-        })
-        const afd_series1 = []
-        res.data.data.afd.forEach((item,index)=>{
-          afd_series1.push(item.value1)
-        })
+        const afd_xData = ['银川市','石嘴山市','吴忠市','中卫市','固原市']
 
+        const afd_series = [36,52,20,18,26]
+        const afd_series1 = [16,36,48,29,30]
         this.chartColumn = echarts.init(document.getElementById("afd"));
         this.chartColumn.setOption({
           backgroundColor: '',
@@ -1898,7 +1884,7 @@
             },
           }]
         });
-        })
+
       },
 
       search1(val) {

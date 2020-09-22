@@ -21,7 +21,15 @@ export function numType(rule, value, callback) {
         callback();
     }
 }
-
+/** 验证是否整数 请输入整数 可输入0*/
+export function numType1(rule, value, callback) {
+    var re = /^[0-9]([0-9])*$/;
+    if (!re.test(value)) {
+        callback(new Error('请输入整数'));
+    } else {
+        callback();
+    }
+}
 /* 是否是邮箱*/
 export function validateEmail(rule, value, callback) {
     var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -215,7 +223,6 @@ export function vaildateCardNum(rule, value, callback){
 
 /** 验证是否整数 两数字并比较大小 */
 export function numCompareList(numList, symbolList, rule, value, callback) {
-    debugger;
     // var re = /^[1-9]([0-9])*$/;
     var re = /^([123456789]{1}\d*)|0$/;
     if (!re.test(value)) {

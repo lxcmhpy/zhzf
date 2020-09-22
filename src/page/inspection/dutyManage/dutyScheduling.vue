@@ -31,7 +31,7 @@
             <div class="duty-item-top">
               <span class="item-index">第 {{ index + 1 }} 组</span>
               <span class="item-handle-btn">
-                <span class="iconfont law-guiji"></span>
+                <!-- <span class="iconfont law-guiji"></span> -->
                 <span class="el-icon-delete" @click="deleteScheduling(schedule.scheduleId)"></span>
               </span>
             </div>
