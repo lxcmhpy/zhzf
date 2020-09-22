@@ -184,6 +184,7 @@ export default {
         partyAddress:'',
         party:'',
         note:'',
+        vehicleType:''
       },
      caseDocDataForm: {
         id: "",   //修改的时候用

@@ -395,3 +395,17 @@ export function updateCheParameterInfoApi(data) {
     cancelToken: setCancelSource(),
   })
 }
+
+//导出excel
+export function exportCheRecordApi(ids){
+  return request({
+    url: "/check/cheProcessType/levels",
+    // url: "/cheProcessType/levels",
+    method: "post",
+    data: {ids},
+    responseType:'blob',
+    showloading: true,
+    cancelToken: setCancelSource(),
+    // baseUrlType:"DUTY_HOST"
+  })
+}

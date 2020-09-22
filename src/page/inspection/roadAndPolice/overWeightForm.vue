@@ -114,7 +114,7 @@
         <div>
           <div class="item">
             <el-form-item label="姓名" prop="party">
-              <el-input ref="party" v-model="carInfo.drivePerson.party"></el-input>
+              <el-input ref="party" v-model="carInfo.drivePerson.party" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </div>
           <div class="item appendSelect">
@@ -128,24 +128,27 @@
           <div class="item">
             <!-- 改 -->
             <el-form-item label="联系电话" prop="partyTel">
-              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel"></el-input>
+              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel" placeholder="请输入联系电话"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="联系地址" prop="partyAddress">
-              <el-input v-model="carInfo.drivePerson.partyAddress"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyAddress" placeholder="请输入联系地址"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="职务" prop="occupation">
-              <el-input v-model="carInfo.drivePerson.occupation"></el-input>
+              <el-select v-model="carInfo.drivePerson.occupation" placeholder="请选择职务" :loading="selectLoading" @focus="getDictInfo('人员信息-职务','postInfo')">
+                <el-option v-for="value in postInfo" :key="value.id" :label="value.name" :value="value.name"></el-option>
+              </el-select>
+              <!-- <el-input v-model="carInfo.drivePerson.occupation" placeholder="请输入职务" @focus="getDictInfo('人员信息-职务','postInfo')"></el-input> -->
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="企业名称" prop="partyUnitPosition">
-              <el-input v-model="carInfo.drivePerson.partyUnitPosition"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyUnitPosition" placeholder="请输入所属企业名称"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -338,7 +341,7 @@
             </div>
             <div class="item">
               <el-form-item label="分装车号" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPlate':'pachor'">
-                <el-input v-model="carInfo.secondCheck.fenPlate"></el-input>
+                <el-input v-model="carInfo.secondCheck.fenPlate" placeholder="请输入车辆号牌，回车做查询，必须先输入车辆颜色"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -359,24 +362,24 @@
           <div>
             <div class="item">
               <el-form-item label="分装承运人" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPerson':'pachor'">
-                <el-input v-model="carInfo.secondCheck.fenPerson"></el-input>
+                <el-input v-model="carInfo.secondCheck.fenPerson" placeholder="请输入姓名"></el-input>
               </el-form-item>
             </div>
             <div class="item">
               <el-form-item label="身份证号" :prop="carInfo.secondCheck.unloadMode=='分装'?'idCard':'pachor'">
-                <el-input v-model="carInfo.secondCheck.idCard"></el-input>
+                <el-input v-model="carInfo.secondCheck.idCard" placeholder="请输入身份证号"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="item">
               <el-form-item label="联系电话" :prop="carInfo.secondCheck.unloadMode=='分装'?'phone':'pachor'">
-                <el-input ref="partyTel" v-model="carInfo.secondCheck.phone"></el-input>
+                <el-input ref="partyTel" v-model="carInfo.secondCheck.phone" placeholder="请输入联系电话"></el-input>
               </el-form-item>
             </div>
             <div class="item">
               <el-form-item label="联系地址" :prop="carInfo.secondCheck.unloadMode=='分装'?'address':'pachor'">
-                <el-input v-model="carInfo.secondCheck.address"></el-input>
+                <el-input v-model="carInfo.secondCheck.address" placeholder="请输入联系地址"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -451,7 +454,7 @@
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
-      <el-button type="primary" @click="saveDataBtn(1)">
+      <el-button type="primary" @click="saveDataBtn(1)" v-show="inspectionOverWeightId.id">
         <i class="iconfont law-save"></i>
         <br />归档
       </el-button>
@@ -565,7 +568,7 @@ export default {
         secondCheck: {
           oddNumber: '',
           unloadMode: '',
-          fenPlateColor: '',
+          fenPlateColor: '黄色',
           fenTonnage: '',
           fenPlate: '',
           fenCarType: '',
@@ -657,6 +660,8 @@ export default {
       optionsXZFS: [],
       currentPerson: '',
       carinfoId: '',
+      selectLoading: false,
+      postInfo: [], //职务
     };
   },
   components: {
@@ -891,6 +896,32 @@ export default {
       });
 
     },
+    getDictInfo(name, codeName) {
+      //根据数据字典查询
+      let _this = this;
+      if (_this[codeName].length) {
+        return false;
+      }
+      _this.selectLoading = true;
+      _this.$store
+        .dispatch("findAllDrawerByName", name)
+        .then(
+          //查询执法领域
+          (res) => {
+            _this.selectLoading = false;
+            if (res.code === 200) {
+              _this[codeName] = res.data
+            } else {
+              console.info("没有查询到数据");
+            }
+          },
+          (err) => {
+            _this.selectLoading = false;
+            console.log(err);
+          }
+        )
+        .catch(() => { });
+    },
     //获取坐标
     getLngLat(lngLatStr, address) {
       this.form.eventCoordinate = lngLatStr;
@@ -960,7 +991,7 @@ export default {
       saveOrUpdateCarInfoApi(data).then(
         res => {
           if (res.code == 200) {
-            this.$store.commit("set_inspection_OverWeightId",  { id: data.id})
+            this.$store.commit("set_inspection_OverWeightId", { id: data.id })
             this.getData(data.id)
             this.$message({
               type: "success",
@@ -1057,7 +1088,7 @@ export default {
           console.log(error)
         }
       );
-    }
+    },
   },
 
   mounted() {
