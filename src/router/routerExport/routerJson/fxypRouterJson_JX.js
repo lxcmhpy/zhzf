@@ -101,7 +101,7 @@ export default  [
             meta: {
               title: "案件案发数量同比分析"
             },
-            component: () => import("@/page/cxtj/ztfx/ajfx/ajfasltbfx-manage/numberYTY.vue")
+            component: () => import("@/page/analyseManage/caseAnalysis/numberYTY.vue")
           },
           {
             name: "proportion",
