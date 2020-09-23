@@ -855,7 +855,7 @@ export default {
             value: item.text,
             validate: [{
               required: item.required == 'true' ? true : false,
-              pattern: item.regular,//正则校验规则
+              pattern: item.regular||'',//正则校验规则
               message: item.message||'请输入' + item.title,
               trigger: 'blur'
             }]
