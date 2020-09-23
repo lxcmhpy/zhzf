@@ -88,13 +88,22 @@ export default {
       this.$emit("returnDataRecord",data);
       this.visible = false;
     },
-     showModal() {
+     showModal(businessType,recordIds) {
+       alert(JSON.stringify(recordIds));
       this.visible = true;
       let data={
-        //businessType:businessType
+       // cateId:businessType,
       }
        getRecordListApi(data).then(res => {
         if (res.code == "200") {
+          recordIds.forEach((rec,index1) =>{
+                res.data.records.forEach((element,index) => {
+                if(element.recordId == rec){
+                  res.data.records.splice(index,1);
+                }
+          });
+          })
+          
           this.tableData = res.data.records;
           //this.totalPage = res.data.total;
         }
