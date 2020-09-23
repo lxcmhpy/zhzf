@@ -28,6 +28,7 @@
             content="查看文件"
             placement="top-start">
             <el-checkbox
+              :label="item.storageId"
               class="checkboxItem">
               <span class="name">{{index + 1}}</span>
               <span class="name">{{item.docName}}</span>
@@ -217,8 +218,6 @@ import iLocalStroage from "@/common/js/localStroage";
       },
       //全选
       handleCheckAllChange(val) {
-//      debugger
-//      console.log(val);
         if (val) {
           this.caseList.forEach(item => {
             //复选框存入id
