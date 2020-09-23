@@ -449,7 +449,6 @@ export default {
     },
     // 关联记录
     relationRecordFun() {
-      alert(JSON.stringify(this.baseInfoForm.recordsIds))
       this.$refs.relationRecordRef.showModal(this.BusinessType,this.baseInfoForm.recordsIds);
     },
     //取消
