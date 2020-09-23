@@ -1038,7 +1038,7 @@
               <el-input v-model="inforForm.discretionId"></el-input>
             </el-form-item>-->
             <p v-if="judgFreedomList&&judgFreedomList.length!==0">自由裁量标准(违法程度/违法情节/建议处罚)</p>
-            <ul v-if="judgFreedomList&&judgFreedomList.length!==0">
+            <!-- <ul v-if="judgFreedomList&&judgFreedomList.length!==0">
               <li
                 v-for="(item,index) in judgFreedomList"
                 :key="index"
@@ -1072,20 +1072,35 @@
                   <i class="el-icon-success"></i>
                 </span>
               </li>
-            </ul>
-            <!-- <el-table
-              ref="multipleTable"
-              :data="judgFreedomList"
-              tooltip-effect="dark"
-              style="width: 100%"
-              class="judgFreedomTable"
-              @selection-change="selectJudgFreedom"
-            >
-              <el-table-column type="selection"></el-table-column>
-              <el-table-column prop="drawerName" label="违法程度"></el-table-column>
-              <el-table-column prop="wfqj" label="违法情节"></el-table-column>
-              <el-table-column prop="jycf" label="建议处罚"></el-table-column>
-            </el-table>-->
+            </ul>-->
+            <div>
+              <el-radio-group
+                class="money_group"
+                @change="handleMoneyChange"
+                v-model="radio3"
+                v-if="judgFreedomList&&judgFreedomList.length!==0"
+              >
+                <el-radio
+                  class="money_item"
+                  v-for="(item,index) in judgFreedomList"
+                  :key="index"
+                  :label="item.id"
+                  border
+                >
+                  <div class="money_name">{{item.drawerName}}</div>
+                  <div class="money_dist">
+                    <el-tooltip effect="dark" :content="item.wfqj" placement="top">
+                      <span>{{item.wfqj}}</span>
+                    </el-tooltip>
+                  </div>
+                  <div class="money_count">
+                    <el-tooltip effect="dark" :content="item.jycf" placement="top">
+                      <span>{{item.lawerLimit}}</span>
+                    </el-tooltip>
+                  </div>
+                </el-radio>
+              </el-radio-group>
+            </div>
           </div>
         </div>
         <div>
@@ -1255,6 +1270,8 @@ export default {
       callback();
     };
     return {
+      radio3: "", //拟定金额单选框绑定值
+      punishList: [],
       changePartyIdType2Index: "",
       theStr: "", // 输入框长度到达设定值时输入框的内容
       recentCheckStastions: [], //最近五个检测站
@@ -1545,7 +1562,7 @@ export default {
       maxLawerLimit: "",
       minLawerLimit: "",
       punishAmountAtention: "", //拟定金额提示语
-      chosedLawItem:{}
+      chosedLawItem: {},
     };
   },
   components: {
@@ -1843,28 +1860,75 @@ export default {
         punishClauseLabel = "处罚依据";
       }
       let data = {
-        caseCauseId: this.inforForm.caseCauseId,
+        // caseCauseId: this.inforForm.caseCauseId,
         caseCauseName: this.inforForm.caseCauseName,
         titleType: titleType,
         illageClauseLabel,
         punishClauseLabel,
+        punishList: this.punishList,
       };
       this.$refs.punishDiagRef.showModal(data);
     },
+    //获取违法条款、依据数据
+    getPunishList() {
+      // debugger
+      this.$store
+        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
+        .then(
+          (res) => {
+            this.punishList = res.data;
+            if(this.judgFreedomList.length===0){
+              this.initMoneyWhenNotExistStandard();
+            }
+          },
+          (err) => {}
+        );
+    },
     //设置违法条款和处罚条款
     setIllegalLawAndPunishLaw(data) {
-      console.log(data);
+      console.log("设置违法条款和处罚条款 -> data", data);
       let illegalLawArr = [];
       let punishLawArr = [];
+      let maxArr = [];
+      let minArr = [];
 
       data.forEach((item) => {
         illegalLawArr.push(item.illageClause);
         punishLawArr.push(item.punishClause);
+        maxArr.push(item.upperLimit);
+        minArr.push(item.lawerLimit);
       });
+      //暂存上下限，表单进入时用
+      this.inforForm.upperLimit = maxArr.join(",");
+      this.inforForm.lawerLimit = minArr.join(",");
+      if (this.judgFreedomList.length == 0) {
+        this.maxLawerLimit = Math.max(...maxArr);
+        this.minLawerLimit = Math.min(...minArr);
+      }
+
       this.inforForm.illegalLaw = illegalLawArr.join(";");
       this.inforForm.punishLaw = punishLawArr.join(";");
     },
-    //查询自由裁量标准
+    //有裁量标准选项时，初始化拟定金额，最大最小金额
+    initMoneyWhenExistStandard(obj) {
+      this.radio3 = obj.id;
+      this.minLawerLimit = obj.lawerLimit;
+      this.maxLawerLimit = obj.upperLimit;
+      this.inforForm.tempPunishAmount = obj.lawerLimit;
+    },
+    //无裁量标准选项时，初始化最大最小金额
+    initMoneyWhenNotExistStandard(obj) {
+      console.log("无裁量标准选项时inforForm", this.inforForm);
+      console.log("无裁量标准选项时punishList", this.punishList);
+      console.log(" this.minLawerLimit", this.minLawerLimit);
+      console.log(" this.maxLawerLimit", this.maxLawerLimit);
+      let formdata = this.inforForm;
+      let maxArr = formdata.upperLimit.split(",");
+      let minArr = formdata.lawerLimit.split(",");
+      this.maxLawerLimit = Math.max(...maxArr);
+      this.minLawerLimit = Math.min(...minArr);
+    },
+    //获取自由裁量标准
     findJudgFreedomList(caseCauseId) {
       let _this = this;
       let data = {};
@@ -1879,81 +1943,85 @@ export default {
         };
       }
       console.log("causeId", data);
+
       findJudgFreedomListApi(data).then(
         (res) => {
-          if(res.data.length){
-             _this.judgFreedomList = res.data;
-             _this.chosedLawItem=this.judgFreedomList[0]
+          if (res.data.length) {
+            _this.judgFreedomList = res.data;
+            _this.initMoneyWhenExistStandard(res.data[0]);
           }
-         
+
           // if (res.data.length) {
-            // let dataList = [];
-            // res.data.forEach((element) => {
-            //   dataList.push(Number(element.lawerLimit));
-            // });
-            // _this.maxLawerLimit = Math.max(dataList);
-            // _this.minLawerLimit = Math.min(dataList);
+          // let dataList = [];
+          // res.data.forEach((element) => {
+          //   dataList.push(Number(element.lawerLimit));
+          // });
+          // _this.maxLawerLimit = Math.max(dataList);
+          // _this.minLawerLimit = Math.min(dataList);
           // }else{
 
           // }
-          
         },
         (err) => {}
       );
     },
-   
-    //选中自由裁量
-    selectJudgFreedom(item) {
-      console.log("selectJudgFreedom -> item", item)
-      this.chosedLawItem=item;
-      if (this.activeJudgli == item.id) {
-        this.activeJudgli = "";
-        this.inforForm.discretionId = "";
-      } else {
-        this.activeJudgli = item.id;
-        this.inforForm.discretionId = item.id;
-      }
-      this.inforForm.tempPunishAmount = item.lawerLimit;
-    },
-     //计算拟处罚金额上下限数值，分有无自由裁量2种情况
-    calcMaxAndMix(arr){
-      // 有自由裁量
-      if(arr.length){
-        
-        let item=this.chosedLawItem;
-        if(this.inforForm.tempPunishAmount==''){
-          this.punishAmountAtention = "";
-          return
-        }
-        if(this.inforForm.tempPunishAmount-item.lawerLimit<0){
-          this.punishAmountAtention = "拟处罚金额已低于自由裁量标准下限";
-          return
-        }
-        if(this.inforForm.tempPunishAmount-item.upperLimit>0){
-          this.punishAmountAtention = "拟处罚金额已超过自由裁量标准上限";
-          return
-        }
-        // if(this.inforForm.tempPunishAmount<0){
-        //   this.inforForm.tempPunishAmount=0
-        //   this.punishAmountAtention = "拟处罚金额不可以小于零";
-        //   return
-        // }
-        this.punishAmountAtention = "";
-      }else{
-        //无自由裁量
 
-      }
-    },
-    // 修改自由裁量权
-    changeTempPunishAmount() {
-      this.calcMaxAndMix(this.judgFreedomList)
-      // this.punishAmountAtention = "";
-      // let tempPunishAmount = Number(this.inforForm.tempPunishAmount);
-      // if (tempPunishAmount > this.maxLawerLimit) {
-      //   this.punishAmountAtention = "拟处罚金额已超过自由裁量标准上限";
-      // } else if (tempPunishAmount < this.minLawerLimit) {
-      //   this.punishAmountAtention = "拟处罚金额已低于自由裁量标准下限";
+    //选中自由裁量 lawerLimit upperLimit
+    selectJudgFreedom(item) {
+      // console.log(" -> item", item);
+      // this.minLawerLimit = item.lawerLimit;
+      // this.maxLawerLimit = item.upperLimit;
+      // this.chosedLawItem = item;
+      // if (this.activeJudgli == item.id) {
+      //   this.activeJudgli = "";
+      //   this.inforForm.discretionId = "";
+      // } else {
+      //   this.activeJudgli = item.id;
+      //   this.inforForm.discretionId = item.id;
       // }
+      // this.inforForm.tempPunishAmount = item.lawerLimit;
+    },
+    //自由裁量标准选择变化
+    handleMoneyChange(val, v2) {
+      console.log(" -> val,v2", val, v2);
+      this.judgFreedomList.forEach((item) => {
+        if (val === item.id) {
+          this.minLawerLimit = item.lawerLimit;
+          this.maxLawerLimit = item.upperLimit;
+          this.inforForm.tempPunishAmount = item.lawerLimit;
+        }
+      });
+      this.changeTempPunishAmount()
+    },
+    //计算拟处罚金额上下限数值，分有无自由裁量2种情况
+    // 修改拟定金额input值
+    changeTempPunishAmount() {
+      // console.log("拟定金额input值 -> ", this.inforForm.tempPunishAmount);
+      // console.log(" this.minLawerLimit", this.minLawerLimit);
+      // console.log(" this.maxLawerLimit", this.maxLawerLimit);
+
+      if (this.inforForm.tempPunishAmount == "") {
+        this.punishAmountAtention = "";
+        return;
+      }
+      if (
+        parseInt(this.inforForm.tempPunishAmount) < parseInt(this.minLawerLimit)
+      ) {
+        this.punishAmountAtention = "拟处罚金额已低于自由裁量标准下限";
+        return;
+      }
+      if (
+        parseInt(this.inforForm.tempPunishAmount) > parseInt(this.maxLawerLimit)
+      ) {
+        this.punishAmountAtention = "拟处罚金额已超过自由裁量标准上限";
+        return;
+      }
+      if (this.inforForm.tempPunishAmount < 0) {
+        this.inforForm.tempPunishAmount = 0;
+        this.punishAmountAtention = "拟处罚金额不可以小于零";
+        return;
+      }
+      this.punishAmountAtention = "";
     },
     toNextPart() {},
     //点击滚动
@@ -2215,6 +2283,7 @@ export default {
           console.log("222222222", _this.inforForm);
           _this.handleCaseData(res.data);
           _this.findJudgFreedomList(res.data.caseCauseId);
+          _this.getPunishList();
           console.log("plist", _this.provincesList);
         },
         (err) => {
@@ -3225,5 +3294,36 @@ export default {
 <style lang="scss">
 .error-color {
   color: #ff6600;
+}
+.money_group {
+  width: 100%;
+  padding-left: 20px;
+  .money_item {
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    .el-radio__label {
+      display: inline-block;
+      width: calc(100% - 5px);
+      .money_name {
+        display: inline-block;
+        width: 20%;
+      }
+      .money_dist {
+        display: inline-block;
+        width: 65%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+      }
+      .money_count {
+        display: inline-block;
+        width: 20%;
+      }
+    }
+  }
+  .el-radio.is-bordered + .el-radio.is-bordered {
+    margin-left: 0;
+  }
 }
 </style>

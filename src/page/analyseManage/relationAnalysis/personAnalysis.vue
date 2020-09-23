@@ -1,36 +1,42 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="searchPage toggleBox">
+    <div class="searchAndpageBox searchAndpageBox2">
       <div class="handlePart">
-        <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form-item label="统计周期" prop>
-            <el-date-picker
-              v-model="value3"
-              type="monthrange"
-              range-separator="至"
-              start-placeholder="开始月份"
-              end-placeholder="结束月份"
-            ></el-date-picker>
+        <el-form :inline="true" :model="logForm" label-width="70px" ref="logForm">
+          <el-form-item label="执法机构" prop>
+            <el-select size="small" v-model="state" placeholder="立案机构">
+              <el-option label="全部" value></el-option>
+
+            </el-select>
           </el-form-item>
         </el-form>
       </div>
-      <div id="chart1" style="width: 100%; height: 50%;"></div>
-      <div style="margin-top:30px;margin-bottom:30px">
-        <el-row>
-          <el-col :span="6">
-            <div id="chart2" style="width: 100%; height: 100%;"></div>
-          </el-col>
-          <el-col :span="6">
-            <div id="chart3" style="width: 100%; height: 100%;"></div>
-          </el-col>
-          <el-col :span="6">
-            <div id="chart4" style="width: 100%; height: 100%;"></div>
-          </el-col>
-          <el-col :span="6">
-            <div id="chart5" style="width: 100%; height: 100%;"></div>
-          </el-col>
-        </el-row>
-      </div>
+      <el-row :gutter="20" style="min-height: 50%">
+        <el-col :span="12" style="height: 100%">
+          <el-card class="box-card">
+            <div id="chart2" class="chart-box"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12" style="height: 100%">
+          <el-card class="box-card">
+            <div id="chart3" class="chart-box"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="margin-top:20px;min-height: 50%">
+        <el-col :span="12" style="height: 100%">
+          <el-card class="box-card">
+
+            <div id="chart4" class="chart-box"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card class="box-card" style="height: 100%">
+
+            <div id="chart5" class="chart-box"></div>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -38,6 +44,9 @@
 
 <script>
 import echarts from "echarts";
+import {
+      ryglfx,
+    } from '@/api/fxyp.js'
 export default {
   data() {
     return {
@@ -47,6 +56,7 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       tableData: [],
+      state:'',
       logForm: {
         organ: "",
         type: "",
@@ -61,56 +71,7 @@ export default {
     };
   },
   methods: {
-    drawLine1() {
-      this.chartColumn = echarts.init(document.getElementById("chart1"));
-
-      this.chartColumn.setOption({
-        title: {
-          text: "执法人员数量",
-          left: "center"
-        },
-        color: ["#3398DB"],
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            // 坐标轴指示器，坐标轴触发有效
-            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: "category",
-            // data: this.data1,
-              data:["西宁市交通局","海东市交通局","玉树交通局","海西交通局","果洛交通局",],
-            axisTick: {
-              alignWithLabel: true
-            }
-          }
-        ],
-        yAxis: [
-          {
-            type: "value"
-          }
-        ],
-        series: [
-          {
-            name: "",
-            type: "bar",
-            barWidth: "60%",
-            // data: this.data2
-            data:[200,105,112,163,158]
-          }
-        ]
-      });
-    },
-
-    drawLine2() {
+      drawLine2() {
       this.chartColumn = echarts.init(document.getElementById("chart2"));
 
       this.chartColumn.setOption({
@@ -130,10 +91,10 @@ export default {
             center: ["50%", "60%"],
             data: [
               { value: 310, name: "24岁以下" },
-              { value: 335, name: "25-29岁" },             
+              { value: 335, name: "25-29岁" },
               { value: 234, name: "30-34岁" },
               { value: 310, name: "35-39岁" },
-              { value: 335, name: "40-44岁" },             
+              { value: 335, name: "40-44岁" },
               { value: 234, name: "45-49岁" },
               { value: 234, name: "50-54岁" },
               { value: 234, name: "55岁以上" },
@@ -241,11 +202,9 @@ export default {
             radius: "75%",
             center: ["50%", "60%"],
             data: [
-              { value: 335, name: "科员" },
-              { value: 150, name: "副科" },
-              { value: 134, name: "正科" },
-              { value: 50, name: "副处" },
-              { value: 30, name: "正处" }
+              { value: 335, name: "局长" },
+              { value: 310, name: "市长" },
+              { value: 234, name: "行长" }
             ],
             emphasis: {
               itemStyle: {
@@ -257,27 +216,9 @@ export default {
           }
         ]
       });
-    },
-    search1(val) {
-      this.currentPage = val;
-      let data = {
-        // year:2018
-      };
-      let _this = this;
-      this.$store.dispatch("ryglfx", data).then(res => {
-        console.log(res);
-         this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
-          this.data1=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
-           this.drawLine1();
-      });
-      err => {
-        console.log(err);
-      };
-    },
+    }
   },
   mounted() {
-    this.drawLine1();
-    // this.search1();
     this.drawLine2();
     this.drawLine3();
     this.drawLine4();
@@ -289,3 +230,12 @@ export default {
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
+<style scoped>
+  .box-card{
+    min-height: 50%;
+  }
+  .chart-box {
+    width: 500px;
+    height: 350px;
+  }
+</style>

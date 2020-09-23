@@ -19,7 +19,7 @@
                 </el-form-item>
                 <el-form-item label="检查类型" prop="checkType">
                   <el-select v-model="searchForm.checkType" placeholder="请选择">
-                    <el-option label="全部" value="全部"></el-option>
+                    <el-option label="全部" value=""></el-option>
                     <el-option
                       v-for="item in checkTypeList"
                       :key="item.id"
@@ -30,7 +30,7 @@
                 </el-form-item>
                 <el-form-item label="是否立案" prop="registerCase">
                   <el-select v-model="searchForm.registerCase" placeholder="请选择">
-                    <el-option label="全部" value="全部"></el-option>
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="是" value="1"></el-option>
                     <el-option label="否" value="2"></el-option>
                   </el-select>
@@ -63,8 +63,8 @@
                 </el-form-item>
               </el-row>
               <el-row v-if="isShow">
-                <el-form-item label="执法人员" prop="lawPerson">
-                  <el-input v-model="searchForm.lawPerson" placeholder></el-input>
+                <el-form-item label="执法人员" prop="personName">
+                  <el-input v-model="searchForm.personName" placeholder></el-input>
                 </el-form-item>
                 <el-form-item label="巡查时间" prop="checkTime">
                   <el-date-picker
@@ -84,7 +84,7 @@
       </div>
       <div class="tableHandle">
         <el-button type="primary" icon="el-icon-plus" size="medium" @click="addRecordFun">新增</el-button>
-        <el-button type="info" size="medium">
+        <el-button type="info" size="medium" @click="exportRecordFun">
           <i class="icon-daochu"></i>导出
         </el-button>
         <el-button plain icon="el-icon-delete-solid" size="medium" @click="deleteRecordlFun">删除</el-button>
@@ -140,7 +140,7 @@
           </el-table-column>
           <el-table-column prop="isFilingCase" label="是否立案" align="center" width="100px">
             <template slot-scope="scope">
-              <span v-if="scope.row.isFilingCase === '0'">否</span>
+              <span v-if="!scope.row.isCase">否</span>
               <el-button v-else type="text">查看案件</el-button>
             </template>
           </el-table-column>
@@ -168,7 +168,8 @@
 </template>
 <script>
 
-import { getCheRecordPageListApi, deleteCheRecordByIdsApi } from '@/api/supervision';
+import { downLoadFile } from "@/api/joinExam";
+import { getCheRecordPageListApi, deleteCheRecordByIdsApi, exportCheRecordApi } from '@/api/supervision';
 import { getDictListDetailByNameApi } from '@/api/system';
 
 export default {
@@ -205,8 +206,9 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       });
-      console.log(queryData);
-      getCheRecordPageListApi(queryData).then(
+      const params = JSON.parse(JSON.stringify(queryData));
+      params.checkTime = "";
+      getCheRecordPageListApi(params).then(
         (res) => {
           if(res.code == 200){
             this.tableData = res.data.records;
@@ -262,6 +264,18 @@ export default {
           })
           .catch(() => {});
       }
+    },
+    //导出excel
+    exportRecordFun() {
+      const ids = this.selectList.map(s => s.recordId);
+      exportCheRecordApi(ids).then(
+        res => {
+          downLoadFile(res.data, res.fileName);
+        },
+        err => {
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
     },
     // 交接班
     handoverFun() {

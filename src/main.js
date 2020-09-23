@@ -19,7 +19,6 @@ import {BASIC_DATA_QH} from '@/common/js/BASIC_DATA_QH.js';
 
 import { messageOne } from '@/common/js/resetMessage';
 import { mixinsCommon } from "@/common/js/mixinsCommon";
-import "./mock";
 Vue.use(ElementUI);
 Vue.use(hasPermission);
 Vue.prototype.$messageOne = messageOne;
@@ -33,8 +32,6 @@ Vue.prototype.BASIC_DATA_SYS = BASIC_DATA_SYS;
 Vue.prototype.BASIC_DATA_JX = BASIC_DATA_JX;
 Vue.prototype.BASIC_DATA_QH = BASIC_DATA_QH;
 Vue.mixin(mixinsCommon);
-import http from "@/api/config";
-Vue.prototype.$http = http;
 
 /* eslint-disable no-new */
 const v = new Vue({

@@ -268,6 +268,7 @@ export default {
         afddparty:"",
         illegalFact:"",
         punishDecision:"",
+        illegalLaw:''
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -509,6 +510,44 @@ export default {
         this.formData.partyUnitPositionAndCom = "无";
       } else {
         this.formData.partyUnitPositionAndCom = `${this.formData.partyUnitPosition} ${this.formData.occupation}`;
+      }
+      console.log(this.formData.illegalLaw)
+      // 需要在系统中绑定-目前绑定报错
+      this.formData.illegalLaw='根据'+this.formData.illegalLaw+'规定，当事人应当赔（补）偿如下：当事人'+this.formData.party+'应缴纳公路路产赔补偿人民币：'
+      +this.combined(this.formData.payTotal)
+    },
+    //将金额转换为大写(小写)
+    combined(val) {
+      this.formData.payTotal = Number(val).toFixed(2);
+      if(this.formData.payTotal == "NaN"){
+        this.$message.warning("请输入正确数字");
+        return;
+      }
+      let buffer = val;
+      if (buffer == "0" || buffer == "" || buffer == null) {
+        this.formData.payTotal = "零(0.00)";
+      } else {
+        let unit = "仟佰拾亿仟佰拾万仟佰拾元角分";
+        let str = "";
+        buffer += "00";
+        const p = buffer.indexOf(".");
+        if (p >= 0) {
+          buffer = buffer.substring(0, p) + buffer.substr(p + 1, 2);
+        }
+        unit = unit.substr(unit.length - buffer.length);
+        for (let i = 0; i < buffer.length; i++) {
+          str +=
+            "零壹贰叁肆伍陆柒捌玖".charAt(buffer.charAt(i)) + unit.charAt(i);
+        }
+        return str
+            .replace(/零(仟|佰|拾|角)/g, "零")
+            .replace(/(零)+/g, "零")
+            .replace(/零(万|亿|元)/g, "$1")
+            .replace(/(亿)万|壹(壹拾)/g, "$1$2")
+            .replace(/^元零?|零分/g, "")
+            .replace(/元$/g, "元"+ "整") +
+          "（" +"￥:"+this.formData.payTotal+
+          "）";
       }
     },
     async initDraw() {
