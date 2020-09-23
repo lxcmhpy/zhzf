@@ -67,17 +67,17 @@
                   <el-radio-group
                     v-model="baseInfoForm.isUseCar"
                     @change="baseInfoForm.carNum === ''"
-                    :disabled="PageType === 'handover'"
+                    disabled
                   >
                     <el-radio label="1">是</el-radio>
                     <el-radio label="2">否</el-radio>
                   </el-radio-group>
                   <el-input
                     v-if="baseInfoForm.isUseCar === '1'"
-                    v-model="baseInfoForm.carNum"
+                    v-model="baseInfoForm.plateNumbers"
                     placeholder="请输入车牌号"
                     class="car-number-input"
-                    :disabled="PageType === 'handover'"
+                    disabled
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -95,9 +95,9 @@
                   <el-input
                     v-model="baseInfoForm.inspectionLength"
                     class="inspection-length-input"
-                    :disabled="PageType === 'handover'"
+                    
                   >
-                    <template slot="append">km</template>
+                    <template slot="append" >km</template>
                   </el-input>
                 </el-form-item>
               </el-col>
@@ -125,7 +125,7 @@
             @selection-change="selectJournal"
           >
             <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-            <el-table-column prop="recordId" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
+            <!-- <el-table-column prop="recordNum" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
             <el-table-column prop="checkTypeName" label="检查类型" align="center" width="120px"></el-table-column>
             <el-table-column prop="checkCategoryName" label="检查门类" align="center" width="150px;"></el-table-column>
             <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="280px"></el-table-column>
@@ -133,8 +133,15 @@
             <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
             <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px"></el-table-column>
             <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
-            <el-table-column prop="lawPerson" label="执法人员" align="center" min-width="140px"></el-table-column>
-            <el-table-column prop="opt" label="是否立案" align="center" fixed="right" width="140px">
+            <el-table-column prop="lawPerson" label="执法人员" align="center" min-width="140px"></el-table-column> -->
+              <el-table-column prop="recordNum" label="记录编号" align="left" ></el-table-column>
+            <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
+            <el-table-column prop="address" label="定位地点" align="center" ></el-table-column>
+            <el-table-column prop="roadName" label="路段名称" align="center" ></el-table-column>
+            <el-table-column prop="roadCondition" label="路段信息" align="center" ></el-table-column>
+            <el-table-column prop="routeSituation" label="路段情况" align="center" ></el-table-column>
+            <el-table-column prop="lawPerson" label="案件编号" align="center" ></el-table-column>
+            <el-table-column prop="opt" label="是否立案" align="center" fixed="right">
               <template slot-scope="scope">
                 <span v-if="scope.row.filingCase === '1'">否</span>
                 <el-button v-else type="text" @click="checkCase(scope.row)">查看案件</el-button>
@@ -281,7 +288,7 @@ export default {
         weather: "", // 天气
         lawEnforcementOfficials: "", // 执法人员
         isUseCar: "1", // 是否用车
-        carNum: "", // 车牌号
+        plateNumbers: "", // 车牌号
         patrolRoute: "", // 巡查路段
         inspectionLength: "", // 路段长度km
         other: "", //其他事项
@@ -294,6 +301,7 @@ export default {
         manager: "", // 负责人
         scheduleId:"",//排班ID
         recordsIds:[],//记录ids
+        
       },
       changeShiftsForm: {
         carCondition: "1", // 巡查车辆情况
@@ -394,6 +402,7 @@ export default {
         this.baseInfoForm.lawEnforcementOfficials = res.data.records[0].lawEnforcementOfficials,
          this.baseInfoForm.includingPeople = res.data.records[0].includingPeople,
          this.baseInfoForm.successor = res.data.records[0].successor,
+        this.baseInfoForm.plateNumbers =  res.data.records[0].plateNumbers,
          this.baseInfoForm.manager = res.data.records[0].manager
        }
       }, err => {
@@ -408,6 +417,9 @@ export default {
         getCheRecordLogApi(data).then(res => {
         if (res.code == "200") {
           this.tableData = res.data;
+          res.data.forEach((element,index) => {
+            this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
+     });
         }
       }, err => {
         this.$message({ type: 'error', message: err.msg || '' });
@@ -418,12 +430,16 @@ export default {
       this.baseInfoForm.lawEnforcementOfficials = data.lawEnforcementOfficials;
       this.baseInfoForm.patrolRoute =data.patrolRoute;
       this.baseInfoForm.scheduleId = data.scheduleId;
+      this.baseInfoForm.plateNumbers = data.plateNumbers;
     },
     //返回关联记录数据
     getReturnDataRecord(data){
-      alert(JSON.stringify(data))
-     this.tableData =data;
-     data.forEach(element => {
+    // this.tableData =data;
+      data.forEach((element,index) =>{
+        this.tableData.splice(this.tableData.length,1,element)
+      })
+
+     data.forEach((element,index) => {
        this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
      });
     },
@@ -433,7 +449,8 @@ export default {
     },
     // 关联记录
     relationRecordFun() {
-      this.$refs.relationRecordRef.showModal();
+      alert(JSON.stringify(this.baseInfoForm.recordsIds))
+      this.$refs.relationRecordRef.showModal(this.BusinessType,this.baseInfoForm.recordsIds);
     },
     //取消
     toClose(){
@@ -456,7 +473,15 @@ export default {
           customClass: "custom-confirm",
         })
           .then(() => {
-        let data={
+           if(this.handelType==='1'){
+             this.tableData.forEach((element,index) => {
+               if(element.recordId === this.selectList[0]){
+                   this.tableData.splice(index,1)
+               }
+             });
+              
+           }else{
+              let data={
           checklogId:this.checklogId,
           templateId:this.selectList[0]
          }
@@ -467,6 +492,8 @@ export default {
          }, err => {
            this.$message({ type: 'error', message: err.msg || '' });
          });
+           }
+        
           })
           .catch(() => {});
       }
@@ -518,6 +545,7 @@ export default {
         weather:this.baseInfoForm.weather,
         scheduleId:this.baseInfoForm.scheduleId,
         other:this.baseInfoForm.other,
+        inspectionLength:this.baseInfoForm.inspectionLength,
         carCondition:this.baseInfoForm.carCondition,
         carConditionDescribe:this.baseInfoForm.carConditionDescribe,
         equipmentCondition:this.baseInfoForm.equipmentCondition,

@@ -8,13 +8,13 @@
             <td colspan="4" class="color_DBE4EF">
               <p>
                 案由:<el-form-item style="width: calc(100% - 45px);" prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
-              </el-form-item>
+                  <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
+                </el-form-item>
               </p>
             </td>
           </tr>
           <tr>
-            <td  style="width:40px">
+            <td style="width:40px">
               <p>案发时间</p>
             </td>
             <td colspan="3" class="color_DBE4EF">
@@ -24,7 +24,7 @@
             </td>
           </tr>
           <tr>
-            <td >案发地点</td>
+            <td>案发地点</td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payTime" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
                 <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
@@ -32,7 +32,7 @@
             </td>
           </tr>
           <tr>
-            <td >缴费单位</td>
+            <td>缴费单位</td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payParty" :rules="fieldRules('payParty',propertyFeatures['payParty'])">
                 <el-input type="textarea" v-model="docData.payParty" :disabled="fieldDisabled(propertyFeatures['payParty'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
@@ -40,7 +40,7 @@
             </td>
           </tr>
           <tr>
-            <td >收费时间</td>
+            <td>收费时间</td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payTime" :rules="fieldRules('payTime',propertyFeatures['payTime'])">
                 <el-date-picker style="width:250px" v-model="docData.payTime" :disabled="fieldDisabled(propertyFeatures['payTime'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
@@ -48,8 +48,8 @@
             </td>
           </tr>
           <tr>
-            <td colspan="3" >收费凭证号数</td>
-            <td  class="color_DBE4EF">
+            <td colspan="3">收费凭证号数</td>
+            <td class="color_DBE4EF">
               <el-form-item prop="payNumber" :rules="fieldRules('payNumber',propertyFeatures['payNumber'])">
                 <el-input type="textarea" v-model="docData.payNumber" :disabled="fieldDisabled(propertyFeatures['payNumber'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
               </el-form-item>
@@ -59,7 +59,7 @@
             <td>
               <p colspan="3">收费票据复印件</p>
             </td>
-            <td colspan="3"  class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
+            <td colspan="3" class="color_DBE4EF table_seal" style="white-space: pre-wrap;word-break:break-all">
               <!-- <div class="pdf_seal">
                 <p>粘贴人</p>
               </div> -->
@@ -69,10 +69,16 @@
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </div>
+              <div v-if="docData.picturesUrl">
+                <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="uploadImg2">
+                  <img style="width:100%;height:100%" v-if="docData.picturesUrl2" :src="docData.picturesUrl2" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </div>
             </td>
           </tr>
           <tr>
-            <td >
+            <td>
               <p colspan="3">备注</p>
               <!-- <p>备注</p> -->
             </td>
@@ -103,7 +109,7 @@ import { mapGetters } from "vuex";
 import { validateIDNumber, validatePhone, validateZIP } from '@/common/js/validator'
 // import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
 import { BASIC_DATA_QH } from '@/common/js/BASIC_DATA_QH.js';
-import { uploadCommon,uploadEvdence } from "@/api/upload.js";
+import { uploadCommon, uploadEvdence } from "@/api/upload.js";
 import {
   queryResizeImageApi
 } from "@/api/caseHandle";
@@ -127,12 +133,13 @@ export default {
         caseName: '',
         note: '',
         picturesUrl: '',
-        picList: '',
+        picturesUrl2: '',
+        picList: [{ 'pictures-1': '' }, { 'pictures-2':'' }]
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: 'dd12012464db04f33c8d31c658976fa9',     //文书类型ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态
@@ -181,7 +188,7 @@ export default {
       isParty: true, //当事人类型为个人
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
-      imageUrl: ''
+      imageUrl: '',
     };
   },
   components: {
@@ -215,6 +222,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      // let a= [{'pictures-1':this.docData.picList[0]['pictures-1']},{'pictures-2':this.docData.picList[1]['pictures-2']}];
+      // this.docData.picList = JSON.stringify(a)
+      this.docData.picList = JSON.stringify(this.docData.picList)
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -225,7 +235,7 @@ export default {
     },
     //设置案件来源
     getDataAfter() {
-
+      // this.docData.picList = JSON.parse(this.docData.picList)
     },
     //获取案件基本信息
     getCaseInfo() {
@@ -259,7 +269,7 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg' ||  file.type === 'image/png';
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 10;
 
       if (!isJPG) {
@@ -272,31 +282,56 @@ export default {
     },
     //上传图片
     uploadImg(param) {
-        var fd = new FormData()
-        fd.append("file", param.file);
-        fd.append('caseId', this.caseId)
-        fd.append('docId', this.$route.params.docId);
-        fd.append("evName", param.file.name);
-        fd.append("evType", param.file.type);
-        uploadEvdence(fd).then(
-          res => {
-            this.getBase64(res.data.storageId)
-            this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId
-          },
-          error => {
-          }
-        );
+      var fd = new FormData()
+      fd.append("file", param.file);
+      fd.append('caseId', this.caseId)
+      fd.append('docId', this.$route.params.docId);
+      fd.append("evName", param.file.name);
+      fd.append("evType", param.file.type);
+      uploadEvdence(fd).then(
+        res => {
+          this.getBase64(res.data.storageId, 1)
+          this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId
+        },
+        error => {
+        }
+      );
 
     },
-    getBase64(storageId) {
+    //上传图片
+    uploadImg2(param) {
+      var fd = new FormData()
+      fd.append("file", param.file);
+      fd.append('caseId', this.caseId)
+      fd.append('docId', this.$route.params.docId);
+      fd.append("evName", param.file.name);
+      fd.append("evType", param.file.type);
+      uploadEvdence(fd).then(
+        res => {
+          this.getBase64(res.data.storageId, 2)
+          this.$set(this.docData, 'picturesUrl2', iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId)
+        },
+        error => {
+        }
+      );
+
+    },
+    getBase64(storageId, sort) {
+
       queryResizeImageApi(storageId).then(res => {
         if (res === false) {   //生成失败
           this.$message.error('生成base64码失败！')
           return;
         } else {
           // this.docData.pictures1 = res.data
-          let data = [{ 'pictures-1': res.data }]
-          this.docData.picList = JSON.stringify(data)
+          // let data = [{ 'pictures-1': res.data }]
+          name='pictures-'+sort
+          if (sort == 1) {
+            this.docData.picList[0][name] = res.data
+          } if (sort == 2) {
+            this.docData.picList[1][name] = res.data
+          }
+
         }
       }).catch(err => { console.log(err) })
     },

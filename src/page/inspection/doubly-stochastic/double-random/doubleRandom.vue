@@ -44,7 +44,7 @@
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkStandard" label="抽查标准" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
-          <el-table-column prop="checkSubject" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column prop="checkRange" label="检查范围" align="center">
             <template slot-scope="scope">
@@ -243,6 +243,7 @@ export default {
         taskName: this.searchForm.taskName,
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.taskArea == '省交通运输厅领域' ? this.searchForm.checkType : '',
+        organName : iLocalStroage.gets("userInfo").organName,//机构名称
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -501,6 +502,7 @@ export default {
       this.isRandomFlag = true
       this.randomResultList = []
       this.randomList = []
+      this.getTableData()
     },
     reRadom(scope) {
       let _this = this

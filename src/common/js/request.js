@@ -112,7 +112,7 @@ service.interceptors.request.use(
         } else {
           // httpErrorStr(response.data.code);
           // 下载后台返回文件流
-          console.log('response',response)
+          console.log('response',response) 
           if(response.config.responseType === "blob"){
             if(response.headers["content-disposition"]){
               const fileName = response.headers["content-disposition"].split(";")[1].split("=")[1];

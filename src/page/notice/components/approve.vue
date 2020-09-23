@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     showModal(data) {
-      this.dispose = data;
+      this.dispose = JSON.parse(JSON.stringify(data));
       this.$set(this.dispose, "auditComment", "");
       this.$set(this.dispose, "state", "");
       this.visible = true;

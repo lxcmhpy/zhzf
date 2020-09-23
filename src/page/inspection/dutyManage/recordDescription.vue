@@ -171,7 +171,6 @@ export default {
             event.stopPropagation();
             this.$refs.templateTreeRef.setCurrentKey();
             this.parentNodeData = parentNodeData;
-            // this.$refs.templateFromRef.resetFields();
             this.templateFrom = {};
             this.templateFrom.roadCondition = parseInt(parentNodeData.roadCondition);
             console.log(this.templateFrom,'this.templateFrom')

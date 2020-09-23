@@ -88,7 +88,13 @@
       </el-row>
       <el-row>
         <el-form-item label="巡查路线" prop="patrolRoute">
-          <el-input v-model="addSchedulingForm.patrolRoute"></el-input>
+          <!-- <el-input v-model="addSchedulingForm.patrolRoute"></el-input> -->
+          <el-select
+            v-model="addSchedulingForm.patrolRoute"
+            placeholder="请选择路线"
+          >
+            <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
         </el-form-item>
       </el-row>
     </el-form>
@@ -102,6 +108,7 @@
 import iLocalStroage from "@/common/js/localStroage";
 import { vaildateCardNum } from "@/common/js/validator";
 import { addCheScheduleApi, updateCheScheduleApi } from "@/api/supervision";
+import { findRouteManageByOrganIdApi } from "@/api/system";
 
 export default {
   props: {
@@ -128,6 +135,7 @@ export default {
         lawEnforcementOfficialsIds: ""
       },
       lawPersonList: [],
+      routeList: [],
       rules: {
         scheduleTime: [
           { required: true, message: "排班时间不能为空", trigger: "blur" },
@@ -157,6 +165,7 @@ export default {
   },
   created() {
     this.searchLawPerson();
+    this.findRouteManageByOrganId();
   },
   methods: {
     // 是否用车
@@ -277,9 +286,6 @@ export default {
       this.schedulingDay = data.day;
       this.visible = true;
       this.addSchedulingForm = formData;
-      this.$nextTick(()=>{
-        this.$refs.addSchedulingRef.resetFields();
-      });
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -288,6 +294,18 @@ export default {
       for (const key in this.addSchedulingForm) {
         this.addSchedulingForm[key] = "";
       }
+    },
+    //查找路线
+    findRouteManageByOrganId() {
+      let data = { organId: this.UserInfo.organId };
+      findRouteManageByOrganIdApi(data).then(
+        (res) => {
+          this.routeList = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     },
   },
 };

@@ -167,7 +167,6 @@
           </div>-->
         </div>
 
-
         <div v-if="inforForm.zfmlId === '1002000100000000' ">
           <span class="gongLiBox1">K</span>
           <span class="itemFive">
@@ -207,7 +206,6 @@
             </el-form-item>
           </span>
         </div>
-
 
         <div>
           <div class="itemOne">
@@ -901,14 +899,22 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总长">
-              <el-input v-model="inforForm.otherInfo.allLength" placeholder="/" @input="countOverLength">
+              <el-input
+                v-model="inforForm.otherInfo.allLength"
+                placeholder="/"
+                @input="countOverLength"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="长度限值">
-              <el-input v-model="inforForm.otherInfo.lengthLimit" placeholder="/" @input="countOverLength">
+              <el-input
+                v-model="inforForm.otherInfo.lengthLimit"
+                placeholder="/"
+                @input="countOverLength"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -924,14 +930,22 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货总宽">
-              <el-input v-model="inforForm.otherInfo.allWidth" placeholder="/" @input="countOverWidth">
+              <el-input
+                v-model="inforForm.otherInfo.allWidth"
+                placeholder="/"
+                @input="countOverWidth"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="宽度限值">
-              <el-input v-model="inforForm.otherInfo.widthLimit" placeholder="/" @input="countOverWidth">
+              <el-input
+                v-model="inforForm.otherInfo.widthLimit"
+                placeholder="/"
+                @input="countOverWidth"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -947,14 +961,22 @@
         <div>
           <div class="itemThird">
             <el-form-item label="车货高度">
-              <el-input v-model="inforForm.otherInfo.allHeight" placeholder="/" @input="countOverHeight">
+              <el-input
+                v-model="inforForm.otherInfo.allHeight"
+                placeholder="/"
+                @input="countOverHeight"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item label="高度限值">
-              <el-input v-model="inforForm.otherInfo.heightLimit" placeholder="/" @input="countOverHeight">
+              <el-input
+                v-model="inforForm.otherInfo.heightLimit"
+                placeholder="/"
+                @input="countOverHeight"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -1015,8 +1037,8 @@
             <!-- <el-form-item label="自由裁量标准">
               <el-input v-model="inforForm.discretionId"></el-input>
             </el-form-item>-->
-            <p>自由裁量标准(违法程度/违法情节/建议处罚)</p>
-            <ul>
+            <p v-if="judgFreedomList&&judgFreedomList.length!==0">自由裁量标准(违法程度/违法情节/建议处罚)</p>
+            <!-- <ul v-if="judgFreedomList&&judgFreedomList.length!==0">
               <li
                 v-for="(item,index) in judgFreedomList"
                 :key="index"
@@ -1050,20 +1072,35 @@
                   <i class="el-icon-success"></i>
                 </span>
               </li>
-            </ul>
-            <!-- <el-table
-              ref="multipleTable"
-              :data="judgFreedomList"
-              tooltip-effect="dark"
-              style="width: 100%"
-              class="judgFreedomTable"
-              @selection-change="selectJudgFreedom"
-            >
-              <el-table-column type="selection"></el-table-column>
-              <el-table-column prop="drawerName" label="违法程度"></el-table-column>
-              <el-table-column prop="wfqj" label="违法情节"></el-table-column>
-              <el-table-column prop="jycf" label="建议处罚"></el-table-column>
-            </el-table>-->
+            </ul>-->
+            <div>
+              <el-radio-group
+                class="money_group"
+                @change="handleMoneyChange"
+                v-model="radio3"
+                v-if="judgFreedomList&&judgFreedomList.length!==0"
+              >
+                <el-radio
+                  class="money_item"
+                  v-for="(item,index) in judgFreedomList"
+                  :key="index"
+                  :label="item.id"
+                  border
+                >
+                  <div class="money_name">{{item.drawerName}}</div>
+                  <div class="money_dist">
+                    <el-tooltip effect="dark" :content="item.wfqj" placement="top">
+                      <span>{{item.wfqj}}</span>
+                    </el-tooltip>
+                  </div>
+                  <div class="money_count">
+                    <el-tooltip effect="dark" :content="item.jycf" placement="top">
+                      <span>{{item.lawerLimit}}</span>
+                    </el-tooltip>
+                  </div>
+                </el-radio>
+              </el-radio-group>
+            </div>
           </div>
         </div>
         <div>
@@ -1152,6 +1189,7 @@ import {
   validateZIP,
   validatePhone,
   vaildateCardNum,
+  validateIsNumber,
 } from "@/common/js/validator";
 import {
   getDictListDetailByNameApi,
@@ -1232,6 +1270,8 @@ export default {
       callback();
     };
     return {
+      radio3: "", //拟定金额单选框绑定值
+      punishList: [],
       changePartyIdType2Index: "",
       theStr: "", // 输入框长度到达设定值时输入框的内容
       recentCheckStastions: [], //最近五个检测站
@@ -1284,10 +1324,10 @@ export default {
         trailerBrand: "",
         trailerCcertId: "",
         caseCauseNameCopy: "",
-        illegalLaw: "",
-        punishLaw: "",
-        discretionId: "",
-        tempPunishAmount: "",
+        illegalLaw: "", //违法条款
+        punishLaw: "", //处罚依据
+        discretionId: "", //自由裁量标准
+        tempPunishAmount: "", //拟处罚金额
         organId: iLocalStroage.gets("userInfo").organId,
         caseTypeId: "",
         staffId: "",
@@ -1374,9 +1414,17 @@ export default {
         ],
         distance: [
           { required: true, message: "请输入米数", trigger: "change" },
+          { validator: validateIsNumber, trigger: "change" }
         ],
         pileNumber: [
           { required: true, message: "请输入公里数", trigger: "change" },
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        pileNumber2: [
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        distance2: [
+          { validator: validateIsNumber, trigger: "change" }
         ],
         vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
         trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
@@ -1511,9 +1559,10 @@ export default {
       hasLatitudeAndLongitude: false, //案发坐标是否已经获取
       provincesList: [], //行政区划
       subAreaCascader: "subAreaCascader",
-      maxLawerLimit:'',
-      minLawerLimit:'',
-      punishAmountAtention:'',
+      maxLawerLimit: "",
+      minLawerLimit: "",
+      punishAmountAtention: "", //拟定金额提示语
+      chosedLawItem: {},
     };
   },
   components: {
@@ -1793,7 +1842,7 @@ export default {
     },
     //添加挂车
     addTrailer() {
-      this.inforForm.trailerColor='1'
+      this.inforForm.trailerColor = "1";
       this.showTrailer = true;
     },
     //点击处罚依据显示弹窗
@@ -1811,30 +1860,77 @@ export default {
         punishClauseLabel = "处罚依据";
       }
       let data = {
-        caseCauseId: this.inforForm.caseCauseId,
+        // caseCauseId: this.inforForm.caseCauseId,
         caseCauseName: this.inforForm.caseCauseName,
         titleType: titleType,
         illageClauseLabel,
         punishClauseLabel,
+        punishList: this.punishList,
       };
       this.$refs.punishDiagRef.showModal(data);
     },
+    //获取违法条款、依据数据
+    getPunishList() {
+      // debugger
+      this.$store
+        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
+        .then(
+          (res) => {
+            this.punishList = res.data;
+            if(this.judgFreedomList.length===0){
+              this.initMoneyWhenNotExistStandard();
+            }
+          },
+          (err) => {}
+        );
+    },
     //设置违法条款和处罚条款
     setIllegalLawAndPunishLaw(data) {
-      console.log(data);
+      console.log("设置违法条款和处罚条款 -> data", data);
       let illegalLawArr = [];
       let punishLawArr = [];
+      let maxArr = [];
+      let minArr = [];
 
       data.forEach((item) => {
         illegalLawArr.push(item.illageClause);
         punishLawArr.push(item.punishClause);
+        maxArr.push(item.upperLimit);
+        minArr.push(item.lawerLimit);
       });
+      //暂存上下限，表单进入时用
+      this.inforForm.upperLimit = maxArr.join(",");
+      this.inforForm.lawerLimit = minArr.join(",");
+      if (this.judgFreedomList.length == 0) {
+        this.maxLawerLimit = Math.max(...maxArr);
+        this.minLawerLimit = Math.min(...minArr);
+      }
+
       this.inforForm.illegalLaw = illegalLawArr.join(";");
       this.inforForm.punishLaw = punishLawArr.join(";");
     },
-    //查询自由裁量标准
+    //有裁量标准选项时，初始化拟定金额，最大最小金额
+    initMoneyWhenExistStandard(obj) {
+      this.radio3 = obj.id;
+      this.minLawerLimit = obj.lawerLimit;
+      this.maxLawerLimit = obj.upperLimit;
+      this.inforForm.tempPunishAmount = obj.lawerLimit;
+    },
+    //无裁量标准选项时，初始化最大最小金额
+    initMoneyWhenNotExistStandard(obj) {
+      console.log("无裁量标准选项时inforForm", this.inforForm);
+      console.log("无裁量标准选项时punishList", this.punishList);
+      console.log(" this.minLawerLimit", this.minLawerLimit);
+      console.log(" this.maxLawerLimit", this.maxLawerLimit);
+      let formdata = this.inforForm;
+      let maxArr = formdata.upperLimit.split(",");
+      let minArr = formdata.lawerLimit.split(",");
+      this.maxLawerLimit = Math.max(...maxArr);
+      this.minLawerLimit = Math.min(...minArr);
+    },
+    //获取自由裁量标准
     findJudgFreedomList(caseCauseId) {
-      let _this=this
+      let _this = this;
       let data = {};
       let someCaseInfo = iLocalStroage.gets("someCaseInfo");
       if (someCaseInfo) {
@@ -1847,44 +1943,85 @@ export default {
         };
       }
       console.log("causeId", data);
+
       findJudgFreedomListApi(data).then(
         (res) => {
-          console.log(res);
-          _this.judgFreedomList = res.data;
-          let dataList=[]
-          res.data.forEach(element => {
-              dataList.push(Number(element.lawerLimit))
-            });
-            _this.maxLawerLimit=Math.max(dataList)
-            _this.minLawerLimit=Math.min(dataList)
+          if (res.data.length) {
+            _this.judgFreedomList = res.data;
+            _this.initMoneyWhenExistStandard(res.data[0]);
+          }
+
+          // if (res.data.length) {
+          // let dataList = [];
+          // res.data.forEach((element) => {
+          //   dataList.push(Number(element.lawerLimit));
+          // });
+          // _this.maxLawerLimit = Math.max(dataList);
+          // _this.minLawerLimit = Math.min(dataList);
+          // }else{
+
+          // }
         },
-        (err) => {
-          console.log(err);
-        }
+        (err) => {}
       );
     },
-    //选中自由裁量
+
+    //选中自由裁量 lawerLimit upperLimit
     selectJudgFreedom(item) {
-      console.log(item);
-      if (this.activeJudgli == item.id) {
-        this.activeJudgli = "";
-        this.inforForm.discretionId = "";
-      } else {
-        this.activeJudgli = item.id;
-        this.inforForm.discretionId = item.id;
-      }
-      this.inforForm.tempPunishAmount = item.lawerLimit;
+      // console.log(" -> item", item);
+      // this.minLawerLimit = item.lawerLimit;
+      // this.maxLawerLimit = item.upperLimit;
+      // this.chosedLawItem = item;
+      // if (this.activeJudgli == item.id) {
+      //   this.activeJudgli = "";
+      //   this.inforForm.discretionId = "";
+      // } else {
+      //   this.activeJudgli = item.id;
+      //   this.inforForm.discretionId = item.id;
+      // }
+      // this.inforForm.tempPunishAmount = item.lawerLimit;
     },
-    // 修改自由裁量权
-    changeTempPunishAmount(){
-      this.punishAmountAtention=''
-      let tempPunishAmount = Number(this.inforForm.tempPunishAmount)
-      if(tempPunishAmount>this.maxLawerLimit){
-        this.punishAmountAtention='拟处罚金额已超过自由裁量标准上限'
-      }else
-      if(tempPunishAmount<this.minLawerLimit){
-        this.punishAmountAtention='拟处罚金额已低于自由裁量标准下限'
+    //自由裁量标准选择变化
+    handleMoneyChange(val, v2) {
+      console.log(" -> val,v2", val, v2);
+      this.judgFreedomList.forEach((item) => {
+        if (val === item.id) {
+          this.minLawerLimit = item.lawerLimit;
+          this.maxLawerLimit = item.upperLimit;
+          this.inforForm.tempPunishAmount = item.lawerLimit;
         }
+      });
+      this.changeTempPunishAmount()
+    },
+    //计算拟处罚金额上下限数值，分有无自由裁量2种情况
+    // 修改拟定金额input值
+    changeTempPunishAmount() {
+      // console.log("拟定金额input值 -> ", this.inforForm.tempPunishAmount);
+      // console.log(" this.minLawerLimit", this.minLawerLimit);
+      // console.log(" this.maxLawerLimit", this.maxLawerLimit);
+
+      if (this.inforForm.tempPunishAmount == "") {
+        this.punishAmountAtention = "";
+        return;
+      }
+      if (
+        parseInt(this.inforForm.tempPunishAmount) < parseInt(this.minLawerLimit)
+      ) {
+        this.punishAmountAtention = "拟处罚金额已低于自由裁量标准下限";
+        return;
+      }
+      if (
+        parseInt(this.inforForm.tempPunishAmount) > parseInt(this.maxLawerLimit)
+      ) {
+        this.punishAmountAtention = "拟处罚金额已超过自由裁量标准上限";
+        return;
+      }
+      if (this.inforForm.tempPunishAmount < 0) {
+        this.inforForm.tempPunishAmount = 0;
+        this.punishAmountAtention = "拟处罚金额不可以小于零";
+        return;
+      }
+      this.punishAmountAtention = "";
     },
     toNextPart() {},
     //点击滚动
@@ -1973,7 +2110,7 @@ export default {
           }
           _this.inforForm.afdd = afddSting;
         }
-        let oldPartyAddress = this.inforForm.partyAddress
+        let oldPartyAddress = this.inforForm.partyAddress;
         if (
           this.inforForm.provincesAddressArray &&
           this.inforForm.provincesAddressArray.length > 1
@@ -1981,14 +2118,19 @@ export default {
           this.inforForm.provincesAddress = JSON.stringify(
             this.inforForm.provincesAddressArray
           );
-          this.inforForm.partyAddress = this.inforForm.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,'')+this.inforForm.partyAddress
+          this.inforForm.partyAddress =
+            this.inforForm.provincesAddress
+              .replace("[", "")
+              .replace("]", "")
+              .replace(/"/g, "")
+              .replace(/,/g, "") + this.inforForm.partyAddress;
         }
         _this.$store
           .dispatch("saveOrUpdateCaseBasicInfo", _this.inforForm)
           .then(
             (res) => {
               console.log(res);
-              this.inforForm.partyAddress = oldPartyAddress
+              this.inforForm.partyAddress = oldPartyAddress;
               _this.$message({
                 type: "success",
                 message: "提交成功!",
@@ -2026,7 +2168,7 @@ export default {
               });
             },
             (err) => {
-                this.inforForm.partyAddress = oldPartyAddress
+              this.inforForm.partyAddress = oldPartyAddress;
               console.log(err);
             }
           );
@@ -2046,7 +2188,7 @@ export default {
       this.inforForm.otherInfo = JSON.stringify(this.inforForm.otherInfo);
       console.log(this.inforForm);
 
-      let oldPartyAddress = this.inforForm.partyAddress
+      let oldPartyAddress = this.inforForm.partyAddress;
       if (
         this.inforForm.provincesAddressArray &&
         this.inforForm.provincesAddressArray.length > 1
@@ -2054,7 +2196,12 @@ export default {
         this.inforForm.provincesAddress = JSON.stringify(
           this.inforForm.provincesAddressArray
         );
-        this.inforForm.partyAddress = this.inforForm.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,'')+this.inforForm.partyAddress
+        this.inforForm.partyAddress =
+          this.inforForm.provincesAddress
+            .replace("[", "")
+            .replace("]", "")
+            .replace(/"/g, "")
+            .replace(/,/g, "") + this.inforForm.partyAddress;
       }
 
       this.inforForm.state = state;
@@ -2064,7 +2211,7 @@ export default {
       this.$store.dispatch("saveOrUpdateCaseBasicInfo", this.inforForm).then(
         (res) => {
           console.log(this.inforForm);
-          this.inforForm.partyAddress = oldPartyAddress
+          this.inforForm.partyAddress = oldPartyAddress;
           if (this.inforForm.otherInfo) {
             this.inforForm.otherInfo = JSON.parse(this.inforForm.otherInfo);
           }
@@ -2077,7 +2224,7 @@ export default {
           // this.autoSava = false;
         },
         (err) => {
-            this.inforForm.partyAddress = oldPartyAddress
+          this.inforForm.partyAddress = oldPartyAddress;
           console.log(err);
         }
       );
@@ -2097,7 +2244,14 @@ export default {
             res.data.provincesAddressArray = JSON.parse(
               res.data.provincesAddress
             );
-            res.data.partyAddress=res.data.partyAddress.replace(res.data.provincesAddress.replace('[','').replace(']','').replace(/"/g,'').replace(/,/g,''),'')
+            res.data.partyAddress = res.data.partyAddress.replace(
+              res.data.provincesAddress
+                .replace("[", "")
+                .replace("]", "")
+                .replace(/"/g, "")
+                .replace(/,/g, ""),
+              ""
+            );
             if (res.data.provincesAddressArray.length > 1) {
               let obj = {
                 first: res.data.provincesAddressArray[0],
@@ -2129,6 +2283,7 @@ export default {
           console.log("222222222", _this.inforForm);
           _this.handleCaseData(res.data);
           _this.findJudgFreedomList(res.data.caseCauseId);
+          _this.getPunishList();
           console.log("plist", _this.provincesList);
         },
         (err) => {
@@ -2162,7 +2317,7 @@ export default {
       if (data.otherInfo != "") {
         // this.inforForm.otherInfo = JSON.parse(data.otherInfo);
         // debugger
-        this.$set(this.inforForm, 'otherInfo', JSON.parse(data.otherInfo));
+        this.$set(this.inforForm, "otherInfo", JSON.parse(data.otherInfo));
       }
       if (data.caseCauseName == "车辆在公路上擅自超限行驶") {
         this.showOverrun = true;
@@ -2558,7 +2713,7 @@ export default {
 
     blur2(val) {
       // var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
-      var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(\d{11})$)/;  
+      var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(\d{11})$)/;
       if (!reg.test(val) && val) {
         this.$message("联系电话格式错误");
       }
@@ -2947,40 +3102,64 @@ export default {
           }
         );
       }, */
-      //超限长宽高限值自动计算
-      countOverLength(){
-        if ( this.inforForm.otherInfo.lengthLimit && this.inforForm.otherInfo.allLength ) {
-          if ( this.inforForm.otherInfo.lengthLimit < this.inforForm.otherInfo.allLength ) {
-            this.inforForm.otherInfo.overLength = this.inforForm.otherInfo.allLength - this.inforForm.otherInfo.lengthLimit;
-          } else {
-            this.inforForm.otherInfo.overLength = "0";
-          }
-        }else{
-          this.inforForm.otherInfo.overLength = "";
+    //超限长宽高限值自动计算
+    countOverLength() {
+      if (
+        this.inforForm.otherInfo.lengthLimit &&
+        this.inforForm.otherInfo.allLength
+      ) {
+        if (
+          this.inforForm.otherInfo.lengthLimit <
+          this.inforForm.otherInfo.allLength
+        ) {
+          this.inforForm.otherInfo.overLength =
+            this.inforForm.otherInfo.allLength -
+            this.inforForm.otherInfo.lengthLimit;
+        } else {
+          this.inforForm.otherInfo.overLength = "0";
         }
-      },
-      countOverWidth(){
-        if ( this.inforForm.otherInfo.widthLimit && this.inforForm.otherInfo.allWidth ) {
-          if ( this.inforForm.otherInfo.widthLimit < this.inforForm.otherInfo.allWidth ) {
-            this.inforForm.otherInfo.overWidth = this.inforForm.otherInfo.allWidth - this.inforForm.otherInfo.widthLimit;
-          } else {
-            this.inforForm.otherInfo.overWidth = "0";
-          }
-        }else{
-          this.inforForm.otherInfo.overWidth = "";
-        }
-      },
-      countOverHeight(){
-        if ( this.inforForm.otherInfo.heightLimit && this.inforForm.otherInfo.allHeight ) {
-          if ( this.inforForm.otherInfo.heightLimit < this.inforForm.otherInfo.allHeight ) {
-            this.inforForm.otherInfo.overHeight = this.inforForm.otherInfo.allHeight - this.inforForm.otherInfo.heightLimit;
-          } else {
-            this.inforForm.otherInfo.overHeight = "0";
-          }
-        }else{
-          this.inforForm.otherInfo.overHeight = "";
-        }
+      } else {
+        this.inforForm.otherInfo.overLength = "";
       }
+    },
+    countOverWidth() {
+      if (
+        this.inforForm.otherInfo.widthLimit &&
+        this.inforForm.otherInfo.allWidth
+      ) {
+        if (
+          this.inforForm.otherInfo.widthLimit <
+          this.inforForm.otherInfo.allWidth
+        ) {
+          this.inforForm.otherInfo.overWidth =
+            this.inforForm.otherInfo.allWidth -
+            this.inforForm.otherInfo.widthLimit;
+        } else {
+          this.inforForm.otherInfo.overWidth = "0";
+        }
+      } else {
+        this.inforForm.otherInfo.overWidth = "";
+      }
+    },
+    countOverHeight() {
+      if (
+        this.inforForm.otherInfo.heightLimit &&
+        this.inforForm.otherInfo.allHeight
+      ) {
+        if (
+          this.inforForm.otherInfo.heightLimit <
+          this.inforForm.otherInfo.allHeight
+        ) {
+          this.inforForm.otherInfo.overHeight =
+            this.inforForm.otherInfo.allHeight -
+            this.inforForm.otherInfo.heightLimit;
+        } else {
+          this.inforForm.otherInfo.overHeight = "0";
+        }
+      } else {
+        this.inforForm.otherInfo.overHeight = "";
+      }
+    },
   },
 
   mounted() {
@@ -3038,9 +3217,9 @@ export default {
     this.$refs.link_5.addEventListener("scroll", this.scrool5);
   },
   activated() {
-      if(this.directionList.length==0){
-          this.initDrawer()
-      }
+    if (this.directionList.length == 0) {
+      this.initDrawer();
+    }
   },
   created() {
     this.initDrawer();
@@ -3110,10 +3289,41 @@ export default {
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/index.scss">
-//  @import "@/assets/css/caseHandle/index.scss"; 
+//  @import "@/assets/css/caseHandle/index.scss";
 </style>
 <style lang="scss">
 .error-color {
   color: #ff6600;
+}
+.money_group {
+  width: 100%;
+  padding-left: 20px;
+  .money_item {
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    .el-radio__label {
+      display: inline-block;
+      width: calc(100% - 5px);
+      .money_name {
+        display: inline-block;
+        width: 20%;
+      }
+      .money_dist {
+        display: inline-block;
+        width: 65%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+      }
+      .money_count {
+        display: inline-block;
+        width: 20%;
+      }
+    }
+  }
+  .el-radio.is-bordered + .el-radio.is-bordered {
+    margin-left: 0;
+  }
 }
 </style>

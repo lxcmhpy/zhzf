@@ -22,7 +22,7 @@
           </div>
           <div class="item">
             <el-form-item label="车辆号牌" prop="vehicleShipId">
-              <el-input v-model="carInfo.vehicleShipId" placeholder="车辆号牌">
+              <el-input v-model="carInfo.vehicleShipId" placeholder="请输入车辆号牌">
                 <el-button slot="append" icon="el-icon-search" @click="searchNumber"></el-button>
               </el-input>
             </el-form-item>
@@ -114,7 +114,7 @@
         <div>
           <div class="item">
             <el-form-item label="姓名" prop="party">
-              <el-input ref="party" v-model="carInfo.drivePerson.party"></el-input>
+              <el-input ref="party" v-model="carInfo.drivePerson.party" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </div>
           <div class="item appendSelect">
@@ -128,24 +128,27 @@
           <div class="item">
             <!-- 改 -->
             <el-form-item label="联系电话" prop="partyTel">
-              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel"></el-input>
+              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel" placeholder="请输入联系电话"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="联系地址" prop="partyAddress">
-              <el-input v-model="carInfo.drivePerson.partyAddress"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyAddress" placeholder="请输入联系地址"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="职务" prop="occupation">
-              <el-input v-model="carInfo.drivePerson.occupation"></el-input>
+              <el-select v-model="carInfo.drivePerson.occupation" placeholder="请选择职务" :loading="selectLoading" @focus="getDictInfo('人员信息-职务','postInfo')">
+                <el-option v-for="value in postInfo" :key="value.id" :label="value.name" :value="value.name"></el-option>
+              </el-select>
+              <!-- <el-input v-model="carInfo.drivePerson.occupation" placeholder="请输入职务" @focus="getDictInfo('人员信息-职务','postInfo')"></el-input> -->
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="企业名称" prop="partyUnitPosition">
-              <el-input v-model="carInfo.drivePerson.partyUnitPosition"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyUnitPosition" placeholder="请输入所属企业名称"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -156,7 +159,7 @@
               <!-- <el-select ref="lawPersonListId" v-model="carInfo.drivePerson.lawOfficerId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select> -->
-              <el-button icon="el-icon-plus" @click="addLawPerson('drivePerson',alreadyChooseLawPerson)"></el-button>
+              <el-button icon="el-icon-plus" @click="addLawPerson('drivePerson',lawPersonListId,alreadyChooseLawPerson)"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -289,7 +292,7 @@
               <!-- <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select> -->
-              <el-button icon="el-icon-plus" @click="addLawPerson('firstCheck',alreadyChooseLawPerson2)"></el-button>
+              <el-button icon="el-icon-plus" @click="addLawPerson('firstCheck',lawPersonListId2,alreadyChooseLawPerson2)"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -338,7 +341,7 @@
             </div>
             <div class="item">
               <el-form-item label="分装车号" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPlate':'pachor'">
-                <el-input v-model="carInfo.secondCheck.fenPlate"></el-input>
+                <el-input v-model="carInfo.secondCheck.fenPlate" placeholder="请输入车辆号牌，回车做查询，必须先输入车辆颜色"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -359,24 +362,24 @@
           <div>
             <div class="item">
               <el-form-item label="分装承运人" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPerson':'pachor'">
-                <el-input v-model="carInfo.secondCheck.fenPerson"></el-input>
+                <el-input v-model="carInfo.secondCheck.fenPerson" placeholder="请输入姓名"></el-input>
               </el-form-item>
             </div>
             <div class="item">
               <el-form-item label="身份证号" :prop="carInfo.secondCheck.unloadMode=='分装'?'idCard':'pachor'">
-                <el-input v-model="carInfo.secondCheck.idCard"></el-input>
+                <el-input v-model="carInfo.secondCheck.idCard" placeholder="请输入身份证号"></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div class="item">
               <el-form-item label="联系电话" :prop="carInfo.secondCheck.unloadMode=='分装'?'phone':'pachor'">
-                <el-input ref="partyTel" v-model="carInfo.secondCheck.phone"></el-input>
+                <el-input ref="partyTel" v-model="carInfo.secondCheck.phone" placeholder="请输入联系电话"></el-input>
               </el-form-item>
             </div>
             <div class="item">
               <el-form-item label="联系地址" :prop="carInfo.secondCheck.unloadMode=='分装'?'address':'pachor'">
-                <el-input v-model="carInfo.secondCheck.address"></el-input>
+                <el-input v-model="carInfo.secondCheck.address" placeholder="请输入联系地址"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -401,18 +404,21 @@
           </div>
           <div class="item">
             <el-form-item label="复检结果" prop="checkResult">
-              <el-input v-model="carInfo.secondCheck.checkResult"></el-input>
+              <el-radio-group v-model="carInfo.secondCheck.checkResult">
+                <el-radio label="未超载（最小）">未超载（最小）</el-radio>
+                <el-radio label="超限超载">超限超载</el-radio>
+              </el-radio-group>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemOne">
-            <el-form-item label="执法人员" id="lawPersonBox" prop="checkPerson">
+            <el-form-item label="复检人员" id="lawPersonBox" prop="checkPerson">
               <el-input v-model="carInfo.secondCheck.checkPerson"></el-input>
               <!-- <el-select ref="lawPersonListId" v-model="carInfo.secondCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select> -->
-              <el-button icon="el-icon-plus" @click="addLawPerson('secondCheck',alreadyChooseLawPerson3)"></el-button>
+              <el-button icon="el-icon-plus" @click="addLawPerson('secondCheck',lawPersonListId3,alreadyChooseLawPerson3)"></el-button>
             </el-form-item>
           </div>
         </div>
@@ -448,7 +454,7 @@
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
-      <el-button type="primary" @click="saveDataBtn(1)">
+      <el-button type="primary" @click="saveDataBtn(1)" v-show="inspectionOverWeightId.id">
         <i class="iconfont law-save"></i>
         <br />归档
       </el-button>
@@ -457,8 +463,8 @@
 </template>
 <script>
 import util from "@/common/js/util";
-// import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson";
-import chooseLawPerson from "@/page/inspection/record-manage/chooseModlePerson";
+import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson";
+// import chooseLawPerson from "@/page/inspection/record-manage/chooseModlePerson";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
 import floatBtns from './floatMenu.vue';
 import iLocalStroage from "@/common/js/localStroage";
@@ -471,13 +477,12 @@ import { saveOrUpdateCarInfoApi, getDictListDetailByNameApi, findCarInfoByIdApi 
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 export default {
   data() {
-
     //执法人员人数不得少于2个，最多不多与9个
     var validateLawPersonNumber = (rule, value, callback) => {
       if (this.lawPersonListId.length < 2) {
-        return callback(new Error("执法人员不得少于2人"));
+        return callback(new Error('执法人员不得少于2人'));
       } else if (this.lawPersonListId.length > 9) {
-        return callback(new Error("执法人员不得多于9人"));
+        return callback(new Error('执法人员不得多于9人'));
       }
       callback();
     };
@@ -485,26 +490,7 @@ export default {
     var checkIdNoPassSort = (rule, value, callback) => {
       // validateIDNumber
       var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
-      // if (!reg.test(value) && value) {
-      //   callback(new Error("身份证格式错误"));
-      // } else {
-      //   if (this.changePartyIdType2Index) {
-      //     this.changePartyIdType2(
-      //       this.driverOrAgentInfo.zhengjianNumber,
-      //       this.changePartyIdType2Index
-      //     );
-      //   } else {
-      //     this.changePartyIdType(this.inforForm.partyIdNo);
-      //   }
-      // }
       callback();
-      // else {
-      //   var reg = /^((1[45]\d{7})|(G\d{8})|(P\d{7})|(S\d{7,8}))?$/
-      //   if (!reg.test(value) && value) {
-      //     callback(new Error('护照号码格式错误'));
-      //   }
-      //   callback();
-      // }
     };
 
     return {
@@ -518,7 +504,7 @@ export default {
         id: '',
         checkType: '路警联合',
         detectStation: '检测站1',//监测站
-        vehicleIdColor: '',
+        vehicleIdColor: '黄色',
         vehicleShipId: '',
         vehicleShipType: '',
         transportNum: '',
@@ -562,7 +548,7 @@ export default {
         secondCheck: {
           oddNumber: '',
           unloadMode: '',
-          fenPlateColor: '',
+          fenPlateColor: '黄色',
           fenTonnage: '',
           fenPlate: '',
           fenCarType: '',
@@ -600,6 +586,8 @@ export default {
         partyIdNo: [{ required: true, message: "请输入", trigger: "change" },
         { validator: checkIdNoPassSort, trigger: "blur" }],
         partyAddress: [{ required: true, message: "请输入", trigger: "change" }],
+        lawOfficer: [{ required: true, message: "请选择", trigger: "change" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       firstCheckRules: {
         vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
@@ -607,6 +595,8 @@ export default {
         overRatio: [{ required: true, message: "请输入", trigger: "change" }],
         overWeight: [{ required: true, message: "请输入", trigger: "change" }],
         checkResult: [{ required: true, message: "请选择", trigger: "change" }],
+        checkPerson: [{ required: true, message: "请选择", trigger: "change" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       secondCheckRules: {
         fenPlateColor: [{ required: true, message: "请选择", trigger: "change" }],
@@ -614,12 +604,14 @@ export default {
         fenTonnage: [{ required: true, message: "请输入", trigger: "change" }],
         fenPerson: [{ required: true, message: "请输入", trigger: "change" }],
         idCard: [{ required: true, message: "请输入", trigger: "change" },
-        ],
+        { validator: checkIdNoPassSort, trigger: "blur" }],
         secondCheckWeight: [{ required: true, message: "请输入", trigger: "change" }],
         unloadWeight: [{ required: true, message: "请输入", trigger: "change" }],
         overRatio: [{ required: true, message: "请输入", trigger: "change" }],
         checkResult: [{ required: true, message: "请输入", trigger: "change" }],
         phone: [{ validator: validatePhone, trigger: "blur" }],
+        checkPerson: [{ required: true, message: "请选择", trigger: "change" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       alreadyChooseLawPerson: [],
       alreadyChooseLawPerson2: [],
@@ -627,6 +619,8 @@ export default {
       allVehicleIdColor: [],//车牌颜色下拉框
       allVehicleShipType: [],
       lawPersonListId: "",
+      lawPersonListId2: "",
+      lawPersonListId3: "",
       currentUserLawId: "",
       // disableBtn: false, //提交暂存按钮的禁用
       activeA: [true, false, false, false, false],
@@ -654,6 +648,8 @@ export default {
       optionsXZFS: [],
       currentPerson: '',
       carinfoId: '',
+      selectLoading: false,
+      postInfo: [], //职务
     };
   },
   components: {
@@ -665,14 +661,12 @@ export default {
   computed: { ...mapGetters(["caseId", "openTab", "caseHandle", "inspectionOverWeightId"]) },
   methods: {
     //选择执法人员
-    addLawPerson(item, valueList) {
+    addLawPerson(item, lawPersonListId, alreadyChooseLawPerson) {
       this.currentPerson = item
-      console.log('valueList', valueList, valueList.length)
-      this.$refs.chooseLawPersonRef.showModal(valueList);
+      this.$refs.chooseLawPersonRef.showModal(lawPersonListId, alreadyChooseLawPerson);
     },
     //设置执法人员
     setLawPerson(userlist) {
-      console.log("选择的执法人员", userlist);
       // this.lawPersonList = userlist;
       let certificateIdArr = [];
       userlist.forEach(item => {
@@ -680,45 +674,90 @@ export default {
         // certificateIdArr.push(item.selectLawOfficerCard);//执法账号
         certificateIdArr.push(item.lawOfficerName + '(' + item.selectLawOfficerCard + ')');//执企业组织信息员
       });
-      console.log(this.currentPerson)
       if (this.currentPerson == 'drivePerson') {
+        this.lawPersonListId = [];
         this.alreadyChooseLawPerson = userlist;
         this.carInfo.drivePerson.lawOfficer = certificateIdArr.join(',')
-      }
-      if (this.currentPerson == 'firstCheck') {
+        this.alreadyChooseLawPerson.forEach((item) => {
+          this.lawPersonListId.push(item.id);
+        });
+        // 初检、复检继承驾驶人信息中的执法人员
+        this.lawPersonListId2 = [];
         this.alreadyChooseLawPerson2 = userlist;
         this.carInfo.firstCheck.checkPerson = certificateIdArr.join(',')
-      }
-      if (this.currentPerson == 'secondCheck') {
+        this.alreadyChooseLawPerson2.forEach((item) => {
+          this.lawPersonListId2.push(item.id);
+        });
+        this.lawPersonListId3 = [];
         this.alreadyChooseLawPerson3 = userlist;
         this.carInfo.secondCheck.checkPerson = certificateIdArr.join(',')
+        this.alreadyChooseLawPerson3.forEach((item) => {
+          this.lawPersonListId3.push(item.id);
+        });
       }
-
+      if (this.currentPerson == 'firstCheck') {
+        this.lawPersonListId2 = [];
+        this.alreadyChooseLawPerson2 = userlist;
+        this.carInfo.firstCheck.checkPerson = certificateIdArr.join(',')
+        this.alreadyChooseLawPerson2.forEach((item) => {
+          this.lawPersonListId2.push(item.id);
+        });
+      }
+      if (this.currentPerson == 'secondCheck') {
+        this.lawPersonListId3 = [];
+        this.alreadyChooseLawPerson3 = userlist;
+        this.carInfo.secondCheck.checkPerson = certificateIdArr.join(',')
+        this.alreadyChooseLawPerson3.forEach((item) => {
+          this.lawPersonListId3.push(item.id);
+        });
+      }
     },
-    //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
-    setLawPersonCurrentP() {
-      let _this = this;
+    // 默认设置联系人为当前用户 需要用用户的id去拿他作为执法人员的id
+    setLawPersonCurrentP(type) {
+      // type=1为回显
+      let _this = this
       this.$store
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           (res) => {
-            console.log("执法人员列表", res);
-            _this.userList = res.data;
             let currentUserData = {};
-            _this.lawPersonListId = [];
-            _this.alreadyChooseLawPerson = [];
+            this.lawPersonListId = [];
+            this.alreadyChooseLawPerson = [];
+            this.lawPersonListId2 = [];
+            this.alreadyChooseLawPerson2 = [];
+            this.lawPersonListId3 = [];
+            this.alreadyChooseLawPerson3 = [];
 
             res.data.forEach((item) => {
-              if (item.userId == iLocalStroage.gets("userInfo").id) {
-                currentUserData.id = item.id;
-                currentUserData.lawOfficerName = item.lawOfficerName;
-                currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(
-                  ","
-                )[0];
-                _this.alreadyChooseLawPerson.push(currentUserData);
-                _this.lawPersonListId.push(currentUserData.id);
-                _this.currentUserLawId = currentUserData.id;
-              }
+              if (type) {
+                if (_this.carInfo.drivePerson.lawOfficer.indexOf(item.lawOfficerName) != -1) {
+                  this.alreadyChooseLawPerson.push(item);
+                  this.lawPersonListId.push(item.id);
+                }
+                if (_this.carInfo.firstCheck.checkPerson.indexOf(item.lawOfficerName) != -1) {
+                  this.alreadyChooseLawPerson2.push(item);
+                  this.lawPersonListId2.push(item.id);
+                }
+                if (_this.carInfo.secondCheck.checkPerson.indexOf(item.lawOfficerName) != -1) {
+                  this.alreadyChooseLawPerson3.push(item);
+                  this.lawPersonListId3.push(item.id);
+                }
+              } else
+                if (item.userId == iLocalStroage.gets("userInfo").id) {
+                  currentUserData.id = item.id;
+                  currentUserData.lawOfficerName = item.lawOfficerName;
+                  currentUserData.selectLawOfficerCard = item.lawOfficerCards.split(",")[0];
+                  this.alreadyChooseLawPerson.push(currentUserData);
+                  this.lawPersonListId.push(currentUserData.id);
+                  this.alreadyChooseLawPerson2.push(currentUserData);
+                  this.lawPersonListId2.push(currentUserData.id);
+                  this.alreadyChooseLawPerson3.push(currentUserData);
+                  this.lawPersonListId3.push(currentUserData.id);
+
+                  this.$set(_this.carInfo.drivePerson, 'lawOfficer', currentUserData.lawOfficerName + '(' + currentUserData.selectLawOfficerCard + ')')
+                  this.$set(_this.carInfo.firstCheck, 'checkPerson', currentUserData.lawOfficerName + '(' + currentUserData.selectLawOfficerCard + ')')
+                  this.$set(_this.carInfo.secondCheck, 'checkPerson', currentUserData.lawOfficerName + '(' + currentUserData.selectLawOfficerCard + ')')
+                }
             });
           },
           (err) => {
@@ -754,7 +793,6 @@ export default {
     },
     //查询执法人员
     getAllUserList(list) {
-      console.log("list", list);
       this.allUserList = list;
     },
     stageInfo(state) {
@@ -780,7 +818,6 @@ export default {
       //设置当前执法人员不可以删除
       findLawOfficerListApi(iLocalStroage.gets("userInfo").organId)
         .then((res) => {
-          console.log("res", res);
           for (let i = 0; i < res.data.length; i++) {
             if (res.data[i].userId == iLocalStroage.gets("userInfo").id) {
               this.currentUserLawId = res.data[i].id;
@@ -823,7 +860,6 @@ export default {
       let data = { organId: iLocalStroage.gets("userInfo").organId };
       findRouteManageByOrganIdApi(data).then(
         (res) => {
-          console.log("路线", res);
           this.routeList = res.data;
         },
         (err) => {
@@ -888,6 +924,32 @@ export default {
       });
 
     },
+    getDictInfo(name, codeName) {
+      //根据数据字典查询
+      let _this = this;
+      if (_this[codeName].length) {
+        return false;
+      }
+      _this.selectLoading = true;
+      _this.$store
+        .dispatch("findAllDrawerByName", name)
+        .then(
+          //查询执法领域
+          (res) => {
+            _this.selectLoading = false;
+            if (res.code === 200) {
+              _this[codeName] = res.data
+            } else {
+              console.info("没有查询到数据");
+            }
+          },
+          (err) => {
+            _this.selectLoading = false;
+            console.log(err);
+          }
+        )
+        .catch(() => { });
+    },
     //获取坐标
     getLngLat(lngLatStr, address) {
       this.form.eventCoordinate = lngLatStr;
@@ -905,7 +967,6 @@ export default {
         // 保存
         // 隐藏保存、签章按钮，显示撤销、删除按钮
         // this.$emit('saveDataStatus', handleType);
-        console.log(this.carInfo)
         this.saveMethod()
         // 保存-修改状态
       }
@@ -913,11 +974,9 @@ export default {
         // 归档
         this.resultArr = [];
         let that = this;
-        console.log('rejectObj', this.rejectObj)
 
         this.formArr.forEach((item, index) => {
           //根据表单的ref校验
-          console.log(this.rejectObj[index])
           this.refForm(item, this.rejectObj[index])
         })
         Promise.all(this.resultArr).then(function () {
@@ -952,12 +1011,11 @@ export default {
       data.secondCheck = JSON.stringify(data.secondCheck)
       data.penaltyDecision = data.penaltyDecision ? data.penaltyDecision : {}
       data.penaltyDecision = JSON.stringify(data.penaltyDecision)
-      console.log('data', data)
       data.id = data.id ? data.id : this.carinfoId
       saveOrUpdateCarInfoApi(data).then(
         res => {
           if (res.code == 200) {
-            this.$store.commit("set_inspection_OverWeightId", data.id)
+            this.$store.commit("set_inspection_OverWeightId", { id: data.id })
             this.getData(data.id)
             this.$message({
               type: "success",
@@ -981,11 +1039,12 @@ export default {
     },
     getData(id) {
       let _this = this
-      findCarInfoByIdApi(this.inspectionOverWeightId.id||id).then(
+      findCarInfoByIdApi(this.inspectionOverWeightId.id || id).then(
         res => {
           if (res.code == 200) {
-            _this.carInfo = res.data
-            this.carinfoId = this.inspectionOverWeightId.id ||id
+            _this.carInfo = res.data;
+            this.carinfoId = this.inspectionOverWeightId.id || id;
+            this.setLawPersonCurrentP(1);
             this.getFile()
           } else {
             this.$message.error(res.msg);
@@ -1022,7 +1081,6 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleRemoveFile(file, fileList) {
-      console.log(file, fileList);
       if (file.storageId) {
         deleteFileByIdApi(file.storageId).then(
           res => {
@@ -1044,7 +1102,6 @@ export default {
       }
       getAssistFile(data).then(
         res => {
-          console.log(res);
           res.data.forEach(element => {
             element.name = element.fileName
           });
@@ -1054,7 +1111,7 @@ export default {
           console.log(error)
         }
       );
-    }
+    },
   },
 
   mounted() {
@@ -1067,8 +1124,8 @@ export default {
       this.getData()
     } else {
       this.carinfoId = this.genID()
+      this.setLawPersonCurrentP();
     }
-
 
     // 鼠标滚动
     this.$refs.link_1.addEventListener("scroll", this.scrool1);

@@ -9,9 +9,9 @@
               <el-select v-model="recordForm.linkName" clearable>
                 <el-option
                   v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.linkName"
+                  :value="item.linkName">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -99,56 +99,58 @@
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import { mapGetters } from "vuex";
 import {
-  querySearchConditionApi
+  querySearchConditionApi,getQueryLinkListApi,
 } from "@/api/caseHandle";
     export default {
         data() {
             return {
-                options : [{
-                    value: '立案登记',
-                    label: '立案登记'
+                options : [
+                //   {
+                //     value: '立案登记',
+                //     label: '立案登记'
 
-                }, {
-                    value: '调查类文书',
-                    label: '调查类文书'
+                // }, {
+                //     value: '调查类文书',
+                //     label: '调查类文书'
 
-                }, {
-                    value: '调查报告',
-                    label: '调查报告'
+                // }, {
+                //     value: '调查报告',
+                //     label: '调查报告'
 
-                }, {
-                    value: '违法行为通知',
-                    label: '违法行为通知'
+                // }, {
+                //     value: '违法行为通知',
+                //     label: '违法行为通知'
 
-                }, {
-                    value: '当事人权利',
-                    label: '当事人权利'
+                // }, {
+                //     value: '当事人权利',
+                //     label: '当事人权利'
 
-                }, {
-                    value: '处罚决定',
-                    label: '处罚决定'
+                // }, {
+                //     value: '处罚决定',
+                //     label: '处罚决定'
 
-                }, {
-                    value: '决定执行',
-                    label: '决定执行'
+                // }, {
+                //     value: '决定执行',
+                //     label: '决定执行'
 
-                }, {
-                    value: '结案登记',
-                    label: '结案登记'
+                // }, {
+                //     value: '结案登记',
+                //     label: '结案登记'
 
-                }, {
-                    value: '归档',
-                    label: '归档'
+                // }, {
+                //     value: '归档',
+                //     label: '归档'
 
-                }, {
-                    value: '行政强制措施',
-                    label: '行政强制措施'
+                // }, {
+                //     value: '行政强制措施',
+                //     label: '行政强制措施'
 
-                }, {
-                    value: '强制执行',
-                    label: '强制执行'
+                // }, {
+                //     value: '强制执行',
+                //     label: '强制执行'
 
-                }],
+                // }
+                ],
                 operationlOptions : [{
                   value: '保存',
                   label: '保存'
@@ -302,13 +304,26 @@ import {
                 }
               );
           },
+          //查询所有环节
+          getAllLinkList() {
+            getQueryLinkListApi().then(
+              res => {
+                this.options = res.data;
+              },
+              error => {
+                console.log(error)
+              }
+            );
+          },
         },
         mounted() {
             // this.setDepartTable(this.data)
         },
         created() {
+           this.getAllLinkList();
             this.getRecordList();
             this.getAllOperator();
+           
         }
     };
 </script>

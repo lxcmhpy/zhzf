@@ -5,7 +5,7 @@ import punishDiag from "@/page/caseHandle/unRecordCase/punishDiag";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import iLocalStroage from "@/common/js/localStroage";
 import {mapGetters} from "vuex";
-import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/common/js/validator'
+import {validateIDNumber, validateAge, validateZIP, validatePhone,validateIsNumber} from '@/common/js/validator'
 import {
   getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
 } from "@/api/system";
@@ -194,10 +194,18 @@ export const inforCollectionCommonMixins = {
           {required: true, message: "请选择位置", trigger: "change"}
         ],
         pileNumber: [
-          {required: true, message: "请输入公里数", trigger: "blur"}
+          {required: true, message: "请输入公里数", trigger: "change"},
+          { validator: validateIsNumber, trigger: "change" }
         ],
         distance: [
-          {required: true, message: "请输入米数", trigger: "blur"}
+          {required: true, message: "请输入米数", trigger: "change"},
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        pileNumber2: [
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        distance2: [
+          { validator: validateIsNumber, trigger: "change" }
         ],
       },
       //案件类型
