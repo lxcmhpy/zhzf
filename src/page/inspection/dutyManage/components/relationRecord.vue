@@ -89,7 +89,6 @@ export default {
       this.visible = false;
     },
      showModal(businessType,recordIds) {
-       alert(JSON.stringify(recordIds));
       this.visible = true;
       let data={
        // cateId:businessType,

@@ -895,3 +895,14 @@ textarea{
     }
   }
 }
+
+/* 所有输入框append均为直角 */
+.el-input-group__append{
+  border-radius: 0;
+}
+/* 避免同一行的输入框不在同一高度 */
+.el-form-item__content{
+  .el-input-group{
+    vertical-align: middle;
+  }
+} 

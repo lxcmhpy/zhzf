@@ -38,11 +38,11 @@
           <el-table-column label="操作" align="center" width="300">
             <template slot-scope="scope">
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
-              <el-button @click="editRecord(scope.row)" type="text">修改</el-button>
-              <el-button type="text" @click="deleteRecord(scope.row.id)" v-if="scope.row.createUser==createUserName">删除</el-button>
-              <el-button @click="editRecord(scope.row)" type="text">复制模板</el-button>
-              <el-button @click="editRecord(scope.row)" type="text">文书配置</el-button>
-              <el-button @click="editRecord(scope.row)" type="text">转立案</el-button>
+              <el-button @click="editModle(scope.row)" type="text">修改</el-button>
+              <el-button type="text" @click="delModle(scope.row.id)" v-if="scope.row.createUser==createUserName">删除</el-button>
+              <el-button @click="editModle(scope.row)" type="text">复制模板</el-button>
+              <el-button @click="editModle(scope.row)" type="text">文书配置</el-button>
+              <el-button @click="editModle(scope.row)" type="text">转立案</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -143,11 +143,6 @@ export default {
 
       // this.$store.commit("set_inspection_orderId", item.id);
 
-    },
-    // 修改模板
-    editModle(item) {
-      console.log('选中的模板', item)
-      this.$refs.addModleRef.showModal(item);
     },
     // 删除模板
     delModle(item) {
