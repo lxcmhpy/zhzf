@@ -387,12 +387,16 @@
         <div>
           <div class="item">
             <el-form-item label="复检质量" prop="secondCheckWeight">
-              <el-input v-model="carInfo.secondCheck.secondCheckWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
+              <el-input v-model="carInfo.secondCheck.secondCheckWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+                <template slot="append">吨</template>
+              </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="卸载质量" prop="unloadWeight">
-              <el-input v-model="carInfo.secondCheck.unloadWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
+              <el-input v-model="carInfo.secondCheck.unloadWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+                <template slot="append">吨</template>
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -405,7 +409,7 @@
           <div class="item">
             <el-form-item label="复检结果" prop="checkResult">
               <el-radio-group v-model="carInfo.secondCheck.checkResult">
-                <el-radio label="未超载（最小）">未超载（最小）</el-radio>
+                <el-radio label="未超载（最小）">未超载</el-radio>
                 <el-radio label="超限超载">超限超载</el-radio>
               </el-radio-group>
             </el-form-item>
@@ -590,7 +594,8 @@ export default {
         { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       firstCheckRules: {
-        vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" },
+        { validator: vaildateCardNum, trigger: "blur" }],
         totalWeight: [{ required: true, message: "请输入", trigger: "change" }],
         overRatio: [{ required: true, message: "请输入", trigger: "change" }],
         overWeight: [{ required: true, message: "请输入", trigger: "change" }],
