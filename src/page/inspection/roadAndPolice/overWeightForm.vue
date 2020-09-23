@@ -431,7 +431,7 @@
     <el-form label-width="200px;">
       <div class="caseFormBac" id="link_5" ref="link_5" @mousewheel="scrool5">
         <p>处罚决定</p>
-        <el-form-item label="附件（称重单拍照）" class="is-required">
+        <el-form-item label="公安交警处罚决定书" class="is-required">
           <el-upload class="upload-demo modle-upload" style="margin-bottom:22px" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
@@ -574,8 +574,8 @@ export default {
       directionList: [],
       locationList: [],
       carInfoRules: {
-        vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
-        trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
+        vehicleShipId: [{ validator: vaildateCardNum, trigger: "change" }],
+        trailerIdNo: [{ validator: vaildateCardNum, trigger: "change" }],
         vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
         loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
         startPlace: [{ required: true, message: "请输入", trigger: "change" }],
@@ -583,25 +583,25 @@ export default {
       },
       drivePersonRules: {
         party: [
-          { required: true, message: "请输入", trigger: "blur" },
+          { required: true, message: "请输入", trigger: "change" },
         ],
         partyTel: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: validatePhone, trigger: "blur" }],
+        { validator: validatePhone, trigger: "change" }],
         partyIdNo: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: checkIdNoPassSort, trigger: "blur" }],
+        { validator: checkIdNoPassSort, trigger: "change" }],
         partyAddress: [{ required: true, message: "请输入", trigger: "change" }],
         lawOfficer: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "blur" }],
+        { validator: validateLawPersonNumber, trigger: "change" }],
       },
       firstCheckRules: {
         vehicleShipId: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: vaildateCardNum, trigger: "blur" }],
+        { validator: vaildateCardNum, trigger: "change" }],
         totalWeight: [{ required: true, message: "请输入", trigger: "change" }],
         overRatio: [{ required: true, message: "请输入", trigger: "change" }],
         overWeight: [{ required: true, message: "请输入", trigger: "change" }],
         checkResult: [{ required: true, message: "请选择", trigger: "change" }],
         checkPerson: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "blur" }],
+        { validator: validateLawPersonNumber, trigger: "change" }],
       },
       secondCheckRules: {
         fenPlateColor: [{ required: true, message: "请选择", trigger: "change" }],
@@ -609,14 +609,14 @@ export default {
         fenTonnage: [{ required: true, message: "请输入", trigger: "change" }],
         fenPerson: [{ required: true, message: "请输入", trigger: "change" }],
         idCard: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: checkIdNoPassSort, trigger: "blur" }],
+        { validator: checkIdNoPassSort, trigger: "change" }],
         secondCheckWeight: [{ required: true, message: "请输入", trigger: "change" }],
         unloadWeight: [{ required: true, message: "请输入", trigger: "change" }],
         overRatio: [{ required: true, message: "请输入", trigger: "change" }],
         checkResult: [{ required: true, message: "请输入", trigger: "change" }],
-        phone: [{ validator: validatePhone, trigger: "blur" }],
+        phone: [{ validator: validatePhone, trigger: "change" }],
         checkPerson: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "blur" }],
+        { validator: validateLawPersonNumber, trigger: "change" }],
       },
       alreadyChooseLawPerson: [],
       alreadyChooseLawPerson2: [],
@@ -834,14 +834,14 @@ export default {
           console.log(err);
         });
     },
-    blur2(val) {
+    change2(val) {
       var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[358]\d{9})$)/;
       if (!reg.test(val) && val) {
         this.$message("手机号不正确");
       }
       // callback();
     },
-    blur3(val) {
+    change3(val) {
       var reg = /^\d{6}$/;
       if (!reg.test(val) && val) {
         this.$message("请输入正确的6位邮编");
