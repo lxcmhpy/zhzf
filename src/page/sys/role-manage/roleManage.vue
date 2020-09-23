@@ -3,12 +3,15 @@
     <div class="searchAndpageBox" id="roleBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="dicSearchForm" class>
-            <el-form-item label="角色名称">
+          <el-form :inline="true" :model="dicSearchForm" ref="roleForm">
+            <el-form-item label="角色名称" prop="name">
               <el-input v-model="dicSearchForm.name" placeholder="输入角色名称"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getRoles">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset">重置</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addRole">添加角色</el-button>
@@ -94,6 +97,11 @@ export default {
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
+      this.getRoles();
+    },
+    //重置
+    reset() {
+      this.$refs["roleForm"].resetFields();
       this.getRoles();
     },
     //获取角色

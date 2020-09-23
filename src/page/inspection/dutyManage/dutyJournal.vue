@@ -178,6 +178,8 @@ export default {
         patrolType:this.searchForm.patrolType,
         status:this.searchForm.status,
         createTime:this.searchForm.createTimethis,
+        current: this.currentPage,
+        size: this.pageSize
 
       };
        getCheChecklogPageList(data).then(res => {

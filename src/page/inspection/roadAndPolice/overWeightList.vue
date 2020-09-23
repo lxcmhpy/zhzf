@@ -143,14 +143,14 @@ export default {
     editRecord(item) {
       // 写文书
       if (item.pdfStorageId && item.status != '暂存') {
-        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: "inspection_myPDF",
           params: { id: item.id, storagePath: item.pdfStorageId }
         });
       } else {
         this.$store.commit("set_inspection_fileId", item.id)
-        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: item.path,
           params: { id: item.id, addOrEiditFlag: 'add' }
@@ -163,7 +163,7 @@ export default {
     // 查看模板
     viewRecord(item) {
       this.$store.commit("set_inspection_fileId", item.id)
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$store.commit("set_inspection_OverWeightId", { id: item.id, firstcheckId: item.firstCheckId });
       this.$router.push({
         name: "inspection_overWeightForm",

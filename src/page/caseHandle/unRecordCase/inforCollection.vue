@@ -1189,6 +1189,7 @@ import {
   validateZIP,
   validatePhone,
   vaildateCardNum,
+  validateIsNumber,
 } from "@/common/js/validator";
 import {
   getDictListDetailByNameApi,
@@ -1413,9 +1414,17 @@ export default {
         ],
         distance: [
           { required: true, message: "请输入米数", trigger: "change" },
+          { validator: validateIsNumber, trigger: "change" }
         ],
         pileNumber: [
           { required: true, message: "请输入公里数", trigger: "change" },
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        pileNumber2: [
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        distance2: [
+          { validator: validateIsNumber, trigger: "change" }
         ],
         vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
         trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],

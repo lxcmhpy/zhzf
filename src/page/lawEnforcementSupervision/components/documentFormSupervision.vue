@@ -87,13 +87,17 @@ export default {
     },
     //跳转到pdf页面
     showCasePdf(item) {
-      this.$router.push({
-        name: "lawEnforcementSupervision_casePDF",
-        params: {
-          currentPdf: JSON.stringify(item),
-          allCasePdf: JSON.stringify(this.caseList),
-        },
-      });
+      if(this.$route.name === 'lawEnforcementSupervision_casePDF'){
+         this.$attrs.getFileStream(item.storageId);
+      }else{
+        this.$router.push({
+          name: "lawEnforcementSupervision_casePDF",
+          params: {
+            currentPdf: JSON.stringify(item),
+            allCasePdf: JSON.stringify(this.caseList),
+          },
+        });
+      }
     },
   },
   mounted() {
