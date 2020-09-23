@@ -12,23 +12,24 @@
       >
         <div :class="lineSearchSty">
           <div class="item" v-if="caseState != 'unRecordCase'">
-            <el-form-item label="案号">
+            <el-form-item label="案号" prop="caseNumber">
               <el-input v-model="caseSearchForm.caseNumber"></el-input>
             </el-form-item>
           </div>
 
           <div class="item">
-            <el-form-item label="当事人/单位">
+            <el-form-item label="当事人/单位" prop="party">
               <el-input v-model="caseSearchForm.party"></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="车船号">
+            <el-form-item label="车船号" prop="vehicleShipId">
               <el-input v-model="caseSearchForm.vehicleShipId"></el-input>
             </el-form-item>
           </div>
             <div class="item">&nbsp;
                 <el-button type="primary" size="medium" icon="el-icon-search" @click="searchCaseEmit"></el-button>
+                 <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset"></el-button>
                 <el-button
                 type
                 size="medium"
@@ -47,7 +48,7 @@
         </div>-->
         <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
             <div class="item">
-                <el-form-item label="案件类型">
+                <el-form-item label="案件类型" prop="caseType">
                     <el-select
                         v-model="caseSearchForm.caseType"
                         placeholder="请选择"
@@ -62,7 +63,7 @@
                 </el-form-item>
             </div>
             <div class="item" v-if="caseState == 'unRecordCase' || caseState == 'waitDeal'">
-                <el-form-item label="案件状态">
+                <el-form-item label="案件状态" prop="caseStatus">
                     <!-- <el-input v-model="caseSearchForm.caseStatus"></el-input> -->
                     <el-select
                         v-model="caseSearchForm.caseStatus"
@@ -79,7 +80,7 @@
             </div>
 
           <div class="item" v-if="caseState == 'waitDeal' || caseState == 'approveIng'">
-            <el-form-item label="当前环节" v-if="caseState == 'waitDeal'">
+            <el-form-item label="当前环节" v-if="caseState == 'waitDeal'" prop="currentLinkName">
                 <el-select
                 v-model="caseSearchForm.currentLinkName"
                 placeholder="请选择"
@@ -93,7 +94,7 @@
               </el-select>
 
             </el-form-item>
-            <el-form-item label="当前环节" v-if="caseState == 'approveIng'">
+            <el-form-item label="当前环节" v-if="caseState == 'approveIng'" prop="currentLinkName">
                 <el-select
                 v-model="caseSearchForm.currentLinkName"
                 placeholder="请选择"
@@ -110,19 +111,19 @@
           </div>
          
           <div class="item" v-if="caseState == 'myApproval'">
-            <el-form-item label="申请人">
+            <el-form-item label="申请人" prop="applicant">
               <el-input v-model="caseSearchForm.applicant"></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="违法行为">
+            <el-form-item label="违法行为" prop="caseCauseName">
               <el-input v-model="caseSearchForm.caseCauseName"></el-input>
             </el-form-item>
           </div>
           <div class="item" v-if="caseState != 'myApproval'">
-            <el-form-item label="受案时间">
+            <el-form-item label="受案时间" prop="acceptTimeArray">
               <el-date-picker
-                v-model="acceptTimeArray"
+                v-model="caseSearchForm.acceptTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -134,9 +135,9 @@
             </el-form-item>
           </div>
           <div class="item" v-if="caseState == 'waitArchive'">
-            <el-form-item label="结案时间">
+            <el-form-item label="结案时间" prop="endCaseTimeArray">
               <el-date-picker
-                v-model="endCaseTimeArray"
+                v-model="caseSearchForm.endCaseTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -148,9 +149,9 @@
             </el-form-item>
           </div>
           <div class="item" v-if="caseState == 'myApproval'" >
-            <el-form-item label="申请时间">
+            <el-form-item label="申请时间" prop="applyTimeArray">
               <el-date-picker
-                v-model="applyTimeArray"
+                v-model="caseSearchForm.applyTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -190,11 +191,11 @@ export default {
         applyStartTime: "",
         applyEndTime: "",
         endCaseStartTime: "",
-        endCaseEndTime: ""
+        endCaseEndTime: "",
+        acceptTimeArray: [],
+        endCaseTimeArray: [],
+        applyTimeArray: [],
       },
-      acceptTimeArray: [],
-      endCaseTimeArray: [],
-      applyTimeArray: [],
       hideSomeSearch: true,
       linkList:[], //环节
       caseTypeList:[],//类型
@@ -252,16 +253,21 @@ export default {
     //搜索
     searchCaseEmit(){
         console.log('点击')
-        this.caseSearchForm.applyStartTime = this.applyTimeArray[0]
-        this.caseSearchForm.applyEndTime = this.applyTimeArray[1]
+        this.caseSearchForm.applyStartTime = this.caseSearchForm.applyTimeArray[0]
+        this.caseSearchForm.applyEndTime = this.caseSearchForm.applyTimeArray[1]
 
-        this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0]
-        this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
+        this.caseSearchForm.acceptStartTime = this.caseSearchForm.acceptTimeArray[0]
+        this.caseSearchForm.acceptEndTime = this.caseSearchForm.acceptTimeArray[1]
 
-        this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0]
-        this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
+        this.caseSearchForm.endCaseStartTime = this.caseSearchForm.endCaseTimeArray[0]
+        this.caseSearchForm.endCaseEndTime = this.caseSearchForm.endCaseTimeArray[1]
 
         this.$emit('searchCase',this.caseSearchForm);
+    },
+    //重置
+    reset() {
+      this.$refs["caseSearchForm"].resetFields();
+      this.searchCaseEmit();
     },
     //查询案件状态
     getQueryCaseStateList(){

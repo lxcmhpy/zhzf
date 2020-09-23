@@ -12,24 +12,25 @@
       >
         <div :class="lineSearchSty">
           <div class="item">
-            <el-form-item label="案号">
+            <el-form-item label="案号" prop="caseNumber">
               <el-input v-model="caseSearchForm.caseNumber"></el-input>
             </el-form-item>
           </div>
 
           <div class="item">
-            <el-form-item label="当事人/单位">
+            <el-form-item label="当事人/单位" prop="party">
               <el-input v-model="caseSearchForm.party"></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="车船号">
+            <el-form-item label="车船号" prop="vehicleShipId">
               <el-input v-model="caseSearchForm.vehicleShipId"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             &nbsp;
             <el-button type="primary" size="medium" icon="el-icon-search" @click="searchCaseEmit"></el-button>
+            <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset"></el-button>
             <el-button
               type
               size="medium"
@@ -115,17 +116,17 @@
         </div>
         <div :class="{hideSomeSearchClass:hideSomeSearch,lineTwoStyle:caseState == 'waitArchive'}">
           <div class="item">
-            <el-form-item label="案件类型">
+            <el-form-item label="案件类型" prop="caseType">
               <el-input v-model="caseSearchForm.caseType"></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="违法行为">
+            <el-form-item label="违法行为" prop="illegalFacts">
               <el-input v-model="caseSearchForm.illegalFacts"></el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="受案时间">
+            <el-form-item label="受案时间" prop="acceptTime">
               <el-date-picker
                 v-model="caseSearchForm.acceptTime"
                 value-format="yyyy-MM-dd HH:mm:ss"
@@ -136,7 +137,7 @@
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="结案时间">
+            <el-form-item label="结案时间" prop="endTime">
               <el-date-picker
                 v-model="caseSearchForm.endTime"
                 value-format="yyyy-MM-dd HH:mm:ss"
@@ -329,6 +330,11 @@ export default {
           console.log(error);
         }
       );
+    },
+    //重置
+    reset() {
+      this.$refs["caseSearchForm"].resetFields();
+      this.searchCaseEmit();
     },
     //查询案件状态
     getQueryCaseStateList() {
