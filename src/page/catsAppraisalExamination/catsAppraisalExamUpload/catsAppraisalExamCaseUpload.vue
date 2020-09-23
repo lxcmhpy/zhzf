@@ -54,22 +54,13 @@
                     </el-form>
                 </div>
                 <el-row>
-                    <div class="tips cats-f-left">
+                    <div class="tips cats-f-left" style="float:left;margin-bottom:10px;">
                         <i class="el-icon-warning"></i>
-
-                        当前上传案卷：<span class="important">{{
-                            tjData.caseInfoTotal ? tjData.caseInfoTotal : 0
-                        }}</span>
-                        卷， 其中行政处罚案卷：<span class="important">{{
-                            tjData.penaltiesNum ? tjData.penaltiesNum : 0
-                        }}</span>
-                        卷，行政强制案卷：
-                        <span class="important">{{
-                            tjData.forceNum ? tjData.forceNum : 0
-                        }}</span>
-                        卷
+                        当前上传案卷：<span class="important">{{tjData.caseInfoTotal ? tjData.caseInfoTotal : 0}}</span>卷， 
+                        其中处罚或强制案卷：<span class="important">{{tjData.penaltiesNum ? tjData.penaltiesNum : 0}}</span>卷，
+                        行政许可案卷：<span class="important">{{tjData.forceNum ? tjData.forceNum : 0}}</span>卷
                     </div>
-                    <el-button-group class="cats-f-right" style="margin-top:10px;">
+                    <el-button-group class="cats-f-right" style="float:right;">
                         <template v-for="(item, index) in btnList">
                             <el-button size="small" :type="btnCheckIndex == index ? 'primary' : ''"
                                 @click="showIndex(index)" :key="index">
@@ -695,16 +686,18 @@
                     this.$message.error('没有案卷可以报送');
                     return;
                 }
-                confirmSubmissionCase(this.organId).then(res => {
+                let _this=this;
+                confirmSubmissionCase(_this.organId).then(res => {
+                    console.log(res)
                     if (res.code == 200) {
-                        this.catsMessage({
+                        _this.catsMessage({
                             type: 'success',
                             message: res.msg
                         })
-                        this.findCaseBsStatus()
-                        this.fetchData({})
+                        _this.findCaseBsStatus()
+                        _this.fetchData({})
                     } else {
-                        this.catsMessage({
+                        _this.catsMessage({
                             type: 'error',
                             message: res.msg
                         })
@@ -885,4 +878,21 @@
   .cats-f-left{
       width: auto;
   }
+.tips{
+    font-size: 16px;
+    background: #d0eeec;
+    width: auto;
+    padding: 0 22px;
+    line-height: 28px;
+    border: 1px solid #b4e5e2;
+    color: #20232c;
+}
+.tips .important {
+    color: #e02020;
+    font-size: 20px;
+}
+.tips i {
+    color: #189f95;
+    font-size: 18px;
+}
 </style>

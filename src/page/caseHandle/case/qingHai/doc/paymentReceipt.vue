@@ -134,7 +134,7 @@ export default {
         note: '',
         picturesUrl: '',
         picturesUrl2: '',
-        picList: '',
+        picList: [{ 'pictures-1': '' }, { 'pictures-2':'' }]
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
@@ -188,7 +188,7 @@ export default {
       isParty: true, //当事人类型为个人
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
-      imageUrl: ''
+      imageUrl: '',
     };
   },
   components: {
@@ -222,6 +222,9 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
+      // let a= [{'pictures-1':this.docData.picList[0]['pictures-1']},{'pictures-2':this.docData.picList[1]['pictures-2']}];
+      // this.docData.picList = JSON.stringify(a)
+      this.docData.picList = JSON.stringify(this.docData.picList)
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -232,7 +235,7 @@ export default {
     },
     //设置案件来源
     getDataAfter() {
-
+      // this.docData.picList = JSON.parse(this.docData.picList)
     },
     //获取案件基本信息
     getCaseInfo() {
@@ -287,7 +290,7 @@ export default {
       fd.append("evType", param.file.type);
       uploadEvdence(fd).then(
         res => {
-          this.getBase64(res.data.storageId)
+          this.getBase64(res.data.storageId, 1)
           this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId
         },
         error => {
@@ -305,23 +308,30 @@ export default {
       fd.append("evType", param.file.type);
       uploadEvdence(fd).then(
         res => {
-          this.getBase64(res.data.storageId)
-         this.$set(this.docData, 'picturesUrl2', iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId)
+          this.getBase64(res.data.storageId, 2)
+          this.$set(this.docData, 'picturesUrl2', iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId)
         },
         error => {
         }
       );
 
     },
-    getBase64(storageId) {
+    getBase64(storageId, sort) {
+
       queryResizeImageApi(storageId).then(res => {
         if (res === false) {   //生成失败
           this.$message.error('生成base64码失败！')
           return;
         } else {
           // this.docData.pictures1 = res.data
-          let data = [{ 'pictures-1': res.data }]
-          this.docData.picList = JSON.stringify(data)
+          // let data = [{ 'pictures-1': res.data }]
+          name='pictures-'+sort
+          if (sort == 1) {
+            this.docData.picList[0][name] = res.data
+          } if (sort == 2) {
+            this.docData.picList[1][name] = res.data
+          }
+
         }
       }).catch(err => { console.log(err) })
     },
