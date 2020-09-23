@@ -18,7 +18,7 @@
             <center>
               <div style="margin-top: 15px;width:60%;" class="searchCaseBox">
                 <el-input
-                  placeholder="请输入案件关键字"
+                  placeholder="请输入案号关键字"
                   v-model="waitDealSearch"
                   @keyup.enter.native="search(0,waitDealSearch)"
                 >
@@ -39,7 +39,7 @@
             <center>
               <div style="margin-top: 15px;width:60%" class="searchCaseBox">
                 <el-input
-                  placeholder="请输入案件关键字"
+                  placeholder="请输入案号关键字"
                   v-model="unRecordCaseSearch"
                   @keyup.enter.native="search(1,unRecordCaseSearch)"
                 >
@@ -64,7 +64,7 @@
             <center>
               <div style="margin-top: 15px;width:60%" class="searchCaseBox">
                 <el-input
-                  placeholder="请输入案件关键字"
+                  placeholder="请输入案号关键字"
                   v-model="waitArchiveSearch"
                   @keyup.enter.native="search(2,waitArchiveSearch)"
                 >
@@ -90,7 +90,7 @@
             <center>
               <div style="margin-top: 15px;width:60%" class="searchCaseBox">
                 <el-input
-                  placeholder="请输入案件关键字"
+                  placeholder="请输入案号关键字"
                   v-model="approveIngSearch"
                   @keyup.enter.native="search(3,approveIngSearch)"
                 >
