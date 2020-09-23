@@ -205,7 +205,7 @@ export default {
     addUserToForm() {
       this.visible = false;
       this.$emit("setLawPer", this.checkedUser);
-      console.log("this.checkedUser", this.checkedUser);
+      // console.log("this.checkedUser", this.checkedUser);
       this.$emit("userList", this.userList);
     },
     //查询执法人员
@@ -230,7 +230,7 @@ export default {
               let hasChangeCard = false;
               let inforCollectLawPerson2 = '';
               inforCollectLawPerson.forEach(inforCollectLawPersonItem => {
-                console.log('inforCollectLawPersonItem',inforCollectLawPersonItem)
+                // console.log('inforCollectLawPersonItem',inforCollectLawPersonItem)
                 //刚进入信息采集页面后获取执法人员数据，当前用户没有设置过selectLawOfficerCard ,需要设置一下
                 inforCollectLawPersonItem.selectLawOfficerCard = !inforCollectLawPersonItem.selectLawOfficerCard ? inforCollectLawPersonItem.lawOfficerCards : inforCollectLawPersonItem.selectLawOfficerCard;
                 if (item.id == inforCollectLawPersonItem.id) {

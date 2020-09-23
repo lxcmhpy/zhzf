@@ -112,7 +112,7 @@ export default {
       fileList: [],
       host: "",
       evfile: "",
-      evTypeOptions: [{ label: '车辆照片证据', value: '000001' }, { label: '驾驶人/企业', value: '000002' }, { label: '初检称重', value: '000003' }, { label: '卸货复检', value: '000004' }, { label: '处罚决定', value: '000005' }, { label: '其他', value: '000006' }],
+      evTypeOptions: [{ label: '车辆照片证据', value: '000001' }, { label: '驾驶人/企业', value: '000002' }, { label: '初检称重', value: '000003' }, { label: '卸载复检', value: '000004' }, { label: '处罚决定', value: '000005' }, { label: '其他', value: '000006' }],
       statusOptions: [],
       value: "",
       //activeName: '1',
@@ -189,6 +189,8 @@ export default {
           this.imgListUpload.forEach(element => {
             this.uploadImg(element)
           });
+          this.fileList = []
+          this.imgListUpload = []
           this.addVisible = false;
           this.getEviList(1)
         }
@@ -199,14 +201,16 @@ export default {
         .then((_) => {
           done();
           this.$nextTick(() => {
-            this.$refs["form"].resetFields();
             this.fileList = [];
+            this.$refs['form'].resetFields();
           });
         })
         .catch((_) => { });
     },
     handleAdd(index, row) {
       this.form = {};
+      this.fileList = []
+      this.imgListUpload = []
       this.addVisible = true;
     },
     //表单筛选
@@ -466,7 +470,7 @@ export default {
           return '初检称重';
           break;
         case '000004':
-          return '卸货复检';
+          return '卸载复检';
           break;
         case '000005':
           return '处罚决定';

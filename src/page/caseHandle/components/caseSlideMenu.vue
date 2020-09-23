@@ -49,7 +49,7 @@
       <el-menu-item index="lawEnforcementSupervision_caseFileList" v-show="lawEnforcementSupervisionType =='adminCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
         行政复议<br>备案材料
       </el-menu-item>
-      <el-menu-item index="lawEnforcementSupervision_archivesReviewResult" v-show="lawEnforcementSupervisionType =='archivesCaseSupervision'" @click="goTo('lawEnforcementSupervision_caseFileList')">
+      <el-menu-item index="lawEnforcementSupervision_archivesReviewResult" v-show="lawEnforcementSupervisionType =='archivesCaseSupervision'" @click="goTo('lawEnforcementSupervision_archivesReviewResult')">
         评查<br>打分
       </el-menu-item>
       <!-- <el-menu-item index="10" class="top" @click="scrollToTop">
