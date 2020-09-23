@@ -255,3 +255,13 @@ export function validatePwd(rule, value, callback) {
         callback();
     }
 }
+
+//验证数字（包括小数）
+export function validateIsNumber(rule, value, callback) {
+    let reg = /^\d+(?=\.{0,1}\d+$|$)/;
+    if (!reg.test(value) && value) {
+        callback(new Error('请填写正确的数字'));
+    }
+    callback();
+
+}
