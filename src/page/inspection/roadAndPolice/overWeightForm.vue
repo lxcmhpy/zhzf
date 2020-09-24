@@ -575,7 +575,7 @@ export default {
       directionList: [],
       locationList: [],
       carInfoRules: {
-        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" },{ validator: vaildateCardNum, trigger: "change" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" }, { validator: vaildateCardNum, trigger: "change" }],
         trailerIdNo: [{ validator: vaildateCardNum, trigger: "change" }],
         vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
         loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
@@ -1005,22 +1005,28 @@ export default {
         json.push(param);
         vehicleCheckApi(JSON.stringify(json)).then(
           res => {
-            let chewckData = {
-              transCertificateCode: res.data[0].transCertificateCode,
-              vehicleNo: this.carInfo.vehicleShipId,
-              vin: ''
+            if (res.data) {
+              let chewckData = {
+                transCertificateCode: res.data[0].transCertificateCode,
+                vehicleNo: this.carInfo.vehicleShipId,
+                vin: ''
+              }
+              yyclCheckApi(chewckData).then(
+                res => {
+                  _this.carInfo.businessScope = res.data[0].BusinessScopeCode || '';
+                  _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode || '';
+                  _this.carInfo.transportNum = res.data[0].LicenseCode || '';
+                  _this.carInfo.businessStatus = res.data[0].OperatingStatus || '';
+                },
+                error => {
+                })
+            } else {
+              this.$message.error('未查到数据');
+              _this.carInfo.businessScope = '';
+              _this.carInfo.vehicleShipType = '';
+              _this.carInfo.transportNum = '';
+              _this.carInfo.businessStatus = '';
             }
-            yyclCheckApi(chewckData).then(
-              res => {
-            _this.carInfo.businessScope = res.data[0].BusinessScopeCode;
-
-                _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode;
-                _this.carInfo.transportNum = res.data[0].LicenseCode;
-                _this.carInfo.businessStatus = res.data[0].OperatingStatus;
-              },
-              error => {
-
-              })
           },
           error => {
 
