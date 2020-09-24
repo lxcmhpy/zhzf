@@ -2,7 +2,7 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="top:165px;right:5px;">
-    <li @click="writeDoc()" :style="!fileEiditFlag?' color: #fff;background-color: #909399;border-color: #909399;':''" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0">
+    <li @click="clickLink('inspection_inspectionRAPFiles')" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0">
       <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc"> -->
       文书<br />填报
     </li>
@@ -21,9 +21,9 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import iLocalStroage from '@/common/js/localStroage';
-import documentSideMenu from '@/page/inspection/record-manage/writeRecordCompoments/documentSideMenu.vue';
+import documentSideMenu from '@/page/inspection/roadAndPolice/compoment/documentSideMenu.vue';
 import operationRecord from '@/page/inspection/record-manage/writeRecordCompoments/operationRecord.vue';
-import relativeRecord from '@/page/inspection/record-manage/writeRecordCompoments/relativeRecord.vue';
+import relativeRecord from '@/page/inspection/roadAndPolice/compoment/relativeRecord.vue';
 export default {
   data() {
     return {
@@ -45,7 +45,7 @@ export default {
     },
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn']) },
+  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'inspectionOverWeightId']) },
   methods: {
     //   打印方法
     async printContent() {
@@ -73,12 +73,10 @@ export default {
       // if (this.addOrEiditFlag == 'add' || !this.formOrDocData.pageDomId) {
       // } else {
       console.log('点击')
-      if (this.fileEiditFlag) {
-        // if (this.formOrDocData.pageDomId || this.$route.params.addOrEiditFlag != 'add') {
+      if (this.inspectionOverWeightId) {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
-          name: 'inspection_inspectionFiles',
-          params: { id: this.formOrDocData.pageDomId || this.$route.params.id, edit: this.formOrDocData.pageDomId ? false : true }
+          name: 'inspection_inspectionRAPFiles',
         });
       } else {
         this.$confirm('请先保存记录', "提示", {
@@ -87,9 +85,6 @@ export default {
           type: "warning"
         }).then(() => { })
       }
-      // }
-      // }
-
     },
     getFile() {
       this.$store.dispatch("getFile", {
@@ -111,10 +106,8 @@ export default {
     // 鼠标移入
     changeActive(index) {
       this.closeAllDialog()
-      // $event.currentTarget.className = "active";
-      console.log('移入', index, this.formOrDocData.pageDomId)
       switch (index) {
-        case 1: this.$refs.documentSideMenuRef.showModal(this.formOrDocData.pageDomId); break;
+        case 1: this.$refs.documentSideMenuRef.showModal(this.inspectionOverWeightId.firstcheckId?this.inspectionOverWeightId.firstcheckId:''); break;
         case 2: this.$refs.relativeRecordRef.showModal(); break;
         case 3: this.$refs.operationRecordRef.showModal(); break;
         default: break;
@@ -136,9 +129,17 @@ export default {
       this.$refs.operationRecordRef.closeDialog();
     },
     clickLink(name) {
-      this.$router.push({
-        name: name
-      });
+      if (this.inspectionOverWeightId) {
+        this.$router.push({
+          name: name
+        });
+      } else {
+        this.$confirm('请先保存记录', "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => { })
+      }
     },
   },
   mounted() {
@@ -146,3 +147,4 @@ export default {
   }
 }
 </script>
+<style lang="scss" src="@/assets/css/documentForm.scss">

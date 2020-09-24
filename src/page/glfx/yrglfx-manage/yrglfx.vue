@@ -14,19 +14,27 @@
           </el-form-item>
         </el-form>
       </div>
-      <div id="chart1" style="width: 100%; height: 50%;"></div>
+      <!-- <div id="chart1" style="width: 100%; height: 50%;"></div> -->
       <div style="margin-top:30px;margin-bottom:30px">
         <el-row>
-          <el-col :span="6">
+          <el-col :span="12">
             <div id="chart2" style="width: 100%; height: 100%;"></div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="12">
             <div id="chart3" style="width: 100%; height: 100%;"></div>
           </el-col>
-          <el-col :span="6">
+          
+        </el-row>
+       
+      </div>
+      <div style="margin-top:60px;margin-bottom:30px">
+       
+        <el-row>
+         
+          <el-col :span="12">
             <div id="chart4" style="width: 100%; height: 100%;"></div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="12">
             <div id="chart5" style="width: 100%; height: 100%;"></div>
           </el-col>
         </el-row>
@@ -242,9 +250,11 @@ export default {
             radius: "75%",
             center: ["50%", "60%"],
             data: [
-              { value: 335, name: "局长" },
-              { value: 310, name: "市长" },
-              { value: 234, name: "行长" }
+              { value: 335, name: "科员" },
+              { value: 150, name: "副科" },
+              { value: 134, name: "正科" },
+              { value: 50, name: "副处" },
+              { value: 30, name: "正处" }
             ],
             emphasis: {
               itemStyle: {
@@ -277,14 +287,14 @@ export default {
   },
   mounted() {
     // this.drawLine1();
-    this.search1();
+    // this.search1();
     this.drawLine2();
     this.drawLine3();
     this.drawLine4();
     this.drawLine5();
   },
   created() {
-    // this.getLogList();
+  
   }
 };
 </script>

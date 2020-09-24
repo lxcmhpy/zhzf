@@ -109,6 +109,14 @@ const route = [
     },
     component: () => import("@/router/reload.vue")
   },
+  {
+    path: "/details",
+    name: "details",
+    meta: {
+      title: "预览"
+    },
+    component: () => import("@/page/notice/components/details")
+  },
   // 人员考试子系统路由
   ...StartRouter
   //主页的路由

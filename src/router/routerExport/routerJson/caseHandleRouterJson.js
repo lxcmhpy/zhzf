@@ -250,8 +250,7 @@ export default [{
     name: "case_handle_inforCollect",
     meta: {
       title: "信息采集",
-      oneTab: true,
-      keepAlive: true
+      oneTab: true
     },
     component: () => import("@/page/caseHandle/unRecordCase/inforCollection.vue")
   },

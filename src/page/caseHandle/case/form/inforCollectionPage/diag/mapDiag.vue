@@ -161,6 +161,7 @@ export default {
     position: relative;
     .amap-demo {
         height: 300px;
+        width: auto;
     }
     .toolbar{
         position: absolute;

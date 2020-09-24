@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-import { upload, deleteFileByIdApi } from "@/api/upload";
+import { upload, deleteFileById } from "@/api/device/device.js";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   props: {
@@ -96,7 +96,6 @@ export default {
       editAble: false,
       vehicleId: "",
       flag: "",
-      baseUrl: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
     };
   },
   computed: {},
@@ -160,7 +159,7 @@ export default {
     //删除附件
     async deleteFile(url) {
       let _this = this;
-      let res = await deleteFileByIdApi(url);
+      let res = await deleteFileById(url);
       this.$message({
         type: "success",
         message: "操作成功!",
@@ -194,7 +193,7 @@ export default {
       height: 240px;
       line-height: 240px;
       text-align: center;
-      margin-left:0px;
+      margin-left: 0px;
     }
     .avatar {
       width: 410px;

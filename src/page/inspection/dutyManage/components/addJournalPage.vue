@@ -16,28 +16,28 @@
           >
             <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item label="日志标题" prop="journalTitle">
-                  <el-input v-model="baseInfoForm.journalTitle" :disabled="PageType === 'handover'"></el-input>
+                <el-form-item label="日志标题" prop="title">
+                  <el-input v-model="baseInfoForm.title" :disabled="PageType === 'handover'"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="方式" prop="type">
-                  <el-radio-group v-model="baseInfoForm.type" :disabled="PageType === 'handover'">
+                <el-form-item label="方式" prop="patrolType">
+                  <el-radio-group v-model="baseInfoForm.patrolType" :disabled="PageType === 'handover'">
                     <el-radio label="1">路巡</el-radio>
                     <el-radio label="2">网巡</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="日志标题" prop="inspectionTime">
+                <el-form-item label="巡查时间" prop="inspectionTime">
                   <el-time-picker
                     is-range
                     v-model="baseInfoForm.inspectionTime"
                     range-separator="至"
                     start-placeholder="开始时间"
                     end-placeholder="结束时间"
-                    format="HH:mm:ss"
-                    value-format="HH:mm:ss"
+                    format="yyyy-MM-dd HH:mm:ss"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     :disabled="PageType === 'handover'"
                   ></el-time-picker>
                 </el-form-item>
@@ -54,9 +54,9 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="执法人员" prop="lawPerson">
+                <el-form-item label="执法人员" prop="lawEnforcementOfficials">
                   <el-input
-                    v-model="baseInfoForm.lawPerson"
+                    v-model="baseInfoForm.lawEnforcementOfficials"
                     disabled
                     placeholder="不能手填，要求先选择关联记录，人员自动带出"
                   ></el-input>
@@ -82,9 +82,9 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="巡查路段" prop="inspectionRoute">
+                <el-form-item label="巡查路段" prop="patrolRoute">
                   <el-input
-                    v-model="baseInfoForm.inspectionRoute"
+                    v-model="baseInfoForm.patrolRoute"
                     disabled
                     placeholder="不能手填，要求先选择关联记录，人员自动带出"
                   ></el-input>
@@ -125,13 +125,13 @@
             @selection-change="selectJournal"
           >
             <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-            <el-table-column prop="journalNo" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
-            <el-table-column prop="checkType" label="检查类型" align="center" width="120px"></el-table-column>
-            <el-table-column prop="checkCategory" label="检查门类" align="center" width="150px;"></el-table-column>
-            <el-table-column prop="inspectionTime" label="巡查时间" align="center" min-width="280px"></el-table-column>
-            <el-table-column prop="companyName" label="单位名称" align="center" min-width="220px"></el-table-column>
-            <el-table-column prop="routeName" label="路段名称" align="center" min-width="180px"></el-table-column>
-            <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px"></el-table-column>
+            <el-table-column prop="recordId" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
+            <el-table-column prop="checkTypeName" label="检查类型" align="center" width="120px"></el-table-column>
+            <el-table-column prop="checkCategoryName" label="检查门类" align="center" width="150px;"></el-table-column>
+            <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="280px"></el-table-column>
+            <el-table-column prop="oname" label="单位名称" align="center" min-width="220px"></el-table-column>
+            <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
+            <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px"></el-table-column>
             <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
             <el-table-column prop="lawPerson" label="执法人员" align="center" min-width="140px"></el-table-column>
             <el-table-column prop="opt" label="是否立案" align="center" fixed="right" width="140px">
@@ -150,7 +150,7 @@
             type="textarea"
             :autosize="{ minRows: 4, maxRows: 6}"
             placeholder
-            v-model="otherAgreements"
+            v-model="baseInfoForm.other"
           ></el-input>
           <!-- 交接班 -->
           <el-form
@@ -161,46 +161,46 @@
           >
             <el-row :gutter="20">
               <el-col :span="24">
-                <el-form-item label="巡查车辆情况" prop="vehicleCondition">
-                  <el-radio-group v-model="changeShiftsForm.vehicleCondition">
+                <el-form-item label="巡查车辆情况" prop="carCondition">
+                  <el-radio-group v-model="baseInfoForm.carCondition">
                     <el-radio label="1">完好</el-radio>
                     <el-radio label="2">故障</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item prop="vehicleConditionInfo" label=" ">
+                <el-form-item prop="carConditionDescribe" label=" ">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 4, maxRows: 6}"
                     placeholder
-                    v-model="changeShiftsForm.vehicleConditionInfo"
+                    v-model="baseInfoForm.carConditionDescribe"
                   ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
                 <el-form-item label="勘察设备情况" prop="equipmentCondition">
-                  <el-radio-group v-model="changeShiftsForm.equipmentCondition">
+                  <el-radio-group v-model="baseInfoForm.equipmentCondition">
                     <el-radio label="1">齐全</el-radio>
                     <el-radio label="2">缺漏或损坏</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item prop="equipmentConditionInfo" label=" ">
+                <el-form-item prop="equipmentConditionDescribe" label=" ">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 4, maxRows: 6}"
                     placeholder
-                    v-model="changeShiftsForm.equipmentConditionInfo"
+                    v-model="baseInfoForm.equipmentConditionDescribe"
                   ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row v-if="PageType === 'handover'">
               <el-col :span="8">
-                <el-form-item label="交班人" prop="shiftHandoverPerson">
-                  <el-select v-model="changeShiftsForm.shiftHandoverPerson">
+                <el-form-item label="交班人" prop="includingPeople">
+                  <el-select v-model="baseInfoForm.includingPeople">
                     <el-option
                       v-for="item in lawPersonList"
                       :key="item.id"
@@ -212,7 +212,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="接班人" prop="successor">
-                  <el-select v-model="changeShiftsForm.successor">
+                  <el-select v-model="baseInfoForm.successor">
                     <el-option
                       v-for="item in lawPersonList"
                       :key="item.id"
@@ -223,8 +223,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="负责人" prop="responsiblePer">
-                  <el-select v-model="changeShiftsForm.responsiblePer">
+                <el-form-item label="负责人" prop="manager">
+                  <el-select v-model="baseInfoForm.manager">
                     <el-option
                       v-for="item in lawPersonList"
                       :key="item.id"
@@ -241,109 +241,97 @@
     </div>
     <!-- 操作按钮 -->
     <div v-if="PageType === 'journal'" class="float-btns">
-      <el-button class="edit_btn" type="primary">
+      <el-button class="edit_btn" type="primary" @click="save">
         <i class="iconfont law-edit"></i>
         <br />保存
       </el-button>
-      <el-button class="edit_btn" type="info">
+      <el-button class="edit_btn" type="info" @click="toClose">
         <i class="el-icon-circle-close"></i>
         <br />取消
       </el-button>
     </div>
     <div v-else class="float-btns">
-      <el-button class="edit_btn" type="info">
+      <el-button class="edit_btn" type="info" @click="save">
         <i class="el-icon-circle-close"></i>
         <br />保存
       </el-button>
     </div>
     <!-- 关联排班弹窗 -->
-    <RelationScheduling ref="relationSchedulingRef" />
+    <RelationScheduling ref="relationSchedulingRef" @returnData="getReturnData" />
     <!-- 关联记录 -->
-    <RelationRecord ref="relationRecordRef" />
+    <RelationRecord ref="relationRecordRef" @returnDataRecord="getReturnDataRecord"/>
   </div>
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import RelationScheduling from "@/page/inspection/dutyManage/components/relationScheduling.vue";
 import RelationRecord from "@/page/inspection/dutyManage/components/relationRecord.vue";
-
+import { saveRecordApi,getCheChecklogPageList,updateRecordApi,getCheRecordLogApi,delCheRecordTemplateApi,addCheShiftchangeApi} from '@/api/supervision';
 export default {
   components: { RelationScheduling, RelationRecord },
   data() {
     return {
       isShow: false,
       baseInfoForm: {
-        journalTitle: "", // 日志标题
-        type: "1", // 方式
+        title: "", // 日志标题
+        patrolType: "1", // 巡查类型 （方式）
         inspectionTime: "", // 巡查时间
+        startCheckTime:"",//巡查开始时间
+        endCheckTime:"",//巡查结束时间
         weather: "", // 天气
-        lawPerson: "", // 执法人员
+        lawEnforcementOfficials: "", // 执法人员
         isUseCar: "1", // 是否用车
         carNum: "", // 车牌号
-        inspectionRoute: "", // 巡查路段
+        patrolRoute: "", // 巡查路段
         inspectionLength: "", // 路段长度km
+        other: "", //其他事项
+        carCondition: "1", // 巡查车辆情况
+        equipmentCondition: "1", // 勘察设备情况
+        carConditionDescribe: "", // 巡查车辆情况描述
+        equipmentConditionDescribe: "", // 勘察设备情况描述
+        includingPeople: "", // 交班人
+        successor: "", // 接班人
+        manager: "", // 负责人
+        scheduleId:"",//排班ID
+        recordsIds:[],//记录ids
       },
       changeShiftsForm: {
-        vehicleCondition: "1", // 巡查车辆情况
+        carCondition: "1", // 巡查车辆情况
         equipmentCondition: "1", // 勘察设备情况
-        vehicleConditionInfo: "", // 巡查车辆情况描述
-        equipmentConditionInfo: "", // 勘察设备情况描述
+        carConditionDescribe: "", // 巡查车辆情况描述
+        equipmentConditionDescribe: "", // 勘察设备情况描述
         shiftHandoverPerson: "", // 交班人
         successor: "", // 接班人
         responsiblePer: "", // 负责人
       },
       rules: {
-        journalTitle: [
+        title: [
           { required: true, message: "请输入日志标题", trigger: "blur" },
         ],
         inspectionTime: [
           { required: true, message: "请输入巡查时间", trigger: "blur" },
         ],
-        lawPerson: [
+        lawEnforcementOfficials: [
           { required: true, message: "执法人员不能为空", trigger: "blur" },
         ],
-        inspectionRoute: [
+        patrolRoute: [
           { required: true, message: "巡查路段不能为空", trigger: "blur" },
         ],
-        responsiblePer: [
-          { required: true, message: "请选择负责人", trigger: "change" },
+        manager: [
+          { required: true, message: "请选择负责人", trigger: "blur" },
         ],
         successor: [
-          { required: true, message: "请选择接班人", trigger: "change" },
+          { required: true, message: "请选择接班人", trigger: "blur" },
         ],
-        shiftHandoverPerson: [
-          { required: true, message: "请选择交班人", trigger: "change" },
+        includingPeople: [
+          { required: true, message: "请选择交班人", trigger: "blur" },
         ],
       },
+      pageType:"",
       lawPersonList: [],
-      tableData: [
-        {
-          journalNo: "11111111",
-          checkType: "安全检查",
-          checkCategory: "公路巡查",
-          inspectionTime: "2020-08-03 14:00至2020-08-03 18:00",
-          companyName: "云南省公路路政总队昆磨支队",
-          routeName: "S210     红砖厂路",
-          routeInfo: "K100+50m至K100+55m",
-          routeSituation: "正常",
-          lawPerson: "张三;李四;王五",
-          filingCase: "1",
-        },
-        {
-          journalNo: "34235534",
-          checkType: "安全检查",
-          checkCategory: "公路巡查",
-          inspectionTime: "2020-08-03 14:00至2020-08-03 18:00",
-          companyName: "北京市交通运输管理局",
-          routeName: "S210     红砖厂路",
-          routeInfo: "K100+50m至K100+55m",
-          routeSituation: "正常",
-          lawPerson: "张三;李四",
-          filingCase: "2",
-        },
-      ],
+      tableData: [],
       selectList: [],
-      otherAgreements: "",
+      other: "",
       tableLoading: false,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -351,6 +339,12 @@ export default {
     };
   },
   computed: {
+    checklogId(){
+       return this.$route.params.checklogId;
+    },
+    pageName(){
+      return this.$route.name;
+    },
     BusinessType() {
       return this.$route.params.type;
     },
@@ -361,24 +355,99 @@ export default {
     PageType() {
       return this.$route.params.page;
     },
+    handelType(){
+      return this.$route.params.handelType;
+    }
   },
   created() {
-    console.log(this.BusinessType);
     this.searchLawPerson();
+    if(this.handelType === '1'){
+      
+    }else{
+        this.getCheckLogInfo();
+        this.getRecordMsg();
+    }
+   
   },
   methods: {
+    //查询修改的日志信息
+    getCheckLogInfo(){
+      let data={
+        checklogId:this.checklogId,
+      };
+       getCheChecklogPageList(data).then(res => {
+        if (res.code == "200") {
+        this.baseInfoForm.title = res.data.records[0].title,
+        this.baseInfoForm.patrolType = res.data.records[0].patrolType,
+        this.baseInfoForm.status = res.data.records[0].status,
+         this.baseInfoForm.inspectionTime = [res.data.records[0].startCheckTime,res.data.records[0].endCheckTime],
+        this.baseInfoForm.startCheckTime = res.data.records[0].startCheckTime,
+        this.baseInfoForm.endCheckTime = res.data.records[0].endCheckTime,
+        this.baseInfoForm.weather = res.data.records[0].weather,
+        this.baseInfoForm.scheduleId = res.data.records[0].scheduleId,
+        this.baseInfoForm.other = res.data.records[0].other,
+        this.baseInfoForm.carCondition = res.data.records[0].carCondition,
+        this.baseInfoForm.carConditionDescribe = res.data.records[0].carConditionDescribe,
+        this.baseInfoForm.equipmentCondition = res.data.records[0].equipmentCondition,
+        this.baseInfoForm.equipmentConditionDescribe = res.data.records[0].equipmentConditionDescribe
+        this.baseInfoForm.patrolRoute = res.data.records[0].patrolRoute,
+        this.baseInfoForm.lawEnforcementOfficials = res.data.records[0].lawEnforcementOfficials,
+         this.baseInfoForm.includingPeople = res.data.records[0].includingPeople,
+         this.baseInfoForm.successor = res.data.records[0].successor,
+         this.baseInfoForm.manager = res.data.records[0].manager
+       }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+    },
+    //获取关联记录
+    getRecordMsg(){
+      let data={
+        checklogId:this.checklogId
+      }
+        getCheRecordLogApi(data).then(res => {
+        if (res.code == "200") {
+          this.tableData = res.data;
+        }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+    },
+    //获取排班数据
+    getReturnData(data){
+      this.baseInfoForm.lawEnforcementOfficials = data.lawEnforcementOfficials;
+      this.baseInfoForm.patrolRoute =data.patrolRoute;
+      this.baseInfoForm.scheduleId = data.scheduleId;
+    },
+    //返回关联记录数据
+    getReturnDataRecord(data){
+      alert(JSON.stringify(data))
+     this.tableData =data;
+     data.forEach(element => {
+       this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
+     });
+    },
     // 关联排班
     relationScheduFun() {
-      this.$refs.relationSchedulingRef.showModal();
+      this.$refs.relationSchedulingRef.showModal(this.BusinessType);
     },
     // 关联记录
     relationRecordFun() {
       this.$refs.relationRecordRef.showModal();
     },
+    //取消
+    toClose(){
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                this.$router.push({
+                  name: "duty_journal",
+                });
+    },
     // 解除记录关联
     disassociateRelation() {
       if (this.selectList.length === 0) {
         this.$message({ type: "warning", message: "请选择需要解除关联的记录" });
+      }else if(this.selectList.length > 1){
+        this.$message({ type: "warning", message: "每次只能解除一条关联记录" });
       } else {
         this.$confirm("确定解除关联吗？", "提示", {
           cancelButtonText: "取消",
@@ -386,7 +455,19 @@ export default {
           iconClass: "custom-question",
           customClass: "custom-confirm",
         })
-          .then(() => {})
+          .then(() => {
+        let data={
+          checklogId:this.checklogId,
+          templateId:this.selectList[0]
+         }
+          delCheRecordTemplateApi(data).then(res => {
+          if (res.code == "200") {
+            this.getRecordMsg();
+          }
+         }, err => {
+           this.$message({ type: 'error', message: err.msg || '' });
+         });
+          })
           .catch(() => {});
       }
     },
@@ -403,8 +484,11 @@ export default {
     },
     // 选中的现场记录
     selectJournal(val) {
-      console.log(val);
-      this.selectList = val;
+        let _this = this;
+      _this.selectList = [];
+      val.forEach((item, index) => {
+        _this.selectList.push(item.recordId);
+      });
     },
     // 查询执法人员
     searchLawPerson() {
@@ -416,6 +500,105 @@ export default {
           console.log(err);
         }
       );
+    },
+    //保存
+    save(){
+      var ss = this.baseInfoForm.inspectionTime+"";
+      var stringResult = ss.split(',');
+        this.baseInfoForm.startCheckTime = stringResult[0]; 
+        this.baseInfoForm.endCheckTime = stringResult[1];
+      //新增
+      if(this.handelType == '1'){
+        var data={
+        title:this.baseInfoForm.title,
+        patrolType:this.baseInfoForm.patrolType,
+        status:this.baseInfoForm.status,
+        startCheckTime:this.baseInfoForm.startCheckTime,
+        endCheckTime:this.baseInfoForm.endCheckTime,
+        weather:this.baseInfoForm.weather,
+        scheduleId:this.baseInfoForm.scheduleId,
+        other:this.baseInfoForm.other,
+        carCondition:this.baseInfoForm.carCondition,
+        carConditionDescribe:this.baseInfoForm.carConditionDescribe,
+        equipmentCondition:this.baseInfoForm.equipmentCondition,
+        equipmentConditionDescribe:this.baseInfoForm.equipmentConditionDescribe,
+        recordsIds:this.baseInfoForm.recordsIds.join(","),
+      }
+         saveRecordApi(data).then(res => {
+        if (res.code == "200") {
+          this.$message({
+              type: "success",
+              message: "提交成功",
+              onClose: () => {
+                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                this.$router.push({
+                  name: "duty_journal",
+                });
+              },
+            });
+        }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+      //修改
+      }else if(this.handelType == '2'){
+        var data={
+        checklogId:this.checklogId, 
+        title:this.baseInfoForm.title,
+        patrolType:this.baseInfoForm.patrolType,
+        status:this.baseInfoForm.status,
+        startCheckTime:this.baseInfoForm.startCheckTime,
+        endCheckTime:this.baseInfoForm.endCheckTime,
+        weather:this.baseInfoForm.weather,
+        scheduleId:this.baseInfoForm.scheduleId,
+        other:this.baseInfoForm.other,
+        carCondition:this.baseInfoForm.carCondition,
+        carConditionDescribe:this.baseInfoForm.carConditionDescribe,
+        equipmentCondition:this.baseInfoForm.equipmentCondition,
+        equipmentConditionDescribe:this.baseInfoForm.equipmentConditionDescribe,
+        recordsIds:this.baseInfoForm.recordsIds.join(","),
+      }
+        updateRecordApi(data).then(res => {
+        if (res.code == "200") {
+         this.$message({
+              type: "success",
+              message: "修改成功",
+              onClose: () => {
+                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                this.$router.push({
+                  name: "duty_journal",
+                });
+              },
+            });
+        }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+      }else if(this.handelType == '3' ){
+        var data={  
+          checklogId:this.checklogId,  
+          includingPeople: this.baseInfoForm.includingPeople, // 交班人
+          successor: this.baseInfoForm.successor, // 接班人
+          manager: this.baseInfoForm.manager, // 负责人
+        }
+        addCheShiftchangeApi(data).then(res => {
+        if (res.code == "200") {
+          this.$message({
+              type: "success",
+              message: "提交成功",
+              onClose: () => {
+                this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                this.$router.push({
+                  name: "duty_journal",
+                });
+              },
+            });
+        }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+      }
+       
     },
   },
 };

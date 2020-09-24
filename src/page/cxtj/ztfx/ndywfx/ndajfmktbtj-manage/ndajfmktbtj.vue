@@ -73,7 +73,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "2019年度各类收缴费用金额同期对比",
+          text: "2019年案件罚没款同期对比",
           left: "center"
         },
         tooltip: {

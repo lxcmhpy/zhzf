@@ -37,7 +37,8 @@
 <script>
 import VehiclePhotos from "@/page/device/components/equipmentDetail/vehiclePhotos";
 import OtherPhotos from "@/page/device/components/equipmentDetail/otherPhotos";
-import { getFileByCaseId } from "@/api/upload";
+import { findImageByCaseId } from "@/api/device/device.js";
+// import { getFileByCaseId } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   components: { VehiclePhotos, OtherPhotos },
@@ -83,42 +84,51 @@ export default {
       otherFileList: [],
     };
   },
-  computed: {
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    },
-  },
   methods: {
     async getFiles() {
       let _this = this;
-      let res = await getFileByCaseId({ caseId: this.$route.params.id });
+      let res = await findImageByCaseId(this.$route.params.id);
+      //   let res = await getFileByCaseId({ caseId: this.$route.params.id });
       debugger;
       res.data.forEach((item) => {
         let flag = item.docId.charAt(item.docId.length - 1) + "";
         if (item.status === _this.vehicleTopTitle.title && flag === "0") {
-          _this.vehiclePhotoList[0].photoUrl = this.baseUrl + item.storageId;
+          _this.$util.com_getDeviceFileStream(item.storageId).then((res) => {
+            _this.vehiclePhotoList[0].photoUrl = res;
+          });
           _this.vehiclePhotoList[0].storageId = item.storageId;
         } else if (
           item.status === _this.vehicleTopTitle.title &&
           flag === "1"
         ) {
-          _this.vehiclePhotoList[1].photoUrl = this.baseUrl + item.storageId;
+          _this.$util.com_getDeviceFileStream(item.storageId).then((res) => {
+            _this.vehiclePhotoList[1].photoUrl = res;
+          });
           _this.vehiclePhotoList[1].storageId = item.storageId;
         } else if (
           item.status === _this.drivingTopTitle.title &&
           flag === "0"
         ) {
-          _this.drivingPhotoList[0].photoUrl = this.baseUrl + item.storageId;
+          _this.$util.com_getDeviceFileStream(item.storageId).then((res) => {
+            _this.drivingPhotoList[0].photoUrl = res;
+          });
           _this.drivingPhotoList[0].storageId = item.storageId;
         } else if (
           item.status === _this.drivingTopTitle.title &&
           flag === "1"
         ) {
-          _this.drivingPhotoList[1].photoUrl = this.baseUrl + item.storageId;
+          _this.$util.com_getDeviceFileStream(item.storageId).then((res) => {
+            _this.drivingPhotoList[1].photoUrl = res;
+          });
           _this.drivingPhotoList[1].storageId = item.storageId;
         } else if (item.status === "其他") {
+          let url = _this.$util
+            .com_getDeviceFileStream(item.storageId)
+            .then((res) => {
+              url = res;
+            });
           _this.otherFileList.push({
-            photoUrl: this.baseUrl + item.storageId,
+            photoUrl: url,
             name: item.fileName,
             docId: item.docId,
             storageId: item.storageId,

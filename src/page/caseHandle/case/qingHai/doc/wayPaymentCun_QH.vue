@@ -60,7 +60,7 @@
             </td>
             <td class="color_DBE4EF" style="width:250px">
               <p>时间：<el-form-item style="width:calc(100% - 56px)" prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                  <el-date-picker style="width:100%" v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+                  <el-date-picker style="width:200px" v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
                 </el-form-item>
               </p>
 
@@ -189,7 +189,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
-        note: "",//文书名字 
+        note: "",//文书名字
         docDataId: "", //多份文书的id
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },

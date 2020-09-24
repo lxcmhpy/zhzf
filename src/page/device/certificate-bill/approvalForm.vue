@@ -101,7 +101,7 @@
 
 <script>
 import { 
-    listApproveInfo,getFileStreamByStorageIdApi
+    listApproveInfo,getFileStreamByStorageId
 } from "@/api/device/deviceCertificateBill.js";
 import iLocalStroage from "@/common/js/localStroage";
 import approvalDialog from "@/page/device/components/approvalDialog";
@@ -118,14 +118,12 @@ export default {
       approved:true,
       step:0,
       organId:'',
-      host:''
     };
   },
   created() {
       this.getApproveInfo()
       this.getFile()
       this.organId=iLocalStroage.gets("userInfo").organId
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
   },
   props: {
     id: String,
@@ -145,7 +143,7 @@ export default {
       },
       //根据stroagId请求文件流
       getFileStream(storageId){
-        getFileStreamByStorageIdApi(storageId).then(res=>{
+        getFileStreamByStorageId(storageId).then(res=>{
           this.getObjectURL(res);
         }).catch(err=>{
           console.log(err);
@@ -200,7 +198,7 @@ export default {
         let websocket = null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-          let _url = "ws://124.192.215.6:8083/socket/" + this.pdfId
+          let _url = "ws://124.192.215.4:8083/socket/" + this.pdfId
           // let _url = "ws://172.16.170.44:8083/socket/" + fileId
           websocket = new WebSocket(_url);
         } else {
@@ -278,10 +276,11 @@ export default {
           var test = window.location.href;
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
-          // path +
-            var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.host+_this.pdfId
-            console.log(ActivexURL);
-            window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+          _this.$util.com_getDeviceFileStream(_this.pdfId).then(res=>{
+                var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + res
+                console.log(ActivexURL);
+                window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+            });
         }
 
         function getParam(paramName) {

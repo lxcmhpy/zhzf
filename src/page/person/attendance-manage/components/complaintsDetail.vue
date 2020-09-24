@@ -82,7 +82,6 @@
   </div>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage.js";
 import AddComplaintsInfo from "@/page/person/attendance-manage/components/addComplaintsInfo";
 
 export default {
@@ -92,11 +91,7 @@ export default {
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
     };
   },
-  computed: {
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    },
-  },
+  computed: {},
   watch: {},
   components: { AddComplaintsInfo },
   created() {},

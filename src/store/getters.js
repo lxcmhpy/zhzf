@@ -27,6 +27,7 @@ const getters = {
   IsLawEnforcementSupervision:state => state.caseHandle.IsLawEnforcementSupervision,
   lawEnforcementSupervisionType:state => state.caseHandle.lawEnforcementSupervisionType,
   currentFileData:state => state.caseHandle.currentFileData,
+  doingLinkId:state => state.caseHandle.doingLinkId,
   noOperation: state => state.caseHandle.noOperation,
   
   //监管
@@ -50,6 +51,7 @@ const getters = {
   inspectionFileId:state => state.inspection.inspectionFileId, //行政检查文书id
   inspectionTempleteId:state => state.inspection.inspectionTempleteId, //行政检查模板id
   inspectionFileEdit:state => state.inspection.inspectionFileEdit, //行政检查模板id
+  inspectionOverWeightId:state => state.inspection.inspectionOverWeightId, //行政检查超限记录id
 
 };
 export default getters;

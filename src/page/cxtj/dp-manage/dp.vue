@@ -558,7 +558,27 @@ echarts.extendsMap = function(id, opt){
                 }
             },
             data: handleEvents.initSeriesData(opt.data)
-        }]
+        }],
+         tooltip: {
+                show:true,
+                trigger: 'item',
+                backgroundColor: 'rgba(166, 200, 76, 0.82)',
+                borderColor: '#FFFFCC',
+                showDelay: 0,
+                hideDelay: 0,
+                enterable: true,
+                transitionDuration: 0,
+                extraCssText: 'z-index:100',
+                formatter: function(params, ticket, callback) {
+                console.log(params);
+                //根据业务自己拓展要显示的内容
+                var res = "";
+                var name = params.name;
+                var value = params.value[2];
+                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
+                return res;
+   }
+  },
     };
 
     chart.setOption(option);
@@ -1396,8 +1416,8 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
 .title_1{
   background-image: url("../../../../static/images/map/导航-未选.png");
   background-size: 100%;
-  height: 58px;
-  width: 150px;
+  height: 3.7rem;
+  width: 10rem;
   text-align: center;
   line-height: 50px;
   cursor: pointer;
@@ -1405,7 +1425,7 @@ background-repeat: no-repeat;
 }
 .title_font{
      
-font-size:18px;
+font-size:1rem;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:500;
 color:rgba(92,216,255,1);
@@ -1414,9 +1434,9 @@ text-shadow:0px 0px 24px rgba(14,40,100,1);
 
 }
 .title_2{
-width:380px;
-height:42px;
-font-size:20px;
+width:24rem;
+height:5rem;
+font-size:1.25rem;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:300;
 color:rgba(255,255,255,1);
@@ -1428,8 +1448,8 @@ text-align: center;
   background-image: url("../../../../static/images/map/选中.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 58px;
-  width: 150px;
+  height: 3.7rem;
+  width: 10rem;
   text-align: center;
   line-height: 60px;
   cursor: pointer;
@@ -1438,8 +1458,8 @@ text-align: center;
   background-image: url("../../../../static/images/map/右侧边框.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 58px;
-  width: 190px;
+  height: 5rem;
+  width: 12rem;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
@@ -1448,23 +1468,23 @@ text-align: center;
   background-image: url("../../../../static/images/map/右侧边框.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 58px;
-  width: 190px;
+  height: 5rem;
+  width: 12rem;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
 }
 .left_1{
-width:300px;
-height:200px;
+width: 18.8rem;
+height: 12rem;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
 margin-left: 30px;
 }
 .left_2{
-width:300px;
-height:200px;
+width: 18.8rem;
+height: 13rem;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1472,8 +1492,8 @@ margin-left: 30px;
 margin-top: 5px;
 }
 .bottom_1{
-width:540px;
-height:200px;
+width: 34rem;
+height: 12rem;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1483,11 +1503,11 @@ margin-top: 5px;
 .center_1{
   background-image: url("../../../../static/images/map/地图bg.png");
   background-size: 100%;
-  height: 410px;
+  height: 25.5rem;
 }
 .bottom_2{
-width:540px;
-height:200px;
+width: 34rem;
+height: 12rem;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1495,16 +1515,16 @@ margin-left: 5px;
 margin-top: 5px;
 }
 .right_1{
-width:300px;
-height:200px;
+width: 18.8rem;
+height: 12rem;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
 margin-left: 5px;
 }
 .right_2{
-width:300px;
-height:200px;
+width: 18.8rem;
+height: 13rem;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1513,8 +1533,8 @@ margin-top: 5px;
 }
 .bt{
 width:100%;
-height:22px;
-font-size:16px;
+height: 1.5rem;
+font-size: 1rem;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(4,241,248,1);
@@ -1522,27 +1542,27 @@ line-height:22px;
 padding-left: 10px;
 }
 .type{
-width:66px;
-height:20px;
-font-size:13px;
+width: 5rem;
+height: 1.5rem;
+font-size: 0.9rem;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
 line-height:20px;
 }
 .count{
-width:58px;
-height:42px;
-font-size:22px;
+width: 5rem;
+height: 1.5rem;
+font-size: 1.3rem;
 font-family:DINCond-Bold,DINCond;
 font-weight:bold;
 color:rgba(4,241,248,1);
 line-height:42px;
 }
 .dw{
-width:14px;
-height:20px;
-font-size:14px;
+width: 2rem;
+height: 1.5rem;
+font-size: 0.9rem;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
@@ -1550,18 +1570,18 @@ line-height:20px;
 margin-left: 15px;
 }
 .ajbjl{
-width:70px;
-height:19px;
-font-size:14px;
+width: 5rem;
+height: 1rem;
+font-size: 0.9rem;
 font-family:MicrosoftYaHei;
 color:rgba(255,255,255,1);
 line-height:19px;
 margin-top: 70px;
 }
 .sl{
-width:190px;
-height:51px;
-font-size:17px;
+width: 1rem;
+height: 2rem;
+font-size: 1.3rem;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:rgba(4,241,248,1);
@@ -1569,24 +1589,25 @@ line-height:61px;
 }
 .body_bg .el-main {
     background: none;
+    width:'100%';
 }
 .main {
     background-image: url("../../../../static/images/map/边框.png");
     background-size: 100% 100%;
 }
 .right_font0{
-width:196px;
-height:28px;
-font-size:20px;
+width: 1rem;
+height: 2rem;
+font-size: 1.3rem;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
 line-height:28px;
 }
 .right_font1{
-width:196px;
-height:28px;
-font-size:18px;
+width: 1rem;
+height: 2rem;
+font-size: 1.3rem;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:#FF9703;

@@ -59,13 +59,13 @@
             <div class="row" v-if="showForQH">
               <div class="col">
                 <el-form-item label="处理结果"  prop="closeResult">
-                  <el-input v-model="formData.closeResult" class="w-120" size="small" disabled></el-input>
+                  <el-input v-model="formData.closeResult" class="w-120" size="small"></el-input>
                 </el-form-item>
               </div>
             </div>
             <div class="row" v-if="showForQH">
               <div class="col">
-                <el-form-item label="程序类型"  prop="closeResult">
+                <el-form-item label="程序类型"  prop="programType">
                   <el-input v-model="formData.programType" class="w-120" size="small" disabled></el-input>
                 </el-form-item>
               </div>
@@ -153,20 +153,48 @@
                 </el-form-item>
               </div>
             </div>
-          
+          <div class="row">
+              <div class="col">
+                <el-form-item label="立卷人">
+                  <el-input class="w-120" v-model="docData.establishor" size="small"></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item label="时间">
+                  <el-date-picker
+                    class="w-120"
+                    v-model="docData.establishTime"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm"
+                    value-format="yyyy-MM-dd HH:mm"
+                  ></el-date-picker>
+                </el-form-item>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col">
+                <el-form-item label="检查人" prop="checkMan">
+                  <el-input class="w-120" v-model="docData.checkMan" size="small"></el-input>
+                </el-form-item>
+              </div>
+              <div class="col">
+                <el-form-item label="时间">
+                  <el-date-picker
+                    class="w-120"
+                    v-model="docData.checkTime"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm"
+                    value-format="yyyy-MM-dd HH:mm"
+                  ></el-date-picker>
+                </el-form-item>
+              </div>
+          </div>
           <div class="row">
               <div class="col">
                 <el-form-item label="整理人" prop="collator">
                   <el-input class="w-120" v-model="docData.collator" size="small"></el-input>
                 </el-form-item>
               </div>
-              <div class="col">
-                <el-form-item label="检查人" prop="checkMan">
-                  <el-input class="w-120" v-model="docData.checkMan" size="small"></el-input>
-                </el-form-item>
-              </div>
-          </div>
-          <div class="row">
               <div class="col">
                 <el-form-item label="时间">
                   <el-date-picker
@@ -308,7 +336,11 @@ export default {
         ],
         organName: [
           { required: true, message: "执法机关不能为空", trigger: "blur" }
-        ]
+        ],
+        closeResult: [
+          { required: true, message: "处理结果不能为空", trigger: "blur" }
+        ],
+        
       },
       nowShowPdfIndex:0, //归档后当前显示的pdf的index
       archiveSuccess:false, //归档成功
@@ -316,7 +348,10 @@ export default {
         beikaoDes:'本案卷共有文件材料  页，其中文字材料   页，照片  页，附图  张，其他（驾驶证、行驶证、营运证、从业资格证复印件）   页。',
         collator:'',
         checkMan:'',
-        beikaoTime:''
+        beikaoTime:'',
+        establishor:'',
+        establishTime:'',
+        checkTime:''
       }, //备考表数据
       beikaoRules:{},
       caseDocDataForm: {   //备考表数据

@@ -97,7 +97,7 @@
     <div style="width:calc(50% - 20px);" class="height100 inspector-left">
       <publicInspectors :freshFlag="freshFlag"></publicInspectors>
     </div>
-    <el-dialog title="人员详情" :visible.sync="dialogFormVisible" style="width:auto">
+    <el-dialog title="人员详情" :close-on-click-modal="false" :visible.sync="dialogFormVisible" style="width:auto">
       <el-form ref="form" :model="personInfoDetailForm" label-width="155px">
         <!--基本信息 -->
         <div class="info_box">
@@ -350,7 +350,7 @@ export default {
       let _this = this;
       if (this.multipleSelection.length > 0) {
         this.multipleSelection.forEach((element) => {
-          element.organName = iLocalStroage.gets("userInfo").organName;
+          element.company = iLocalStroage.gets("userInfo").organName;
           // 删除是否在岗
           if (element.stationStatusName) {
             this.$delete(element, "stationStatusName");
@@ -407,8 +407,8 @@ export default {
     top: 47%;
     cursor: pointer;
   }
-  .el-form-item {
-    margin-bottom: 0;
-  }
+  // .el-form-item {
+  //   margin-bottom: 0;
+  // }
 }
 </style>

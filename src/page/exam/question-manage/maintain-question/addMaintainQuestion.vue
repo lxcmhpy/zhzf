@@ -276,22 +276,22 @@ export default {
         questionAnalysis: "",
         questionType: "",
         questionLevel: "",
-        answer: ""
+        answer: "",
       },
       rules: {
         questionType: [
-          { required: true, message: "请选择题型", trigger: "change" }
+          { required: true, message: "请选择题型", trigger: "change" },
         ],
         questionLevel: [
-          { required: true, message: "请选择难度", trigger: "change" }
+          { required: true, message: "请选择难度", trigger: "change" },
         ],
         questionName: [
-          { required: true, message: "请输入题干", trigger: "blur" }
+          { required: true, message: "请输入题干", trigger: "blur" },
         ],
         questionAnalysis: [
-          { required: true, message: "请输入答案解析", trigger: "blur" }
+          { required: true, message: "请输入答案解析", trigger: "blur" },
         ],
-        answer: [{ required: true, message: "请输入答案", trigger: "blur" }]
+        answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
       },
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
@@ -305,7 +305,7 @@ export default {
       descImages: [], // 问题描述图片
       questionTypeMap: ["单选题", "多选题", "判断题", "简答题", "论述题"], // 试题类型集合
       tableLoading: false,
-      optionImages: [] // 问题选项图片
+      optionImages: [], // 问题选项图片
     };
   },
   computed: {
@@ -324,9 +324,6 @@ export default {
       }
       return desc;
     },
-    baseUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
   },
   created() {
     this.getDictInfo("考试-试题类型", "questionTypeList");
@@ -345,7 +342,7 @@ export default {
           item.checked = index === this.radioChecked;
         });
       } else {
-        _this.addMaintainQuestionForm.pqoList.forEach(item => {
+        _this.addMaintainQuestionForm.pqoList.forEach((item) => {
           if (item.optionNum == row.optionNum) {
             if (item.optionKey == undefined || item.optionKey == "0") {
               item.optionKey = "1";
@@ -382,7 +379,7 @@ export default {
     handleOptionImgChange(file, fileList, index) {
       const isGt2M = this.checkImageSize(file);
       const fileIndex = this.optionImages.findIndex(
-        item => item.uid === file.uid
+        (item) => item.uid === file.uid
       );
       const row = JSON.parse(
         JSON.stringify(this.addMaintainQuestionForm.pqoList[index])
@@ -399,11 +396,10 @@ export default {
     // 删除选项图片
     deleteOptionImg(index) {
       const item = this.addMaintainQuestionForm.pqoList[index];
-      if(item.file){
-        if(item.file.status === 'success'){
-          const imgId = item.file.url.replace(this.baseUrl, '');
-          this.deleteImage(imgId, 'option', index, 'isUpload');
-        }else{
+      if (item.file) {
+        if (item.file.status === "success") {
+          this.deleteImage(item.file.storageId, "option", index, "isUpload");
+        } else {
           this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
           this.addMaintainQuestionForm.pqoList[index]["file"] = null;
         }
@@ -415,7 +411,7 @@ export default {
       if (isGt2M) {
         this.$message({
           message: "上传文件大小不能超过 2MB!",
-          type: "warning"
+          type: "warning",
         });
         return true;
       } else {
@@ -426,7 +422,7 @@ export default {
     changeType(clearPqoList) {
       let id = this.addMaintainQuestionForm.questionType;
       const currentIndex = this.questionTypeList.findIndex(
-        item => item.id === id
+        (item) => item.id === id
       );
       this.questionTypeName = this.questionTypeList[currentIndex].name;
       const pqoListLen = this.addMaintainQuestionForm.pqoList.length;
@@ -443,7 +439,7 @@ export default {
       if (!this[codeName].length) {
         this.$store.dispatch("findAllDrawerByName", name).then(
           //查询执法领域
-          res => {
+          (res) => {
             if (res.code === 200) {
               this[codeName] = res.data;
             } else {
@@ -466,7 +462,7 @@ export default {
           this.addMaintainQuestionForm.pqoList.push({
             optionNum: name,
             questionId: this.addMaintainQuestionForm.questionId,
-            checked: false
+            checked: false,
           });
         }
       } else {
@@ -479,7 +475,7 @@ export default {
           this.addMaintainQuestionForm.pqoList.push({
             optionNum: name,
             questionId: this.addMaintainQuestionForm.questionId,
-            checked: false
+            checked: false,
           });
         }
       }
@@ -493,9 +489,8 @@ export default {
     delet(row, index) {
       this.addMaintainQuestionForm.pqoList.splice(index, 1);
       this.updatChecked();
-      if(row.optionPicture && row.optionPicture.indexOf(this.baseUrl) > -1){
-        const deleteId = row.optionPicture.replace(this.baseUrl, '');
-        this.deleteImage(deleteId, 'option', index, 'upload');
+      if (row.optionPicture) {
+        this.deleteImage(row.optionPicture, "option", index, "upload");
       }
     },
     //修改选项
@@ -514,7 +509,7 @@ export default {
       } else {
         _this.$message({
           type: "warning",
-          message: "已经是第一条了，不可以上移"
+          message: "已经是第一条了，不可以上移",
         });
       }
       this.updatChecked();
@@ -525,7 +520,7 @@ export default {
       if (index + 1 === _this.addMaintainQuestionForm.pqoList.length) {
         _this.$message({
           type: "warning",
-          message: "已经是最后一条了，不可以下移"
+          message: "已经是最后一条了，不可以下移",
         });
       } else {
         let rowDate = _this.addMaintainQuestionForm.pqoList[index + 1];
@@ -536,7 +531,7 @@ export default {
     },
     // 新增试题表单校验
     checkForm() {
-      this.$refs.addMaintainQuestionFormRef.validate(valid => {
+      this.$refs.addMaintainQuestionFormRef.validate((valid) => {
         if (valid) {
           let warningMsg = "";
           // 单选，多选，判断必须添加选项并选择正确答案
@@ -545,7 +540,7 @@ export default {
               warningMsg = "请添加题目选项";
             } else {
               const answer = this.addMaintainQuestionForm.pqoList.filter(
-                item => item.optionKey == 1
+                (item) => item.optionKey == 1
               );
               if (answer.length === 0) {
                 warningMsg = "请选择正确答案";
@@ -574,11 +569,8 @@ export default {
         questionAnalysis: this.addMaintainQuestionForm.questionAnalysis,
         questionType: this.addMaintainQuestionForm.questionType,
         questionLevel: this.addMaintainQuestionForm.questionLevel,
-        answer: this.addMaintainQuestionForm.answer
+        answer: this.addMaintainQuestionForm.answer,
       };
-      if(this.addMaintainQuestionForm.questionPicture){
-        saveData.questionPicture = this.addMaintainQuestionForm.questionPicture.replace(this.baseUrl, '');
-      }
       let dispatchType = "addExamQuestionInfo",
         successMsg = "添加成功!";
       if (this.handelType == "1") {
@@ -591,15 +583,15 @@ export default {
       // 发起ajax请求
       if (dispatchType) {
         this.$store.dispatch(dispatchType, saveData).then(
-          res => {
+          (res) => {
             loading.close();
             this.$message({ type: "success", message: successMsg });
-            if(!deleteImg){
+            if (!deleteImg) {
               this.$emit("getAllQuestion");
               this.closeDialog();
             }
           },
-          err => {
+          (err) => {
             loading.close();
             this.$message({ type: "error", message: err.msg || "" });
           }
@@ -613,11 +605,12 @@ export default {
         text: "正在保存",
         spinner: "car-loading",
         customClass: "loading-box",
-        background: "rgba(234,237,244, 0.8)"
+        background: "rgba(234,237,244, 0.8)",
       });
       const formData = new FormData();
       const changeIndex = [];
-      const hasQuestionPic = this.descImages.length && this.descImages[0].status === 'ready';
+      const hasQuestionPic =
+        this.descImages.length && this.descImages[0].status === "ready";
       if (
         this.addMaintainQuestionForm.pqoList &&
         this.addMaintainQuestionForm.pqoList.length
@@ -627,34 +620,33 @@ export default {
             formData.append("file", item.file.raw);
             changeIndex.push(index);
           }
-          if(item.optionPicture){
-            item.optionPicture = item.optionPicture.replace(this.baseUrl, '');
-          }
         });
-        if(hasQuestionPic){
+        if (hasQuestionPic) {
           formData.append("file", this.descImages[0].raw);
         }
       }
       if (changeIndex.length || hasQuestionPic) {
         this.$store.dispatch("uploadMaterial", formData).then(
-          res => {
+          (res) => {
             if (res.code === 200) {
               changeIndex.forEach((item, index) => {
-                this.addMaintainQuestionForm.pqoList[item].optionPicture = res.data[index].storageId;
+                this.addMaintainQuestionForm.pqoList[item].optionPicture =
+                  res.data[index].storageId;
                 delete this.addMaintainQuestionForm.pqoList[item].file;
-              })
+              });
             }
-            if(hasQuestionPic){
-              this.addMaintainQuestionForm.questionPicture = res.data[res.data.length - 1].storageId;
+            if (hasQuestionPic) {
+              this.addMaintainQuestionForm.questionPicture =
+                res.data[res.data.length - 1].storageId;
             }
             this.saveQuestionInfo(loading);
           },
-          err => {
+          (err) => {
             loading.close();
             this.$message({ type: "error", message: err.msg || "" });
           }
         );
-      }else{
+      } else {
         this.saveQuestionInfo(loading);
       }
     },
@@ -676,7 +668,7 @@ export default {
         this.addMaintainQuestionForm.questionId = row;
         //查询所修改的试题数据
         this.$store.dispatch("selectExamQuestionInfo", row).then(
-          res => {
+          (res) => {
             this.tableLoading = false;
             if (res.code === 200) {
               if (res.data.pqoList && res.data.pqoList.length) {
@@ -701,7 +693,7 @@ export default {
               this.changeType(true);
             }
           },
-          err => {
+          (err) => {
             this.tableLoading = false;
             this.$message({ type: "error", message: err.msg || "" });
           }
@@ -711,50 +703,64 @@ export default {
     // 处理选项图片回显
     setDefaultImage(data) {
       if (data.questionPicture) {
-        data.questionPicture = this.baseUrl + data.questionPicture;
-        this.descImages.push({ url: data.questionPicture, status: "success" });
+        this.$util.com_getFileStream(data.questionPicture).then((res) => {
+          this.descImages.push({
+            url: res,
+            storageId: data.questionPicture,
+            status: "success",
+          });
+        });
       }
       if (data.pqoList && data.pqoList.length) {
-        data.pqoList.forEach(item => {
-          if(item.optionPicture){
-            if(item.optionPicture.indexOf(this.baseUrl) === -1){
-              item.optionPicture = this.baseUrl + item.optionPicture
-            }
+        data.pqoList.forEach((item) => {
+          let itemFile = { status: "success", storageId: item.optionPicture };
+          if (item.optionPicture) {
+            this.$util.com_getFileStream(item.optionPicture).then((res) => {
+              itemFile.url = res;
+            });
           }
-          item.file = { url: item.optionPicture, status: 'success' }
+          item.file = itemFile;
         });
       }
     },
     // 删除已上传的图片
-    deleteImage(id, type, index, isUpload){
+    deleteImage(id, type, index, isUpload) {
       const loading = this.$loading({
         lock: true,
         text: "正在删除",
         spinner: "car-loading",
         customClass: "loading-box",
-        background: "rgba(234,237,244, 0.8)"
+        background: "rgba(234,237,244, 0.8)",
       });
-      this.$store.dispatch('deleteQuestionImage', { storageId: id }).then(res => {
-        if(!isUpload){ loading.close(); }
-        if(res.code === 200){
-          if(type === 'title'){
-            this.deleteDescImg();
-            this.$message({ type: 'success', message: '删除成功' });
-            return
+      this.$store.dispatch("deleteQuestionImage", { storageId: id }).then(
+        (res) => {
+          if (!isUpload) {
+            loading.close();
           }
-          if(type === 'option' && this.addMaintainQuestionForm.pqoList[index]){
-            this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
-            this.addMaintainQuestionForm.pqoList[index]["file"] = null;
-            this.$message({ type: 'success', message: '删除成功' });
+          if (res.code === 200) {
+            if (type === "title") {
+              this.deleteDescImg();
+              this.$message({ type: "success", message: "删除成功" });
+              return;
+            }
+            if (
+              type === "option" &&
+              this.addMaintainQuestionForm.pqoList[index]
+            ) {
+              this.addMaintainQuestionForm.pqoList[index].optionPicture = "";
+              this.addMaintainQuestionForm.pqoList[index]["file"] = null;
+              this.$message({ type: "success", message: "删除成功" });
+            }
+            if (isUpload) {
+              this.saveQuestionInfo(loading, "deleteImg");
+            }
           }
-          if(isUpload){
-            this.saveQuestionInfo(loading, 'deleteImg');
-          }
+        },
+        (err) => {
+          loading.close();
+          this.$message({ type: "error", message: err.msg || "" });
         }
-      }, err => {
-        loading.close();
-        this.$message({ type: 'error', message: err.msg || '' });
-      });
+      );
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -769,8 +775,8 @@ export default {
           this.addMaintainQuestionForm["pqoList"].splice(0, pqoListLen);
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

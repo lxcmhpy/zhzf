@@ -21,10 +21,10 @@
     >
       <el-table-column type="selection" align="center"></el-table-column>
       <el-table-column prop="journalNo" label="记录编号" align="left" width="100px"></el-table-column>
-      <el-table-column prop="inspectionTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
-      <el-table-column prop="companyName" label="定位地点" align="center" min-width="220px"></el-table-column>
-      <el-table-column prop="routeName" label="路段名称" align="center" min-width="180px"></el-table-column>
-      <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px"></el-table-column>
+      <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
+      <el-table-column prop="address" label="定位地点" align="center" min-width="220px"></el-table-column>
+      <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
+      <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px"></el-table-column>
       <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
       <el-table-column prop="lawPerson" label="案件编号" align="center" min-width="140px"></el-table-column>
     </el-table>
@@ -46,6 +46,7 @@
   </el-dialog>
 </template>
 <script>
+import { getRecordListApi} from '@/api/supervision';
 export default {
   props: {},
   data() {
@@ -53,30 +54,7 @@ export default {
       visible: false,
       selectList: [],
       tableLoading: false,
-      tableData: [
-        {
-          journalNo: "11111111",
-          checkType: "安全检查",
-          checkCategory: "公路巡查",
-          inspectionTime: "2020-08-03 14:00 2020-08-03 18:00",
-          companyName: "云南省公路路政总队昆磨支队",
-          routeName: "S210     红砖厂路",
-          routeInfo: "K100+50m至K100+55m",
-          routeSituation: "正常",
-          lawPerson: "CN325345436"
-        },
-        {
-          journalNo: "34235534",
-          checkType: "安全检查",
-          checkCategory: "公路巡查",
-          inspectionTime: "2020-08-03 14:00 2020-08-03 18:00",
-          companyName: "北京市交通运输管理局",
-          routeName: "S210     红砖厂路",
-          routeInfo: "K100+50m至K100+55m",
-          routeSituation: "正常",
-          lawPerson: "CN325345436"
-        },
-      ],
+      tableData: [],
       currentPage: 1, //当前页
       pageSize: 10,   //pagesize
       totalPage: 0,   //总页数
@@ -104,9 +82,25 @@ export default {
       this.selectList = val;
     },
     // 关联
-    submit() {},
-    showModal(type, data) {
+    submit() {
+       let data= [];
+      data=this.selectList;
+      this.$emit("returnDataRecord",data);
+      this.visible = false;
+    },
+     showModal() {
       this.visible = true;
+      let data={
+        //businessType:businessType
+      }
+       getRecordListApi(data).then(res => {
+        if (res.code == "200") {
+          this.tableData = res.data.records;
+          //this.totalPage = res.data.total;
+        }
+      }, err => {
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

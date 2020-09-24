@@ -45,17 +45,31 @@
           highlight-current-row
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="55" class="selection" :selectable="checkboxInit"></el-table-column>
+          <el-table-column type="selection" width="55" class="selection"></el-table-column>
           <el-table-column prop="title" label="标题" align="center"></el-table-column>
           <el-table-column prop="source" label="来源" align="center"></el-table-column>
           <el-table-column prop="publishTime" label="发布日期" align="center"></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
             <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
           </el-table-column>
-          <el-table-column prop="remark" label="审核意见" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column
+            prop="auditComment"
+            label="审核意见"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="openPreview(scope.row)">预览</el-button>
+              <router-link
+                target="_blank"
+                :to="{path:'/details',query:{content: scope.row.content,
+          files: JSON.stringify(scope.row.fileUploadVos),
+          title: scope.row.title,
+          source: scope.row.source,
+          time: scope.row.publishTime}}"
+              >
+                <el-button type="text">预览</el-button>
+              </router-link>
               <el-button
                 v-if="scope.row.state===1 || scope.row.state===4"
                 type="text"
@@ -66,7 +80,11 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button
+                v-if="scope.row.state===2 && canApprove"
+                type="text"
+                @click="onApprove(scope.row)"
+              >审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -118,6 +136,7 @@ export default {
       total: 0, //总页数
       allStatus: { 1: "草稿", 2: "待审核", 3: "已通过", 4: "已退回" },
       multipleSelection: [],
+      canApprove: false,
     };
   },
   components: {
@@ -157,21 +176,25 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
-      debugger;
+      this.load();
     },
-    openPreview(row) {
-      let data = {
-        content: row.content,
-        files: JSON.stringify(row.fileUploadVos),
-        title: row.title,
-        source: row.source,
-        time: row.publishTime,
+    openPreview(item) {
+      let oldRouter = {
+        name: this.$route.name,
+        // path: this.$route.path
       };
-      window.open(
-        iLocalStroage.gets("CURRENT_BASE_URL").NOTICE_WEB_HOST +
-          "#/details?" +
-          vm.$qs.stringify(data)
-      );
+      let route = this.$router.resolve({
+        path: "/details",
+        query: {
+          content: item.content,
+          files: JSON.stringify(item.fileUploadVos),
+          title: item.title,
+          source: item.source,
+          time: item.publishTime,
+          oldRouter: JSON.stringify(oldRouter),
+        },
+      });
+      window.open(route.href, "_blank");
     },
     onAdd() {
       let data = {
@@ -209,8 +232,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = saveOrUpdateNotice(data);
-      _this.$message({ type: "success", message: "操作成功!" });
+      let res = await saveOrUpdateNotice(data);
+      this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     /* handleCurrentChange(row) {
       if (this.multipleSelection.length > 0) {
@@ -230,31 +254,49 @@ export default {
       this.multipleSelection = val;
     },
     async onDelete() {
+      let ids = [];
       if (this.multipleSelection.length < 1) {
         this.$message({ type: "warning", message: "请选择需要删除的记录" });
         return;
       }
-      let _this = this;
-      let ids = [];
-      this.multipleSelection.forEach((item) => {
+      let flag = false; //标记是否有不满足提交的记录，如不满足，则返回，不允许操作
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        let item = this.multipleSelection[i];
+        if (item.state !== 1 && item.state !== 4) {
+          flag = true;
+          break;
+        }
         ids.push(item.id);
-      });
+      }
+      if (flag) {
+        this.$message({
+          type: "error",
+          message: "只允许删除草稿状态或者退回状态的记录!",
+        });
+        return;
+      }
 
       let res = await deleteNoticeById(ids);
       this.$message({ type: "success", message: "删除成功!" });
       this.load();
     },
-    checkboxInit(row, index) {
-      //不可勾选
-      if (row.state != 1 && row.state != 4) return 0;
-      else return 1; //可勾选
-    },
+    // checkboxInit(row, index) {
+    //   //不可勾选
+    //   if (row.state != 1 && row.state != 4) return 0;
+    //   else return 1; //可勾选
+    // },
     load() {
       this.getDataList({ type: this.type });
     },
   },
   created() {},
   mounted() {
+    let user = iLocalStroage.gets("userInfo");
+    let _this = this;
+    user.roles.forEach((item) => {
+      if (item.name === "信息公示审核") _this.canApprove = true;
+    });
+    debugger;
     this.searchForm.type = this.type;
     this.load();
   },

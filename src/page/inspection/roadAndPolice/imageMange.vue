@@ -5,14 +5,17 @@
         <div class="search">
           <el-form :inline="true" :model="evidenceForm" ref="evidenceForm" label-width="80px">
             <el-form-item>
-              <el-button type="primary" icon="add" size="medium" @click="handleAdd" v-show="!caseApproval && !IsLawEnforcementSupervision">添加记录</el-button>
+              <el-button type="primary" size="medium" @click="goBack">返回</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" icon="add" size="medium" @click="handleAdd">添加记录</el-button>
             </el-form-item>
             <!-- <el-form-item label="证据名称" prop="fileName">
               <el-input v-model="evidenceForm.fileName"></el-input>
             </el-form-item> -->
-            <el-form-item label="证据类型" prop="docDataId">
-              <el-select v-model="evidenceForm.docDataId" clearable>
-                <el-option v-for="(item,index) in evTypeOptions" :key="index" :label="item" :value="item"></el-option>
+            <el-form-item label="证据类型" prop="docId">
+              <el-select v-model="evidenceForm.docId" clearable>
+                <el-option v-for="(item,index) in evTypeOptions" :key="index" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item>
@@ -26,7 +29,7 @@
         <el-table :data="tableData" stripe height="100%">
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
           <!-- <el-table-column prop="fileName" label="证据名称" align="center"></el-table-column> -->
-          <el-table-column prop="docDataId" label="类型" align="center"></el-table-column>
+          <el-table-column prop="docId" label="类型" align="center" :formatter="format"></el-table-column>
           <el-table-column prop="storageId" label="详情" align="center">
             <template slot-scope="scope">
               <img :src="host+scope.row.storageId" width="40" height="40" @click.stop="imgDetail(scope.row)" />
@@ -35,18 +38,11 @@
           <el-table-column prop="status" label="状态" align="center">
             <template slot-scope="scope">
               <label>
-                <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="0" active-color="#13ce66" inactive-color="#ff4949" @change="updateEviBySwitch(scope.row)" :disabled="caseApproval || IsLawEnforcementSupervision"></el-switch>
+                <el-switch v-model="scope.row.status" :active-value="'1'" :inactive-value="'0'" active-color="#13ce66" inactive-color="#ff4949" @change="updateEviBySwitch(scope.row)"></el-switch>
               </label>
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="保存日期" align="center"></el-table-column>
-          <!-- 
-          <el-table-column label="操作" align="center" fixed="right">
-            <template slot-scope="scope">
-              <el-button type="text" icon="el-icon-edit" @click.stop="handleEdit(scope.$index, scope.row)" :disabled="caseApproval || IsLawEnforcementSupervision">编辑</el-button>
-              <el-button type="text" @click.stop="getFileStream(scope.row,scope.row.evPath)">下载</el-button>
-            </template>
-          </el-table-column> -->
         </el-table>
       </div>
       <div class="paginationF">
@@ -56,86 +52,28 @@
     <!-- 添加弹出框 -->
     <el-dialog title="添加证据材料" :visible.sync="addVisible" width="40%" v-loading="addLoading" :before-close="handleClose">
       <div>
-        <div style="float: left;width: 75%;position:relative">
-          <el-upload class="upload-demo" drag :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple style="position: absolute;left: 0; top: 0;z-index:2">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              <em>点击上传附件</em>
-            </div>
-            <div
-              class="el-upload__tip"
-              slot="tip"
-              style="text-align: center"
-            >只能上传jpg/png文件，且不超过500kb
-            </div>
-          </el-upload>
-       </div>
-        <div style="float: right;width: 25%;height:400px">
+        <div style="height:auto">
           <el-form ref="form" :model="form" :rules="addrules">
             <div style="font-size:16px;font-weight:500;">证据类型</div>
-            <el-form-item prop="docDataId" label-width="0">
+            <el-form-item prop="radio" label-width="0">
               <el-radio-group v-model="form.radio">
-                <el-radio style="margin-top:10px;width: 100%;" v-for="(item,index) in evTypeOptions" :key="index" :label="item" :value="item">{{item}}</el-radio>
+                <el-radio v-for="(item,index) in evTypeOptions" :key="index" :label="item.value">{{item.label}}</el-radio>
               </el-radio-group>
-
             </el-form-item>
           </el-form>
         </div>
-        <div style="margin-left: 42%;clear:both">
-          <el-button size="medium" type="primary" @click="submitForm('form')">提 交</el-button>
-          <el-button size="medium" @click="addVisible=false">取 消</el-button>
-        </div>
-      </div>
-    </el-dialog>
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑证据" :visible.sync="editVisible" width="60%" v-loading="editLoading" :before-close="handleClose">
-      <div>
-        <div style="float: left;width: 45%">
-          <el-form :model="uForm">
-            <!-- <img :src="host+uForm.evPath" width="350px" height="400" align="center"/> -->
-            <img v-if="uForm.evType =='照片'" :src="host+uForm.evPath" width="350px" height="400" align="center" />
-            <video v-if="uForm.evType =='音视频'" :src="host+uForm.evPath" controls="controls" width="350px" height="400">your browser does not support the video tag</video>
-            <div v-if="uForm.evType=='其他附件'" style="text-align: center;margin-top:100px;">
-              <div>
-                <i class="el-icon-document" style="font-size:45px;"></i>
-              </div>
-              <div style="margin: 15px;line-height: 35px">{{uForm.fileName}}</div>
+        <div slot="footer" class="dialog-footer">
+          <el-upload class="upload-demo" :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple>
+            <el-button size="small" type="primary">选择文件</el-button>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb
             </div>
-          </el-form>
+          </el-upload>
         </div>
-        <div style="float: right;width: 55%">
-          <el-form ref="uForm" :model="uForm" :rules="addrules">
-            <el-form-item label="证据类型" prop="evType" label-width="113px">
-              <el-select v-model="uForm.evType" style="width: 100%">
-                <el-option v-for="(item,index) in evTypeOptions" :key="index" :label="item" :value="item"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="证据名称" prop="fileName" label-width="113px">
-              <el-input v-model="uForm.fileName" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="记 录 人" prop="userName" label-width="113px">
-              <el-input v-model="uForm.userName" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="记录时间" prop="recordTime" label-width="113px">
-              <el-date-picker v-model="uForm.recordTime" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期时间" style="width: 100%"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="相关地点" prop="recordPlace" label-width="113px">
-              <el-input v-model="uForm.recordPlace" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="状  态" prop="status" label-width="113px">
-              <el-radio-group v-model="uForm.status">
-                <el-radio :label="0">有效</el-radio>
-                <el-radio :label="1">无效</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="备  注" prop="note" label-width="113px">
-              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入" v-model="uForm.note"></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div style="margin-left: 40%">
-          <el-button size="medium" type="primary" @click="submitUForm('uForm')">提 交</el-button>
-          <el-button size="medium" @click="editVisible=false">取 消</el-button>
+
+        <div style="margin-left: 42%;clear:both">
+          <el-button size="medium" @click="addVisible=false">取 消</el-button>
+          <el-button size="medium" type="primary" @click="submitForm('form')">确认上传</el-button>
+
         </div>
       </div>
     </el-dialog>
@@ -154,7 +92,6 @@ import evidenceCatalogue from "@/page/caseHandle/case/form/evidenceCatalogue.vue
 import { uploadCommon, findCommonFileApi } from "@/api/upload";
 
 import {
-  getCaseBasicInfoApi,
   getFileStreamByStorageIdApi,
 } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage.js";
@@ -175,7 +112,7 @@ export default {
       fileList: [],
       host: "",
       evfile: "",
-      evTypeOptions: ['全部', '车辆', '驾驶人/企业', '初检称重', '卸货复检', '处罚决定', '其他'],
+      evTypeOptions: [{ label: '车辆照片证据', value: '000001' }, { label: '驾驶人/企业', value: '000002' }, { label: '初检称重', value: '000003' }, { label: '卸货复检', value: '000004' }, { label: '处罚决定', value: '000005' }, { label: '其他', value: '000006' }],
       statusOptions: [],
       value: "",
       //activeName: '1',
@@ -187,10 +124,11 @@ export default {
       userNameList: [],
       evidenceForm: {
         fileName: "",
-        evType: "",
+        docId: "",
         status: "",
       },
       form: {
+        radio: '',
         id: "",
         caseId: "",
         fileName: "",
@@ -211,6 +149,7 @@ export default {
       editVisible: false,
       addLoading: false,
       editLoading: false,
+
       addrules: {
         evType: [
           {
@@ -230,10 +169,11 @@ export default {
       },
       videoImgSrc: "",
       myVideoSrc: "",
+      imgListUpload: []
     };
   },
   computed: {
-    ...mapGetters(["caseId", "caseApproval", "IsLawEnforcementSupervision"]),
+    ...mapGetters(["caseId", "caseApproval", "inspectionOverWeightId"]),
   },
   components: {
     caseSlideMenu,
@@ -246,15 +186,11 @@ export default {
       let _this = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          _this.insertEvi();
-        }
-      });
-    },
-    submitUForm(formName) {
-      let _this = this;
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          _this.updateEvi();
+          this.imgListUpload.forEach(element => {
+            this.uploadImg(element)
+          });
+          this.addVisible = false;
+          this.getEviList(1)
         }
       });
     },
@@ -273,30 +209,11 @@ export default {
       this.form = {};
       this.addVisible = true;
     },
-    handleEdit(index, row) {
-      const item = this.tableData[index];
-      console.log("编辑证据", item);
-      this.uForm = {
-        id: item.id,
-        caseId: item.caseId,
-        fileName: item.fileName,
-        evPath: item.evPath,
-        evType: item.evType,
-        userName: item.userName,
-        recordTime: item.recordTime,
-        recordPlace: item.recordPlace,
-        status: item.status,
-        note: item.note,
-      };
-      this.editVisible = true;
-    },
     //表单筛选
     getEviList(index) {
       let data = {
-        caseId: '56f0428094e2d06e17fb3ad97a13b686',
-        fileName: this.evidenceForm.fileName,
-        docDataId: this.evidenceForm.docDataId,
-        status: this.evidenceForm.status,
+        caseId: this.inspectionOverWeightId.id,
+        docId: this.evidenceForm.docId,
         current: index || this.currentPage,
         size: this.pageSize,
       };
@@ -305,55 +222,55 @@ export default {
       findCommonFileApi(data).then((res) => {
         console.log("res", res);
         _this.tableData = res.data.records;
-        _this.total = res.data.pages
+        _this.total = res.data.total
       });
     },
     saveFile(param) {
-      console.log(param);
-      // this.formUpload = {
-      (this.form.file = param.file),
-        (this.form.caseId = this.caseId),
-        (this.form.docId = "000"),
-        (this.form.category = "证据"),
-        (this.form.userId = iLocalStroage.gets("userInfo").id),
-        (this.form.fileName = param.file.name);
+      this.imgListUpload.push(param)
+      // console.log(param);
+      // // this.formUpload = {
+      // (this.form.file = param.file),
+      //   (this.form.caseId = this.caseId),
+      //   (this.form.docId = "000"),
+      //   (this.form.category = "证据"),
+      //   (this.form.userId = iLocalStroage.gets("userInfo").id),
+      //   (this.form.fileName = param.file.name);
+      // // }
+
+      // //给证据类型赋值
+      // let fileType = this.$util.getFileType(param.file.name);
+      // console.log("给证据类型赋值", fileType);
+      // this.$set(this.form, "evType");
+      // if (fileType == "image") {
+      //   //图片
+      //   console.log("是图片呀");
+      //   this.form.evType = "照片";
+      // } else if (fileType == "video" || fileType == "radio") {
+      //   this.form.evType = "音视频";
+      // } else {
+      //   this.form.evType = "其他附件";
       // }
-
-      //给证据类型赋值
-      let fileType = this.$util.getFileType(param.file.name);
-      console.log("给证据类型赋值", fileType);
-      this.$set(this.form, "evType");
-      if (fileType == "image") {
-        //图片
-        console.log("是图片呀");
-        this.form.evType = "照片";
-      } else if (fileType == "video" || fileType == "radio") {
-        this.form.evType = "音视频";
-      } else {
-        this.form.evType = "其他附件";
-      }
-      //生成缩略图
-      let videoURL = null;
-      let windowURL = window.URL || window.webkitURL;
-      if (param.file && fileType == "video") {
-        videoURL = windowURL.createObjectURL(param.file);
-        this.myVideoSrc = videoURL;
-        let _this = this;
-        setTimeout(function () {
-          _this.makeVideoImg();
-        }, 500);
-      }
+      // //生成缩略图
+      // let videoURL = null;
+      // let windowURL = window.URL || window.webkitURL;
+      // if (param.file && fileType == "video") {
+      //   videoURL = windowURL.createObjectURL(param.file);
+      //   this.myVideoSrc = videoURL;
+      //   let _this = this;
+      //   setTimeout(function () {
+      //     _this.makeVideoImg();
+      //   }, 500);
+      // }
     },
-    //插入证据表
-    insertEvi() {
-
+    //上传
+    uploadImg(param) {
       var fd = new FormData();
       fd.append("file", param.file);
-      fd.append("category", '行政检查');
+      fd.append("category", '路警联合;图片');
       fd.append("fileName", param.file.name);
-      fd.append('status', '文书')//传图片状态
-      fd.append('caseId', this.inspectionOrderId)//传记录id
-      fd.append('docId', currentFileId)//传文书id
+      fd.append('status', 1)//传图片状态
+      fd.append('caseId', this.inspectionOverWeightId.id)//传记录id
+      fd.append('docId', this.form.radio)//传类型代码
 
       let _this = this;
       uploadCommon(fd).then((res) => {
@@ -373,54 +290,18 @@ export default {
     },
     //通过switch开关修改状态
     updateEviBySwitch(row) {
-      console.log("data", row);
-      let data = {
-        id: row.id,
-        caseId: row.caseId,
-        fileName: row.fileName,
-        evType: row.evType,
-        userName: row.userName,
-        recordTime: row.recordTime ? row.recordTime : "",
-        recordPlace: row.recordPlace,
-        status: row.status,
-        note: row.note,
-      };
       let _this = this;
-      this.$store.dispatch("saveOrUpdateEvidence", data).then((res) => {
-        if (res.code == 200) {
-          // _this.$message({
-          //   message: "编辑成功！",
-          //   type: "success"
-          // });
-          _this.editVisible = false;
-          _this.currentPage = 1;
-          _this.getEviList();
-        } else {
-          _this.$message.error("出现异常，添加失败！");
-        }
-      });
-    },
-    //修改证据
-    updateEvi() {
-      let data = {
-        id: this.uForm.id,
-        caseId: this.uForm.caseId,
-        fileName: this.uForm.fileName,
-        evType: this.uForm.evType,
-        userName: this.uForm.userName,
-        recordTime: this.uForm.recordTime ? this.uForm.recordTime : "",
-        recordPlace: this.uForm.recordPlace,
-        status: this.uForm.status,
-        note: this.uForm.note,
-      };
-      let _this = this;
-      this.$store.dispatch("saveOrUpdateEvidence", data).then((res) => {
+
+      console.log(row)
+      debugger
+      uploadCommon(fd).then((res) => {
+        console.log("1111111", res);
         if (res.code == 200) {
           _this.$message({
-            message: "编辑成功！",
+            message: "添加成功！",
             type: "success",
           });
-          _this.editVisible = false;
+          _this.addVisible = false;
           _this.currentPage = 1;
           _this.getEviList();
         } else {
@@ -495,21 +376,6 @@ export default {
     imgDetail(row) {
       this.$refs.evidenceImageDetailRef.showModal(row);
     },
-    //查询记录人列表
-    findUserNameList() {
-      let data = {
-        id: this.caseId,
-      };
-      getCaseBasicInfoApi(data).then((res) => {
-        if (res.code == 200) {
-          console.log("1456", res);
-          this.userNameList = res.data.staff.split(",");
-          console.log("this.userNameList", this.userNameList);
-        } else {
-          console.log("fail");
-        }
-      });
-    },
     //生成视频缩略图
     makeVideoImg() {
       const video = document.getElementById("myVideo");
@@ -582,13 +448,40 @@ export default {
       // 然后移除
       document.body.removeChild(eleLink);
     },
+    goBack() {
+      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      this.$router.push({
+        name: 'inspection_overWeightForm',
+      });
+    },
+    format(row, column) {
+      switch (row.docId) {
+        case '000001':
+          return '车辆照片证据';
+          break;
+        case '000002':
+          return '驾驶人/企业';
+          break;
+        case '000003':
+          return '初检称重';
+          break;
+        case '000004':
+          return '卸货复检';
+          break;
+        case '000005':
+          return '处罚决定';
+          break;
+        case '000006':
+          return '其他';
+          break;
+      }
+    },
   },
   mounted() {
     this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
   },
   created() {
     this.getEviList();
-    this.findUserNameList();
   },
 };
 </script>

@@ -78,6 +78,7 @@ export default {
         { value: "5", label: "代理人" }
       ],
       handleType:"",
+      docTypeId:'',
     };
     
   },
@@ -90,6 +91,7 @@ export default {
       this.docData = data;
       this.handleType = handleType;
       this.caseLinktypeId = caseLinktypeId;
+      this.docTypeId = data.docId;
       this.findPersonAndRelationByCaseId();
     },
     //关闭弹窗的时候清除数据
@@ -171,7 +173,8 @@ export default {
     findAskNum(name){
       let data = {
         caseId:this.caseId,
-        name:name
+        name:name,
+        docTypeId:this.docTypeId
       }
       console.log('询询问次数',data)
       findAskNumApi(data).then(res=>{

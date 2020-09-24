@@ -78,7 +78,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: this.value3+"年度路政案件数量同期对比",
+          text: this.value3+"年度案件数量同期对比",
           left: "center"
         },
         tooltip: {

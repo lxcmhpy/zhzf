@@ -121,6 +121,7 @@
                 :multiple="true"
                 :limit="30"
                 :file-list="fileList"
+                :on-preview="preview_pdf"
               >
                 <el-button size="small" type="primary">上传</el-button>
               </el-upload>
@@ -185,6 +186,13 @@ export default {
     caseListSearch,
   },
   methods: {
+    preview_pdf(file){
+      for (let i = 0; i < this.fileList.length; i++) {
+        if(file.name == this.fileList[i].name){
+            window.open(this.fileList[i].url);
+        }       
+      }
+    },
     submitForm(addpdf_form) {
       this.$refs[addpdf_form].validate((valid) => {
         if (valid) {

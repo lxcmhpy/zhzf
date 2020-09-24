@@ -37,7 +37,7 @@
           <el-row style="margin-bottom:10px;">
             <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
             <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
-            <el-button type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
+            <el-button v-if="canApprove" type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
           </el-row>
         </el-form>
       </div>
@@ -74,7 +74,11 @@
                 type="text"
                 @click="onSubmit(scope.row)"
               >提交</el-button>
-              <el-button v-if="scope.row.state===2" type="text" @click="onApprove(scope.row)">审核</el-button>
+              <el-button
+                v-if="scope.row.state===2 && canApprove"
+                type="text"
+                @click="onApprove(scope.row)"
+              >审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -97,7 +101,7 @@
       :visible.sync="detailVisible"
       @close="detailVisible = false"
       :close-on-click-modal="false"
-      width="30%"
+      width="35%"
       class="detail-dialog"
     >
       <table class="table" width="100%" cellspacing="0">
@@ -136,7 +140,7 @@
       :isSelection="true"
       :dialogVisible="dialogVisible"
       title="新增"
-      :isPagination="false"
+      :isPagination="true"
     />
     <approve ref="approveDialog" @handle-data="handleData"></approve>
 
@@ -216,6 +220,7 @@ export default {
       ],
       form: {},
       detailVisible: false,
+      canApprove: false,
     };
   },
   methods: {
@@ -251,6 +256,7 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.load();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -329,8 +335,9 @@ export default {
       this.$refs.approveDialog.showModal(row);
     },
     async handleData(data) {
-      let res = update(data);
+      let res = await update(data);
       this.$message({ type: "success", message: "操作成功!" });
+      this.load();
     },
     onApproveBatch() {
       if (this.multipleSelection.length < 1) {
@@ -370,28 +377,35 @@ export default {
   },
   created() {},
   mounted() {
+    let user = iLocalStroage.gets("userInfo");
+    let _this = this;
+    user.roles.forEach((item) => {
+      if (item.name === "信息公示审核") _this.canApprove = true;
+    });
     this.load();
   },
 };
 </script>
 <style lang="scss" scoped>
 .person-management {
-  table {
-    border: 1px solid #ecebeb;
-    min-height: 30px;
-    line-height: 30px;
-    text-align: center;
-    border-collapse: collapse;
-    padding: 2px;
-  }
-  table tr th,
-  table tr td {
-    border: 1px solid #ecebeb;
-    padding: 10px;
-  }
-  table .title {
-    font-weight: bold;
-    background-color: #fbfafa;
+  .detail-dialog {
+    .table {
+      border: 1px solid #ecebeb;
+      min-height: 30px;
+      line-height: 30px;
+      text-align: left;
+      border-collapse: collapse;
+      padding: 2px;
+    }
+    .table tr th,
+    .table tr td {
+      border: 1px solid #ecebeb;
+      padding: 10px;
+    }
+    .table .title {
+      font-weight: bold;
+      background: #f8f6f6;
+    }
   }
 }
 </style>

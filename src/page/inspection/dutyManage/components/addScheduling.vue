@@ -70,7 +70,7 @@
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="执法人员" prop="lawEnforcementPer">
+        <el-form-item label="执法人员" prop="lawPersonListIndex">
           <el-select v-model="addSchedulingForm.lawPersonListIndex" multiple>
             <el-option
               v-for="(item, index) in lawPersonList"
@@ -123,7 +123,9 @@ export default {
         schedulePersonnel: "",
         schedulePersonnelId: "",
         patrolRoute: "",
-        scheduleTime: []
+        scheduleTime: [],
+        lawEnforcementOfficials: "",
+        lawEnforcementOfficialsIds: ""
       },
       lawPersonList: [],
       rules: {
@@ -211,6 +213,11 @@ export default {
                     message: res.msg
                   });
                   this.$parent.getScheduleList();
+                }else if( res.code == 500 ){
+                  this.$message({
+                    type: "warning",
+                    message: res.msg
+                  });
                 }
               },
               (err) => { }
@@ -225,6 +232,11 @@ export default {
                   });
                   this.$parent.getScheduleList();
                   this.$parent.clearSelectSchedule();
+                }else if(res.code == 500){
+                  this.$message({
+                    type: "warning",
+                    message: res.msg
+                  });
                 }
               },
               (err) => { }
@@ -263,11 +275,11 @@ export default {
       }
       
       this.schedulingDay = data.day;
-
       this.visible = true;
-      this.$nextTick(() => {
-        this.addSchedulingForm = formData;
-      })
+      this.addSchedulingForm = formData;
+      this.$nextTick(()=>{
+        this.$refs.addSchedulingRef.resetFields();
+      });
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

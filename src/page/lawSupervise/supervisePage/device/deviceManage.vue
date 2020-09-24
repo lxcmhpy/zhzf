@@ -249,7 +249,9 @@
                   :http-request="saveImageFile"
                   :file-list="imageList"
                   :disabled="formReadOnly"
-                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')">
+                  :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
+                  :on-change="(file, fileList)=>changeDeviceImage(file, fileList,'图片')"
+                  >
                   <i class="el-icon-plus"></i>
                 </el-upload>
               </el-form-item>
@@ -262,6 +264,7 @@
                   :on-preview="handlePDFPreview"
                   multiple
                   :on-remove="(file, fileList)=>deleteFile(file, fileList,'附件')"
+                  :on-change="(file, fileList)=>changeDeviceImage(file, fileList,'图片')"
                   :limit="3"
                   :disabled="formReadOnly"
                   :file-list="attachList">
@@ -397,6 +400,14 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
             }
         }
       },
+      // 选择装备图片
+      changeDeviceImage(file, fileList,type) {
+        if(type=="图片"){
+            this.imageList = fileList
+        }else{
+            this.attachList = fileList
+        }
+      },
       //删除附件
       deleteFile(file, fileList,type){
         let _this = this
@@ -417,7 +428,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
       saveImageFile(param){
         this.saveFile(param,'图片')
       },
-      saveFile (param,type) {
+      async saveFile (param,type) {
         var fd = new FormData()
         fd.append("file", param.file);
         fd.append("category", '执法监管');
@@ -426,26 +437,20 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         fd.append('caseId', param.file.name+new Date().getTime())//传记录id
         fd.append('docId', param.file.name+new Date().getTime())//传记录id
         let _this = this
-        upload(fd).then(
-            res => {
-              if(type=="图片"){
-                _this.imageList.push({
-                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
-                  storageId:res.data[0].storageId,
-                  name:res.data[0].fileName
-                });
-              }else{
-                 _this.attachList.push({
-                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+res.data[0].storageId,
-                  storageId:res.data[0].storageId,
-                  name:res.data[0].fileName
-                });
-              }
-            },
-            error => {
-                console.log(error)
-            }
-        );
+        let res = await upload(fd)
+        if(type=="图片"){
+            this.imageList.forEach(p=>{
+                if(p.uid===param.file.uid){
+                    p.storageId=res.data[0].storageId
+                }
+            })
+        }else{
+            this.attachList.forEach(p=>{
+                if(p.uid===param.file.uid){
+                    p.storageId=res.data[0].storageId
+                }
+            })
+        }
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
@@ -645,20 +650,18 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
             _this.deviceDate=deviceDate
             if(res.data.fileList){
               res.data.fileList.forEach(item=>{
-              if(item.status=='图片'){
-                _this.imageList.push({
-                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
-                  storageId:item.storageId,
-                  name:item.name
-                })
-              }else{
-                _this.attachList.push({
-                  url:iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST+'/'+item.storageId,
-                  storageId:item.storageId,
-                  name:item.name
-                })
-              }
-            })
+                if(item.status=='图片'){
+                    _this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
+                        item.url = res
+                        _this.imageList.push(item)
+                    });
+                }else{
+                    _this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
+                        item.url = res
+                        _this.attachList.push(item)
+                    });
+                }
+              })
             }
             _this.visible=true
             if(_this.addForm.deviceType=='01'){
