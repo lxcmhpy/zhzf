@@ -27,14 +27,14 @@
               <el-row>
                 <div class="bt">案件类型</div>
               </el-row>
-                <el-row style="text-align:center;overflow-y: hidden;overflow-x: auto;height: 153px;" >
-                  <el-col class="case" v-for="(item,i) in caseTypeCon" :key="i">
-                    <img src="../../../../static/images/map/一般案件.png" style="height:60px;width:60px;">
-                    <div class="type">{{item.name}}</div>
-                    <div id="ybaj" class="count">{{item.value}}</div>
-                    <div class="dw">例</div>
-                  </el-col>
-                </el-row>
+              <el-row style="text-align:center;overflow-y: hidden;overflow-x: auto;height: 153px;">
+                <el-col class="case" v-for="(item,i) in caseTypeCon" :key="i">
+                  <img src="../../../../static/images/map/一般案件.png" style="height:60px;width:60px;">
+                  <div class="type">{{item.name}}</div>
+                  <div id="ybaj" class="count">{{item.value}}</div>
+                  <div class="dw">例</div>
+                </el-col>
+              </el-row>
             </el-row>
             <el-row class="left_2">
               <el-row>
@@ -57,10 +57,10 @@
                     <div class="ajbjl">案件办结率</div>
                   </el-row>
                   <el-row>
-                    <div style="width:200px" v-for="(item,i) in caseStatusData" :key="i">
-                      <span class="sl" v-if="item.name == '已结案'">{{item.value}}</span>
+                    <div style="width:200px">
+                      <span class="sl">{{complete}}</span>
                       <span class="dw" style="margin-left:0px;">例/</span>
-                      <span class="sl2" v-if="item.name == '宗案件'">{{item.value}}</span>
+                      <span class="sl2">{{all}}</span>
                       <span class="dw" style="margin-left:0px;">例</span>
                     </div>
                   </el-row>
@@ -107,36 +107,15 @@
                 <el-row>
                   <el-col :span="12"><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;">
                   </el-col>
-                  <el-col :span="12"><img src="../../../../static/images/map/执行金额.png" style="height:80px;width:100px;">
-                  </el-col>
-
                 </el-row>
                 <el-row>
                   <el-col :span="12">
                     <div class="type" style="height:30px;width:100px;margin-left:25px;">【 处罚金额 】</div>
                   </el-col>
                   <el-col :span="12">
-                    <div class="type" style="height:30px;width:100px;margin-left:25px;">【 执行金额 】</div>
-                  </el-col>
-
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <div class="count" style="height:40px;width:100px;margin-left:25px;">32682</div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="count" style="height:40px;width:100px;margin-left:25px;">248292</div>
-                  </el-col>
-
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
+                    <div class="count" style="text-align:center;height:40px;width:100px;margin-left:25px;">{{penalty}}</div>
                     <div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div>
                   </el-col>
-                  <el-col :span="12">
-                    <div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div>
-                  </el-col>
-
                 </el-row>
               </el-row>
             </el-row>
@@ -162,41 +141,47 @@
   import "echarts/lib/component/toolbox";
   import "echarts/lib/component/tooltip";
   import "../../../../static/css/animate.min.css";
-  import {lawCaseApi} from '@/api/analysisManage.js'
+  import {lawCaseApi} from '@/api/analysis/analysisManage.js'
 
   export default {
     data() {
       return {
-        caseTypeCon:[],
-        incidentTrend:[],
+        penalty:'',
+        all: '',
+        complete: '',
+        caseTypeCon: [],
+        incidentTrend: [],
         data1: [],
         data2: [],
-        carsData:{
-          xAxis:[],
-          series:[]
+        carsData: {
+          xAxis: [],
+          series: []
         },
-        legendTrend:[],
-        trendYear:'',
-        trendYearNew:'',
-        trendYearDate:[],
-        trendYearDateNew:[],
-        trendYearNewX:[],
-        caseStatusData:[]
+        legendTrend: [],
+        trendYear: '',
+        trendYearNew: '',
+        trendYearDate: [],
+        trendYearDateNew: [],
+        trendYearNewX: [],
+        caseStatusData: [],
+        caseNumber: [],
+        caseNumberXData: [],
+        caseNumberSeries: []
       };
     },
     methods: {
-      getData(){
+      getData() {
         let that = this;
         let param = {
-          organId:JSON.parse(localStorage.getItem('userInfo')).organId
+          organId: JSON.parse(localStorage.getItem('userInfo')).organId
         };
         lawCaseApi(param).then(res => {
-          if(res.code == 200){
+          if (res.code == 200) {
             this.caseTypeCon = res.data.typeOfCase;
             this.incidentTrend = res.data.incidentTrend;
-            Object.keys(res.data.incidentTrend).forEach(function(element,index){
+            Object.keys(res.data.incidentTrend).forEach(function (element, index) {
               res.data.incidentTrend[element].map(item => {
-                if(index == 0) {
+                if (index == 0) {
                   that.trendYear = element
                   that.trendYearDate.push(item.value)
                 } else if (index == 1) {
@@ -207,9 +192,22 @@
               })
             })
             this.caseStatusData = res.data.caseStatus
-            this.trend()
+            res.data.caseStatus.map(item => {
+              if (item.name == '已结案') {
+                that.complete = item.value
+              } else if (item.name == '总案件') {
+                that.all = item.value
+              }
+            });
+            //执法机构案件数量
+            res.data.caseNumber.map(item => {
+              that.caseNumberSeries.push(item.value)
+              that.caseNumberXData.push(item.name)
+            })
+            that.penalty = res.data.confiscated[0].value
+            this.trend()  //年度案发趋势
+            this.caseNumberFun()//执法机构案件数量
           }
-
         });
         err => {
           console.log(err);
@@ -782,152 +780,152 @@
 
           var handleEvents = {
 
-          resetOption: function (i, o, n) {
-            var breadcrumb = this.createBreadcrumb(n);
+            resetOption: function (i, o, n) {
+              var breadcrumb = this.createBreadcrumb(n);
 
-            var j = name.indexOf(n);
-            var l = o.graphic.length;
-            if (j < 0) {
-              o.graphic.push(breadcrumb);
-              o.graphic[0].children[0].shape.x2 = 145;
-              o.graphic[0].children[1].shape.x2 = 145;
-              if (o.graphic.length > 2) {
-                for (var x = 0; x < opt.data.length; x++) {
-                  if (n === opt.data[x].name + '市') {
-                    o.series[0].data = handleEvents.initSeriesData([opt.data[x]]);
-                    break;
-                  } else o.series[0].data = [];
+              var j = name.indexOf(n);
+              var l = o.graphic.length;
+              if (j < 0) {
+                o.graphic.push(breadcrumb);
+                o.graphic[0].children[0].shape.x2 = 145;
+                o.graphic[0].children[1].shape.x2 = 145;
+                if (o.graphic.length > 2) {
+                  for (var x = 0; x < opt.data.length; x++) {
+                    if (n === opt.data[x].name + '市') {
+                      o.series[0].data = handleEvents.initSeriesData([opt.data[x]]);
+                      break;
+                    } else o.series[0].data = [];
+                  }
+                }
+                ;
+                name.push(n);
+                idx++;
+              } else {
+                o.graphic.splice(j + 2, l);
+                if (o.graphic.length <= 2) {
+                  o.graphic[0].children[0].shape.x2 = 60;
+                  o.graphic[0].children[1].shape.x2 = 60;
+                  o.series[0].data = handleEvents.initSeriesData(opt.data);
+                }
+                ;
+                name.splice(j + 1, l);
+                idx = j;
+                pos.leftCur -= pos.leftPlus * (l - j - 1);
+              }
+              ;
+
+              o.geo.map = n;
+              o.geo.zoom = 0.4;
+              i.clear();
+              i.setOption(o);
+              this.zoomAnimation();
+              opt.callback(n, o, i);
+            },
+
+            createBreadcrumb: function (name) {
+              var cityToPinyin = {
+                "固原市": 'guyuan.json',
+                "石嘴山市": 'shizuishan',
+                "吴忠市": 'wuzhong',
+                "银川市": 'yinchuan',
+                "中卫市": 'zhongwei'
+              };
+              var breadcrumb = {
+                type: 'group',
+                id: name,
+                left: pos.leftCur + pos.leftPlus,
+                top: pos.top + 5,
+                children: [{
+                  type: 'polyline',
+                  left: -90,
+                  top: -5,
+                  shape: {
+                    points: line
+                  },
+                  style: {
+                    stroke: '#fff',
+                    key: name
+                    // lineWidth: 2,
+                  },
+                  onclick: function () {
+                    var name = this.style.key;
+                    handleEvents.resetOption(chart, option, name);
+                  }
+                }, {
+                  type: 'text',
+                  left: -68,
+                  top: 'middle',
+                  style: {
+                    text: name,
+                    textAlign: 'center',
+                    fill: style.textColor,
+                    font: style.font
+                  },
+                  onclick: function () {
+                    var name = this.style.text;
+                    handleEvents.resetOption(chart, option, name);
+                  }
+                }, {
+                  type: 'text',
+                  left: -68,
+                  top: 10,
+                  style: {
+
+                    name: name,
+                    text: cityToPinyin[name] ? cityToPinyin[name].toUpperCase() : '',
+                    textAlign: 'center',
+                    fill: style.textColor,
+                    font: '12px "Microsoft YaHei", sans-serif',
+                  },
+                  onclick: function () {
+                    // console.log(this.style);
+                    var name = this.style.name;
+                    handleEvents.resetOption(chart, option, name);
+                  }
+                }]
+              }
+
+              pos.leftCur += pos.leftPlus;
+
+              return breadcrumb;
+            },
+
+            // 设置effectscatter
+            initSeriesData: function (data) {
+              var temp = [];
+              for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                  temp.push({
+                    name: data[i].name,
+                    value: geoCoord.concat(data[i].value, data[i].level)
+                  });
                 }
               }
               ;
-              name.push(n);
-              idx++;
-            } else {
-              o.graphic.splice(j + 2, l);
-              if (o.graphic.length <= 2) {
-                o.graphic[0].children[0].shape.x2 = 60;
-                o.graphic[0].children[1].shape.x2 = 60;
-                o.series[0].data = handleEvents.initSeriesData(opt.data);
-              }
-              ;
-              name.splice(j + 1, l);
-              idx = j;
-              pos.leftCur -= pos.leftPlus * (l - j - 1);
-            }
-            ;
+              return temp;
+            },
 
-            o.geo.map = n;
-            o.geo.zoom = 0.4;
-            i.clear();
-            i.setOption(o);
-            this.zoomAnimation();
-            opt.callback(n, o, i);
-          },
-
-          createBreadcrumb: function (name) {
-            var cityToPinyin = {
-              "固原市": 'guyuan.json',
-              "石嘴山市": 'shizuishan',
-              "吴忠市": 'wuzhong',
-              "银川市": 'yinchuan',
-              "中卫市": 'zhongwei'
-            };
-            var breadcrumb = {
-              type: 'group',
-              id: name,
-              left: pos.leftCur + pos.leftPlus,
-              top: pos.top + 5,
-              children: [{
-                type: 'polyline',
-                left: -90,
-                top: -5,
-                shape: {
-                  points: line
-                },
-                style: {
-                  stroke: '#fff',
-                  key: name
-                  // lineWidth: 2,
-                },
-                onclick: function () {
-                  var name = this.style.key;
-                  handleEvents.resetOption(chart, option, name);
-                }
-              }, {
-                type: 'text',
-                left: -68,
-                top: 'middle',
-                style: {
-                  text: name,
-                  textAlign: 'center',
-                  fill: style.textColor,
-                  font: style.font
-                },
-                onclick: function () {
-                  var name = this.style.text;
-                  handleEvents.resetOption(chart, option, name);
-                }
-              }, {
-                type: 'text',
-                left: -68,
-                top: 10,
-                style: {
-
-                  name: name,
-                  text: cityToPinyin[name] ? cityToPinyin[name].toUpperCase() : '',
-                  textAlign: 'center',
-                  fill: style.textColor,
-                  font: '12px "Microsoft YaHei", sans-serif',
-                },
-                onclick: function () {
-                  // console.log(this.style);
-                  var name = this.style.name;
-                  handleEvents.resetOption(chart, option, name);
-                }
-              }]
-            }
-
-            pos.leftCur += pos.leftPlus;
-
-            return breadcrumb;
-          },
-
-          // 设置effectscatter
-          initSeriesData: function (data) {
-            var temp = [];
-            for (var i = 0; i < data.length; i++) {
-              var geoCoord = geoCoordMap[data[i].name];
-              if (geoCoord) {
-                temp.push({
-                  name: data[i].name,
-                  value: geoCoord.concat(data[i].value, data[i].level)
+            zoomAnimation: function () {
+              var count = null;
+              var zoom = function (per) {
+                if (!count) count = per;
+                count = count + per;
+                // console.log(per,count);
+                chart.setOption({
+                  geo: {
+                    zoom: count
+                  }
                 });
-              }
-            }
-            ;
-            return temp;
-          },
-
-          zoomAnimation: function () {
-            var count = null;
-            var zoom = function (per) {
-              if (!count) count = per;
-              count = count + per;
-              // console.log(per,count);
-              chart.setOption({
-                geo: {
-                  zoom: count
-                }
-              });
-              if (count < 1) window.requestAnimationFrame(function () {
+                if (count < 1) window.requestAnimationFrame(function () {
+                  zoom(0.2);
+                });
+              };
+              window.requestAnimationFrame(function () {
                 zoom(0.2);
               });
-            };
-            window.requestAnimationFrame(function () {
-              zoom(0.2);
-            });
-          }
-        };
+            }
+          };
 
           var option = {
             // backgroundColor: opt.bgColor,
@@ -1184,7 +1182,7 @@
 
 
       },
-      trend(){
+      trend() {
         /*年度案发趋势*/
         this.chartColumn = echarts.init(document.getElementById("ndafqs"));
         const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF']
@@ -1482,7 +1480,7 @@
       },
 
 
-      drawCenter2() {
+      caseNumberFun() {
         this.chartColumn = echarts.init(document.getElementById("zfjgajsl"));
         const createSvg = (shadowColor, shadowBlur) => `
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -1516,14 +1514,6 @@
         const DOMURL = window.URL || window.webkitURL || window;
         const insetShadowUrl = DOMURL.createObjectURL(svg);
 
-        const dataSet = [
-          // ['江西省 交通运输厅', '江西省公路 路政管理总队', '新余高速公路 路政管理支队',
-          //  '南昌高速公路 路政管理支队', '高速公路 管理局', '赣州高速公路 路政管理支队', '吉安高速公路 路政管理支队'],
-          ['交通 运输厅', '路政 管理总队', '青银 高速公路',
-            '银川 高速公路', '京藏 高速公路', '福银 高速公路'],
-          [120, 200, 150, 70, 110, 60]
-        ];
-
         this.chartColumn.setOption({
           backgroundColor: '',
           tooltip: {
@@ -1555,7 +1545,7 @@
             splitLine: {
               show: false,
             },
-            data: dataSet[0],
+            data: this.caseNumberXData,
           },
           yAxis: {
             type: 'value',
@@ -1579,13 +1569,13 @@
           },
           series: [
             {
-              data: dataSet[1],
+              data: this.caseNumberSeries,
               type: 'pictorialBar',
               symbol: 'image://' + insetShadowUrl,
               barWidth: 30,
             },
             {
-              data: dataSet[1],
+              data: this.caseNumberSeries,
               type: 'bar',
               barWidth: 30,
               itemStyle: {
@@ -1617,127 +1607,127 @@
 
       drawRight1() {
         let that = this
-          /*涉案外埠车辆排名*/
-          that.chartColumn = echarts.init(document.getElementById("clpm"));
-          let option={
-            backgroundColor: "",
-            tooltip: {
-              trigger: 'axis',
-              formatter: "{b} : {c}",
-              axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+        /*涉案外埠车辆排名*/
+        that.chartColumn = echarts.init(document.getElementById("clpm"));
+        let option = {
+          backgroundColor: "",
+          tooltip: {
+            trigger: 'axis',
+            formatter: "{b} : {c}",
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          grid: {
+            left: '12%',
+            top: '6%',
+            bottom: '12%',
+            right: '8%'
+          },
+          xAxis: {
+            data: [
+              "湖南省",
+              "福建省",
+              "云南省",
+              "山东省",
+              "山西省"
+            ],
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              lineStyle: {
+                color: 'rgba(255, 129, 109, 0.1)',
+                width: 1 //这里是为了突出显示加上的
               }
             },
-            grid: {
-              left: '12%',
-              top: '6%',
-              bottom: '12%',
-              right: '8%'
-            },
-            xAxis: {
-              data:  [
-                "湖南省",
-                "福建省",
-                "云南省",
-                "山东省",
-                "山西省"
-              ],
-              axisTick: {
-                show: false
-              },
-              axisLine: {
-                lineStyle: {
-                  color: 'rgba(255, 129, 109, 0.1)',
-                  width: 1 //这里是为了突出显示加上的
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#999',
-                  fontSize: 12
-                }
-              }
-            },
-            yAxis: [{
-              splitNumber: 2,
-              axisTick: {
-                show: false
-              },
-              axisLine: {
-                lineStyle: {
-                  color: 'rgba(255, 129, 109, 0.1)',
-                  width: 1 //这里是为了突出显示加上的
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#999'
-                }
-              },
-              splitArea: {
-                areaStyle: {
-                  color: 'rgba(255,255,255,.5)'
-                }
-              },
-              splitLine: {
-                show: true,
-                lineStyle: {
-                  color: 'rgba(255, 129, 109, 0.1)',
-                  width: 0.5,
-                  type: 'dashed'
-                }
+            axisLabel: {
+              textStyle: {
+                color: '#999',
+                fontSize: 12
               }
             }
-            ],
-            series: [{
-              name: 'hill',
-              type: 'pictorialBar',
-              barCategoryGap: '0%',
-              symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
-              label: {
-                show: true,
-                position: 'top',
-                distance: 15,
-                color: '#DB5E6A',
-                fontWeight: 'bolder',
-                fontSize: 20,
-              },
-              itemStyle: {
-                normal: {
-                  color: {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    colorStops: [{
-                      offset: 0,
-                      color: 'rgba(232, 94, 106, .8)' //  0%  处的颜色
-                    },
-                      {
-                        offset: 1,
-                        color: 'rgba(232, 94, 106, .1)' //  100%  处的颜色
-                      }
-                    ],
-                    global: false //  缺省为  false
-                  }
-                },
-                emphasis: {
-                  opacity: 1
+          },
+          yAxis: [{
+            splitNumber: 2,
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              lineStyle: {
+                color: 'rgba(255, 129, 109, 0.1)',
+                width: 1 //这里是为了突出显示加上的
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#999'
+              }
+            },
+            splitArea: {
+              areaStyle: {
+                color: 'rgba(255,255,255,.5)'
+              }
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: 'rgba(255, 129, 109, 0.1)',
+                width: 0.5,
+                type: 'dashed'
+              }
+            }
+          }
+          ],
+          series: [{
+            name: 'hill',
+            type: 'pictorialBar',
+            barCategoryGap: '0%',
+            symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
+            label: {
+              show: true,
+              position: 'top',
+              distance: 15,
+              color: '#DB5E6A',
+              fontWeight: 'bolder',
+              fontSize: 20,
+            },
+            itemStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: 'rgba(232, 94, 106, .8)' //  0%  处的颜色
+                  },
+                    {
+                      offset: 1,
+                      color: 'rgba(232, 94, 106, .1)' //  100%  处的颜色
+                    }
+                  ],
+                  global: false //  缺省为  false
                 }
               },
-              data: [12,32,40,11,20],
-              z: 10
-            }]
-          };
-          that.chartColumn.setOption(option);
+              emphasis: {
+                opacity: 1
+              }
+            },
+            data: [12, 32, 40, 11, 20],
+            z: 10
+          }]
+        };
+        that.chartColumn.setOption(option);
 
 
-         /*案发地*/
-        const afd_xData = ['银川市','石嘴山市','吴忠市','中卫市','固原市']
+        /*案发地*/
+        const afd_xData = ['银川市', '石嘴山市', '吴忠市', '中卫市', '固原市']
 
-        const afd_series = [36,52,20,18,26]
-        const afd_series1 = [16,36,48,29,30]
+        const afd_series = [36, 52, 20, 18, 26]
+        const afd_series1 = [16, 36, 48, 29, 30]
         this.chartColumn = echarts.init(document.getElementById("afd"));
         this.chartColumn.setOption({
           backgroundColor: '',
@@ -1897,7 +1887,6 @@
     mounted() {
       this.getData()
       this.drawLeft3();
-      this.drawCenter2();
       this.drawRight1();
       this.map();
     },
@@ -2148,7 +2137,8 @@
     color: #FF9703;
     line-height: 28px;
   }
-  .case{
+
+  .case {
     width: 74px;
     height: 153px;
   }

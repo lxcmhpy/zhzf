@@ -27,7 +27,7 @@
 
 <script>
   import echarts from "echarts";
-  import {caseReasonApi} from '@/api/analysisManage.js'
+  import {caseReasonApi} from '@/api/analysis/analysisManage.js'
   export default {
     data() {
       return {

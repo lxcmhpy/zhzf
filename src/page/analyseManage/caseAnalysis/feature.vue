@@ -45,7 +45,7 @@
 
 <script>
 import echarts from "echarts";
-import {featureApi} from '@/api/analysisManage.js'
+import {featureApi} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
