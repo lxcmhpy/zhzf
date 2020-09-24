@@ -451,7 +451,7 @@
     </el-backtop>
     <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
     <!-- 悬浮按钮-拓展 -->
-    <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :fileEiditFlag='fileEiditFlag'></floatBtns>
+    <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :carinfoId='carinfoId'></floatBtns>
     <!-- 悬浮按钮 -->
     <div class="float-btns" style="bottom:150px">
       <el-button type="primary" @click="saveDataBtn(0)">
@@ -647,7 +647,6 @@ export default {
       afddFlag: false,
       // disableZcBtn: false, //暂存按钮禁用车辆类型
       hasLatitudeAndLongitude: false, //案发坐标是否已经获取
-      fileEiditFlag: '',
       formOrDocData: '',
       submitFileData: '',
       saveEileData: '',

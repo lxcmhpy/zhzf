@@ -49,16 +49,16 @@ export default {
   // props: ["caseInfo"],
   computed: { ...mapGetters(["caseId", 'inspectionOverWeightId']) },
   methods: {
-    showModal() {
+    showModal(carinfoId) {
       //      console.log('show');
 
       this.visible = true;
       // if (!this.getData) this.getByMlCaseId();
       console.log('show');
-      if (this.inspectionOverWeightId.id) {
+      if (carinfoId) {
 
         let data = {
-          caseId: this.inspectionOverWeightId.id,
+          caseId: carinfoId,
           current: 1,
           size: 20,
         };
