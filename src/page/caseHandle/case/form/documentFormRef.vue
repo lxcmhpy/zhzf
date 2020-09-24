@@ -4,7 +4,7 @@
       custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat"
       :visible.sync="visible"
       @close="closeDialog"
-      :top="fatherCom==='inforCollection' ? '95px':'0px'"
+      :top="fatherCom==='inforCollection' ? '95px':'33px'"
       width="405px"
       :modal="false"
       :show-close="false"
@@ -28,9 +28,10 @@
             content="查看文件"
             placement="top-start">
             <el-checkbox
-              class="checkboxItem">
+              class="checkboxItem"
+              :label="item.storageId">
               <span class="name">{{index + 1}}</span>
-              <span class="name">{{item.docName}}</span>
+              <span class="name" @click="handleCheckName(item)">{{item.docName}}</span>
             </el-checkbox>
           </el-tooltip>
         </el-checkbox-group>
@@ -41,13 +42,13 @@
         >
         <el-tooltip effect="dark" content="批量打印" placement="top">
           <el-checkbox
-            :style="fatherCom==='inforCollection' ? 'top: -68px':'top: 27px'"
+            :style="fatherCom==='inforCollection' ? 'top: -68px':'top: -19px'"
             :indeterminate="isIndeterminate"
             v-model="checkAll"
             @change="handleCheckAllChange"
           ></el-checkbox>
         </el-tooltip>
-        <el-button :style="fatherCom==='inforCollection' ? 'top: -80px':null" @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
+        <el-button :style="fatherCom==='inforCollection' ? 'top: -80px':'top: -33px'" @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -157,6 +158,20 @@ import iLocalStroage from "@/common/js/localStroage";
       //     }
       //   );
       // },
+      /**
+       * 点击文书名字
+       */
+      handleCheckName(data) {
+        let arr = []
+        arr.push(data.storageId)
+        this.docSrc = this.host + arr;
+        this.nowShowPdfIndex = 0;
+        this.indexPdf = 0;
+        this.pdfVisible = true
+        this.archiveSuccess = true;
+        this.showCover = 'pdf';
+      },
+
       routerArchiveCatalogueDetail() {
         let _thats = this
         this.docSrc = this.host + this.checkedDocId[0];
@@ -217,8 +232,6 @@ import iLocalStroage from "@/common/js/localStroage";
       },
       //全选
       handleCheckAllChange(val) {
-//      debugger
-//      console.log(val);
         if (val) {
           this.caseList.forEach(item => {
             //复选框存入id
@@ -252,6 +265,9 @@ import iLocalStroage from "@/common/js/localStroage";
         align-items: center;
         box-sizing: border-box;
         padding-left: 10px;
+        .name {
+          z-index: 112233;
+        }
       }
       .checkboxItem:hover {
         background: #F1C100;

@@ -267,6 +267,23 @@
                     max-height: 30px;
                 }
             }
+            .bgc_red{
+                .el-textarea__inner {
+                    background     : #f7c9cb;
+                }
+                .el-input__inner{
+                    background     : #f7c9cb ;
+                }
+            }
+
+            .bgc_gray{
+                .el-textarea__inner {
+                    background     :#DBE4EF !important;
+                }
+                .el-input__inner{
+                    background     : #DBE4EF !important;
+                }
+            }
 
 
 

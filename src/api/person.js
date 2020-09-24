@@ -76,7 +76,7 @@ export  function  addPersonApi(data)  {
   return  request({
     url:  "/person/person/infoAddPerson",
     method:  "post",
-    params: data,
+    data:vm.$qs.stringify(data),
     showloading: false,
     cancelToken:  setCancelSource()
   });
@@ -87,7 +87,7 @@ export  function  updatePersonApi(data)  {
   return  request({
     url:  "/person/person/infoUpdatePerson",
     method:  "post",
-    params: data,
+    data: vm.$qs.stringify(data),
     showloading: false,
     cancelToken:  setCancelSource()
   });
