@@ -440,7 +440,7 @@
     </el-form>
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
     <!-- 置顶 -->
-    <el-backtop target="#inforCollectionBox" :bottom="46" :right="0" :visibility-height="800" style="width: 58px;height: 58px;">
+    <el-backtop target="#inforCollectionBox" :bottom="46" :right="0" :visibility-height="800" style="width: 58px;height: 58px;" @click="backTop">
       <div class="back-ball">
         <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="18" height="22">
           <path d="M862.72 147.2H161.28c-18.432 0-33.28-14.848-33.28-33.28s14.848-33.28 33.28-33.28h701.44c18.432 0 33.28 14.848 33.28 33.28s-14.848 33.28-33.28 33.28zM549.376 323.84v580.608c0 21.504-17.408 38.912-38.912 38.912-21.504 0-38.912-17.408-38.912-38.912V323.84c0-21.504 17.408-38.912 38.912-38.912 21.504 0 38.912 17.408 38.912 38.912z" p-id="1940" fill="#bfbfbf" />
@@ -479,6 +479,7 @@ import { findLawOfficerListApi, getAssistFile } from "@/api/caseHandle";
 import { findRouteManageByOrganIdApi, } from "@/api/system";
 import { saveOrUpdateCarInfoApi, getDictListDetailByNameApi, findCarInfoByIdApi } from "@/api/inspection";
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
+import { vehicleCheckApi, yyclCheckApi } from "@/api/checkInfo.js";
 export default {
   data() {
     //执法人员人数不得少于2个，最多不多与9个
@@ -655,6 +656,28 @@ export default {
       carinfoId: '',
       selectLoading: false,
       postInfo: [], //职务
+      sfList: [
+        {
+          value: '蓝色',
+          label: 1
+        },
+        {
+          value: '黄色',
+          label: 2
+        },
+        {
+          value: '黑色 ',
+          label: 3
+        },
+        {
+          value: '白色',
+          label: 4
+        },
+        {
+          value: '其他',
+          label: 9
+        }
+      ],
     };
   },
   components: {
@@ -964,7 +987,47 @@ export default {
     weightLimit() { },
     saveFileData() { },
     searchNumber() {
+      let _this = this
       // 查询车辆号牌
+      console.log()
+      if (this.carInfo.vehicleShipId && this.carInfo.vehicleIdColor) {
+        let colorCode = '';
+        this.sfList.forEach(element => {
+          if (element.value == this.carInfo.vehicleIdColor) {
+            colorCode = element.label
+          }
+        });
+        let json = [];
+        let param = {
+          vehicleNo: this.carInfo.vehicleShipId,
+          plateColor: colorCode
+        };
+        json.push(param);
+        vehicleCheckApi(JSON.stringify(json)).then(
+          res => {
+            let chewckData = {
+              transCertificateCode: res.data[0].transCertificateCode,
+              vehicleNo: this.carInfo.vehicleShipId,
+              vin: ''
+            }
+            yyclCheckApi(chewckData).then(
+              res => {
+            _this.carInfo.businessScope = res.data[0].BusinessScopeCode;
+
+                _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode;
+                _this.carInfo.transportNum = res.data[0].LicenseCode;
+                _this.carInfo.businessStatus = res.data[0].OperatingStatus;
+              },
+              error => {
+
+              })
+          },
+          error => {
+
+          })
+      } else {
+        this.$message.error('请正确输入车辆颜色和车牌号码');
+      }
     },
     saveDataBtn(handleType) {
       let _this = this
@@ -1117,6 +1180,10 @@ export default {
         }
       );
     },
+    /* 置顶后锚点回到第一个 */
+    backTop() {
+      this.activeA = [true, false, false, false, false];
+    }
   },
 
   mounted() {

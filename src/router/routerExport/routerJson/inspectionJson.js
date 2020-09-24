@@ -189,6 +189,7 @@ export default  [
                 meta: {
                 title: "超限超载记录",
                 oneTab:true,
+                keepAlive:true,
                 },
                 component: () => import("@/page/inspection/roadAndPolice/overWeightForm.vue")
             },
