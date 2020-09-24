@@ -72,7 +72,7 @@
      <!-- 送达回证列表 -->
     <deliverReceiptFormRef ref="deliverReceiptFormRef"></deliverReceiptFormRef>
     <!--执法监督 文书列表 -->
-    <documentFormSupervision ref="documentFormSupervisionRef"></documentFormSupervision>
+    <documentFormSupervision ref="documentFormSupervisionRef" :getFileStream="getFileStream"></documentFormSupervision>
     <!--执法监督 送达回证 -->
     <deliverReceiptFormSupervision ref="deliverReceiptFormSupervisionRef"></deliverReceiptFormSupervision>
   </div>
@@ -112,6 +112,9 @@ export default {
     deliverReceiptFormSupervision,
   },
   methods: {
+    getFileStream(storageId){
+      this.$attrs.getFileStream(storageId);
+    },
     goToInfoPage(){
       console.log("shuju1111111",this.infoPage)
       this.goTo(this.infoPage);
