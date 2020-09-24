@@ -700,6 +700,8 @@ export default {
                 type: "warning"
               }).then(() => {
                 let data = JSON.parse(JSON.stringify(this.formData))
+                data.templateUser = '';
+                data.templateAdmin = ''
                 data.templateAdminId = '';
                 data.templateUserId = ''
                 let sort = this.globalCont

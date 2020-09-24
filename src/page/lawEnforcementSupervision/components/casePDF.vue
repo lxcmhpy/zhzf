@@ -1,6 +1,6 @@
 <template>
   <div  id="myBox" style="width:790px;margin:0 auto;">
-    <caseSlideMenu :activeIndex="''"></caseSlideMenu>
+    <caseSlideMenu :activeIndex="''" :getFileStream="getFileStream"></caseSlideMenu>
     <div class="float-btns">
       <el-button
         type="primary"
@@ -73,6 +73,7 @@ export default {
     //根据stroagId请求文件流
     getFileStream(storageId) {
       //设置地址
+      console.log("331231231312")
       this.$store.commit("setDocPdfStorageId", storageId);
       getFileStreamByStorageIdApi(storageId)
         .then((res) => {

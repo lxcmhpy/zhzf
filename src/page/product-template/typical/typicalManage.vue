@@ -3,12 +3,12 @@
     <div class="searchAndpageBox" id="roleBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="dicSearchForm" class>
+          <el-form :inline="true" :model="searchForm" ref="searchForm">
             <el-form-item
               label="业务领域"
               prop="zfml">
               <el-select
-                v-model="dicSearchForm.zfml"
+                v-model="searchForm.zfml"
                 placeholder="请选择"
                 :loading="selectLoading"
                 clearable>
@@ -17,9 +17,9 @@
                 </el-option>        
               </el-select>
             </el-form-item>
-            <el-form-item label="案件类型">
+            <el-form-item label="案件类型" prop="caseType">
               <el-select
-                  v-model="dicSearchForm.caseType"
+                  v-model="searchForm.caseType"
                   placeholder="请选择">
                   <el-option
                   v-for="item in caseTypeList"
@@ -29,9 +29,9 @@
                   ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="受案机构">
+            <el-form-item label="受案机构" prop="organName">
               <el-select
-                  v-model="dicSearchForm.organName"
+                  v-model="searchForm.organName"
                   placeholder="请选择">
                   <el-option
                   v-for="item in organList"
@@ -41,17 +41,20 @@
                   ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="案由" >
+            <el-form-item label="案由" prop="caseName">
               <el-input
                 ref="caseName"
                 clearable
                 class="w-120"
-                v-model="dicSearchForm.caseName"
+                v-model="searchForm.caseName"
                 size="small"
               ></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getCaseTypes">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset">重置</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addTypical">标记典型案件</el-button>
@@ -103,7 +106,7 @@ export default {
   data() {
     return {
       tableData: [], //表格数据
-      dicSearchForm: {
+      searchForm: {
         typeName: ""
       },
       organList:[],//受案机构
@@ -155,10 +158,10 @@ export default {
       let data = {
         current: this.currentPage,
         size: this.pageSize,
-        zfml: this.dicSearchForm.zfml,
-        caseType: this.dicSearchForm.caseType,
-        organName: this.dicSearchForm.organName,
-        caseName: this.dicSearchForm.caseName,
+        zfml: this.searchForm.zfml,
+        caseType: this.searchForm.caseType,
+        organName: this.searchForm.organName,
+        caseName: this.searchForm.caseName,
       };
       let _this = this;
       findTypicalCaseList(data).then(
@@ -211,6 +214,11 @@ export default {
             );
           })
         .catch(() => {});
+    },
+    //重置
+    reset() {
+      this.$refs["searchForm"].resetFields();
+      this.getCaseTypes();
     },
   },
   created() {
