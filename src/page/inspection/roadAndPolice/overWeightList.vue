@@ -167,6 +167,9 @@ export default {
       this.$store.commit("set_inspection_OverWeightId", { id: item.id, firstcheckId: item.firstCheckId });
       this.$router.push({
         name: "inspection_overWeightForm",
+        params: {
+          isRefresh: true,
+        }
       });
     },
     // 修改模板
@@ -253,6 +256,9 @@ export default {
             this.$store.commit("set_inspection_OverWeightId", '');
             this.$router.push({
               name: 'inspection_overWeightForm',
+              params: {
+                isRefresh: true,
+              }
             });
           }
           else {
