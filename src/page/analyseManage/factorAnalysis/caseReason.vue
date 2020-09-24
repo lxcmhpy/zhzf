@@ -18,7 +18,7 @@
         </el-form>
       </div>
       <div class="tablePart">
-        <div id="chart" style="width: 100%; height: 400px;"></div>
+        <div id="chart" style="width: 100%; height: 100%;"></div>
       </div>
     </div>
   </div>
@@ -41,7 +41,8 @@
           endTime: "",
           dateArray: ""
         },
-        seriesData:[]
+        seriesData:[],
+        legendData: []
       };
     },
     methods: {
@@ -57,17 +58,16 @@
             formatter: "{a} <br/>{b} : {c} ({d}%)"
           },
           legend: {
-            left: "center",
-            top: "bottom",
-            data: []
+            y: "bottom",
+            data: this.legendData
           },
           series: [
             {
               name: "案发原因",
               type: "pie",
               radius: "55%",
-              center: ["50%", "60%"],
-              data: [],
+              center: ["50%", "45%"],
+              data: this.seriesData,
               emphasis: {
                 itemStyle: {
                   shadowBlur: 10,
@@ -90,7 +90,11 @@
         }
         caseReasonApi(param).then(res => {
           if(res.code == 200){
-            this.seriesData = res.data
+            this.seriesData = res.data.map(item => {
+              this.legendData.push(item.name)
+              item.value = item.num
+              return item
+            })
           }
            this.drawLine()
         });
@@ -105,3 +109,13 @@
   };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+.com_searchAndpageBoxPadding {
+  .searchPage {
+    .tablePart {
+      height: 87% !important;
+    }
+  }
+}
+</style>
