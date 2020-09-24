@@ -575,7 +575,7 @@ export default {
       directionList: [],
       locationList: [],
       carInfoRules: {
-        vehicleShipId: [{ validator: vaildateCardNum, trigger: "change" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" },{ validator: vaildateCardNum, trigger: "change" }],
         trailerIdNo: [{ validator: vaildateCardNum, trigger: "change" }],
         vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
         loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
