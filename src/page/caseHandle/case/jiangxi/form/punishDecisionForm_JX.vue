@@ -383,6 +383,7 @@
                   <span v-if="scope.row.status == '1' || scope.row.status == '2'">
                     <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
                     <template v-if="scope.row.docProcessStatus=='审批中'">审批中</template>
+                    <template v-if="scope.row.docProcessStatus=='已驳回'">已驳回</template>
                     <template v-if="scope.row.docProcessStatus==''|| scope.row.docProcessStatus=='已完成'">已完成</template>
                   </span>
                   <span v-if="scope.row.status == '0'">暂存</span>
@@ -640,26 +641,31 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) { 
-      let routerData = {
-        hasApprovalBtn: false,
-        docId: row.docId,
-        approvalOver: false,
-        hasBack: true,
-        status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
-        docDataId: row.docDataId
-      };
-      if(row.docProcessStatus == '待审批'){
-        this.$store.commit('setApprovalState', 'approvalBefore');
-        this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.punishDecisionDoc_JX_caseLinktypeId);
-        this.$store.commit("setDocDataId", row.docDataId);
-        this.$store.commit("setDocId", row.docId);
-      }else if(row.docProcessStatus == '审批中'){
-        this.$store.commit('setApprovalState', 'submitApproval');
-      }else{
-         this.$store.commit('setApprovalState', '');
-      }
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      //参数说明：文书数据  环节ID  是否有多文书
+      this.com_viewDocPdf(row,this.BASIC_DATA_JX.punishDecisionDoc_JX_caseLinktypeId,1)
+      // let routerData = {
+      //   hasApprovalBtn: false,
+      //   docId: row.docId,
+      //   approvalOver: false,
+      //   hasBack: true,
+      //   status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
+      //   docDataId: row.docDataId
+      // };
+      // if(row.docProcessStatus == '待审批'){
+      //   this.$store.commit('setApprovalState', 'approvalBefore');
+      //   this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.punishDecisionDoc_JX_caseLinktypeId);
+      //   this.$store.commit("setDocDataId", row.docDataId);
+      //   this.$store.commit("setDocId", row.docId);
+      // }else if(row.docProcessStatus == '审批中'){
+      //   this.$store.commit('setApprovalState', 'submitApproval');
+      // }else{
+      //    //判断是否为已驳回状态
+      //   let caseBasicInfoRes= await  getCaseBasicInfoApi({id: this.caseId});
+      //   if(caseBasicInfoRes.data.caseStatus == '已驳回') this.$store.commit('setApprovalState', 'approvalNoPass');
+      //   else  this.$store.commit('setApprovalState', '');
+      // }
+      // this.$store.dispatch("deleteTabs", this.$route.name);
+      // this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
     //清空文书
     delDocDataByDocId(data) {

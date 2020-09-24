@@ -134,37 +134,35 @@
           <div class="showMapBtn"><label class="mustTip">*</label><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
         </div>
         <div>
-          <div class="gongLiBox1">K</div>
-          <div class="itemFive">
+          <span class="gongLiBox1">K</span>
+          <span class="itemFive">
             <el-form-item  prop="pileNumber" label-width="0px">
               <el-input v-model="inforForm.pileNumber" placeholder="公里数"></el-input>
             </el-form-item>
-          </div>
-          <div class="gongLiBox2">+</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox2">+</span>
+          <span class="itemFive">
             <el-form-item label-width="0px" prop="distance">
               <el-input v-model="inforForm.distance" placeholder="米数" style="vertical-align: middle;">
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-
-          </div>
-          <div class="gongLiBox3">至</div>
-          <div class="gongLiBox3">K</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox3">至</span>
+          <span class="gongLiBox3">K</span>
+          <span class="itemFive">
             <el-form-item  prop="pileNumber2" label-width="0px">
               <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
             </el-form-item>
-          </div>
-          <div class="gongLiBox2">+</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox2">+</span>
+          <span class="itemFive">
             <el-form-item label-width="0px" prop="distance2">
               <el-input v-model="inforForm.distance2" placeholder="米数" style="vertical-align: middle;">
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-
-          </div>
+          </span>
           <!-- <div class="itemFive">
             <el-form-item label="K">
               <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
@@ -708,8 +706,8 @@
             <el-table-column label="单价(元)" prop="roadLcPrice" align="center"></el-table-column>
             <el-table-column label="数量" width="150" align="center">
               <template slot-scope="scope">
-                <!-- el-input-number 标签不能加 mini="1",否则回将数量为 0 的转换为 1，从而出现bug -->
-                <el-input-number v-model="scope.row.quantity" size="mini"></el-input-number>
+                <!-- el-input-number 标签不能加 min="1",否则回将数量为 0 的转换为 1，从而出现bug -->
+                <el-input-number v-model="scope.row.quantity" :min="1" size="mini"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column label="合计" align="center">
@@ -866,8 +864,11 @@ export default {
     },
     //选中的路损
     selectRoadData(data) {
-      this.pathLossList = this.unique([...this.pathLossList, ...data]);
-      console.log(this.pathLossList)
+      this.pathLossList = [...this.pathLossList, ...data];
+      this.pathLossList.map((v, i) => {
+        let quantity = v.quantity || 1;
+        this.$set(v, "quantity", quantity);
+      });
     },
     changeCaseSource(item) {
         if(item.value === "投诉举报"){

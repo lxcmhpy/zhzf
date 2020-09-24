@@ -2,6 +2,18 @@
 
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px;">
+      <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
+    <span v-if="currentFileData">
+      <el-button type="primary"  style="margin-bottom: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
+        <i class="iconfont law-edit"></i>
+        <br />修改
+      </el-button>
+    </span>
+    <!-- 立案登记的修改按钮 -->
+    <el-button type="primary"  style="margin-bottom: 10px;" @click="editEstablish" v-if="approvalState=='approvalEstabishNoPass'">
+      <i class="iconfont law-edit"></i>
+      <br />修改
+    </el-button>
     <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
       <i class="iconfont law-approval"></i>
       <br />签章
@@ -35,13 +47,7 @@
       <i class="iconfont law-back"></i>
       <br />返回
     </el-button>
-    <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
-    <span v-if="currentFileData">
-      <el-button type="primary"  style="margin-top: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
-        <i class="iconfont law-edit"></i>
-        <br />修改
-      </el-button>
-    </span>
+  
 
     <img src="" id="show">
   </div>
@@ -64,8 +70,9 @@ export default {
   },
   props: ['formOrDocData', 'storagePath'],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId']),
+  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId','caseApproval']),
   isCanEdit(){
+    console.log('caseLinktypeId',this.caseLinktypeId,this.doingLinkId)
     let data= this.$route.name=='case_handle_myPDF'
     &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
     &&this.approvalState!='approvaling'&&this.caseLinktypeId==this.doingLinkId
@@ -107,7 +114,7 @@ export default {
       let websocket = null;
       //判断当前浏览器是否支持WebSocket
       if ('WebSocket' in window) {
-        let _url = "ws://124.192.215.4:8083/socket/" + fileId
+        let _url = iLocalStroage.gets('CURRENT_BASE_URL').QZ_SOCKET_HOST+"/socket/" + fileId
         // let _url = "ws://172.16.170.44:8083/socket/" + fileId
         websocket = new WebSocket(_url);
       } else {
@@ -227,19 +234,6 @@ export default {
       //   this.com_addDocData(handleType, this.formOrDocData.formRef);
       // }
     },
-    getFile() {
-      this.$store.dispatch("getFile", {
-        docId: '5cad5b54eb97a15250672a4c397cee56',
-        caseId: '297708bcd8e80872febb61577329194f'
-      }).then(
-        res => {
-          console.log(res[0].storagePath)
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
     //保存文书信息
     //  addDocData(handleType){
     //   let _this = this
@@ -344,6 +338,10 @@ export default {
 
 
       }).catch(() => { });
+    },
+    //返回立案登记表单
+    editEstablish(){
+      this.$emit('editEstablish');
     }
   },
   mounted() {

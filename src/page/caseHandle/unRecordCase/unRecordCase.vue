@@ -102,6 +102,7 @@ export default {
     //跳转立案登记
     async handleCase(row) {
       console.log(row);
+      iLocalStroage.removeItem("someCaseInfo")
       let setCaseNumber = row.caseNumber!='' ? row.caseNumber : row.tempNo;
       this.$store.commit("setCaseNumber", setCaseNumber);
       this.$store.commit("setIsLawEnforcementSupervision", false);
@@ -125,7 +126,7 @@ export default {
       if (row.caseStatus == '已移送') {
         let message = '该案件正在移送中，移送完成后才可与继续办理'
         this.$refs.tansferAtentionDialogRef.showModal(message, '移送中');
-      } else {
+      }else {
          this.$store.commit("setCaseId", row.id);
          //立案登记表已保存未提交审批时 跳转pdf页面
          let docTypeId,linkId,currentFlow = '';
@@ -148,6 +149,13 @@ export default {
           }).then(res=>{
             console.log('查询环节是否生成了pdf',res);
             if(res && res.length >0){
+              if(row.caseStatus == '已驳回'){
+                this.$store.commit('setApprovalState', 'approvalEstabishNoPass');
+                //设置环节id，提交审批时需要用到
+                this.$store.commit("setCaseLinktypeId",linkId );
+                this.$router.push({ name: 'case_handle_myPDF', params: { docId: docTypeId, } })
+                return;
+              }
               this.$store.commit('setApprovalState', 'approvalBefore');
               //设置环节id，提交审批时需要用到
               this.$store.commit("setCaseLinktypeId",linkId );
@@ -155,6 +163,7 @@ export default {
             }else{
                 //设置案件状态不为审批中
                 this.$store.commit("setCaseApproval", false);
+                this.$store.commit('setApprovalState', '');
                 this.getCaseNextRoute('立案登记').then(res=>{
                   this.$router.push({
                     name: res

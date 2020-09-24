@@ -33,7 +33,6 @@ Vue.prototype.BASIC_DATA_JX = BASIC_DATA_JX;
 Vue.prototype.BASIC_DATA_QH = BASIC_DATA_QH;
 Vue.mixin(mixinsCommon);
 
-
 /* eslint-disable no-new */
 const v = new Vue({
   el: "#app",

@@ -64,4 +64,20 @@ export default [
         },
         component: () => import("@/page/caseHandle/case/qingHai/doc/publishReport_QH.vue")
     },
+    {
+      path: "/sceneNotesDoc_QH",
+      name: "case_handle_sceneNotesDoc_QH",
+      meta: {
+        title: "现场笔录——青海"
+      },
+      component: () => import("@/page/caseHandle/case/qingHai/doc/sceneNotesDoc_QH.vue")
+    },
+    {
+        path: "/compensationInquestRecord",
+        name: "case_handle_compensationInquestRecord",
+        meta: {
+          title: "公路赔（补）偿案件勘验检查笔录"
+        },
+        component: () => import("@/page/caseHandle/case/qingHai/doc/compensationInquestRecord.vue")
+    },
 ]

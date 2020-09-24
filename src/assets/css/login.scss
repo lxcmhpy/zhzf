@@ -204,8 +204,17 @@
 
       .wechat_box {
         width: 140px;
-        // height: 170px;
+        height: 164px;
+        .wechat-text{
+          cursor: pointer;
+          color:#409EFF;
+          font-size: 14px;
+          &:hover{
+            color: #66b1ff;
+          }
+      }
 
+      
         .wechat {
           clear: both;
           width: 150px;
@@ -227,7 +236,7 @@
 
   }
 
-  .blue {
+  .blue-text {
     color: #7CB1E8;
   }
 

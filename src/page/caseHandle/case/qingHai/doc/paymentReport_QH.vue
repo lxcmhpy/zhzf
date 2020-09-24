@@ -111,10 +111,10 @@
           </tr>
           <tr style="height:180px">
             <td>领导意见</td>
-            <td  colspan="4" class="color_DBE4EF">
-              <el-form-item prop="agencyOpinions" :rules="fieldRules('agencyOpinions',propertyFeatures['agencyOpinions'])">
+            <td  colspan="4">
+              <!-- <el-form-item prop="agencyOpinions" :rules="fieldRules('agencyOpinions',propertyFeatures['agencyOpinions'])">
                 <el-input type="textarea" v-model="docData.agencyOpinions" :autosize="{ minRows: 5, maxRows: 7}"   :disabled="fieldDisabled(propertyFeatures['agencyOpinions'])" maxlength="500" placeholder="\"></el-input>
-              </el-form-item>
+              </el-form-item> -->
             </td>
           </tr>
           <tr style="height:80px">
@@ -174,7 +174,7 @@ export default {
         staff2:'',
         staff1:'',
         defaultStaff:'',
-        agencyOpinions:'',
+        // agencyOpinions:'',
         evidence:'',
         process:'',
         number:'',
@@ -184,11 +184,12 @@ export default {
         partyAddress:'',
         party:'',
         note:'',
+        vehicleType:''
       },
      caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: '2955023b99943d7c21e54c5d84d82667',     //文书类型ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态

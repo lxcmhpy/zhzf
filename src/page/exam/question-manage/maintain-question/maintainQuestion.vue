@@ -219,7 +219,8 @@ export default {
       tableLoading: false,
       treeLoading: false,
       editable: true,
-      currentNodeLevel: ''
+      currentNodeLevel: '',
+      handleLimit: true
     };
   },
   components: {
@@ -230,11 +231,11 @@ export default {
     importQuestion
   },
   inject: ["reload"],
-  computed:{
-    handleLimit(){
-      return !this.editable || (this.editable && this.currentNodeLevel === '1')
-    }
-  },
+  // computed:{
+  //   handleLimit(){
+  //     return !this.editable || (this.editable && this.currentNodeLevel === '1')
+  //   }
+  // },
   methods: {
     selectDataInfo(val) {
       this.selectQustionId = val.map(item => item.questionId);
@@ -470,7 +471,7 @@ export default {
     }
   },
   created() {
-    this.getSystemParams();
+    // this.getSystemParams();
     this.getAllOutline();
   }
 };
@@ -530,14 +531,14 @@ export default {
 .question-table {
   height: calc(100% - 194px);
   // min-height: 240px;
-  &.noHandle {
-    height: calc(100% - 130px);
-  }
   >>> .el-table__row {
     .el-table-column--selection {
       vertical-align: top;
       .cell {
         margin-top: 15px;
+        .el-checkbox{
+          display: block;
+        }
       }
     }
   }

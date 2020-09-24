@@ -757,7 +757,8 @@ export default {
     },
     //获取记录详情
     getCheRecordDetail(cheRecord) {
-      getCheRecordDetailApi(cheRecord).then(
+      const { recordId } = cheRecord;
+      getCheRecordDetailApi({recordId}).then(
         (res) => {
           if (res.code == 200) {
             let formData = {};
@@ -823,14 +824,16 @@ export default {
     },
     //模板生成描述
     generateDescribes() {
+      const from = this.inspectRecordForm;
       const tmp = this.normalRecordTemp.find(
-        (t) => t.templateId == this.inspectRecordForm.desTemplateId
+        (t) => t.templateId == from.desTemplateId
       );
-      if(this.inspectRecordForm.checkTime){
-        this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
-        this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
+      if(from.checkTime){
+        from.checkStartTime = from.checkTime[0];
+        from.checkEndTime = from.checkTime[1];
       }
-      this.inspectRecordForm.describes = this.generateContent(tmp.content);
+      from.describes = this.generateContent(tmp.content);
+      this.inspectRecordForm = JSON.parse(JSON.stringify(from));
     },
     //异常摘要生成
     problemAbstractGenerate(listAbnIndex) {
@@ -1021,11 +1024,11 @@ export default {
           Object.assign(curAbnormal, abnormal, { processList: res.data });
 
           if(curAbnormal.process){
-            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process);
+            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'];
           }
 
           if(curAbnormal.processMode) {
-            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode);
+            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode)['children'];
           }
           const list = this.inspectRecordForm.listAbn;
           list.splice(abnormalIndex, 1, curAbnormal);

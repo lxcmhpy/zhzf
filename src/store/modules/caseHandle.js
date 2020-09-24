@@ -1,7 +1,7 @@
 import { getEnforceLawTypeApi,getCaseTypeApi,getIllegaActApi,getIndustryCategoryApi,saveOrUpdateCaseBasicInfoApi,findLawRegulationsByCauseIdApi,findJudgFreedomListApi,findLawOfficerListApi,queryCaseBasicInfoListPageApi,
     getCaseBasicInfoApi,addDocDataApi,getDocDataByCaseIdAndDocIdApi,findDocCatalogByCaseIdApi
     ,getFormDataByCaseIdAndFormIdApi,addFormDataApi,getDocListByCaseIdAndFormIdApi,saveOrUpdateLinkApi,
-    submitPdfApi,approvalPdfApi,approvalPdfQzApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,getApprovePeopleApi,
+    submitPdfApi,approvalPdfApi,approvalPdfQzApi,getNextLinkAPi,setFlowStatusAPi,delDocDataByDocIdApi,deleteDocByIdApi,getApprovePeopleApi,
     findByCondition,findByMlCaseIdNew,saveOrUpdateDocCatalogList,getCaseTypeListApi,getCatalogListApi,addOrEditCatalogApi,
     deleteCatalogApi,
     //-----------------长软start-----------
@@ -16,6 +16,7 @@ const caseHandle = {
         docId: '',
         docDataId:'', //文书数据id
         caseLinktypeId:'', // 环节id
+        caseLinkName:'', //环节路由name
         caseApproval:'', //案件是否为审批状态
         clickArchiveCatalogue:'', //当前点击的归档卷宗目录
         archiveCatalogueList:[], //归档卷宗目录
@@ -47,6 +48,10 @@ const caseHandle = {
         //环节id
         setCaseLinktypeId(state,data) {
             state.caseLinktypeId = data
+        },
+        //环节name
+        setCaseLinkName(state,data) {
+            state.caseLinkName = data
         },
         setCaseApproval(state,data){
             iLocalStroage.set('caseApproval',data)
@@ -223,6 +228,18 @@ const caseHandle = {
         delDocDataByDocId({ commit }, data) {
             return new Promise((resolve, reject) => {
                 delDocDataByDocIdApi(data).then(
+                    res => {
+                        resolve(res);
+                    },
+                    error => {
+                        reject(error);
+                    })
+            })
+        },
+        //删除文书
+        deleteDocByIdApi({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                deleteDocByIdApi(data).then(
                     res => {
                         resolve(res);
                     },

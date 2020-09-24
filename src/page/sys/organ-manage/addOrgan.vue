@@ -149,6 +149,19 @@
             <el-input v-model="addOrganForm.enforcementOrgan2"></el-input>
           </el-form-item>
         </div>
+        <div>
+          <el-form-item label="行政区划" prop="administrativeDivision">
+            <el-cascader
+                ref="areaCascader"
+                v-model="addOrganForm.administrativeDivisionArray"
+                :options="provincesList"
+                @active-item-change="handleSelect"
+                :props="{ expandTrigger:'hover',label:'name',value:'name'}"
+                filterable
+                @change="handleSelect"
+              ></el-cascader>
+          </el-form-item>
+        </div>
       </div>
       <div class="part">
         <p class="titleP">三定要求</p>
@@ -223,6 +236,8 @@ export default {
         enforcementOrgan1:'',
         enforcementOrgan2:'',
         enforcementBody:'',
+        administrativeDivision:'',
+        administrativeDivisionArray: [],
         // propertyValue:{}
       },
       addValueForm:{
@@ -246,6 +261,7 @@ export default {
       attachedPropertyFlag: false,
       organArray: [],//执法主体
       enforcementBodyStatus:'0',//执法主体是否显示，1显示，0不显示
+      provincesList: [], //行政区划
     };
   },
 
@@ -350,6 +366,13 @@ export default {
         if (valid && !this.errorOrganName) {
           _this.addOrganForm.pid = _this.parentNode.parentNodeId;
           _this.addOrganForm.id = _this.handelType == 0 ? '' :  _this.organId;
+          if (_this.addOrganForm.administrativeDivisionArray 
+            && _this.addOrganForm.administrativeDivisionArray.length > 1
+          ) {
+            _this.addOrganForm.administrativeDivision = JSON.stringify(
+                _this.addOrganForm.administrativeDivisionArray
+            );
+          }
           _this.$store.dispatch("addOrgan", _this.addOrganForm).then(
             res => {
               console.log('this.organId',_this.addOrganForm.pid);
@@ -424,7 +447,39 @@ export default {
             console.log(err);
           }
         );
-    }
+    },
+    getCountry(pCode) {
+      let params = pCode;
+      let _this = this;
+      this.$store.dispatch("getCountry", params).then(
+        (res) => {
+          res.data.forEach((p) => {
+            if (p.childrenCount > 0) {
+              p.children = [];
+            }
+          });
+          _this.provincesList = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    handleSelect(node) {
+      if (node) {
+        let data = this.$refs["areaCascader"].panel.getNodeByValue(
+          node[node.length - 1]
+        ).data;
+        if (data.childrenCount > 0 && data.children.length == 0) {
+          this.$store.dispatch("getCountry", data.adCode).then((res) => {
+            data.children = res.data;
+          });
+        }
+      }
+    },
+  },
+  mounted(){
+      this.getCountry("100000");
   }
 };
 </script>

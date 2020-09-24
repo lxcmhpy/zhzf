@@ -13,6 +13,7 @@
             :props="defaultProps"
             node-key="id"
             default-expand-all
+            :expand-on-click-node='false'
             :filter-node-method="filterNode"
             ref="tree"
             @node-click="handleNodeClick"
@@ -29,7 +30,7 @@
       <div class="searchPage toggleBox">
         <div class="handlePart">
           <el-form :inline="true" ref="userForm" :model="formInline" label-width="70px">
-            <el-form-item label="查询范围">
+            <el-form-item label="查询范围" prop="selectValue">
               <el-select v-model="formInline.selectValue">
                 <el-option
                   v-for="item in searchType"
@@ -95,10 +96,16 @@
             border
             style="width: 100%;height:100%"
             @selection-change="selectUser"
-            @row-click="showUserDetail"
           >
+            <!-- @row-click="showUserDetail" -->
             <el-table-column type="selection" align="center"></el-table-column>
-            <el-table-column prop="username" label="用户名"></el-table-column>
+            <el-table-column prop="username" label="用户名">
+              <template slot-scope="scope">
+                <div>
+                  <el-button type="text" @click.stop="showUserDetail(scope.$index, scope.row)">{{scope.row.username}}</el-button>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column prop="nickName" label="姓名"></el-table-column>
             <el-table-column prop="ministerial" label="执法证号"></el-table-column>
             <el-table-column prop="mobile" label="联系电话"></el-table-column>
@@ -113,9 +120,9 @@
             <el-table-column label="操作" width="160">
               <template slot-scope="scope">
                 <div style="width:160px">
-                  <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                  <el-button type="text" @click.stop @click="handleDelete(scope.row)">删除</el-button>
-                  <el-button type="text" @click.stop @click="Initialization(scope.row)">初始化</el-button>
+                  <el-button type="text"  @click.stop="handleEdit(scope.$index, scope.row)">修改</el-button>
+                  <el-button type="text"  @click.stop="handleDelete(scope.row)">删除</el-button>
+                  <el-button type="text"  @click.stop="Initialization(scope.row)">初始化</el-button>
                 </div>
               </template>
             </el-table-column>
@@ -408,7 +415,8 @@
         });
       },
       //查看用户详情
-      showUserDetail(row){
+      showUserDetail(v,row){
+        console.log(" -> v,row", v,row)
         let newRow =JSON.parse(JSON.stringify(row))
         this.$refs.addUserRef.showUserDetail(newRow);
       }

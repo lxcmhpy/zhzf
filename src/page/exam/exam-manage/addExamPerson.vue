@@ -370,6 +370,11 @@ export default {
     >>> .el-table__body-wrapper {
       padding-bottom: 0;
     }
+    >>>.cell{
+      .el-checkbox{
+        display: block;
+      }
+    }
   }
 }
 .search-form {

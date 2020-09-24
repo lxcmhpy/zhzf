@@ -21,7 +21,15 @@ export function numType(rule, value, callback) {
         callback();
     }
 }
-
+/** 验证是否整数 请输入整数 可输入0*/
+export function numType1(rule, value, callback) {
+    var re = /^[0-9]([0-9])*$/;
+    if (!re.test(value)) {
+        callback(new Error('请输入整数'));
+    } else {
+        callback();
+    }
+}
 /* 是否是邮箱*/
 export function validateEmail(rule, value, callback) {
     var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -53,7 +61,11 @@ export function validateUrl(rule, value, callback) {
 /* 是否是手机号 有值时验证*/
 export function validatePhone(rule, value, callback) {
     // var reg = /^1(3|4|5|6|7|8)\d{9}$/;
-    var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[35879]\d{9})$)/;
+    // var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[35879]\d{9})$)/;
+    
+    //张浩、李春宏提的新需求要求 将手机号段校验去掉，只保留手机位数校验；对固话等其他校验规则不变
+    var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(\d{11})$)/;
+    
     // 适配17-19
     // var reg = /^((13[0-9])|(17[0-1,6-8])|(15[^4,\\D])|(18[0-9]))|(19[1,9])\d{8}$/;
     // var reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
@@ -211,7 +223,6 @@ export function vaildateCardNum(rule, value, callback){
 
 /** 验证是否整数 两数字并比较大小 */
 export function numCompareList(numList, symbolList, rule, value, callback) {
-    debugger;
     // var re = /^[1-9]([0-9])*$/;
     var re = /^([123456789]{1}\d*)|0$/;
     if (!re.test(value)) {
@@ -250,4 +261,14 @@ export function validatePwd(rule, value, callback) {
     } else {
         callback();
     }
+}
+
+//验证数字（包括小数）
+export function validateIsNumber(rule, value, callback) {
+    let reg = /^\d+(?=\.{0,1}\d+$|$)/;
+    if (!reg.test(value) && value) {
+        callback(new Error('请填写正确的数字'));
+    }
+    callback();
+
 }

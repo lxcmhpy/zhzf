@@ -16,7 +16,7 @@
               <td width="15%">办件编号</td>
               <td width="35%">{{form.letterNo}}</td>
               <td width="15%">来信时间</td>
-              <td width="35%">{{form.sendTime}}</td>
+              <td width="35%">{{form.sendTime.substring(0,10)}}</td>
             </tr>
             <tr>
               <td>信件标题</td>

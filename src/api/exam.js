@@ -197,9 +197,10 @@ export function addExamPersonApi(data){
 //移除参考人员
 export function removeExamPersonApi(examperId){
     return request({
-        url: "/exam/examPerson/deleteExamPersonById/"+examperId,
-        method: "get",
+        url: "/exam/examPerson/deleteExamPersonById",
+        method: "post",
         data: vm.$qs.stringify(examperId),
+        // data: examperId,
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -763,9 +764,8 @@ export function autoDispatchApi (data){
 // 查询答题结果
 export function getExamAnswerReport(data){
     return request({
-        url: "/examResult/getExamReportInfo",
+        url: "/exam/examResult/getExamReportInfo",
         method: "get",
-        baseUrlType: 'EXAM',
         params: data,
         showloading: false,
         cancelToken: setCancelSource()

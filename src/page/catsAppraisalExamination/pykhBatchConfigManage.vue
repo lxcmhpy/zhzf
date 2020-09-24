@@ -64,7 +64,7 @@
                                 :readonly="formReadOnly"></el-input>
                         </el-form-item>
                         <br />
-                        <el-form-item label="行政处罚" prop="ajCfBsjs">
+                        <el-form-item label="处罚或强制" prop="ajCfBsjs">
                             <el-input v-model="addForm.ajCfBsjs" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
@@ -73,7 +73,7 @@
                             </el-input>
                         </el-form-item>
                         <br />
-                        <el-form-item label="行政强制" prop="ajQzBsjs">
+                        <el-form-item label="行政许可" prop="ajQzBsjs">
                             <el-input v-model="addForm.ajQzBsjs" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
@@ -119,7 +119,7 @@
         findAllDepartment
     } from "@/api/pykh/catsAppraisalExamPersonUpload.js";
     import {
-        numType,
+        numType1,
         numCompareList
     } from "@/common/js/validator";
     import iLocalStroage from "@/common/js/localStroage";
@@ -302,7 +302,7 @@
                             trigger: "blur"
                         },
                         {
-                            validator: numType,
+                            validator: numType1,
                             trigger: "blur"
                         }
                     ],
@@ -335,7 +335,7 @@
                             trigger: "blur"
                         },
                         {
-                            validator: numType,
+                            validator: numType1,
                             trigger: "blur"
                         }
                     ]
@@ -373,7 +373,7 @@
             },
             //表单筛选
             async queryData() {
-                let obj = await findPykhBatchConfigByOrganId(this.search.orgId);
+                let obj = await findPykhBatchConfigByOrganId(this.search.organId);
                 this.tableData = obj.data;
             },
             //编辑
@@ -403,7 +403,7 @@
                 this.orgList = obj.data;
             },
             onChange(val) {
-                this.search.orgId = val;
+                this.search.organId = val;
                 this.queryData();
             },
             async judgmentOrganIdFun(){
@@ -416,7 +416,6 @@
                         this.queryData();
                     }
                 }else{
-                    this.search.organId = this.organId;
                     this.queryData();
                 }
             }
@@ -424,6 +423,7 @@
         mounted() {
             let userInfo = iLocalStroage.gets("userInfo");
             this.organId = userInfo.organId;
+            this.search.organId = this.organId;
             this.judgmentOrganIdFun();
             
         },

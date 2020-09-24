@@ -33,18 +33,38 @@
             </el-row> 
             <el-row>
                 <el-form-item label="下载地址:" prop="appUpgrade">
-                    <el-input v-model="addVersionForm.appUpgrade"></el-input>
+                    <el-input type="textarea" v-model="addVersionForm.appUpgrade"></el-input>
                 </el-form-item>
             </el-row>
+             <div v-if="handelType == 3">
+                  <el-row>
+                    <el-form-item label="创建时间" prop="createTime">
+                        <el-input  v-model="addVersionForm.createTime"></el-input>
+                    </el-form-item>
+                  </el-row>  
+                 <el-row>
+                    <el-form-item label="操作人" prop="modifyId">
+                        <el-input  v-model="addVersionForm.modifyId"></el-input>
+                    </el-form-item>
+                  </el-row>
+                  <el-row>
+                    <el-form-item label="操作时间" prop="modifyTime">
+                        <el-input  v-model="addVersionForm.modifyTime"></el-input>
+                    </el-form-item>
+                  </el-row>    
+            </div>
             <el-row>
                 <el-form-item label="更新内容:" prop="appMessage">
-                    <el-input v-model="addVersionForm.appMessage"></el-input>
+                    <el-input type="textarea" v-model="addVersionForm.appMessage"></el-input>
                 </el-form-item>
             </el-row>     
         </el-form>
-        <div slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer" v-if="handelType==1 || handelType==2" >
                 <el-button @click="closeDialog">取 消</el-button>
-                <el-button type="primary" @click="submit('addVersionForm')">保 存</el-button>
+                    <el-button type="primary" @click="submit('addVersionForm')">保 存</el-button>
+        </div>
+          <div slot="footer" class="dialog-footer" v-if="handelType==3" >
+                <el-button type="primary" @click="closeDialog">确 定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -56,13 +76,17 @@ export default {
             isDisabled:false,
             visible: false,
             addVersionForm: {
+                appId:"",
                 appVersion: "",//版本名称
                 appVersionCode:"",  //版本号
                 appMessage: "",//更新内容
                 appUpgrade:"", //下载地址
                 appForcedUpgrade: "1",  //是否强制跟新  0：否  1：是
-              
+                modifyId:"",
+                modifyTime:"",
+                createTime:"",
             },
+            
             rules: {
                 appVersion: [{ required: true, message: "版本名称必须填写", trigger: "blur" }],
                 appVersionCode: [{ required: true, message: "版本号必须填写", trigger: "blur" }],
@@ -101,7 +125,15 @@ export default {
                         console.log(err);
                 };
             }else if(_this.handelType==2){
-                _this.$store.dispatch("updateVersionModel", _this.addVersionForm).then(res => {
+                var data = {
+                appId:_this.addVersionForm.appId,
+				appVersion:_this.addVersionForm.appVersion,
+                appVersionCode:_this.addVersionForm.appVersionCode,
+                appMessage:_this.addVersionForm.appMessage,
+                appUpgrade:_this.addVersionForm.appUpgrade,
+                appForcedUpgrade:_this.addVersionForm.appForcedUpgrade,
+                }
+                _this.$store.dispatch("updateVersionModel", data).then(res => {
                     _this.$emit("getVersionList");
                     _this.$message({
                         type: "success",
@@ -130,11 +162,15 @@ export default {
                     _this.dialogTitle = "详情";
                     _this.isDisabled=true;
                 }
+                _this.addVersionForm.appId = row.appId;
 				_this.addVersionForm.appVersion=row.appVersion;
                 _this.addVersionForm.appVersionCode=row.appVersionCode;
                 _this.addVersionForm.appMessage=row.appMessage;
                 _this.addVersionForm.appUpgrade=row.appUpgrade;
                 _this.addVersionForm.appForcedUpgrade=row.appForcedUpgrade;
+                _this.appForcedUpgrade.createTime=row.createTime;
+                _this.addVersionForm.modifyId=row.modifyId;
+                _this.addVersionForm.modifyTime=row.modifyTime;
             }
         },
         //关闭弹窗的时候清除数据
