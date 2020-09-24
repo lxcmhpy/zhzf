@@ -10,18 +10,6 @@
       </div>
 
       <div id="chartColumn" style="width: 100%; height: 500px;margin-bottom:20px"></div>
-
-      <!-- <div class="tablePart">
-        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
-          <el-table-column prop="time" label="日期" align="center"></el-table-column>
-          <el-table-column prop="lscf" label="路损处罚" align="center"></el-table-column>
-          <el-table-column prop="cxcf" label="超限处罚" align="center"></el-table-column>
-          <el-table-column prop="slxk" label="涉路许可" align="center"></el-table-column>
-          <el-table-column prop="cxxk" label="超限许可" align="center"></el-table-column>
-          <el-table-column prop="lspc" label="路损赔偿" align="center"></el-table-column>
-          <el-table-column prop="zs" label="总数" align="center"></el-table-column>
-        </el-table>
-      </div> -->
     </div>
   </div>
 </template>
@@ -78,7 +66,7 @@ export default {
             "超限超载",
             "处罚案件",
             "赔补偿案件",
-           
+
           ]
         },
         series: [
@@ -92,7 +80,7 @@ export default {
               { value: this.cxcz, name: "超限超载" },
               { value: this.cfaj, name: "处罚案件" },
               { value: this.pbcaj, name: "赔补偿案件" },
-              
+
             ],
             emphasis: {
               itemStyle: {
@@ -106,27 +94,27 @@ export default {
       });
     },
 
-    
-    search(val) {    
+
+    search(val) {
       let data = {
        year:val
       };
       let _this = this;
       // this.$store.dispatch("ndajsllxslbztj", data).then(res => {
-      ndajsllxslbztj(data).then(res => { 
+      ndajsllxslbztj(data).then(res => {
          var map={};
        res.forEach(item =>{
           map[item[0]]=item[1]
-          
+
          });
          console.log(map);
-            this.ybaj=map["一般案件"];      
-            this.cfaj=map["处罚案件"];         
+            this.ybaj=map["一般案件"];
+            this.cfaj=map["处罚案件"];
             this.pbcaj=map["赔补偿案件"];
             this.cxcz=map["超限超载"];
-                             
+
             this.drawLine();
-       
+
       });
       err => {
         console.log(err);
@@ -140,7 +128,7 @@ export default {
     this.search(2020);
   },
   created() {
-    
+
   }
 };
 </script>

@@ -6,7 +6,7 @@
           <el-col :span="6" style="height:60px;margin-top: 35px;margin-left: 100px; " >
               <div class="title_1 title_font"  @click="ajpage()">执法案件</div>
           </el-col>
-          <el-col :span="4" class="title_2" style="margin-left: -18px;">
+          <el-col :span="4" class="title_2" style="margin-left: 13px;">
                宁夏执法数据分析研判系统
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -520px;margin-top: 28px;" >

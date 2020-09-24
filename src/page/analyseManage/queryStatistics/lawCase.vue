@@ -6,7 +6,7 @@
           <el-col :span="6" style="height:60px;margin-top: 25px;margin-left: 100px; ">
             <div class="dptitle_1 dptitle_font" @click="ajpage()">执法案件</div>
           </el-col>
-          <el-col :span="4" class="dptitle_2" style="margin-left: -18px;">
+          <el-col :span="4" class="dptitle_2" style="margin-left: 13px;">
             宁夏执法数据分析研判系统
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;">
@@ -27,60 +27,14 @@
               <el-row>
                 <div class="bt">案件类型</div>
               </el-row>
-              <el-row>
-                <el-row style="text-align:center">
-                  <el-col :span="6"><img src="../../../../static/images/map/一般案件.png" style="height:60px;width:60px;">
-                  </el-col>
-                  <el-col :span="6"><img src="../../../../static/images/map/处罚案件.png" style="height:60px;width:60px;">
-                  </el-col>
-                  <el-col :span="6"><img src="../../../../static/images/map/赔补偿案件.png" style="height:60px;width:60px;">
-                  </el-col>
-                  <el-col :span="6"><img src="../../../../static/images/map/超限超载.png" style="height:60px;width:60px;">
-                  </el-col>
-                </el-row>
-                <el-row style="text-align:center">
-                  <el-col :span="6">
-                    <div class="type">一般案件</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div class="type">处罚案件</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div class="type">赔补偿案件</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div class="type">超限超载</div>
-                  </el-col>
-                </el-row>
-                <el-row style="text-align:center">
-                  <el-col :span="6">
-                    <div id="ybaj" class="count">{{ybaj}}</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div id="cfaj" class="count">{{cfaj}}</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div id="pbcaj" class="count">{{pbcaj}}</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div id="cxcz" class="count">{{cxcz}}</div>
-                  </el-col>
-                </el-row>
-                <el-row style="text-align:center">
-                  <el-col :span="6">
-                    <div class="dw">例</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div class="dw">例</div>
-                  </el-col>
-                  <el-col :span="6">
-                    <div class="dw">例</div>
-                  </el-col>
-                  <el-col :span="6">
+                <el-row style="text-align:center;overflow-y: hidden;overflow-x: auto;height: 153px;" >
+                  <el-col class="case" v-for="(item,i) in caseTypeCon" :key="i">
+                    <img src="../../../../static/images/map/一般案件.png" style="height:60px;width:60px;">
+                    <div class="type">{{item.name}}</div>
+                    <div id="ybaj" class="count">{{item.value}}</div>
                     <div class="dw">例</div>
                   </el-col>
                 </el-row>
-              </el-row>
             </el-row>
             <el-row class="left_2">
               <el-row>
@@ -103,10 +57,10 @@
                     <div class="ajbjl">案件办结率</div>
                   </el-row>
                   <el-row>
-                    <div style="width:200px">
-                      <span class="sl">3829</span>
+                    <div style="width:200px" v-for="(item,i) in caseStatusData" :key="i">
+                      <span class="sl" v-if="item.name == '已结案'">{{item.value}}</span>
                       <span class="dw" style="margin-left:0px;">例/</span>
-                      <span class="sl2">5283</span>
+                      <span class="sl2" v-if="item.name == '宗案件'">{{item.value}}</span>
                       <span class="dw" style="margin-left:0px;">例</span>
                     </div>
                   </el-row>
@@ -208,30 +162,61 @@
   import "echarts/lib/component/toolbox";
   import "echarts/lib/component/tooltip";
   import "../../../../static/css/animate.min.css";
-  import {
-    ndajsltbtj
-  } from '@/api/fxyp.js'
+  import {lawCaseApi} from '@/api/analysisManage.js'
 
   export default {
     data() {
       return {
-        ybaj: "4306",
-        cxcz: "9372",
-        cfaj: "769",
-        pbcaj: "19273",
+        caseTypeCon:[],
+        incidentTrend:[],
         data1: [],
         data2: [],
         carsData:{
           xAxis:[],
           series:[]
-        }
+        },
+        legendTrend:[],
+        trendYear:'',
+        trendYearNew:'',
+        trendYearDate:[],
+        trendYearDateNew:[],
+        trendYearNewX:[],
+        caseStatusData:[]
       };
     },
     methods: {
       getData(){
+        let that = this;
+        let param = {
+          organId:JSON.parse(localStorage.getItem('userInfo')).organId
+        };
+        lawCaseApi(param).then(res => {
+          if(res.code == 200){
+            this.caseTypeCon = res.data.typeOfCase;
+            this.incidentTrend = res.data.incidentTrend;
+            Object.keys(res.data.incidentTrend).forEach(function(element,index){
+              res.data.incidentTrend[element].map(item => {
+                if(index == 0) {
+                  that.trendYear = element
+                  that.trendYearDate.push(item.value)
+                } else if (index == 1) {
+                  that.trendYearNew = element
+                  that.trendYearNewX.push(item.name)
+                  that.trendYearDateNew.push(item.value)
+                }
+              })
+            })
+            this.caseStatusData = res.data.caseStatus
+            this.trend()
+          }
+
+        });
+        err => {
+          console.log(err);
+        };
       },
       ajpage() {
-        this.$router.push({path: '/lawCase'})
+        this.$router.push({path: '/lawCase_JX'})
       },
       zbpage() {
         this.$router.push({path: '/personEqpt'})
@@ -1199,6 +1184,193 @@
 
 
       },
+      trend(){
+        /*年度案发趋势*/
+        this.chartColumn = echarts.init(document.getElementById("ndafqs"));
+        const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF']
+        this.chartColumn.setOption({
+          backgroundColor: '',
+          title: {
+            text: '',
+            textStyle: {
+              fontSize: 12,
+              fontWeight: 400
+            },
+            left: 'center',
+            top: '5%'
+          },
+          legend: {
+            icon: 'circle',
+            top: '5%',
+            right: '5%',
+            itemWidth: 6,
+            itemGap: 20,
+            textStyle: {
+              color: '#556677'
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              label: {
+                show: true,
+                backgroundColor: '#fff',
+                color: '#556677',
+                borderColor: 'rgba(0,0,0,0)',
+                shadowColor: 'rgba(0,0,0,0)',
+                shadowOffsetY: 0
+              },
+              lineStyle: {
+                width: 0
+              }
+            },
+            backgroundColor: '#fff',
+            textStyle: {
+              color: '#5c6c7c'
+            },
+            padding: [10, 10],
+            extraCssText: 'box-shadow: 1px 0 2px 0 rgba(163,163,163,0.5)'
+          },
+          grid: {
+            top: '15%',
+            right: '5%',
+            bottom: '35%'
+          },
+          xAxis: [{
+            type: 'category',
+            data: this.trendYearNewX,
+            axisLine: {
+              lineStyle: {
+                color: 'rgba(107,107,107,0.37)', //x轴颜色
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              interval: 0,
+              textStyle: {
+                color: '#999' //坐标轴字颜色
+              },
+              margin: 15,
+              formatter: function (value) {
+                return value.split(" ").join("\n");
+              }
+            },
+            axisPointer: {
+              label: {
+                padding: [11, 5, 7],
+                backgroundColor: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: '#fff' // 0% 处的颜色
+                  }, {
+                    offset: 0.9,
+                    color: '#fff' // 0% 处的颜色
+                  }, {
+                    offset: 0.9,
+                    color: '#33c0cd' // 0% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: '#33c0cd' // 100% 处的颜色
+                  }],
+                  global: false // 缺省为 false
+                }
+              }
+            },
+            boundaryGap: false
+          }],
+          yAxis: [{
+            type: 'value',
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: 'rgba(107,107,107,0.37)', //y轴颜色
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#999'
+              }
+            },
+            splitLine: {
+              show: false
+            }
+          }],
+          series: [
+            {
+              name: this.trendYear,
+              type: 'line',
+              data: this.trendYearDate,
+              // data:this.data1,
+              symbolSize: 1,
+              symbol: 'circle',
+              smooth: true,
+              yAxisIndex: 0,
+              showSymbol: false,
+              lineStyle: {
+                width: 5,
+                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                  offset: 0,
+                  color: '#9effff'
+                },
+                  {
+                    offset: 1,
+                    color: '#9E87FF'
+                  }
+                ]),
+                shadowColor: 'rgba(158,135,255, 0.3)',
+                shadowBlur: 10,
+                shadowOffsetY: 20
+              },
+              itemStyle: {
+                normal: {
+                  color: colorList[0],
+                  borderColor: colorList[0]
+                }
+              }
+            }, {
+              name: this.trendYearNew,
+              type: 'line',
+              data: this.trendYearDateNew,
+              //  data:this.data2,
+              symbolSize: 1,
+              symbol: 'circle',
+              smooth: true,
+              yAxisIndex: 0,
+              showSymbol: false,
+              lineStyle: {
+                width: 5,
+                color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
+                  offset: 0,
+                  color: '#73DD39'
+                },
+                  {
+                    offset: 1,
+                    color: '#73DDFF'
+                  }
+                ]),
+                shadowColor: 'rgba(115,221,255, 0.3)',
+                shadowBlur: 10,
+                shadowOffsetY: 20
+              },
+              itemStyle: {
+                normal: {
+                  color: colorList[1],
+                  borderColor: colorList[1]
+                }
+              }
+            }]
+        });
+      },
 
       drawLeft3() {
         this.chartColumn = echarts.init(document.getElementById("ajzt"));
@@ -1445,7 +1617,6 @@
 
       drawRight1() {
         let that = this
-
           /*涉案外埠车辆排名*/
           that.chartColumn = echarts.init(document.getElementById("clpm"));
           let option={
@@ -1560,195 +1731,7 @@
             }]
           };
           that.chartColumn.setOption(option);
-          /*年度案发趋势*/
-          this.chartColumn = echarts.init(document.getElementById("ndafqs"));
-          const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF', "#9E87FF", '#73DDFF']
-          const xData = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-          const oldData = [12,10,20,32,17,8,36,25,13,10,32,11]
 
-          const newData = [22,16,11,13,34,20,16,10,33,22,10,6]
-
-          this.chartColumn.setOption({
-            backgroundColor: '',
-            title: {
-              text: '',
-              textStyle: {
-                fontSize: 12,
-                fontWeight: 400
-              },
-              left: 'center',
-              top: '5%'
-            },
-            legend: {
-              icon: 'circle',
-              top: '5%',
-              right: '5%',
-              itemWidth: 6,
-              itemGap: 20,
-              textStyle: {
-                color: '#556677'
-              }
-            },
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                label: {
-                  show: true,
-                  backgroundColor: '#fff',
-                  color: '#556677',
-                  borderColor: 'rgba(0,0,0,0)',
-                  shadowColor: 'rgba(0,0,0,0)',
-                  shadowOffsetY: 0
-                },
-                lineStyle: {
-                  width: 0
-                }
-              },
-              backgroundColor: '#fff',
-              textStyle: {
-                color: '#5c6c7c'
-              },
-              padding: [10, 10],
-              extraCssText: 'box-shadow: 1px 0 2px 0 rgba(163,163,163,0.5)'
-            },
-            grid: {
-              top: '15%',
-              right: '5%',
-              bottom: '35%'
-            },
-            xAxis: [{
-              type: 'category',
-              data: xData,
-              axisLine: {
-                lineStyle: {
-                  color: 'rgba(107,107,107,0.37)', //x轴颜色
-                }
-              },
-              axisTick: {
-                show: false
-              },
-              axisLabel: {
-                interval: 0,
-                textStyle: {
-                  color: '#999' //坐标轴字颜色
-                },
-                margin: 15,
-                formatter: function (value) {
-                  return value.split(" ").join("\n");
-                }
-              },
-              axisPointer: {
-                label: {
-                  padding: [11, 5, 7],
-                  backgroundColor: {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    colorStops: [{
-                      offset: 0,
-                      color: '#fff' // 0% 处的颜色
-                    }, {
-                      offset: 0.9,
-                      color: '#fff' // 0% 处的颜色
-                    }, {
-                      offset: 0.9,
-                      color: '#33c0cd' // 0% 处的颜色
-                    }, {
-                      offset: 1,
-                      color: '#33c0cd' // 100% 处的颜色
-                    }],
-                    global: false // 缺省为 false
-                  }
-                }
-              },
-              boundaryGap: false
-            }],
-            yAxis: [{
-              type: 'value',
-              axisTick: {
-                show: false
-              },
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: 'rgba(107,107,107,0.37)', //y轴颜色
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#999'
-                }
-              },
-              splitLine: {
-                show: false
-              }
-            }],
-            series: [{
-              name: '2018',
-              type: 'line',
-              data: oldData,
-              // data:this.data1,
-              symbolSize: 1,
-              symbol: 'circle',
-              smooth: true,
-              yAxisIndex: 0,
-              showSymbol: false,
-              lineStyle: {
-                width: 5,
-                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                  offset: 0,
-                  color: '#9effff'
-                },
-                  {
-                    offset: 1,
-                    color: '#9E87FF'
-                  }
-                ]),
-                shadowColor: 'rgba(158,135,255, 0.3)',
-                shadowBlur: 10,
-                shadowOffsetY: 20
-              },
-              itemStyle: {
-                normal: {
-                  color: colorList[0],
-                  borderColor: colorList[0]
-                }
-              }
-            }, {
-              name: '2019',
-              type: 'line',
-              data: newData,
-              //  data:this.data2,
-              symbolSize: 1,
-              symbol: 'circle',
-              smooth: true,
-              yAxisIndex: 0,
-              showSymbol: false,
-              lineStyle: {
-                width: 5,
-                color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [{
-                  offset: 0,
-                  color: '#73DD39'
-                },
-                  {
-                    offset: 1,
-                    color: '#73DDFF'
-                  }
-                ]),
-                shadowColor: 'rgba(115,221,255, 0.3)',
-                shadowBlur: 10,
-                shadowOffsetY: 20
-              },
-              itemStyle: {
-                normal: {
-                  color: colorList[1],
-                  borderColor: colorList[1]
-                }
-              }
-            }]
-          });
 
          /*案发地*/
         const afd_xData = ['银川市','石嘴山市','吴忠市','中卫市','固原市']
@@ -1884,102 +1867,11 @@
             },
           }]
         });
-
-      },
-
-      search1(val) {
-        let data = {
-          year: 2020
-        };
-
-        this.$store.dispatch("ndajsllxslbztj", data).then(res => {
-
-          var map = {};
-          res.forEach(item => {
-            map[item[0]] = item[1]
-
-          });
-          console.log(map);
-          this.ybaj = map["一般案件"];
-          this.cfaj = map["处罚案件"];
-          this.pbcaj = map["赔补偿案件"];
-          this.cxcz = map["超限超载"];
-
-
-        });
-        err => {
-          console.log(err);
-        };
-      },
-      search2(val) {
-        let data = {
-          year: 2018
-        };
-        let _this = this;
-        //   this.$store.dispatch("ndajsltbtj", data).then(res => {
-        ndajsltbtj(data).then(res => {
-          var map = {};
-          res.forEach(item => {
-            var tmp = item[0];
-            if (tmp < 10) {
-              tmp = tmp.substring(1, 2);
-            }
-            map[tmp] = item[1];
-          });
-
-
-          var map2 = [];
-          for (var i = 1; i <= 12; i++) {
-            if (map[i] != undefined) {
-              map2.push(map[i]);
-            } else {
-              map2.push(0);
-            }
-          }
-          this.data1 = map2;
-        });
-        err => {
-          console.log(err);
-        };
-      },
-      search3(val) {
-        let data = {
-          year: 2019
-        };
-        let _this = this;
-        ndajsltbtj(data).then(res => {
-          var map = {};
-          res.forEach(item => {
-            var tmp = item[0];
-            if (tmp < 10) {
-              tmp = tmp.substring(1, 2);
-            }
-            map[tmp] = item[1];
-          });
-
-
-          var map2 = [];
-          for (var i = 1; i <= 12; i++) {
-            if (map[i] != undefined) {
-              map2.push(map[i]);
-            } else {
-              map2.push(0);
-            }
-          }
-
-
-          this.data2 = map2;
-        });
-        err => {
-          console.log(err);
-        };
       },
       timer() {
         return setInterval(() => {
           this.font();
         }, 1000 * 5)
-
-
       },
       font() {
         $('#ybaj').addClass('flipOutX animated infinite');
@@ -2003,7 +1895,7 @@
 
     },
     mounted() {
-
+      this.getData()
       this.drawLeft3();
       this.drawCenter2();
       this.drawRight1();
@@ -2163,7 +2055,7 @@
 
   .type {
     width: 66px;
-    height: 20px;
+    height: 33px;
     font-size: 13px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
@@ -2255,5 +2147,9 @@
     font-weight: 400;
     color: #FF9703;
     line-height: 28px;
+  }
+  .case{
+    width: 74px;
+    height: 153px;
   }
 </style>
