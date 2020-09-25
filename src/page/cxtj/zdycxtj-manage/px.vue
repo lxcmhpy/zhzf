@@ -1,24 +1,24 @@
 <template>
-  <el-container class="body_bg">
+  <el-container class="body_bg"> 
       <el-main>
           <el-row class="main">
         <el-row>
           <el-col :span="6" style="height:60px;margin-top: 25px;margin-left: 100px; " >
-              <div class="dptitle_1 dptitle_font">领导驾驶仓</div>
+              <div class="dptitle_1 dptitle_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="dptitle_2" >
-               青海省执法数据分析研判系统
+               江西省执法数据分析研判系统
           </el-col>
-          <!-- <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;" >
+          <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;" >
               <div class="dptitle_3 dptitle_font" @click="zbpage()">人员装备</div>
-
-          </el-col> -->
+               
+          </el-col>
           <el-col :span="6" style="height:60px;margin-left:50px;margin-top: 35px;" >
               <div class="dptitle_4" >
                   <span class="dpright_font0">涉案本地车辆：</span>
                   <span class="dpright_font1">2568辆</span>
               </div>
-
+               
           </el-col>
         </el-row>
         <el-row>
@@ -67,7 +67,7 @@
                 <div class="bt">案件状态</div>
               </el-row>
               <el-row>
-                <el-col :span="12" >
+                <el-col :span="12" > 
                   <div id="ajzt" style="width: 100%; height: 200px;margin-top:-20px"></div>
                 </el-col>
                 <el-col :span="12" style="" >
@@ -76,14 +76,14 @@
                     </el-row>
                       <el-row  >
                              <div style="width:200px" >
-                                 <span class="sl">{{jas}}</span>
+                                 <span class="sl">3829</span>
                                  <span class="dw" style="margin-left:0px;">例/</span>
-                                 <span class="sl2">{{ajs}}</span>
+                                 <span class="sl2">5283</span>
                                  <span class="dw" style="margin-left:0px;">例</span>
-                            </div>
+                            </div>                         
                         </el-row>
                   </el-col>
-
+                
               </el-row>
             </el-row>
           </el-col>
@@ -125,30 +125,31 @@
                  <el-row>
                        <el-col :span="12" ><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;"></el-col>
                        <el-col :span="12" ><img src="../../../../static/images/map/执行金额.png" style="height:80px;width:100px;"></el-col>
-
+                      
                   </el-row>
                   <el-row >
                        <el-col :span="12" ><div class="type" style="height:30px;width:100px;margin-left:25px;">【 处罚金额 】</div></el-col>
                        <el-col :span="12" ><div class="type" style="height:30px;width:100px;margin-left:25px;">【 执行金额 】</div></el-col>
-
+                       
                   </el-row>
                   <el-row>
                        <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">32682</div></el-col>
-                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">28292</div></el-col>
-
+                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">248292</div></el-col>
+                       
                   </el-row>
                   <el-row>
                        <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
                        <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
-
+                     
                   </el-row>
               </el-row>
             </el-row>
            </el-col>
         </el-row>
         </el-row>
-      </el-main>
+      </el-main>    
   </el-container>
+</template>
 </template>
 
 
@@ -156,26 +157,26 @@
 import echarts from "echarts";
 
 import "echarts/map/js/china.js";
-import "echarts/map/js/province/qinghai.js";
-import "echarts/map/json/province/qinghai.json";
+import "echarts/map/js/province/jiangxi.js";
+import "echarts/map/json/province/jiangxi.json";
 import "echarts/lib/component/title";
 import "echarts/lib/component/legend";
 import "echarts/lib/chart/heatmap";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
 import "../../../../static/css/animate.min.css";
-
+import {
+      ndajsltbtj
+    } from '@/api/fxyp.js'
 export default {
   data() {
     return {
-      jas:"1228",
-      ajs:"4389",
-      ybaj:"1613",
-      cxcz:"803",
-      cfaj:"633",
-      pbcaj:"980",
-      data1:[289, 78, 306, 405, 728, 500, 684, 333, 402, 479, 492, 296],
-      data2:[216, 396, 399, 783, 503, 417, 717, 291, 245, 452, 768, 769],
+      ybaj:"4306",
+      cxcz:"9372",
+      cfaj:"769",
+      pbcaj:"19273",
+      data1:[],
+      data2:[],
     };
   },
   methods:{
@@ -186,79 +187,49 @@ export default {
            this.$router.push({ path:'/personEqpt'  })
       },
     map() {
-    var qinghai = "../../../../static/json/map/青海-630000.json";
-    var xining = "../../../../static/json/map/西宁市-630100.json";
-    var yushu = "../../../../static/json/map/玉树藏族自治州-632700.json";
-    var huangnan = "../../../../static/json/map/黄南藏族自治州-632300.json";
-    var haixi = "../../../../static/json/map/海西蒙古族藏族自治州-632800.json";
-    var hainan = "../../../../static/json/map/海南藏族自治州-632500.json";
-    var haidong = "../../../../static/json/map/海东市-630200.json";
-    var haibei = "../../../../static/json/map/海北藏族自治州-632200.json";
-    var guoluo = "../../../../static/json/map/果洛藏族自治州-632600.json";
+     var jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
+    var yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
+    var yichun = "../../../../static/json/map/data-1518338852969-Hy677KTIf.json";
+    var xinyu = "../../../../static/json/map/data-1518338838010-SyAzQYTIf.json";
+    var shangrao = "../../../../static/json/map/data-1518338829670-H1UfQYa8G.json";
+    var pingxiang = "../../../../static/json/map/data-1518338823093-HkyMQtpUf.json";
+    var nanchang = "../../../../static/json/map/data-1518338805373-S1Temta8G.json";
+    var jiujiang = "../../../../static/json/map/data-1518338799987-S1deQFTLz.json";
+    var jingdezhen = "../../../../static/json/map/data-1518338783915-HJOJXtaLf.json";
+    var jian = "../../../../static/json/map/data-1518338772507-BJnAMKTIz.json";
+    var ganzhou = "../../../../static/json/map/data-1518338763250-S17RfKpLM.json";
+    var fuzhou = "../../../../static/json/map/data-1518338684239-S1EFGtp8f.json";
+
 echarts.extendsMap = function(id, opt){
     // 实例
     var chart = this.init(document.getElementById("map"));
 
     var curGeoJson = {};
     var cityMap = {
-        "西宁市": xining,
-        "玉树藏族自治州": yushu,
-        "黄南藏族自治州": huangnan,
-        "海西蒙古族藏族自治州": haixi,
-        "海南藏族自治州": hainan,
-        "海东市": haidong,
-        "海北藏族自治州": haibei,
-        "果洛藏族自治州": guoluo,
+        "南昌市": nanchang,
+        "景德镇市": jingdezhen,
+        "萍乡市": pingxiang,
+        "九江市": jiujiang,
+        "新余市": xinyu,
+        "鹰潭市": yingtan,
+        "赣州市": ganzhou,
+        "吉安市": jian,
+        "宜春市": yichun,
+        "抚州市": fuzhou,
+        "上饶市": shangrao
     };
     var geoCoordMap = {
-        '西宁市': [101.76792099, 36.640738612],
-                    '玉树藏族自治州': [97.0133161374, 33.0062399097],
-                    '黄南藏族自治州': [102.007600308, 35.5228515517],
-                    '海西蒙古族藏族自治州': [97.3426254153, 37.3737990706],
-                    '海南藏族自治州': [100.624066094, 36.2843638038],
-                    '海东市': [102.085206987, 36.5176101677],
-                    '海北藏族自治州': [100.879802174, 36.9606541011],
-                    '果洛藏族自治州': [100.223722769, 34.4804845846],
-                    '大通回族土族自治县':[101.67,36.92],
-                    // '茫崖市':[102.09,36.47],
-                    '德令哈市':[97.36084,37.36946],
-                    '平安区':[102.09,36.47],
-                    '湟中县':[101.57,36.49],
-                    '乐都区':[102.38,36.49],
-                    '民和回族土族自治县':[102.80,36.30],
-                    '湟源县':[101.28,36.72],
-                    '互助土族自治县':[101.95,36.84],
-                    '化隆回族自治县':[102.30,36.11],
-                    '循化撒拉族自治县':[102.46,35.84],
-                    '门源回族自治县':[101.62,37.37],
-                    '海晏县':[100.99,36.89],
-                    '刚察县':[100.17,37.32],
-                    '祁连县':[100.22,38.20],
-                    '同仁县':[102.00,35.54],
-                    '尖扎县':[102.00,35.92],
-                    '泽库县':[101.50,35.03],
-                    '河南蒙古族自治县':[101.62,34.75],
-                    '共和县':[100.61,36.27],
-                    '贵德县':[101.47,36.02],
-                    '贵南县':[100.75,35.57],
-                    '同德县':[100.63,35.24],
-                    '兴海县':[99.99,35.60],
-                    '玛沁县':[100.26,34.49],
-                    '甘德县':[99.89,33.95],
-                    '久治县':[101.47,33.46],
-                    '班玛县':[100.73,32.92],
-                    '达日县':[99.68,33.74],
-                    '玛多县':[98.26,34.92],
-                    '玉树市':[96.97,33.03],
-                    '称多县':[97.12,33.35],
-                    '囊谦县':[96.47,32.23],
-                    '杂多县':[95.30,32.92],
-                    '治多县':[95.60,33.86],
-                    '曲麻菜县':[95.50,34.52],
-                    '格尔木市':[94.90,36.41],
-                    '乌兰县':[98.46,36.90],
-                    '都兰县':[98.13,36.30],
-                    '天峻县':[99.03,37.28],
+        '南昌': [115.89, 28.48],
+        '景德镇': [117.28, 29.09],
+        '萍乡': [113.93, 27.41],
+        '九江': [115.97,29.51],
+        '新余': [114.81, 27.72],
+        '鹰潭': [117.12, 28.10],
+        '赣州': [115.04, 25.67],
+        '吉安': [115.05, 26.88],
+        '宜春': [114.41, 28.03],
+        '抚州': [116.45, 27.79],
+        '上饶': [117.92, 28.22]
     };
     var levelColorMap = {
         '1': 'rgba(241, 109, 115, .8)',
@@ -276,17 +247,17 @@ echarts.extendsMap = function(id, opt){
         callback: function(name, option, instance){}
 	};
 	if(opt) opt = this.util.extend(defaultOpt, opt);
-
+	
 	// 层级索引
 	var name = [opt.mapName];
 	var idx = 0;
 	var pos = {
 		leftPlus: 115,
 		leftCur: -10,
-		left: 30,
-		top: 5
+		left: 38,
+		top: 40
 	};
-
+    
 	var line = [[0, 0], [8, 11], [0, 22]];
     // style
 	var style = {
@@ -303,7 +274,7 @@ echarts.extendsMap = function(id, opt){
         **/
         resetOption: function(i, o, n){
             var breadcrumb = this.createBreadcrumb(n);
-
+            
             var j = name.indexOf(n);
             var l = o.graphic.length;
             if(j < 0){
@@ -345,16 +316,17 @@ echarts.extendsMap = function(id, opt){
         **/
         createBreadcrumb: function(name){
             var cityToPinyin = {
-                "西宁市": "xining",
-                "玉树藏族自治州": "yushu",
-                "黄南藏族自治州": "huangnan",
-                "海西蒙古族藏族自治州": "haixi",
-                "海南藏族自治州": "hainan",
-                "海东市": "haidong",
-                "海北藏族自治州": "haibei",
-                "果洛藏族自治州": "guoluo",
-
-
+                "南昌市": "nanchang",
+                "景德镇市": "jingdezhen",
+                "萍乡市": "pingxiang",
+                "九江市": "jiujiang",
+                "新余市": "xinyu",
+                "鹰潭市": "yingtan",
+                "赣州市": "ganzhou",
+                "吉安市": "jian",
+                "宜春市": "yichun",
+                "抚州市": "fuzhou",
+                "上饶市": "shangrao"
             };
             var breadcrumb = {
                 type: 'group',
@@ -451,7 +423,7 @@ echarts.extendsMap = function(id, opt){
             });
         }
     };
-
+    
     var option = {
     	// backgroundColor: opt.bgColor,
     	graphic: [{
@@ -510,26 +482,26 @@ echarts.extendsMap = function(id, opt){
         		left: 0,
                 top: 'left',
         		style: {
-	        		text: name[0] === '青海' ? '青海省' : name[0],
+	        		text: name[0] === '江西' ? '江西省' : name[0],
 	        		textAlign: 'left',
 	        		fill: style.textColor,
 	        		font: style.font
 	        	},
 	        	onclick: function(){
-	        		handleEvents.resetOption(chart, option, '青海');
+	        		handleEvents.resetOption(chart, option, '江西');
 	        	}
         	}, {
                 type: 'text',
                 left: 0,
                 top: 20,
                 style: {
-                    text: 'QINGHAI',
+                    text: 'JIANGXI',
                     textAlign: 'center',
                     fill: style.textColor,
                     font: '12px "Microsoft YaHei", sans-serif',
                 },
                 onclick: function(){
-                    handleEvents.resetOption(chart, option, '青海');
+                    handleEvents.resetOption(chart, option, '江西');
                 }
             }]
         }],
@@ -560,10 +532,10 @@ echarts.extendsMap = function(id, opt){
                         y: 0.5,
                         r: 0.8,
                         colorStops: [{
-                            offset: 0,
+                            offset: 0, 
                             color: 'rgba(147, 235, 248, 0)' // 0% 处的颜色
                         }, {
-                            offset: 1,
+                            offset: 1, 
                             color: 'rgba(147, 235, 248, .2)' // 100% 处的颜色
                         }],
                         globalCoord: false // 缺省为 false
@@ -631,44 +603,21 @@ echarts.extendsMap = function(id, opt){
                 }
             },
             data: handleEvents.initSeriesData(opt.data)
-        }],
-        tooltip: {
-                show:true,
-                trigger: 'item',
-                backgroundColor: 'rgba(166, 200, 76, 0.82)',
-                borderColor: '#FFFFCC',
-                showDelay: 0,
-                hideDelay: 0,
-                enterable: true,
-                transitionDuration: 0,
-                extraCssText: 'z-index:100',
-                formatter: function(params, ticket, callback) {
-                console.log(params);
-                //根据业务自己拓展要显示的内容
-                var res = "";
-                var name = params.name;
-                var value = params.value[2];
-                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
-                return res;
-   }
-  },
+        }]
     };
 
     chart.setOption(option);
     // 添加事件
     chart.on('click', function(params){
-
-
         var _self = this;
-
     	if(opt.goDown && params.name !== name[idx]){
             if(cityMap[params.name]){
                 var url = cityMap[params.name];
                 $.get(url, function(response){
+                    // console.log(response);
                     curGeoJson = response;
                     echarts.registerMap(params.name, response);
                     handleEvents.resetOption(_self, option, params.name);
-
                 });
             }
     	}
@@ -681,6 +630,7 @@ echarts.extendsMap = function(id, opt){
         if(citySource){
             var url = './map/' + citySource + '.json';
             $.get(url, function(response){
+                // console.log(response);
                 curGeoJson = response;
                 echarts.registerMap(mapName, response);
                 handleEvents.resetOption(_self, option, mapName);
@@ -692,200 +642,36 @@ echarts.extendsMap = function(id, opt){
     return chart;
 };
 
-$.getJSON(qinghai, function(geoJson){
-    echarts.registerMap('青海', geoJson);
+$.getJSON(jiangxi, function(geoJson){
+    echarts.registerMap('江西', geoJson);
     var myChart = echarts.extendsMap('chart-panel', {
     	bgColor: '#154e90', // 画布背景色
-    	mapName: '青海',    // 地图名
+    	mapName: '江西',    // 地图名
     	goDown: true,       // 是否下钻
     	// 下钻回调
     	callback: function(name, option, instance){
-
-        //     var cityMap2 = {
-        //         "西宁市": xining,
-        //         "玉树藏族自治州": yushu,
-        //         "黄南藏族自治州": huangnan,
-        //         "海西蒙古族藏族自治州": haixi,
-        //         "海南藏族自治州": hainan,
-        //         "海东市": haidong,
-        //         "海北藏族自治州": haibei,
-        //         "果洛藏族自治州": guoluo,
-        //     };
-        //     var geoCoordMap2 = {
-        //             '西宁市': [101.76792099, 36.640738612],
-        //             '玉树藏族自治州': [97.0133161374, 33.0062399097],
-        //             '黄南藏族自治州': [102.007600308, 35.5228515517],
-        //             '海西蒙古族藏族自治州': [97.3426254153, 37.3737990706],
-        //             '海南藏族自治州': [100.624066094, 36.2843638038],
-        //             '海东市': [102.085206987, 36.5176101677],
-        //             '海北藏族自治州': [100.879802174, 36.9606541011],
-        //             '果洛藏族自治州': [100.223722769, 34.4804845846],
-        //             '大通回族土族自治县':[101.67,36.92],
-        //             '平安区':[102.09,36.47],
-        //             '湟中县':[101.57,36.49],
-        //             '乐都区':[102.38,36.49],
-        //             '民和回族土族自治县':[102.80,36.30],
-        //             '湟源县':[101.28,36.72],
-        //             '互助土族自治县':[101.95,36.84],
-        //             '化隆回族自治县':[102.30,36.11],
-        //             '循化撒拉族自治县':[102.46,35.84],
-        //             '门源回族自治县':[101.62,37.37],
-        //             '海晏县':[100.99,36.89],
-        //             '刚察县':[100.17,37.32],
-        //             '祁连县':[100.22,38.20],
-        //             '同仁县':[102.00,35.54],
-        //             '尖扎县':[102.00,35.92],
-        //             '泽库县':[101.50,35.03],
-        //             '河南蒙古族自治县':[101.62,34.75],
-        //             '共和县':[100.61,36.27],
-        //             '贵德县':[101.47,36.02],
-        //             '贵南县':[100.75,35.57],
-        //             '同德县':[100.63,35.24],
-        //             '兴海县':[99.99,35.60],
-        //             '玛沁县':[100.26,34.49],
-        //             '甘德县':[99.89,33.95],
-        //             '久治县':[101.47,33.46],
-        //             '班玛县':[100.73,32.92],
-        //             '达日县':[99.68,33.74],
-        //             '玛多县':[98.26,34.92],
-        //             '玉树市':[96.97,33.03],
-        //             '称多县':[97.12,33.35],
-        //             '囊谦县':[96.47,32.23],
-        //             '杂多县':[95.30,32.92],
-        //             '治多县':[95.60,33.86],
-        //             '曲麻菜县':[95.50,34.52],
-        //             '格尔木市':[94.90,36.41],
-        //             '乌兰县':[98.46,36.90],
-        //             '都兰县':[98.13,36.30],
-        //             '天峻县':[99.03,37.28],
-        //         };
-        //         function initSeriesData2(data){
-        //                 var temp = [];
-        //                 for(var i = 0;i < data.length;i++){
-        //                     var geoCoord = geoCoordMap2[data[i].name];
-        //                     if(geoCoord){
-        //                         temp.push({
-        //                             name: data[i].name,
-        //                             value: geoCoord.concat(data[i].value, data[i].level)
-        //                         });
-        //                     }
-        //                 };
-        //                 return temp;
-        //                 };
-        //             var url = cityMap2[name];
-        //             var data1=[];
-        //             var tmp=[];
-        //             $.get(url, function(response){
-        //           console.log(response);
-        //             for(var i=0;i<response.features.length;i++){
-        //                 data1.push({name:response.features[i].properties.name,value:35,level:2});
-
-        //             }
-        //            tmp=initSeriesData2(data1);
-        //            console.log(tmp);
-        //            for(var i=0;i<tmp.length;i++){
-        //                 option.series[0].data.push(tmp[i]);
-        //                 // option.geo.map=name;
-        //            }
-        //         });
-
-
-        //    console.log(option);
-         console.log(name);
-          if(name=="西宁市"){
-            option.series[0].data.push({name: "大通回族土族自治县",value:[101.67, 36.92,35,3]});
-              option.series[0].data.push({name: "湟中县",value:[101.57, 36.49, 35, 1]});
-              option.series[0].data.push({name: "甘德县",value:[101.28, 36.72, 35, 2]});
-
-         }
-         if(name=="海东市"){
-              option.series[0].data.push({name: "乐都区",value:[102.38, 36.49, 35, 1]});
-              option.series[0].data.push({name: "民和回族土族自治县",value:[102.8, 36.3, 35, 2]});
-              option.series[0].data.push({name: "互助土族自治县",value:[101.95, 36.84, 35, 2]});
-              option.series[0].data.push({name: "化隆回族自治县",value:[102.3, 36.11, 35, 2]});
-              option.series[0].data.push({name: "循化撒拉族自治县",value:[102.46, 35.84, 35, 2]});
-              option.series[0].data.push({name: "平安区",value:[102.09, 36.47, 35,3]});
-         }
-         if(name=="黄南藏族自治州"){
-              option.series[0].data.push({name: "同仁县",value:[102, 35.54, 35, 2]});
-              option.series[0].data.push({name: "尖扎县",value:[102, 35.92, 35, 2]});
-              option.series[0].data.push({name: "泽库县",value:[101.5, 35.03, 35, 1]});
-              option.series[0].data.push({name: "河南蒙古族自治县",value:[101.62, 34.75, 35, 2]});
-
-         }
-         if(name=="海南藏族自治州"){
-              option.series[0].data.push({name: "共和县",value:[100.61, 36.27, 35, 3]});
-              option.series[0].data.push({name: "同德县",value:[100.63, 35.24, 15,1]});
-              option.series[0].data.push({name: "贵德县",value:[101.47, 36.02, 35, 2]});
-              option.series[0].data.push({name: "兴海县",value:[99.99, 35.6, 25, 2]});
-              option.series[0].data.push({name: "贵南县",value:[100.75, 35.57, 15, 2]});
-         }
-         if(name=="海北藏族自治州"){
-              option.series[0].data.push({name: "门源回族自治县",value:[101.62, 37.37, 15, 2]});
-              option.series[0].data.push({name: "祁连县",value:[100.22, 38.2, 35,1]});
-              option.series[0].data.push({name: "海晏县",value:[100.99, 36.89, 35, 2]});
-              option.series[0].data.push({name: "刚察县",value:[100.17, 37.32, 25, 2]});
-         }
-         if(name=="果洛藏族自治州"){
-               option.series[0].data.push({name: "玛沁县",value:[100.26,34.49,32,2]});
-              option.series[0].data.push({name: "班玛县",value:[100.73,32.92,34,1]});
-              option.series[0].data.push({name: "甘德县",value:[99.89,33.95,32,1]});
-              option.series[0].data.push({name: "达日县",value:[99.68,33.74,31,2]});
-              option.series[0].data.push({name: "久治县",value:[101.47,33.46,25,2]});
-              option.series[0].data.push({name: "玛多县",value:[98.26,34.92,15,3]});
-         }
-         if(name=="海西蒙古族藏族自治州"){
-               option.series[0].data.push({name: "格尔木市",value:[94.9, 36.41,32,2]});
-              option.series[0].data.push({name: "乌兰县",value:[98.46, 36.9,34,1]});
-              option.series[0].data.push({name: "都兰县",value:[98.13, 36.3,32,1]});
-              option.series[0].data.push({name: "天峻县",value:[99.03, 37.28,31,2]});
-               option.series[0].data.push({name: "德令哈市",value:[97.36084,37.36946,11,2]});
-
-         }
-         if(name=="玉树藏族自治州"){
-               option.series[0].data.push({name: "玉树市",value:[96.97, 33.03,32,2]});
-              option.series[0].data.push({name: "杂多县",value:[95.3, 32.92,34,1]});
-              option.series[0].data.push({name: "称多县",value:[97.12, 33.35,32,1]});
-              option.series[0].data.push({name: "治多县",value:[95.6, 33.86,31,2]});
-              option.series[0].data.push({name: "囊谦县",value:[96.47, 32.23,25,2]});
-              option.series[0].data.push({name: "曲麻菜县",value:[95.50,34.52,25,2]});
-         }
-
-           myChart.setOption(option);
-
+    		console.log(name, option, instance);
     	},
-        // 数据展示
+        // 数据展示            	
     	data: [{
-    		name: '西宁市',
-    		value: 89,
+    		name: '南昌',
+    		value: 10,
     		level: 1
     	}, {
-    		name: '玉树藏族自治州',
-    		value: 92,
+    		name: '景德镇',
+    		value: 12,
     		level: 2
     	}, {
-    		name: '黄南藏族自治州',
-    		value: 102,
+    		name: '萍乡',
+    		value: 11,
     		level: 3
     	}, {
-    		name: '海南藏族自治州',
-    		value: 67,
+    		name: '赣州',
+    		value: 16,
     		level: 2
     	}, {
-    		name: '海西蒙古族藏族自治州',
-    		value: 68,
-    		level: 1
-    	}, {
-    		name: '海东市',
-    		value: 89,
-    		level: 1
-    	}, {
-    		name: '海北藏族自治州',
-    		value: 112,
-    		level: 1
-    	}, {
-    		name: '果洛藏族自治州',
-    		value: 90,
+    		name: '吉安',
+    		value: 12,
     		level: 1
     	}]
     });
@@ -893,7 +679,6 @@ $.getJSON(qinghai, function(geoJson){
 
 
     },
-
      drawLeft2() {
       this.chartColumn = echarts.init(document.getElementById("ndafqs"));
 const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF',"#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF',"#9E87FF", '#73DDFF']
@@ -963,10 +748,10 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
                 color: '#999' //坐标轴字颜色
             },
             margin: 15,
-            formatter:function(value)
-        {
-            return value.split(" ").join("\n");
-        }
+            formatter:function(value)  
+        {  
+            return value.split(" ").join("\n");  
+        } 
         },
         axisPointer: {
             label: {
@@ -1019,8 +804,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     series: [{
         name: '2018',
         type: 'line',
-        // data: [289, 78, 306, 405, 728, 500, 684, 333, 402, 479, 492, 296],
-        data:this.data1,
+        data: [10, 10, 30, 12, 15, 3, 7, 30, 12, 15, 3, 7],
+        // data:this.data1,
         symbolSize: 1,
         symbol: 'circle',
         smooth: true,
@@ -1050,8 +835,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     }, {
         name: '2019',
         type: 'line',
-        // data: [216, 396, 399, 783, 503, 417, 717, 291, 245, 452, 768, 769],
-         data:this.data2,
+        data: [5, 12, 11, 14, 25, 16, 10, 20, 13, 5, 13, 17],
+        //  data:this.data2,
         symbolSize: 1,
         symbol: 'circle',
         smooth: true,
@@ -1080,11 +865,11 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
         }
     }]
       });
-
+      
     },
 drawLeft3() {
       this.chartColumn = echarts.init(document.getElementById("ajzt"));
-     let value = 28;
+     let value = 55.33;
       let title = '';
       let int = value.toFixed(2).split('.')[0];
       let float = value.toFixed(2).split('.')[1];
@@ -1188,7 +973,7 @@ drawLeft3() {
         }
     ]
       });
-
+  
     },
 
 
@@ -1198,8 +983,8 @@ drawLeft3() {
 drawCenter2() {
       this.chartColumn = echarts.init(document.getElementById("zfjgajsl"));
 const createSvg = (shadowColor, shadowBlur) => `
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-        x="0px" y="0px"
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
+        x="0px" y="0px" 
         viewBox="0 0 32 128"
         xml:space="preserve"
     >
@@ -1230,14 +1015,11 @@ const DOMURL = window.URL || window.webkitURL || window;
 const insetShadowUrl = DOMURL.createObjectURL(svg);
 
 const dataSet = [
-     ['青海省海晏 公路超限检测站', '日月超限运输 车辆监控检测站', '倒淌河超限运输 车辆监控检测站',
-    //  '青海省共和塔拉滩公路 超限检测站',
-
-       ],
-    [493, 492, 486,
-    // 347,
-
-    ]
+    // ['江西省 交通运输厅', '江西省公路 路政管理总队', '新余高速公路 路政管理支队',
+    //  '南昌高速公路 路政管理支队', '高速公路 管理局', '赣州高速公路 路政管理支队', '吉安高速公路 路政管理支队'],
+     ['交通 运输厅', '路政 管理总队', '新余 高速公路',
+     '南昌 高速公路',  '赣州 高速公路', '吉安 高速公路'],
+    [120, 200, 150, 70, 110, 130]
 ];
 
       this.chartColumn.setOption({
@@ -1263,11 +1045,11 @@ const dataSet = [
         },
         axisLabel: {
             color: 'rgba(255,255,255, 0.5)',
-            // interval: 0,
-            formatter:function(value)
-            {
-                return value.split(" ").join("\n");
-            }
+            // interval: 0,  
+            formatter:function(value)  
+            {  
+                return value.split(" ").join("\n");  
+            } 
         },
         splitLine: {
             show: false,
@@ -1328,7 +1110,7 @@ const dataSet = [
         },
     ],
       });
-
+      
     },
 drawRight1() {
       this.chartColumn = echarts.init(document.getElementById("clpm"));
@@ -1438,12 +1220,12 @@ drawRight1() {
         z: 10
     }]
       });
-
+      
     },
  drawRight2() {
       this.chartColumn = echarts.init(document.getElementById("afd"));
-
-
+        
+        
       this.chartColumn.setOption({
         backgroundColor: '',
         tooltip: {
@@ -1462,18 +1244,18 @@ drawRight1() {
 				xAxis: [{
 					type: 'category',
 					color: '#59588D',
-					data: ['西宁市', '海东市', '德令哈市', '格尔木市', '玉树市'],
+					data: ['南昌市', '九江市', '吉安市', '新余市', '萍乡市', '宜春市', '抚州市', '上饶市'],
 					axisLabel: {
 						margin: 10,
 						color: '#999',
 						textStyle: {
 							fontSize: 12
                         },
-                        interval: 0,
-                        formatter:function(value)
-                        {
-                            return value.split("").join("\n");
-                        }
+                        interval: 0,  
+                        formatter:function(value)  
+                        {  
+                            return value.split("").join("\n");  
+                        } 
 					},
 					axisLine: {
 						lineStyle: {
@@ -1509,7 +1291,7 @@ drawRight1() {
 				}],
 				series: [{
 					type: 'bar',
-					data: [40, 65, 50, 36, 30],
+					data: [40, 65, 50, 36, 30, 35, 40, 60],
 					barWidth: '16px',
 					itemStyle: {
 						normal: {
@@ -1573,28 +1355,28 @@ drawRight1() {
 					},
 				}]
       });
-
+     
     },
- search1(val) {
+ search1(val) {    
       let data = {
        year:2020
       };
-
+      
       this.$store.dispatch("ndajsllxslbztj", data).then(res => {
-
+        
          var map={};
        res.forEach(item =>{
           map[item[0]]=item[1]
-
+          
          });
          console.log(map);
-            this.ybaj=map["一般案件"];
-            this.cfaj=map["处罚案件"];
+            this.ybaj=map["一般案件"];      
+            this.cfaj=map["处罚案件"];         
             this.pbcaj=map["赔补偿案件"];
             this.cxcz=map["超限超载"];
-
-
-
+                             
+           
+       
       });
       err => {
         console.log(err);
@@ -1605,18 +1387,18 @@ search2(val) {
         year:2018
       };
       let _this = this;
-      this.$store.dispatch("ndajsltbtj", data).then(res => {
-
+    //   this.$store.dispatch("ndajsltbtj", data).then(res => { 
+      ndajsltbtj(data).then(res => {   
          var map={};
          res.forEach(item =>{
          var tmp=item[0];
          if(tmp<10){
            tmp=tmp.substring(1,2);
          }
-              map[tmp]=item[1];
+              map[tmp]=item[1];       
          });
 
-
+        
         var map2=[];
         for(var i=1;i<=12;i++){
           if(map[i]!=undefined){
@@ -1624,8 +1406,8 @@ search2(val) {
           }else{
              map2.push(0);
           }
-        }
-          this.data1=map2;
+        }       
+          this.data1=map2; 
           this.drawLeft2();
       });
       err => {
@@ -1637,18 +1419,17 @@ search2(val) {
         year:2019
       };
       let _this = this;
-      this.$store.dispatch("ndajsltbtj", data).then(res => {
-
+     ndajsltbtj(data).then(res => {
          var map={};
          res.forEach(item =>{
          var tmp=item[0];
          if(tmp<10){
            tmp=tmp.substring(1,2);
          }
-              map[tmp]=item[1];
+              map[tmp]=item[1];       
          });
 
-
+        
         var map2=[];
         for(var i=1;i<=12;i++){
           if(map[i]!=undefined){
@@ -1657,7 +1438,7 @@ search2(val) {
              map2.push(0);
           }
         }
-
+       
 
          this.data2=map2;
           this.drawLeft2();
@@ -1670,8 +1451,8 @@ search2(val) {
         return  setInterval(() => {
           this.font();
    }, 1000*5)
-
-
+        
+       
       },
       font(){
           $('#ybaj').addClass('flipOutX animated infinite');
@@ -1690,22 +1471,12 @@ search2(val) {
         setTimeout(function(){
             $('#cxcz').removeClass('flipOutX animated infinite');
         }, 5000);
-        // setTimeout(function(){
-        //      this.jas="122",
-        //     this.ajs="438",
-        //     this.ybaj="440",
-        //     this.cxcz="80",
-        //     this.cfaj="63",
-        //     this.pbcaj="98",
-        // this.data1=[28, 78, 306, 405, 728, 500, 684, 333, 402, 479, 492, 296],
-        // this.data2=[21, 396, 399, 783, 503, 417, 717, 291, 245, 452, 768, 769]
-        // }, 5000);
       }
 
 
-
-
-
+   
+    
+   
   },
   mounted() {
     // this.search1();
@@ -1740,7 +1511,7 @@ search2(val) {
   cursor: pointer;
 }
 .dptitle_font{
-
+     
 font-size:18px;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:500;
@@ -1901,7 +1672,7 @@ font-size:23px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:rgba(4,241,248,1);
-line-height:61px;
+line-height:61px;  
 }
 .sl2{
 width:190px;
@@ -1910,10 +1681,11 @@ font-size:17px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:#FFFFFF;
-line-height:61px;
+line-height:61px;  
 }
 /* .fullscreen .el-main {
-    background:bottom;
+    
+    background-position: bottom;
 } */
 .body_bg .el-main {
     background: none;

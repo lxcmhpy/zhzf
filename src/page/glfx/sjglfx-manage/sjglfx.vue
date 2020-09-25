@@ -1,7 +1,7 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchPage toggleBox">
-      <div class="handlePart">
+      <!-- <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="立案机构" prop>
             <el-select size="small" v-model="state" placeholder="立案机构">
@@ -16,16 +16,36 @@
             </el-select>
           </el-form-item>
         </el-form>
-      </div>
+      </div> -->
       <div class="tablePart">
         <el-tabs type="border-card">
           <el-tab-pane label="年视图">
             <div id="chartYear" style="width: 1000px; height: 400px;"></div>
           </el-tab-pane>
           <el-tab-pane label="月视图">
+                <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
+                  <el-form-item label="年份" prop>
+                    <el-date-picker
+                      v-model="value1"
+                      type="year"
+                      
+                    ></el-date-picker>
+                  </el-form-item>
+                  
+                </el-form>
             <div id="chartMonth" style="width: 1000px; height: 400px;"></div>
           </el-tab-pane>
           <el-tab-pane label="日视图">
+                <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
+                  
+                  <el-form-item label="年份月份" prop>
+                    <el-date-picker
+                      v-model="value1"
+                      type="month"
+                      
+                    ></el-date-picker>
+                  </el-form-item>
+                </el-form>
             <div id="chartDay" style="width: 1000px; height: 400px;"></div>
           </el-tab-pane>
         </el-tabs>
