@@ -422,7 +422,7 @@
                 <li v-for="offical in finishedDocs" :key="offical.label" >
                   <el-checkbox :label="offical.label">
                     <img :src="acOfficalUrl" />
-                    <span @click="docClick(offical)">{{ offical.name }}</span>
+                    <span>{{ offical.name }}</span>
                   </el-checkbox>
                 </li>
                 <li v-if="this.finishedDocs.length == 0" class="offical-list-panel-none">暂无文书</li>
@@ -431,7 +431,7 @@
                 <li v-for="offical in nofinishedDocs" :key="offical.label">
                   <el-checkbox :label="offical.label">
                     <img :src="dsOfficalUrl" />
-                    <span @click="docClick(offical)">{{ offical.name }}</span>
+                    <span>{{ offical.name }}</span>
                   </el-checkbox>
                 </li>
               </template>
@@ -443,7 +443,7 @@
               v-model="checkAllOffical"
               @change="handleCheckAllChange"
             ></el-checkbox>
-            <el-button type="primary" icon="el-icon-printer">打印文书</el-button>
+            <el-button type="primary" icon="el-icon-printer"  @click="docClick()">打印文书</el-button>
           </div>
         </el-card>
       </el-col>
@@ -476,6 +476,13 @@
               :src="docSrc" type="application/pdf" internalinstanceid="29">
           </object>
         </div>
+        <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
+            <el-button @click="showNext('last')" :disabled="!nowShowPdfIndex ? true : false">上一张</el-button>
+            <br><br>
+            <el-button @click="showNext('next')"
+              :disabled="nowShowPdfIndex == this.checkedDocId.length-1 ? true : false">下一张
+            </el-button>
+          </div>
       </div>
     </el-dialog>
   </div>
@@ -603,6 +610,8 @@ export default {
       processResultsList: [], //处理结果list
       docSrc: undefined,//文书路径
       docVisible: false,//文书dialog
+      checkedDocId: [],
+      nowShowPdfIndex: 0,
     };
   },
   computed: {
@@ -691,7 +700,7 @@ export default {
     },
     // 全选文书
     handleCheckAllChange(val) {
-      this.checkedCities = val ? ["1", "2"] : [];
+      this.checkedCities = val ? ["92531b11586dab1eba850aea1c415a4f", "98499c305c6447988343c33d92f0f23c"] : [];
       this.isIndeterminate = false;
     },
     //巡查时间变化
@@ -896,12 +905,10 @@ export default {
       let _this = this;
       if(attach && attach.storageId){
         this.$util.com_getFileStream(attach.storageId).then((res) => {
-          const blob = new Blob([res]);
-          const blobUrl = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.style.display = 'none';
           a.download = attach.name;
-          a.href = blobUrl;
+          a.href = res;
           a.click();
           document.body.removeChild(a);
         });
@@ -1158,17 +1165,43 @@ export default {
       }
       this.inspectRecordForm.listAbn[abnormalIndex][processAttr] = index;
     },
-    //文书点击
-    docClick(item) {
-      this.$util.com_getFileStream(item.caseDocStorageId).then((res) => {
-        this.docSrc = res;
-        this.docVisible = true;
-      });
+    //打印文书
+    docClick() {
+      this.checkedDocId = this.finishedDocs.filter(f => this.checkedOffical.indexOf(f.caseDoctypeId) != -1).map(f => f.caseDocStorageId);
+      this.docSrc = res;
+      this.docVisible = true;
+      if(this.checkedDocId.length > 0) {
+
+        this.$util.com_getFileStream(this.checkedDocId[0]).then((res) => {
+          this.docSrc = res;
+        });
+      }else{
+        console.err("请选择文书");
+      }
     },
     //文书dialog
     closeDialog(){
       this.docVisible = false;
-    }
+    },
+    //上下翻页显示pdf
+    showNext(flag) {
+      this.docVisible = true;
+      if (flag == 'last') {
+        if (this.nowShowPdfIndex) {
+          this.nowShowPdfIndex--;
+          this.$util.com_getFileStream(this.checkedDocId[this.nowShowPdfIndex]).then((res) => {
+            this.docSrc = res;
+          });
+        }
+      } else {
+        if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
+          this.nowShowPdfIndex++;
+          this.$util.com_getFileStream(this.checkedDocId[this.nowShowPdfIndex]).then((res) => {
+            this.docSrc = res;
+          });
+        }
+      }
+    },
   },
 };
 </script>
