@@ -152,11 +152,12 @@ export function getFxypApi(data) {
     });
   }
    //时间关联分析  年
-  export function sjglfx(data) {
+  export function sjglfx() {
     return  request({
-      url: `/case/numYear/${data}`,
+      url: "/case/numYear",
       method:  "get",
       showloading: false,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }
@@ -164,8 +165,9 @@ export function getFxypApi(data) {
    export function sjglfxmonth(data) {
     return  request({
       url: `/case/numMonth/${data}`,
-      method:  "post",
+      method:  "get",
       showloading: false,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }
@@ -173,9 +175,9 @@ export function getFxypApi(data) {
    export function sjglfxday(data) {
     return  request({
       url: `/case/numDay/${data}`,
-      method:  "post",
+      method:  "get",
       showloading: false,
-      // params:data,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }
@@ -183,9 +185,9 @@ export function getFxypApi(data) {
   export function sjglfxhours(data) {
     return  request({
       url: `/case/numHours/${data}`,
-      method:  "post",
+      method:  "get",
       showloading: false,
-      // params:data,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }

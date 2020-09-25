@@ -68,8 +68,12 @@
             <el-radio-group v-model="recordType.type">
               <ul class="notice-icon-list">
                 <li v-for="(item,index) in checkList" :key="index">
-                  <i class="iconfont law-icon_cheliang"></i><br />
-                  <el-radio :label="item">{{item}}</el-radio>
+                  <i class="iconfont" :class="item.iconName"></i><br />
+               <!-- <svg class="icon svg-icon" aria-hidden="true">
+                  <use xlink:href="#law-btn_luj"></use>
+                </svg> -->
+                  <el-radio :label="item">{{item.label}}</el-radio>
+                  
                 </li>
                 <!-- <el-radio label="大件许可">大件许可</el-radio>
                 <el-radio label="绿通车">绿通车</el-radio>
@@ -107,7 +111,8 @@ export default {
       domainList: [{ name: '全部', value: 0 }, { name: '路警联合', value: 1 }, { name: '绿通车', value: 2 },
       { name: '危化品', value: 3 }, { name: '大件许可', value: 14 }, { name: '不足1吨', value: 5 }, { name: '特种车', value: 6 },],
       statusList: [{ name: '进行中', value: 0 }, { name: '已归档', value: 1 }],
-      checkList: ['特种车', '大件许可', '绿通车', '不足1t', '危化车', '路警联合'],
+      checkList: [{label:'特种车',iconName:'law-btn_te'}, {label:'大件许可',iconName:'law-btn_daj'}, {label: '绿通车',iconName:'law-btn_lv'}, 
+      {label: '不足1t', iconName:'law-btn_1t'}, {label:'危化车',iconName:'law-btn_v'}, {label:'路警联合',iconName:'law-btn_luj'}],
       searchForm: {
         vehicleShipId: "",
         fileStatus: "",
