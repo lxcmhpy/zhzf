@@ -4,7 +4,7 @@
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="统计年度" prop>
-            <el-date-picker v-model="year" type="year" placeholder="选择年" @change="getData"></el-date-picker>
+            <el-date-picker v-model="year" type="year" placeholder="选择年" @change="changeFun"></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
@@ -28,7 +28,7 @@
     data() {
       return {
         seriesData:[],
-        year: "",
+        year: "2019",
         tableData: [],
         logForm: {
         },
@@ -36,6 +36,9 @@
       };
     },
     methods: {
+      changeFun(val){
+        this.getData(val)
+      },
       getData(date) {
         let that = this
         let param = {
@@ -47,11 +50,12 @@
             res.data.map(item => {
               that.XData.push(item.name)
             })
+            let json = {};
+            that.tableData = []
             that.seriesData.forEach(v=>{
-              that.tableData[v.name] = v.value
+              json[v.name] = v.value
             })
-            debugger
-            console.log(that.seriesData)
+            that.tableData.push(json)
             that.drawLine()
           }
         });
@@ -64,7 +68,7 @@
 
         this.chartColumn.setOption({
           title: {
-            text: "2019年度各类收缴费用金额及所占比重(万元)",
+            text: this.year+"年度各类收缴费用金额及所占比重(万元)",
             left: "center"
           },
           tooltip: {
@@ -81,7 +85,7 @@
               name: "",
               type: "pie",
               radius: "55%",
-              center: ["50%", "50%"],
+              center: ["50%", "60%"],
               data: this.seriesData,
               emphasis: {
                 itemStyle: {

@@ -224,7 +224,6 @@ export default {
     this.searchDrawFun();
     this.drawLine1();
     this.drawLine2();
-    //this.drawLine3();
   },
   created() {
 

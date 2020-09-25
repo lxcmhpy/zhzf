@@ -4,7 +4,7 @@
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="统计年度" prop>
-            <el-date-picker v-model="year" type="year" value-format="yyyy" placeholder="选择年" @change="getData"></el-date-picker>
+            <el-date-picker v-model="year" type="year" value-format="yyyy" placeholder="选择年" @change="changeFun"></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
@@ -13,13 +13,10 @@
 
       <div class="tablePart">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
-          <el-table-column prop="time" label="日期" align="center"></el-table-column>
-          <el-table-column prop="lscf" label="路损处罚" align="center"></el-table-column>
-          <el-table-column prop="cxcf" label="超限处罚" align="center"></el-table-column>
-          <el-table-column prop="slxk" label="涉路许可" align="center"></el-table-column>
-          <el-table-column prop="cxxk" label="超限许可" align="center"></el-table-column>
-          <el-table-column prop="lspc" label="路损赔偿" align="center"></el-table-column>
-          <el-table-column prop="zs" label="总数" align="center"></el-table-column>
+          <el-table-column  prop = 'time' label= '日期' align="center"></el-table-column>
+
+          <el-table-column :prop = item.name :label= item.name align="center" v-for="(item,i) in seriesData[trendYear]" :key="i"></el-table-column>
+
         </el-table>
       </div>
 
@@ -35,23 +32,8 @@ export default {
   data() {
     return {
       year: "2020",
-      tableData: [{
-        time: "2018年1-12月",
-        lscf: "1714804",
-        cxcf: "23473275",
-        slxk: "17502999",
-        cxxk: "0",
-        lspc: "35561880",
-        zs: "78252958"
-      },{
-        time: "2019年1-12月",
-        lscf: "968369",
-        cxcf: "179100",
-        slxk: "8203862",
-        cxxk: "0",
-        lspc: "18883066",
-        zs: "28234397"
-      }],
+      tableData: [],
+      seriesData:[],
       trendYear:'',
       trendYearNew:'',
       trendYearDate:[],
@@ -62,6 +44,9 @@ export default {
     };
   },
   methods: {
+    changeFun(val){
+      this.getData(val)
+    },
     getData(date) {
       let that = this
       let param = {
@@ -69,6 +54,8 @@ export default {
       };
       proportionYTYApi(param).then(res => {
         if(res.code == 200){
+          that.seriesData = res.data
+
           Object.keys(res.data).forEach(function (element, index) {
             if (index == 0) {
               that.trendYear = element
@@ -82,8 +69,20 @@ export default {
                 that.trendYearDateNew.push(item.value)
               })
             }
-
           })
+          let beforeYear = {}, year = {}, cloums = []
+          Object.keys(res.data).map((key,index) => {
+            res.data[key].map(item => {
+              if(index === 0) {
+                beforeYear.time = key
+                beforeYear[item.name] = item.value
+              } else if (index === 1) {
+                year.time = key
+                year[item.name] = item.value
+              }
+            })
+          })
+          that.tableData.push(beforeYear,year)
           that.drawLine()
         }
       });
