@@ -152,9 +152,9 @@ export function getFxypApi(data) {
     });
   }
    //时间关联分析  年
-  export function sjglfx() {
+  export function sjglfx(data) {
     return  request({
-      url: "/case/numYear",
+      url: `/case/numYear/${data}`,
       method:  "get",
       showloading: false,
       baseUrlType:  'FXYP_HOST',
@@ -185,6 +185,16 @@ export function getFxypApi(data) {
   export function sjglfxhours(data) {
     return  request({
       url: `/case/numHours/${data}`,
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 执法门类
+  export function zfml() {
+    return  request({
+      url: "/organdzfml/zfml",
       method:  "get",
       showloading: false,
       baseUrlType:  'FXYP_HOST',
