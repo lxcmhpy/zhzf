@@ -960,7 +960,7 @@
         </div>
         <div>
           <div class="itemThird">
-            <el-form-item label="车货高度">
+            <el-form-item label="车货总高">
               <el-input
                 v-model="inforForm.otherInfo.allHeight"
                 placeholder="/"

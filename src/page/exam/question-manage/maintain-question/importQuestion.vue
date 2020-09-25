@@ -32,7 +32,6 @@
   </el-dialog>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage";
 import { downLoadFile } from "@/api/joinExam";
 
 export default {

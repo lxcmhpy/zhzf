@@ -82,6 +82,18 @@ export  function  addPersonApi(data)  {
   });
 }
 
+//导出人员列表
+export function exportPersonInfoApi(data){
+  return request({
+      responseType:'blob',
+      url: "/person/person/exportPersonInfo",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource()
+  })
+}
+
 //修改用户用户信息
 export  function  updatePersonApi(data)  {
   return  request({
