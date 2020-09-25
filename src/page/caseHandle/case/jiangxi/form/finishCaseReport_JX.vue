@@ -18,7 +18,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.caseName"
-                  v-bind:class="{ over_flow:formData.caseName.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.caseName && formData.caseName.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="fieldDisabled(propertyFeatures['caseName'])"
@@ -43,7 +43,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.party"
-                  v-bind:class="{ over_flow:formData.party.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.party && formData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
@@ -80,7 +80,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyAge"
-                  v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyAge && formData.partyAge.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAge'])"
@@ -99,7 +99,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyAddress"
-                  v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyAddress && formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
@@ -116,7 +116,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyIdNo"
-                  v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyIdNo && formData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
@@ -133,7 +133,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyTel"
-                  v-bind:class="{ over_flow:formData.partyTel.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyTel && formData.partyTel.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
@@ -153,7 +153,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyName"
-                  v-bind:class="{ over_flow:formData.partyName.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyName && formData.partyName.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
@@ -189,7 +189,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyUnitAddress"
-                  v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyUnitAddress && formData.partyUnitAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
@@ -206,7 +206,7 @@
                 <el-input
                   type="textarea"
                   v-model="formData.partyUnitTel"
-                  v-bind:class="{ over_flow:formData.partyUnitTel.length>14?true:false }"
+                  v-bind:class="{ over_flow:formData.partyUnitTel && formData.partyUnitTel.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
@@ -305,7 +305,7 @@
                   style="float:left;margin-top:10px;"
                   type="textarea"
                   v-model="formData.approveOpinions"
-                  v-bind:class="{ over_flow:formData.approveOpinions.length>33?true:false }"
+                  v-bind:class="{ over_flow:formData.approveOpinions && formData.approveOpinions.length>33?true:false }"
                   :rows="5"
                 ></el-input>
               </el-form-item>

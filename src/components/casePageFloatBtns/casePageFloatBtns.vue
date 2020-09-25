@@ -3,7 +3,7 @@
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px;">
       <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
-      <!-- {{isCanEdit}} -->
+      {{isCanEdit}}
     <!-- <span v-if="currentFileData"> -->
       <el-button type="primary"  style="margin-bottom: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
         <i class="iconfont law-edit"></i>
@@ -78,12 +78,15 @@ export default {
     if(!this.currentFileData){
       return false
     }
+    console.log('getEstablish_caseLinktypeIdArr',this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr())
     // let data= this.$route.name=='case_handle_myPDF'
     // &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
     // && (this.approvalState!='approvaling' && this.approvalState!='approvalEstabishNoPass' && this.approvalState!='approvalFinishCaseReportNoPass') &&this.caseLinktypeId==this.doingLinkId
     // return data
+    alert(this.caseLinktypeId==this.doingLinkId);
     let data= this.$route.name=='case_handle_myPDF'
-    &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
+    &&this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr().join(',').indexOf(this.caseLinktypeId)==-1
+    &&this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr().join(',').indexOf(this.caseLinktypeId)==-1
     && (this.approvalState=='' || this.approvalState=='approvalBefore'|| this.approvalState=='approvalNoPass') &&this.caseLinktypeId==this.doingLinkId
     return data
 ;
