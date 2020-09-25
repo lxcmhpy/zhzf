@@ -42,13 +42,16 @@ export default {
       showPreview: false,
       fileType: "",
       fileSrc: "",
-      host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+      // host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
     };
   },
   methods:{
     showModal(attach){
       this.fileType = attach.type;
-      this.fileSrc = this.host + "/" + attach.storageId;
+
+      this.$util.com_getFileStream(attach.storageId).then((res) => {
+        this.fileSrc = res;
+      });
       this.showPreview = true;
     },
     closeDialog(){

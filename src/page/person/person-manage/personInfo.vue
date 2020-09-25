@@ -112,6 +112,7 @@
         <el-button plain size="medium" @click="applyTx">申请退休</el-button>
         <el-button plain size="medium" @click="applyDl">申请调离</el-button>
         <el-button plain size="medium" @click="applyApprove">申请审批</el-button>
+        <el-button plain size="medium" @click="exportExcel">导出</el-button>
       </div>
       <div class="tablePart">
         <el-table
@@ -184,6 +185,8 @@
 import addApplyDdComp from "@/page/person/person-apply/addApplyDd";
 import { mixinPerson } from "@/common/js/personComm";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
+import { exportPersonInfoApi } from '@/api/person';
+import { downLoadFile } from '@/api/joinExam';
 export default {
   mixins: [mixinPerson],
   name: "personInfo",
@@ -249,6 +252,37 @@ export default {
   },
   components: { addApplyDdComp, elSelectTree },
   methods: {
+    exportExcel(type) {
+    let _this = this;
+      let data = {
+        personName: _this.personForm.personName,
+        idNo: _this.personForm.idNo,
+        ministerialNo: _this.personForm.ministerialNo,
+        branchId: _this.personForm.branchId,
+        oName: _this.personForm.oname,
+        certStatus: _this.personForm.certStatus,
+        personType: _this.personForm.personType,
+        post: _this.personForm.post,
+        stationId: _this.personForm.stationId,
+        stationStatus: _this.personForm.stationStatus,
+        current: _this.currentPage,
+        size: _this.pageSize
+      };
+      const loading = this.$loading({
+        lock: true,
+        text: '正在导出',
+        spinner: 'car-loading',
+        customClass: 'loading-box',
+        background: 'rgba(234,237,244, 0.8)'
+      });
+       exportPersonInfoApi(data).then(res => {
+        loading.close()
+        downLoadFile(res.data, res.fileName);
+      }, err => {
+        loading.close();
+        this.$message({ type: 'error', message: err.msg || '' });
+      });
+    },
     applyTx() {
       //申请退休
       let _this = this;

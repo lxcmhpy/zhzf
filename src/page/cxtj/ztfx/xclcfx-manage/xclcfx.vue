@@ -86,7 +86,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: ["宁夏交通运输厅", "石嘴山市执法队", "固原市执法队", "银川路政管理局", ],
+            data: ["江西交通厅", "江西省交通运输厅", "南昌路政管理局", "九江路政管理局", ],
             axisTick: {
               alignWithLabel: true
             }

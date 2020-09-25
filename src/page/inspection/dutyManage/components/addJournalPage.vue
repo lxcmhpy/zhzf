@@ -402,7 +402,8 @@ export default {
         this.baseInfoForm.lawEnforcementOfficials = res.data.records[0].lawEnforcementOfficials,
          this.baseInfoForm.includingPeople = res.data.records[0].includingPeople,
          this.baseInfoForm.successor = res.data.records[0].successor,
-        this.baseInfoForm.plateNumbers =  res.data.records[0].plateNumbers,
+        this.baseInfoForm.inspectionLength =  res.data.records[0].inspectionLength,
+         this.baseInfoForm.plateNumbers =  res.data.records[0].plateNumbers,
          this.baseInfoForm.manager = res.data.records[0].manager
        }
       }, err => {
