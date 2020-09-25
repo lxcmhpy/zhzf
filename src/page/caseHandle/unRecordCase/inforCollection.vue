@@ -960,7 +960,7 @@
         </div>
         <div>
           <div class="itemThird">
-            <el-form-item label="车货高度">
+            <el-form-item label="车货总高">
               <el-input
                 v-model="inforForm.otherInfo.allHeight"
                 placeholder="/"
@@ -3128,8 +3128,7 @@ export default {
         this.inforForm.otherInfo.allWidth
       ) {
         if (
-          this.inforForm.otherInfo.widthLimit <
-          this.inforForm.otherInfo.allWidth
+          this.inforForm.otherInfo.allWidth - this.inforForm.otherInfo.widthLimit    
         ) {
           this.inforForm.otherInfo.overWidth =
             this.inforForm.otherInfo.allWidth -

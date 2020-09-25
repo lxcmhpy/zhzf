@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" id="myBox" style="width:790px;margin:0 auto;">
+  <div class="print_box" id="myBox" style="width:790px;height:100%;margin:0 auto;">
     <!-- <div class="print_info"> -->
     <!-- <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
            style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item"
@@ -55,7 +55,7 @@
       casePageFloatBtns,
       caseSlideMenu
     },
-    computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId','caseLinktypeId','docPdfStorageId'])},
+    computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId','caseLinktypeId','docPdfStorageId','caseLinkName'])},
     methods: {
       print() {
         for (var i = 0; i < this.storagePath.length; i++) {
@@ -264,7 +264,7 @@
         }
         let  myIframe = document.createElement('iframe');
         myIframe.setAttribute("src", '/static/pdf/web/viewer.html?file='+encodeURIComponent(url));
-        myIframe.setAttribute('style','width:790px;height:1119px');
+        myIframe.setAttribute('style','height:100%;width:790px');
         myBox.appendChild(myIframe);
       },
       //修改立案登记
@@ -282,11 +282,28 @@
           }
           console.log('修改数据',data)
           updateDocStatusById(data).then(res=>{
-            if (_this.caseLinktypeId == _this.BASIC_DATA_JX.establish_JX_caseLinktypeId) {
-              _this.$router.push({ name: 'case_handle_establish_JX' });
+            // if (_this.caseLinktypeId == _this.BASIC_DATA_JX.establish_JX_caseLinktypeId) {
+            //   _this.$router.push({ name: 'case_handle_establish_JX' });
+            // }else if(_this.caseLinktypeId == _this.BASIC_DATA_SYS.establish_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_establish' });
+            // }
+            // if(_this.caseLinktypeId == _this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_finishCaseReport' });
+            // }else if(_this.caseLinktypeId == _this.BASIC_DATA_QH.finishCaseReport_QH_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_finishCaseReport_QH' });
+            // }else if(_this.caseLinktypeId == _this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_finishCaseReport_JX' });
+            // }
+            if(this.caseLinkName){
+               _this.$router.push({ name: this.caseLinkName });
             }else{
-              _this.$router.push({ name: 'case_handle_establish' });
+              if (_this.caseLinktypeId == _this.BASIC_DATA_JX.establish_JX_caseLinktypeId) {
+                _this.$router.push({ name: 'case_handle_establish_JX' });
+              }else{
+                _this.$router.push({ name: 'case_handle_establish' });
+              }
             }
+           
             this.$store.commit("setCaseApproval", false);
             this.$store.commit('setApprovalState', '');
           }).catch(err=>{throw new Error(err);_this.$message({type: "error",message: '失败',});})

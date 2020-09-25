@@ -134,7 +134,8 @@ export default {
         note: '',
         picturesUrl: '',
         picturesUrl2: '',
-        picList: [{ 'pictures-1': '' }, { 'pictures-2':'' }]
+        picList:'',
+        // picList: [{ 'pictures-1': '', 'pictures-2':''}]
       },
       caseDocDataForm: {
         id: "",   //修改的时候用
@@ -189,6 +190,7 @@ export default {
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
       imageUrl: '',
+      pic:[{ 'pictures-1': '', 'pictures-2':''}]
     };
   },
   components: {
@@ -224,7 +226,9 @@ export default {
     saveData(handleType) {
       // let a= [{'pictures-1':this.docData.picList[0]['pictures-1']},{'pictures-2':this.docData.picList[1]['pictures-2']}];
       // this.docData.picList = JSON.stringify(a)
-      this.docData.picList = JSON.stringify(this.docData.picList)
+      this.docData.picList = JSON.stringify(this.pic);
+      // this.docData.picList = JSON.stringify(this.docData.picList)
+      console.log('this.docData.picList',this.docData.picList)
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -319,6 +323,7 @@ export default {
     getBase64(storageId, sort) {
 
       queryResizeImageApi(storageId).then(res => {
+        console.log('res',res);
         if (res === false) {   //生成失败
           this.$message.error('生成base64码失败！')
           return;
@@ -327,11 +332,14 @@ export default {
           // let data = [{ 'pictures-1': res.data }]
           name='pictures-'+sort
           if (sort == 1) {
-            this.docData.picList[0][name] = res.data
+            // this.docData.picList[0][name] = res.data
+            this.pic[0]['pictures-1'] = res.data;
+            // this.docData.picList[0]['pictures-1'] = res.data
           } if (sort == 2) {
-            this.docData.picList[1][name] = res.data
+            this.pic[0]['pictures-2'] = res.data;
+            // this.docData.picList[0]['pictures-2'] = res.data
           }
-
+          // console.log('this.docData.picList',this.docData.picList)
         }
       }).catch(err => { console.log(err) })
     },
