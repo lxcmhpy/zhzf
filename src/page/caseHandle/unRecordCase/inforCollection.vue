@@ -2159,7 +2159,7 @@ export default {
                   this.openTab[replaceIndex].route = "/establish";
                 }
               }
-
+              this.$store.commit('setApprovalState', '')
               //跳转立案登记
               this.getCaseNextRoute("立案登记").then((res) => {
                 this.$router.push({

@@ -69,7 +69,7 @@ export default [{
     name: "equipmentDetail",
     path: "/equipment-detail/:id",
     meta: {
-      title: "装备信息"
+      title: "车辆信息"
     },
     component: () => import("@/page/device/components/equipmentDetail/equipmentDetail.vue")
   },

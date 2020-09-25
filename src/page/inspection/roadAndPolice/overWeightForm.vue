@@ -1030,6 +1030,7 @@ export default {
                   _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode || '';
                   _this.carInfo.transportNum = res.data[0].LicenseCode || '';
                   _this.carInfo.businessStatus = res.data[0].OperatingStatus || '';
+                  _this.carInfo.drivePerson.partyUnitPosition = res.data[0].OwnerName || '';
                 },
                 error => {
                 })
@@ -1039,6 +1040,7 @@ export default {
               _this.carInfo.vehicleShipType = '';
               _this.carInfo.transportNum = '';
               _this.carInfo.businessStatus = '';
+              _this.carInfo.drivePerson.partyUnitPosition='';
             }
           },
           error => {

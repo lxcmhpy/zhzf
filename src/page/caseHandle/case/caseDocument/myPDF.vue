@@ -121,7 +121,7 @@
         }else if(this.approvalState == 'submitApproval'){
           //执法人员提交审批之后
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        }else if(this.approvalState == 'approvalNoPass' || this.approvalState == 'approvalEstabishNoPass'){
+        }else if(this.approvalState == 'approvalNoPass' || this.approvalState == 'approvalEstabishNoPass' || this.approvalState =='approvalFinishCaseReportNoPass'){
           //审批未通过 都不显示    
            this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回 
         }
