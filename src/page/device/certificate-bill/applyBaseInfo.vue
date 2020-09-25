@@ -435,6 +435,7 @@ export default {
         this.$set(this.addForm,'declarationUnitName',this.$refs.addFormDeclarationUnitTreeObj.valueTitle)
     },
     async getImageListByCaseId(){
+      if(this.id){
         let res = await findImageByCaseId(this.id);
         this.imageList=[]
         res.data.forEach(p=>{
@@ -445,6 +446,7 @@ export default {
                 });
             }
         })
+      }
     }
   },
   mounted(){
