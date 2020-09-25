@@ -3,7 +3,6 @@
   <!-- 悬浮按钮 -->
   <div class="float-btns" style="bottom:250px;">
       <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
-      <!-- {{isCanEdit}} -->
     <!-- <span v-if="currentFileData"> -->
       <el-button type="primary"  style="margin-bottom: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
         <i class="iconfont law-edit"></i>
@@ -13,7 +12,7 @@
     <!-- 立案登记的修改按钮 -->
     <el-button type="primary"  style="margin-bottom: 10px;" @click="editEstablish" v-if="approvalState=='approvalEstabishNoPass' || approvalState=='approvalFinishCaseReportNoPass'">
       <i class="iconfont law-edit"></i>
-      <br />修改2
+      <br />修改
     </el-button>
     <el-button type="primary" @click="makeSeal" v-if="formOrDocData.showBtn[5] && showQZBtn">
       <i class="iconfont law-approval"></i>

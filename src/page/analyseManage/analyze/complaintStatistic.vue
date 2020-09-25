@@ -34,8 +34,8 @@
   </div>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage";
-import { countByHour } from "@/api/notice/complaint";
+
+import { complaintApi } from "@/api/analysis/analysisManage.js";
 import echarts from "echarts";
 
 export default {
@@ -103,7 +103,7 @@ export default {
     getDataList(searchData) {
       let data = searchData;
       let _this = this;
-      countByHour(data).then(
+      complaintApi(data).then(
         (res) => {
           _this.showChart(res.data);
         },
@@ -120,7 +120,6 @@ export default {
       this.getDataList(data);
     },
   },
-  created() {},
   mounted() {
     this.load();
   },
