@@ -87,7 +87,8 @@ export default {
       tableLoading: false,
       treeLoading: false,
       editable: true,
-      currentNodeLevel: ''
+      currentNodeLevel: '',
+      handleLimit: true
     };
   },
   components: {
@@ -96,13 +97,13 @@ export default {
     outlineList
   },
   inject: ["reload"],
-  computed:{
-    handleLimit(){
-      return !this.editable || (this.editable && this.currentNodeLevel === '1')
-    }
-  },
+  // computed:{
+  //   handleLimit(){
+  //     return !this.editable || (this.editable && this.currentNodeLevel === '1')
+  //   }
+  // },
   created() {
-    this.getSystemParams();
+    // this.getSystemParams();
     this.getAllOutline("");
   },
   methods: {

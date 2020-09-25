@@ -432,7 +432,7 @@
       <div class="caseFormBac" id="link_5" ref="link_5" @mousewheel="scrool5">
         <p>处罚决定</p>
         <el-form-item label="公安交警处罚决定书" class="is-required">
-          <el-upload class="upload-demo modle-upload" style="margin-bottom:22px" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
+          <el-upload class="upload-demo modle-upload" style="margin-bottom:22px" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
             <el-button size="small" type="primary">选取文件</el-button>
           </el-upload>
         </el-form-item>
@@ -440,7 +440,7 @@
     </el-form>
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
     <!-- 置顶 -->
-    <el-backtop target="#inforCollectionBox" :bottom="46" :right="0" :visibility-height="800" style="width: 58px;height: 58px;">
+    <el-backtop target="#inforCollectionBox" :bottom="46" :right="0" :visibility-height="800" style="width: 58px;height: 58px;" @click="backTop">
       <div class="back-ball">
         <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="18" height="22">
           <path d="M862.72 147.2H161.28c-18.432 0-33.28-14.848-33.28-33.28s14.848-33.28 33.28-33.28h701.44c18.432 0 33.28 14.848 33.28 33.28s-14.848 33.28-33.28 33.28zM549.376 323.84v580.608c0 21.504-17.408 38.912-38.912 38.912-21.504 0-38.912-17.408-38.912-38.912V323.84c0-21.504 17.408-38.912 38.912-38.912 21.504 0 38.912 17.408 38.912 38.912z" p-id="1940" fill="#bfbfbf" />
@@ -451,7 +451,7 @@
     </el-backtop>
     <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
     <!-- 悬浮按钮-拓展 -->
-    <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :fileEiditFlag='fileEiditFlag'></floatBtns>
+    <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :carinfoId='carinfoId'></floatBtns>
     <!-- 悬浮按钮 -->
     <div class="float-btns" style="bottom:150px">
       <el-button type="primary" @click="saveDataBtn(0)">
@@ -463,6 +463,17 @@
         <br />归档
       </el-button>
     </div>
+
+    <el-dialog :visible.sync="dialogImageVisible" size="tiny">
+      <img v-if="dialogImageUrl" width="100%" :src="dialogImageUrl" alt="">
+      <div lazy id="myPdfBOx" v-if="pdfUrl">
+        <!-- <object >
+                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
+                    :src="mlList" type="application/pdf" internalinstanceid="29">
+                </object> -->
+        <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -475,10 +486,11 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, checkPassport, validateAge, validateZIP, validatePhone, vaildateCardNum, } from "@/common/js/validator";
-import { findLawOfficerListApi, getAssistFile } from "@/api/caseHandle";
+import { findLawOfficerListApi, getAssistFile, getFileStreamByStorageIdApi } from "@/api/caseHandle";
 import { findRouteManageByOrganIdApi, } from "@/api/system";
 import { saveOrUpdateCarInfoApi, getDictListDetailByNameApi, findCarInfoByIdApi } from "@/api/inspection";
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
+import { vehicleCheckApi, yyclCheckApi } from "@/api/checkInfo.js";
 export default {
   data() {
     //执法人员人数不得少于2个，最多不多与9个
@@ -574,7 +586,7 @@ export default {
       directionList: [],
       locationList: [],
       carInfoRules: {
-        vehicleShipId: [{ validator: vaildateCardNum, trigger: "change" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" }, { validator: vaildateCardNum, trigger: "change" }],
         trailerIdNo: [{ validator: vaildateCardNum, trigger: "change" }],
         vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
         loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
@@ -635,7 +647,6 @@ export default {
       afddFlag: false,
       // disableZcBtn: false, //暂存按钮禁用车辆类型
       hasLatitudeAndLongitude: false, //案发坐标是否已经获取
-      fileEiditFlag: '',
       formOrDocData: '',
       submitFileData: '',
       saveEileData: '',
@@ -655,6 +666,31 @@ export default {
       carinfoId: '',
       selectLoading: false,
       postInfo: [], //职务
+      sfList: [
+        {
+          value: '蓝色',
+          label: 1
+        },
+        {
+          value: '黄色',
+          label: 2
+        },
+        {
+          value: '黑色 ',
+          label: 3
+        },
+        {
+          value: '白色',
+          label: 4
+        },
+        {
+          value: '其他',
+          label: 9
+        }
+      ],
+      dialogImageUrl: '',
+      pdfUrl: '',
+      dialogImageVisible: false,
     };
   },
   components: {
@@ -964,7 +1000,53 @@ export default {
     weightLimit() { },
     saveFileData() { },
     searchNumber() {
+      let _this = this
       // 查询车辆号牌
+      console.log()
+      if (this.carInfo.vehicleShipId && this.carInfo.vehicleIdColor) {
+        let colorCode = '';
+        this.sfList.forEach(element => {
+          if (element.value == this.carInfo.vehicleIdColor) {
+            colorCode = element.label
+          }
+        });
+        let json = [];
+        let param = {
+          vehicleNo: this.carInfo.vehicleShipId,
+          plateColor: colorCode
+        };
+        json.push(param);
+        vehicleCheckApi(JSON.stringify(json)).then(
+          res => {
+            if (res.data) {
+              let chewckData = {
+                transCertificateCode: res.data[0].transCertificateCode,
+                vehicleNo: this.carInfo.vehicleShipId,
+                vin: ''
+              }
+              yyclCheckApi(chewckData).then(
+                res => {
+                  _this.carInfo.businessScope = res.data[0].BusinessScopeCode || '';
+                  _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode || '';
+                  _this.carInfo.transportNum = res.data[0].LicenseCode || '';
+                  _this.carInfo.businessStatus = res.data[0].OperatingStatus || '';
+                },
+                error => {
+                })
+            } else {
+              this.$message.error('未查到数据');
+              _this.carInfo.businessScope = '';
+              _this.carInfo.vehicleShipType = '';
+              _this.carInfo.transportNum = '';
+              _this.carInfo.businessStatus = '';
+            }
+          },
+          error => {
+
+          })
+      } else {
+        this.$message.error('请正确输入车辆颜色和车牌号码');
+      }
     },
     saveDataBtn(handleType) {
       let _this = this
@@ -1117,20 +1199,79 @@ export default {
         }
       );
     },
+    /* 置顶后锚点回到第一个 */
+    backTop() {
+      this.activeA = [true, false, false, false, false];
+    },
+    handlePictureCardPreview(file) {
+      console.log(file)
+      this.pdfUrl = this.dialogImageUrl = ''
+      let fileType = this.$util.getFileType(file.name);
+      if (fileType == 'pdf') {
+        this.getFileStream(file.storageId)
+        this.dialogImageVisible = true;
+
+      } else if (fileType == 'image') {
+        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + file.storageId;
+        this.dialogImageVisible = true;
+
+      } else {
+        this.$message.error('当前文件格式不支持预览');
+      }
+    },
+    //根据stroagId请求文件流
+    getFileStream(storageId) {
+      //设置地址
+      this.$store.commit("setDocPdfStorageId", storageId);
+      getFileStreamByStorageIdApi(storageId)
+        .then((res) => {
+          this.getObjectURL(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 将返回的流数据转换为url
+    getObjectURL(file) {
+      let url = null;
+      if (window.createObjectURL != undefined) { // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) { // webkit or chrome
+        try {
+          url = window.webkitURL.createObjectURL(file);
+        } catch (error) {
+
+        }
+      } else if (window.URL != undefined) { // mozilla(firefox)
+        try {
+          url = window.URL.createObjectURL(file);
+        } catch (error) {
+
+        }
+      }
+
+      this.pdfUrl = url;
+      // this.pdfVisible = true
+    },
+     resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
   },
 
   mounted() {
+    console.log('mounted11111')
+
     this.getDrawerList([
       { name: '车牌颜色', option: 1 },
       { name: '车辆类型', option: 2 },
       { name: '路警联合-卸载方式', option: 3 },])
 
-    if (this.inspectionOverWeightId.id) {
-      this.getData()
-    } else {
-      this.carinfoId = this.genID()
-      this.setLawPersonCurrentP();
-    }
+    // if (this.inspectionOverWeightId.id) {
+    //   this.getData()
+    // } else {
+    //   this.carinfoId = this.genID()
+    //   this.setLawPersonCurrentP();
+    // }
 
     // 鼠标滚动
     this.$refs.link_1.addEventListener("scroll", this.scrool1);
@@ -1140,8 +1281,28 @@ export default {
     this.$refs.link_5.addEventListener("scroll", this.scrool5);
 
   },
+  activated() {
+    console.log('activated1111')
+    /* 如果是页面跳转过来的，则isRefresh=true */
+    if (this.$route.params.isRefresh) {
+      if (this.inspectionOverWeightId.id) {
+        this.getData()
+      } else {
+        this.resetForm('carInfo');
+        this.resetForm('drivePerson');
+        this.resetForm('firstCheck');
+        this.resetForm('secondCheck');
+        this.fileList=[]
+        this.carinfoId = this.genID()
+        this.setLawPersonCurrentP();
+      }
+    }
+
+  },
+
   created() {
     this.findRouteManageByOrganId();
+    console.log('create11111')
 
   },
   beforeRouteLeave(to, from, next) {

@@ -3,210 +3,195 @@
     <div class="searchPage toggleBox">
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-            <el-form-item label="统计年份" prop>
-              <el-date-picker
-                v-model="value3"
-                type="year"
-                value-format="yyyy" @change="select"
-              ></el-date-picker>
-            </el-form-item>
-          </el-form>
+          <el-form-item label="立案机构" prop>
+            <el-select size="small" v-model="state" placeholder="立案机构">
+              <el-option label="全部" value></el-option>
+
+            </el-select>
+          </el-form-item>
+          <el-form-item label="执法门类" prop>
+            <el-select size="small" v-model="state" placeholder="执法门类">
+              <el-option label="全部" value></el-option>
+
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="统计周期"
+            v-for="(item, index) in dateList"
+            v-show="item.activeName === activeName"
+            :key="index">
+            <el-date-picker
+              v-model="item.value"
+              :type="item.type"
+              :placeholder="item.placeholder"
+              :value-format="item.valueFormat">
+            </el-date-picker>
+          </el-form-item>
         </el-form>
       </div>
-
-      <div id="chartColumn" style="width: 100%; height: 400px;"></div>
+      <div class="tablePart">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleTabClick(activeName)">
+          <el-tab-pane
+          v-for="item in tabPans"
+          :key="item.name"
+          :label="item.label"
+          :name="item.name">
+            <div ref="echarts" style="width: 1000px; height: 400px;"></div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
   </div>
 </template>
 
 
 <script>
-import echarts from "echarts";
-import {
-      ajslsjqsfx,
-    } from '@/api/fxyp.js'
-export default {
-  data() {
-    return {
-      value3: "2019",
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
-      tableData: [],
-      logForm: {
-        organ: "",
-        type: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
-      },
-      isShow: false,
-      data1:[],
-      data2:[],
-    };
-  },
-  methods: {
-    drawLine() {
-      this.chartColumn = echarts.init(document.getElementById("chartColumn"));
+  import echarts from "echarts";
+  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours} from '@/api/fxyp.js'
 
-      this.chartColumn.setOption({
-        title: {
-          text: "",
-          left: "left"
-        },
-        tooltip: {
-          trigger: "axis"
-        },
-        legend: {
-          // left: "center",
-          // top: "bottom",
-          data: [ this.value3+"年每月案发数量"]
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true
-        },
-        xAxis: {
-          type: "category",
-          boundaryGap: false,
-          data: [
-            "1月",
-            "2月",
-            "3月",
-            "4月",
-            "5月",
-            "6月",
-            "7月",
-            "8月",
-            "9月",
-            "10月",
-            "11月",
-            "12月"
-          ]
-        },
-        yAxis: {
-          type: "value"
-        },
-        series: [
-          // {
-          //   name: "2018年每月案发数量",
-          //   type: "line",
-          //   stack: "总量",
-          //   data: this.data1,
-          //   itemStyle: {
-          //     //通常情况下：
-          //     normal: {
-          //       color: "#00CCFF"
-          //     }
-          //   }
-          // },
+  export default {
+    data() {
+      return {
+        dateList: [
           {
-            name: this.value3+"年每月案发数量",
-            type: "line",
-            stack: "总量",
-            data: this.data2,
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: "#002933"
-              }
-            }
-          }
-        ]
-      });
-    },
+            activeName: 'monthView',
+            value: "",
+            type: "year",
+            placeholder: "选择年",
+            valueFormat: "yyyy"
+          },
+          {
+            activeName: 'dayView',
+            value: "",
+            type: "month",
+            placeholder: "选择月",
+            valueFormat: "yyyy/MM"
+          },
+          {
+            activeName: 'hoursView',
+            value: "",
+            type: "date",
+            placeholder: "选择日期",
+            valueFormat: "yyyy/MM/dd"
+          },
+        ],
+        tabPans: [
+          { label: "年视图", name: "year" },
+          { label: "月视图", name: "monthView" },
+          { label: "日视图", name: "dayView" },
+          { label: "时视图", name: "hoursView" },
+        ],
+        activeName: 'year',
 
-  //  search(val) {
-  //     this.currentPage = val;
-  //     let data = {
-  //       year:2018
-  //     };
-  //     let _this = this;
-  //     this.$store.dispatch("ajslsjqsfx", data).then(res => {
-        
-  //        var map={};
-  //        res.forEach(item =>{
-  //        var tmp=item[0];
-  //        if(tmp<10){
-  //          tmp=tmp.substring(1,2);
-  //        }
-  //             map[tmp]=item[1];       
-  //        });
-
-        
-  //       var map2=[];
-  //       for(var i=1;i<=12;i++){
-  //         if(map[i]!=undefined){
-  //            map2.push(map[i] );
-  //         }else{
-  //            map2.push(0);
-  //         }
-  //       }
-       
-        
-  //         this.data1=map2; 
-         
-
-          
-  //         this.drawLine();
-  //     });
-  //     err => {
-  //       console.log(err);
-  //     };
-  //   },
-    search2(val) {
-      // this.currentPage = val;
-      let data = {
-        year:val
+        state: "",
+        checked: true,
+        logForm: {
+          organ: "",
+          type: "",
+          operation: "",
+          username: "",
+          startTime: "",
+          endTime: "",
+          dateArray: ""
+        },
       };
-      let _this = this;
-      // this.$store.dispatch("ajslsjqsfx", data).then(res => {
-      ajslsjqsfx(data).then(res => {
-        
-         var map={};
-         res.forEach(item =>{
-         var tmp=item[0];
-         if(tmp<10){
-           tmp=tmp.substring(1,2);
-         }
-              map[tmp]=item[1];       
-         });
+    },
+    created() {
+      this.init()
+    },
+    methods: {
+      /**
+       * 初始化页面，显示年视图
+       */
+      init() {
+        sjglfx().then(res => {
+          let data = res.data
+          this.setCharts(data)
+        }).catch(() => {
+          throw new Error("sjglfx::::::接口数据错误")
+        })
+      },
 
-        
-        var map2=[];
-        for(var i=1;i<=12;i++){
-          if(map[i]!=undefined){
-             map2.push(map[i] );
-          }else{
-             map2.push(0);
-          }
+      /**
+       * 切换选项卡触发
+       */
+      handleTabClick(val) {
+        let dateMap = new Map([
+          [ 'monthView', this.dateList[0].value ],
+          [ 'dayView', this.dateList[1].value ],
+          [ 'hoursView', this.dateList[2].value ],
+        ])
+        if(val === 'year') {
+          this.init()
+        } else {
+          this.getData(val, dateMap.get(val))
         }
-       
+      },
 
-         this.data2=map2;
-          this.drawLine();
-      });
-      err => {
-        console.log(err);
-      };
+      /**
+       * 获取数据
+       */
+      getData(val, params) {
+        let axiosMap = new Map([
+          [ 'monthView', sjglfxmonth(params) ],
+          [ 'dayView', sjglfxday(params) ],
+          [ 'hoursView', sjglfxhours(params) ],
+        ])
+        axiosMap.get(val)
+          .then(res => {
+            let data = res.data
+            this.setCharts(data)
+          }).catch(() => {
+            throw new Error("sjglfx::::::接口数据错误")
+          })
+      },
+
+      /**
+       * 给图表赋值
+       */
+      setCharts(data) {
+        let xAxis = [], series = [];
+        console.log(data)
+        // this.drawCharts({ xAxis, series })
+      },
+
+      /**
+       * 折线图数据格式
+       */
+      drawCharts({ xAxis, series }) {
+        let dom = this.$refs.echarts
+        if(dom) {
+          let myChart = echarts.init(dom)
+          const option = {
+            title: {
+              text: "年度案发数量分析",
+              left: "center"
+            },
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: "line" // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+            xAxis: {
+              type: "category",
+              data: xAxis
+            },
+            yAxis: {
+              type: "value"
+            },
+            series: [
+              {
+                data: data,
+                type: "line"
+              }
+            ]
+          }
+          myChart.setOption(option)
+        }
+      },
     },
-     select(val){
-     this.search2(val);
-   }
-  },
-  mounted() {
-    // this.search();
-    this.search2(2019);
-  },
-  created() {
-  
-  }
-};
+  };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

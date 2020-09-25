@@ -6,11 +6,14 @@
           <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
             <el-form-item label="统计周期" prop>
               <el-date-picker
-                v-model="value3"
+                v-model="date"
                 type="monthrange"
                 range-separator="至"
                 start-placeholder="开始月份"
                 end-placeholder="结束月份"
+                format="yyyy-MM"
+                value-format="yyyy-MM"
+                @change="searchDrawFun"
               ></el-date-picker>
             </el-form-item>
           </el-form>
@@ -42,13 +45,11 @@
 
 <script>
 import echarts from "echarts";
-import {
-      getAjdsrtzfx,
-    } from '@/api/fxyp.js'
+import {featureApi} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
-      value3: "",
+      date: [],
       value2: "",
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -65,7 +66,8 @@ export default {
       },
       fr:"",
       gr:"",
-      isShow: false
+      isShow: false,
+      ageSeries:[]
     };
   },
   methods: {
@@ -92,11 +94,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "21-30岁" },
-              { value: 310, name: "31-40岁" },
-              { value: 234, name: "41-50岁" }
-            ],
+            data: this.ageSeries,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -202,20 +200,20 @@ export default {
         ]
       });
     },
-     searchDraw3() {
-      let data = {
-        //  organ: this.logForm.organ,
-        // type: this.logForm.type,
-        // operation: this.logForm.operation,
-        // username: this.logForm.username,
-      };
-      let _this = this
-      // this.$store.dispatch("getAjdsrtzfx", data).then(res => {
-      getAjdsrtzfx(data).then(res => {
-        console.log(res);
-         _this.fr = res[0];
-         _this.gr = res[1];
-         this.drawLine3();
+     searchDrawFun() {
+       let param = {
+         year:this.date[0],
+         year2:this.date[1]
+       };
+       if(this.date.length ==0){
+         param.year = '2019-09'
+         param.year2 = '2020-09'
+       }
+       featureApi(param).then(res => {
+         if(res.code == 200){
+           this.ageSeries = res.data.ageGroup
+         }
+
       });
       err => {
         console.log(err);
@@ -223,13 +221,13 @@ export default {
     },
   },
   mounted() {
-    this.searchDraw3();
+    this.searchDrawFun();
     this.drawLine1();
     this.drawLine2();
     //this.drawLine3();
   },
   created() {
-    
+
   }
 };
 </script>

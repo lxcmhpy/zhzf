@@ -27,7 +27,7 @@ import echarts from "echarts";
 export default {
   data() {
     return {
-      value1:'',
+      value1:"",
       logForm: {
         organ: "",
         type: "",
@@ -45,7 +45,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "金额分布图",
+          text: "罚没款分布图",
           left: "center"
         },
         tooltip: {
@@ -55,18 +55,32 @@ export default {
         legend: {
           left: "center",
           top: "bottom",
-          data: ["赔偿金额", "处罚金额", "许可补偿"]
+          data: ["公路路政",
+            "道路运政",
+            "水路运政",
+            "航道行政",
+            "港口行政",
+            "海事行政",
+            "工程质量安全监督",
+            "其他",
+            "综合执法",]
         },
         series: [
           {
             name: "访问来源",
-            type: "pie",
+            type: "pie", 
             radius: "55%",
             center: ["50%", "60%"],
             data: [
-              { value: 335, name: "赔偿金额" },
-              { value: 310, name: "处罚金额" },
-              { value: 234, name: "许可补偿" }
+               { value: 20, name: "公路路政" },
+              { value: 30, name: "道路运政" },
+              { value: 40, name: "水路运政" },
+              { value: 10, name: "航道行政" },
+              { value: 30, name: "港口行政" },
+              { value: 20, name: "海事行政" },
+              { value: 10, name: "工程质量安全监督" },
+              { value: 30, name: "其他" },
+              { value: 20, name: "综合执法" },
             ],
             emphasis: {
               itemStyle: {

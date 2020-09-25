@@ -76,7 +76,7 @@
 
         this.chartColumn.setOption({
           title: {
-            text: "年度路政案件数量同期对比",
+            text: "2019年度案件数量同期对比",
             left: "center"
           },
           tooltip: {

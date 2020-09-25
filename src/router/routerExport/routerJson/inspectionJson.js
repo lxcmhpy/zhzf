@@ -189,6 +189,7 @@ export default  [
                 meta: {
                 title: "超限超载记录",
                 oneTab:true,
+                keepAlive:true,
                 },
                 component: () => import("@/page/inspection/roadAndPolice/overWeightForm.vue")
             },
@@ -202,7 +203,7 @@ export default  [
                 component: () => import("@/page/inspection/roadAndPolice/overWeightList.vue")
             },
             {
-                path: "/inspection_imageMange",
+                path: "/inspection_imageMange/:carinfoId",
                 name: "inspection_imageMange",
                 meta: {
                 title: "照片证据列表",
