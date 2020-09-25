@@ -5,11 +5,14 @@
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="统计周期" prop>
             <el-date-picker
-              v-model="value3"
+              v-model="date"
               type="monthrange"
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              format="yyyy-MM"
+              value-format="yyyy-MM"
+              @change="searchDraw"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -47,40 +50,46 @@ import "echarts/lib/component/legend";
 import "echarts/lib/chart/heatmap";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
-
+import {caseAddressApi} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
-      value3: "",
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
-      tableData: [
-        {
-          road: "S201",
-          number: 3
-        }
-      ],
+      date:[],
       logForm: {
-        organ: "",
-        type: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
       },
       isShow: false,
-      data1:[],
-      data2:[],
-
+      mapData:[],
+      addressName:[],
+      addressValue:[]
     };
   },
   methods: {
+    searchDraw() {
+      let param = {
+        year:this.date[0],
+        year2:this.date[1]
+      };
+      if(this.date.length ==0){
+        param.year = '2019-09'
+        param.year2 = '2020-09'
+      }
+      caseAddressApi(param).then(res => {
+        if(res.code == 200){
+          this.mapData = res.data
+          res.data.map(item => {
+            this.addressName.push(item.name)
+            this.addressValue.push(item.value)
+          })
+          this.drawLine1()
+          this.drawLine2()
+        }
+      });
+      err => {
+        console.log(err);
+      };
+    },
     drawLine1() {
       let myChart = echarts.init(document.getElementById("chart1"));
-
       myChart.setOption({
         backgroundColor: "#FFFFFF",
       title: {
@@ -94,7 +103,7 @@ export default {
 
       //左侧小导航图标
       visualMap: {
-        min: 10,
+        min: 0,
         max: 500,
         text: ["高", "低"],
         inRange: {
@@ -107,7 +116,7 @@ export default {
         {
           name: "案发数量",
           type: "map",
-          mapType: "宁夏",
+          mapType: "江西",
           roam: true,
           label: {
             normal: {
@@ -117,21 +126,15 @@ export default {
               show: false
             }
           },
-          data: [
-            { name: "银川市", value: "315" },
-            { name: "石嘴山市", value: "481"},
-            { name: "吴忠市", value: "214" },
-            { name: "中卫市", value: "164" },
-            { name: "固原市", value: "95" }
-          ] //数据
+          data: this.mapData //数据
         }
       ]
       });
     },
     drawLine2() {
       this.chartColumn = echarts.init(document.getElementById("chart2"));
-      var salvProName =["银川市","石嘴山市","吴忠市","中卫市","固原市"];
-      var salvProValue =[209,181,144,114,85];
+      var salvProName = this.addressName;
+      var salvProValue = this.addressValue;
       var salvProMax =[];//背景按最大值
       for (let i = 0; i < salvProValue.length; i++) {
           salvProMax.push(salvProValue[0])
@@ -231,38 +234,10 @@ export default {
     ]
       });
     },
-    search1(val) {
-      this.currentPage = val;
-      let data = {
-        // year:2018
-      };
-      let _this = this;
-      this.$store.dispatch("afddfb", data).then(res => {
-        console.log(res);
-        //  var map={};
-        //  res.forEach(item =>{
-        //       map[item[0]]=item[1];
-
-        //  });
-        // console.log(map);
-
-
-          this.data1=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
-          this.data2=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
-           this.drawLine2();
-      });
-      err => {
-        console.log(err);
-      };
-    },
   },
   mounted() {
-    //  this.search1();
-    this.drawLine1();
-    this.drawLine2();
-    // this.drawLine3();
+    this.searchDraw()
   },
-  created() {}
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
