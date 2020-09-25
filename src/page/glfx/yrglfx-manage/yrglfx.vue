@@ -1,3 +1,4 @@
+
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchPage toggleBox">
@@ -14,19 +15,27 @@
           </el-form-item>
         </el-form>
       </div>
-      <div id="chart1" style="width: 100%; height: 50%;"></div>
+      <!-- <div id="chart1" style="width: 100%; height: 50%;"></div> -->
       <div style="margin-top:30px;margin-bottom:30px">
         <el-row>
-          <el-col :span="6">
+          <el-col :span="12">
             <div id="chart2" style="width: 100%; height: 100%;"></div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="12">
             <div id="chart3" style="width: 100%; height: 100%;"></div>
           </el-col>
-          <el-col :span="6">
+          
+        </el-row>
+       
+      </div>
+      <div style="margin-top:60px;margin-bottom:30px">
+       
+        <el-row>
+         
+          <el-col :span="12">
             <div id="chart4" style="width: 100%; height: 100%;"></div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="12">
             <div id="chart5" style="width: 100%; height: 100%;"></div>
           </el-col>
         </el-row>
@@ -89,8 +98,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            //data: this.data1,
-            data: ['银川交通厅','吴忠综合执法支队','石嘴山综合执法支队','固原市综合执法支队','中卫市综合执法支队'],
+            data: this.data1,
             axisTick: {
               alignWithLabel: true
             }
@@ -132,10 +140,10 @@ export default {
             center: ["50%", "60%"],
             data: [
               { value: 310, name: "24岁以下" },
-              { value: 335, name: "25-29岁" },
+              { value: 335, name: "25-29岁" },             
               { value: 234, name: "30-34岁" },
               { value: 310, name: "35-39岁" },
-              { value: 335, name: "40-44岁" },
+              { value: 335, name: "40-44岁" },             
               { value: 234, name: "45-49岁" },
               { value: 234, name: "50-54岁" },
               { value: 234, name: "55岁以上" },
@@ -243,9 +251,11 @@ export default {
             radius: "75%",
             center: ["50%", "60%"],
             data: [
-              { value: 335, name: "局长" },
-              { value: 310, name: "市长" },
-              { value: 234, name: "行长" }
+              { value: 335, name: "科员" },
+              { value: 150, name: "副科" },
+              { value: 134, name: "正科" },
+              { value: 50, name: "副处" },
+              { value: 30, name: "正处" }
             ],
             emphasis: {
               itemStyle: {
@@ -267,8 +277,8 @@ export default {
       // this.$store.dispatch("ryglfx", data).then(res => {
       ryglfx(data).then(res => {
         console.log(res);
-         this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
-          this.data1=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
+         this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
+          this.data1=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
            this.drawLine1();
       });
       err => {
@@ -278,14 +288,14 @@ export default {
   },
   mounted() {
     // this.drawLine1();
-    this.search1();
+    // this.search1();
     this.drawLine2();
     this.drawLine3();
     this.drawLine4();
     this.drawLine5();
   },
   created() {
-    // this.getLogList();
+  
   }
 };
 </script>

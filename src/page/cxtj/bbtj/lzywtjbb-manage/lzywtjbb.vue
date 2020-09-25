@@ -1,3 +1,4 @@
+
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchPage toggleBox">
@@ -7,13 +8,13 @@
             <el-button size="medium" icon="el-icon-circle-plus" @click="add()">新增</el-button>
           </el-form-item>
           <el-form-item label prop>
-            <el-button size="medium" icon="el-icon-edit" @click="getLogList(1)">查看</el-button>
+            <el-button size="medium" icon="el-icon-edit" @click="look()">查看</el-button>
           </el-form-item>
           <el-form-item label prop>
-            <el-button size="medium" icon="el-icon-upload2" @click="getLogList(1)">上报</el-button>
+            <el-button size="medium" icon="el-icon-upload2" @click="look()">上报</el-button>
           </el-form-item>
           <el-form-item label prop>
-            <el-button size="medium" icon="iconfont law-sousuo" @click="getLogList(1)">查看汇总报表</el-button>
+            <el-button size="medium" icon="iconfont law-sousuo" @click="look()">查看汇总报表</el-button>
           </el-form-item>
           <el-form-item label="年份" prop>
             <el-date-picker v-model="value3" type="year" placeholder="选择年"></el-date-picker>
@@ -22,7 +23,7 @@
             <el-date-picker v-model="value2" type="month" value-format="M" placeholder="选择月"></el-date-picker>
           </el-form-item>
           <el-form-item label=" " label-width="13px">
-            <el-button size="medium" icon="iconfont law-sousuo" @click="getLogList(1)">查询</el-button>
+            <el-button size="medium" icon="iconfont law-sousuo" @click="search()">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -126,7 +127,7 @@ export default {
       totalPage: 0, //总页数
       tableData: [
         {
-          tbdw:'银川路政管理局',
+          tbdw:'南昌路政管理局',
           zt:'已上报',
           nd:'2019',
           yd:'7',
@@ -135,7 +136,7 @@ export default {
           sbr:'刘新',
           sbrq:'2019-07-02',
         },{
-          tbdw:'中卫路政管理局',
+          tbdw:'九江路政管理局',
           zt:'未填报',
           nd:'2019',
           yd:'8',
@@ -190,6 +191,10 @@ export default {
     };
   },
   methods: {
+    //查看
+    look(){},
+    //查询
+    search(){},
     //新增
     add() {
       this.dialogTitle = "新增";
@@ -246,10 +251,10 @@ export default {
     }
   },
   mounted() {
-    // this.setDepartTable(this.data)
+   
   },
   created() {
-    // this.getLogList();
+    
   }
 };
 </script>

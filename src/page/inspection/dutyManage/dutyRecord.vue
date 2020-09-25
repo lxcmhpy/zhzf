@@ -28,11 +28,10 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="是否立案" prop="registerCase">
-                  <el-select v-model="searchForm.registerCase" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="是" value="1"></el-option>
-                    <el-option label="否" value="2"></el-option>
+                <el-form-item label="是否立案" prop="isCase">
+                  <el-select v-model="searchForm.isCase" placeholder="请选择">
+                    <el-option label="是" value="true"></el-option>
+                    <el-option label="否" value="false"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="单位名称" prop="companyName">
@@ -133,15 +132,11 @@
               <span v-else>{{scope.row.routeSituation}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="personIds" label="执法人员" align="center" min-width="160px">
-              <template slot-scope="scope">
-                <span v-for="per in scope.row.listPer" :key="per.id" >{{per.personName}};</span>
-              </template>
-          </el-table-column>
+          <el-table-column prop="personNames" label="执法人员" align="center" min-width="160px"></el-table-column>
           <el-table-column prop="isFilingCase" label="是否立案" align="center" width="100px">
             <template slot-scope="scope">
               <span v-if="!scope.row.isCase">否</span>
-              <el-button v-else type="text">查看案件</el-button>
+              <el-button v-else type="text" @click="recordCaseClick(scope.row.recordId)">查看案件</el-button>
             </template>
           </el-table-column>
           <el-table-column prop="opt" label="操作" align="center" width="160px" fixed="right">
@@ -164,10 +159,12 @@
         ></el-pagination>
       </div>
     </div>
+    <RecordCaseModel ref="RecordCaseModelRef" />
   </div>
 </template>
 <script>
 
+import RecordCaseModel from '@/page/inspection/dutyManage/components/recordCaseModel';
 import { downLoadFile } from "@/api/joinExam";
 import { getCheRecordPageListApi, deleteCheRecordByIdsApi, exportCheRecordApi } from '@/api/supervision';
 import { getDictListDetailByNameApi } from '@/api/system';
@@ -187,7 +184,7 @@ export default {
       checkTypeList: []//检查类型select
     };
   },
-  components: {  },
+  components: { RecordCaseModel },
   created() {
     this.getRecordList();
     this.initCheckDictData();
@@ -327,6 +324,10 @@ export default {
     checkTimeChange(){
       this.searchForm.checkStartTime = this.searchForm.checkTime[0];
       this.searchForm.checkEndTime = this.searchForm.checkTime[1]
+    },
+    //查看案件点击
+    recordCaseClick(recordId) {
+      this.$refs.RecordCaseModelRef.showModal(recordId);
     }
   },
 };
