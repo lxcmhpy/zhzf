@@ -60,10 +60,13 @@ export default {
     showModal(businessType) {
       this.visible = true;
       let data={
-        cateId:businessType
+        cateId:businessType,
+         current:this.currentPage,
+        size:this.pageSize
       }
        getScheduleListApi(data).then(res => {
         if (res.code == "200") {
+        
           this.tableData = res.data.records;
           //this.totalPage = res.data.total;
         }

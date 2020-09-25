@@ -43,6 +43,7 @@
                   icon="el-icon-search"
                   @click="currentPage = 1; getAssistCaseList();"
                 ></el-button>
+                <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset"></el-button>
                 <el-button
                   type
                   size="medium"
@@ -271,6 +272,12 @@ export default {
     //更换页码
     handleCurrentChange(val) {
       this.currentPage = val;
+      this.getAssistCaseList();
+    },
+    //重置
+    reset() {
+      this.$refs.caseSearchFormRef.resetFields();
+      this.currentPage = 1;
       this.getAssistCaseList();
     },
   },

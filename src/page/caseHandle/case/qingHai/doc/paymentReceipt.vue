@@ -239,7 +239,7 @@ export default {
     },
     //设置案件来源
     getDataAfter() {
-      // this.docData.picList = JSON.parse(this.docData.picList)
+      this.docData.picList = JSON.parse(this.docData.picList)
     },
     //获取案件基本信息
     getCaseInfo() {

@@ -30,7 +30,7 @@
       <div class="searchPage toggleBox">
         <div class="handlePart">
           <el-form :inline="true" ref="userForm" :model="formInline" label-width="70px">
-            <el-form-item label="查询范围">
+            <el-form-item label="查询范围" prop="selectValue">
               <el-select v-model="formInline.selectValue">
                 <el-option
                   v-for="item in searchType"

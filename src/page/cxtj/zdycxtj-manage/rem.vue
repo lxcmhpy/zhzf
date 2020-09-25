@@ -138,8 +138,8 @@
                        
                   </el-row>
                   <el-row>
-                       <el-col :span="12" ><div class="dw2" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
-                       <el-col :span="12" ><div class="dw2" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
+                       <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
+                       <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
                      
                   </el-row>
               </el-row>
@@ -603,27 +603,7 @@ echarts.extendsMap = function(id, opt){
                 }
             },
             data: handleEvents.initSeriesData(opt.data)
-        }],
-         tooltip: {
-                show:true,
-                trigger: 'item',
-                backgroundColor: 'rgba(166, 200, 76, 0.82)',
-                borderColor: '#FFFFCC',
-                showDelay: 0,
-                hideDelay: 0,
-                enterable: true,
-                transitionDuration: 0,
-                extraCssText: 'z-index:100',
-                formatter: function(params, ticket, callback) {
-                console.log(params);
-                //根据业务自己拓展要显示的内容
-                var res = "";
-                var name = params.name;
-                var value = params.value[2];
-                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
-                return res;
-   }
-  },
+        }]
     };
 
     chart.setOption(option);
@@ -1658,7 +1638,7 @@ line-height:20px;
 .count{
 width: 5rem;
 height: 1.5rem;
-font-size: 1.3rem;
+font-size: 0.9rem;
 font-family:DINCond-Bold,DINCond;
 font-weight:bold;
 color:rgba(4,241,248,1);
@@ -1666,18 +1646,7 @@ line-height:42px;
 margin-left: 5px;
 }
 .dw{
-width: 2rem;
-height: 1.5rem;
-font-size: 0.9rem;
-font-family:PingFangSC-Regular,PingFang SC;
-font-weight:400;
-color:rgba(255,255,255,1);
-line-height:50px;
-margin-left: 15px;
-margin-left: 25px;
-}
-.dw2{
-width: 2rem;
+width: 5rem;
 height: 1.5rem;
 font-size: 0.9rem;
 font-family:PingFangSC-Regular,PingFang SC;
@@ -1688,9 +1657,9 @@ margin-left: 15px;
 margin-left: 25px;
 }
 .ajbjl{
-width: 5rem;
-height: 1rem;
-font-size: 0.9rem;
+width:70px;
+height:19px;
+font-size:14px;
 font-family:MicrosoftYaHei;
 color:rgba(255,255,255,1);
 line-height:19px;

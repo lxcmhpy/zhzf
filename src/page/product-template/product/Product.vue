@@ -3,12 +3,15 @@
     <div class="searchAndpageBox" id="roleBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="dicSearchForm" class>
-            <el-form-item label="案件类型名称">
-              <el-input v-model="dicSearchForm.typeName" placeholder="输入案件类型名称"></el-input>
+          <el-form :inline="true" :model="productForm" ref="productForm">
+            <el-form-item label="案件类型名称" prop="typeName">
+              <el-input v-model="productForm.typeName" placeholder="输入案件类型名称"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getCaseTypes">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset">重置</el-button>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addOrUpdateCaseType">添加</el-button>
@@ -60,7 +63,7 @@ export default {
   data() {
     return {
       tableData: [], //表格数据
-      dicSearchForm: {
+      productForm: {
         typeName: ""
       },
       currentPage: 1, //当前页
@@ -116,7 +119,7 @@ export default {
       let data = {
         current: this.currentPage,
         size: this.pageSize,
-        typeName: this.dicSearchForm.typeName
+        typeName: this.productForm.typeName
       };
       let _this = this;
       this.$store.dispatch("getCaseTypes", data).then(
@@ -133,6 +136,11 @@ export default {
     //添加或修改案件类型
     addOrUpdateCaseType() {
       this.$refs.addOrUpdateCaseTypeRef.showModal(0, "");
+    },
+    //重置
+    reset() {
+      this.$refs["productForm"].resetFields();
+      this.getCaseTypes();
     },
   },
   created() {

@@ -2,8 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox">
       <div class="handlePart">
-        <el-form :inline="true" :model="pdfForm" label-width="80px" ref="pdfForm" :rules="pdfRule">
-
+        <el-form :inline="true" :model="pdfForm" label-width="80px" ref="pdfForm" >
           <el-form-item label="类型" prop="bindType">
             <el-select v-model="pdfForm.bindType" @change="changeBindType(pdfForm.bindType)">
               <el-option v-for="item in typeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -20,10 +19,13 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="getPdfAndFormList('pdfForm',1)">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-search" @click="getPdfAndFormList(1)">查询</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" @click="goAddDia('pdfForm')">添加属性</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset">重置</el-button>
+            </el-form-item>
+          <el-form-item>
+            <el-button type="primary" size="medium" icon="el-icon-plus" @click="goAddDia('pdfForm')">添加属性</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -80,17 +82,17 @@
               </span>
             </el-form-item>
             <el-form-item label="所属类型" prop="bindType">
-              <el-select v-model="pdfForm.bindType" @change="changeBindType(pdfForm.bindType)" disabled style="width:80px">
+              <el-select v-model="setForm.bindType" @change="changeBindType(setForm.bindType)" disabled style="width:80px">
                 <el-option v-for="item in typeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="文书或表单" prop="typeId" v-if="pdfForm.bindType=='2'" label-width="100px">
-              <el-select v-model="pdfForm.typeId" disabled>
+            <el-form-item label="文书或表单" prop="typeId" v-if="setForm.bindType=='2'" label-width="100px">
+              <el-select v-model="setForm.typeId" disabled>
                 <el-option v-for="item in bindList" :key="item.id" :label="item.linkName" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="文书或表单" prop="typeId" v-if="pdfForm.bindType=='3'" label-width="100px">
-              <el-select v-model="pdfForm.typeId" disabled>
+            <el-form-item label="文书或表单" prop="typeId" v-if="setForm.bindType=='3'" label-width="100px">
+              <el-select v-model="setForm.typeId" disabled>
                 <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -199,28 +201,31 @@ export default {
       tableData: [],
       resourceData: [],
       pdfForm: {
-        bindType: '1',
+        bindType: '',
         bindName: "",
         typeId: ''
       },
       relation: '',
       typeList: [
         {
+          id: '4',
+          name: '基本信息'
+        },
+        {
           id: '2',
           name: '表单'
         },
         {
           id: '3',
           name: '文书'
-        },
-        // {
-        //   id: '1',
-        //   name: '基本信息'
-        // }
+        }, 
       ],
       resourceNameList: [],
       resourceTypeList: [
-
+        {
+          id: '1',
+          name: '基本信息'
+        },
         {
           id: '2',
           name: '表单'
@@ -228,10 +233,8 @@ export default {
         {
           id: '3',
           name: '文书'
-        }, {
-          id: '1',
-          name: '基本信息'
-        }],
+        }
+      ],
       isShow: false,
       dialogVisible: false,
       addVisible: false,
@@ -302,49 +305,52 @@ export default {
 
     },
     //表单筛选
-    getPdfAndFormList(formName, currentPage) {
+    getPdfAndFormList(currentPage) {
       if (currentPage) {
         this.currentPage = currentPage
       }
-      this.tableData = [];
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          let data = {
-            // bindName: this.pdfForm.bindName,
-            // bindType: this.pdfForm.bindType,
-            typeId: this.pdfForm.typeId,
-            pageSize: this.pageSize,
-            currentPage: this.currentPage,
-          }
-          findSetListApi(data).then(
-            res => {
-              console.log('列表', res)
-              // this.pdfAndFormList = res.data.records
-              console.log('pdfAndFormList', this.pdfAndFormList)
-              this.tableData = res.data.records
-              this.totalPage = res.data.total
-              // 类型转换
-              this.tableData.forEach(element => {
-                if (element.isEditable == 'true') {
-                  element.isEditable = true
-                }
-                if (element.isEditable == 'false') {
-                  element.isEditable = false
-                }
-                if (element.isRequired == 'true') {
-                  element.isRequired = true
-                }
-                if (element.isRequired == 'false') {
-                  element.isRequired = false
-                }
-              });
+      // this.tableData = [];
+      // this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      let data = {
+        bindType:this.pdfForm.bindType,
+        typeId: this.pdfForm.typeId,
+        pageSize: this.pageSize,
+        currentPage: this.currentPage,
+      }
+      findSetListApi(data).then(
+        res => {
+          console.log('列表', res)
+          // this.pdfAndFormList = res.data.records
+          console.log('pdfAndFormList', this.pdfAndFormList)
+          this.tableData = res.data.records
+          this.totalPage = res.data.total
+          // 类型转换
+          this.tableData.forEach(element => {
+            if (element.isEditable == 'true') {
+              element.isEditable = true
+            }
+            if (element.isEditable == 'false') {
+              element.isEditable = false
+            }
+            if (element.isRequired == 'true') {
+              element.isRequired = true
+            }
+            if (element.isRequired == 'false') {
+              element.isRequired = false
+            }
+          });
 
-            });
-        } else {
-          console.log('error submit!!');
-          return false;
+        },
+        err => {
+          console.log(err);
         }
-      });
+      );
+        // } else {
+        //   console.log('error submit!!');
+        //   return false;
+        // }
+      // });
     },
     getPdfAndFormSetList(formName) {
       console.log('search',this.setForm)
@@ -354,9 +360,8 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = {
-              typeId: this.setForm.bindId
-            }
-
+            typeId: this.setForm.bindId
+          }
           findAllSetListApi(data).then(
             res => {
               console.log('列表', res)
@@ -381,7 +386,6 @@ export default {
       this.dialogVisible = true;
       console.log('值绑定', val)
       this.setForm = JSON.parse(JSON.stringify(val));
-
       if (this.setForm.resourceType == '2') {
         this.resourceNameList = this.bindList
       }
@@ -417,7 +421,7 @@ export default {
               this.pdfAndFormList = res.data.records
               this.addVisible = false;
               this.$refs.editFormRef.resetFields();
-              this.getPdfAndFormList('pdfForm');
+              this.getPdfAndFormList();
               this.$message({
                 type: "success",
                 message: "操作成功"
@@ -448,7 +452,7 @@ export default {
             type: "success",
             message: "绑定成功"
           });
-          this.getPdfAndFormList('pdfForm');
+          this.getPdfAndFormList();
         } else {
           console.log("fail");
         }
@@ -472,11 +476,14 @@ export default {
             isRequired: '',
             checkRule: '',
           },
-            this.editForm.isRequired = false;
+          this.editForm.isRequired = false;
           this.editForm.isEditable = true;
           this.editForm.resourceType = '1';
-          console.log('id', this.editForm)
-          this.editForm.typeId = this.pdfForm.typeId;
+          if(this.pdfForm.bindType=='4'){
+            this.editForm.typeId='basic36b59bd27ff4b6fe96e1b06390d'
+          }else{
+            this.editForm.typeId = this.pdfForm.typeId;
+          }
           console.log(this.editForm)
         } else {
           console.log('error submit!!');
@@ -508,11 +515,11 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
-      this.getPdfAndFormList('pdfForm', 1);
+      this.getPdfAndFormList(1);
     },
     //更换页码
     handleCurrentChange(val) {
-      this.getPdfAndFormList('pdfForm', val);
+      this.getPdfAndFormList(val);
     },
 
     // 表单抽屉表
@@ -555,7 +562,7 @@ export default {
     // 重置
     reset() {
       this.$refs["pdfForm"].resetFields();
-      getPdfAndFormList('pdfForm');
+      this.getPdfAndFormList();
     },
     // 删除
     goDelDia(val) {
@@ -564,7 +571,7 @@ export default {
         callback: action => {
           delBindApi(val).then(res => {
             if (res.code == 200) {
-              this.getPdfAndFormList('pdfForm', 1);
+              this.getPdfAndFormList(1);
             } else {
               console.log("fail");
             }
@@ -577,10 +584,10 @@ export default {
     // this.setDepartTable(this.data)
     this.getFormList();
     this.getPdfList();
-    this.pdfForm.bindType = this.typeList[0].id
+    // this.pdfForm.bindType = this.typeList[0].id
   },
   created() {
-    // this.getPdfAndFormList(1);
+    this.getPdfAndFormList(1);
 
   }
 };

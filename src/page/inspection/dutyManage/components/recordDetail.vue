@@ -23,6 +23,7 @@
                     end-placeholder="结束日期"
                     format="yyyy-MM-dd HH:mm:ss"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    @change="checkTimeChange"
                   ></el-date-picker>
                 </el-form-item>
               </el-col>
@@ -360,7 +361,7 @@
                 v-if="PageType !== 'view'"
                 type="text"
                 class="add-enclosure-file"
-                @click="addEnclosure('type')"
+                @click="addEnclosure('0')"
               >
                 <i class="add-file-type-icon">+</i>添加
               </el-button>
@@ -377,8 +378,8 @@
                       <li style="width: 60px;">{{ `${scope.$index + 1}.${index + 1}` }}</li>
                       <li style="width: calc(100% - 220px);color: #7b7b7b;">{{ attach.name }}</li>
                       <li style="width: 160px;">
-                        <el-button type="text">查看</el-button>
-                        <el-button type="text">下载</el-button>
+                        <el-button type="text" @click="previewFile(attach)">查看</el-button>
+                        <el-button type="text" @click="download(attach)">下载</el-button>
                         <el-button type="text" @click="removeAttach(attach, scope.row)">删除</el-button>
                       </li>
                     </ul>
@@ -394,7 +395,7 @@
               <el-table-column label="材料名称" prop="name" align="center"></el-table-column>
               <el-table-column label="操作" width="160px" fixed="right" align="center">
                 <template slot-scope="scope">
-                  <el-button type="text" @click="addEnclosure('file', scope.row)">添加</el-button>
+                  <el-button type="text" @click="addEnclosure('1', scope.row)">添加</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -417,15 +418,26 @@
           </el-tabs>
           <el-checkbox-group v-model="checkedOffical" @change="handleCheckedOffical">
             <ul class="offical-list-panel">
-              <li v-for="offical in officialList" :key="offical.label">
-                <el-checkbox :label="offical.label">
-                  <img :src="activeOffical === '1' ? acOfficalUrl: dsOfficalUrl" />
-                  {{ offical.name }}
-                </el-checkbox>
-              </li>
+              <template v-if="activeOffical === '1'">
+                <li v-for="offical in finishedDocs" :key="offical.label" >
+                  <el-checkbox :label="offical.label">
+                    <img :src="acOfficalUrl" />
+                    <span @click="docClick(offical)">{{ offical.name }}</span>
+                  </el-checkbox>
+                </li>
+                <li v-if="this.finishedDocs.length == 0" class="offical-list-panel-none">暂无文书</li>
+              </template>
+              <template v-else>
+                <li v-for="offical in nofinishedDocs" :key="offical.label">
+                  <el-checkbox :label="offical.label">
+                    <img :src="dsOfficalUrl" />
+                    <span @click="docClick(offical)">{{ offical.name }}</span>
+                  </el-checkbox>
+                </li>
+              </template>
             </ul>
           </el-checkbox-group>
-          <div class="print-offical-btn">
+          <div v-if="activeOffical === '1' && this.finishedDocs.length > 0" class="print-offical-btn">
             <el-checkbox
               :indeterminate="isIndeterminate"
               v-model="checkAllOffical"
@@ -449,6 +461,23 @@
     <ReviewAbnormalFile ref="ReviewAbnormalFileRef" />
     <!-- 违规行为 -->
     <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
+
+    <el-dialog
+      :visible.sync="docVisible"
+      @close="closeDialog"
+      :close-on-click-modal="false"
+      width="1000px"
+      append-to-body>
+      <div>
+        <div style="height:auto;">
+          <object>
+            <embed style="padding:0px;width: 790px;margin:0 auto;height:1150px !important"
+              name="plugin" id="plugin"
+              :src="docSrc" type="application/pdf" internalinstanceid="29">
+          </object>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -468,6 +497,7 @@ import {
   getProcessTypeTreeApi
 } from "@/api/supervision";
 import { findRouteManageByOrganIdApi, getSectionListApi } from "@/api/system";
+import { deleteFileByIdApi, downLoadCommon } from "@/api/upload";
 
 export default {
   components: {
@@ -531,10 +561,12 @@ export default {
       musicFileUrl: "@/../static/images/img/personInfo/icon_music.svg",
       listAtt: [],
       officialList: [
-        { label: "1", name: "《责令整改通知书》" },
-        { label: "2", name: "《安全隐患告知函》" },
+        { label: "92531b11586dab1eba850aea1c415a4f", name: "《公路安全隐患告知函》", caseDoctypeId: "92531b11586dab1eba850aea1c415a4f" },
+        { label: "98499c305c6447988343c33d92f0f23c", name: "《路政巡查监督责令整改通知书》", caseDoctypeId: "98499c305c6447988343c33d92f0f23c" },
       ],
-      activeOffical: "1",
+      finishedDocs: [],//已做文书
+      nofinishedDocs: [],//未作文书
+      activeOffical: "0",
       checkedOffical: [],
       checkAllOffical: false,
       isIndeterminate: false,
@@ -569,6 +601,8 @@ export default {
       processList: [], //处理情况list
       processModeList: [], //处理方式list
       processResultsList: [], //处理结果list
+      docSrc: undefined,//文书路径
+      docVisible: false,//文书dialog
     };
   },
   computed: {
@@ -592,7 +626,10 @@ export default {
     console.log(this.PageType);
     this.getCheRecordTempPageList();
     if (this.PageType === "edit") {
+      this.activeOffical = "1";
       this.getCheRecordDetail(this.rowData);
+    }else {
+      this.nofinishedDocs = this.officialList;
     }
     this.searchLawPerson();
     this.findRouteManageByOrganId();
@@ -600,9 +637,10 @@ export default {
   },
   methods: {
     // 添加附件
-    addEnclosure(type, parent) {
+    addEnclosure(levels, parent) {
       this.curParentAttach = parent;
-      this.$refs.AddRecordFileRef.showModal(type);
+      const type = parent ? parent.type : "1";
+      this.$refs.AddRecordFileRef.showModal(levels,type);
     },
     // 新增异常情况
     addAbnormal() {
@@ -643,6 +681,9 @@ export default {
     },
     // 选择文书
     handleCheckedOffical(value) {
+      this.inspectRecordForm.caseDoctypeId = this.checkedOffical.toString();
+      console.log(this.inspectRecordForm.caseDoctypeId,"checkedOffical");
+
       let checkedCount = value.length;
       this.checkAllOffical = checkedCount === this.officialList.length;
       this.isIndeterminate =
@@ -652,6 +693,11 @@ export default {
     handleCheckAllChange(val) {
       this.checkedCities = val ? ["1", "2"] : [];
       this.isIndeterminate = false;
+    },
+    //巡查时间变化
+    checkTimeChange() {
+      this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
+      this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
     },
     // 保存
     saveRecordInfo() {
@@ -668,8 +714,6 @@ export default {
 
           this.inspectRecordForm.cateId = this.cate.zfmlId;
           this.inspectRecordForm.cateName = this.cate.zfml;
-          this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
-          this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
           this.inspectRecordForm.listAbn.forEach(a => {
             a.programTypeName = a.programTypeName == "0" ? "一般程序" : "简易程序";
           })
@@ -715,10 +759,6 @@ export default {
           return false;
         }
       });
-    },
-    // 查看附件
-    viewAbnormalFile(file) {
-      this.$refs.ReviewAbnormalFileRef.showModal(file.type, file.src);
     },
     //模板查询
     getCheRecordTempPageList() {
@@ -791,6 +831,8 @@ export default {
                 a["firstType"] = this.cheProcesTypeTree.findIndex(t => t.id === a.firstProcessType);
               }
               if(a.secondProcessType && a.firstProcessType){
+                console.log(a["firstType"]);
+                console.log(this.cheProcesTypeTree[a["firstType"]]);
                 a["secondType"] = this.cheProcesTypeTree[a["firstType"]]["children"].findIndex(t => t.id === a.secondProcessType)
               }
 
@@ -799,6 +841,15 @@ export default {
               this.programTypeChange(index);
             });
             this.inspectRecordForm = formData;
+
+            if(res.data.listCaseDocs && res.data.listCaseDocs.length > 0) {
+              this.officialList.forEach( o => {
+                const caseDoc = res.data.listCaseDocs.find(d => d.caseDocTypeId == o.caseDoctypeId);
+                this.finishedDocs.push(Object.assign(o, caseDoc));
+              })
+            }else{
+              this.nofinishedDocs = this.officialList;
+            }
 
           } else {
             console.error(res);
@@ -811,7 +862,7 @@ export default {
     },
     //添加删除附件
     addAttach(attach) {
-      if (attach.type === "0") {
+      if (attach.levels === "0") {
         attach.children = [];
         this.listAtt.push(attach);
       } else {
@@ -820,7 +871,45 @@ export default {
     },
     //删除附件
     removeAttach(attach, parentAttach) {
+      if(attach.storageId){
+        this.deleteFile(attach.storageId);
+      }
       parentAttach.children.splice(parentAttach.children.indexOf(attach), 1);
+    },
+    //删除附件
+    deleteFile(storageId) {
+      let _this = this;
+      deleteFileByIdApi(storageId).then(
+        (res) => {
+          _this.$message({
+            type: "success",
+            message: "操作成功!",
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    //下载附件
+    download(attach) {
+      let _this = this;
+      if(attach && attach.storageId){
+        this.$util.com_getFileStream(attach.storageId).then((res) => {
+          const blob = new Blob([res]);
+          const blobUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.download = attach.name;
+          a.href = blobUrl;
+          a.click();
+          document.body.removeChild(a);
+        });
+      }
+    },
+    //查看文件
+    previewFile(attach) {
+      this.$refs.ReviewAbnormalFileRef.showModal(attach);
     },
     //模板生成描述
     generateDescribes() {
@@ -828,10 +917,6 @@ export default {
       const tmp = this.normalRecordTemp.find(
         (t) => t.templateId == from.desTemplateId
       );
-      if(from.checkTime){
-        from.checkStartTime = from.checkTime[0];
-        from.checkEndTime = from.checkTime[1];
-      }
       from.describes = this.generateContent(tmp.content);
       this.inspectRecordForm = JSON.parse(JSON.stringify(from));
     },
@@ -841,13 +926,26 @@ export default {
       const tmp = this.abnormalRecordTemp.find(
         (t) => t.templateId == curAbn.templateId
       );
+      console.log(this.generateContent(tmp.content));
       this.inspectRecordForm.listAbn[
         listAbnIndex
       ].problemAbstract = this.generateContent(tmp.content);
     },
     generateContent(content) {
+      console.log(this.inspectRecordForm);
       for (const key in this.inspectRecordForm) {
-        content = content.replace(`{${key}}`, this.inspectRecordForm[key]);
+
+        switch (key){
+          case "checkCategory":
+            content = content.replace(`{${key}}`, this.checkCategoryList.find(c => c.id == this.inspectRecordForm[key]).name);
+            break;
+          case "checkType":
+            content = content.replace(`{${key}}`, this.checkTypeList.find(c => c.id == this.inspectRecordForm[key]).name);
+            break;
+          default:
+          content = content.replace(`{${key}}`, this.inspectRecordForm[key]);
+          break;
+        }
       }
       return content;
     },
@@ -1032,7 +1130,7 @@ export default {
           }
           const list = this.inspectRecordForm.listAbn;
           list.splice(abnormalIndex, 1, curAbnormal);
-          this.$set(this.inspectRecordForm,listAbn,list);
+          this.$set(this.inspectRecordForm,abnormalIndex,list);
         },
         (err) => {
           console.error(err);
@@ -1059,8 +1157,18 @@ export default {
           break;
       }
       this.inspectRecordForm.listAbn[abnormalIndex][processAttr] = index;
-      
     },
+    //文书点击
+    docClick(item) {
+      this.$util.com_getFileStream(item.caseDocStorageId).then((res) => {
+        this.docSrc = res;
+        this.docVisible = true;
+      });
+    },
+    //文书dialog
+    closeDialog(){
+      this.docVisible = false;
+    }
   },
 };
 </script>
@@ -1258,6 +1366,13 @@ export default {
           }
         }
       }
+    }
+
+    &-none {
+      line-height: 60px;
+      color: #909399 !important;
+      text-align: center;
+      font-size: 14px !important;
     }
   }
   .print-offical-btn {

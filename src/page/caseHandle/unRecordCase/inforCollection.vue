@@ -3109,8 +3109,8 @@ export default {
         this.inforForm.otherInfo.allLength
       ) {
         if (
-          this.inforForm.otherInfo.lengthLimit <
-          this.inforForm.otherInfo.allLength
+         Number(this.inforForm.otherInfo.lengthLimit)  <
+         Number(this.inforForm.otherInfo.allLength)
         ) {
           this.inforForm.otherInfo.overLength =
             this.inforForm.otherInfo.allLength -
@@ -3128,7 +3128,8 @@ export default {
         this.inforForm.otherInfo.allWidth
       ) {
         if (
-          this.inforForm.otherInfo.allWidth - this.inforForm.otherInfo.widthLimit    
+          Number(this.inforForm.otherInfo.widthLimit) <
+          Number(this.inforForm.otherInfo.allWidth)
         ) {
           this.inforForm.otherInfo.overWidth =
             this.inforForm.otherInfo.allWidth -
@@ -3146,8 +3147,8 @@ export default {
         this.inforForm.otherInfo.allHeight
       ) {
         if (
-          this.inforForm.otherInfo.heightLimit <
-          this.inforForm.otherInfo.allHeight
+          Number(this.inforForm.otherInfo.heightLimit) <
+          Number(this.inforForm.otherInfo.allHeight)
         ) {
           this.inforForm.otherInfo.overHeight =
             this.inforForm.otherInfo.allHeight -

@@ -409,3 +409,15 @@ export function exportCheRecordApi(ids){
     // baseUrlType:"DUTY_HOST"
   })
 }
+
+//根据记录id查询案件
+export function getRecordCaseByRecordIdApi(recordId) {
+  return request({
+    url: "/check/record/getRecordCaseByRecordId/" + recordId,
+    // url: "/record/getRecordCaseByRecordId/" + recordId,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    // baseUrlType:"DUTY_HOST"
+  })
+}
