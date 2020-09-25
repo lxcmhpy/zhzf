@@ -419,10 +419,10 @@
           <el-checkbox-group v-model="checkedOffical" @change="handleCheckedOffical">
             <ul class="offical-list-panel">
               <template v-if="activeOffical === '1'">
-                <li v-for="offical in finishedDocs" :key="offical.label">
+                <li v-for="offical in finishedDocs" :key="offical.label" >
                   <el-checkbox :label="offical.label">
                     <img :src="acOfficalUrl" />
-                    {{ offical.name }}
+                    <span @click="docClick(offical)">{{ offical.name }}</span>
                   </el-checkbox>
                 </li>
                 <li v-if="this.finishedDocs.length == 0" class="offical-list-panel-none">暂无文书</li>
@@ -431,7 +431,7 @@
                 <li v-for="offical in nofinishedDocs" :key="offical.label">
                   <el-checkbox :label="offical.label">
                     <img :src="dsOfficalUrl" />
-                    {{ offical.name }}
+                    <span @click="docClick(offical)">{{ offical.name }}</span>
                   </el-checkbox>
                 </li>
               </template>
@@ -461,6 +461,23 @@
     <ReviewAbnormalFile ref="ReviewAbnormalFileRef" />
     <!-- 违规行为 -->
     <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
+
+    <el-dialog
+      :visible.sync="docVisible"
+      @close="closeDialog"
+      :close-on-click-modal="false"
+      width="1000px"
+      append-to-body>
+      <div>
+        <div style="height:auto;">
+          <object>
+            <embed style="padding:0px;width: 790px;margin:0 auto;height:1150px !important"
+              name="plugin" id="plugin"
+              :src="docSrc" type="application/pdf" internalinstanceid="29">
+          </object>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -584,6 +601,8 @@ export default {
       processList: [], //处理情况list
       processModeList: [], //处理方式list
       processResultsList: [], //处理结果list
+      docSrc: undefined,//文书路径
+      docVisible: false,//文书dialog
     };
   },
   computed: {
@@ -812,6 +831,8 @@ export default {
                 a["firstType"] = this.cheProcesTypeTree.findIndex(t => t.id === a.firstProcessType);
               }
               if(a.secondProcessType && a.firstProcessType){
+                console.log(a["firstType"]);
+                console.log(this.cheProcesTypeTree[a["firstType"]]);
                 a["secondType"] = this.cheProcesTypeTree[a["firstType"]]["children"].findIndex(t => t.id === a.secondProcessType)
               }
 
@@ -874,21 +895,16 @@ export default {
     download(attach) {
       let _this = this;
       if(attach && attach.storageId){
-        downLoadCommon(attach.storageId).then(
-          (res) => {
-            _this.$message({
-              type: "success",
-              message: "下载成功!",
-            });
-          },
-          (err) => {
-            _this.$message({
-              type: "error",
-              message: "下载失败!",
-            });
-            console.log(err);
-          }
-        );
+        this.$util.com_getFileStream(attach.storageId).then((res) => {
+          const blob = new Blob([res]);
+          const blobUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.download = attach.name;
+          a.href = blobUrl;
+          a.click();
+          document.body.removeChild(a);
+        });
       }
     },
     //查看文件
@@ -1141,8 +1157,18 @@ export default {
           break;
       }
       this.inspectRecordForm.listAbn[abnormalIndex][processAttr] = index;
-      
     },
+    //文书点击
+    docClick(item) {
+      this.$util.com_getFileStream(item.caseDocStorageId).then((res) => {
+        this.docSrc = res;
+        this.docVisible = true;
+      });
+    },
+    //文书dialog
+    closeDialog(){
+      this.docVisible = false;
+    }
   },
 };
 </script>
