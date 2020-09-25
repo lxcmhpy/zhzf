@@ -4,7 +4,7 @@
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="统计年度" prop>
-            <el-date-picker  v-model="value3" type="year" placeholder="选择年" value-format="yyyy" @change="select"></el-date-picker>
+            <el-date-picker  v-model="year" type="year" placeholder="选择年" value-format="yyyy" @change="searchDraw"></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
@@ -17,41 +17,42 @@
 
 <script>
 import echarts from "echarts";
-
-import {
-      ndajsllxslbztj,
-    } from '@/api/fxyp.js'
+import {amountProportionApi} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
-      value3: "2020",
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
-      ybaj:"",
-      cxcz:"",
-      cfaj:"",
-      pbcaj:"",
+      year: "2020",
       isShow: false,
       logForm: {
-        organ: "",
-        type: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
       },
+      seriesData:[],
+      XData:[]
     };
   },
   methods: {
+    searchDraw(date) {
+      let param = {
+        year:date
+      };
+      amountProportionApi(param).then(res => {
+        if(res.code == 200){
+          this.seriesData = res.data
+          res.data.map(item => {
+            this.XData.push(item.name)
+          })
+          this.drawLine()
+        }
+      });
+      err => {
+        console.log(err);
+      };
+    },
     drawLine() {
       this.chartColumn = echarts.init(document.getElementById("chartColumn"));
 
       this.chartColumn.setOption({
         title: {
-          text: this.value3+"年度各类案件类型数量比重",
+          text: this.year+"年度各类案件类型数量比重",
           left: "center"
         },
         tooltip: {
@@ -61,13 +62,7 @@ export default {
         legend: {
           left: "center",
           top: "bottom",
-          data: [
-            "一般案件",
-            "超限超载",
-            "处罚案件",
-            "赔补偿案件",
-
-          ]
+          data: this.XData
         },
         series: [
           {
@@ -75,13 +70,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "50%"],
-            data: [
-              { value: this.ybaj, name: "一般案件" },
-              { value: this.cxcz, name: "超限超载" },
-              { value: this.cfaj, name: "处罚案件" },
-              { value: this.pbcaj, name: "赔补偿案件" },
-
-            ],
+            data: this.seriesData,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -92,44 +81,11 @@ export default {
           }
         ]
       });
-    },
-
-
-    search(val) {
-      let data = {
-       year:val
-      };
-      let _this = this;
-      // this.$store.dispatch("ndajsllxslbztj", data).then(res => {
-      ndajsllxslbztj(data).then(res => {
-         var map={};
-       res.forEach(item =>{
-          map[item[0]]=item[1]
-
-         });
-         console.log(map);
-            this.ybaj=map["一般案件"];
-            this.cfaj=map["处罚案件"];
-            this.pbcaj=map["赔补偿案件"];
-            this.cxcz=map["超限超载"];
-
-            this.drawLine();
-
-      });
-      err => {
-        console.log(err);
-      };
-    },
-   select(val){
-     this.search(val);
-   }
+    }
   },
   mounted() {
-    this.search(2020);
+    this.searchDraw(this.year);
   },
-  created() {
-
-  }
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

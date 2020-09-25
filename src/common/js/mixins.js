@@ -671,7 +671,7 @@ export const mixinGetCaseApiList = {
       console.log('查询环节是否生成了pdf', res);
 
       if (res.data.length > 0) {
-
+        
         let nowCaseDocdata = '';
         try {
           nowCaseDocdata = await findDocDataByIdApi(data.docId);
@@ -694,8 +694,13 @@ export const mixinGetCaseApiList = {
           } else {
             //判断是否为已驳回状态
             let caseBasicInfoRes= await  getCaseBasicInfoApi({id: this.caseId});
-            if(caseBasicInfoRes.data.caseStatus == '已驳回') this.$store.commit('setApprovalState', 'approvalNoPass');
-            else this.$store.commit('setApprovalState', 'approvalBefore')
+            if(caseBasicInfoRes.data.caseStatus == '已驳回'){
+              let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
+              if(finishCaseReport_caseLinktypeIdArr.includes(caseBasicInfoRes.data.currentLinkId)) this.$store.commit('setApprovalState', 'approvalFinishCaseReportNoPass');
+              else this.$store.commit('setApprovalState', 'approvalNoPass');
+            }else{
+              this.$store.commit('setApprovalState', 'approvalBefore')
+            }
           }
         } else {  //不需要审批
           this.$store.commit('setApprovalState', '')

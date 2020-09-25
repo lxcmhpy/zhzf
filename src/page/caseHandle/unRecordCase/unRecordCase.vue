@@ -149,10 +149,11 @@ export default {
           }).then(res=>{
             console.log('查询环节是否生成了pdf',res);
             if(res && res.length >0){
-              if(row.caseStatus == '已驳回'){
+              if(row.caseStatus == '已驳回'){ 
                 this.$store.commit('setApprovalState', 'approvalEstabishNoPass');
                 //设置环节id，提交审批时需要用到
                 this.$store.commit("setCaseLinktypeId",linkId );
+                this.$store.commit("setCaseLinkName", '');
                 this.$router.push({ name: 'case_handle_myPDF', params: { docId: docTypeId, } })
                 return;
               }

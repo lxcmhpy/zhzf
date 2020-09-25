@@ -1,4 +1,3 @@
-
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchPage toggleBox">
