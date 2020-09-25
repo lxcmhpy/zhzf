@@ -74,7 +74,7 @@ export default {
   computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'currentFileData', 'approvalState', 'doingLinkId', 'caseLinktypeId', 'docPdfStorageId','caseApproval']),
   isCanEdit(){
     console.log('caseLinktypeId',this.caseLinktypeId,this.doingLinkId)
-    // console.log('this.currentFileData',this.currentFileData)
+    console.log('this.currentFileData',this.currentFileData)
     if(!this.currentFileData){
       return false
     }

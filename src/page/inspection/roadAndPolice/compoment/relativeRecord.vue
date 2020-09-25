@@ -54,11 +54,9 @@ export default {
 
       this.visible = true;
       // if (!this.getData) this.getByMlCaseId();
-      console.log('show');
       if (carinfoId) {
-
         let data = {
-          caseId: carinfoId,
+          caseId: carinfoId.id||'',
           current: 1,
           size: 20,
         };
@@ -78,7 +76,7 @@ export default {
     getByMlCaseId() {
       this.getData = true;
       let _this = this
-      findVoByDocCaseIdApi(this.caseId).then(
+      findVoByDocCaseIdApi(this.caseId.id).then(
         res => {
           console.log(res);
           _this.caseList = res.data;
