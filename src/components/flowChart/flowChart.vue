@@ -858,7 +858,11 @@ export default {
     //是否显示环节回退按钮
     isShowLinkBackBtn(data){
       console.log(data);
-    
+      //是执法监督时
+      if(this.IsLawEnforcementSupervision){
+        this.showLinkBackBtn = false;
+        return;
+      }
 
       let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
       let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();

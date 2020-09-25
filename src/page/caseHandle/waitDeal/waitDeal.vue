@@ -22,7 +22,7 @@
           <el-table-column prop="caseStatus" label="案件状态" align="center" width="100">
             <template slot-scope="scope">
               <div :style="{'color':scope.row.caseStatus=='已移送'?'#22C058':''}">{{scope.row.caseStatus}}</div>
-            </template>
+            </template> 
           </el-table-column>
           <el-table-column label="标签" align="center" width="50">
             <template slot-scope="scope">
