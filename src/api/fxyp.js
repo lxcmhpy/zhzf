@@ -154,27 +154,35 @@ export function getFxypApi(data) {
    //时间关联分析  年
   export function sjglfx(data) {
     return  request({
-      url: "/fxyp/sjglfx",
-      method:  "post",
+      url: `/case/numYear/${data}`,
+      method:  "get",
       showloading: false,
-      // params:data,
       cancelToken:  setCancelSource(),
     });
   }
    //时间关联分析  月
    export function sjglfxmonth(data) {
     return  request({
-      url: "/fxyp/sjglfxmonth",
+      url: `/case/numMonth/${data}`,
       method:  "post",
       showloading: false,
-      // params:data,
       cancelToken:  setCancelSource(),
     });
   }
    //时间关联分析  日
    export function sjglfxday(data) {
     return  request({
-      url: "/fxyp/sjglfxday",
+      url: `/case/numDay/${data}`,
+      method:  "post",
+      showloading: false,
+      // params:data,
+      cancelToken:  setCancelSource(),
+    });
+  }
+  //时间关联分析  时
+  export function sjglfxhours(data) {
+    return  request({
+      url: `/case/numHours/${data}`,
       method:  "post",
       showloading: false,
       // params:data,

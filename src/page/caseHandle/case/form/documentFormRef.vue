@@ -13,9 +13,9 @@
       <template slot="title">
         <div class="catalogueTitle" style="display:flex;justify-content:space-between;">
           <div>文书列表<span style="color:#E54241">（{{caseList.length}}）</span></div>
-          <el-tooltip style="margin-right: 15px;" effect="dark" content="查看更多" placement="top">
+          <!-- <el-tooltip style="margin-right: 15px;" effect="dark" content="查看更多" placement="top">
             <el-button type="text">详情</el-button>
-          </el-tooltip>
+          </el-tooltip> -->
         </div>
       </template>
       <div class="userList a">

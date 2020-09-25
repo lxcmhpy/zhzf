@@ -54,6 +54,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item
+                  prop="payTotal"
                   label="赔（补）偿总金额"
                   :rules="fieldRules('payTotal',propertyFeatures['payTotal'])"
                 >
@@ -89,7 +90,6 @@
                 <el-form-item
                   prop="paidAmount"
                   label="已缴金额"
-                  :rules="fieldRules('paidAmount',propertyFeatures['paidAmount'])"
                 >
                   <el-input-number
                     :precision="2"
@@ -98,7 +98,7 @@
                     v-model.number="formData.paidAmount"
                     size="small"
                     placeholder="-"
-                    @change=" checkAmountAndPerformance"
+                    @input = "checkAmountAndPerformance"
                     :disabled="fieldDisabled(propertyFeatures['paidAmount'])"
                   ></el-input-number>
                 </el-form-item>
@@ -107,7 +107,6 @@
                 <el-form-item
                   prop="toPayAmount"
                   label="待缴金额"
-                  :rules="fieldRules('toPayAmount',propertyFeatures['toPayAmount'])"
                 >
                   <el-input
                     clearable
@@ -235,15 +234,18 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { uploadEvdence, findFileByIdApi } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage.js";
+import { validateIDNumber, validatePhone } from "@/common/js/validator";
+
 export default {
   data() {
     var validatePaid = (rule, value, callback) => {
-      console.log("ruke", value);
       if (value && typeof value != "number") {
-        callback(new Error("必须为数字!"));
+        this.formData.paidAmount = 0;
+        return callback(new Error("必须为数字!"));
       }
-      if (value && (value < 0 || value > Number(this.formData.payTotal))) {
-        callback(new Error("不得小于0或大于处罚金额!"));
+      if (this.formData.paidAmount < 0 || this.formData.paidAmount > Number(this.formData.payTotal)) {
+        this.formData.paidAmount = 0;
+        return callback(new Error("已缴金额不得小于0或大于处罚金额,请重新输入正确的值!"));
       } else {
         callback();
       }
@@ -299,9 +301,8 @@ export default {
         paidAmount: [{ validator: validatePaid, trigger: "blur" }],
         toPayAmount: [{ validator: validatePaid, trigger: "blur" }],
         performWay: [
-          { required: true, message: "执行方式必须选择", trigger: "blur" }
+          { required: true, message: "执行方式必须选择", trigger: "change" }
         ],
-        note: [{ required: true, message: "备注必须填写", trigger: "blur" }]
       },
       needDealData: true,
       propertyFeatures: ""
@@ -323,7 +324,6 @@ export default {
     },
     //保存表单数据
     submitCaseDoc(handleType) {
-      console.log("分期", this.formData.stepPay);
       this.com_submitCaseForm(handleType, "penaltyExecutionForm", false);
     },
     //下一环节
@@ -434,15 +434,16 @@ export default {
     },
     //是否已完成缴费
     checkAmountAndPerformance(val) {
+      this.formData.paidAmount = val ? val : 0;
       let num = this.formData.payTotal - this.formData.paidAmount;
-      this.formData.toPayAmount = num;
       if (num > 0) {
         this.formData.performance = "未完成";
-      } else if (num < 0) {
-        this.$message.warning("已缴金额不能大于总金额");
-      } else {
+      } else if(num === 0){
         this.formData.performance = "已完成";
+      }else{
+        val = 0;
       }
+      this.formData.toPayAmount = num;
     },
     // 分期延期缴纳
     changeStepPay() {
