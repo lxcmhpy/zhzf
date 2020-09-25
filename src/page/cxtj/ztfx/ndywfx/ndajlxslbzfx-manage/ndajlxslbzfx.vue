@@ -63,7 +63,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: this.value3+"年度各类案件类型数量比重",
+          text: this.value3+"年度执法领域案件数量比重",
           left: "center"
         },
         tooltip: {
@@ -74,11 +74,15 @@ export default {
           left: "center",
           top: "bottom",
           data: [
-            "一般案件",
-            "超限超载",
-            "处罚案件",
-            "赔补偿案件",
-           
+            "公路路政",
+            "道路运政",
+            "水路运政",
+            "航道行政",
+            "港口行政",
+            "海事行政",
+            "工程质量安全监督",
+            "其他",
+            "综合执法",
           ]
         },
         series: [
@@ -88,11 +92,15 @@ export default {
             radius: "55%",
             center: ["50%", "50%"],
             data: [
-              { value: this.ybaj, name: "一般案件" },
-              { value: this.cxcz, name: "超限超载" },
-              { value: this.cfaj, name: "处罚案件" },
-              { value: this.pbcaj, name: "赔补偿案件" },
-              
+              { value: 20, name: "公路路政" },
+              { value: 30, name: "道路运政" },
+              { value: 40, name: "水路运政" },
+              { value: 10, name: "航道行政" },
+              { value: 30, name: "港口行政" },
+              { value: 20, name: "海事行政" },
+              { value: 10, name: "工程质量安全监督" },
+              { value: 30, name: "其他" },
+              { value: 20, name: "综合执法" },
             ],
             emphasis: {
               itemStyle: {

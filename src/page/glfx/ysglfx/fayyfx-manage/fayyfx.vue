@@ -75,9 +75,15 @@ export default {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
+        // grid:{
+        //   left:44,
+        // },
         legend: {
-          left: "center",
-          top: "bottom",
+          // left: "center",
+          // top: "bottom",
+          orient: 'vertical',  //垂直显示
+             y: 'center',    //延Y轴居中
+             x: 'right', //居右显示
           data: [
            this.n1,
             this.n2,

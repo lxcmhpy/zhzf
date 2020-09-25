@@ -1912,8 +1912,12 @@ font-weight:bold;
 color:#FFFFFF;
 line-height:61px;
 }
-.fullscreen .el-main {
+/* .fullscreen .el-main {
     background:bottom;
+} */
+.body_bg .el-main {
+    background: none;
+    width:'100%';
 }
 .main {
     background-image: url("../../../../static/images/map/边框.png");

@@ -13,12 +13,15 @@
 
       <div class="tablePart">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
-          <el-table-column prop="time" label="案件类型" align="center"></el-table-column>
-          <el-table-column prop="lscf" label="路损处罚" align="center"></el-table-column>
-          <el-table-column prop="cxcf" label="超限处罚" align="center"></el-table-column>
-          <el-table-column prop="slxk" label="涉路许可" align="center"></el-table-column>
-          <el-table-column prop="cxxk" label="超限许可" align="center"></el-table-column>
-          <el-table-column prop="lspc" label="路损赔偿" align="center"></el-table-column>
+          <el-table-column prop="gllz" label="公路路政" align="center"></el-table-column>
+          <el-table-column prop="dlyz" label="道路运政" align="center"></el-table-column>
+          <el-table-column prop="slyz" label="水路运政" align="center"></el-table-column>
+          <el-table-column prop="hdxz" label="航道行政" align="center"></el-table-column>
+          <el-table-column prop="gkxz" label="港口行政" align="center"></el-table-column>
+          <el-table-column prop="hsxz" label="海事行政" align="center"></el-table-column>
+           <el-table-column prop="gczlaqjd" label="工程质量安全监督" align="center"></el-table-column>
+            <el-table-column prop="qt" label="其他" align="center"></el-table-column>
+             <el-table-column prop="zhzf" label="综合执法" align="center"></el-table-column>
         </el-table>
       </div>
     </div>
@@ -37,20 +40,16 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       tableData: [{
-        time: "2019年1-12月",
-        lscf: "96.83",
-        cxcf: "17.91",
-        slxk: "820.38",
-        cxxk: "0.0",
-        lspc: "1888.3",
-      },{
-        time: "所占比重(%)",
-        lscf: "3.4%",
-        cxcf: "0.6%",
-        slxk: "29.1%",
-        cxxk: "0.0%",
-        lspc: "66.9%",
-      }],
+        gllz: "20",
+        dlyz: "30",
+        slyz: "40",
+        hdxz: "10",
+        gkxz: "30",
+        hsxz: "20",
+        gczlaqjd:"10",
+        qt:"30",
+        zhzf:"20",
+      },],
       logForm: {
         organ: "",
         type: "",
@@ -69,7 +68,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "2019年度各类收缴费用金额及所占比重(万元)",
+          text: "2019年度收缴费用金额及所占比重(万元)",
           left: "center"
         },
         tooltip: {
@@ -80,11 +79,15 @@ export default {
           left: "center",
           top: "bottom",
           data: [
-            "路损处罚",
-            "超限处罚",
-            "涉路许可",
-            "超限许可",
-            "路损赔偿",
+           "公路路政",
+            "道路运政",
+            "水路运政",
+            "航道行政",
+            "港口行政",
+            "海事行政",
+            "工程质量安全监督",
+            "其他",
+            "综合执法",
           ]
         },
         series: [
@@ -94,11 +97,15 @@ export default {
             radius: "55%",
             center: ["50%", "50%"],
             data: [
-              { value: 96.83, name: "路损处罚" },
-              { value: 17.91, name: "超限处罚" },
-              { value: 820.38, name: "涉路许可" },
-              { value: 0.0, name: "超限许可" },
-              { value: 1888.3, name: "路损赔偿" },
+              { value: 20, name: "公路路政" },
+              { value: 30, name: "道路运政" },
+              { value: 40, name: "水路运政" },
+              { value: 10, name: "航道行政" },
+              { value: 30, name: "港口行政" },
+              { value: 20, name: "海事行政" },
+              { value: 10, name: "工程质量安全监督" },
+              { value: 30, name: "其他" },
+              { value: 20, name: "综合执法" },
             ],
             emphasis: {
               itemStyle: {
