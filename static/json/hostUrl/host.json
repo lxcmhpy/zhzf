@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JXW",
+  "CURRENT": "JX",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -95,7 +95,6 @@
     "QZ_SOCKET_HOST": "ws://124.192.215.4:8083"
   },
   "JXW": {
-    "FXYP_HOST": "http://192.168.110.17:8099",
     "CAPTCHA_HOST": "http://124.192.215.6:9000",
     "PDF_HOST": "http://124.192.215.10:9332/",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
