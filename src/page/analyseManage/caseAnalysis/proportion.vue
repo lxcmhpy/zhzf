@@ -13,12 +13,7 @@
 
       <div class="tablePart">
         <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
-          <el-table-column prop="time" label="案件类型" align="center" v-for="(item,i) in seriesData" :key="i"></el-table-column>
-          <el-table-column prop="lscf" label="路损处罚" align="center"></el-table-column>
-          <el-table-column prop="cxcf" label="超限处罚" align="center"></el-table-column>
-          <el-table-column prop="slxk" label="涉路许可" align="center"></el-table-column>
-          <el-table-column prop="cxxk" label="超限许可" align="center"></el-table-column>
-          <el-table-column prop="lspc" label="路损赔偿" align="center"></el-table-column>
+          <el-table-column :prop = item.name :label= item.name align="center" v-for="(item,i) in seriesData" :key="i"></el-table-column>
         </el-table>
       </div>
     </div>
@@ -34,21 +29,7 @@
       return {
         seriesData:[],
         year: "",
-        tableData: [{
-          time: "2019年1-12月",
-          lscf: "96.83",
-          cxcf: "17.91",
-          slxk: "820.38",
-          cxxk: "0.0",
-          lspc: "1888.3",
-        },{
-          time: "所占比重(%)",
-          lscf: "3.4%",
-          cxcf: "0.6%",
-          slxk: "29.1%",
-          cxxk: "0.0%",
-          lspc: "66.9%",
-        }],
+        tableData: [],
         logForm: {
         },
         XData:[],
@@ -56,16 +37,22 @@
     },
     methods: {
       getData(date) {
+        let that = this
         let param = {
           year:date
         };
         proportionApi(param).then(res => {
           if(res.code == 200){
-            this.seriesData = res.data
+            that.seriesData = res.data
             res.data.map(item => {
-              this.XData.push(item.name)
+              that.XData.push(item.name)
             })
-            this.drawLine()
+            that.seriesData.forEach(v=>{
+              that.tableData[v.name] = v.value
+            })
+            debugger
+            console.log(that.seriesData)
+            that.drawLine()
           }
         });
         err => {
@@ -87,7 +74,7 @@
           legend: {
             left: "center",
             top: "bottom",
-            data: this.XData
+            data: [(this.year-1)+"年",this.year+"年"]
           },
           series: [
             {
@@ -109,7 +96,7 @@
       },
     },
     mounted() {
-      this.getData('2020');
+      this.getData('2019');
     }
   };
 </script>

@@ -104,3 +104,35 @@ export function reportStatisticApi(data) {
     cancelToken: setCancelSource()
   });
 }
+//案发数量同比分析
+export function numberYTYApi(data) {
+  return  request({
+    url:  "/annual/analysis/quantityYOY/"+data.year,
+    method:  "get",
+    params: data,
+    showloading: false,
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource()
+  });
+}
+//案件罚没款同比统计
+export function proportionYTYApi(data) {
+  return  request({
+    url:  "/annual/analysis/moneyYOY/"+data.year,
+    method:  "get",
+    params: data,
+    showloading: false,
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource()
+  });
+}
+export function complaintApi(data) {
+  return  request({
+    url:  "/judge/analysis/countByHour/"+data.startTime+'/'+data.endTime,
+    method:  "get",
+    params: data,
+    showloading: false,
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource()
+  });
+}
