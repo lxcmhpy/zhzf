@@ -78,12 +78,14 @@ export default {
     if(!this.currentFileData){
       return false
     }
+    console.log('getEstablish_caseLinktypeIdArr',this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr())
     // let data= this.$route.name=='case_handle_myPDF'
     // &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
     // && (this.approvalState!='approvaling' && this.approvalState!='approvalEstabishNoPass' && this.approvalState!='approvalFinishCaseReportNoPass') &&this.caseLinktypeId==this.doingLinkId
     // return data
     let data= this.$route.name=='case_handle_myPDF'
-    &&this.currentFileData.path!='case_handle_establish'&&this.currentFileData.path!='case_handle_finishCaseReport'
+    &&this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr().join(',').indexOf(this.caseLinktypeId)==-1
+    &&this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr().join(',').indexOf(this.caseLinktypeId)==-1
     && (this.approvalState=='' || this.approvalState=='approvalBefore'|| this.approvalState=='approvalNoPass') &&this.caseLinktypeId==this.doingLinkId
     return data
 ;
