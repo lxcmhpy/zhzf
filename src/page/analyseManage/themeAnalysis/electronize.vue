@@ -3,13 +3,17 @@
     <div class="searchPage toggleBox">
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form-item label="统计周期" prop>
+          <el-form-item label="统计周期">
             <el-date-picker
-              v-model="value3"
+              v-model="logForm.date"
+              size="small"
               type="monthrange"
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              format="yyyy-MM"
+              value-format="yyyy-MM"
+              @change="handleSelect"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -39,258 +43,238 @@
 
 
 <script>
-  import echarts from "echarts";
-  import {
-    dzhbafx,dzhbafxry
-  } from '@/api/fxyp.js'
+  import echarts from "echarts"
+  import { dzhbafx } from '@/api/fxyp.js'
   export default {
     data() {
       return {
-        value3: "",
-        value2: "",
-        currentPage: 1, //当前页
-        pageSize: 10, //pagesize
-        totalPage: 0, //总页数
-        tableData: [],
         logForm: {
-          organ: "",
-          type: "",
-          operation: "",
-          username: "",
-          startTime: "",
-          endTime: "",
-          dateArray: ""
+          date: [
+            String(new Date().getFullYear()-1) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1)),
+            String(new Date().getFullYear()) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1))
+          ]
         },
-        data1:[],
-        data2:[],
-        data3:[],
-        data4:[],
-        data5:[],
-        isShow: false
-      };
-    },
-    methods: {
-      drawLine1() {
-        this.chartColumn = echarts.init(document.getElementById("chart1"));
-
-        this.chartColumn.setOption({
-          title: {
-            text: "办案数量TOP机构排名",
-            left: "center"
-          },
-          tooltip: {
-            trigger: "item",
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-          },
-          // legend: {
-          //     left: 'center',
-          //     top: 'bottom',
-          //     data: ['操作不当', '未按规定安全驾驶', '交通事故', '车辆失控', '逃避公路车辆通行费','轮胎爆裂','疲劳驾驶',
-          //     '闯卡逃逸','大厢板封闭不严,抛洒杂物','其他原因',]
-          // },
-          series: [
-            {
-              name: "",
-              type: "pie",
-              radius: "55%",
-              center: ["50%", "60%"],
-              //data: this.data1,
-              data: [{name:'宁夏交通运输厅',value:34},{name:'石嘴山市执法队',value:12},{name:'固原市执法队',value:22},{name:'银川交通厅',value:32},{name:'中卫市执法队',value:6}],
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: "rgba(0, 0, 0, 0.5)"
-                }
-              }
-            }
-          ]
-        });
-      },
-      drawLine2() {
-        this.chartColumn = echarts.init(document.getElementById("chart2"));
-
-        this.chartColumn.setOption({
-          title: {
-            text: "县市(市辖区)级办案数量TOP5机构",
-            left: "center"
-          },
-          tooltip: {
-            trigger: "axis",
-            axisPointer: {
-              // 坐标轴指示器，坐标轴触发有效
-              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-            }
-          },
-          // legend: {
-          //     left: 'center',
-          //      top: 'bottom',
-          //     data: ['2018年1-12月', ]
-          // },
-          grid: {
-            left: "3%",
-            right: "4%",
-            bottom: "15%",
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: "category",
-              //data: this.data2,
-              data: ['宁夏交通运输厅','银川交通厅','石嘴山市执法队','固原市执法队','中卫市执法队'],
-            }
-          ],
-          yAxis: [
-            {
-              type: "value"
-            }
-          ],
-          series: [
-            {
-              name: "",
-              type: "bar",
-              data: this.data3,
-              //设置柱子的宽度
-              barWidth: 30,
-              //配置样式
-              itemStyle: {
-                //通常情况下：
-                normal: {
-                  color: function(params) {
-                    var colorList = ["rgb(42,170,227)"];
-                    return colorList[0];
-                  }
-                }
-              }
-            }
-          ]
-        });
-      },
-      drawLine3() {
-        this.chartColumn = echarts.init(document.getElementById("chart3"));
-
-        this.chartColumn.setOption({
-          title: {
-            text: "执法人员办案数量TOP5",
-            left: "center"
-          },
-          tooltip: {
-            trigger: "axis",
-            axisPointer: {
-              // 坐标轴指示器，坐标轴触发有效
-              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-            }
-          },
-          // legend: {
-          //     left: 'center',
-          //      top: 'bottom',
-          //     data: ['2018年1-12月', ]
-          // },
-          grid: {
-            left: "3%",
-            right: "4%",
-            bottom: "15%",
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: "category",
-              data: this.data4,
-            }
-          ],
-          yAxis: [
-            {
-              type: "value"
-            }
-          ],
-          series: [
-            {
-              name: "",
-              type: "bar",
-              data: this.data5,
-              //设置柱子的宽度
-              barWidth: 30,
-              //配置样式
-              itemStyle: {
-                //通常情况下：
-                normal: {
-                  color: function(params) {
-                    var colorList = ["rgb(42,170,227)"];
-                    return colorList[0];
-                  }
-                }
-              }
-            }
-          ]
-        });
-      },
-      search1(val) {
-        this.currentPage = val;
-        let data = {
-          // year:2018
-        };
-        let _this = this;
-        // this.$store.dispatch("dzhbafx", data).then(res => {
-        dzhbafx(data).then(res => {
-          console.log(res);
-          var map={};
-          res.forEach(item =>{
-            map[item[0]]=item[1];
-
-          });
-          console.log(map);
-          var arr=[];
-          // arr.push({value:res[]})
-          this.data1=[ {value:res[0][1], name:res[0][0]},{value:res[1][1], name:res[1][0]}
-            ,{value:res[2][1], name:res[2][0]},{value:res[3][1], name:res[3][0]}
-            ,{value:res[4][1], name:res[4][0]},{value:res[5][1], name:res[5][0]}
-          ];
-          this.drawLine1();
-
-          this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
-          this.data3=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
-          this.drawLine2();
-        });
-        err => {
-          console.log(err);
-        };
-      },
-      search2(val) {
-        this.currentPage = val;
-        let data = {
-          // year:2018
-        };
-        let _this = this;
-        // this.$store.dispatch("dzhbafxry", data).then(res => {
-        dzhbafxry(data).then(res => {
-
-          console.log(res);
-          var map={};
-          res.forEach(item =>{
-            map[item[0]]=item[1];
-
-          });
-          console.log(map);
-
-
-          this.data4=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
-          this.data5=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
-          this.drawLine3();
-        });
-        err => {
-          console.log(err);
-        };
-      },
-    },
-    mounted() {
-      this.search1();
-      this.search2();
-      // this.drawLine2();
-      // this.drawLine3();
+        organId: JSON.parse(localStorage.getItem("userInfo")).organId
+      }
     },
     created() {
+      this.init()
+    },
+    methods: {
+      /**
+       * 初始化界面
+       */
+      init() {
+        let params = {
+          organId: this.organId,
+          startTime: this.logForm.date[0],
+          endTime: this.logForm.date[1]
+        }
+        this.getData(params)
+      },
 
-    }
-  };
+      /**
+       * 获取数据
+       */
+      getData(params) {
+        dzhbafx(params).then(res => {
+          if(res.code === 200) {
+            let data = res.data
+            this.drawLine1(data.org)
+            this.drawLine2(data.orgTop10)
+            this.drawLine3(data.people)
+          }
+        }, err => { console.log(err) })
+      },
+
+      /**
+       * 选中时间触发
+       */
+      handleSelect(val) {
+        let params = {
+          organId: this.organId,
+          startTime: val[0],
+          endTime: val[1]
+        }
+        this.getData(params)
+      },
+
+      /**
+       * 点击饼图触发
+       */
+      handleClick(data) {
+        let params = {
+          organId: data.data.id,
+          startTime: this.logForm.date[0],
+          endTime: this.logForm.date[1]
+        }
+        this.getData(params)
+      },
+
+      drawLine1(data) {
+        let dom = document.getElementById("chart1")
+        if(dom) {
+          let myChart = echarts.init(dom)
+          const option = {
+            title: {
+              text: "办案数量TOP机构排名",
+              left: "center"
+            },
+            tooltip: {
+              trigger: "item",
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            series: [
+              {
+                name: "",
+                type: "pie",
+                radius: "55%",
+                center: ["50%", "60%"],
+                data: data,
+                emphasis: {
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: "rgba(0, 0, 0, 0.5)"
+                  }
+                }
+              }
+            ]
+          }
+          myChart.setOption(option)
+          myChart.on('click', this.handleClick)
+        }
+      },
+      drawLine2(data) {
+        let _xAxis = [], _series = []
+        if(data.length > 0) {
+          data.map(item => {
+            _xAxis.push(item.name)
+            _series.push(item.value)
+          })
+        }
+
+        let dom = document.getElementById("chart2")
+        if(dom) {
+          let myChart = echarts.init(dom)
+          const option = {
+            title: {
+              text: "县市(市辖区)级办案数量TOP5机构",
+              left: "center"
+            },
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "15%",
+              containLabel: true
+            },
+            xAxis: [
+              {
+                type: "category",
+                //data: this.data2,
+                data: _xAxis,
+              }
+            ],
+            yAxis: [
+              {
+                type: "value"
+              }
+            ],
+            series: [
+              {
+                name: "",
+                type: "bar",
+                data: _series,
+                //设置柱子的宽度
+                barWidth: 30,
+                //配置样式
+                itemStyle: {
+                  //通常情况下：
+                  normal: {
+                    color: function(params) {
+                      var colorList = ["rgb(42,170,227)"];
+                      return colorList[0];
+                    }
+                  }
+                }
+              }
+            ]
+          }
+          myChart.setOption(option)
+        }
+      },
+      drawLine3(data) {
+        let _xAxis = [], _series = []
+        if(data.length > 0) {
+          data.map(item => {
+            _xAxis.push(item.name)
+            _series.push(item.value)
+          })
+        }
+
+        let dom = document.getElementById("chart3")
+        if(dom) {
+          let myChart = echarts.init(dom)
+          const option = {
+            title: {
+              text: "执法人员办案数量TOP5",
+              left: "center"
+            },
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "15%",
+              containLabel: true
+            },
+            xAxis: [
+              {
+                type: "category",
+                data: _xAxis,
+              }
+            ],
+            yAxis: [
+              {
+                type: "value"
+              }
+            ],
+            series: [
+              {
+                name: "",
+                type: "bar",
+                data: _series,
+                //设置柱子的宽度
+                barWidth: 30,
+                //配置样式
+                itemStyle: {
+                  //通常情况下：
+                  normal: {
+                    color: function(params) {
+                      var colorList = ["rgb(42,170,227)"];
+                      return colorList[0];
+                    }
+                  }
+                }
+              }
+            ]
+          }
+          myChart.setOption(option)
+        }
+      },
+    },
+  }
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

@@ -91,16 +91,6 @@ export function getFxypApi(data) {
       cancelToken:  setCancelSource(),
     });
   }
-  //电子化办案分析
-  export function dzhbafx(data) {
-    return  request({
-      url: "/fxyp/dzhbafx",
-      method:  "post",
-      showloading: false,
-      params:data,
-      cancelToken:  setCancelSource(),
-    });
-  }
   //电子化办案分析 人员
   export function dzhbafxry(data) {
     return  request({
@@ -226,6 +216,17 @@ export function getFxypApi(data) {
     return  request({
       url: `/judge/analysis/JGZLlist/${startTime}/${endTime}`,
       method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 电子化办案分析
+  export function dzhbafx(data) {
+    return  request({
+      url: "/electronization/electronization",
+      method:  "get",
+      params: data,
       showloading: false,
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
