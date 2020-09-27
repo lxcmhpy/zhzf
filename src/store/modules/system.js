@@ -11,7 +11,7 @@ import {
     getDictListApi, getDictListDetailApi, getAllDictListDetailApi, addDictApi, deleteDictApi,
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
     getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,getRouteListApi,addOrUpdateRouteApi,deleteRouteApi,
-    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,getCountryApi,getDrawerListApi,countryTreeApi,getAllGroupOrganApi
+    getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,getCountryApi,getDrawerListApi,countryTreeApi,getAllGroupOrganApi,getDataListApi
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";
@@ -975,6 +975,18 @@ const system = {
       getAllGroupOrgan({ commit }, data) {
         return new Promise((resolve, reject) => {
             getAllGroupOrganApi(data).then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+        })
+      },
+      //获取下拉列表
+      getDataList({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            getDataListApi(data).then(
                 res => {
                     resolve(res);
                 },

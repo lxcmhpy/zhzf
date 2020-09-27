@@ -201,6 +201,36 @@ export function getFxypApi(data) {
       cancelToken:  setCancelSource(),
     });
   }
+  // 案件当事人特征分析
+  export function casepPeople({year1, year2}) {
+    return  request({
+      url: `/case/people/${year1}/${year2}`,
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 法律法规分析研判
+  export function flfgfxyp({ startTime, endTime }) {
+    return  request({
+      url: `/judge/analysis/list/${startTime}/${endTime}`,
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 监管治理分析研判
+  export function jgzlfxyp({ startTime, endTime }) {
+    return  request({
+      url: `/judge/analysis/JGZLlist/${startTime}/${endTime}`,
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
   //违法行为关联分析
   export function wfxwglfx(data) {
     return  request({

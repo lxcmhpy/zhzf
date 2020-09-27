@@ -287,22 +287,22 @@
         </div>
         <div>
           <div class="itemOne">
+            <el-form-item label="初检结果" id="lawPersonBox" prop="checkResult">
+              <el-radio-group v-model="carInfo.firstCheck.checkResult">
+                <el-radio label="超限超载">超限超载</el-radio>
+                <el-radio label="未超载">未超载</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </div>
+        </div>
+        <div>
+          <div class="itemOne">
             <el-form-item label="初检人员" id="lawPersonBox" prop="checkPerson">
               <el-input v-model="carInfo.firstCheck.checkPerson"></el-input>
               <!-- <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
                 <el-option v-for="item in alreadyChooseLawPerson" :key="item.id" :label="item.lawOfficerName" :value="item.id" placeholder="请添加" :disabled="currentUserLawId==item.id?true:false"></el-option>
               </el-select> -->
               <el-button icon="el-icon-plus" @click="addLawPerson('firstCheck',lawPersonListId2,alreadyChooseLawPerson2)"></el-button>
-            </el-form-item>
-          </div>
-        </div>
-        <div>
-          <div class="itemOne">
-            <el-form-item label="初检结果" id="lawPersonBox" prop="checkResult">
-              <el-radio-group v-model="carInfo.firstCheck.checkResult">
-                <el-radio label="超限超载">超限超载</el-radio>
-                <el-radio label="未超载">未超载</el-radio>
-              </el-radio-group>
             </el-form-item>
           </div>
         </div>
@@ -586,49 +586,49 @@ export default {
       directionList: [],
       locationList: [],
       carInfoRules: {
-        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" }, { validator: vaildateCardNum, trigger: "change" }],
-        trailerIdNo: [{ validator: vaildateCardNum, trigger: "change" }],
-        vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
-        loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
-        startPlace: [{ required: true, message: "请输入", trigger: "change" }],
-        endPlace: [{ required: true, message: "请输入", trigger: "change" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "blur" }, { validator: vaildateCardNum, trigger: "blur" }],
+        trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
+        vehicleIdColor: [{ required: true, message: "请选择", trigger: "blur" }],
+        loadGoods: [{ required: true, message: "请输入", trigger: "blur" }],
+        startPlace: [{ required: true, message: "请输入", trigger: "blur" }],
+        endPlace: [{ required: true, message: "请输入", trigger: "blur" }],
       },
       drivePersonRules: {
         party: [
-          { required: true, message: "请输入", trigger: "change" },
+          { required: true, message: "请输入", trigger: "blur" },
         ],
-        partyTel: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: validatePhone, trigger: "change" }],
-        partyIdNo: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: checkIdNoPassSort, trigger: "change" }],
-        partyAddress: [{ required: true, message: "请输入", trigger: "change" }],
-        lawOfficer: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "change" }],
+        partyTel: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: validatePhone, trigger: "blur" }],
+        partyIdNo: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: checkIdNoPassSort, trigger: "blur" }],
+        partyAddress: [{ required: true, message: "请输入", trigger: "blur" }],
+        lawOfficer: [{ required: true, message: "请选择", trigger: "blur" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       firstCheckRules: {
-        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: vaildateCardNum, trigger: "change" }],
-        totalWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        overRatio: [{ required: true, message: "请输入", trigger: "change" }],
-        overWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        checkResult: [{ required: true, message: "请选择", trigger: "change" }],
-        checkPerson: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "change" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: vaildateCardNum, trigger: "blur" }],
+        totalWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        overRatio: [{ required: true, message: "请输入", trigger: "blur" }],
+        overWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        checkResult: [{ required: true, message: "请选择", trigger: "blur" }],
+        checkPerson: [{ required: true, message: "请选择", trigger: "blur" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       secondCheckRules: {
-        fenPlateColor: [{ required: true, message: "请选择", trigger: "change" }],
-        fenPlate: [{ required: true, message: "请输入", trigger: "change" }],
-        fenTonnage: [{ required: true, message: "请输入", trigger: "change" }],
-        fenPerson: [{ required: true, message: "请输入", trigger: "change" }],
-        idCard: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: checkIdNoPassSort, trigger: "change" }],
-        secondCheckWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        unloadWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        overRatio: [{ required: true, message: "请输入", trigger: "change" }],
-        checkResult: [{ required: true, message: "请输入", trigger: "change" }],
-        phone: [{ validator: validatePhone, trigger: "change" }],
-        checkPerson: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "change" }],
+        fenPlateColor: [{ required: true, message: "请选择", trigger: "blur" }],
+        fenPlate: [{ required: true, message: "请输入", trigger: "blur" }],
+        fenTonnage: [{ required: true, message: "请输入", trigger: "blur" }],
+        fenPerson: [{ required: true, message: "请输入", trigger: "blur" }],
+        idCard: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: checkIdNoPassSort, trigger: "blur" }],
+        secondCheckWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        unloadWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        overRatio: [{ required: true, message: "请输入", trigger: "blur" }],
+        checkResult: [{ required: true, message: "请输入", trigger: "blur" }],
+        phone: [{ validator: validatePhone, trigger: "blur" }],
+        checkPerson: [{ required: true, message: "请选择", trigger: "blur" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       alreadyChooseLawPerson: [],
       alreadyChooseLawPerson2: [],
@@ -757,9 +757,7 @@ export default {
     setLawPersonCurrentP(type) {
       // type=1为回显
       let _this = this
-      this.$store
-        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
-        .then(
+           findLawInfoById(iLocalStroage.gets("userInfo").organId).then(
           (res) => {
             let currentUserData = {};
             this.lawPersonListId = [];

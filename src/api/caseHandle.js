@@ -1713,3 +1713,13 @@ export function updateDocStatusById(data) {
     cancelToken: setCancelSource()
   });
 }
+
+// 通过id查找执法人员
+export function findLawInfoById(data) {
+  return request({
+    url: `/case/caseTemplate/lawOfficer/findByUserId/${data}`,
+    method: "get",
+    showloading: true,
+    cancelToken: setCancelSource()
+  });
+}

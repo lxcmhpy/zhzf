@@ -14,7 +14,7 @@
                     </span>
                     <el-dialog class='mini-dialog-title' title="号牌更正" :visible.sync="visible" :show-close='false'
                     :close-on-click-modal="false" width="460px" append-to-body>
-                        <el-form :model="checkSearchForm" ref="checkSearchForm" class="checkSearchForm" label-width="120px">
+                        <el-form :model="checkSearchForm" ref="checkSearchForm" label-width="120px">
                             <div>
                                 <div class="item">
                                 <el-form-item label="图像识别车牌">
