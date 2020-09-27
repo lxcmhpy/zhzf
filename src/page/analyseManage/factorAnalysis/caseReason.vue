@@ -12,7 +12,7 @@
               end-placeholder="结束月份"
               format="yyyy-MM"
               value-format="yyyy-MM"
-              @change="searchDraw"
+              @change="changeTime"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -46,6 +46,9 @@
       };
     },
     methods: {
+      changeTime(val){
+        this.searchDraw(val);
+      },
       drawLine() {
         this.chartColumn = echarts.init(document.getElementById("chart"));
         this.chartColumn.setOption({
@@ -79,10 +82,10 @@
           ]
         });
       },
-      searchDraw() {
+      searchDraw(date) {
         let param = {
-           year:this.date[0],
-           year2:this.date[1]
+           year:date[0],
+           year2:date[1]
         };
         if(this.date.length ==0){
           param.year = '2019-09'
@@ -104,7 +107,7 @@
       },
     },
     mounted() {
-      this.searchDraw();
+      this.searchDraw(this.date);
     },
   };
 </script>

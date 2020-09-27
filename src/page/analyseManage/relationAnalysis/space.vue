@@ -5,28 +5,21 @@
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="统计周期" prop>
             <el-date-picker
-              v-model="value3"
+              v-model="date"
               type="monthrange"
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              format="yyyy-MM"
+              value-format="yyyy-MM"
+              @change="changeTime"
             ></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
       <div >
         <el-row>
-          <el-col :span="12">
-            <div id="chart1" style="width: 550px; height: 500px;"></div>
-          </el-col>
-          <el-col :span="12">
-            <el-row>
-              <el-col :span="6" >
-                <div id="chart2" style="width: 500px; height: 400px;margin-top:60px" ></div>
-              </el-col>
-            </el-row>
-
-          </el-col>
+          <div id="chart1" style="width:100%;height: 550px;"></div>
         </el-row>
       </div>
     </div>
@@ -45,220 +38,123 @@ import "echarts/lib/component/legend";
 import "echarts/lib/chart/heatmap";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
-
+import {spaceApi} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
-      value3: "",
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
-      tableData: [
-        {
-          road: "S201",
-          number: 3
-        }
-      ],
-      logForm: {
-        organ: "",
-        type: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
-      },
+      date:['2019-01','2020-09'],
+      logForm: {},
       isShow: false,
-      data1:[],
-      data2:[],
-
+      addressCon:[],
+      mapData:[],
+      addressName:[],
+      addressValue:[]
     };
   },
   methods: {
+    changeTime(val){
+      this.addressCon = []
+      this.getData(val)
+    },
+    getData(time) {
+      let param = {
+        startTime: time[0],
+        endTime:time[1]
+      };
+      let json={}
+      spaceApi(param).then(res => {
+        if (res.code == 200) {
+          res.data.forEach(v=>{
+            json['value'] = v.split(',').map(val => parseFloat(val))
+            this.addressCon.push({value:v.split(',').map(val => parseFloat(val))})
+          })
+          this.drawLine1()
+        }
+      });
+
+    },
     drawLine1() {
       let myChart = echarts.init(document.getElementById("chart1"));
-
-      myChart.setOption({
-        backgroundColor: "#FFFFFF",
-      title: {
-        text: "",
-        subtext: "",
-        x: "center"
-      },
-      tooltip: {
-        trigger: "item"
-      },
-
-      //左侧小导航图标
-      visualMap: {
-        min: 0,
-        max: 400,
-        text: ["高", "低"],
-        inRange: {
-          color: ["lightskyblue", "yellow", "orangered"]
-        }
-      },
-
-      //配置属性
-        series: [
-          {
-            name: "案发数量",
-            type: "map",
-            mapType: "宁夏",
-            roam: true,
-            label: {
-              normal: {
-                show: false //省份名称
-              },
-              emphasis: {
-                show: false
-              }
-            },
-            data: [
-              { name: "银川市", value: "315" },
-              { name: "石嘴山市", value: "481"},
-              { name: "吴忠市", value: "214" },
-              { name: "中卫市", value: "164" },
-              { name: "固原市", value: "95" }
-            ] //数据
-          }
-        ]
-      });
-    },
-    drawLine2() {
-      this.chartColumn = echarts.init(document.getElementById("chart2"));
-      var salvProName =["银川市","石嘴山市","吴忠市","中卫市","固原市"];
-      var salvProValue =[209,181,144,114,85];
-      var salvProMax =[];//背景按最大值
-      for (let i = 0; i < salvProValue.length; i++) {
-        salvProMax.push(salvProValue[0])
-      }
-      this.chartColumn.setOption({
-        title: {
-          text: "各省市案发数量分布",
-          subtext: "",
-          x: "center"
-        },
-        backgroundColor:"",
-        grid: {
-          left: '2%',
-          right: '2%',
-          bottom: '2%',
-          top: '6%',
-          containLabel: true
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'none'
-          },
-          formatter: function(params) {
-            return params[0].name  + ' : ' + params[0].value
-          }
-        },
-        xAxis: {
-          show: false,
-          type: 'value'
-        },
-        yAxis: [{
-          type: 'category',
-          inverse: true,
-          axisLabel: {
-            show: true,
-            textStyle: {
-              color: 'black'
-            },
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          },
-          data: salvProName
-        }, {
-          type: 'category',
-          inverse: true,
-          axisTick: 'none',
-          axisLine: 'none',
-          show: true,
-          axisLabel: {
-            textStyle: {
-              color: '#ffffff',
-              fontSize: '12'
-            },
-          },
-          data:salvProValue
-        }],
-        series: [{
-          name: '值',
-          type: 'bar',
-          zlevel: 1,
-          itemStyle: {
-            normal: {
-              barBorderRadius: 30,
-              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                offset: 0,
-                color: 'rgb(57,89,255,1)'
-              }, {
-                offset: 1,
-                color: 'rgb(46,200,207,1)'
-              }]),
-            },
-          },
-          barWidth: 20,
-          data: salvProValue
-        },
-          {
-            name: '背景',
-            type: 'bar',
-            barWidth: 20,
-            barGap: '-100%',
-            data: salvProMax,
-            itemStyle: {
-              normal: {
-                color: 'rgba(24,31,68,1)',
-                barBorderRadius: 30,
-              }
-            },
-          },
-        ]
-      });
-    },
-    // search1(val) {
-    //   this.currentPage = val;
-    //   let data = {
-    //     // year:2018
-    //   };
-    //   let _this = this;
-    //   this.$store.dispatch("afddfb", data).then(res => {
-    //     console.log(res);
-    //     //  var map={};
-    //     //  res.forEach(item =>{
-    //     //       map[item[0]]=item[1];
-
-    //     //  });
-    //     // console.log(map);
-
-
-    //       this.data1=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
-    //       this.data2=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
-    //        this.drawLine2();
-    //   });
-    //   err => {
-    //     console.log(err);
-    //   };
-    // },
+     myChart.setOption({
+         title: {
+           text: '',
+           x: 'left',
+           textStyle: {
+             fontSize: 33,
+             color: '#fff',
+             fontWeight: 'bold',
+             fontFamily: 'testFamily'
+           }
+         },
+         tooltip: {
+           trigger: 'item'
+         },
+         toolbox: {
+           show: false,
+           showTitle: true,
+           orient: 'vertical',
+           left: 'right',
+           top: 'center',
+           feature: {
+             mark: {show: true},
+             dataView: {show: true, readOnly: false},
+             restore: {show: true},
+             saveAsImage: {show: true}
+           }
+         },
+         visualMap: {
+           show: false,
+           inRange: {
+             color: ['#d94e5d', '#eac736', '#50a3ba'].reverse()
+           },
+           textStyle: {
+             color: '#fff'
+           }
+         },
+         geo: {
+           map: 'china',
+           zoom: 1.3,
+           label: {
+             emphasis: {
+               show: true
+             }
+           },
+           roam: true,
+           itemStyle: {
+             normal: {
+               borderWidth: 1,
+               borderColor:'#389BB7',
+               areaColor: '#A5DCF4',
+             },
+             emphasis: {
+               areaColor: '#389BB7',
+               borderWidth: 0
+             }
+           }
+         },
+         series: [{
+           name: '中国',
+           zoom: 2,
+           aspectScale: 0.75, //长宽比
+           type: 'heatmap',
+           coordinateSystem: 'geo',
+           data: this.addressCon,
+           itemStyle: {
+             normal: {
+               borderColor: '#389BB7',
+               borderWidth: 1,
+             },
+             emphasis: {
+               areaColor: '#d8d5e6'
+             }
+           }
+         }]
+       }
+     )
+    }
   },
   mounted() {
-     this.drawLine1();
-    this.drawLine2();
-    // this.drawLine2();
-    // this.drawLine3();
+    this.getData(this.date)
   },
   created() {}
 };
