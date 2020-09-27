@@ -38,6 +38,7 @@
                 <div style="width:160px">
                     <el-button type="text" @click.stop @click="showDataDetail(scope.row)">查看</el-button>
                     <el-button type="text" @click.stop @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                    <el-button type="text" @click.stop @click="handleDelete(scope.row)">删除</el-button>
                 </div>
               </template>
             </el-table-column>
@@ -87,7 +88,14 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
-import { queryDeviceTypeAll,findDeviceTypeById,saveOrUpdateDeviceType,findDeviceTypeByName,findDeviceTypeNewCode} from "@/api/lawSupervise.js";
+import { 
+    queryDeviceTypeAll,
+    findDeviceTypeById,
+    saveOrUpdateDeviceType,
+    findDeviceTypeByName,
+    findDeviceTypeNewCode,
+    deleteDeviceTypeById
+} from "@/api/lawSupervise.js";
 import iLocalStroage from '@/common/js/localStroage';
   export default {
     watch: {
@@ -190,6 +198,31 @@ import iLocalStroage from '@/common/js/localStroage';
         this.title="修改设备类型"
         this.findDeviceTypeById(row)
         this.formReadOnly = false
+      },
+      //删除
+      handleDelete(row){
+        let _this = this
+        this.$confirm("确认删除该设备类型?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+            deleteDeviceTypeById(row.id).then(
+              res => {
+                if(res.data==true){
+                  _this.$message({type: "success",message: "删除成功!"});
+                  _this.getDataList(1)
+                }else{
+                   _this.$message({type: "error",message: "删除失败!"});
+                }
+              },
+              err => {
+                console.log(err);
+              }
+            );
+          })
+          .catch(() => {
+          });
       },
       //查看详情
       showDataDetail(row){

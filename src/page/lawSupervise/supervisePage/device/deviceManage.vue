@@ -82,6 +82,9 @@
                 <el-button type="primary" size="medium" icon="el-icon-plus">导入</el-button>
               </el-upload>
             </el-form-item>
+            <el-form-item>
+                <el-button type="primary" size="medium" icon="el-icon-delete"  @click="deleteData">删除</el-button>
+            </el-form-item>
             </div>
           </el-form>
         </div>
@@ -95,6 +98,10 @@
             @selection-change="selectData"
             @row-click="showDataDetail"
           >
+           <el-table-column
+            type="selection"
+            width="55">
+            </el-table-column>
             <el-table-column label="序号" width="70px">
               <template slot-scope="scope">
                 {{scope.$index+1}}
@@ -299,7 +306,17 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
-import { queryDeviceListPage,findDeviceById,saveOrUpdateDevice,deleteDeviceById,upload,deleteFileByIdApi,queryDeviceTypeAll,getCurrentAndNextOrganApi} from "@/api/lawSupervise.js";
+import { 
+            queryDeviceListPage,
+            findDeviceById,
+            saveOrUpdateDevice,
+            deleteDeviceById,
+            upload,
+            deleteFileByIdApi,
+            queryDeviceTypeAll,
+            getCurrentAndNextOrganApi,
+            deleteDeviceByIds
+        } from "@/api/lawSupervise.js";
 import iLocalStroage from '@/common/js/localStroage';
 import elSelectTree from '@/components/elSelectTree/elSelectTree';
   export default {
@@ -321,6 +338,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         formReadOnly:false,
         hasAddress:true,
         status: [
+          {label: '全部', value: -1},
           {label: '在用', value: 0},
           {label: '禁用', value: 1}
         ],
@@ -566,6 +584,35 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         this.currentPage = val;
         this.getDataList(val);
       },
+      deleteData(){
+        if(this.selectDataIdList.length==0){
+            this.$message({type: "error",message: "请先选择设备"});
+        }else{
+            let _this = this
+            this.$confirm("确认删除这些设备?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+            .then(() => {
+                deleteDeviceByIds(_this.selectDataIdList).then(
+                    res => {
+                        if(res.code==200){
+                            _this.$message({type: "success",message: "删除成功!"});
+                            _this.getDataList(1)
+                        }else{
+                            _this.$message({type: "error",message: "删除失败!"});
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
+            })
+            .catch(() => {
+            });
+        }
+      },
       // 表格id删除
       handleDelete(row) {
         let _this = this
@@ -604,8 +651,13 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         if(this.currentOrganId !== ''){
             this.addForm.contactor = this.selectOrgan.contactor
             this.addForm.telephone = this.selectOrgan.telephone
-            this.addForm.organName = this.selectOrgan.label
-            this.addForm.organId = this.selectOrgan.id
+            if(this.selectOrgan.type=='1'){
+                this.addForm.organName = this.selectOrgan.pLabel
+                this.addForm.organId = this.selectOrgan.pid
+            }else{
+                this.addForm.organName = this.selectOrgan.label
+                this.addForm.organId = this.selectOrgan.id
+            }
         }
         this.hideAddress(this.selectDeviceType)
       },
@@ -664,10 +716,10 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
               })
             }
             _this.visible=true
-            if(_this.addForm.deviceType=='01'){
-              _this.hasAddress = true
-            }else{
+            if(_this.addForm.deviceType=='02' || _this.addForm.deviceType=='03'){
               _this.hasAddress = false
+            }else{
+              _this.hasAddress = true
             }
           },
           err => {
@@ -681,8 +733,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         this.selectDataIdList = [];
         let _this = this
         val.forEach(item => {
-          _this.selectDataIdList.push(item.id);
-          console.log(_this.selectDataIdList);
+          _this.selectDataIdList.push({id:item.id,typeCode:item.deviceType});
         });
       },
       //关闭弹窗的时候清除数据
@@ -711,7 +762,14 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
                   item.children = item.children ? item.children : [];
                   _this.typeData.forEach(item1=>{
                     item.children.splice(0,0,{
-                      id:item1.code,pid:item.id,pLabel:item.label,label:item1.name,icon:item1.icon,type:1
+                      id:item1.code,
+                      pid:item.id,
+                      pLabel:item.label,
+                      label:item1.name,
+                      icon:item1.icon,
+                      type:1,
+                      contactor:item.contactor,
+                      telephone:item.telephone
                     })
                   })
                   let len = item.children.length -_this.typeData.length;
