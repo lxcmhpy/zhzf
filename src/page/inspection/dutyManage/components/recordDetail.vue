@@ -29,7 +29,10 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="检查门类" prop="checkCategory">
-                  <el-select v-model="inspectRecordForm.checkCategory" placeholder="请选择">
+                  <el-select
+                    v-model="inspectRecordForm.checkCategory"
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="item in checkCategoryList"
                       :key="item.id"
@@ -41,7 +44,10 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="检查类型" prop="checkType">
-                  <el-select v-model="inspectRecordForm.checkType" placeholder="请选择">
+                  <el-select
+                    v-model="inspectRecordForm.checkType"
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="item in checkTypeList"
                       :key="item.id"
@@ -53,14 +59,20 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="填报地点" prop="address">
-                  <el-input v-model="inspectRecordForm.address" placeholder="请输入">
+                  <el-input
+                    v-model="inspectRecordForm.address"
+                    placeholder="请输入"
+                  >
                     <i slot="suffix" class="el-icon-location-outline"></i>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="执法人员" prop="lawPersonListIndex">
-                  <el-select v-model="inspectRecordForm.lawPersonListIndex" multiple>
+                  <el-select
+                    v-model="inspectRecordForm.lawPersonListIndex"
+                    multiple
+                  >
                     <el-option
                       v-for="(item, index) in lawPersonList"
                       :key="item.id"
@@ -97,7 +109,12 @@
                     @change="routeChange()"
                     placeholder="请选择"
                   >
-                    <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
+                    <el-option
+                      v-for="item in routeList"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -109,7 +126,7 @@
                     placeholder="请选择"
                   >
                     <el-option
-                      v-for="(item,index) in sectionList"
+                      v-for="(item, index) in sectionList"
                       :key="item.id"
                       :label="item.sectionName"
                       :value="index"
@@ -119,36 +136,62 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="行驶方向" prop="drivingDirection">
-                  <el-select v-model="inspectRecordForm.drivingDirection" placeholder="请选择">
+                  <el-select
+                    v-model="inspectRecordForm.drivingDirection"
+                    placeholder="请选择"
+                  >
                     <el-option label="上行" value="1"></el-option>
                     <el-option label="下行" value="2"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item label="路段信息" prop="roadInfo" class="road-info-input">
-                  <el-input v-model="inspectRecordForm.startKilometer" placeholder="请输入">
+                <el-form-item
+                  label="路段信息"
+                  prop="roadInfo"
+                  class="road-info-input"
+                >
+                  <el-input
+                    v-model="inspectRecordForm.startKilometer"
+                    placeholder="请输入"
+                  >
                     <i slot="prefix" class="input-tips">K</i>
                   </el-input>
                   <span class="road-info-join">+</span>
-                  <el-input v-model="inspectRecordForm.startMeter" placeholder="请输入">
+                  <el-input
+                    v-model="inspectRecordForm.startMeter"
+                    placeholder="请输入"
+                  >
                     <i slot="suffix" class="input-tips">M</i>
                   </el-input>
                   <span class="road-info-split">至</span>
-                  <el-input v-model="inspectRecordForm.endKilometer" placeholder="请输入">
+                  <el-input
+                    v-model="inspectRecordForm.endKilometer"
+                    placeholder="请输入"
+                  >
                     <i slot="prefix" class="input-tips">K</i>
                   </el-input>
                   <span class="road-info-join">+</span>
-                  <el-input v-model="inspectRecordForm.endMeter" placeholder="请输入">
+                  <el-input
+                    v-model="inspectRecordForm.endMeter"
+                    placeholder="请输入"
+                  >
                     <i slot="suffix" class="input-tips">M</i>
                   </el-input>
                 </el-form-item>
               </el-col>
               <!-- 路段信息正常时显示 -->
               <el-col v-if="inspectRecordForm.roadCondition === '1'" :span="24">
-                <el-form-item label="描述" prop="describes" class="problem-abstract-panel">
+                <el-form-item
+                  label="描述"
+                  prop="describes"
+                  class="problem-abstract-panel"
+                >
                   <div class="abstract-top-handle">
-                    <el-select v-model="inspectRecordForm.desTemplateId" placeholder="模板选择">
+                    <el-select
+                      v-model="inspectRecordForm.desTemplateId"
+                      placeholder="模板选择"
+                    >
                       <el-option
                         v-for="item in normalRecordTemp"
                         :key="item.templateId"
@@ -156,11 +199,13 @@
                         :value="item.templateId"
                       ></el-option>
                     </el-select>
-                    <el-button type="text" @click="generateDescribes">自动生成</el-button>
+                    <el-button type="text" @click="generateDescribes"
+                      >自动生成</el-button
+                    >
                   </div>
                   <el-input
                     type="textarea"
-                    :autosize="{ minRows: 4, maxRows: 6}"
+                    :autosize="{ minRows: 4, maxRows: 6 }"
                     placeholder="请输入内容"
                     v-model="inspectRecordForm.describes"
                   ></el-input>
@@ -176,7 +221,11 @@
               >
                 <h4 class="abnormal-title">
                   异常情况{{ index + 1 }}
-                  <el-button type="text" class="del-abnormal-btn" @click="deleteAbnormal(index)">
+                  <el-button
+                    type="text"
+                    class="del-abnormal-btn"
+                    @click="deleteAbnormal(index)"
+                  >
                     <i class="el-icon-delete"></i>删除
                   </el-button>
                 </h4>
@@ -184,7 +233,7 @@
                   <el-form-item label="一级分类" prop="firstProcessType">
                     <el-select
                       v-model="abnormal.firstProcessType"
-                      @change="processTypeChange(index,1)"
+                      @change="processTypeChange(index, 1)"
                       placeholder="请选择"
                     >
                       <el-option
@@ -197,17 +246,23 @@
                   </el-form-item>
                 </el-col>
                 <el-col
-                  v-if="abnormal.firstType !== undefined && abnormal.firstType !== null && cheProcesTypeTree[abnormal.firstType]['children'].length > 0"
+                  v-if="
+                    abnormal.firstType !== undefined &&
+                    abnormal.firstType !== null &&
+                    cheProcesTypeTree[abnormal.firstType]['children'].length > 0
+                  "
                   :span="12"
                 >
                   <el-form-item label="二级分类" prop="secondProcessType">
                     <el-select
                       v-model="abnormal.secondProcessType"
-                      @change="processTypeChange(index,2)"
+                      @change="processTypeChange(index, 2)"
                       placeholder="请选择"
                     >
                       <el-option
-                        v-for="item in cheProcesTypeTree[abnormal.firstType]['children']"
+                        v-for="item in cheProcesTypeTree[abnormal.firstType][
+                          'children'
+                        ]"
                         :key="item.id"
                         :label="item.name"
                         :value="item.id"
@@ -217,17 +272,33 @@
                 </el-col>
                 <!-- 三级分类根据分级配置判断是否显示 -->
                 <el-col
-                  v-if="abnormal.firstType !== undefined && abnormal.firstType !== null && abnormal.secondType !== undefined && abnormal.secondType !== null  && cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType] && cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType]['children'] && cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType]['children'].length > 0"
+                  v-if="
+                    abnormal.firstType !== undefined &&
+                    abnormal.firstType !== null &&
+                    abnormal.secondType !== undefined &&
+                    abnormal.secondType !== null &&
+                    cheProcesTypeTree[abnormal.firstType]['children'][
+                      abnormal.secondType
+                    ] &&
+                    cheProcesTypeTree[abnormal.firstType]['children'][
+                      abnormal.secondType
+                    ]['children'] &&
+                    cheProcesTypeTree[abnormal.firstType]['children'][
+                      abnormal.secondType
+                    ]['children'].length > 0
+                  "
                   :span="12"
                 >
                   <el-form-item label="三级分类" prop="thirdProcessType">
                     <el-select
                       v-model="abnormal.thirdProcessType"
-                      @change="processTypeChange(index,3)"
+                      @change="processTypeChange(index, 3)"
                       placeholder="请选择"
                     >
                       <el-option
-                        v-for="item in cheProcesTypeTree[abnormal.firstType]['children'][abnormal.secondType]['children']"
+                        v-for="item in cheProcesTypeTree[abnormal.firstType][
+                          'children'
+                        ][abnormal.secondType]['children']"
                         :key="item.id"
                         :label="item.name"
                         :value="item.id"
@@ -239,7 +310,7 @@
                   <el-form-item label="处理情况" prop="process">
                     <el-select
                       v-model="abnormal.process"
-                      @change="processChange(index,1)"
+                      @change="processChange(index, 1)"
                       placeholder="请选择"
                     >
                       <el-option
@@ -251,11 +322,19 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col v-if="abnormal.processList && abnormal.process && abnormal.processModeList && abnormal.processModeList.length > 0" :span="12">
+                <el-col
+                  v-if="
+                    abnormal.processList &&
+                    abnormal.process &&
+                    abnormal.processModeList &&
+                    abnormal.processModeList.length > 0
+                  "
+                  :span="12"
+                >
                   <el-form-item label="处理方式" prop="processMode">
                     <el-select
                       v-model="abnormal.processMode"
-                      @change="processChange(index,2)"
+                      @change="processChange(index, 2)"
                       placeholder="请选择"
                     >
                       <el-option
@@ -267,9 +346,21 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col v-if="abnormal.processList && abnormal.process && abnormal.process && abnormal.processResultsList &&  abnormal.processResultsList.length > 0" :span="12">
+                <el-col
+                  v-if="
+                    abnormal.processList &&
+                    abnormal.process &&
+                    abnormal.process &&
+                    abnormal.processResultsList &&
+                    abnormal.processResultsList.length > 0
+                  "
+                  :span="12"
+                >
                   <el-form-item label="处理结果" prop="processResults">
-                    <el-select v-model="abnormal.processResults" placeholder="请选择">
+                    <el-select
+                      v-model="abnormal.processResults"
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in abnormal.processResultsList"
                         :key="item.id"
@@ -288,9 +379,16 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item label="问题摘要" prop="templateId" class="problem-abstract-panel">
+                  <el-form-item
+                    label="问题摘要"
+                    prop="templateId"
+                    class="problem-abstract-panel"
+                  >
                     <div class="abstract-top-handle">
-                      <el-select v-model="abnormal.templateId" placeholder="模板选择">
+                      <el-select
+                        v-model="abnormal.templateId"
+                        placeholder="模板选择"
+                      >
                         <el-option
                           v-for="item in abnormalRecordTemp"
                           :key="item.templateId"
@@ -298,11 +396,15 @@
                           :value="item.templateId"
                         ></el-option>
                       </el-select>
-                      <el-button type="text" @click="problemAbstractGenerate(index)">自动生成</el-button>
+                      <el-button
+                        type="text"
+                        @click="problemAbstractGenerate(index)"
+                        >自动生成</el-button
+                      >
                     </div>
                     <el-input
                       type="textarea"
-                      :autosize="{ minRows: 4, maxRows: 6}"
+                      :autosize="{ minRows: 4, maxRows: 6 }"
                       placeholder="请输入内容"
                       v-model="abnormal.problemAbstract"
                     ></el-input>
@@ -310,9 +412,17 @@
                 </el-col>
                 <template v-if="abnormal.isCase === '1'">
                   <el-col :span="12">
-                    <el-form-item label="程序类型" 
-                      :rules="[{ required: true, message: '请选择程序类型', trigger: 'change' }]"
-                      :prop="'listAbn.'+ index + '.programType'">
+                    <el-form-item
+                      label="程序类型"
+                      :rules="[
+                        {
+                          required: true,
+                          message: '请选择程序类型',
+                          trigger: 'change',
+                        },
+                      ]"
+                      :prop="'listAbn.' + index + '.programType'"
+                    >
                       <el-select
                         v-model="abnormal.programType"
                         placeholder="请选择"
@@ -324,12 +434,23 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="案件类型" 
-                      :rules="[{ required: true, message: '请选择案件类型', trigger: 'change' }]"
-                      :prop="'listAbn.'+ index + '.caseTypeId'">
-                      <el-select v-model="abnormal.caseTypeId" placeholder="请选择">
+                    <el-form-item
+                      label="案件类型"
+                      :rules="[
+                        {
+                          required: true,
+                          message: '请选择案件类型',
+                          trigger: 'change',
+                        },
+                      ]"
+                      :prop="'listAbn.' + index + '.caseTypeId'"
+                    >
+                      <el-select
+                        v-model="abnormal.caseTypeId"
+                        placeholder="请选择"
+                      >
                         <el-option
-                          v-for="(item,index) in caseTypeList"
+                          v-for="(item, index) in caseTypeList"
                           :key="index"
                           :label="item.caseTypeName"
                           :value="item.caseTypeId"
@@ -338,9 +459,19 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="24">
-                    <el-form-item label="违法行为" prop="caseCauseName" class="case-abnormal-input">
-                      <el-input v-model="abnormal.caseCauseName" @click="chooseIllegalAct(index)">
-                        <el-button slot="append" @click="chooseIllegalAct(index)"></el-button>
+                    <el-form-item
+                      label="违法行为"
+                      prop="caseCauseName"
+                      class="case-abnormal-input"
+                    >
+                      <el-input
+                        v-model="abnormal.caseCauseName"
+                        @click="chooseIllegalAct(index)"
+                      >
+                        <el-button
+                          slot="append"
+                          @click="chooseIllegalAct(index)"
+                        ></el-button>
                       </el-input>
                     </el-form-item>
                   </el-col>
@@ -348,12 +479,21 @@
               </el-row>
             </template>
             <!-- 新增异常情况 -->
-            <div v-if="inspectRecordForm.roadCondition === '2'" class="abnormal-add-btn">
-              <el-button type="primary" icon="el-icon-plus" size="medium" @click="addAbnormal">新增</el-button>
+            <div
+              v-if="inspectRecordForm.roadCondition === '2'"
+              class="abnormal-add-btn"
+            >
+              <el-button
+                type="primary"
+                icon="el-icon-plus"
+                size="medium"
+                @click="addAbnormal"
+                >新增</el-button
+              >
             </div>
           </el-form>
         </el-card>
-        <el-card shadow="never" style="margin-top: 20px;">
+        <el-card shadow="never" style="margin-top: 20px">
           <div class="enclosure-file-table">
             <h3 class="form-tab-title">
               附件信息
@@ -366,7 +506,11 @@
                 <i class="add-file-type-icon">+</i>添加
               </el-button>
             </h3>
-            <el-table v-if="PageType !== 'view'" :data="listAtt" style="width: 100%">
+            <el-table
+              v-if="PageType !== 'view'"
+              :data="listAtt"
+              style="width: 100%"
+            >
               <el-table-column type="expand">
                 <template slot-scope="scope">
                   <div v-if="scope.row.children && scope.row.children.length">
@@ -375,37 +519,68 @@
                       :key="attach.id"
                       class="file-children-table"
                     >
-                      <li style="width: 60px;">{{ `${scope.$index + 1}.${index + 1}` }}</li>
-                      <li style="width: calc(100% - 220px);color: #7b7b7b;">{{ attach.name }}</li>
-                      <li style="width: 160px;">
-                        <el-button type="text" @click="previewFile(attach)">查看</el-button>
-                        <el-button type="text" @click="download(attach)">下载</el-button>
-                        <el-button type="text" @click="removeAttach(attach, scope.row)">删除</el-button>
+                      <li style="width: 60px">
+                        {{ `${scope.$index + 1}.${index + 1}` }}
+                      </li>
+                      <li style="width: calc(100% - 220px); color: #7b7b7b">
+                        {{ attach.name }}
+                      </li>
+                      <li style="width: 160px">
+                        <el-button type="text" @click="previewFile(attach)"
+                          >查看</el-button
+                        >
+                        <el-button type="text" @click="download(attach)"
+                          >下载</el-button
+                        >
+                        <el-button
+                          type="text"
+                          @click="removeAttach(attach, scope.row)"
+                          >删除</el-button
+                        >
                       </li>
                     </ul>
                   </div>
                   <div v-else class="no-enclose-file">暂无数据</div>
                 </template>
               </el-table-column>
-              <el-table-column label="序号" prop="index" width="60px" align="center">
+              <el-table-column
+                label="序号"
+                prop="index"
+                width="60px"
+                align="center"
+              >
                 <template slot-scope="scope">
-                  <span>{{scope.$index + 1}}</span>
+                  <span>{{ scope.$index + 1 }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="材料名称" prop="name" align="center"></el-table-column>
-              <el-table-column label="操作" width="160px" fixed="right" align="center">
+              <el-table-column
+                label="材料名称"
+                prop="name"
+                align="center"
+              ></el-table-column>
+              <el-table-column
+                label="操作"
+                width="160px"
+                fixed="right"
+                align="center"
+              >
                 <template slot-scope="scope">
-                  <el-button type="text" @click="addEnclosure('1', scope.row)">添加</el-button>
+                  <el-button type="text" @click="addEnclosure('1', scope.row)"
+                    >添加</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
             <!-- 查看附件信息 -->
-            <AbnormalFile v-if="PageType === 'view'" :abnormalFileList="abnormalFileList" />
+            <AbnormalFile
+              v-if="PageType === 'view'"
+              :abnormalFileList="abnormalFileList"
+            />
           </div>
         </el-card>
       </el-col>
       <el-col :span="7">
-        <el-card shadow="never" style="height: 100%;">
+        <el-card shadow="never" style="height: 100%">
           <h3 class="form-tab-title">文书列表</h3>
           <el-tabs
             v-model="activeOffical"
@@ -416,34 +591,49 @@
             <el-tab-pane label="已做文书" name="1"></el-tab-pane>
             <el-tab-pane label="未做文书" name="0"></el-tab-pane>
           </el-tabs>
-          <el-checkbox-group v-model="checkedOffical" @change="handleCheckedOffical">
+          <el-checkbox-group
+            v-model="checkedOffical"
+            @change="handleCheckedOffical"
+          >
             <ul class="offical-list-panel">
               <template v-if="activeOffical === '1'">
                 <li v-for="offical in finishedDocs" :key="offical.label">
                   <el-checkbox :label="offical.label">
                     <img :src="acOfficalUrl" />
-                    {{ offical.name }}
+                    <span>{{ offical.name }}</span>
                   </el-checkbox>
                 </li>
-                <li v-if="this.finishedDocs.length == 0" class="offical-list-panel-none">暂无文书</li>
+                <li
+                  v-if="this.finishedDocs.length == 0"
+                  class="offical-list-panel-none"
+                >
+                  暂无文书
+                </li>
               </template>
               <template v-else>
                 <li v-for="offical in nofinishedDocs" :key="offical.label">
-                  <el-checkbox :label="offical.label">
-                    <img :src="dsOfficalUrl" />
-                    {{ offical.name }}
-                  </el-checkbox>
+                  <div class="el-checkbox" @click="editDoc(offical)">
+                    <span class="el-checkbox__label">
+                      <img :src="dsOfficalUrl" />
+                      <span>{{ offical.name }}</span>
+                    </span>
+                  </div>
                 </li>
               </template>
             </ul>
           </el-checkbox-group>
-          <div v-if="activeOffical === '1' && this.finishedDocs.length > 0" class="print-offical-btn">
+          <div
+            v-if="activeOffical === '1' && this.finishedDocs.length > 0"
+            class="print-offical-btn"
+          >
             <el-checkbox
               :indeterminate="isIndeterminate"
               v-model="checkAllOffical"
               @change="handleCheckAllChange"
             ></el-checkbox>
-            <el-button type="primary" icon="el-icon-printer">打印文书</el-button>
+            <el-button type="primary" icon="el-icon-printer" @click="docClick()"
+              >打印文书</el-button
+            >
           </div>
         </el-card>
       </el-col>
@@ -460,7 +650,57 @@
     <!-- 查看附件 -->
     <ReviewAbnormalFile ref="ReviewAbnormalFileRef" />
     <!-- 违规行为 -->
-    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
+    <chooseillegalAct
+      ref="chooseillegalActRef"
+      @setIllegaAct="setIllegaAct"
+    ></chooseillegalAct>
+
+    <el-dialog
+      :visible.sync="docVisible"
+      @close="closeDialog"
+      :close-on-click-modal="false"
+      width="840px"
+      append-to-body
+    >
+      <div>
+        <div style="height: auto">
+          <object>
+            <embed
+              style="
+                padding: 0px;
+                width: 790px;
+                margin: 0 auto;
+                height: 1150px !important;
+              "
+              name="plugin"
+              id="plugin"
+              :src="docSrc"
+              type="application/pdf"
+              internalinstanceid="29"
+            />
+          </object>
+        </div>
+        <div
+          style="position: absolute; bottom: 150px; right: 20px; width: 100px"
+        >
+          <el-button
+            @click="showNext('last')"
+            :disabled="!nowShowPdfIndex ? true : false"
+            >上一张</el-button
+          >
+          <br /><br />
+          <el-button
+            @click="showNext('next')"
+            :disabled="
+              nowShowPdfIndex == this.checkedDocId.length - 1 ? true : false
+            "
+            >下一张
+          </el-button>
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 编辑文书 -->
+    <EditDocDialog ref="editDocDialogRef" />
   </div>
 </template>
 
@@ -470,6 +710,7 @@ import AddRecordFile from "@/page/inspection/dutyManage/components/addRecordFile
 import ReviewAbnormalFile from "@/page/inspection/dutyManage/components/reviewAbnormalFile.vue";
 import AbnormalFile from "@/page/inspection/dutyManage/components/abnormalFileList.vue";
 import chooseillegalAct from "@/page/chooseIllegegaDialog.vue";
+import EditDocDialog from "@/page/inspection/dutyManage/recordDoc/editDocDialog.vue";
 import {
   getCheRecordTempPageListApi,
   addCheRecordApi,
@@ -477,7 +718,7 @@ import {
   getCheProcessTypeTreeApi,
   getProcessTypeApi,
   getProcessApi,
-  getProcessTypeTreeApi
+  getProcessTypeTreeApi,
 } from "@/api/supervision";
 import { findRouteManageByOrganIdApi, getSectionListApi } from "@/api/system";
 import { deleteFileByIdApi, downLoadCommon } from "@/api/upload";
@@ -488,6 +729,7 @@ export default {
     AbnormalFile,
     ReviewAbnormalFile,
     chooseillegalAct,
+    EditDocDialog,
   },
   data() {
     return {
@@ -536,7 +778,7 @@ export default {
         ],
         sectionIndex: [
           { required: true, message: "请选择路段", trigger: "change" },
-        ]
+        ],
       },
       tipsUrl: "@/../static/images/img/personInfo/form_item_tips.svg",
       acOfficalUrl: "@/../static/images/img/personInfo/icon_ac_wenshu.svg",
@@ -544,11 +786,21 @@ export default {
       musicFileUrl: "@/../static/images/img/personInfo/icon_music.svg",
       listAtt: [],
       officialList: [
-        { label: "92531b11586dab1eba850aea1c415a4f", name: "《公路安全隐患告知函》", caseDoctypeId: "92531b11586dab1eba850aea1c415a4f" },
-        { label: "98499c305c6447988343c33d92f0f23c", name: "《路政巡查监督责令整改通知书》", caseDoctypeId: "98499c305c6447988343c33d92f0f23c" },
+        {
+          label: "92531b11586dab1eba850aea1c415a4f",
+          name: "《公路安全隐患告知函》",
+          caseDoctypeId: "92531b11586dab1eba850aea1c415a4f",
+          id: '1'
+        },
+        {
+          label: "98499c305c6447988343c33d92f0f23c",
+          name: "《路政巡查监督责令整改通知书》",
+          caseDoctypeId: "98499c305c6447988343c33d92f0f23c",
+          id: '2'
+        },
       ],
-      finishedDocs: [],//已做文书
-      nofinishedDocs: [],//未作文书
+      finishedDocs: [], //已做文书
+      nofinishedDocs: [], //未作文书
       activeOffical: "0",
       checkedOffical: [],
       checkAllOffical: false,
@@ -584,6 +836,10 @@ export default {
       processList: [], //处理情况list
       processModeList: [], //处理方式list
       processResultsList: [], //处理结果list
+      docSrc: undefined, //文书路径
+      docVisible: false, //文书dialog
+      checkedDocId: [],
+      nowShowPdfIndex: 0,
     };
   },
   computed: {
@@ -609,7 +865,7 @@ export default {
     if (this.PageType === "edit") {
       this.activeOffical = "1";
       this.getCheRecordDetail(this.rowData);
-    }else {
+    } else {
       this.nofinishedDocs = this.officialList;
     }
     this.searchLawPerson();
@@ -621,7 +877,7 @@ export default {
     addEnclosure(levels, parent) {
       this.curParentAttach = parent;
       const type = parent ? parent.type : "1";
-      this.$refs.AddRecordFileRef.showModal(levels,type);
+      this.$refs.AddRecordFileRef.showModal(levels, type);
     },
     // 新增异常情况
     addAbnormal() {
@@ -663,7 +919,7 @@ export default {
     // 选择文书
     handleCheckedOffical(value) {
       this.inspectRecordForm.caseDoctypeId = this.checkedOffical.toString();
-      console.log(this.inspectRecordForm.caseDoctypeId,"checkedOffical");
+      console.log(this.inspectRecordForm.caseDoctypeId, "checkedOffical");
 
       let checkedCount = value.length;
       this.checkAllOffical = checkedCount === this.officialList.length;
@@ -672,7 +928,12 @@ export default {
     },
     // 全选文书
     handleCheckAllChange(val) {
-      this.checkedCities = val ? ["1", "2"] : [];
+      this.checkedCities = val
+        ? [
+            "92531b11586dab1eba850aea1c415a4f",
+            "98499c305c6447988343c33d92f0f23c",
+          ]
+        : [];
       this.isIndeterminate = false;
     },
     //巡查时间变化
@@ -695,9 +956,10 @@ export default {
 
           this.inspectRecordForm.cateId = this.cate.zfmlId;
           this.inspectRecordForm.cateName = this.cate.zfml;
-          this.inspectRecordForm.listAbn.forEach(a => {
-            a.programTypeName = a.programTypeName == "0" ? "一般程序" : "简易程序";
-          })
+          this.inspectRecordForm.listAbn.forEach((a) => {
+            a.programTypeName =
+              a.programTypeName == "0" ? "一般程序" : "简易程序";
+          });
           const lawPersonListIndex = this.inspectRecordForm.lawPersonListIndex;
           let listPer = [];
           this.inspectRecordForm.personIds = "";
@@ -779,7 +1041,7 @@ export default {
     //获取记录详情
     getCheRecordDetail(cheRecord) {
       const { recordId } = cheRecord;
-      getCheRecordDetailApi({recordId}).then(
+      getCheRecordDetailApi({ recordId }).then(
         (res) => {
           if (res.code == 200) {
             let formData = {};
@@ -801,35 +1063,50 @@ export default {
                 });
               });
             formData.lawPersonListIndex = lawPersonListIndex;
-            
+
             this.inspectRecordForm = formData;
-            if(this.inspectRecordForm.roadNum){
+            if (this.inspectRecordForm.roadNum) {
               this.routeChange(this.inspectRecordForm.roadNum);
             }
 
-            formData.listAbn && formData.listAbn.forEach((a, index) => {
-              if(a.firstProcessType) {
-                a["firstType"] = this.cheProcesTypeTree.findIndex(t => t.id === a.firstProcessType);
-              }
-              if(a.secondProcessType && a.firstProcessType){
-                a["secondType"] = this.cheProcesTypeTree[a["firstType"]]["children"].findIndex(t => t.id === a.secondProcessType)
-              }
+            formData.listAbn &&
+              formData.listAbn.forEach((a, index) => {
+                if (a.firstProcessType) {
+                  a["firstType"] = this.cheProcesTypeTree.findIndex(
+                    (t) => t.id === a.firstProcessType
+                  );
+                }
+                if (a.secondProcessType && a.firstProcessType) {
+                  console.log(a["firstType"]);
+                  console.log(this.cheProcesTypeTree[a["firstType"]]);
+                  a["secondType"] = this.cheProcesTypeTree[a["firstType"]][
+                    "children"
+                  ].findIndex((t) => t.id === a.secondProcessType);
+                }
 
-              this.getProcessType(index,a.thirdProcessType ? a.thirdProcessType : a.secondProcessType ? a.secondProcessType : a.firstProcessType);
+                this.getProcessType(
+                  index,
+                  a.thirdProcessType
+                    ? a.thirdProcessType
+                    : a.secondProcessType
+                    ? a.secondProcessType
+                    : a.firstProcessType
+                );
 
-              this.programTypeChange(index);
-            });
+                this.programTypeChange(index);
+              });
             this.inspectRecordForm = formData;
 
-            if(res.data.listCaseDocs && res.data.listCaseDocs.length > 0) {
-              this.officialList.forEach( o => {
-                const caseDoc = res.data.listCaseDocs.find(d => d.caseDocTypeId == o.caseDoctypeId);
+            if (res.data.listCaseDocs && res.data.listCaseDocs.length > 0) {
+              this.officialList.forEach((o) => {
+                const caseDoc = res.data.listCaseDocs.find(
+                  (d) => d.caseDocTypeId == o.caseDoctypeId
+                );
                 this.finishedDocs.push(Object.assign(o, caseDoc));
-              })
-            }else{
+              });
+            } else {
               this.nofinishedDocs = this.officialList;
             }
-
           } else {
             console.error(res);
           }
@@ -850,7 +1127,7 @@ export default {
     },
     //删除附件
     removeAttach(attach, parentAttach) {
-      if(attach.storageId){
+      if (attach.storageId) {
         this.deleteFile(attach.storageId);
       }
       parentAttach.children.splice(parentAttach.children.indexOf(attach), 1);
@@ -873,22 +1150,15 @@ export default {
     //下载附件
     download(attach) {
       let _this = this;
-      if(attach && attach.storageId){
-        downLoadCommon(attach.storageId).then(
-          (res) => {
-            _this.$message({
-              type: "success",
-              message: "下载成功!",
-            });
-          },
-          (err) => {
-            _this.$message({
-              type: "error",
-              message: "下载失败!",
-            });
-            console.log(err);
-          }
-        );
+      if (attach && attach.storageId) {
+        this.$util.com_getFileStream(attach.storageId).then((res) => {
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.download = attach.name;
+          a.href = res;
+          a.click();
+          document.body.removeChild(a);
+        });
       }
     },
     //查看文件
@@ -918,17 +1188,26 @@ export default {
     generateContent(content) {
       console.log(this.inspectRecordForm);
       for (const key in this.inspectRecordForm) {
-
-        switch (key){
+        switch (key) {
           case "checkCategory":
-            content = content.replace(`{${key}}`, this.checkCategoryList.find(c => c.id == this.inspectRecordForm[key]).name);
+            content = content.replace(
+              `{${key}}`,
+              this.checkCategoryList.find(
+                (c) => c.id == this.inspectRecordForm[key]
+              ).name
+            );
             break;
           case "checkType":
-            content = content.replace(`{${key}}`, this.checkTypeList.find(c => c.id == this.inspectRecordForm[key]).name);
+            content = content.replace(
+              `{${key}}`,
+              this.checkTypeList.find(
+                (c) => c.id == this.inspectRecordForm[key]
+              ).name
+            );
             break;
           default:
-          content = content.replace(`{${key}}`, this.inspectRecordForm[key]);
-          break;
+            content = content.replace(`{${key}}`, this.inspectRecordForm[key]);
+            break;
         }
       }
       return content;
@@ -983,7 +1262,10 @@ export default {
     setIllegaAct(val) {
       const abnormal = this.inspectRecordForm.listAbn[this.curAbnormalIndex];
       let curAbnormal = {};
-      Object.assign(curAbnormal, abnormal, { caseCauseId: val.id, caseCauseName:val.strContent });
+      Object.assign(curAbnormal, abnormal, {
+        caseCauseId: val.id,
+        caseCauseName: val.strContent,
+      });
       this.inspectRecordForm.listAbn.splice(
         this.curAbnormalIndex,
         1,
@@ -1009,8 +1291,10 @@ export default {
         (res) => {
           if (res.code == 200) {
             this.sectionList = res.data.records;
-            if(this.inspectRecordForm.roadName){
-              this.inspectRecordForm.sectionIndex = this.sectionList.findIndex(s => s.sectionName == this.inspectRecordForm.roadName);
+            if (this.inspectRecordForm.roadName) {
+              this.inspectRecordForm.sectionIndex = this.sectionList.findIndex(
+                (s) => s.sectionName == this.inspectRecordForm.roadName
+              );
             }
           }
         },
@@ -1065,14 +1349,14 @@ export default {
           break;
         case 2:
           typeAttr = "secondType";
-          let perIndex = this.inspectRecordForm.listAbn[abnormalIndex]['firstType'];
+          let perIndex = this.inspectRecordForm.listAbn[abnormalIndex][
+            "firstType"
+          ];
           if (
             this.cheProcesTypeTree[perIndex]["children"] &&
             this.cheProcesTypeTree[perIndex]["children"].length
           ) {
-            typeIndex = this.cheProcesTypeTree[perIndex][
-              "children"
-            ].findIndex(
+            typeIndex = this.cheProcesTypeTree[perIndex]["children"].findIndex(
               (item) =>
                 item.id ===
                 this.inspectRecordForm.listAbn[abnormalIndex][
@@ -1092,29 +1376,35 @@ export default {
           ];
           break;
       }
-      if(typeAttr){
+      if (typeAttr) {
         this.inspectRecordForm.listAbn[abnormalIndex][typeAttr] = typeIndex;
       }
-      this.getProcessType(abnormalIndex,processType);
+      this.getProcessType(abnormalIndex, processType);
     },
     //获取处理情况
-    getProcessType(abnormalIndex,processTypeId) {
+    getProcessType(abnormalIndex, processTypeId) {
       getProcessTypeTreeApi(processTypeId).then(
         (res) => {
           const abnormal = this.inspectRecordForm.listAbn[abnormalIndex];
           let curAbnormal = {};
           Object.assign(curAbnormal, abnormal, { processList: res.data });
 
-          if(curAbnormal.process){
-            curAbnormal.processModeList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'];
+          if (curAbnormal.process) {
+            curAbnormal.processModeList = curAbnormal.processList.find(
+              (p) => p.id === curAbnormal.process
+            )["children"];
           }
 
-          if(curAbnormal.processMode) {
-            curAbnormal.processResultsList = curAbnormal.processList.find(p => p.id === curAbnormal.process)['children'].find(p => p.id === curAbnormal.processMode)['children'];
+          if (curAbnormal.processMode) {
+            curAbnormal.processResultsList = curAbnormal.processList
+              .find((p) => p.id === curAbnormal.process)
+              ["children"].find((p) => p.id === curAbnormal.processMode)[
+              "children"
+            ];
           }
           const list = this.inspectRecordForm.listAbn;
           list.splice(abnormalIndex, 1, curAbnormal);
-          this.$set(this.inspectRecordForm,abnormalIndex,list);
+          this.$set(this.inspectRecordForm, abnormalIndex, list);
         },
         (err) => {
           console.error(err);
@@ -1131,18 +1421,69 @@ export default {
         case 1:
           curAbnormal.processMode = "";
           curAbnormal.processRes = "";
-          index = curAbnormal.processList.findIndex(p => p.id === curAbnormal.process);
-          curAbnormal.processModeList = curAbnormal.processList[index]["children"]
+          index = curAbnormal.processList.findIndex(
+            (p) => p.id === curAbnormal.process
+          );
+          curAbnormal.processModeList =
+            curAbnormal.processList[index]["children"];
           break;
         case 2:
           curAbnormal.processRes = "";
-          index = curAbnormal.processModeList.findIndex(p => p.id === curAbnormal.processMode);
-          curAbnormal.processResultsList = curAbnormal.processModeList[index]['children'];
+          index = curAbnormal.processModeList.findIndex(
+            (p) => p.id === curAbnormal.processMode
+          );
+          curAbnormal.processResultsList =
+            curAbnormal.processModeList[index]["children"];
           break;
       }
       this.inspectRecordForm.listAbn[abnormalIndex][processAttr] = index;
-      
     },
+    //打印文书
+    docClick() {
+      this.checkedDocId = this.finishedDocs
+        .filter((f) => this.checkedOffical.indexOf(f.caseDoctypeId) != -1)
+        .map((f) => f.caseDocStorageId);
+      if (this.checkedDocId.length > 0) {
+        this.docVisible = true;
+        this.$util.com_getFileStream(this.checkedDocId[0]).then((res) => {
+          this.docSrc = res;
+        });
+      } else {
+        this.$messageOne.info({showClose: true, message: '请选择需要打印的文书'});
+      }
+    },
+    //文书dialog
+    closeDialog() {
+      this.docVisible = false;
+    },
+    //上下翻页显示pdf
+    showNext(flag) {
+      this.docVisible = true;
+      if (flag == "last") {
+        if (this.nowShowPdfIndex) {
+          this.nowShowPdfIndex--;
+          this.$util
+            .com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
+            .then((res) => {
+              this.docSrc = res;
+            });
+        }
+      } else {
+        if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
+          this.nowShowPdfIndex++;
+          this.$util
+            .com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
+            .then((res) => {
+              this.docSrc = res;
+            });
+        }
+      }
+    },
+
+    // 编辑文书
+    editDoc(doc){
+      this.$refs.editDocDialogRef.showModal(doc);
+    }
   },
 };
 </script>

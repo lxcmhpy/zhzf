@@ -98,10 +98,10 @@ export default {
           {
             type: "category",
             data: [
-              "银川路政局",
-              "固原路政局",
-              "石嘴山路政局",
-              "中卫路政局",
+              "南昌路政局",
+              "九江路政局",
+              "景德镇路政局",
+              "新余路政局",
             ]
           }
         ],
@@ -159,7 +159,7 @@ export default {
       let _this = this
       // this.$store.dispatch("getFxyp", data).then(res => {
       getFxyp(data).then(res => {
-
+      
         console.log(res);
         // _this.tableData = res.data.records;
         //  _this.totalPage = res.data.total;

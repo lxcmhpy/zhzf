@@ -157,6 +157,7 @@ export function getFxypApi(data) {
       url: `/case/numYear/${data}`,
       method:  "get",
       showloading: false,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }
@@ -164,8 +165,9 @@ export function getFxypApi(data) {
    export function sjglfxmonth(data) {
     return  request({
       url: `/case/numMonth/${data}`,
-      method:  "post",
+      method:  "get",
       showloading: false,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }
@@ -173,9 +175,9 @@ export function getFxypApi(data) {
    export function sjglfxday(data) {
     return  request({
       url: `/case/numDay/${data}`,
-      method:  "post",
+      method:  "get",
       showloading: false,
-      // params:data,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }
@@ -183,9 +185,19 @@ export function getFxypApi(data) {
   export function sjglfxhours(data) {
     return  request({
       url: `/case/numHours/${data}`,
-      method:  "post",
+      method:  "get",
       showloading: false,
-      // params:data,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 执法门类
+  export function zfml() {
+    return  request({
+      url: "/organdzfml/zfml",
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }

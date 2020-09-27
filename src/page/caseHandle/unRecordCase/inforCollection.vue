@@ -960,7 +960,7 @@
         </div>
         <div>
           <div class="itemThird">
-            <el-form-item label="车货高度">
+            <el-form-item label="车货总高">
               <el-input
                 v-model="inforForm.otherInfo.allHeight"
                 placeholder="/"
@@ -2159,7 +2159,7 @@ export default {
                   this.openTab[replaceIndex].route = "/establish";
                 }
               }
-
+              this.$store.commit('setApprovalState', '')
               //跳转立案登记
               this.getCaseNextRoute("立案登记").then((res) => {
                 this.$router.push({
