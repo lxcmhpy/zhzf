@@ -757,7 +757,9 @@ export default {
     setLawPersonCurrentP(type) {
       // type=1为回显
       let _this = this
-           findLawInfoById(iLocalStroage.gets("userInfo").organId).then(
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
           (res) => {
             let currentUserData = {};
             this.lawPersonListId = [];
