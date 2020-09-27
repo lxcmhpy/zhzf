@@ -129,7 +129,7 @@
                 v-else-if="scope.row.roadCondition === '2'"
                 style="color: #E84241;"
               >异常</span>
-              <span v-else>{{scope.row.routeSituation}}</span>
+              <span v-else>{{scope.row.roadCondition}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="personNames" label="执法人员" align="center" min-width="160px"></el-table-column>
