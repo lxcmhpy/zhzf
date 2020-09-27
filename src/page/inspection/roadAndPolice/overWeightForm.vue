@@ -180,14 +180,14 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" prop="totalWeight">
-              <el-input v-model="carInfo.firstCheck.totalWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.totalWeight" @input="overLimit()" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="车货限重" prop="weightLimit">
-              <el-input v-model="carInfo.firstCheck.weightLimit" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.weightLimit" @input="overLimit()" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -1030,6 +1030,7 @@ export default {
                   _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode || '';
                   _this.carInfo.transportNum = res.data[0].LicenseCode || '';
                   _this.carInfo.businessStatus = res.data[0].OperatingStatus || '';
+                  _this.carInfo.drivePerson.partyUnitPosition = res.data[0].OwnerName || '';
                 },
                 error => {
                 })
@@ -1039,6 +1040,7 @@ export default {
               _this.carInfo.vehicleShipType = '';
               _this.carInfo.transportNum = '';
               _this.carInfo.businessStatus = '';
+              _this.carInfo.drivePerson.partyUnitPosition = '';
             }
           },
           error => {
@@ -1148,7 +1150,7 @@ export default {
     uploadFile(param) {
       var fd = new FormData()
       fd.append("file", param.file);
-      fd.append("category", '路警联合;图片');
+      fd.append("category", '路警联合;附件');
       fd.append("fileName", param.file.name);
       fd.append('status', 1)//传图片状态
       fd.append('caseId', this.carinfoId)//传记录id
@@ -1253,9 +1255,21 @@ export default {
       this.pdfUrl = url;
       // this.pdfVisible = true
     },
-     resetForm(formName) {
-        this.$refs[formName].resetFields();
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    overLimit() {
+      if (this.carInfo.firstCheck.weightLimit && this.carInfo.firstCheck.totalWeight) {
+        this.carInfo.firstCheck.overWeight = Number(this.carInfo.firstCheck.totalWeight) - Number(this.carInfo.firstCheck.weightLimit)
+        if (this.carInfo.firstCheck.overWeight < 0) {
+          this.carInfo.firstCheck.overWeight = 0
+        } else {
+          var number = this.carInfo.firstCheck.overWeight;
+          number = String(number).replace(/^(.*\..{4}).*$/, "$1");
+          this.carInfo.firstCheck.overWeight = Number(number);
+        }
       }
+    }
   },
 
   mounted() {
@@ -1292,7 +1306,7 @@ export default {
         this.resetForm('drivePerson');
         this.resetForm('firstCheck');
         this.resetForm('secondCheck');
-        this.fileList=[]
+        this.fileList = []
         this.carinfoId = this.genID()
         this.setLawPersonCurrentP();
       }
