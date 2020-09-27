@@ -211,6 +211,16 @@ export function getFxypApi(data) {
       cancelToken:  setCancelSource(),
     });
   }
+  // 法律法规分析研判
+  export function flfgfxyp({year1, year2}) {
+    return  request({
+      url: `/judge/analysis/list/${year1}/${year2}`,
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
   //违法行为关联分析
   export function wfxwglfx(data) {
     return  request({
