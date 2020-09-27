@@ -93,7 +93,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "年度案发数量分析",
+          text: "",
           left: "center"
         },
         tooltip: {
@@ -112,7 +112,8 @@ export default {
         },
         series: [
           {
-            data: this.data1,
+            // data: this.data1,
+            data:[0,0,0,0,0,1569],
             type: "line"
           }
         ]
@@ -123,7 +124,7 @@ export default {
 
       this.chartColumn.setOption({
          title: {
-          text: "月度案发数量分析",
+          text: "",
           left: "center"
         },
         tooltip: {
@@ -155,7 +156,8 @@ export default {
         },
         series: [
           {
-            data: this.data2,
+            // data: this.data2,
+            data:[156,123,226,186,223,178,226,269,259,365,369,302],
             type: "line"
           }
         ]
@@ -166,7 +168,7 @@ export default {
 
       this.chartColumn.setOption({
          title: {
-          text: "当日案发数量分析",
+          text: "",
           left: "center"
         },
         tooltip: {
@@ -178,14 +180,20 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: this.data3
+          // data: this.data3
+           data:['0801','0802','0803','0804','0805','0806','0807','0808','0809','0810',
+           '0811','0812','0813','0814','0815','0816','0817','0818','0819','0820',
+           '0821','0822','0823','0824','0825','0826','0827','0828','0829','0830','0831'],
         },
         yAxis: {
           type: "value"
         },
         series: [
           {
-            data: this.data4,
+            // data: this.data4,
+            data:[2,3,1,4,1,7,8,3,2,1,
+           1,2,3,5,5,5,6,3,2,1,
+           1,2,3,4,6,7,8,1,1,2,3],
             type: "line"
           }
         ]
@@ -280,9 +288,12 @@ export default {
     },
   },
   mounted() {
-    this.search1();
-    this.search2();
-    this.search3();
+    this.drawLine1();
+    this.drawLine2();
+    this.drawLine3();
+    // this.search1();
+    // this.search2();
+    // this.search3();
   },
   created() {
     // this.getLogList();
