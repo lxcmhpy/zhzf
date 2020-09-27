@@ -94,13 +94,5 @@ export default [{
       title: "执法案件"
     },
     component: () => import("@/page/notice/event-after/caseManagement.vue")
-  },
-  {
-    path: "/complaintStatistic",
-    name: "complaintStatistic",
-    meta: {
-      title: "投诉高发时段统计"
-    },
-    component: () => import("@/page/notice/complaint/complaintStatistic")
-  },
+  }
 ]

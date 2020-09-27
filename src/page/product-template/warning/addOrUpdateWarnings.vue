@@ -24,7 +24,7 @@
         <el-col :span="8">
           <el-row>
             <!-- cycleTime 1_天 -->
-            <el-form-item label="循环时间" prop="cycleTime1">
+            <!-- <el-form-item label="循环时间" prop="cycleTime1">
               <el-col :span="12">
                 <el-input v-model="addOrUpdateForm.cycleTime1" placeholder="请输入"></el-input>
               </el-col>
@@ -33,7 +33,7 @@
                   <el-option v-for="item in timeList" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </el-col>
-            </el-form-item>
+            </el-form-item> -->
           </el-row>
         </el-col>
       </el-row>
@@ -269,7 +269,8 @@ export default {
     changeType(typeId, index) {
       let _this = this
       let data = {
-        typeId: typeId
+        typeId: typeId,
+        itemValue:'时间'
       }
       findAllSetListApi(data).then(
         res => {

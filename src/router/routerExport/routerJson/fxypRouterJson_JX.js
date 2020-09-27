@@ -206,7 +206,6 @@ export default  [
             component: () => import("@/page/analyseManage/analyze/complaintStatistic.vue")
           }
         ]
-
       },
 
 ]
