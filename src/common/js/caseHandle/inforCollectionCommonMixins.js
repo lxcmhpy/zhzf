@@ -52,6 +52,26 @@ export const inforCollectionCommonMixins = {
       }
       callback();
     };
+    // 检验身份证
+    var checkIdNoPassSort = (rule, value, callback) => {
+      if (this.inforForm.partyIdType === "0") {
+        // validateIDNumber
+        var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
+        if (!reg.test(value) && value) {
+          callback(new Error("身份证格式错误"));
+        } else {
+          if (this.changePartyIdType2Index) {
+            this.changePartyIdType2(
+              this.driverOrAgentInfo.zhengjianNumber,
+              this.changePartyIdType2Index
+            );
+          } else {
+            this.changePartyIdType(this.inforForm.partyIdNo);
+          }
+        }
+        callback();
+      }
+    };
     return {
       moneyTooltip: "",// 自由裁量权金额提示语
       recentCheckStastions: [],//最近五个检测站
@@ -172,9 +192,7 @@ export const inforCollectionCommonMixins = {
         partyAge: [
           {validator: validateAge, trigger: "blur"}
         ],
-        partyIdNo: [
-          {validator: validateIDNumber, trigger: "blur"}
-        ],
+        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
         partyZipCode: [
           {validator: validateZIP, trigger: "blur"}
         ],

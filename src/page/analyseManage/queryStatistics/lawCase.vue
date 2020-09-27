@@ -185,9 +185,10 @@
             this.incidentTrend = res.data.incidentTrend;
             Object.keys(res.data.incidentTrend).forEach(function (element, index) {
               if (index == 0) {
+                debugger
                 that.trendYear = element
-                if(res.data[element].length>0){
-                  res.data[element].map(item => {
+                if(res.data.incidentTrend[element].length>0){
+                  res.data.incidentTrend[element].map(item => {
                     that.trendYearDate.push(item.value)
                   })
                 }else{
@@ -195,8 +196,8 @@
                 }
               } else if (index == 1) {
                 that.trendYearNew = element
-                if(res.data[element].length>0) {
-                  res.data[element].map(item => {
+                if(res.data.incidentTrend[element].length>0) {
+                  res.data.incidentTrend[element].map(item => {
                     that.trendYearNewX.push(item.name)
                     that.trendYearDateNew.push(item.value)
                   })
@@ -215,10 +216,13 @@
               }
             });
             //执法机构案件数量
-            res.data.caseNumber.slice(0, 8).map(item => {
-              that.caseNumberSeries.push(item.value)
-              that.caseNumberXData.push(item.name)
-            })
+            if(res.data.caseNumber.length>0){
+              res.data.caseNumber.slice(0, 8).map(item => {
+                that.caseNumberSeries.push(item.value)
+                that.caseNumberXData.push(item.name)
+              })
+            }
+
             //罚没款项
             that.penalty = res.data.confiscated[0].value
 

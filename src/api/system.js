@@ -1303,3 +1303,14 @@ export  function  getAllGroupOrganApi()  {
       cancelToken:  setCancelSource()
     });
   }
+
+//获取下拉列表
+export  function  getDataListApi(data)  {
+    return  request({
+      url:  "/system/sys/datalist/getDataList/" + data.pid + "/" + data.dataType,
+      method:  "get",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource()
+    });
+  }

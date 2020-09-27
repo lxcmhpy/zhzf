@@ -3,13 +3,17 @@
     <div class="searchPage toggleBox">
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form-item label="起始年月" prop>
+          <el-form-item label="起始年月">
             <el-date-picker
-              v-model="value1"
+              v-model="logForm.date"
+              size="small"
               type="monthrange"
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              format="yyyy-MM"
+              value-format="yyyy-MM"
+              @change="handleSelect"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -24,24 +28,55 @@
 
 <script>
 import echarts from "echarts";
+import {flfgfxyp} from '@/api/fxyp.js'
 export default {
   data() {
     return {
-      value1:'',
       logForm: {
-        organ: "",
-        type: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
+        date: [
+          String(new Date().getFullYear()-1) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1)),
+          String(new Date().getFullYear()) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1))
+        ]
       }
     };
   },
+  created() {
+    this.init()
+  },
   methods: {
-    drawLine() {
+    /**
+     * 初始化页面
+     */
+    init() {
+      let year1 = this.logForm.date[0]
+      let year2 = this.logForm.date[1]
+      this.getData({year1, year2})
+    },
+
+    /**
+     * 选中时间
+     */
+    handleSelect(val) {
+      let year1 = val[0], year2 = val[1]
+      this.getData({ year1, year2 })
+    },
+
+    /**
+     * 获取数据
+     */
+    getData({year1, year2}) {
+      flfgfxyp({year1, year2}).then(res => {
+        if(res.code == 200) {
+          this.drawLine(res.data)
+        }
+      }, err => { console.log(err) })
+    },
+
+    drawLine(data) {
       this.chartColumn = echarts.init(document.getElementById("chartColumn"));
+      let _legend = data.map(item => {
+        return item.name
+      })
 
       this.chartColumn.setOption({
         title: {
@@ -59,19 +94,15 @@ export default {
           right: 150,
           top: 150,
           bottom: 10,
-          data: ["法律法规A执行次数", "法律法规B执行次数", "法律法规C执行次数"]
+          data: _legend
         },
         series: [
           {
             name: "访问来源",
             type: "pie",
             radius: "55%",
-            center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "法律法规A执行次数" },
-              { value: 310, name: "法律法规B执行次数" },
-              { value: 234, name: "法律法规C执行次数" }
-            ],
+            center: ["30%", "60%"],
+            data: data,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -84,12 +115,6 @@ export default {
       });
     }
   },
-  mounted() {
-    this.drawLine();
-  },
-  created() {
-    // this.getLogList();
-  }
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
