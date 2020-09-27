@@ -132,46 +132,20 @@
              size="450px" customClass="amap-drawer" :modal="false" :visible.sync="drawer">
              <el-form :model="pykhObj" ref="pykhObj" :rules="rules" class="checkSearchForm" label-width="120px">
                  <div style="width:400px">
-                     <div class="item">
-                         <el-form-item label="一级考核指标" prop="indexOne">
-                             <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 10}" v-model="pykhObj.indexOne"
-                                 class="w-120" placeholder="请输入一级考核指标"></el-input>
-
-                         </el-form-item>
-                     </div>
-                     <!-- <div class="item">
-                        <el-form-item label="立案开始时间" prop="startTime">
-                              <el-date-picker
-                              style='width:282px'
-                                v-model="pykhObj.startTime"
-                                type="date"
-                                value-format="yyyy-MM-dd" format="yyyy-MM-dd"
-                                placeholder="立案开始时间"
-                                >
-                            </el-date-picker>
-                        </el-form-item>
-                    </div> -->
-                     <!-- <div class="item">
-                        <el-form-item label="立案截止时间" prop="endTime">
-                            <el-date-picker
-                              style='width:282px'
-                                v-model="pykhObj.endTime"
-                                type="date"
-                                value-format="yyyy-MM-dd" format="yyyy-MM-dd"
-                                placeholder="立案截止时间"
-                                >
-                            </el-date-picker>
-                        </el-form-item>
-                    </div> -->
-                     <div class="item">
+                    <div class="item">
                          <el-form-item label="指标类型配置" prop="oneType">
-                             <!-- <el-input v-model="pykhObj.oneType" placeholder="请输入指标类型配置"></el-input> -->
                              <el-select v-model="pykhObj.oneTypeId" class="w-220"
                                  @change="changeOneType(pykhObj.oneTypeId)">
                                  <el-option v-for="(item,index) in oneZblxList.data" :key="index" :value="item.id"
                                      :label="item.name">
                                  </el-option>
                              </el-select>
+                         </el-form-item>
+                     </div>
+                     <div class="item">
+                         <el-form-item label="一级考核指标" prop="indexOne">
+                             <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 10}" v-model="pykhObj.indexOne"
+                                 class="w-120" placeholder="请输入一级考核指标"></el-input>
                          </el-form-item>
                      </div>
                  </div>
