@@ -212,9 +212,19 @@ export function getFxypApi(data) {
     });
   }
   // 法律法规分析研判
-  export function flfgfxyp({year1, year2}) {
+  export function flfgfxyp({ startTime, endTime }) {
     return  request({
-      url: `/judge/analysis/list/${year1}/${year2}`,
+      url: `/judge/analysis/list/${startTime}/${endTime}`,
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 监管治理分析研判
+  export function jgzlfxyp({ startTime, endTime }) {
+    return  request({
+      url: `/judge/analysis/JGZLlist/${startTime}/${endTime}`,
       method:  "get",
       showloading: false,
       baseUrlType:  'FXYP_HOST',
