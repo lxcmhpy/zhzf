@@ -16,14 +16,14 @@
            <el-col :span="4" style="height:60px;margin-left:-30px;margin-top: 35px;" >
               <div class="title_4" >
                   <span class="right_font0">执法人员：</span>
-                  <span class="right_font1">96人</span>
+                  <span class="right_font1">{{personNum}}</span>
               </div>
 
           </el-col>
            <el-col :span="4" style="height:60px;margin-left:0px;margin-top: 35px;" >
               <div class="title_5" >
                   <span class="right_font0">执法装备：</span>
-                  <span class="right_font1">72件</span>
+                  <span class="right_font1">{{equNum}}</span>
               </div>
 
           </el-col>
@@ -120,6 +120,8 @@ import {personEquipApi} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
+      personNum:'',
+      equNum:'',
       distributed:[],
       preparedBy:[],
       value3: "",
@@ -146,6 +148,8 @@ export default {
       };
       personEquipApi(param).then(res => {
         if (res.code == 200) {
+          that.personNum = res.data.enforcement[0].value
+          that.equNum = res.data.equipment[0].value
           that.distributed = res.data.distributed
           that.preparedBy = res.data.preparedBy
           res.data.personNum.slice(0, 8).map(item => {

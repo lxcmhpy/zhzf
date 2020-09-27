@@ -184,16 +184,27 @@
             this.caseTypeCon = res.data.typeOfCase;
             this.incidentTrend = res.data.incidentTrend;
             Object.keys(res.data.incidentTrend).forEach(function (element, index) {
-              res.data.incidentTrend[element].map(item => {
-                if (index == 0) {
-                  that.trendYear = element
-                  that.trendYearDate.push(item.value)
-                } else if (index == 1) {
-                  that.trendYearNew = element
-                  that.trendYearNewX.push(item.name)
-                  that.trendYearDateNew.push(item.value)
+              if (index == 0) {
+                that.trendYear = element
+                if(res.data[element].length>0){
+                  res.data[element].map(item => {
+                    that.trendYearDate.push(item.value)
+                  })
+                }else{
+                  that.trendYearDate = []
                 }
-              })
+              } else if (index == 1) {
+                that.trendYearNew = element
+                if(res.data[element].length>0) {
+                  res.data[element].map(item => {
+                    that.trendYearNewX.push(item.name)
+                    that.trendYearDateNew.push(item.value)
+                  })
+                }else{
+                  that.trendYearNewX = []
+                  that.trendYearDateNew = []
+                }
+              }
             })
             this.caseStatusData = res.data.caseStatus
             res.data.caseStatus.map(item => {

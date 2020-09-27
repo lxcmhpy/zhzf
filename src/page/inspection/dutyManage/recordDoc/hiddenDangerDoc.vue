@@ -213,22 +213,24 @@ export default {
   methods: {
     // 表单校验,校验通过返回数据
     validateForm() {
-      this.$refs.docFormRef.validate((valid, noPass) => {
-        if (valid) {
-          const reportData = JSON.stringify(this.formData);
-          return reportData;
-        } else {
-          let a = Object.values(noPass)[0];
-          this.$message({
-            showClose: true,
-            message: a[0].message,
-            type: "error",
-            offset: 100,
-            customClass: "validateErrorTip",
-          });
-          return false;
-        }
-      });
+      return new Promise((resolve, reject) => {
+        this.$refs.docFormRef.validate((valid, noPass) => {
+          if (valid) {
+            const reportData = JSON.stringify(this.formData);
+            resolve({ code: 200, data: reportData });
+          } else {
+            let a = Object.values(noPass)[0];
+            this.$message({
+              showClose: true,
+              message: a[0].message,
+              type: "error",
+              offset: 100,
+              customClass: "validateErrorTip",
+            });
+            resolve({ code: 500 });
+          }
+        });
+      })
     },
     // 获取当前日期
     getCurrentDay() {
@@ -252,6 +254,7 @@ export default {
 <style lang="scss" scoped>
 .danger-notice {
   #dangerNoticePanel {
+    margin-top: 10px;
       .top-split-line{
         display: block;
         border: 1px solid #dcdfe6;
