@@ -249,7 +249,7 @@
               <el-select
                 placeholder="请选择"
                 v-model="inforForm.partySex"
-                :disabled="inforForm.partyIdNo?true:false"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType === '0'?true:false"
               >
                 <el-option :value="0" label="男"></el-option>
                 <el-option :value="1" label="女"></el-option>
@@ -262,7 +262,7 @@
                 ref="partyAge"
                 v-model="inforForm.partyAge"
                 type="number"
-                :disabled="inforForm.partyIdNo?true:false"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType === '0'?true:false"
                 @change="noFue('inforForm.partyAge',inforForm.partyAge)"
               ></el-input>
             </el-form-item>
