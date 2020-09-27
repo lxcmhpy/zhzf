@@ -52,8 +52,8 @@ export default {
     return {
       logForm: {
         date: [
-          new Date().getFullYear() + '-' + (new Date().getMonth() > 9 ? String(new Date().getMonth()) : '0'+String(new Date().getMonth())),
-          new Date().getFullYear() + '-' + (new Date().getMonth() > 9 ? String(new Date().getMonth()) : '0'+String(new Date().getMonth()))
+          String(new Date().getFullYear()-1) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1)),
+          String(new Date().getFullYear()) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1))
         ]
       },
     };
@@ -66,8 +66,8 @@ export default {
      * 初始化页面
      */
     init() {
-      let year1 = String(new Date().getFullYear()-1) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1))
-      let year2 = String(new Date().getFullYear()) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1))
+      let year1 = this.logForm.date[0]
+      let year2 = this.logForm.date[1]
       this.getData({ year1, year2 })
     },
 
