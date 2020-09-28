@@ -144,7 +144,8 @@ export function getFxypApi(data) {
    //时间关联分析  年
   export function sjglfx(data) {
     return  request({
-      url: `/case/numYear/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
       showloading: true,
       loadingType: 'loadPart',
@@ -155,7 +156,8 @@ export function getFxypApi(data) {
    //时间关联分析  月
    export function sjglfxmonth(data) {
     return  request({
-      url: `/case/numMonth/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
       showloading: true,
       loadingType: 'loadPart',
@@ -166,7 +168,8 @@ export function getFxypApi(data) {
    //时间关联分析  日
    export function sjglfxday(data) {
     return  request({
-      url: `/case/numDay/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
       showloading: true,
       loadingType: 'loadPart',
@@ -177,7 +180,8 @@ export function getFxypApi(data) {
   //时间关联分析  时
   export function sjglfxhours(data) {
     return  request({
-      url: `/case/numHours/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
       showloading: true,
       loadingType: 'loadPart',
@@ -190,8 +194,8 @@ export function getFxypApi(data) {
     return  request({
       url: "/organdzfml/zfml",
       method:  "get",
-      showloading: true,
-      loadingType: 'loadPart',
+      showloading: false,
+      // loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });

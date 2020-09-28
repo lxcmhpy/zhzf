@@ -80,17 +80,17 @@
           },
           {
             activeName: 'dayView',
-            value: String(new Date().getFullYear()) + '/' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
+            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
             type: "month",
             placeholder: "选择月",
-            valueFormat: "yyyy/MM"
+            valueFormat: "yyyy MM"
           },
           {
             activeName: 'hoursView',
-            value: String(new Date().getFullYear()) + '/' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + '/' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
+            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + ' ' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
             type: "date",
             placeholder: "选择日期",
-            valueFormat: "yyyy/MM/dd"
+            valueFormat: "yyyy MM dd"
           },
         ],
         tabPans: [
@@ -133,27 +133,52 @@
         }, err => { console.log(err) }).then(() => {
           let mechanism = this.mechanismOption[0].id
           let category = this.categoryOption[0].value
-          let params = mechanism + '/' + category
+          let params = {
+            mechanism,
+            category
+          }
           this.getData(params)
         })
       },
 
       /**
-       * 点击搜索
+       * 点击搜索或者切换视图
        */
       handleSelect() {
         let valMap = new Map([
           [ 'monthView', this.dateList[0].value ],
-          [ 'dayView', this.dateList[1].value ],
-          [ 'hoursView', this.dateList[2].value ],
+          [ 'dayView', this.dateList[1].value.split(" ") ],
+          [ 'hoursView', this.dateList[2].value.split(" ") ],
         ])
         let mechanism = this.logForm.mechanism
         let category = this.logForm.category
-        let params = ''
+        let params = {}
         if(this.activeName === 'yearView') {
-          params = mechanism + '/' + category
-        } else {
-          params = mechanism + '/' + category + '/' + valMap.get(this.activeName)
+          params = {
+            mechanism,
+            category
+          }
+        } else if (this.activeName === 'monthView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)
+          }
+        } else if (this.activeName === 'dayView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)[0],
+            month: valMap.get(this.activeName)[1]
+          }
+        } else if (this.activeName === 'hoursView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)[0],
+            month: valMap.get(this.activeName)[1],
+            day: valMap.get(this.activeName)[2],
+          }
         }
         this.getData(params)
       },
