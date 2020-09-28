@@ -9,7 +9,8 @@ export function caseReasonApi(data) {
     url: "/crimecaseanalysis/case/" + data.year + '/' + data.year2,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });

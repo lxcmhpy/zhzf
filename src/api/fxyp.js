@@ -146,7 +146,8 @@ export function getFxypApi(data) {
     return  request({
       url: `/case/numYear/${data}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -156,7 +157,8 @@ export function getFxypApi(data) {
     return  request({
       url: `/case/numMonth/${data}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -166,7 +168,8 @@ export function getFxypApi(data) {
     return  request({
       url: `/case/numDay/${data}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -176,7 +179,8 @@ export function getFxypApi(data) {
     return  request({
       url: `/case/numHours/${data}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -186,7 +190,8 @@ export function getFxypApi(data) {
     return  request({
       url: "/organdzfml/zfml",
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -196,7 +201,8 @@ export function getFxypApi(data) {
     return  request({
       url: `/case/people/${year1}/${year2}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -206,7 +212,8 @@ export function getFxypApi(data) {
     return  request({
       url: `/judge/analysis/list/${startTime}/${endTime}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -216,7 +223,8 @@ export function getFxypApi(data) {
     return  request({
       url: `/judge/analysis/JGZLlist/${startTime}/${endTime}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -227,7 +235,8 @@ export function getFxypApi(data) {
       url: "/electronization/electronization",
       method:  "get",
       params: data,
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
