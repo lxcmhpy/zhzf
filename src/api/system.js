@@ -1314,3 +1314,42 @@ export  function  getDataListApi(data)  {
       cancelToken:  setCancelSource()
     });
   }
+
+// 文件上传
+export function uploadApi(data) {
+    return request({
+      url: "/system/sys/file/uploadCommon",
+      method: "POST",
+      data: data,
+      contentType: 'multipart/form-data;',
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType: 'CAPTCHA_HOST',
+      cancelToken: setCancelSource(),
+    });
+  }
+  //根据主键ID删除附件
+  export function deleteFileByIdApi(fileId) {
+    return request({
+      url: "/system/sys/file/delete/" + fileId,
+      method: "GET",
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType: 'CAPTCHA_HOST',
+      cancelToken: setCancelSource(),
+    });
+  }
+
+  
+//获取文件流
+export function getFileStreamApi(storageId) {
+    return request({
+      url: "/system/sys/file/getFileStreamByStorageId/"+storageId,
+      method: "get",
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType:  'CAPTCHA_HOST',
+      responseType:'blob',
+      cancelToken: setCancelSource()
+    });
+  }
