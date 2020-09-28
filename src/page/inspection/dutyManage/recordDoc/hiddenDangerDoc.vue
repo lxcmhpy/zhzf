@@ -156,6 +156,9 @@ import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
 
 export default {
+  props: {
+    caseDocData: {}
+  },
   components: {},
   computed: {
     UserInfo() {
@@ -246,7 +249,11 @@ export default {
 
   mounted() {},
   created() {
+    this.caseDocData = JSON.parse(this.caseDocData);
     this.getCurrentDay();
+    if(Object.keys(this.caseDocData).length > 0){
+      this.formData = this.caseDocData;
+    }
   },
 };
 </script>
