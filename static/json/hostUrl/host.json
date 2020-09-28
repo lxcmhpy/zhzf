@@ -1,11 +1,11 @@
 {
-  "CURRENT": "QHW",
+  "CURRENT": "JXW",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
     "HOME_PAGE_ROUTER_NAME": "catsAppraisalExamination//评议考核，case_handle_home_index //案件办理law_supervise_lawSupervise//监管",
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
-    "PDF_HOST": "文件服务器地址 d",
+    "PDF_HOST": "文件服务器地址 delete",
     "VIDEO_HOST": "综合监管语音通话",
     "CHECK_API": "信息检查 91:8081",
     "XJ_IMG_HOST": "新疆图片视频地址",
@@ -65,6 +65,7 @@
   },
   "WC": {
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
+    "AAA_HOST": "http://172.16.169.37:8099",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",

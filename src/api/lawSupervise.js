@@ -575,3 +575,28 @@ export function getZfjgFileStreamByStorageId(storageId) {
       cancelToken:  setCancelSource(),
     });
   }
+
+  //删除设备类型
+  export function deleteDeviceTypeById(id) {
+    return request({
+        url: "/zfjg/lawDeviceType/deleteById/" +id,
+        method: "get",
+        showloading: true,
+        loadingType:'loadPart',
+        baseUrlType:'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    })
+ }
+  
+ //批量删除设备
+export function deleteDeviceByIds(data) {
+    return request({
+      url: "/zfjg/lawDevice/deleteByIds",
+      method: "post",
+      showloading: true,
+      data: data,
+      baseUrlType: 'CAPTCHA_HOST',
+      loadingType: 'loadPart',
+      cancelToken: setCancelSource()
+    })
+  }

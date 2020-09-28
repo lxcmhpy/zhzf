@@ -578,7 +578,7 @@ export function getAllRandomItemApi(data) {
 // 根据抽查类别或者抽查事项查询当前事项是否有启用的
 export function getIsRandomNameApi(data) {
     return request({
-        url: "xzjc/randomItem/queryByCheckDomainAndTaskName",
+        url: "/xzjc/randomItem/queryByCheckDomainAndTaskName",
         method: "get",
         params: data,
         showloading: true,
@@ -1021,8 +1021,6 @@ export function findCarInfoFileByIdApi(data) {
     return request({
         url: "/xzjc/document/getDocListById/" + data,
         method: "get",
-        showloading: true,
-        loadingType: 'loadPart',
         baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });

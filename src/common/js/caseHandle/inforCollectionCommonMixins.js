@@ -5,7 +5,7 @@ import punishDiag from "@/page/caseHandle/unRecordCase/punishDiag";
 import caseSlideMenu from '@/page/caseHandle/components/caseSlideMenu'
 import iLocalStroage from "@/common/js/localStroage";
 import {mapGetters} from "vuex";
-import {validateIDNumber, validateAge, validateZIP, validatePhone} from '@/common/js/validator'
+import {validateIDNumber, validateAge, validateZIP, validatePhone,validateIsNumber} from '@/common/js/validator'
 import {
   getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
 } from "@/api/system";
@@ -52,8 +52,29 @@ export const inforCollectionCommonMixins = {
       }
       callback();
     };
+    // 检验身份证
+    var checkIdNoPassSort = (rule, value, callback) => {
+      if (this.inforForm.partyIdType === "0") {
+        // validateIDNumber
+        var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
+        if (!reg.test(value) && value) {
+          callback(new Error("身份证格式错误"));
+        } else {
+          if (this.changePartyIdType2Index) {
+            this.changePartyIdType2(
+              this.driverOrAgentInfo.zhengjianNumber,
+              this.changePartyIdType2Index
+            );
+          } else {
+            this.changePartyIdType(this.inforForm.partyIdNo);
+          }
+        }
+        callback();
+      }
+    };
     return {
       moneyTooltip: "",// 自由裁量权金额提示语
+      punishList: [],
       recentCheckStastions: [],//最近五个检测站
       recentCheckWorkers: [],//历史保存过检测人员
       vehicleTypeList: [],//车型
@@ -172,9 +193,7 @@ export const inforCollectionCommonMixins = {
         partyAge: [
           {validator: validateAge, trigger: "blur"}
         ],
-        partyIdNo: [
-          {validator: validateIDNumber, trigger: "blur"}
-        ],
+        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
         partyZipCode: [
           {validator: validateZIP, trigger: "blur"}
         ],
@@ -194,10 +213,18 @@ export const inforCollectionCommonMixins = {
           {required: true, message: "请选择位置", trigger: "change"}
         ],
         pileNumber: [
-          {required: true, message: "请输入公里数", trigger: "blur"}
+          {required: true, message: "请输入公里数", trigger: "change"},
+          { validator: validateIsNumber, trigger: "change" }
         ],
         distance: [
-          {required: true, message: "请输入米数", trigger: "blur"}
+          {required: true, message: "请输入米数", trigger: "change"},
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        pileNumber2: [
+          { validator: validateIsNumber, trigger: "change" }
+        ],
+        distance2: [
+          { validator: validateIsNumber, trigger: "change" }
         ],
       },
       //案件类型
@@ -526,9 +553,25 @@ export const inforCollectionCommonMixins = {
         caseCauseName: this.inforForm.caseCauseName,
         titleType:titleType,
         illageClauseLabel,
-        punishClauseLabel
-      };
+        punishClauseLabel,
+        punishList: this.punishList,
+      }; 
       this.$refs.punishDiagRef.showModal(data);
+    },
+    //获取违法条款、依据数据
+    getPunishList() {
+      // debugger
+      this.$store
+        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
+        .then(
+          (res) => {
+            this.punishList = res.data;
+            if(this.judgFreedomList.length===0){
+              this.initMoneyWhenNotExistStandard();
+            }
+          },
+          (err) => {}
+        );
     },
     //设置违法条款和处罚条款
     setIllegalLawAndPunishLaw(data) {
@@ -801,9 +844,10 @@ export const inforCollectionCommonMixins = {
                     }
                 })
             }
-            this.initProvincesList(dataArray)  
+          _this.initProvincesList(dataArray)  
           _this.inforForm = res.data;
-          this.handleCaseData(res.data);
+          _this.handleCaseData(res.data);
+          _this.getPunishList();
         },
         err => {
           console.log(err);

@@ -39,7 +39,7 @@
             </div>
             <p class="p1">2.上传推优集体及个人材料。</p>
             <div class="uploadList">
-                <uploadDrag v-if="userInfo" :disType="true" :uploadData="uploadDataOne" :uploadFuncName="uploadFuncName"
+                <uploadDrag v-if="userInfo" :disType="false" :uploadData="uploadDataOne" :uploadFuncName="uploadFuncName"
                     @callBackFunc="callBackFuncOne"></uploadDrag>
                 <ul>
                     <li v-for="(item,index) in fileListFour" :key="index">
@@ -56,7 +56,7 @@
                         </div>
                     </li>
                 </ul>
-                <el-button type="primary" size="cats-common" @click="confirmUploadOne" disabled>确认上传</el-button>
+                <el-button type="primary" size="cats-common" @click="confirmUploadOne">确认上传</el-button>
             </div>
             <div class="uploadList">
                 <ul>

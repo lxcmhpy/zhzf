@@ -241,9 +241,11 @@ export default {
             radius: "75%",
             center: ["50%", "60%"],
             data: [
-              { value: 335, name: "局长" },
-              { value: 310, name: "市长" },
-              { value: 234, name: "行长" }
+              { value: 335, name: "科员" },
+              { value: 150, name: "副科" },
+              { value: 134, name: "正科" },
+              { value: 50, name: "副处" },
+              { value: 30, name: "正处" }
             ],
             emphasis: {
               itemStyle: {

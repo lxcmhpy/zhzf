@@ -1,5 +1,5 @@
 <template>
-  <div class="print_box" id="myBox" style="width:790px;margin:0 auto;">
+  <div class="print_box" id="myBox" style="width:790px;height:100%;margin:0 auto;">
     <!-- <div class="print_info"> -->
     <!-- <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
            style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item"
@@ -7,7 +7,8 @@
     <!-- </div>  -->
     <casePageFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData"
                        @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall"
-                       @showApprovePeopleList="showApprovePeopleList" @showApproval="findCurrentApproval"></casePageFloatBtns>
+                       @showApprovePeopleList="showApprovePeopleList" @showApproval="findCurrentApproval"
+                       @editEstablish="editEstablish"></casePageFloatBtns>
 
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
@@ -28,8 +29,9 @@
   import {mapGetters} from "vuex";
 
   import {
-    updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,getDocDetailByIdApi,
+    updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,getDocDetailByIdApi,updateDocStatusById,
   } from "@/api/caseHandle";
+
   import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 
   export default {
@@ -43,6 +45,7 @@
         docFinishQZ:false, //环节下文书是否已完成签章
         pdfUrl:'',
         numPages:0,
+
       };
     },
     mixins: [mixinGetCaseApiList],
@@ -52,7 +55,7 @@
       casePageFloatBtns,
       caseSlideMenu
     },
-    computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId','caseLinktypeId'])},
+    computed: {...mapGetters(['caseId', 'docId','approvalState','docDataId','caseLinktypeId','docPdfStorageId','caseLinkName'])},
     methods: {
       print() {
         for (var i = 0; i < this.storagePath.length; i++) {
@@ -69,6 +72,9 @@
         if (this.$route.params && this.$route.params.docId) {
           this.$store.commit('setDocId', this.$route.params.docId)
         }
+        // if(this.$route.params.doingLink){
+        //   this.$store.commit('setCaseLinktypeId', this.$route.params.doingLink)
+        // }
         console.log('docId', this.docId);
         console.log('caseId', this.caseId)
         let _that = this
@@ -99,7 +105,7 @@
           }
         );
       },
-      isApproval() {
+      isApproval() { 
         //审批
         console.log('this.approvalState',this.approvalState)
         if(this.approvalState == 'approvaling'){
@@ -115,6 +121,9 @@
         }else if(this.approvalState == 'submitApproval'){
           //执法人员提交审批之后
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        }else if(this.approvalState == 'approvalNoPass' || this.approvalState == 'approvalEstabishNoPass' || this.approvalState =='approvalFinishCaseReportNoPass'){
+          //审批未通过 都不显示    
+           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, false]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回 
         }
 
         //文书预览只有返回按钮
@@ -175,33 +184,31 @@
         console.log('docDataRes',docDataRes);
         let currentDocData = JSON.parse(docDataRes.data.docData);
         console.log('currentDocData',currentDocData)
-        let oldApprovalOpion,oldApprovalTime = '';
+        let oldApprovalOpion,oldApprovalTime,oldExecuteHandle = '';
 
         let currentApproveRes = await getCurrentApproveApi(this.docDataId);
         console.log('几级审批',currentApproveRes);
-        // if(currentApproveRes.data.currentIndex == 1){  //一级审批
-        //     if(currentDocData.approveOpinions) {
-        //       oldApprovalOpion = currentDocData.approveOpinions;
-        //       oldApprovalTime = currentDocData.approveTime;
-        //     }
-        // }else if(currentApproveRes.data.currentIndex == 2){
-        //     if(currentDocData.secondApproveOpinions) {
-        //       oldApprovalOpion = currentDocData.secondApproveOpinions;
-        //       oldApprovalTime = currentDocData.secondApproveTime;
-        //     }
-        // }else if(currentApproveRes.data.currentIndex == 3){
-        //     if(currentDocData.thirdApproveOpinions) {
-        //       oldApprovalOpion = currentDocData.thirdApproveOpinions;
-        //       oldApprovalTime = currentDocData.thirdApproveTime;
-        //     }
-        // }
+        if(currentApproveRes.data.currentIndex == "1"){  //一级审批
+              oldApprovalOpion = currentDocData.old_approveOpinions; 
+              oldApprovalTime = currentDocData.old_approveTime;
+              oldExecuteHandle = currentDocData.approveExecuteHandle;
+        }else if(currentApproveRes.data.currentIndex == "2"){
+              oldApprovalOpion = currentDocData.old_secondApproveOpinions;
+              oldApprovalTime = currentDocData.old_secondApproveTime;
+              oldExecuteHandle = currentDocData.old_secondApproveExecuteHandle;
+        }else if(currentApproveRes.data.currentIndex == "3"){
+              oldApprovalOpion = currentDocData.old_thirdApproveOpinions;
+              oldApprovalTime = currentDocData.old_thirdApproveTime;
+              oldExecuteHandle = currentDocData.old_thirdApproveExecuteHandle;
+        }
 
         let caseData={
             caseId:this.caseId,
             currentApproval:currentApproveRes.data.currentIndex, //当前是几级审批
             approvalNumber:currentApproveRes.data.amount ,  //共几级审批
             oldApprovalOpion:oldApprovalOpion, //环节回退或修改文书之后自动带入旧的审批
-            oldApprovalTime:oldApprovalOpion
+            oldApprovalTime:oldApprovalTime,
+            oldExecuteHandle:oldExecuteHandle
         }
         this.$refs.approvalDialogRef.showModal(caseData);
 
@@ -257,9 +264,51 @@
         }
         let  myIframe = document.createElement('iframe');
         myIframe.setAttribute("src", '/static/pdf/web/viewer.html?file='+encodeURIComponent(url));
-        myIframe.setAttribute('style','width:790px;height:1119px');
+        myIframe.setAttribute('style','height:100%;width:790px');
         myBox.appendChild(myIframe);
       },
+      //修改立案登记
+      editEstablish(){
+        let _this = this;
+        this.$confirm('修改操作将替换掉当前文书（包括签名签章），', '提示', {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: 'el-icon-question',
+          customClass: 'custom-confirm'
+        }).then(() => {
+          let data = {
+            storageId: _this.docPdfStorageId,
+            linkTypeId: _this.caseLinktypeId
+          }
+          console.log('修改数据',data)
+          updateDocStatusById(data).then(res=>{
+            // if (_this.caseLinktypeId == _this.BASIC_DATA_JX.establish_JX_caseLinktypeId) {
+            //   _this.$router.push({ name: 'case_handle_establish_JX' });
+            // }else if(_this.caseLinktypeId == _this.BASIC_DATA_SYS.establish_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_establish' });
+            // }
+            // if(_this.caseLinktypeId == _this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_finishCaseReport' });
+            // }else if(_this.caseLinktypeId == _this.BASIC_DATA_QH.finishCaseReport_QH_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_finishCaseReport_QH' });
+            // }else if(_this.caseLinktypeId == _this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId){
+            //   _this.$router.push({ name: 'case_handle_finishCaseReport_JX' });
+            // }
+            if(this.caseLinkName){
+               _this.$router.push({ name: this.caseLinkName });
+            }else{
+              if (_this.caseLinktypeId == _this.BASIC_DATA_JX.establish_JX_caseLinktypeId) {
+                _this.$router.push({ name: 'case_handle_establish_JX' });
+              }else{
+                _this.$router.push({ name: 'case_handle_establish' });
+              }
+            }
+           
+            this.$store.commit("setCaseApproval", false);
+            this.$store.commit('setApprovalState', '');
+          }).catch(err=>{throw new Error(err);_this.$message({type: "error",message: '失败',});})
+        })
+      }
 
     },
     mounted() {

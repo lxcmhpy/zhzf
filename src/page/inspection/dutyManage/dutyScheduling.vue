@@ -19,8 +19,11 @@
           <el-button icon="el-icon-plus" plain @click="addSchedulingFun">新增</el-button>
           <el-button icon="el-icon-edit" plain @click="editSchedulingFun">修改</el-button>
         </div>
+        <div class="scheduling-center-line"/>
         <!-- 排班列表 -->
-        <div class="scheduling-list-wrap">
+        <div 
+            v-if="scheduleList && scheduleList.length > 0"
+            class="scheduling-list-wrap">
           <div 
             v-for="(schedule,index) in scheduleList" 
             :key="index" 
@@ -31,7 +34,7 @@
             <div class="duty-item-top">
               <span class="item-index">第 {{ index + 1 }} 组</span>
               <span class="item-handle-btn">
-                <span class="iconfont law-guiji"></span>
+                <!-- <span class="iconfont law-guiji"></span> -->
                 <span class="el-icon-delete" @click="deleteScheduling(schedule.scheduleId)"></span>
               </span>
             </div>
@@ -51,6 +54,7 @@
             </div>
           </div>
         </div>
+        <div v-else class="schedutin-none-data">暂无数据</div>
       </div>
     </div>
     <!-- 新增排班 -->
@@ -254,6 +258,17 @@ export default {
           background: rgba(69, 115, 208, 0.5);
         }
       }
+    }
+
+    .scheduling-center-line {
+      height: 1px;
+      box-shadow: 0px 5px 10px #383737;
+    }
+
+    .schedutin-none-data {
+      line-height: 60px;
+      text-align: center;
+      color: white;
     }
   }
 }

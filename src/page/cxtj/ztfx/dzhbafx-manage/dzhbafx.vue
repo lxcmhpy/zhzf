@@ -105,6 +105,11 @@ export default {
           }
         ]
       });
+       this.chartColumn.on('click', function (params) {
+        
+            var value = params.name;
+           console.log(value);
+        });
     },
     drawLine2() {
       this.chartColumn = echarts.init(document.getElementById("chart2"));

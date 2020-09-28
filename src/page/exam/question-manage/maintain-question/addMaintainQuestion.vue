@@ -67,6 +67,7 @@
               cols="100%"
               placeholder="请输入内容"
               v-model="addMaintainQuestionForm.questionName"
+              maxlength="500"
             ></el-input>
           </el-form-item>
         </div>
@@ -148,6 +149,7 @@
                 :rows="4"
                 placeholder
                 v-model="addMaintainQuestionForm.pqoList[scope.$index].optionName"
+                maxlength="500"
               ></el-input>
             </template>
           </el-table-column>
@@ -226,6 +228,7 @@
               :rows="5"
               placeholder="请输入答案"
               v-model="addMaintainQuestionForm.answer"
+              maxlength="500"
             ></el-input>
           </el-form-item>
         </el-row>
@@ -243,6 +246,7 @@
             :rows="4"
             placeholder="请输入内容"
             v-model="addMaintainQuestionForm.questionAnalysis"
+            maxlength="500"
           ></el-input>
         </el-form-item>
       </el-row>
@@ -257,7 +261,6 @@
   </el-dialog>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   data() {

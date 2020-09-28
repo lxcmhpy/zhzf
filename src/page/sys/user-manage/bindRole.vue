@@ -61,11 +61,21 @@ export default {
     },
     //绑定角色
     bindRoleSure() {
+      let _this = this
+      let compare=''
+      this.roleList.forEach(element => {
+        compare=compare+element.id+','
+      });
+      // 排除列表中没有的角色
+      let onlyList=[]
+      _this.selectRoleList.forEach(element => {
+        if(compare.indexOf(element)!=-1)
+           onlyList.push(element)
+      });
       let data = {
         userIds: this.userIds.join(','),
-        roleIds: this.selectRoleList.join(",")
+        roleIds: onlyList.join(",")
       };
-      let _this = this
       this.$store.dispatch("userBindRole", data).then(
         res => {
           console.log(res);

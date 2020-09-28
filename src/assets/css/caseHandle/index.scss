@@ -2,18 +2,18 @@
 
 .caseFormBac {
   background: #ffffff;
-  margin    : 22px;
+  margin: 22px;
 
-  &>p {
+  & > p {
     line-height: 50px;
-    text-align : center;
-    font-size  : 20px;
+    text-align: center;
+    font-size: 20px;
   }
 
-  &>div {
+  & > div {
     overflow: hidden;
-    margin  : auto;
-    width   : 70%;
+    margin: auto;
+    width: 70%;
 
     .item {
       width: 49%;
@@ -33,21 +33,33 @@
     }
 
     .itemFive {
-      width: calc(20% - 20px);
+      width: calc(20% - 33px);
       float: left;
     }
     .itemFive2 {
       width: calc(30% - 20px);
       float: left;
     }
-    .gongLiBox1{
-      margin-top: 12px;text-align: center;float:left;margin-left:90px;color:#606266
+    .gongLiBox1 {
+      margin-top: 12px;
+      text-align: center;
+      float: left;
+      margin-left: 90px;
+      color: #606266;
     }
-    .gongLiBox2{
-      margin-top: 12px;text-align: center;float:left;margin-left: 10px;margin-right: 10px;color:#606266
+    .gongLiBox2 {
+      margin-top: 12px;
+      text-align: center;
+      float: left;
+      margin-left: 10px;
+      margin-right: 10px;
+      color: #606266;
     }
-    .gongLiBox3{
-      margin-top: 12px;text-align: center;float: left;margin-left: 30px;
+    .gongLiBox3 {
+      margin-top: 12px;
+      text-align: center;
+      float: left;
+      margin-left: 30px;
     }
 
     .itemThird:nth-child(2) {
@@ -76,7 +88,6 @@
           line-height: 100%;
         }
       }
-
     }
 
     .el-date-editor.el-input,
@@ -88,17 +99,17 @@
       position: relative;
 
       .el-form-item__content button {
-        position     : absolute;
-        right        : 0;
-        height       : 32px;
-        width        : 20px;
-        top          : 4px;
+        position: absolute;
+        right: 0;
+        height: 32px;
+        width: 20px;
+        top: 4px;
         border-radius: 0;
 
         i {
           position: absolute;
-          left    : 13px;
-          top     : 9px;
+          left: 13px;
+          top: 9px;
         }
       }
 
@@ -106,60 +117,62 @@
         width: calc(100% - 17px);
       }
     }
-
   }
 
   .driverOrAgentBox {
-    &>div {
+    & > div {
       overflow: hidden;
     }
   }
 
   .buttonBox {
     text-align: center;
-    padding   : 20px 0;
+    padding: 20px 0;
   }
 
   .el-select {
     width: 100%;
   }
-  #payTotalBox{
-    label:before{
-      content: '*';
-      color: #F56C6C;
+  #payTotalBox {
+    label:before {
+      content: "*";
+      color: #f56c6c;
       margin-right: 4px;
     }
   }
-  #pathLossListTable{
-    th:nth-child(2),th:nth-child(3),th:nth-child(4),th:nth-child(5),th:nth-child(6){
-        .cell:before{
-          content: '*';
-          color: #F56C6C;
-          margin-right: 4px;
-        }
+  #pathLossListTable {
+    th:nth-child(2),
+    th:nth-child(3),
+    th:nth-child(4),
+    th:nth-child(5),
+    th:nth-child(6) {
+      .cell:before {
+        content: "*";
+        color: #f56c6c;
+        margin-right: 4px;
+      }
     }
   }
-  .mustTip{
-    color: #F56C6C;
+  .mustTip {
+    color: #f56c6c;
     margin-right: 4px;
   }
-
 }
 
 #inforCollectionBox {
   position: absolute;
-  width   : 100%;
-  height  : 100%;
+  width: 100%;
+  height: 100%;
   overflow: auto;
 
   .linkPart {
-    width     : 100%;
-    position  : fixed;
-    top       : 92px;
-    height    : 62px;
-    z-index   : 10;
+    width: 100%;
+    position: fixed;
+    top: 92px;
+    height: 62px;
+    z-index: 10;
     text-align: center;
-    background: linear-gradient(0deg, #EAEDF4, #FFFFFF);
+    background: linear-gradient(0deg, #eaedf4, #ffffff);
     box-shadow: 0px 6px 4px 0px rgba(39, 66, 122, 0.13);
 
     .linkPartCon {
@@ -171,15 +184,15 @@
       a {
         width: 123px;
         height: 32px;
-        display       : inline-block;
+        display: inline-block;
         line-height: 32px;
         vertical-align: middle;
-        box-sizing    : border-box;
-        color         : #20232B;
+        box-sizing: border-box;
+        color: #20232b;
       }
       .activeA {
-        background: #4573D0;
-        color     : #fff;
+        background: #4573d0;
+        color: #fff;
       }
     }
   }
@@ -189,17 +202,17 @@
   }
 
   .caseSubmitBtn {
-    width     : 48px;
-    height    : 48px;
-    background: #4573D0;
-    position  : fixed;
-    bottom    : 120px;
-    right     : 100px;
-    color     : #fff;
-    font-size : 12px;
+    width: 48px;
+    height: 48px;
+    background: #4573d0;
+    position: fixed;
+    bottom: 120px;
+    right: 100px;
+    color: #fff;
+    font-size: 12px;
 
     i {
-      display      : block;
+      display: block;
       margin-bottom: 2px;
     }
 
@@ -207,37 +220,37 @@
   }
 
   .caseSubmitBtn2 {
-    bottom    : 50px;
-    background: #4AAFA7;
+    bottom: 50px;
+    background: #4aafa7;
   }
 
   #judgeFreedomBox {
     margin-bottom: 20px;
 
     p {
-      color        : #606266;
-      font-size    : 14px;
+      color: #606266;
+      font-size: 14px;
       margin-bottom: 10px;
     }
 
     li {
-      background   : #fff;
-      border       : 1px solid #DDDDDD;
-      overflow     : hidden;
-      line-height  : 34px;
-      margin-left  : 20px;
-      padding-left : 20px;
+      background: #fff;
+      border: 1px solid #dddddd;
+      overflow: hidden;
+      line-height: 34px;
+      margin-left: 20px;
+      padding-left: 20px;
       margin-bottom: 10px;
 
       div {
-        float       : left;
+        float: left;
         margin-right: 10px;
       }
-      &>div:nth-child(1) {
+      & > div:nth-child(1) {
         min-width: 80px;
       }
 
-      &>div:nth-child(2) {
+      & > div:nth-child(2) {
         /* min-width  : 400px; */
         width: calc(100% - 300px);
         margin-left: 100px;
@@ -245,7 +258,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      .wfqj-tooltip{
+      .wfqj-tooltip {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -259,59 +272,57 @@
     }
 
     .activeJudgli {
-      background: #EAEDF4;
-      border    : 1px solid #4573D0;
-      color     : #4573D0;
-      position  : relative;
+      background: #eaedf4;
+      border: 1px solid #4573d0;
+      color: #4573d0;
+      position: relative;
 
       span.selectIcon {
-        display : inline-block;
+        display: inline-block;
         position: absolute;
-        right   : 10px;
+        right: 10px;
       }
-
     }
   }
-  .afddBox{
+
+  .afddBox {
     position: relative;
     overflow: inherit;
-    .showMapBtn{
+    .showMapBtn {
       position: absolute;
       right: -100px;
       top: 4px;
     }
   }
-  .el-input-number--mini .el-input--mini .el-input__inner{
+  .el-input-number--mini .el-input--mini .el-input__inner {
     height: 28px;
   }
-
 }
 
 .chooseLawPer {
-  height  : 300px;
+  height: 300px;
   overflow: hidden;
 
-  &>div {
-    width        : 50%;
-    height       : 100%;
-    float        : left;
-    box-sizing   : border-box;
-    border-bottom: 1px solid #D6DBE3;
+  & > div {
+    width: 50%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    border-bottom: 1px solid #d6dbe3;
 
-    &>p {
-      color        : #9FA3AF;
+    & > p {
+      color: #9fa3af;
       margin-bottom: 10px;
     }
-
   }
 
   .choosed {
     padding-right: 22px;
-    border-right : 1px solid #D6DBE3;
+    border-right: 1px solid #d6dbe3;
 
     div {
-      &>span {
-        margin-right : 10px;
+      & > span {
+        margin-right: 10px;
         margin-bottom: 5px;
       }
     }
@@ -325,23 +336,23 @@
     }
 
     .el-input__inner {
-      height     : 32px;
+      height: 32px;
       line-height: 32px;
     }
 
     .userList {
-      height  : 200px;
+      height: 200px;
       overflow: auto;
 
       .el-checkbox-group {
         .el-checkbox {
-          display     : block;
-          height      : 30px;
+          display: block;
+          height: 30px;
           margin-right: 0;
 
           span.name {
             display: inline-block;
-            width  : 80px;
+            width: 80px;
           }
         }
 
@@ -355,7 +366,6 @@
       }
     }
   }
-
 }
 
 .caseRegisterForm {
@@ -369,37 +379,35 @@
 
       .el-input-group__append {
         position: absolute;
-        left    : 0;
-        top     : 0;
-        width   : 100%;
-        padding : 0;
-        opacity : 0;
-        height  : 100%;
-        cursor  : pointer;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        opacity: 0;
+        height: 100%;
+        cursor: pointer;
 
         button {
-          width  : 100%;
-          height : 100%;
+          width: 100%;
+          height: 100%;
           padding: 0;
-          margin : 0;
+          margin: 0;
         }
       }
     }
-
   }
 }
 
 .illegalActSearchForm {
-  &>div {
+  & > div {
     overflow: hidden;
 
-    &>div {
+    & > div {
       float: left;
     }
 
     .item {
       width: 32%;
-
     }
 
     .item:nth-child(2) {
@@ -407,7 +415,7 @@
     }
 
     .itemBig {
-      width       : 80%;
+      width: 80%;
       margin-right: 2%;
     }
 
@@ -415,7 +423,6 @@
       width: 18%;
     }
   }
-
 }
 
 // .paginationBox {
@@ -424,27 +431,27 @@
 
 .showApprovePeople {
   max-height: 200px;
-  overflow  : auto;
+  overflow: auto;
 
   .part {
-    margin  : 10px 0;
+    margin: 10px 0;
     overflow: hidden;
 
-    &>div {
+    & > div {
       float: left;
     }
 
-    &>div:nth-child(1) {
-      width     : 30%;
+    & > div:nth-child(1) {
+      width: 30%;
       margin-top: 0px;
     }
 
-    &>div:nth-child(2) {
+    & > div:nth-child(2) {
       width: 70%;
     }
 
     .el-tag {
-      margin-left  : 10px;
+      margin-left: 10px;
       margin-bottom: 10px;
     }
   }
@@ -453,88 +460,84 @@
 //搜索栏
 .caseHandleSearchPart {
   display: flex;
-  right  : 20px;
+  right: 20px;
 
-  &>div:first-child {
-    width     : 10%;
+  & > div:first-child {
+    width: 10%;
     margin-top: 5px;
   }
 
-  &>div:last-child {
+  & > div:last-child {
     width: 90%;
 
     .caseSearchForm {
       width: 100%;
 
-      &>div {
-        display        : flex;
-        flex-wrap      : wrap;
+      & > div {
+        display: flex;
+        flex-wrap: wrap;
         justify-content: flex-start;
 
         .item {
-
           // width: 20%;
           button {
             margin-top: 5px;
           }
         }
 
-        &>div:last-child {
+        & > div:last-child {
           // width      : 15%;
           // margin-left: 5%;
         }
-
       }
     }
 
-    .caseSearchForm>div.waitDealStyle {
+    .caseSearchForm > div.waitDealStyle {
       .item {
         // width: 15%;
       }
 
-      &>div:last-child {
+      & > div:last-child {
         // width: 10%;
       }
     }
 
-    .caseSearchForm>div.approveIngStyle {
+    .caseSearchForm > div.approveIngStyle {
       .item {
         // width: 18%;
       }
 
-      &>div:last-child {
+      & > div:last-child {
         // width: 10%;
       }
     }
 
-    .caseSearchForm>div:last-child {
+    .caseSearchForm > div:last-child {
       .item {
         // width: 50%;
       }
     }
 
-    .caseSearchForm>div.lineTwoStyle {
+    .caseSearchForm > div.lineTwoStyle {
       .item {
-
         // width: 33.3%;
-        &>div {
-
+        & > div {
           // width: 100%;
           .el-date-editor--daterange.el-input__inner {
             // width   : 100%;
-            height     : 32px;
+            height: 32px;
             line-height: 26px;
           }
         }
       }
     }
 
-    .caseSearchForm>div.hideSomeSearchClass {
+    .caseSearchForm > div.hideSomeSearchClass {
       display: none;
     }
   }
 
-  &>div.fullWid {
+  & > div.fullWid {
     width: 100%;
   }
 }
@@ -545,8 +548,8 @@
 }
 
 .fullscreen .searchAndpageBox {
-  padding       : 20px;
-  animation     : switchHeight2 0.4s;
+  padding: 20px;
+  animation: switchHeight2 0.4s;
   -moz-animation: switchHeight2 0.4s;
   /* Firefox */
   -webkit-animation: switchHeight2 0.4s;
@@ -577,7 +580,7 @@
 // }
 
 .fullscreen .el-date-editor {
-  height     : 33px;
+  height: 33px;
   line-height: 33px;
   //padding  : 0px 10px;
 }
@@ -594,8 +597,7 @@
 
 @-moz-keyframes switchHeight
 
-/* Firefox */
-  {
+/* Firefox */ {
   from {
     padding-top: 60px;
   }
@@ -607,8 +609,7 @@
 
 @-webkit-keyframes switchHeight
 
-/* Safari 和 Chrome */
-  {
+/* Safari 和 Chrome */ {
   from {
     padding-top: 60px;
   }
@@ -620,8 +621,7 @@
 
 @-o-keyframes switchHeight
 
-/* Opera */
-  {
+/* Opera */ {
   from {
     padding-top: 60px;
   }
@@ -643,8 +643,7 @@
 
 @-moz-keyframes switchHeight2
 
-/* Firefox */
-  {
+/* Firefox */ {
   from {
     padding-top: 20px;
   }
@@ -656,8 +655,7 @@
 
 @-webkit-keyframes switchHeight2
 
-/* Safari 和 Chrome */
-  {
+/* Safari 和 Chrome */ {
   from {
     padding-top: 20px;
   }
@@ -669,8 +667,7 @@
 
 @-o-keyframes switchHeight
 
-/* Opera */
-  {
+/* Opera */ {
   from {
     padding-top: 20px;
   }
@@ -682,9 +679,9 @@
 
 /* 置顶 */
 .el-backtop {
-  background-color  : transparent;
+  background-color: transparent;
   -webkit-box-shadow: none;
-  box-shadow        : none;
+  box-shadow: none;
 }
 
 .next_btn {
@@ -693,33 +690,32 @@
 }
 
 .tablePart_select {
-  height            : calc(100% - 235px);
-  overflow          : auto;
-  padding-top       : 3px;
+  height: calc(100% - 235px);
+  overflow: auto;
+  padding-top: 3px;
   -webkit-box-sizing: border-box;
-  box-sizing        : border-box;
+  box-sizing: border-box;
 
-  .el-table__body tr.current-row>td {
-    background-color: #4573D0;
-    color           : #fff;
+  .el-table__body tr.current-row > td {
+    background-color: #4573d0;
+    color: #fff;
   }
 
   .el-table--striped .el-table__body tr.el-table__row--striped.current-row td {
-    background-color: #4573D0;
+    background-color: #4573d0;
   }
-
 }
 
 .disabled_btn {
   .el-button--primary {
-    color           : #fff;
+    color: #fff;
     background-color: #a0b5e0;
-    border-color    : #a0b5e0;
+    border-color: #a0b5e0;
   }
 }
 
 .casehome_dialog {
-  padding   : 42px;
+  padding: 42px;
   box-sizing: border-box;
 }
 
@@ -734,46 +730,46 @@
 }
 
 .line {
-  margin-top      : 12px !important;
-  margin-bottom      : 18px !important;
-  border-bottom: 1px dashed #DFDFDF;
+  margin-top: 12px !important;
+  margin-bottom: 18px !important;
+  border-bottom: 1px dashed #dfdfdf;
 }
-.lable-height18px{
-  .el-form-item__label{
+.lable-height18px {
+  .el-form-item__label {
     line-height: 18px;
   }
 }
 
 // 自由裁量标准tooltip
-.wfqj-poper{
+.wfqj-poper {
   width: 40%;
   line-height: 24px;
   font-size: 16px;
 }
-.judge-poper{
+.judge-poper {
   line-height: 24px;
   font-size: 16px;
 }
 
-.back-ball{
+.back-ball {
   line-height: 58px;
 }
 
 /* 回到顶部按钮背景色 */
-.el-backtop:hover{
-  background-color: #363B42;
+.el-backtop:hover {
+  background-color: #363b42;
 }
 
 .warn-box {
-  width        : 20px;
-  height       : 20px;
+  width: 20px;
+  height: 20px;
   border-radius: 50px;
-  color        : #fff;
-  line-height  : 20px;
+  color: #fff;
+  line-height: 20px;
 }
 
 .warn-li {
   li {
-      list-style-type: disc;
+    list-style-type: disc;
   }
 }

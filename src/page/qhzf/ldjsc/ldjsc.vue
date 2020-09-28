@@ -1,5 +1,5 @@
 <template>
-  <el-container class="body_bg"> 
+  <el-container class="body_bg">
       <el-main>
           <el-row class="main">
         <el-row>
@@ -11,14 +11,14 @@
           </el-col>
           <!-- <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;" >
               <div class="dptitle_3 dptitle_font" @click="zbpage()">人员装备</div>
-               
+
           </el-col> -->
           <el-col :span="6" style="height:60px;margin-left:50px;margin-top: 35px;" >
               <div class="dptitle_4" >
                   <span class="dpright_font0">涉案本地车辆：</span>
                   <span class="dpright_font1">2568辆</span>
               </div>
-               
+
           </el-col>
         </el-row>
         <el-row>
@@ -67,7 +67,7 @@
                 <div class="bt">案件状态</div>
               </el-row>
               <el-row>
-                <el-col :span="12" > 
+                <el-col :span="12" >
                   <div id="ajzt" style="width: 100%; height: 200px;margin-top:-20px"></div>
                 </el-col>
                 <el-col :span="12" style="" >
@@ -80,10 +80,10 @@
                                  <span class="dw" style="margin-left:0px;">例/</span>
                                  <span class="sl2">{{ajs}}</span>
                                  <span class="dw" style="margin-left:0px;">例</span>
-                            </div>                         
+                            </div>
                         </el-row>
                   </el-col>
-                
+
               </el-row>
             </el-row>
           </el-col>
@@ -125,31 +125,30 @@
                  <el-row>
                        <el-col :span="12" ><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;"></el-col>
                        <el-col :span="12" ><img src="../../../../static/images/map/执行金额.png" style="height:80px;width:100px;"></el-col>
-                      
+
                   </el-row>
                   <el-row >
                        <el-col :span="12" ><div class="type" style="height:30px;width:100px;margin-left:25px;">【 处罚金额 】</div></el-col>
                        <el-col :span="12" ><div class="type" style="height:30px;width:100px;margin-left:25px;">【 执行金额 】</div></el-col>
-                       
+
                   </el-row>
                   <el-row>
                        <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">32682</div></el-col>
                        <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">28292</div></el-col>
-                       
+
                   </el-row>
                   <el-row>
                        <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
                        <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
-                     
+
                   </el-row>
               </el-row>
             </el-row>
            </el-col>
         </el-row>
         </el-row>
-      </el-main>    
+      </el-main>
   </el-container>
-</template>
 </template>
 
 
@@ -277,7 +276,7 @@ echarts.extendsMap = function(id, opt){
         callback: function(name, option, instance){}
 	};
 	if(opt) opt = this.util.extend(defaultOpt, opt);
-	
+
 	// 层级索引
 	var name = [opt.mapName];
 	var idx = 0;
@@ -287,7 +286,7 @@ echarts.extendsMap = function(id, opt){
 		left: 30,
 		top: 5
 	};
-    
+
 	var line = [[0, 0], [8, 11], [0, 22]];
     // style
 	var style = {
@@ -304,7 +303,7 @@ echarts.extendsMap = function(id, opt){
         **/
         resetOption: function(i, o, n){
             var breadcrumb = this.createBreadcrumb(n);
-            
+
             var j = name.indexOf(n);
             var l = o.graphic.length;
             if(j < 0){
@@ -355,7 +354,7 @@ echarts.extendsMap = function(id, opt){
                 "海北藏族自治州": "haibei",
                 "果洛藏族自治州": "guoluo",
 
-            
+
             };
             var breadcrumb = {
                 type: 'group',
@@ -452,7 +451,7 @@ echarts.extendsMap = function(id, opt){
             });
         }
     };
-    
+
     var option = {
     	// backgroundColor: opt.bgColor,
     	graphic: [{
@@ -561,10 +560,10 @@ echarts.extendsMap = function(id, opt){
                         y: 0.5,
                         r: 0.8,
                         colorStops: [{
-                            offset: 0, 
+                            offset: 0,
                             color: 'rgba(147, 235, 248, 0)' // 0% 处的颜色
                         }, {
-                            offset: 1, 
+                            offset: 1,
                             color: 'rgba(147, 235, 248, .2)' // 100% 处的颜色
                         }],
                         globalCoord: false // 缺省为 false
@@ -658,10 +657,10 @@ echarts.extendsMap = function(id, opt){
     chart.setOption(option);
     // 添加事件
     chart.on('click', function(params){
-    
-      
+
+
         var _self = this;
-        
+
     	if(opt.goDown && params.name !== name[idx]){
             if(cityMap[params.name]){
                 var url = cityMap[params.name];
@@ -669,7 +668,7 @@ echarts.extendsMap = function(id, opt){
                     curGeoJson = response;
                     echarts.registerMap(params.name, response);
                     handleEvents.resetOption(_self, option, params.name);
-                  
+
                 });
             }
     	}
@@ -701,7 +700,7 @@ $.getJSON(qinghai, function(geoJson){
     	goDown: true,       // 是否下钻
     	// 下钻回调
     	callback: function(name, option, instance){
-           
+
         //     var cityMap2 = {
         //         "西宁市": xining,
         //         "玉树藏族自治州": yushu,
@@ -780,7 +779,7 @@ $.getJSON(qinghai, function(geoJson){
         //           console.log(response);
         //             for(var i=0;i<response.features.length;i++){
         //                 data1.push({name:response.features[i].properties.name,value:35,level:2});
-                       
+
         //             }
         //            tmp=initSeriesData2(data1);
         //            console.log(tmp);
@@ -789,15 +788,15 @@ $.getJSON(qinghai, function(geoJson){
         //                 // option.geo.map=name;
         //            }
         //         });
-                  
-                   
-        //    console.log(option);  
+
+
+        //    console.log(option);
          console.log(name);
           if(name=="西宁市"){
-            option.series[0].data.push({name: "大通回族土族自治县",value:[101.67, 36.92,35,3]});
+              option.series[0].data.push({name: "大通回族土族自治县",value:[101.67, 36.92,35,3]});
               option.series[0].data.push({name: "湟中县",value:[101.57, 36.49, 35, 1]});
               option.series[0].data.push({name: "甘德县",value:[101.28, 36.72, 35, 2]});
-              
+
          }
          if(name=="海东市"){
               option.series[0].data.push({name: "乐都区",value:[102.38, 36.49, 35, 1]});
@@ -812,7 +811,7 @@ $.getJSON(qinghai, function(geoJson){
               option.series[0].data.push({name: "尖扎县",value:[102, 35.92, 35, 2]});
               option.series[0].data.push({name: "泽库县",value:[101.5, 35.03, 35, 1]});
               option.series[0].data.push({name: "河南蒙古族自治县",value:[101.62, 34.75, 35, 2]});
-             
+
          }
          if(name=="海南藏族自治州"){
               option.series[0].data.push({name: "共和县",value:[100.61, 36.27, 35, 3]});
@@ -841,7 +840,7 @@ $.getJSON(qinghai, function(geoJson){
               option.series[0].data.push({name: "都兰县",value:[98.13, 36.3,32,1]});
               option.series[0].data.push({name: "天峻县",value:[99.03, 37.28,31,2]});
                option.series[0].data.push({name: "德令哈市",value:[97.36084,37.36946,11,2]});
-            
+
          }
          if(name=="玉树藏族自治州"){
                option.series[0].data.push({name: "玉树市",value:[96.97, 33.03,32,2]});
@@ -851,11 +850,11 @@ $.getJSON(qinghai, function(geoJson){
               option.series[0].data.push({name: "囊谦县",value:[96.47, 32.23,25,2]});
               option.series[0].data.push({name: "曲麻菜县",value:[95.50,34.52,25,2]});
          }
-             
+
            myChart.setOption(option);
-          
+
     	},
-        // 数据展示         	
+        // 数据展示
     	data: [{
     		name: '西宁市',
     		value: 89,
@@ -894,7 +893,7 @@ $.getJSON(qinghai, function(geoJson){
 
 
     },
-   
+
      drawLeft2() {
       this.chartColumn = echarts.init(document.getElementById("ndafqs"));
 const colorList = ["#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF',"#9E87FF", '#73DDFF', '#fe9a8b', '#F56948', '#9E87FF',"#9E87FF", '#73DDFF']
@@ -964,10 +963,10 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
                 color: '#999' //坐标轴字颜色
             },
             margin: 15,
-            formatter:function(value)  
-        {  
-            return value.split(" ").join("\n");  
-        } 
+            formatter:function(value)
+        {
+            return value.split(" ").join("\n");
+        }
         },
         axisPointer: {
             label: {
@@ -1081,7 +1080,7 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
         }
     }]
       });
-      
+
     },
 drawLeft3() {
       this.chartColumn = echarts.init(document.getElementById("ajzt"));
@@ -1189,7 +1188,7 @@ drawLeft3() {
         }
     ]
       });
-  
+
     },
 
 
@@ -1199,8 +1198,8 @@ drawLeft3() {
 drawCenter2() {
       this.chartColumn = echarts.init(document.getElementById("zfjgajsl"));
 const createSvg = (shadowColor, shadowBlur) => `
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
-        x="0px" y="0px" 
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+        x="0px" y="0px"
         viewBox="0 0 32 128"
         xml:space="preserve"
     >
@@ -1233,11 +1232,11 @@ const insetShadowUrl = DOMURL.createObjectURL(svg);
 const dataSet = [
      ['青海省海晏 公路超限检测站', '日月超限运输 车辆监控检测站', '倒淌河超限运输 车辆监控检测站',
     //  '青海省共和塔拉滩公路 超限检测站',
-   
+
        ],
-    [493, 492, 486, 
-    // 347, 
-    
+    [493, 492, 486,
+    // 347,
+
     ]
 ];
 
@@ -1264,11 +1263,11 @@ const dataSet = [
         },
         axisLabel: {
             color: 'rgba(255,255,255, 0.5)',
-            // interval: 0,  
-            formatter:function(value)  
-            {  
-                return value.split(" ").join("\n");  
-            } 
+            // interval: 0,
+            formatter:function(value)
+            {
+                return value.split(" ").join("\n");
+            }
         },
         splitLine: {
             show: false,
@@ -1329,7 +1328,7 @@ const dataSet = [
         },
     ],
       });
-      
+
     },
 drawRight1() {
       this.chartColumn = echarts.init(document.getElementById("clpm"));
@@ -1439,12 +1438,12 @@ drawRight1() {
         z: 10
     }]
       });
-      
+
     },
  drawRight2() {
       this.chartColumn = echarts.init(document.getElementById("afd"));
-        
-        
+
+
       this.chartColumn.setOption({
         backgroundColor: '',
         tooltip: {
@@ -1470,11 +1469,11 @@ drawRight1() {
 						textStyle: {
 							fontSize: 12
                         },
-                        interval: 0,  
-                        formatter:function(value)  
-                        {  
-                            return value.split("").join("\n");  
-                        } 
+                        interval: 0,
+                        formatter:function(value)
+                        {
+                            return value.split("").join("\n");
+                        }
 					},
 					axisLine: {
 						lineStyle: {
@@ -1574,28 +1573,28 @@ drawRight1() {
 					},
 				}]
       });
-     
+
     },
- search1(val) {    
+ search1(val) {
       let data = {
        year:2020
       };
-      
+
       this.$store.dispatch("ndajsllxslbztj", data).then(res => {
-        
+
          var map={};
        res.forEach(item =>{
           map[item[0]]=item[1]
-          
+
          });
          console.log(map);
-            this.ybaj=map["一般案件"];      
-            this.cfaj=map["处罚案件"];         
+            this.ybaj=map["一般案件"];
+            this.cfaj=map["处罚案件"];
             this.pbcaj=map["赔补偿案件"];
             this.cxcz=map["超限超载"];
-                             
-           
-       
+
+
+
       });
       err => {
         console.log(err);
@@ -1607,17 +1606,17 @@ search2(val) {
       };
       let _this = this;
       this.$store.dispatch("ndajsltbtj", data).then(res => {
-        
+
          var map={};
          res.forEach(item =>{
          var tmp=item[0];
          if(tmp<10){
            tmp=tmp.substring(1,2);
          }
-              map[tmp]=item[1];       
+              map[tmp]=item[1];
          });
 
-        
+
         var map2=[];
         for(var i=1;i<=12;i++){
           if(map[i]!=undefined){
@@ -1625,8 +1624,8 @@ search2(val) {
           }else{
              map2.push(0);
           }
-        }       
-          this.data1=map2; 
+        }
+          this.data1=map2;
           this.drawLeft2();
       });
       err => {
@@ -1639,17 +1638,17 @@ search2(val) {
       };
       let _this = this;
       this.$store.dispatch("ndajsltbtj", data).then(res => {
-         
+
          var map={};
          res.forEach(item =>{
          var tmp=item[0];
          if(tmp<10){
            tmp=tmp.substring(1,2);
          }
-              map[tmp]=item[1];       
+              map[tmp]=item[1];
          });
 
-        
+
         var map2=[];
         for(var i=1;i<=12;i++){
           if(map[i]!=undefined){
@@ -1658,7 +1657,7 @@ search2(val) {
              map2.push(0);
           }
         }
-       
+
 
          this.data2=map2;
           this.drawLeft2();
@@ -1671,8 +1670,8 @@ search2(val) {
         return  setInterval(() => {
           this.font();
    }, 1000*5)
-        
-       
+
+
       },
       font(){
           $('#ybaj').addClass('flipOutX animated infinite');
@@ -1704,9 +1703,9 @@ search2(val) {
       }
 
 
-    
-    
-   
+
+
+
   },
   mounted() {
     // this.search1();
@@ -1741,7 +1740,7 @@ search2(val) {
   cursor: pointer;
 }
 .dptitle_font{
-     
+
 font-size:18px;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:500;
@@ -1902,7 +1901,7 @@ font-size:23px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:rgba(4,241,248,1);
-line-height:61px;  
+line-height:61px;
 }
 .sl2{
 width:190px;
@@ -1911,10 +1910,14 @@ font-size:17px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:#FFFFFF;
-line-height:61px;  
+line-height:61px;
 }
-.fullscreen .el-main {
+/* .fullscreen .el-main {
     background:bottom;
+} */
+.body_bg .el-main {
+    background: none;
+    width:'100%';
 }
 .main {
     background-image: url("../../../../static/images/map/边框.png");

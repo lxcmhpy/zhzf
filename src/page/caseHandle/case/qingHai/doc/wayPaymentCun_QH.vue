@@ -76,7 +76,7 @@
           <tr style="height:80px">
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="caseSituation" :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])">
-                <el-input type="textarea" v-model="docData.caseSituation" :disabled="fieldDisabled(propertyFeatures['caseSituation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.caseSituation" :disabled="fieldDisabled(propertyFeatures['caseSituation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="200" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -185,7 +185,7 @@ export default {
       caseDocDataForm: {
         id: "",   //修改的时候用
         caseBasicinfoId: '',   //案件ID
-        caseDoctypeId: '7499e317a812995c933d679b521416b2',     //文书类型ID
+        caseDoctypeId: this.$route.params.docId,     //文书类型ID
         //文书数据
         docData: "",
         status: "",   //提交状态

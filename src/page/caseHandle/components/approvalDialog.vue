@@ -69,10 +69,11 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId", "docId", "showQZBtn", "docDataId"]) },
   methods: {
-    async showModal(data) {
+    async showModal(data) { 
       console.log(data);
       this.visible = true;
       this.caseData = data;
+      this.approvalForm.executeHandle = data.oldExecuteHandle || data.oldExecuteHandle === 0 ? data.oldExecuteHandle : 1;
       this.approvalForm.approveOpinions = data.oldApprovalOpion ? data.oldApprovalOpion : '同意';
       this.approvalForm.approvalTime = data.oldApprovalTime ? data.oldApprovalTime : new Date().format("yyyy年MM月dd日");
     },
@@ -100,13 +101,13 @@ export default {
         jsonApproveData: "",
       };
       
-
       if (this.caseData.currentApproval == "1") {
         //一级审批
         params.jsonApproveData = JSON.stringify({
           approveOpinions: this.approvalForm.approveOpinions,
           approvePeo: this.approvalPeopleName,
           approveTime: this.approvalForm.approvalTime,
+          approveExecuteHandle:this.approvalForm.executeHandle
         });
       } else if (this.caseData.currentApproval == "2") {
         //二级审批
@@ -114,6 +115,7 @@ export default {
           secondApproveOpinions: this.approvalForm.approveOpinions,
           secondApprovePeo: this.approvalPeopleName,
           secondApproveTime: this.approvalForm.approvalTime,
+          secondApproveExecuteHandle:this.approvalForm.executeHandle
         });
       } else if (this.caseData.currentApproval == "3") {
         //三级审批
@@ -121,6 +123,7 @@ export default {
           thirdApproveOpinions: this.approvalForm.approveOpinions,
           thirdApprovePeo: this.approvalPeopleName,
           thirdApproveTime: this.approvalForm.approvalTime,
+          thirdApproveExecuteHandle:this.approvalForm.executeHandle
         });
       }
       console.log(params);
@@ -188,7 +191,7 @@ export default {
         approvalResult = await approvalPdfApi(params);
         this.$message({
           type: "success",
-          message: "审批通过",
+          message: "审批成功",
         });
         _this.$store.commit("setApprovalState", "approvalOver");
         _this.$emit("getNewData");

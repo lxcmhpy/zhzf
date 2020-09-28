@@ -101,7 +101,7 @@
                 element-loading-text="加载中..."
                 :max-height="320"
               >
-                <el-table-column type="selection" align="center" width="40px"></el-table-column>
+                <el-table-column type="selection" align="center" width="58px"></el-table-column>
                 <el-table-column prop="personName" label="姓名" min-width="100px" align="left"></el-table-column>
                 <el-table-column
                   prop="sex"

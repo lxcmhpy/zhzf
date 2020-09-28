@@ -9,7 +9,7 @@
       </template>
       <div class="userList a">
         <!-- <el-checkbox-group v-model="checkedDocId"> -->
-          <li v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
+          <li v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId" @click="editRecord(item)" style="cursor:pointer">
             <span class="name">{{index + 1}}、</span>
             <span class="name">{{item.docName}}</span>
             <span class="name" style="margin-left:20px;color:bule">{{item.status?item.status:'未完成'}}</span>
@@ -156,6 +156,27 @@ export default {
         this.checkedDocId = [];
       }
       this.isIndeterminate = false;
+    },
+     // 选择模板
+    editRecord(item) {
+      // 写文书
+      if (item.pdfStorageId && item.status != '暂存') {
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: "inspection_myPDF",
+          params: { id: item.id, storagePath: item.pdfStorageId }
+        });
+      } else {
+        this.$store.commit("set_inspection_fileId", item.id)
+        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$router.push({
+          name: item.path,
+          params: { id: item.id, addOrEiditFlag: 'add' }
+          // query: { id: item.id, addOrEiditFlag: 'add' }
+        });
+        // 写表单
+        this.$emit('changeModleId', item);
+      }
     },
   },
   mounted() {

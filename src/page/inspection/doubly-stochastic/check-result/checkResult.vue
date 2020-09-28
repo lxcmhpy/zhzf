@@ -45,7 +45,7 @@
           <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
-          <el-table-column prop="checkContent" label="抽查内容" align="center"></el-table-column>
+          <el-table-column prop="checkItem" label="抽查内容" align="center"></el-table-column>
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
             <template slot-scope="scope">
@@ -304,6 +304,7 @@ export default {
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.checkType,
         taskArea: this.searchForm.taskArea,
+        organName : iLocalStroage.gets("userInfo").organName,//机构名称
         current: this.currentPage,
         size: this.pageSize,
       };

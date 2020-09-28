@@ -1,6 +1,6 @@
 import {
   getFileStreamByStorageIdApi,
-} from "@/api/notice/upload";
+} from "@/api/notice/upload"; 
 //公用方法
 let util = {};
 

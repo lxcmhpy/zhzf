@@ -553,7 +553,7 @@ export default {
       let imgRes = '';
       try {
         imgRes = await getDictListDetailByNameApi('loginBg');
-        this.$store.dispatch("setLoadingState", { flag: true, type: 'loadFull' });
+        // this.$store.dispatch("setLoadingState", { flag: true, type: 'loadFull' });
         this.loginImgSrc = './static/images/img/login/' + imgRes.data[0].name + '.jpg';
 
       } catch (error) {
@@ -584,6 +584,7 @@ export default {
     },
   },
   async created() {
+    this.$store.dispatch("setLoadingState", { flag: true, type: 'loadFull' });
     await getHost();
     await this.getSystemData();
     this.getAppDownHref();

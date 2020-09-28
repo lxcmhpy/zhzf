@@ -14,21 +14,21 @@
             <el-form-item label="案卷基数" prop="ajBsjs">
               <el-input placeholder="请输入案卷基数" v-model="batchForm.ajBsjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="结案时间" prop="ajJaDate">
-              <el-date-picker v-model="batchForm.ajJaDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :readonly="isView"></el-date-picker>
-            </el-form-item>
             <el-form-item label="案卷抽取基数" prop="ajCqjs">
               <el-input placeholder="请输入抽取基数" v-model="batchForm.ajCqjs" :readonly="isView"></el-input>
             </el-form-item>
+            <el-form-item label="结案开始时间" prop="ajJaDate">
+              <el-date-picker v-model="batchForm.ajJaDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :readonly="isView"></el-date-picker>
+            </el-form-item>
             <br>
-            <el-form-item label="行政处罚" prop="ajCfBsjs">
+            <el-form-item label="处罚或强制" prop="ajCfBsjs">
               <el-input v-model="batchForm.ajCfBsjs" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="抽取" prop="ajCfCqjs">
               <el-input v-model="batchForm.ajCfCqjs" :readonly="isView"></el-input>
             </el-form-item>
             <br>
-            <el-form-item label="行政强制" prop="ajQzBsjs">
+            <el-form-item label="行政审批" prop="ajQzBsjs">
               <el-input v-model="batchForm.ajQzBsjs" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="抽取" prop="ajQzCqjs">
@@ -38,14 +38,14 @@
             <el-form-item label="执法人员基数" prop="ryBsjs">
               <el-input v-model="batchForm.ryBsjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="各级执法机构领导班子成员比例不低于" prop="ryZjProtion">
+            <el-form-item class="ryZjProtion" label="各级机构领导班子成员最低比例" prop="ryZjProtion">
               <el-input v-model="batchForm.ryZjProtion" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="抽取考试人员基数" prop="ryCqjs">
               <el-input v-model="batchForm.ryCqjs" :readonly="isView"></el-input>
             </el-form-item>
           </el-form>
-          <div :hidden="isView">
+          <div :hidden="isView" style="margin-bottom: 10px;">
             <el-button type="primary" icon="el-icon-plus" @click="addItem">新增指标</el-button>
             <el-button type="primary" @click="saveOrUpdate('batchForm')">保存</el-button>
           </div>
@@ -141,7 +141,7 @@ import {
   findListVoByDetails
 } from '@/api/pykh/catsAppraisalStartUp.js'
 import iLocalStroage from '@/common/js/localStroage'
-import { numType, numCompareList } from '@/common/js/validator'
+import { numType1, numCompareList } from '@/common/js/validator'
 export default {
   data() {
     let _this = this
@@ -286,7 +286,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: numType,
+            validator: numType1,
             trigger: 'blur'
           }
         ],
@@ -315,7 +315,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: numType,
+            validator: numType1,
             trigger: 'blur'
           }
         ]
@@ -518,3 +518,8 @@ export default {
   }
 }
 </script>
+<style>
+  .ryZjProtion .el-form-item__label{
+    line-height: 20px !important;
+  }
+</style>

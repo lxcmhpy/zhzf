@@ -2,7 +2,7 @@ import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi, queryFlowBycaseIdApi, findDocDataByIdApi,
-  updateLinkInfoByCaseIdAndLinkTypeIdApi, findApprovingDocApi, getLinkTypeInfoByIdApi,
+  updateLinkInfoByCaseIdAndLinkTypeIdApi, findApprovingDocApi, getLinkTypeInfoByIdApi,getCaseBasicInfoApi,
 } from "@/api/caseHandle";
 import { getFile } from "@/api/upload";
 import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
@@ -545,6 +545,8 @@ export const mixinGetCaseApiList = {
       }
       this.$store.commit('setDocId', data.docId);
       this.$store.commit("setCaseLinktypeId", data.linkID);
+      this.$store.commit("setCaseLinkName", data.linkName);
+
       if (data.curLinkState == "complete") {    //已完成文书显示pdf  审核中也显示pdf
         //只是环节文书
         let isHuanjieDoc = false;
@@ -615,7 +617,6 @@ export const mixinGetCaseApiList = {
         this.$message('查询环节是否生成了pdf失败!')
       }
       console.log('查询环节是否生成了pdf', fileres);
-
       if (fileres.data.length > 0) {
         this.$store.commit("setDoingLinkId", data.linkID);//保存正在进行的环节ID
         this.$router.push({ name: 'case_handle_myPDF', params: { docId: data2.docId, caseLinktypeId: data.linkID } })
@@ -660,6 +661,7 @@ export const mixinGetCaseApiList = {
     },
     //查询环节是否生成了pdf
     async searchHuanjiePdf(data, linkID) {
+
       let res = '';
       try {
         res = await getFile({ docId: data.docId, caseId: this.caseId, });
@@ -669,7 +671,7 @@ export const mixinGetCaseApiList = {
       console.log('查询环节是否生成了pdf', res);
 
       if (res.data.length > 0) {
-
+        
         let nowCaseDocdata = '';
         try {
           nowCaseDocdata = await findDocDataByIdApi(data.docId);
@@ -690,7 +692,15 @@ export const mixinGetCaseApiList = {
           if (caseIsApprovalingResult.data) {  //审批中
             this.$store.commit('setApprovalState', 'submitApproval')
           } else {
-            this.$store.commit('setApprovalState', 'approvalBefore')
+            //判断是否为已驳回状态
+            let caseBasicInfoRes= await  getCaseBasicInfoApi({id: this.caseId});
+            if(caseBasicInfoRes.data.caseStatus == '已驳回'){
+              let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
+              if(finishCaseReport_caseLinktypeIdArr.includes(caseBasicInfoRes.data.currentLinkId)) this.$store.commit('setApprovalState', 'approvalFinishCaseReportNoPass');
+              else this.$store.commit('setApprovalState', 'approvalNoPass');
+            }else{
+              this.$store.commit('setApprovalState', 'approvalBefore')
+            }
           }
         } else {  //不需要审批
           this.$store.commit('setApprovalState', '')
@@ -795,7 +805,12 @@ export const mixinGetCaseApiList = {
 
     },
     //查看pdf
-    com_viewDocPdf(row, caseLinktypeId) {
+    async com_viewDocPdf(row, caseLinktypeId,hasMoreDoc=0) { //hasMoreDoc为1是代表该环节下有多份文书（比如询问笔录）
+      if(hasMoreDoc){
+        row.url=this.$route.name;
+        row.caseBasicinfoId= this.caseBasicinfoId
+        this.$store.commit("setCurrentFileData", row);//保存文书信息
+      }
       let routerData = {
         hasApprovalBtn: false,
         docId: row.docId,
@@ -818,7 +833,10 @@ export const mixinGetCaseApiList = {
       } else if (row.docProcessStatus == "审批中") {
         this.$store.commit("setApprovalState", "submitApproval");
       } else {
-        this.$store.commit("setApprovalState", "");
+         //判断是否为已驳回状态
+         let caseBasicInfoRes= await  getCaseBasicInfoApi({id: this.caseId});
+         if(caseBasicInfoRes.data.caseStatus == '已驳回') this.$store.commit('setApprovalState', 'approvalNoPass');
+         else  this.$store.commit('setApprovalState', '');
       }
       this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
@@ -832,10 +850,7 @@ export const mixinGetCaseApiList = {
         let data2 = await getDictListDetailByNameApi('车辆类型');
         this.allVehicleShipType = data2.data;
       }
-
-
     }
-
   },
   created() {
     // this.getApiList();

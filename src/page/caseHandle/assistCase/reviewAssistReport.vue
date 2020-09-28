@@ -15,7 +15,7 @@
   </el-dialog>
 </template>
 <script>
-import iLocalStroage from "@/common/js/localStroage";
+
 import {
   getFileStreamByStorageIdApi,
   findByCaseIdAndDocIdApi
@@ -31,14 +31,7 @@ export default {
       pdfId: "",
     };
   },
-  computed:{
-    hostUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    },
-    UserInfo() {
-      return iLocalStroage.gets("userInfo");
-    },
-  },
+  computed:{ },
   methods: {
     showModal(caseId) {
       this.visible = true;

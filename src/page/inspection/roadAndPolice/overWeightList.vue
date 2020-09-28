@@ -68,15 +68,10 @@
             <el-radio-group v-model="recordType.type">
               <ul class="notice-icon-list">
                 <li v-for="(item,index) in checkList" :key="index">
-                  <i class="iconfont law-icon_cheliang"></i><br />
-                  <el-radio :label="item">{{item}}</el-radio>
+                  <i class="iconfont" :class="item.iconName"></i><br />
+                  <el-radio :label="item.label">{{item.label}}</el-radio>
                 </li>
-                <!-- <el-radio label="大件许可">大件许可</el-radio>
-                <el-radio label="绿通车">绿通车</el-radio>
-                <el-radio label="危化车">危化车</el-radio>
-                <el-radio label="路警联合">路警联合</el-radio> -->
               </ul>
-
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -107,7 +102,8 @@ export default {
       domainList: [{ name: '全部', value: 0 }, { name: '路警联合', value: 1 }, { name: '绿通车', value: 2 },
       { name: '危化品', value: 3 }, { name: '大件许可', value: 14 }, { name: '不足1吨', value: 5 }, { name: '特种车', value: 6 },],
       statusList: [{ name: '进行中', value: 0 }, { name: '已归档', value: 1 }],
-      checkList: ['特种车', '大件许可', '绿通车', '不足1t', '危化车', '路警联合'],
+      checkList: [{ label: '特种车', iconName: 'law-btn_te' }, { label: '大件许可', iconName: 'law-btn_daj' }, { label: '绿通车', iconName: 'law-btn_lv' },
+      { label: '不足1t', iconName: 'law-btn_1t' }, { label: '危化车', iconName: 'law-btn_v' }, { label: '路警联合', iconName: 'law-btn_luj' }],
       searchForm: {
         vehicleShipId: "",
         fileStatus: "",
@@ -143,14 +139,14 @@ export default {
     editRecord(item) {
       // 写文书
       if (item.pdfStorageId && item.status != '暂存') {
-        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: "inspection_myPDF",
           params: { id: item.id, storagePath: item.pdfStorageId }
         });
       } else {
         this.$store.commit("set_inspection_fileId", item.id)
-        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: item.path,
           params: { id: item.id, addOrEiditFlag: 'add' }
@@ -163,10 +159,13 @@ export default {
     // 查看模板
     viewRecord(item) {
       this.$store.commit("set_inspection_fileId", item.id)
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$store.commit("set_inspection_OverWeightId", { id: item.id, firstcheckId: item.firstCheckId });
       this.$router.push({
         name: "inspection_overWeightForm",
+        params: {
+          isRefresh: true,
+        }
       });
     },
     // 修改模板
@@ -245,14 +244,17 @@ export default {
       this.dialogVisible = true
     },
     addRecord(formName) {
-      console.log('提那');
+      let _this = this
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.recordType.type == '路警联合') {
+          if (_this.recordType.type == '路警联合') {
             console.log('yanzheng')
             this.$store.commit("set_inspection_OverWeightId", '');
             this.$router.push({
               name: 'inspection_overWeightForm',
+              params: {
+                isRefresh: true,
+              }
             });
           }
           else {

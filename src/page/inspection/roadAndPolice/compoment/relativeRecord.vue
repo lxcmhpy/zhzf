@@ -7,9 +7,6 @@
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
-      <div v-if="!inspectionOverWeightId">
-        请先保存表单
-      </div>
       <div class="userList">
         <li v-for="item in tableData" :label="item.storageId" :key="item.storageId" style="margin-bottom:20px;cursor   : pointer;">
           <img :src="host+item.storageId" width="100%" height="auto" @click.stop="imgDetail(scope.row)" />
@@ -52,16 +49,14 @@ export default {
   // props: ["caseInfo"],
   computed: { ...mapGetters(["caseId", 'inspectionOverWeightId']) },
   methods: {
-    showModal() {
+    showModal(carinfoId) {
       //      console.log('show');
 
       this.visible = true;
       // if (!this.getData) this.getByMlCaseId();
-      console.log('show');
-      if (this.inspectionOverWeightId.id) {
-
+      if (carinfoId) {
         let data = {
-          caseId: this.inspectionOverWeightId.id,
+          caseId: carinfoId.id||'',
           current: 1,
           size: 20,
         };
@@ -81,7 +76,7 @@ export default {
     getByMlCaseId() {
       this.getData = true;
       let _this = this
-      findVoByDocCaseIdApi(this.caseId).then(
+      findVoByDocCaseIdApi(this.caseId.id).then(
         res => {
           console.log(res);
           _this.caseList = res.data;

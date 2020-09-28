@@ -189,6 +189,7 @@ export default  [
                 meta: {
                 title: "超限超载记录",
                 oneTab:true,
+                keepAlive:true,
                 },
                 component: () => import("@/page/inspection/roadAndPolice/overWeightForm.vue")
             },
@@ -202,7 +203,7 @@ export default  [
                 component: () => import("@/page/inspection/roadAndPolice/overWeightList.vue")
             },
             {
-                path: "/inspection_imageMange",
+                path: "/inspection_imageMange/:carinfoId",
                 name: "inspection_imageMange",
                 meta: {
                 title: "照片证据列表",
@@ -250,6 +251,16 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/dutyManage/recordDescription.vue")
+            },
+            // 行政检查--情况分类配置
+            {
+                path: "/conditionClassify",
+                name: "condition_classify",
+                meta: {
+                title: "情况分类配置",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/dutyManage/conditionClassify.vue")
             },
             // 勤务管理--日志管理
             {

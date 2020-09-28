@@ -6,7 +6,7 @@
       <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc"> -->
       文书<br />填报
     </li>
-    <li @click="clickLink('inspection_imageMange')" @mouseenter="changeActive(2)" @mouseout="removeActive(2)" class='el-button el-button--primary' style="padding:10px 0">
+    <li @click="clickLink1('inspection_imageMange')" @mouseenter="changeActive(2)" @mouseout="removeActive(2)" class='el-button el-button--primary' style="padding:10px 0">
       照片<br />证据
     </li>
     <li @mouseenter="changeActive(3)" @mouseout="removeActive(3)" class='el-button el-button--primary' style="padding:10px 0">
@@ -37,11 +37,11 @@ export default {
     relativeRecord,
     operationRecord
   },
-  props: ['formOrDocData', 'storagePath', 'fileEiditFlag'],
+  props: ['formOrDocData', 'storagePath', 'carinfoId'],
   watch: {
-    fileEiditFlag(val, oldVal) {
+    carinfoId(val, oldVal) {
       // debugger
-      console.log('fileEiditFlag', this.fileEiditFlag, 'val', val)
+      console.log(this.carinfoId)
     },
   },
   mixins: [mixinGetCaseApiList],
@@ -107,8 +107,8 @@ export default {
     changeActive(index) {
       this.closeAllDialog()
       switch (index) {
-        case 1: this.$refs.documentSideMenuRef.showModal(this.inspectionOverWeightId.firstcheckId?this.inspectionOverWeightId.firstcheckId:''); break;
-        case 2: this.$refs.relativeRecordRef.showModal(); break;
+        case 1: this.$refs.documentSideMenuRef.showModal(this.inspectionOverWeightId.firstcheckId ? this.inspectionOverWeightId.firstcheckId : ''); break;
+        case 2: this.$refs.relativeRecordRef.showModal(this.inspectionOverWeightId||this.carinfoId); break;
         case 3: this.$refs.operationRecordRef.showModal(); break;
         default: break;
       }
@@ -131,7 +131,25 @@ export default {
     clickLink(name) {
       if (this.inspectionOverWeightId) {
         this.$router.push({
-          name: name
+          name: name,
+        });
+      } else {
+        this.$confirm('请先保存记录', "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => { })
+      }
+    },
+    clickLink1(name) {
+      let _this=this
+      if (this.inspectionOverWeightId||this.carinfoId) {
+
+        this.$router.push({
+          name: name,
+          params: {
+            carinfoId: _this.carinfoId,
+          }
         });
       } else {
         this.$confirm('请先保存记录', "提示", {

@@ -41,7 +41,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <el-dialog :title="title" custom-class="batchConfigDialog" :visible.sync="visible" top="0" width="40%"
+            <el-dialog :title="title" custom-class="batchConfigDialog" :visible.sync="visible" top="7%" width="40%"
                 @close="closeDialog" :close-on-click-modal="false">
                 <div class="search">
                     <el-form :inline="true" :model="addForm" :rules="rules" ref="addForm" label-width="140px">
@@ -50,21 +50,22 @@
                             </el-input>
                         </el-form-item>
                         <br />
-                        <el-form-item label="案卷基数" prop="ajBsjs">
-                            <el-input placeholder="请输入案卷基数" style="width: 100%;" v-model="addForm.ajBsjs"
-                                :readonly="formReadOnly"></el-input>
-                        </el-form-item>
                         <el-form-item label="结案时间" prop="ajJaDate">
                             <el-date-picker v-model="addForm.ajJaDate" style="width: 100%;" type="date"
                                 value-format="yyyy-MM-dd" format="yyyy-MM-dd" :readonly="formReadOnly">
                             </el-date-picker>
+                        </el-form-item>
+                        <br />
+                        <el-form-item label="案卷基数" prop="ajBsjs">
+                            <el-input placeholder="请输入案卷基数" style="width: 100%;" v-model="addForm.ajBsjs"
+                                :readonly="formReadOnly"></el-input>
                         </el-form-item>
                         <el-form-item label="案卷抽取基数" prop="ajCqjs">
                             <el-input placeholder="请输入抽取基数" style="width: 100%;" v-model="addForm.ajCqjs"
                                 :readonly="formReadOnly"></el-input>
                         </el-form-item>
                         <br />
-                        <el-form-item label="行政处罚" prop="ajCfBsjs">
+                        <el-form-item label="处罚或强制" prop="ajCfBsjs">
                             <el-input v-model="addForm.ajCfBsjs" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
@@ -73,7 +74,7 @@
                             </el-input>
                         </el-form-item>
                         <br />
-                        <el-form-item label="行政强制" prop="ajQzBsjs">
+                        <el-form-item label="行政许可" prop="ajQzBsjs">
                             <el-input v-model="addForm.ajQzBsjs" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
@@ -86,7 +87,7 @@
                             <el-input v-model="addForm.ryBsjs" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
-                        <el-form-item label="各级执法机构领导班子成员比例不低于" prop="ryZjProtion">
+                        <el-form-item class="ryZjProtion" label="各级机构领导班子成员最低比例" prop="ryZjProtion">
                             <el-input v-model="addForm.ryZjProtion" style="width: 100%;" :readonly="formReadOnly">
                             </el-input>
                         </el-form-item>
@@ -95,7 +96,7 @@
                             </el-input>
                         </el-form-item>
                     </el-form>
-                    <div slot="footer" class="dialog-footer" v-show="!formReadOnly">
+                    <div slot="footer" class="dialog-footer" v-show="!formReadOnly" style="float:right;"> 
                         <el-button @click="closeDialog">取 消</el-button>
                         <el-button @click="saveOrUpdate('addForm')" type="primary" class="btn-custom">
                             <span>确 定</span>
@@ -119,7 +120,7 @@
         findAllDepartment
     } from "@/api/pykh/catsAppraisalExamPersonUpload.js";
     import {
-        numType,
+        numType1,
         numCompareList
     } from "@/common/js/validator";
     import iLocalStroage from "@/common/js/localStroage";
@@ -302,7 +303,7 @@
                             trigger: "blur"
                         },
                         {
-                            validator: numType,
+                            validator: numType1,
                             trigger: "blur"
                         }
                     ],
@@ -335,7 +336,7 @@
                             trigger: "blur"
                         },
                         {
-                            validator: numType,
+                            validator: numType1,
                             trigger: "blur"
                         }
                     ]
@@ -434,4 +435,9 @@
 <style lang="scss">
     @import "@/assets/scss/systemManage.scss";
 
+</style>
+<style>
+    .ryZjProtion .el-form-item__label{
+        line-height: 20px !important;
+    }
 </style>

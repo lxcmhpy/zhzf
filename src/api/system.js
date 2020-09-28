@@ -54,6 +54,7 @@ export  function  addOrganApi(data)  {
     enforcementOrgan1:data.enforcementOrgan1,
     enforcementOrgan2:data.enforcementOrgan2,
     enforcementBody:data.enforcementBody,
+    administrativeDivision:data.administrativeDivision,
   };
   let  data2  =  vm.$qs.stringify(addOrganForm);
   return  request({
@@ -1296,6 +1297,17 @@ export function getDrawerListApi(data) {
 export  function  getAllGroupOrganApi()  {
     return  request({
       url:  "/system/sys/organ/getAllOrgan",
+      method:  "get",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource()
+    });
+  }
+
+//获取下拉列表
+export  function  getDataListApi(data)  {
+    return  request({
+      url:  "/system/sys/datalist/getDataList/" + data.pid + "/" + data.dataType,
       method:  "get",
       showloading: true,
       loadingType:'loadPart',

@@ -2,12 +2,13 @@
   <div class="searchAndpageBox" id="roleBox">
     <div class="handlePart">
       <div class="search">
-        <el-form :inline="true" :model="searchForm">
-          <el-form-item label="流程名称">
+        <el-form :inline="true" :model="searchForm" ref="searchForm">
+          <el-form-item label="流程名称" prop="flowName">
             <el-input v-model="searchForm.flowName" placeholder="请输入流程名称"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" icon="el-icon-search" @click="getFlowList">查询</el-button>
+            <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset">重置</el-button>
             <el-button type="primary" size="medium" icon="el-icon-plus" @click="addFlow">新增</el-button>
           </el-form-item>
         </el-form>
@@ -137,7 +138,12 @@ export default {
         name: "case_handle_flowBindLink",
         params: { flowId: data.id }
       });
-    }
+    },
+    //重置
+    reset() {
+      this.$refs["searchForm"].resetFields();
+      this.getFlowList();
+    },
   },
   created() {
     this.getFlowList();

@@ -20,12 +20,29 @@
       @selection-change="selectRecord"
     >
       <el-table-column type="selection" align="center"></el-table-column>
-      <el-table-column prop="journalNo" label="记录编号" align="left" width="100px"></el-table-column>
+      <el-table-column prop="recordNum" label="记录编号" align="left" width="100px"></el-table-column>
       <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
       <el-table-column prop="address" label="定位地点" align="center" min-width="220px"></el-table-column>
       <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
-      <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px"></el-table-column>
-      <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
+      <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px">
+        <template slot-scope="scope">
+          <div >K{{scope.row.startKilometer}}+{{scope.row.startMeter}}m</div>
+          <div >K{{scope.row.endKilometer}}+{{scope.row.endMeter}}m</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px">
+        <template slot-scope="scope">
+          <span
+            v-if="scope.row.roadCondition === '1'"
+            style="color: #05C051;"
+          >正常</span>
+          <span
+            v-else-if="scope.row.roadCondition === '2'"
+            style="color: #E84241;"
+          >异常</span>
+          <span v-else>{{scope.row.roadCondition}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="lawPerson" label="案件编号" align="center" min-width="140px"></el-table-column>
     </el-table>
       <div class="paginationBox">
@@ -88,13 +105,21 @@ export default {
       this.$emit("returnDataRecord",data);
       this.visible = false;
     },
-     showModal() {
+     showModal(businessType,recordIds) {
       this.visible = true;
       let data={
-        //businessType:businessType
+       // cateId:businessType,
       }
        getRecordListApi(data).then(res => {
         if (res.code == "200") {
+          recordIds.forEach((rec,index1) =>{
+                res.data.records.forEach((element,index) => {
+                if(element.recordId == rec){
+                  res.data.records.splice(index,1);
+                }
+          });
+          })
+          
           this.tableData = res.data.records;
           //this.totalPage = res.data.total;
         }

@@ -134,37 +134,35 @@
           <div class="showMapBtn"><label class="mustTip">*</label><el-button type="primary" icon="iconfont law-weizhi" size="mini" @click="showMap" v-if="!hasLatitudeAndLongitude">请获取坐标</el-button><el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button></div>
         </div>
         <div>
-          <div class="gongLiBox1">K</div>
-          <div class="itemFive">
+          <span class="gongLiBox1">K</span>
+          <span class="itemFive">
             <el-form-item  prop="pileNumber" label-width="0px">
               <el-input v-model="inforForm.pileNumber" placeholder="公里数"></el-input>
             </el-form-item>
-          </div>
-          <div class="gongLiBox2">+</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox2">+</span>
+          <span class="itemFive">
             <el-form-item label-width="0px" prop="distance">
               <el-input v-model="inforForm.distance" placeholder="米数" style="vertical-align: middle;">
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-
-          </div>
-          <div class="gongLiBox3">至</div>
-          <div class="gongLiBox3">K</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox3">至</span>
+          <span class="gongLiBox3">K</span>
+          <span class="itemFive">
             <el-form-item  prop="pileNumber2" label-width="0px">
               <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
             </el-form-item>
-          </div>
-          <div class="gongLiBox2">+</div>
-          <div class="itemFive">
+          </span>
+          <span class="gongLiBox2">+</span>
+          <span class="itemFive">
             <el-form-item label-width="0px" prop="distance2">
               <el-input v-model="inforForm.distance2" placeholder="米数" style="vertical-align: middle;">
                 <template slot="append">m</template>
               </el-input>
             </el-form-item>
-
-          </div>
+          </span>
           <!-- <div class="itemFive">
             <el-form-item label="K">
               <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
@@ -251,7 +249,7 @@
               <el-select
                 placeholder="请选择"
                 v-model="inforForm.partySex"
-                :disabled="inforForm.partyIdNo?true:false"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType === '0'?true:false"
               >
                 <el-option :value="0" label="男"></el-option>
                 <el-option :value="1" label="女"></el-option>
@@ -264,7 +262,7 @@
                 ref="partyAge"
                 v-model="inforForm.partyAge"
                 type="number"
-                :disabled="inforForm.partyIdNo?true:false"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType === '0'?true:false"
                 @change="noFue('inforForm.partyAge',inforForm.partyAge)"
               ></el-input>
             </el-form-item>

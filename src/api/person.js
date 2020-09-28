@@ -74,20 +74,32 @@ export  function  getAllPersonApi(data)  {
 //添加用户信息
 export  function  addPersonApi(data)  {
   return  request({
-    url:  "/person/person/addPerson",
-    method:  "get",
-    params: data,
+    url:  "/person/person/infoAddPerson",
+    method:  "post",
+    data:vm.$qs.stringify(data),
     showloading: false,
     cancelToken:  setCancelSource()
   });
 }
 
+//导出人员列表
+export function exportPersonInfoApi(data){
+  return request({
+      responseType:'blob',
+      url: "/person/person/exportPersonInfo",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource()
+  })
+}
+
 //修改用户用户信息
 export  function  updatePersonApi(data)  {
   return  request({
-    url:  "/person/person/updatePerson",
-    method:  "get",
-    params: data,
+    url:  "/person/person/infoUpdatePerson",
+    method:  "post",
+    data: vm.$qs.stringify(data),
     showloading: false,
     cancelToken:  setCancelSource()
   });
