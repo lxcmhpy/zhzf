@@ -74,13 +74,17 @@ export default {
 
     drawLine(data) {
       this.chartColumn = echarts.init(document.getElementById("chartColumn"));
-      let _legend = data.map(item => {
-        return item.name
+      let _legend = [], _series = []
+      data.map((item,index) => {
+        if(index < 5) {
+          _legend.push(item.name)
+          _series.push({ value: item.value, name: item.name })
+        }
       })
 
       this.chartColumn.setOption({
         title: {
-          text: "案件当事人类型分布",
+          text: "监管检查治理分析",
           left: "center"
         },
         tooltip: {
@@ -98,7 +102,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "50%"],
-            data: data,
+            data: _series,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
