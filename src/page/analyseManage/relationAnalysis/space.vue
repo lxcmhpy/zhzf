@@ -112,7 +112,7 @@ export default {
            }
          },
          geo: {
-           map: 'china',
+           map: '宁夏',
            zoom: 1.3,
            label: {
              emphasis: {
