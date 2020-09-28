@@ -104,23 +104,6 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="现场检查配置" name="执法考试">
-            <el-table :data="dataList4" stripe resizable border style="width: 100%;height:100%;" row-key="id">
-              <el-table-column prop="indexOne" label="一级指标" align="center"></el-table-column>
-              <el-table-column prop="indexTwo" label="二级指标" align="center"></el-table-column>
-              <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
-              <el-table-column prop="score" label="分数" align="center">
-                <template slot-scope="scope">
-                  <el-input v-model="scope.row.score" placeholder="请输入数值" @blur="validateScore(scope.row)" :readonly="isView"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" align="center" width="120" v-if="!isView">
-                <template slot-scope="scope">
-                  <el-button type="text" @click="deletePykhBatchById(scope.row)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
         </el-tabs>
       </div>
       <el-dialog title="指标树" :visible.sync="visible" @close="closeDialog" :close-on-click-modal="false" width="50%">
@@ -323,7 +306,6 @@ export default {
       dataList1: [],
       dataList2: [],
       dataList3: [],
-      dataList4: [],
       visible: false,
       data2: [],
       defaultProps: {
@@ -359,8 +341,6 @@ export default {
         this.addItems(datas, this.dataList2)
       } else if (this.activeName === '网上评查') {
         this.addItems(datas, this.dataList3)
-      } else {
-        this.addItems(datas, this.dataList4)
       }
       this.visible = false
     },
@@ -425,17 +405,9 @@ export default {
             })
             return
           }
-          if (_this.dataList4.length === 0) {
-            _this.catsMessage({
-              type: 'warning',
-              message: '请填写现场检查配置'
-            })
-            return
-          }
           tableData = _this.dataList1
             .concat(_this.dataList2)
             .concat(_this.dataList3)
-            .concat(_this.dataList4)
           let errorData = tableData.filter(item => {
             if (item.score === '' || item.score === undefined) {
               return item
@@ -474,8 +446,6 @@ export default {
         this.dataList2 = this.dataList2.filter(item => item.indexThreeId !== row.indexThreeId)
       } else if (row.assessType === '网上评查') {
         this.dataList3 = this.dataList3.filter(item => item.indexThreeId !== row.indexThreeId)
-      } else {
-        this.dataList4 = this.dataList4.filter(item => item.indexThreeId !== row.indexThreeId)
       }
     },
     init() {
@@ -499,8 +469,6 @@ export default {
                 _that.dataList2.push(item)
               } else if (item.assessType === '网上评查') {
                 _that.dataList3.push(item)
-              } else {
-                _that.dataList4.push(item)
               }
             })
           },
