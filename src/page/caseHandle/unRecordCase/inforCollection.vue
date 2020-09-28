@@ -501,12 +501,13 @@
               </el-form-item>
             </div>
             <div class="item appendSelect">
-              <el-form-item label="证件类型" prop="partyIdNo">
+              <el-form-item label="证件类型" >
                 <el-input
                   ref="partyIdNo"
                   placeholder="请输入内容"
                   v-model="driverOrAgentInfo.zhengjianNumber"
                   @input="changePartyIdType2Index = index"
+                  @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                   class="input-with-select hasMargintop"
                   :disabled="index==0&&relationWithPartyIsOne[index]"
                 >

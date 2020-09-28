@@ -2,7 +2,7 @@
   <div class="com_searchAndpageBoxPadding">
     <div class="searchPageLayout" id="userBox">
       <div class="departOrUserTree">
-        <p>设备资源列表</p>
+        <p>站点资源列表</p>
         <el-input placeholder="输入机构名" v-model="filterText">
           <el-button slot="append" size="mini" icon="el-icon-search"></el-button>
         </el-input>
@@ -38,7 +38,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="设备类型" prop="deviceType">
+            <el-form-item label="站点类型" prop="deviceType">
               <el-select v-model="formInline.deviceType">
                     <el-option
                       v-for="item in typeData"
@@ -48,10 +48,10 @@
                     ></el-option>
                   </el-select>
             </el-form-item>
-            <el-form-item label="设备名称" prop="name">
+            <el-form-item label="站点名称" prop="name">
               <el-input v-model="formInline.name"></el-input>
             </el-form-item>
-            <el-form-item label="设备状态" prop="status">
+            <el-form-item label="站点状态" prop="status">
                   <el-select v-model="formInline.status">
                     <el-option
                       v-for="item in status"
@@ -107,8 +107,8 @@
                 {{scope.$index+1}}
               </template>
             </el-table-column>
-            <el-table-column prop="deviceType" label="设备类型" :formatter="formatDeviceType"></el-table-column>
-            <el-table-column prop="name" label="设备名称"></el-table-column>
+            <el-table-column prop="deviceType" label="站点类型" :formatter="formatDeviceType"></el-table-column>
+            <el-table-column prop="name" label="站点名称"></el-table-column>
             <el-table-column prop="organName" label="所属机构"></el-table-column>
             <el-table-column width="50" prop="status" label="状态">
               <template slot-scope="scope">
@@ -150,7 +150,7 @@
             label-width="100px"
             class="addOrganClass" >
             <div class="part">
-              <p class="titleP">设备说明</p>
+              <p class="titleP">站点说明</p>
               <el-row>
                   <el-form-item label="所属机构" prop="organId">
                       <elSelectTree
@@ -180,8 +180,8 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-form-item label="设备类型" prop="deviceType">
-                  <el-select v-model="addForm.deviceType" placeholder="请选择设备类型" style="width: 100%;" :disabled="this.formReadOnly" @change="changeDeviceType">
+                <el-form-item label="站点类型" prop="deviceType">
+                  <el-select v-model="addForm.deviceType" placeholder="请选择站点类型" style="width: 100%;" :disabled="this.formReadOnly" @change="changeDeviceType">
                     <el-option
                       v-for="item in typeData"
                       :key="item.code"
@@ -193,18 +193,18 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                <el-form-item label="设备名称" prop="name">
+                <el-form-item label="站点名称" prop="name">
                   <el-input v-model="addForm.name" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                 </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="设备简称" prop="shortName">
+                  <el-form-item label="站点简称" prop="shortName">
                   <el-input v-model="addForm.shortName" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                 </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <el-form-item label="设备有效期" prop="deviceDate">
+                <el-form-item label="站点有效期" prop="deviceDate">
                   <el-date-picker
                     :readonly="this.formReadOnly"
                     v-model="deviceDate"
@@ -219,7 +219,7 @@
               </el-form-item>
               </el-row>
               <el-row>
-                <el-form-item label="设备状态">
+                <el-form-item label="站点状态">
                   <el-switch
                     v-model="addForm.status"
                     :active-value=0
@@ -247,7 +247,7 @@
             </div>
             <div class="part">
               <p class="titleP">其他材料</p>
-              <el-form-item label="设备照片">
+              <el-form-item label="站点照片">
                 <el-upload
                   action="#"
                   accept=".jpg, .png"
@@ -355,10 +355,10 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
                 {required: true, message: "请输入所属机构", trigger: "blur"}
             ],
             deviceType: [
-                {required: true, message: "请输入设备类型", trigger: "blur"}
+                {required: true, message: "请输入站点类型", trigger: "blur"}
             ],
             name: [
-                {required: true, message: "请输入设备名称", trigger: "blur"}
+                {required: true, message: "请输入站点名称", trigger: "blur"}
             ],
             /* deviceDate:[
               { type: 'array', required: true,  trigger: 'blur,change',validator:this.validateDate}
@@ -371,7 +371,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         currentOrganId: "",
         organData: [],
         /* typeData:[
-          {label:'非现场检测设备',id:'01',icon:'icon_zhifadian'},
+          {label:'非现场检测站点',id:'01',icon:'icon_zhifadian'},
           {label:'执法车辆',id:'02',icon:'icon_cl11'},
           {label:'执法船舶',id:'03',icon:'icon_cb11'}], */
         typeData:[],
@@ -386,7 +386,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         selectDataIdList: [], //选中的记录
         selectOrganName:'',
         selectOrgan:{},
-        title:'新增设备',
+        title:'新增站点',
         visiblePopover: false,
         orgTreeProps: {
             label: "label",
@@ -403,7 +403,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         if(this.deviceDate && this.deviceDate.length==2 && this.deviceDate[0]!==''){
           callback();
         }else{
-          callback(new Error("请选择设备有效期"));
+          callback(new Error("请选择站点有效期"));
         }
       }, */
       addFormUseUnitClick(val) {
@@ -586,10 +586,10 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
       },
       deleteData(){
         if(this.selectDataIdList.length==0){
-            this.$message({type: "error",message: "请先选择设备"});
+            this.$message({type: "error",message: "请先选择站点"});
         }else{
             let _this = this
-            this.$confirm("确认删除这些设备?", "提示", {
+            this.$confirm("确认删除这些站点?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
@@ -616,7 +616,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
       // 表格id删除
       handleDelete(row) {
         let _this = this
-        this.$confirm("确认删除该设备?", "提示", {
+        this.$confirm("确认删除该站点?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -647,7 +647,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
         this.imageList=[]
         this.attachList=[]
         this.deviceDate=['','']
-        this.title='新增设备'
+        this.title='新增站点'
         if(this.currentOrganId !== ''){
             this.addForm.contactor = this.selectOrgan.contactor
             this.addForm.telephone = this.selectOrgan.telephone
@@ -670,7 +670,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
       },
       // 表格编辑
       handleEdit(index, row) {
-        this.title='修改设备'
+        this.title='修改站点'
         this.findDeviceById(row)
         this.formReadOnly = false
         this.imageList=[]
@@ -678,7 +678,7 @@ import elSelectTree from '@/components/elSelectTree/elSelectTree';
       },
       //查看详情
       showDataDetail(row){
-        this.title='设备详情'
+        this.title='站点详情'
         this.findDeviceById(row)
         this.formReadOnly = true
         this.imageList=[]

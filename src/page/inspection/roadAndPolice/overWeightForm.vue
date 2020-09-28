@@ -170,7 +170,7 @@
         <p>初检记录</p>
         <div>
           <div class="itemOne">
-            <el-form-item label="初测单号" prop="oddNumber">
+            <el-form-item label="初检单号" prop="oddNumber">
               <el-input v-model="carInfo.firstCheck.oddNumber">
                 <template slot="append">查询</template>
               </el-input>
@@ -757,7 +757,9 @@ export default {
     setLawPersonCurrentP(type) {
       // type=1为回显
       let _this = this
-           findLawInfoById(iLocalStroage.gets("userInfo").organId).then(
+      this.$store
+        .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
+        .then(
           (res) => {
             let currentUserData = {};
             this.lawPersonListId = [];

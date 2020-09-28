@@ -91,16 +91,6 @@ export function getFxypApi(data) {
       cancelToken:  setCancelSource(),
     });
   }
-  //电子化办案分析
-  export function dzhbafx(data) {
-    return  request({
-      url: "/fxyp/dzhbafx",
-      method:  "post",
-      showloading: false,
-      params:data,
-      cancelToken:  setCancelSource(),
-    });
-  }
   //电子化办案分析 人员
   export function dzhbafxry(data) {
     return  request({
@@ -212,10 +202,31 @@ export function getFxypApi(data) {
     });
   }
   // 法律法规分析研判
-  export function flfgfxyp({year1, year2}) {
+  export function flfgfxyp({ startTime, endTime }) {
     return  request({
-      url: `/judge/analysis/list/${year1}/${year2}`,
+      url: `/judge/analysis/list/${startTime}/${endTime}`,
       method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 监管治理分析研判
+  export function jgzlfxyp({ startTime, endTime }) {
+    return  request({
+      url: `/judge/analysis/JGZLlist/${startTime}/${endTime}`,
+      method:  "get",
+      showloading: false,
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 电子化办案分析
+  export function dzhbafx(data) {
+    return  request({
+      url: "/electronization/electronization",
+      method:  "get",
+      params: data,
       showloading: false,
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
