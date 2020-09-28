@@ -8,8 +8,8 @@ import {
   getFileStreamByStorageIdApi,
 } from "@/api/caseHandle";
 import {
-    getFileStreamByStorageId,
-  } from "@/api/device/deviceCertificateBill";
+    getFileStreamApi,
+  } from "@/api/system";
 import {
     getZfjgFileStreamByStorageId,
   } from "@/api/lawSupervise";
@@ -541,7 +541,7 @@ util.com_getFileStream = async function (storageId) {
 util.com_getDeviceFileStream = async function (storageId) {
     let fileStreamRes;
     try{
-      fileStreamRes = await getFileStreamByStorageId(storageId);
+      fileStreamRes = await getFileStreamApi(storageId);
     }catch(err){throw new Error(err);}
     let url = null;
     if (window.createObjectURL != undefined) { // basic

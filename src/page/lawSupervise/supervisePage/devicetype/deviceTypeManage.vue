@@ -4,7 +4,7 @@
       <div class="searchPage toggleBox">
         <div class="handlePart">
           <el-form :inline="true" ref="deviceTypeForm" :model="formInline" label-width="120px">
-                <el-form-item label="设备类型名称" prop="name">
+                <el-form-item label="站点类型名称" prop="name">
                     <el-input v-model="formInline.name"></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -30,8 +30,8 @@
                 {{scope.$index+1}}
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="设备类型名称"></el-table-column>
-            <el-table-column prop="code" label="设备类型编号"></el-table-column>
+            <el-table-column prop="name" label="站点类型名称"></el-table-column>
+            <el-table-column prop="code" label="站点类型编号"></el-table-column>
             <el-table-column prop="createTime" label="创建时间"></el-table-column>
             <el-table-column label="操作" width="160">
               <template slot-scope="scope">
@@ -59,13 +59,25 @@
             class="addOrganClass" >
             <div class="part">
               <el-row>
-                <el-form-item label="设备类型名称" prop="name">
+                <el-form-item label="站点类型名称" prop="name">
                   <el-input v-model="addForm.name" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                 </el-form-item>
               </el-row>
               <el-row>
-                <el-form-item label="设备类型编号" prop="code">
+                <el-form-item label="站点类型编号" prop="code">
                   <el-input v-model="addForm.code" style="width: 100%;" readonly></el-input>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-form-item label="站点定位类型" prop="locationType">
+                  <el-select v-model="addForm.locationType" style="width: 100%;" :disabled="this.formReadOnly">
+                      <el-option
+                        v-for="item in locationTypeData"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-row>
               <el-row>
@@ -114,14 +126,18 @@ import iLocalStroage from '@/common/js/localStroage';
         },
         rules: {
             code: [
-                {required: true, message: "请输入设备类型编号", trigger: "blur"}
+                {required: true, message: "请输入站点类型编号", trigger: "blur"}
             ],
             name: [
-                {required: true, message: "请输入设备类型名称", trigger: "blur"},
+                {required: true, message: "请输入站点类型名称", trigger: "blur"},
+            ],
+            locationType: [
+                {required: true, message: "请输入站点定位类型", trigger: "blur"},
             ]
         },
         tableData: [], //表格数据
-        title:"新增设备类型"
+        title:"新增站点类型",
+        locationTypeData: [{value: 0, label: '地理位置信息'}, {value: 1, label: '路桩路段位置信息'}],
       };
     },
     components: {
@@ -181,7 +197,7 @@ import iLocalStroage from '@/common/js/localStroage';
       addData() {
         this.addForm = {};
         let _this = this;
-        this.title="新增设备类型"
+        this.title="新增站点类型"
         findDeviceTypeNewCode().then(
           res => {
             _this.addForm.code = res.data
@@ -195,14 +211,14 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       // 表格编辑
       handleEdit(index, row) {
-        this.title="修改设备类型"
+        this.title="修改站点类型"
         this.findDeviceTypeById(row)
         this.formReadOnly = false
       },
       //删除
       handleDelete(row){
         let _this = this
-        this.$confirm("确认删除该设备类型?", "提示", {
+        this.$confirm("确认删除该站点类型?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -226,7 +242,7 @@ import iLocalStroage from '@/common/js/localStroage';
       },
       //查看详情
       showDataDetail(row){
-        this.title="设备类型"
+        this.title="站点类型"
         this.findDeviceTypeById(row)
         this.formReadOnly = true
       },
