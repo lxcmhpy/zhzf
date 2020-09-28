@@ -6,14 +6,15 @@
           <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
             <el-form-item label="统计周期" prop>
               <el-date-picker
-                v-model="date"
+                v-model="logForm.date"
+                size="small"
                 type="monthrange"
                 range-separator="至"
                 start-placeholder="开始月份"
                 end-placeholder="结束月份"
                 format="yyyy-MM"
                 value-format="yyyy-MM"
-                @change="searchDrawFun"
+                @change="handleSelect"
               ></el-date-picker>
             </el-form-item>
           </el-form>
@@ -45,33 +46,54 @@
 
 <script>
 import echarts from "echarts";
-import {featureApi} from '@/api/analysis/analysisManage.js'
+import {casepPeople} from '@/api/fxyp.js'
 export default {
   data() {
     return {
-      date: [],
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
-      tableData: [],
       logForm: {
-        organ: "",
-        type: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
+        date: [
+          String(new Date().getFullYear()-1) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1)),
+          String(new Date().getFullYear()) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1))
+        ]
       },
-      fr:"",
-      gr:"",
-      isShow: false,
-      ageSeries:[]
     };
   },
+  created() {
+    this.init()
+  },
   methods: {
-    drawLine1() {
+    /**
+     * 初始化页面
+     */
+    init() {
+      let year1 = this.logForm.date[0]
+      let year2 = this.logForm.date[1]
+      this.getData({ year1, year2 })
+    },
+
+    /**
+     * 获取数据
+     */
+    getData({ year1, year2 }) {
+      casepPeople({ year1, year2 }).then(res => {
+        if(res.code == 200){
+          let data = res.data
+          this.drawLine1(data.ageGroup)
+          this.drawLine2(data.age)
+          this.drawLine3(data.type)
+        }
+      }, err => { console.log(err) })
+    },
+
+    /**
+     * 选中时间
+     */
+    handleSelect(val) {
+      let year1 = val[0], year2 = val[1]
+      this.getData({ year1, year2 })
+    },
+
+    drawLine1(series) {
       this.chartColumn = echarts.init(document.getElementById("chart1"));
 
       this.chartColumn.setOption({
@@ -94,7 +116,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: this.ageSeries,
+            data: series,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -106,9 +128,14 @@ export default {
         ]
       });
     },
-     drawLine2() {
+     drawLine2(data) {
       this.chartColumn = echarts.init(document.getElementById("chart2"));
 
+      let _xAxis = [], _series = []
+      data.map(item => {
+        _xAxis.push(item.name)
+        _series.push(item.value)
+      })
       this.chartColumn.setOption({
         title: {
           text: "个人案件被处罚人年龄分布",
@@ -131,17 +158,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: [
-              "21岁",
-              "22岁",
-              "23岁",
-              "24岁",
-              "25岁",
-              "26岁",
-              "27岁",
-              "28岁",
-              "29岁",
-            ],
+            data: _xAxis,
             axisTick: {
               alignWithLabel: true
             }
@@ -157,14 +174,21 @@ export default {
             name: "",
             type: "bar",
             barWidth: "60%",
-            data: [10, 52, 200, 334, 390, 330, 220, 390, 330,]
+            data: _series
           }
         ]
       });
     },
-    drawLine3() {
+    drawLine3(data) {
       this.chartColumn = echarts.init(document.getElementById("chart3"));
 
+      data.map(item => {
+        if(item.name === "1") {
+          item.name = "个人"
+        } else {
+          item.name = "企业"
+        }
+      })
       this.chartColumn.setOption({
         title: {
           text: "案件当事人类型分布",
@@ -177,18 +201,15 @@ export default {
         legend: {
           left: "center",
           top: "bottom",
-          data: ["法人", "个人"]
+          data: ["个人", "企业"]
         },
         series: [,
           {
             name: "",
             type: "pie",
             radius: "55%",
-            center: ["50%", "60%"],
-            data: [
-              { value: this.fr, name: "法人" },
-              { value: this.gr, name: "个人" },
-            ],
+            center: ["50%", "50%"],
+            data: data,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -200,33 +221,6 @@ export default {
         ]
       });
     },
-     searchDrawFun() {
-       let param = {
-         year:this.date[0],
-         year2:this.date[1]
-       };
-       if(this.date.length ==0){
-         param.year = '2019-09'
-         param.year2 = '2020-09'
-       }
-       featureApi(param).then(res => {
-         if(res.code == 200){
-           this.ageSeries = res.data.ageGroup
-         }
-
-      });
-      err => {
-        console.log(err);
-      };
-    },
-  },
-  mounted() {
-    this.searchDrawFun();
-    this.drawLine1();
-    this.drawLine2();
-  },
-  created() {
-
   }
 };
 </script>

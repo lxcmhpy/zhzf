@@ -9,7 +9,8 @@ export function caseReasonApi(data) {
     url: "/crimecaseanalysis/case/" + data.year + '/' + data.year2,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -92,7 +93,7 @@ export function proportionApi(data) {
     cancelToken: setCancelSource()
   });
 }
-//报表统计 
+//报表统计
 export function reportStatisticApi(data) {
   return request({
     url: "/report/case",
@@ -129,6 +130,17 @@ export function proportionYTYApi(data) {
 export function complaintApi(data) {
   return  request({
     url:  "/judge/analysis/countByHour/"+data.startTime+'/'+data.endTime,
+    method:  "get",
+    params: data,
+    showloading: false,
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource()
+  });
+}
+//空间关联分析
+export function spaceApi(data) {
+  return  request({
+    url:  "/correlation/analysis/space/"+data.startTime+'/'+data.endTime,
     method:  "get",
     params: data,
     showloading: false,
