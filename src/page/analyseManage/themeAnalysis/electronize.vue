@@ -13,8 +13,19 @@
               end-placeholder="结束月份"
               format="yyyy-MM"
               value-format="yyyy-MM"
-              @change="handleSelect"
             ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="立案机构">
+            <elSelectTree
+              ref="elSelectTreeObj1"
+              :options="logForm.mechanismOption"
+              :accordion="true"
+              :props="{label: 'label', value: 'id'}"
+              @getValue="handleMechanism"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button style="margin-left: 10px" size="small" type="primary" icon="el-icon-search" @click="handleSerch">搜索</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -45,14 +56,19 @@
 <script>
   import echarts from "echarts"
   import { dzhbafx } from '@/api/fxyp.js'
+  import elSelectTree from "@/components/elSelectTree/elSelectTree";
   export default {
+    components: {
+      elSelectTree,
+    },
     data() {
       return {
         logForm: {
           date: [
             String(new Date().getFullYear()-1) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1)),
             String(new Date().getFullYear()) + '-' + ((new Date().getMonth()+1) > 9 ? String(new Date().getMonth()+1) : '0'+String(new Date().getMonth()+1))
-          ]
+          ],
+          mechanismOption: []
         },
         organId: JSON.parse(localStorage.getItem("userInfo")).organId
       }
@@ -65,6 +81,19 @@
        * 初始化界面
        */
       init() {
+        // 获取机构数据
+        this.$store.dispatch("findOrganTreeByCurrUser").then(res => {
+          if(res.code === 200) {
+            this.logForm.mechanismOption = res.data
+            res.data.map(item => {
+              if(item.id === this.organId) {
+                // this.$refs.elSelectTreeObj1.valueTitle = res.data[0].label // 默认显示第一个
+                this.$refs.elSelectTreeObj1.valueTitle = item.label // 默认显示当前机构
+              }
+            })
+          }
+        }, err => { console.log(err) })
+
         let params = {
           organId: this.organId,
           startTime: this.logForm.date[0],
@@ -88,13 +117,22 @@
       },
 
       /**
-       * 选中时间触发
+       * 选中机构
        */
-      handleSelect(val) {
+      handleMechanism(val) {
+        console.log(val)
+        this.$refs.elSelectTreeObj1.$children[0].handleClose()
+        this.organId = val
+      },
+
+      /**
+       * 点击搜索，获取数据
+       */
+      handleSerch() {
         let params = {
-          organId: this.organId,
-          startTime: val[0],
-          endTime: val[1]
+          organId: this.organId || JSON.parse(localStorage.getItem("userInfo")).organId,
+          startTime: this.logForm.date[0],
+          endTime: this.logForm.date[1]
         }
         this.getData(params)
       },
@@ -103,6 +141,9 @@
        * 点击饼图触发
        */
       handleClick(data) {
+        console.log(data)
+        this.organId = data.data.id
+        this.$refs.elSelectTreeObj1.valueTitle = data.data.name // 更改显示的机构
         let params = {
           organId: data.data.id,
           startTime: this.logForm.date[0],
