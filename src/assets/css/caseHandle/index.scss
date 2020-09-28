@@ -182,7 +182,7 @@
       justify-content: space-around;
       align-items: center;
       a {
-        width: 123px;
+        min-width: 123px;
         height: 32px;
         display: inline-block;
         line-height: 32px;
@@ -193,6 +193,9 @@
       .activeA {
         background: #4573d0;
         color: #fff;
+      }
+      i{
+        margin-right: 8px;
       }
     }
   }

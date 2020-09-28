@@ -2,14 +2,14 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a href="#" :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">车辆信息</a>
-        <a href="#" :class="activeA[1]? 'activeA' :''" @click="jump(2)">驾驶人/企业信息</a>
-        <a href="#" :class="activeA[2]? 'activeA' :''" @click="jump(3)">初检信息</a>
-        <a href="#" :class="activeA[3]? 'activeA' :''" @click="jump(4)">卸载/复检记录</a>
-        <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)">处罚决定</a>
+        <a href="#" :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv"><i class="iconfont law-icon_chel"></i>车辆信息</a>
+        <a href="#" :class="activeA[1]? 'activeA' :''" @click="jump(2)"><i class="iconfont law-icon_qye"></i>驾驶人/企业</a>
+        <a href="#" :class="activeA[2]? 'activeA' :''" @click="jump(3)"><i class="iconfont law-icon_nianj"></i>初检信息</a>
+        <a href="#" :class="activeA[3]? 'activeA' :''" @click="jump(4)"><i class="iconfont law-icon_xzai"></i>卸载/复检记录</a>
+        <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)"><i class="iconfont law-icon_cfa"></i>处罚决定</a>
       </div>
     </div>
-    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;">
+    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;" :disabled='carInfo.fileStatus==1'>
       <div class="caseFormBac" id="link_1" ref="link_1" @mousewheel="scrool1">
         <p>车辆信息</p>
         <div>
@@ -31,20 +31,20 @@
         <div>
           <div class="item">
             <el-form-item label="车辆类型" prop="vehicleShipType">
-              <el-select v-model="carInfo.vehicleShipType">
+              <el-select v-model="carInfo.vehicleShipType" placeholder="请选择">
                 <el-option v-for="(item,index) in allVehicleShipType" :key="index" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="道路运输证号" prop="transportNum">
-              <el-input v-model="carInfo.transportNum"></el-input>
+              <el-input v-model="carInfo.transportNum" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
-            <el-form-item label="车辆轴数" prop="axisNum" style="width:69%;display: inline-block;">
+            <el-form-item label="车辆轴数" prop="axisNum" style="width:70%;display: inline-block;">
               <el-select placeholder="请选择" v-model="carInfo.axisNum" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
@@ -76,19 +76,19 @@
         <div>
           <div class="itemOne">
             <el-form-item label="装载货物" prop="loadGoods">
-              <el-input v-model="carInfo.loadGoods"></el-input>
+              <el-input v-model="carInfo.loadGoods" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="起止路线" prop="startPlace">
-              <el-input v-model="carInfo.startPlace" placeholder="请输入装载货物起始点"></el-input>
+              <el-input v-model="carInfo.startPlace" placeholder="装载货物起始点"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item prop="endPlace">
-              <el-input v-model="carInfo.endPlace" placeholder="请输入装载货物终止点"></el-input>
+              <el-input v-model="carInfo.endPlace" placeholder="装载货物终止点"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -100,7 +100,7 @@
           </div>
           <div class="item">
             <el-form-item label="挂车牌颜色" prop="trailerColor">
-              <el-select v-model="carInfo.trailerColor" placeholder="请选择挂车号牌颜色">
+              <el-select v-model="carInfo.trailerColor">
                 <el-option v-for="(item,index) in allVehicleIdColor" :key="index" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -108,18 +108,18 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px">
+    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled='carInfo.fileStatus==1'>
       <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
-        <p>驾驶员/企业信息</p>
+        <p>驾驶员/企业</p>
         <div>
           <div class="item">
-            <el-form-item label="姓名" prop="party">
-              <el-input ref="party" v-model="carInfo.drivePerson.party" placeholder="请输入姓名"></el-input>
+            <el-form-item label="驾驶人姓名" prop="party">
+              <el-input ref="party" v-model="carInfo.drivePerson.party" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
           <div class="item appendSelect">
             <el-form-item label="身份证号" prop="partyIdNo">
-              <el-input ref="partyIdNo" placeholder="请输入身份证号" v-model="carInfo.drivePerson.partyIdNo" class="input-with-select hasMargintop">
+              <el-input ref="partyIdNo" placeholder="请输入" v-model="carInfo.drivePerson.partyIdNo" class="input-with-select hasMargintop">
               </el-input>
             </el-form-item>
           </div>
@@ -128,27 +128,36 @@
           <div class="item">
             <!-- 改 -->
             <el-form-item label="联系电话" prop="partyTel">
-              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel" placeholder="请输入联系电话"></el-input>
+              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="联系地址" prop="partyAddress">
-              <el-input v-model="carInfo.drivePerson.partyAddress" placeholder="请输入联系地址"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyAddress" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
-          <div class="item">
+          <div class="itemOne">
             <el-form-item label="职务" prop="occupation">
-              <el-select v-model="carInfo.drivePerson.occupation" placeholder="请选择职务" :loading="selectLoading" @focus="getDictInfo('人员信息-职务','postInfo')">
+              <!-- <el-select v-model="carInfo.drivePerson.occupation" :loading="selectLoading" @focus="getDictInfo('人员信息-职务','postInfo')">
                 <el-option v-for="value in postInfo" :key="value.id" :label="value.name" :value="value.name"></el-option>
-              </el-select>
-              <!-- <el-input v-model="carInfo.drivePerson.occupation" placeholder="请输入职务" @focus="getDictInfo('人员信息-职务','postInfo')"></el-input> -->
+              </el-select> -->
+              <el-row>
+                <el-col :span="12">
+                  <el-input v-model="carInfo.drivePerson.occupation" placeholder="请输入职务" @focus="getDictInfo('人员信息-职务','postInfo')"></el-input>
+                </el-col>
+                <el-col :span="12">
+                  <el-button :type="carInfo.drivePerson.occupation=='个体'?'primary':''" size="medium" @click="chooseOccupation('个体')" style="margin-left:27px">个体</el-button>
+                  <el-button :type="carInfo.drivePerson.occupation=='其他'?'primary':''" size="medium" @click="chooseOccupation('其他')">其他</el-button>
+                  <el-button :type="carInfo.drivePerson.occupation=='不知道'?'primary':''" size="medium" @click="chooseOccupation('不知道')">不知道</el-button>
+                </el-col>
+              </el-row>
             </el-form-item>
           </div>
-          <div class="item">
+          <div class="itemOne">
             <el-form-item label="企业名称" prop="partyUnitPosition">
-              <el-input v-model="carInfo.drivePerson.partyUnitPosition" placeholder="请输入所属企业名称"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyUnitPosition" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -165,9 +174,24 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px">
+    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled='carInfo.fileStatus==1'>
       <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>初检记录</p>
+        <div>
+          <div class="item">
+            <el-form-item label="初检站点" prop="overWeight">
+              <el-input v-model="carInfo.firstCheck.overWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+                <template slot="append">吨</template>
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-form-item label="初检时间" prop="overRatio">
+              <el-input v-model="carInfo.firstCheck.overRatio" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              </el-input>
+            </el-form-item>
+          </div>
+        </div>
         <div>
           <div class="itemOne">
             <el-form-item label="初检单号" prop="oddNumber">
@@ -308,7 +332,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px">
+    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px" :disabled='carInfo.fileStatus==1'>
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">
         <p>卸载/复检记录</p>
         <div>
@@ -329,7 +353,7 @@
             </el-form-item>
           </div>
         </div>
-        <div v-if="carInfo.secondCheck.unloadMode=='分装'">
+        <div v-if="carInfo.secondCheck.unloadMode=='分装'" style="background: #f6f8fc;width: calc(70% + 20px);padding-right: 20px;">
           <div>
             <div class="item">
               <el-form-item label="分装车辆" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPlateColor':'pachor'">
@@ -345,6 +369,7 @@
               </el-form-item>
             </div>
           </div>
+
           <div>
             <div class="item">
               <el-form-item label="车辆类型" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenCarType':'pachor'">
@@ -359,6 +384,7 @@
               </el-form-item>
             </div>
           </div>
+          <div class="line" style="clear:both"></div>
           <div>
             <div class="item">
               <el-form-item label="分装承运人" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPerson':'pachor'">
@@ -517,6 +543,7 @@ export default {
       vehicleAxlesTypeList: [], //轴数
       brandList: [], //品牌
       carInfo: {
+        fileStatus: 0,
         id: '',
         checkType: '路警联合',
         detectStation: '检测站1',//监测站
@@ -771,7 +798,7 @@ export default {
 
             res.data.forEach((item) => {
               if (type) {
-                if (_this.carInfo.drivePerson.lawOfficer.indexOf(item.lawOfficerName) != -1) {
+                if (item.lawOfficerName && _this.carInfo.drivePerson.lawOfficer.indexOf(item.lawOfficerName) != -1) {
                   this.alreadyChooseLawPerson.push(item);
                   this.lawPersonListId.push(item.id);
                 }
@@ -1269,6 +1296,9 @@ export default {
           this.carInfo.firstCheck.overWeight = Number(number);
         }
       }
+    },
+    chooseOccupation(data) {
+      this.$set(this.carInfo.drivePerson, 'occupation', data)
     }
   },
 

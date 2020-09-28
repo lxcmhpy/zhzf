@@ -124,7 +124,18 @@ export function downLoadCommon(data) {
     cancelToken:  setCancelSource(),
   });
 }
-
+//修改FileUpload实体
+export function updateCommonFileApi(data) {
+  data = vm.$qs.stringify(data);
+  return  request({
+    url:  "/case/sys/file/updateFileUpload",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
 
 export let uploadFuncO = {
 
@@ -179,6 +190,8 @@ export let uploadFuncO = {
   //       cancelToken:  setCancelSource(),
   //     });
   // }
+
+  
 }
 
 
