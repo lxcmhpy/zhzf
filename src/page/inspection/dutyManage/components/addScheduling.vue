@@ -212,7 +212,7 @@ export default {
           this.addSchedulingForm.lawEnforcementOfficials = "";
           this.addSchedulingForm.lawEnforcementOfficialsIds = "";
           this.addSchedulingForm.lawEnforcementOfficials = this.addSchedulingForm.lawPersonListIndex.map(i => this.lawPersonList[i].lawOfficerName).join(';');
-          this.addSchedulingForm.lawEnforcementOfficialsIds = this.addSchedulingForm.lawPersonListIndex.map(i => this.lawPersonList[i].id).join(';');
+          this.addSchedulingForm.lawEnforcementOfficialsIds = this.addSchedulingForm.lawPersonListIndex.map(i => this.lawPersonList[i].userId).join(';');
           this.addSchedulingForm.patrolRoute = this.addSchedulingForm.patrolRoute.join(';');
           const data = JSON.parse(JSON.stringify(this.addSchedulingForm));
 

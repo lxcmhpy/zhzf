@@ -94,6 +94,18 @@ export function exportPersonInfoApi(data){
   })
 }
 
+//导出人员列表
+export function personPictureApi(data){
+  return request({
+      responseType:'blob',
+      url: "/person/person/personPicture",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource()
+  })
+}
+
 //修改用户用户信息
 export  function  updatePersonApi(data)  {
   return  request({

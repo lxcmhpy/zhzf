@@ -7,7 +7,7 @@
               <div class="title_1 title_font"  @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="title_2" style="margin-left: 13px;">
-               宁夏执法数据分析研判系统
+               江西执法数据分析研判系统
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -520px;margin-top: 28px;" >
               <div class="title_3 title_font" @click="zbpage()" >人员装备</div>
@@ -107,8 +107,8 @@
 import echarts from "echarts";
 
 import "echarts/map/js/china.js";
-/*import "echarts/map/js/province/jiangxi.js";
-import "echarts/map/json/province/jiangxi.json";*/
+import "echarts/map/js/province/jiangxi.js";
+import "echarts/map/json/province/jiangxi.json";
 import "echarts/map/js/province/ningxia.js";
 import "echarts/map/json/province/ningxia.json";
 import "echarts/lib/component/title";
@@ -131,8 +131,8 @@ export default {
       dataForm: {},
       personNumSeries:[],
       personNumXData:[],
-      equipmentNumFunSeries:[],
-      equipmentNumFunXData:[],
+      equipmentNumSeries:[],
+      equipmentNumXData:[],
       increaseSeries:[],
       increaseXData:[],
       equipmentTypeXData:[],
@@ -148,8 +148,13 @@ export default {
       };
       personEquipApi(param).then(res => {
         if (res.code == 200) {
-          that.personNum = res.data.enforcement[0].value
-          that.equNum = res.data.equipment[0].value
+          if(res.data.enforcement){
+            that.personNum = res.data.enforcement[0].value
+          }
+          if(res.data.equipment){
+            that.equNum = res.data.equipment[0].value
+          }
+
           that.distributed = res.data.distributed
           that.preparedBy = res.data.preparedBy
           res.data.personNum.slice(0, 8).map(item => {
@@ -1927,7 +1932,7 @@ this.chartColumn.setOption({
 				xAxis: [{
 					type: 'category',
 					color: '#59588D',
-					data: this.equipmentNumFunXData,
+					data: this.equipmentNumXData,
 					axisLabel: {
 						margin: 10,
 						color: '#999',
@@ -1974,7 +1979,7 @@ this.chartColumn.setOption({
 				}],
 				series: [{
 					type: 'bar',
-					data:this.equipmentNumFunSeries,
+					data:this.equipmentNumSeries,
 					barWidth: '16px',
 					itemStyle: {
 						normal: {
@@ -2001,7 +2006,7 @@ this.chartColumn.setOption({
 						}
 					}
 				}, {
-					data: this.equipmentNumFunSeries,
+					data: this.equipmentNumSeries,
 					type: 'line',
 					smooth: true,
 					name: '折线图',
