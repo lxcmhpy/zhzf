@@ -249,7 +249,7 @@
                     type="textarea"
                     v-model="docData.inquiriedIdNo"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxLength="maxLength"
+                    :maxLength="18"
                     placeholder="\"
                     :disabled="fieldDisabled(propertyFeatures['inquiriedIdNo'])"
                   ></el-input>

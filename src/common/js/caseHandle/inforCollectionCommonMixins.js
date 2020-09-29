@@ -74,6 +74,7 @@ export const inforCollectionCommonMixins = {
     };
     return {
       moneyTooltip: "",// 自由裁量权金额提示语
+      punishList: [],
       recentCheckStastions: [],//最近五个检测站
       recentCheckWorkers: [],//历史保存过检测人员
       vehicleTypeList: [],//车型
@@ -552,9 +553,25 @@ export const inforCollectionCommonMixins = {
         caseCauseName: this.inforForm.caseCauseName,
         titleType:titleType,
         illageClauseLabel,
-        punishClauseLabel
-      };
+        punishClauseLabel,
+        punishList: this.punishList,
+      }; 
       this.$refs.punishDiagRef.showModal(data);
+    },
+    //获取违法条款、依据数据
+    getPunishList() {
+      // debugger
+      this.$store
+        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
+        .then(
+          (res) => {
+            this.punishList = res.data;
+            if(this.judgFreedomList.length===0){
+              this.initMoneyWhenNotExistStandard();
+            }
+          },
+          (err) => {}
+        );
     },
     //设置违法条款和处罚条款
     setIllegalLawAndPunishLaw(data) {
@@ -827,9 +844,10 @@ export const inforCollectionCommonMixins = {
                     }
                 })
             }
-            this.initProvincesList(dataArray)  
+          _this.initProvincesList(dataArray)  
           _this.inforForm = res.data;
-          this.handleCaseData(res.data);
+          _this.handleCaseData(res.data);
+          _this.getPunishList();
         },
         err => {
           console.log(err);

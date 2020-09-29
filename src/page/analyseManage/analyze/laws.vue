@@ -28,7 +28,7 @@
 
 <script>
 import echarts from "echarts";
-import {flfgfxyp} from '@/api/fxyp.js'
+import {flfgfxyp} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
@@ -48,24 +48,24 @@ export default {
      * 初始化页面
      */
     init() {
-      let year1 = this.logForm.date[0]
-      let year2 = this.logForm.date[1]
-      this.getData({year1, year2})
+      let startTime = this.logForm.date[0]
+      let endTime = this.logForm.date[1]
+      this.getData({ startTime, endTime })
     },
 
     /**
      * 选中时间
      */
     handleSelect(val) {
-      let year1 = val[0], year2 = val[1]
-      this.getData({ year1, year2 })
+      let startTime = val[0], endTime = val[1]
+      this.getData({ startTime, endTime })
     },
 
     /**
      * 获取数据
      */
-    getData({year1, year2}) {
-      flfgfxyp({year1, year2}).then(res => {
+    getData({ startTime, endTime }) {
+      flfgfxyp({ startTime, endTime }).then(res => {
         if(res.code == 200) {
           this.drawLine(res.data)
         }

@@ -22,9 +22,9 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="方式" prop="patrolType">
-                  <el-radio-group v-model="baseInfoForm.patrolType" :disabled="PageType === 'handover'">
-                    <el-radio label="1">路巡</el-radio>
-                    <el-radio label="2">网巡</el-radio>
+                  <el-radio-group v-model="baseInfoForm.patrolType" :disabled="relationType === '1' || PageType === 'handover'">
+                    <el-radio label="路巡">路巡</el-radio>
+                    <el-radio label="网巡">网巡</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -54,48 +54,76 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="执法人员" prop="lawEnforcementOfficials">
+                <!-- <el-form-item label="执法人员" prop="lawEnforcementOfficials">
                   <el-input
                     v-model="baseInfoForm.lawEnforcementOfficials"
-                    disabled
+                    :disabled="relationType === '1'"
                     placeholder="不能手填，要求先选择关联记录，人员自动带出"
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
+               <el-form-item label="执法人员" prop="lawEnforcementOfficialsIds" > 
+                 <el-select
+                  v-model="baseInfoForm.lawEnforcementOfficialsIds"
+                  multiple
+                  @remove-tag="removeRelation"
+                  :class="{'disabled': relationType === '1' || PageType === 'handover'}">
+                    <el-option
+                      v-for="(item, index) in lawPersonList"
+                      :key="item.id"
+                      :label="item.lawOfficerName"
+                      :value="item.userId"
+                      :disabled="relationType === '1' || PageType === 'handover'"
+                    ></el-option>
+                  </el-select>
+               </el-form-item>
               </el-col>
+              
               <el-col :span="12">
                 <el-form-item label="是否用车" prop="isUseCar">
                   <el-radio-group
                     v-model="baseInfoForm.isUseCar"
                     @change="baseInfoForm.carNum === ''"
-                    disabled
+                    :disabled="relationType === '1' || PageType === 'handover'"
                   >
-                    <el-radio label="1">是</el-radio>
-                    <el-radio label="2">否</el-radio>
+                    <el-radio label="0">是</el-radio>
+                    <el-radio label="1">否</el-radio>
                   </el-radio-group>
                   <el-input
-                    v-if="baseInfoForm.isUseCar === '1'"
+                    v-if="baseInfoForm.isUseCar === '0'"
                     v-model="baseInfoForm.plateNumbers"
                     placeholder="请输入车牌号"
                     class="car-number-input"
-                    disabled
+                    :disabled="relationType === '1' || PageType === 'handover'"
                   ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="巡查路段" prop="patrolRoute">
+                <!-- <el-form-item label="巡查路段" prop="patrolRoute">
                   <el-input
                     v-model="baseInfoForm.patrolRoute"
-                    disabled
+                    :disabled="relationType === '1'"
                     placeholder="不能手填，要求先选择关联记录，人员自动带出"
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
+               <el-form-item label="巡查路线" prop="patrolRoute"> 
+                 <el-select v-model="baseInfoForm.patrolRoute"  multiple  
+                :class="{'disabled': relationType === '1' || PageType === 'handover'}">
+                    <el-option
+                      v-for="(item, index) in patrolRouteList"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                     :disabled="relationType === '1' || PageType === 'handover'"
+                    ></el-option>
+                  </el-select>
+               </el-form-item> 
               </el-col>
               <el-col :span="12">
                 <el-form-item prop="inspectionLength" label-width="0">
                   <el-input
                     v-model="baseInfoForm.inspectionLength"
                     class="inspection-length-input"
-                    
+                     :disabled="relationType === '1' || PageType === 'handover'"
                   >
                     <template slot="append" >km</template>
                   </el-input>
@@ -124,21 +152,23 @@
             style="width: 100%;height:100%;"
             @selection-change="selectJournal"
           >
-            <el-table-column type="selection" align="center" fixed="left"></el-table-column>
-            <!-- <el-table-column prop="recordNum" label="记录编号" align="left" width="100px" fixed="left"></el-table-column>
-            <el-table-column prop="checkTypeName" label="检查类型" align="center" width="120px"></el-table-column>
-            <el-table-column prop="checkCategoryName" label="检查门类" align="center" width="150px;"></el-table-column>
-            <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="280px"></el-table-column>
-            <el-table-column prop="oname" label="单位名称" align="center" min-width="220px"></el-table-column>
-            <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
-            <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px"></el-table-column>
-            <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
-            <el-table-column prop="lawPerson" label="执法人员" align="center" min-width="140px"></el-table-column> -->
-              <el-table-column prop="recordNum" label="记录编号" align="left" ></el-table-column>
-            <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
-            <el-table-column prop="address" label="定位地点" align="center" ></el-table-column>
+            <el-table-column type="selection" align="center"></el-table-column>
+            <el-table-column prop="recordNum" label="记录编号" align="center"  >
+               <template slot-scope="scope" class="person-table-onerow">
+                  <div @click="getDetials(scope.row)" style="color:#0000CD;">{{scope.row.recordNum}}</div>
+              </template>
+             </el-table-column>   
+            <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px">
+               <template slot-scope="scope" class="person-table-onerow">
+                  <div >{{scope.row.checkStartTime}}</div>
+                  <div >{{scope.row.checkEndTime}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="personNames" label="巡查人员" align="center" ></el-table-column>
+            <el-table-column prop="roadNum" label="巡查路线" align="center" ></el-table-column>
             <el-table-column prop="roadName" label="路段名称" align="center" ></el-table-column>
-            <el-table-column prop="roadCondition" label="路段信息" align="center" >
+            <!-- <el-table-column prop="routeInfo" label="桩号" align="center" ></el-table-column> -->
+            <el-table-column prop="routeInfo" label="桩号" align="center" >
               <template slot-scope="scope">
               <div >K{{scope.row.startKilometer}}+{{scope.row.startMeter}}m</div>
               <div >K{{scope.row.endKilometer}}+{{scope.row.endMeter}}m</div>
@@ -157,38 +187,41 @@
                 <span v-else>{{scope.row.roadCondition}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="lawPerson" label="案件编号" align="center" ></el-table-column>
-            <el-table-column prop="opt" label="是否立案" align="center" fixed="right">
-              <template slot-scope="scope">
+            <el-table-column prop="caseTempNos" label="案件编号" align="center" ></el-table-column>
+              <!-- <template slot-scope="scope">
                 <span v-if="scope.row.filingCase === '1'">否</span>
                 <el-button v-else type="text" @click="checkCase(scope.row)">查看案件</el-button>
-              </template>
+              </template> -->
             </el-table-column>
           </el-table>
         </div>
         <h3 class="form-tab-title">其他事项</h3>
         <div class="journal-info-panel">
           <!-- 添加日志 -->
-          <el-input
-            v-if="PageType === 'journal'"
+          <el-input :disabled="PageType === 'handover'"
             type="textarea"
             :autosize="{ minRows: 4, maxRows: 6}"
             placeholder
             v-model="baseInfoForm.other"
           ></el-input>
-          <!-- 交接班 -->
+          
+        </div>
+        <h3 class="form-tab-title" v-if="PageType === 'handover'">交接班</h3>
+        <div class="journal-info-panel">
+<!-- 交接班 -->
           <el-form
-            :model="changeShiftsForm"
+            :model="baseInfoForm"
             ref="changeShiftsRef"
             :rules="rules"
             label-width="110px"
+           
           >
-            <el-row :gutter="20">
+            <el-row :gutter="20"  v-if="PageType === 'handover'">
               <el-col :span="24">
                 <el-form-item label="巡查车辆情况" prop="carCondition">
                   <el-radio-group v-model="baseInfoForm.carCondition">
-                    <el-radio label="1">完好</el-radio>
-                    <el-radio label="2">故障</el-radio>
+                    <el-radio label="完好">完好</el-radio>
+                    <el-radio label="故障">故障</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -205,8 +238,8 @@
               <el-col :span="24">
                 <el-form-item label="勘察设备情况" prop="equipmentCondition">
                   <el-radio-group v-model="baseInfoForm.equipmentCondition">
-                    <el-radio label="1">齐全</el-radio>
-                    <el-radio label="2">缺漏或损坏</el-radio>
+                    <el-radio label="齐全">齐全</el-radio>
+                    <el-radio label="缺漏或损坏">缺漏或损坏</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -229,7 +262,7 @@
                       v-for="item in lawPersonList"
                       :key="item.id"
                       :label="item.lawOfficerName"
-                      :value="item.lawOfficerName"
+                      :value="item.userId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -241,7 +274,7 @@
                       v-for="item in lawPersonList"
                       :key="item.id"
                       :label="item.lawOfficerName"
-                      :value="item.lawOfficerName"
+                      :value="item.userId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -253,14 +286,14 @@
                       v-for="item in lawPersonList"
                       :key="item.id"
                       :label="item.lawOfficerName"
-                      :value="item.lawOfficerName"
+                      :value="item.userId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
           </el-form>
-        </div>
+          </div>
       </div>
     </div>
     <!-- 操作按钮 -->
@@ -275,9 +308,13 @@
       </el-button>
     </div>
     <div v-else class="float-btns">
-      <el-button class="edit_btn" type="info" @click="save">
+      <el-button class="edit_btn" type="primary" @click="save">
         <i class="el-icon-circle-close"></i>
         <br />保存
+      </el-button>
+       <el-button class="edit_btn" type="info" @click="toClose">
+        <i class="el-icon-circle-close"></i>
+        <br />取消
       </el-button>
     </div>
     <!-- 关联排班弹窗 -->
@@ -288,6 +325,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+import { findRouteManageByOrganIdApi } from "@/api/system";
 import RelationScheduling from "@/page/inspection/dutyManage/components/relationScheduling.vue";
 import RelationRecord from "@/page/inspection/dutyManage/components/relationRecord.vue";
 import { saveRecordApi,getCheChecklogPageList,updateRecordApi,getCheRecordLogApi,delCheRecordTemplateApi,addCheShiftchangeApi} from '@/api/supervision';
@@ -298,19 +336,20 @@ export default {
       isShow: false,
       baseInfoForm: {
         title: "", // 日志标题
-        patrolType: "1", // 巡查类型 （方式）
+        patrolType: "路巡", // 巡查类型 （方式）
         inspectionTime: "", // 巡查时间
         startCheckTime:"",//巡查开始时间
         endCheckTime:"",//巡查结束时间
         weather: "", // 天气
-        lawEnforcementOfficials: "", // 执法人员
-        isUseCar: "1", // 是否用车
+        lawEnforcementOfficials: [], // 执法人员
+        lawEnforcementOfficialsIds: [], // 执法人员ids
+        isUseCar: "0", // 是否用车
         plateNumbers: "", // 车牌号
-        patrolRoute: "", // 巡查路段
+        patrolRoute: [], // 巡查路段
         inspectionLength: "", // 路段长度km
         other: "", //其他事项
-        carCondition: "1", // 巡查车辆情况
-        equipmentCondition: "1", // 勘察设备情况
+        carCondition: "完好", // 巡查车辆情况
+        equipmentCondition: "齐全", // 勘察设备情况
         carConditionDescribe: "", // 巡查车辆情况描述
         equipmentConditionDescribe: "", // 勘察设备情况描述
         includingPeople: "", // 交班人
@@ -318,11 +357,12 @@ export default {
         manager: "", // 负责人
         scheduleId:"",//排班ID
         recordsIds:[],//记录ids
-        
+        schedulePersonnel:"",//排班人
+        schedulePersonnelId:""//排班人ID
       },
       changeShiftsForm: {
-        carCondition: "1", // 巡查车辆情况
-        equipmentCondition: "1", // 勘察设备情况
+        carCondition: "完好", // 巡查车辆情况
+        equipmentCondition: "齐全", // 勘察设备情况
         carConditionDescribe: "", // 巡查车辆情况描述
         equipmentConditionDescribe: "", // 勘察设备情况描述
         shiftHandoverPerson: "", // 交班人
@@ -352,8 +392,10 @@ export default {
           { required: true, message: "请选择交班人", trigger: "blur" },
         ],
       },
+      relationType:"0",
       pageType:"",
       lawPersonList: [],
+      patrolRouteList:[],
       tableData: [],
       selectList: [],
       other: "",
@@ -385,6 +427,7 @@ export default {
     }
   },
   created() {
+    this.findRouteManageByOrganId();
     this.searchLawPerson();
     if(this.handelType === '1'){
       
@@ -405,27 +448,45 @@ export default {
         this.baseInfoForm.title = res.data.records[0].title,
         this.baseInfoForm.patrolType = res.data.records[0].patrolType,
         this.baseInfoForm.status = res.data.records[0].status,
-         this.baseInfoForm.inspectionTime = [res.data.records[0].startCheckTime,res.data.records[0].endCheckTime],
+        this.baseInfoForm.inspectionTime = [res.data.records[0].startCheckTime,res.data.records[0].endCheckTime],
         this.baseInfoForm.startCheckTime = res.data.records[0].startCheckTime,
         this.baseInfoForm.endCheckTime = res.data.records[0].endCheckTime,
         this.baseInfoForm.weather = res.data.records[0].weather,
         this.baseInfoForm.scheduleId = res.data.records[0].scheduleId,
         this.baseInfoForm.other = res.data.records[0].other,
-        this.baseInfoForm.carCondition = res.data.records[0].carCondition,
-        this.baseInfoForm.carConditionDescribe = res.data.records[0].carConditionDescribe,
-        this.baseInfoForm.equipmentCondition = res.data.records[0].equipmentCondition,
-        this.baseInfoForm.equipmentConditionDescribe = res.data.records[0].equipmentConditionDescribe
+          this.baseInfoForm.carCondition = res.data.records[0].carCondition,
+          this.baseInfoForm.carConditionDescribe = res.data.records[0].carConditionDescribe,
+          this.baseInfoForm.equipmentCondition = res.data.records[0].equipmentCondition,
+          this.baseInfoForm.equipmentConditionDescribe = res.data.records[0].equipmentConditionDescribe
         this.baseInfoForm.patrolRoute = res.data.records[0].patrolRoute,
         this.baseInfoForm.lawEnforcementOfficials = res.data.records[0].lawEnforcementOfficials,
-         this.baseInfoForm.includingPeople = res.data.records[0].includingPeople,
-         this.baseInfoForm.successor = res.data.records[0].successor,
+        this.baseInfoForm.includingPeople = res.data.records[0].includingPeople,
+        this.baseInfoForm.successor = res.data.records[0].successor,
         this.baseInfoForm.inspectionLength =  res.data.records[0].inspectionLength,
-         this.baseInfoForm.plateNumbers =  res.data.records[0].plateNumbers,
-         this.baseInfoForm.manager = res.data.records[0].manager
+        this.baseInfoForm.plateNumbers =  res.data.records[0].plateNumbers,
+        this.baseInfoForm.manager = res.data.records[0].manager,
+        this.baseInfoForm.lawEnforcementOfficials = res.data.records[0].lawEnforcementOfficials.split(",");
+        this.baseInfoForm.lawEnforcementOfficialsIds = res.data.records[0].lawEnforcementOfficialsIds.split(",");
+        this.baseInfoForm.patrolRoute = res.data.records[0].patrolRoute.split(";");
+        this.baseInfoForm.isUseCar = res.data.records[0].isUseCar
+        
        }
       }, err => {
         this.$message({ type: 'error', message: err.msg || '' });
       });
+    },
+    //移除执法人员 做校验
+    removeRelation(tagval){
+      this.tableData.forEach(item =>{
+        var personIds =  item.personIds.split(";");
+        personIds.forEach(element =>{
+              if(tagval === element){
+                this.$message({ type: 'warning', message:"已关联现场记录钟存在该执法人员，不能删除！" });
+                this.baseInfoForm.lawEnforcementOfficialsIds[this.baseInfoForm.lawEnforcementOfficialsIds.length] = tagval;
+                throw new Error("EndIterative");
+            }
+        })
+      })
     },
     //获取关联记录
     getRecordMsg(){
@@ -445,10 +506,15 @@ export default {
     },
     //获取排班数据
     getReturnData(data){
-      this.baseInfoForm.lawEnforcementOfficials = data.lawEnforcementOfficials;
-      this.baseInfoForm.patrolRoute =data.patrolRoute;
+      this.relationType = "1";
+      this.baseInfoForm.lawEnforcementOfficialsIds = data.lawEnforcementOfficialsIds.split(";");
+      this.baseInfoForm.patrolRoute = data.patrolRoute.split(";");
+      //this.patrolRouteList = data.patrolRoute.split(";");
       this.baseInfoForm.scheduleId = data.scheduleId;
       this.baseInfoForm.plateNumbers = data.plateNumbers;
+      this.baseInfoForm.patrolType = data.patrolType;
+      this.baseInfoForm.schedulePersonnel = data.schedulePersonnel;
+      this.baseInfoForm.schedulePersonnelId = data.schedulePersonnelId;
     },
     //返回关联记录数据
     getReturnDataRecord(data){
@@ -467,7 +533,33 @@ export default {
     },
     // 关联记录
     relationRecordFun() {
-      this.$refs.relationRecordRef.showModal(this.BusinessType,this.baseInfoForm.recordsIds);
+      this.$refs.baseInfoFormRef.validate((valid) => {
+            if (valid) {
+            var ss = this.baseInfoForm.inspectionTime+"";
+            var stringResult = ss.split(',');
+            this.baseInfoForm.startCheckTime = stringResult[0]; 
+            this.baseInfoForm.endCheckTime = stringResult[1];
+            //根据巡查人员名称获取id   
+        this.baseInfoForm.lawEnforcementOfficials=[];
+        this.baseInfoForm.lawEnforcementOfficialsIds.forEach((item,index1)=>{
+          this.lawPersonList.forEach((element,index)=>{
+               if(item == element.userId){
+                 this.baseInfoForm.lawEnforcementOfficials[this.baseInfoForm.lawEnforcementOfficials.length] = element.lawOfficerName;
+               }
+          })
+        })
+               let data = {
+                  recordsIds:this.baseInfoForm.recordsIds,
+                  checkStartTime:this.baseInfoForm.startCheckTime,
+                  checkEndTime:this.baseInfoForm.endCheckTime,
+                  personIds:this.baseInfoForm.lawEnforcementOfficialsIds.join(",")
+              }
+              this.$refs.relationRecordRef.showModal(data);
+            }else{
+              this.$message({ type: "warning", message: "请先填写日志信息" });
+            }
+        })
+
     },
     //取消
     toClose(){
@@ -496,7 +588,6 @@ export default {
                    this.tableData.splice(index,1)
                }
              });
-              
            }else{
               let data={
           checklogId:this.checklogId,
@@ -545,12 +636,51 @@ export default {
         }
       );
     },
+      // 查询巡查路段
+      findRouteManageByOrganId() {
+      let data = { organId: this.UserInfo.organId };
+      findRouteManageByOrganIdApi(data).then(
+        (res) => {
+          this.patrolRouteList = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    //查看记录详情
+    getDetials(row){
+       this.$router.push({
+        name: "record_detail",
+        params: { page: 'detail', cheRecord: row }
+      });
+    },
     //保存
     save(){
+      //截取巡查时间
+        this.$refs.baseInfoFormRef.validate((valid) => {
+            if (valid) {
+            const loading = this.$loading({
+                lock: true,
+                text: "正在保存",
+                spinner: "car-loading",
+                customClass: "loading-box",
+                background: "rgba(234,237,244, 0.8)",
+            });
+      //巡查时间
       var ss = this.baseInfoForm.inspectionTime+"";
       var stringResult = ss.split(',');
         this.baseInfoForm.startCheckTime = stringResult[0]; 
         this.baseInfoForm.endCheckTime = stringResult[1];
+     //根据巡查人员名称获取id   
+        this.baseInfoForm.lawEnforcementOfficials=[];
+        this.baseInfoForm.lawEnforcementOfficialsIds.forEach((item,index1)=>{
+          this.lawPersonList.forEach((element,index)=>{
+               if(item == element.userId){
+                 this.baseInfoForm.lawEnforcementOfficials[this.baseInfoForm.lawEnforcementOfficials.length] = element.lawOfficerName;
+               }
+          })
+        })
       //新增
       if(this.handelType == '1'){
         var data={
@@ -563,11 +693,14 @@ export default {
         scheduleId:this.baseInfoForm.scheduleId,
         other:this.baseInfoForm.other,
         inspectionLength:this.baseInfoForm.inspectionLength,
-        carCondition:this.baseInfoForm.carCondition,
-        carConditionDescribe:this.baseInfoForm.carConditionDescribe,
-        equipmentCondition:this.baseInfoForm.equipmentCondition,
-        equipmentConditionDescribe:this.baseInfoForm.equipmentConditionDescribe,
         recordsIds:this.baseInfoForm.recordsIds.join(","),
+        isUseCar:this.baseInfoForm.isUseCar,
+        plateNumbers:this.baseInfoForm.plateNumbers,
+        lawEnforcementOfficials:this.baseInfoForm.lawEnforcementOfficials.join(","),
+        lawEnforcementOfficialsIds:this.baseInfoForm.lawEnforcementOfficialsIds.join(","),
+        patrolRoute:this.baseInfoForm.patrolRoute.join(","),
+        schedulePersonnel:this.baseInfoForm.schedulePersonnel,//排班人
+        schedulePersonnelId:this.baseInfoForm.schedulePersonnelId//排班人ID
       }
          saveRecordApi(data).then(res => {
         if (res.code == "200") {
@@ -597,11 +730,12 @@ export default {
         weather:this.baseInfoForm.weather,
         scheduleId:this.baseInfoForm.scheduleId,
         other:this.baseInfoForm.other,
-        carCondition:this.baseInfoForm.carCondition,
-        carConditionDescribe:this.baseInfoForm.carConditionDescribe,
-        equipmentCondition:this.baseInfoForm.equipmentCondition,
-        equipmentConditionDescribe:this.baseInfoForm.equipmentConditionDescribe,
         recordsIds:this.baseInfoForm.recordsIds.join(","),
+         isUseCar:this.baseInfoForm.isUseCar,
+        plateNumbers:this.baseInfoForm.plateNumbers,
+        lawEnforcementOfficials:this.baseInfoForm.lawEnforcementOfficials.join(","),
+        lawEnforcementOfficialsIds:this.baseInfoForm.lawEnforcementOfficialsIds.join(","),
+        patrolRoute:this.baseInfoForm.patrolRoute.join(","),
       }
         updateRecordApi(data).then(res => {
         if (res.code == "200") {
@@ -620,11 +754,25 @@ export default {
         this.$message({ type: 'error', message: err.msg || '' });
       });
       }else if(this.handelType == '3' ){
+          this.$refs.changeShiftsRef.validate((valid) => {
+            if (valid) {
+            const loading = this.$loading({
+                lock: true,
+                text: "正在保存",
+                spinner: "car-loading",
+                customClass: "loading-box",
+                background: "rgba(234,237,244, 0.8)",
+            });
+            
         var data={  
           checklogId:this.checklogId,  
           includingPeople: this.baseInfoForm.includingPeople, // 交班人
           successor: this.baseInfoForm.successor, // 接班人
           manager: this.baseInfoForm.manager, // 负责人
+          carCondition:this.baseInfoForm.carCondition,
+        carConditionDescribe:this.baseInfoForm.carConditionDescribe,
+        equipmentCondition:this.baseInfoForm.equipmentCondition,
+        equipmentConditionDescribe:this.baseInfoForm.equipmentConditionDescribe,
         }
         addCheShiftchangeApi(data).then(res => {
         if (res.code == "200") {
@@ -642,8 +790,12 @@ export default {
       }, err => {
         this.$message({ type: 'error', message: err.msg || '' });
       });
+            }
+          })
       }
-       
+      loading.close();
+            }
+        })
     },
   },
 };
@@ -763,6 +915,11 @@ export default {
 }
 >>> .el-select {
   margin-right: 0;
+  &.disabled{
+    .el-tag__close{
+      display: none;
+    }
+  }
 }
 .tableHandle {
   margin-bottom: 10px;

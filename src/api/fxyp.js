@@ -91,16 +91,6 @@ export function getFxypApi(data) {
       cancelToken:  setCancelSource(),
     });
   }
-  //电子化办案分析
-  export function dzhbafx(data) {
-    return  request({
-      url: "/fxyp/dzhbafx",
-      method:  "post",
-      showloading: false,
-      params:data,
-      cancelToken:  setCancelSource(),
-    });
-  }
   //电子化办案分析 人员
   export function dzhbafxry(data) {
     return  request({
@@ -154,9 +144,11 @@ export function getFxypApi(data) {
    //时间关联分析  年
   export function sjglfx(data) {
     return  request({
-      url: `/case/numYear/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -164,9 +156,11 @@ export function getFxypApi(data) {
    //时间关联分析  月
    export function sjglfxmonth(data) {
     return  request({
-      url: `/case/numMonth/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -174,9 +168,11 @@ export function getFxypApi(data) {
    //时间关联分析  日
    export function sjglfxday(data) {
     return  request({
-      url: `/case/numDay/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -184,9 +180,11 @@ export function getFxypApi(data) {
   //时间关联分析  时
   export function sjglfxhours(data) {
     return  request({
-      url: `/case/numHours/${data}`,
+      url: "/case/numDay",
+      params: data,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -197,6 +195,7 @@ export function getFxypApi(data) {
       url: "/organdzfml/zfml",
       method:  "get",
       showloading: false,
+      // loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
@@ -206,17 +205,42 @@ export function getFxypApi(data) {
     return  request({
       url: `/case/people/${year1}/${year2}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });
   }
   // 法律法规分析研判
-  export function flfgfxyp({year1, year2}) {
+  export function flfgfxyp({ startTime, endTime }) {
     return  request({
-      url: `/judge/analysis/list/${year1}/${year2}`,
+      url: `/judge/analysis/list/${startTime}/${endTime}`,
       method:  "get",
-      showloading: false,
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 监管治理分析研判
+  export function jgzlfxyp({ startTime, endTime }) {
+    return  request({
+      url: `/judge/analysis/JGZLlist/${startTime}/${endTime}`,
+      method:  "get",
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType:  'FXYP_HOST',
+      cancelToken:  setCancelSource(),
+    });
+  }
+  // 电子化办案分析
+  export function dzhbafx(data) {
+    return  request({
+      url: "/electronization/electronization",
+      method:  "get",
+      params: data,
+      showloading: true,
+      loadingType: 'loadPart',
       baseUrlType:  'FXYP_HOST',
       cancelToken:  setCancelSource(),
     });

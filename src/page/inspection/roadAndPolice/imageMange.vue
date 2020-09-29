@@ -32,7 +32,7 @@
           <el-table-column prop="docId" label="类型" align="center" :formatter="format"></el-table-column>
           <el-table-column prop="storageId" label="详情" align="center">
             <template slot-scope="scope">
-              <img :src="host+scope.row.storageId" width="40" height="40" @click.stop="imgDetail(scope.row)" />
+              <img v-if="scope.row.status==1" :src="host+scope.row.storageId" width="40" height="40" @click.stop="imgDetail(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column prop="status" label="状态" align="center">
@@ -89,7 +89,7 @@
 import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import { mapGetters } from "vuex";
 import evidenceCatalogue from "@/page/caseHandle/case/form/evidenceCatalogue.vue";
-import { uploadCommon, findCommonFileApi } from "@/api/upload";
+import { uploadCommon, findCommonFileApi ,updateCommonFileApi} from "@/api/upload";
 
 import {
   getFileStreamByStorageIdApi,
@@ -97,8 +97,6 @@ import {
 import iLocalStroage from "@/common/js/localStroage.js";
 import evidenceDetail from "@/page/caseHandle/case/form/evidenceDetail";
 import evidenceImageDetail from "@/page/caseHandle/case/form/evidenceImageDetail";
-// import {saveOrUpdateEvdencenApi2, } from "@/api/caseHandle";
-// import { getEviByCaseIdApi } from "@api/caseHandle";
 export default {
   data() {
     const isSelect = (rule, value, callback) => {
@@ -294,18 +292,15 @@ export default {
     },
     //通过switch开关修改状态
     updateEviBySwitch(row) {
+      let data=row
       let _this = this;
-
-      console.log(row)
-      debugger
-      uploadCommon(fd).then((res) => {
-        console.log("1111111", res);
+      updateCommonFileApi(data).then((res) => {
         if (res.code == 200) {
           _this.$message({
-            message: "添加成功！",
-            type: "success",
+            message: "操作成功！",
+            type: "success"
           });
-          _this.addVisible = false;
+          _this.editVisible = false;
           _this.currentPage = 1;
           _this.getEviList();
         } else {

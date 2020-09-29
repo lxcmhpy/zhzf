@@ -185,7 +185,7 @@
 import addApplyDdComp from "@/page/person/person-apply/addApplyDd";
 import { mixinPerson } from "@/common/js/personComm";
 import elSelectTree from "@/components/elSelectTree/elSelectTree";
-import { exportPersonInfoApi } from '@/api/person';
+import { exportPersonInfoApi,personPictureApi } from '@/api/person';
 import { downLoadFile } from '@/api/joinExam';
 export default {
   mixins: [mixinPerson],
@@ -275,6 +275,7 @@ export default {
         customClass: 'loading-box',
         background: 'rgba(234,237,244, 0.8)'
       });
+      //导出excel
        exportPersonInfoApi(data).then(res => {
         loading.close()
         downLoadFile(res.data, res.fileName);
@@ -282,6 +283,14 @@ export default {
         loading.close();
         this.$message({ type: 'error', message: err.msg || '' });
       });
+      //导出照片
+      // personPictureApi(data).then(res => {
+      //   loading.close()
+      //   downLoadFile(res.data, res.fileName);
+      // }, err => {
+      //   loading.close();
+      //   this.$message({ type: 'error', message: err.msg || '' });
+      // });
     },
     applyTx() {
       //申请退休
