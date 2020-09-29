@@ -592,7 +592,6 @@ export default {
         status: this.uForm.status,
         note: this.uForm.note,
       };
-      debugger;
       let _this = this;
       this.$store.dispatch("saveOrUpdateEvidence", data).then((res) => {
         if (res.code == 200) {

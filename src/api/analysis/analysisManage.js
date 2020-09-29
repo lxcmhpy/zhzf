@@ -9,7 +9,8 @@ export function caseReasonApi(data) {
     url: "/crimecaseanalysis/case/" + data.year + '/' + data.year2,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -20,7 +21,8 @@ export function caseAddressApi(data) {
     url: "/crimecaseanalysis/place/" + data.year + '/' + data.year2,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -31,7 +33,8 @@ export function lawCaseApi(data) {
     url: "/query/statistic/case/" + data.organId,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -42,7 +45,8 @@ export function personEquipApi(data) {
     url: "/query/statistic/person/" + data.organId,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -53,7 +57,8 @@ export function personApi(data) {
     url: "/correlation/analysis/person/" + data.organId,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -64,7 +69,8 @@ export function featureApi(data) {
     url: "/case/people/" + data.year + '/' + data.year2,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -76,7 +82,8 @@ export function amountProportionApi(data) {
     url: "/annual/analysis/quantity/" + data.year,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
@@ -87,12 +94,13 @@ export function proportionApi(data) {
     url: "/annual/analysis/money/" + data.year,
     method: "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType: 'FXYP_HOST',
     cancelToken: setCancelSource()
   });
 }
-//报表统计 
+//报表统计
 export function reportStatisticApi(data) {
   return request({
     url: "/report/case",
@@ -110,7 +118,8 @@ export function numberYTYApi(data) {
     url:  "/annual/analysis/quantityYOY/"+data.year,
     method:  "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType:  'FXYP_HOST',
     cancelToken:  setCancelSource()
   });
@@ -121,7 +130,8 @@ export function proportionYTYApi(data) {
     url:  "/annual/analysis/moneyYOY/"+data.year,
     method:  "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType:  'FXYP_HOST',
     cancelToken:  setCancelSource()
   });
@@ -131,7 +141,20 @@ export function complaintApi(data) {
     url:  "/judge/analysis/countByHour/"+data.startTime+'/'+data.endTime,
     method:  "get",
     params: data,
-    showloading: false,
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource()
+  });
+}
+//空间关联分析
+export function spaceApi(data) {
+  return  request({
+    url:  "/correlation/analysis/space/"+data.startTime+'/'+data.endTime,
+    method:  "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
     baseUrlType:  'FXYP_HOST',
     cancelToken:  setCancelSource()
   });

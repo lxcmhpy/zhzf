@@ -25,7 +25,7 @@
   export default {
     data() {
       return {
-        year: "2020",
+        year: new Date().getFullYear().toString(),
         logForm: {},
         trendYear:'',
         trendYearNew:'',
@@ -146,7 +146,7 @@
       }
     },
     mounted() {
-      this.searchDraw('2020')
+      this.searchDraw( new Date().getFullYear().toString())
     }
   };
 </script>

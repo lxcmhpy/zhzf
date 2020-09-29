@@ -14,9 +14,17 @@
             ref="addProcessTypeRef"
             :rules="rules"
         >
-            <el-row>
-                <el-form-item label="分类等级" prop="levels">
-                    <el-select :disabled="handelType == 'edit'" v-model="processTypeForm.levels" @change="levelsChange" placeholder="请选择">
+            <el-row v-if="handelType == 'add'">
+                <el-form-item label="分类等级" prop="levelsType">
+                    <el-select :disabled="handelType == 'edit'" v-model="processTypeForm.levelsType" @change="levelsTypeChange" placeholder="请选择">
+                        <el-option label="同级" value="1" >同级</el-option>
+                        <el-option label="下级" v-if="curTreeNodeNode && curTreeNodeNode.data.levels != 3"  value="2" >下级</el-option>
+                    </el-select>
+                </el-form-item>
+            </el-row>
+            <el-row v-if="handelType == 'add'">
+                <el-form-item label="" prop="levels">
+                    <el-select :disabled="handelType == 'add'" v-model="processTypeForm.levels" @change="levelsChange" placeholder="请选择">
                         <el-option
                             v-for="item in levelsList"
                             :key="item.value"
@@ -26,9 +34,9 @@
                     </el-select>
                 </el-form-item>
             </el-row>
-            <el-row v-if="processTypeForm.levels && processTypeForm.levels != '1'">
+            <el-row v-if="processTypeForm && processTypeForm.levels && processTypeForm.levels != '1'">
                 <el-form-item label="上级分类" prop="parentId">
-                    <el-select :disabled="handelType == 'edit'" v-model="processTypeForm.parentId" placeholder="请选择">
+                    <el-select :disabled="handelType == 'add' || handelType == 'edit'" v-model="processTypeForm.parentId" placeholder="请选择">
                         <el-option
                             v-for="item in parentTypeList"
                             :key="item.id"
@@ -54,6 +62,9 @@
 import { saveCheProcessTypeApi, getProcessTypeByLevelsApi } from "@/api/supervision";
 
 export default {
+    props: {
+        curTreeNodeNode: Object
+    },
     data() {
         return {
         visible: false,
@@ -120,6 +131,17 @@ export default {
             }
         });
         },
+        levelsTypeChange(){
+            if(this.processTypeForm.levelsType == "1"){
+                this.processTypeForm.levels = this.curTreeNodeNode.data.levels + "";
+                this.processTypeForm.parentId = this.curTreeNodeNode.parent.data.id;
+                this.getProcessTypeByLevels(parseInt(this.processTypeForm.levels)-1);
+            }else if (this.processTypeForm.levelsType == "2"){
+                this.processTypeForm.levels = parseInt(this.curTreeNodeNode.data.levels) + 1 + "";
+                this.processTypeForm.parentId = this.curTreeNodeNode.data.id;
+                this.getProcessTypeByLevels(parseInt(this.processTypeForm.levels)-1);
+            }
+        },
         levelsChange() {
             const levels = this.processTypeForm.levels;
             this.processTypeForm.parentId = "";
@@ -146,8 +168,11 @@ export default {
             //添加
             if(type === "add") {
                 // const fromData = { pName: data.name, levels: parseInt(data.levels) + 1, parentId: data.id};
-                this.$refs["addProcessTypeRef"].resetFields();
-                this.dialogTitle = "新增情况分类"
+                this.dialogTitle = "新增情况分类";
+                this.processTypeForm.levelsType = "1";
+                this.processTypeForm.levels = this.curTreeNodeNode.data.levels + "";
+                this.processTypeForm.parentId = this.curTreeNodeNode.parent.data.id;
+                this.getProcessTypeByLevels(parseInt(this.processTypeForm.levels)-1);
             }else{//修改
                 const levels = parseInt(data.levels);
                 levels != 1 && this.getProcessTypeByLevels(levels - 1);
