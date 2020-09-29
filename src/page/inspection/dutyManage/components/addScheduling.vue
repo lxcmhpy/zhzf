@@ -208,7 +208,7 @@ export default {
           this.addSchedulingForm.lawEnforcementOfficialsIds = "";
           this.addSchedulingForm.lawPersonListIndex.forEach(i => {
             this.addSchedulingForm.lawEnforcementOfficials += `${this.lawPersonList[i].lawOfficerName};`;
-            this.addSchedulingForm.lawEnforcementOfficialsIds += `${this.lawPersonList[i].id};`;
+            this.addSchedulingForm.lawEnforcementOfficialsIds += `${this.lawPersonList[i].userId};`;
           });
 
           const data = JSON.parse(JSON.stringify(this.addSchedulingForm));
