@@ -20,13 +20,42 @@
       @selection-change="selectRecord"
     >
       <el-table-column type="selection" align="center"></el-table-column>
-      <el-table-column prop="recordNum" label="记录编号" align="left" width="100px"></el-table-column>
-      <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px"></el-table-column>
-      <el-table-column prop="address" label="定位地点" align="center" min-width="220px"></el-table-column>
-      <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
-      <el-table-column prop="roadCondition" label="路段信息" align="center" min-width="220px"></el-table-column>
-      <el-table-column prop="routeSituation" label="路段情况" align="center" width="120px"></el-table-column>
-      <el-table-column prop="lawPerson" label="案件编号" align="center" min-width="140px"></el-table-column>
+      <el-table-column prop="recordNum" label="记录编号" align="center" ></el-table-column>
+            <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px">
+               <template slot-scope="scope" class="person-table-onerow">
+                  <div >{{scope.row.checkStartTime}}</div>
+                  <div >{{scope.row.checkEndTime}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="personNames" label="巡查人员" align="center" ></el-table-column>
+            <el-table-column prop="roadNum" label="巡查路线" align="center" ></el-table-column>
+            <el-table-column prop="roadName" label="路段名称" align="center" ></el-table-column>
+            <!-- <el-table-column prop="routeInfo" label="桩号" align="center" ></el-table-column> -->
+            <el-table-column prop="routeInfo" label="桩号" align="center" >
+              <template slot-scope="scope">
+              <div >K{{scope.row.startKilometer}}+{{scope.row.startMeter}}m</div>
+              <div >K{{scope.row.endKilometer}}+{{scope.row.endMeter}}m</div>
+            </template>
+            </el-table-column>
+            <el-table-column prop="routeSituation" label="路段情况" align="center" >
+              <template slot-scope="scope">
+                <span
+                  v-if="scope.row.roadCondition === '1'"
+                  style="color: #05C051;"
+                >正常</span>
+                <span
+                  v-else-if="scope.row.roadCondition === '2'"
+                  style="color: #E84241;"
+                >异常</span>
+                <span v-else>{{scope.row.roadCondition}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="caseTempNos" label="案件编号" align="center" ></el-table-column>
+              <!-- <template slot-scope="scope">
+                <span v-if="scope.row.filingCase === '1'">否</span>
+                <el-button v-else type="text" @click="checkCase(scope.row)">查看案件</el-button>
+              </template> -->
+            </el-table-column>
     </el-table>
       <div class="paginationBox">
         <el-pagination
@@ -88,20 +117,27 @@ export default {
       this.$emit("returnDataRecord",data);
       this.visible = false;
     },
-     showModal(businessType,recordIds) {
+     showModal(data) {
+       let data1 ={
+         checkStartTime:data.checkStartTime,
+         checkEndTime:data.checkEndTime,
+         personIds:data.personIds,
+        current: this.currentPage,
+        size: this.pageSize
+       }
       this.visible = true;
-      let data={
-       // cateId:businessType,
-      }
-       getRecordListApi(data).then(res => {
+       getRecordListApi(data1).then(res => {
         if (res.code == "200") {
-          recordIds.forEach((rec,index1) =>{
+          if(data.recordsIds != '' && data.recordsIds != [] && data.recordsIds != undefined){
+              data.recordsIds.forEach((rec,index1) =>{
                 res.data.records.forEach((element,index) => {
-                if(element.recordId == rec){
+                if(element.recordId === rec){
                   res.data.records.splice(index,1);
                 }
           });
           })
+          }
+       
           
           this.tableData = res.data.records;
           //this.totalPage = res.data.total;

@@ -99,7 +99,7 @@ export default  [
             name: "numberYTY",
             path: "/numberYTY",
             meta: {
-              title: "案件案发数量同比分析"
+              title: "案件类型数量同比分析"
             },
             component: () => import("@/page/analyseManage/caseAnalysis/numberYTY.vue")
           },
@@ -206,7 +206,6 @@ export default  [
             component: () => import("@/page/analyseManage/analyze/complaintStatistic.vue")
           }
         ]
-
       },
 
 ]

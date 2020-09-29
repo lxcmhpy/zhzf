@@ -180,20 +180,35 @@
         };
         lawCaseApi(param).then(res => {
           if (res.code == 200) {
-            this.vehicle = res.data.vehicleInvolved[0].value;
+            if(res.data.vehicleInvolved){
+              this.vehicle = res.data.vehicleInvolved[0].value;
+            }else{
+              this.vehicle = ''
+            }
             this.caseTypeCon = res.data.typeOfCase;
             this.incidentTrend = res.data.incidentTrend;
             Object.keys(res.data.incidentTrend).forEach(function (element, index) {
-              res.data.incidentTrend[element].map(item => {
-                if (index == 0) {
-                  that.trendYear = element
-                  that.trendYearDate.push(item.value)
-                } else if (index == 1) {
-                  that.trendYearNew = element
-                  that.trendYearNewX.push(item.name)
-                  that.trendYearDateNew.push(item.value)
+              if (index == 0) {
+                that.trendYear = element
+                if(res.data.incidentTrend[element].length>0){
+                  res.data.incidentTrend[element].map(item => {
+                    that.trendYearDate.push(item.value)
+                  })
+                }else{
+                  that.trendYearDate = []
                 }
-              })
+              } else if (index == 1) {
+                that.trendYearNew = element
+                if(res.data.incidentTrend[element].length>0) {
+                  res.data.incidentTrend[element].map(item => {
+                    that.trendYearNewX.push(item.name)
+                    that.trendYearDateNew.push(item.value)
+                  })
+                }else{
+                  that.trendYearNewX = []
+                  that.trendYearDateNew = []
+                }
+              }
             })
             this.caseStatusData = res.data.caseStatus
             res.data.caseStatus.map(item => {
@@ -204,10 +219,13 @@
               }
             });
             //执法机构案件数量
-            res.data.caseNumber.slice(0, 8).map(item => {
-              that.caseNumberSeries.push(item.value)
-              that.caseNumberXData.push(item.name)
-            })
+            if(res.data.caseNumber.length>0){
+              res.data.caseNumber.slice(0, 8).map(item => {
+                that.caseNumberSeries.push(item.value)
+                that.caseNumberXData.push(item.name)
+              })
+            }
+
             //罚没款项
             that.penalty = res.data.confiscated[0].value
 
@@ -217,24 +235,30 @@
               that.crimePlaceXData.push(item.name)
             })
             //车辆排名
-            res.data.vehicles.slice(0, 8).map(item => {
-              that.carSortSeries.push(item.value)
-              that.carSortXData.push(item.name)
-            })
+            if(res.data.vehicles){
+              res.data.vehicles.slice(0, 8).map(item => {
+                that.carSortSeries.push(item.value)
+                that.carSortXData.push(item.name)
+              })
+            }else{
+              that.carSortSeries =[]
+              that.carSortXData =[]
+            }
+
             //地图数据
             that.mapData = res.data.mapdata
-            var jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
-            var yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
-            var yichun = "../../../../static/json/map/data-1518338852969-Hy677KTIf.json";
-            var xinyu = "../../../../static/json/map/data-1518338838010-SyAzQYTIf.json";
-            var shangrao = "../../../../static/json/map/data-1518338829670-H1UfQYa8G.json";
-            var pingxiang = "../../../../static/json/map/data-1518338823093-HkyMQtpUf.json";
-            var nanchang = "../../../../static/json/map/data-1518338805373-S1Temta8G.json";
-            var jiujiang = "../../../../static/json/map/data-1518338799987-S1deQFTLz.json";
-            var jingdezhen = "../../../../static/json/map/data-1518338783915-HJOJXtaLf.json";
-            var jian = "../../../../static/json/map/data-1518338772507-BJnAMKTIz.json";
-            var ganzhou = "../../../../static/json/map/data-1518338763250-S17RfKpLM.json";
-            var fuzhou = "../../../../static/json/map/data-1518338684239-S1EFGtp8f.json";
+            let jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
+            let yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
+            let yichun = "../../../../static/json/map/data-1518338852969-Hy677KTIf.json";
+            let xinyu = "../../../../static/json/map/data-1518338838010-SyAzQYTIf.json";
+            let shangrao = "../../../../static/json/map/data-1518338829670-H1UfQYa8G.json";
+            let pingxiang = "../../../../static/json/map/data-1518338823093-HkyMQtpUf.json";
+            let nanchang = "../../../../static/json/map/data-1518338805373-S1Temta8G.json";
+            let jiujiang = "../../../../static/json/map/data-1518338799987-S1deQFTLz.json";
+            let jingdezhen = "../../../../static/json/map/data-1518338783915-HJOJXtaLf.json";
+            let jian = "../../../../static/json/map/data-1518338772507-BJnAMKTIz.json";
+            let ganzhou = "../../../../static/json/map/data-1518338763250-S17RfKpLM.json";
+            let fuzhou = "../../../../static/json/map/data-1518338684239-S1EFGtp8f.json";
 
             echarts.extendsMap = function (id, opt) {
               // 实例

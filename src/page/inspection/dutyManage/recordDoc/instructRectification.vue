@@ -102,8 +102,20 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">监督巡查人（签字）：</el-col>
-          <el-col :span="12">被监督巡查对象责任人（签字）：</el-col>
+          <el-col :span="12">监督巡查人（签字）：
+            <p class="partyBox d-i-b w-180">
+              <el-form-item prop="monitorName">
+                <el-input v-model="formData.monitorName"></el-input>
+              </el-form-item>
+            </p>
+          </el-col>
+          <el-col :span="12">被监督巡查对象责任人（签字）：
+            <p class="partyBox d-i-b" style="width: 165px;">
+              <el-form-item prop="supervisedName">
+                <el-input v-model="formData.supervisedName"></el-input>
+              </el-form-item>
+            </p>
+          </el-col>
         </el-row>
         <br />
         <br />
@@ -136,6 +148,9 @@ import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
 
 export default {
+  props: {
+    caseDocData: {}
+  },
   components: {},
   computed: {
     UserInfo() {
@@ -199,21 +214,23 @@ export default {
   methods: {
     // 表单校验,校验通过返回数据
     validateForm() {
-      this.$refs.docFormRef.validate((valid, noPass) => {
-        if (valid) {
-          const reportData = JSON.stringify(this.formData);
-          return reportData;
-        } else {
-          let a = Object.values(noPass)[0];
-          this.$message({
-            showClose: true,
-            message: a[0].message,
-            type: "error",
-            offset: 100,
-            customClass: "validateErrorTip",
-          });
-          return false;
-        }
+      return new Promise((resolve, reject) => {
+        this.$refs.docFormRef.validate((valid, noPass) => {
+          if (valid) {
+            const reportData = JSON.stringify(this.formData);
+            resolve({ code: 200, data: reportData });
+          } else {
+            let a = Object.values(noPass)[0];
+            this.$message({
+              showClose: true,
+              message: a[0].message,
+              type: "error",
+              offset: 100,
+              customClass: "validateErrorTip",
+            });
+            resolve({ code: 500 });
+          }
+        });
       });
     },
     // 获取当前日期
@@ -230,6 +247,10 @@ export default {
   mounted() {},
   created() {
     this.getCurrentDay();
+    this.caseDocData = JSON.parse(this.caseDocData);
+    if(Object.keys(this.caseDocData).length > 0){
+      this.formData = this.caseDocData;
+    }
   },
 };
 </script>
@@ -237,6 +258,7 @@ export default {
 <style lang="scss" scoped>
 .instruct-notice {
   #instructNoticePanel {
+    margin-top: 10px;
     .partyBox {
       text-indent: 0;
     }

@@ -4,15 +4,22 @@
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="立案机构" prop>
-            <el-select size="small" v-model="logForm.mechanism" placeholder="立案机构">
-              <el-option label="全部" value></el-option>
-
-            </el-select>
+            <elSelectTree
+              ref="elSelectTreeObj1"
+              :options="mechanismOption"
+              :accordion="true"
+              :props="{label: 'label', value: 'id'}"
+              @getValue="handleMechanism"
+            />
           </el-form-item>
           <el-form-item label="执法门类" prop>
-            <el-select size="small" v-model="logForm.category" placeholder="执法门类">
-              <el-option label="全部" value></el-option>
-
+            <el-select v-model="logForm.category" placeholder="请选择">
+              <el-option
+                v-for="item in categoryOption"
+                :key="item.value"
+                :label="item.name"
+                :value="item.value">
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item
@@ -39,7 +46,7 @@
         </el-form>
       </div>
       <div class="tablePart">
-        <el-tabs type="border-card" v-model="activeName" @tab-click="handleTabClick(activeName)">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleSelect">
           <el-tab-pane
           v-for="item in tabPans"
           :key="item.name"
@@ -56,9 +63,11 @@
 
 <script>
   import echarts from "echarts";
-  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours} from '@/api/fxyp.js'
+  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours, zfml } from '@/api/analysis/analysisManage.js'
+  import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
   export default {
+    components: { elSelectTree },
     data() {
       return {
         dateList: [
@@ -71,17 +80,17 @@
           },
           {
             activeName: 'dayView',
-            value: String(new Date().getFullYear()) + '/' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
+            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
             type: "month",
             placeholder: "选择月",
-            valueFormat: "yyyy/MM"
+            valueFormat: "yyyy MM"
           },
           {
             activeName: 'hoursView',
-            value: String(new Date().getFullYear()) + '/' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + '/' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
+            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + ' ' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
             type: "date",
             placeholder: "选择日期",
-            valueFormat: "yyyy/MM/dd"
+            valueFormat: "yyyy MM dd"
           },
         ],
         tabPans: [
@@ -91,73 +100,90 @@
           { label: "时视图", name: "hoursView", id: "hoursChart" },
         ],
         activeName: 'yearView',
-        checked: true,
         logForm: {
           mechanism: "",
           category: ""
         },
-      };
+        mechanismOption: [],
+        categoryOption: []
+      }
     },
     created() {
       this.init()
     },
     methods: {
       /**
-       * 初始化页面，显示年视图
+       * 初始化页面，默认显示年数据，机构和门类默认不选择
        */
-      init(params) {
-        sjglfx(params).then(res => {
-          if(res.code === 200) {
-            return res.data
-          } else {
-            throw new Error("sjglfx::::接口数据错误")
-          }
-        }).then(data => {
-          let echartsData = []
-          Object.keys(data).map(key => {
-            console.log(data[key].length)
-            if(data[key].length > 0) {
-              echartsData.push(data[key][0])
+      init() {
+        let reqArr = [this.$store.dispatch("findOrganTreeByCurrUser"), zfml()]
+        Promise.all(reqArr).then(result => {
+          result.map((res,index) => {
+            // 第一个为机构数据，第二个为门类数据
+            if(index === 0) {
+              this.mechanismOption = res.data
+              let organId = JSON.parse(localStorage.getItem("userInfo")).organId // 获取当前用户机构
+              res.data.map(item => {
+                if(item.id === organId) {
+                  this.$refs.elSelectTreeObj1.valueTitle = item.label
+                  this.logForm.mechanism = item.id
+                }
+              })
+            } else if (index === 1) {
+              this.categoryOption = res.data
+              // this.logForm.category = res.data[0].value // 默认显示第一个
             }
           })
-          this.setCharts(echartsData)
+          return
+        }, err => { console.log(err) }).then(() => {
+          let mechanism = this.logForm.mechanism
+          let params = {
+            mechanism
+          }
+          this.getData(params)
         })
       },
 
       /**
-       * 点击搜索
+       * 点击搜索或者切换视图
        */
       handleSelect() {
         let valMap = new Map([
           [ 'monthView', this.dateList[0].value ],
-          [ 'dayView', this.dateList[1].value ],
-          [ 'hoursView', this.dateList[2].value ],
+          [ 'dayView', this.dateList[1].value.split(" ") ],
+          [ 'hoursView', this.dateList[2].value.split(" ") ],
         ])
         let mechanism = this.logForm.mechanism
         let category = this.logForm.category
+        let params = {}
         if(this.activeName === 'yearView') {
-          let params = mechanism + '/' + category
-          this.init(params)
-        } else {
-          let params = mechanism + '/' + category + '/' + valMap.get(this.activeName)
-          this.getData(params)
+          params = {
+            mechanism,
+            category
+          }
+        } else if (this.activeName === 'monthView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)
+          }
+        } else if (this.activeName === 'dayView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)[0],
+            month: valMap.get(this.activeName)[1]
+          }
+        } else if (this.activeName === 'hoursView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)[0],
+            month: valMap.get(this.activeName)[1],
+            day: valMap.get(this.activeName)[2],
+          }
         }
-      },
-
-      /**
-       * 切换选项卡触发
-       */
-      handleTabClick(val) {
-        let dateMap = new Map([
-          [ 'monthView', this.dateList[0].value ],
-          [ 'dayView', this.dateList[1].value ],
-          [ 'hoursView', this.dateList[2].value ],
-        ])
-        if(val === 'yearView') {
-          this.init()
-        } else {
-          this.getData(dateMap.get(val))
-        }
+        this.getData(params)
       },
 
       /**
@@ -165,6 +191,7 @@
        */
       getData(params) {
         let axiosMap = new Map([
+          [ 'yearView', sjglfx ],
           [ 'monthView', sjglfxmonth ],
           [ 'dayView', sjglfxday ],
           [ 'hoursView', sjglfxhours ],
@@ -176,14 +203,28 @@
             } else {
               throw new Error("getData::::接口数据错误")
             }
-          }).then(data => { this.setCharts(data) })
+          }).then(data => {
+            // 如果是年数据，则处理数据格式
+            if(this.activeName === 'yearView') {
+              let echartsData = []
+              Object.keys(data).map(key => {
+                if(data[key].length === 0) {
+                  echartsData.push({years:key, value: 0})
+                } else {
+                  echartsData.push(data[key][0])
+                }
+              })
+              this.setCharts(echartsData)
+            } else {
+              this.setCharts(data)
+            }
+          })
       },
 
       /**
        * 给图表赋值
        */
       setCharts(data) {
-        console.log(data)
         let xAxis = [], series = [];
         let type = this.activeName
         data.map(item => {
@@ -218,7 +259,6 @@
         ])
         let chartRef = idMap.get(this.activeName)
         let dom = document.getElementById(chartRef)
-        console.log(dom)
         if(dom) {
           let myChart = echarts.init(dom)
           let option = {
@@ -250,7 +290,16 @@
           myChart.setOption(option)
         }
       },
+
+      /**
+       * 选中机构
+       */
+      handleMechanism(val) {
+        this.$refs.elSelectTreeObj1.$children[0].handleClose()
+        this.logForm.mechanism = val
+        console.log(val)
+      }
     },
-  };
+  }
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

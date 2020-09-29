@@ -283,7 +283,7 @@
               <el-select
                 placeholder="请选择"
                 v-model="inforForm.partySex"
-                :disabled="inforForm.partyIdNo?true:false"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType ==='0'?true:false"
               >
                 <el-option :value="0" label="男"></el-option>
                 <el-option :value="1" label="女"></el-option>
@@ -296,7 +296,7 @@
                 ref="partyAge"
                 v-model="inforForm.partyAge"
                 type="number"
-                :disabled="inforForm.partyIdNo?true:false"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType ==='0'?true:false"
                 @change="noFue('inforForm.partyAge',inforForm.partyAge)"
               ></el-input>
             </el-form-item>
@@ -501,12 +501,13 @@
               </el-form-item>
             </div>
             <div class="item appendSelect">
-              <el-form-item label="证件类型" prop="partyIdNo">
+              <el-form-item label="证件类型" >
                 <el-input
                   ref="partyIdNo"
                   placeholder="请输入内容"
                   v-model="driverOrAgentInfo.zhengjianNumber"
                   @input="changePartyIdType2Index = index"
+                  @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                   class="input-with-select hasMargintop"
                   :disabled="index==0&&relationWithPartyIsOne[index]"
                 >
