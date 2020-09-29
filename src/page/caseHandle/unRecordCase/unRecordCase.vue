@@ -147,7 +147,7 @@ export default {
             docId: docTypeId,
             caseId: row.id,
           }).then(res=>{
-            console.log('查询环节是否生成了pdf',res);
+            console.log('查询环节是否生成了pdf1',res);
             if(res && res.length >0){
               if(row.caseStatus == '已驳回'){ 
                 this.$store.commit('setApprovalState', 'approvalEstabishNoPass');

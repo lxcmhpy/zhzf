@@ -262,7 +262,7 @@ export default {
     editJournalInfo(row) {
       this.$router.push({
             name: 'add_duty_journal',
-            params: { type: "11111",checklogId:row.checklogId, page: 'journal',handelType:"2" }
+            params: { type:this.searchForm.businessType,checklogId:row.checklogId, page: 'journal',handelType:"2" }
           });
     },
     // 日志查询

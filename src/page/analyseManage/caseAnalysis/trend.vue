@@ -113,7 +113,7 @@
     },
     methods: {
       /**
-       * 初始化页面，默认显示年数据，机构和门类默认选择第一个
+       * 初始化页面，默认显示年数据，机构和门类默认不选择
        */
       init() {
         let reqArr = [this.$store.dispatch("findOrganTreeByCurrUser"), zfml()]
@@ -122,20 +122,23 @@
             // 第一个为机构数据，第二个为门类数据
             if(index === 0) {
               this.mechanismOption = res.data
-              this.$refs.elSelectTreeObj1.valueTitle = res.data[0].label // 默认显示第一个
-              this.logForm.mechanism = res.data[0].id
+              let organId = JSON.parse(localStorage.getItem("userInfo")).organId // 获取当前用户机构
+              res.data.map(item => {
+                if(item.id === organId) {
+                  this.$refs.elSelectTreeObj1.valueTitle = item.label
+                  this.logForm.mechanism = item.id
+                }
+              })
             } else if (index === 1) {
               this.categoryOption = res.data
-              this.logForm.category = res.data[0].value // 默认显示第一个
+              // this.logForm.category = res.data[0].value // 默认显示第一个
             }
           })
           return
         }, err => { console.log(err) }).then(() => {
-          let mechanism = this.mechanismOption[0].id
-          let category = this.categoryOption[0].value
+          let mechanism = this.logForm.mechanism
           let params = {
-            mechanism,
-            category
+            mechanism
           }
           this.getData(params)
         })

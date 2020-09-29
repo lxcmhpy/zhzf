@@ -174,7 +174,7 @@ export function dzhbafx(data) {
 //时间关联分析  年
 export function sjglfx(data) {
   return  request({
-    url: "/case/numDay",
+    url: "/case/numYear",
     params: data,
     method:  "get",
     showloading: true,
@@ -186,7 +186,7 @@ export function sjglfx(data) {
 //时间关联分析  月
 export function sjglfxmonth(data) {
   return  request({
-    url: "/case/numDay",
+    url: "/case/numMonth",
     params: data,
     method:  "get",
     showloading: true,
@@ -210,7 +210,7 @@ export function sjglfxday(data) {
 //时间关联分析  时
 export function sjglfxhours(data) {
   return  request({
-    url: "/case/numDay",
+    url: "/case/numHours",
     params: data,
     method:  "get",
     showloading: true,

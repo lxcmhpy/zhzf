@@ -60,14 +60,19 @@
           <el-table-column prop="CertificateState" label="资格证状态" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >
-                    <div>
+                    <span>
                     <el-button type="text" @click="transportWorkerSee(scope.$index, scope.row)">查看</el-button>
-                    </div>
+                    </span>
+                    <span>
+                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">违法记录({{scope.row.illeaglTotal}})</el-button>
+                    </span>
                 </template>
           </el-table-column>
         </el-table>
       </div>
         <transportWorkerSee ref="transportWorkerSeeRef"></transportWorkerSee>
+        <checkilleagalDiag ref="checkilleagalDiagRef"></checkilleagalDiag>
+
     </div>
   </div>
 
@@ -75,10 +80,14 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import transportWorkerSee from "@/page/checkInfo/checkInfoDiag/transprotWorkerDiag";
+import checkilleagalDiag from "@/page/checkInfo/checkInfoDiag/checkilleagalDiag";
+import { checkWithilleaglApi } from "@/api/checkInfo";
+
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
-    transportWorkerSee
+    transportWorkerSee,
+    checkilleagalDiag
   },
   data() {
 //     OwnerName:北京京版物流有限责任公司
@@ -86,8 +95,8 @@ export default {
 // ProvinceCode:110000
     return {
       checkData: {
-        certificateCode: '',
-        staffName: '',
+        certificateCode: '371427198609163735',
+        staffName: '陈法冰',
         provinceCode: ''
       },
       radio: '1',
@@ -265,11 +274,12 @@ export default {
         res => {
           console.log('返回', res)
           res.data[0].staffName = this.checkData.staffName;
-          _this.tableData = res.data;
-          if (_this.tableData!=null &&  _this.tableData.length > 0) {
+          // _this.tableData = res.data;
+          if (res.data!=null &&  res.data.length > 0) {
              _this.dlyscyryAmount = res.data.length;
+             this.getIllegalData(res.data);
           }
-          if (_this.tableData!=null &&  _this.tableData.length > 1) {
+          if (res.data!=null && res.data.length > 1) {
             _this.showFlag = false;
           }
         },
@@ -316,6 +326,26 @@ export default {
     changeCertificateCode(certificateCode) {
         let iden = certificateCode;
         this.checkData.provinceCode = this.area[iden.substring(0,2)];
+    },
+    showIllegal(illeagl){
+      this.$refs.checkilleagalDiagRef.showModal(illeagl)
+    },
+    //获取违法行为条数
+    async getIllegalData(checkData){
+      alert(1111)
+      for(let item of checkData){
+        let data = {party:this.checkData.staffName,partyEcertId:this.checkData.certificateCode}
+        let illeagalRes = await checkWithilleaglApi(data);
+        item.illeagl = illeagalRes.data;
+        let illeaglTotal = 0;
+        for(let item2 of item.illeagl.caseCount){
+          illeaglTotal +=item2.count;
+        }
+        item.illeaglTotal = illeaglTotal;
+
+      }
+      console.log(checkData);
+      this.tableData = checkData;
     }
   }
 }

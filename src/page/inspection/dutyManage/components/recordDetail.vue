@@ -590,16 +590,16 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  <el-button type="text" @click="previewFile(attach)"
+                  <el-button type="text" @click="previewFile(scope.row)"
                     >查看</el-button
                   >
-                  <el-button type="text" @click="download(attach)"
+                  <el-button type="text" @click="download(scope.row)"
                     >下载</el-button
                   >
                   <el-button
                     :disabled="editFlag"
                     type="text"
-                    @click="removeAttach(attach, scope.row)"
+                    @click="removeAttach( scope.$index )"
                     >删除</el-button
                   >
                 </template>
@@ -623,7 +623,7 @@
             @tab-click="officalTabClick"
           >
             <el-tab-pane label="已做文书" name="1"></el-tab-pane>
-            <el-tab-pane label="未做文书" name="0"></el-tab-pane>
+            <el-tab-pane label="文书模板" name="0"></el-tab-pane>
           </el-tabs>
           <el-checkbox-group
             v-model="checkedOffical"
@@ -632,10 +632,11 @@
             <ul class="offical-list-panel">
               <template v-if="activeOffical === '1'">
                 <li v-for="(offical, index) in finishedDocs" :key="offical.label">
-                  <div class="el-checkbox" @click="editDoc(offical,'edit', index)">
+                  <div class="el-checkbox">
                     <span class="el-checkbox__label">
+                    <el-checkbox v-if="offical.id" v-model="checkedDocId" :label="offical.caseDocStorageId" @click.stop="">{{offical.id}}</el-checkbox>
                     <img :src="acOfficalUrl" />
-                    <span>{{ offical.name }}</span>
+                    <span  @click="editDoc(offical,'edit', index)">{{ offical.name }}</span>
                     </span>
                   </div>
                 </li>
@@ -835,13 +836,13 @@ export default {
           label: "92531b11586dab1eba850aea1c415a4f",
           name: "《公路安全隐患告知函》",
           caseDoctypeId: "92531b11586dab1eba850aea1c415a4f",
-          id: '1'
+          type: '1'
         },
         {
           label: "98499c305c6447988343c33d92f0f23c",
           name: "《路政巡查监督责令整改通知书》",
           caseDoctypeId: "98499c305c6447988343c33d92f0f23c",
-          id: '2'
+          type: '2'
         },
       ],
       finishedDocs: [], //已做文书
@@ -1163,7 +1164,7 @@ export default {
                 const caseDoc = res.data.listCaseDocs.find(
                   (d) => d.caseDocTypeId == o.caseDoctypeId
                 );
-                this.finishedDocs.push(Object.assign(o, caseDoc));
+                this.finishedDocs.push(Object.assign(caseDoc, {name: o.name, type: o.type}));
               });
             }
           } else {
@@ -1184,11 +1185,8 @@ export default {
       console.log(that.listAtt);
     },
     //删除附件
-    removeAttach(attach, parentAttach) {
-      if (attach.storageId) {
-        this.deleteFile(attach.storageId);
-      }
-      parentAttach.children.splice(parentAttach.children.indexOf(attach), 1);
+    removeAttach(index) {
+      this.listAtt.splice(index, 1);
     },
     //删除附件
     deleteFile(storageId) {
@@ -1502,16 +1500,13 @@ export default {
     },
     //打印文书
     docClick() {
-      this.checkedDocId = this.finishedDocs
-        .filter((f) => this.checkedOffical.indexOf(f.caseDoctypeId) != -1)
-        .map((f) => f.caseDocStorageId);
+      this.checkedDocId = this.finishedDocs.map((f) => f.caseDocStorageId)
+
       if (this.checkedDocId.length > 0) {
         this.docVisible = true;
         this.$util.com_getFileStream(this.checkedDocId[0]).then((res) => {
           this.docSrc = res;
         });
-      } else {
-        this.$messageOne.info({showClose: true, message: '请选择需要打印的文书'});
       }
     },
     //文书dialog
@@ -1531,7 +1526,7 @@ export default {
             });
         }
       } else {
-        if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
+        if (this.nowShowPdfIndex != this.finishedDocs.length - 1) {
           this.nowShowPdfIndex++;
           this.$util
             .com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
