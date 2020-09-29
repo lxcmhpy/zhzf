@@ -399,8 +399,8 @@ export function updateCheParameterInfoApi(data) {
 //导出excel
 export function exportCheRecordApi(ids){
   return request({
-    url: "/check/cheProcessType/levels",
-    // url: "/cheProcessType/levels",
+    url: "/check/record/exportCheRecord",
+    // url: "/record/exportCheRecord",
     method: "post",
     data: {ids},
     responseType:'blob',
