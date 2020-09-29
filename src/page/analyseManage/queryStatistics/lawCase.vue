@@ -180,7 +180,11 @@
         };
         lawCaseApi(param).then(res => {
           if (res.code == 200) {
-            this.vehicle = res.data.vehicleInvolved[0].value;
+            if(res.data.vehicleInvolved){
+              this.vehicle = res.data.vehicleInvolved[0].value;
+            }else{
+              this.vehicle = ''
+            }
             this.caseTypeCon = res.data.typeOfCase;
             this.incidentTrend = res.data.incidentTrend;
             Object.keys(res.data.incidentTrend).forEach(function (element, index) {
@@ -231,10 +235,16 @@
               that.crimePlaceXData.push(item.name)
             })
             //车辆排名
-            res.data.vehicles.slice(0, 8).map(item => {
-              that.carSortSeries.push(item.value)
-              that.carSortXData.push(item.name)
-            })
+            if(res.data.vehicles){
+              res.data.vehicles.slice(0, 8).map(item => {
+                that.carSortSeries.push(item.value)
+                that.carSortXData.push(item.name)
+              })
+            }else{
+              that.carSortSeries =[]
+              that.carSortXData =[]
+            }
+
             //地图数据
             that.mapData = res.data.mapdata
             let jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
