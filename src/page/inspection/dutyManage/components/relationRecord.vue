@@ -50,7 +50,7 @@
                 <span v-else>{{scope.row.roadCondition}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="lawPerson" label="案件编号" align="center" ></el-table-column>
+            <el-table-column prop="caseTempNos" label="案件编号" align="center" ></el-table-column>
               <!-- <template slot-scope="scope">
                 <span v-if="scope.row.filingCase === '1'">否</span>
                 <el-button v-else type="text" @click="checkCase(scope.row)">查看案件</el-button>

@@ -108,7 +108,6 @@
                <el-form-item label="巡查路线" prop="patrolRoute"> 
                  <el-select v-model="baseInfoForm.patrolRoute"  multiple  
                 :class="{'disabled': relationType === '1' || PageType === 'handover'}">
-                 >
                     <el-option
                       v-for="(item, index) in patrolRouteList"
                       :key="item"
@@ -154,7 +153,11 @@
             @selection-change="selectJournal"
           >
             <el-table-column type="selection" align="center"></el-table-column>
-            <el-table-column prop="recordNum" label="记录编号" align="center" ></el-table-column>
+            <el-table-column prop="recordNum" label="记录编号" align="center"  >
+               <template slot-scope="scope" class="person-table-onerow">
+                  <div @click="getDetials(scope.row)" style="color:#0000CD;">{{scope.row.recordNum}}</div>
+              </template>
+             </el-table-column>   
             <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px">
                <template slot-scope="scope" class="person-table-onerow">
                   <div >{{scope.row.checkStartTime}}</div>
@@ -184,7 +187,7 @@
                 <span v-else>{{scope.row.roadCondition}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="lawPerson" label="案件编号" align="center" ></el-table-column>
+            <el-table-column prop="caseTempNos" label="案件编号" align="center" ></el-table-column>
               <!-- <template slot-scope="scope">
                 <span v-if="scope.row.filingCase === '1'">否</span>
                 <el-button v-else type="text" @click="checkCase(scope.row)">查看案件</el-button>
@@ -354,7 +357,8 @@ export default {
         manager: "", // 负责人
         scheduleId:"",//排班ID
         recordsIds:[],//记录ids
-        
+        schedulePersonnel:"",//排班人
+        schedulePersonnelId:""//排班人ID
       },
       changeShiftsForm: {
         carCondition: "完好", // 巡查车辆情况
@@ -465,6 +469,7 @@ export default {
         this.baseInfoForm.lawEnforcementOfficialsIds = res.data.records[0].lawEnforcementOfficialsIds.split(",");
         this.baseInfoForm.patrolRoute = res.data.records[0].patrolRoute.split(";");
         this.baseInfoForm.isUseCar = res.data.records[0].isUseCar
+        
        }
       }, err => {
         this.$message({ type: 'error', message: err.msg || '' });
@@ -478,7 +483,8 @@ export default {
               if(tagval === element){
                 this.$message({ type: 'warning', message:"已关联现场记录钟存在该执法人员，不能删除！" });
                 this.baseInfoForm.lawEnforcementOfficialsIds[this.baseInfoForm.lawEnforcementOfficialsIds.length] = tagval;
-              }
+                throw new Error("EndIterative");
+            }
         })
       })
     },
@@ -502,12 +508,13 @@ export default {
     getReturnData(data){
       this.relationType = "1";
       this.baseInfoForm.lawEnforcementOfficialsIds = data.lawEnforcementOfficialsIds.split(";");
-      
       this.baseInfoForm.patrolRoute = data.patrolRoute.split(";");
       //this.patrolRouteList = data.patrolRoute.split(";");
       this.baseInfoForm.scheduleId = data.scheduleId;
       this.baseInfoForm.plateNumbers = data.plateNumbers;
       this.baseInfoForm.patrolType = data.patrolType;
+      this.baseInfoForm.schedulePersonnel = data.schedulePersonnel;
+      this.baseInfoForm.schedulePersonnelId = data.schedulePersonnelId;
     },
     //返回关联记录数据
     getReturnDataRecord(data){
@@ -641,7 +648,13 @@ export default {
         }
       );
     },
-    
+    //查看记录详情
+    getDetials(row){
+       this.$router.push({
+        name: "record_detail",
+        params: { page: 'detail', cheRecord: row }
+      });
+    },
     //保存
     save(){
       //截取巡查时间
@@ -686,6 +699,8 @@ export default {
         lawEnforcementOfficials:this.baseInfoForm.lawEnforcementOfficials.join(","),
         lawEnforcementOfficialsIds:this.baseInfoForm.lawEnforcementOfficialsIds.join(","),
         patrolRoute:this.baseInfoForm.patrolRoute.join(","),
+        schedulePersonnel:this.baseInfoForm.schedulePersonnel,//排班人
+        schedulePersonnelId:this.baseInfoForm.schedulePersonnelId//排班人ID
       }
          saveRecordApi(data).then(res => {
         if (res.code == "200") {
