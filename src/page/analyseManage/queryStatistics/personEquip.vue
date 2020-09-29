@@ -107,8 +107,8 @@
 import echarts from "echarts";
 
 import "echarts/map/js/china.js";
-/*import "echarts/map/js/province/jiangxi.js";
-import "echarts/map/json/province/jiangxi.json";*/
+import "echarts/map/js/province/jiangxi.js";
+import "echarts/map/json/province/jiangxi.json";
 import "echarts/map/js/province/ningxia.js";
 import "echarts/map/json/province/ningxia.json";
 import "echarts/lib/component/title";

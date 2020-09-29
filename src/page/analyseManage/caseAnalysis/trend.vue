@@ -63,7 +63,7 @@
 
 <script>
   import echarts from "echarts";
-  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours, zfml } from '@/api/fxyp.js'
+  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours, zfml } from '@/api/analysis/analysisManage.js'
   import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
   export default {
