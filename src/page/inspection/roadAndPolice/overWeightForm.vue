@@ -9,7 +9,7 @@
         <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)"><i class="iconfont law-icon_cfa"></i>处罚决定</a>
       </div>
     </div>
-    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;" :disabled='carInfo.fileStatus==1'>
+    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_1" ref="link_1" @mousewheel="scrool1">
         <p>车辆信息</p>
         <div>
@@ -108,7 +108,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled='carInfo.fileStatus==1'>
+    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
         <p>驾驶员/企业</p>
         <div>
@@ -174,7 +174,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled='carInfo.fileStatus==1'>
+    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>初检记录</p>
         <div>
@@ -332,13 +332,30 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px" :disabled='carInfo.fileStatus==1'>
+    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">
         <p>卸载/复检记录</p>
         <div>
           <div class="itemOne">
             <el-form-item label="复检单号" prop="oddNumber">
               <el-input v-model="carInfo.secondCheck.oddNumber">
+                <template slot="append">查询</template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </div>
+         <div>
+          <div class="item">
+            <el-form-item label="复检站点" prop="oddNumber">
+              <el-input v-model="carInfo.secondCheck.oddNumber">
+                <template slot="append">查询</template>
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-form-item label="复检时间" prop="oddNumber">
+              <el-input v-model="carInfo.secondCheck.oddNumber">
+                <template slot="append">查询</template>
               </el-input>
             </el-form-item>
           </div>
@@ -455,13 +472,22 @@
       </div>
     </el-form>
     <el-form label-width="200px;">
-      <div class="caseFormBac" id="link_5" ref="link_5" @mousewheel="scrool5">
+      <div class="caseFormBac clear-float-div" id="link_5" ref="link_5" @mousewheel="scrool5">
         <p>处罚决定</p>
-        <el-form-item label="公安交警处罚决定书" class="is-required">
-          <el-upload class="upload-demo modle-upload" style="margin-bottom:22px" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
-            <el-button size="small" type="primary">选取文件</el-button>
+        <div>
+          <ul>
+            <li v-for="(item,index) in fileList" :key="index" class="file-list-chufa">
+              <div>
+                <img src="../../../../static/images/img/personInfo/icon_ac_wenshu.svg" alt="">
+              </div>
+              <div class="file-list-chufa-text">{{item.fileName}}</div>
+            </li>
+          </ul>
+          <el-upload class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
+            <!-- <el-button size="small" type="primary">选取文件</el-button> -->
+            <i class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-        </el-form-item>
+        </div>
       </div>
     </el-form>
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
@@ -480,11 +506,15 @@
     <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :carinfoId='carinfoId'></floatBtns>
     <!-- 悬浮按钮 -->
     <div class="float-btns" style="bottom:150px">
-      <el-button type="primary" @click="saveDataBtn(0)">
+      <el-button type="primary" @click="changeEdit" v-show="!isCanEdit">
+        <i class="iconfont law-save"></i>
+        <br />修改
+      </el-button>
+      <el-button type="primary" @click="saveDataBtn(0)" v-show="isCanEdit">
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
-      <el-button type="primary" @click="saveDataBtn(1)" v-show="inspectionOverWeightId.id">
+      <el-button type="primary" @click="saveDataBtn(1)" v-show="inspectionOverWeightId.id&&isCanEdit">
         <i class="iconfont law-save"></i>
         <br />归档
       </el-button>
@@ -493,10 +523,6 @@
     <el-dialog :visible.sync="dialogImageVisible" size="tiny">
       <img v-if="dialogImageUrl" width="100%" :src="dialogImageUrl" alt="">
       <div lazy id="myPdfBOx" v-if="pdfUrl">
-        <!-- <object >
-                    <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                    :src="mlList" type="application/pdf" internalinstanceid="29">
-                </object> -->
         <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
       </div>
     </el-dialog>
@@ -718,6 +744,7 @@ export default {
       dialogImageUrl: '',
       pdfUrl: '',
       dialogImageVisible: false,
+      isCanEdit: true,
     };
   },
   components: {
@@ -1299,6 +1326,9 @@ export default {
     },
     chooseOccupation(data) {
       this.$set(this.carInfo.drivePerson, 'occupation', data)
+    },
+    changeEdit() {
+      this.isCanEdit = false
     }
   },
 
@@ -1341,7 +1371,9 @@ export default {
         this.setLawPersonCurrentP();
       }
     }
-
+    if (!this.inspectionOverWeightId.id) {
+      this.isCanEdit = false;//可编辑
+    }
   },
 
   created() {
@@ -1371,5 +1403,51 @@ export default {
 <style lang="scss">
 .error-color {
   color: #ff6600;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 87px;
+  height: 72px;
+  line-height: 72px;
+  text-align: center;
+}
+.avatar {
+  width: 87px;
+  height: 72px;
+  display: block;
+}
+.clear-float-div:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.file-list-chufa {
+  padding: 5px;
+  width: auto;
+  float: left;
+  text-align: center;
+  margin-right: 20px;
+  box-sizing: border-box;
+  i {
+    font-size: 34px;
+  }
+  .file-list-chufa-text {
+    margin-top: 15px;
+    color: #20232c;
+    line-height: 20px;
+    font-size: 14px;
+  }
 }
 </style>
