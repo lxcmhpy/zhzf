@@ -571,7 +571,8 @@ export const mixinGetCaseApiList = {
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
+        
+        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart) && !this.alReadyFinishCoerciveM) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }

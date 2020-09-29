@@ -64,15 +64,19 @@
           <el-table-column prop="OwnerName" label="经营业户名称" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >
-                    <div>
-                    <el-button type="text" @click="commercialVehicleSee(scope.$index, scope.row)">查看</el-button>
-
-                    </div>
+                    <span>
+                      <el-button type="text" @click="commercialVehicleSee(scope.$index, scope.row)">查看</el-button>
+                    </span>
+                    <span>
+                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">违法记录({{scope.row.illeaglTotal}})</el-button>
+                    </span>
                 </template>
           </el-table-column>
         </el-table>
       </div>
         <commercialVehicleSee ref="commercialVehicleSeeRef"></commercialVehicleSee>
+        <checkilleagalDiag ref="checkilleagalDiagRef"></checkilleagalDiag>
+
     </div>
   </div>
 
@@ -80,11 +84,14 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import commercialVehicleSee from "@/page/checkInfo/checkInfoDiag/commercialVehicleDiag";
+import { checkWithilleaglApi } from "@/api/checkInfo";
+import checkilleagalDiag from "@/page/checkInfo/checkInfoDiag/checkilleagalDiag";
+
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
-    commercialVehicleSee
-
+    commercialVehicleSee,
+    checkilleagalDiag
   },
   data() {
 //     OwnerName:北京京版物流有限责任公司
@@ -149,11 +156,12 @@ export default {
                         tableData.push(result);
                     }
 
-                    _this.tableData = tableData;
-                    if (_this.tableData!=null && _this.tableData.length > 0) {
+                    // _this.tableData = tableData;
+                    if (tableData!=null && tableData.length > 0) {
                         _this.yyclAmount = _this.tableData.length;
+                        this.getIllegalData(tableData);
                     }
-                    if (_this.tableData!=null && _this.tableData.length > 1) {
+                    if (tableData!=null && tableData.length > 1) {
                         _this.showFlag = false;
                     }
                 },
@@ -208,6 +216,25 @@ export default {
     //查看
     commercialVehicleSee(index, row) {
       this.$refs.commercialVehicleSeeRef.commercialVehicleSee(row);
+    },
+    showIllegal(illeagl){
+      this.$refs.checkilleagalDiagRef.showModal(illeagl)
+    },
+    //获取违法行为条数
+    async getIllegalData(checkData){
+      for(let item of checkData){
+        let data = {vehicleShipId:item.VehicleNo,ccertId:''}
+        let illeagalRes = await checkWithilleaglApi(data);
+        item.illeagl = illeagalRes.data;
+        let illeaglTotal = 0;
+        for(let item2 of item.illeagl.caseCount){
+          illeaglTotal +=item2.count;
+        }
+        item.illeaglTotal = illeaglTotal;
+
+      }
+      console.log(checkData);
+      this.tableData = checkData;
     }
   },
   created() {
