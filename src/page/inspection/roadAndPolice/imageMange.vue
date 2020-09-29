@@ -1,5 +1,5 @@
 <template>
-  <div class="com_searchAndpageBoxPadding hasBigMarginRight">
+  <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" style="min-height:calc(100% - 44px)">
       <div class="handlePart">
         <div class="search">
@@ -516,9 +516,4 @@ export default {
   overflow: hidden;
 }
 
-.fullscreen {
-  .hasBigMarginRight {
-    margin-right: 65px;
-  }
-}
 </style>
