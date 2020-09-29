@@ -59,7 +59,7 @@
 
 <script>
 import echarts from "echarts";
-import { casepPeople } from "@/api/fxyp.js";
+import { casepPeople } from "@/api/analysis/analysisManage.js";
 export default {
   data() {
     return {

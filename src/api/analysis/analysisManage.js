@@ -159,3 +159,107 @@ export function spaceApi(data) {
     cancelToken:  setCancelSource()
   });
 }
+// 电子化办案分析
+export function dzhbafx(data) {
+  return  request({
+    url: "/electronization/electronization",
+    method:  "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+//时间关联分析  年
+export function sjglfx(data) {
+  return  request({
+    url: "/case/numDay",
+    params: data,
+    method:  "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+//时间关联分析  月
+export function sjglfxmonth(data) {
+  return  request({
+    url: "/case/numDay",
+    params: data,
+    method:  "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+//时间关联分析  日
+export function sjglfxday(data) {
+  return  request({
+    url: "/case/numDay",
+    params: data,
+    method:  "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+//时间关联分析  时
+export function sjglfxhours(data) {
+  return  request({
+    url: "/case/numDay",
+    params: data,
+    method:  "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+// 执法门类
+export function zfml() {
+  return  request({
+    url: "/organdzfml/zfml",
+    method:  "get",
+    showloading: false,
+    // loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+// 案件当事人特征分析
+export function casepPeople({year1, year2}) {
+  return  request({
+    url: `/case/people/${year1}/${year2}`,
+    method:  "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+// 法律法规分析研判
+export function flfgfxyp({ startTime, endTime }) {
+  return  request({
+    url: `/judge/analysis/list/${startTime}/${endTime}`,
+    method:  "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}
+// 监管治理分析研判
+export function jgzlfxyp({ startTime, endTime }) {
+  return  request({
+    url: `/judge/analysis/JGZLlist/${startTime}/${endTime}`,
+    method:  "get",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType:  'FXYP_HOST',
+    cancelToken:  setCancelSource(),
+  });
+}

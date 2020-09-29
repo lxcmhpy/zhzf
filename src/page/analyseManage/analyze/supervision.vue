@@ -33,7 +33,7 @@
 
 <script>
 import echarts from "echarts";
-import { jgzlfxyp } from "@/api/fxyp.js";
+import { jgzlfxyp } from "@/api/analysis/analysisManage.js";
 export default {
   data() {
     return {

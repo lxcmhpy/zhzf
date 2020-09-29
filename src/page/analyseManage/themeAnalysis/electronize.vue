@@ -55,7 +55,7 @@
 
 <script>
   import echarts from "echarts"
-  import { dzhbafx } from '@/api/fxyp.js'
+  import { dzhbafx } from '@/api/analysis/analysisManage.js'
   import elSelectTree from "@/components/elSelectTree/elSelectTree";
   export default {
     components: {

@@ -28,7 +28,7 @@
 
 <script>
 import echarts from "echarts";
-import {flfgfxyp} from '@/api/fxyp.js'
+import {flfgfxyp} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
