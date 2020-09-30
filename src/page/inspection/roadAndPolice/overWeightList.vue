@@ -38,7 +38,7 @@
           <!-- <el-table-column prop="vehicleShipId" label="车牌号" align="center"></el-table-column> -->
           <el-table-column label="车牌号" align="center" width="120">
             <template slot-scope="scope">
-              <div class="otherColor" :class="vehicleColorObj[scope.row.vehicleColor]">
+              <div class="otherColor" :class="vehicleColorObj[scope.row.vehicleIdColor]">
                 <div class="border">
                   {{scope.row.vehicleShipId}}
                 </div>
@@ -53,7 +53,7 @@
           <el-table-column prop="overRatio2" label="复检超限率" align="center"></el-table-column>
           <el-table-column prop="fileStatus" label="处置状态" align="center">
             <template slot-scope="scope">
-              {{scope.row.fileStatus==0?'进行中':'已归档'}}
+              {{scope.row.fileStatus==0?'进行中':'待归档'}}
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
@@ -298,3 +298,4 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>

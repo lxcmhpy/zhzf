@@ -744,7 +744,7 @@ export default {
       dialogImageUrl: '',
       pdfUrl: '',
       dialogImageVisible: false,
-      isCanEdit: true,
+      isCanEdit: false,
     };
   },
   components: {
@@ -1328,7 +1328,7 @@ export default {
       this.$set(this.carInfo.drivePerson, 'occupation', data)
     },
     changeEdit() {
-      this.isCanEdit = false
+      this.isCanEdit = true
     }
   },
 
@@ -1372,7 +1372,7 @@ export default {
       }
     }
     if (!this.inspectionOverWeightId.id) {
-      this.isCanEdit = false;//可编辑
+      this.isCanEdit = true;//可编辑
     }
   },
 

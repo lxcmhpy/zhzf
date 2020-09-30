@@ -123,7 +123,7 @@
                   <el-input
                     v-model="baseInfoForm.inspectionLength"
                     class="inspection-length-input"
-                     :disabled="relationType === '1' || PageType === 'handover'"
+                     :disabled="PageType === 'handover'"
                   >
                     <template slot="append" >km</template>
                   </el-input>
@@ -218,7 +218,7 @@
           >
             <el-row :gutter="20"  v-if="PageType === 'handover'">
               <el-col :span="24">
-                <el-form-item label="巡查车辆情况" prop="carCondition">
+                <el-form-item label="巡查车辆情况" prop="carCondition" label-width="100px">
                   <el-radio-group v-model="baseInfoForm.carCondition">
                     <el-radio label="完好">完好</el-radio>
                     <el-radio label="故障">故障</el-radio>
@@ -226,7 +226,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item prop="carConditionDescribe" label=" ">
+                <el-form-item prop="carConditionDescribe" label="" label-width="0">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 4, maxRows: 6}"
@@ -236,7 +236,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item label="勘察设备情况" prop="equipmentCondition">
+                <el-form-item label="勘察设备情况" prop="equipmentCondition" label-width="100px">
                   <el-radio-group v-model="baseInfoForm.equipmentCondition">
                     <el-radio label="齐全">齐全</el-radio>
                     <el-radio label="缺漏或损坏">缺漏或损坏</el-radio>
@@ -244,7 +244,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item prop="equipmentConditionDescribe" label=" ">
+                <el-form-item prop="equipmentConditionDescribe" label="" label-width="0">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 4, maxRows: 6}"
@@ -256,7 +256,7 @@
             </el-row>
             <el-row v-if="PageType === 'handover'">
               <el-col :span="8">
-                <el-form-item label="交班人" prop="includingPeople">
+                <el-form-item label="交班人" prop="includingPeople" label-width="70px">
                   <el-select v-model="baseInfoForm.includingPeople">
                     <el-option
                       v-for="item in lawPersonList"
@@ -268,7 +268,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="接班人" prop="successor">
+                <el-form-item label="接班人" prop="successor" label-width="70px">
                   <el-select v-model="baseInfoForm.successor">
                     <el-option
                       v-for="item in lawPersonList"
@@ -280,7 +280,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="负责人" prop="manager">
+                <el-form-item label="负责人" prop="manager" label-width="70px">
                   <el-select v-model="baseInfoForm.manager">
                     <el-option
                       v-for="item in lawPersonList"
@@ -467,8 +467,10 @@ export default {
         this.baseInfoForm.manager = res.data.records[0].manager,
         this.baseInfoForm.lawEnforcementOfficials = res.data.records[0].lawEnforcementOfficials.split(",");
         this.baseInfoForm.lawEnforcementOfficialsIds = res.data.records[0].lawEnforcementOfficialsIds.split(",");
-        this.baseInfoForm.patrolRoute = res.data.records[0].patrolRoute.split(";");
-        this.baseInfoForm.isUseCar = res.data.records[0].isUseCar
+        this.baseInfoForm.patrolRoute = res.data.records[0].patrolRoute.split(";"),
+        this.baseInfoForm.isUseCar = res.data.records[0].isUseCar,
+        this.baseInfoForm.schedulePersonnel=res.data.records[0].schedulePersonnel,//排班人
+        this.baseInfoForm.schedulePersonnelId=res.data.records[0].schedulePersonnelId//排班人ID
         
        }
       }, err => {
@@ -481,7 +483,7 @@ export default {
         var personIds =  item.personIds.split(";");
         personIds.forEach(element =>{
               if(tagval === element){
-                this.$message({ type: 'warning', message:"已关联现场记录钟存在该执法人员，不能删除！" });
+                this.$message({ type: 'warning', message:"已关联现场记录中存在该执法人员，不能删除！" });
                 this.baseInfoForm.lawEnforcementOfficialsIds[this.baseInfoForm.lawEnforcementOfficialsIds.length] = tagval;
                 throw new Error("EndIterative");
             }
@@ -548,6 +550,10 @@ export default {
                }
           })
         })
+        this.baseInfoForm.recordsIds=[];
+          this.tableData.forEach((element,index) => {
+            this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
+     });
                let data = {
                   recordsIds:this.baseInfoForm.recordsIds,
                   checkStartTime:this.baseInfoForm.startCheckTime,
@@ -572,39 +578,51 @@ export default {
     disassociateRelation() {
       if (this.selectList.length === 0) {
         this.$message({ type: "warning", message: "请选择需要解除关联的记录" });
-      }else if(this.selectList.length > 1){
-        this.$message({ type: "warning", message: "每次只能解除一条关联记录" });
-      } else {
-        this.$confirm("确定解除关联吗？", "提示", {
-          cancelButtonText: "取消",
-          confirmButtonText: "确定",
-          iconClass: "custom-question",
-          customClass: "custom-confirm",
-        })
-          .then(() => {
-           if(this.handelType==='1'){
-             this.tableData.forEach((element,index) => {
-               if(element.recordId === this.selectList[0]){
+      }else{
+        this.selectList.forEach(item =>{
+          this.tableData.forEach((element,index) => {
+               if(element.recordId === item){
                    this.tableData.splice(index,1)
                }
              });
-           }else{
-              let data={
-          checklogId:this.checklogId,
-          templateId:this.selectList[0]
-         }
-          delCheRecordTemplateApi(data).then(res => {
-          if (res.code == "200") {
-            this.getRecordMsg();
-          }
-         }, err => {
-           this.$message({ type: 'error', message: err.msg || '' });
-         });
-           }
-        
-          })
-          .catch(() => {});
+        })
       }
+
+      // if (this.selectList.length === 0) {
+      //   this.$message({ type: "warning", message: "请选择需要解除关联的记录" });
+      // }else if(this.selectList.length > 1){
+      //   this.$message({ type: "warning", message: "每次只能解除一条关联记录" });
+      // } else {
+      //   this.$confirm("确定解除关联吗？", "提示", {
+      //     cancelButtonText: "取消",
+      //     confirmButtonText: "确定",
+      //     iconClass: "custom-question",
+      //     customClass: "custom-confirm",
+      //   })
+      //     .then(() => {
+      //      if(this.handelType==='1'){
+      //        this.tableData.forEach((element,index) => {
+      //          if(element.recordId === this.selectList[0]){
+      //              this.tableData.splice(index,1)
+      //          }
+      //        });
+      //      }else{
+      //         let data={
+      //           checklogId:this.checklogId,
+      //           templateId:this.selectList[0]
+      //        }
+      //     delCheRecordTemplateApi(data).then(res => {
+      //     if (res.code == "200") {
+      //       this.getRecordMsg();
+      //     }
+      //    }, err => {
+      //      this.$message({ type: 'error', message: err.msg || '' });
+      //    });
+      //      }
+        
+      //     })
+      //     .catch(() => {});
+      // }
     },
     // 现场记录--查看案件
     checkCase(row) {
@@ -681,6 +699,10 @@ export default {
                }
           })
         })
+        this.baseInfoForm.recordsIds=[];
+        this.tableData.forEach((element,index) => {
+          this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
+       });
       //新增
       if(this.handelType == '1'){
         var data={

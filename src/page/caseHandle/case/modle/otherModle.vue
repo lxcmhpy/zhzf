@@ -25,10 +25,10 @@
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm"
                 placeholder=" 年 月 日 时 分"
-                format="yyyy年MM月dd日HH时mm分"
+                format="yyyy-MM-dd HH:mm" 
                 :disabled="fieldDisabled(propertyFeatures['askdataStart'])"
               ></el-date-picker>
-              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.askdataStart"></el-input>
+              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="getEvidenceTime"></el-input>
             </el-form-item>至
             <el-form-item
               prop="askdataEnd"
@@ -701,7 +701,14 @@ export default {
   },
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId", "currentFileData"]) },
+  computed: { 
+    ...mapGetters(["caseId", "currentFileData"]),
+      getEvidenceTime() {
+          if (this.docData.askdataStart) {
+            return new Date(this.docData.askdataStart).format('yyyy年MM月dd日HH时mm分')
+          }
+      }
+     },
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {

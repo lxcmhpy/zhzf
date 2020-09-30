@@ -70,14 +70,18 @@
           <el-table-column prop="OperatingStatus" label="经营状态" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >
-                    <div>
-                    <el-button type="text" @click="industrySee(scope.$index, scope.row)">查看</el-button>
-                    </div>
+                    <span>
+                      <el-button type="text" @click="industrySee(scope.$index, scope.row)">查看</el-button>
+                    </span>
+                    <span>
+                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">违法记录({{scope.row.illeaglTotal}})</el-button>
+                    </span>
                 </template>
           </el-table-column>
         </el-table>
       </div>
         <industrySee ref="industrySeeRef"></industrySee>
+        <checkilleagalDiag ref="checkilleagalDiagRef"></checkilleagalDiag>
       <!-- <div v-if="tableData.lenth>0">请在上方查验条件输入检索内容，显示结果</div>
       <table v-for='item in searchList' :key="item.id">
         <tr>
@@ -142,10 +146,13 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import industrySee from "@/page/checkInfo/checkInfoDiag/industryDiag";
+import checkilleagalDiag from "@/page/checkInfo/checkInfoDiag/checkilleagalDiag";
+import { checkWithilleaglApi } from "@/api/checkInfo";
 export default {
   mixins: [mixinGetCaseApiList],
   components: {
-    industrySee
+    industrySee,
+    checkilleagalDiag
   },
   data() {
 //     OwnerName:北京京版物流有限责任公司
@@ -334,11 +341,12 @@ export default {
         res => {
           console.log('返回', res)
          // _this.searchList = res.data
-          _this.tableData = res.data;
-          if ( _this.tableData != null &&  _this.tableData.length > 0) {
+          // _this.tableData = res.data;
+          if ( res.data != null && res.data.length > 0) {
             _this.yehuAmount = _this.tableData.length;
+            this.getIllegalData(res.data);
           }
-          if ( _this.tableData != null &&  _this.tableData.length > 1) {
+          if ( res.data != null &&  res.data.length > 1) {
             _this.showFlag = false;
           }
         },
@@ -358,6 +366,25 @@ export default {
     clearData() {
       this.checkData.ownerName = '';
       this.checkData.licenseCode = '';
+    },
+    showIllegal(illeagl){
+      this.$refs.checkilleagalDiagRef.showModal(illeagl)
+    },
+    //获取违法行为条数
+    async getIllegalData(checkData){
+      for(let item of checkData){
+        let data = {partyName:item.OwnerName,roadTransportLicense:item.LicenseCode}
+        let illeagalRes = await checkWithilleaglApi(data);
+        item.illeagl = illeagalRes.data;
+        let illeaglTotal = 0;
+        for(let item2 of item.illeagl.caseCount){
+          illeaglTotal +=item2.count;
+        }
+        item.illeaglTotal = illeaglTotal;
+
+      }
+      console.log(checkData);
+      this.tableData = checkData;
     }
 
   }

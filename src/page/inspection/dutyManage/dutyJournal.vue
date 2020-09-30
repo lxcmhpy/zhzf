@@ -46,8 +46,8 @@
                 <el-form-item label="任务类型" prop="patrolType">
                   <el-select v-model="searchForm.patrolType" placeholder="请选择">
                     <el-option label="全部" value=""></el-option>
-                    <el-option label="路巡" value="0"></el-option>
-                    <el-option label="网巡" value="1"></el-option>
+                    <el-option label="路巡" value="路巡"></el-option>
+                    <el-option label="网巡" value="网巡"></el-option>
                   </el-select>
                 </el-form-item>
                 <!-- <el-form-item label="任务状态" prop="status">
