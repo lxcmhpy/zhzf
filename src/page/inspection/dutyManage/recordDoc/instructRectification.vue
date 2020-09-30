@@ -284,12 +284,16 @@ export default {
 
   mounted() {},
   created() {
-    this.getCurrentDay();
-    this.getCheParameterInfo();
+    const caseDocData = JSON.parse(this.caseDocData);
+    if(!caseDocData.yearNo) {
+      this.getCurrentDay();
+    }
+    if(!caseDocData.numberNo) {
+      this.getCheParameterInfo();
+    }
     if(!caseDocData.porgNameTop && !caseDocData.orgNameTop) {
       this.getOrganInfo();
     }
-    const caseDocData = JSON.parse(this.caseDocData);
     if(Object.keys(caseDocData).length > 0){
       this.formData = Object.assign(caseDocData);
     }

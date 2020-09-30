@@ -279,8 +279,12 @@ export default {
   mounted() {},
   created() {
     const caseDocData = JSON.parse(this.caseDocData);
-    this.getCheParameterInfo();
-    this.getCurrentDay();
+    if(!caseDocData.numberNo) {
+      this.getCheParameterInfo();
+    }
+    if(!caseDocData.yearNo) {
+      this.getCurrentDay();
+    }
     if(!caseDocData.porgNameTop && !caseDocData.orgNameTop) {
       this.getOrganInfo();
     }
