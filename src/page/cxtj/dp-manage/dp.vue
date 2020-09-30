@@ -1,5 +1,5 @@
 <template>
-  <el-container class="body_bg"> 
+  <el-container class="body_bg">
       <el-main >
           <el-row class="main">
        <el-row>
@@ -11,21 +11,21 @@
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -520px;margin-top: 28px;" >
               <div class="title_3 title_font" @click="zbpage()" >人员装备</div>
-               
+
           </el-col>
            <el-col :span="4" style="height:60px;margin-left:-30px;margin-top: 35px;" >
               <div class="title_4" >
                   <span class="right_font0">执法人员：</span>
                   <span class="right_font1">536人</span>
               </div>
-               
+
           </el-col>
            <el-col :span="4" style="height:60px;margin-left:0px;margin-top: 35px;" >
               <div class="title_5" >
                   <span class="right_font0">执法装备：</span>
                   <span class="right_font1">862件</span>
               </div>
-               
+
           </el-col>
         </el-row>
         <el-row>
@@ -46,13 +46,13 @@
                  <div id="ndafqs" style="width: 100%; height: 200px;"></div>
               </el-row>
             </el-row>
-            
+
           </el-col>
           <el-col :span="10" >
               <el-row class="center_1">
               <div id="map" style="width: 550px; height: 400px;"></div>
             </el-row>
-           
+
           </el-col>
            <el-col :span="7" >
              <el-row class="right_1">
@@ -98,7 +98,7 @@
           </el-col>
         </el-row>
           </el-row>
-      </el-main>    
+      </el-main>
   </el-container>
 </template>
 </template>
@@ -202,7 +202,7 @@ echarts.extendsMap = function(id, opt){
         callback: function(name, option, instance){}
 	};
 	if(opt) opt = this.util.extend(defaultOpt, opt);
-	
+
 	// 层级索引
 	var name = [opt.mapName];
 	var idx = 0;
@@ -212,7 +212,7 @@ echarts.extendsMap = function(id, opt){
 		left: 38,
 		top: 40
 	};
-    
+
 	var line = [[0, 0], [8, 11], [0, 22]];
     // style
 	var style = {
@@ -229,7 +229,7 @@ echarts.extendsMap = function(id, opt){
         **/
         resetOption: function(i, o, n){
             var breadcrumb = this.createBreadcrumb(n);
-            
+
             var j = name.indexOf(n);
             var l = o.graphic.length;
             if(j < 0){
@@ -378,7 +378,7 @@ echarts.extendsMap = function(id, opt){
             });
         }
     };
-    
+
     var option = {
     	// backgroundColor: opt.bgColor,
     	graphic: [{
@@ -487,10 +487,10 @@ echarts.extendsMap = function(id, opt){
                         y: 0.5,
                         r: 0.8,
                         colorStops: [{
-                            offset: 0, 
+                            offset: 0,
                             color: 'rgba(147, 235, 248, 0)' // 0% 处的颜色
                         }, {
-                            offset: 1, 
+                            offset: 1,
                             color: 'rgba(147, 235, 248, .2)' // 100% 处的颜色
                         }],
                         globalCoord: false // 缺省为 false
@@ -643,7 +643,7 @@ $.getJSON(jiangxi, function(geoJson){
               option.series[0].data.push({name: "珠山区 ",value:[117.2 ,29.3, 35, 2]});
               option.series[0].data.push({name: "浮梁县",value:[117.25 ,29.37, 35, 2]});
               option.series[0].data.push({name: "乐平市",value:[117.12 ,28.97, 35, 2]});
-              
+
          }
          if(name=="萍乡市"){
               option.series[0].data.push({name: "安源区",value:[113.87, 27.65, 35, 2]});
@@ -669,13 +669,13 @@ $.getJSON(jiangxi, function(geoJson){
          if(name=="新余市"){
               option.series[0].data.push({name: "渝水区 ",value:[114.93, 27.8, 15, 2]});
               option.series[0].data.push({name: "分宜县",value:[114.67 ,27.82, 35,1]});
-              
+
          }
          if(name=="鹰潭市"){
                option.series[0].data.push({name: "月湖区",value:[117.05, 28.23,32,2]});
               option.series[0].data.push({name: "余江县",value:[116.82 ,28.2,34,1]});
               option.series[0].data.push({name: "贵溪市",value:[117.22 ,28.28,32,1]});
-              
+
          }
          if(name=="赣州市"){
                option.series[0].data.push({name: "章贡区",value:[114.93 ,25.87,32,2]});
@@ -751,7 +751,7 @@ $.getJSON(jiangxi, function(geoJson){
          }
            myChart.setOption(option);
     	},
-        // 数据展示            	
+        // 数据展示
     	data: [{
     		name: '南昌',
     		value: 10,
@@ -876,7 +876,7 @@ $.getJSON(jiangxi, function(geoJson){
                     value: 40,
                     name: '监督岗'
                 },
-              
+
             ]
         },
 
@@ -890,7 +890,7 @@ $.getJSON(jiangxi, function(geoJson){
             label: {
                 normal: {
                     position: 'inside',
-                    formatter: '{c}%',
+                    formatter: '{c}',
                     textStyle: {
                         color: '#fff',
                         fontSize:14,
@@ -898,7 +898,7 @@ $.getJSON(jiangxi, function(geoJson){
                 },
                 emphasis: {
                     position: 'inside',
-                    formatter: '{b}: {c}%'
+                    formatter: '{b}: {c}'
                 }
             },
             itemStyle: {
@@ -924,7 +924,7 @@ $.getJSON(jiangxi, function(geoJson){
                     value: 40,
                     name: '监督岗'
                 },
-               
+
             ]
         }
     ]
@@ -971,7 +971,7 @@ $.getJSON(jiangxi, function(geoJson){
           { value: 16, name: "参照公务员管理编制" },
           { value: 24, name: "事业编制" },
           { value: 25, name: "其他" },
-       
+
         ],
         // 修饰饼形图文字相关的样式 label对象
         label: {
@@ -987,11 +987,11 @@ $.getJSON(jiangxi, function(geoJson){
       }
     ]
       });
-      
+
     },
 drawBottom1() {
       this.chartColumn = echarts.init(document.getElementById("rysl"));
-     
+
       this.chartColumn.setOption({
         backgroundColor: '',
         tooltip: {
@@ -1017,11 +1017,11 @@ drawBottom1() {
 						textStyle: {
 							fontSize: 12
                         },
-                        interval: 0,  
-                        formatter:function(value)  
-                        {  
-                            return value.split(" ").join("\n");  
-                        } 
+                        interval: 0,
+                        formatter:function(value)
+                        {
+                            return value.split(" ").join("\n");
+                        }
 					},
 					axisLine: {
 						lineStyle: {
@@ -1121,7 +1121,7 @@ drawBottom1() {
 					},
 				}]
       });
-  
+
     },
 
 
@@ -1155,11 +1155,11 @@ this.chartColumn.setOption({
 						textStyle: {
 							fontSize: 12
                         },
-                        interval: 0,  
-                        formatter:function(value)  
-                        {  
-                            return value.split(" ").join("\n");  
-                        } 
+                        interval: 0,
+                        formatter:function(value)
+                        {
+                            return value.split(" ").join("\n");
+                        }
 					},
 					axisLine: {
 						lineStyle: {
@@ -1259,7 +1259,7 @@ this.chartColumn.setOption({
 					},
 				}]
       });
-      
+
     },
 drawRight1() {
       this.chartColumn = echarts.init(document.getElementById("clpm"));
@@ -1294,13 +1294,13 @@ drawRight1() {
 			textStyle: {
 				color: '#999',
         fontSize: 12,
-       
+
       },
-       interval: 0,  
-        formatter:function(value)  
-        {  
-            return value.split(" ").join("\n");  
-        } 
+       interval: 0,
+        formatter:function(value)
+        {
+            return value.split(" ").join("\n");
+        }
 		}
     },
     yAxis: [{
@@ -1375,7 +1375,7 @@ drawRight1() {
         z: 10
     }]
       });
-      
+
     },
  drawRight2() {
       this.chartColumn = echarts.init(document.getElementById("afd"));
@@ -1446,11 +1446,11 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
                 color: '#999' //坐标轴字颜色
             },
             margin: 15,
-            interval: 0,  
-        formatter:function(value)  
-        {  
-            return value.split(" ").join("\n");  
-        } 
+            interval: 0,
+        formatter:function(value)
+        {
+            return value.split(" ").join("\n");
+        }
         },
         axisPointer: {
             label: {
@@ -1531,19 +1531,19 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
             }
         }
     },
-   
+
     ]
       });
-      
+
     },
 
 
 
 
 
-   
-    
-   
+
+
+
   },
   mounted() {
     this.drawLeft1();
@@ -1572,7 +1572,7 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
 background-repeat: no-repeat;
 }
 .title_font{
-     
+
 font-size:18px;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:500;
@@ -1733,7 +1733,7 @@ font-size:17px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:rgba(4,241,248,1);
-line-height:61px;  
+line-height:61px;
 }
 .body_bg .el-main {
     background: none;
