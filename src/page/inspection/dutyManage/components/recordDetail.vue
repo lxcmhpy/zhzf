@@ -634,7 +634,7 @@
                 <li v-for="(offical, index) in finishedDocs" :key="offical.label">
                   <div class="el-checkbox">
                     <span class="el-checkbox__label">
-                    <el-checkbox v-if="offical.id" v-model="checkedDocId" :label="offical.caseDocStorageId" @click.stop="">{{offical.id}}</el-checkbox>
+                    <el-checkbox v-if="offical.caseDocStorageId" v-model="checkedDocId" :label="offical.caseDocStorageId" @click.stop="">&nbsp;&nbsp;{{offical.numberNo}}</el-checkbox>
                     <img :src="acOfficalUrl" />
                     <span  @click="editDoc(offical,'edit', index)">{{ offical.name }}</span>
                     </span>
@@ -1053,6 +1053,8 @@ export default {
                 });
                 this.$router.go(-1);
                 this.$store.dispatch("deleteTabs", this.$route.name);
+              }else {
+                this.$message({type:'warning',message:'保存错误，请重试！'});
               }
             },
             (err) => {
@@ -1160,11 +1162,23 @@ export default {
             this.inspectRecordForm = formData;
 
             if (res.data.listCaseDocs && res.data.listCaseDocs.length > 0) {
-              this.officialList.forEach((o) => {
-                const caseDoc = res.data.listCaseDocs.find(
-                  (d) => d.caseDocTypeId == o.caseDoctypeId
+              // this.officialList.forEach((o) => {
+              //   const caseDoc = res.data.listCaseDocs.find(
+              //     (d) => d.caseDocTypeId == o.caseDoctypeId
+              //   );
+              //   if(caseDoc) {
+              //     const caseDocData = JSON.parse(caseDoc.caseDocData) || {};
+              //     this.finishedDocs.push(Object.assign(caseDoc, {name: o.name, type: o.type, numberNo: caseDocData.numberNo || '暂无文书编号'}));
+              //   }
+              // });
+              res.data.listCaseDocs.forEach((o) => {
+                const caseDoc = this.officialList.find(
+                  (d) => d.caseDoctypeId == o.caseDocTypeId
                 );
-                this.finishedDocs.push(Object.assign(caseDoc, {name: o.name, type: o.type}));
+                if(caseDoc) {
+                  const caseDocData = JSON.parse(o.caseDocData) || {};
+                  this.finishedDocs.push(Object.assign(o, {name: caseDoc.name, type: caseDoc.type, numberNo: caseDocData.numberNo || '暂无文书编号'}));
+                }
               });
             }
           } else {
@@ -1539,9 +1553,25 @@ export default {
 
     // 编辑文书
     editDoc(doc, operationType, finishDocIndex){
-      this.docOperationType = operationType;
-      this.finishDocIndex = finishDocIndex;
-      this.$refs.editDocDialogRef.showModal(doc);
+      let caseFlag = false;
+      const listAbn = this.inspectRecordForm.listAbn;
+      if(listAbn && listAbn.length > 0) {
+        for (let index = 0; index < listAbn.length; index++) {
+          const item = listAbn[index];
+          if(item.isCase == "1") {
+            caseFlag = true;
+            break;
+          }
+        }
+      }
+
+      if(caseFlag) {
+        this.docOperationType = operationType;
+        this.finishDocIndex = finishDocIndex;
+        this.$refs.editDocDialogRef.showModal(doc);
+      }else{
+        this.$message({type:'warning',message:'路段情况正常或异常情况未转立案，无法添加文书！'});
+      }
     },
     addDoc(doc) {
       if(this.docOperationType == 'add') {

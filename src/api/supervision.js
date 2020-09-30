@@ -352,11 +352,21 @@ export function getProcessTypeByLevelsApi(levels) {
   })
 }
 
+//查询机构信息
+export function getOrganInfoApi(){
+  return request({
+    url: "/check/cheParameter/getOrganInfo",
+  method: "get",
+  showloading: true,
+  cancelToken: setCancelSource(),
+})
+}
+
 ///流水号
 //添加流水号
 export function getCheParameterInfoApi(data) {
   return request({
-     url: "/check/cheParameter/getCheParameterInfo",
+    url: "/check/cheParameter/getCheParameterInfo",
     method: "get",
     params: data,
     showloading: true,
