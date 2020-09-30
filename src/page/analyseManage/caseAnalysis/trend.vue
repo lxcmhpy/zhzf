@@ -7,13 +7,14 @@
             <elSelectTree
               ref="elSelectTreeObj1"
               :options="mechanismOption"
+              :clearable="false"
               :accordion="true"
               :props="{label: 'label', value: 'id'}"
               @getValue="handleMechanism"
             />
           </el-form-item>
           <el-form-item label="执法门类" prop>
-            <el-select v-model="logForm.category" placeholder="请选择">
+            <el-select v-model="logForm.category" clearable placeholder="请选择">
               <el-option
                 v-for="item in categoryOption"
                 :key="item.value"
