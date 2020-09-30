@@ -28,7 +28,7 @@
                 <div class="bt">案件类型</div>
               </el-row>
               <el-row style="text-align:center;overflow-y: hidden;overflow-x: auto;height: 153px;">
-                <el-col class="case" v-for="(item,i) in caseTypeCon" :key="i">
+                <el-col class="case-box" v-for="(item,i) in caseTypeCon" :key="i">
                   <img src="../../../../static/images/map/一般案件.png" style="height:60px;width:60px;">
                   <div class="type">{{item.name}}</div>
                   <div id="ybaj" class="count">{{item.value}}</div>
@@ -244,21 +244,13 @@
               that.carSortSeries =[]
               that.carSortXData =[]
             }
-
-            //地图数据
             that.mapData = res.data.mapdata
-            let jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
-            let yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
-            let yichun = "../../../../static/json/map/data-1518338852969-Hy677KTIf.json";
-            let xinyu = "../../../../static/json/map/data-1518338838010-SyAzQYTIf.json";
-            let shangrao = "../../../../static/json/map/data-1518338829670-H1UfQYa8G.json";
-            let pingxiang = "../../../../static/json/map/data-1518338823093-HkyMQtpUf.json";
-            let nanchang = "../../../../static/json/map/data-1518338805373-S1Temta8G.json";
-            let jiujiang = "../../../../static/json/map/data-1518338799987-S1deQFTLz.json";
-            let jingdezhen = "../../../../static/json/map/data-1518338783915-HJOJXtaLf.json";
-            let jian = "../../../../static/json/map/data-1518338772507-BJnAMKTIz.json";
-            let ganzhou = "../../../../static/json/map/data-1518338763250-S17RfKpLM.json";
-            let fuzhou = "../../../../static/json/map/data-1518338684239-S1EFGtp8f.json";
+            let ningxia = "../../../../static/json/map/ningxia.json";
+            let guyuan = "../../../../static/json/map/guyuan.json";
+            let shizuishan = "../../../../static/json/map/shizuishan.json";
+            let wuzhong = "../../../../static/json/map/wuzhong.json";
+            let yinchuan = "../../../../static/json/map/yinchuan.json";
+            let zhongwei = "../../../../static/json/map/zhongwei.json";
 
             echarts.extendsMap = function (id, opt) {
               // 实例
@@ -266,30 +258,16 @@
 
               var curGeoJson = {};
               var cityMap = {
-                "南昌市": nanchang,
-                "景德镇市": jingdezhen,
-                "萍乡市": pingxiang,
-                "九江市": jiujiang,
-                "新余市": xinyu,
-                "鹰潭市": yingtan,
-                "赣州市": ganzhou,
-                "吉安市": jian,
-                "宜春市": yichun,
-                "抚州市": fuzhou,
-                "上饶市": shangrao
+                "固原市": guyuan,
+                "石嘴山市": shizuishan,
+                "吴忠市": wuzhong,
+                "银川市": yinchuan,
+                "中卫市": zhongwei
               };
               var geoCoordMap = {
-                '南昌市': [115.89, 28.48],
-                '景德镇市': [117.28, 29.09],
-                '萍乡市': [113.93, 27.41],
-                '九江市': [115.97,29.51],
-                '新余市': [114.81, 27.72],
-                '鹰潭市': [117.12, 28.10],
-                '赣州市': [115.04, 25.67],
-                '吉安市': [115.05, 26.88],
-                '宜春市': [114.41, 28.03],
-                '抚州市': [116.45, 27.79],
-                '上饶市': [117.92, 28.22]
+                '中卫': [105.196754199, 37.5211241916],
+                '吴忠': [106.208254199, 37.9935610029],
+                '石嘴山': [106.379337202, 39.0202232836]
               };
               var levelColorMap = {
                 '1': 'rgba(241, 109, 115, .8)',
@@ -328,11 +306,7 @@
               };
 
               var handleEvents = {
-                /**
-                 * i 实例对象
-                 * o option
-                 * n 地图名
-                 **/
+
                 resetOption: function (i, o, n) {
                   var breadcrumb = this.createBreadcrumb(n);
 
@@ -375,22 +349,13 @@
                   opt.callback(n, o, i);
                 },
 
-                /**
-                 * name 地图名
-                 **/
                 createBreadcrumb: function (name) {
                   var cityToPinyin = {
-                    "南昌市": "nanchang",
-                    "景德镇市": "jingdezhen",
-                    "萍乡市": "pingxiang",
-                    "九江市": "jiujiang",
-                    "新余市": "xinyu",
-                    "鹰潭市": "yingtan",
-                    "赣州市": "ganzhou",
-                    "吉安市": "jian",
-                    "宜春市": "yichun",
-                    "抚州市": "fuzhou",
-                    "上饶市": "shangrao"
+                    "固原市": 'guyuan.json',
+                    "石嘴山市": 'shizuishan',
+                    "吴忠市": 'wuzhong',
+                    "银川市": 'yinchuan',
+                    "中卫市": 'zhongwei'
                   };
                   var breadcrumb = {
                     type: 'group',
@@ -454,7 +419,7 @@
 
                 // 设置effectscatter
                 initSeriesData: function (data) {
-                  let temp = [];
+                  var temp = [];
                   for (var i = 0; i < data.length; i++) {
                     var geoCoord = geoCoordMap[data[i].name];
                     if (geoCoord) {
@@ -547,50 +512,29 @@
                     left: 0,
                     top: 'left',
                     style: {
-                      text: name[0] === '江西' ? '江西省' : name[0],
+                      text: name[0] === '宁夏' ? '宁夏' : name[0],
                       textAlign: 'left',
                       fill: style.textColor,
                       font: style.font
                     },
                     onclick: function () {
-                      handleEvents.resetOption(chart, option, '江西');
+                      handleEvents.resetOption(chart, option, '宁夏');
                     }
                   }, {
                     type: 'text',
                     left: 0,
                     top: 20,
                     style: {
-                      text: 'JIANGXI',
+                      text: 'NINGXIA',
                       textAlign: 'center',
                       fill: style.textColor,
                       font: '12px "Microsoft YaHei", sans-serif',
                     },
                     onclick: function () {
-                      handleEvents.resetOption(chart, option, '江西');
+                      handleEvents.resetOption(chart, option, '宁夏');
                     }
                   }]
                 }],
-                tooltip: {
-                  show:true,
-                  trigger: 'item',
-                  backgroundColor: 'rgba(166, 200, 76, 0.82)',
-                  borderColor: '#FFFFCC',
-                  showDelay: 0,
-                  hideDelay: 0,
-                  enterable: true,
-                  transitionDuration: 0,
-                  extraCssText: 'z-index:100',
-                  formatter: function(params, ticket, callback) {
-                    console.log(params);
-
-                    //根据业务自己拓展要显示的内容
-                    var res = "";
-                    var name = params.name;
-                    var value = params.value[2];
-                    res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
-                    return res;
-                  }
-                },
                 geo: {
                   map: opt.mapName,
                   // roam: true,
@@ -727,21 +671,41 @@
 
               return chart;
             };
-            $.getJSON(jiangxi, function (geoJson) {
-              echarts.registerMap('江西', geoJson);
+
+            $.getJSON(ningxia, function (geoJson) {
+              echarts.registerMap('宁夏', geoJson);
               var myChart = echarts.extendsMap('chart-panel', {
                 bgColor: '#154e90', // 画布背景色
-                mapName: '江西',    // 地图名
+                mapName: '宁夏',    // 地图名
                 goDown: true,       // 是否下钻
                 // 下钻回调
                 callback: function (name, option, instance) {
                   console.log(name, option, instance);
                 },
                 // 数据展示
-                data: that.mapData
+                data: [{
+                  name: '银川',
+                  value: 10,
+                  level: 1
+                }, {
+                  name: '固原',
+                  value: 12,
+                  level: 2
+                }, {
+                  name: '石嘴山',
+                  value: 55,
+                  level: 3
+                }, {
+                  name: '吴忠',
+                  value: 16,
+                  level: 2
+                }, {
+                  name: '中卫',
+                  value: 17,
+                  level: 4
+                }]
               });
             })
-
             that.trend()    //年度案发趋势
             that.caseStatus()   //案件状态
             that.caseNumberFun()   //执法机构案件数量
@@ -758,17 +722,23 @@
         this.$router.push({path: '/lawCase_JX'})
       },
       zbpage() {
-        this.$router.push({path: '/personEqpt'})
+        this.$router.push({path: '/personEquip'})
       },
-      map() {
-        },
       /*map() {
-        let ningxia = "../../../../static/json/map/ningxia.json";
-        let guyuan = "../../../../static/json/map/guyuan.json";
-        let shizuishan = "../../../../static/json/map/shizuishan.json";
-        let wuzhong = "../../../../static/json/map/wuzhong.json";
-        let yinchuan = "../../../../static/json/map/yinchuan.json";
-        let zhongwei = "../../../../static/json/map/zhongwei.json";
+        //地图数据
+        that.mapData = res.data.mapdata
+        let jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
+        let yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
+        let yichun = "../../../../static/json/map/data-1518338852969-Hy677KTIf.json";
+        let xinyu = "../../../../static/json/map/data-1518338838010-SyAzQYTIf.json";
+        let shangrao = "../../../../static/json/map/data-1518338829670-H1UfQYa8G.json";
+        let pingxiang = "../../../../static/json/map/data-1518338823093-HkyMQtpUf.json";
+        let nanchang = "../../../../static/json/map/data-1518338805373-S1Temta8G.json";
+        let jiujiang = "../../../../static/json/map/data-1518338799987-S1deQFTLz.json";
+        let jingdezhen = "../../../../static/json/map/data-1518338783915-HJOJXtaLf.json";
+        let jian = "../../../../static/json/map/data-1518338772507-BJnAMKTIz.json";
+        let ganzhou = "../../../../static/json/map/data-1518338763250-S17RfKpLM.json";
+        let fuzhou = "../../../../static/json/map/data-1518338684239-S1EFGtp8f.json";
 
         echarts.extendsMap = function (id, opt) {
           // 实例
@@ -776,16 +746,30 @@
 
           var curGeoJson = {};
           var cityMap = {
-            "固原市": guyuan,
-            "石嘴山市": shizuishan,
-            "吴忠市": wuzhong,
-            "银川市": yinchuan,
-            "中卫市": zhongwei
+            "南昌市": nanchang,
+            "景德镇市": jingdezhen,
+            "萍乡市": pingxiang,
+            "九江市": jiujiang,
+            "新余市": xinyu,
+            "鹰潭市": yingtan,
+            "赣州市": ganzhou,
+            "吉安市": jian,
+            "宜春市": yichun,
+            "抚州市": fuzhou,
+            "上饶市": shangrao
           };
           var geoCoordMap = {
-            '中卫': [105.196754199, 37.5211241916],
-            '吴忠': [106.208254199, 37.9935610029],
-            '石嘴山': [106.379337202, 39.0202232836]
+            '南昌市': [115.89, 28.48],
+            '景德镇市': [117.28, 29.09],
+            '萍乡市': [113.93, 27.41],
+            '九江市': [115.97,29.51],
+            '新余市': [114.81, 27.72],
+            '鹰潭市': [117.12, 28.10],
+            '赣州市': [115.04, 25.67],
+            '吉安市': [115.05, 26.88],
+            '宜春市': [114.41, 28.03],
+            '抚州市': [116.45, 27.79],
+            '上饶市': [117.92, 28.22]
           };
           var levelColorMap = {
             '1': 'rgba(241, 109, 115, .8)',
@@ -824,7 +808,11 @@
           };
 
           var handleEvents = {
-
+            /!**
+             * i 实例对象
+             * o option
+             * n 地图名
+             **!/
             resetOption: function (i, o, n) {
               var breadcrumb = this.createBreadcrumb(n);
 
@@ -867,13 +855,22 @@
               opt.callback(n, o, i);
             },
 
+            /!**
+             * name 地图名
+             **!/
             createBreadcrumb: function (name) {
               var cityToPinyin = {
-                "固原市": 'guyuan.json',
-                "石嘴山市": 'shizuishan',
-                "吴忠市": 'wuzhong',
-                "银川市": 'yinchuan',
-                "中卫市": 'zhongwei'
+                "南昌市": "nanchang",
+                "景德镇市": "jingdezhen",
+                "萍乡市": "pingxiang",
+                "九江市": "jiujiang",
+                "新余市": "xinyu",
+                "鹰潭市": "yingtan",
+                "赣州市": "ganzhou",
+                "吉安市": "jian",
+                "宜春市": "yichun",
+                "抚州市": "fuzhou",
+                "上饶市": "shangrao"
               };
               var breadcrumb = {
                 type: 'group',
@@ -937,7 +934,7 @@
 
             // 设置effectscatter
             initSeriesData: function (data) {
-              var temp = [];
+              let temp = [];
               for (var i = 0; i < data.length; i++) {
                 var geoCoord = geoCoordMap[data[i].name];
                 if (geoCoord) {
@@ -1030,29 +1027,50 @@
                 left: 0,
                 top: 'left',
                 style: {
-                  text: name[0] === '宁夏' ? '宁夏' : name[0],
+                  text: name[0] === '江西' ? '江西省' : name[0],
                   textAlign: 'left',
                   fill: style.textColor,
                   font: style.font
                 },
                 onclick: function () {
-                  handleEvents.resetOption(chart, option, '宁夏');
+                  handleEvents.resetOption(chart, option, '江西');
                 }
               }, {
                 type: 'text',
                 left: 0,
                 top: 20,
                 style: {
-                  text: 'NINGXIA',
+                  text: 'JIANGXI',
                   textAlign: 'center',
                   fill: style.textColor,
                   font: '12px "Microsoft YaHei", sans-serif',
                 },
                 onclick: function () {
-                  handleEvents.resetOption(chart, option, '宁夏');
+                  handleEvents.resetOption(chart, option, '江西');
                 }
               }]
             }],
+            tooltip: {
+              show:true,
+              trigger: 'item',
+              backgroundColor: 'rgba(166, 200, 76, 0.82)',
+              borderColor: '#FFFFCC',
+              showDelay: 0,
+              hideDelay: 0,
+              enterable: true,
+              transitionDuration: 0,
+              extraCssText: 'z-index:100',
+              formatter: function(params, ticket, callback) {
+                console.log(params);
+
+                //根据业务自己拓展要显示的内容
+                var res = "";
+                var name = params.name;
+                var value = params.value[2];
+                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
+                return res;
+              }
+            },
             geo: {
               map: opt.mapName,
               // roam: true,
@@ -1189,44 +1207,24 @@
 
           return chart;
         };
-
-        $.getJSON(ningxia, function (geoJson) {
-          echarts.registerMap('宁夏', geoJson);
+        $.getJSON(jiangxi, function (geoJson) {
+          echarts.registerMap('江西', geoJson);
           var myChart = echarts.extendsMap('chart-panel', {
             bgColor: '#154e90', // 画布背景色
-            mapName: '宁夏',    // 地图名
+            mapName: '江西',    // 地图名
             goDown: true,       // 是否下钻
             // 下钻回调
             callback: function (name, option, instance) {
               console.log(name, option, instance);
             },
             // 数据展示
-            data: [{
-              name: '银川',
-              value: 10,
-              level: 1
-            }, {
-              name: '固原',
-              value: 12,
-              level: 2
-            }, {
-              name: '石嘴山',
-              value: 55,
-              level: 3
-            }, {
-              name: '吴忠',
-              value: 16,
-              level: 2
-            }, {
-              name: '中卫',
-              value: 17,
-              level: 4
-            }]
+            data: that.mapData
           });
         })
+        },*/
+      map() {
 
-
-      },*/
+      },
       trend() {
         /*年度案发趋势*/
         this.chartColumn = echarts.init(document.getElementById("ndafqs"));
@@ -2171,7 +2169,7 @@
     margin-top: 24px;
   }
 
-  .case {
+  .case-box {
     width: 74px;
     height: 153px;
   }

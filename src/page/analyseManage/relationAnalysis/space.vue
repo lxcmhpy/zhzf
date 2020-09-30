@@ -76,7 +76,7 @@ export default {
     initMap(){
       this.map = new AMap.Map("container", {
         resizeEnable: true,
-        center: [116.191031, 39.988585],
+        center: [115.906044,28.557908],
         zoom: 11,
         mapStyle: 'amap://styles/grey', // 极夜蓝
         //自定义地图样式：https://lbs.amap.com/dev/mapstyle/index
