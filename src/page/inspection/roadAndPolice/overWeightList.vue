@@ -1,9 +1,9 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" style="overflow: hidden;">
-      <div class="handlePart">
-        <div class="search toggleBox">
-          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
+      <div class="handlePart" style="margin-left:0">
+        <div class="search toggleBox btn-style" style="width: 100%;">
+          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="width：100%;margin-left:-6px;right: 0;">
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
               <el-form-item label-width="0">
                 <el-button size="medium" class="commonBtn searchBtn" type="primary" @click="addRecordDialog()">添加记录</el-button>
@@ -299,3 +299,11 @@ export default {
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
 <style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss">
+.btn-style{
+  .el-button{
+    background: #4573D0;
+    color: white;
+  }
+}
+</style>

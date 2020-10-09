@@ -236,6 +236,7 @@
           <div class="item">
             <el-form-item label="超限比例" prop="overRatio">
               <el-input v-model="carInfo.firstCheck.overRatio" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+                <template slot="append">%</template>
               </el-input>
             </el-form-item>
           </div>
@@ -445,7 +446,9 @@
         <div>
           <div class="item">
             <el-form-item label="超限比例" prop="overRatio">
-              <el-input v-model="carInfo.secondCheck.overRatio" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"></el-input>
+              <el-input v-model="carInfo.secondCheck.overRatio" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+                <template slot="append">%</template>
+              </el-input>
             </el-form-item>
           </div>
           <div class="item">
@@ -1345,10 +1348,7 @@ export default {
 
   mounted() {
     console.log('mounted')
-    this.getDrawerList([
-      { name: '车牌颜色', option: 1 },
-      { name: '车辆类型', option: 2 },
-      { name: '路警联合-卸载方式', option: 3 },])
+
 
     // if (this.inspectionOverWeightId.id) {
     //   this.getData()
@@ -1383,14 +1383,18 @@ export default {
     }
     if (!this.inspectionOverWeightId.id) {
       this.isCanEdit = true;//可编辑
-    }else{}
-    console.log('activated',this.carinfoId)
+    } else { }
+    console.log('activated', this.carinfoId)
+    this.getDrawerList([
+      { name: '车牌颜色', option: 1 },
+      { name: '车辆类型', option: 2 },
+      { name: '路警联合-卸载方式', option: 3 },])
   },
 
   created() {
     this.carinfoId = this.genID()
     this.findRouteManageByOrganId();
-    console.log('create',this.carinfoId)
+    console.log('create', this.carinfoId)
   },
   beforeRouteLeave(to, from, next) {
     console.log("to", to);
