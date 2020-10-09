@@ -58,7 +58,7 @@
       </div>
     </div>
     <!-- 新增排班 -->
-    <AddScheduling ref="AddSchedulingRef" :businessOptions="businessOptions" />
+    <AddScheduling ref="AddSchedulingRef" :dutyDay="dutyDay" :businessOptions="businessOptions" />
   </div>
 </template>
 <script>

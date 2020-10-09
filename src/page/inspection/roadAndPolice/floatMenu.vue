@@ -1,21 +1,28 @@
 <template>
+  <div class="right_side_box">
+    <div class="btn_box">
+      <i class="el-icon-arrow-down"></i>
+    </div>
+    <el-menu class="el-menu-vertical-demo" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
+      <!-- 悬浮按钮 -->
 
-  <!-- 悬浮按钮 -->
-  <div class="float-btns" style="top:165px;right:5px;">
-    <li @click="clickLink('inspection_inspectionRAPFiles')" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0">
-      <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)" class='el-button el-button--primary' style="padding:10px 0" @click="writeDoc"> -->
-      文书<br />填报
-    </li>
-    <li @click="clickLink1('inspection_imageMange')" @mouseenter="changeActive(2)" @mouseout="removeActive(2)" class='el-button el-button--primary' style="padding:10px 0">
-      照片<br />证据
-    </li>
-    <li @mouseenter="changeActive(3)" @mouseout="removeActive(3)" class='el-button el-button--primary' style="padding:10px 0">
-      操作<br />记录
-    </li>
+      <el-menu-item @click="clickLink('inspection_inspectionRAPFiles')">
+        <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)"  @click="writeDoc"> -->
+        <div @mouseenter="changeActive(1)" @mouseout="removeActive(1)">文书<br />填报</div>
+      </el-menu-item>
+      <el-menu-item @click="clickLink1('inspection_imageMange')">
+        <div @mouseenter="changeActive(2)" @mouseout="removeActive(2)">照片<br />证据</div>
+      </el-menu-item>
+      <el-menu-item >
+        <div @mouseenter="changeActive(3)" @mouseout="removeActive(3)">操作<br />记录</div>
+      </el-menu-item>
+    </el-menu>
     <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
     <relativeRecord ref="relativeRecordRef"></relativeRecord>
     <operationRecord ref="operationRecordRef"></operationRecord>
+
   </div>
+
 </template>
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
@@ -108,7 +115,7 @@ export default {
       this.closeAllDialog()
       switch (index) {
         case 1: this.$refs.documentSideMenuRef.showModal(this.inspectionOverWeightId.firstcheckId ? this.inspectionOverWeightId.firstcheckId : ''); break;
-        case 2: this.$refs.relativeRecordRef.showModal(this.inspectionOverWeightId||this.carinfoId); break;
+        case 2: this.$refs.relativeRecordRef.showModal(this.inspectionOverWeightId || this.carinfoId); break;
         case 3: this.$refs.operationRecordRef.showModal(); break;
         default: break;
       }
@@ -129,6 +136,7 @@ export default {
       this.$refs.operationRecordRef.closeDialog();
     },
     clickLink(name) {
+      this.closeAllDialog()
       if (this.inspectionOverWeightId) {
         this.$router.push({
           name: name,
@@ -142,8 +150,9 @@ export default {
       }
     },
     clickLink1(name) {
-      let _this=this
-      if (this.inspectionOverWeightId||this.carinfoId) {
+      this.closeAllDialog()
+      let _this = this
+      if (this.inspectionOverWeightId || this.carinfoId) {
 
         this.$router.push({
           name: name,
@@ -165,4 +174,4 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="@/assets/css/documentForm.scss">
+<style lang="scss" src="@/assets/css/documentForm.scss"></style>

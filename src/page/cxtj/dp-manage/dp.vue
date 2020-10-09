@@ -1,5 +1,5 @@
 <template>
-  <el-container class="body_bg"> 
+  <el-container class="body_bg">
       <el-main >
           <el-row class="main">
        <el-row>
@@ -11,21 +11,21 @@
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -520px;margin-top: 28px;" >
               <div class="title_3 title_font" @click="zbpage()" >人员装备</div>
-               
+
           </el-col>
            <el-col :span="4" style="height:60px;margin-left:-30px;margin-top: 35px;" >
               <div class="title_4" >
                   <span class="right_font0">执法人员：</span>
                   <span class="right_font1">536人</span>
               </div>
-               
+
           </el-col>
            <el-col :span="4" style="height:60px;margin-left:0px;margin-top: 35px;" >
               <div class="title_5" >
                   <span class="right_font0">执法装备：</span>
                   <span class="right_font1">862件</span>
               </div>
-               
+
           </el-col>
         </el-row>
         <el-row>
@@ -46,13 +46,13 @@
                  <div id="ndafqs" style="width: 100%; height: 200px;"></div>
               </el-row>
             </el-row>
-            
+
           </el-col>
           <el-col :span="10" >
               <el-row class="center_1">
               <div id="map" style="width: 550px; height: 400px;"></div>
             </el-row>
-           
+
           </el-col>
            <el-col :span="7" >
              <el-row class="right_1">
@@ -98,7 +98,7 @@
           </el-col>
         </el-row>
           </el-row>
-      </el-main>    
+      </el-main>
   </el-container>
 </template>
 </template>
@@ -174,103 +174,17 @@ echarts.extendsMap = function(id, opt){
         "上饶市": shangrao
     };
     var geoCoordMap = {
-        // '南昌': [115.89, 28.48],
-        // '景德镇': [117.28, 29.09],
-        // '萍乡': [113.93, 27.41],
-        // '九江': [115.97,29.51],
-        // '新余': [114.81, 27.72],
-        // '鹰潭': [117.12, 28.10],
-        // '赣州': [115.04, 25.67],
-        // '吉安': [115.05, 26.88],
-        // '宜春': [114.41, 28.03],
-        // '抚州': [116.45, 27.79],
-        // '上饶': [117.92, 28.22]
-        '南昌'　　:[115.89,28.68],　　
-　　　　'新建'　　:[115.80,28.69],　　
-　　　　'景德镇'　:[117.22,29.30],　　
-　　　　'萍乡'　　:[113.85,27.60],　　
-　　　　'九江'　　:[115.97,29.71],　　
-　　　　'彭泽'　　:[116.56,29.90],　　
-　　　　'湖口'　　:[116.23,29.75],　　
-　　　　'都昌'　　:[116.19,29.29],　　
-　　　　'星子'　　:[116.03,29.47],　　
-　　　　'永修'　　:[115.82,29.04],　　
-　　　　'德安'　　:[115.75,29.33],　　
-　　　　'瑞昌'　　:[115.65,29.68],　　
-　　　　'武宁'　　:[115.09,29.26],　　
-　　　　'修永'　　:[114.55,29.04],　　
-　　　　'上饶'　　:[117.97,28.47],　　
-　　　　'婺源'　　:[117.83,29.25],　　
-　　　　'德兴'　　:[117.58,28.96],　　
-　　　  '玉山'　　:[118.25,28.68],　　
-　　　　'广丰'　  :[118.20,28.45],　
-　　　　'铅山'　　:[117.71,28.32],　　
-　　　　'横峰'　  :[117.62,28.42],　　
-　　　　'鹰潭'　　:[117.02,28.23],　　
-　　　　'贵溪'　　:[117.20,28.30],　　
-　　　　'余江'　　:[116.82,28.22],　　
-　　　　'万年'　　:[117.08,28.70],　　
-　　　　'乐平'　　:[117.12,28.97],　　
-　　　　'波阳'　　:[116.68,29.00],　
-　　　　'于干'　　:[116.69,28.70],　　
-　　　　'弋阳'　　:[117.43,28.42],　　
-　　　　'宜春'　　:[114.38,27.81],　　
-　　　　'万载'　　:[114.44,28.11],　　
-　　　　'铜鼓'　　:[114.37,28.53],　　
-　　　　'宜丰'　　:[114.78,28.40],　　
-　　　　'上高'　  :[114.91,28.25],　　
-　　　　'安义'　　:[115.55,28.86],　　
-　　　　'奉新'　　:[115.38,28.71],　　
-　　　　'高安'　　:[115.38,28.42],　　
-　　　　'丰城'　　:[115.70,28.19],　　
-　　　　'清江'　　:[115.54,28.07],　　
-　　　　'新余'　　:[114.92,27.81],　　
-　　　　'分宜'　　:[114.68,27.82],　　
-　　　　'靖安'　　:[115.37,28.88],　　
-　　　　'抚州'　　:[116.34,28.00],　　
-　　　　'临川'　　:[116.29,27.95],　　
-　　　　'金溪'　　:[116.77,27.92],　　
-　　　　'资溪'　　:[117.06,27.70],　　
-　　　　'黎川'　　:[116.91,27.30],　　
-　　　　'南丰'　　:[116.52,27.22],　　
-　　　　'南城'　　:[116.62,27.56],　　
-　　　　'宜黄'　　:[116.20,27.55],　　
-　　　　'崇仁'　　:[116.05,27.75],　　
-　　　　'乐安'　　:[115.82,27.44],　　
-　　　　'东乡'　　:[116.61,28.23],　　
-　　　　'进贤'　　:[116.26,28.37],　　
-　　　　'吉安'　　:[114.97,27.12],　　
-　　　　'新干'　　:[115.40,27.77],　　
-　　　　'峡江'　　:[115.15,27.56],　　
-　　　　'吉水'　　:[115.14,27.22],　　
-　　　　'永丰'　　:[115.42,27.33],　　
-　　　　'泰和'　　:[114.88,26.81],　　
-　　　　'万安'　　:[114.77,26.47],　　
-　　　　'遂川'　　:[114.50,26.33],　　
-　　　　'宁冈'　　:[113.97,26.71],　　
-　　　　'永新'　　:[114.23,26.96],　　
-　　　　'莲花'　　:[113.94,27.14],　　
-　　　　'安福'　　:[114.62,27.39],　　
-　　　　'井冈山'　:[114.17,26.57],　　
-　　　　'赣州'　　:[114.92,25.85],　　
-　　　　'广昌'　　:[116.32,26.84],　　
-　　　　'石城'　　:[116.32,26.34],　　
-　　　　'宁都'　　:[116.00,26.46],　　
-　　　　'兴国'　　:[115.33,26.32],　　
-　　　　'于都'　　:[115.39,25.96],　　
-　　　　'瑞金'　　:[116.02,25.89],　　
-　　　　'会昌'　　:[115.79,25.58],　　
-　　　　'安远'　　:[115.41,25.15],　
-　　　　'寻乌'　　:[115.64,24.96],　　
-　　　　'定南'　　:[115.02,24.70],　　
-　　　　'龙南'　　:[114.79,24.91],　　
-　　　　'全南'　　:[114.53,24.76],　　
-　　　　'信丰'　　:[114.94,25.39],　　
-　　　　'赣县'　　:[114.02,25.85],　　
-　　　　'南康'　　:[114.75,25.66],　
-　　　　'上犹'　　:[114.55,25.80],　　
-　　　　'崇义'　　:[114.31,25.69],　　
-　　　　'大余'　　:[114.36,25.39],　
+        '南昌': [115.89, 28.48],
+        '景德镇': [117.28, 29.09],
+        '萍乡': [113.93, 27.41],
+        '九江': [115.97,29.51],
+        '新余': [114.81, 27.72],
+        '鹰潭': [117.12, 28.10],
+        '赣州': [115.04, 25.67],
+        '吉安': [115.05, 26.88],
+        '宜春': [114.41, 28.03],
+        '抚州': [116.45, 27.79],
+        '上饶': [117.92, 28.22]
     };
     var levelColorMap = {
         '1': 'rgba(241, 109, 115, .8)',
@@ -288,7 +202,7 @@ echarts.extendsMap = function(id, opt){
         callback: function(name, option, instance){}
 	};
 	if(opt) opt = this.util.extend(defaultOpt, opt);
-	
+
 	// 层级索引
 	var name = [opt.mapName];
 	var idx = 0;
@@ -298,7 +212,7 @@ echarts.extendsMap = function(id, opt){
 		left: 38,
 		top: 40
 	};
-    
+
 	var line = [[0, 0], [8, 11], [0, 22]];
     // style
 	var style = {
@@ -315,7 +229,7 @@ echarts.extendsMap = function(id, opt){
         **/
         resetOption: function(i, o, n){
             var breadcrumb = this.createBreadcrumb(n);
-            
+
             var j = name.indexOf(n);
             var l = o.graphic.length;
             if(j < 0){
@@ -464,7 +378,7 @@ echarts.extendsMap = function(id, opt){
             });
         }
     };
-    
+
     var option = {
     	// backgroundColor: opt.bgColor,
     	graphic: [{
@@ -573,10 +487,10 @@ echarts.extendsMap = function(id, opt){
                         y: 0.5,
                         r: 0.8,
                         colorStops: [{
-                            offset: 0, 
+                            offset: 0,
                             color: 'rgba(147, 235, 248, 0)' // 0% 处的颜色
                         }, {
-                            offset: 1, 
+                            offset: 1,
                             color: 'rgba(147, 235, 248, .2)' // 100% 处的颜色
                         }],
                         globalCoord: false // 缺省为 false
@@ -645,7 +559,7 @@ echarts.extendsMap = function(id, opt){
             },
             data: handleEvents.initSeriesData(opt.data)
         }],
-         tooltip: {
+        tooltip: {
                 show:true,
                 trigger: 'item',
                 backgroundColor: 'rgba(166, 200, 76, 0.82)',
@@ -729,7 +643,7 @@ $.getJSON(jiangxi, function(geoJson){
               option.series[0].data.push({name: "珠山区 ",value:[117.2 ,29.3, 35, 2]});
               option.series[0].data.push({name: "浮梁县",value:[117.25 ,29.37, 35, 2]});
               option.series[0].data.push({name: "乐平市",value:[117.12 ,28.97, 35, 2]});
-              
+
          }
          if(name=="萍乡市"){
               option.series[0].data.push({name: "安源区",value:[113.87, 27.65, 35, 2]});
@@ -755,13 +669,13 @@ $.getJSON(jiangxi, function(geoJson){
          if(name=="新余市"){
               option.series[0].data.push({name: "渝水区 ",value:[114.93, 27.8, 15, 2]});
               option.series[0].data.push({name: "分宜县",value:[114.67 ,27.82, 35,1]});
-              
+
          }
          if(name=="鹰潭市"){
                option.series[0].data.push({name: "月湖区",value:[117.05, 28.23,32,2]});
               option.series[0].data.push({name: "余江县",value:[116.82 ,28.2,34,1]});
               option.series[0].data.push({name: "贵溪市",value:[117.22 ,28.28,32,1]});
-              
+
          }
          if(name=="赣州市"){
                option.series[0].data.push({name: "章贡区",value:[114.93 ,25.87,32,2]});
@@ -797,47 +711,47 @@ $.getJSON(jiangxi, function(geoJson){
               option.series[0].data.push({name: "万安县 ",value:[114.78, 26.47,31,2]});
               option.series[0].data.push({name: "安福县",value:[114.62 ,27.38,25,2]});
               option.series[0].data.push({name: "永新县",value:[114.23, 26.95,25,2]});
-              option.series[0].data.push({name: "井冈山市",value:[114.27 ,26.72,25,2]});
+               option.series[0].data.push({name: "井冈山市",value:[114.27 ,26.72,25,2]});
          }
          if(name=="宜春市"){
-              option.series[0].data.push({name: "袁州区",value:[114.38, 27.8,32,2]});
+               option.series[0].data.push({name: "袁州区",value:[114.38, 27.8,32,2]});
               option.series[0].data.push({name: "奉新县",value:[115.38, 28.7,34,1]});
               option.series[0].data.push({name: "万载县",value:[114.43, 28.12,32,1]});
               option.series[0].data.push({name: "上高县",value:[114.92, 28.23,31,2]});
               option.series[0].data.push({name: "宜丰县",value:[114.78, 28.38,25,2]});
               option.series[0].data.push({name: "靖安县 ",value:[115.35, 28.87,25,2]});
-              option.series[0].data.push({name: "铜鼓县",value:[114.37, 28.53,32,1]});
+               option.series[0].data.push({name: "铜鼓县",value:[114.37, 28.53,32,1]});
               option.series[0].data.push({name: "丰城市",value:[115.78, 28.2,31,2]});
               option.series[0].data.push({name: "樟树市",value:[115.53, 28.07,25,2]});
               option.series[0].data.push({name: "高安市 ",value:[115.37 ,28.42,25,2]});
          }
          if(name=="抚州市"){
                option.series[0].data.push({name: "临川区",value:[116.35, 27.98,32,2]});
-               option.series[0].data.push({name: "南城县",value:[116.63 ,27.55,34,1]});
-               option.series[0].data.push({name: "黎川县",value:[116.92 ,27.3,32,1]});
-               option.series[0].data.push({name: "南丰县",value:[116.53 ,27.22,31,2]});
-               option.series[0].data.push({name: "崇仁县 ",value:[116.05, 27.77,25,2]});
-               option.series[0].data.push({name: " 乐安县",value:[115.83, 27.43,25,2]});
+              option.series[0].data.push({name: "南城县",value:[116.63 ,27.55,34,1]});
+              option.series[0].data.push({name: "黎川县",value:[116.92 ,27.3,32,1]});
+              option.series[0].data.push({name: "南丰县",value:[116.53 ,27.22,31,2]});
+              option.series[0].data.push({name: "崇仁县 ",value:[116.05, 27.77,25,2]});
+              option.series[0].data.push({name: " 乐安县",value:[115.83, 27.43,25,2]});
                option.series[0].data.push({name: "宜黄县",value:[116.22, 27.55,34,1]});
-               option.series[0].data.push({name: "金溪县",value:[116.77, 27.92,32,1]});
-               option.series[0].data.push({name: "资溪县",value:[117.07, 27.7,31,2]});
-               option.series[0].data.push({name: "东乡县  ",value:[116.62 ,28.23,25,2]});
-               option.series[0].data.push({name: " 广昌县 ",value:[116.32 ,26.83,25,2]});
+              option.series[0].data.push({name: "金溪县",value:[116.77, 27.92,32,1]});
+              option.series[0].data.push({name: "资溪县",value:[117.07, 27.7,31,2]});
+              option.series[0].data.push({name: "东乡县  ",value:[116.62 ,28.23,25,2]});
+              option.series[0].data.push({name: " 广昌县 ",value:[116.32 ,26.83,25,2]});
          }
         if(name=="上饶市"){
                option.series[0].data.push({name: "信州区",value:[117.95, 28.43,32,2]});
-               option.series[0].data.push({name: "上饶县",value:[117.92, 28.43,34,1]});
-               option.series[0].data.push({name: "广丰县",value:[118.18, 28.43,32,1]});
-               option.series[0].data.push({name: "玉山县",value:[118.25, 28.68,31,2]});
-               option.series[0].data.push({name: "铅山县",value:[117.7, 28.32,25,2]});
-               option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
+              option.series[0].data.push({name: "上饶县",value:[117.92, 28.43,34,1]});
+              option.series[0].data.push({name: "广丰县",value:[118.18, 28.43,32,1]});
+              option.series[0].data.push({name: "玉山县",value:[118.25, 28.68,31,2]});
+              option.series[0].data.push({name: "铅山县",value:[117.7, 28.32,25,2]});
+              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
                option.series[0].data.push({name: "戈阳县",value:[117.43, 28.4,31,2]});
-               option.series[0].data.push({name: "余干县",value:[116.68, 28.7,25,2]});
-               option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
+              option.series[0].data.push({name: "余干县",value:[116.68, 28.7,25,2]});
+              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
          }
            myChart.setOption(option);
     	},
-        // 数据展示            	
+        // 数据展示
     	data: [{
     		name: '南昌',
     		value: 10,
@@ -885,7 +799,6 @@ $.getJSON(jiangxi, function(geoJson){
     	}]
     });
 })
-
 
     },
     drawLeft1() {
@@ -963,7 +876,7 @@ $.getJSON(jiangxi, function(geoJson){
                     value: 40,
                     name: '监督岗'
                 },
-              
+
             ]
         },
 
@@ -977,7 +890,7 @@ $.getJSON(jiangxi, function(geoJson){
             label: {
                 normal: {
                     position: 'inside',
-                    formatter: '{c}%',
+                    formatter: '{c}',
                     textStyle: {
                         color: '#fff',
                         fontSize:14,
@@ -985,7 +898,7 @@ $.getJSON(jiangxi, function(geoJson){
                 },
                 emphasis: {
                     position: 'inside',
-                    formatter: '{b}: {c}%'
+                    formatter: '{b}: {c}'
                 }
             },
             itemStyle: {
@@ -1011,7 +924,7 @@ $.getJSON(jiangxi, function(geoJson){
                     value: 40,
                     name: '监督岗'
                 },
-               
+
             ]
         }
     ]
@@ -1058,7 +971,7 @@ $.getJSON(jiangxi, function(geoJson){
           { value: 16, name: "参照公务员管理编制" },
           { value: 24, name: "事业编制" },
           { value: 25, name: "其他" },
-       
+
         ],
         // 修饰饼形图文字相关的样式 label对象
         label: {
@@ -1074,11 +987,11 @@ $.getJSON(jiangxi, function(geoJson){
       }
     ]
       });
-      
+
     },
 drawBottom1() {
       this.chartColumn = echarts.init(document.getElementById("rysl"));
-     
+
       this.chartColumn.setOption({
         backgroundColor: '',
         tooltip: {
@@ -1104,11 +1017,11 @@ drawBottom1() {
 						textStyle: {
 							fontSize: 12
                         },
-                        interval: 0,  
-                        formatter:function(value)  
-                        {  
-                            return value.split(" ").join("\n");  
-                        } 
+                        interval: 0,
+                        formatter:function(value)
+                        {
+                            return value.split(" ").join("\n");
+                        }
 					},
 					axisLine: {
 						lineStyle: {
@@ -1208,7 +1121,7 @@ drawBottom1() {
 					},
 				}]
       });
-  
+
     },
 
 
@@ -1242,11 +1155,11 @@ this.chartColumn.setOption({
 						textStyle: {
 							fontSize: 12
                         },
-                        interval: 0,  
-                        formatter:function(value)  
-                        {  
-                            return value.split(" ").join("\n");  
-                        } 
+                        interval: 0,
+                        formatter:function(value)
+                        {
+                            return value.split(" ").join("\n");
+                        }
 					},
 					axisLine: {
 						lineStyle: {
@@ -1346,7 +1259,7 @@ this.chartColumn.setOption({
 					},
 				}]
       });
-      
+
     },
 drawRight1() {
       this.chartColumn = echarts.init(document.getElementById("clpm"));
@@ -1381,13 +1294,13 @@ drawRight1() {
 			textStyle: {
 				color: '#999',
         fontSize: 12,
-       
+
       },
-       interval: 0,  
-        formatter:function(value)  
-        {  
-            return value.split(" ").join("\n");  
-        } 
+       interval: 0,
+        formatter:function(value)
+        {
+            return value.split(" ").join("\n");
+        }
 		}
     },
     yAxis: [{
@@ -1462,7 +1375,7 @@ drawRight1() {
         z: 10
     }]
       });
-      
+
     },
  drawRight2() {
       this.chartColumn = echarts.init(document.getElementById("afd"));
@@ -1533,11 +1446,11 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
                 color: '#999' //坐标轴字颜色
             },
             margin: 15,
-            interval: 0,  
-        formatter:function(value)  
-        {  
-            return value.split(" ").join("\n");  
-        } 
+            interval: 0,
+        formatter:function(value)
+        {
+            return value.split(" ").join("\n");
+        }
         },
         axisPointer: {
             label: {
@@ -1618,19 +1531,19 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
             }
         }
     },
-   
+
     ]
       });
-      
+
     },
 
 
 
 
 
-   
-    
-   
+
+
+
   },
   mounted() {
     this.drawLeft1();
@@ -1651,16 +1564,16 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
 .title_1{
   background-image: url("../../../../static/images/map/导航-未选.png");
   background-size: 100%;
-  height: 3.7rem;
-  width: 10rem;
+  height: 58px;
+  width: 150px;
   text-align: center;
   line-height: 50px;
   cursor: pointer;
 background-repeat: no-repeat;
 }
 .title_font{
-     
-font-size:1rem;
+
+font-size:18px;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:500;
 color:rgba(92,216,255,1);
@@ -1669,9 +1582,9 @@ text-shadow:0px 0px 24px rgba(14,40,100,1);
 
 }
 .title_2{
-width:24rem;
-height:5rem;
-font-size:1.25rem;
+width:380px;
+height:42px;
+font-size:20px;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:300;
 color:rgba(255,255,255,1);
@@ -1683,8 +1596,8 @@ text-align: center;
   background-image: url("../../../../static/images/map/选中.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 3.7rem;
-  width: 10rem;
+  height: 58px;
+  width: 150px;
   text-align: center;
   line-height: 60px;
   cursor: pointer;
@@ -1693,8 +1606,8 @@ text-align: center;
   background-image: url("../../../../static/images/map/右侧边框.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 5rem;
-  width: 12rem;
+  height: 58px;
+  width: 190px;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
@@ -1703,23 +1616,23 @@ text-align: center;
   background-image: url("../../../../static/images/map/右侧边框.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 5rem;
-  width: 12rem;
+  height: 58px;
+  width: 190px;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
 }
 .left_1{
-width: 18.8rem;
-height: 12rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
 margin-left: 30px;
 }
 .left_2{
-width: 18.8rem;
-height: 13rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1727,8 +1640,8 @@ margin-left: 30px;
 margin-top: 5px;
 }
 .bottom_1{
-width: 34rem;
-height: 12rem;
+width:540px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1738,11 +1651,11 @@ margin-top: 5px;
 .center_1{
   background-image: url("../../../../static/images/map/地图bg.png");
   background-size: 100%;
-  height: 25.5rem;
+  height: 410px;
 }
 .bottom_2{
-width: 34rem;
-height: 12rem;
+width:540px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1750,16 +1663,16 @@ margin-left: 5px;
 margin-top: 5px;
 }
 .right_1{
-width: 18.8rem;
-height: 12rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
 margin-left: 5px;
 }
 .right_2{
-width: 18.8rem;
-height: 13rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1768,8 +1681,8 @@ margin-top: 5px;
 }
 .bt{
 width:100%;
-height: 1.5rem;
-font-size: 1rem;
+height:22px;
+font-size:16px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(4,241,248,1);
@@ -1777,27 +1690,27 @@ line-height:22px;
 padding-left: 10px;
 }
 .type{
-width: 5rem;
-height: 1.5rem;
-font-size: 0.9rem;
+width:66px;
+height:20px;
+font-size:13px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
 line-height:20px;
 }
 .count{
-width: 5rem;
-height: 1.5rem;
-font-size: 1.3rem;
+width:58px;
+height:42px;
+font-size:22px;
 font-family:DINCond-Bold,DINCond;
 font-weight:bold;
 color:rgba(4,241,248,1);
 line-height:42px;
 }
 .dw{
-width: 2rem;
-height: 1.5rem;
-font-size: 0.9rem;
+width:14px;
+height:20px;
+font-size:14px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
@@ -1805,22 +1718,22 @@ line-height:20px;
 margin-left: 15px;
 }
 .ajbjl{
-width: 5rem;
-height: 1rem;
-font-size: 0.9rem;
+width:70px;
+height:19px;
+font-size:14px;
 font-family:MicrosoftYaHei;
 color:rgba(255,255,255,1);
 line-height:19px;
 margin-top: 70px;
 }
 .sl{
-width: 1rem;
-height: 2rem;
-font-size: 1.3rem;
+width:190px;
+height:51px;
+font-size:17px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:rgba(4,241,248,1);
-line-height:61px;  
+line-height:61px;
 }
 .body_bg .el-main {
     background: none;
@@ -1831,18 +1744,18 @@ line-height:61px;
     background-size: 100% 100%;
 }
 .right_font0{
-width: 1rem;
-height: 2rem;
-font-size: 1.3rem;
+width:196px;
+height:28px;
+font-size:20px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
 line-height:28px;
 }
 .right_font1{
-width: 1rem;
-height: 2rem;
-font-size: 1.3rem;
+width:196px;
+height:28px;
+font-size:18px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:#FF9703;

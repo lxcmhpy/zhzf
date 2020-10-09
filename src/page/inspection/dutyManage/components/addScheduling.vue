@@ -91,6 +91,7 @@
           <!-- <el-input v-model="addSchedulingForm.patrolRoute"></el-input> -->
           <el-select
             v-model="addSchedulingForm.patrolRoute"
+            multiple
             placeholder="请选择路线"
           >
             <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
@@ -116,6 +117,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    dutyDay: {
+      type: String,
+      default: ""
+    }
   },
   data() {
     return {
@@ -206,11 +211,9 @@ export default {
 
           this.addSchedulingForm.lawEnforcementOfficials = "";
           this.addSchedulingForm.lawEnforcementOfficialsIds = "";
-          this.addSchedulingForm.lawPersonListIndex.forEach(i => {
-            this.addSchedulingForm.lawEnforcementOfficials += `${this.lawPersonList[i].lawOfficerName};`;
-            this.addSchedulingForm.lawEnforcementOfficialsIds += `${this.lawPersonList[i].id};`;
-          });
-
+          this.addSchedulingForm.lawEnforcementOfficials = this.addSchedulingForm.lawPersonListIndex.map(i => this.lawPersonList[i].lawOfficerName).join(';');
+          this.addSchedulingForm.lawEnforcementOfficialsIds = this.addSchedulingForm.lawPersonListIndex.map(i => this.lawPersonList[i].userId).join(';');
+          this.addSchedulingForm.patrolRoute = this.addSchedulingForm.patrolRoute.join(';');
           const data = JSON.parse(JSON.stringify(this.addSchedulingForm));
 
           if(this.handelType == "add"){
@@ -270,6 +273,9 @@ export default {
         formData.schedulePersonnel = this.UserInfo.nickName;
         formData.schedulePersonnelId = this.UserInfo.id;
         formData.oid = this.UserInfo.organId;
+        formData.startTime = this.dutyDay + " 08:00:00";
+        formData.endTime = this.dutyDay + " 18:00:00";
+        formData.scheduleTime = [formData.startTime, formData.endTime];
       }else{
         Object.assign(formData, data);
         this.dialogTitle = "修改排班";

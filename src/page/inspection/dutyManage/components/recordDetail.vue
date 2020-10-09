@@ -13,23 +13,39 @@
           >
             <h3 class="form-tab-title">基本信息</h3>
             <el-row :gutter="20">
-              <el-col :span="24">
-                <el-form-item label="巡查时间" prop="checkTime">
+              <el-col :span="12">
+                <el-form-item label="巡查开始时间" prop="checkStartTime">
                   <el-date-picker
-                    v-model="inspectRecordForm.checkTime"
-                    type="datetimerange"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
+                    :disabled="editFlag"
+                    v-model="inspectRecordForm.checkStartTime"
+                    type="datetime"
                     format="yyyy-MM-dd HH:mm:ss"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    clearable
+                    placeholder="请选择时间"
                     @change="checkTimeChange"
+                  ></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="巡查结束时间" prop="checkEndTime">
+                  <el-date-picker
+                    :disabled="editFlag"
+                    v-model="inspectRecordForm.checkEndTime"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm:ss"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    :picker-options="endTimePickerOptions"
+                    placeholder="请选择时间"
+                    clearable
                   ></el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="检查门类" prop="checkCategory">
                   <el-select
+                    :disabled="editFlag"
+                    clearable
                     v-model="inspectRecordForm.checkCategory"
                     placeholder="请选择"
                   >
@@ -45,6 +61,8 @@
               <el-col :span="12">
                 <el-form-item label="检查类型" prop="checkType">
                   <el-select
+                    :disabled="editFlag"
+                    clearable
                     v-model="inspectRecordForm.checkType"
                     placeholder="请选择"
                   >
@@ -60,16 +78,18 @@
               <el-col :span="12">
                 <el-form-item label="填报地点" prop="address">
                   <el-input
+                    :disabled="editFlag"
                     v-model="inspectRecordForm.address"
                     placeholder="请输入"
                   >
-                    <i slot="suffix" class="el-icon-location-outline"></i>
+                    <!-- <i slot="suffix" class="el-icon-location-outline"></i> -->
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="执法人员" prop="lawPersonListIndex">
                   <el-select
+                    :disabled="editFlag"
                     v-model="inspectRecordForm.lawPersonListIndex"
                     multiple
                   >
@@ -93,6 +113,8 @@
               <el-col :span="12">
                 <el-form-item label="路段情况" prop="roadCondition">
                   <el-select
+                    :disabled="editFlag"
+                    clearable
                     v-model="inspectRecordForm.roadCondition"
                     placeholder="请选择"
                     @change="roadConditionChange"
@@ -103,8 +125,22 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
+                <el-form-item label="行驶方向" prop="drivingDirection">
+                  <el-select 
+                    :disabled="editFlag"
+                    clearable
+                    v-model="inspectRecordForm.drivingDirection" 
+                    placeholder="请选择">
+                    <el-option label="上行" value="1"></el-option>
+                    <el-option label="下行" value="2"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
                 <el-form-item label="路线编号" prop="roadNum">
                   <el-select
+                    :disabled="editFlag"
+                    clearable
                     v-model="inspectRecordForm.roadNum"
                     @change="routeChange()"
                     placeholder="请选择"
@@ -121,6 +157,8 @@
               <el-col :span="12">
                 <el-form-item label="路段名称" prop="sectionIndex">
                   <el-select
+                    :disabled="editFlag"
+                    clearable
                     v-model="inspectRecordForm.sectionIndex"
                     @change="sectionChange"
                     placeholder="请选择"
@@ -134,17 +172,6 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
-                <el-form-item label="行驶方向" prop="drivingDirection">
-                  <el-select
-                    v-model="inspectRecordForm.drivingDirection"
-                    placeholder="请选择"
-                  >
-                    <el-option label="上行" value="1"></el-option>
-                    <el-option label="下行" value="2"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
               <el-col :span="24">
                 <el-form-item
                   label="路段信息"
@@ -152,6 +179,7 @@
                   class="road-info-input"
                 >
                   <el-input
+                    :disabled="editFlag"
                     v-model="inspectRecordForm.startKilometer"
                     placeholder="请输入"
                   >
@@ -159,6 +187,7 @@
                   </el-input>
                   <span class="road-info-join">+</span>
                   <el-input
+                    :disabled="editFlag"
                     v-model="inspectRecordForm.startMeter"
                     placeholder="请输入"
                   >
@@ -166,6 +195,7 @@
                   </el-input>
                   <span class="road-info-split">至</span>
                   <el-input
+                    :disabled="editFlag"
                     v-model="inspectRecordForm.endKilometer"
                     placeholder="请输入"
                   >
@@ -173,6 +203,7 @@
                   </el-input>
                   <span class="road-info-join">+</span>
                   <el-input
+                    :disabled="editFlag"
                     v-model="inspectRecordForm.endMeter"
                     placeholder="请输入"
                   >
@@ -189,6 +220,8 @@
                 >
                   <div class="abstract-top-handle">
                     <el-select
+                      :disabled="editFlag"
+                      clearable
                       v-model="inspectRecordForm.desTemplateId"
                       placeholder="模板选择"
                     >
@@ -199,11 +232,12 @@
                         :value="item.templateId"
                       ></el-option>
                     </el-select>
-                    <el-button type="text" @click="generateDescribes"
+                    <el-button :disabled="editFlag" type="text" @click="generateDescribes"
                       >自动生成</el-button
                     >
                   </div>
                   <el-input
+                    :disabled="editFlag"
                     type="textarea"
                     :autosize="{ minRows: 4, maxRows: 6 }"
                     placeholder="请输入内容"
@@ -222,6 +256,7 @@
                 <h4 class="abnormal-title">
                   异常情况{{ index + 1 }}
                   <el-button
+                    :disabled="editFlag"
                     type="text"
                     class="del-abnormal-btn"
                     @click="deleteAbnormal(index)"
@@ -232,6 +267,8 @@
                 <el-col :span="12">
                   <el-form-item label="一级分类" prop="firstProcessType">
                     <el-select
+                      :disabled="editFlag"
+                      clearable
                       v-model="abnormal.firstProcessType"
                       @change="processTypeChange(index, 1)"
                       placeholder="请选择"
@@ -255,6 +292,8 @@
                 >
                   <el-form-item label="二级分类" prop="secondProcessType">
                     <el-select
+                      :disabled="editFlag"
+                      clearable
                       v-model="abnormal.secondProcessType"
                       @change="processTypeChange(index, 2)"
                       placeholder="请选择"
@@ -291,6 +330,8 @@
                 >
                   <el-form-item label="三级分类" prop="thirdProcessType">
                     <el-select
+                      :disabled="editFlag"
+                      clearable
                       v-model="abnormal.thirdProcessType"
                       @change="processTypeChange(index, 3)"
                       placeholder="请选择"
@@ -309,6 +350,8 @@
                 <el-col :span="12">
                   <el-form-item label="处理情况" prop="process">
                     <el-select
+                      :disabled="editFlag"
+                      clearable
                       v-model="abnormal.process"
                       @change="processChange(index, 1)"
                       placeholder="请选择"
@@ -333,6 +376,8 @@
                 >
                   <el-form-item label="处理方式" prop="processMode">
                     <el-select
+                      :disabled="editFlag"
+                      clearable
                       v-model="abnormal.processMode"
                       @change="processChange(index, 2)"
                       placeholder="请选择"
@@ -358,6 +403,8 @@
                 >
                   <el-form-item label="处理结果" prop="processResults">
                     <el-select
+                      :disabled="editFlag"
+                      clearable
                       v-model="abnormal.processResults"
                       placeholder="请选择"
                     >
@@ -371,8 +418,8 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="是否立案" prop="isCase">
-                    <el-select v-model="abnormal.isCase" placeholder="请选择">
+                  <el-form-item label="是否转立案" prop="isCase">
+                    <el-select :disabled="editFlag" v-model="abnormal.isCase" placeholder="请选择">
                       <el-option label="是" value="1"></el-option>
                       <el-option label="否" value="0"></el-option>
                     </el-select>
@@ -386,6 +433,8 @@
                   >
                     <div class="abstract-top-handle">
                       <el-select
+                        :disabled="editFlag"
+                        clearable
                         v-model="abnormal.templateId"
                         placeholder="模板选择"
                       >
@@ -397,12 +446,14 @@
                         ></el-option>
                       </el-select>
                       <el-button
+                        :disabled="editFlag"
                         type="text"
                         @click="problemAbstractGenerate(index)"
                         >自动生成</el-button
                       >
                     </div>
                     <el-input
+                      :disabled="editFlag"
                       type="textarea"
                       :autosize="{ minRows: 4, maxRows: 6 }"
                       placeholder="请输入内容"
@@ -424,6 +475,7 @@
                       :prop="'listAbn.' + index + '.programType'"
                     >
                       <el-select
+                        :disabled="editFlag"
                         v-model="abnormal.programType"
                         placeholder="请选择"
                         @change="programTypeChange(index)"
@@ -446,6 +498,7 @@
                       :prop="'listAbn.' + index + '.caseTypeId'"
                     >
                       <el-select
+                        :disabled="editFlag"
                         v-model="abnormal.caseTypeId"
                         placeholder="请选择"
                       >
@@ -465,10 +518,12 @@
                       class="case-abnormal-input"
                     >
                       <el-input
+                        :disabled="editFlag"
                         v-model="abnormal.caseCauseName"
                         @click="chooseIllegalAct(index)"
                       >
                         <el-button
+                          :disabled="editFlag"
                           slot="append"
                           @click="chooseIllegalAct(index)"
                         ></el-button>
@@ -484,6 +539,7 @@
               class="abnormal-add-btn"
             >
               <el-button
+                :disabled="editFlag"
                 type="primary"
                 icon="el-icon-plus"
                 size="medium"
@@ -498,6 +554,7 @@
             <h3 class="form-tab-title">
               附件信息
               <el-button
+                :disabled="editFlag"
                 v-if="PageType !== 'view'"
                 type="text"
                 class="add-enclosure-file"
@@ -511,38 +568,6 @@
               :data="listAtt"
               style="width: 100%"
             >
-              <el-table-column type="expand">
-                <template slot-scope="scope">
-                  <div v-if="scope.row.children && scope.row.children.length">
-                    <ul
-                      v-for="(attach, index) in scope.row.children"
-                      :key="attach.id"
-                      class="file-children-table"
-                    >
-                      <li style="width: 60px">
-                        {{ `${scope.$index + 1}.${index + 1}` }}
-                      </li>
-                      <li style="width: calc(100% - 220px); color: #7b7b7b">
-                        {{ attach.name }}
-                      </li>
-                      <li style="width: 160px">
-                        <el-button type="text" @click="previewFile(attach)"
-                          >查看</el-button
-                        >
-                        <el-button type="text" @click="download(attach)"
-                          >下载</el-button
-                        >
-                        <el-button
-                          type="text"
-                          @click="removeAttach(attach, scope.row)"
-                          >删除</el-button
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div v-else class="no-enclose-file">暂无数据</div>
-                </template>
-              </el-table-column>
               <el-table-column
                 label="序号"
                 prop="index"
@@ -565,8 +590,17 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  <el-button type="text" @click="addEnclosure('1', scope.row)"
-                    >添加</el-button
+                  <el-button type="text" @click="previewFile(scope.row)"
+                    >查看</el-button
+                  >
+                  <el-button type="text" @click="download(scope.row)"
+                    >下载</el-button
+                  >
+                  <el-button
+                    :disabled="editFlag"
+                    type="text"
+                    @click="removeAttach( scope.$index )"
+                    >删除</el-button
                   >
                 </template>
               </el-table-column>
@@ -589,7 +623,7 @@
             @tab-click="officalTabClick"
           >
             <el-tab-pane label="已做文书" name="1"></el-tab-pane>
-            <el-tab-pane label="未做文书" name="0"></el-tab-pane>
+            <el-tab-pane label="文书模板" name="0"></el-tab-pane>
           </el-tabs>
           <el-checkbox-group
             v-model="checkedOffical"
@@ -597,11 +631,14 @@
           >
             <ul class="offical-list-panel">
               <template v-if="activeOffical === '1'">
-                <li v-for="offical in finishedDocs" :key="offical.label">
-                  <el-checkbox :label="offical.label">
+                <li v-for="(offical, index) in finishedDocs" :key="offical.label">
+                  <div class="el-checkbox">
+                    <span class="el-checkbox__label">
+                    <el-checkbox v-if="offical.caseDocStorageId" v-model="checkedDocId" :label="offical.caseDocStorageId" @click.stop="">&nbsp;&nbsp;{{offical.numberNo}}</el-checkbox>
                     <img :src="acOfficalUrl" />
-                    <span>{{ offical.name }}</span>
-                  </el-checkbox>
+                    <span  @click="editDoc(offical,'edit', index)">{{ offical.name }}</span>
+                    </span>
+                  </div>
                 </li>
                 <li
                   v-if="this.finishedDocs.length == 0"
@@ -611,8 +648,8 @@
                 </li>
               </template>
               <template v-else>
-                <li v-for="offical in nofinishedDocs" :key="offical.label">
-                  <div class="el-checkbox" @click="editDoc(offical)">
+                <li v-for="offical in officialList" :key="offical.label">
+                  <div class="el-checkbox" @click="editDoc(offical,'add')">
                     <span class="el-checkbox__label">
                       <img :src="dsOfficalUrl" />
                       <span>{{ offical.name }}</span>
@@ -700,7 +737,7 @@
       </div>
     </el-dialog>
     <!-- 编辑文书 -->
-    <EditDocDialog ref="editDocDialogRef" />
+    <EditDocDialog ref="editDocDialogRef" @addDoc="addDoc"/>
   </div>
 </template>
 
@@ -720,7 +757,7 @@ import {
   getProcessApi,
   getProcessTypeTreeApi,
 } from "@/api/supervision";
-import { findRouteManageByOrganIdApi, getSectionListApi } from "@/api/system";
+import { findRouteManageByOrganIdApi, getSectionListApi, getDictListDetailByNameApi } from "@/api/system";
 import { deleteFileByIdApi, downLoadCommon } from "@/api/upload";
 
 export default {
@@ -734,7 +771,9 @@ export default {
   data() {
     return {
       inspectRecordForm: {
-        checkTime: "",
+        // checkTime: "",
+        checkStartTime: "",
+        checkEndTime: "",
         checkCategory: "",
         checkType: "",
         roadCondition: "1",
@@ -747,13 +786,14 @@ export default {
             process: "",
             processMode: "",
             processResults: "",
-            isCase: "",
+            isCase: "0",
             problemAbstract: "",
             programType: "",
             caseType: "",
             caseCauseId: "",
           },
         ],
+        listAtt: []
       },
       //默认业务领域
       cate: {
@@ -761,8 +801,14 @@ export default {
         zfml: "公路路政",
       },
       rules: {
-        checkTime: [
-          { required: true, message: "巡查时间不能为空", trigger: "blur" },
+        // checkTime: [
+        //   { required: true, message: "巡查时间不能为空", trigger: "blur" },
+        // ],
+        checkStartTime: [
+          { required: true, message: "开始时间不能为空", trigger: "blur" },
+        ],
+        checkEndTime: [
+          { required: true, message: "结束时间不能为空", trigger: "blur" },
         ],
         checkCategory: [
           { required: true, message: "请选择检查门类", trigger: "change" },
@@ -790,17 +836,16 @@ export default {
           label: "92531b11586dab1eba850aea1c415a4f",
           name: "《公路安全隐患告知函》",
           caseDoctypeId: "92531b11586dab1eba850aea1c415a4f",
-          id: '1'
+          type: '1'
         },
         {
           label: "98499c305c6447988343c33d92f0f23c",
           name: "《路政巡查监督责令整改通知书》",
           caseDoctypeId: "98499c305c6447988343c33d92f0f23c",
-          id: '2'
+          type: '2'
         },
       ],
       finishedDocs: [], //已做文书
-      nofinishedDocs: [], //未作文书
       activeOffical: "0",
       checkedOffical: [],
       checkAllOffical: false,
@@ -824,7 +869,7 @@ export default {
       ],
       normalRecordTemp: [], //正常记录模板list
       abnormalRecordTemp: [], //异常
-      curParentAttach: {}, //当前所选附件分类
+      // curParentAttach: {}, //当前所选附件分类
       curAbnormalIndex: {}, //当前所选记录异常索引
       lawPersonList: [], //执法人员列表
       caseTypeList: [], //案件类型
@@ -840,17 +885,23 @@ export default {
       docVisible: false, //文书dialog
       checkedDocId: [],
       nowShowPdfIndex: 0,
+      endTimePickerOptions: {
+        disabledDate: (time) => {
+            let data = new Date(this.inspectRecordForm.checkStartTime)
+            let thatDay = data.getTime()
+            return time.getTime() < thatDay;
+          }
+      },
+      editFlag: false,
+      checkCategoryList: [],//检查门类select
+      checkTypeList: [],//检查类型select
+      docOperationType: '',//文书操作类型
+      finishDocIndex: undefined,//当前编辑文书
     };
   },
   computed: {
     PageType() {
       return this.$route.params.page;
-    },
-    checkTypeList() {
-      return this.$route.params.checkTypeList;
-    },
-    checkCategoryList() {
-      return this.$route.params.checkCategoryList;
     },
     rowData() {
       return this.$route.params.cheRecord;
@@ -861,21 +912,28 @@ export default {
   },
   created() {
     console.log(this.PageType);
+    this.editFlag = this.PageType === "detail" ? true : false;
     this.getCheRecordTempPageList();
-    if (this.PageType === "edit") {
+    if (this.PageType != "add") {
       this.activeOffical = "1";
       this.getCheRecordDetail(this.rowData);
-    } else {
-      this.nofinishedDocs = this.officialList;
     }
     this.searchLawPerson();
     this.findRouteManageByOrganId();
     this.getCheProcessTypeTree();
+    this.initCheckDictData();
   },
   methods: {
+    //获取巡查检查门类，检查类型
+    async initCheckDictData() {
+      const checkCategoryData = await getDictListDetailByNameApi('巡查-检查门类');
+      const checkTypeData = await getDictListDetailByNameApi('巡查-检查类型');
+      this.checkCategoryList = checkCategoryData.data;
+      this.checkTypeList = checkTypeData.data;
+    },
     // 添加附件
     addEnclosure(levels, parent) {
-      this.curParentAttach = parent;
+      // this.curParentAttach = parent;
       const type = parent ? parent.type : "1";
       this.$refs.AddRecordFileRef.showModal(levels, type);
     },
@@ -888,7 +946,7 @@ export default {
         process: "",
         processMode: "",
         processResults: "",
-        isCase: "",
+        isCase: "0",
         problemAbstract: "",
         programType: "",
         caseType: "",
@@ -938,8 +996,9 @@ export default {
     },
     //巡查时间变化
     checkTimeChange() {
-      this.inspectRecordForm.checkStartTime = this.inspectRecordForm.checkTime[0];
-      this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkTime[1];
+      if(this.inspectRecordForm.checkEndTime == "") {
+        this.inspectRecordForm.checkEndTime = this.inspectRecordForm.checkStartTime;
+      }
     },
     // 保存
     saveRecordInfo() {
@@ -982,6 +1041,9 @@ export default {
           //添加附件
           this.inspectRecordForm.listAtt = this.listAtt;
 
+          //添加文书
+          this.inspectRecordForm.listCaseDocs = this.finishedDocs;
+
           addCheRecordApi(this.inspectRecordForm).then(
             (res) => {
               if (res.code == 200) {
@@ -991,6 +1053,8 @@ export default {
                 });
                 this.$router.go(-1);
                 this.$store.dispatch("deleteTabs", this.$route.name);
+              }else {
+                this.$message({type:'warning',message:'保存错误，请重试！'});
               }
             },
             (err) => {
@@ -1046,10 +1110,10 @@ export default {
           if (res.code == 200) {
             let formData = {};
             formData = res.data;
-            formData.checkTime = [
-              res.data.checkStartTime,
-              res.data.checkEndTime,
-            ];
+            // formData.checkTime = [
+            //   res.data.checkStartTime,
+            //   res.data.checkEndTime,
+            // ];
             this.listAtt = formData.listAtt;
             //回填执法人员
             const listPer = formData.listPer;
@@ -1098,14 +1162,24 @@ export default {
             this.inspectRecordForm = formData;
 
             if (res.data.listCaseDocs && res.data.listCaseDocs.length > 0) {
-              this.officialList.forEach((o) => {
-                const caseDoc = res.data.listCaseDocs.find(
-                  (d) => d.caseDocTypeId == o.caseDoctypeId
+              // this.officialList.forEach((o) => {
+              //   const caseDoc = res.data.listCaseDocs.find(
+              //     (d) => d.caseDocTypeId == o.caseDoctypeId
+              //   );
+              //   if(caseDoc) {
+              //     const caseDocData = JSON.parse(caseDoc.caseDocData) || {};
+              //     this.finishedDocs.push(Object.assign(caseDoc, {name: o.name, type: o.type, numberNo: caseDocData.numberNo || '暂无文书编号'}));
+              //   }
+              // });
+              res.data.listCaseDocs.forEach((o) => {
+                const caseDoc = this.officialList.find(
+                  (d) => d.caseDoctypeId == o.caseDocTypeId
                 );
-                this.finishedDocs.push(Object.assign(o, caseDoc));
+                if(caseDoc) {
+                  const caseDocData = JSON.parse(o.caseDocData) || {};
+                  this.finishedDocs.push(Object.assign(o, {name: caseDoc.name, type: caseDoc.type, numberNo: caseDocData.numberNo || '暂无文书编号'}));
+                }
               });
-            } else {
-              this.nofinishedDocs = this.officialList;
             }
           } else {
             console.error(res);
@@ -1117,20 +1191,16 @@ export default {
       );
     },
     //添加删除附件
-    addAttach(attach) {
-      if (attach.levels === "0") {
-        attach.children = [];
-        this.listAtt.push(attach);
-      } else {
-        this.curParentAttach.children.push(attach);
-      }
+    addAttach(attachList) {
+      const that = this;
+      attachList.forEach(attach => {
+        that.listAtt.push(attach);
+      })
+      console.log(that.listAtt);
     },
     //删除附件
-    removeAttach(attach, parentAttach) {
-      if (attach.storageId) {
-        this.deleteFile(attach.storageId);
-      }
-      parentAttach.children.splice(parentAttach.children.indexOf(attach), 1);
+    removeAttach(index) {
+      this.listAtt.splice(index, 1);
     },
     //删除附件
     deleteFile(storageId) {
@@ -1286,7 +1356,7 @@ export default {
     },
     routeChange(routeName) {
       routeName = routeName ? routeName : this.inspectRecordForm.roadNum;
-      const params = { size: -1, routeName };
+      const params = { size: -1, routeName, choseFlag: true, currentOrganId: this.UserInfo.organId };
       getSectionListApi(params).then(
         (res) => {
           if (res.code == 200) {
@@ -1377,9 +1447,13 @@ export default {
           break;
       }
       if (typeAttr) {
-        this.inspectRecordForm.listAbn[abnormalIndex][typeAttr] = typeIndex;
+        this.inspectRecordForm.listAbn[abnormalIndex][typeAttr] = typeIndex != -1 ? typeIndex : null;
       }
-      this.getProcessType(abnormalIndex, processType);
+      if(processType != "") {
+        this.getProcessType(abnormalIndex, processType);
+      }else{
+        
+      }
     },
     //获取处理情况
     getProcessType(abnormalIndex, processTypeId) {
@@ -1440,16 +1514,13 @@ export default {
     },
     //打印文书
     docClick() {
-      this.checkedDocId = this.finishedDocs
-        .filter((f) => this.checkedOffical.indexOf(f.caseDoctypeId) != -1)
-        .map((f) => f.caseDocStorageId);
+      this.checkedDocId = this.finishedDocs.map((f) => f.caseDocStorageId)
+
       if (this.checkedDocId.length > 0) {
         this.docVisible = true;
         this.$util.com_getFileStream(this.checkedDocId[0]).then((res) => {
           this.docSrc = res;
         });
-      } else {
-        this.$messageOne.info({showClose: true, message: '请选择需要打印的文书'});
       }
     },
     //文书dialog
@@ -1469,7 +1540,7 @@ export default {
             });
         }
       } else {
-        if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
+        if (this.nowShowPdfIndex != this.finishedDocs.length - 1) {
           this.nowShowPdfIndex++;
           this.$util
             .com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
@@ -1481,8 +1552,33 @@ export default {
     },
 
     // 编辑文书
-    editDoc(doc){
-      this.$refs.editDocDialogRef.showModal(doc);
+    editDoc(doc, operationType, finishDocIndex){
+      let caseFlag = false;
+      const listAbn = this.inspectRecordForm.listAbn;
+      if(listAbn && listAbn.length > 0) {
+        for (let index = 0; index < listAbn.length; index++) {
+          const item = listAbn[index];
+          if(item.isCase == "1") {
+            caseFlag = true;
+            break;
+          }
+        }
+      }
+
+      if(caseFlag) {
+        this.docOperationType = operationType;
+        this.finishDocIndex = finishDocIndex;
+        this.$refs.editDocDialogRef.showModal(doc);
+      }else{
+        this.$message({type:'warning',message:'路段情况正常或异常情况未转立案，无法添加文书！'});
+      }
+    },
+    addDoc(doc) {
+      if(this.docOperationType == 'add') {
+        this.finishedDocs.push(doc)
+      }else{
+        this.finishedDocs.splice(this.finishDocIndex,1,doc);
+      }
     }
   },
 };

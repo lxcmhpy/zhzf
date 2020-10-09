@@ -69,6 +69,18 @@
                 </el-form-item>
               </el-row>
               <el-row>
+                <el-form-item label="站点定位类型" prop="locationType">
+                  <el-select v-model="addForm.locationType" style="width: 100%;" :disabled="this.formReadOnly">
+                      <el-option
+                        v-for="item in locationTypeData"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-row>
+              <el-row>
                 <el-form-item label="备注">
                   <el-input v-model="addForm.note" style="width: 100%;" :readonly="this.formReadOnly"></el-input>
                 </el-form-item>
@@ -118,10 +130,14 @@ import iLocalStroage from '@/common/js/localStroage';
             ],
             name: [
                 {required: true, message: "请输入站点类型名称", trigger: "blur"},
+            ],
+            locationType: [
+                {required: true, message: "请输入站点定位类型", trigger: "blur"},
             ]
         },
         tableData: [], //表格数据
-        title:"新增站点类型"
+        title:"新增站点类型",
+        locationTypeData: [{value: 0, label: '地理位置信息'}, {value: 1, label: '路桩路段位置信息'}],
       };
     },
     components: {

@@ -14,6 +14,7 @@
       stripe
       class="recordCase-table"
       v-loading="tableLoading"
+      @row-click="caseRowClick"
       element-loading-spinner="car-loading"
       element-loading-text="加载中..."
       style="width: 100%;height:100%;"
@@ -26,7 +27,10 @@
   </el-dialog>
 </template>
 <script>
-import { getRecordCaseByRecordIdApi } from "@/api/supervision"
+import { mapGetters } from "vuex";
+import { getRecordCaseByRecordIdApi } from "@/api/supervision";
+import { mixinGetCaseApiList } from "@/common/js/mixins";
+import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   props: {},
@@ -38,7 +42,9 @@ export default {
       tableLoading: false
     };
   },
+  mixins: [mixinGetCaseApiList],
   computed: {
+    ...mapGetters(["openTab"]),
     UserInfo() {
       return iLocalStroage.gets("userInfo");
     },
@@ -59,6 +65,32 @@ export default {
       this.visible = false;
       this.tableData = [];
     },
+    async caseRowClick(row) {
+      // this.$store.commit("setCaseId", row.id);
+      // iLocalStroage.set("stageCaseId",row.id);
+      // await this.queryFlowBycaseId();
+      // this.$router.replace({
+      //   name: this.caseFlowData.basicInfoPage,
+      // });
+      // return;
+      this.$store.commit("setCaseId", row.id);
+      this.$store.commit("setIsLawEnforcementSupervision", false);
+      this.$store.commit("setLawEnforcementSupervisionType", '');
+      //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
+      //设置案件状态不为审批中
+      this.$store.commit("setCaseApproval", false);
+      console.log(this.$store.state.caseId);
+      this.$router.push({
+        name: "case_handle_caseInfo",
+        params: {
+          caseInfo: row
+        }
+      });
+      let setCaseNumber = row.caseNumber != '' ? row.caseNumber : row.tempNo;
+      this.$store.commit("setCaseNumber", setCaseNumber);
+      }
   },
 };
 </script>
