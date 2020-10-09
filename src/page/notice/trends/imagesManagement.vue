@@ -5,7 +5,7 @@
         <el-form
           :model="searchForm"
           ref="searchForm"
-          style="width:100%"
+          style="width: 100%"
           label-width="50px"
           size="small"
         >
@@ -17,14 +17,36 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label-width="10px">
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-search"
+                  @click="searchEmit"
+                ></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-refresh-left"
+                  @click="reset"
+                ></el-button>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row style="margin-bottom:10px;">
-            <el-button type="primary" size="medium" icon="el-icon-plus" @click="onAdd">添加</el-button>
-            <el-button type="primary" size="medium" icon="el-icon-delete" @click="onDeleteBatch">删除</el-button>
+          <el-row style="margin-bottom: 10px">
+            <el-button
+              type="primary"
+              size="medium"
+              icon="el-icon-plus"
+              @click="onAdd"
+              >添加</el-button
+            >
+            <el-button
+              type="primary"
+              size="medium"
+              icon="el-icon-delete"
+              @click="onDeleteBatch"
+              >删除</el-button
+            >
           </el-row>
         </el-form>
       </div>
@@ -37,14 +59,31 @@
           highlight-current-row
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="title" label="标题" width="400" align="center"></el-table-column>
+          <el-table-column
+            type="selection"
+            width="50"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="title"
+            label="标题"
+            width="400"
+            align="center"
+          ></el-table-column>
           <el-table-column prop="图片" label="来源" align="center">
             <template slot-scope="scope">
-              <el-image style="width: 120px; height: 80px" :src="scope.row.url" fit="fill"></el-image>
+              <el-image
+                style="width: 120px; height: 80px"
+                :src="scope.row.url"
+                fit="fill"
+              ></el-image>
             </template>
           </el-table-column>
-          <el-table-column prop="orderNo" label="轮播次序" align="center"></el-table-column>
+          <el-table-column
+            prop="orderNo"
+            label="轮播次序"
+            align="center"
+          ></el-table-column>
           <el-table-column prop="state" label="启用状态" align="center">
             <template slot-scope="scope">
               <el-switch
@@ -59,8 +98,13 @@
           </el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="onEdit(scope.row)" :disabled="scope.row.state===1">修改</el-button>
-              <el-button type="text" @click="onDelete(scope.row)" :disabled="scope.row.state===1">删除</el-button>
+              <el-button
+                type="text"
+                @click="onEdit(scope.row)"
+                :disabled="scope.row.state === 1"
+                >修改</el-button
+              >
+              <!-- <el-button type="text" @click="onDelete(scope.row)" :disabled="scope.row.state===1">删除</el-button> -->
             </template>
           </el-table-column>
         </el-table>

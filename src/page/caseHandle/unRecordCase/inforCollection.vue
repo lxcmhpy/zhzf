@@ -360,7 +360,7 @@
               <el-select
                 placeholder="请选择"
                 v-model="inforForm.partySex"
-                :disabled="inforForm.partyIdNo ? true : false"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType ==='0'?true:false"
               >
                 <el-option :value="0" label="男"></el-option>
                 <el-option :value="1" label="女"></el-option>
@@ -373,8 +373,8 @@
                 ref="partyAge"
                 v-model="inforForm.partyAge"
                 type="number"
-                :disabled="inforForm.partyIdNo ? true : false"
-                @change="noFue('inforForm.partyAge', inforForm.partyAge)"
+                :disabled="inforForm.partyIdNo && inforForm.partyIdType ==='0'?true:false"
+                @change="noFue('inforForm.partyAge',inforForm.partyAge)"
               ></el-input>
             </el-form-item>
           </div>
@@ -606,12 +606,13 @@
               </el-form-item>
             </div>
             <div class="item appendSelect">
-              <el-form-item label="证件类型" prop="partyIdNo">
+              <el-form-item label="证件类型" >
                 <el-input
                   ref="partyIdNo"
                   placeholder="请输入内容"
                   v-model="driverOrAgentInfo.zhengjianNumber"
                   @input="changePartyIdType2Index = index"
+                  @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                   class="input-with-select hasMargintop"
                   :disabled="index == 0 && relationWithPartyIsOne[index]"
                 >
@@ -1114,7 +1115,7 @@
         </div>
         <div>
           <div class="itemThird">
-            <el-form-item label="车货高度">
+            <el-form-item label="车货总高">
               <el-input
                 v-model="inforForm.otherInfo.allHeight"
                 placeholder="/"
@@ -2364,7 +2365,7 @@ export default {
                   this.openTab[replaceIndex].route = "/establish";
                 }
               }
-
+              this.$store.commit('setApprovalState', '')
               //跳转立案登记
               this.getCaseNextRoute("立案登记").then((res) => {
                 this.$router.push({
@@ -3314,8 +3315,8 @@ export default {
         this.inforForm.otherInfo.allLength
       ) {
         if (
-          this.inforForm.otherInfo.lengthLimit <
-          this.inforForm.otherInfo.allLength
+         Number(this.inforForm.otherInfo.lengthLimit)  <
+         Number(this.inforForm.otherInfo.allLength)
         ) {
           this.inforForm.otherInfo.overLength =
             this.inforForm.otherInfo.allLength -
@@ -3333,8 +3334,8 @@ export default {
         this.inforForm.otherInfo.allWidth
       ) {
         if (
-          this.inforForm.otherInfo.widthLimit <
-          this.inforForm.otherInfo.allWidth
+          Number(this.inforForm.otherInfo.widthLimit) <
+          Number(this.inforForm.otherInfo.allWidth)
         ) {
           this.inforForm.otherInfo.overWidth =
             this.inforForm.otherInfo.allWidth -
@@ -3352,8 +3353,8 @@ export default {
         this.inforForm.otherInfo.allHeight
       ) {
         if (
-          this.inforForm.otherInfo.heightLimit <
-          this.inforForm.otherInfo.allHeight
+          Number(this.inforForm.otherInfo.heightLimit) <
+          Number(this.inforForm.otherInfo.allHeight)
         ) {
           this.inforForm.otherInfo.overHeight =
             this.inforForm.otherInfo.allHeight -

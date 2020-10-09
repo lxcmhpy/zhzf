@@ -25,7 +25,7 @@
                 <div id="chart2" style="width: 500px; height: 400px;margin-top:60px" ></div>
               </el-col>
             </el-row>
-
+           
           </el-col>
         </el-row>
       </div>
@@ -72,13 +72,13 @@ export default {
       isShow: false,
       data1:[],
       data2:[],
-
+      
     };
   },
   methods: {
     drawLine1() {
       let myChart = echarts.init(document.getElementById("chart1"));
-
+    
       myChart.setOption({
         backgroundColor: "#FFFFFF",
       title: {
@@ -89,144 +89,140 @@ export default {
       tooltip: {
         trigger: "item"
       },
-
+ 
       //左侧小导航图标
       visualMap: {
         min: 0,
-        max: 400,
+        max: 100,
         text: ["高", "低"],
         inRange: {
           color: ["lightskyblue", "yellow", "orangered"]
         }
       },
-
+ 
       //配置属性
-        series: [
-          {
-            name: "案发数量",
-            type: "map",
-            mapType: "宁夏",
-            roam: true,
-            label: {
-              normal: {
-                show: false //省份名称
-              },
-              emphasis: {
-                show: false
-              }
+      series: [
+        {
+          name: "案发数量",
+          type: "map",
+          mapType: "江西",
+          roam: true,
+          label: {
+            normal: {
+              show: false //省份名称
             },
-            data: [
-              { name: "银川市", value: "315" },
-              { name: "石嘴山市", value: "481"},
-              { name: "吴忠市", value: "214" },
-              { name: "中卫市", value: "164" },
-              { name: "固原市", value: "95" }
-            ] //数据
-          }
-        ]
+            emphasis: {
+              show: false
+            }
+          },
+          data: [
+            { name: "南昌市", value: "209" },
+            { name: "九江市", value:  "181"},
+            { name: "上饶市", value: "154" },
+            { name: "抚州市", value: "144" },
+            { name: "宜春市", value: "135" },
+            { name: "吉安市", value: "117"},
+            { name: "赣州市", value: "74" },
+            { name: "景德镇市", value: "72" },
+            { name: "萍乡市", value: "67" },
+            { name: "新余市", value: "55" },
+            { name: "鹰潭市", value: "55" },
+          ] 
+        }
+      ]
       });
     },
     drawLine2() {
       this.chartColumn = echarts.init(document.getElementById("chart2"));
-      var salvProName =["银川市","石嘴山市","吴忠市","中卫市","固原市"];
-      var salvProValue =[209,181,144,114,85];
-      var salvProMax =[];//背景按最大值
-      for (let i = 0; i < salvProValue.length; i++) {
-        salvProMax.push(salvProValue[0])
-      }
-      this.chartColumn.setOption({
-        title: {
-          text: "各省市案发数量分布",
-          subtext: "",
-          x: "center"
-        },
-        backgroundColor:"",
-        grid: {
-          left: '2%',
-          right: '2%',
-          bottom: '2%',
-          top: '6%',
-          containLabel: true
-        },
-        tooltip: {
+      // var salvProName =["南昌市","九江市","上饶市","抚州市","宜春市","吉安市","赣州市","景德镇市","萍乡市","新余市","鹰潭市",];
+    var yData = ["南昌市","九江市","上饶市","抚州市","宜春市","吉安市","赣州市","景德镇市","萍乡市","新余市","鹰潭市",];
+  var dataArr = [87, 95, 79, 60, 53, 92, 79, 60, 53, 92,26];
+  var allDataArr = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100,100];
+
+this.chartColumn.setOption({
+   backgroundColor: '#fff',
+      tooltip: {
           trigger: 'axis',
+          padding: [10,10],
           axisPointer: {
-            type: 'none'
+              type: 'shadow'
           },
-          formatter: function(params) {
-            return params[0].name  + ' : ' + params[0].value
+          formatter: function(param) {
+              return param[0].name + "：" + param[0].value
           }
-        },
-        xAxis: {
-          show: false,
-          type: 'value'
-        },
-        yAxis: [{
-          type: 'category',
-          inverse: true,
+      },
+      grid: {
+          left: 60,
+          right: 48,
+          top: 0,
+          bottom: 0
+      },
+      xAxis: {
+          type: 'value',
           axisLabel: {
-            show: true,
-            textStyle: {
-              color: 'black'
-            },
-          },
-          splitLine: {
-            show: false
+              show: false
           },
           axisTick: {
-            show: false
+              show: false
           },
           axisLine: {
-            show: false
+              show: false
           },
-          data: salvProName
-        }, {
+          splitLine: {
+              show: false
+          }
+      },
+      yAxis: [{
           type: 'category',
-          inverse: true,
+          data: yData,
+          axisLabel: {
+              color: "#000",
+              fontSize: 14
+          },
+          axisTick: {
+              show: false
+          },
+          axisLine: {
+              show: false
+          }
+      }, {
+          type: 'category',
           axisTick: 'none',
           axisLine: 'none',
           show: true,
           axisLabel: {
-            textStyle: {
-              color: '#ffffff',
-              fontSize: '12'
-            },
-          },
-          data:salvProValue
-        }],
-        series: [{
-          name: '值',
-          type: 'bar',
-          zlevel: 1,
-          itemStyle: {
-            normal: {
-              barBorderRadius: 30,
-              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                offset: 0,
-                color: 'rgb(57,89,255,1)'
-              }, {
-                offset: 1,
-                color: 'rgb(46,200,207,1)'
-              }]),
-            },
-          },
-          barWidth: 20,
-          data: salvProValue
-        },
-          {
-            name: '背景',
-            type: 'bar',
-            barWidth: 20,
-            barGap: '-100%',
-            data: salvProMax,
-            itemStyle: {
-              normal: {
-                color: 'rgba(24,31,68,1)',
-                barBorderRadius: 30,
+              textStyle: {
+                  color: '#0058a3',
+                  fontSize: 14
               }
-            },
           },
-        ]
+          data: dataArr
+      }],
+      series: [{
+              name: '',
+              type: 'bar',
+              data: dataArr,
+              barWidth: 10,
+              zlevel: 1,
+              itemStyle: {
+                  normal: {
+                      color: '#0058a3'
+                  }
+              }
+          },
+          {
+              name: '',
+              type: 'bar',
+              barWidth: 10,
+              barGap: '-100%',
+              data: allDataArr,
+              itemStyle: {
+                  normal: {
+                      color: '#eee'
+                  }
+              }
+          }
+      ]
       });
     },
     // search1(val) {
@@ -239,14 +235,14 @@ export default {
     //     console.log(res);
     //     //  var map={};
     //     //  res.forEach(item =>{
-    //     //       map[item[0]]=item[1];
-
+    //     //       map[item[0]]=item[1];  
+                
     //     //  });
     //     // console.log(map);
+        
 
-
-    //       this.data1=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];
-    //       this.data2=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]];
+    //       this.data1=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
+    //       this.data2=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
     //        this.drawLine2();
     //   });
     //   err => {

@@ -2,14 +2,14 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a href="#" :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">车辆信息</a>
-        <a href="#" :class="activeA[1]? 'activeA' :''" @click="jump(2)">驾驶人/企业信息</a>
-        <a href="#" :class="activeA[2]? 'activeA' :''" @click="jump(3)">初检信息</a>
-        <a href="#" :class="activeA[3]? 'activeA' :''" @click="jump(4)">卸载/复检记录</a>
-        <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)">处罚决定</a>
+        <a href="#" :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv"><i class="iconfont law-icon_chel"></i>车辆信息</a>
+        <a href="#" :class="activeA[1]? 'activeA' :''" @click="jump(2)"><i class="iconfont law-icon_qye"></i>驾驶人/企业</a>
+        <a href="#" :class="activeA[2]? 'activeA' :''" @click="jump(3)"><i class="iconfont law-icon_nianj"></i>初检信息</a>
+        <a href="#" :class="activeA[3]? 'activeA' :''" @click="jump(4)"><i class="iconfont law-icon_xzai"></i>卸载/复检记录</a>
+        <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)"><i class="iconfont law-icon_cfa"></i>处罚决定</a>
       </div>
     </div>
-    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;">
+    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_1" ref="link_1" @mousewheel="scrool1">
         <p>车辆信息</p>
         <div>
@@ -31,20 +31,20 @@
         <div>
           <div class="item">
             <el-form-item label="车辆类型" prop="vehicleShipType">
-              <el-select v-model="carInfo.vehicleShipType">
+              <el-select v-model="carInfo.vehicleShipType" placeholder="请选择">
                 <el-option v-for="(item,index) in allVehicleShipType" :key="index" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="道路运输证号" prop="transportNum">
-              <el-input v-model="carInfo.transportNum"></el-input>
+              <el-input v-model="carInfo.transportNum" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
-            <el-form-item label="车辆轴数" prop="axisNum" style="width:69%;display: inline-block;">
+            <el-form-item label="车辆轴数" prop="axisNum" style="width:70%;display: inline-block;">
               <el-select placeholder="请选择" v-model="carInfo.axisNum" @change="weightLimit('车辆轴数')">
                 <el-option label="2" value="2"></el-option>
                 <el-option label="3" value="3"></el-option>
@@ -76,19 +76,19 @@
         <div>
           <div class="itemOne">
             <el-form-item label="装载货物" prop="loadGoods">
-              <el-input v-model="carInfo.loadGoods"></el-input>
+              <el-input v-model="carInfo.loadGoods" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="起止路线" prop="startPlace">
-              <el-input v-model="carInfo.startPlace" placeholder="请输入装载货物起始点"></el-input>
+              <el-input v-model="carInfo.startPlace" placeholder="装载货物起始点"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item prop="endPlace">
-              <el-input v-model="carInfo.endPlace" placeholder="请输入装载货物终止点"></el-input>
+              <el-input v-model="carInfo.endPlace" placeholder="装载货物终止点"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -100,7 +100,7 @@
           </div>
           <div class="item">
             <el-form-item label="挂车牌颜色" prop="trailerColor">
-              <el-select v-model="carInfo.trailerColor" placeholder="请选择挂车号牌颜色">
+              <el-select v-model="carInfo.trailerColor">
                 <el-option v-for="(item,index) in allVehicleIdColor" :key="index" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </el-form-item>
@@ -108,18 +108,18 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px">
+    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
-        <p>驾驶员/企业信息</p>
+        <p>驾驶员/企业</p>
         <div>
           <div class="item">
-            <el-form-item label="姓名" prop="party">
-              <el-input ref="party" v-model="carInfo.drivePerson.party" placeholder="请输入姓名"></el-input>
+            <el-form-item label="驾驶人姓名" prop="party">
+              <el-input ref="party" v-model="carInfo.drivePerson.party" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
           <div class="item appendSelect">
             <el-form-item label="身份证号" prop="partyIdNo">
-              <el-input ref="partyIdNo" placeholder="请输入身份证号" v-model="carInfo.drivePerson.partyIdNo" class="input-with-select hasMargintop">
+              <el-input ref="partyIdNo" placeholder="请输入" v-model="carInfo.drivePerson.partyIdNo" class="input-with-select hasMargintop">
               </el-input>
             </el-form-item>
           </div>
@@ -128,27 +128,36 @@
           <div class="item">
             <!-- 改 -->
             <el-form-item label="联系电话" prop="partyTel">
-              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel" placeholder="请输入联系电话"></el-input>
+              <el-input ref="partyTel" v-model="carInfo.drivePerson.partyTel" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="联系地址" prop="partyAddress">
-              <el-input v-model="carInfo.drivePerson.partyAddress" placeholder="请输入联系地址"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyAddress" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
-          <div class="item">
+          <div class="itemOne">
             <el-form-item label="职务" prop="occupation">
-              <el-select v-model="carInfo.drivePerson.occupation" placeholder="请选择职务" :loading="selectLoading" @focus="getDictInfo('人员信息-职务','postInfo')">
+              <!-- <el-select v-model="carInfo.drivePerson.occupation" :loading="selectLoading" @focus="getDictInfo('人员信息-职务','postInfo')">
                 <el-option v-for="value in postInfo" :key="value.id" :label="value.name" :value="value.name"></el-option>
-              </el-select>
-              <!-- <el-input v-model="carInfo.drivePerson.occupation" placeholder="请输入职务" @focus="getDictInfo('人员信息-职务','postInfo')"></el-input> -->
+              </el-select> -->
+              <el-row>
+                <el-col :span="12">
+                  <el-input v-model="carInfo.drivePerson.occupation" placeholder="请输入职务" @focus="getDictInfo('人员信息-职务','postInfo')"></el-input>
+                </el-col>
+                <el-col :span="12">
+                  <el-button :type="carInfo.drivePerson.occupation=='个体'?'primary':''" size="medium" @click="chooseOccupation('个体')" style="margin-left:27px">个体</el-button>
+                  <el-button :type="carInfo.drivePerson.occupation=='其他'?'primary':''" size="medium" @click="chooseOccupation('其他')">其他</el-button>
+                  <el-button :type="carInfo.drivePerson.occupation=='不知道'?'primary':''" size="medium" @click="chooseOccupation('不知道')">不知道</el-button>
+                </el-col>
+              </el-row>
             </el-form-item>
           </div>
-          <div class="item">
+          <div class="itemOne">
             <el-form-item label="企业名称" prop="partyUnitPosition">
-              <el-input v-model="carInfo.drivePerson.partyUnitPosition" placeholder="请输入所属企业名称"></el-input>
+              <el-input v-model="carInfo.drivePerson.partyUnitPosition" placeholder="请输入"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -165,12 +174,27 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px">
+    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>初检记录</p>
         <div>
+          <div class="item">
+            <el-form-item label="初检站点" prop="overWeight">
+              <el-input v-model="carInfo.firstCheck.overWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+                <template slot="append">吨</template>
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-form-item label="初检时间" prop="overRatio">
+              <el-input v-model="carInfo.firstCheck.overRatio" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              </el-input>
+            </el-form-item>
+          </div>
+        </div>
+        <div>
           <div class="itemOne">
-            <el-form-item label="初测单号" prop="oddNumber">
+            <el-form-item label="初检单号" prop="oddNumber">
               <el-input v-model="carInfo.firstCheck.oddNumber">
                 <template slot="append">查询</template>
               </el-input>
@@ -180,14 +204,14 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" prop="totalWeight">
-              <el-input v-model="carInfo.firstCheck.totalWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.totalWeight" @input="overLimit()" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="车货限重" prop="weightLimit">
-              <el-input v-model="carInfo.firstCheck.weightLimit" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.weightLimit" @input="overLimit()" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -287,6 +311,16 @@
         </div>
         <div>
           <div class="itemOne">
+            <el-form-item label="初检结果" id="lawPersonBox" prop="checkResult">
+              <el-radio-group v-model="carInfo.firstCheck.checkResult">
+                <el-radio label="超限超载">超限超载</el-radio>
+                <el-radio label="未超载">未超载</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </div>
+        </div>
+        <div>
+          <div class="itemOne">
             <el-form-item label="初检人员" id="lawPersonBox" prop="checkPerson">
               <el-input v-model="carInfo.firstCheck.checkPerson"></el-input>
               <!-- <el-select ref="lawPersonListId" v-model="carInfo.firstCheck.checkPersonId" multiple @remove-tag="removeLawPersontag">
@@ -296,25 +330,32 @@
             </el-form-item>
           </div>
         </div>
-        <div>
-          <div class="itemOne">
-            <el-form-item label="初检结果" id="lawPersonBox" prop="checkResult">
-              <el-radio-group v-model="carInfo.firstCheck.checkResult">
-                <el-radio label="超限超载">超限超载</el-radio>
-                <el-radio label="未超载">未超载</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </div>
-        </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px">
+    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">
         <p>卸载/复检记录</p>
         <div>
           <div class="itemOne">
             <el-form-item label="复检单号" prop="oddNumber">
               <el-input v-model="carInfo.secondCheck.oddNumber">
+                <template slot="append">查询</template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </div>
+         <div>
+          <div class="item">
+            <el-form-item label="复检站点" prop="oddNumber">
+              <el-input v-model="carInfo.secondCheck.oddNumber">
+                <template slot="append">查询</template>
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="item">
+            <el-form-item label="复检时间" prop="oddNumber">
+              <el-input v-model="carInfo.secondCheck.oddNumber">
+                <template slot="append">查询</template>
               </el-input>
             </el-form-item>
           </div>
@@ -329,7 +370,7 @@
             </el-form-item>
           </div>
         </div>
-        <div v-if="carInfo.secondCheck.unloadMode=='分装'">
+        <div v-if="carInfo.secondCheck.unloadMode=='分装'" style="background: #f6f8fc;width: calc(70% + 20px);padding-right: 20px;">
           <div>
             <div class="item">
               <el-form-item label="分装车辆" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPlateColor':'pachor'">
@@ -345,6 +386,7 @@
               </el-form-item>
             </div>
           </div>
+
           <div>
             <div class="item">
               <el-form-item label="车辆类型" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenCarType':'pachor'">
@@ -359,6 +401,7 @@
               </el-form-item>
             </div>
           </div>
+          <div class="line" style="clear:both"></div>
           <div>
             <div class="item">
               <el-form-item label="分装承运人" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPerson':'pachor'">
@@ -429,18 +472,27 @@
       </div>
     </el-form>
     <el-form label-width="200px;">
-      <div class="caseFormBac" id="link_5" ref="link_5" @mousewheel="scrool5">
+      <div class="caseFormBac clear-float-div" id="link_5" ref="link_5" @mousewheel="scrool5">
         <p>处罚决定</p>
-        <el-form-item label="公安交警处罚决定书" class="is-required">
-          <el-upload class="upload-demo modle-upload" style="margin-bottom:22px" action="https://jsonplaceholder.typicode.com/posts/" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
-            <el-button size="small" type="primary">选取文件</el-button>
+        <div>
+          <ul>
+            <li v-for="(item,index) in fileList" :key="index" class="file-list-chufa">
+              <div>
+                <img src="../../../../static/images/img/personInfo/icon_ac_wenshu.svg" alt="">
+              </div>
+              <div class="file-list-chufa-text">{{item.fileName}}</div>
+            </li>
+          </ul>
+          <el-upload class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
+            <!-- <el-button size="small" type="primary">选取文件</el-button> -->
+            <i class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-        </el-form-item>
+        </div>
       </div>
     </el-form>
     <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
     <!-- 置顶 -->
-    <el-backtop target="#inforCollectionBox" :bottom="46" :right="0" :visibility-height="800" style="width: 58px;height: 58px;">
+    <el-backtop target="#inforCollectionBox" :bottom="46" :right="0" :visibility-height="800" style="width: 58px;height: 58px;" @click="backTop">
       <div class="back-ball">
         <svg t="1581647372853" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1939" width="18" height="22">
           <path d="M862.72 147.2H161.28c-18.432 0-33.28-14.848-33.28-33.28s14.848-33.28 33.28-33.28h701.44c18.432 0 33.28 14.848 33.28 33.28s-14.848 33.28-33.28 33.28zM549.376 323.84v580.608c0 21.504-17.408 38.912-38.912 38.912-21.504 0-38.912-17.408-38.912-38.912V323.84c0-21.504 17.408-38.912 38.912-38.912 21.504 0 38.912 17.408 38.912 38.912z" p-id="1940" fill="#bfbfbf" />
@@ -451,18 +503,29 @@
     </el-backtop>
     <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
     <!-- 悬浮按钮-拓展 -->
-    <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :fileEiditFlag='fileEiditFlag'></floatBtns>
+    <floatBtns :formOrDocData="formOrDocData" @submitFileData="submitFileData" @saveEileData="saveFileData" :carinfoId='carinfoId'></floatBtns>
     <!-- 悬浮按钮 -->
     <div class="float-btns" style="bottom:150px">
-      <el-button type="primary" @click="saveDataBtn(0)">
+      <el-button type="primary" @click="changeEdit" v-show="!isCanEdit">
+        <i class="iconfont law-save"></i>
+        <br />修改
+      </el-button>
+      <el-button type="primary" @click="saveDataBtn(0)" v-show="isCanEdit">
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
-      <el-button type="primary" @click="saveDataBtn(1)" v-show="inspectionOverWeightId.id">
+      <el-button type="primary" @click="saveDataBtn(1)" v-show="inspectionOverWeightId.id&&isCanEdit">
         <i class="iconfont law-save"></i>
         <br />归档
       </el-button>
     </div>
+
+    <el-dialog :visible.sync="dialogImageVisible" size="tiny">
+      <img v-if="dialogImageUrl" width="100%" :src="dialogImageUrl" alt="">
+      <div lazy id="myPdfBOx" v-if="pdfUrl">
+        <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -475,10 +538,11 @@ import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import { validateIDNumber, checkPassport, validateAge, validateZIP, validatePhone, vaildateCardNum, } from "@/common/js/validator";
-import { findLawOfficerListApi, getAssistFile } from "@/api/caseHandle";
+import { findLawOfficerListApi, getAssistFile, getFileStreamByStorageIdApi } from "@/api/caseHandle";
 import { findRouteManageByOrganIdApi, } from "@/api/system";
 import { saveOrUpdateCarInfoApi, getDictListDetailByNameApi, findCarInfoByIdApi } from "@/api/inspection";
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
+import { vehicleCheckApi, yyclCheckApi } from "@/api/checkInfo.js";
 export default {
   data() {
     //执法人员人数不得少于2个，最多不多与9个
@@ -505,6 +569,7 @@ export default {
       vehicleAxlesTypeList: [], //轴数
       brandList: [], //品牌
       carInfo: {
+        fileStatus: 0,
         id: '',
         checkType: '路警联合',
         detectStation: '检测站1',//监测站
@@ -574,49 +639,49 @@ export default {
       directionList: [],
       locationList: [],
       carInfoRules: {
-        vehicleShipId: [{ validator: vaildateCardNum, trigger: "change" }],
-        trailerIdNo: [{ validator: vaildateCardNum, trigger: "change" }],
-        vehicleIdColor: [{ required: true, message: "请选择", trigger: "change" }],
-        loadGoods: [{ required: true, message: "请输入", trigger: "change" }],
-        startPlace: [{ required: true, message: "请输入", trigger: "change" }],
-        endPlace: [{ required: true, message: "请输入", trigger: "change" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "blur" }, { validator: vaildateCardNum, trigger: "blur" }],
+        trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
+        vehicleIdColor: [{ required: true, message: "请选择", trigger: "blur" }],
+        loadGoods: [{ required: true, message: "请输入", trigger: "blur" }],
+        startPlace: [{ required: true, message: "请输入", trigger: "blur" }],
+        endPlace: [{ required: true, message: "请输入", trigger: "blur" }],
       },
       drivePersonRules: {
         party: [
-          { required: true, message: "请输入", trigger: "change" },
+          { required: true, message: "请输入", trigger: "blur" },
         ],
-        partyTel: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: validatePhone, trigger: "change" }],
-        partyIdNo: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: checkIdNoPassSort, trigger: "change" }],
-        partyAddress: [{ required: true, message: "请输入", trigger: "change" }],
-        lawOfficer: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "change" }],
+        partyTel: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: validatePhone, trigger: "blur" }],
+        partyIdNo: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: checkIdNoPassSort, trigger: "blur" }],
+        partyAddress: [{ required: true, message: "请输入", trigger: "blur" }],
+        lawOfficer: [{ required: true, message: "请选择", trigger: "blur" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       firstCheckRules: {
-        vehicleShipId: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: vaildateCardNum, trigger: "change" }],
-        totalWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        overRatio: [{ required: true, message: "请输入", trigger: "change" }],
-        overWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        checkResult: [{ required: true, message: "请选择", trigger: "change" }],
-        checkPerson: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "change" }],
+        vehicleShipId: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: vaildateCardNum, trigger: "blur" }],
+        totalWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        overRatio: [{ required: true, message: "请输入", trigger: "blur" }],
+        overWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        checkResult: [{ required: true, message: "请选择", trigger: "blur" }],
+        checkPerson: [{ required: true, message: "请选择", trigger: "blur" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       secondCheckRules: {
-        fenPlateColor: [{ required: true, message: "请选择", trigger: "change" }],
-        fenPlate: [{ required: true, message: "请输入", trigger: "change" }],
-        fenTonnage: [{ required: true, message: "请输入", trigger: "change" }],
-        fenPerson: [{ required: true, message: "请输入", trigger: "change" }],
-        idCard: [{ required: true, message: "请输入", trigger: "change" },
-        { validator: checkIdNoPassSort, trigger: "change" }],
-        secondCheckWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        unloadWeight: [{ required: true, message: "请输入", trigger: "change" }],
-        overRatio: [{ required: true, message: "请输入", trigger: "change" }],
-        checkResult: [{ required: true, message: "请输入", trigger: "change" }],
-        phone: [{ validator: validatePhone, trigger: "change" }],
-        checkPerson: [{ required: true, message: "请选择", trigger: "change" },
-        { validator: validateLawPersonNumber, trigger: "change" }],
+        fenPlateColor: [{ required: true, message: "请选择", trigger: "blur" }],
+        fenPlate: [{ required: true, message: "请输入", trigger: "blur" }],
+        fenTonnage: [{ required: true, message: "请输入", trigger: "blur" }],
+        fenPerson: [{ required: true, message: "请输入", trigger: "blur" }],
+        idCard: [{ required: true, message: "请输入", trigger: "blur" },
+        { validator: checkIdNoPassSort, trigger: "blur" }],
+        secondCheckWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        unloadWeight: [{ required: true, message: "请输入", trigger: "blur" }],
+        overRatio: [{ required: true, message: "请输入", trigger: "blur" }],
+        checkResult: [{ required: true, message: "请输入", trigger: "blur" }],
+        phone: [{ validator: validatePhone, trigger: "blur" }],
+        checkPerson: [{ required: true, message: "请选择", trigger: "blur" },
+        { validator: validateLawPersonNumber, trigger: "blur" }],
       },
       alreadyChooseLawPerson: [],
       alreadyChooseLawPerson2: [],
@@ -635,7 +700,6 @@ export default {
       afddFlag: false,
       // disableZcBtn: false, //暂存按钮禁用车辆类型
       hasLatitudeAndLongitude: false, //案发坐标是否已经获取
-      fileEiditFlag: '',
       formOrDocData: '',
       submitFileData: '',
       saveEileData: '',
@@ -655,6 +719,32 @@ export default {
       carinfoId: '',
       selectLoading: false,
       postInfo: [], //职务
+      sfList: [
+        {
+          value: '蓝色',
+          label: 1
+        },
+        {
+          value: '黄色',
+          label: 2
+        },
+        {
+          value: '黑色 ',
+          label: 3
+        },
+        {
+          value: '白色',
+          label: 4
+        },
+        {
+          value: '其他',
+          label: 9
+        }
+      ],
+      dialogImageUrl: '',
+      pdfUrl: '',
+      dialogImageVisible: false,
+      isCanEdit: false,
     };
   },
   components: {
@@ -735,7 +825,7 @@ export default {
 
             res.data.forEach((item) => {
               if (type) {
-                if (_this.carInfo.drivePerson.lawOfficer.indexOf(item.lawOfficerName) != -1) {
+                if (item.lawOfficerName && _this.carInfo.drivePerson.lawOfficer.indexOf(item.lawOfficerName) != -1) {
                   this.alreadyChooseLawPerson.push(item);
                   this.lawPersonListId.push(item.id);
                 }
@@ -964,7 +1054,55 @@ export default {
     weightLimit() { },
     saveFileData() { },
     searchNumber() {
+      let _this = this
       // 查询车辆号牌
+      console.log()
+      if (this.carInfo.vehicleShipId && this.carInfo.vehicleIdColor) {
+        let colorCode = '';
+        this.sfList.forEach(element => {
+          if (element.value == this.carInfo.vehicleIdColor) {
+            colorCode = element.label
+          }
+        });
+        let json = [];
+        let param = {
+          vehicleNo: this.carInfo.vehicleShipId,
+          plateColor: colorCode
+        };
+        json.push(param);
+        vehicleCheckApi(JSON.stringify(json)).then(
+          res => {
+            if (res.data) {
+              let chewckData = {
+                transCertificateCode: res.data[0].transCertificateCode,
+                vehicleNo: this.carInfo.vehicleShipId,
+                vin: ''
+              }
+              yyclCheckApi(chewckData).then(
+                res => {
+                  _this.carInfo.businessScope = res.data[0].BusinessScopeCode || '';
+                  _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode || '';
+                  _this.carInfo.transportNum = res.data[0].LicenseCode || '';
+                  _this.carInfo.businessStatus = res.data[0].OperatingStatus || '';
+                  _this.carInfo.drivePerson.partyUnitPosition = res.data[0].OwnerName || '';
+                },
+                error => {
+                })
+            } else {
+              this.$message.error('未查到数据');
+              _this.carInfo.businessScope = '';
+              _this.carInfo.vehicleShipType = '';
+              _this.carInfo.transportNum = '';
+              _this.carInfo.businessStatus = '';
+              _this.carInfo.drivePerson.partyUnitPosition = '';
+            }
+          },
+          error => {
+
+          })
+      } else {
+        this.$message.error('请正确输入车辆颜色和车牌号码');
+      }
     },
     saveDataBtn(handleType) {
       let _this = this
@@ -1066,7 +1204,7 @@ export default {
     uploadFile(param) {
       var fd = new FormData()
       fd.append("file", param.file);
-      fd.append("category", '路警联合;图片');
+      fd.append("category", '路警联合;附件');
       fd.append("fileName", param.file.name);
       fd.append('status', 1)//传图片状态
       fd.append('caseId', this.carinfoId)//传记录id
@@ -1117,20 +1255,97 @@ export default {
         }
       );
     },
+    /* 置顶后锚点回到第一个 */
+    backTop() {
+      this.activeA = [true, false, false, false, false];
+    },
+    handlePictureCardPreview(file) {
+      console.log(file)
+      this.pdfUrl = this.dialogImageUrl = ''
+      let fileType = this.$util.getFileType(file.name);
+      if (fileType == 'pdf') {
+        this.getFileStream(file.storageId)
+        this.dialogImageVisible = true;
+
+      } else if (fileType == 'image') {
+        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + file.storageId;
+        this.dialogImageVisible = true;
+
+      } else {
+        this.$message.error('当前文件格式不支持预览');
+      }
+    },
+    //根据stroagId请求文件流
+    getFileStream(storageId) {
+      //设置地址
+      this.$store.commit("setDocPdfStorageId", storageId);
+      getFileStreamByStorageIdApi(storageId)
+        .then((res) => {
+          this.getObjectURL(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 将返回的流数据转换为url
+    getObjectURL(file) {
+      let url = null;
+      if (window.createObjectURL != undefined) { // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) { // webkit or chrome
+        try {
+          url = window.webkitURL.createObjectURL(file);
+        } catch (error) {
+
+        }
+      } else if (window.URL != undefined) { // mozilla(firefox)
+        try {
+          url = window.URL.createObjectURL(file);
+        } catch (error) {
+
+        }
+      }
+
+      this.pdfUrl = url;
+      // this.pdfVisible = true
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    overLimit() {
+      if (this.carInfo.firstCheck.weightLimit && this.carInfo.firstCheck.totalWeight) {
+        this.carInfo.firstCheck.overWeight = Number(this.carInfo.firstCheck.totalWeight) - Number(this.carInfo.firstCheck.weightLimit)
+        if (this.carInfo.firstCheck.overWeight < 0) {
+          this.carInfo.firstCheck.overWeight = 0
+        } else {
+          var number = this.carInfo.firstCheck.overWeight;
+          number = String(number).replace(/^(.*\..{4}).*$/, "$1");
+          this.carInfo.firstCheck.overWeight = Number(number);
+        }
+      }
+    },
+    chooseOccupation(data) {
+      this.$set(this.carInfo.drivePerson, 'occupation', data)
+    },
+    changeEdit() {
+      this.isCanEdit = true
+    }
   },
 
   mounted() {
+    console.log('mounted11111')
+
     this.getDrawerList([
       { name: '车牌颜色', option: 1 },
       { name: '车辆类型', option: 2 },
       { name: '路警联合-卸载方式', option: 3 },])
 
-    if (this.inspectionOverWeightId.id) {
-      this.getData()
-    } else {
-      this.carinfoId = this.genID()
-      this.setLawPersonCurrentP();
-    }
+    // if (this.inspectionOverWeightId.id) {
+    //   this.getData()
+    // } else {
+    //   this.carinfoId = this.genID()
+    //   this.setLawPersonCurrentP();
+    // }
 
     // 鼠标滚动
     this.$refs.link_1.addEventListener("scroll", this.scrool1);
@@ -1140,8 +1355,30 @@ export default {
     this.$refs.link_5.addEventListener("scroll", this.scrool5);
 
   },
+  activated() {
+    console.log('activated1111')
+    /* 如果是页面跳转过来的，则isRefresh=true */
+    if (this.$route.params.isRefresh) {
+      if (this.inspectionOverWeightId.id) {
+        this.getData()
+      } else {
+        this.resetForm('carInfo');
+        this.resetForm('drivePerson');
+        this.resetForm('firstCheck');
+        this.resetForm('secondCheck');
+        this.fileList = []
+        this.carinfoId = this.genID()
+        this.setLawPersonCurrentP();
+      }
+    }
+    if (!this.inspectionOverWeightId.id) {
+      this.isCanEdit = true;//可编辑
+    }
+  },
+
   created() {
     this.findRouteManageByOrganId();
+    console.log('create11111')
 
   },
   beforeRouteLeave(to, from, next) {
@@ -1166,5 +1403,51 @@ export default {
 <style lang="scss">
 .error-color {
   color: #ff6600;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 87px;
+  height: 72px;
+  line-height: 72px;
+  text-align: center;
+}
+.avatar {
+  width: 87px;
+  height: 72px;
+  display: block;
+}
+.clear-float-div:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.file-list-chufa {
+  padding: 5px;
+  width: auto;
+  float: left;
+  text-align: center;
+  margin-right: 20px;
+  box-sizing: border-box;
+  i {
+    font-size: 34px;
+  }
+  .file-list-chufa-text {
+    margin-top: 15px;
+    color: #20232c;
+    line-height: 20px;
+    font-size: 14px;
+  }
 }
 </style>

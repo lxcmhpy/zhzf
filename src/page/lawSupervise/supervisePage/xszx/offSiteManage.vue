@@ -24,42 +24,9 @@
             <embed class="print_info" style="padding:0px;width: 900px;margin:0 auto;height:1200px !important;" name="plugin" id="plugin"
             src="http://172.16.170.54:9332/9,105b6779dca4#palette='white|white'#" type="application/pdf" internalinstanceid="29">
         </object> -->
-        <div class="handlePart caseHandleSearchPart" :class="{'autoHeight':isShow}">
-          <el-form :inline="true" :model="form" label-width="70px" ref="offsiteManageform">
-            <el-form-item label="检测站点" prop="siteName">
-              <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
-            </el-form-item>
-            <el-form-item label="车牌号" prop="vehicleColor">
-              <el-select v-model="form.vehicleColor" placeholder="请选择">
-                <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
-              </el-select>
-              <el-input v-model="form.vehicleNumber" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
-            </el-form-item>
-            <!-- <el-form-item label=" " label-width="0px" prop="vehicleNumber">
-              
-            </el-form-item> -->
-            <el-form-item label="超限率" prop="overload">
-              <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
-              <el-select v-model="form.overload" placeholder="请选择">
-                <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.sort"></el-option>
-              </el-select>
-            </el-form-item>
-            <!-- <el-collapse-transition>
-              <div :class="{'ransition-box':true}"> -->
-                <el-form-item label="过检时间">
-                  <el-date-picker style='width:240px' :picker-options="pickerOptions" unlink-panels v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']">
-
-                  </el-date-picker>
-                </el-form-item>
-              <!-- </div>
-            </el-collapse-transition> -->
-          </el-form>
-          <div style="width:120px;line-height: 42px;">
-            <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
-            <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="reset('offsiteManageform')"></el-button>
-          </div>
-        </div>
-        <div class="handlePart" style="margin-left: 0px;">
+        
+        <div class="orgin">
+        <div class="orgin_left">
           <el-button type="primary" size="medium" @click="getAllOrganDialog()">
             <i class="iconfont law-submit-o f12"></i> 预警推送
           </el-button>
@@ -106,7 +73,7 @@
               </div>
               <p>预警信息(4条)</p>
               <div class="tablePart" style="padding-top:0px">
-                <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
+                <el-table :data="tableData" stripe highlight-current-row  style="width: 100%;height:100%;">
                   <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                   <el-table-column prop="checkTime" label="检测时间" align="center" width="100"></el-table-column>
                   <el-table-column prop="siteName" label="执法点" align="center"></el-table-column>
@@ -124,8 +91,51 @@
             </span>
           </el-dialog>
         </div>
+        <div class=" " :class="{'autoHeight':isShow}">
+          <el-form :inline="true" :model="form" label-width="70px" ref="offsiteManageform">
+            <el-form-item label="检测站点" prop="siteName">
+              <el-input v-model="form.siteName" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input>
+            </el-form-item>
+            <el-form-item label="车牌号" prop="vehicleColor">
+              <el-select v-model="form.vehicleColor" placeholder="请选择">
+                <el-option v-for="item in vehicleColorList" :key="item.id" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+              <el-form-item class="cars">
+              <el-input v-model="form.vehicleNumber" placeholder="请输入车牌号" @keyup.enter.native="search(1)"></el-input>
+              </el-form-item>
+            </el-form-item>
+            <!-- <el-form-item label=" " label-width="0px" prop="vehicleNumber">
+              
+            </el-form-item> -->
+            <el-form-item label="超限率" prop="overload">
+              <!-- <el-input v-model="form.overload" placeholder="回车可直接查询" @keyup.enter.native="search(1)"></el-input> -->
+              <el-select v-model="form.overload" placeholder="请选择">
+                <el-option v-for="item in cxlList" :key="item.id" :label="item.name" :value="item.sort"></el-option>
+              </el-select>
+            </el-form-item>
+            <!-- <el-collapse-transition>
+              <div :class="{'ransition-box':true}"> -->
+                <el-form-item label="过检时间">
+                  <el-date-picker style='width:240px' :picker-options="pickerOptions" unlink-panels v-model="timeList" type="daterange" range-separator="—" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']">
+
+                  </el-date-picker>
+                </el-form-item>
+              <!-- </div>
+            </el-collapse-transition> -->
+            <div class="orgin_bottom" >&nbsp;
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="search(1)"></el-button>
+              <el-button type="primary" size="medium" icon="el-icon-refresh-right" @click="reset('offsiteManageform')"></el-button>
+            </div>
+            <!-- <div style="display:inline-block ">
+              <el-button size="medium" class="commonBtn " title="搜索" icon="iconfont law-sousuo" @click="search(1)"></el-button>
+              <el-button size="medium" class="commonBtn " title="重置" icon="iconfont law-zhongzhi" @click="reset('offsiteManageform')"></el-button>
+            </div> -->
+          </el-form>
+          
+        </div>
+        </div>
         <div class="tablePart">
-          <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;" @row-click="handleNodeClick">
+          <el-table :data="tableData" stripe highlight-current-row  style="width: 100%;height:100%;" @row-click="handleNodeClick">
             <el-table-column type="selection" width="55" align="center"></el-table-column>
             <el-table-column prop="checkTime" sortable label="检测时间" align="center" width="105"></el-table-column>
             <el-table-column prop="siteName" label="检测站点名称" align="center"></el-table-column>
@@ -503,3 +513,22 @@ export default {
   }
 }
 </script>
+<style lang="scss"  scoped>
+  .orgin{
+    display: flex;
+  }
+  .orgin_left{
+    margin-left: 0px;
+    margin-right: 80px;
+    display: flex;
+    height: fit-content;
+  }
+  .cars{
+    margin-left: -5px;
+  }
+  .orgin_bottom{
+    display:inline-block; 
+    margin-top:6px; 
+  }
+</style>
+<style lang="scss" src="@/assets/css/caseHandle/index.scss">

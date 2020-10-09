@@ -571,7 +571,8 @@ export const mixinGetCaseApiList = {
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
+        
+        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart) && !this.alReadyFinishCoerciveM) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
@@ -671,7 +672,7 @@ export const mixinGetCaseApiList = {
       console.log('查询环节是否生成了pdf', res);
 
       if (res.data.length > 0) {
-
+        
         let nowCaseDocdata = '';
         try {
           nowCaseDocdata = await findDocDataByIdApi(data.docId);
@@ -694,8 +695,13 @@ export const mixinGetCaseApiList = {
           } else {
             //判断是否为已驳回状态
             let caseBasicInfoRes= await  getCaseBasicInfoApi({id: this.caseId});
-            if(caseBasicInfoRes.data.caseStatus == '已驳回') this.$store.commit('setApprovalState', 'approvalNoPass');
-            else this.$store.commit('setApprovalState', 'approvalBefore')
+            if(caseBasicInfoRes.data.caseStatus == '已驳回'){
+              let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
+              if(finishCaseReport_caseLinktypeIdArr.includes(caseBasicInfoRes.data.currentLinkId)) this.$store.commit('setApprovalState', 'approvalFinishCaseReportNoPass');
+              else this.$store.commit('setApprovalState', 'approvalNoPass');
+            }else{
+              this.$store.commit('setApprovalState', 'approvalBefore')
+            }
           }
         } else {  //不需要审批
           this.$store.commit('setApprovalState', '')

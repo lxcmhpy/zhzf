@@ -145,7 +145,7 @@
             <el-input v-model="addOrganForm.enforcementOrgan2"></el-input>
           </el-form-item>
         </div>
-        <div>
+        <div class="item">
           <el-form-item label="行政区划" prop="administrativeDivision">
             <el-cascader
                 ref="areaCascader"

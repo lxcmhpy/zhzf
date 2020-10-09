@@ -882,16 +882,25 @@ textarea{
   }
 }
 .notice-icon-list{
-  width: 530px;
+  width: 100%;
   li{
-    width: 30%;
-    height: 100px;
+    margin-bottom: 48px;
+    width: 128px;
     float: left;
     text-align: center;
     display: inline-block;
-    line-height: 36px;
+    cursor: pointer;
     i{
-      font-size: 36px;
+      font-size: 64px;
+    }
+    .icon-dec-text{
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+      margin-top: 10px;
+      line-height: 22px;
+      font-size: 16px;
+      color: #7b7b7b;
     }
   }
 }

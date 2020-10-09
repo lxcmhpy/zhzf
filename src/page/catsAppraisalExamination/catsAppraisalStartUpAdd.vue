@@ -14,6 +14,9 @@
             <el-form-item label="案卷基数" prop="ajBsjs">
               <el-input placeholder="请输入案卷基数" v-model="batchForm.ajBsjs" :readonly="isView"></el-input>
             </el-form-item>
+            <el-form-item label="案卷抽取基数" prop="ajCqjs">
+              <el-input placeholder="请输入抽取基数" v-model="batchForm.ajCqjs" :readonly="isView"></el-input>
+            </el-form-item>
             <el-form-item label="结案开始时间" prop="ajJaDate">
               <el-date-picker v-model="batchForm.ajJaDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" :readonly="isView"></el-date-picker>
             </el-form-item>
@@ -23,9 +26,6 @@
             </el-form-item>
             <el-form-item label="抽取" prop="ajCfCqjs">
               <el-input v-model="batchForm.ajCfCqjs" :readonly="isView"></el-input>
-            </el-form-item>
-            <el-form-item label="案卷抽取基数" prop="ajCqjs">
-              <el-input placeholder="请输入抽取基数" v-model="batchForm.ajCqjs" :readonly="isView"></el-input>
             </el-form-item>
             <br>
             <el-form-item label="行政审批" prop="ajQzBsjs">
@@ -38,14 +38,14 @@
             <el-form-item label="执法人员基数" prop="ryBsjs">
               <el-input v-model="batchForm.ryBsjs" :readonly="isView"></el-input>
             </el-form-item>
-            <el-form-item label="各级执法机构领导班子成员比例不低于" prop="ryZjProtion">
+            <el-form-item class="ryZjProtion" label="各级机构领导班子成员最低比例" prop="ryZjProtion">
               <el-input v-model="batchForm.ryZjProtion" :readonly="isView"></el-input>
             </el-form-item>
             <el-form-item label="抽取考试人员基数" prop="ryCqjs">
               <el-input v-model="batchForm.ryCqjs" :readonly="isView"></el-input>
             </el-form-item>
           </el-form>
-          <div :hidden="isView">
+          <div :hidden="isView" style="margin-bottom: 10px;">
             <el-button type="primary" icon="el-icon-plus" @click="addItem">新增指标</el-button>
             <el-button type="primary" @click="saveOrUpdate('batchForm')">保存</el-button>
           </div>
@@ -89,23 +89,6 @@
           </el-tab-pane>
           <el-tab-pane label="网上评查配置" name="网上评查">
             <el-table :data="dataList3" stripe resizable border style="width: 100%;height:100%;" row-key="id">
-              <el-table-column prop="indexOne" label="一级指标" align="center"></el-table-column>
-              <el-table-column prop="indexTwo" label="二级指标" align="center"></el-table-column>
-              <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
-              <el-table-column prop="score" label="分数" align="center">
-                <template slot-scope="scope">
-                  <el-input v-model="scope.row.score" placeholder="请输入数值" @blur="validateScore(scope.row)" :readonly="isView"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" align="center" width="120" v-if="!isView">
-                <template slot-scope="scope">
-                  <el-button type="text" @click="deletePykhBatchById(scope.row)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
-          <el-tab-pane label="现场检查配置" name="执法考试">
-            <el-table :data="dataList4" stripe resizable border style="width: 100%;height:100%;" row-key="id">
               <el-table-column prop="indexOne" label="一级指标" align="center"></el-table-column>
               <el-table-column prop="indexTwo" label="二级指标" align="center"></el-table-column>
               <el-table-column prop="nrxm" label="三级指标" align="center"></el-table-column>
@@ -323,7 +306,6 @@ export default {
       dataList1: [],
       dataList2: [],
       dataList3: [],
-      dataList4: [],
       visible: false,
       data2: [],
       defaultProps: {
@@ -359,8 +341,6 @@ export default {
         this.addItems(datas, this.dataList2)
       } else if (this.activeName === '网上评查') {
         this.addItems(datas, this.dataList3)
-      } else {
-        this.addItems(datas, this.dataList4)
       }
       this.visible = false
     },
@@ -425,17 +405,9 @@ export default {
             })
             return
           }
-          if (_this.dataList4.length === 0) {
-            _this.catsMessage({
-              type: 'warning',
-              message: '请填写现场检查配置'
-            })
-            return
-          }
           tableData = _this.dataList1
             .concat(_this.dataList2)
             .concat(_this.dataList3)
-            .concat(_this.dataList4)
           let errorData = tableData.filter(item => {
             if (item.score === '' || item.score === undefined) {
               return item
@@ -474,8 +446,6 @@ export default {
         this.dataList2 = this.dataList2.filter(item => item.indexThreeId !== row.indexThreeId)
       } else if (row.assessType === '网上评查') {
         this.dataList3 = this.dataList3.filter(item => item.indexThreeId !== row.indexThreeId)
-      } else {
-        this.dataList4 = this.dataList4.filter(item => item.indexThreeId !== row.indexThreeId)
       }
     },
     init() {
@@ -499,8 +469,6 @@ export default {
                 _that.dataList2.push(item)
               } else if (item.assessType === '网上评查') {
                 _that.dataList3.push(item)
-              } else {
-                _that.dataList4.push(item)
               }
             })
           },
@@ -518,3 +486,8 @@ export default {
   }
 }
 </script>
+<style>
+  .ryZjProtion .el-form-item__label{
+    line-height: 20px !important;
+  }
+</style>
