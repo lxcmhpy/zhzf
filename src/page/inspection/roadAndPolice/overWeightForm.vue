@@ -9,7 +9,7 @@
         <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)"><i class="iconfont law-icon_cfa"></i>处罚决定</a>
       </div>
     </div>
-    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;" :disabled='carInfo.fileStatus==1&&isCanEdit'>
+    <el-form :model="carInfo" :rules="carInfoRules" ref="carInfo" label-width="100px" style="margin-top: 82px;" :disabled='!isCanEdit'>
       <div class="caseFormBac" id="link_1" ref="link_1" @mousewheel="scrool1">
         <p>车辆信息</p>
         <div>
@@ -1383,7 +1383,9 @@ export default {
     }
     if (!this.inspectionOverWeightId.id) {
       this.isCanEdit = true;//可编辑
-    } else { }
+    } else {
+      this.isCanEdit = false
+    }
     console.log('activated', this.carinfoId)
     this.getDrawerList([
       { name: '车牌颜色', option: 1 },
