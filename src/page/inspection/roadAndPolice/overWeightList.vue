@@ -47,10 +47,10 @@
           </el-table-column>
           <el-table-column prop="checkType" label="类型" align="center"></el-table-column>
           <el-table-column prop="detectStation" label="检测站" align="center"></el-table-column>
-          <el-table-column prop="totalWeight" label="初检车货总重" align="center"></el-table-column>
-          <el-table-column prop="overRatio" label="初检时间" align="center"></el-table-column>
-          <el-table-column prop="overRatio" label="初检超载率" align="center"></el-table-column>
-          <el-table-column prop="overRatio2" label="复检超限率" align="center"></el-table-column>
+          <el-table-column prop="totalWeight" label="初检车货总重" align="center" sortable></el-table-column>
+          <el-table-column prop="firstCheckTime" label="初检时间" align="center"></el-table-column>
+          <el-table-column prop="overRatio" label="初检超载率" align="center" sortable></el-table-column>
+          <el-table-column prop="overRatio2" label="复检超限率" align="center" sortable></el-table-column>
           <el-table-column prop="fileStatus" label="处置状态" align="center">
             <template slot-scope="scope">
               {{scope.row.fileStatus==0?'进行中':'待归档'}}
