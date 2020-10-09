@@ -73,6 +73,7 @@ export const inforCollectionCommonMixins = {
       }
     };
     return {
+      punishList: [],
       moneyTooltip: "",// 自由裁量权金额提示语
       punishList: [],
       recentCheckStastions: [],//最近五个检测站
@@ -549,7 +550,7 @@ export const inforCollectionCommonMixins = {
         punishClauseLabel = '处罚依据';
       }
       let data = {
-        caseCauseId: this.inforForm.caseCauseId,
+        // caseCauseId: this.inforForm.caseCauseId,
         caseCauseName: this.inforForm.caseCauseName,
         titleType:titleType,
         illageClauseLabel,
@@ -1425,6 +1426,21 @@ export const inforCollectionCommonMixins = {
             console.log(err);
           }
     )},
+    //获取违法条款、依据数据
+    getPunishList() {
+      // debugger
+      this.$store
+        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
+        .then(
+          (res) => {
+            this.punishList = res.data;
+            if (this.judgFreedomList.length === 0) {
+              this.initMoneyWhenNotExistStandard();
+            }
+          },
+          (err) => {}
+        );
+    },
   },
 
   mounted() {
@@ -1449,6 +1465,7 @@ export const inforCollectionCommonMixins = {
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
     this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
     this.inforForm.caseCauseId = someCaseInfo.illageActId;
+    this.getPunishList();
     this.inforForm.programType = someCaseInfo.programType;
     this.inforForm.caseType = someCaseInfo.caseType;
     this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
