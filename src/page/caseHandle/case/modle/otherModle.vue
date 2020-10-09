@@ -112,7 +112,7 @@
                 <el-form-item
                   v-if="!lineStyleFlag"
                   prop="recordStaff"
-                  style="width:246px"
+                  style="width:241px"
                   :rules="fieldRules('recordStaff',propertyFeatures['recordStaff'])"
                 >
                   <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
@@ -218,7 +218,7 @@
                 <el-form-item
                   v-if="!lineStyleFlag"
                   prop="inquiriedAge"
-                  style="width:262px"
+                  style="width:257px"
                   :rules="fieldRules('inquiriedAge',propertyFeatures['inquiriedAge'])"
                 >
                   <!-- <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
@@ -263,7 +263,7 @@
                 <el-form-item
                   v-if="!lineStyleFlag"
                   prop="inquiriedTel"
-                  style="width:230px"
+                  style="width:225px"
                   :rules="fieldRules('inquiriedTel',propertyFeatures['inquiriedTel'],validatePhone)"
                 >
                   <el-input
@@ -338,7 +338,7 @@
             <el-form-item
               v-if="!lineStyleFlag"
               prop="staff1"
-              style="width:100px"
+              style="width:78px"
               :rules="fieldRules('staff1',propertyFeatures['staff1'])"
             >
               <!-- <el-input
@@ -1004,10 +1004,10 @@ export default {
     width: 100px;
   }
   .inquiriedUnitPositionBox {
-    width: calc(100% - 130px);
+    width: calc(100% - 137px);
   }
   .inquiriedAddressBox {
-    width: calc(100% - 80px);
+    width: calc(100% - 88px);
   }
   .print_info p .span_bg {
     height: 23px;
