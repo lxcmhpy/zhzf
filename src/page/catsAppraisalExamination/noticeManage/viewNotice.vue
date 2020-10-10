@@ -81,9 +81,11 @@
                 this.showBtn = row.isRead === 'N' ? true : false;
                 this.noticeId = row.id;
                 this.title = row.title;
-                // this.storagePath = 'http://127.0.0.1:8012/onlinePreview?url='+encodeURIComponent(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST +id + '?&fullfilename='+this.title+'.pdf&time='+new Date().getTime())+'&time='+new Date().getTime();
-                this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + row.storageId + '?time=' +
-                    new Date().getTime();
+                this.$util.com_getFileStream(row.storageId).then((res) => {
+                    this.storagePath = res;
+                  });
+                // this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + row.storageId + '?time=' +
+                //     new Date().getTime();
                     console.log(this.storagePath)
                 this.visible1 = true;
             },
