@@ -503,7 +503,7 @@
                         placeholder="请选择"
                       >
                         <el-option
-                          v-for="(item, index) in caseTypeList"
+                          v-for="(item, index) in abnormal.caseTypeList"
                           :key="index"
                           :label="item.caseTypeName"
                           :value="item.caseTypeId"
@@ -634,9 +634,9 @@
                 <li v-for="(offical, index) in finishedDocs" :key="offical.label">
                   <div class="el-checkbox">
                     <span class="el-checkbox__label">
-                    <el-checkbox v-if="offical.caseDocStorageId" v-model="checkedDocId" :label="offical.caseDocStorageId" @click.stop="">&nbsp;&nbsp;{{offical.numberNo}}</el-checkbox>
+                    <el-checkbox v-if="offical.caseDocStorageId" :label="offical.caseDocStorageId" @click.stop="">&nbsp;&nbsp;{{offical.numberNo}}</el-checkbox>
                     <img :src="acOfficalUrl" />
-                    <span  @click="editDoc(offical,'edit', index)">{{ offical.name }}</span>
+                    <span  @click="editDoc(offical,'show', index)">{{ offical.name }}</span>
                     </span>
                   </div>
                 </li>
@@ -668,7 +668,7 @@
               v-model="checkAllOffical"
               @change="handleCheckAllChange"
             ></el-checkbox>
-            <el-button type="primary" icon="el-icon-printer" @click="docClick()"
+            <el-button type="primary" icon="el-icon-printer" @click="printDoc()"
               >打印文书</el-button
             >
           </div>
@@ -677,7 +677,7 @@
     </el-row>
     <!-- 添加或修改时保存 -->
     <div class="float-btns">
-      <el-button class="edit_btn" type="primary" @click="saveRecordInfo">
+      <el-button class="edit_btn" :disabled="editFlag" type="primary" @click="saveRecordInfo">
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
@@ -698,27 +698,13 @@
       :close-on-click-modal="false"
       width="840px"
       append-to-body
+      class="el-dialog-doc-detail"
     >
-      <div>
-        <div style="height: auto">
-          <object>
-            <embed
-              style="
-                padding: 0px;
-                width: 790px;
-                margin: 0 auto;
-                height: 1150px !important;
-              "
-              name="plugin"
-              id="plugin"
-              :src="docSrc"
-              type="application/pdf"
-              internalinstanceid="29"
-            />
-          </object>
-        </div>
-        <div
-          style="position: absolute; bottom: 150px; right: 20px; width: 100px"
+      <div style="height:100%" id="myBox">
+      </div>
+      <div
+          v-if="!docEditFlag"
+          style="position: absolute; bottom: 150px; right: 95px;"
         >
           <el-button
             @click="showNext('last')"
@@ -729,12 +715,22 @@
           <el-button
             @click="showNext('next')"
             :disabled="
-              nowShowPdfIndex == this.checkedDocId.length - 1 ? true : false
+              nowShowPdfIndex == this.checkedOffical.length - 1 ? true : false
             "
             >下一张
           </el-button>
         </div>
-      </div>
+        <div v-else style="position: absolute; bottom: 150px; right: 95px;" class="float-btns">
+          <el-button
+            class="edit_btn"
+            type="primary"
+            :disabled="editFlag"
+            @click="editDoc(finishedDocs[finishDocIndex],'edit')"
+            >
+          <i class="iconfont law-edit"></i>
+          <br />修改</el-button
+          >
+        </div>
     </el-dialog>
     <!-- 编辑文书 -->
     <EditDocDialog ref="editDocDialogRef" @addDoc="addDoc"/>
@@ -790,6 +786,7 @@ export default {
             problemAbstract: "",
             programType: "",
             caseType: "",
+            caseTypeId: "",
             caseCauseId: "",
           },
         ],
@@ -883,7 +880,7 @@ export default {
       processResultsList: [], //处理结果list
       docSrc: undefined, //文书路径
       docVisible: false, //文书dialog
-      checkedDocId: [],
+      docEditFlag: false,//文书是否可编辑
       nowShowPdfIndex: 0,
       endTimePickerOptions: {
         disabledDate: (time) => {
@@ -911,7 +908,6 @@ export default {
     },
   },
   created() {
-    console.log(this.PageType);
     this.editFlag = this.PageType === "detail" ? true : false;
     this.getCheRecordTempPageList();
     if (this.PageType != "add") {
@@ -977,7 +973,6 @@ export default {
     // 选择文书
     handleCheckedOffical(value) {
       this.inspectRecordForm.caseDoctypeId = this.checkedOffical.toString();
-      console.log(this.inspectRecordForm.caseDoctypeId, "checkedOffical");
 
       let checkedCount = value.length;
       this.checkAllOffical = checkedCount === this.officialList.length;
@@ -1002,7 +997,6 @@ export default {
     },
     // 保存
     saveRecordInfo() {
-      console.log("保存记录", this.inspectRecordForm);
       this.$refs.inspectRecordFormRef.validate((valid) => {
         if (valid) {
           const loading = this.$loading({
@@ -1141,8 +1135,6 @@ export default {
                   );
                 }
                 if (a.secondProcessType && a.firstProcessType) {
-                  console.log(a["firstType"]);
-                  console.log(this.cheProcesTypeTree[a["firstType"]]);
                   a["secondType"] = this.cheProcesTypeTree[a["firstType"]][
                     "children"
                   ].findIndex((t) => t.id === a.secondProcessType);
@@ -1157,7 +1149,7 @@ export default {
                     : a.firstProcessType
                 );
 
-                this.programTypeChange(index);
+                a.programType && this.getAbnormalCaseTypeList(index);
               });
             this.inspectRecordForm = formData;
 
@@ -1196,7 +1188,6 @@ export default {
       attachList.forEach(attach => {
         that.listAtt.push(attach);
       })
-      console.log(that.listAtt);
     },
     //删除附件
     removeAttach(index) {
@@ -1250,13 +1241,11 @@ export default {
       const tmp = this.abnormalRecordTemp.find(
         (t) => t.templateId == curAbn.templateId
       );
-      console.log(this.generateContent(tmp.content));
       this.inspectRecordForm.listAbn[
         listAbnIndex
       ].problemAbstract = this.generateContent(tmp.content);
     },
     generateContent(content) {
-      console.log(this.inspectRecordForm);
       for (const key in this.inspectRecordForm) {
         switch (key) {
           case "checkCategory":
@@ -1297,8 +1286,12 @@ export default {
     programTypeChange(abnormalIndex) {
       this.curAbnormalIndex = abnormalIndex;
       this.inspectRecordForm.listAbn[abnormalIndex].caseType = "";
+      this.inspectRecordForm.listAbn[abnormalIndex].caseTypeId = "";
 
-      this.caseTypeList = [];
+      this.inspectRecordForm.listAbn[abnormalIndex].caseTypeList = [];
+      this.getAbnormalCaseTypeList(abnormalIndex);
+    },
+    getAbnormalCaseTypeList(abnormalIndex){
       let data = {
         programType: this.inspectRecordForm.listAbn[abnormalIndex].programType,
         cateId: this.cate.zfmlId,
@@ -1307,8 +1300,7 @@ export default {
       let _this = this;
       this.$store.dispatch("getCaseType", data).then(
         (res) => {
-          console.log("案件类型", res);
-          _this.caseTypeList = res.data;
+          _this.inspectRecordForm.listAbn[abnormalIndex].caseTypeList = res.data;
         },
         (err) => {
           console.log(err);
@@ -1513,15 +1505,27 @@ export default {
       this.inspectRecordForm.listAbn[abnormalIndex][processAttr] = index;
     },
     //打印文书
-    docClick() {
-      this.checkedDocId = this.finishedDocs.map((f) => f.caseDocStorageId)
+    printDoc() {
+      // this.checkedDocId = this.finishedDocs.map((f) => f.caseDocStorageId);
 
-      if (this.checkedDocId.length > 0) {
+      if (this.checkedOffical.length > 0) {
         this.docVisible = true;
-        this.$util.com_getFileStream(this.checkedDocId[0]).then((res) => {
-          this.docSrc = res;
+        this.docEditFlag = false;
+        this.$util.com_getFileStream(this.checkedOffical[0]).then((res) => {
+          this.showDocPdf(res);
         });
       }
+    },
+    showDocPdf(url){
+      let myBox = document.getElementById("myBox");
+      let iframes = document.getElementsByTagName("iframe");
+      for (let i = 0; i < iframes.length; i++) {
+        myBox.removeChild(iframes[i]);
+      }
+      let  myIframe = document.createElement('iframe');
+      myIframe.setAttribute("src", '/static/pdf/web/viewer.html?file='+encodeURIComponent(url));
+      myIframe.setAttribute('style','height: calc(100% - 70px);width:790px');
+      myBox.appendChild(myIframe);
     },
     //文书dialog
     closeDialog() {
@@ -1534,18 +1538,18 @@ export default {
         if (this.nowShowPdfIndex) {
           this.nowShowPdfIndex--;
           this.$util
-            .com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
+            .com_getFileStream(this.checkedOffical[this.nowShowPdfIndex])
             .then((res) => {
-              this.docSrc = res;
+              this.showDocPdf(res);
             });
         }
       } else {
         if (this.nowShowPdfIndex != this.finishedDocs.length - 1) {
           this.nowShowPdfIndex++;
           this.$util
-            .com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
+            .com_getFileStream(this.checkedOffical[this.nowShowPdfIndex])
             .then((res) => {
-              this.docSrc = res;
+              this.showDocPdf(res);
             });
         }
       }
@@ -1553,31 +1557,52 @@ export default {
 
     // 编辑文书
     editDoc(doc, operationType, finishDocIndex){
-      let caseFlag = false;
-      const listAbn = this.inspectRecordForm.listAbn;
-      if(listAbn && listAbn.length > 0) {
-        for (let index = 0; index < listAbn.length; index++) {
-          const item = listAbn[index];
-          if(item.isCase == "1") {
-            caseFlag = true;
-            break;
-          }
+      
+      this.docOperationType = operationType;
+      if(operationType == 'add') {
+        if(this.editFlag) {
+          this.$message({type: 'warning', message: '记录详情界面不能新增文书！'});
+          return;
         }
-      }
-
-      if(caseFlag) {
-        this.docOperationType = operationType;
         this.finishDocIndex = finishDocIndex;
+        // let caseFlag = false;
+        // const listAbn = this.inspectRecordForm.listAbn;
+        // if(listAbn && listAbn.length > 0) {
+        //   for (let index = 0; index < listAbn.length; index++) {
+        //     const item = listAbn[index];
+        //     if(item.isCase == "1") {
+        //       caseFlag = true;
+        //       break;
+        //     }
+        //   }
+        // }
+  
+        // if(caseFlag) {
+          this.$refs.editDocDialogRef.showModal(doc);
+        // }else{
+        //   this.$message({type:'warning',message:'路段情况正常或异常情况未转立案，无法添加文书！'});
+        // }
+      }else if(operationType == 'show') {
+        this.finishDocIndex = finishDocIndex;
+        this.docVisible = true;
+        this.docEditFlag = true;
+        this.$util.com_getFileStream(doc.caseDocStorageId).then((res) => {
+          this.showDocPdf(res);
+        });
+      }else {
+        this.docVisible = false;
+        this.docEditFlag = false;
         this.$refs.editDocDialogRef.showModal(doc);
-      }else{
-        this.$message({type:'warning',message:'路段情况正常或异常情况未转立案，无法添加文书！'});
       }
     },
     addDoc(doc) {
       if(this.docOperationType == 'add') {
-        this.finishedDocs.push(doc)
+        this.finishedDocs.push(doc);
+        this.editDoc(doc,'show');
+        this.finishDocIndex = this.finishedDocs.findIndex(d => d.caseDocPdfId == doc.caseDocPdfId);
       }else{
         this.finishedDocs.splice(this.finishDocIndex,1,doc);
+        this.editDoc(doc,'show',this.finishDocIndex);
       }
     }
   },
@@ -1840,7 +1865,47 @@ export default {
       }
     }
   }
+
+  
 }
+.el-dialog-doc-detail {
+    >>>.el-dialog{
+        height: 75%;
+    }
+    >>>.el-dialog__body{
+        position: relative;
+        overflow-y: hidden;
+        height: 100%;
+        max-height: 97%;
+    }
+
+    .float-btns {
+      width: 48px;
+      height: 50px;
+      position: fixed;
+      right: 50px;
+      bottom: 70px;
+      z-index: 100;
+      background: #4573d0;
+      border: none;
+
+      &.float-btns .el-button {
+        border-radius: 1px;
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        background: #4573d0;
+        border: none;
+        text-align: center;
+      }
+
+      .iconfont {
+        display: inline-block;
+        margin-bottom: 4px;
+        margin-left: 4px;
+      }
+    }
+  }
 </style>
 <style lang="scss">
 .form-tips-popper.el-popover {
