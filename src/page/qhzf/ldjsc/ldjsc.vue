@@ -793,7 +793,7 @@ $.getJSON(qinghai, function(geoJson){
         //    console.log(option);
          console.log(name);
           if(name=="西宁市"){
-            option.series[0].data.push({name: "大通回族土族自治县",value:[101.67, 36.92,35,3]});
+              option.series[0].data.push({name: "大通回族土族自治县",value:[101.67, 36.92,35,3]});
               option.series[0].data.push({name: "湟中县",value:[101.57, 36.49, 35, 1]});
               option.series[0].data.push({name: "甘德县",value:[101.28, 36.72, 35, 2]});
 
@@ -1912,8 +1912,12 @@ font-weight:bold;
 color:#FFFFFF;
 line-height:61px;
 }
-.fullscreen .el-main {
+/* .fullscreen .el-main {
     background:bottom;
+} */
+.body_bg .el-main {
+    background: none;
+    width:'100%';
 }
 .main {
     background-image: url("../../../../static/images/map/边框.png");

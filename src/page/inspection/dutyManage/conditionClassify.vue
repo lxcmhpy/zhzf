@@ -25,7 +25,7 @@
                         :filter-node-method="filterNode"
                         :render-content="renderNode"
                         @node-click="nodeClick"
-                        ref="typeTreeRef">
+                        ref="processTypeTreeRef">
                     </el-tree>
                 </el-card>
             </el-col>
@@ -102,7 +102,7 @@
                 </el-card>
             </el-col>
         </el-row>
-    <AddProcessType ref="addProcessTypeRef" />
+    <AddProcessType ref="addProcessTypeRef" :curTreeNodeNode="curTreeNodeNode"/>
     <AddProcess ref="addProcessRef" />
     </div>
 </template>
@@ -133,6 +133,7 @@ export default {
         curResult: undefined,//当前处理结果
         curTypeNode: undefined,//当前情况分类
         breadcrumbList: [],//右侧面包屑
+        curTreeNodeNode: undefined,//当前节点
     }
 },
     computed: {
@@ -171,9 +172,13 @@ export default {
             );
         },
         //添加节点
-        appendTreeNode(parentNodeData) {
+        appendTreeNode() {
             event.stopPropagation();
-            this.$refs.addProcessTypeRef.showModal('add', parentNodeData);
+            if(this.curTreeNodeNode){
+                this.$refs.addProcessTypeRef.showModal('add',);
+            }else{
+                this.$message({ type: "warning", message: "请选择情况分类！" });
+            }
         },
         //修改节点
         editTreeNode(nodeData, parent) {
@@ -185,6 +190,7 @@ export default {
         //节点点击
         nodeClick(data,node) {
             this.curTypeNode = data;
+            this.curTreeNodeNode = node;
             console.log(data,'nodedata');
             console.log(node,'node');
             this.curProcess = undefined;
@@ -372,7 +378,7 @@ export default {
     },
     watch: {
         filterText(val) {
-            this.$refs.typeTreeRef.filter(val);
+            this.$refs.processTypeTreeRef.filter(val);
         }
     },
 };

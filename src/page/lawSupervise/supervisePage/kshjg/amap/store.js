@@ -148,6 +148,13 @@ export default {
         { title: "联系方式", value: node.mobile },
         { title: "机构名称", value: node.organName },
       ]
+      this.searchWindowData.window4.btnList= [
+        { class: 'el-icon-phone' },
+        { class: 'iconfont law-shipin' },
+        { class: 'iconfont law-jiankong' },
+        { class: 'iconfont law-msg-box' },
+        { class: 'iconfont law-xianlu' }
+      ]
       this.$refs.Search.showCom = "Window4"
     },
 

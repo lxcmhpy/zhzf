@@ -9,7 +9,7 @@
         {{item.title}}: {{item.value}}
       </p>
       <div class="btns">
-        <div class="btnsBox" v-for="(item,index) of btnList" :key="index" @click="handleClickBtns(index)">
+        <div class="btnsBox" v-for="(item,index) of window4.btnList" :key="index" @click="handleClickBtns(index)">
           <i :class="item.class" :style="(index===0 || index===1)?{color:window4.info.padStateColor} : index===2 ? {color:window4.info.peStateColor} : null" />
         </div>
       </div>
@@ -31,17 +31,6 @@ export default {
   computed: {
     list() {
       return (this.window4 && this.window4.info) || []
-    }
-  },
-  data() {
-    return {
-      btnList: [
-        { class: 'el-icon-phone' },
-        { class: 'iconfont law-shipin' },
-        { class: 'iconfont law-jiankong' },
-        { class: 'iconfont law-msg-box' },
-        { class: 'iconfont law-xianlu' }
-      ]
     }
   },
   methods: {

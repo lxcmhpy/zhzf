@@ -214,7 +214,7 @@
         </p>
 
         <div class="pdf_seal">
-          <span @click='makeSeal'>交通运输执法部门(印章)</span><br>
+          <span>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
             <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
@@ -542,22 +542,6 @@ import {
           false
         );
       },
-      // 盖章
-      makeSeal() {
-        console.log('盖章!');
-      },
-      // 打印
-      print() {
-        console.log('打印!');
-      },
-      // 多行编辑
-      // overFlowEdit() {
-      //   this.$refs.overflowInputRef.showModal(0, '', this.maxLengthOverLine);
-      // },
-      // 获取多行编辑内容
-      // getOverFloeEditInfo(edit) {
-      //   this.formData.illegalFactsEvidence = edit;
-      // },
       //提交
       submitData(handleType) {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -642,7 +626,6 @@ import {
           this.addVisible = false;
         }
       },
-
       startTime() {
         if (this.formData.measureStartDate) {
           this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
@@ -661,7 +644,6 @@ import {
             let orgData = {
               id: res.data.organId
             };
-
             getOrganDetailApi(orgData).then(
               orgRes => {
                 _this.reconsiderationOptions = [
@@ -685,33 +667,24 @@ import {
                     label: orgRes.data.enforcementOrgan2
                   }
                 ];
-                // _this.formData.reconsiderationOrgan = 'reconsiderationOrgan1';
-                // _this.formData.lawsuitOrgan = 'enforcementOrgan1';
-                _this.formData.reconsiderationOrgan = '复议机构1';
-                _this.formData.lawsuitOrgan = '诉讼机构1';
               });
           });
 
       },
-      // test(){
-      //   testApi().then(res=>{console.log(res)})
-      // }
       getDataAfter(){
-        // this.$set(this.formData, 'measureStartDate', new Date());
-        this.formData.measureStartDate = new Date().format('yyyy-MM-dd');
-        this.startTime();
+        if(!this.formData.measureStartDate || !this.formData.measureEndDate){
+           this.formData.measureStartDate = new Date().format('yyyy-MM-dd');
+           this.startTime();
+        }
       }
 
 
     },
     mounted() {
-      // this.$set(this.formData, 'measureStartDate', new Date());
-      // console.log('this.formData.measureStartDate',this.formData.measureStartDate)
-      // this.startTime();
+      this.getOrganDetailOptions();
     },
     created() {
       this.isOverStatus();
-      this.getOrganDetailOptions();
       this.setData();
     }
   }

@@ -7,6 +7,12 @@
             <el-form-item label="统计日期" prop>
             <el-date-picker  style="width:60%" v-model="value3" type="date" placeholder="选择日期"  ></el-date-picker>
           </el-form-item>
+           <el-form-item label="执法门类" prop>
+            <el-select size="small" v-model="state" placeholder="执法门类">
+              <el-option label="全部" value></el-option>
+             
+            </el-select>
+          </el-form-item>
           </el-form>
         </el-form>
       </div>

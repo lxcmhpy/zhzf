@@ -404,7 +404,7 @@ export default {
     var validateCheckObjectNum = (rule, value, callback) => {
       if (!value) {
         callback(new Error('必填项'));
-      } else if (value <= Math.ceil(this.addForm.checkObjectNumAll * 0.3)) {
+      } else if (value <= this.addForm.checkObjectNumAll * 0.3) {
         callback(new Error('不得少于总对象数的30%'));
       } else if (value > this.addForm.checkObjectNumAll) {
         callback(new Error('必须小于总数'));
@@ -415,7 +415,7 @@ export default {
     var validateCheckObjectNum2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('必填项'));
-      } else if (value <= Math.ceil(this.addForm2.checkObjectNumAll * 0.3)) {
+      } else if (value <= this.addForm2.checkObjectNumAll * 0.3) {
         callback(new Error('不得少于总对象数的30%'));
       } else if (value > this.addForm2.checkObjectNumAll) {
         callback(new Error('必须小于总数'));

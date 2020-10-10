@@ -4,7 +4,7 @@
     custom-class="leftDialog leftDialog2 archiveCatalogueBox deliverCaBox"
     :visible.sync="visible"
     @close="closeDialog"
-    top="0px"
+    :top="fatherCom==='inforCollection' ? '95px':'33px'"
     width="405px"
     :modal="false"
     :show-close="false"
@@ -66,6 +66,12 @@ import { mapGetters } from "vuex";
 import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi,getDeliverReceiptByCaseIdApi,getFileStreamByStorageIdApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
+  props: {
+    fatherCom: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
       visible: false,
@@ -138,7 +144,7 @@ export default {
         // },err=>{
         //     console.log(err);
         // })
-        this.$store.dispatch("getFile", { 
+        this.$store.dispatch("getFile", {
           docId: data.docId,
           caseId: data.caseId,
         }).then(
@@ -199,8 +205,8 @@ export default {
 
           }
         }
-         
-        this.pdfUrl =url;   
+
+        this.pdfUrl =url;
       },
     //显示封面
     showCover(){

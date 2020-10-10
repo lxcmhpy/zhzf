@@ -145,7 +145,13 @@ service.interceptors.request.use(
           if (error.toString().indexOf("Network Error") != -1) {//系统返回 无code 网络错误
           alertMessage("网络错误"); //networkError
           } else if (error.toString().indexOf("500") != -1) {
-          alertMessage(error.response.data.msg || "系统错误"); //系统错误
+            if(error.response.data.msg){
+              alertMessage(error.response.data.msg)
+            }else if(error.response.data.message){
+              alertMessage(error.response.data.message)
+            }else{
+              alertMessage('系统错误')
+            }
           } else if (error.toString().indexOf("401") != -1 && error.response.data.code == 400000) {
           alertMessage('账户在其他地方登录，您被迫下线'); //账户在其他地方登录，您被迫下线
           // removeToken();

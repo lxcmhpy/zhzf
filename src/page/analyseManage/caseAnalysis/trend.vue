@@ -3,210 +3,304 @@
     <div class="searchPage toggleBox">
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-            <el-form-item label="统计年份" prop>
-              <el-date-picker
-                v-model="value3"
-                type="year"
-                value-format="yyyy" @change="select"
-              ></el-date-picker>
-            </el-form-item>
-          </el-form>
+          <el-form-item label="立案机构" prop>
+            <elSelectTree
+              ref="elSelectTreeObj1"
+              :options="mechanismOption"
+              :clearable="false"
+              :accordion="true"
+              :props="{label: 'label', value: 'id'}"
+              @getValue="handleMechanism"
+            />
+          </el-form-item>
+          <el-form-item label="执法门类" prop>
+            <el-select v-model="logForm.category" clearable placeholder="请选择">
+              <el-option
+                v-for="item in categoryOption"
+                :key="item.value"
+                :label="item.name"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="统计周期"
+            v-for="(item, index) in dateList"
+            v-show="item.activeName === activeName"
+            :key="index">
+            <el-date-picker
+              size="small"
+              v-model="item.value"
+              :type="item.type"
+              :placeholder="item.placeholder"
+              :value-format="item.valueFormat">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="small"
+              style="margin-left: 30px"
+              @click="handleSelect">搜索</el-button>
+          </el-form-item>
         </el-form>
       </div>
-
-      <div id="chartColumn" style="width: 100%; height: 400px;"></div>
+      <div class="tablePart">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleSelect">
+          <el-tab-pane
+          v-for="item in tabPans"
+          :key="item.name"
+          :label="item.label"
+          :name="item.name">
+            <div :id="item.id" style="width: 1000px; height: 400px;"></div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
   </div>
 </template>
 
 
 <script>
-import echarts from "echarts";
-import {
-      ajslsjqsfx,
-    } from '@/api/fxyp.js'
-export default {
-  data() {
-    return {
-      value3: "2019",
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
-      tableData: [],
-      logForm: {
-        organ: "",
-        type: "",
-        operation: "",
-        username: "",
-        startTime: "",
-        endTime: "",
-        dateArray: ""
-      },
-      isShow: false,
-      data1:[],
-      data2:[],
-    };
-  },
-  methods: {
-    drawLine() {
-      this.chartColumn = echarts.init(document.getElementById("chartColumn"));
+  import echarts from "echarts";
+  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours, zfml } from '@/api/analysis/analysisManage.js'
+  import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
-      this.chartColumn.setOption({
-        title: {
-          text: "",
-          left: "left"
-        },
-        tooltip: {
-          trigger: "axis"
-        },
-        legend: {
-          // left: "center",
-          // top: "bottom",
-          data: [ this.value3+"年每月案发数量"]
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true
-        },
-        xAxis: {
-          type: "category",
-          boundaryGap: false,
-          data: [
-            "1月",
-            "2月",
-            "3月",
-            "4月",
-            "5月",
-            "6月",
-            "7月",
-            "8月",
-            "9月",
-            "10月",
-            "11月",
-            "12月"
-          ]
-        },
-        yAxis: {
-          type: "value"
-        },
-        series: [
-          // {
-          //   name: "2018年每月案发数量",
-          //   type: "line",
-          //   stack: "总量",
-          //   data: this.data1,
-          //   itemStyle: {
-          //     //通常情况下：
-          //     normal: {
-          //       color: "#00CCFF"
-          //     }
-          //   }
-          // },
+  export default {
+    components: { elSelectTree },
+    data() {
+      return {
+        dateList: [
           {
-            name: this.value3+"年每月案发数量",
-            type: "line",
-            stack: "总量",
-            data: this.data2,
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: "#002933"
-              }
-            }
-          }
-        ]
-      });
+            activeName: 'monthView',
+            value: String(new Date().getFullYear()),
+            type: "year",
+            placeholder: "选择年",
+            valueFormat: "yyyy"
+          },
+          {
+            activeName: 'dayView',
+            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
+            type: "month",
+            placeholder: "选择月",
+            valueFormat: "yyyy MM"
+          },
+          {
+            activeName: 'hoursView',
+            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + ' ' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
+            type: "date",
+            placeholder: "选择日期",
+            valueFormat: "yyyy MM dd"
+          },
+        ],
+        tabPans: [
+          { label: "年视图", name: "yearView", id: "yearChart" },
+          { label: "月视图", name: "monthView", id: "monthChart" },
+          { label: "日视图", name: "dayView", id: "dayChart" },
+          { label: "时视图", name: "hoursView", id: "hoursChart" },
+        ],
+        activeName: 'yearView',
+        logForm: {
+          mechanism: "",
+          category: ""
+        },
+        mechanismOption: [],
+        categoryOption: []
+      }
     },
+    created() {
+      this.init()
+    },
+    methods: {
+      /**
+       * 初始化页面，默认显示年数据，机构和门类默认不选择
+       */
+      init() {
+        let reqArr = [this.$store.dispatch("findOrganTreeByCurrUser"), zfml()]
+        Promise.all(reqArr).then(result => {
+          result.map((res,index) => {
+            // 第一个为机构数据，第二个为门类数据
+            if(index === 0) {
+              this.mechanismOption = res.data
+              let organId = JSON.parse(localStorage.getItem("userInfo")).organId // 获取当前用户机构
+              res.data.map(item => {
+                if(item.id === organId) {
+                  this.$refs.elSelectTreeObj1.valueTitle = item.label
+                  this.logForm.mechanism = item.id
+                }
+              })
+            } else if (index === 1) {
+              this.categoryOption = res.data
+              // this.logForm.category = res.data[0].value // 默认显示第一个
+            }
+          })
+          return
+        }, err => { console.log(err) }).then(() => {
+          let mechanism = this.logForm.mechanism
+          let params = {
+            mechanism
+          }
+          this.getData(params)
+        })
+      },
 
-  //  search(val) {
-  //     this.currentPage = val;
-  //     let data = {
-  //       year:2018
-  //     };
-  //     let _this = this;
-  //     this.$store.dispatch("ajslsjqsfx", data).then(res => {
-        
-  //        var map={};
-  //        res.forEach(item =>{
-  //        var tmp=item[0];
-  //        if(tmp<10){
-  //          tmp=tmp.substring(1,2);
-  //        }
-  //             map[tmp]=item[1];       
-  //        });
-
-        
-  //       var map2=[];
-  //       for(var i=1;i<=12;i++){
-  //         if(map[i]!=undefined){
-  //            map2.push(map[i] );
-  //         }else{
-  //            map2.push(0);
-  //         }
-  //       }
-       
-        
-  //         this.data1=map2; 
-         
-
-          
-  //         this.drawLine();
-  //     });
-  //     err => {
-  //       console.log(err);
-  //     };
-  //   },
-    search2(val) {
-      // this.currentPage = val;
-      let data = {
-        year:val
-      };
-      let _this = this;
-      // this.$store.dispatch("ajslsjqsfx", data).then(res => {
-      ajslsjqsfx(data).then(res => {
-        
-         var map={};
-         res.forEach(item =>{
-         var tmp=item[0];
-         if(tmp<10){
-           tmp=tmp.substring(1,2);
-         }
-              map[tmp]=item[1];       
-         });
-
-        
-        var map2=[];
-        for(var i=1;i<=12;i++){
-          if(map[i]!=undefined){
-             map2.push(map[i] );
-          }else{
-             map2.push(0);
+      /**
+       * 点击搜索或者切换视图
+       */
+      handleSelect() {
+        let valMap = new Map([
+          [ 'monthView', this.dateList[0].value ],
+          [ 'dayView', this.dateList[1].value.split(" ") ],
+          [ 'hoursView', this.dateList[2].value.split(" ") ],
+        ])
+        let mechanism = this.logForm.mechanism
+        let category = this.logForm.category
+        let params = {}
+        if(this.activeName === 'yearView') {
+          params = {
+            mechanism,
+            category
+          }
+        } else if (this.activeName === 'monthView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)
+          }
+        } else if (this.activeName === 'dayView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)[0],
+            month: valMap.get(this.activeName)[1]
+          }
+        } else if (this.activeName === 'hoursView') {
+          params = {
+            mechanism,
+            category,
+            year: valMap.get(this.activeName)[0],
+            month: valMap.get(this.activeName)[1],
+            day: valMap.get(this.activeName)[2],
           }
         }
-       
+        this.getData(params)
+      },
 
-         this.data2=map2;
-          this.drawLine();
-      });
-      err => {
-        console.log(err);
-      };
+      /**
+       * 获取数据
+       */
+      getData(params) {
+        let axiosMap = new Map([
+          [ 'yearView', sjglfx ],
+          [ 'monthView', sjglfxmonth ],
+          [ 'dayView', sjglfxday ],
+          [ 'hoursView', sjglfxhours ],
+        ])
+        axiosMap.get(this.activeName)(params)
+          .then(res => {
+            if(res.code === 200) {
+              return res.data
+            } else {
+              throw new Error("getData::::接口数据错误")
+            }
+          }).then(data => {
+            // 如果是年数据，则处理数据格式
+            if(this.activeName === 'yearView') {
+              let echartsData = []
+              Object.keys(data).map(key => {
+                if(data[key].length === 0) {
+                  echartsData.push({years:key, value: 0})
+                } else {
+                  echartsData.push(data[key][0])
+                }
+              })
+              this.setCharts(echartsData)
+            } else {
+              this.setCharts(data)
+            }
+          })
+      },
+
+      /**
+       * 给图表赋值
+       */
+      setCharts(data) {
+        let xAxis = [], series = [];
+        let type = this.activeName
+        data.map(item => {
+          let years = item.years || '-',
+          month = item.month || '-',
+          day = item.day || '-',
+          hours = item.dhoursay || '-'
+
+          if(type === 'yearView') {
+            xAxis.push(years)
+          } else if (type === 'monthView') {
+            xAxis.push((years + '/' + month))
+          } else if (type === 'dayView') {
+            xAxis.push((years + '/' + month + '/' + day))
+          } else if (type === 'hoursView') {
+            xAxis.push(hours)
+          }
+          series.push(item.value)
+        })
+        this.drawCharts({ xAxis, series })
+      },
+
+      /**
+       * 折线图数据格式
+       */
+      drawCharts({ xAxis, series }) {
+        let idMap = new Map([
+          [ 'yearView', 'yearChart' ],
+          [ 'monthView', 'monthChart' ],
+          [ 'dayView', 'dayChart' ],
+          [ 'hoursView', 'hoursChart' ],
+        ])
+        let chartRef = idMap.get(this.activeName)
+        let dom = document.getElementById(chartRef)
+        if(dom) {
+          let myChart = echarts.init(dom)
+          let option = {
+            title: {
+              text: "年度案发数量分析",
+              left: "center"
+            },
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: "line" // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+            xAxis: {
+              type: "category",
+              data: xAxis
+            },
+            yAxis: {
+              type: "value"
+            },
+            series: [
+              {
+                data: series,
+                type: "line"
+              }
+            ]
+          }
+          myChart.setOption(option)
+        }
+      },
+
+      /**
+       * 选中机构
+       */
+      handleMechanism(val) {
+        this.$refs.elSelectTreeObj1.$children[0].handleClose()
+        this.logForm.mechanism = val
+        console.log(val)
+      }
     },
-     select(val){
-     this.search2(val);
-   }
-  },
-  mounted() {
-    // this.search();
-    this.search2(2019);
-  },
-  created() {
-  
   }
-};
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

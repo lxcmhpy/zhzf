@@ -178,7 +178,7 @@ var PhoneCallModule =(function () {
             webSocketServerUrl: urlObj.VIDEO_HOST,
             // webSocketServerUrl: 'wss://172.16.170.47:10062',
             // webSocketServerUrl: 'wss://124.192.215.9:10062',
-            sipOutboundProxyUrl: 'udp://172.16.170.47:7766',
+            sipOutboundProxyUrl: urlObj.VIDEO_UDP_HOST,
             iceServers:'[]',
             password: password,
             authToken:result

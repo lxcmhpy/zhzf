@@ -204,7 +204,7 @@
         </div>
         <div style="margin-left: 42%">
           <el-button size="medium" type="primary" @click="submitForm('form')">提 交</el-button>
-          <el-button size="medium" @click="addVisible=false">取 消</el-button>
+          <el-button size="medium" @click="handleClose">取 消</el-button>
         </div>
       </div>
     </el-dialog>
@@ -421,14 +421,12 @@ export default {
         }
       });
     },
-    handleClose(done) {
+    handleClose() {
       this.$confirm("确认关闭？")
         .then((_) => {
-          done();
-          this.$nextTick(() => {
-            this.$refs["form"].resetFields();
-            this.fileList = [];
-          });
+          this.$refs["form"].resetFields();
+          this.fileList = [];
+          this.addVisible = false;
         })
         .catch((_) => {});
     },
@@ -544,9 +542,13 @@ export default {
           });
           _this.addVisible = false;
           _this.currentPage = 1;
+          _this.$refs["form"].resetFields();
+          _this.fileList = [];
           _this.getEviList();
         } else {
           _this.$message.error("出现异常，添加失败！");
+          _this.$refs["form"].resetFields();
+          _this.fileList = [];
         }
       });
     },
@@ -592,7 +594,6 @@ export default {
         status: this.uForm.status,
         note: this.uForm.note,
       };
-      debugger;
       let _this = this;
       this.$store.dispatch("saveOrUpdateEvidence", data).then((res) => {
         if (res.code == 200) {

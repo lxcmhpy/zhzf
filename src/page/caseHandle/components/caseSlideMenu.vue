@@ -70,7 +70,7 @@
     <!-- 文书列表 -->
     <documentFormRef :fatherCom="fatherCom" ref="documentFormRef"></documentFormRef>
      <!-- 送达回证列表 -->
-    <deliverReceiptFormRef ref="deliverReceiptFormRef"></deliverReceiptFormRef>
+    <deliverReceiptFormRef :fatherCom="fatherCom" ref="deliverReceiptFormRef"></deliverReceiptFormRef>
     <!--执法监督 文书列表 -->
     <documentFormSupervision ref="documentFormSupervisionRef" :getFileStream="getFileStream"></documentFormSupervision>
     <!--执法监督 送达回证 -->

@@ -5,7 +5,7 @@
         <el-form
           :model="searchForm"
           ref="searchForm"
-          style="width:100%"
+          style="width: 100%"
           label-width="50px"
           size="small"
         >
@@ -17,27 +17,66 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="所属机构" prop="oid" label-width="80px">
-                <el-input v-model="searchForm.oid"></el-input>
+                <!-- <el-input v-model="searchForm.oid"></el-input> -->
+                <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="tableDataTree"
+                  :accordion="true"
+                  :props="{ label: 'label', value: 'id' }"
+                  @getValue="hindleChanged"
+                ></elSelectTree>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="状态" prop="state">
-                <el-select v-model="searchForm.state" placeholder="请选择" clearable>
-                  <el-option v-for="(item,key) in allStatus" :key="key" :label="item" :value="key"></el-option>
+                <el-select
+                  v-model="searchForm.state"
+                  placeholder="请选择"
+                  clearable
+                >
+                  <el-option
+                    v-for="(item, key) in allStatus"
+                    :key="key"
+                    :label="item"
+                    :value="key"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label-width="10px">
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-search"
+                  @click="searchEmit"
+                ></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-refresh-left"
+                  @click="reset"
+                ></el-button>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row style="margin-bottom:10px;">
-            <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
-            <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
-            <el-button v-if="canApprove" type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
+          <el-row style="margin-bottom: 10px">
+            <el-button
+              type="primary"
+              size="medium"
+              @click="dialogVisible = true"
+              >添加</el-button
+            >
+            <el-button type="primary" size="medium" @click="onDeleteBatch"
+              >删除</el-button
+            >
+            <el-button
+              v-if="canApprove"
+              type="primary"
+              size="medium"
+              @click="onApproveBatch"
+              >批量审核</el-button
+            >
           </el-row>
         </el-form>
       </div>
@@ -51,14 +90,40 @@
           @selection-change="handleSelectionChange"
         >
           >
-          <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
-          <el-table-column prop="oname" label="所属机构" align="center"></el-table-column>
-          <el-table-column prop="ministerialNo" label="部级执法证号" align="center"></el-table-column>
-          <el-table-column prop="provinceNo" label="省级执法证号" align="center"></el-table-column>
-          <el-table-column prop="maritimeNo" label="海事执法证号" align="center"></el-table-column>
+          <el-table-column
+            type="selection"
+            width="50"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="personName"
+            label="姓名"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="oname"
+            label="所属机构"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="ministerialNo"
+            label="部级执法证号"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="provinceNo"
+            label="省级执法证号"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="maritimeNo"
+            label="海事执法证号"
+            align="center"
+          ></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
-            <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
+            <template slot-scope="scope">{{
+              allStatus[scope.row.state]
+            }}</template>
           </el-table-column>
           <el-table-column
             prop="auditComment"
@@ -68,17 +133,21 @@
           ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
+              <el-button type="text" @click="onDetail(scope.row)"
+                >详情</el-button
+              >
               <el-button
-                v-if="scope.row.state===1 || scope.row.state===4"
+                v-if="scope.row.state === 1 || scope.row.state === 4"
                 type="text"
                 @click="onSubmit(scope.row)"
-              >提交</el-button>
+                >提交</el-button
+              >
               <el-button
-                v-if="scope.row.state===2 && canApprove"
+                v-if="scope.row.state === 2 && canApprove"
                 type="text"
                 @click="onApprove(scope.row)"
-              >审核</el-button>
+                >审核</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -107,27 +176,29 @@
       <table class="table" width="100%" cellspacing="0">
         <tr>
           <td width="15%" class="title">姓名</td>
-          <td width="35%">{{form.personName}}</td>
+          <td width="35%">{{ form.personName }}</td>
         </tr>
         <tr>
           <td class="title">所属机构</td>
-          <td>{{form.oname}}</td>
+          <td>{{ form.oname }}</td>
         </tr>
         <tr>
           <td class="title">部级执法证号</td>
-          <td>{{form.ministerialNo}}</td>
+          <td>{{ form.ministerialNo }}</td>
         </tr>
         <tr>
           <td class="title">省级执法证号</td>
-          <td>{{form.provinceNo}}</td>
+          <td>{{ form.provinceNo }}</td>
         </tr>
         <tr>
           <td class="title">海事执法证号</td>
-          <td>{{form.maritimeNo}}</td>
+          <td>{{ form.maritimeNo }}</td>
         </tr>
       </table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="detailVisible = false">关闭</el-button>
+        <el-button type="primary" @click="detailVisible = false"
+          >关闭</el-button
+        >
       </span>
     </el-dialog>
 
@@ -160,9 +231,10 @@ import {
 } from "@/api/notice/person";
 import approve from "@/page/notice/components/approve";
 import JkyDialogTable from "@/components/jky-dialogTable";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
 export default {
-  components: { approve, JkyDialogTable },
+  components: { approve, JkyDialogTable, elSelectTree },
   data() {
     return {
       searchForm: {
@@ -221,9 +293,27 @@ export default {
       form: {},
       detailVisible: false,
       canApprove: false,
+      tableDataTree: [],
     };
   },
   methods: {
+    // 获取机构树
+    getOidTreeData() {
+      let _this = this;
+      _this.$store.dispatch("findOrganTreeByCurrUser").then(
+        (res) => {
+          _this.tableDataTree = res.data;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    // 所属机构切换
+    hindleChanged(val) {
+      this.searchForm.oid = val;
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+    },
     //获取已归档的数据
     getDataList(searchData) {
       let data = searchData;
@@ -256,6 +346,8 @@ export default {
     },
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.$refs.elSelectTreeObj.clearHandle();
+      this.searchForm.oid = "";
       this.load();
     },
     handleSelectionChange(val) {
@@ -375,7 +467,9 @@ export default {
       this.getDataList({});
     },
   },
-  created() {},
+  created() {
+    this.getOidTreeData();
+  },
   mounted() {
     let user = iLocalStroage.gets("userInfo");
     let _this = this;

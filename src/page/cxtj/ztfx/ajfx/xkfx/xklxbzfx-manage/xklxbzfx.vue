@@ -27,7 +27,6 @@ import echarts from "echarts";
 export default {
   data() {
     return {
-      value1:'',
       logForm: {
         organ: "",
         type: "",
@@ -63,7 +62,7 @@ export default {
         },
         series: [
           {
-            name: "访问来源",
+            name: "",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
