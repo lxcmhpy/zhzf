@@ -63,7 +63,8 @@
           </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-          <el-upload class="upload-demo" :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple>
+          {{fileList}}
+          <el-upload class="upload-demo" :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple :on-remove="delFile">
             <el-button size="small" type="primary">选择文件</el-button>
             <div class="el-upload__tip" slot="tip">只能上传图片文件，且不大于10M
             </div>
@@ -230,6 +231,11 @@ export default {
         });
         _this.total = res.data.total
       });
+    },
+    delFile(param) {
+      console.log(param)
+      this.imgListUpload = this.imgListUpload.filter(item => item.file.name !== param.name)
+      console.log(this.imgListUpload)
     },
     saveFile(param) {
       this.imgListUpload.push(param)
