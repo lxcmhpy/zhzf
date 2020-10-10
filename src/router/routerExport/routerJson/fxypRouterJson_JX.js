@@ -88,14 +88,6 @@ export default  [
             component: () => import("@/page/analyseManage/caseAnalysis/amountProportion.vue")
           },
           {
-            name: "trend",
-            path: "/trend",
-            meta: {
-              title: "案件数量时间趋势分析"
-            },
-            component: () => import("@/page/analyseManage/caseAnalysis/trend.vue")
-          },
-          {
             name: "numberYTY",
             path: "/numberYTY",
             meta: {
@@ -103,6 +95,15 @@ export default  [
             },
             component: () => import("@/page/analyseManage/caseAnalysis/numberYTY.vue")
           },
+          {
+            name: "trend",
+            path: "/trend",
+            meta: {
+              title: "案件数量时间趋势分析"
+            },
+            component: () => import("@/page/analyseManage/caseAnalysis/trend.vue")
+          },
+
           {
             name: "proportion",
             path: "/proportion",
