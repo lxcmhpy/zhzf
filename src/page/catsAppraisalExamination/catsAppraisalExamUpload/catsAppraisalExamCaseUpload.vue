@@ -472,17 +472,6 @@
                     title: row.title,
                     storageId:row.storageId
                 }
-                // this.$refs.viewNoticeRef.showNewPDF(routerData);
-                // return;
-                // getFileStreamByStorageId(row.storageId).then(res => {
-                //     const blob = new Blob([res], {
-                //         type: 'application/pdf;charset-UTF-8'
-                //     });
-                //     let objectUrl = window.URL.createObjectURL(blob);
-                //     routerData.storagePath = objectUrl;
-                //     this.$refs.viewNoticeRef.showNewPDF(routerData);
-                // })
-                // return;
                 this.$refs.viewNoticeRef.showPDF(row)
 
             },
