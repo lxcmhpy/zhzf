@@ -277,7 +277,7 @@ el-form {
   width: calc(100% - 96px);
 }
 .btn-height63 {
-  right: 126px;
+  right: 9%;
 }
 .el-form-item {
   margin-bottom: 0px;
