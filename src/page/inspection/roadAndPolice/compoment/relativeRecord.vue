@@ -9,6 +9,7 @@
       </template>
       <div class="userList">
         <li v-for="item in tableData" :label="item.storageId" :key="item.storageId" style="margin-bottom:20px;cursor   : pointer;">
+          <span style="margin-top:20px;margin-bottom:10px;    display: block;">{{format(item.docId)}}</span>
           <img :src="item.url" width="100%" height="auto" @click.stop="imgDetail(scope.row)" />
         </li>
       </div>
@@ -48,7 +49,7 @@ export default {
       // if (!this.getData) this.getByMlCaseId();
       if (carinfoId) {
         let data = {
-          caseId: carinfoId.id||'',
+          caseId: carinfoId.id || '',
           current: 1,
           size: 20,
         };
@@ -57,11 +58,11 @@ export default {
         findCommonFileApi(data).then((res) => {
           console.log("res", res);
           _this.tableData = res.data.records;
-           _this.tableData.forEach(element => {
-          _this.$util.com_getFileStream(element.storageId).then(res => {
-            _this.$set(element, 'url', res)
+          _this.tableData.forEach(element => {
+            _this.$util.com_getFileStream(element.storageId).then(res => {
+              _this.$set(element, 'url', res)
+            });
           });
-        });
         });
       }
     },
@@ -106,6 +107,28 @@ export default {
         this.checkedDocId = [];
       }
       this.isIndeterminate = false;
+    },
+    format(docId) {
+      switch (docId) {
+        case '000001':
+          return '车辆照片证据';
+          break;
+        case '000002':
+          return '驾驶人/企业';
+          break;
+        case '000003':
+          return '初检称重';
+          break;
+        case '000004':
+          return '卸载复检';
+          break;
+        case '000005':
+          return '处罚决定';
+          break;
+        case '000006':
+          return '其他';
+          break;
+      }
     },
   },
   mounted() {

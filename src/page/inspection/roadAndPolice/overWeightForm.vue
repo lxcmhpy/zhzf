@@ -108,7 +108,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
+    <el-form :model="carInfo.drivePerson" :rules="drivePersonRules" ref="drivePerson" label-width="100px" :disabled='!isCanEdit'>
       <div class="caseFormBac" id="link_2" ref="link_2" @mousewheel="scrool2">
         <p>驾驶员/企业</p>
         <div>
@@ -174,7 +174,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
+    <el-form :model="carInfo.firstCheck" :rules="firstCheckRules" ref="firstCheck" label-width="100px" :disabled='!isCanEdit'>
       <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>初检记录</p>
         <div>
@@ -211,7 +211,7 @@
           </div>
           <div class="item">
             <el-form-item label="车货限重" prop="weightLimit">
-              <el-input v-model="carInfo.firstCheck.weightLimit" @input="overLimit()" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.weightLimit" @input="overLimit()" @change="firstCheckOverWeight"  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -228,7 +228,7 @@
         <div>
           <div class="item">
             <el-form-item label="超限质量" prop="overWeight">
-              <el-input v-model="carInfo.firstCheck.overWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.overWeight" @input="firstCheckOverWeight" @change="firstCheckOverWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -333,7 +333,7 @@
         </div>
       </div>
     </el-form>
-    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px" :disabled='carInfo.fileStatus==1&&isCanEdit'>
+    <el-form :model="carInfo.secondCheck" :rules="secondCheckRules" ref="secondCheck" label-width="100px" :disabled='!isCanEdit'>
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">
         <p>卸载/复检记录</p>
         <div>
@@ -430,14 +430,14 @@
         <div>
           <div class="item">
             <el-form-item label="复检质量" prop="secondCheckWeight">
-              <el-input v-model="carInfo.secondCheck.secondCheckWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.secondCheck.secondCheckWeight"  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="卸载质量" prop="unloadWeight">
-              <el-input v-model="carInfo.secondCheck.unloadWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.secondCheck.unloadWeight"  @change="secondCheckOverWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -476,19 +476,23 @@
     <el-form label-width="200px;">
       <div class="caseFormBac clear-float-div" id="link_5" ref="link_5" @mousewheel="scrool5">
         <p>处罚决定</p>
-        <div>
-          <ul>
-            <li v-for="(item,index) in fileList" :key="index" class="file-list-chufa" @click="handlePictureCardPreview(item)">
-              <div>
-                <img src="../../../../static/images/img/personInfo/icon_ac_wenshu.svg" alt="">
-              </div>
-              <div class="file-list-chufa-text">{{item.fileName}}</div>
-            </li>
-          </ul>
-          <el-upload class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
-            <!-- <el-button size="small" type="primary">选取文件</el-button> -->
-            <i class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+        <div class="el-form-item is-required">
+          <div class=" el-form-item__label ">公安交警处罚决定书</div>
+          <div>
+            <ul>
+              <li v-for="(item,index) in fileList" :key="index" class="file-list-chufa" @click="handlePictureCardPreview(item)">
+                <div>
+                  <img src="../../../../static/images/img/personInfo/icon_ac_wenshu.svg" alt="">
+                </div>
+                <div class="file-list-chufa-text">{{item.fileName}}</div>
+              </li>
+            </ul>
+            <el-upload class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
+              <!-- <el-button size="small" type="primary">选取文件</el-button> -->
+              <i class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+
         </div>
       </div>
     </el-form>
@@ -637,6 +641,7 @@ export default {
           overRatio: '',
           checkPerson: '',
           checkPersonId: '',
+          checkResult: ''
         },
         penaltyDecision: {}
       },
@@ -1345,7 +1350,24 @@ export default {
     },
     changeEdit() {
       this.isCanEdit = true
-    }
+    },
+    firstCheckOverWeight() {
+      if(this.carInfo.firstCheck.overWeight){
+      let number = this.carInfo.firstCheck.overWeight / this.carInfo.firstCheck.weightLimit*100;
+      number = String(number).replace(/^(.*\..{4}).*$/, "$1");
+      number = Number(number); // number = 12.3321
+      this.$set(this.carInfo.firstCheck, 'overRatio', number)
+      }
+      this.secondCheckOverWeight()
+    },
+    secondCheckOverWeight() {
+      if(this.carInfo.secondCheck.unloadWeight){
+      let number = this.carInfo.secondCheck.unloadWeight / this.carInfo.firstCheck.weightLimit*100;
+      number = String(number).replace(/^(.*\..{4}).*$/, "$1");
+      number = Number(number); // number = 12.3321
+      this.$set(this.carInfo.secondCheck, 'overRatio', number)
+      }
+    },
   },
 
   mounted() {
