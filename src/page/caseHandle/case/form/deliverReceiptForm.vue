@@ -148,10 +148,12 @@
         <div style="height:auto;">
         <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
             <div lazy>
-                <object >
+                <!-- <object >
                     <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
                     :src="mlList" type="application/pdf" internalinstanceid="29">
-                </object>
+                </object> -->
+                <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
+
             </div>
         </div>
         </div>
@@ -178,7 +180,7 @@ export default {
       pdfVisible: false,
       closeDialog: false,
       mlList: "",
-      host:'',
+      // host:'',
       servedTypeOptions: [],//送达方式
       receiveTypeOptions: [],//接收方式
       currentPage: 1, //当前页
@@ -200,7 +202,9 @@ export default {
           { required: true, message: '接收方式不能为空', trigger: 'blur', validator: isSelect },
           { required: true, message: '接收方式不能为空', trigger: 'change', validator: isSelect },
         ]
-      }
+      },
+      pdfUrl:''
+
     };
   },
   computed: { ...mapGetters(['caseId','caseApproval']) },
@@ -241,7 +245,7 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({name:'case_handle_deliveryCertificate'});
     },
-    handleEdit(index, row) {
+    async handleEdit(index, row) {
       console.log("111",row);
         let data = {
             caseId:row.caseId,
@@ -250,14 +254,16 @@ export default {
         };
         console.log("123",data);
         let _that = this
+        let  thisStorageIdRes= await findByCaseIdAndDocIdSongdaApi(data)
+        _that.pdfUrl = await this.$util.com_getFileStream(thisStorageIdRes.data.storageId)
+        // findByCaseIdAndDocIdSongdaApi(data).then(res=>{
+        //     console.log("1111",res.data);
+        //     _that.mlList = _that.host + res.data.storageId;
 
-        findByCaseIdAndDocIdSongdaApi(data).then(res=>{
-            console.log("1111",res.data);
-            _that.mlList = _that.host + res.data.storageId;
 
-        },err=>{
-            console.log(err);
-        })
+        // },err=>{
+        //     console.log(err);
+        // })
         this.indexPdf = 0;
         this.pdfVisible = true
     },
@@ -371,8 +377,6 @@ export default {
       },
   },
   mounted() {
-    // this.setDepartTable(this.data)
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
   },
   created() {
     this.getDeliverReList();
