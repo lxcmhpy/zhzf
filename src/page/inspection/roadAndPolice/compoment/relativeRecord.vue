@@ -9,13 +9,9 @@
       </template>
       <div class="userList">
         <li v-for="item in tableData" :label="item.storageId" :key="item.storageId" style="margin-bottom:20px;cursor   : pointer;">
-          <img :src="host+item.storageId" width="100%" height="auto" @click.stop="imgDetail(scope.row)" />
+          <img :src="item.url" width="100%" height="auto" @click.stop="imgDetail(scope.row)" />
         </li>
       </div>
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
-        <el-button @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
-      </span> -->
     </el-dialog>
   </div>
 </template>
@@ -31,7 +27,6 @@ export default {
       caseList: [],
       mlList: [],
       pdfVisible: false,
-      host: "",
       checkedDocId: [],
       tableData: [],
       indexPdf: 0,
@@ -40,9 +35,6 @@ export default {
       isIndeterminate: true,
       checkAll: false,
       getData: false,
-      host: ''
-
-
     };
   },
   inject: ["reload"],
@@ -65,6 +57,11 @@ export default {
         findCommonFileApi(data).then((res) => {
           console.log("res", res);
           _this.tableData = res.data.records;
+           _this.tableData.forEach(element => {
+          _this.$util.com_getFileStream(element.storageId).then(res => {
+            _this.$set(element, 'url', res)
+          });
+        });
         });
       }
     },
@@ -86,54 +83,6 @@ export default {
         }
       );
     },
-    // getByMlCaseId() {
-    //   let _this = this
-    //   findByCaseBasicInfoIdApi(this.caseId).then(
-    //     res => {
-    //         debugger
-    //       console.log(res);
-    //       _this.caseList = res.data;
-    //     },
-    //     error => {
-    //       console.log(error);
-    //     }
-    //   );
-    // },
-    routerArchiveCatalogueDetail() {
-      let _thats = this
-      this.docSrc = this.host + this.checkedDocId[0];
-      this.nowShowPdfIndex = 0;
-      this.indexPdf = 0;
-      this.pdfVisible = true
-      this.archiveSuccess = true;
-      this.showCover = 'pdf';
-    },
-    // routerArchiveCatalogueDetail () {
-    //     debugger
-    //     let _thats = this
-    //     this.checkedDocId.forEach((v)=>{
-    //        debugger
-    //        _thats.mlList.push(this.host + v)
-    //     });
-    //     this.indexPdf = 0;
-    //     this.pdfVisible = true
-    //     console.log('选中的id',this.checkedDocId)
-    // },
-    alertPDF(item) {
-      let data = {
-        caseId: item.caseBasicinfoId,
-        docId: item.caseDoctypeId,
-      };
-      let _that = this
-      findByCaseIdAndDocIdApi(data).then(res => {
-        _that.mlList = _that.host + res.data[0].storageId;
-
-      }, err => {
-        console.log(err);
-      })
-      this.indexPdf = 0;
-      this.pdfVisible = true
-    },
     //显示封面
     showCover() {
       if (this.$route.name != 'case_handle_archiveCover') {
@@ -143,20 +92,7 @@ export default {
       }
       this.$emit('showCoverEmit')
     },
-    //上下翻页显示pdf
-    showNext(flag) {
-      if (flag == 'last') {
-        if (this.nowShowPdfIndex) {
-          this.nowShowPdfIndex--;
-          this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
-        }
-      } else {
-        if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
-          this.nowShowPdfIndex++;
-          this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
-        }
-      }
-    },
+
     //全选
     handleCheckAllChange(val) {
       //      debugger
@@ -173,7 +109,6 @@ export default {
     },
   },
   mounted() {
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     let class1 = document.getElementsByClassName("documentFormCat");
     let class2 = class1[0].parentNode;
     class2.style.right = '60px';

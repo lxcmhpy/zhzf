@@ -53,7 +53,7 @@
                 <el-option label="6" value="6"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label-width="0" prop="axisNum" style="width:29%;display: inline-block;">
+            <el-form-item label-width="0" prop="axisNum" style="width:calc(30% - 6px);display: inline-block;">
               <el-select placeholder="选择驱动轴" v-model="carInfo.axisType">
                 <el-option label="双轴" value="双轴"></el-option>
                 <el-option label="单轴" value="单轴"></el-option>
@@ -181,7 +181,7 @@
           <div class="item">
             <el-form-item label="初检站点" prop="firstCheckStation">
               <el-input v-model="carInfo.firstCheck.firstCheckStation" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
-                <template slot="append">吨</template>
+                <template slot="append">选择</template>
               </el-input>
             </el-form-item>
           </div>
@@ -1282,7 +1282,9 @@ export default {
         this.dialogImageVisible = true;
 
       } else if (fileType == 'image') {
-        this.dialogImageUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + file.storageId;
+        this.$util.com_getFileStream(file.storageId).then(res => {
+          this.dialogImageUrl = res;
+        });
         this.dialogImageVisible = true;
 
       } else {
