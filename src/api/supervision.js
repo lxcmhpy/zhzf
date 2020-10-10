@@ -431,3 +431,16 @@ export function getRecordCaseByRecordIdApi(recordId) {
     // baseUrlType:"DUTY_HOST"
   })
 }
+
+//生成pdf
+export function createRecordDocPdfApi(doc) {
+  return request({
+    url: "/check/record/createRecordDocPdf",
+    // url: "/record/createRecordDocPdf",
+    method: "post",
+    data: doc,
+    showloading: true,
+    cancelToken: setCancelSource(),
+    // baseUrlType:"DUTY_HOST"
+  })
+}

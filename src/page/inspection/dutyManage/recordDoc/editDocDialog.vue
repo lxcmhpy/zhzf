@@ -20,6 +20,7 @@
 <script>
 import HiddenDangerDoc from './hiddenDangerDoc.vue';
 import InstructRectification from './instructRectification.vue';
+import { createRecordDocPdfApi } from "@/api/supervision";
 
 export default {
   components: { HiddenDangerDoc, InstructRectification },
@@ -59,12 +60,19 @@ export default {
       }
       this.$refs[refName].validateForm().then(res => {
         if(res.code === 200){
-          console.log(res.data);
-          const doc = Object.assign(this.docData,{ caseDocTypeId, name, caseDocData: res.data })
-          this.$emit("addDoc", doc);
-          this.closeDialog();
+          const doc = Object.assign(this.docData,{ caseDocTypeId, name, caseDocData: res.data, numberNo: JSON.parse(res.data).numberNo });
+
+          createRecordDocPdfApi(doc).then(
+            res => {
+              doc.caseDocPdfId = res.data.id;
+              doc.caseDocStorageId = res.data.storageId;
+              this.$emit("addDoc", doc);
+              this.closeDialog();
+            },
+            err => {}
+          );
         }else{
-          this.closeDialog();
+          // this.closeDialog();
         }
       });
     },

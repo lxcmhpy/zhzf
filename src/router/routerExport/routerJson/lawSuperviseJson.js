@@ -200,5 +200,12 @@ export default  [
     title: "重点人员",
     },
     component: () => import("@/page/lawSupervise/supervisePage/emphasis/personManage")
+  },{
+    path: "/siteAnalysis",
+    name: "law_supervise_siteAnalysis",
+    meta: {
+      title: "站点资源统计",
+    },
+    component: () => import("@/page/lawSupervise/supervisePage/site/siteAnalysisManage.vue")
   }
 ]

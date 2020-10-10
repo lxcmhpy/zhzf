@@ -32,7 +32,7 @@
           <el-table-column prop="docId" label="类型" align="center" :formatter="format"></el-table-column>
           <el-table-column prop="storageId" label="详情" align="center">
             <template slot-scope="scope">
-              <img v-if="scope.row.status==1" :src="host+scope.row.storageId" width="40" height="40" @click.stop="imgDetail(scope.row)" />
+              <img v-if="scope.row.status==1" :src="scope.row.url" width="40" height="40" @click.stop="imgDetail(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column prop="status" label="状态" align="center">
@@ -63,7 +63,8 @@
           </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-          <el-upload class="upload-demo" :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple>
+          {{fileList}}
+          <el-upload class="upload-demo" :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple :on-remove="delFile">
             <el-button size="small" type="primary">选择文件</el-button>
             <div class="el-upload__tip" slot="tip">只能上传图片文件，且不大于10M
             </div>
@@ -89,7 +90,7 @@
 import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import { mapGetters } from "vuex";
 import evidenceCatalogue from "@/page/caseHandle/case/form/evidenceCatalogue.vue";
-import { uploadCommon, findCommonFileApi ,updateCommonFileApi} from "@/api/upload";
+import { uploadCommon, findCommonFileApi, updateCommonFileApi } from "@/api/upload";
 
 import {
   getFileStreamByStorageIdApi,
@@ -108,7 +109,6 @@ export default {
     };
     return {
       fileList: [],
-      host: "",
       evfile: "",
       evTypeOptions: [{ label: '车辆照片证据', value: '000001' }, { label: '驾驶人/企业', value: '000002' }, { label: '初检称重', value: '000003' }, { label: '卸载复检', value: '000004' }, { label: '处罚决定', value: '000005' }, { label: '其他', value: '000006' }],
       statusOptions: [],
@@ -214,7 +214,7 @@ export default {
     //表单筛选
     getEviList(index) {
       let data = {
-        caseId: this.inspectionOverWeightId.id||this.$route.params.carinfoId,
+        caseId: this.inspectionOverWeightId.id || this.$route.params.carinfoId,
         docId: this.evidenceForm.docId,
         current: index || this.currentPage,
         size: this.pageSize,
@@ -224,8 +224,18 @@ export default {
       findCommonFileApi(data).then((res) => {
         console.log("res", res);
         _this.tableData = res.data.records;
+        _this.tableData.forEach(element => {
+          _this.$util.com_getFileStream(element.storageId).then(res => {
+            _this.$set(element, 'url', res)
+          });
+        });
         _this.total = res.data.total
       });
+    },
+    delFile(param) {
+      console.log(param)
+      this.imgListUpload = this.imgListUpload.filter(item => item.file.name !== param.name)
+      console.log(this.imgListUpload)
     },
     saveFile(param) {
       this.imgListUpload.push(param)
@@ -271,7 +281,7 @@ export default {
       fd.append("category", '路警联合;图片');
       fd.append("fileName", param.file.name);
       fd.append('status', 1)//传图片状态
-      fd.append('caseId', this.inspectionOverWeightId.id||this.$route.params.carinfoId)//传记录id
+      fd.append('caseId', this.inspectionOverWeightId.id || this.$route.params.carinfoId)//传记录id
       fd.append('docId', this.form.radio)//传类型代码
 
       let _this = this;
@@ -292,7 +302,7 @@ export default {
     },
     //通过switch开关修改状态
     updateEviBySwitch(row) {
-      let data=row
+      let data = row
       let _this = this;
       updateCommonFileApi(data).then((res) => {
         if (res.code == 200) {
@@ -477,7 +487,6 @@ export default {
     },
   },
   mounted() {
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
   },
   created() {
     this.getEviList();
@@ -515,5 +524,4 @@ export default {
   position: relative;
   overflow: hidden;
 }
-
 </style>

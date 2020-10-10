@@ -31,6 +31,14 @@
     "QZ_SOCKET_HOST": "ws://172.16.170.44:8083",
     "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
   },
+  "NWnginx": {
+    "CAPTCHA_HOST": "http://172.16.169.51:8881",
+    "PDF_HOST": "http://172.16.169.51:8882",
+    "VIDEO_HOST": "http://172.16.169.51:8883",
+    "XJ_IMG_HOST": "http://172.16.169.51:8884",
+    "CHECK_API": "http://172.16.169.51:8885",
+    "QZ_SOCKET_HOST": "http://172.16.169.51:8886"
+  },
   "XBW": {
     "CAPTCHA_HOST": "http://127.0.0.1:9000",
     "PDF_HOST": "http://39.105.229.204:9332/",
@@ -73,7 +81,7 @@
   },
   "WC": {
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
-    "AAA_HOST": "http://172.16.169.37:8099",
+    "AAA_HOST": "http://172.16.169.56:8099",
     "PDF_HOST": "http://172.16.170.54:9332/",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
