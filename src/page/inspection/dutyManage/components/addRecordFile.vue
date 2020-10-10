@@ -101,7 +101,6 @@ export default {
                   attach.name = file.fileName;
                   attachList.push(attach);
                 })
-                console.log(attachList)
                 this.$emit("addAttach", attachList);
                 loading.close();
               },

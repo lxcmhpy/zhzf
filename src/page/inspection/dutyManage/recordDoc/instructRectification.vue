@@ -12,14 +12,10 @@
         <div
           class="doc_number"
         >
-        <el-form-item prop="porgNameTop"  style="width: 100px;">
-          <el-input v-model="formData.porgNameTop"></el-input>
+        <el-form-item prop="orgName"  style="width: 100px;">
+          <el-input v-model="formData.orgName"></el-input>
         </el-form-item>
-        大队
-        <el-form-item prop="orgNameTop"  style="width: 100px;">
-          <el-input v-model="formData.orgNameTop"></el-input>
-        </el-form-item>
-        中队函告[
+        函告[
         <el-form-item prop="yearNo"  style="width: 50px;">
           <el-input v-model="formData.yearNo"></el-input>
         </el-form-item>
@@ -188,10 +184,10 @@ export default {
       formData: {
         // tempNo: "整改001",
         numberNo: "",
-        companyName: "责令某单位",
-        orgName: "机构名称",
+        companyName: "",
+        orgName: "",
         inspectionTime: "",
-        afdd: "路段名称",
+        afdd: "",
         contextInfo: "问题内容",
         days: 15,
         endTime: "",
@@ -238,6 +234,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.docFormRef.validate((valid, noPass) => {
           if (valid) {
+            this.formData.orgNameTop = this.formData.orgName;
             const reportData = JSON.stringify(this.formData);
             resolve({ code: 200, data: reportData });
           } else {
@@ -274,8 +271,7 @@ export default {
       getOrganInfoApi().then(
         res => {
           const data = {};
-          data.porgNameTop = res.data.porgNameTop || res.data.porgName;
-          data.orgNameTop = res.data.orgNameTop || res.data.orgName;
+          data.orgName = res.data.orgName;
           this.formData = Object.assign(data,this.formData);
         }
       )

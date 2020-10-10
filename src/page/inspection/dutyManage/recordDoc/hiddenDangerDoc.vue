@@ -11,13 +11,13 @@
         <div class="doc_topic">公路安全隐患告知函</div>
         <div
           class="doc_number"
-        >{{ formData.porgName }}大队{{ formData.orgName }}中队函告[
+        >{{ formData.orgName }}函告[
         <el-form-item prop="yearNo" style="width: 50px;">
           <el-input v-model="formData.yearNo" placeholder=""></el-input>
         </el-form-item>
         ]&nbsp;&nbsp;第
         <el-form-item prop="numberNo" style="width: 150px;">
-          <el-input v-model="formData.numberNo" placeholder="XXXX"></el-input>
+          <el-input v-model="formData.numberNo" placeholder=""></el-input>
         </el-form-item>
         号</div>
         <span class="top-split-line"></span>
@@ -29,18 +29,18 @@
           </span>
         </p>
         <p class="t-i-28">
-          <span>
+          <!-- <span>
             <el-form-item prop="porgName" style="width: 260px;">
               <el-input v-model="formData.porgName" placeholder="XXXXXXXXXX"></el-input>
             </el-form-item>
           </span>
-          大队
+          大队 -->
           <span>
             <el-form-item prop="orgName" style="width: 200px;">
-              <el-input v-model="formData.orgName" placeholder="XXXXXXXX"></el-input>
+              <el-input v-model="formData.orgName" placeholder=""></el-input>
             </el-form-item>
           </span>
-          中队于
+          于
           <el-form-item prop="inspectionTime">
             <el-date-picker
               class="date-time-input"
@@ -74,7 +74,7 @@
           鉴于情况严重，影响
           <span>
             <el-form-item prop="influenceInfo" style="width: 280px">
-              <el-input v-model="formData.influenceInfo" placeholder="xxxxxxxxxxxxxxxxxxxxxxx"></el-input>
+              <el-input v-model="formData.influenceInfo" placeholder=""></el-input>
             </el-form-item>
           </span>安全，请贵单位核实后尽快处置。
         </p>
@@ -228,7 +228,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.docFormRef.validate((valid, noPass) => {
           if (valid) {
-            this.formData.porgNameTop = this.formData.porgName;
+            this.formData.porgNameTop = this.formData.orgName;
             this.formData.orgNameTop = this.formData.orgName;
             const reportData = JSON.stringify(this.formData);
             resolve({ code: 200, data: reportData });
@@ -266,9 +266,6 @@ export default {
       getOrganInfoApi().then(
         res => {
           const data = {}
-          data.porgNameTop = res.data.porgNameTop || res.data.porgName;
-          data.orgNameTop = res.data.orgNameTop || res.data.orgName;
-          data.porgName = res.data.porgName || '';
           data.orgName = res.data.orgName  || '';
           this.formData = Object.assign(data,this.formData);
         }
