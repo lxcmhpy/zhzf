@@ -311,7 +311,6 @@ export default {
       rules: {},
       mlList: [],
       indexPdf: 0,
-      host:'',
       urlList: [],
       caseList: [],
       showCover:'cover', //显示pdf还是封面form
@@ -630,9 +629,6 @@ export default {
     }
   },
   mounted() {
-    // this.$refs.archiveCatalogueRef.showModal(true);
-    // this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
-    // this.getByMlCaseId(this.caseId)
     this.caseLinkDataForm.caseBasicinfoId = this.caseId;
     this.getFlowType();
     this.setFormData();

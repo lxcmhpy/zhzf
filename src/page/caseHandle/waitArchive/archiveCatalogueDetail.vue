@@ -627,8 +627,6 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.caseList);
-    // this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     this.getByMlCaseId(this.caseId);
   },
   components: {

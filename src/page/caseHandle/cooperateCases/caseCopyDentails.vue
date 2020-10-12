@@ -114,7 +114,6 @@ export default {
     return {
       caseData: {},
       appendixList: [],
-      // host:"",
     }
     
   },
@@ -158,7 +157,6 @@ export default {
     this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
     this.caseData = this.$route.params.caseInfo;
     console.log('this.caseData',this.caseData);
-    // this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     this.findFileList();
   },
   created(){
