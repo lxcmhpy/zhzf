@@ -87,7 +87,7 @@
           element-loading-spinner="car-loading"
           element-loading-text="加载中..."
           style="width: 100%;height:100%;"
-          @selection-change="getJournalList"
+          @selection-change="selectJournal"
         >
           <el-table-column type="selection" align="center"></el-table-column>
           <el-table-column prop="title" label="日志名称" align="left" ></el-table-column>
@@ -248,7 +248,7 @@ export default {
       // }else{
          this.$router.push({
           name: "journal_handover",
-        params: { page: "handover",checklogId:row.checklogId,handelType:"3" },
+          params: { page: "handover",checklogId:row.checklogId,handelType:"3" },
       });
       // }
      
