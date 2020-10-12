@@ -96,7 +96,7 @@
                 <div class="bt">案发地</div>
               </el-row>
               <el-row>
-                <div id="afd" style="width: 100%; height: 200px;"></div>
+                <div id="afd" class="afd" style="width: 100%; height: 200px;"></div>
               </el-row>
             </el-row>
             <el-row class="right_3">
@@ -111,7 +111,7 @@
                   <el-col :span="12">
                     <div class="count" style="text-align:center;width:100px;margin-left:25px;">{{penalty}}
                     </div>
-                    <div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div>
+                    <div class="dw" style="height:30px;width:100px;margin-left:25px;">{{unit}}</div>
                   </el-col>
                 </el-row>
               </el-row>
@@ -169,7 +169,8 @@
         crimePlaceSeries: [],
         carSortXData: [],
         carSortSeries: [],
-        mapData:[]
+        mapData:[],
+        unit:'万元'
       };
     },
     methods: {
@@ -187,26 +188,39 @@
             }
             this.caseTypeCon = res.data.typeOfCase;
             this.incidentTrend = res.data.incidentTrend;
+            this.trendYearNewX = ['01','02','03','04','05','06','07','08','09','10','11','12']
             Object.keys(res.data.incidentTrend).forEach(function (element, index) {
               if (index == 0) {
+                that.trendYearDate = [0,0,0,0,0,0,0,0,0,0,0,0]
                 that.trendYear = element
                 if(res.data.incidentTrend[element].length>0){
-                  res.data.incidentTrend[element].map(item => {
-                    that.trendYearDate.push(item.value)
+                  that.trendYearNewX.map(i=>{
+                    res.data.incidentTrend[element].map(item => {
+                      if(i == item.name){
+                        that.trendYearDate[i-1]= item.value
+                      }else{
+                        return
+                      }
+                    })
                   })
                 }else{
-                  that.trendYearDate = []
+                  that.trendYearDate = [0,0,0,0,0,0,0,0,0,0,0,0]
                 }
               } else if (index == 1) {
+                that.trendYearDateNew = [0,0,0,0,0,0,0,0,0,0,0,0]
                 that.trendYearNew = element
                 if(res.data.incidentTrend[element].length>0) {
-                  res.data.incidentTrend[element].map(item => {
-                    that.trendYearNewX.push(item.name)
-                    that.trendYearDateNew.push(item.value)
+                  that.trendYearNewX.map(i=>{
+                    res.data.incidentTrend[element].map(item => {
+                      if(i == item.name){
+                        that.trendYearDateNew[i-1]= item.value
+                      }else{
+                        return
+                      }
+                    })
                   })
                 }else{
-                  that.trendYearNewX = []
-                  that.trendYearDateNew = []
+                  that.trendYearDateNew = [0,0,0,0,0,0,0,0,0,0,0,0]
                 }
               }
             })
@@ -220,23 +234,30 @@
             });
             //执法机构案件数量
             if(res.data.caseNumber.length>0){
-              res.data.caseNumber.slice(0, 8).map(item => {
+              res.data.caseNumber.slice(0, 5).map(item => {
                 that.caseNumberSeries.push(item.value)
                 that.caseNumberXData.push(item.name)
               })
             }
 
             //罚没款项
-            that.penalty = res.data.confiscated[0].value
+
+            if(res.data.confiscated[0].value.length>8){
+              that.unit = '亿元'
+              that.penalty = res.data.confiscated[0].value/100000000
+            }else{
+              that.unit = '万元'
+              that.penalty = res.data.confiscated[0].value/10000
+            }
 
             //案发地
-            res.data.crimePlace.slice(0, 8).map(item => {
+            res.data.crimePlace.slice(0, 5).map(item => {
               that.crimePlaceSeries.push(item.value)
               that.crimePlaceXData.push(item.name)
             })
             //车辆排名
             if(res.data.vehicles){
-              res.data.vehicles.slice(0, 8).map(item => {
+              res.data.vehicles.slice(0, 5).map(item => {
                 that.carSortSeries.push(item.value)
                 that.carSortXData.push(item.name)
               })
@@ -535,6 +556,27 @@
                     }
                   }]
                 }],
+                tooltip: {
+                  show:true,
+                  trigger: 'item',
+                  backgroundColor: 'rgba(166, 200, 76, 0.82)',
+                  borderColor: '#FFFFCC',
+                  showDelay: 0,
+                  hideDelay: 0,
+                  enterable: true,
+                  transitionDuration: 0,
+                  extraCssText: 'z-index:100',
+                  formatter: function(params, ticket, callback) {
+                    console.log(params);
+
+                    //根据业务自己拓展要显示的内容
+                    var res = "";
+                    var name = params.name;
+                    var value = params.value[2];
+                    res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
+                    return res;
+                  }
+                },
                 geo: {
                   map: opt.mapName,
                   // roam: true,
@@ -683,27 +725,7 @@
                   console.log(name, option, instance);
                 },
                 // 数据展示
-                data: [{
-                  name: '银川',
-                  value: 10,
-                  level: 1
-                }, {
-                  name: '固原',
-                  value: 12,
-                  level: 2
-                }, {
-                  name: '石嘴山',
-                  value: 55,
-                  level: 3
-                }, {
-                  name: '吴忠',
-                  value: 16,
-                  level: 2
-                }, {
-                  name: '中卫',
-                  value: 17,
-                  level: 4
-                }]
+                data: that.mapData
               });
             })
             that.trend()    //年度案发趋势
@@ -1258,8 +1280,6 @@
                 backgroundColor: '#fff',
                 color: '#556677',
                 borderColor: 'rgba(0,0,0,0)',
-                shadowColor: 'rgba(0,0,0,0)',
-                shadowOffsetY: 0
               },
               lineStyle: {
                 width: 0
@@ -1279,7 +1299,7 @@
           },
           xAxis: [{
             type: 'category',
-            data: this.trendYearNewX,
+            data: ['01','02','03','04','05','06','07','08','09','10','11','12'],
             axisLine: {
               lineStyle: {
                 color: 'rgba(107,107,107,0.37)', //x轴颜色
@@ -1367,10 +1387,7 @@
                     offset: 1,
                     color: '#9E87FF'
                   }
-                ]),
-                shadowColor: 'rgba(158,135,255, 0.3)',
-                shadowBlur: 10,
-                shadowOffsetY: 20
+                ])
               },
               itemStyle: {
                 normal: {
@@ -1382,7 +1399,6 @@
               name: this.trendYearNew,
               type: 'line',
               data: this.trendYearDateNew,
-              //  data:this.data2,
               symbolSize: 1,
               symbol: 'circle',
               smooth: true,
@@ -1398,10 +1414,7 @@
                     offset: 1,
                     color: '#73DDFF'
                   }
-                ]),
-                shadowColor: 'rgba(115,221,255, 0.3)',
-                shadowBlur: 10,
-                shadowOffsetY: 20
+                ])
               },
               itemStyle: {
                 normal: {
@@ -1458,7 +1471,7 @@
           },
           grid: {
             top: '5%',
-            bottom: '30%'
+            bottom: '34%'
           },
           xAxis: {
             type: 'category',
@@ -1470,9 +1483,9 @@
             },
             axisLabel: {
               color: 'rgba(255,255,255, 0.5)',
-              // interval: 0,
+              interval: 0,
               formatter: function (value) {
-                return value.split(" ").join("\n");
+               return value.substring(0, 2)+'\n'+value.substring(2, value.length)
               }
             },
             splitLine: {
@@ -1540,7 +1553,7 @@
         this.chartColumn = echarts.init(document.getElementById("ajzt"));
         let value = this.complete / this.all;
         let title = '';
-        let int = value.toFixed(2).split('.')[0];
+        let int = value.toFixed(2)*100;
         let float = value.toFixed(2).split('.')[1];
         this.chartColumn.setOption({
           backgroundColor: '',
@@ -1573,7 +1586,7 @@
               radius: '60%',
               clockwise: false,
               startAngle: '90',
-              endAngle: '-269.9999',
+              endAngle: '-269.9999'+int,
               splitNumber: 25,
               detail: {
                 offsetCenter: [0, -20],
@@ -1590,7 +1603,7 @@
                     [52 / 100, '#1DE2A4'],
                     [1, 'rgba(32,187,252,0.15)']
                   ],
-                  width: 30
+                  width: 70
                 }
               },
               axisTick: {
@@ -1662,7 +1675,7 @@
             right: '8%'
           },
           xAxis: {
-            data: this.carSortXData,
+            data: [],
             axisTick: {
               show: false
             },
@@ -1766,7 +1779,7 @@
             }
           },
           grid: {
-            top: '10',
+            top: '20',
             right: '20',
             left: '40',
             bottom: '70' //图表尺寸大小
@@ -1783,7 +1796,7 @@
               },
               interval: 0,
               formatter: function (value) {
-                return value.split("").join("\n");
+                return value.substring(0, 3);
               }
             },
             axisLine: {
@@ -2172,5 +2185,8 @@
   .case-box {
     width: 74px;
     height: 153px;
+  }
+  .afd *{
+  white-space: pre;
   }
 </style>

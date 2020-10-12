@@ -4,7 +4,7 @@
     custom-class="leftDialog leftDialog2 archiveCatalogueBox evidenceCatalogueBox"
     :visible.sync="visible"
     @close="closeDialog"
-    :top="fatherCom==='inforCollection' ? '95px':'0px'"
+    :top="fatherCom==='inforCollection' ? '95px':'33px'"
     width="405px"
     :modal="false"
     :show-close="false"
@@ -29,17 +29,21 @@
             </el-table-column>
         </el-table>
     </div>
-    <span slot="footer" class="dialog-footer">
-      <el-upload
-        class="upload-demo"
-        :http-request="saveFile"
-        :on-change="uploadChange"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        multiple
-        >
-        <el-button size="small" type="primary" @click="hidden" v-show="!caseApproval && !IsLawEnforcementSupervision">上传证据</el-button>
-    </el-upload>
-    </span>
+    <div
+      :style="fatherCom==='inforCollection' ? 'margin-top: -80px':'margin-top: -35px'"
+      style="text-align:center">
+      <span slot="footer" class="dialog-footer">
+        <el-upload
+          class="upload-demo"
+          :http-request="saveFile"
+          :on-change="uploadChange"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          multiple
+          >
+          <el-button size="small" type="primary" @click="hidden" v-show="!caseApproval && !IsLawEnforcementSupervision">上传证据</el-button>
+        </el-upload>
+      </span>
+    </div>
   </el-dialog>
   <evidenceDetail ref="evidenceDetailRef"></evidenceDetail>
 

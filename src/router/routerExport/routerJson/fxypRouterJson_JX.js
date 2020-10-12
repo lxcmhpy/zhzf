@@ -208,5 +208,13 @@ export default  [
           }
         ]
       },
+  {
+    name: "report",
+    path: "/report",
+    meta: {
+      title: "专题报告"
+    },
+    component: () => import("@/page/analyseManage/report/index.vue")
+  },
 
 ]
