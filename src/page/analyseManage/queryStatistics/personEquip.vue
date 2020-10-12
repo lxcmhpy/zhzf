@@ -157,19 +157,19 @@ export default {
 
           that.distributed = res.data.distributed
           that.preparedBy = res.data.preparedBy
-          res.data.personNum.slice(0, 8).map(item => {
+          res.data.personNum.slice(0, 5).map(item => {
             that.personNumSeries.push(item.value)
             that.personNumXData.push(item.name)
           })
-          res.data.equipmentNum.slice(0, 8).map(item => {
+          res.data.equipmentNum.slice(0, 5).map(item => {
             that.equipmentNumSeries.push(item.value)
             that.equipmentNumXData.push(item.name)
           })
-          res.data.increase.slice(0, 8).map(item => {
+          res.data.increase.slice(0, 5).map(item => {
             that.increaseSeries.push(item.value)
             that.increaseXData.push(item.name)
           })
-          res.data.equipmentType.slice(0, 8).map(item => {
+          res.data.equipmentType.slice(0, 5).map(item => {
             that.equipmentTypeSeries.push(item.value)
             that.equipmentTypeXData.push(item.name)
           })
@@ -464,6 +464,27 @@ export default {
                   }
                 }]
               }],
+              tooltip: {
+                show:true,
+                trigger: 'item',
+                backgroundColor: 'rgba(166, 200, 76, 0.82)',
+                borderColor: '#FFFFCC',
+                showDelay: 0,
+                hideDelay: 0,
+                enterable: true,
+                transitionDuration: 0,
+                extraCssText: 'z-index:100',
+                formatter: function(params, ticket, callback) {
+                  console.log(params);
+
+                  //根据业务自己拓展要显示的内容
+                  var res = "";
+                  var name = params.name;
+                  var value = params.value[2];
+                  res = "<span style='color:#fff;'>" + name + "</span><br/>执法人员：" + value;
+                  return res;
+                }
+              },
               geo: {
                 map: opt.mapName,
                 // roam: true,
@@ -1317,7 +1338,7 @@ export default {
                         interval: 0,
                         formatter:function(value)
                         {
-                            return value.split(" ").join("\n");
+                          return value.substring(0, 2)+'\n'+value.substring(2, value.length)
                         }
 					},
 					axisLine: {
@@ -1450,7 +1471,7 @@ this.chartColumn.setOption({
                         interval: 0,
                         formatter:function(value)
                         {
-                            return value.split(" ").join("\n");
+                          return value.substring(0, 2)+'\n'+value.substring(2, value.length)
                         }
 					},
 					axisLine: {
@@ -1587,10 +1608,10 @@ this.chartColumn.setOption({
 				color: '#999',
         fontSize: 12,
       },
-       interval: 1,
+       interval: 0,
         formatter:function(value)
         {
-            return value.split(" ").join("\n");
+          return value.substring(0, 2)+'\n'+value.substring(2, value.length)
         }
 		}
     },
@@ -2037,4 +2058,7 @@ font-weight:400;
 color:#FF9703;
 line-height:28px;
 }
+  #clpm *,#afd *,#rysl *,#zbsl *{
+    white-space: pre;
+  }
 </style>
