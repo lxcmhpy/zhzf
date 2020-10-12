@@ -228,23 +228,35 @@
       setCharts(data) {
         let xAxis = [], series = [];
         let type = this.activeName
-        data.map(item => {
-          let years = item.years || '-',
-          month = item.month || '-',
-          day = item.day || '-',
-          hours = item.dhoursay || '-'
+        // 时间折线图横坐标写死
+        if(type === 'hoursView') {
+          xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12']
+          xAxis.map(item => {
+            data.map(dataItem => {
+              if(dataItem.hours === item) {
+                series.push(dataItem.value)
+              } else {
+                series.push(0)
+              }
+            })
+          })
+        } else {
+          data.map(item => {
+            let years = item.years || '-',
+            month = item.month || '-',
+            day = item.day || '-'
+            // hours = item.hours || '-'
 
-          if(type === 'yearView') {
-            xAxis.push(years)
-          } else if (type === 'monthView') {
-            xAxis.push((years + '/' + month))
-          } else if (type === 'dayView') {
-            xAxis.push((years + '/' + month + '/' + day))
-          } else if (type === 'hoursView') {
-            xAxis.push(hours)
-          }
-          series.push(item.value)
-        })
+            if(type === 'yearView') {
+              xAxis.push(years)
+            } else if (type === 'monthView') {
+              xAxis.push((years + '/' + month))
+            } else if (type === 'dayView') {
+              xAxis.push((years + '/' + month + '/' + day))
+            }
+            series.push(item.value || 0)
+          })
+        }
         this.drawCharts({ xAxis, series })
       },
 

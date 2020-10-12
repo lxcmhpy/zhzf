@@ -295,7 +295,11 @@ export default {
       uploadEvdence(fd).then(
         res => {
           this.getBase64(res.data.storageId, 1)
-          this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId
+          // let imgSrc = this.$util.com_getFileStream(res.data.storageId)
+          this.$util.com_getFileStream(res.data.storageId).then(res => {
+            this.docData.picturesUrl = res
+          });
+          
         },
         error => {
         }
@@ -312,8 +316,12 @@ export default {
       fd.append("evType", param.file.type);
       uploadEvdence(fd).then(
         res => {
-          this.getBase64(res.data.storageId, 2)
-          this.$set(this.docData, 'picturesUrl2', iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId)
+          this.getBase64(res.data.storageId, 2);
+          // let imgSrc = this.$util.com_getFileStream(res.data.storageId)
+          this.$util.com_getFileStream(res.data.storageId).then(res => {
+            this.$set(this.docData, 'picturesUrl2', res)
+          });
+          
         },
         error => {
         }

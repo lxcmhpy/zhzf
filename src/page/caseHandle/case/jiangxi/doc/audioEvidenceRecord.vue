@@ -432,15 +432,20 @@ export default {
           this.imgHeightArr.push(["", ""]);
           this.scalingArr.push([1, 1]);
         }
-        this.changeImgWidHei(item.picSrc1, index, 1);
+        if(item.picSrc1){
+          this.changeImgWidHei(item.picSrc1, index, 1);
+        }
       });
-      this.imgWidthArr[1][1] = 400;
+      if(this.imgWidthArr.length>0){
+        this.imgWidthArr[1][1] = 400;
+      }
     },
     //对图片进行处理
-    changeImgWidHei(storageId, pastePage, picIndex) {
+   async changeImgWidHei(storageId, pastePage, picIndex) {
       //设置临时图片
       let temImg = new Image();
-      temImg.src = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+      let imgSrc = await this.$util.com_getFileStream(storageId);
+      temImg.src = imgSrc;
       let _this = this;
       temImg.onload = function(e) {
         //赋值给图片地址

@@ -87,14 +87,14 @@
           element-loading-spinner="car-loading"
           element-loading-text="加载中..."
           style="width: 100%;height:100%;"
-          @selection-change="selectJournal"
+          @selection-change="getJournalList"
         >
           <el-table-column type="selection" align="center"></el-table-column>
           <el-table-column prop="title" label="日志名称" align="left" ></el-table-column>
           <el-table-column prop="oname" label="执法机构" align="left" ></el-table-column>
           <el-table-column prop="schedulePersonnel" label="排班人员" align="center"></el-table-column>
           <el-table-column prop="createTime" label="填报日期" align="center" ></el-table-column>
-          <el-table-column prop="plateNumbers" label="车牌/船舶号" align="center" ></el-table-column>
+          <!-- <el-table-column prop="plateNumbers" label="车牌/船舶号" align="center" ></el-table-column> -->
           <el-table-column prop="patrolRoute" label="巡查地点/线路" align="center" ></el-table-column>
           <el-table-column prop="lawEnforcementOfficials" label="执法人员" align="center"></el-table-column>
           <el-table-column prop="patrolType" label="任务类型" align="center" ></el-table-column>
@@ -113,8 +113,9 @@
           </el-table-column> -->
           <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="handoverFun(scope.row)">交接班</el-button>
-              <el-button type="text" @click="editJournalInfo(scope.row)">修改</el-button>
+              <el-button :disabled="scope.row.shiftchangeId != null && scope.row.shiftchangeId != undefined && scope.row.shiftchangeId != ''" type="text" @click="handoverFun(scope.row)">交接班</el-button>
+              <el-button type="text" @click="editJournalInfo(scope.row,'5')">查看</el-button>
+              <el-button type="text" @click="editJournalInfo(scope.row,'2')">修改</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -229,6 +230,7 @@ export default {
         }).then(() => {
               deleteRecordApi(this.selectList[0]).then(res => {
             if (res.code == "200") {
+               this.$message({ type: 'success', message: '删除成功' });
               this.getJournalList();
             }
           }, err => {
@@ -259,10 +261,10 @@ export default {
       });
     },
     // 修改日志
-    editJournalInfo(row) {
+    editJournalInfo(row,type) {
       this.$router.push({
             name: 'add_duty_journal',
-            params: { type:this.searchForm.businessType,checklogId:row.checklogId, page: 'journal',handelType:"2" }
+            params: { type:this.searchForm.businessType,checklogId:row.checklogId, page: 'journal',handelType:type }
           });
     },
     // 日志查询
