@@ -178,6 +178,15 @@
       <div class="caseFormBac" id="link_3" ref="link_3" @mousewheel="scrool3">
         <p>初检记录</p>
         <div>
+          <div class="itemOne">
+            <el-form-item label="初检单号" prop="oddNumber">
+              <el-input v-model="carInfo.firstCheck.oddNumber">
+                <template slot="append">查询</template>
+              </el-input>
+            </el-form-item>
+          </div>
+        </div>
+        <div>
           <div class="item">
             <el-form-item label="初检站点" prop="firstCheckStation">
               <el-input v-model="carInfo.firstCheck.firstCheckStation" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
@@ -192,15 +201,7 @@
             </el-form-item>
           </div>
         </div>
-        <div>
-          <div class="itemOne">
-            <el-form-item label="初检单号" prop="oddNumber">
-              <el-input v-model="carInfo.firstCheck.oddNumber">
-                <template slot="append">查询</template>
-              </el-input>
-            </el-form-item>
-          </div>
-        </div>
+
         <div>
           <div class="item">
             <el-form-item label="车货总重" prop="totalWeight">
@@ -211,7 +212,7 @@
           </div>
           <div class="item">
             <el-form-item label="车货限重" prop="weightLimit">
-              <el-input v-model="carInfo.firstCheck.weightLimit" @input="overLimit()" @change="firstCheckOverWeight"  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.weightLimit" @input="overLimit()" @change="firstCheckOverWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -349,7 +350,7 @@
           <div class="item">
             <el-form-item label="复检站点" prop="secondCheckStation">
               <el-input v-model="carInfo.secondCheck.secondCheckStation">
-                <template slot="append">查询</template>
+                <template slot="append">选择</template>
               </el-input>
             </el-form-item>
           </div>
@@ -430,14 +431,14 @@
         <div>
           <div class="item">
             <el-form-item label="复检质量" prop="secondCheckWeight">
-              <el-input v-model="carInfo.secondCheck.secondCheckWeight"  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.secondCheck.secondCheckWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="卸载质量" prop="unloadWeight">
-              <el-input v-model="carInfo.secondCheck.unloadWeight"  @change="secondCheckOverWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.secondCheck.unloadWeight" @change="secondCheckOverWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -489,7 +490,7 @@
             </ul>
             <el-upload class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
               <!-- <el-button size="small" type="primary">选取文件</el-button> -->
-              <i class="el-icon-plus avatar-uploader-icon"></i>
+              <i class="el-icon-plus avatar-uploader-icon" style="width: 87px;height: 72px;line-height: 72px;margin-left:0;"></i>
             </el-upload>
           </div>
 
@@ -678,6 +679,7 @@ export default {
         checkResult: [{ required: true, message: "请选择", trigger: "blur" }],
         checkPerson: [{ required: true, message: "请选择", trigger: "blur" },
         { validator: validateLawPersonNumber, trigger: "blur" }],
+        weightLimit: [{ required: true, message: "请输入", trigger: "blur" }],
       },
       secondCheckRules: {
         fenPlateColor: [{ required: true, message: "请选择", trigger: "blur" }],
@@ -1352,20 +1354,20 @@ export default {
       this.isCanEdit = true
     },
     firstCheckOverWeight() {
-      if(this.carInfo.firstCheck.overWeight){
-      let number = this.carInfo.firstCheck.overWeight / this.carInfo.firstCheck.weightLimit*100;
-      number = String(number).replace(/^(.*\..{4}).*$/, "$1");
-      number = Number(number); // number = 12.3321
-      this.$set(this.carInfo.firstCheck, 'overRatio', number)
+      if (this.carInfo.firstCheck.overWeight) {
+        let number = this.carInfo.firstCheck.overWeight / this.carInfo.firstCheck.weightLimit * 100;
+        number = String(number).replace(/^(.*\..{4}).*$/, "$1");
+        number = Number(number); // number = 12.3321
+        this.$set(this.carInfo.firstCheck, 'overRatio', number)
       }
       this.secondCheckOverWeight()
     },
     secondCheckOverWeight() {
-      if(this.carInfo.secondCheck.unloadWeight){
-      let number = this.carInfo.secondCheck.unloadWeight / this.carInfo.firstCheck.weightLimit*100;
-      number = String(number).replace(/^(.*\..{4}).*$/, "$1");
-      number = Number(number); // number = 12.3321
-      this.$set(this.carInfo.secondCheck, 'overRatio', number)
+      if (this.carInfo.secondCheck.unloadWeight) {
+        let number = this.carInfo.secondCheck.unloadWeight / this.carInfo.firstCheck.weightLimit * 100;
+        number = String(number).replace(/^(.*\..{4}).*$/, "$1");
+        number = Number(number); // number = 12.3321
+        this.$set(this.carInfo.secondCheck, 'overRatio', number)
       }
     },
   },

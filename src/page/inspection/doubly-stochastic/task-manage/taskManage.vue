@@ -11,6 +11,11 @@
               <el-form-item label="抽查主体" prop='checkSubject'>
                 <el-input v-model="searchForm.checkSubject"></el-input>
               </el-form-item>
+              <el-form-item label="查询范围" prop='selectValue'>
+                <el-select v-model="searchForm.selectValue">
+                  <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
             </el-form>
             <div class="search-btns">
               <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button> -->
@@ -476,7 +481,8 @@ export default {
       searchForm: {
         checkSubject: "",
         taskName: '',
-        taskArea: '省交通运输厅领域'
+        taskArea: '省交通运输厅领域',
+        selectValue:0
       },
       isShow: false,
       addForm: {
@@ -627,6 +633,7 @@ export default {
       optionsSSLB: [],
       LawOfficerList: [],//执法人员列表
       alreadyChooseAdminPerson: [],//已选择管理人员列表
+      searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
     }
   },
   methods: {
@@ -636,7 +643,8 @@ export default {
         checkSubject: this.searchForm.checkSubject,
         taskName: this.searchForm.taskName,
         taskArea: this.searchForm.taskArea,
-        organName : iLocalStroage.gets("userInfo").organName,//机构名称
+        organName: iLocalStroage.gets("userInfo").organName,//机构名称
+        organId: this.searchForm.selectValue==1?iLocalStroage.gets("userInfo").organId:'',
         current: this.currentPage,
         size: this.pageSize,
       };
