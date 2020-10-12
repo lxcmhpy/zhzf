@@ -98,6 +98,9 @@ export default {
     //根据id删除单个人员信息
     deleteVersionById(row) {
       let _this = this;
+      let data={
+        appId:row.appId
+      }
       _this
         .$confirm("确定要删除该条记录吗?", "提示", {
           confirmButtonText: "确定",
@@ -107,7 +110,7 @@ export default {
         })
         .then(() => {
           _this.$store
-            .dispatch("deleteVersionModel", row.VersionId)
+            .dispatch("deleteVersionModel", data)
             .then(
               res => {
                 _this.$message({

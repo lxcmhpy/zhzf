@@ -113,8 +113,9 @@
           </el-table-column> -->
           <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="handoverFun(scope.row)">交接班</el-button>
-              <el-button type="text" @click="editJournalInfo(scope.row)">修改</el-button>
+              <el-button :disabled="scope.row.shiftchangeId != null && scope.row.shiftchangeId != undefined && scope.row.shiftchangeId != ''" type="text" @click="handoverFun(scope.row)">交接班</el-button>
+              <el-button type="text" @click="editJournalInfo(scope.row,'5')">查看</el-button>
+              <el-button type="text" @click="editJournalInfo(scope.row,'2')">修改</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -259,10 +260,10 @@ export default {
       });
     },
     // 修改日志
-    editJournalInfo(row) {
+    editJournalInfo(row,type) {
       this.$router.push({
             name: 'add_duty_journal',
-            params: { type:this.searchForm.businessType,checklogId:row.checklogId, page: 'journal',handelType:"2" }
+            params: { type:this.searchForm.businessType,checklogId:row.checklogId, page: 'journal',handelType:type }
           });
     },
     // 日志查询
