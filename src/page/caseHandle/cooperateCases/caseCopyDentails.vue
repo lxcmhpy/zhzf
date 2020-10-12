@@ -58,7 +58,7 @@
                       </span><i class="el-icon-user-solid"></i>
                       <span style="color:#20232B">{{caseData.person}}</span>
                     </span>
-                    <span>移送至</span>
+                    <span>发起抄告至</span>
                     <span>
                       <svg t="1584797983914" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="924" width="20px" height="20px">
                         <path d="M960 576v-2q-0.06-1-0.15-2v-0.27c-0.06-0.56-0.13-1.13-0.21-1.7l-0.06-0.35c-0.09-0.54-0.18-1.07-0.29-1.61 0-0.11-0.05-0.22-0.07-0.34-0.12-0.53-0.24-1.07-0.37-1.6 0-0.09 0-0.18-0.08-0.28-0.14-0.55-0.3-1.09-0.46-1.64l-0.06-0.17c-0.18-0.58-0.37-1.15-0.58-1.72a39.6 39.6 0 0 0-6.69-11.65v-0.06c-0.39-0.47-0.78-0.93-1.19-1.38-0.22-0.24-0.45-0.47-0.67-0.7s-0.42-0.45-0.64-0.67L668.14 267.57a39.88 39.88 0 0 0-56.39 0l-0.18 0.18a39.88 39.88 0 0 0 0 56.39L823.43 536H104a40 40 0 0 0 0 80h817.87A40 40 0 0 0 960 577.89v-1.12-0.77z" fill="#999999" p-id="925"></path>
@@ -81,13 +81,14 @@
                   <div class="document_list">
                     <ul>
                       <li v-for="(item,index) in appendixList" :key="index">
-                        
-                          <el-link type="primary" :href="host+item.storageId" :underline="false" :target="['.jpg','.png','.jpeg'].includes(item.fileType) ? '_blank':'_self'">
+                          <el-link type="primary" :href="item.storagePath" :download="item.fileName" :underline="false" :target="['.jpg','.png','.jpeg'].includes(item.fileType) ? '_blank':'_self'">
                             <i class="el-icon-document-checked"></i>
                             {{item.fileName}}
                           </el-link>
-                      
-                        
+                          <!-- <a :href="item.storagePath" :download="item.fileName">
+                            <i class="el-icon-document-checked"></i>
+                            {{item.fileName}}
+                          </a> -->
                       </li>
                     </ul>
                   </div>
@@ -113,7 +114,7 @@ export default {
     return {
       caseData: {},
       appendixList: [],
-      host:"",
+      // host:"",
     }
     
   },
@@ -137,7 +138,14 @@ export default {
         getFile(data).then(
           res => {
             console.log("附件列表",res);
-            this.appendixList = res.data
+            this.appendixList = res.data;
+            this.appendixList.forEach((item, index) => {
+              if (item.storageId) {
+                this.$util.com_getFileStream(item.storageId).then(res => {
+                  item.storagePath = res
+                });
+              }
+            });
           },
           error => {
             console.log(error);
@@ -150,7 +158,7 @@ export default {
     this.caseData.person = iLocalStroage.gets("userInfo").organName + '-' + this.caseData.person;  
     this.caseData = this.$route.params.caseInfo;
     console.log('this.caseData',this.caseData);
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+    // this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     this.findFileList();
   },
   created(){
