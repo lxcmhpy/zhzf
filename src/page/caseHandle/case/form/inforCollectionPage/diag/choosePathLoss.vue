@@ -67,7 +67,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="selectSure">确 定</el-button>
+        <el-button type="primary" @click="selectSure" :disabled="!visible">确 定</el-button>
       </span>
     </el-dialog>
   </div>

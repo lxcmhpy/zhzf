@@ -2,42 +2,6 @@
 <template>
   <div class="com_searchAndpageBoxPadding hasBigMarginRight">
     <div class="searchAndpageBox">
-      <!--<div class="handlePart">
-        <div class="search">
-          <el-form :inline="true" :model="evidenceForm"  ref="evidenceForm">
-            <el-form-item>
-              <el-button type="primary" icon="add" size="medium"  @click="handleAdd">上传证据</el-button>
-            </el-form-item>
-            <el-form-item label="证据名称" prop="evName">
-              <el-input v-model="evidenceForm.evName"></el-input>
-            </el-form-item>
-            <el-form-item label="证据类型" prop="evType">
-              <el-select v-model="evidenceForm.evType">
-                <el-option
-                  v-for="item in evTypeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="证据状态" prop="status">
-              <el-select v-model="value">
-                <el-option
-                  v-for="item in statusOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="getDocList">查询</el-button>
-              <el-button type="primary" size="medium" @click="resetSearch">重置</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </div>-->
       <div class="tablePartF">
         <el-table :data="tableData" stripe height="100%">
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
@@ -78,10 +42,11 @@
         <div style="height:auto;">
         <!-- <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image> -->
             <div lazy>
-                <object >
+                <!-- <object >
                     <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
                     :src="mlList" type="application/pdf" internalinstanceid="29">
-                </object>
+                </object> -->
+                <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
             </div>
             <!-- <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
             <el-button @click="updatePDF1">上一张</el-button><br><br>
@@ -122,7 +87,7 @@ import iLocalStroage from "@/common/js/localStroage";
                 editVisible: false,
                 mlList: "",
                 indexPdf: 0,
-                host:"",
+                pdfUrl:'',
             };
         },
         components: {
@@ -139,26 +104,15 @@ import iLocalStroage from "@/common/js/localStroage";
                     .catch(_ => {});
             },
             //查看  打印方法
-            handleEdit(index, row) {
+            async handleEdit(index, row) {
 
               let data = {
                     caseId:this.caseId,
                     docId: this.tableData[index].caseDoctypeId,
                 };
-                let _that = this
-              findByCaseIdAndDocIdApi(data).then(res=>{
-
-                _that.mlList = _that.host + res.data[0].storageId;
-                // _that.mlList.push(_that.host + res.data[0].storageId)
-                //   res.data.forEach((v)=>{
-                //     debugger
-                //   _that.mlList.push(_that.host + v.storageId)
-                // })
-              },err=>{
-                console.log(err);
-              })
-
-               console.log(_that.mlList);
+              let _that = this
+              let  thisStorageIdRes= await findByCaseIdAndDocIdApi(data)
+              _that.pdfUrl = await this.$util.com_getFileStream(thisStorageIdRes.data[0].storageId)
               this.indexPdf = 0;
               this.pdfVisible = true
 
@@ -212,8 +166,6 @@ import iLocalStroage from "@/common/js/localStroage";
             },
         },
         mounted() {
-            // this.setDepartTable(this.data)
-            this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
         },
         created() {
             this.getDocList();

@@ -479,11 +479,6 @@
                 )
             },
             view(row) {
-                // this.dialogImageUrl =
-                //   iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST +
-                //   row.storageId +
-                //   '?time=' +
-                //   new Date().getTime()
                 getFileStreamByStorageId(row.storageId).then(res => {
                     const blob = new Blob([res], {
                         type: 'application/octet-stream'

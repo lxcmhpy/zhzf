@@ -221,9 +221,11 @@ export default {
       let _xAxis = [],
         _series = [];
       if (data.length > 0) {
-        data.map((item) => {
-          _xAxis.push(item.name);
-          _series.push(item.value);
+        data.map((item, index) => {
+          if(index < 5) {
+            _xAxis.push(item.name);
+            _series.push(item.value);
+          }
         });
       }
 
@@ -251,8 +253,17 @@ export default {
           xAxis: [
             {
               type: "category",
-              //data: this.data2,
               data: _xAxis,
+              axisLabel: {
+                interval: 0,
+                formatter(value) {
+                  if(value.length > 3) {
+                    return value.substring(0, 4) + '\n' + value.substring(4)
+                  } else {
+                    return value
+                  }
+                }
+              }
             },
           ],
           yAxis: [
