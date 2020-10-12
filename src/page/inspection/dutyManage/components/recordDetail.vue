@@ -287,6 +287,7 @@
                   v-if="
                     abnormal.firstType !== undefined &&
                     abnormal.firstType !== null &&
+                    cheProcesTypeTree[abnormal.firstType]['children'] &&
                     cheProcesTypeTree[abnormal.firstType]['children'].length > 0
                   "
                   :span="12"
@@ -317,6 +318,7 @@
                     abnormal.firstType !== null &&
                     abnormal.secondType !== undefined &&
                     abnormal.secondType !== null &&
+                    cheProcesTypeTree[abnormal.firstType]['children'] &&
                     cheProcesTypeTree[abnormal.firstType]['children'][
                       abnormal.secondType
                     ] &&
@@ -912,13 +914,13 @@ export default {
   created() {
     this.editFlag = this.PageType === "detail" ? true : false;
     this.getCheRecordTempPageList();
+    this.getCheProcessTypeTree();
     if (this.PageType != "add") {
       this.activeOffical = "1";
       this.getCheRecordDetail(this.rowData);
     }
     this.searchLawPerson();
     this.findRouteManageByOrganId();
-    this.getCheProcessTypeTree();
     this.initCheckDictData();
   },
   methods: {
@@ -1136,7 +1138,7 @@ export default {
                     (t) => t.id === a.firstProcessType
                   );
                 }
-                if (a.secondProcessType && a.firstProcessType) {
+                if (a.secondProcessType && a.firstProcessType && a["firstType"] > 0) {
                   a["secondType"] = this.cheProcesTypeTree[a["firstType"]][
                     "children"
                   ].findIndex((t) => t.id === a.secondProcessType);
@@ -1293,7 +1295,10 @@ export default {
       let _this = this;
       this.$store.dispatch("getCaseType", data).then(
         (res) => {
-          _this.inspectRecordForm.listAbn[abnormalIndex].caseTypeList = res.data;
+          const abn = _this.inspectRecordForm.listAbn[abnormalIndex];
+          abn.caseTypeList = res.data;
+          _this.inspectRecordForm.listAbn.splice(abnormalIndex,1,abn);
+          Object.assign(_this.inspectRecordForm.listAbn[abnormalIndex], { caseTypeList: res.data });
         },
         (err) => {
           console.log(err);
