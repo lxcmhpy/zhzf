@@ -191,8 +191,8 @@ export function addCheRecordApi(data){
 //查询记录详情
 export function getCheRecordDetailApi(data) {
   return request({
-     url: "/check/record/updateCheRecord",
-    // url: "/record/updateCheRecord",
+     url: "/check/record/cheRecordDetail",
+    // url: "/record/cheRecordDetail",
     method: "get",
     params: data,
     showloading: true,

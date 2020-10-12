@@ -30,16 +30,17 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="巡查时间" prop="inspectionTime">
-                  <el-time-picker
-                    is-range
+                  <el-date-picker
+                    type="datetimerange"
                     v-model="baseInfoForm.inspectionTime"
                     range-separator="至"
                     start-placeholder="开始时间"
                     end-placeholder="结束时间"
                     format="yyyy-MM-dd HH:mm:ss"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    :default-time="['12:00:00']"
                     :disabled="PageType === 'handover' || handelType === '5'"
-                  ></el-time-picker>
+                  ></el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
