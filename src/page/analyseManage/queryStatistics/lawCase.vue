@@ -106,9 +106,10 @@
               <el-row style="text-align:center;">
                 <el-row class="mt24">
                   <el-col :span="12"><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;">
-                    <div class="type" style="height:30px;width:100px;margin-left:25px;">【 处罚金额 】</div>
+
                   </el-col>
                   <el-col :span="12">
+                    <div class="type" style="height:30px;width:100px;margin-left:25px;">【 处罚金额 】</div>
                     <div class="count" style="text-align:center;width:100px;margin-left:25px;">{{penalty}}
                     </div>
                     <div class="dw" style="height:30px;width:100px;margin-left:25px;">{{unit}}</div>
@@ -1485,7 +1486,7 @@
               color: 'rgba(255,255,255, 0.5)',
               interval: 0,
               formatter: function (value) {
-               return value.substring(0, 2)+'\n'+value.substring(2, value.length)
+               return value.substring(0, 2)+'\n'+value.substring(2, 5)
               }
             },
             splitLine: {
@@ -1675,7 +1676,7 @@
             right: '8%'
           },
           xAxis: {
-            data: [],
+            data: this.carSortXData,
             axisTick: {
               show: false
             },
@@ -1686,6 +1687,10 @@
               }
             },
             axisLabel: {
+              interval: 0,
+              formatter: function (value) {
+                return value.substring(0, 2);
+              },
               textStyle: {
                 color: '#999',
                 fontSize: 12
