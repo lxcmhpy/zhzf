@@ -175,8 +175,8 @@
             </el-table-column>
             <el-table-column label="详情" align="center">
               <template slot-scope="scope">
-                <img v-if="scope.row.evType == '照片'" :src="host+scope.row.evPath" style="height:50px;">
-                <el-link type="primary" v-if="scope.row.evType != '照片'" :href="host+scope.row.evPath">下载</el-link>
+                <img v-if="scope.row.evType == '照片'" :src="scope.row.evPath" style="height:50px;">
+                <el-link type="primary" v-if="scope.row.evType != '照片'" :download="scope.row.evPath" :href="scope.row.storagePath">下载</el-link>
               </template>
             </el-table-column>
             <el-table-column label="备注" align="center" prop="note"></el-table-column>
@@ -198,7 +198,7 @@
     >
       <ul class="catalogueDrawerList">
         <li v-for="(item, i) in multipleSelection" :key="i">
-          <img :src="host+item.evPath" >
+          <img :src="item.evPath" >
           <div class="evidenceName">{{item.evName}}</div>
           <div>
             <span>
@@ -295,7 +295,7 @@ export default {
         recordPlace:"", //取证地址
       },
       handleIndex:0,//附件关联的行
-      host:"",
+      // host:"",
       alreadyAddEvi:[], //已经添加的证据
       // isTrue: false
     };
@@ -355,6 +355,8 @@ export default {
       }
     },
     addEnclosure() {
+      debugger
+      console.log("111111",this.multipleSelection[0])
       if (this.multipleSelection.length > 0) {
         let _that = this;
          let a = JSON.parse(JSON.stringify(this.caseList));
@@ -479,24 +481,21 @@ export default {
         }
       );
     },
-    //点击卷宗目录后 显示卷宗目录
-    // showArchiveCatalogue() {
-    //   this.$refs.archiveCatalogueRef.showModal(true);
-    // },
     // 绑定已有证据材料
     bindEvidence(row) {
       this.relationFileVisible = true;
-
-      // this.$store
-      //   .dispatch("getByCondition", {
-      //     caseId: this.caseId
-      //   })
         findEvidencePicApi({caseId:this.caseId})
         .then(
           res => {
               console.log('证据',res);
             this.evidenceList = res.data;
-            // debugger
+            this.evidenceList.forEach((item, index) => {
+              if (item.evPath) {
+                this.$util.com_getFileStream(item.evPath).then(res => {
+                  item.evPath = res
+                });
+              }
+            });
           },
           err => {
             console.log(err);
@@ -629,7 +628,7 @@ export default {
   },
   mounted() {
     // console.log(this.caseList);
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
+    // this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
     this.getByMlCaseId(this.caseId);
   },
   components: {
