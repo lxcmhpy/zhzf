@@ -239,6 +239,13 @@ export default {
         this.searchWindowData.window4.info.padStateColor = data.padStateColor || ''
         this.searchWindowData.window4.info.sn = data.sn || ''
         this.searchWindowData.window4.info.padSn = data.padSn || ''
+        this.searchWindowData.window4.btnList= [
+            { class: 'el-icon-phone' },
+            { class: 'iconfont law-shipin' },
+            { class: 'iconfont law-jiankong' },
+            { class: 'iconfont law-msg-box' },
+            { class: 'iconfont law-xianlu' }
+        ]
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 2) {
         this.searchWindowData.window4.title = data.vehicleNumber
@@ -246,12 +253,14 @@ export default {
           { title: "车牌号", value: data.vehicleNumber },
           { title: "机构名称", value: data.organName },
         ]
+        this.searchWindowData.window4.btnList= []
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 3) {
         this.searchWindowData.window4.title = data.shipNumber
         this.searchWindowData.window4.info = [
           { title: "机构名称", value: data.organName },
         ]
+        this.searchWindowData.window4.btnList= []
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 5) {
         this.searchWindowData.window4.title = data.eventName
@@ -260,6 +269,7 @@ export default {
           { title: "时间", value: data.eventDate },
           { title: "地点", value: data.eventAddress },
         ]
+        this.searchWindowData.window4.btnList= []
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 4) { // 如果是非现场站点
         this.$refs.Search.showCom = "Window5"

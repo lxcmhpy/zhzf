@@ -17,12 +17,12 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="日志标题" prop="title">
-                  <el-input v-model="baseInfoForm.title" :disabled="PageType === 'handover'"></el-input>
+                  <el-input v-model="baseInfoForm.title" :disabled="PageType === 'handover' || handelType === '5'"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="方式" prop="patrolType">
-                  <el-radio-group v-model="baseInfoForm.patrolType" :disabled="relationType === '1' || PageType === 'handover'">
+                  <el-radio-group v-model="baseInfoForm.patrolType" :disabled="relationType === '1' || PageType === 'handover' || handelType === '5'">
                     <el-radio label="路巡">路巡</el-radio>
                     <el-radio label="网巡">网巡</el-radio>
                   </el-radio-group>
@@ -38,13 +38,13 @@
                     end-placeholder="结束时间"
                     format="yyyy-MM-dd HH:mm:ss"
                     value-format="yyyy-MM-dd HH:mm:ss"
-                    :disabled="PageType === 'handover'"
+                    :disabled="PageType === 'handover' || handelType === '5'"
                   ></el-time-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="天气" prop="weather">
-                  <el-select v-model="baseInfoForm.weather" :disabled="PageType === 'handover'">
+                  <el-select v-model="baseInfoForm.weather" :disabled="PageType === 'handover' || handelType === '5'">
                     <el-option label="晴" value="1"></el-option>
                     <el-option label="阴" value="2"></el-option>
                     <el-option label="风" value="3"></el-option>
@@ -66,13 +66,13 @@
                   v-model="baseInfoForm.lawEnforcementOfficialsIds"
                   multiple
                   @remove-tag="removeRelation"
-                  :class="{'disabled': relationType === '1' || PageType === 'handover'}">
+                  :class="{'disabled': relationType === '1' || PageType === 'handover' || handelType === '5'}">
                     <el-option
                       v-for="(item, index) in lawPersonList"
                       :key="item.id"
                       :label="item.lawOfficerName"
                       :value="item.userId"
-                      :disabled="relationType === '1' || PageType === 'handover'"
+                      :disabled="relationType === '1' || PageType === 'handover'|| handelType === '5'"
                     ></el-option>
                   </el-select>
                </el-form-item>
@@ -83,7 +83,7 @@
                   <el-radio-group
                     v-model="baseInfoForm.isUseCar"
                     @change="baseInfoForm.carNum === ''"
-                    :disabled="relationType === '1' || PageType === 'handover'"
+                    :disabled="relationType === '1' || PageType === 'handover' || handelType === '5'"
                   >
                     <el-radio label="0">是</el-radio>
                     <el-radio label="1">否</el-radio>
@@ -93,7 +93,7 @@
                     v-model="baseInfoForm.plateNumbers"
                     placeholder="请输入车牌号"
                     class="car-number-input"
-                    :disabled="relationType === '1' || PageType === 'handover'"
+                    :disabled="relationType === '1' || PageType === 'handover' || handelType === '5'"
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -107,13 +107,13 @@
                 </el-form-item> -->
                <el-form-item label="巡查路线" prop="patrolRoute"> 
                  <el-select v-model="baseInfoForm.patrolRoute"  multiple  
-                :class="{'disabled': relationType === '1' || PageType === 'handover'}">
+                :class="{'disabled': relationType === '1' || PageType === 'handover' || handelType === '5'}">
                     <el-option
                       v-for="(item, index) in patrolRouteList"
                       :key="item"
                       :label="item"
                       :value="item"
-                     :disabled="relationType === '1' || PageType === 'handover'"
+                     :disabled="relationType === '1' || PageType === 'handover'|| handelType === '5'"
                     ></el-option>
                   </el-select>
                </el-form-item> 
@@ -123,7 +123,7 @@
                   <el-input
                     v-model="baseInfoForm.inspectionLength"
                     class="inspection-length-input"
-                     :disabled="PageType === 'handover'"
+                     :disabled="PageType === 'handover' || handelType === '5'"
                   >
                     <template slot="append" >km</template>
                   </el-input>
@@ -134,7 +134,7 @@
         </div>
         <h3 class="form-tab-title">现场记录</h3>
         <div class="journal-info-panel">
-          <div  v-if="PageType === 'journal'" class="journal-top-handle">
+          <div  v-if="PageType === 'journal' && handelType != '5'" class="journal-top-handle">
             <el-button icon="el-icon-connection" size="medium" plain @click="relationRecordFun">关联记录</el-button>
             <el-button class="disassociate-btn" size="medium" plain @click="disassociateRelation">
               <i class="disassociate-icon"></i>解除关联
@@ -198,7 +198,7 @@
         <h3 class="form-tab-title">其他事项</h3>
         <div class="journal-info-panel">
           <!-- 添加日志 -->
-          <el-input :disabled="PageType === 'handover'"
+          <el-input :disabled="PageType === 'handover' || handelType === '5'"
             type="textarea"
             :autosize="{ minRows: 4, maxRows: 6}"
             placeholder
@@ -206,7 +206,7 @@
           ></el-input>
           
         </div>
-        <h3 class="form-tab-title" v-if="PageType === 'handover'">交接班</h3>
+        <h3 class="form-tab-title" v-if="PageType === 'handover' || handelType === '5'">交接班</h3>
         <div class="journal-info-panel">
 <!-- 交接班 -->
           <el-form
@@ -216,10 +216,10 @@
             label-width="110px"
            
           >
-            <el-row :gutter="20"  v-if="PageType === 'handover'">
+            <el-row :gutter="20"  v-if="PageType === 'handover' || handelType === '5' ">
               <el-col :span="24">
                 <el-form-item label="巡查车辆情况" prop="carCondition" label-width="100px">
-                  <el-radio-group v-model="baseInfoForm.carCondition">
+                  <el-radio-group v-model="baseInfoForm.carCondition" :disabled="handelType === '5'">
                     <el-radio label="完好">完好</el-radio>
                     <el-radio label="故障">故障</el-radio>
                   </el-radio-group>
@@ -232,12 +232,13 @@
                     :autosize="{ minRows: 4, maxRows: 6}"
                     placeholder
                     v-model="baseInfoForm.carConditionDescribe"
+                    :disabled="handelType === '5'"
                   ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
                 <el-form-item label="勘察设备情况" prop="equipmentCondition" label-width="100px">
-                  <el-radio-group v-model="baseInfoForm.equipmentCondition">
+                  <el-radio-group v-model="baseInfoForm.equipmentCondition" :disabled="handelType === '5'">
                     <el-radio label="齐全">齐全</el-radio>
                     <el-radio label="缺漏或损坏">缺漏或损坏</el-radio>
                   </el-radio-group>
@@ -250,43 +251,47 @@
                     :autosize="{ minRows: 4, maxRows: 6}"
                     placeholder
                     v-model="baseInfoForm.equipmentConditionDescribe"
+                    :disabled="handelType === '5'"
                   ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row v-if="PageType === 'handover'">
+            <el-row v-if="PageType === 'handover' || handelType === '5'">
               <el-col :span="8">
                 <el-form-item label="交班人" prop="includingPeople" label-width="70px">
-                  <el-select v-model="baseInfoForm.includingPeople">
+                  <el-select v-model="baseInfoForm.includingPeople" :disabled="handelType === '5'">
                     <el-option
                       v-for="item in lawPersonList"
                       :key="item.id"
                       :label="item.lawOfficerName"
                       :value="item.userId"
+                      :disabled="handelType === '5'"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="接班人" prop="successor" label-width="70px">
-                  <el-select v-model="baseInfoForm.successor">
+                  <el-select v-model="baseInfoForm.successor" :disabled="handelType === '5'">
                     <el-option
                       v-for="item in lawPersonList"
                       :key="item.id"
                       :label="item.lawOfficerName"
                       :value="item.userId"
+                      :disabled="handelType === '5'"
                     ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="负责人" prop="manager" label-width="70px">
-                  <el-select v-model="baseInfoForm.manager">
+                  <el-select v-model="baseInfoForm.manager" :disabled="handelType === '5'">
                     <el-option
                       v-for="item in lawPersonList"
                       :key="item.id"
                       :label="item.lawOfficerName"
                       :value="item.userId"
+                      :disabled="handelType === '5'"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -297,7 +302,7 @@
       </div>
     </div>
     <!-- 操作按钮 -->
-    <div v-if="PageType === 'journal'" class="float-btns">
+    <div v-if="PageType === 'journal' && handelType != '5'" class="float-btns">
       <el-button class="edit_btn" type="primary" @click="save">
         <i class="iconfont law-edit"></i>
         <br />保存
@@ -307,7 +312,7 @@
         <br />取消
       </el-button>
     </div>
-    <div v-else class="float-btns">
+    <div v-if="PageType === 'handover' && handelType != '5'" class="float-btns">
       <el-button class="edit_btn" type="primary" @click="save">
         <i class="el-icon-circle-close"></i>
         <br />保存
@@ -315,6 +320,12 @@
        <el-button class="edit_btn" type="info" @click="toClose">
         <i class="el-icon-circle-close"></i>
         <br />取消
+      </el-button>
+    </div>
+    <div v-if="handelType == '5'" class="float-btns">
+       <el-button class="edit_btn" type="info" @click="toClose">
+        <i class="el-icon-circle-close"></i>
+        <br />关闭
       </el-button>
     </div>
     <!-- 关联排班弹窗 -->

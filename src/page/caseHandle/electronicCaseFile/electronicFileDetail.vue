@@ -1,11 +1,12 @@
 <template>
     <div class="box">
         <div style="margin:0 auto;width:690px">
-            <object >
+            <!-- <object >
                 <embed class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
                 :src="docSrc" type="application/pdf" internalinstanceid="29">
-            </object>
-    
+            </object> -->
+            <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(docSrc)" frameborder="0" style="width:790px;height:1119px">
+            </iframe>
         </div>
         <div style="position:fixed;bottom:150px;right: 60px;width:100px;">
             <el-button @click="showNext('last')" :disabled="!nowShowPdfIndex ? true : false">上一张</el-button><br><br>
@@ -21,7 +22,7 @@ export default {
     return {
         caseList:[],
         docSrc:"",
-        host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+        // host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
         nowShowPdfIndex:0,
     }
   },
@@ -39,7 +40,10 @@ export default {
 
              this.caseList = res.data;
             //   this.showCover = 'pdf';
-              this.docSrc = this.host + this.caseList[0].storageId;
+              // this.docSrc = this.host + this.caseList[0].storageId;
+              this.$util.com_getFileStream(this.caseList[0].storageId).then(res => {
+                this.docSrc = res;
+              });
               this.nowShowPdfIndex = 0;
             //   this.archiveSuccess = true;
          },
@@ -53,12 +57,18 @@ export default {
       if(flag == 'last'){
         if(this.nowShowPdfIndex){
           this.nowShowPdfIndex--;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          // this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId).then(res => {
+            this.docSrc = res
+          });
         }
       }else{
         if(this.nowShowPdfIndex != this.caseList.length-1){
           this.nowShowPdfIndex++;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          // this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId).then(res => {
+            this.docSrc = res
+          });
         }
       }
     },
