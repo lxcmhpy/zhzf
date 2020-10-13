@@ -69,7 +69,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { addCourseInfo, uploadCourseFile } from "@/api/trained";
+import { addCourseInfo, uploadTrainedFile, getFileStream } from "@/api/trained";
 
 export default {
   data() {
@@ -128,11 +128,9 @@ export default {
       if (coverImage && coverImage.status === "ready") {
         const formData = new FormData();
         formData.append("file", coverImage.raw);
-        this.$store.dispatch('uploadMaterial', formData).then(res => {
+        uploadTrainedFile(formData).then(res => {
           if(res.code === 200){
-            if(res.data && res.data.length){
-              this.addCourseForm.lessonPic = res.data[0].storageId;
-            }
+            this.addCourseForm.picId = res.data;
             this.descImages.forEach(item => item.status = 'success');
             this.saveCourseInfo(loading);
           }
@@ -218,7 +216,7 @@ export default {
         }
         if(row.picId){
           let picObj = { url: '', status: 'success' };
-          this.$util.com_getFileStream(row.picId).then( res => {
+          getFileStream(row.picId).then( res => {
             picObj.url = res;
           });
           this.descImages.push(picObj);

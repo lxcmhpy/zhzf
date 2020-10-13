@@ -81,17 +81,17 @@
           },
           {
             activeName: 'dayView',
-            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
+            value: String(new Date().getFullYear()) + '-' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
             type: "month",
             placeholder: "选择月",
-            valueFormat: "yyyy MM"
+            valueFormat: "yyyy-MM"
           },
           {
             activeName: 'hoursView',
-            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + ' ' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
+            value: String(new Date().getFullYear()) + '-' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + '-' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
             type: "date",
             placeholder: "选择日期",
-            valueFormat: "yyyy MM dd"
+            valueFormat: "yyyy-MM-dd"
           },
         ],
         tabPans: [
@@ -151,8 +151,8 @@
       handleSelect() {
         let valMap = new Map([
           [ 'monthView', this.dateList[0].value ],
-          [ 'dayView', this.dateList[1].value.split(" ") ],
-          [ 'hoursView', this.dateList[2].value.split(" ") ],
+          [ 'dayView', this.dateList[1].value ],
+          [ 'hoursView', this.dateList[2].value ],
         ])
         let mechanism = this.logForm.mechanism
         let category = this.logForm.category
@@ -166,22 +166,19 @@
           params = {
             mechanism,
             category,
-            year: valMap.get(this.activeName)
+            data: valMap.get(this.activeName)
           }
         } else if (this.activeName === 'dayView') {
           params = {
             mechanism,
             category,
-            year: valMap.get(this.activeName)[0],
-            month: valMap.get(this.activeName)[1]
+            data: valMap.get(this.activeName),
           }
         } else if (this.activeName === 'hoursView') {
           params = {
             mechanism,
             category,
-            year: valMap.get(this.activeName)[0],
-            month: valMap.get(this.activeName)[1],
-            day: valMap.get(this.activeName)[2],
+            data: valMap.get(this.activeName),
           }
         }
         this.getData(params)
@@ -210,7 +207,7 @@
               let echartsData = []
               Object.keys(data).map(key => {
                 if(data[key].length === 0) {
-                  echartsData.push({years:key, value: 0})
+                  echartsData.push({name:key, value: 0})
                 } else {
                   echartsData.push(data[key][0])
                 }
@@ -233,7 +230,7 @@
           xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
           xAxis.map(item => {
             data.map(dataItem => {
-              if(dataItem.hours === item) {
+              if(dataItem.name === item) {
                 series.push(dataItem.value)
               } else {
                 series.push(0)
@@ -242,17 +239,12 @@
           })
         } else {
           data.map(item => {
-            let years = item.years || '-',
-            month = item.month || '-',
-            day = item.day || '-'
-            // hours = item.hours || '-'
-
             if(type === 'yearView') {
-              xAxis.push(years)
+              xAxis.push(item.name+'年')
             } else if (type === 'monthView') {
-              xAxis.push((years + '/' + month))
+              xAxis.push(item.name+'月')
             } else if (type === 'dayView') {
-              xAxis.push((years + '/' + month + '/' + day))
+              xAxis.push(item.name+'日')
             }
             series.push(item.value || 0)
           })

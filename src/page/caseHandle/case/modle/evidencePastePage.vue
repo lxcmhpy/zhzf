@@ -119,7 +119,7 @@
               <el-form-item
                 :prop="'evidenceData.' + index + '.pPla'"
                 style="width: 200px"
-              >
+              > 
                 <el-input
                   type="textarea"
                   v-model="item.pPla"
@@ -393,7 +393,6 @@ export default {
           let noteKey = "note" + selpicData.picIndex;
           this.docData.evidenceData[selpicData.pastePage][noteKey] =
             selpicData.picData.note;
-          
         })
         .catch((err) => {
           console.log(err);
@@ -483,10 +482,12 @@ export default {
       }
     },
     //对图片进行处理
-    changeImgWidHei(storageId, pastePage, picIndex) {
+    async changeImgWidHei(storageId, pastePage, picIndex) {
       //设置临时图片
       let temImg = new Image();
-      temImg.src = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+      if(storageId){
+        temImg.src = await this.$util.com_getFileStream(storageId);
+      }
       let _this = this;
       temImg.onload = function (e) {
         //赋值给图片地址
