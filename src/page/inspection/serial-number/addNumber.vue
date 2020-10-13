@@ -11,6 +11,7 @@
           <el-input v-model="addStationForm.preName" placeholder="编号前缀"></el-input>
         </el-form-item>
       </el-row>
+      <el-row>
       <el-form-item label="后缀:" prop="sufName">
           <el-input v-model="addStationForm.sufName" placeholder="编号后缀"></el-input>
         </el-form-item>
@@ -30,18 +31,22 @@
               </el-select>
         </el-form-item>
       </el-row>
+      <el-row>
       <el-form-item label="业务类型:" prop="codeInfo">
           <el-input v-model="addStationForm.codeInfo" placeholder="业务类型"></el-input>
         </el-form-item>
       </el-row>
-      <!-- <el-form-item label="当前账号:" prop="currNo">
+      <!--<el-row>
+          <el-form-item label="当前账号:" prop="currNo">
           <el-input v-model="addStationForm.currNo" placeholder="当前账号"></el-input>
-        </el-form-item> -->
-      </el-row>
-      <!-- <el-form-item label="机构id:" prop="organId">
+        </el-form-item>
+        </el-row> -->
+      
+      <!-- <el-row>
+        <el-form-item label="机构id:" prop="organId">
           <el-input v-model="addStationForm.organId"></el-input>
-        </el-form-item> -->
-      </el-row>
+        </el-form-item></el-row> -->
+      
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button  @click="closeDialog()">取 消</el-button>
@@ -76,9 +81,11 @@ export default {
     submitStation() {
       let _this = this
       if(_this.handelType==0){
-           getCheParameterInfoApi(this.addStationForm).then(res => {
+            getCheParameterInfoApi(this.addStationForm).then(res => {
             if (res.code == "200") {
               this.$message({ type: 'success', message: "保存成功"});
+              this.visible = false;
+              this.$parent.getStationList();
             }
           }, err => {
             this.$message({ type: 'error', message: err.msg || '' });
@@ -87,6 +94,8 @@ export default {
           updateCheParameterInfoApi(this.addStationForm).then(res => {
             if (res.code == "200") {
               this.$message({ type: 'success', message: "保存成功"});
+              this.visible = false;
+              this.$parent.getStationList();
             }
           }, err => {
             this.$message({ type: 'error', message: err.msg || '' });
@@ -102,7 +111,7 @@ export default {
         _this.dialogTitle = "新增";
       }else if(type==1){//修改
         _this.dialogTitle = "修改";
-         _this.addStationForm.id=row.id,
+        _this.addStationForm.id=row.id,
         _this.addStationForm.preName=row.preName,
         _this.addStationForm.sufName=row.sufName,
         _this.addStationForm.numLength=row.numLength,
@@ -120,6 +129,9 @@ export default {
     closeDialog() {
       this.visible = false;
       this.$refs["addStationFormRef"].resetFields();
+      for (const key in this.addStationForm) {
+        this.addStationForm[key] = "";
+      }
     }
   }
 }

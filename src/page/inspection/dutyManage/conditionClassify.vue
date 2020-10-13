@@ -174,11 +174,11 @@ export default {
         //添加节点
         appendTreeNode() {
             event.stopPropagation();
-            if(this.curTreeNodeNode){
-                this.$refs.addProcessTypeRef.showModal('add',);
-            }else{
-                this.$message({ type: "warning", message: "请选择情况分类！" });
-            }
+            // if(this.curTreeNodeNode){
+                this.$refs.addProcessTypeRef.showModal('add');
+            // }else{
+            //     this.$message({ type: "warning", message: "请选择情况分类！" });
+            // }
         },
         //修改节点
         editTreeNode(nodeData, parent) {
