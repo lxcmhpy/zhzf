@@ -60,13 +60,13 @@ export default {
             if (index == 0) {
               that.trendYear = element
               res.data[element].map(item => {
-                that.trendYearDate.push(item.value)
+                that.trendYearDate.push((item.value/10000).toFixed(2))
               })
             } else if (index == 1) {
               that.trendYearNew = element
               res.data[element].map(item => {
                 that.XData.push(item.name)
-                that.trendYearDateNew.push(item.value)
+                that.trendYearDateNew.push((item.value/10000).toFixed(2))
               })
             }
           })
@@ -75,10 +75,10 @@ export default {
             res.data[key].map(item => {
               if(index === 0) {
                 beforeYear.time = key
-                beforeYear[item.name] = item.value
+                beforeYear[item.name] = (item.value/10000).toFixed(2)
               } else if (index === 1) {
                 year.time = key
-                year[item.name] = item.value
+                year[item.name] = (item.value/10000).toFixed(2)
               }
             })
           })

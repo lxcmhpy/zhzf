@@ -1701,7 +1701,9 @@ export default {
         },
         yAxis: [
           {
-            max:10,
+            max: function (value) {
+              return value.max + 10;
+            },
             splitNumber: 2,
             axisTick: {
               show: false,
@@ -1930,10 +1932,7 @@ export default {
                   offset: 1,
                   color: "#9E87FF",
                 },
-              ]),
-              shadowColor: "rgba(158,135,255, 0.3)",
-              shadowBlur: 10,
-              shadowOffsetY: 20,
+              ])
             },
             itemStyle: {
               normal: {
