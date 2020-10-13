@@ -245,10 +245,10 @@
 
             if(res.data.confiscated[0].value.length>8){
               that.unit = '亿元'
-              that.penalty = res.data.confiscated[0].value/100000000
+              that.penalty = (res.data.confiscated[0].value/100000000).toFixed(2)
             }else{
               that.unit = '万元'
-              that.penalty = res.data.confiscated[0].value/10000
+              that.penalty = (res.data.confiscated[0].value/10000).toFixed(2)
             }
 
             //案发地
@@ -1554,7 +1554,7 @@
         this.chartColumn = echarts.init(document.getElementById("ajzt"));
         let value = this.complete / this.all;
         let title = '';
-        let int = value.toFixed(2)*100;
+        let int = (value*100).toFixed(2);
         let float = value.toFixed(2).split('.')[1];
         this.chartColumn.setOption({
           backgroundColor: '',
@@ -1586,8 +1586,8 @@
               type: 'gauge',
               radius: '60%',
               clockwise: false,
-              startAngle: '90',
-              endAngle: '-269.9999'+int,
+              startAngle: '90'-int,
+              endAngle: '-269.9999',
               splitNumber: 25,
               detail: {
                 offsetCenter: [0, -20],
