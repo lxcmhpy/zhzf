@@ -81,7 +81,7 @@
                       <li v-for="(item,index) in launchList" :key="index">
                         <el-link
                           type="primary"
-                          :href="host+item.storageId"
+                          :href="item.storageStreamPath"
                           :underline="false"
                           :target="['.jpg','.png','.jpeg'].includes(item.fileType) ? '_blank':'_self'"
                         >
@@ -168,7 +168,7 @@
                       <li v-for="(item,index) in replyFileList" :key="index">
                         <el-link
                           type="primary"
-                          :href="host+item.storageId"
+                          :href="item.storageStreamPath"
                           :underline="false"
                           :target="['.jpg','.png','.jpeg'].includes(item.fileType) ? '_blank':'_self'"
                         >
@@ -214,9 +214,6 @@ export default {
     UserInfo() {
       return iLocalStroage.gets("userInfo");
     },
-    host() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    },
   },
   data() {
     return {
@@ -259,7 +256,13 @@ export default {
       };
       getAssistFile(data).then(
         (res) => {
-          this[type] = res.data;
+          let fileListData = res.data;
+          fileListData.forEach(item => {
+            this.$util.com_getDeviceFileStream(item.storageId).then(res=>{
+              item['storageStreamPath'] = res;
+            });
+          })
+          this[type] = fileListData;
         },
         (error) => {
           console.log(error);

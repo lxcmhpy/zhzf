@@ -25,7 +25,7 @@
             <el-checkbox v-for="(user,index) in userList" :label="user.id" :key="user.id">
               <span class="name">{{user.lawOfficerName}}</span>
               <el-select v-model="selectedNumber[index]" placeholder="请选择" @change="changeLawOfficerCards($event,user.lawOfficerCardsAndId)" @click.native.prevent>
-                <el-option v-for="item in user.lawOfficerCardsAndId.lawOfficerCards" :key="item" :label="item" :value="item"></el-option>
+                <el-option v-for="(item,index) in user.lawOfficerCardsAndId.lawOfficerCards" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-checkbox>
           </el-checkbox-group>

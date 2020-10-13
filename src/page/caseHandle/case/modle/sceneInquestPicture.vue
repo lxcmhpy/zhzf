@@ -237,12 +237,14 @@ export default {
       }).catch(err=>{console.log(err)})
     },
     //对图片进行处理
-    changeImgWidHei(storageId){
+    async changeImgWidHei(storageId){
        //设置临时图片
         let temImg = new Image();
-        temImg.src =  iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+        if(storageId){
+          temImg.src = await this.$util.com_getFileStream(storageId);
+        }
         let _this = this;
-        temImg.onload = function(e) {
+        temImg.onload = function(e) { 
           //赋值给图片地址
           _this.getScaling(temImg.width,temImg.height);
           _this.imgWidth = temImg.width / _this.scaling;

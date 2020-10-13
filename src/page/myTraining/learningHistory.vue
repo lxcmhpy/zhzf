@@ -126,9 +126,6 @@ export default {
   computed: {
     UserInfo() {
       return iLocalStroage.gets("userInfo");
-    },
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
   },
   created(){
@@ -169,9 +166,9 @@ export default {
       if(history && history.length){
         let listData = [];
         history.forEach(item => {
-          if(item.path){
-            item.path = this.baseUrl + item.path;
-          }
+          // if(item.path){
+          //   item.path = this.baseUrl + item.path;
+          // }
           if(item.beginTime){
             let itemBeginTime = this.formatTime(item.beginTime);
             let inList = listData.findIndex(study => study.studyTime === itemBeginTime);

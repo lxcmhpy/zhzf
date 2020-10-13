@@ -122,7 +122,7 @@
             {
               name: "案发数量",
               type: "map",
-              mapType: "宁夏",
+              mapType: "江西",
               roam: true,
               label: {
                 normal: {
