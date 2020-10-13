@@ -15,10 +15,10 @@
       :rules="rules"
     >
       <el-row>
-        <el-form-item label="材料名称" prop="name">
+        <!-- <el-form-item label="材料名称" prop="name">
           <el-input v-model="addEnclosureTypeForm.name" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item v-if="addLevels === '1'" label="上传附件" prop="path">
+        </el-form-item> -->
+        <el-form-item label="上传附件" prop="path">
           <el-upload
             action="https://jsonplaceholder.typicode.cmo/posts/"
             :auto-upload="false"
@@ -29,7 +29,7 @@
             <el-button slot="trigger" type="info" size="medium">选择文件</el-button>
           </el-upload>
         </el-form-item>
-        <el-form-item v-else label="分类" prop="type">
+        <!-- <el-form-item v-else label="分类" prop="type">
           <el-select v-model="addEnclosureTypeForm.type" placeholder="请选择">
             <el-option :label="'图片'" value="1">图片</el-option>
             <el-option :label="'音频'" value="2">音频</el-option>
@@ -37,7 +37,7 @@
             <el-option :label="'PDF'" value="4">PDF</el-option>
             <el-option :label="'其他'" value="5">其他</el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </el-row>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -57,7 +57,6 @@ export default {
   data() {
     return {
       visible: false,
-      addLevels: "1",
       addEnclosureTypeForm: {
         name: ""
       },
@@ -82,32 +81,31 @@ export default {
         this.$refs.addEnclosureTypeRef.validate((valid) => {
           if (valid) {
             var params = new FormData();
-            const attach = JSON.parse(JSON.stringify(this.addEnclosureTypeForm));
-            attach.levels = this.addLevels;
-            console.log(attach);
-
-            if(attach.levels != "0"){
-              params.append("file", this.fileList[0].raw);
-              const loading = this.$loading({
-                lock: true,
-                text: "正在上传",
-                spinner: "car-loading",
-                customClass: "loading-box",
-                background: "rgba(234,237,244, 0.8)",
-              });
-              uploadCommon(params).then(
-                res => {
-                  attach.path = res.data[0].storagePath;
-                  attach.storageId = res.data[0].storageId;
-                  console.log(attach)
-                  this.$emit("addAttach", attach);
-                  loading.close();
-                },
-                err => { console.error(err);loading.close();; }
-              );
-            }else{
-              this.$emit("addAttach", attach);
-            }
+            this.fileList.forEach(f => {
+              params.append("file", f.raw);
+            })
+            const loading = this.$loading({
+              lock: true,
+              text: "正在上传",
+              spinner: "car-loading",
+              customClass: "loading-box",
+              background: "rgba(234,237,244, 0.8)",
+            });
+            uploadCommon(params).then(
+              res => {
+                let attachList = [];
+                res.data.forEach(file => {
+                  let attach = {};
+                  attach.path = file.storagePath;
+                  attach.storageId = file.storageId;
+                  attach.name = file.fileName;
+                  attachList.push(attach);
+                })
+                this.$emit("addAttach", attachList);
+                loading.close();
+              },
+              err => { console.error(err);loading.close();; }
+            );
             
             this.closeDialog();
           } else {
@@ -115,10 +113,7 @@ export default {
           }
         });
     },
-    showModal(levels, type) {
-      const from = {type}
-      this.addEnclosureTypeForm = from;
-      this.addLevels = levels;
+    showModal() {
       this.visible = true;
     },
     // 选择文件变化
@@ -130,8 +125,9 @@ export default {
           type: "warning"
         });
       }
-      fileList.splice(0, 1, file);
-      this.fileList.splice(0, 1, file);
+      // fileList.splice(0, 1, file);
+      // this.fileList.splice(0, 1, file);
+      this.fileList = fileList;
 
 
     },
@@ -142,7 +138,7 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
-      this.fileList.splice(0, this.fileList.length);
+      this.fileList = [];
       this.addEnclosureTypeForm.name = "";
     },
   },

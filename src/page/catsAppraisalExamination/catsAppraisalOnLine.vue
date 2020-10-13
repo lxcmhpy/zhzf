@@ -1,7 +1,7 @@
 <!-- 网上检查 -->
 <template>
     <div class="cats-layout-page-content" style="height: calc(100% - 44px);box-sizing: border-box">
-        <div class="searchAndpageBox toggleBox" style="overflow-y:auto;min-height: auto;">
+        <div class="searchAndpageBox toggleBox onlineBox" style="overflow-y:auto;min-height: auto;">
             <div class="departOrUserTree">
                 <div class="treeBox">
                     <el-tree style="font-size:14px" class="filter-tree" :data="organData" :props="defaultProps"
@@ -285,3 +285,8 @@
     };
 
 </script>
+<style>
+    .onlineBox{
+        height: 100% !important;
+    }
+</style>

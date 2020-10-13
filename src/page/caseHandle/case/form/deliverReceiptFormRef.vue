@@ -4,7 +4,7 @@
     custom-class="leftDialog leftDialog2 archiveCatalogueBox deliverCaBox"
     :visible.sync="visible"
     @close="closeDialog"
-    top="0px"
+    :top="fatherCom==='inforCollection' ? '95px':'33px'"
     width="405px"
     :modal="false"
     :show-close="false"
@@ -66,6 +66,12 @@ import { mapGetters } from "vuex";
 import { findByCaseBasicInfoIdApi,findByCaseIdAndDocIdApi,getDeliverReceiptByCaseIdApi,getFileStreamByStorageIdApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
+  props: {
+    fatherCom: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
       visible: false,
@@ -73,7 +79,6 @@ export default {
       mlList: "",
       pdfVisible: false,
       // doccloseDialog: false,
-      host:'',
       getData:false,
       pdfUrl:''
     };
@@ -131,14 +136,8 @@ export default {
         };
         let _that = this;
         console.log('item',item)
-        // findByCaseIdAndDocIdApi(data).then(res=>{
-        //   console.log('res',res)
-        //     _that.mlList = _that.host + res.data[0].storageId;
-        //   console.log('_that.mlList ',_that.mlList )
-        // },err=>{
-        //     console.log(err);
-        // })
-        this.$store.dispatch("getFile", { 
+       
+        this.$store.dispatch("getFile", {
           docId: data.docId,
           caseId: data.caseId,
         }).then(
@@ -146,7 +145,6 @@ export default {
             console.log('地址1',res);
             //单份文书取一个
             if (res.length == 1) {
-              // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
               this.getFileStream(res[0].storageId)
             }else{
               //多份文书按照docDataId取地址
@@ -154,7 +152,6 @@ export default {
                 if (data.docDataId && data.docDataId == res[i].docDataId) {
                   console.log('res[i].storageId', res[i].storageId);
                   this.getFileStream(res[i].storageId)
-                  // _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
                   break;
                 }
               }
@@ -182,7 +179,7 @@ export default {
         })
       },
       // 将返回的流数据转换为url
-      getObjectURL(file) {
+      getObjectURL(file) { 
         let url = null;
         if (window.createObjectURL != undefined) { // basic
           url = window.createObjectURL(file);
@@ -199,8 +196,8 @@ export default {
 
           }
         }
-         
-        this.pdfUrl =url;   
+
+        this.pdfUrl =url;
       },
     //显示封面
     showCover(){
@@ -213,7 +210,6 @@ export default {
     }
   },
   mounted () {
-     this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
       let class1 =  document.getElementsByClassName("deliverCaBox");
       let class2 = class1[0].parentNode;
       class2.style.right = '60px';
@@ -222,35 +218,4 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-// @import "@/assets/css/caseHandle/index.scss";
-// .fullscreen .archiveCatalogueBox{
-//     background: #EAEDF4;
-//     margin-right: 0;
-//     .el-dialog__header {
-//         height: 64px;
-//         background: #FFFFFF;
-//         color: #20232B;
-//         padding: 0 0 0 20px;
-//         line-height: 64px;
-//         .catalogueTitle {
-//             font-size: 20px;
-//             cursor: pointer;
-//         }
-//     }
-//     table{
-//         text-align: center;
-//         background: #fdffff;
-//         td{
-//             padding: 10px 0;
-//             min-height: 38px;
-//             border: 1px solid #7F8185;
-//         }
-//         tr{
-//             td:nth-child(1),td:nth-child(3){
-//                 width: 40px;
-//             }
-//         }
-//     }
-// }
-</style>
+

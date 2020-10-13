@@ -146,7 +146,7 @@
                 </div>
             </div>
 
-            <el-dialog :visible.sync="visible" title="人员报送" width="480px">
+            <el-dialog :visible.sync="visible" title="人员报送" width="600px">
                 <el-form :label-position="labelPosition" :model="form" :rules="rules" ref="formRY" label-width="160px">
                     <el-form-item label="姓名" prop="staffName">
                         <el-input placeholder="请输入姓名" v-model.trim="form.staffName"></el-input>
@@ -479,11 +479,6 @@
                 )
             },
             view(row) {
-                // this.dialogImageUrl =
-                //   iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST +
-                //   row.storageId +
-                //   '?time=' +
-                //   new Date().getTime()
                 getFileStreamByStorageId(row.storageId).then(res => {
                     const blob = new Blob([res], {
                         type: 'application/octet-stream'

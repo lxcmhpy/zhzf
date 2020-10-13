@@ -111,9 +111,10 @@
               <div >{{scope.row.checkEndTime}}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="oname" label="单位名称" align="center" min-width="200px"></el-table-column>
-          <el-table-column prop="roadName" label="路段名称" align="center" min-width="180px"></el-table-column>
-          <el-table-column prop="routeInfo" label="路段信息" align="center" min-width="220px">
+          <el-table-column prop="oname" label="单位名称" align="center" min-width="150px"></el-table-column>
+          <el-table-column prop="roadNum" label="路线编号" align="center" min-width="100px"></el-table-column>
+          <el-table-column prop="roadName" label="路段名称" align="center" min-width="100px"></el-table-column>
+          <el-table-column prop="routeInfo" label="桩号" align="center" min-width="150px">
             <template slot-scope="scope">
               <div >K{{scope.row.startKilometer}}+{{scope.row.startMeter}}m</div>
               <div >K{{scope.row.endKilometer}}+{{scope.row.endMeter}}m</div>
@@ -129,19 +130,19 @@
                 v-else-if="scope.row.roadCondition === '2'"
                 style="color: #E84241;"
               >异常</span>
-              <span v-else>{{scope.row.routeSituation}}</span>
+              <span v-else>{{scope.row.roadCondition}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="personNames" label="执法人员" align="center" min-width="160px"></el-table-column>
-          <el-table-column prop="isFilingCase" label="是否立案" align="center" width="100px">
+          <el-table-column prop="isFilingCase" label="是否转立案" align="center" width="100px">
             <template slot-scope="scope">
               <span v-if="!scope.row.isCase">否</span>
-              <el-button v-else type="text" @click="recordCaseClick(scope.row.recordId)">查看案件</el-button>
+              <el-button v-else type="text" @click="recordCaseClick(scope.row.recordId)">是</el-button>
             </template>
           </el-table-column>
           <el-table-column prop="opt" label="操作" align="center" width="160px" fixed="right">
             <template slot-scope="scope">
-              <el-button type="text" @click="checkConcat(scope.row)">新增</el-button>
+              <el-button type="text" @click="recordDetail(scope.row)">详情</el-button>
               <el-button type="text" @click="editJournalInfo(scope.row)">修改</el-button>
             </template>
           </el-table-column>
@@ -282,10 +283,10 @@ export default {
       });
     },
     // 查看交接班
-    checkConcat(row) {
+    recordDetail(row) {
       this.$router.push({
-        name: "journal_handover",
-        params: { page: "handover" },
+        name: "record_detail",
+        params: { page: 'detail', cheRecord: row }
       });
     },
     // 修改日志
@@ -293,7 +294,7 @@ export default {
       console.log(row);
       this.$router.push({
         name: 'record_detail',
-        params: { page: 'edit', checkCategoryList: this.checkCategoryList, checkTypeList: this.checkTypeList, cheRecord: row }
+        params: { page: 'edit', cheRecord: row }
       });
 
     },

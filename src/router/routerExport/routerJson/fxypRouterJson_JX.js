@@ -88,6 +88,14 @@ export default  [
             component: () => import("@/page/analyseManage/caseAnalysis/amountProportion.vue")
           },
           {
+            name: "numberYTY",
+            path: "/numberYTY",
+            meta: {
+              title: "案件类型数量同比分析"
+            },
+            component: () => import("@/page/analyseManage/caseAnalysis/numberYTY.vue")
+          },
+          {
             name: "trend",
             path: "/trend",
             meta: {
@@ -95,14 +103,7 @@ export default  [
             },
             component: () => import("@/page/analyseManage/caseAnalysis/trend.vue")
           },
-          {
-            name: "numberYTY",
-            path: "/numberYTY",
-            meta: {
-              title: "案件案发数量同比分析"
-            },
-            component: () => import("@/page/analyseManage/caseAnalysis/numberYTY.vue")
-          },
+
           {
             name: "proportion",
             path: "/proportion",
@@ -207,5 +208,13 @@ export default  [
           }
         ]
       },
+  {
+    name: "report",
+    path: "/report",
+    meta: {
+      title: "专题报告"
+    },
+    component: () => import("@/page/analyseManage/report/index.vue")
+  },
 
 ]

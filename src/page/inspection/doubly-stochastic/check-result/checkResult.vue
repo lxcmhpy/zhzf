@@ -235,6 +235,7 @@ export default {
       searchForm: {
         checkSubject: "",
         taskName: '',
+        checkType: '',
         taskArea: '省交通运输厅领域'
       },
       isShow: false,

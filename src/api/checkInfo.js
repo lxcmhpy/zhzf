@@ -16,7 +16,8 @@ export function yehuCheckApi(data) {
     return request({
         url: "/cy/yuz/yh",
         method: "GET",
-        showloading: false,
+        showloading: true,
+        loadingType: 'loadPart',
         params: data,
         baseUrlType:  'CHECK_API',
         cancelToken: setCancelSource()
@@ -125,6 +126,19 @@ export function vehicleCheckApi(data) {
         loadingType:'loadPart',
         params: param,
         baseUrlType:  'CHECK_API',
+        cancelToken: setCancelSource()
+    });
+}
+
+//关联违法行为
+export function checkWithilleaglApi(data) {
+    console.log(data);
+    return request({
+        url: "/case/doc/caseBasicInfo/findCaseListByXxcy",
+        method: "GET",
+        showloading: true,
+        loadingType: 'loadPart',
+        params: data,
         cancelToken: setCancelSource()
     });
 }

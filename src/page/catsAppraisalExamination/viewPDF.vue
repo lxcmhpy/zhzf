@@ -17,7 +17,10 @@
         },
         methods: {
             getFile() {
-                this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + this.$route.params.id
+                this.$util.com_getFileStream(this.$route.params.id).then((res) => {
+                    this.storagePath = res;
+                  });
+                //this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + this.$route.params.id
             }
         },
         mounted() {

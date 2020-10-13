@@ -186,7 +186,7 @@
               <el-form-item prop="caseSituation" :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])">
                 <el-input type='textarea' v-model="formData.caseSituation" 
                 :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
-                v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="200" placeholder="\"></el-input>
+                v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="1000" placeholder="\"></el-input>
               </el-form-item>
             </td>
           </tr>

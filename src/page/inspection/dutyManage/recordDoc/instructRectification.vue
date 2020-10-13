@@ -9,7 +9,20 @@
         :model="formData"
       >
         <div class="doc_topic">路政巡查监督责令整改通知书</div>
-        <div class="doc_number">{{ formData.tempNo }}号</div>
+        <div
+          class="doc_number"
+        >
+        {{formData.orgName}}
+        函告[
+        <el-form-item prop="yearNo"  style="width: 50px;">
+          <el-input v-model="formData.yearNo"></el-input>
+        </el-form-item>
+        ]&nbsp;&nbsp;第
+        <el-form-item prop="numberNo"  style="width: 150px;">
+          <el-input v-model="formData.numberNo" placeholder="XXXX"></el-input>
+        </el-form-item>
+        号</div>
+        <span class="top-split-line"></span>
         <p class="partyBox">
           <span class="width_file">
             <el-form-item prop="companyName">
@@ -102,8 +115,20 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">监督巡查人（签字）：</el-col>
-          <el-col :span="12">被监督巡查对象责任人（签字）：</el-col>
+          <el-col :span="12">监督巡查人（签字）：
+            <p class="partyBox d-i-b w-180">
+              <el-form-item prop="monitorName">
+                <el-input v-model="formData.monitorName"></el-input>
+              </el-form-item>
+            </p>
+          </el-col>
+          <el-col :span="12">被监督巡查对象责任人（签字）：
+            <p class="partyBox d-i-b" style="width: 165px;">
+              <el-form-item prop="supervisedName">
+                <el-input v-model="formData.supervisedName"></el-input>
+              </el-form-item>
+            </p>
+          </el-col>
         </el-row>
         <br />
         <br />
@@ -134,8 +159,12 @@
 <script>
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
+import { getCheParameterInfoApi, getOrganInfoApi } from "@/api/supervision";
 
 export default {
+  props: {
+    caseDocData: {}
+  },
   components: {},
   computed: {
     UserInfo() {
@@ -151,11 +180,12 @@ export default {
     };
     return {
       formData: {
-        tempNo: "整改001",
-        companyName: "责令某单位",
-        orgName: "机构名称",
+        // tempNo: "整改001",
+        numberNo: "",
+        companyName: "",
+        orgName: "",
         inspectionTime: "",
-        afdd: "路段名称",
+        afdd: "",
         contextInfo: "问题内容",
         days: 15,
         endTime: "",
@@ -202,6 +232,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.docFormRef.validate((valid, noPass) => {
           if (valid) {
+            this.formData.pName = this.formData.orgName;
             const reportData = JSON.stringify(this.formData);
             resolve({ code: 200, data: reportData });
           } else {
@@ -226,12 +257,40 @@ export default {
       const day = date.getDate();
       this.formData.createTime = `${year}-${month}-${day}`;
       this.formData.monitorUnit = this.UserInfo.orgName;
+      this.formData.yearNo = `${year}`;
     },
+    getCheParameterInfo() {
+      const params = { codeInfo: 'record_case_doc_code' };
+      getCheParameterInfoApi(params).then(
+        res => this.formData.numberNo = res.data
+      );
+    },
+    getOrganInfo() {
+      getOrganInfoApi().then(
+        res => {
+          const data = {};
+          data.orgName = res.data.orgName;
+          this.formData = Object.assign(data,this.formData);
+        }
+      )
+    }
   },
 
   mounted() {},
   created() {
-    this.getCurrentDay();
+    const caseDocData = JSON.parse(this.caseDocData);
+    if(!caseDocData.yearNo) {
+      this.getCurrentDay();
+    }
+    if(!caseDocData.numberNo) {
+      this.getCheParameterInfo();
+    }
+    if(!caseDocData.orgName && !caseDocData.porgName) {
+      this.getOrganInfo();
+    }
+    if(Object.keys(caseDocData).length > 0){
+      this.formData = Object.assign(caseDocData);
+    }
   },
 };
 </script>
@@ -240,6 +299,15 @@ export default {
 .instruct-notice {
   #instructNoticePanel {
     margin-top: 10px;
+    .top-split-line{
+        display: block;
+        border: 1px solid #dcdfe6;
+        margin: 20px 0;
+      }
+    
+    .doc_number {
+      line-height: 40px;
+    }
     .partyBox {
       text-indent: 0;
     }

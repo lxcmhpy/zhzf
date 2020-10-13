@@ -7,8 +7,13 @@
             <el-form-item label="姓名：" prop='name'>
               <el-input v-model="searchForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="单位：" prop='company'>
-              <el-input v-model="searchForm.company"></el-input>
+            <el-form-item label="单位：" prop='selectValue'>
+              <!-- <el-input v-model="searchForm.company"></el-input>
+            </el-form-item>
+            <el-form-item label="查询范围" prop='selectValue'> -->
+              <el-select v-model="searchForm.selectValue">
+                <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <div class="search-btns">
@@ -44,7 +49,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportExpert','检查专家表.xls')">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportExpert','检查专家表.xls')">导出所有专家</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -221,7 +226,7 @@ import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
-import { validatePhone,validateIDNumber  } from "@/common/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
@@ -229,7 +234,8 @@ export default {
       multipleSelection: [],
       searchForm: {
         company: "",
-        name: ''
+        name: '',
+        selectValue: 0
       },
       isShow: false,
       addForm: {
@@ -277,15 +283,16 @@ export default {
           { required: true, message: "必填项", trigger: "change" }
         ],
         contactType: [
-         { validator:validatePhone , trigger: "blur" }
+          { validator: validatePhone, trigger: "blur" }
         ],
         fixedTelephone: [
-         { validator:validatePhone , trigger: "blur" }
+          { validator: validatePhone, trigger: "blur" }
         ],
       },
       optionsZC: [],
       optionsZZMM: [],
       optionsZYLY: [],
+      searchType: [{ value: 0, label: '本单位' }, { value: 1, label: '本单位及子单位' }],
     }
   },
   methods: {
@@ -293,7 +300,8 @@ export default {
     getTableData() {
       let data = {
         name: this.searchForm.name,
-        company: this.searchForm.company,
+        company: iLocalStroage.gets("userInfo").organName,
+        organId: this.searchForm.selectValue==1?iLocalStroage.gets("userInfo").organId:'',
         current: this.currentPage,
         size: this.pageSize,
       };

@@ -7,10 +7,21 @@
   <section class="file-upload-grid">
     <el-card class="box-card u-my-card" shadow="naver">
       <div slot="header" class="clearfix">
-        <span>{{title}}</span>
-        <div v-if="inputShow && !isDetail" class="u-file-button" style="float:right;">
-          <el-button type="primary" size="small" class="u-button-mini">上传</el-button>
-          <input type="file" multiple v-bind:accept="acceptType" v-on:change="onFileChange" />
+        <span>{{ title }}</span>
+        <div
+          v-if="inputShow && !isDetail"
+          class="u-file-button"
+          style="float: right"
+        >
+          <el-button type="primary" size="small" class="u-button-mini"
+            >上传</el-button
+          >
+          <input
+            type="file"
+            multiple
+            v-bind:accept="acceptType"
+            v-on:change="onFileChange"
+          />
         </div>
       </div>
       <el-table :data="files" stripe style="width: 100%" height="100%">
@@ -18,17 +29,38 @@
         <el-table-column prop="accName" label="附件名称" align="center">
           <template slot-scope="scope">
             <el-input v-model="scope.row.accName" v-if="!isDetail"></el-input>
-            <span v-else>{{scope.row.accName}}</span>
+            <span v-else>{{ scope.row.accName }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="accType" label="类型" align="center"></el-table-column>
-        <el-table-column prop="accUpTime" label="上传日期" align="center"></el-table-column>
-        <el-table-column prop="accPersonName" label="上传人" align="center"></el-table-column>
+        <el-table-column
+          prop="accType"
+          label="类型"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="accUpTime"
+          label="上传日期"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="accPersonName"
+          label="上传人"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="op" label="操作" align="center" width="120">
           <template slot-scope="scope">
-            <el-button type="text" @click="previewFile(scope.row)">预览</el-button>
-            <el-button v-if="!isDetail" type="text" @click="removeFile(scope.row,scope.$index)">删除</el-button>
-            <el-button v-else type="text" @click="download(scope.row.accUrl)">下载</el-button>
+            <el-button type="text" @click="previewFile(scope.row)"
+              >预览</el-button
+            >
+            <el-button
+              v-if="!isDetail"
+              type="text"
+              @click="removeFile(scope.row, scope.$index)"
+              >删除</el-button
+            >
+            <el-button v-else type="text" @click="download(scope.row.accUrl)"
+              >下载</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -36,14 +68,19 @@
 
     <el-dialog title="预览" :visible.sync="dialogPreviewVisible" width="70%">
       <div style="text-align: center">
-        <img v-if="dialogPreviewType === '图片' " :src="dialogPreviewUrl" alt height="500" />
-        <video v-else-if="dialogPreviewType === '音视频' " height="500" controls>
+        <img
+          v-if="dialogPreviewType === '图片'"
+          :src="dialogPreviewUrl"
+          alt
+          height="500"
+        />
+        <video v-else-if="dialogPreviewType === '音视频'" height="500" controls>
           <source :src="dialogPreviewUrl" type="video/mp4" />
         </video>
-        <object v-else-if="dialogPreviewType === 'PDF' ">
+        <object v-else-if="dialogPreviewType === 'PDF'">
           <embed
             class="print_info"
-            style="padding:0px;width: 900px;margin:0 auto;height:1000px"
+            style="padding: 0px; width: 900px; margin: 0 auto; height: 1000px"
             name="plugin"
             id="plugin"
             :src="dialogPreviewUrl"
@@ -65,6 +102,7 @@ import {
   deleteFileByIdApi,
   downLoadCommon,
 } from "@/api/upload";
+import Util from "@/api/notice/util";
 export default {
   props: {
     title: {
@@ -85,11 +123,11 @@ export default {
   data: function () {
     return {
       inputShow: true,
-      storageIds: [],
+      //   storageIds: [],
       dialogPreviewType: "",
       dialogPreviewUrl: false,
       dialogPreviewVisible: false,
-      host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+      //   host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
     };
   },
   computed: {},
@@ -161,11 +199,11 @@ export default {
       let _this = this;
       uploadCommon(fd).then(
         (res) => {
-          _this.storageIds.push({
-            url: _this.host + "/" + res.data[0].storageId,
-            storageId: res.data[0].storageId,
-            name: res.data[0].fileName,
-          });
+          //   _this.storageIds.push({
+          //     url: _this.host + "/" + res.data[0].storageId,
+          //     storageId: res.data[0].storageId,
+          //     name: res.data[0].fileName,
+          //   });
           let file = _this.files.find((item) => item.id === param.id);
           file.accUrl = res.data[0].storageId;
         },
@@ -190,7 +228,6 @@ export default {
             type: "success",
             message: "操作成功!",
           });
-          // _this.storageIds.splice(_this.storageIds.findIndex(item => item.storageId === file.accUrl), 1)
         },
         (err) => {
           console.log(err);
@@ -218,7 +255,11 @@ export default {
 
     previewFile(file) {
       this.dialogPreviewType = file.accType;
-      this.dialogPreviewUrl = this.host + "/" + file.accUrl;
+      let _this = this;
+      this.$util.com_getFileStream(file.accUrl).then((res) => {
+        _this.dialogPreviewUrl = res;
+      });
+      //   this.dialogPreviewUrl = this.host + "/" + file.accUrl;
       this.dialogPreviewVisible = true;
     },
   },

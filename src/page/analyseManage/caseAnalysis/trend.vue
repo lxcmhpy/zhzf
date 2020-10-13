@@ -7,13 +7,14 @@
             <elSelectTree
               ref="elSelectTreeObj1"
               :options="mechanismOption"
+              :clearable="false"
               :accordion="true"
               :props="{label: 'label', value: 'id'}"
               @getValue="handleMechanism"
             />
           </el-form-item>
           <el-form-item label="执法门类" prop>
-            <el-select v-model="logForm.category" placeholder="请选择">
+            <el-select v-model="logForm.category" clearable placeholder="请选择">
               <el-option
                 v-for="item in categoryOption"
                 :key="item.value"
@@ -63,7 +64,7 @@
 
 <script>
   import echarts from "echarts";
-  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours, zfml } from '@/api/fxyp.js'
+  import { sjglfx, sjglfxmonth, sjglfxday, sjglfxhours, zfml } from '@/api/analysis/analysisManage.js'
   import elSelectTree from "@/components/elSelectTree/elSelectTree";
 
   export default {
@@ -80,17 +81,17 @@
           },
           {
             activeName: 'dayView',
-            value: String(new Date().getFullYear()) + '/' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
+            value: String(new Date().getFullYear()) + '-' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
             type: "month",
             placeholder: "选择月",
-            valueFormat: "yyyy/MM"
+            valueFormat: "yyyy-MM"
           },
           {
             activeName: 'hoursView',
-            value: String(new Date().getFullYear()) + '/' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + '/' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
+            value: String(new Date().getFullYear()) + '-' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + '-' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
             type: "date",
             placeholder: "选择日期",
-            valueFormat: "yyyy/MM/dd"
+            valueFormat: "yyyy-MM-dd"
           },
         ],
         tabPans: [
@@ -113,7 +114,7 @@
     },
     methods: {
       /**
-       * 初始化页面，默认显示年数据，机构和门类默认选择第一个
+       * 初始化页面，默认显示年数据，机构和门类默认不选择
        */
       init() {
         let reqArr = [this.$store.dispatch("findOrganTreeByCurrUser"), zfml()]
@@ -122,24 +123,30 @@
             // 第一个为机构数据，第二个为门类数据
             if(index === 0) {
               this.mechanismOption = res.data
-              this.$refs.elSelectTreeObj1.valueTitle = res.data[0].label // 默认显示第一个
-              this.logForm.mechanism = res.data[0].id
+              let organId = JSON.parse(localStorage.getItem("userInfo")).organId // 获取当前用户机构
+              res.data.map(item => {
+                if(item.id === organId) {
+                  this.$refs.elSelectTreeObj1.valueTitle = item.label
+                  this.logForm.mechanism = item.id
+                }
+              })
             } else if (index === 1) {
               this.categoryOption = res.data
-              this.logForm.category = res.data[0].value // 默认显示第一个
+              // this.logForm.category = res.data[0].value // 默认显示第一个
             }
           })
           return
         }, err => { console.log(err) }).then(() => {
-          let mechanism = this.mechanismOption[0].id
-          let category = this.categoryOption[0].value
-          let params = mechanism + '/' + category
+          let mechanism = this.logForm.mechanism
+          let params = {
+            mechanism
+          }
           this.getData(params)
         })
       },
 
       /**
-       * 点击搜索
+       * 点击搜索或者切换视图
        */
       handleSelect() {
         let valMap = new Map([
@@ -149,11 +156,30 @@
         ])
         let mechanism = this.logForm.mechanism
         let category = this.logForm.category
-        let params = ''
+        let params = {}
         if(this.activeName === 'yearView') {
-          params = mechanism + '/' + category
-        } else {
-          params = mechanism + '/' + category + '/' + valMap.get(this.activeName)
+          params = {
+            mechanism,
+            category
+          }
+        } else if (this.activeName === 'monthView') {
+          params = {
+            mechanism,
+            category,
+            data: valMap.get(this.activeName)
+          }
+        } else if (this.activeName === 'dayView') {
+          params = {
+            mechanism,
+            category,
+            data: valMap.get(this.activeName),
+          }
+        } else if (this.activeName === 'hoursView') {
+          params = {
+            mechanism,
+            category,
+            data: valMap.get(this.activeName),
+          }
         }
         this.getData(params)
       },
@@ -199,23 +225,35 @@
       setCharts(data) {
         let xAxis = [], series = [];
         let type = this.activeName
-        data.map(item => {
-          let years = item.years || '-',
-          month = item.month || '-',
-          day = item.day || '-',
-          hours = item.dhoursay || '-'
+        // 时间折线图横坐标写死
+        if(type === 'hoursView') {
+          xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
+          xAxis.map(item => {
+            data.map(dataItem => {
+              if(dataItem.hours === item) {
+                series.push(dataItem.value)
+              } else {
+                series.push(0)
+              }
+            })
+          })
+        } else {
+          data.map(item => {
+            let years = item.years || '-',
+            month = item.month || '-',
+            day = item.day || '-'
+            // hours = item.hours || '-'
 
-          if(type === 'yearView') {
-            xAxis.push(years)
-          } else if (type === 'monthView') {
-            xAxis.push((years + '/' + month))
-          } else if (type === 'dayView') {
-            xAxis.push((years + '/' + month + '/' + day))
-          } else if (type === 'hoursView') {
-            xAxis.push(hours)
-          }
-          series.push(item.value)
-        })
+            if(type === 'yearView') {
+              xAxis.push(years)
+            } else if (type === 'monthView') {
+              xAxis.push((years + '/' + month))
+            } else if (type === 'dayView') {
+              xAxis.push((years + '/' + month + '/' + day))
+            }
+            series.push(item.value || 0)
+          })
+        }
         this.drawCharts({ xAxis, series })
       },
 
@@ -247,7 +285,17 @@
             },
             xAxis: {
               type: "category",
-              data: xAxis
+              boundaryGap: false,
+              data: xAxis,
+              axisLabel: {
+                formatter: (val) => {
+                  if(this.activeName === 'hoursView') {
+                    return val + '时'
+                  } else {
+                    return val
+                  }
+                }
+              },
             },
             yAxis: {
               type: "value"

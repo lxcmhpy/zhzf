@@ -51,7 +51,11 @@ $dialog-default-height: 560px !default;
       background  : $cats-blue4D89FF-color;
     }
   }
-
+  .el-button--primary.is-plain {
+    color: #409EFF;
+    background: #ecf5ff;
+    border-color: #b3d8ff;
+  }
   .el-button--medium {
     padding: 7px 14px;
   }

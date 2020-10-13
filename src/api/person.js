@@ -90,7 +90,21 @@ export function exportPersonInfoApi(data){
       method: "get",
       params: data,
       showloading: false,
-      cancelToken: setCancelSource()
+      cancelToken: setCancelSource(),
+     /// baseUrlType:"LOCALADDR"
+  })
+}
+
+//导出人员图片
+export function personPictureApi(data){
+  return request({
+      responseType:'blob',
+      url: "/person/person/personPicture",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource(),
+    //  baseUrlType:"LOCALADDR"
   })
 }
 

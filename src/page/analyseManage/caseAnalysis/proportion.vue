@@ -4,7 +4,7 @@
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="统计年度" prop>
-            <el-date-picker v-model="year" type="year" placeholder="选择年" @change="changeFun"></el-date-picker>
+            <el-date-picker v-model="year" type="year" placeholder="选择年" value-format="yyyy" @change="changeFun"></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
@@ -28,7 +28,7 @@
     data() {
       return {
         seriesData:[],
-        year: "2019",
+        year:  new Date().getFullYear().toString(),
         tableData: [],
         logForm: {
         },
@@ -46,12 +46,15 @@
         };
         proportionApi(param).then(res => {
           if(res.code == 200){
-            that.seriesData = res.data
+            that.seriesData = res.data.filter(function (obj) {
+              return obj.value = (obj.value/10000).toFixed(2);
+            });
             res.data.map(item => {
               that.XData.push(item.name)
             })
             let json = {};
             that.tableData = []
+
             that.seriesData.forEach(v=>{
               json[v.name] = v.value
             })
@@ -100,7 +103,7 @@
       },
     },
     mounted() {
-      this.getData('2019');
+      this.getData( new Date().getFullYear().toString());
     }
   };
 </script>

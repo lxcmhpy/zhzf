@@ -52,8 +52,30 @@ export const inforCollectionCommonMixins = {
       }
       callback();
     };
+    // 检验身份证
+    var checkIdNoPassSort = (rule, value, callback) => {
+      if (this.inforForm.partyIdType === "0") {
+        // validateIDNumber
+        var reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
+        if (!reg.test(value) && value) {
+          callback(new Error("身份证格式错误"));
+        } else {
+          if (this.changePartyIdType2Index) {
+            this.changePartyIdType2(
+              this.driverOrAgentInfo.zhengjianNumber,
+              this.changePartyIdType2Index
+            );
+          } else {
+            this.changePartyIdType(this.inforForm.partyIdNo);
+          }
+        }
+        callback();
+      }
+    };
     return {
+      punishList: [],
       moneyTooltip: "",// 自由裁量权金额提示语
+      punishList: [],
       recentCheckStastions: [],//最近五个检测站
       recentCheckWorkers: [],//历史保存过检测人员
       vehicleTypeList: [],//车型
@@ -172,9 +194,7 @@ export const inforCollectionCommonMixins = {
         partyAge: [
           {validator: validateAge, trigger: "blur"}
         ],
-        partyIdNo: [
-          {validator: validateIDNumber, trigger: "blur"}
-        ],
+        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
         partyZipCode: [
           {validator: validateZIP, trigger: "blur"}
         ],
@@ -530,13 +550,29 @@ export const inforCollectionCommonMixins = {
         punishClauseLabel = '处罚依据';
       }
       let data = {
-        caseCauseId: this.inforForm.caseCauseId,
+        // caseCauseId: this.inforForm.caseCauseId,
         caseCauseName: this.inforForm.caseCauseName,
         titleType:titleType,
         illageClauseLabel,
-        punishClauseLabel
-      };
+        punishClauseLabel,
+        punishList: this.punishList,
+      }; 
       this.$refs.punishDiagRef.showModal(data);
+    },
+    //获取违法条款、依据数据
+    getPunishList() {
+      // debugger
+      this.$store
+        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
+        .then(
+          (res) => {
+            this.punishList = res.data;
+            if(this.judgFreedomList.length===0){
+              this.initMoneyWhenNotExistStandard();
+            }
+          },
+          (err) => {}
+        );
     },
     //设置违法条款和处罚条款
     setIllegalLawAndPunishLaw(data) {
@@ -809,9 +845,10 @@ export const inforCollectionCommonMixins = {
                     }
                 })
             }
-            this.initProvincesList(dataArray)  
+          _this.initProvincesList(dataArray)  
           _this.inforForm = res.data;
-          this.handleCaseData(res.data);
+          _this.handleCaseData(res.data);
+          _this.getPunishList();
         },
         err => {
           console.log(err);
@@ -1389,6 +1426,21 @@ export const inforCollectionCommonMixins = {
             console.log(err);
           }
     )},
+    //获取违法条款、依据数据
+    getPunishList() {
+      // debugger
+      this.$store
+        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
+        .then(
+          (res) => {
+            this.punishList = res.data;
+            if (this.judgFreedomList.length === 0) {
+              this.initMoneyWhenNotExistStandard();
+            }
+          },
+          (err) => {}
+        );
+    },
   },
 
   mounted() {
@@ -1413,6 +1465,7 @@ export const inforCollectionCommonMixins = {
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
     this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
     this.inforForm.caseCauseId = someCaseInfo.illageActId;
+    this.getPunishList();
     this.inforForm.programType = someCaseInfo.programType;
     this.inforForm.caseType = someCaseInfo.caseType;
     this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
