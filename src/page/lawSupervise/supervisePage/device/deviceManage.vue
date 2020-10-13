@@ -712,6 +712,7 @@ import {
         this.imageList=[]
         this.attachList=[]
         this.deviceDate=['','']
+        this.hasLatitudeAndLongitude = false
         this.title='新增站点'
         if(this.currentOrganId !== ''){
             this.addForm.contactor = this.selectOrgan.contactor
