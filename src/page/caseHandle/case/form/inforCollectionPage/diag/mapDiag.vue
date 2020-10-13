@@ -36,6 +36,7 @@ import VueAMap from "vue-amap";
 import { AMapManager } from "vue-amap";
 
 Vue.use(VueAMap);
+console.log('VueAMap',VueAMap)
 VueAMap.initAMapApiLoader({
   key: "2fab5dfd6958addd56c89e58df8cbb37",
   plugin: [
@@ -44,7 +45,7 @@ VueAMap.initAMapApiLoader({
     "AMap.Scale",
     "AMap.OverView",
     "AMap.ToolBar",
-    "AMap.Geolocation",
+    "Geolocation",
     "Geocoder"
   ],
   v: "1.4.4",
@@ -52,6 +53,7 @@ VueAMap.initAMapApiLoader({
   showLabel: false
 });
 let amapManager = new VueAMap.AMapManager();
+console.log('amapManager',amapManager)
 export default {
   data() {
     let self = this;
@@ -70,7 +72,7 @@ export default {
           pName: 'Geolocation',
           events: {
               init(o) {                
-                
+                  console.log(o)
                   // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
                   console.log(status,result);
@@ -138,7 +140,8 @@ export default {
     },
     //逆解码函数
     getaddress: function(lnglat) {
-      let self=this
+      let self=this;
+      
       var geocoder = new AMap.Geocoder({
         radius: 1000,
         extensions: "all"
