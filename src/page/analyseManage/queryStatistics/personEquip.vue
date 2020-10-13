@@ -1230,7 +1230,7 @@ export default {
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c}%",
+          formatter: "{a} <br/>{b} : {c}",
         },
         color: ["#c2c1bd", "#00a1e5", "#23c768"],
         series: [
@@ -1273,7 +1273,7 @@ export default {
             label: {
               normal: {
                 position: "inside",
-                formatter: "{c}%",
+                formatter: "{c}",
                 textStyle: {
                   color: "#fff",
                   fontSize: 14,
@@ -1281,7 +1281,7 @@ export default {
               },
               emphasis: {
                 position: "inside",
-                formatter: "{b}: {c}%",
+                formatter: "{b}: {c}",
               },
             },
             itemStyle: {
@@ -1379,7 +1379,7 @@ export default {
                 return (
                   value.substring(0, 2) +
                   "\n" +
-                  value.substring(2, value.length)
+                  value.substring(2, 5)
                 );
               },
             },
@@ -1534,7 +1534,7 @@ export default {
                 return (
                   value.substring(0, 2) +
                   "\n" +
-                  value.substring(2, value.length)
+                  value.substring(2, 5)
                 );
               },
             },
@@ -1670,11 +1670,12 @@ export default {
         },
         grid: {
           left: "12%",
-          top: "10%",
+          top: "20%",
           bottom: "20%",
           right: "8%",
         },
         xAxis: {
+
           data: this.equipmentTypeXData,
           axisTick: {
             show: false,
@@ -1700,10 +1701,14 @@ export default {
         },
         yAxis: [
           {
+            max: function (value) {
+              return value.max + 10;
+            },
             splitNumber: 2,
             axisTick: {
               show: false,
             },
+
             axisLine: {
               lineStyle: {
                 color: "rgba(255, 129, 109, 0.1)",
@@ -1927,10 +1932,7 @@ export default {
                   offset: 1,
                   color: "#9E87FF",
                 },
-              ]),
-              shadowColor: "rgba(158,135,255, 0.3)",
-              shadowBlur: 10,
-              shadowOffsetY: 20,
+              ])
             },
             itemStyle: {
               normal: {

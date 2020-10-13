@@ -256,6 +256,7 @@
                 <h4 class="abnormal-title">
                   异常情况{{ index + 1 }}
                   <el-button
+                    v-if="!editFlag"
                     :disabled="editFlag"
                     type="text"
                     class="del-abnormal-btn"
@@ -286,6 +287,7 @@
                   v-if="
                     abnormal.firstType !== undefined &&
                     abnormal.firstType !== null &&
+                    cheProcesTypeTree[abnormal.firstType]['children'] &&
                     cheProcesTypeTree[abnormal.firstType]['children'].length > 0
                   "
                   :span="12"
@@ -316,6 +318,7 @@
                     abnormal.firstType !== null &&
                     abnormal.secondType !== undefined &&
                     abnormal.secondType !== null &&
+                    cheProcesTypeTree[abnormal.firstType]['children'] &&
                     cheProcesTypeTree[abnormal.firstType]['children'][
                       abnormal.secondType
                     ] &&
@@ -539,6 +542,7 @@
               class="abnormal-add-btn"
             >
               <el-button
+                v-if="!editFlag"
                 :disabled="editFlag"
                 type="primary"
                 icon="el-icon-plus"
@@ -555,7 +559,7 @@
               附件信息
               <el-button
                 :disabled="editFlag"
-                v-if="PageType !== 'view'"
+                v-if="!editFlag"
                 type="text"
                 class="add-enclosure-file"
                 @click="addEnclosure('0')"
@@ -564,7 +568,6 @@
               </el-button>
             </h3>
             <el-table
-              v-if="PageType !== 'view'"
               :data="listAtt"
               style="width: 100%"
             >
@@ -597,6 +600,7 @@
                     >下载</el-button
                   >
                   <el-button
+                    v-if="!editFlag"
                     :disabled="editFlag"
                     type="text"
                     @click="removeAttach( scope.$index )"
@@ -634,7 +638,7 @@
                 <li v-for="(offical, index) in finishedDocs" :key="offical.label">
                   <div class="el-checkbox">
                     <span class="el-checkbox__label">
-                    <el-checkbox v-if="offical.caseDocStorageId" :label="offical.caseDocStorageId" @click.stop="">&nbsp;&nbsp;{{offical.numberNo}}</el-checkbox>
+                    <el-checkbox v-if="offical.caseDocStorageId" :label="offical.caseDocStorageId" @click.stop="">&nbsp;&nbsp;第{{offical.numberNo}}号</el-checkbox>
                     <img :src="acOfficalUrl" />
                     <span  @click="editDoc(offical,'show', index)">{{ offical.name }}</span>
                     </span>
@@ -677,7 +681,7 @@
     </el-row>
     <!-- 添加或修改时保存 -->
     <div class="float-btns">
-      <el-button class="edit_btn" :disabled="editFlag" type="primary" @click="saveRecordInfo">
+      <el-button v-if="!editFlag" class="edit_btn" :disabled="editFlag" type="primary" @click="saveRecordInfo">
         <i class="iconfont law-save"></i>
         <br />保存
       </el-button>
@@ -720,7 +724,7 @@
             >下一张
           </el-button>
         </div>
-        <div v-else style="position: absolute; bottom: 150px; right: 95px;" class="float-btns">
+        <div v-else-if="!editFlag" style="position: absolute; bottom: 150px; right: 95px;" class="float-btns">
           <el-button
             class="edit_btn"
             type="primary"
@@ -910,13 +914,13 @@ export default {
   created() {
     this.editFlag = this.PageType === "detail" ? true : false;
     this.getCheRecordTempPageList();
+    this.getCheProcessTypeTree();
     if (this.PageType != "add") {
       this.activeOffical = "1";
       this.getCheRecordDetail(this.rowData);
     }
     this.searchLawPerson();
     this.findRouteManageByOrganId();
-    this.getCheProcessTypeTree();
     this.initCheckDictData();
   },
   methods: {
@@ -1134,7 +1138,7 @@ export default {
                     (t) => t.id === a.firstProcessType
                   );
                 }
-                if (a.secondProcessType && a.firstProcessType) {
+                if (a.secondProcessType && a.firstProcessType && a["firstType"] > 0) {
                   a["secondType"] = this.cheProcesTypeTree[a["firstType"]][
                     "children"
                   ].findIndex((t) => t.id === a.secondProcessType);
@@ -1154,15 +1158,6 @@ export default {
             this.inspectRecordForm = formData;
 
             if (res.data.listCaseDocs && res.data.listCaseDocs.length > 0) {
-              // this.officialList.forEach((o) => {
-              //   const caseDoc = res.data.listCaseDocs.find(
-              //     (d) => d.caseDocTypeId == o.caseDoctypeId
-              //   );
-              //   if(caseDoc) {
-              //     const caseDocData = JSON.parse(caseDoc.caseDocData) || {};
-              //     this.finishedDocs.push(Object.assign(caseDoc, {name: o.name, type: o.type, numberNo: caseDocData.numberNo || '暂无文书编号'}));
-              //   }
-              // });
               res.data.listCaseDocs.forEach((o) => {
                 const caseDoc = this.officialList.find(
                   (d) => d.caseDoctypeId == o.caseDocTypeId
@@ -1300,7 +1295,10 @@ export default {
       let _this = this;
       this.$store.dispatch("getCaseType", data).then(
         (res) => {
-          _this.inspectRecordForm.listAbn[abnormalIndex].caseTypeList = res.data;
+          const abn = _this.inspectRecordForm.listAbn[abnormalIndex];
+          abn.caseTypeList = res.data;
+          _this.inspectRecordForm.listAbn.splice(abnormalIndex,1,abn);
+          Object.assign(_this.inspectRecordForm.listAbn[abnormalIndex], { caseTypeList: res.data });
         },
         (err) => {
           console.log(err);

@@ -228,7 +228,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.docFormRef.validate((valid, noPass) => {
           if (valid) {
-            this.formData.porgNameTop = this.formData.orgName;
+            this.formData.pName = this.formData.orgName;
             this.formData.orgNameTop = this.formData.orgName;
             const reportData = JSON.stringify(this.formData);
             resolve({ code: 200, data: reportData });

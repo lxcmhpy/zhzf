@@ -94,7 +94,7 @@
           <el-table-column prop="oname" label="执法机构" align="left" ></el-table-column>
           <el-table-column prop="schedulePersonnel" label="排班人员" align="center"></el-table-column>
           <el-table-column prop="createTime" label="填报日期" align="center" ></el-table-column>
-          <el-table-column prop="plateNumbers" label="车牌/船舶号" align="center" ></el-table-column>
+          <!-- <el-table-column prop="plateNumbers" label="车牌/船舶号" align="center" ></el-table-column> -->
           <el-table-column prop="patrolRoute" label="巡查地点/线路" align="center" ></el-table-column>
           <el-table-column prop="lawEnforcementOfficials" label="执法人员" align="center"></el-table-column>
           <el-table-column prop="patrolType" label="任务类型" align="center" ></el-table-column>
@@ -230,6 +230,7 @@ export default {
         }).then(() => {
               deleteRecordApi(this.selectList[0]).then(res => {
             if (res.code == "200") {
+               this.$message({ type: 'success', message: '删除成功' });
               this.getJournalList();
             }
           }, err => {
@@ -247,7 +248,7 @@ export default {
       // }else{
          this.$router.push({
           name: "journal_handover",
-        params: { page: "handover",checklogId:row.checklogId,handelType:"3" },
+          params: { page: "handover",checklogId:row.checklogId,handelType:"3" },
       });
       // }
      

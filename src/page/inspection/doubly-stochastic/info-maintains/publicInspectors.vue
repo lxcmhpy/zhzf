@@ -20,6 +20,11 @@
                 <el-option label="离岗" value="离岗"></el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="查询范围" prop='selectValue'>
+              <el-select v-model="searchForm.selectValue">
+                <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
           </el-form>
           <div class="search-btns">
             <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
@@ -311,6 +316,7 @@ export default {
       searchForm: {
         stationStatusName: "",
         personName: '',
+        selectValue: 0
       },
       isShow: false,
       dialogFormVisible: false,
@@ -421,6 +427,7 @@ export default {
         label: "label"
       },
       visiblePopover: false,
+      searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
     }
   },
   methods: {
@@ -434,7 +441,7 @@ export default {
         stationStatusName: this.searchForm.stationStatusName,
         // workStatus: this.searchForm.stationStatusName,
         company: iLocalStroage.gets("userInfo").organName,
-        organId: iLocalStroage.gets("userInfo").organId,
+        organId: this.searchForm.selectValue==1?iLocalStroage.gets("userInfo").organId:'',
         // oName: '固原综合执法支队',
         current: this.currentPage,
         size: this.pageSize,

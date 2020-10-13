@@ -107,7 +107,7 @@
                     routeName: "",
                     routeMileage: "",
                     routeLevel:"",
-                    // routeGrade: "",
+                    routeGrade: "",
                     startingPoint: "",
                     enddingPoint: "",
                     startingPileNumberK: "",
@@ -126,7 +126,7 @@
                 handelType: 0, //添加 0  修改2
                 editRouteId:'',
                 levelList:[], //公路行政级别列表
-                // gradeList:[],//公路等级列表
+                gradeList:[],//公路等级列表
             };
         },
         inject: ["reload"],
@@ -143,10 +143,10 @@
                 }
             },
             showModal(type, data) {
-                /*getDictListDetailByNameApi("公路等级").then(res=>{
+                getDictListDetailByNameApi("公路等级").then(res=>{
                     console.log(res)
                     _this.gradeList = res.data;
-                })*/
+                })
                 let _this = this;
                 getDictListDetailByNameApi("公路行政级别").then(res=>{
                     console.log(res)
@@ -161,7 +161,7 @@
                     this.addOrUpdateRouteForm.routeName = "";
                     this.addOrUpdateRouteForm.routeMileage = "";
                     this.addOrUpdateRouteForm.routeLevel = "";
-                    // this.addOrUpdateRouteForm.routeGrade = "";
+                    this.addOrUpdateRouteForm.routeGrade = "";
                     this.addOrUpdateRouteForm.startingPoint = "";
                     this.addOrUpdateRouteForm.enddingPoint = "";
                     this.addOrUpdateRouteForm.startingPileNumberK = "";
@@ -180,7 +180,7 @@
                     this.addOrUpdateRouteForm.routeName = data.routeName;
                     this.addOrUpdateRouteForm.routeMileage = data.routeMileage;
                     this.addOrUpdateRouteForm.routeLevel = data.routeLevel;
-                    // this.addOrUpdateRouteForm.routeGrade = data.routeGrade;
+                    this.addOrUpdateRouteForm.routeGrade = data.routeGrade;
                     this.addOrUpdateRouteForm.startingPoint = data.startingPoint;
                     this.addOrUpdateRouteForm.enddingPoint = data.enddingPoint;
                     this.addOrUpdateRouteForm.startingPileNumberK = data.startingPileNumberK;
