@@ -93,24 +93,6 @@ export default {
   data() {
     return {
       drawer: false,
-      catalog: [
-        { index: 1, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 2, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 3, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 4, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 5, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 6, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 7, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 8, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 9, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 10, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 11, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 12, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 13, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 14, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 15, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 16, text: "Procreate 入门教程！NO.01 界面、工具" }
-      ],
       videoRef: null,
       playTimeout: null,
       currentCourse: { type: "1", src: "", cpId: "", flag: '', accTime: '', personLessonId: '', couTime: 0, unitTimeCredits: 0 },
@@ -124,11 +106,7 @@ export default {
     };
   },
   components: { },
-  computed: {
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed: {},
   mounted() {
     this.$nextTick(() => {
       this.videoRef = document.getElementById("courseVideo");
@@ -157,7 +135,8 @@ export default {
       }
       this.currentCourse.cpId = course.cpId;
       this.currentCourse.couId = course.couId;
-      this.currentCourse.src = this.baseUrl + course.path;
+      this.currentCourse.src = course.path;
+      // this.currentCourse.src = this.baseUrl + course.path;
       // this.$util.com_getFileStream(course.path).then( res => {
       //   this.currentCourse.src = res;
       // });

@@ -30,6 +30,7 @@
 
 
 <script>
+  import loadScript from "@/common/js/loadScript.js";
 import VueAMap from "vue-amap"
 import {spaceApi} from '@/api/analysis/analysisManage.js'
 import Vue from "vue";
@@ -194,6 +195,9 @@ export default {
   mounted() {
     this.getData(this.date)
   },
+  created() {
+    loadScript('https://webapi.amap.com/maps?v=1.4.15&key="2fab5dfd6958addd56c89e58df8cbb37"').then(() => this.initMap());
+  }
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
