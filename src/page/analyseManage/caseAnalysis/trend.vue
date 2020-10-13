@@ -227,10 +227,10 @@
         let type = this.activeName
         // 时间折线图横坐标写死
         if(type === 'hoursView') {
-          xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
+          xAxis = ['1时','2时','3时','4时','5时','6时','7时','8时','9时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时','24时',]
           xAxis.map(item => {
             data.map(dataItem => {
-              if(dataItem.name === item) {
+              if(dataItem.name === item.substring(0, item.length - 1)) {
                 series.push(dataItem.value)
               } else {
                 series.push(0)
@@ -256,6 +256,12 @@
        * 折线图数据格式
        */
       drawCharts({ xAxis, series }) {
+        // if(this.activeName === 'hoursView') {
+        //   xAxis.map(item => {
+        //     item = item + '时'
+        //   })
+        // }
+
         let idMap = new Map([
           [ 'yearView', 'yearChart' ],
           [ 'monthView', 'monthChart' ],
@@ -282,15 +288,6 @@
               type: "category",
               boundaryGap: false,
               data: xAxis,
-              axisLabel: {
-                formatter: (val) => {
-                  if(this.activeName === 'hoursView') {
-                    return val + '时'
-                  } else {
-                    return val
-                  }
-                }
-              },
             },
             yAxis: {
               type: "value"
