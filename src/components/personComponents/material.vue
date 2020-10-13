@@ -10,22 +10,22 @@
             </template>
             <template>
                 <!-- 身份证材料 -->
-                <materialIdNo :params="params" :idPic="materialInfo.idPic" :baseUrl="baseUrl"
+                <materialIdNo :params="params" :idPic="materialInfo.idPic"
                     @saveIdImgSuccess="idImgSucess"></materialIdNo>
             </template>
             <template>
                 <!-- 学历证明材料 -->
-                <materialUpload :params="params" :savePic="materialInfo.eduPic" :baseUrl="baseUrl" materialType="eduPic"
+                <materialUpload :params="params" :savePic="materialInfo.eduPic" materialType="eduPic"
                     uploadTitle="学历证明" @saveMaterialSuccess="cacheImage"></materialUpload>
             </template>
             <template>
                 <!-- 编制证明材料 -->
-                <materialUpload :params="params" :savePic="materialInfo.organPic" :baseUrl="baseUrl"
+                <materialUpload :params="params" :savePic="materialInfo.organPic"
                     materialType="organPic" uploadTitle="编制证明" @saveMaterialSuccess="cacheImage"></materialUpload>
             </template>
             <template>
                 <!-- 其他证明材料 -->
-                <materialUpload :params="params" :savePic="materialInfo.otherPic" :baseUrl="baseUrl"
+                <materialUpload :params="params" :savePic="materialInfo.otherPic"
                     materialType="otherPic" uploadTitle="其他证明" @saveMaterialSuccess="cacheImage"></materialUpload>
             </template>
         </div>
@@ -44,7 +44,6 @@
 <script>
     import materialIdNo from './materialIdNo';
     import materialUpload from './materialUpload';
-    import iLocalStroage from "@/common/js/localStroage.js";
     export default {
         name: 'material', //证明材料
         props: {
@@ -77,11 +76,7 @@
         data() {
             return {}
         },
-        computed: {
-            baseUrl() {
-                return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-            }
-        },
+        computed: {},
         components: {
             materialIdNo,
             materialUpload
