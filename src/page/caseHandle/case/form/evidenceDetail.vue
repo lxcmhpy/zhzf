@@ -81,7 +81,6 @@ export default {
               note:'',
               status:''
             },
-            host:"",
             myFileUrl:''
           }
     },
@@ -107,7 +106,6 @@ export default {
         },
     },
     mounted(){
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
 }
 </script>
