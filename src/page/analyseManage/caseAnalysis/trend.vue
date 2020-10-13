@@ -207,7 +207,7 @@
               let echartsData = []
               Object.keys(data).map(key => {
                 if(data[key].length === 0) {
-                  echartsData.push({years:key, value: 0})
+                  echartsData.push({name:key, value: 0})
                 } else {
                   echartsData.push(data[key][0])
                 }
@@ -230,7 +230,7 @@
           xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
           xAxis.map(item => {
             data.map(dataItem => {
-              if(dataItem.hours === item) {
+              if(dataItem.name === item) {
                 series.push(dataItem.value)
               } else {
                 series.push(0)
@@ -239,17 +239,12 @@
           })
         } else {
           data.map(item => {
-            let years = item.years || '-',
-            month = item.month || '-',
-            day = item.day || '-'
-            // hours = item.hours || '-'
-
             if(type === 'yearView') {
-              xAxis.push(years)
+              xAxis.push(item.name+'年')
             } else if (type === 'monthView') {
-              xAxis.push((years + '/' + month))
+              xAxis.push(item.name+'月')
             } else if (type === 'dayView') {
-              xAxis.push((years + '/' + month + '/' + day))
+              xAxis.push(item.name+'日')
             }
             series.push(item.value || 0)
           })
