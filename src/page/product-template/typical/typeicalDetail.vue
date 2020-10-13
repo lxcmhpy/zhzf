@@ -68,7 +68,7 @@ export default {
     return {
         caseList:[],
         docSrc:"",
-        host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+        // host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
         nowShowPdfIndex:0,
         dialogTitle:"修改案件点评",
         selectElement: '',
@@ -105,7 +105,10 @@ export default {
               return a.num - b.num;
             });
             this.caseList = res.data;
-            this.docSrc = this.host + this.caseList[0].storageId;
+            // this.docSrc = this.host + this.caseList[0].storageId;
+            this.$util.com_getFileStream(this.caseList[0].storageId).then(res => {
+                this.docSrc = res;
+              });
             this.nowShowPdfIndex = 0;
          },
          err=>{
@@ -118,12 +121,18 @@ export default {
       if(flag == 'last'){
         if(this.nowShowPdfIndex){
           this.nowShowPdfIndex--;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          // this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId).then(res => {
+            this.docSrc = res
+          });
         }
       }else{
         if(this.nowShowPdfIndex != this.caseList.length-1){
           this.nowShowPdfIndex++;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          // this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId).then(res => {
+            this.docSrc = res
+          });
         }
       }
     },

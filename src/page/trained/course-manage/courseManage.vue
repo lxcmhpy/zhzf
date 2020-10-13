@@ -162,7 +162,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import addCourse from "./components/addCourse";
 import coursewareManage from "./components/coursewareManage";
 import coursewarePreview from "./components/coursewarePreview";
-import { getCourseList, deleteCourse, disposeOverLesson, viewLesson } from "@/api/trained";
+import { getCourseList, deleteCourse, disposeOverLesson, viewLesson, getFileStream } from "@/api/trained";
 
 export default {
   data() {
@@ -344,7 +344,7 @@ export default {
     },
     // 获取图片文件流
     createImageUrl(id, index){
-      this.$util.com_getFileStream(id).then( res => {
+      getFileStream(id).then( res => {
         this.tableData[index].lessonPic = res;
       });
     },
