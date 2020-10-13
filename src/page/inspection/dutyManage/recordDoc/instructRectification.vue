@@ -12,9 +12,7 @@
         <div
           class="doc_number"
         >
-        <el-form-item prop="orgName"  style="width: 100px;">
-          <el-input v-model="formData.orgName"></el-input>
-        </el-form-item>
+        {{formData.orgName}}
         函告[
         <el-form-item prop="yearNo"  style="width: 50px;">
           <el-input v-model="formData.yearNo"></el-input>
@@ -234,7 +232,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.docFormRef.validate((valid, noPass) => {
           if (valid) {
-            this.formData.orgNameTop = this.formData.orgName;
+            this.formData.pName = this.formData.orgName;
             const reportData = JSON.stringify(this.formData);
             resolve({ code: 200, data: reportData });
           } else {
@@ -287,7 +285,7 @@ export default {
     if(!caseDocData.numberNo) {
       this.getCheParameterInfo();
     }
-    if(!caseDocData.porgNameTop && !caseDocData.orgNameTop) {
+    if(!caseDocData.orgName && !caseDocData.porgName) {
       this.getOrganInfo();
     }
     if(Object.keys(caseDocData).length > 0){

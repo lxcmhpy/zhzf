@@ -1047,9 +1047,9 @@ export default {
               },
             ],
             inject: true,
-            // on: {
-            //   'focus': this.focusMethod(item.field)
-            // },
+            on: {
+              'focus': this.focusMethod(item.field)
+            },
           })
 
 

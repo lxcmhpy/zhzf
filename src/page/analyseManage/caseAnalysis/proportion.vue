@@ -46,12 +46,15 @@
         };
         proportionApi(param).then(res => {
           if(res.code == 200){
-            that.seriesData = res.data
+            that.seriesData = res.data.filter(function (obj) {
+              return obj.value = (obj.value/10000).toFixed(2);
+            });
             res.data.map(item => {
               that.XData.push(item.name)
             })
             let json = {};
             that.tableData = []
+
             that.seriesData.forEach(v=>{
               json[v.name] = v.value
             })

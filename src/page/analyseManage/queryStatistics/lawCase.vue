@@ -106,9 +106,10 @@
               <el-row style="text-align:center;">
                 <el-row class="mt24">
                   <el-col :span="12"><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;">
-                    <div class="type" style="height:30px;width:100px;margin-left:25px;">【 处罚金额 】</div>
+
                   </el-col>
                   <el-col :span="12">
+                    <div class="type" style="height:30px;width:100px;margin-left:25px;">【 处罚金额 】</div>
                     <div class="count" style="text-align:center;width:100px;margin-left:25px;">{{penalty}}
                     </div>
                     <div class="dw" style="height:30px;width:100px;margin-left:25px;">{{unit}}</div>
@@ -244,10 +245,10 @@
 
             if(res.data.confiscated[0].value.length>8){
               that.unit = '亿元'
-              that.penalty = res.data.confiscated[0].value/100000000
+              that.penalty = (res.data.confiscated[0].value/100000000).toFixed(2)
             }else{
               that.unit = '万元'
-              that.penalty = res.data.confiscated[0].value/10000
+              that.penalty = (res.data.confiscated[0].value/10000).toFixed(2)
             }
 
             //案发地
@@ -1485,7 +1486,7 @@
               color: 'rgba(255,255,255, 0.5)',
               interval: 0,
               formatter: function (value) {
-               return value.substring(0, 2)+'\n'+value.substring(2, value.length)
+               return value.substring(0, 2)+'\n'+value.substring(2, 5)
               }
             },
             splitLine: {
@@ -1553,7 +1554,7 @@
         this.chartColumn = echarts.init(document.getElementById("ajzt"));
         let value = this.complete / this.all;
         let title = '';
-        let int = value.toFixed(2)*100;
+        let int = (value*100).toFixed(2);
         let float = value.toFixed(2).split('.')[1];
         this.chartColumn.setOption({
           backgroundColor: '',
@@ -1585,8 +1586,8 @@
               type: 'gauge',
               radius: '60%',
               clockwise: false,
-              startAngle: '90',
-              endAngle: '-269.9999'+int,
+              startAngle: '90'-int,
+              endAngle: '-269.9999',
               splitNumber: 25,
               detail: {
                 offsetCenter: [0, -20],
@@ -1675,7 +1676,7 @@
             right: '8%'
           },
           xAxis: {
-            data: [],
+            data: this.carSortXData,
             axisTick: {
               show: false
             },
@@ -1686,6 +1687,10 @@
               }
             },
             axisLabel: {
+              interval: 0,
+              formatter: function (value) {
+                return value.substring(0, 2);
+              },
               textStyle: {
                 color: '#999',
                 fontSize: 12
