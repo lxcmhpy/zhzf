@@ -4,7 +4,7 @@
       <div class="search toggleBox">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
-            <el-form-item label="主体名称：" prop='objectName'>
+            <el-form-item label="对象名称：" prop='objectName'>
               <el-input v-model="searchForm.objectName"></el-input>
             </el-form-item>
             <el-form-item label="项目名称：" prop='projectName'>

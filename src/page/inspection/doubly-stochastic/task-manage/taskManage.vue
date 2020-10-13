@@ -242,8 +242,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('addForm',0)">暂存</el-button>
-          <el-button type="primary" @click="submitForm('addForm',1)">保存</el-button>
+          <el-button type="primary" @click="submitForm('addForm',0)" v-if="!viewFlag">暂存</el-button>
+          <el-button type="primary" @click="submitForm('addForm',1)" v-if="!viewFlag">保存</el-button>
         </div>
       </el-dialog>
       <el-dialog :title='dialogStatus2+"省市场监管领域任务"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')" width="70%">
@@ -390,8 +390,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm2('addForm2',0)">暂存</el-button>
-          <el-button type="primary" @click="submitForm2('addForm2',1)">保存</el-button>
+          <el-button type="primary" @click="submitForm2('addForm2',0)" v-if="!viewFlag">暂存</el-button>
+          <el-button type="primary" @click="submitForm2('addForm2',1)" v-if="!viewFlag">保存</el-button>
         </div>
       </el-dialog>
     </div>
@@ -634,6 +634,7 @@ export default {
       LawOfficerList: [],//执法人员列表
       alreadyChooseAdminPerson: [],//已选择管理人员列表
       searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
+      viewFlag:false
     }
   },
   methods: {
@@ -799,6 +800,7 @@ export default {
     },
     editMethod1(row) {
       this.eidtFlag = true;
+      this.viewFlag = false;
       this.getCountByOrganName(1)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
@@ -813,6 +815,7 @@ export default {
     },
     viewMethod(row) {
       this.eidtFlag = false;
+      this.viewFlag = true;
       this.getCountByOrganName(1)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
@@ -828,6 +831,7 @@ export default {
     // 修改
     editMethod2(row) {
       this.eidtFlag = true;
+      this.viewFlag = false;
       this.getCountByOrganName(2)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
@@ -844,6 +848,7 @@ export default {
     },
     viewMethod2(row) {
       this.eidtFlag = false;
+      this.viewFlag = true;
       this.getCountByOrganName(2)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
