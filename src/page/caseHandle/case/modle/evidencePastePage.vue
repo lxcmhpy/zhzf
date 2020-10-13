@@ -242,7 +242,6 @@ export default {
         pageDomId: "hearingRecordDoc_print",
       },
       propertyFeatures: "",
-      chooseImgSrc: "",
       picData: "",
       imgBase64: "",
       needDealData: true,
@@ -394,7 +393,7 @@ export default {
           let noteKey = "note" + selpicData.picIndex;
           this.docData.evidenceData[selpicData.pastePage][noteKey] =
             selpicData.picData.note;
-          // this.chooseImgSrc = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+          
         })
         .catch((err) => {
           console.log(err);

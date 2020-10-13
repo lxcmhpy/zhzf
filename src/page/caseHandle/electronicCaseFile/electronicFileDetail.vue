@@ -22,7 +22,6 @@ export default {
     return {
         caseList:[],
         docSrc:"",
-        // host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
         nowShowPdfIndex:0,
     }
   },
