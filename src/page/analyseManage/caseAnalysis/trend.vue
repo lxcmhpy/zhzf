@@ -230,7 +230,7 @@
         let type = this.activeName
         // 时间折线图横坐标写死
         if(type === 'hoursView') {
-          xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12']
+          xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
           xAxis.map(item => {
             data.map(dataItem => {
               if(dataItem.hours === item) {
@@ -288,7 +288,17 @@
             },
             xAxis: {
               type: "category",
-              data: xAxis
+              boundaryGap: false,
+              data: xAxis,
+              axisLabel: {
+                formatter: (val) => {
+                  if(this.activeName === 'hoursView') {
+                    return val + '时'
+                  } else {
+                    return val
+                  }
+                }
+              },
             },
             yAxis: {
               type: "value"
