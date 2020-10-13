@@ -242,7 +242,7 @@ export default {
         },
         removeTreeNode(nodeData) {
             event.stopPropagation();
-            this.$confirm("确定要删除吗?", "提示", {
+            this.$confirm("确定要删除所选节点及其子节点吗??", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 iconClass: "custom-question",
