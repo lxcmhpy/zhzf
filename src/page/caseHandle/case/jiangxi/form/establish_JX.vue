@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
-    <el-button type="primary"  id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
+    <el-button type="primary"  id="editCaseInfoBtn" @click="gotoEditCase" v-if="showEditInfo">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
@@ -413,6 +413,7 @@ export default {
       needDealData:true,
       editCaseInfo:'', //修改案件基本信息需要传的数据
       propertyFeatures:'', //字段属性配置
+      showEditInfo:true, //显示按钮
     };
   },
   components: {
@@ -466,6 +467,7 @@ export default {
       } else {
         this.isParty = false;
       }
+      
     },
     //获取案件基本信息
     getCaseInfo(){
