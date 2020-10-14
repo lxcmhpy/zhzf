@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+        <el-table :data="tableData" key="table1" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
@@ -78,7 +78,7 @@
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+        <el-table :data="tableData" key="table2" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
@@ -102,7 +102,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="checkResult" label="检查结果" align="center"></el-table-column>
-          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center">
+          </el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text" :disabled="!scope.row.objectName">附件管理</el-button>
