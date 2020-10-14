@@ -73,7 +73,6 @@ export const inforCollectionCommonMixins = {
       }
     };
     return {
-      punishList: [],
       moneyTooltip: "",// 自由裁量权金额提示语
       punishList: [],
       recentCheckStastions: [],//最近五个检测站
@@ -191,18 +190,36 @@ export const inforCollectionCommonMixins = {
         punishLaw: [
           {required: true, message: "请选择依据", trigger: "change"}
         ],
-        partyAge: [
-          {validator: validateAge, trigger: "blur"}
-        ],
-        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
         partyZipCode: [
           {validator: validateZIP, trigger: "blur"}
         ],
+        provincesAddressArray: [{ required: true, message: "省市区不能为空", trigger: "change"}],
+        partyIdNo: [
+          { required: true, message: "身份证号不能为空", trigger: "blur" },
+          { validator: checkIdNoPassSort, trigger: "blur" }
+        ],
         partyTel: [
-          {validator: validatePhone, trigger: "blur"}
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        partyAddress: [
+          { required: true, message: "住址不能为空", trigger: "blur" },
+        ],
+        partyAge: [
+          { validator: validateAge, trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, message: "法人不能为空", trigger: "blur" },
+        ],
+        partyUnitAddress: [
+          { required: true, message: "单位地址不能为空", trigger: "blur" },
         ],
         partyUnitTel: [
-          {validator: validatePhone, trigger: "blur"}
+          { required: true, message: "单位联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        socialCreditCode: [
+          { required: true, message: "社会信用代码不能为空", trigger: "blur" },
         ],
         highwayRoute: [
           {required: true, message: "请选择路线", trigger: "change"}
@@ -567,9 +584,9 @@ export const inforCollectionCommonMixins = {
         .then(
           (res) => {
             this.punishList = res.data;
-            if(this.judgFreedomList.length===0){
-              this.initMoneyWhenNotExistStandard();
-            }
+            // if(this.judgFreedomList.length===0){
+            //   this.initMoneyWhenNotExistStandard();
+            // }
           },
           (err) => {}
         );
@@ -1152,36 +1169,35 @@ export const inforCollectionCommonMixins = {
         }
 
       }
-      if (idCard === this.driverOrAgentInfoList[0].zhengjianNumber) {
+      if (idCard === this.driverOrAgentInfoList[index].zhengjianNumber) {
+        let iden = idCard;
+        let val = idCard.length;
+        let sex = null;
+        let myDate = new Date();
+        let month = myDate.getMonth() + 1;
+        let day = myDate.getDate();
+        let age = 0;
+        if (val === 18) {
+          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+          sex = iden.substring(16, 17);
+          if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
 
-      }
-      let iden = idCard;
-      let val = idCard.length;
-      let sex = null;
-      let myDate = new Date();
-      let month = myDate.getMonth() + 1;
-      let day = myDate.getDate();
-      let age = 0;
-      if (val === 18) {
-        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
-        sex = iden.substring(16, 17);
-        if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+        }
+        if (val === 15) {
+          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+          sex = iden.substring(13, 14);
+          if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+        }
 
+        if (sex % 2 === 0) {
+          sex = 1;
+        } else {
+          sex = 0;
+        }
+        ;
+        this.driverOrAgentInfoList[index].age = age;
+        this.driverOrAgentInfoList[index].sex = sex;
       }
-      if (val === 15) {
-        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
-        sex = iden.substring(13, 14);
-        if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
-      }
-
-      if (sex % 2 === 0) {
-        sex = 1;
-      } else {
-        sex = 0;
-      }
-      ;
-      this.driverOrAgentInfoList[index].age = age;
-      this.driverOrAgentInfoList[index].sex = sex;
     },
     noFue(val) {
       this.inforForm.partyAge = val >= 0 ? val : 0;
@@ -1426,21 +1442,7 @@ export const inforCollectionCommonMixins = {
             console.log(err);
           }
     )},
-    //获取违法条款、依据数据
-    getPunishList() {
-      // debugger
-      this.$store
-        .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
-        .then(
-          (res) => {
-            this.punishList = res.data;
-            if (this.judgFreedomList.length === 0) {
-              this.initMoneyWhenNotExistStandard();
-            }
-          },
-          (err) => {}
-        );
-    },
+
   },
 
   mounted() {

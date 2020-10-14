@@ -60,6 +60,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod1(scope.row)" type="text">修改</el-button>
@@ -86,6 +87,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text">修改</el-button>
@@ -482,7 +484,7 @@ export default {
         checkSubject: "",
         taskName: '',
         taskArea: '省交通运输厅领域',
-        selectValue:0
+        selectValue: 0
       },
       isShow: false,
       addForm: {
@@ -634,7 +636,7 @@ export default {
       LawOfficerList: [],//执法人员列表
       alreadyChooseAdminPerson: [],//已选择管理人员列表
       searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
-      viewFlag:false
+      viewFlag: false
     }
   },
   methods: {
@@ -645,7 +647,7 @@ export default {
         taskName: this.searchForm.taskName,
         taskArea: this.searchForm.taskArea,
         organName: iLocalStroage.gets("userInfo").organName,//机构名称
-        organId: this.searchForm.selectValue==1?iLocalStroage.gets("userInfo").organId:'',
+        organId: this.searchForm.selectValue == 1 ? iLocalStroage.gets("userInfo").organId : '',
         current: this.currentPage,
         size: this.pageSize,
       };

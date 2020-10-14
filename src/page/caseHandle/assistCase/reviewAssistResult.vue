@@ -92,7 +92,7 @@
                     </ul>
                   </div>
                   <div
-                    v-if="pageType === 'received' && caseData.status ==='待回复'"
+                    v-if="pageType === 'received' && caseData.status ==='0'"
                     style="clear:both;"
                   >
                     <div>
@@ -129,7 +129,7 @@
                 </div>
               </el-timeline-item>
               <el-timeline-item
-                v-if="caseData.status === '已完成'"
+                v-if="caseData.status === '1'"
                 :timestamp="caseData.replyTime"
                 placement="top"
                 icon="el-icon-time"

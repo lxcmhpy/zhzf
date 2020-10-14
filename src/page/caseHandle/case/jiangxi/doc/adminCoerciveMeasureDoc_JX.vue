@@ -360,7 +360,7 @@ import {
         var diff = new Date(value).getTime() - new Date(this.docData.measureStartDate).getTime();
         var days = diff / 24 / 60 / 60 / 1000;
         console.log("差几天", days)
-        if (days > 30) {
+        if (days > 29) {
           return callback("措施起止期限不得超过30日");
         }
         if (days <= 0) {
@@ -625,7 +625,7 @@ import {
 
       startTime() {
         if (this.docData.measureStartDate) {
-          this.$set(this.docData, 'measureEndDate', new Date(new Date(this.docData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+          this.$set(this.docData, 'measureEndDate', new Date(new Date(this.docData.measureStartDate).getTime() + 29 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
         }
       },
       //根据用户的组织机构ID获取复议机构和诉讼机构

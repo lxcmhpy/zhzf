@@ -149,8 +149,8 @@
                 </el-col>
                 <el-col :span="12" class="defualt-click-btn">
                   <el-button type="primary" size="medium" @click="chooseOccupation('个体')" style="margin-left:27px" :plain='carInfo.drivePerson.occupation=="个体"?false:true'>个体</el-button>
-                  <el-button type="primary" size="medium" @click="chooseOccupation('其他')" :plain='carInfo.drivePerson.occupation=="其他"?false:true'>其他</el-button>
-                  <el-button type="primary" size="medium" @click="chooseOccupation('不知道')" :plain='carInfo.drivePerson.occupation=="不知道"?false:true'>不知道</el-button>
+                  <!-- <el-button type="primary" size="medium" @click="chooseOccupation('其他')" :plain='carInfo.drivePerson.occupation=="其他"?false:true'>其他</el-button>
+                  <el-button type="primary" size="medium" @click="chooseOccupation('不知道')" :plain='carInfo.drivePerson.occupation=="不知道"?false:true'>不知道</el-button> -->
                 </el-col>
               </el-row>
             </el-form-item>
