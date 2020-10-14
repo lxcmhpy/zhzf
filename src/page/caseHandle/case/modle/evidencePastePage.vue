@@ -242,7 +242,6 @@ export default {
         pageDomId: "hearingRecordDoc_print",
       },
       propertyFeatures: "",
-      chooseImgSrc: "",
       picData: "",
       imgBase64: "",
       needDealData: true,
