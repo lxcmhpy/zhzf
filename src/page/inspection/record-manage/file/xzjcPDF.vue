@@ -78,8 +78,7 @@ export default {
               _that.storagePath = res.data.pdfPath || res.data.picPath
               _that.pdfShowUrl = res.data.pdfPath || res.data.picPath
               // 外网专用，发布需要修改
-              // _that.pdfShowUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + (res.data.pdfStorageId || res.data.picStorageId)
-              // _that.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + (res.data.pdfStorageId || res.data.picStorageId)
+              
 
               _that.$util.com_getFileStream(res.data.pdfStorageId || res.data.picStorageId).then(res => {
                 _that.pdfShowUrl = res

@@ -84,8 +84,6 @@
                 this.$util.com_getFileStream(row.storageId).then((res) => {
                     this.storagePath = res;
                   });
-                // this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + row.storageId + '?time=' +
-                //     new Date().getTime();
                     console.log(this.storagePath)
                 this.visible1 = true;
             },

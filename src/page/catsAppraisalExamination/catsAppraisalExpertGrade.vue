@@ -244,12 +244,6 @@ export default {
       this.$util.com_getFileStream(row.storageId).then((res) => {
         storagePath1 = res;
       });
-      // window.open(
-      //   iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST +
-      //     row.storageId +
-      //     '?time=' +
-      //     new Date().getTime()
-      // )
       window.open(storagePath1);
     }
   },

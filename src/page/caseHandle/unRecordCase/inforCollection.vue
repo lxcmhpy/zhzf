@@ -356,7 +356,7 @@
         </div>
         <div v-show="partyTypePerson == '1'">
           <div class="itemThird">
-            <el-form-item label="性别">
+            <el-form-item label="性别" prop="partySex">
               <el-select
                 placeholder="请选择"
                 v-model="inforForm.partySex"
@@ -390,7 +390,7 @@
         </div>
         <div v-show="partyTypePerson == '1'">
           <div class="itemThird">
-            <el-form-item label="省/市/区">
+            <el-form-item label="省/市/区" prop="provincesAddressArray">
               <el-cascader
                 ref="areaCascader"
                 v-model="inforForm.provincesAddressArray"
@@ -407,7 +407,7 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="详细地址">
+            <el-form-item label="详细地址" prop="partyAddress">
               <el-input
                 v-model="inforForm.partyAddress"
                 @change="changeDriverOrAgentInfo"
@@ -474,7 +474,7 @@
         </div>
         <div v-show="partyTypePerson != '1'">
           <div class="itemSmall">
-            <el-form-item label="统一社会信用代码" class="lable-height18px">
+            <el-form-item label="统一社会信用代码" prop="socialCreditCode" class="lable-height18px">
               <el-input v-model="inforForm.socialCreditCode"></el-input>
             </el-form-item>
           </div>
@@ -499,7 +499,7 @@
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="法定代表人">
+            <el-form-item label="法定代表人" prop="partyManager">
               <el-input
                 v-model="inforForm.partyManager"
                 @input="handleLength(inforForm.partyManager, 'partyManager')"
@@ -509,7 +509,7 @@
         </div>
         <div v-show="partyTypePerson != '1'">
           <div class="itemOne">
-            <el-form-item label="地址">
+            <el-form-item label="地址" prop="partyUnitAddress">
               <el-input
                 v-model="inforForm.partyUnitAddress"
                 @input="
@@ -1604,11 +1604,35 @@ export default {
         punishLaw: [
           { required: true, message: "请选择处罚依据", trigger: "change" },
         ],
-        partyAge: [{ validator: validateAge, trigger: "blur" }],
-        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
         partyZipCode: [{ validator: validateZIP, trigger: "blur" }],
-        partyTel: [{ validator: validatePhone, trigger: "blur" }],
-        partyUnitTel: [{ validator: validatePhone, trigger: "blur" }],
+        provincesAddressArray: [{ required: true, message: "省市区不能为空", trigger: "change"}],
+        partyIdNo: [
+          { required: true, message: "身份证号不能为空", trigger: "blur" },
+          { validator: checkIdNoPassSort, trigger: "blur" }
+        ],
+        partyTel: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        partyAddress: [
+          { required: true, message: "住址不能为空", trigger: "blur" },
+        ],
+        partyAge: [
+          { validator: validateAge, trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, message: "法人不能为空", trigger: "blur" },
+        ],
+        partyUnitAddress: [
+          { required: true, message: "单位地址不能为空", trigger: "blur" },
+        ],
+        partyUnitTel: [
+          { required: true, message: "单位联系电话不能为空", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        socialCreditCode: [
+          { required: true, message: "社会信用代码不能为空", trigger: "blur" },
+        ],
         highwayRoute: [
           {
             required: true,
@@ -1905,7 +1929,6 @@ export default {
     },
     //更改当事人类型
     changePartyType(val) {
-      // debugger
       this.partyTypePerson = val;
       if (val == "1") {
         this.inforForm.partyName = "";
@@ -1982,7 +2005,6 @@ export default {
       let val = this.driverOrAgentInfoList[index].relationWithParty;
       if (val === "同一人") {
         console.log(val);
-        // debugger
         this.driverOrAgentInfoList[index].relationWithCase = "当事人";
         this.driverOrAgentInfoList[index].name = this.inforForm.party;
         this.driverOrAgentInfoList[
@@ -2077,7 +2099,6 @@ export default {
     },
     //获取违法条款、依据数据
     getPunishList() {
-      // debugger
       this.$store
         .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
         .then(
@@ -2522,7 +2543,6 @@ export default {
       //超限信息
       if (data.otherInfo != "") {
         // this.inforForm.otherInfo = JSON.parse(data.otherInfo);
-        // debugger
         this.$set(this.inforForm, "otherInfo", JSON.parse(data.otherInfo));
       }
       if (data.caseCauseName == "车辆在公路上擅自超限行驶") {
@@ -2872,41 +2892,41 @@ export default {
           return;
         }
       }
-      if (idCard === this.driverOrAgentInfoList[0].zhengjianNumber) {
-      }
-      let iden = idCard;
-      let val = idCard.length;
-      let sex = null;
-      let myDate = new Date();
-      let month = myDate.getMonth() + 1;
-      let day = myDate.getDate();
-      let age = 0;
-      if (val === 18) {
-        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
-        sex = iden.substring(16, 17);
-        if (
-          iden.substring(10, 12) < month ||
-          (iden.substring(10, 12) == month && iden.substring(12, 14) <= day)
-        )
-          age++;
-      }
-      if (val === 15) {
-        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
-        sex = iden.substring(13, 14);
-        if (
-          iden.substring(8, 10) < month ||
-          (iden.substring(8, 10) == month && iden.substring(10, 12) <= day)
-        )
-          age++;
-      }
+      if (idCard === this.driverOrAgentInfoList[index].zhengjianNumber){
+        let iden = idCard;
+        let val = idCard.length;
+        let sex = null;
+        let myDate = new Date();
+        let month = myDate.getMonth() + 1;
+        let day = myDate.getDate();
+        let age = 0;
+        if (val === 18) {
+          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+          sex = iden.substring(16, 17);
+          if (
+            iden.substring(10, 12) < month ||
+            (iden.substring(10, 12) == month && iden.substring(12, 14) <= day)
+          )
+            age++;
+        }
+        if (val === 15) {
+          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+          sex = iden.substring(13, 14);
+          if (
+            iden.substring(8, 10) < month ||
+            (iden.substring(8, 10) == month && iden.substring(10, 12) <= day)
+          )
+            age++;
+        }
 
-      if (sex % 2 === 0) {
-        sex = 1;
-      } else {
-        sex = 0;
+        if (sex % 2 === 0) {
+          sex = 1;
+        } else {
+          sex = 0;
+        }
+        this.driverOrAgentInfoList[index].age = age;
+        this.driverOrAgentInfoList[index].sex = sex;
       }
-      this.driverOrAgentInfoList[index].age = age;
-      this.driverOrAgentInfoList[index].sex = sex;
     },
     noFue(val) {
       this.inforForm.partyAge = val >= 0 ? val : 0;
@@ -3393,7 +3413,6 @@ export default {
     this.inforForm.caseType = someCaseInfo.caseType;
     this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
     this.inforForm.zfmlId = someCaseInfo.cateId;
-    // debugger
     if (this.inforForm.zfmlId === "1002000100000000") {
       this.afddFlag = true;
     } else {

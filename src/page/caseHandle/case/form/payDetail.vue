@@ -14,7 +14,7 @@
           <div class="el-upload__tip" slot="tip" style="text-align: center">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload> -->
         <el-form ref="form" :model="form">
-          <img :src="host+form.storageId" width="430px" height="400" align="center"/>
+          <img :src="myFileUrl" width="430px" height="400" align="center"/>
           <!-- <img v-if="form.evType =='照片'" :src="host+form.storageId"  width="430px" height="400" align="center"/> -->
           <!-- <video v-if="form.evType =='音视频'" :src="host+form.storageId" controls="controls" width="400px" height="380">your browser does not support the video tag</video> -->
         </el-form>
@@ -31,7 +31,8 @@ export default {
         return{
             visible: false,
             form:{},
-            host:""
+            host:"",
+            myFileUrl:'',
         }
     },
     methods:{
@@ -50,10 +51,10 @@ export default {
                 status: data.status,
                 note: data.note
             };
+            this.$util.com_getFileStream(data.storageId).then(res=>{
+              this.myFileUrl = res;
+            }).catch(err=>{console.log(err)})
         },
-    },
-    mounted(){
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
 }
 </script>

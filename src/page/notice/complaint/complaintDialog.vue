@@ -192,7 +192,6 @@ export default {
       rules: {},
       visible: false,
       title: "",
-      host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
       type: "",
     };
   },

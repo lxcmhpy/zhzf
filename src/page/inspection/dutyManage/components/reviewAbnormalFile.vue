@@ -39,7 +39,7 @@ export default {
       showPreview: false,
       fileType: "",
       fileSrc: "",
-      // host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+     
     };
   },
   methods: {

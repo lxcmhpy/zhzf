@@ -340,10 +340,7 @@ export default {
 
       })
     }
-  },
-  mounted() {
-    //   this.makeSealStr = iLocalStroage.gets('CURRENT_BASE_URL').QZ_ACTIVEX_HOST + 'iWebPDFEditor-V5.1/MultBrowser.html?path='
-    //     + iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST + '13,10a8b0e21ded'
   }
+  
 }
 </script>
