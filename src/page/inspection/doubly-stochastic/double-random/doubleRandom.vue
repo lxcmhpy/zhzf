@@ -14,6 +14,11 @@
               <el-form-item label="检查类型" prop='checkType' v-if="searchForm.taskArea=='省交通运输厅领域'">
                 <el-input v-model="searchForm.checkType"></el-input>
               </el-form-item>
+              <el-form-item label="查询范围" prop='selectValue'>
+                <el-select v-model="searchForm.selectValue">
+                  <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
             </el-form>
             <div class="search-btns">
               <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button> -->
@@ -58,6 +63,7 @@
           </el-table-column>
           <el-table-column prop="operatePerson" label="操作人员" align="center"></el-table-column>
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.extractStatus==1">抽取</el-button>
@@ -87,6 +93,7 @@
           </el-table-column>
           <el-table-column prop="operatePerson" label="操作人员" align="center"></el-table-column>
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.extractStatus==1">抽取</el-button>
@@ -173,6 +180,7 @@ export default {
         checkSubject: "",
         taskName: '',
         taskArea: '省交通运输厅领域',
+        selectValue: 0,
       },
       isShow: false,
       dialogFormVisible: false,
@@ -230,7 +238,8 @@ export default {
       isPersonNameTrue: false,
       isObjectTrue: false,
       isFinishFlag: false,
-      errorFlag: false
+      errorFlag: false,
+      searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
     }
   },
   methods: {
@@ -243,7 +252,8 @@ export default {
         taskName: this.searchForm.taskName,
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.taskArea == '省交通运输厅领域' ? this.searchForm.checkType : '',
-        organName : iLocalStroage.gets("userInfo").organName,//机构名称
+        organName: iLocalStroage.gets("userInfo").organName,//机构名称
+        organId: this.searchForm.selectValue == 1 ? iLocalStroage.gets("userInfo").organId : '',
         current: this.currentPage,
         size: this.pageSize,
       };
