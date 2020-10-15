@@ -290,6 +290,7 @@
                       placeholder="    年  月  日"
                       clear-icon="el-icon-circle-close"
                       value-format="yyyy-MM-dd"
+                      @blur="starttime"
                     ></el-date-picker>
                   </el-form-item>
                 </p>
@@ -588,6 +589,16 @@ export default {
     caseSlideMenu
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.formData.lasj)
+      if (Date.parse(this.formData.lawOfficeApprovalTime) < Date.parse(this.formData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.formData.lawOfficeApprovalTime = '';
+      }
+    },
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;

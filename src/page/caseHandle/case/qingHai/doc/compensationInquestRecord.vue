@@ -422,6 +422,18 @@ export default {
     var validateStartTime = (rule, value, callback) => {
       let parseInquestStartTime = this.docData.inquestStartTime;
       let parseinquestEndTime = this.docData.inquestEndTime;
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.inquestStartTime = ""
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if (Date.parse(parseInquestStartTime) > Date.parse(parseinquestEndTime)) {
         this.$message({
           showClose: true,
