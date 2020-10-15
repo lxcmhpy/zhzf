@@ -104,6 +104,11 @@ export const mixinGetCaseApiList = {
             console.log(res.data);
             this.caseLinkDataForm.status = res.data.status;
             console.log('this.propertyFeatures', this.propertyFeatures);
+            //立案登记表 暂存状态不显示修改信息按钮
+            if(this.showEditInfo){
+              this.showEditInfo = false;
+            }
+           
             if (this.propertyFeatures != undefined) {
               let data = {
                 caseBasicInfoId: caseId,

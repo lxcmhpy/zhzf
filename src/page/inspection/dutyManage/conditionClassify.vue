@@ -353,7 +353,7 @@ export default {
                 customClass: "custom-confirm",
                 }).then(() => {
 
-                    deleteProcessApi(ids).then(
+                    deleteProcessApi({ processTypeId: this.curTypeNode.id, ids }).then(
                         res => {
                             if(res.code == 200) {
                                 this.$message({  type: "success", message: "删除成功"});
