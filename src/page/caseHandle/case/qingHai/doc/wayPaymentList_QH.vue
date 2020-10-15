@@ -87,7 +87,7 @@
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="time" :rules="fieldRules('time',propertyFeatures['time'])">
                 <!--<el-input type="textarea" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>-->
-                <el-date-picker style="width: 200px" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
+                <el-date-picker @blur="starttime" style="width: 200px" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
             <td>
@@ -166,7 +166,7 @@
           <span>交通运输执法部门(印章)</span>
           <br />
           <el-form-item prop="makeDate" class="pdf_datapick" :rules="fieldRules('makeDate',propertyFeatures['makeDate'])">
-            <el-date-picker class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker class="big_error" @blur="starttime"  v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
         </div>
         <div class="notice clear">
@@ -320,6 +320,23 @@ export default {
     }
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.time) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.time = '';
+      }
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

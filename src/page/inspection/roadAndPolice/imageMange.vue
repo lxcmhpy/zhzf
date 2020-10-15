@@ -63,7 +63,6 @@
           </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-          {{fileList}}
           <el-upload class="upload-demo" :http-request="saveFile" :file-list="fileList" action="https://jsonplaceholder.typicode.cmo/posts/" multiple :on-remove="delFile">
             <el-button size="small" type="primary">选择文件</el-button>
             <div class="el-upload__tip" slot="tip">只能上传图片文件，且不大于10M

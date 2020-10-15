@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box ">
     <div class="print_info" id="evidenceListDoc_print">
@@ -177,7 +177,7 @@
         <div class="pdf_seal">
           <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker @blur="starttimes" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -395,6 +395,16 @@ export default {
   },
 
  methods: {
+   starttimes(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -442,7 +452,16 @@ export default {
     },
     starttime(){
       if (this.docData.acceptTreatmentEndDate){
-        if(this.docData.acceptTreatmentStartDate > this.docData.acceptTreatmentEndDate){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.acceptTreatmentStartDate) < Date.parse(this.docData.lasj)) {
+          this.docData.askdataStart = ""
+          this.$message({
+            message: '开始时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.acceptTreatmentStartDate = '';
+          this.docData.acceptTreatmentNumber = '';
+        }else if(this.docData.acceptTreatmentStartDate > this.docData.acceptTreatmentEndDate){
           this.$message({
             message: '开始时间不能大于结束时间',
             type: 'warning'
@@ -466,7 +485,16 @@ export default {
     },
     endtime(){
       if (this.docData.acceptTreatmentStartDate){
-        if(this.docData.acceptTreatmentStartDate > this.docData.acceptTreatmentEndDate){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.acceptTreatmentStartDate) < Date.parse(this.docData.lasj)) {
+          this.docData.askdataStart = ""
+          this.$message({
+            message: '开始时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.acceptTreatmentStartDate = '';
+          this.docData.acceptTreatmentNumber = '';
+        }else if(this.docData.acceptTreatmentStartDate > this.docData.acceptTreatmentEndDate){
           this.$message({
             message: '结束时间不能小于开始时间',
             type: 'warning'

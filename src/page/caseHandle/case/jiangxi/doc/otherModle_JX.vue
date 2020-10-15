@@ -480,6 +480,18 @@ export default {
         .replace("分", "");
       let a = parseInquestStartTime.split(" ");
       let parseinquestEndTime = a[0] + " " + this.docData.askdataEnd;
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.askdataStart = ""
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if (Date.parse(parseInquestStartTime) > Date.parse(parseinquestEndTime)) {
         this.$message({
           showClose: true,

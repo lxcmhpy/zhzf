@@ -59,7 +59,7 @@ export default {
           console.log("res", res);
           _this.tableData = res.data.records;
           _this.tableData.forEach(element => {
-            _this.$util.com_getFileStream(element.storageId).then(res => {
+            _this.$util.partLoading_getFileStream(element.storageId).then(res => {
               _this.$set(element, 'url', res)
             });
           });
