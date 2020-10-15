@@ -127,7 +127,6 @@ export default {
       dialogPreviewType: "",
       dialogPreviewUrl: false,
       dialogPreviewVisible: false,
-      //   host: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
     };
   },
   computed: {},

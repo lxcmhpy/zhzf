@@ -328,12 +328,12 @@ export function saveProessApi(data){
 }
 
 //删除处理情况
-export function deleteProcessApi(ids){
+export function deleteProcessApi(data){
   return request({
     url: "/check/cheProcess/deleteProcess",
     // url: "/cheProcess/deleteProcess",
     method: "post",
-    data: {ids},
+    data: data,
     showloading: true,
     cancelToken: setCancelSource(),
     //baseUrlType:"DUTY_HOST"
