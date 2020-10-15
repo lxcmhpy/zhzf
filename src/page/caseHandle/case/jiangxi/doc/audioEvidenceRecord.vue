@@ -54,6 +54,7 @@
                         type="datetime"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="   年  月  日  时 分 秒"
+                        @blur="starttime(item)"
                       ></el-date-picker>
                     </el-form-item>
                   </span>
@@ -269,6 +270,17 @@ export default {
     };
   },
   methods: {
+    starttime(datas){
+      console.log(datas)
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(datas.pTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '采集时间不得小于立案时间',
+          type: 'warning'
+        });
+        datas.pTime = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

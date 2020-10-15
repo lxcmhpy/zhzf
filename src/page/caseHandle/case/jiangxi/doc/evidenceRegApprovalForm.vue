@@ -466,7 +466,14 @@ export default {
   methods: {
     starttime(){
       if (this.docData.endDate){
-        if(this.docData.startDate > this.docData.endDate){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.startDate) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '开始时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.startDate = '';
+        }else if(this.docData.startDate > this.docData.endDate){
           this.$message({
             message: '开始时间不能大于结束时间',
             type: 'warning'
@@ -484,7 +491,14 @@ export default {
     },
     endtime(){
       if (this.docData.startDate){
-        if(this.docData.startDate > this.docData.endDate){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.startDate) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '开始时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.startDate = '';
+        }else  if(this.docData.startDate > this.docData.endDate){
           this.$message({
             message: '结束时间不能小于开始时间',
             type: 'warning'

@@ -205,7 +205,7 @@
                   >
                     <el-date-picker
                       v-model="docData.startDate"
-                      @change="startTime"
+                      @blur="starttime"
                       type="date"
                       format="yyyy年MM月dd日"
                       value-format="yyyy-MM-dd"
@@ -236,6 +236,7 @@
                       value-format="yyyy-MM-dd"
                       placeholder="      年 月 日"
                       :clearable="false"
+                      @blur="starttime"
                     ></el-date-picker>
                   </span>
                 </p>
@@ -279,7 +280,7 @@
       </el-form>
     </div>
     <casePageFloatBtns
-      :pageDomId="removeEvidenceRegApprovalForm_print"
+      :pageDomId="pageDomId"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
     ></casePageFloatBtns>
@@ -412,11 +413,29 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "removeEvidenceRegApprovalForm_print"
       },
+      pageDomId: "removeEvidenceRegApprovalForm_print",
       approvalOver: false, //审核完成
       propertyFeatures: ""
     };
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.startDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.startDate = '';
+      }
+      if (Date.parse(this.docData.staffSignTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.staffSignTime = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
