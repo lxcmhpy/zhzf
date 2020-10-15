@@ -47,9 +47,9 @@ export default {
 
       this.visible = true;
       // if (!this.getData) this.getByMlCaseId();
-      if (carinfoId) {
+      if (carinfoId&&carinfoId.id) {
         let data = {
-          caseId: carinfoId.id || '',
+          caseId: carinfoId.id,
           current: 1,
           size: 20,
         };

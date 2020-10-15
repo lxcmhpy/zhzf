@@ -207,7 +207,7 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" prop="totalWeight">
-              <el-input v-model="carInfo.firstCheck.totalWeight" @input="overLimit()" @change="firstCheckOverWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.totalWeight" @input="overLimit()" @change="firstCheckOverWeight(1)" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -435,7 +435,7 @@
         <div>
           <div class="item">
             <el-form-item label="复检质量" prop="secondCheckWeight">
-              <el-input v-model="carInfo.secondCheck.secondCheckWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.secondCheck.secondCheckWeight" @change='cuntUnloadWeight' onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -1428,7 +1428,7 @@ export default {
     changeEdit() {
       this.isCanEdit = true
     },
-    firstCheckOverWeight() {
+    firstCheckOverWeight(type) {
       if (this.carInfo.firstCheck.overWeight && this.carInfo.firstCheck.weightLimit) {
         let number = this.carInfo.firstCheck.overWeight / this.carInfo.firstCheck.weightLimit * 100;
         number = String(number).replace(/^(.*\..{4}).*$/, "$1");
@@ -1439,6 +1439,9 @@ export default {
         this.$set(this.carInfo.firstCheck, 'overRatio', '')
       }
       this.secondCheckOverWeight()
+      if (type == 1) {
+        this.cuntUnloadWeight()
+      }
     },
     secondCheckOverWeight() {
       if (this.carInfo.secondCheck.unloadWeight && this.carInfo.firstCheck.weightLimit) {
@@ -1483,6 +1486,13 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    cuntUnloadWeight() {
+      if (this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight>0) {
+        this.carInfo.secondCheck.unloadWeight = this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight
+      } else {
+        this.carInfo.secondCheck.unloadWeight = ''
+      }
     }
   },
 
