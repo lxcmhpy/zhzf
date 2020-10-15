@@ -692,6 +692,7 @@ export const inforCollectionCommonMixins = {
         obj.validateField(field, (validMessage) => {
           if (validMessage !== '' && result === true) {
             result = false
+            console.log('_this.$refs[field]',_this.$refs[field])
             let fields = _this.$refs[field].elForm.fields
             for (let i in fields) {
               if (fields[i].labelFor === field) {
