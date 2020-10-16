@@ -499,7 +499,7 @@
                 <div class="file-list-chufa-text" @click="handlePictureCardPreview(item)">{{item.fileName}}</div>
               </li>
             </ul>
-            <el-upload class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
+            <el-upload :disabled='!isCanEdit' class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
               <!-- <el-button size="small" type="primary">选取文件</el-button> -->
               <i class="el-icon-plus avatar-uploader-icon" style="width: 87px;height: 72px;line-height: 72px;margin-left:0;"></i>
             </el-upload>
@@ -1191,7 +1191,7 @@ export default {
       }
     },
     refForm(formName, err) {
-      let that = this;
+      let that = this; 
       let result = new Promise(function (resolve, reject) {
         that.$refs[formName].validate((valid) => {
           if (valid) {
@@ -1206,11 +1206,12 @@ export default {
     saveMethod() {
       let data = JSON.parse(JSON.stringify(this.carInfo))
       // 处理%
-      console.log(data.secondCheck.overRatio)
-      if (data.secondCheck.overRatio.toString().indexOf('%') == -1) {
+      // console.log(data.secondCheck.overRatio)
+      // debugger
+      if (data.secondCheck.overRatio&&data.secondCheck.overRatio.toString().indexOf('%') == -1) {
         data.secondCheck.overRatio = data.secondCheck.overRatio ? data.secondCheck.overRatio + '%' : ''
       }
-      if (data.firstCheck.overRatio.toString().indexOf('%') == -1) {
+      if (data.firstCheck.overRatio&&data.firstCheck.overRatio.toString().indexOf('%') == -1) {
         data.firstCheck.overRatio = data.firstCheck.overRatio ? data.firstCheck.overRatio + '%' : ''
       }
 
@@ -1247,24 +1248,24 @@ export default {
     },
     getData(id) {
       let _this = this
-      findCarInfoByIdApi(this.inspectionOverWeightId.id || id).then(
+      findCarInfoByIdApi(_this.inspectionOverWeightId.id || id).then(
         res => {
           if (res.code == 200) {
             _this.carInfo = res.data;
-            this.carinfoId = this.inspectionOverWeightId.id || id;
-            if (this.carInfo.secondCheck.overRatio.toString().indexOf('%') != -1) {
+            _this.carinfoId = this.inspectionOverWeightId.id || id;
+            if (_this.carInfo.secondCheck.overRatio&&_this.carInfo.secondCheck.overRatio.toString().indexOf('%') != -1) {
               _this.carInfo.secondCheck.overRatio = _this.carInfo.secondCheck.overRatio.toString()
               _this.carInfo.secondCheck.overRatio = _this.carInfo.secondCheck.overRatio.substring(0, _this.carInfo.secondCheck.overRatio.lastIndexOf('%'));
             }
 
-            if (this.carInfo.firstCheck.overRatio.toString().indexOf('%') != -1) {
+            if (_this.carInfo.firstCheck.overRatio&&_this.carInfo.firstCheck.overRatio.toString().indexOf('%') != -1) {
               _this.carInfo.firstCheck.overRatio = _this.carInfo.firstCheck.overRatio.toString()
               _this.carInfo.firstCheck.overRatio = _this.carInfo.firstCheck.overRatio.substring(0, _this.carInfo.firstCheck.overRatio.lastIndexOf('%'));
             }
-            this.setLawPersonCurrentP(1);
-            this.getFile()
+            _this.setLawPersonCurrentP(1);
+            _this.getFile()
           } else {
-            this.$message.error(res.msg);
+            _this.$message.error(res.msg);
           }
         },
         error => {
@@ -1567,6 +1568,7 @@ export default {
     console.log("from", from);
     console.log("next", next);
     console.log("this.autoSava", this.autoSava);
+    this.isCanEdit=false;
     if (this.autoSava && to.name != "login") {
       //退出登录不自动暂存
       // this.stageInfo(0);

@@ -61,7 +61,7 @@
               </el-form>
             </div>
             <div class="formC1" v-if="!check">
-              <div>请使用<span class="blue">执法APP</span>扫码登录</div>
+              <div>请使用<span class="blue-text">执法APP</span>扫码登录</div>
               <div class="code_box">
                 <img src="../../../static/images/img/login/loginCode.png" alt="">
               </div>
