@@ -507,6 +507,15 @@ export default {
   },
   methods: {
     starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.prolongStartDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '开始时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.prolongStartDate = '';
+        return;
+      }
       if (this.docData.prolongStartDate){
         if(this.docData.prolongStartDate > this.docData.prolongEndDate && this.docData.prolongEndDate){
           this.$message({

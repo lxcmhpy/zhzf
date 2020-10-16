@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div
     class="print_box printNumbers_box"
@@ -39,7 +39,8 @@
                 type="date"
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
-                 value-format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                @blur="startTime"
               ></el-date-picker>
             </el-form-item>
           </span>对你（单位）采取了
@@ -81,8 +82,9 @@
                 type="date"
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
-                 value-format="yyyy-MM-dd"
-                 :disabled="fieldDisabled(propertyFeatures['removeDate'])"
+                value-format="yyyy-MM-dd"
+                :disabled="fieldDisabled(propertyFeatures['removeDate'])"
+                @blur="startTime"
               ></el-date-picker>
             </el-form-item>
           </span>起解除该行政强制措施。
@@ -97,7 +99,8 @@
               type="date"
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
-               value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              @blur="startTime"
             ></el-date-picker>
           </el-form-item>
         </div>
@@ -277,6 +280,30 @@ export default {
   },
 
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+      if (Date.parse(this.docData.dateTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.dateTime = '';
+      }
+      if (Date.parse(this.docData.removeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.removeDate = '';
+      }
+    },
     //对原始数据做一下处理
     getDataAfter() {
       console.log("处理数据", this.docData);

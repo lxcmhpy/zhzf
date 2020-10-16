@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box printNumbers_box" id="adminCoerciveMeasure-print" style="width:790px; margin:0 auto;">
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
@@ -139,7 +139,7 @@
         </table>
         <p>
           <el-form-item prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])" class="pdf_datapick" style="width: 150px">
-            <el-date-picker :disabled="fieldDisabled(propertyFeatures['afsj'])" v-model="formData.afsj" type="date"
+            <el-date-picker @blur="startTime2" :disabled="fieldDisabled(propertyFeatures['afsj'])" v-model="formData.afsj" type="date"
                             format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -184,7 +184,7 @@
                 </span>至
           <span>
                   <el-form-item prop="measureEndDate" :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])" style="width: 150px" class="pdf_datapick">
-                    <el-date-picker v-model="formData.measureEndDate" type="date" format="yyyy年MM月dd日"
+                    <el-date-picker v-model="formData.measureEndDate" type="date" @blur="startTime1" format="yyyy年MM月dd日"
                                     value-format="yyyy-MM-dd" placeholder="  年  月  日" :disabled="fieldDisabled(propertyFeatures['measureEndDate'])">
                     </el-date-picker>
                   </el-form-item>
@@ -216,7 +216,7 @@
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker @blur="startTime2" v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -611,7 +611,42 @@ import {
       },
       startTime() {
         if (this.formData.measureStartDate) {
+          if (Date.parse(this.formData.measureStartDate) < Date.parse(this.formData.lasj)) {
+            this.$message({
+              message: '开始时间不得小于立案时间',
+              type: 'warning'
+            });
+            this.formData.measureStartDate = '';
+            return;
+          }
           this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 29 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+        }
+      },
+      startTime1(){
+        if (Date.parse(this.formData.measureEndDate) < Date.parse(this.formData.measureStartDate)) {
+          this.$message({
+            message: '结束时间不得小于开始时间',
+            type: 'warning'
+          });
+          this.formData.measureEndDate = '';
+          this.formData.measureStartDate = '';
+        }
+      },
+      starttime2(){
+        console.log('案发时间=='+this.formData.lasj)
+        if (Date.parse(this.formData.makeDate) < Date.parse(this.formData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.formData.makeDate = '';
+        }
+        if (Date.parse(this.formData.afsj) < Date.parse(this.formData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.formData.afsj = '';
         }
       },
       //根据用户的组织机构ID获取复议机构和诉讼机构

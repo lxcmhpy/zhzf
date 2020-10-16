@@ -283,6 +283,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="       年  月  日"
                         :clearable="false"
+                        @blur="starttime"
                       ></el-date-picker>
                     </span>
                   </p>
@@ -529,6 +530,16 @@ export default {
     };
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.formData.lasj)
+      if (Date.parse(this.formData.staffSignTime) < Date.parse(this.formData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.formData.staffSignTime = '';
+      }
+    },
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;

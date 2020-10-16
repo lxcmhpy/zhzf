@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box">
     <div class="print_info" id="enforceDecideDoc-print">
@@ -195,6 +195,7 @@
                 placeholder="    年  月  日"
                 value-format="yyyy-MM-dd"
                 :disabled="fieldDisabled(propertyFeatures['serviceTime'])"
+                @blur="starttime"
               ></el-date-picker>
             </el-form-item>
           </span>作出
@@ -257,6 +258,7 @@
                 value-format="yyyy-MM-dd"
                 :disabled="!docData.checkBox1"
                 v-bind:class="{ bgc_red:docData.checkBox1,bgc_gray:!docData.checkBox1 }"
+                @blur="starttime"
               >
                 <!-- :disabled="fieldDisabled(propertyFeatures['forceTime'])" -->
               </el-date-picker>
@@ -380,6 +382,7 @@
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
               value-format="yyyy-MM-dd"
+              @blur="starttime"
             ></el-date-picker>
           </el-form-item>
         </div>
@@ -535,6 +538,30 @@ export default {
     };
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+      if (Date.parse(this.docData.serviceTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.serviceTime = '';
+      }
+      if (Date.parse(this.docData.forceTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.forceTime = '';
+      }
+    },
     handleCheckChangeOne(val) {
       console.log(" -> val", this.docData.checkBox1);
       if (val === false) {
