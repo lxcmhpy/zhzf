@@ -75,7 +75,7 @@
           <div class="noMore" v-else>没有更多了</div>
         </div> -->
     <div class="paginationBox">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
     </div>
       <el-dialog title="添加超限超载记录" :visible.sync="dialogVisible" width="424px">
         <ul class="notice-icon-list">
@@ -235,7 +235,7 @@ export default {
           console.log(res)
           if (res.code == 200) {
             this.recordList = res.data.records
-            _this.total = res.data.total
+            this.totalPage = res.data.total
           }
         },
         error => {
