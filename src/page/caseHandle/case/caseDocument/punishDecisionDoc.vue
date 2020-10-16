@@ -312,6 +312,7 @@
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
               value-format="yyyy-MM-dd"
+              @blur="starttime"
             ></el-date-picker>
           </el-form-item>
         </div>
@@ -482,6 +483,16 @@ export default {
   },
 
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+    },
       // 打印
     print() {
       console.log("打印!");

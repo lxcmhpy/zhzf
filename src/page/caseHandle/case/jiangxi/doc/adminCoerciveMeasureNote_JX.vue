@@ -130,7 +130,7 @@
               <td>身份证件号</td>
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item prop="scenePeopelIdNo" :rules="fieldRules('scenePeopelIdNo',propertyFeatures['scenePeopelIdNo'],validateIDNumber)">
-                  <el-input type="textarea" v-model="docData.scenePeopelIdNo" :maxLength="maxLength" placeholder="\" v-bind:class="{ over_flow:docData.scenePeopelIdNo.length>14?true:false }"
+                  <el-input type="textarea" v-model="docData.scenePeopelIdNo" :maxLength="maxLength" placeholder="\" v-bind:class="{ over_flow:docData.scenePeopelIdNo?(docData.scenePeopelIdNo.length>14?true:false):false }"
                     :autosize="{ minRows: 1, maxRows: 2}" 
                     :disabled="fieldDisabled(propertyFeatures['scenePeopelIdNo'])"
                     ></el-input>
@@ -263,7 +263,7 @@
                 </span>至
                 <span>
                   <el-form-item prop="measureEndDate" :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])" style="width: 150px" class="pdf_datapick">
-                    <el-date-picker v-model="docData.measureEndDate" type="date" format="yyyy年MM月dd日"
+                    <el-date-picker v-model="docData.measureEndDate" @blur="startTime1" type="date" format="yyyy年MM月dd日"
                                     value-format="yyyy-MM-dd" placeholder="  年  月  日" :disabled="fieldDisabled(propertyFeatures['measureEndDate'])">
                     </el-date-picker>
                   </el-form-item>
@@ -389,6 +389,18 @@ export default {
       let a = parseInquestStartTime.split(' ');
       let parseinquestEndTime = a[0] + ' ' + this.docData.enforceEndTime;
       let currentTime = new Date();
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.enforceStartTime = "";
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if(Date.parse(parseInquestStartTime)>Date.parse(currentTime)){
         this.$message({
               showClose: true,
@@ -846,9 +858,34 @@ export default {
       },
       startTime() {
         if (this.docData.measureStartDate) {
+          console.log('案发时间=='+this.docData.lasj)
+          if (Date.parse(this.docData.measureStartDate) < Date.parse(this.docData.lasj)) {
+            this.$message({
+              showClose: true,
+              message: "开始时间不得小于立案时间",
+              type: "error",
+              offset: 100,
+              customClass: "validateErrorTip",
+            });
+            this.docData.measureStartDate = "";
+            return;
+          }
           this.$set(this.docData, 'measureEndDate', new Date(new Date(this.docData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
         }
       },
+      startTime1(){
+        if (Date.parse(this.docData.measureStartDate) > Date.parse(this.docData.measureEndDate)) {
+            this.$message({
+              showClose: true,
+              message: "结束时间不得小于开始时间",
+              type: "error",
+              offset: 100,
+              customClass: "validateErrorTip",
+            });
+            this.docData.measureStartDate = "";
+            this.docData.measureEndDate = "";
+          }
+      }
     },
     mounted() {
       this.getDocDataByCaseIdAndDocId();
