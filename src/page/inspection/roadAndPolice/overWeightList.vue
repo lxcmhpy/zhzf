@@ -74,9 +74,9 @@
           </div>
           <div class="noMore" v-else>没有更多了</div>
         </div> -->
-      <div class="paginationBox">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
-      </div>
+    <div class="paginationBox">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="total"></el-pagination>
+    </div>
       <el-dialog title="添加超限超载记录" :visible.sync="dialogVisible" width="424px">
         <ul class="notice-icon-list">
           <li v-for="(item,index) in checkList" :key="index" @click="addRecord(item.label)">
@@ -222,6 +222,7 @@ export default {
     },
     getTableData() {
       this.recordList = []
+      let _this=this
       let data = {
         checkType: this.searchForm.checkType,
         fileStatus: this.searchForm.fileStatus,
@@ -234,7 +235,7 @@ export default {
           console.log(res)
           if (res.code == 200) {
             this.recordList = res.data.records
-            this.total = res.data.total
+            _this.total = res.data.total
           }
         },
         error => {

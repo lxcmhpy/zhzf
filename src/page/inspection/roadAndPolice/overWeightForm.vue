@@ -1208,10 +1208,10 @@ export default {
       // 处理%
       console.log(data.secondCheck.overRatio)
       if (data.secondCheck.overRatio.toString().indexOf('%') == -1) {
-        data.secondCheck.overRatio = data.secondCheck.overRatio + '%'
+        data.secondCheck.overRatio = data.secondCheck.overRatio ? data.secondCheck.overRatio + '%' : ''
       }
       if (data.firstCheck.overRatio.toString().indexOf('%') == -1) {
-        data.firstCheck.overRatio = data.firstCheck.overRatio + '%'
+        data.firstCheck.overRatio = data.firstCheck.overRatio ? data.firstCheck.overRatio + '%' : ''
       }
 
       data.drivePerson = JSON.stringify(data.drivePerson)
@@ -1444,8 +1444,8 @@ export default {
       }
     },
     secondCheckOverWeight() {
-      if (this.carInfo.secondCheck.unloadWeight && this.carInfo.firstCheck.weightLimit) {
-        let number = (this.carInfo.secondCheck.unloadWeight - this.carInfo.firstCheck.weightLimit) / this.carInfo.firstCheck.weightLimit * 100;
+      if (this.carInfo.secondCheck.secondCheckWeight && this.carInfo.firstCheck.weightLimit && this.carInfo.secondCheck.secondCheckWeight - this.carInfo.firstCheck.weightLimit > 0) {
+        let number = (this.carInfo.secondCheck.secondCheckWeight - this.carInfo.firstCheck.weightLimit) / this.carInfo.firstCheck.weightLimit * 100;
         number = String(number).replace(/^(.*\..{4}).*$/, "$1");
         number = Number(number); // number = 12.3321
         this.$set(this.carInfo.secondCheck, 'overRatio', number)
@@ -1488,12 +1488,16 @@ export default {
         });
     },
     cuntUnloadWeight() {
-      if (this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight>0) {
-        this.carInfo.secondCheck.unloadWeight = this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight
+      if (this.carInfo.firstCheck.totalWeight && this.carInfo.secondCheck.secondCheckWeight && this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight > 0) {
+        let number = this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight
+        number = String(number).replace(/^(.*\..{4}).*$/, "$1");
+        number = Number(number); // number = 12.3321
+        this.$set(this.carInfo.secondCheck, 'unloadWeight', number)
       } else {
-        this.carInfo.secondCheck.unloadWeight = ''
+        this.$set(this.carInfo.secondCheck, 'unloadWeight', '')
       }
-    }
+      this.secondCheckOverWeight()
+    },
   },
 
   mounted() {
