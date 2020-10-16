@@ -42,7 +42,11 @@
               </label>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="保存日期" align="center"></el-table-column>
+          <el-table-column prop="createTime" label="保存日期" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.createTime&&scope.row.createTime.length>10?scope.row.createTime.substring(0,16):''}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="paginationF">
