@@ -5,7 +5,7 @@
         <div class="doc_topic">送达回证</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <div>案由:<el-form-item prop="caseName" style="width:585px">
-            <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
+            <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/" disabled style="height:36px;"></el-input>
           </el-form-item>
         </div> -->
         <div class="doc_cause" style="padding-bottom:10px;">
@@ -18,7 +18,7 @@
             </td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="servedOrg" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.servedOrg" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.servedOrg" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
 
             </td>
@@ -29,7 +29,7 @@
             </td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="server" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.server" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.server" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
 
             </td>
@@ -40,7 +40,7 @@
             </td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="collector" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.collector" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.collector" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
 
             </td>
@@ -86,7 +86,7 @@
           <tr>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item label='备注:'>
-                <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>

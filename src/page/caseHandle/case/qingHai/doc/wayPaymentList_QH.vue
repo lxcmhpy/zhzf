@@ -10,7 +10,7 @@
             </td>
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -23,7 +23,7 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
-                <el-input type="textarea" v-model="docData.party" :disabled="fieldDisabled(propertyFeatures['party'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.party" :disabled="fieldDisabled(propertyFeatures['party'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -31,7 +31,7 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'])">
-                <el-input type="textarea" v-model="docData.partyAddress" :disabled="fieldDisabled(propertyFeatures['partyAddress'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.partyAddress" :disabled="fieldDisabled(propertyFeatures['partyAddress'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -42,7 +42,7 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'])">
-                <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -50,7 +50,7 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'])">
-                <el-input type="textarea" v-model="docData.partyManager" :disabled="fieldDisabled(propertyFeatures['partyManager'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.partyManager" :disabled="fieldDisabled(propertyFeatures['partyManager'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -60,7 +60,7 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="carLocation" :rules="fieldRules('carLocation',propertyFeatures['carLocation'])">
-                <el-input type="textarea" v-model="docData.carLocation" :disabled="fieldDisabled(propertyFeatures['carLocation'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.carLocation" :disabled="fieldDisabled(propertyFeatures['carLocation'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -68,14 +68,14 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <!-- <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item> -->
               <p>
                 <el-form-item prop="vehicleType" style="width:calc(50% - 10px);" :rules="fieldRules('vehicleType',propertyFeatures['vehicleType'])">
-                  <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
                 <el-form-item prop="number" style="width:calc(50% - 10px);" :rules="fieldRules('number',propertyFeatures['number'])">
-                  <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
             </td>
@@ -86,7 +86,7 @@
             </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="time" :rules="fieldRules('time',propertyFeatures['time'])">
-                <!--<el-input type="textarea" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>-->
+                <!--<el-input type="textarea" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>-->
                 <el-date-picker @blur="starttime" style="width: 200px" v-model="docData.time" :disabled="fieldDisabled(propertyFeatures['time'])" type="datetime" format="yyyy年MM月dd日HH时mm分" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
               </el-form-item>
             </td>
@@ -95,7 +95,7 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="adress" :rules="fieldRules('adress',propertyFeatures['adress'])">
-                <el-input type="textarea" v-model="docData.adress" :disabled="fieldDisabled(propertyFeatures['adress'])" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                <el-input type="textarea" v-model="docData.adress" :disabled="fieldDisabled(propertyFeatures['adress'])" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -129,7 +129,7 @@
             <td>备注</td>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item prop="docNote" :rules="fieldRules('adress',propertyFeatures['docNote'])">
-                <el-input type='textarea' v-model="docData.docNote" :disabled="fieldDisabled(propertyFeatures['docNote'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.docNote" :disabled="fieldDisabled(propertyFeatures['docNote'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>

@@ -65,7 +65,7 @@
           依照《中华人民共和国行政强制法》第二十八条第一款第
           <span>
             <el-form-item prop="clause" style="width:140px" :rules="fieldRules('clause',propertyFeatures['clause'])">
-              <el-select v-model="docData.clause" :maxLength="maxLength" placeholder="\" :disabled="fieldDisabled(propertyFeatures['clause'])">
+              <el-select v-model="docData.clause" :maxLength="maxLength" placeholder="/" :disabled="fieldDisabled(propertyFeatures['clause'])">
                 <el-option
                   v-for="item in options"
                   :key="item.value"

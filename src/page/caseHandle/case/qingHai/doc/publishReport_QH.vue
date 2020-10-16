@@ -15,7 +15,7 @@
                         v-model="docData.publishInfo"
                         rows="4"
                         maxlength="400"
-                        placeholder="\"
+                        placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['publishInfo'])"
                       ></el-input>
                       <p class="span_bg" style="    margin-top: 8px;">&nbsp;</p>

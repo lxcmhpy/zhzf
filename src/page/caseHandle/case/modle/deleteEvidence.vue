@@ -21,7 +21,7 @@
                 v-bind:class="{ over_flow:docData.party.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
               ></el-input>
             </el-form-item>
           </span>
@@ -48,7 +48,7 @@
                 v-bind:class="{ over_flow:docData.caseNumberCopy.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
               ></el-input>
             </el-form-item>
           </span>。依照《中华人民共和国行政处罚法》第三十七条第二款的规定，本机关决定自

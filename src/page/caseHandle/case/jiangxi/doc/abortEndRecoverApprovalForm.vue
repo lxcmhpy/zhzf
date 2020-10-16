@@ -31,9 +31,9 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
               </el-form-item>
             </td>
             <td colspan="2">身份证件号</td>
@@ -47,7 +47,7 @@
                   v-model="docData.partyIdNo"
                   v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }"
                   :maxLength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
@@ -68,7 +68,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   maxlength="30"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -81,7 +81,7 @@
                 <el-input
                   v-model="docData.partyTel"
                   maxlength="11"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                 ></el-input>
               </el-form-item>
@@ -99,7 +99,7 @@
                   v-model="docData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -115,7 +115,7 @@
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -132,7 +132,7 @@
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -146,7 +146,7 @@
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -162,7 +162,7 @@
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -182,7 +182,7 @@
                   v-bind:class="{ over_flow:docData.caseSituation && docData.caseSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
                 ></el-input>
               </el-form-item>
@@ -206,7 +206,7 @@
                       v-model="docData.reason"
                       :maxLength="maxLength"
                       :disabled="fieldDisabled(propertyFeatures['reason'])"
-                      placeholder="\"
+                      placeholder="/"
                     ></el-input>
                   </el-form-item>
                 </span>，拟作出如下处理决定：
@@ -286,7 +286,7 @@
                     v-bind:class="{ over_flow:docData.notes.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="200"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
               </span>

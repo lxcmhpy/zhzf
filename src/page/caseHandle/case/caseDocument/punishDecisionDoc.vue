@@ -30,9 +30,9 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
               </el-form-item>
             </td>
             <td>身份证件号</td>
@@ -44,7 +44,7 @@
                   v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
               </el-form-item>
@@ -61,7 +61,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -73,7 +73,7 @@
                   v-model="formData.partyTel"
                   :maxLength="maxLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -87,7 +87,7 @@
                   v-model="formData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -100,7 +100,7 @@
                   v-model="formData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -114,7 +114,7 @@
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -125,7 +125,7 @@
                   v-model="formData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -138,7 +138,7 @@
                   v-model="formData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -216,7 +216,7 @@
                 :maxLength="maxLength"
                 :disabled="fieldDisabled(propertyFeatures['tempPunishAmount'])"
               ></el-input>
-              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="/"></el-input> -->
             </el-form-item>
           </span>的行政处罚。
         </p>
@@ -284,7 +284,7 @@
 
           <span>
             <el-form-item prop="litigationOrgan" :rules="fieldRules('litigationOrgan',propertyFeatures['litigationOrgan'])">
-              <!-- <el-input type="textarea" v-model="formData.litigationOrgan" v-bind:class="{ over_flow:formData.litigationOrgan && formData.litigationOrgan.length>12?true:false }" :maxLength="maxLength" :autosize="{ minRows: 1, maxRows: 3}"  placeholder="\"></el-input> -->
+              <!-- <el-input type="textarea" v-model="formData.litigationOrgan" v-bind:class="{ over_flow:formData.litigationOrgan && formData.litigationOrgan.length>12?true:false }" :maxLength="maxLength" :autosize="{ minRows: 1, maxRows: 3}"  placeholder="/"></el-input> -->
               <el-select v-model="formData.litigationOrgan" :disabled="fieldDisabled(propertyFeatures['litigationOrgan'])">
                 <el-option v-for="(item,index) in enforcementOrganList" :key="index" :value="item" :label="item"></el-option>
               </el-select>

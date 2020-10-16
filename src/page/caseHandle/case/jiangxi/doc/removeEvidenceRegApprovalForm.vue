@@ -31,7 +31,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -45,7 +45,7 @@
                   type="textarea"
                   v-model="docData.partyIdNo"
                   :maxLength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
@@ -66,7 +66,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   maxlength="30"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -79,7 +79,7 @@
                 <el-input
                   v-model="docData.partyTel"
                   maxlength="11"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                 ></el-input>
               </el-form-item>
@@ -97,7 +97,7 @@
                   v-model="docData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -113,7 +113,7 @@
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -130,7 +130,7 @@
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -144,7 +144,7 @@
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -160,7 +160,7 @@
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -182,7 +182,7 @@
                   v-bind:class="{ over_flow:docData.basicSituation && docData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
                 ></el-input>
               </el-form-item>

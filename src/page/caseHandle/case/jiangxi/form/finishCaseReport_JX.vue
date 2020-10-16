@@ -22,7 +22,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="fieldDisabled(propertyFeatures['caseName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -47,7 +47,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -57,12 +57,12 @@
                 prop="partySex"
                 :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)"
               >
-                <!-- <el-input  v-model="formData.partySex" maxlength="2" :disabled="isParty ? false : true" placeholder="\"></el-input> -->
+                <!-- <el-input  v-model="formData.partySex" maxlength="2" :disabled="isParty ? false : true" placeholder="/"></el-input> -->
                 <!-- 需要完善 -->
                 <el-select
                   v-model="formData.partySex"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partySex'])"
-                  placeholder="\"
+                  placeholder="/"
                   class="select10"
                 >
                   <el-option value="0" label="男"></el-option>
@@ -84,7 +84,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAge'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -103,7 +103,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -120,7 +120,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -137,7 +137,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -157,7 +157,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -174,7 +174,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -193,7 +193,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -210,7 +210,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -226,7 +226,7 @@
                   v-model="formData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -249,7 +249,7 @@
                   v-bind:class="{ over_flow:formData.closeResult && formData.closeResult.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['closeResult'])"
                 ></el-input>
               </el-form-item>
@@ -271,7 +271,7 @@
                   v-bind:class="{ over_flow:formData.closeSituation && formData.closeSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
                 <div class="pdf_seal">
                   <p>签名：{{formData.staffSign}}</p>

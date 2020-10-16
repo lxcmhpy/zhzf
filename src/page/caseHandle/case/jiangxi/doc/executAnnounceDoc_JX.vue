@@ -8,7 +8,7 @@
         <p>
           <span>
             <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="docData.caseName" type="textarea" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+              <el-input v-model="docData.caseName" type="textarea" :maxLength='maxLength' placeholder="/" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
@@ -19,18 +19,18 @@
           </span>依法作出了
           <span>
             <el-form-item prop="punishContent" :rules="fieldRules('punishContent',propertyFeatures['punishContent'])">
-              <el-input v-model="docData.punishContent" type="textarea" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['punishContent'])"></el-input>
+              <el-input v-model="docData.punishContent" type="textarea" :maxLength='maxLength' placeholder="/" :disabled="fieldDisabled(propertyFeatures['punishContent'])"></el-input>
             </el-form-item>
           </span>的决定，决定书编号为
           <span>
             <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
-              <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength'  type="textarea" placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
+              <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength'  type="textarea" placeholder="/" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
             </el-form-item>
           </span>。
           依据《中华人民共和国行政强制法》第四十四条的规定，现责令当事人
           <span>
             <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
-              <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
+              <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="/" :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>立即停止违法行为并于
           <span>

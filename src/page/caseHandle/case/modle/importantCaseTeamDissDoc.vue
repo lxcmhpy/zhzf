@@ -191,7 +191,7 @@
         <!-- <div class="overflow_lins_style">
           <div class="overflow_lins_textarea">
             <el-form-item prop="discussionRecord">
-              <el-input class='text_indent10' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="\"></el-input>
+              <el-input class='text_indent10' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="/"></el-input>
             </el-form-item>
           </div>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>

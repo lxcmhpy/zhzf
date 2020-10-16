@@ -8,7 +8,7 @@
         <p>
           <span>
             <el-form-item prop="caseName">
-              <el-input v-model="docData.caseName"  :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.caseName"  :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
@@ -19,12 +19,12 @@
           </span>依法作出了
           <span>
             <el-form-item prop="punishContent">
-              <el-input v-model="docData.punishContent" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.punishContent" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>的决定，决定书案号为
           <span>
             <el-form-item prop="caseNumberCopy">
-              <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.caseNumberCopy"  :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>。
         </p>
@@ -33,7 +33,7 @@
           依据《中华人民共和国行政强制法》第四十四条的规定，现责令当事人
           <span>
             <el-form-item prop="party">
-              <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.party"  :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>立即停止违法行为并于
           <span>

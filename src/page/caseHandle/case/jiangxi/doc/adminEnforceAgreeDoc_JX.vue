@@ -15,11 +15,11 @@
           </span>对
           <span>
             <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-              <el-input v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" style="width:250px;" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>做出了编号为：
           <el-form-item prop="caseNumber1" :rules="fieldRules('caseNumber1',propertyFeatures['caseNumber1'])">
-              <el-input v-model="docData.caseNumber1" :disabled="fieldDisabled(propertyFeatures['caseNumber1'])" style="width:250px;" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.caseNumber1" :disabled="fieldDisabled(propertyFeatures['caseNumber1'])" style="width:250px;" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>的《行政强制执行决定书》，根据《中华人民共和国行政强
             制法》第四十二条的规定，在不损害公共利益和他人合法利益的情况下，与当事人
           <span>
