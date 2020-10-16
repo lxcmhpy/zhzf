@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box">
     <div class="print_info" id="remindLetter_print">
@@ -63,6 +63,7 @@
                 placeholder="    年  月  日"
                 value-format="yyyy-MM-dd"
                 :disabled="fieldDisabled(propertyFeatures['serviceTime'])"
+                @blur="starttime"
               ></el-date-picker>
             </el-form-item>
           </span>对你（单位）作出了
@@ -110,6 +111,7 @@
                   format="yyyy年MM月dd日"
                   placeholder="    年  月  日"
                   value-format="yyyy-MM-dd"
+                  @blur="starttime"
                 ></el-date-picker>
               </el-form-item>对你（单位）作出了《代履行决定书》，决定书编号为
               <el-form-item
@@ -238,6 +240,7 @@
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
               value-format="yyyy-MM-dd"
+              @blur="starttime"
             ></el-date-picker>
           </el-form-item>
         </div>
@@ -357,6 +360,30 @@ export default {
     };
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+      if (Date.parse(this.docData.serviceTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.serviceTime = '';
+      }
+      if (Date.parse(this.docData.decidedTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.decidedTime = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() { 
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

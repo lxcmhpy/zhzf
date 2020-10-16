@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
    <div class="print_box">
     <div class="print_info" id="executAnnounceDoc_print">
@@ -13,7 +13,7 @@
           </span>一案，本机关于
           <span>
             <el-form-item prop="serviceTime" class="pdf_datapick">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+              <el-date-picker @blur="starttime" v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>依法作出了
@@ -50,7 +50,7 @@
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker @blur="starttime" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -150,6 +150,23 @@ export default {
     }
   },
  methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+      if (Date.parse(this.docData.serviceTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.serviceTime = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
