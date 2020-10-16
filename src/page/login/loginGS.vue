@@ -46,14 +46,15 @@
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
                 </div>
                 <div class="login_btm">
-                  <!-- <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link> 
-                  <div class="left_float margin24 wechat_box">
+                  <!-- <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link>  -->
+                  <el-link type="primary" :underline="false" class="left_float"  download="执法app">APP下载</el-link> 
+                  <!-- <div class="left_float margin24 wechat_box">
                     <span @mouseenter="enter" @mouseleave="leave" class="wechat-text">微信公众号</span>
                     <div class="wechat" v-show="weChatFlag">
                       <img src="../../../static/images/img/login/weChat.png" alt="">
                     </div>
-                  </div>
-                  <el-link type="primary" :underline="false" class="right_float" @click="resetChange(true)">忘记密码</el-link> -->
+                  </div> -->
+                  <el-link type="primary" :underline="false" class="right_float" @click="resetChange(true)">忘记密码</el-link>
 
                 </div>
 
@@ -537,7 +538,13 @@ export default {
     background-size: cover;
     display: block;
     .rightC{
-      margin-top: 15%;
+      margin-top: 12%;
+      background: #fff;
+      margin-right: 5%;
+      width: 480px;
+      height: 500px;
+      box-shadow: 0 0 10px #ccc;
+      border-radius: 8px;
       .form_box{
         min-height: auto;
         .back{
@@ -546,9 +553,14 @@ export default {
       }
       .checkText{
         font-size: 26px;
+        
       }
       .title{
         margin-bottom: 20px;
+        margin-top: 45px;
+      }
+      .formC1 button{
+        margin-top: 0;
       }
       .formC1 .login_btm{
         height: 70px;

@@ -165,11 +165,11 @@
                 </template>
               </el-table-column>
 
-              <!-- <el-table-column width="52%" >
+              <el-table-column width="52%" >
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.row)"></el-button>
+                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteRes(scope.row,scope.$index)"></el-button>
                 </template>
-              </el-table-column> -->
+              </el-table-column>
             </el-table>
             <el-button icon="el-icon-circle-plus-outline" @click="addTableData" circle type="info" style="margin-left: 50%;margin-top: 10px"></el-button>
           </el-form>
@@ -507,10 +507,10 @@ export default {
             })
             .catch(_ => {});
     },
-    //删除当前添加行的数据
-    // handleRow(row) {
-
-    // },
+    //删除一行
+    deleteRes(row,index) {
+      this.tableDatas.splice(index, 1);
+    },
     submitForm(formName){
       console.log('数组11',this.tableDatas)
       let canAdd = true;

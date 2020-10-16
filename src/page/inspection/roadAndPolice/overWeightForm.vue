@@ -53,8 +53,8 @@
                 <el-option label="6" value="6"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label-width="0" prop="axisNum" style="width:calc(30% - 6px);display: inline-block;">
-              <el-select placeholder="选择驱动轴" v-model="carInfo.axisType">
+            <el-form-item label-width="0" prop="axisType" style="width:calc(30% - 6px);display: inline-block;">
+              <el-select placeholder="请选择" v-model="carInfo.axisType">
                 <el-option label="双轴" value="双轴"></el-option>
                 <el-option label="单轴" value="单轴"></el-option>
               </el-select>
@@ -189,8 +189,10 @@
         <div>
           <div class="item">
             <el-form-item label="初检站点" prop="firstCheckStation">
-              <el-input v-model="carInfo.firstCheck.firstCheckStation" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
-                <template slot="append">选择</template>
+              <el-input v-model="carInfo.firstCheck.firstCheckStation">
+                <template slot="append">
+                  <div @click="checkFirstCheckStation(1)">选择</div>
+                </template>
               </el-input>
             </el-form-item>
           </div>
@@ -205,7 +207,7 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" prop="totalWeight">
-              <el-input v-model="carInfo.firstCheck.totalWeight" @input="overLimit()" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.firstCheck.totalWeight" @input="overLimit()" @change="firstCheckOverWeight(1)" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -252,14 +254,14 @@
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.lengthLimit" placeholder="/" disabled>
+              <el-input v-model="carInfo.firstCheck.limitLength" placeholder="/" disabled>
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.overLength" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.overLength" placeholder="/" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -275,14 +277,14 @@
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.widthLimit" placeholder="/" disabled>
+              <el-input v-model="carInfo.firstCheck.limitWide" placeholder="/" disabled>
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.overWidth" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.overWide" placeholder="/" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -298,14 +300,14 @@
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.heightLimit" placeholder="/" disabled>
+              <el-input v-model="carInfo.firstCheck.limitHeight" placeholder="/" disabled>
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
           </div>
           <div class="itemThird">
             <el-form-item>
-              <el-input v-model="carInfo.firstCheck.overHeight" placeholder="/">
+              <el-input v-model="carInfo.firstCheck.overHeight" placeholder="/" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <!-- <template slot="append">米</template> -->
               </el-input>
             </el-form-item>
@@ -350,7 +352,9 @@
           <div class="item">
             <el-form-item label="复检站点" prop="secondCheckStation">
               <el-input v-model="carInfo.secondCheck.secondCheckStation">
-                <template slot="append">选择</template>
+                <template slot="append">
+                  <div @click="checkFirstCheckStation(2)">选择</div>
+                </template>
               </el-input>
             </el-form-item>
           </div>
@@ -383,7 +387,7 @@
             </div>
             <div class="item">
               <el-form-item label="分装车号" :prop="carInfo.secondCheck.unloadMode=='分装'?'fenPlate':'pachor'">
-                <el-input v-model="carInfo.secondCheck.fenPlate" placeholder="请输入车辆号牌，回车做查询，必须先输入车辆颜色"></el-input>
+                <el-input v-model="carInfo.secondCheck.fenPlate" placeholder="请输入"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -431,7 +435,7 @@
         <div>
           <div class="item">
             <el-form-item label="复检质量" prop="secondCheckWeight">
-              <el-input v-model="carInfo.secondCheck.secondCheckWeight" onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
+              <el-input v-model="carInfo.secondCheck.secondCheckWeight" @change='cuntUnloadWeight' onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')">
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -481,11 +485,18 @@
           <div class=" el-form-item__label ">公安交警处罚决定书</div>
           <div>
             <ul>
-              <li v-for="(item,index) in fileList" :key="index" class="file-list-chufa" @click="handlePictureCardPreview(item)">
-                <div>
-                  <img src="../../../../static/images/img/personInfo/icon_ac_wenshu.svg" alt="">
+              <li v-for="(item,index) in fileList" :key="index" class="file-list-chufa">
+                <div style="position: relative;height: 30px;">
+                  <div style="width:60px;position:absolute;left:50%;margin-left:-15px">
+                    <div style="width:auto;float:left" @click="handlePictureCardPreview(item)">
+                      <img src="../../../../static/images/img/personInfo/icon_ac_wenshu.svg" alt="">
+                    </div>
+                    <div class="del-icon-s">
+                      <i class="el-icon-close" style="font-size:12px" @click="removeFile(item)"></i>
+                    </div>
+                  </div>
                 </div>
-                <div class="file-list-chufa-text">{{item.fileName}}</div>
+                <div class="file-list-chufa-text" @click="handlePictureCardPreview(item)">{{item.fileName}}</div>
               </li>
             </ul>
             <el-upload class=" avatar-uploader upload-demo modle-upload" style="margin-bottom:22px;float:left" :show-file-list="false" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePictureCardPreview" :http-request="uploadFile" :on-remove="handleRemoveFile" :before-remove="beforeRemoveFile" multiple :file-list="fileList">
@@ -533,6 +544,13 @@
         <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(pdfUrl)" frameborder="0" style="width:790px;height:1119px"></iframe>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="checkStationVisible" title="请选择一个站点" size="tiny">
+      <ul>
+        <li v-for="(item,index) in stationRecord" :key="index" @click="checkSure(item)" style="cursor: pointer;line-height:40px;background:#F5F7FA;margin-bottom:20px;padding:0 20px">
+          {{item.name}}
+        </li>
+      </ul>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -549,6 +567,7 @@ import { findLawOfficerListApi, getAssistFile, getFileStreamByStorageIdApi } fro
 import { findRouteManageByOrganIdApi, } from "@/api/system";
 import { saveOrUpdateCarInfoApi, getDictListDetailByNameApi, findCarInfoByIdApi } from "@/api/inspection";
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
+import { findDueryFixedSitePage } from "@/api/lawSupervise.js";
 import { vehicleCheckApi, yyclCheckApi } from "@/api/checkInfo.js";
 export default {
   data() {
@@ -569,6 +588,7 @@ export default {
     };
 
     return {
+      stationRecord: [],
       changePartyIdType2Index: "",
       theStr: "", // 输入框长度到达设定值时输入框的内容
       recentCheckWorkers: [], //历史保存过检测人员
@@ -579,7 +599,7 @@ export default {
         fileStatus: 0,
         id: '',
         checkType: '路警联合',
-        detectStation: '检测站1',//监测站
+        // detectStation: '',//监测站
         vehicleIdColor: '黄色',
         vehicleShipId: '',
         vehicleShipType: '',
@@ -604,7 +624,7 @@ export default {
           lawOfficerId: '',
         },
         firstCheck: {
-          firstCheckTime: '',
+          firstCheckTime: new Date(),
           firstCheckStation: '',
           oddNumber: '',
           vehicleShipType: '',
@@ -621,6 +641,12 @@ export default {
           checkResult: '超限超载',
           checkPerson: '',
           checkPersonId: '',
+          overHeight: '',
+          overWide: '',
+          overLength: '',
+          limitWide: '',
+          limitLength: '',
+          limitHeight: '',
         },
 
         secondCheck: {
@@ -652,6 +678,9 @@ export default {
       locationList: [],
       carInfoRules: {
         vehicleShipId: [{ required: true, message: "请输入", trigger: "blur" }, { validator: vaildateCardNum, trigger: "blur" }],
+        vehicleShipType: [{ required: true, message: "请选择", trigger: "blur" }],
+        axisNum: [{ required: true, message: "请选择", trigger: "blur" }],
+        axisType: [{ required: true, message: "请选择", trigger: "blur" }],
         trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
         vehicleIdColor: [{ required: true, message: "请选择", trigger: "blur" }],
         loadGoods: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -673,6 +702,8 @@ export default {
       firstCheckRules: {
         vehicleShipId: [{ required: true, message: "请输入", trigger: "blur" },
         { validator: vaildateCardNum, trigger: "blur" }],
+        firstCheckStation: [{ required: true, message: "请输入", trigger: "blur" }],
+        firstCheckTime: [{ required: true, message: "请输入", trigger: "blur" }],
         totalWeight: [{ required: true, message: "请输入", trigger: "blur" }],
         overRatio: [{ required: true, message: "请输入", trigger: "blur" }],
         overWeight: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -692,6 +723,9 @@ export default {
         unloadWeight: [{ required: true, message: "请输入", trigger: "blur" }],
         overRatio: [{ required: true, message: "请输入", trigger: "blur" }],
         checkResult: [{ required: true, message: "请输入", trigger: "blur" }],
+        unloadMode: [{ required: true, message: "请输入", trigger: "blur" }],
+        secondCheckTime: [{ required: true, message: "请输入", trigger: "blur" }],
+        secondCheckStation: [{ required: true, message: "请输入", trigger: "blur" }],
         phone: [{ validator: validatePhone, trigger: "blur" }],
         checkPerson: [{ required: true, message: "请选择", trigger: "blur" },
         { validator: validateLawPersonNumber, trigger: "blur" }],
@@ -758,6 +792,8 @@ export default {
       pdfUrl: '',
       dialogImageVisible: false,
       isCanEdit: false,
+      checkStationVisible: false,
+      currentStation: '',
     };
   },
   components: {
@@ -766,7 +802,7 @@ export default {
     floatBtns,
   },
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId", "openTab", "caseHandle", "inspectionOverWeightId"]) },
+  computed: { ...mapGetters(["caseId", "openTab", "caseHandle", "inspectionOverWeightId", 'inspectionOverWeightFresh']) },
   methods: {
     //选择执法人员
     addLawPerson(item, lawPersonListId, alreadyChooseLawPerson) {
@@ -1072,7 +1108,7 @@ export default {
         case 5: this.$set(this.carInfo.firstCheck, 'weightLimit', 43); break;
         case 6: this.$set(this.carInfo.firstCheck, 'weightLimit', 49); break;
       }
-
+      this.firstCheckOverWeight()
     },
     saveFileData() { },
     searchNumber() {
@@ -1169,6 +1205,15 @@ export default {
     },
     saveMethod() {
       let data = JSON.parse(JSON.stringify(this.carInfo))
+      // 处理%
+      console.log(data.secondCheck.overRatio)
+      if (data.secondCheck.overRatio.toString().indexOf('%') == -1) {
+        data.secondCheck.overRatio = data.secondCheck.overRatio + '%'
+      }
+      if (data.firstCheck.overRatio.toString().indexOf('%') == -1) {
+        data.firstCheck.overRatio = data.firstCheck.overRatio + '%'
+      }
+
       data.drivePerson = JSON.stringify(data.drivePerson)
       data.firstCheck = JSON.stringify(data.firstCheck)
       data.secondCheck = JSON.stringify(data.secondCheck)
@@ -1207,6 +1252,15 @@ export default {
           if (res.code == 200) {
             _this.carInfo = res.data;
             this.carinfoId = this.inspectionOverWeightId.id || id;
+            if (this.carInfo.secondCheck.overRatio.toString().indexOf('%') != -1) {
+              _this.carInfo.secondCheck.overRatio = _this.carInfo.secondCheck.overRatio.toString()
+              _this.carInfo.secondCheck.overRatio = _this.carInfo.secondCheck.overRatio.substring(0, _this.carInfo.secondCheck.overRatio.lastIndexOf('%'));
+            }
+
+            if (this.carInfo.firstCheck.overRatio.toString().indexOf('%') != -1) {
+              _this.carInfo.firstCheck.overRatio = _this.carInfo.firstCheck.overRatio.toString()
+              _this.carInfo.firstCheck.overRatio = _this.carInfo.firstCheck.overRatio.substring(0, _this.carInfo.firstCheck.overRatio.lastIndexOf('%'));
+            }
             this.setLawPersonCurrentP(1);
             this.getFile()
           } else {
@@ -1256,6 +1310,27 @@ export default {
       } else {
         return;
       }
+    },
+    removeFile(file) {
+      this.$confirm('确认删除吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        iconClass: 'el-icon-question',
+        customClass: 'custom-confirm'
+      })
+        .then(() => {
+          deleteFileByIdApi(file.storageId).then(
+            res => {
+              console.log(res);
+              this.getFile()
+            },
+            error => {
+              console.log(error)
+            }
+          );
+        })
+        .catch(() => { })
+
     },
     getFile() {
       if (this.carinfoId) {
@@ -1353,23 +1428,72 @@ export default {
     changeEdit() {
       this.isCanEdit = true
     },
-    firstCheckOverWeight() {
-      if (this.carInfo.firstCheck.overWeight) {
+    firstCheckOverWeight(type) {
+      if (this.carInfo.firstCheck.overWeight && this.carInfo.firstCheck.weightLimit) {
         let number = this.carInfo.firstCheck.overWeight / this.carInfo.firstCheck.weightLimit * 100;
         number = String(number).replace(/^(.*\..{4}).*$/, "$1");
         number = Number(number); // number = 12.3321
+        console.log(number)
         this.$set(this.carInfo.firstCheck, 'overRatio', number)
+      } else {
+        this.$set(this.carInfo.firstCheck, 'overRatio', '')
       }
       this.secondCheckOverWeight()
+      if (type == 1) {
+        this.cuntUnloadWeight()
+      }
     },
     secondCheckOverWeight() {
-      if (this.carInfo.secondCheck.unloadWeight) {
-        let number = this.carInfo.secondCheck.unloadWeight / this.carInfo.firstCheck.weightLimit * 100;
+      if (this.carInfo.secondCheck.unloadWeight && this.carInfo.firstCheck.weightLimit) {
+        let number = (this.carInfo.secondCheck.unloadWeight - this.carInfo.firstCheck.weightLimit) / this.carInfo.firstCheck.weightLimit * 100;
         number = String(number).replace(/^(.*\..{4}).*$/, "$1");
         number = Number(number); // number = 12.3321
         this.$set(this.carInfo.secondCheck, 'overRatio', number)
+      } else {
+        this.$set(this.carInfo.secondCheck, 'overRatio', '')
       }
     },
+    checkSure(item) {
+      if (this.currentStation == 1) {
+        this.carInfo.firstCheck.firstCheckStation = item.name
+
+      }
+      if (this.currentStation == 2) {
+        this.carInfo.secondCheck.secondCheckStation = item.name
+      }
+      this.checkStationVisible = false
+    },
+    checkFirstCheckStation(type) {
+      let _this = this
+      this.currentStation = type
+      let data = {
+        organId: iLocalStroage.gets("userInfo").organId
+      }
+      findDueryFixedSitePage(data)
+        .then((res) => {
+          _this.stationRecord = res.data.records
+          if (_this.stationRecord.length == 1) {
+            if (type == 1) {
+              _this.carInfo.firstCheck.firstCheckStation = this.stationRecord[0].name
+            }
+            if (type == 2) {
+              _this.carInfo.secondCheck.secondCheckStation = this.stationRecord[0].name
+            }
+          } else {
+            this.checkStationVisible = true
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    cuntUnloadWeight() {
+      if (this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight>0) {
+        this.carInfo.secondCheck.unloadWeight = this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight
+      } else {
+        this.carInfo.secondCheck.unloadWeight = ''
+      }
+    }
   },
 
   mounted() {
@@ -1382,7 +1506,11 @@ export default {
     //   this.carinfoId = this.genID()
     //   this.setLawPersonCurrentP();
     // }
-
+    if (!this.inspectionOverWeightId.id) {
+      this.isCanEdit = true;//可编辑
+    } else {
+      this.isCanEdit = false
+    }
     // 鼠标滚动
     this.$refs.link_1.addEventListener("scroll", this.scrool1);
     this.$refs.link_2.addEventListener("scroll", this.scrool2);
@@ -1394,7 +1522,7 @@ export default {
   activated() {
     console.log('activated')
     /* 如果是页面跳转过来的，则isRefresh=true */
-    if (this.$route.params.isRefresh) {
+    if (this.inspectionOverWeightFresh) {
       if (this.inspectionOverWeightId.id) {
         this.getData()
       } else {
@@ -1404,13 +1532,19 @@ export default {
         this.resetForm('secondCheck');
         this.fileList = []
         this.carinfoId = this.genID()
+        this.carInfo.id = this.carinfoId
         this.setLawPersonCurrentP();
       }
-    }
-    if (!this.inspectionOverWeightId.id) {
-      this.isCanEdit = true;//可编辑
+      this.$store.commit("set_inspection_OverWeightFresh", false);
+      if (!this.inspectionOverWeightId.id) {
+        this.isCanEdit = true;//可编辑
+      } else {
+        this.isCanEdit = false
+      }
     } else {
-      this.isCanEdit = false
+      if (this.inspectionOverWeightId.id) {
+        this.getData()
+      }
     }
     console.log('activated', this.carinfoId)
     this.getDrawerList([
@@ -1479,10 +1613,12 @@ export default {
 .file-list-chufa {
   padding: 5px;
   width: auto;
+  min-width: 100px;
   float: left;
   text-align: center;
   margin-right: 20px;
   box-sizing: border-box;
+  cursor: pointer;
   i {
     font-size: 34px;
   }
@@ -1498,5 +1634,17 @@ export default {
     background: #ecf1fa;
     color: #4573d0;
   }
+}
+.file-list-chufa :hover {
+  .del-icon-s {
+    display: inline-block;
+  }
+}
+.del-icon-s {
+  display: none;
+  margin-left: 10px;
+  width: auto;
+  float: left;
+  margin-top: -6px;
 }
 </style>

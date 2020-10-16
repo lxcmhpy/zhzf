@@ -289,8 +289,12 @@
               <el-table-column prop="spec" label="规格" align="center">
                 <template slot-scope="scope">
                   <el-select v-model="scope.row.spec" placeholder="">
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label">
-                    </el-option>
+                    <el-option
+                      v-for="item in options" 
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
+                    ></el-option>
                   </el-select>
                 </template>
               </el-table-column>
@@ -328,13 +332,14 @@
 <script>
   import overflowInput from "@/page/caseHandle/case/modle/overflowInput.vue";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
-  import {getOrganDetailApi, getOrganIdApi} from "@/api/system";
+  import {getOrganDetailApi, getOrganIdApi,getDictListDetailByNameApi} from "@/api/system";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
   import {validateIDNumber, validatePhone, validateZIP} from '@/common/js/validator'
 import {
   testApi
 } from "@/api/caseHandle";
+
   export default {
     components: {
       casePageFloatBtns
@@ -489,26 +494,6 @@ import {
           }
         ],
         options: [
-          {
-            value: '1',
-            label: ' '
-          },
-          {
-            value: '2',
-            label: '份'
-          },
-          {
-            value: '3',
-            label: '套'
-          },
-          {
-            value: '4',
-            label: '个'
-          },
-          {
-            value: '5',
-            label: '件'
-          }
         ],
         measurOptions: [
           {
@@ -680,6 +665,15 @@ import {
         // this.$set(this.docData, 'measureStartDate', new Date());
         this.docData.measureStartDate = new Date().format('yyyy-MM-dd');
         this.startTime();
+      },
+       //获取规格单位
+      getUnit(){
+        getDictListDetailByNameApi('扣押物品规格').then(res=>{
+          console.log('规格',res);
+          this.options = res.data;
+          //添加一个空的数据
+          this.options.unshift({name:' ',note:' ',id:'123'})
+        }).catch(err=>{throw new Error(err)})
       }
 
 
@@ -693,6 +687,7 @@ import {
       this.isOverStatus();
       this.getOrganDetailOptions();
       this.getDocDataByCaseIdAndDocId();
+      this.getUnit();
     }
   }
 </script>

@@ -1476,6 +1476,17 @@ export function getFileStreamByStorageIdApi(storageId) {
   });
 }
 
+//获取文件流-不加载loading
+export function getFileStreamNoLoadingByStorageIdApi(storageId) {
+  return request({
+    url: "/case/sys/file/getFileStreamByStorageId/"+storageId,
+    method: "get",
+    showloading: false,
+    responseType:'blob',
+    cancelToken: setCancelSource()
+  });
+}
+
 //点击流程图(已解锁状态的)时 更改流程图各环节状态
 export function updateLinkInfoByCaseIdAndLinkTypeIdApi(data) {
   return request({

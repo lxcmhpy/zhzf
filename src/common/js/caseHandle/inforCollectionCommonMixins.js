@@ -193,33 +193,33 @@ export const inforCollectionCommonMixins = {
         partyZipCode: [
           {validator: validateZIP, trigger: "blur"}
         ],
-        provincesAddressArray: [{ required: true, message: "省市区不能为空", trigger: "change"}],
+        provincesAddressArray: [{ required: true, validator: validatePart, trigger: "change" }],
         partyIdNo: [
-          { required: true, message: "身份证号不能为空", trigger: "blur" },
+          { required: true, validator: validatePart, trigger: "blur" },
           { validator: checkIdNoPassSort, trigger: "blur" }
         ],
         partyTel: [
-          { required: true, message: "联系电话不能为空", trigger: "blur" },
+          { required: true, validator: validatePart, trigger: "blur" },
           { validator: validatePhone, trigger: "blur" },
         ],
         partyAddress: [
-          { required: true, message: "住址不能为空", trigger: "blur" },
+          { required: true, validator: validatePart, trigger: "blur" },
         ],
         partyAge: [
           { validator: validateAge, trigger: "blur" }
         ],
         partyManager: [
-          { required: true, message: "法人不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         partyUnitAddress: [
-          { required: true, message: "单位地址不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         partyUnitTel: [
-          { required: true, message: "单位联系电话不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
           { validator: validatePhone, trigger: "blur" },
         ],
         socialCreditCode: [
-          { required: true, message: "社会信用代码不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         highwayRoute: [
           {required: true, message: "请选择路线", trigger: "change"}
@@ -692,6 +692,7 @@ export const inforCollectionCommonMixins = {
         obj.validateField(field, (validMessage) => {
           if (validMessage !== '' && result === true) {
             result = false
+            console.log('_this.$refs[field]',_this.$refs[field])
             let fields = _this.$refs[field].elForm.fields
             for (let i in fields) {
               if (fields[i].labelFor === field) {

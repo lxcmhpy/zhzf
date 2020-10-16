@@ -46,11 +46,15 @@
             </template>
           </el-table-column>
           <el-table-column prop="checkType" label="类型" align="center"></el-table-column>
-          <el-table-column prop="detectStation" label="检测站" align="center"></el-table-column>
+          <el-table-column prop="firstCheckStation" label="检测站" align="center"></el-table-column>
           <el-table-column prop="totalWeight" label="初检车货总重" align="center" sortable></el-table-column>
           <el-table-column prop="firstCheckTime" label="初检时间" align="center"></el-table-column>
           <el-table-column prop="overRatio" label="初检超载率" align="center" sortable></el-table-column>
-          <el-table-column prop="overRatio2" label="复检超限率" align="center" sortable></el-table-column>
+          <el-table-column prop="overRatio2" label="复检超限率" align="center" sortable>
+             <template slot-scope="scope">
+              {{scope.row.overRatio2&&scope.row.overRatio2!='0%'?scope.row.overRatio2:''}}
+            </template>
+          </el-table-column>
           <el-table-column prop="fileStatus" label="处置状态" align="center">
             <template slot-scope="scope">
               {{scope.row.fileStatus==0?'进行中':'待归档'}}
@@ -170,13 +174,11 @@ export default {
     // 查看模板
     viewRecord(item) {
       this.$router.push({
-        name: "inspection_overWeightForm",
-        params: {
-          isRefresh: true,
-        }
+        name: "inspection_overWeightForm"
       });
       this.$store.commit("set_inspection_fileId", item.id)
       this.$store.commit("set_inspection_OverWeightId", { id: item.id, firstcheckId: item.firstCheckId });
+      this.$store.commit("set_inspection_OverWeightFresh", false);
     },
     // 修改模板
     editModle(item) {
@@ -260,11 +262,9 @@ export default {
         console.log('yanzheng')
         this.$store.commit("set_inspection_OverWeightId", '');
         this.$router.push({
-          name: 'inspection_overWeightForm',
-          params: {
-            isRefresh: true,
-          }
+          name: 'inspection_overWeightForm'
         });
+         this.$store.commit("set_inspection_OverWeightFresh", true);
       }
     },
     getDrawerList(data) {
