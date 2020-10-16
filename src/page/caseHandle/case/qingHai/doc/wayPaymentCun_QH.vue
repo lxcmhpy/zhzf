@@ -11,13 +11,13 @@
             </td>
             <td class="color_DBE4EF">
               <p>姓名：<el-form-item style="width:calc(100% - 56px)" prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
-                  <el-input type="textarea" v-model="docData.party" :disabled="fieldDisabled(propertyFeatures['party'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.party" :disabled="fieldDisabled(propertyFeatures['party'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
             </td>
             <td class="color_DBE4EF">
               <p>地址： <el-form-item style="width:calc(100% - 56px)" prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'])">
-                  <el-input type="textarea" v-model="docData.partyAddress" :disabled="fieldDisabled(propertyFeatures['partyAddress'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.partyAddress" :disabled="fieldDisabled(propertyFeatures['partyAddress'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
             </td>
@@ -25,13 +25,13 @@
           <tr>
             <td class="color_DBE4EF">
               <p>单位名称： <el-form-item style="width:calc(100% - 88px)" prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'])">
-                  <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.partyName" :disabled="fieldDisabled(propertyFeatures['partyName'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
             </td>
             <td class="color_DBE4EF">
               <p>法定代表人： <el-form-item style="width:calc(100% - 104px);" prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'])">
-                  <el-input type="textarea" v-model="docData.partyManager" :disabled="fieldDisabled(propertyFeatures['partyManager'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.partyManager" :disabled="fieldDisabled(propertyFeatures['partyManager'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
             </td>
@@ -39,16 +39,16 @@
           <tr>
             <td class="color_DBE4EF">
               <p>车辆所在地： <el-form-item style="width:calc(100% - 104px);" prop="carLocation" :rules="fieldRules('carLocation',propertyFeatures['carLocation'])">
-                  <el-input type="textarea" v-model="docData.carLocation" :disabled="fieldDisabled(propertyFeatures['carLocation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.carLocation" :disabled="fieldDisabled(propertyFeatures['carLocation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
             </td>
             <td class="color_DBE4EF">
               <p>车型、车牌号：<el-form-item prop="vehicleType" style="width:calc(50% - 60px);" :rules="fieldRules('vehicleType',propertyFeatures['vehicleType'])">
-                  <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.vehicleType" :disabled="fieldDisabled(propertyFeatures['vehicleType'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
                 <el-form-item prop="number" style="width:calc(50% - 60px);" :rules="fieldRules('number',propertyFeatures['number'])">
-                  <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.number" :disabled="fieldDisabled(propertyFeatures['number'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
 
@@ -67,7 +67,7 @@
             </td>
             <td class="color_DBE4EF">
               <p>地点：<el-form-item style="width:calc(100% - 56px)" prop="afdd" v-if="!approval" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
-                  <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
                 </el-form-item>
               </p>
 
@@ -76,7 +76,7 @@
           <tr style="height:80px">
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="caseSituation" :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])">
-                <el-input type="textarea" v-model="docData.caseSituation" :disabled="fieldDisabled(propertyFeatures['caseSituation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="200" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.caseSituation" :disabled="fieldDisabled(propertyFeatures['caseSituation'])" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="200" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -84,9 +84,9 @@
             <td>法律法规依据</td>
             <td colspan="2" class="color_DBE4EF">
               <p>违反了 <el-form-item prop="illegalBasis" :rules="fieldRules('illegalBasis',propertyFeatures['illegalBasis'])">
-                  <el-input type="textarea" v-model="docData.illegalBasis" :disabled="fieldDisabled(propertyFeatures['illegalBasis'])" :autosize="{ minRows: 1, maxRows: 2}" maxlength="50" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.illegalBasis" :disabled="fieldDisabled(propertyFeatures['illegalBasis'])" :autosize="{ minRows: 1, maxRows: 2}" maxlength="50" placeholder="/"></el-input>
                 </el-form-item>第<el-form-item prop="illegalLaw" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
-                  <el-input type="textarea" v-model="docData.illegalLaw" :disabled="fieldDisabled(propertyFeatures['illegalLaw'])" :autosize="{ minRows: 1, maxRows: 2}" maxlength="50" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.illegalLaw" :disabled="fieldDisabled(propertyFeatures['illegalLaw'])" :autosize="{ minRows: 1, maxRows: 2}" maxlength="50" placeholder="/"></el-input>
                 </el-form-item>的规定
               </p>
             </td>
@@ -95,7 +95,7 @@
             <td>赔补偿决定</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="payDecison" :rules="fieldRules('payDecison',propertyFeatures['payDecison'])">
-                <el-input type="textarea" v-model="docData.payDecison" :disabled="fieldDisabled(propertyFeatures['payDecison'])" :autosize="{ minRows: 5, maxRows: 9}" maxlength="500" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.payDecison" :disabled="fieldDisabled(propertyFeatures['payDecison'])" :autosize="{ minRows: 5, maxRows: 9}" maxlength="500" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -106,9 +106,9 @@
                 1.当事人收到本通知书之日起3日内可向本执法单位陈述申辩。逾期则视为当事人放弃其上述权利。
               </p>
               <p> 2.当事人收到本通知书之日起15日内到 <el-form-item prop="bankInfo" :rules="fieldRules('bankInfo',propertyFeatures['bankInfo'])">
-                  <el-input type="textarea" v-model="docData.bankInfo" :disabled="fieldDisabled(propertyFeatures['bankInfo'])" :autosize="{ minRows: 1, maxRows:3}" maxlength="50" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.bankInfo" :disabled="fieldDisabled(propertyFeatures['bankInfo'])" :autosize="{ minRows: 1, maxRows:3}" maxlength="50" placeholder="/"></el-input>
                 </el-form-item>缴纳路产损坏赔偿费。如有疑义，可向<el-form-item prop="payResideParty" :rules="fieldRules('payResideParty',propertyFeatures['payResideParty'])">
-                  <el-input type="textarea" v-model="docData.payResideParty" :disabled="fieldDisabled(propertyFeatures['payResideParty'])" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.payResideParty" :disabled="fieldDisabled(propertyFeatures['payResideParty'])" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" placeholder="/"></el-input>
                 </el-form-item>申请复核 。
               </p>
               <p>
@@ -130,7 +130,7 @@
             <td>备注</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="note" :rules="fieldRules('bankInfo',propertyFeatures['note'])">
-                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 3, maxRows: 3}" maxlength="30" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 3, maxRows: 3}" maxlength="30" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>

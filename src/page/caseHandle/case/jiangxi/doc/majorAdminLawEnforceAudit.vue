@@ -45,7 +45,7 @@
                   v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
                 ></el-input>
               </el-form-item>
@@ -65,7 +65,7 @@
                   v-model="docData.transactor"
                   v-bind:class="{ over_flow:docData.transactor && docData.transactor.length>14?true:false }"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['transactor'])"
                 ></el-input>
               </el-form-item>
@@ -81,7 +81,7 @@
                 <el-input
                   v-model="docData.telephone"
                   maxlength="11"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['telephone'])"
                 ></el-input>
               </el-form-item>
@@ -102,7 +102,7 @@
                   v-bind:class="{ over_flow:docData.closeResult && docData.closeResult.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['closeResult'])"
                 ></el-input>
               </el-form-item>
@@ -295,7 +295,7 @@
                       v-model="docData.secondApproveOpinions"
                       rows="4"
                       maxlength="400"
-                      placeholder="\"
+                      placeholder="/"
                       :disabled="fieldDisabled(propertyFeatures['secondApproveOpinions'])"
                     ></el-input>
                     <span class="overflow_describe_JX" style="padding-bottom:-6px;text-indent:0 !important">有关事项说明及审核结论：</span>

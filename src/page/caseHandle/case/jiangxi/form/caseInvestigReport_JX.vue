@@ -68,7 +68,7 @@
                   v-bind:class="{ over_flow:formData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                 ></el-input>
               </el-form-item>
@@ -85,7 +85,7 @@
                   v-bind:class="{ over_flow:formData.partyIdNo && formData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
               </el-form-item>
@@ -105,7 +105,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -121,7 +121,7 @@
                   v-bind:class="{ over_flow:formData.partyTel && formData.partyTel.length>4?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="11"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                 ></el-input>
               </el-form-item>
@@ -141,7 +141,7 @@
                   v-bind:class="{ over_flow:formData.partyName && formData.partyName.length>25?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="30"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
                 ></el-input>
               </el-form-item>
@@ -161,7 +161,7 @@
                   v-bind:class="{ over_flow:formData.partyUnitAddress && formData.partyUnitAddress.length>25?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="30"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
                 ></el-input>
               </el-form-item>
@@ -180,7 +180,7 @@
                   v-bind:class="{ over_flow:formData.partyUnitTel && formData.partyUnitTel.length>25?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="30"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
                 ></el-input>
               </el-form-item>
@@ -197,7 +197,7 @@
                   v-bind:class="{ over_flow:formData.partyManager && formData.partyManager.length>25?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="30"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
                 ></el-input>
               </el-form-item>
@@ -216,7 +216,7 @@
                   v-bind:class="{ over_flow:formData.socialCreditCode && formData.socialCreditCode.length>25?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="11"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
                 ></el-input>
               </el-form-item>
@@ -239,7 +239,7 @@
                   v-bind:class="{ over_flow:formData.illegalFact && formData.illegalFact.length>30?true:false }"
                   :autosize="{ minRows: 1, maxRows: 10}"
                   maxlength="300"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
                 ></el-input>
               </el-form-item>
