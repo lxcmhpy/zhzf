@@ -232,7 +232,7 @@ export default {
           console.log(res)
           if (res.code == 200) {
             this.recordList = res.data.records
-            this.total = res.data.total
+            this.totalPage = res.data.total
           }
         },
         error => {
