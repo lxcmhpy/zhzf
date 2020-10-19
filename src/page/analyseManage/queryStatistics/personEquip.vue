@@ -10,7 +10,7 @@
             <div class="title_1 title_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="title_2" style="margin-left: 13px">
-            江西执法数据分析研判系统
+            {{ mapTitle }}
           </el-col>
           <el-col
             :span="6"
@@ -111,7 +111,7 @@
 
 <script>
 import echarts from "echarts";
-import {JxMap} from '@/common/js/mapType.js'
+import * as mapTypes from '@/common/js/mapType.js'
 import "echarts/map/js/china.js";
 import "echarts/map/js/province/jiangxi.js";
 import "echarts/map/json/province/jiangxi.json";
@@ -123,9 +123,11 @@ import "echarts/lib/chart/heatmap";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
 import { personEquipApi } from "@/api/analysis/analysisManage.js";
+import axios from "axios";
 export default {
   data() {
     return {
+      mapTitle: '',
       personNum: "",
       equNum: "",
       distributed: [],
@@ -187,7 +189,10 @@ export default {
             that.equipmentTypeXData.push(item.name);
           });
           that.mapData = res.data.mapdata;
-          JxMap(that.mapData,'执法人员')
+          axios.get('/static/json/map/changeMap.json').then(res => {
+            mapTypes[res.data.mapType](that.mapData,'执法人员')
+            this.mapTitle = res.data.mapTitle
+          })
         }
         that.job();
         that.preparedByFun();
@@ -1944,10 +1949,9 @@ export default {
       });
     },
   },
-  mounted() {
+  created() {
     this.getData();
   },
-  created() {},
 };
 </script>
 <style scoped>
