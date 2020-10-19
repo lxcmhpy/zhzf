@@ -110,18 +110,18 @@ export default {
           {
             type: "category",
             data: 
-            // this.value1
-             [
-           "公路路政",
-            "道路运政",
-            "水路运政",
-            "航道行政",
-            "港口行政",
-            "海事行政",
-            "工程质量安全监督",
+            this.value1,
+            //  [
+          //  "公路路政",
+          //   "道路运政",
+          //   "水路运政",
+          //   "航道行政",
+          //   "港口行政",
+          //   "海事行政",
+          //   "工程质量安全监督",
           //   "其他",
           //   "综合执法",
-          ]
+          // ]
           }
         ],
         yAxis: [
@@ -138,15 +138,15 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(42,170,227)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(25,46,94)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           },
           {
             name: this.value3+"年",
@@ -156,19 +156,110 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(25,46,94)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //      var colorList = ["rgb(42,170,227)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           }
         ]
       });
     },
+    //   drawLine() {
+    //   this.chartColumn = echarts.init(document.getElementById("chartColumn"));
+
+    //   this.chartColumn.setOption({
+    //     title: {
+    //       text: this.value3+"年案件罚没款同期对比",
+    //       left: "center"
+    //     },
+    //     tooltip: {
+    //       trigger: "axis",
+    //       axisPointer: {
+    //         // 坐标轴指示器，坐标轴触发有效
+    //         type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+    //       }
+    //     },
+    //     legend: {
+    //       left: "center",
+    //       top: "bottom",
+    //       data: ["2018年", "2019年"]
+    //     },
+    //     grid: {
+    //       left: "3%",
+    //       right: "4%",
+    //       bottom: "15%",
+    //       containLabel: true
+    //     },
+    //     xAxis: [
+    //       {
+    //         type: "category",
+    //         data: 
+    //         // this.value1,
+    //          [
+    //        "公路路政",
+    //         "道路运政",
+    //         "水路运政",
+    //         "航道行政",
+    //         "港口行政",
+    //         "海事行政",
+    //         // "工程质量安全监督",
+    //       //   "其他",
+    //       //   "综合执法",
+    //       ],
+    //       }
+    //     ],
+    //     yAxis: [
+    //       {
+    //         type: "value"
+    //       }
+    //     ],
+    //     series: [
+    //       {
+    //         name: "2018年",
+    //         type: "bar",
+    //         data: 
+    //         // this.value2,
+    //         [1714804, 23473275, 17502999, 0, 35561880, 78252958],
+    //         //设置柱子的宽度
+    //         barWidth: 30,
+    //         //配置样式
+    //         // itemStyle: {
+    //         //   //通常情况下：
+    //         //   normal: {
+    //         //     color: function(params) {
+    //         //       var colorList = ["rgb(25,46,94)"];
+    //         //       return colorList[0];
+    //         //     }
+    //         //   }
+    //         // }
+    //       },
+    //       {
+    //         name: "2019年",
+    //         type: "bar",
+    //         data:
+    //         // this.value4, 
+    //         [968369, 179100, 8203862, 0, 18883066, 28234397],
+    //         //设置柱子的宽度
+    //         barWidth: 30,
+    //         //配置样式
+    //         // itemStyle: {
+    //         //   //通常情况下：
+    //         //   normal: {
+    //         //     color: function(params) {
+    //         //      var colorList = ["rgb(42,170,227)"];
+    //         //       return colorList[0];
+    //         //     }
+    //         //   }
+    //         // }
+    //       }
+    //     ]
+    //   });
+    // },
     //查询-----------------------------------------------------------------------------------------------------   
   search(val) {    
       let data = {
@@ -180,21 +271,22 @@ export default {
          this.value1=[];
          this.value2=[];
          var map={};
-         
+         console.log(res);
        res.forEach(item =>{
           map[item[0]]=item[1];
-          this.value1.push(item[0]);
+          // this.value1.push(item[0]);
           this.value2.push(item[1])
          });
+        
          this.tableData[0].time=val+"年";
-         this.tableData[0].gllz=map["公路路政"]==null?0:map["公路路政"];
-        this.tableData[0].dlyz=map["道路运政"]==null?0:map["道路运政"];
-        this.tableData[0].slyz=map["水路运政"]==null?0:map["水路运政"];
-        this.tableData[0].hdxz=map["航道行政"]==null?0:map["航道行政"];
-        this.tableData[0].gkxz=map["港口行政"]==null?0:map["港口行政"];
-        this.tableData[0].hsxz=map["海事行政"]==null?0:map["海事行政"];
-        this.tableData[0].gczlaqjd=map["工程质量安全监督"]==null?0:map["工程质量安全监督"];
-         console.log(map);
+         this.tableData[0].gllz=map["公路路政"]==undefined?0:map["公路路政"];
+        this.tableData[0].dlyz=map["道路运政"]==undefined?0:map["道路运政"];
+        this.tableData[0].slyz=map["水路运政"]==undefined?0:map["水路运政"];
+        this.tableData[0].hdxz=map["航道行政"]==undefined?0:map["航道行政"];
+        this.tableData[0].gkxz=map["港口行政"]==undefined?0:map["港口行政"];
+        this.tableData[0].hsxz=map["海事行政"]==undefined?0:map["海事行政"];
+        this.tableData[0].gczlaqjd=map["工程质量安全监督"]==undefined?0:map["工程质量安全监督"];
+         
            
                              
             this.drawLine();
@@ -217,17 +309,18 @@ export default {
          
        res.forEach(item =>{
           map[item[0]]=item[1];
-          // this.value1.push(item[0]);
+          this.value1.push(item[0]);
           this.value4.push(item[1])
          });
+          console.log(this.value1);
          this.tableData[1].time=val+"年";
-         this.tableData[1].gllz=map["公路路政"]==null?0:map["公路路政"];
-        this.tableData[1].dlyz=map["道路运政"]==null?0:map["道路运政"];
-        this.tableData[1].slyz=map["水路运政"]==null?0:map["水路运政"];
-        this.tableData[1].hdxz=map["航道行政"]==null?0:map["航道行政"];
-        this.tableData[1].gkxz=map["港口行政"]==null?0:map["港口行政"];
-        this.tableData[1].hsxz=map["海事行政"]==null?0:map["海事行政"];
-        this.tableData[1].gczlaqjd=map["工程质量安全监督"]==null?0:map["工程质量安全监督"];
+         this.tableData[1].gllz=map["公路路政"]==undefined?0:map["公路路政"];
+        this.tableData[1].dlyz=map["道路运政"]==undefined?0:map["道路运政"];
+        this.tableData[1].slyz=map["水路运政"]==undefined?0:map["水路运政"];
+        this.tableData[1].hdxz=map["航道行政"]==undefined?0:map["航道行政"];
+        this.tableData[1].gkxz=map["港口行政"]==undefined?0:map["港口行政"];
+        this.tableData[1].hsxz=map["海事行政"]==undefined?0:map["海事行政"];
+        this.tableData[1].gczlaqjd=map["工程质量安全监督"]==undefined?0:map["工程质量安全监督"];
        
                              
             this.drawLine();
