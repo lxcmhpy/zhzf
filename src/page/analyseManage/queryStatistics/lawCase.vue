@@ -2100,6 +2100,7 @@
 
   .count {
     width: 58px;
+    height: 26px;
     font-size: 22px;
     font-family: DINCond-Bold, DINCond;
     font-weight: bold;
