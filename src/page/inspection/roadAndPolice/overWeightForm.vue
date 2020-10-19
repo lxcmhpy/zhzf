@@ -149,6 +149,7 @@
                 </el-col>
                 <el-col :span="12" class="defualt-click-btn">
                   <el-button type="primary" size="medium" @click="chooseOccupation('个体')" style="margin-left:27px" :plain='carInfo.drivePerson.occupation=="个体"?false:true'>个体</el-button>
+                  <el-button type="primary" size="medium" @click="chooseOccupation('')" :plain='carInfo.drivePerson.occupation==""?false:true'>无</el-button>
                   <!-- <el-button type="primary" size="medium" @click="chooseOccupation('其他')" :plain='carInfo.drivePerson.occupation=="其他"?false:true'>其他</el-button>
                   <el-button type="primary" size="medium" @click="chooseOccupation('不知道')" :plain='carInfo.drivePerson.occupation=="不知道"?false:true'>不知道</el-button> -->
                 </el-col>
@@ -624,7 +625,7 @@ export default {
           lawOfficerId: '',
         },
         firstCheck: {
-          firstCheckTime: new Date(),
+          firstCheckTime: '',
           firstCheckStation: '',
           oddNumber: '',
           vehicleShipType: '',
@@ -801,8 +802,9 @@ export default {
     mapDiag,
     floatBtns,
   },
+  
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId", "openTab", "caseHandle", "inspectionOverWeightId", 'inspectionOverWeightFresh']) },
+  computed: { ...mapGetters(["caseId", "openTab", "caseHandle", "inspectionOverWeightId", 'inspectionOverWeightFresh'])   },
   methods: {
     //选择执法人员
     addLawPerson(item, lawPersonListId, alreadyChooseLawPerson) {
@@ -1430,7 +1432,9 @@ export default {
       this.isCanEdit = true
     },
     firstCheckOverWeight(type) {
+      
       if (this.carInfo.firstCheck.overWeight && this.carInfo.firstCheck.weightLimit) {
+        debugger
         let number = this.carInfo.firstCheck.overWeight / this.carInfo.firstCheck.weightLimit * 100;
         number = String(number).replace(/^(.*\..{4}).*$/, "$1");
         number = Number(number); // number = 12.3321
@@ -1539,6 +1543,7 @@ export default {
         this.carinfoId = this.genID()
         this.carInfo.id = this.carinfoId
         this.setLawPersonCurrentP();
+        this.carInfo.firstCheck.firstCheckTime=new Date();
       }
       this.$store.commit("set_inspection_OverWeightFresh", false);
       if (!this.inspectionOverWeightId.id) {
