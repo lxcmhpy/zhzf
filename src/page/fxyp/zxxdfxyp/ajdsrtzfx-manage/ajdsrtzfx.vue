@@ -11,6 +11,7 @@
                 range-separator="至"
                 start-placeholder="开始月份"
                 end-placeholder="结束月份"
+                 value-format="yyyyMM" @change="select"
               ></el-date-picker>
             </el-form-item>
           </el-form>
@@ -43,7 +44,7 @@
 <script>
 import echarts from "echarts";
 import {
-      getAjdsrtzfx,
+      ajdsrtzfx,ajdsrtzfxAge
     } from '@/api/fxyp.js'
 export default {
   data() {
@@ -63,9 +64,10 @@ export default {
         endTime: "",
         dateArray: ""
       },
-      fr:"",
-      gr:"",
-      isShow: false
+      data1: [],
+      data2: [],
+      data3: [],
+      data4: [],
     };
   },
   methods: {
@@ -92,11 +94,12 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "21-30岁" },
-              { value: 310, name: "31-40岁" },
-              { value: 234, name: "41-50岁" }
-            ],
+            data: this.data1,
+            // [
+            //   { value: 335, name: "21-30岁" },
+            //   { value: 310, name: "31-40岁" },
+            //   { value: 234, name: "41-50岁" }
+            // ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -133,17 +136,18 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: [
-              "21岁",
-              "22岁",
-              "23岁",
-              "24岁",
-              "25岁",
-              "26岁",
-              "27岁",
-              "28岁",
-              "29岁",
-            ],
+            data: this.data2,
+            // [
+            //   "21岁",
+            //   "22岁",
+            //   "23岁",
+            //   "24岁",
+            //   "25岁",
+            //   "26岁",
+            //   "27岁",
+            //   "28岁",
+            //   "29岁",
+            // ],
             axisTick: {
               alignWithLabel: true
             }
@@ -159,7 +163,8 @@ export default {
             name: "",
             type: "bar",
             barWidth: "60%",
-            data: [10, 52, 200, 334, 390, 330, 220, 390, 330,]
+            data: this.data3
+            // [10, 52, 200, 334, 390, 330, 220, 390, 330,]
           }
         ]
       });
@@ -169,28 +174,30 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "案件当事人类型分布",
+          text: "个人案件被处罚人年龄段分布",
           left: "center"
         },
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
-        legend: {
-          left: "center",
-          top: "bottom",
-          data: ["法人", "个人"]
-        },
-        series: [,
+        // legend: {
+        //   left: "center",
+        //   top: "bottom",
+        //   data: ["赔偿金额", "处罚金额", "许可补偿"]
+        // },
+        series: [
           {
             name: "",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: [
-              { value: this.fr, name: "法人" },
-              { value: this.gr, name: "个人" },
-            ],
+            data: this.data4,
+            // [
+            //   { value: 335, name: "21-30岁" },
+            //   { value: 310, name: "31-40岁" },
+            //   { value: 234, name: "41-50岁" }
+            // ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -202,31 +209,89 @@ export default {
         ]
       });
     },
-     searchDraw3() {
+    //查询-----------------------------------------------------------------------------------------------------
+    //年龄
+    search1(start,end) {
       let data = {
-        //  organ: this.logForm.organ,
-        // type: this.logForm.type,
-        // operation: this.logForm.operation,
-        // username: this.logForm.username,
+       start:start,
+       end:end
       };
-      let _this = this
-      // this.$store.dispatch("getAjdsrtzfx", data).then(res => {
-      getAjdsrtzfx(data).then(res => {
-        console.log(res);
-         _this.fr = res[0];
-         _this.gr = res[1];
-         this.drawLine3();
+         var val1=0;
+        var val2=0;
+        var val3=0;
+        var val4=0;
+      ajdsrtzfxAge(data).then(res => {
+        res.forEach(item =>{
+          this.data2.push(item[0]);
+           this.data3.push(item[1]);
+         if(item[0]>0&&item[0]<24){          
+           val1=val1+item[1];          
+         }
+         if(item[0]>25&&item[0]<39){           
+           val2=val2+item[1];            
+         }
+          if(item[0]>40&&item[0]<49){        
+           val3=val3+item[1];  
+         }
+         if(item[0]>50){          
+           val4=val4+item[1];   
+         }
+         
+         });
+         this.data1.push({ value: val1, name: "24岁以下" },);
+         this.data1.push({ value: val2, name: "25-39岁" },);
+         this.data1.push({ value: val3, name: "40-49岁" },);
+         this.data1.push({ value: val4, name: "50岁以上" },);
+         this.drawLine1();
+         this.drawLine2();
       });
       err => {
         console.log(err);
       };
     },
+    //法人
+     search2(start,end) {
+      let data = {
+       start:start,
+       end:end
+      };
+      ajdsrtzfx(data).then(res => {
+        if(res.length!=0){
+          this.data4.push({ value:res[0], name: "法人" });
+          this.data4.push({ value:res[1], name: "个人" });
+         this.drawLine3();
+        }else{
+           this.data4=[{ value:0, name: "法人" },{ value:0, name: "个人" }];
+           this.drawLine3();
+        }
+         
+      });
+      err => {
+        console.log(err);
+      };
+    },
+     select(val){
+      if(val!=null){
+        this.data1=[];
+        this.data2=[];
+        this.data3=[];
+        this.data4=[];
+        this.search1(val[0],val[1]);
+        this.search2(val[0],val[1]);
+      }
+     
+     }
   },
   mounted() {
-    this.searchDraw3();
-    this.drawLine1();
-    this.drawLine2();
-    //this.drawLine3();
+        this.data1=[];
+        this.data2=[];
+        this.data3=[];
+        this.data4=[];
+        this.search1(202001,202012);
+        this.search2(202001,202012);
+        // this.drawLine1();
+        // this.drawLine2();
+        //this.drawLine3();
   },
   created() {
     

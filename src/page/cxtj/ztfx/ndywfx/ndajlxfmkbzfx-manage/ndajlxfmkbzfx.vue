@@ -4,7 +4,7 @@
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
           <el-form-item label="统计年度" prop>
-            <el-date-picker v-model="value3" type="year" placeholder="选择年"></el-date-picker>
+            <el-date-picker v-model="value3" type="year" placeholder="选择年" value-format="yyyy" @change="select"></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
@@ -20,8 +20,8 @@
           <el-table-column prop="gkxz" label="港口行政" align="center"></el-table-column>
           <el-table-column prop="hsxz" label="海事行政" align="center"></el-table-column>
            <el-table-column prop="gczlaqjd" label="工程质量安全监督" align="center"></el-table-column>
-            <el-table-column prop="qt" label="其他" align="center"></el-table-column>
-             <el-table-column prop="zhzf" label="综合执法" align="center"></el-table-column>
+            <!-- <el-table-column prop="qt" label="其他" align="center"></el-table-column>
+             <el-table-column prop="zhzf" label="综合执法" align="center"></el-table-column> -->
         </el-table>
       </div>
     </div>
@@ -31,25 +31,27 @@
 
 <script>
 import echarts from "echarts";
+import {
+      ndajlxfmkbztj,
+    } from '@/api/fxyp.js'
 export default {
   data() {
     return {
-      value3: "",
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
+      value3: "2020",
+      value2: [],
+      value1: [],
+     
       tableData: [{
-        gllz: "20",
-        dlyz: "30",
-        slyz: "40",
-        hdxz: "10",
-        gkxz: "30",
-        hsxz: "20",
-        gczlaqjd:"10",
-        qt:"30",
-        zhzf:"20",
-      },],
+        gllz: "",
+        dlyz: "",
+        slyz: "",
+        hdxz: "",
+        gkxz: "",
+        hsxz: "",
+        gczlaqjd:"",
+        qt:"",
+        zhzf:"",
+      }],
       logForm: {
         organ: "",
         type: "",
@@ -68,7 +70,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "2019年度收缴费用金额及所占比重(万元)",
+          text: this.value3+"年度收缴费用金额及所占比重(万元)",
           left: "center"
         },
         tooltip: {
@@ -78,17 +80,18 @@ export default {
         legend: {
           left: "center",
           top: "bottom",
-          data: [
-           "公路路政",
-            "道路运政",
-            "水路运政",
-            "航道行政",
-            "港口行政",
-            "海事行政",
-            "工程质量安全监督",
-            "其他",
-            "综合执法",
-          ]
+          data:this.value1
+          //  [
+          //  "公路路政",
+          //   "道路运政",
+          //   "水路运政",
+          //   "航道行政",
+          //   "港口行政",
+          //   "海事行政",
+          //   "工程质量安全监督",
+          //   "其他",
+          //   "综合执法",
+          // ]
         },
         series: [
           {
@@ -96,17 +99,18 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "50%"],
-            data: [
-              { value: 20, name: "公路路政" },
-              { value: 30, name: "道路运政" },
-              { value: 40, name: "水路运政" },
-              { value: 10, name: "航道行政" },
-              { value: 30, name: "港口行政" },
-              { value: 20, name: "海事行政" },
-              { value: 10, name: "工程质量安全监督" },
-              { value: 30, name: "其他" },
-              { value: 20, name: "综合执法" },
-            ],
+            data: this.value2,
+            // [
+            //   { value: 20, name: "公路路政" },
+            //   { value: 30, name: "道路运政" },
+            //   { value: 40, name: "水路运政" },
+            //   { value: 10, name: "航道行政" },
+            //   { value: 30, name: "港口行政" },
+            //   { value: 20, name: "海事行政" },
+            //   { value: 10, name: "工程质量安全监督" },
+            //   { value: 30, name: "其他" },
+            //   { value: 20, name: "综合执法" },
+            // ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -118,53 +122,54 @@ export default {
         ]
       });
     },
-
-    //表单筛选
-    getLogList(val) {
-      this.currentPage = val;
+       //查询-----------------------------------------------------------------------------------------------------
+ search(val) {    
       let data = {
-        organ: this.logForm.organ,
-        type: this.logForm.type,
-        operation: this.logForm.operation,
-        username: this.logForm.username,
-        startTime: this.logForm.dateArray ? this.logForm.dateArray[0] : "",
-        endTime: this.logForm.dateArray ? this.logForm.dateArray[1] : "",
-        current: this.currentPage,
-        size: this.pageSize
+       year:val
       };
       let _this = this;
-      this.$store.dispatch("getloglist", data).then(res => {
-        _this.tableData = res.data.records;
-        _this.totalPage = res.data.total;
+    
+      ndajlxfmkbztj(data).then(res => { 
+          this.value1=[];
+         this.value2=[];
+         var map={};
+       res.forEach(item =>{
+          map[item[0]]=item[1];
+          this.value1.push(item[0]);
+          this.value2.push({value:item[1],name:item[0] })
+         });
+         console.log(map);
+        this.tableData[0].gllz=map["公路路政"]==null?0:map["公路路政"];
+        this.tableData[0].dlyz=map["道路运政"]==null?0:map["道路运政"];
+        this.tableData[0].slyz=map["水路运政"]==null?0:map["水路运政"];
+        this.tableData[0].hdxz=map["航道行政"]==null?0:map["航道行政"];
+        this.tableData[0].gkxz=map["港口行政"]==null?0:map["港口行政"];
+        this.tableData[0].hsxz=map["海事行政"]==null?0:map["海事行政"];
+        this.tableData[0].gczlaqjd=map["工程质量安全监督"]==null?0:map["工程质量安全监督"];
+        // this.tableData[0].qt=map["其他"]==null?0:map["其他"];
+        // this.tableData[0].zhzf=map["综合执法"]==null?0:map["综合执法"];
+       
+                             
+            this.drawLine();
+       
       });
       err => {
         console.log(err);
       };
     },
-    //展开
-    showSomeSearch() {
-      this.isShow = !this.isShow;
-    },
-    // 日志重置
-    reset() {
-      this.$refs["logForm"].resetFields();
-      this.getLogList();
-    },
-    //更改每页显示的条数
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.getLogList(1);
-    },
-    //更换页码
-    handleCurrentChange(val) {
-      this.getLogList(val);
-    }
+   select(val){
+     if(val!=null){
+      this.search(val);
+     }
+     
+   }
+   
   },
   mounted() {
-    this.drawLine();
+    this.search(2020);
   },
   created() {
-    // this.getLogList();
+   
   }
 };
 </script>

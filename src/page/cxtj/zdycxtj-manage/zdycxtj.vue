@@ -16,7 +16,7 @@
           <el-col :span="6" style="height:60px;margin-left:50px;margin-top: 35px;" >
               <div class="dptitle_4" >
                   <span class="dpright_font0">涉案本地车辆：</span>
-                  <span class="dpright_font1">2568辆</span>
+                  <span class="dpright_font1">{{bdcl}}辆</span>
               </div>
                
           </el-col>
@@ -76,9 +76,9 @@
                     </el-row>
                       <el-row  >
                              <div style="width:200px" >
-                                 <span class="sl">3829</span>
+                                 <span class="sl">{{ja}}</span>
                                  <span class="dw" style="margin-left:0px;">例/</span>
-                                 <span class="sl2">5283</span>
+                                 <span class="sl2">{{af}}</span>
                                  <span class="dw" style="margin-left:0px;">例</span>
                             </div>                         
                         </el-row>
@@ -133,8 +133,8 @@
                        
                   </el-row>
                   <el-row>
-                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">32682</div></el-col>
-                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">248292</div></el-col>
+                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">{{cfje}}</div></el-col>
+                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">{{zxje}}</div></el-col>
                        
                   </el-row>
                   <el-row>
@@ -166,17 +166,45 @@ import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
 import "../../../../static/css/animate.min.css";
 import {
-      ndajsltbtj
+      ndajsltbtj,ajlx,ajzt,zfjgajsl,fmkx,bdcl,wdcl,afddfb,map
     } from '@/api/fxyp.js'
 export default {
   data() {
     return {
-      ybaj:"4306",
-      cxcz:"9372",
-      cfaj:"769",
-      pbcaj:"9273",
+    //   ybaj:"4306",
+    //   cxcz:"9372",
+    //   cfaj:"769",
+    //   pbcaj:"9273",
+      ybaj:"",
+      cxcz:"",
+      cfaj:"",
+      pbcaj:"",
       data1:[],
       data2:[],
+      ja:"",
+      af:"",
+      jal:"",
+      data3:[],
+      data4:[],
+      cfje:"",
+      zxje:"",
+      bdcl:"",
+      data5:[],
+      data6:[],
+      data7:[],
+      data8:[],
+      datamap:[],
+    //   nc:"",
+    //   jj:"",
+    //   sr:"",
+    //   fz:"",
+    //   yc:"",
+    //   ja:"",
+    //   gz:"",
+    //   jdz:"",
+    //   px:"",
+    //   xy:"",
+    //   yt:"",
     };
   },
   methods:{
@@ -883,49 +911,73 @@ $.getJSON(jiangxi, function(geoJson){
            myChart.setOption(option);
     	},
         // 数据展示            	
-    	data: [{
+        data: 
+        // this.datamap,
+        [{
     		name: '南昌',
-    		value: 10,
+            value: 
+            // this.nc,
+            951,
     		level: 1
     	}, {
     		name: '景德镇',
-    		value: 12,
+            value: 
+            // this.jdz,
+            0,
     		level: 2
     	}, {
     		name: '萍乡',
-    		value: 11,
+            value:
+            //  this.px,
+            0,
     		level: 3
     	}, {
     		name: '赣州',
-    		value: 16,
+            value: 
+            // this.gz,
+            0,
     		level: 2
     	}, {
     		name: '吉安',
-    		value: 12,
+            value: 
+            // this.ja,
+            0,
     		level: 1
     	}, {
     		name: '九江',
-    		value: 12,
+            value: 
+            // this.jj,
+            0,
     		level: 1
     	}, {
     		name: '新余',
-    		value: 12,
+            value: 
+            // this.xy,
+            0,
     		level: 1
     	}, {
     		name: '鹰潭',
-    		value: 12,
+            value: 
+            // this.yt,
+            0,
     		level: 1
     	}, {
     		name: '宜春',
-    		value: 12,
+            value: 
+            // this.yc,
+            0,
     		level: 1
     	}, {
     		name: '抚州',
-    		value: 12,
+            value: 
+            // this.fz,
+            0,
     		level: 1
     	}, {
     		name: '上饶',
-    		value: 12,
+            value: 
+            // this.sr,
+            0,
     		level: 1
     	}]
     });
@@ -1058,8 +1110,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     series: [{
         name: '2018',
         type: 'line',
-        data: [10, 10, 30, 12, 15, 3, 7, 30, 12, 15, 3, 7],
-        // data:this.data1,
+        // data: [10, 10, 30, 12, 15, 3, 7, 30, 12, 15, 3, 7],
+        data:this.data1,
         symbolSize: 1,
         symbol: 'circle',
         smooth: true,
@@ -1089,8 +1141,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     }, {
         name: '2019',
         type: 'line',
-        data: [5, 12, 11, 14, 25, 16, 10, 20, 13, 5, 13, 17],
-        //  data:this.data2,
+        // data: [5, 12, 11, 14, 25, 16, 10, 20, 13, 5, 13, 17],
+         data:this.data2,
         symbolSize: 1,
         symbol: 'circle',
         smooth: true,
@@ -1123,7 +1175,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     },
 drawLeft3() {
       this.chartColumn = echarts.init(document.getElementById("ajzt"));
-     let value = 55.33;
+     let value = this.jal;
+    //  55.33;
       let title = '';
       let int = value.toFixed(2).split('.')[0];
       let float = value.toFixed(2).split('.')[1];
@@ -1271,9 +1324,10 @@ const insetShadowUrl = DOMURL.createObjectURL(svg);
 const dataSet = [
     // ['江西省 交通运输厅', '江西省公路 路政管理总队', '新余高速公路 路政管理支队',
     //  '南昌高速公路 路政管理支队', '高速公路 管理局', '赣州高速公路 路政管理支队', '吉安高速公路 路政管理支队'],
-     ['交通 运输厅', '路政 管理总队', '新余 高速公路',
-     '南昌 高速公路',  '赣州 高速公路', '吉安 高速公路'],
-    [120, 200, 150, 70, 110, 130]
+    //  ['交通 运输厅', '路政 管理总队', '新余 高速公路',
+    //  '南昌 高速公路',  '赣州 高速公路', '吉安 高速公路'],
+    // [120, 200, 150, 70, 110, 130]
+    this.data3,this.data4
 ];
 
       this.chartColumn.setOption({
@@ -1385,7 +1439,8 @@ drawRight1() {
 		right: '8%'
 	},
     xAxis: {
-        data: ['湖南省', '福建省', '云南省', '山东省', '山西省' ],
+        data:this.data5,
+        //  ['湖南省', '福建省', '云南省', '山东省', '山西省' ],
        axisTick: {
 			show: false
 		},
@@ -1470,7 +1525,8 @@ drawRight1() {
 				opacity: 1
 			}
         },
-        data: [123, 60, 25, 18, 12],
+        data: this.data6,
+        // [123, 60, 25, 18, 12],
         z: 10
     }]
       });
@@ -1498,7 +1554,8 @@ drawRight1() {
 				xAxis: [{
 					type: 'category',
 					color: '#59588D',
-					data: ['南昌市', '九江市', '吉安市', '新余市', '萍乡市', '宜春市', '抚州市', '上饶市'],
+                    data: this.data7,
+                    // ['南昌市', '九江市', '吉安市', '新余市', '萍乡市', '宜春市', '抚州市', '上饶市'],
 					axisLabel: {
 						margin: 10,
 						color: '#999',
@@ -1545,7 +1602,8 @@ drawRight1() {
 				}],
 				series: [{
 					type: 'bar',
-					data: [40, 65, 50, 36, 30, 35, 40, 60],
+                    data:this.data8, 
+                    // [40, 65, 50, 36, 30, 35, 40, 60],
 					barWidth: '16px',
 					itemStyle: {
 						normal: {
@@ -1611,13 +1669,14 @@ drawRight1() {
       });
      
     },
+//查询-----------------------------------------------------------------------------------------------------
+//案件类型
  search1(val) {    
       let data = {
        year:2020
       };
       
-      this.$store.dispatch("ndajsllxslbztj", data).then(res => {
-        
+       ajlx(data).then(res => {   
          var map={};
        res.forEach(item =>{
           map[item[0]]=item[1]
@@ -1636,12 +1695,11 @@ drawRight1() {
         console.log(err);
       };
     },
-search2(val) {
+    //2018年案件数量
+    search2(val) {
       let data = {
         year:2018
       };
-      let _this = this;
-    //   this.$store.dispatch("ndajsltbtj", data).then(res => { 
       ndajsltbtj(data).then(res => {   
          var map={};
          res.forEach(item =>{
@@ -1668,6 +1726,7 @@ search2(val) {
         console.log(err);
       };
     },
+      //2019年案件数量
     search3(val) {
       let data = {
         year:2019
@@ -1701,6 +1760,322 @@ search2(val) {
         console.log(err);
       };
     },
+    //案件状态  
+    search4(val) {
+      let data = {
+        year:val
+      };
+     ajzt(data).then(res => {
+         var map={};
+         console.log(res);
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+            this.af=map['案发'];
+            this.ja=map['结案'];
+            this.jal=map['结案']/map['案发'];
+             console.log(this.jal);
+          this.drawLeft3();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    //执法机构案件数量  
+    search5(val) {
+      let data = {
+        year:val
+      };
+     zfjgajsl(data).then(res => {
+        //  var map={};
+         console.log(res);
+         this.data3.push(res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]);
+         this.data4.push(res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]);
+        //  res.forEach(item =>{
+         
+        //     //   map[item[0]]=item[1];       
+        //  });
+            // console.log(map);
+          this.drawCenter2();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//罚没款项
+    search6(val) {
+      let data = {
+        year:val
+      };
+     fmkx(data).then(res => {
+         var map={};
+         console.log(res);
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+            this.cfje=map['处罚金额'];
+            this.zxje="0";
+         
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//本地车辆
+    search7(val) {
+      let data = {
+        year:val
+      };
+     bdcl(data).then(res => {
+         var map={};
+         console.log(res);
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+            this.bdcl=map['赣'];
+            
+         
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//外地车辆
+    search8(val) {
+      let data = {
+        year:val
+      };
+     wdcl(data).then(res => {
+         this.data5.push(res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]);
+         this.data6.push(res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]);
+         this.drawRight1();
+         
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//案发地
+search9(province,start,end) {
+      
+      let data = {
+        province:province,
+        start:start,
+        end:end
+      };
+      
+         afddfb(data).then(res => {
+        console.log(res);
+        var map={};
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+        if(res.length!=0){
+            this.data7.push(province);        
+            this.data8.push(res[0][1]==undefined?0:res[0][1] );
+        }else{       
+            this.data7.push(province);        
+            this.data8.push(0);
+        }
+       this.drawRight2();
+      
+       
+       
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//地图
+searchMap(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+         map(data).then(res => {
+        console.log(res);
+        var map={};
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap.push({
+                    name: '南昌',
+                    value:map['南昌市'],
+                    level: 1
+                });
+               
+            }else{
+                this.datamap.push({
+                    name: '南昌',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['九江市']!=undefined){
+                this.datamap.push({
+                    name: '九江',
+                    value:map['九江市'],
+                    level: 1
+                });
+            }else{
+               this.datamap.push({
+                    name: '九江',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['上饶市']!=undefined){
+                this.datamap.push({
+                    name: '上饶',
+                    value:map['上饶市'],
+                    level: 1
+                });
+            }else{
+                this.datamap.push({
+                    name: '上饶',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap.push({
+                    name: '抚州',
+                    value:map['抚州市'],
+                    level: 1
+                });
+            }else{
+                this.datamap.push({
+                    name: '抚州',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['宜春市']!=undefined){
+               this.datamap.push({
+                    name: '宜春',
+                    value:map['宜春市'],
+                    level: 1
+                });
+            }else{
+               this.datamap.push({
+                    name: '宜春',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap.push({
+                    name: '吉安',
+                    value:map['吉安市'],
+                    level: 1
+                });
+            }else{
+                this.datamap.push({
+                    name: '吉安',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['赣州市']!=undefined){
+                this.datamap.push({
+                    name: '赣州',
+                    value:map['赣州市'],
+                    level: 1
+                });
+            }else{
+                 this.datamap.push({
+                    name: '赣州',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['景德镇市']!=undefined){
+               this.datamap.push({
+                    name: '景德镇',
+                    value:map['景德镇市'],
+                    level: 1
+                });
+            }else{
+               this.datamap.push({
+                    name: '景德镇',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap.push({
+                    name: '萍乡',
+                    value:map['萍乡市'],
+                    level: 1
+                });
+            }else{
+                 this.datamap.push({
+                    name: '萍乡',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['新余市']!=undefined){
+               this.datamap.push({
+                    name: '新余',
+                    value:map['新余市'],
+                    level: 1
+                });
+            }else{
+               this.datamap.push({
+                    name: '新余',
+                    value:0,
+                    level: 1
+                });
+            }
+            if(map['鹰潭市']!=undefined){
+                this.datamap.push({
+                    name: '鹰潭',
+                    value:map['鹰潭市'],
+                    level: 1
+                });
+            }else{
+                this.datamap.push({
+                    name: '鹰潭',
+                    value:0,
+                    level: 1
+                });
+            }
+        }
+        this.map();
+       
+      });
+      err => {
+        console.log(err);
+      };
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     timer() {
         return  setInterval(() => {
           this.font();
@@ -1725,7 +2100,8 @@ search2(val) {
         setTimeout(function(){
             $('#cxcz').removeClass('flipOutX animated infinite');
         }, 5000);
-      }
+      },
+
 
 
    
@@ -1733,22 +2109,38 @@ search2(val) {
    
   },
   mounted() {
-    // this.search1();
-    // this.search2();
-    // this.search3();
-    this.drawLeft2();
-    this.drawLeft3();
-    this.drawCenter2();
-    this.drawRight1();
-    this.drawRight2();
+    this.search1();
+    this.search2();
+    this.search3();
+    this.search4(2020);
+    this.search5(2020);
+    this.search6(2020);
+    this.search7(2020);
+    this.search8(2020);
+    this.search9('南昌市',202001,202012);
+     this.search9('九江市',202001,202012);
+     this.search9('上饶市',202001,202012);
+     this.search9('抚州市',202001,202012);
+     this.search9('宜春市',202001,202012);
+     this.search9('吉安市',202001,202012);
+     this.search9('赣州市',202001,202012);
+     this.search9('景德镇市',202001,202012);
+     this.search9('萍乡市',202001,202012);
+     this.search9('新余市',202001,202012);
+     this.search9('鹰潭市',202001,202012);
+    // this.searchMap(202001,202012);
+    // this.drawLeft2();
+    // this.drawLeft3();
+    // this.drawCenter2();
     this.map();
+    // this.drawRight1();
+    // this.drawRight2();
+    
   },
   created() {
        this.timer();
   },
-//   destroyed() {
-//   clearTimeout(this.timer)
-//     }
+
 };
 </script>
 <style>

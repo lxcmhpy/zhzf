@@ -162,12 +162,11 @@ export default {
       });
     },
 
-    
+   //查询-----------------------------------------------------------------------------------------------------
     search(val) {
       let data = {
         year:val
       };
-      let _this = this;
       ndajsltbtj(data).then(res => {   
       
          var map={};
@@ -188,12 +187,7 @@ export default {
              map2.push(0);
           }
         }
-       
-        
           this.data1=map2; 
-         
-
-          
           this.drawLine();
       });
       err => {
@@ -204,7 +198,6 @@ export default {
       let data = {
         year:val
       };
-      let _this = this;
       ndajsltbtj(data).then(res => {   
     
          var map={};
@@ -235,8 +228,11 @@ export default {
       };
     },
      select(val){
-     this.search(val-1);
-     this.search2(val);
+       if(val!=null){
+         this.search(val-1);
+          this.search2(val);
+       }
+     
    }
   },
   mounted() {
