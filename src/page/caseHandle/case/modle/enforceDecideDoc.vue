@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
    <div class="print_box">
     <div class="print_info" id="enforceDecideDoc-print">
@@ -16,7 +16,7 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-                <!-- <el-input type="textarea" v-model="docData.party"  :maxlength="nameLength" placeholder="\"></el-input> -->
+                <!-- <el-input type="textarea" v-model="docData.party"  :maxlength="nameLength" placeholder="/"></el-input> -->
                 <el-input
                   type="textarea"
                   v-model="docData.party"
@@ -24,7 +24,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
 
@@ -32,7 +32,7 @@
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
-                <!-- <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="/"></el-input> -->
 
                 <el-input
                   type="textarea"
@@ -40,7 +40,7 @@
                   v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
               </el-form-item>
@@ -50,7 +50,7 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
-                <!-- <el-input v-model="docData.partyAddress"  :maxlength="adressLength" placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.partyAddress"  :maxlength="adressLength" placeholder="/"></el-input> -->
 
                 <el-input
                   type="textarea"
@@ -59,20 +59,20 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
-                <!-- <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="/"></el-input> -->
 
                 <el-input
                   v-model="docData.partyTel"
                   :maxLength="maxLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -82,13 +82,13 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
-                <!-- <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="/"></el-input> -->
 
                  <el-input
                   v-model="docData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -97,13 +97,13 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
-                <!-- <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="/"></el-input> -->
 
                  <el-input
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -112,27 +112,27 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel" :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)">
-                <!-- <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="/"></el-input> -->
 
                 <el-input
                   v-model="docData.partyUnitTel"
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
-                <!-- <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="/"></el-input> -->
 
                 <el-input
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -143,13 +143,13 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
-                <!-- <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input> -->
+                <!-- <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="/"></el-input> -->
 
                 <el-input
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -159,7 +159,7 @@
         <p>因你（单位）逾期未履行本机关于
           <span>
             <el-form-item prop="serviceTime" class="pdf_datapick" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
-              <el-date-picker v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['serviceTime'])">
+              <el-date-picker @blur="starttime" v-model="docData.serviceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['serviceTime'])">
               </el-date-picker>
             </el-form-item>
           </span>作出的
@@ -183,7 +183,7 @@
           </span>的规定，本机关将立即于
           <span>
             <el-form-item prop="forceTime" class="pdf_datapick" :rules="fieldRules('forceTime',propertyFeatures['forceTime'])">
-              <el-date-picker v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['forceTime'])">
+              <el-date-picker @blur="starttime" v-model="docData.forceTime" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd" :disabled="fieldDisabled(propertyFeatures['forceTime'])">
               </el-date-picker>
             </el-form-item>
           </span>强制执行：
@@ -204,7 +204,7 @@
                   <el-option v-for="item in reconsiderationOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
-              <!-- <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <!-- <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="/"></el-input> -->
             </el-form-item>
           </span>申请行政复议或者在六个月内依法向<span>
             <el-form-item prop="enforcementOrgan" :rules="fieldRules('enforcementOrgan',propertyFeatures['enforcementOrgan'])">
@@ -212,7 +212,7 @@
                   <el-option v-for="item in enforcementOptions" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
-              <!-- <el-input v-model="docData.enforcementOrgan" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <!-- <el-input v-model="docData.enforcementOrgan" :maxLength='maxLength' placeholder="/"></el-input> -->
             </el-form-item>
           </span>人民法院提起行政诉讼。
         </p>
@@ -220,7 +220,7 @@
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker @blur="starttime" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -389,7 +389,30 @@ export default {
     }
   },
    methods: {
-
+     starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.makeDate = '';
+      }
+      if (Date.parse(this.docData.serviceTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.serviceTime = '';
+      }
+      if (Date.parse(this.docData.forceTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.forceTime = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
      getDocDataByCaseIdAndDocId() {
        this.caseDocDataForm.caseBasicinfoId = this.caseId;

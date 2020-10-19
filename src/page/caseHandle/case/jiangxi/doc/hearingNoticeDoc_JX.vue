@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box">
     <div class="print_info" id="hearingNoticeDoc_print">
@@ -24,7 +24,7 @@
           </span>一案，现定于
           <span>
             <el-form-item style="width:176px" prop="hearingTime" class="pdf_datapick listen_data" :rules="fieldRules('hearingTime',propertyFeatures['hearingTime'])">
-              <el-date-picker v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日HH时" value-format="yyyy-MM-dd HH"
+              <el-date-picker @blur="starttime" v-model="docData.hearingTime" type="datetime" format="yyyy年MM月dd日HH时" value-format="yyyy-MM-dd HH"
                               placeholder="    年  月  日  时" :disabled="fieldDisabled(propertyFeatures['hearingTime'])">
               </el-date-picker>
             </el-form-item>
@@ -110,13 +110,13 @@
         <p class="p_begin">
           联系地址：
           <span>
-            <el-form-item prop="organAddress" style='width:220px' :rules="fieldRules('organAddress',propertyFeatures['organAddress'])">
+            <el-form-item prop="organAddress" style="width:220px" :rules="fieldRules('organAddress',propertyFeatures['organAddress'])">
               <el-input v-model="docData.organAddress" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organAddress'])"></el-input>
             </el-form-item>
           </span>
           邮编：
           <span>
-            <el-form-item prop="organZipCode" style='width:250px' :rules="fieldRules('organZipCode',propertyFeatures['organZipCode'])">
+            <el-form-item prop="organZipCode" style="width:250px" :rules="fieldRules('organZipCode',propertyFeatures['organZipCode'])">
               <el-input v-model="docData.organZipCode" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organZipCode'])"></el-input>
             </el-form-item>
           </span>
@@ -124,13 +124,13 @@
         <p class="p_begin">
           联系人：
           <span>
-            <el-form-item prop="organContactor" style='width:235px' :rules="fieldRules('organContactor',propertyFeatures['organContactor'])">
+            <el-form-item prop="organContactor" style="width:235px" :rules="fieldRules('organContactor',propertyFeatures['organContactor'])">
               <el-input v-model="docData.organContactor" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organContactor'])"></el-input>
             </el-form-item>
           </span>
           联系电话：
           <span>
-            <el-form-item prop="organTel" style='width:220px' :rules="fieldRules('organTel',propertyFeatures['organTel'],validatePhone)">
+            <el-form-item prop="organTel" style="width:220px" :rules="fieldRules('organTel',propertyFeatures['organTel'],validatePhone)">
               <el-input v-model="docData.organTel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organTel'])"></el-input>
             </el-form-item>
           </span>
@@ -139,7 +139,7 @@
         <div class="pdf_seal">
           <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
+            <el-date-picker @blur="starttime" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -270,6 +270,23 @@
       };
     },
     methods: {
+      starttime(){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.makeDate = '';
+        }
+        if (Date.parse((this.docData.hearingTime+":00")) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.hearingTime = '';
+        }
+      },
       //根据案件ID和文书Id获取数据
       getDocDataByCaseIdAndDocId() {
         this.caseDocDataForm.caseBasicinfoId = this.caseId;

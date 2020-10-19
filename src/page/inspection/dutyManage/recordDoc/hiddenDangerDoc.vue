@@ -11,7 +11,15 @@
         <div class="doc_topic">公路安全隐患告知函</div>
         <div
           class="doc_number"
-        >{{ formData.porgName }}大队{{ formData.orgName }}中队函告[{{ formData.yearNo }}]&nbsp;&nbsp;第{{ formData.numberNo }}号</div>
+        >{{ formData.orgName }}函告[
+        <el-form-item prop="yearNo" style="width: 50px;">
+          <el-input v-model="formData.yearNo" placeholder=""></el-input>
+        </el-form-item>
+        ]&nbsp;&nbsp;第
+        <el-form-item prop="numberNo" style="width: 150px;">
+          <el-input v-model="formData.numberNo" placeholder=""></el-input>
+        </el-form-item>
+        号</div>
         <span class="top-split-line"></span>
         <p class="partyBox">
           <span class="width_file">
@@ -21,18 +29,18 @@
           </span>
         </p>
         <p class="t-i-28">
-          <span>
+          <!-- <span>
             <el-form-item prop="porgName" style="width: 260px;">
               <el-input v-model="formData.porgName" placeholder="XXXXXXXXXX"></el-input>
             </el-form-item>
           </span>
-          大队
+          大队 -->
           <span>
             <el-form-item prop="orgName" style="width: 200px;">
-              <el-input v-model="formData.orgName" placeholder="XXXXXXXX"></el-input>
+              <el-input v-model="formData.orgName" placeholder=""></el-input>
             </el-form-item>
           </span>
-          中队于
+          于
           <el-form-item prop="inspectionTime">
             <el-date-picker
               class="date-time-input"
@@ -66,7 +74,7 @@
           鉴于情况严重，影响
           <span>
             <el-form-item prop="influenceInfo" style="width: 280px">
-              <el-input v-model="formData.influenceInfo" placeholder="xxxxxxxxxxxxxxxxxxxxxxx"></el-input>
+              <el-input v-model="formData.influenceInfo" placeholder=""></el-input>
             </el-form-item>
           </span>安全，请贵单位核实后尽快处置。
         </p>
@@ -153,6 +161,7 @@
 </template>
 <script>
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
+import { getCheParameterInfoApi, getOrganInfoApi } from "@/api/supervision";
 import iLocalStroage from "@/common/js/localStroage";
 
 export default {
@@ -169,7 +178,7 @@ export default {
     return {
       formData: {
         yearNo: "",
-        numberNo: "0000",
+        numberNo: "",
         informUnit: "告知单位名称",
         inspectionTime: "",
         afdd: "路段名称",
@@ -219,6 +228,8 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.docFormRef.validate((valid, noPass) => {
           if (valid) {
+            this.formData.pName = this.formData.orgName;
+            this.formData.orgNameTop = this.formData.orgName;
             const reportData = JSON.stringify(this.formData);
             resolve({ code: 200, data: reportData });
           } else {
@@ -235,6 +246,12 @@ export default {
         });
       })
     },
+    getCheParameterInfo() {
+      const params = { codeInfo: 'record_case_doc_code' };
+      getCheParameterInfoApi(params).then(
+        res => this.formData.numberNo = res.data
+      );
+    },
     // 获取当前日期
     getCurrentDay() {
       const date = new Date();
@@ -245,14 +262,31 @@ export default {
       this.formData.yearNo = `${year}`;
       this.formData.accName = this.UserInfo.nickName;
     },
+    getOrganInfo() {
+      getOrganInfoApi().then(
+        res => {
+          const data = {}
+          data.orgName = res.data.orgName  || '';
+          this.formData = Object.assign(data,this.formData);
+        }
+      )
+    }
   },
 
   mounted() {},
   created() {
-    this.caseDocData = JSON.parse(this.caseDocData);
-    this.getCurrentDay();
-    if(Object.keys(this.caseDocData).length > 0){
-      this.formData = this.caseDocData;
+    const caseDocData = JSON.parse(this.caseDocData);
+    if(!caseDocData.numberNo) {
+      this.getCheParameterInfo();
+    }
+    if(!caseDocData.yearNo) {
+      this.getCurrentDay();
+    }
+    if(!caseDocData.porgNameTop && !caseDocData.orgNameTop) {
+      this.getOrganInfo();
+    }
+    if(Object.keys(caseDocData).length > 0){
+      this.formData = Object.assign(caseDocData);
     }
   },
 };
@@ -267,6 +301,9 @@ export default {
         border: 1px solid #dcdfe6;
         margin: 20px 0;
       }
+    .doc_number {
+      line-height: 40px;
+    }
     .partyBox {
       text-indent: 0;
     }

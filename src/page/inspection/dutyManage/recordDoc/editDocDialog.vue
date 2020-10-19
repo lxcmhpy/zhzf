@@ -8,9 +8,9 @@
     class="duty-manage-edit-doc"
   >
     <!-- 公路安全隐患告知函 -->
-    <HiddenDangerDoc ref="hiddenDangerDocRef" v-if="docData.id === '1'" :caseDocData="docData.caseDocData" />
+    <HiddenDangerDoc ref="hiddenDangerDocRef" v-if="docData.type === '1'" :caseDocData="docData.caseDocData" />
     <!-- 路政巡查监督责令整改通知书 -->
-    <InstructRectification ref="instructRectificationRef" v-if="docData.id === '2'" :caseDocData="docData.caseDocData"/>
+    <InstructRectification ref="instructRectificationRef" v-if="docData.type === '2'" :caseDocData="docData.caseDocData"/>
     <div slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
       <el-button type="primary" @click="saveDoc">保 存</el-button>
@@ -20,6 +20,7 @@
 <script>
 import HiddenDangerDoc from './hiddenDangerDoc.vue';
 import InstructRectification from './instructRectification.vue';
+import { createRecordDocPdfApi } from "@/api/supervision";
 
 export default {
   components: { HiddenDangerDoc, InstructRectification },
@@ -44,28 +45,34 @@ export default {
       let refName = '';
       let caseDocTypeId = '';
       let name = '';
-      let id = '';
-      switch(this.docData.id){
+      let id = this.docData.id || null;
+      switch(this.docData.type){
         case '1':
           refName = 'hiddenDangerDocRef';
           caseDocTypeId = '92531b11586dab1eba850aea1c415a4f';
           name = '《公路安全隐患告知函》';
-          id = '1';
           break;
         case '2':
           refName = 'instructRectificationRef';
           caseDocTypeId = '98499c305c6447988343c33d92f0f23c';
           name = '《路政巡查监督责令整改通知书》';
-          id = '2';
           break;
       }
       this.$refs[refName].validateForm().then(res => {
         if(res.code === 200){
-          console.log(res.data);
-          this.$emit("addDoc",{ id, caseDocTypeId, name, caseDocData: res.data });
-          this.closeDialog();
+          const doc = Object.assign(this.docData,{ caseDocTypeId, name, caseDocData: res.data, numberNo: JSON.parse(res.data).numberNo });
+
+          createRecordDocPdfApi(doc).then(
+            res => {
+              doc.caseDocPdfId = res.data.id;
+              doc.caseDocStorageId = res.data.storageId;
+              this.$emit("addDoc", doc);
+              this.closeDialog();
+            },
+            err => {}
+          );
         }else{
-          this.closeDialog();
+          // this.closeDialog();
         }
       });
     },

@@ -30,7 +30,7 @@
                 v-model="reportData.caseName"
                 rows="2"
                 maxlength="100"
-                placeholder="\"
+                placeholder="/"
               ></el-input>
               <span class="overflow_describe begin-space" style="text-indent:0">为查清</span>
               <span class="span_bg span_bg_top">&nbsp;</span>

@@ -71,7 +71,10 @@
     var g_guid;
 
     function LoadPage() {
-      var url = getParam(0);
+      let url = getParam(0);
+      // let host = "http://172.16.170.54:9332/";
+      let host = "http://124.192.215.10:9332/";
+      alert(url);
       var divobj = document.createElement("div");
       divobj.setAttribute("id", "objdiv1");
       var obj = "";
@@ -80,7 +83,7 @@
       document.getElementById('myDiv').appendChild(divobj);
       PDFReader = document.getElementById("PDF");
       //alert(url);
-      PDFReader.OpenFile(2, url, "", ""); //打开网络文档
+      PDFReader.OpenFile(2, host+url, "", ""); //打开网络文档
       //PDFReader.OpenFile(2,"http://172.16.170.54:9332/12,3b11e8faa6","", ""); //打开网络文档
     }
 

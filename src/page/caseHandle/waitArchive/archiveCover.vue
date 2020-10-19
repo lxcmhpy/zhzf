@@ -123,16 +123,20 @@
       </div>
     </el-form>
     <div v-show="showCover=='pdf'" style="margin:0 auto;width:690px">
-        <object >
+        <!-- <object >
             <embed class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
             :src="docSrc" type="application/pdf" internalinstanceid="29">
-        </object>
+        </object> -->
+        <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(docSrc)" frameborder="0" style="width:790px;height:1119px">
+        </iframe>
     </div>
     <div v-show="showCover=='img'" style="margin:0 auto;width:690px">
         <object >
             <img class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
             :src="docSrc" />
         </object>
+        <!-- <iframe :src="'../static/pdf/web/viewer.html?file='+encodeURIComponent(docSrc)" frameborder="0" style="width:690px;height:1150px">
+        </iframe> -->
     </div>
 
     <el-form ref="beikaoForm" :rules="beikaoRules" :model="docData" label-width="145px" v-show="showCover == 'beikao'">
@@ -307,7 +311,6 @@ export default {
       rules: {},
       mlList: [],
       indexPdf: 0,
-      host:'',
       urlList: [],
       caseList: [],
       showCover:'cover', //显示pdf还是封面form
@@ -376,13 +379,13 @@ export default {
   computed: { ...mapGetters(['caseId','clickArchiveCatalogue','archiveCatalogueList']) },
   mixins: [mixinGetCaseApiList],
   methods: {
-    alertPDF(data) {
+    async alertPDF(data) {
       console.log('item',data.item);
       console.log('mulvList',data.mulvList);
 
       if(data.item.name == "卷宗封面"){
         if(data.item.storageId){
-          this.docSrc = this.host + data.item.storageId;
+          this.docSrc = await this.$util.com_getFileStream(data.item.storageId);
           this.showCover = 'pdf';
         }else{
           this.showCover = 'cover';
@@ -392,7 +395,8 @@ export default {
       }
       if(data.item.name == "卷内目录"){
         if(data.item.storageId){
-          this.docSrc = this.host + data.item.storageId;
+          this.docSrc = await this.$util.com_getFileStream(data.item.storageId);
+          
           this.showCover = 'pdf';
         }else{
           this.showCover = 'mulv';
@@ -402,7 +406,8 @@ export default {
       }
       if(data.item.name=='备考表'){
         if(data.item.storageId){
-          this.docSrc = this.host + data.item.storageId;
+          this.docSrc = await this.$util.com_getFileStream(data.item.storageId);
+          
           this.showCover = 'pdf';
         }else{
           this.showCover = 'beikao'
@@ -411,11 +416,13 @@ export default {
       }
       let fileType= this.$util.getFileType(data.item.evName);
       if(fileType == 'image'){ //图片
-         this.docSrc = this.host + data.item.storageId;
+         this.docSrc = await this.$util.com_getFileStream(data.item.storageId);
+         
          this.showCover = 'img';
       }else{
           // if(fileType == 'pdf'){
-            this.docSrc = this.host + data.item.storageId;
+            this.docSrc = await this.$util.com_getFileStream(data.item.storageId);
+            
             this.showCover = 'pdf';
           // }
       }
@@ -509,10 +516,11 @@ export default {
               return a.num - b.num;
             });
             console.log('getByMlCaseId2',res.data)
-
              this.caseList = res.data;
               console.log('this.caseList[0].storageId',this.caseList[0].storageId)
-              this.docSrc = this.host + this.caseList[0].storageId;
+              this.$util.com_getFileStream(this.caseList[0].storageId).then(res => {
+                this.docSrc = res
+              });
               this.nowShowPdfIndex = 0;
               this.archiveSuccess = true;
                this.showCover = 'pdf';
@@ -571,16 +579,17 @@ export default {
       );
     },
     //上下翻页显示pdf
-    showNext(flag){
+    async showNext(flag){
       if(flag == 'last'){
         if(this.nowShowPdfIndex){
           this.nowShowPdfIndex--;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.docSrc = await this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId);   
         }
       }else{
         if(this.nowShowPdfIndex != this.caseList.length-1){
           this.nowShowPdfIndex++;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.docSrc = await this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId);
+          
         }
       }
     },
@@ -620,9 +629,6 @@ export default {
     }
   },
   mounted() {
-    // this.$refs.archiveCatalogueRef.showModal(true);
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
-    // this.getByMlCaseId(this.caseId)
     this.caseLinkDataForm.caseBasicinfoId = this.caseId;
     this.getFlowType();
     this.setFormData();

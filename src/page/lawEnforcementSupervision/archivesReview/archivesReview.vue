@@ -180,6 +180,7 @@ import {getAllOrganApi} from '@/api/system'
 import {queryLawCateByOrganIdApi} from '@/api/caseDeploy'
 import iLocalStroage from "@/common/js/localStroage";
 import { caseSupervisionCommonMixins } from "@/common/js/caseHandle/caseSupervisionCommonMixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -200,6 +201,9 @@ export default {
       },
       allPCStatue:[{value:'',label:'全部'},{value:1,label:'已评查'},{value:0,label:'未评查'}],
     };
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   mixins: [caseSupervisionCommonMixins],
   methods: {
@@ -231,6 +235,9 @@ export default {
         this.$store.commit("setIsLawEnforcementSupervision", true);
         this.$store.commit("setLawEnforcementSupervisionType", 'archivesCaseSupervision');
         sessionStorage.setItem('archivesReviewCaseData',JSON.stringify(row));
+        //防止出现多个案件tab
+        let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+        this.$store.commit("reset_ALLTABS", newOpenTab);
         this.$router.push({
             name: 'lawEnforcementSupervision_archivesReviewResult'
         });

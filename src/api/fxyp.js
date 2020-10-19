@@ -1,8 +1,11 @@
-import  request  from  "@/common/js/request";
-import  {setCancelSource}  from  "@/common/js/cancelToken";
-import  Vue  from  "vue";
+import request from "@/common/js/request";
+import {
+  setCancelSource
+} from "@/common/js/cancelToken";
+import Vue from "vue";
 //分析研判
 export function getFxypApi(data) {
+
     return  request({
       url: "/fxyp/test",
       method:  "post",

@@ -2,7 +2,7 @@
   <div class="height100">
     <div class="handlePart el-form-bottom0">
       <div class="search toggleBox search-mini" style="width:100%">
-        <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'" style="margin:0">
+        <div class="handlePart caseHandleSearchPart" id="searchBox" :class="isShow?'autoHeight':'aaa'" style="margin:0">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
             <el-form-item>
               双随机一公开执法人员库
@@ -20,17 +20,22 @@
                 <el-option label="离岗" value="离岗"></el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="查询范围" prop='selectValue'>
+              <el-select v-model="searchForm.selectValue">
+                <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
           </el-form>
           <div class="search-btns">
             <el-button size="medium" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
             <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="resetSearchData('searchForm')"></el-button>
-            <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+            <el-button size="medium" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShowMethod">
             </el-button>
           </div>
         </div>
       </div>
     </div>
-    <div class="handlePart el-form-bottom0">
+    <div class="handlePart el-form-bottom0" style="height:40px">
       <div class="search" style="width:100%">
         <el-form :inline="true">
           <el-form-item>
@@ -59,7 +64,7 @@
         </el-form>
       </div>
     </div>
-    <div class="tablePart">
+    <div class="tablePart1">
       <el-table :data="tableData" stripe style="width: 100%" height="100%" @selection-change="handleSelectionChange">
         <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
         <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
@@ -311,6 +316,7 @@ export default {
       searchForm: {
         stationStatusName: "",
         personName: '',
+        selectValue: 0
       },
       isShow: false,
       dialogFormVisible: false,
@@ -421,6 +427,7 @@ export default {
         label: "label"
       },
       visiblePopover: false,
+      searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
     }
   },
   methods: {
@@ -434,7 +441,7 @@ export default {
         stationStatusName: this.searchForm.stationStatusName,
         // workStatus: this.searchForm.stationStatusName,
         company: iLocalStroage.gets("userInfo").organName,
-        organId: iLocalStroage.gets("userInfo").organId,
+        organId: this.searchForm.selectValue == 1 ? iLocalStroage.gets("userInfo").organId : '',
         // oName: '固原综合执法支队',
         current: this.currentPage,
         size: this.pageSize,
@@ -587,6 +594,9 @@ export default {
       console.log(node);
       console.log(jq);
     },
+    isShowMethod() {
+      this.isShow = !this.isShow
+    }
   },
   mounted() {
     this.getTableData()
@@ -608,3 +618,18 @@ export default {
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
 <style lang="scss" src="@/assets/css/systemManage.scss"></style>
+<style lang="scss">
+.tablePart1 {
+  height: calc(100% - 170px);
+}
+// @media screen and (max-width: 1798px) {
+//     .tablePart1 {
+//   height: calc(100% - 200px);
+// }
+// }
+@media screen and (max-width: 1798px) {
+    .tablePart1 {
+  height: calc(100% - 245px);
+}
+}
+</style>

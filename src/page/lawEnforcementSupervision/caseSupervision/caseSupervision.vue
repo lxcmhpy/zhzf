@@ -229,6 +229,7 @@ import caseCheckDialog from "./dialog/caseCheckDialog";
 // import elSelectTree from "../../../components/elSelectTree/elSelectTree";
 import caseInfoDia from "@/page/lawEnforcementSupervision/components/caseInfoDia";
 import { caseSupervisionCommonMixins } from "@/common/js/caseHandle/caseSupervisionCommonMixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -268,6 +269,9 @@ export default {
       allStaff: [],
     };
   },
+  computed: {
+        ...mapGetters(["openTab"])
+  },
   components: {
     caseCheckDialog,
     caseInfoDia,
@@ -305,6 +309,9 @@ export default {
       this.$store.commit("setCaseNumber", row.caseNumber);
       this.$store.commit("setIsLawEnforcementSupervision", true);
       this.$store.commit("setLawEnforcementSupervisionType", "caseSupervision");
+       //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
       this.$router.push({
         name: "case_handle_flowChart",
       });

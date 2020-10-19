@@ -191,8 +191,8 @@ export function addCheRecordApi(data){
 //查询记录详情
 export function getCheRecordDetailApi(data) {
   return request({
-     url: "/check/record/updateCheRecord",
-    // url: "/record/updateCheRecord",
+     url: "/check/record/cheRecordDetail",
+    // url: "/record/cheRecordDetail",
     method: "get",
     params: data,
     showloading: true,
@@ -328,12 +328,12 @@ export function saveProessApi(data){
 }
 
 //删除处理情况
-export function deleteProcessApi(ids){
+export function deleteProcessApi(data){
   return request({
     url: "/check/cheProcess/deleteProcess",
     // url: "/cheProcess/deleteProcess",
     method: "post",
-    data: {ids},
+    data: data,
     showloading: true,
     cancelToken: setCancelSource(),
     //baseUrlType:"DUTY_HOST"
@@ -352,11 +352,21 @@ export function getProcessTypeByLevelsApi(levels) {
   })
 }
 
+//查询机构信息
+export function getOrganInfoApi(){
+  return request({
+    url: "/check/cheParameter/getOrganInfo",
+  method: "get",
+  showloading: true,
+  cancelToken: setCancelSource(),
+})
+}
+
 ///流水号
 //添加流水号
 export function getCheParameterInfoApi(data) {
   return request({
-     url: "/check/cheParameter/getCheParameterInfo",
+    url: "/check/cheParameter/getCheParameterInfo",
     method: "get",
     params: data,
     showloading: true,
@@ -399,8 +409,8 @@ export function updateCheParameterInfoApi(data) {
 //导出excel
 export function exportCheRecordApi(ids){
   return request({
-    url: "/check/cheProcessType/levels",
-    // url: "/cheProcessType/levels",
+    url: "/check/record/exportCheRecord",
+    // url: "/record/exportCheRecord",
     method: "post",
     data: {ids},
     responseType:'blob',
@@ -416,6 +426,19 @@ export function getRecordCaseByRecordIdApi(recordId) {
     url: "/check/record/getRecordCaseByRecordId/" + recordId,
     // url: "/record/getRecordCaseByRecordId/" + recordId,
     method: "get",
+    showloading: true,
+    cancelToken: setCancelSource(),
+    // baseUrlType:"DUTY_HOST"
+  })
+}
+
+//生成pdf
+export function createRecordDocPdfApi(doc) {
+  return request({
+    url: "/check/record/createRecordDocPdf",
+    // url: "/record/createRecordDocPdf",
+    method: "post",
+    data: doc,
     showloading: true,
     cancelToken: setCancelSource(),
     // baseUrlType:"DUTY_HOST"

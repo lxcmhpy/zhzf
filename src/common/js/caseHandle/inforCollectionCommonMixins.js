@@ -190,18 +190,36 @@ export const inforCollectionCommonMixins = {
         punishLaw: [
           {required: true, message: "请选择依据", trigger: "change"}
         ],
-        partyAge: [
-          {validator: validateAge, trigger: "blur"}
-        ],
-        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
         partyZipCode: [
           {validator: validateZIP, trigger: "blur"}
         ],
+        provincesAddressArray: [{ required: true, validator: validatePart, trigger: "change" }],
+        partyIdNo: [
+          { required: true, validator: validatePart, trigger: "blur" },
+          { validator: checkIdNoPassSort, trigger: "blur" }
+        ],
         partyTel: [
-          {validator: validatePhone, trigger: "blur"}
+          { required: true, validator: validatePart, trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        partyAddress: [
+          { required: true, validator: validatePart, trigger: "blur" },
+        ],
+        partyAge: [
+          { validator: validateAge, trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, validator: validatePartName, trigger: "blur" },
+        ],
+        partyUnitAddress: [
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         partyUnitTel: [
-          {validator: validatePhone, trigger: "blur"}
+          { required: true, validator: validatePartName, trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        socialCreditCode: [
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         highwayRoute: [
           {required: true, message: "请选择路线", trigger: "change"}
@@ -549,7 +567,7 @@ export const inforCollectionCommonMixins = {
         punishClauseLabel = '处罚依据';
       }
       let data = {
-        caseCauseId: this.inforForm.caseCauseId,
+        // caseCauseId: this.inforForm.caseCauseId,
         caseCauseName: this.inforForm.caseCauseName,
         titleType:titleType,
         illageClauseLabel,
@@ -566,9 +584,9 @@ export const inforCollectionCommonMixins = {
         .then(
           (res) => {
             this.punishList = res.data;
-            if(this.judgFreedomList.length===0){
-              this.initMoneyWhenNotExistStandard();
-            }
+            // if(this.judgFreedomList.length===0){
+            //   this.initMoneyWhenNotExistStandard();
+            // }
           },
           (err) => {}
         );
@@ -674,6 +692,7 @@ export const inforCollectionCommonMixins = {
         obj.validateField(field, (validMessage) => {
           if (validMessage !== '' && result === true) {
             result = false
+            console.log('_this.$refs[field]',_this.$refs[field])
             let fields = _this.$refs[field].elForm.fields
             for (let i in fields) {
               if (fields[i].labelFor === field) {
@@ -1151,36 +1170,35 @@ export const inforCollectionCommonMixins = {
         }
 
       }
-      if (idCard === this.driverOrAgentInfoList[0].zhengjianNumber) {
+      if (idCard === this.driverOrAgentInfoList[index].zhengjianNumber) {
+        let iden = idCard;
+        let val = idCard.length;
+        let sex = null;
+        let myDate = new Date();
+        let month = myDate.getMonth() + 1;
+        let day = myDate.getDate();
+        let age = 0;
+        if (val === 18) {
+          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+          sex = iden.substring(16, 17);
+          if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
 
-      }
-      let iden = idCard;
-      let val = idCard.length;
-      let sex = null;
-      let myDate = new Date();
-      let month = myDate.getMonth() + 1;
-      let day = myDate.getDate();
-      let age = 0;
-      if (val === 18) {
-        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
-        sex = iden.substring(16, 17);
-        if (iden.substring(10, 12) < month || iden.substring(10, 12) == month && iden.substring(12, 14) <= day) age++;
+        }
+        if (val === 15) {
+          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+          sex = iden.substring(13, 14);
+          if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
+        }
 
+        if (sex % 2 === 0) {
+          sex = 1;
+        } else {
+          sex = 0;
+        }
+        ;
+        this.driverOrAgentInfoList[index].age = age;
+        this.driverOrAgentInfoList[index].sex = sex;
       }
-      if (val === 15) {
-        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
-        sex = iden.substring(13, 14);
-        if (iden.substring(8, 10) < month || iden.substring(8, 10) == month && iden.substring(10, 12) <= day) age++;
-      }
-
-      if (sex % 2 === 0) {
-        sex = 1;
-      } else {
-        sex = 0;
-      }
-      ;
-      this.driverOrAgentInfoList[index].age = age;
-      this.driverOrAgentInfoList[index].sex = sex;
     },
     noFue(val) {
       this.inforForm.partyAge = val >= 0 ? val : 0;
@@ -1425,6 +1443,7 @@ export const inforCollectionCommonMixins = {
             console.log(err);
           }
     )},
+
   },
 
   mounted() {
@@ -1449,6 +1468,7 @@ export const inforCollectionCommonMixins = {
     this.inforForm.caseCauseName = someCaseInfo.illageAct;
     this.inforForm.caseCauseNameCopy = someCaseInfo.illageAct;
     this.inforForm.caseCauseId = someCaseInfo.illageActId;
+    this.getPunishList();
     this.inforForm.programType = someCaseInfo.programType;
     this.inforForm.caseType = someCaseInfo.caseType;
     this.inforForm.caseTypeId = someCaseInfo.caseTypeId;

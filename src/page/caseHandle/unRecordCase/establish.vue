@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
-    <el-button type="primary" id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
+    <el-button type="primary" id="editCaseInfoBtn" @click="gotoEditCase" v-if="showEditInfo">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
       <el-form
         :rules="rules"
@@ -45,7 +45,7 @@
                           <el-input
                             v-model="caseSourceText3"
                             :maxLength="maxLength"
-                            placeholder="\"
+                            placeholder="/"
                             disabled
                           ></el-input>
                         </el-form-item>交办的；
@@ -62,7 +62,7 @@
                           <el-input
                             v-model="caseSourceText4"
                             :maxLength="maxLength"
-                            placeholder="\"
+                            placeholder="/"
                             disabled
                           ></el-input>
                         </el-form-item>报请查处的；
@@ -79,7 +79,7 @@
                           <el-input
                             v-model="caseSourceText5"
                             :maxLength="maxLength"
-                            placeholder="\"
+                            placeholder="/"
                             disabled
                           ></el-input>
                         </el-form-item>移送的；
@@ -96,7 +96,7 @@
                           <el-input
                             v-model="caseSourceText6"
                             :maxLength="maxLength"
-                            placeholder="\"
+                            placeholder="/"
                             disabled
                           ></el-input>
                         </el-form-item>
@@ -121,7 +121,7 @@
                   v-bind:class="{ over_flow:formData.caseName.length>14?true:false }"
                   :autosize="{ minRows: 2, maxRows: 3}"
                   maxlength="90"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -173,7 +173,7 @@
                   v-bind:class="{ over_flow:formData.party.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -187,7 +187,7 @@
                 <el-select
                   v-model="formData.partySex"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partySex'])"
-                  placeholder="\"
+                  placeholder="/"
                 >
                   <el-option value="0" label="男"></el-option>
                   <el-option value="1" label="女"></el-option>
@@ -208,7 +208,7 @@
                   v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   maxlength="3"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -227,7 +227,7 @@
                   v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -247,7 +247,7 @@
                   v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -264,7 +264,7 @@
                   v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }"
                   :autosize="{ minRows: 2, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -284,7 +284,7 @@
                   v-bind:class="{ over_flow:formData.partyName.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -304,7 +304,7 @@
                   v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="10"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -323,7 +323,7 @@
                   v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="45"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -340,7 +340,7 @@
                   v-bind:class="{ over_flow:formData.partyUnitTel.length>6?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -359,7 +359,7 @@
                   v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -381,7 +381,7 @@
                   v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 7}"
                   maxlength="500"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -463,7 +463,7 @@
                   v-model="formData.note"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="30"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -633,6 +633,8 @@ export default {
       needDealData: true,
       editCaseInfo: "", //修改案件基本信息需要传的数据
       propertyFeatures: "", //字段属性配置
+      showEditInfo:true, //显示按钮
+
     };
   },
   components: {

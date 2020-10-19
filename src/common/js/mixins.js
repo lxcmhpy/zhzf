@@ -104,6 +104,11 @@ export const mixinGetCaseApiList = {
             console.log(res.data);
             this.caseLinkDataForm.status = res.data.status;
             console.log('this.propertyFeatures', this.propertyFeatures);
+            //立案登记表 暂存状态不显示修改信息按钮
+            if(this.showEditInfo){
+              this.showEditInfo = false;
+            }
+           
             if (this.propertyFeatures != undefined) {
               let data = {
                 caseBasicInfoId: caseId,
@@ -571,7 +576,8 @@ export const mixinGetCaseApiList = {
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
+        
+        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart) && !this.alReadyFinishCoerciveM) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }

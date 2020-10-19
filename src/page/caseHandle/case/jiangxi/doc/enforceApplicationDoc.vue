@@ -105,7 +105,7 @@
           </span>一案，申请人于
           <span>
             <el-form-item prop="serviceTime" class="pdf_datapick" :rules="fieldRules('serviceTime',propertyFeatures['serviceTime'])">
-              <el-date-picker v-model="formData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+              <el-date-picker @blur="starttime" v-model="formData.serviceTime" :disabled="fieldDisabled(propertyFeatures['serviceTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>向被申请人送达了
@@ -116,7 +116,7 @@
           </span>（编号）行政处罚决定书，被申请人未在法定的期限内申请行政复议或提起行政诉讼，又不履行该行政处罚决定书规定的义务。申请人于
           <span>
             <el-form-item prop="serviceTime1" class="pdf_datapick" :rules="fieldRules('serviceTime1',propertyFeatures['serviceTime1'])">
-              <el-date-picker v-model="formData.serviceTime1" :disabled="fieldDisabled(propertyFeatures['serviceTime1'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+              <el-date-picker @blur="starttime" v-model="formData.serviceTime1" :disabled="fieldDisabled(propertyFeatures['serviceTime1'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>向被申请人送达<span>
@@ -126,7 +126,7 @@
           </span>（编号）催告书，责令其在
           <span>
             <el-form-item prop="reformTime" class="pdf_datapick" :rules="fieldRules('reformTime',propertyFeatures['reformTime'])">
-              <el-date-picker v-model="formData.reformTime" :disabled="fieldDisabled(propertyFeatures['reformTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+              <el-date-picker @blur="starttime" v-model="formData.reformTime" :disabled="fieldDisabled(propertyFeatures['reformTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </span>前主动履行规定义务，被申请人逾期仍未履行。
@@ -175,7 +175,8 @@
               type="date"
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
-               value-format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              @blur="starttime"
             ></el-date-picker>
           </el-form-item>
         </div>
@@ -315,6 +316,37 @@ export default {
   },
 
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.formData.lasj)
+      if (Date.parse(this.formData.makeDate) < Date.parse(this.formData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.formData.makeDate = '';
+      }
+      if (Date.parse(this.formData.serviceTime) < Date.parse(this.formData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.formData.serviceTime = '';
+      }
+      if (Date.parse(this.formData.reformTime) < Date.parse(this.formData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.formData.reformTime = '';
+      }
+      if (Date.parse(this.formData.serviceTime1) < Date.parse(this.formData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.formData.serviceTime1 = '';
+      }
+    },
     //加载表单信息
     setFormData() {
       this.caseLinkDataForm.caseBasicinfoId = this.caseId;

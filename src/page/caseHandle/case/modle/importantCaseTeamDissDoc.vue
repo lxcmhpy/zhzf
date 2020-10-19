@@ -191,7 +191,7 @@
         <!-- <div class="overflow_lins_style">
           <div class="overflow_lins_textarea">
             <el-form-item prop="discussionRecord">
-              <el-input class='text_indent10' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="\"></el-input>
+              <el-input class='text_indent10' type='textarea' v-model="docData.discussionRecord" rows="3" maxLength='90' placeholder="/"></el-input>
             </el-form-item>
           </div>
           <span class="span_bg" @click="overFlowEdit">&nbsp;</span>
@@ -284,6 +284,18 @@ export default {
         .replace("日", " ")
         .replace("时", ":")
         .replace("分", "");
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(parseStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.discussionStartTime = "";
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if (Date.parse(parseStartTime) > Date.parse(parseEndTime)) {
         this.$message({
           showClose: true,

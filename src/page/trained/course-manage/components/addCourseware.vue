@@ -208,7 +208,7 @@ export default {
       formData.append("file", this.coursewareFileList[0].raw);
       formData.append("lessonId", this.addCourseForm.lessonId);
       request({
-        url:  "/system/sys/file/uploadCommon",
+        url:  "/person/fileUploadDownHdfs/uploadFileHdfs",
         method:  "POST",
         data: formData,
         contentType: 'multipart/form-data;',
@@ -222,23 +222,18 @@ export default {
         this.inProgress = false;
         this.uploadProgress = 0;
         if(res.code === 200){
-          this.addCourseForm.path = res.data[0].storageId;
+          this.addCourseForm.path = res.data;
           this.addCourseForm.name = this.coursewareFileList[0].name;
-          this.addCourseForm.id = res.data[0].id;
           this.$message({ type: 'success', message: '课件上传成功' });
-        }
-        if(typeof res.data === 'string'){
-          this.$message({ type: 'success', message: res.data });
         }
       }, err => {
         this.inProgress = false;
         this.uploadProgress = 0;
-        this.$message({ type: 'error', message: '文件上传失败!' });
       });
     },
     //提交
     submit() {
-      if(!this.addCourseForm.id){
+      if(!this.addCourseForm.path){
         this.$message({ type: 'info', message: '请上传课件文件' });
         return false;
       }

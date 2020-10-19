@@ -54,6 +54,7 @@
                         type="datetime"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="   年  月  日  时 分 秒"
+                        @blur="starttime(item)"
                       ></el-date-picker>
                     </el-form-item>
                   </span>
@@ -269,6 +270,17 @@ export default {
     };
   },
   methods: {
+    starttime(datas){
+      console.log(datas)
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(datas.pTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '采集时间不得小于立案时间',
+          type: 'warning'
+        });
+        datas.pTime = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
@@ -432,15 +444,20 @@ export default {
           this.imgHeightArr.push(["", ""]);
           this.scalingArr.push([1, 1]);
         }
-        this.changeImgWidHei(item.picSrc1, index, 1);
+        if(item.picSrc1){
+          this.changeImgWidHei(item.picSrc1, index, 1);
+        }
       });
-      this.imgWidthArr[1][1] = 400;
+      if(this.imgWidthArr.length>0){
+        this.imgWidthArr[1][1] = 400;
+      }
     },
     //对图片进行处理
-    changeImgWidHei(storageId, pastePage, picIndex) {
+   async changeImgWidHei(storageId, pastePage, picIndex) {
       //设置临时图片
       let temImg = new Image();
-      temImg.src = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + storageId;
+      let imgSrc = await this.$util.com_getFileStream(storageId);
+      temImg.src = imgSrc;
       let _this = this;
       temImg.onload = function(e) {
         //赋值给图片地址

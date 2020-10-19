@@ -220,6 +220,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import setMajorCaseMoney from "./dialog/setMajorCaseMoney";
 import { getDictListDetailByNameApi } from "@/api/system";
 import { caseSupervisionCommonMixins } from "@/common/js/caseHandle/caseSupervisionCommonMixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -249,6 +250,9 @@ export default {
   },
   components: {
     setMajorCaseMoney,
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   mixins: [caseSupervisionCommonMixins],
   methods: {
@@ -289,6 +293,9 @@ export default {
       this.$store.commit("setCaseId", row.id);
       this.$store.commit("setCaseNumber", row.caseNumber);
       this.$store.commit("setIsLawEnforcementSupervision", true);
+      //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
       this.$store.commit(
         "setLawEnforcementSupervisionType",
         "majorCaseSupervision"

@@ -67,11 +67,12 @@
               </object>
           </div> -->
           <div v-show="showCover=='pdf'">
-            <object>
+            <!-- <object>
               <embed class="print_info" style="padding:0px;width: 790px;margin:0 auto;height:1150px !important"
                      name="plugin" id="plugin"
                      :src="docSrc" type="application/pdf" internalinstanceid="29">
-            </object>
+            </object> -->
+                <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(docSrc)" frameborder="0" style="width:790px;height:1119px"></iframe>
           </div>
           <div style="position:absolute;bottom:150px;right: 20px;width:100px;">
             <!-- <el-button @click="updatePDF1">上一张</el-button><br><br>
@@ -98,7 +99,6 @@ import iLocalStroage from "@/common/js/localStroage";
         caseList: [],
         mlList: [],
         pdfVisible: false,
-        host: "",
         checkedDocId: [],
         indexPdf: 0,
         nowShowPdfIndex: 0,
@@ -161,10 +161,11 @@ import iLocalStroage from "@/common/js/localStroage";
       /**
        * 点击文书名字
        */
-      handleCheckName(data) {
+      async handleCheckName(data) {
         let arr = []
         arr.push(data.storageId)
-        this.docSrc = this.host + arr;
+        this.docSrc = await this.$util.com_getFileStream(data.storageId)
+
         this.nowShowPdfIndex = 0;
         this.indexPdf = 0;
         this.pdfVisible = true
@@ -172,41 +173,30 @@ import iLocalStroage from "@/common/js/localStroage";
         this.showCover = 'pdf';
       },
 
-      routerArchiveCatalogueDetail() {
-        let _thats = this
-        this.docSrc = this.host + this.checkedDocId[0];
+      async routerArchiveCatalogueDetail() {
+        this.docSrc = await this.$util.com_getFileStream(this.checkedDocId[0])
         this.nowShowPdfIndex = 0;
         this.indexPdf = 0;
         this.pdfVisible = true
         this.archiveSuccess = true;
         this.showCover = 'pdf';
       },
-      // routerArchiveCatalogueDetail () {
-      //     debugger
-      //     let _thats = this
-      //     this.checkedDocId.forEach((v)=>{
-      //        debugger
-      //        _thats.mlList.push(this.host + v)
-      //     });
-      //     this.indexPdf = 0;
-      //     this.pdfVisible = true
-      //     console.log('选中的id',this.checkedDocId)
+      
+      // alertPDF(item) {
+      //   let data = {
+      //     caseId: item.caseBasicinfoId,
+      //     docId: item.caseDoctypeId,
+      //   };
+      //   let _that = this
+      //   findByCaseIdAndDocIdApi(data).then(res => {
+      //     _that.mlList = _that.host + res.data[0].storageId;
+
+      //   }, err => {
+      //     console.log(err);
+      //   })
+      //   this.indexPdf = 0;
+      //   this.pdfVisible = true
       // },
-      alertPDF(item) {
-        let data = {
-          caseId: item.caseBasicinfoId,
-          docId: item.caseDoctypeId,
-        };
-        let _that = this
-        findByCaseIdAndDocIdApi(data).then(res => {
-          _that.mlList = _that.host + res.data[0].storageId;
-
-        }, err => {
-          console.log(err);
-        })
-        this.indexPdf = 0;
-        this.pdfVisible = true
-      },
       //显示封面
       showCover() {
         if (this.$route.name != 'case_handle_archiveCover') {
@@ -217,16 +207,16 @@ import iLocalStroage from "@/common/js/localStroage";
         this.$emit('showCoverEmit')
       },
       //上下翻页显示pdf
-      showNext(flag) {
+      async showNext(flag) {
         if (flag == 'last') {
           if (this.nowShowPdfIndex) {
             this.nowShowPdfIndex--;
-            this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
+            this.docSrc = await this.$util.com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
           }
         } else {
           if (this.nowShowPdfIndex != this.checkedDocId.length - 1) {
             this.nowShowPdfIndex++;
-            this.docSrc = this.host + this.checkedDocId[this.nowShowPdfIndex];
+            this.docSrc = await this.$util.com_getFileStream(this.checkedDocId[this.nowShowPdfIndex])
           }
         }
       },
@@ -244,7 +234,6 @@ import iLocalStroage from "@/common/js/localStroage";
       },
     },
     mounted() {
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST
       let class1 = document.getElementsByClassName("documentFormCat");
       let class2 = class1[0].parentNode;
       class2.style.right = '60px';

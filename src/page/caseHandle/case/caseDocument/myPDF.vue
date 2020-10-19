@@ -86,7 +86,7 @@
             console.log('地址1',res);
             //单份文书取一个
             if (res.length == 1) {
-              _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
+              _that.storagePath.push(res[0].storageId)
               this.getFileStream(res[0].storageId)
             }else{
               //多份文书按照docDataId取地址
@@ -94,7 +94,7 @@
                 if (this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId) {
                   console.log('res[i].storageId', res[i].storageId);
                   this.getFileStream(res[i].storageId)
-                  _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
+                  _that.storagePath.push(res[i].storageId)
                   break;
                 }
               }

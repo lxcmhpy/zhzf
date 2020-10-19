@@ -90,11 +90,12 @@ export function exportPersonInfoApi(data){
       method: "get",
       params: data,
       showloading: false,
-      cancelToken: setCancelSource()
+      cancelToken: setCancelSource(),
+     /// baseUrlType:"LOCALADDR"
   })
 }
 
-//导出人员列表
+//导出人员图片
 export function personPictureApi(data){
   return request({
       responseType:'blob',
@@ -102,7 +103,8 @@ export function personPictureApi(data){
       method: "get",
       params: data,
       showloading: false,
-      cancelToken: setCancelSource()
+      cancelToken: setCancelSource(),
+    //  baseUrlType:"LOCALADDR"
   })
 }
 
@@ -957,7 +959,7 @@ export function personEdabled(data){
 // 上传证明材料文件
 export function uploadMaterial(data){
   return  request({
-    url:  "/system/sys/file/uploadCommon",
+    url:  "/case/sys/file/uploadCommon",
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',

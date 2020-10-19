@@ -600,3 +600,15 @@ export function deleteDeviceByIds(data) {
       cancelToken: setCancelSource()
     })
   }
+ //根据机构id查询站点
+export function findDueryFixedSitePage(data) {
+    return request({
+      url: "zfjg/lawDevice/queryFixedSitePage",
+      method: "get",
+      params: data,
+      showloading: true,
+      loadingType:'loadPart',
+      baseUrlType:'CAPTCHA_HOST',
+      cancelToken: setCancelSource()
+    })
+  }

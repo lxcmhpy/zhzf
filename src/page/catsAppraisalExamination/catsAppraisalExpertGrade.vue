@@ -240,18 +240,11 @@ export default {
       )
     },
     viewFile(row) {
-      // this.storagePath =
-      //   iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST +
-      //   row.storageId +
-      //   '?time=' +
-      //   new Date().getTime()
-      // this.pdfVisible = true
-      window.open(
-        iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST +
-          row.storageId +
-          '?time=' +
-          new Date().getTime()
-      )
+      let storagePath1="";
+      this.$util.com_getFileStream(row.storageId).then((res) => {
+        storagePath1 = res;
+      });
+      window.open(storagePath1);
     }
   },
   mounted() {

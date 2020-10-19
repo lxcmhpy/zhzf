@@ -9,7 +9,7 @@
           当事人（个人姓名或单位名称）
           <span>
             <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
-              <el-input v-model="docData.party" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
+              <el-input v-model="docData.party" :maxLength='maxLength' placeholder="/" :disabled="fieldDisabled(propertyFeatures['party'])"></el-input>
             </el-form-item>
           </span>：
         </p>
@@ -20,7 +20,7 @@
               <el-input type="textarea" v-model="docData.caseName" :maxLength='maxLength'
               v-bind:class="{ over_flow:docData.caseName && docData.caseName.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
-              placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
+              placeholder="/" :disabled="fieldDisabled(propertyFeatures['caseName'])"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>
@@ -32,7 +32,7 @@
           </span>依法作出了行政强制执行决定，并向你（单位）送达了《行政强制执行决定书》(案号：
           <span>
             <el-form-item prop="caseNumberCopy" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
-              <el-input v-model="docData.caseNumberCopy" :maxLength='maxLength' placeholder="\" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
+              <el-input v-model="docData.caseNumberCopy" :maxLength='maxLength' placeholder="/" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
             </el-form-item>
           </span>)。
         </p>
@@ -44,7 +44,7 @@
               <el-input type="textarea" v-model="docData.stopReason"
               v-bind:class="{ over_flow:docData.stopReason.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
-              v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
+              v-bind:disabled="disabledOne" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>，根据《中华人民共和国行政强制法》第三十九条第一款的规定，本机关决定自
           <span>
@@ -62,7 +62,7 @@
               <el-input type="textarea" v-model="docData.endReason" v-bind:disabled="disabledTwo"
               v-bind:class="{ over_flow:docData.endReason.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
-              :maxLength='maxLength' placeholder="\"></el-input>
+              :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>，根据《中华人民共和国行政强制法》第四十条的规定，本机关决定终结执行。
         </p>
@@ -73,7 +73,7 @@
               <el-input  type="textarea" v-model="docData.caseName"
               v-bind:class="{ over_flow:docData.caseName.length>14?true:false }"
               :autosize="{ minRows: 1, maxRows: 3}"
-              v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="\"></el-input>
+              v-bind:disabled="disabledThree" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>一案，本机关于
           <span>

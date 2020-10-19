@@ -53,8 +53,8 @@
                 @click.native.prevent
               >
                 <el-option
-                  v-for="item in user.lawOfficerCardsAndId.lawOfficerCards"
-                  :key="item"
+                  v-for="(item,index) in user.lawOfficerCardsAndId.lawOfficerCards"
+                  :key="index"
                   :label="item"
                   :value="item"
                 ></el-option>

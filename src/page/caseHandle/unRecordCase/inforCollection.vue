@@ -2,12 +2,30 @@
   <div id="inforCollectionBox">
     <div class="linkPart">
       <div class="linkPartCon">
-        <a href="#" :class="activeA[0]? 'activeA' :''" @click="jump(1)" id="scrollDiv">案件情况</a>
-        <a href="#" :class="activeA[1]? 'activeA' :''" @click="jump(2)">当事人</a>
-        <a href="#" :class="activeA[2]? 'activeA' :''" @click="jump(3)">车辆信息</a>
-        <a href="#" :class="activeA[3]? 'activeA' :''" v-if="showOverrun" @click="jump(4)">超限信息</a>
+        <a
+          href="#"
+          :class="activeA[0] ? 'activeA' : ''"
+          @click="jump(1)"
+          id="scrollDiv"
+          >案件情况</a
+        >
+        <a href="#" :class="activeA[1] ? 'activeA' : ''" @click="jump(2)"
+          >当事人</a
+        >
+        <a href="#" :class="activeA[2] ? 'activeA' : ''" @click="jump(3)"
+          >车辆信息</a
+        >
+        <a
+          href="#"
+          :class="activeA[3] ? 'activeA' : ''"
+          v-if="showOverrun"
+          @click="jump(4)"
+          >超限信息</a
+        >
         <!-- <a :class="activeA[3]? 'activeA' :''" @click="jump(4)">超限信息</a> -->
-        <a href="#" :class="activeA[4]? 'activeA' :''" @click="jump(5)">违法事实</a>
+        <a href="#" :class="activeA[4] ? 'activeA' : ''" @click="jump(5)"
+          >违法事实</a
+        >
       </div>
     </div>
     <el-form
@@ -59,10 +77,9 @@
                 format="yyyy-MM-dd HH:mm"
                 value-format="yyyy-MM-dd HH:mm"
               ></el-date-picker>
-              <div
-                v-if="dateShow"
-                class="el-form-item__error error-color"
-              >当前案发时间早于受案时间10日以上，若核对无误可忽略本提醒。</div>
+              <div v-if="dateShow" class="el-form-item__error error-color">
+                当前案发时间早于受案时间10日以上，若核对无误可忽略本提醒。
+              </div>
             </el-form-item>
           </div>
           <div class="item">
@@ -80,34 +97,58 @@
         <div>
           <div class="itemOne">
             <el-form-item label="违法行为">
-              <el-input v-model="inforForm.caseCauseName" :disabled="true"></el-input>
+              <el-input
+                v-model="inforForm.caseCauseName"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="item">
             <el-form-item label="程序类型">
-              <el-input v-model="inforForm.programType" :disabled="true"></el-input>
+              <el-input
+                v-model="inforForm.programType"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </div>
           <div class="item">
             <el-form-item label="案件类型">
-              <el-input v-model="inforForm.caseType" :disabled="true"></el-input>
+              <el-input
+                v-model="inforForm.caseType"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </div>
         </div>
-        <div class="afddBox" v-if="inforForm.zfmlId === '1002000100000000' ">
-          <label class="el-form-item__label" style="width: 100px;">案发地点</label>
+        <div class="afddBox" v-if="inforForm.zfmlId === '1002000100000000'">
+          <label class="el-form-item__label" style="width: 100px"
+            >案发地点</label
+          >
           <div class="itemFive2">
             <el-form-item label-width="0" prop="highwayRoute">
-              <el-select ref="highwayRoute" v-model="inforForm.highwayRoute" placeholder="本机构路线编号">
-                <el-option v-for="item in routeList" :key="item" :label="item" :value="item"></el-option>
+              <el-select
+                ref="highwayRoute"
+                v-model="inforForm.highwayRoute"
+                placeholder="本机构路线编号"
+              >
+                <el-option
+                  v-for="item in routeList"
+                  :key="item"
+                  :label="item"
+                  :value="item"
+                ></el-option>
               </el-select>
             </el-form-item>
           </div>
           <div class="itemFive2">
             <el-form-item label-width="20px" prop="direction">
-              <el-select ref="direction" v-model="inforForm.direction" placeholder="方向">
+              <el-select
+                ref="direction"
+                v-model="inforForm.direction"
+                placeholder="方向"
+              >
                 <el-option
                   v-for="item in locationList"
                   :key="item.name"
@@ -119,7 +160,11 @@
           </div>
           <div class="itemFive2">
             <el-form-item label-width="20px" prop="position">
-              <el-select ref="position" v-model="inforForm.position" placeholder="位置">
+              <el-select
+                ref="position"
+                v-model="inforForm.position"
+                placeholder="位置"
+              >
                 <el-option
                   v-for="item in directionList"
                   :key="item.name"
@@ -137,11 +182,19 @@
               size="mini"
               @click="showMap"
               v-if="!hasLatitudeAndLongitude"
-            >请获取坐标</el-button>
-            <el-button type="info" icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
+              >请获取坐标</el-button
+            >
+            <el-button
+              type="info"
+              icon="iconfont law-weizhi"
+              size="mini"
+              disabled
+              v-else
+              >已获取坐标</el-button
+            >
           </div>
         </div>
-        <div v-if="inforForm.zfmlId !== '1002000100000000' ">
+        <div v-if="inforForm.zfmlId !== '1002000100000000'">
           <div class="itemOne">
             <el-form-item label="案发地点">
               <el-input v-model="inforForm.afdd">
@@ -153,8 +206,15 @@
                       size="mini"
                       @click="showMap"
                       v-if="!hasLatitudeAndLongitude"
-                    >请获取坐标</el-button>
-                    <el-button icon="iconfont law-weizhi" size="mini" disabled v-else>已获取坐标</el-button>
+                      >请获取坐标</el-button
+                    >
+                    <el-button
+                      icon="iconfont law-weizhi"
+                      size="mini"
+                      disabled
+                      v-else
+                      >已获取坐标</el-button
+                    >
                   </div>
                 </template>
               </el-input>
@@ -167,11 +227,14 @@
           </div>-->
         </div>
 
-        <div v-if="inforForm.zfmlId === '1002000100000000' ">
+        <div v-if="inforForm.zfmlId === '1002000100000000'">
           <span class="gongLiBox1">K</span>
           <span class="itemFive">
             <el-form-item prop="pileNumber" label-width="0px">
-              <el-input v-model="inforForm.pileNumber" placeholder="公里数"></el-input>
+              <el-input
+                v-model="inforForm.pileNumber"
+                placeholder="公里数"
+              ></el-input>
             </el-form-item>
           </span>
           <span class="gongLiBox2">+</span>
@@ -180,7 +243,7 @@
               <el-input
                 v-model="inforForm.distance"
                 placeholder="米数"
-                style="vertical-align: middle;"
+                style="vertical-align: middle"
               >
                 <template slot="append">m</template>
               </el-input>
@@ -190,7 +253,10 @@
           <span class="gongLiBox3">K</span>
           <span class="itemFive">
             <el-form-item prop="pileNumber2" label-width="0px">
-              <el-input v-model="inforForm.pileNumber2" placeholder="公里数"></el-input>
+              <el-input
+                v-model="inforForm.pileNumber2"
+                placeholder="公里数"
+              ></el-input>
             </el-form-item>
           </span>
           <span class="gongLiBox2">+</span>
@@ -199,7 +265,7 @@
               <el-input
                 v-model="inforForm.distance2"
                 placeholder="米数"
-                style="vertical-align: middle;"
+                style="vertical-align: middle"
               >
                 <template slot="append">m</template>
               </el-input>
@@ -209,7 +275,11 @@
 
         <div>
           <div class="itemOne">
-            <el-form-item label="执法人员" id="lawPersonBox" prop="lawPersonListId">
+            <el-form-item
+              label="执法人员"
+              id="lawPersonBox"
+              prop="lawPersonListId"
+            >
               <!-- <el-input> -->
               <el-select
                 ref="lawPersonListId"
@@ -223,7 +293,7 @@
                   :label="item.lawOfficerName"
                   :value="item.id"
                   placeholder="请添加"
-                  :disabled="currentUserLawId==item.id?true:false"
+                  :disabled="currentUserLawId == item.id ? true : false"
                 ></el-option>
               </el-select>
               <el-button icon="el-icon-plus" @click="addLawPerson"></el-button>
@@ -240,17 +310,24 @@
             <el-form-item label="当事人类型">
               <!-- <el-radio v-model="inforForm.partyType" label="1">个人</el-radio>
               <el-radio v-model="inforForm.partyType" label="2">企业组织</el-radio>-->
-              <el-radio-group v-model="inforForm.partyType" @change="changePartyType">
+              <el-radio-group
+                v-model="inforForm.partyType"
+                @change="changePartyType"
+              >
                 <el-radio :label="1">个人</el-radio>
                 <el-radio :label="2">企业组织</el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson=='1'">
+        <div v-show="partyTypePerson == '1'">
           <div class="item">
             <el-form-item label="姓名" prop="party">
-              <el-input ref="party" @change="changeDriverOrAgentInfo" v-model="inforForm.party"></el-input>
+              <el-input
+                ref="party"
+                @change="changeDriverOrAgentInfo"
+                v-model="inforForm.party"
+              ></el-input>
             </el-form-item>
           </div>
           <div class="item appendSelect">
@@ -277,9 +354,9 @@
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson=='1'">
+        <div v-show="partyTypePerson == '1'">
           <div class="itemThird">
-            <el-form-item label="性别">
+            <el-form-item label="性别" prop="partySex">
               <el-select
                 placeholder="请选择"
                 v-model="inforForm.partySex"
@@ -311,23 +388,30 @@
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson=='1'">
+        <div v-show="partyTypePerson == '1'">
           <div class="itemThird">
-            <el-form-item label="省/市/区">
+            <el-form-item label="省/市/区" prop="provincesAddressArray">
               <el-cascader
                 ref="areaCascader"
                 v-model="inforForm.provincesAddressArray"
                 :options="provincesList"
                 @active-item-change="handleSelect"
-                :props="{ expandTrigger:'hover',label:'name',value:'name'}"
+                :props="{
+                  expandTrigger: 'hover',
+                  label: 'name',
+                  value: 'name',
+                }"
                 filterable
                 @change="handleSelect"
               ></el-cascader>
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="详细地址">
-              <el-input v-model="inforForm.partyAddress" @change="changeDriverOrAgentInfo"></el-input>
+            <el-form-item label="详细地址" prop="partyAddress">
+              <el-input
+                v-model="inforForm.partyAddress"
+                @change="changeDriverOrAgentInfo"
+              ></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
@@ -341,44 +425,56 @@
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson=='1'">
+        <div v-show="partyTypePerson == '1'">
           <div class="itemBig">
             <el-form-item label="工作单位">
-              <el-input v-model="inforForm.partyUnitPosition" @change="changeDriverOrAgentInfo"></el-input>
+              <el-input
+                v-model="inforForm.partyUnitPosition"
+                @change="changeDriverOrAgentInfo"
+              ></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="职务">
-              <el-input v-model="inforForm.occupation" @change="changeDriverOrAgentInfo"></el-input>
+              <el-input
+                v-model="inforForm.occupation"
+                @change="changeDriverOrAgentInfo"
+              ></el-input>
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson=='1'">
+        <div v-show="partyTypePerson == '1'">
           <div class="itemOne">
             <el-form-item label="从业资格证号">
-              <el-input v-model="inforForm.partyEcertId" @change="changeDriverOrAgentInfo"></el-input>
+              <el-input
+                v-model="inforForm.partyEcertId"
+                @change="changeDriverOrAgentInfo"
+              ></el-input>
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson!='1'">
+        <div v-show="partyTypePerson != '1'">
           <div class="itemBig">
             <el-form-item label="单位名称" prop="partyName">
               <el-input
                 ref="partyName"
                 v-model="inforForm.partyName"
-                @input="handleLength(inforForm.partyName,'partyName')"
+                @input="handleLength(inforForm.partyName, 'partyName')"
               ></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
             <el-form-item label="联系电话" prop="partyUnitTel">
-              <el-input ref="partyUnitTel" v-model="inforForm.partyUnitTel"></el-input>
+              <el-input
+                ref="partyUnitTel"
+                v-model="inforForm.partyUnitTel"
+              ></el-input>
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson!='1'">
+        <div v-show="partyTypePerson != '1'">
           <div class="itemSmall">
-            <el-form-item label="统一社会信用代码" class="lable-height18px">
+            <el-form-item label="统一社会信用代码" prop="socialCreditCode" class="lable-height18px">
               <el-input v-model="inforForm.socialCreditCode"></el-input>
             </el-form-item>
           </div>
@@ -388,17 +484,22 @@
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson!='1'">
+        <div v-show="partyTypePerson != '1'">
           <div class="itemSmall">
             <el-form-item label="职务">
               <el-input
                 v-model="inforForm.partyManagerPositions"
-                @input="handleLength(inforForm.partyManagerPositions, 'partyManagerPositions')"
+                @input="
+                  handleLength(
+                    inforForm.partyManagerPositions,
+                    'partyManagerPositions'
+                  )
+                "
               ></el-input>
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="法定代表人">
+            <el-form-item label="法定代表人" prop="partyManager">
               <el-input
                 v-model="inforForm.partyManager"
                 @input="handleLength(inforForm.partyManager, 'partyManager')"
@@ -406,12 +507,14 @@
             </el-form-item>
           </div>
         </div>
-        <div v-show="partyTypePerson!='1'">
+        <div v-show="partyTypePerson != '1'">
           <div class="itemOne">
-            <el-form-item label="地址">
+            <el-form-item label="地址" prop="partyUnitAddress">
               <el-input
                 v-model="inforForm.partyUnitAddress"
-                @input="handleLength(inforForm.partyUnitAddress,'partyUnitAddress')"
+                @input="
+                  handleLength(inforForm.partyUnitAddress, 'partyUnitAddress')
+                "
               ></el-input>
             </el-form-item>
           </div>
@@ -421,10 +524,10 @@
         <p>驾驶人或代理人</p>
         <div
           class="driverOrAgentBox"
-          v-for="(driverOrAgentInfo,index) in driverOrAgentInfoList"
+          v-for="(driverOrAgentInfo, index) in driverOrAgentInfoList"
           :key="index"
         >
-          <div v-show="partyTypePerson=='1'">
+          <div v-show="partyTypePerson == '1'">
             <div>
               <div class="item">
                 <el-form-item label="与当事人关系">
@@ -433,7 +536,9 @@
                     @change="changeRelationWithParty(index)"
                   >
                     <el-option
-                      v-for="item in index === 0?allRelationWithParty:allRelationWithParty_"
+                      v-for="item in index === 0
+                        ? allRelationWithParty
+                        : allRelationWithParty_"
                       :key="item.value"
                       :label="item.label"
                       :value="item.label"
@@ -446,7 +551,7 @@
                 <el-form-item label="与案件关系">
                   <el-select
                     v-model="driverOrAgentInfo.relationWithCase"
-                    :disabled="index==0&&relationWithPartyIsOne[index]"
+                    :disabled="index == 0 && relationWithPartyIsOne[index]"
                   >
                     <el-option
                       v-for="item in allRelationWithCase"
@@ -459,7 +564,7 @@
               </div>
             </div>
           </div>
-          <div v-show="partyTypePerson!='1'">
+          <div v-show="partyTypePerson != '1'">
             <div>
               <div class="item">
                 <el-form-item label="与当事人关系">
@@ -496,7 +601,7 @@
               <el-form-item label="姓名">
                 <el-input
                   v-model="driverOrAgentInfo.name"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                 ></el-input>
               </el-form-item>
             </div>
@@ -509,19 +614,19 @@
                   @input="changePartyIdType2Index = index"
                   @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                   class="input-with-select hasMargintop"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                 >
                   <el-select
                     slot="prepend"
                     v-model="driverOrAgentInfo.zhengjianType"
-                    :disabled="index==0&&relationWithPartyIsOne[index]"
+                    :disabled="index == 0 && relationWithPartyIsOne[index]"
                   >
                     <el-option
                       v-for="item in credentialType"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
-                      :disabled="index==0&&relationWithPartyIsOne[index]"
+                      :disabled="index == 0 && relationWithPartyIsOne[index]"
                     ></el-option>
                   </el-select>
                 </el-input>
@@ -533,7 +638,7 @@
               <el-form-item label="性别">
                 <el-select
                   v-model="driverOrAgentInfo.sex"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                 >
                   <el-option :value="0" label="男"></el-option>
                   <el-option :value="1" label="女"></el-option>
@@ -545,7 +650,7 @@
                 <el-input
                   v-model="driverOrAgentInfo.age"
                   type="number"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                   @change="noFueA(driverOrAgentInfo.age)"
                 ></el-input>
               </el-form-item>
@@ -554,7 +659,7 @@
               <el-form-item label="联系电话">
                 <el-input
                   v-model="driverOrAgentInfo.tel"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                   @blur="blur2($event.target.value)"
                 ></el-input>
               </el-form-item>
@@ -564,14 +669,32 @@
             <div class="itemThird">
               <el-form-item label="省/市/区">
                 <el-cascader
-                  :ref="subAreaCascader+index"
+                  :ref="subAreaCascader + index"
                   v-model="driverOrAgentInfo.provincesAddress"
                   :options="provincesList"
-                  @active-item-change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
-                  :props="{ expandTrigger:'hover',label:'name',value:'name'}"
+                  @active-item-change="
+                    (params) =>
+                      handleSelectDriverOrAgent(
+                        params,
+                        index,
+                        driverOrAgentInfo
+                      )
+                  "
+                  :props="{
+                    expandTrigger: 'hover',
+                    label: 'name',
+                    value: 'name',
+                  }"
                   filterable
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
-                  @change="(params)=>handleSelectDriverOrAgent(params,index,driverOrAgentInfo)"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  @change="
+                    (params) =>
+                      handleSelectDriverOrAgent(
+                        params,
+                        index,
+                        driverOrAgentInfo
+                      )
+                  "
                 ></el-cascader>
               </el-form-item>
             </div>
@@ -579,7 +702,7 @@
               <el-form-item label="详细地址">
                 <el-input
                   v-model="driverOrAgentInfo.adress"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                 ></el-input>
               </el-form-item>
             </div>
@@ -587,7 +710,7 @@
               <el-form-item label="邮编">
                 <el-input
                   v-model="driverOrAgentInfo.adressCode"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                   @blur="blur3($event.target.value)"
                 ></el-input>
               </el-form-item>
@@ -598,7 +721,7 @@
               <el-form-item label="工作单位">
                 <el-input
                   v-model="driverOrAgentInfo.company"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                 ></el-input>
               </el-form-item>
             </div>
@@ -606,7 +729,7 @@
               <el-form-item label="职务">
                 <el-input
                   v-model="driverOrAgentInfo.position"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                 ></el-input>
               </el-form-item>
             </div>
@@ -616,13 +739,16 @@
               <el-form-item label="从业资格证号">
                 <el-input
                   v-model="driverOrAgentInfo.zigeNumber"
-                  :disabled="index==0&&relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && relationWithPartyIsOne[index]"
                 ></el-input>
               </el-form-item>
             </div>
           </div>
           <!-- 分隔线 -->
-          <div class="line" v-if="index<driverOrAgentInfoList.length-1"></div>
+          <div
+            class="line"
+            v-if="index < driverOrAgentInfoList.length - 1"
+          ></div>
         </div>
         <div class="buttonBox">
           <el-button
@@ -630,7 +756,8 @@
             size="medium"
             icon="el-icon-plus"
             @click="addDriverOrAgent"
-          >添加其他人</el-button>
+            >添加其他人</el-button
+          >
         </div>
       </div>
 
@@ -687,7 +814,13 @@
           </div>
         </div>
         <div class="buttonBox" v-if="!showTrailer">
-          <el-button type="primary" size="medium" icon="el-icon-plus" @click="addTrailer">添加挂车数据</el-button>
+          <el-button
+            type="primary"
+            size="medium"
+            icon="el-icon-plus"
+            @click="addTrailer"
+            >添加挂车数据</el-button
+          >
         </div>
         <p v-if="showTrailer">挂车信息</p>
         <div v-if="showTrailer">
@@ -744,7 +877,13 @@
           <el-button type="primary" size="medium" icon="el-icon-plus">添加其他</el-button>
         </div>
       </div>-->
-      <div class="caseFormBac" id="link_4" v-if="showOverrun" ref="link_4" @mousewheel="scrool4">
+      <div
+        class="caseFormBac"
+        id="link_4"
+        v-if="showOverrun"
+        ref="link_4"
+        @mousewheel="scrool4"
+      >
         <p>超限信息</p>
         <div>
           <div class="itemBig">
@@ -793,7 +932,10 @@
         <div>
           <div class="itemBig">
             <el-form-item label="装载物" prop="vehiclefiledThing">
-              <el-input ref="vehiclefiledThing" v-model="inforForm.otherInfo.vehiclefiledThing"></el-input>
+              <el-input
+                ref="vehiclefiledThing"
+                v-model="inforForm.otherInfo.vehiclefiledThing"
+              ></el-input>
             </el-form-item>
           </div>
           <div class="itemSmall">
@@ -863,13 +1005,19 @@
         <div>
           <div class="item">
             <el-form-item label="车货总重" class="is-required">
-              <el-input v-model="inforForm.otherInfo.allWeight" @input="concludeOverWeight">
+              <el-input
+                v-model="inforForm.otherInfo.allWeight"
+                @input="concludeOverWeight"
+              >
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
           </div>
           <div class="item">
-            <el-form-item label="驱动轴" v-show="inforForm.otherInfo.vehicleAxleNumber==6">
+            <el-form-item
+              label="驱动轴"
+              v-show="inforForm.otherInfo.vehicleAxleNumber == 6"
+            >
               <el-radio-group
                 v-model="inforForm.otherInfo.vehiclePowerType"
                 @change="weightLimit"
@@ -884,7 +1032,10 @@
         <div>
           <div class="item">
             <el-form-item label="总质量限值">
-              <el-input v-model="inforForm.otherInfo.weightLimit" @input="concludeOverWeight">
+              <el-input
+                v-model="inforForm.otherInfo.weightLimit"
+                @input="concludeOverWeight"
+              >
                 <template slot="append">吨</template>
               </el-input>
             </el-form-item>
@@ -922,7 +1073,10 @@
           </div>
           <div class="itemThird">
             <el-form-item label="超长">
-              <el-input v-model="inforForm.otherInfo.overLength" placeholder="/">
+              <el-input
+                v-model="inforForm.otherInfo.overLength"
+                placeholder="/"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -984,7 +1138,10 @@
           </div>
           <div class="itemThird">
             <el-form-item label="超高">
-              <el-input v-model="inforForm.otherInfo.overHeight" placeholder="/">
+              <el-input
+                v-model="inforForm.otherInfo.overHeight"
+                placeholder="/"
+              >
                 <template slot="append">米</template>
               </el-input>
             </el-form-item>
@@ -993,7 +1150,10 @@
         <div>
           <div class="item">
             <el-form-item label="检测结果">
-              <el-select placeholder="请选择" v-model="inforForm.otherInfo.checkResult">
+              <el-select
+                placeholder="请选择"
+                v-model="inforForm.otherInfo.checkResult"
+              >
                 <el-option value="超限" label="超限"></el-option>
                 <el-option value="未超限" label="未超限"></el-option>
               </el-select>
@@ -1001,7 +1161,9 @@
           </div>
           <div class="item">
             <el-form-item label="备注">
-              <el-input v-model="inforForm.otherInfo.overLimitRemark"></el-input>
+              <el-input
+                v-model="inforForm.otherInfo.overLimitRemark"
+              ></el-input>
             </el-form-item>
           </div>
         </div>
@@ -1011,15 +1173,26 @@
         <div>
           <div class="itemOne">
             <el-form-item label="违法行为">
-              <el-input v-model="inforForm.caseCauseNameCopy" :disabled="true"></el-input>
+              <el-input
+                v-model="inforForm.caseCauseNameCopy"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </div>
         </div>
         <div>
           <div class="itemOne">
             <el-form-item label="违法条款" prop="illegalLaw">
-              <el-input ref="illegalLaw" v-model="inforForm.illegalLaw" :disabled="true">
-                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
+              <el-input
+                ref="illegalLaw"
+                v-model="inforForm.illegalLaw"
+                :disabled="true"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="showPunishDiag"
+                ></el-button>
               </el-input>
             </el-form-item>
           </div>
@@ -1027,8 +1200,16 @@
         <div>
           <div class="itemOne">
             <el-form-item label="处罚依据" prop="punishLaw">
-              <el-input ref="punishLaw" v-model="inforForm.punishLaw" :disabled="true">
-                <el-button slot="append" icon="el-icon-search" @click="showPunishDiag"></el-button>
+              <el-input
+                ref="punishLaw"
+                v-model="inforForm.punishLaw"
+                :disabled="true"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="showPunishDiag"
+                ></el-button>
               </el-input>
             </el-form-item>
           </div>
@@ -1038,7 +1219,9 @@
             <!-- <el-form-item label="自由裁量标准">
               <el-input v-model="inforForm.discretionId"></el-input>
             </el-form-item>-->
-            <p v-if="judgFreedomList&&judgFreedomList.length!==0">自由裁量标准(违法程度/违法情节/建议处罚)</p>
+            <p v-if="judgFreedomList && judgFreedomList.length !== 0">
+              自由裁量标准(违法程度/违法情节/建议处罚)
+            </p>
             <!-- <ul v-if="judgFreedomList&&judgFreedomList.length!==0">
               <li
                 v-for="(item,index) in judgFreedomList"
@@ -1079,24 +1262,32 @@
                 class="money_group"
                 @change="handleMoneyChange"
                 v-model="radio3"
-                v-if="judgFreedomList&&judgFreedomList.length!==0"
+                v-if="judgFreedomList && judgFreedomList.length !== 0"
               >
                 <el-radio
                   class="money_item"
-                  v-for="(item,index) in judgFreedomList"
+                  v-for="(item, index) in judgFreedomList"
                   :key="index"
                   :label="item.id"
                   border
                 >
-                  <div class="money_name">{{item.drawerName}}</div>
+                  <div class="money_name">{{ item.drawerName }}</div>
                   <div class="money_dist">
-                    <el-tooltip effect="dark" :content="item.wfqj" placement="top">
-                      <span>{{item.wfqj}}</span>
+                    <el-tooltip
+                      effect="dark"
+                      :content="item.wfqj"
+                      placement="top"
+                    >
+                      <span>{{ item.wfqj }}</span>
                     </el-tooltip>
                   </div>
                   <div class="money_count">
-                    <el-tooltip effect="dark" :content="item.jycf" placement="top">
-                      <span>{{item.lawerLimit}}</span>
+                    <el-tooltip
+                      effect="dark"
+                      :content="item.jycf"
+                      placement="top"
+                    >
+                      <span>{{ item.lawerLimit }}</span>
                     </el-tooltip>
                   </div>
                 </el-radio>
@@ -1107,10 +1298,15 @@
         <div>
           <div class="itemOne">
             <el-form-item label="拟处罚金额">
-              <el-input v-model="inforForm.tempPunishAmount" @input="changeTempPunishAmount">
+              <el-input
+                v-model="inforForm.tempPunishAmount"
+                @input="changeTempPunishAmount"
+              >
                 <span slot="append">元</span>
               </el-input>
-              <p style="font-size:12px;color: #FF6600;">{{punishAmountAtention}}</p>
+              <p style="font-size: 12px; color: #ff6600">
+                {{ punishAmountAtention }}
+              </p>
             </el-form-item>
           </div>
         </div>
@@ -1119,28 +1315,41 @@
           icon="el-icon-plus"
           :disabled="disableBtn"
           @click="submitInfo(1)"
-        >提交</el-button>
+          >提交</el-button
+        >
         <el-button
           class="caseSubmitBtn caseSubmitBtn2"
           icon="el-icon-plus"
           :disabled="disableBtn || disableZcBtn"
           @click="stageInfo(0)"
-        >暂存</el-button>
+          >暂存</el-button
+        >
       </div>
     </el-form>
 
-    <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
-    <punishDiag ref="punishDiagRef" @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"></punishDiag>
+    <chooseLawPerson
+      ref="chooseLawPersonRef"
+      @setLawPer="setLawPerson"
+      @userList="getAllUserList"
+    ></chooseLawPerson>
+    <punishDiag
+      ref="punishDiagRef"
+      @setIllegalLawAndPunishLaw="setIllegalLawAndPunishLaw"
+    ></punishDiag>
     <!--快速入口 -->
 
-    <caseSlideMenu fatherCom="inforCollection" :activeIndex="'inforCollect'" @fromSlide="fromSlide"></caseSlideMenu>
+    <caseSlideMenu
+      fatherCom="inforCollection"
+      :activeIndex="'inforCollect'"
+      @fromSlide="fromSlide"
+    ></caseSlideMenu>
     <!-- 置顶 -->
     <el-backtop
       target="#inforCollectionBox"
       :bottom="46"
       :right="0"
       :visibility-height="800"
-      style="width: 58px;height: 58px;"
+      style="width: 58px; height: 58px"
     >
       <div class="back-ball">
         <svg
@@ -1395,11 +1604,35 @@ export default {
         punishLaw: [
           { required: true, message: "请选择处罚依据", trigger: "change" },
         ],
-        partyAge: [{ validator: validateAge, trigger: "blur" }],
-        partyIdNo: [{ validator: checkIdNoPassSort, trigger: "blur" }],
         partyZipCode: [{ validator: validateZIP, trigger: "blur" }],
-        partyTel: [{ validator: validatePhone, trigger: "blur" }],
-        partyUnitTel: [{ validator: validatePhone, trigger: "blur" }],
+        provincesAddressArray: [{ required: true, validator: validatePart, trigger: "change" }],
+        partyIdNo: [
+          { required: true, validator: validatePart, trigger: "blur" },
+          { validator: checkIdNoPassSort, trigger: "blur" }
+        ],
+        partyTel: [
+          { required: true, validator: validatePart, trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        partyAddress: [
+          { required: true, validator: validatePart, trigger: "blur" },
+        ],
+        partyAge: [
+          { validator: validateAge, trigger: "blur" }
+        ],
+        partyManager: [
+          { required: true, validator: validatePartName, trigger: "blur" },
+        ],
+        partyUnitAddress: [
+          { required: true, validator: validatePartName, trigger: "blur" },
+        ],
+        partyUnitTel: [
+          { required: true, validator: validatePartName, trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" },
+        ],
+        socialCreditCode: [
+          { required: true, validator: validatePartName, trigger: "blur" },
+        ],
         highwayRoute: [
           {
             required: true,
@@ -1415,18 +1648,14 @@ export default {
         ],
         distance: [
           { required: true, message: "请输入米数", trigger: "change" },
-          { validator: validateIsNumber, trigger: "change" }
+          { validator: validateIsNumber, trigger: "change" },
         ],
         pileNumber: [
           { required: true, message: "请输入公里数", trigger: "change" },
-          { validator: validateIsNumber, trigger: "change" }
+          { validator: validateIsNumber, trigger: "change" },
         ],
-        pileNumber2: [
-          { validator: validateIsNumber, trigger: "change" }
-        ],
-        distance2: [
-          { validator: validateIsNumber, trigger: "change" }
-        ],
+        pileNumber2: [{ validator: validateIsNumber, trigger: "change" }],
+        distance2: [{ validator: validateIsNumber, trigger: "change" }],
         vehicleShipId: [{ validator: vaildateCardNum, trigger: "blur" }],
         trailerIdNo: [{ validator: vaildateCardNum, trigger: "blur" }],
       },
@@ -1700,7 +1929,6 @@ export default {
     },
     //更改当事人类型
     changePartyType(val) {
-      // debugger
       this.partyTypePerson = val;
       if (val == "1") {
         this.inforForm.partyName = "";
@@ -1777,7 +2005,6 @@ export default {
       let val = this.driverOrAgentInfoList[index].relationWithParty;
       if (val === "同一人") {
         console.log(val);
-        // debugger
         this.driverOrAgentInfoList[index].relationWithCase = "当事人";
         this.driverOrAgentInfoList[index].name = this.inforForm.party;
         this.driverOrAgentInfoList[
@@ -1872,13 +2099,12 @@ export default {
     },
     //获取违法条款、依据数据
     getPunishList() {
-      // debugger
       this.$store
         .dispatch("findLawRegulationsByCauseId", this.inforForm.caseCauseId)
         .then(
           (res) => {
             this.punishList = res.data;
-            if(this.judgFreedomList.length===0){
+            if (this.judgFreedomList.length === 0) {
               this.initMoneyWhenNotExistStandard();
             }
           },
@@ -1992,7 +2218,7 @@ export default {
           this.inforForm.tempPunishAmount = item.lawerLimit;
         }
       });
-      this.changeTempPunishAmount()
+      this.changeTempPunishAmount();
     },
     //计算拟处罚金额上下限数值，分有无自由裁量2种情况
     // 修改拟定金额input值
@@ -2317,7 +2543,6 @@ export default {
       //超限信息
       if (data.otherInfo != "") {
         // this.inforForm.otherInfo = JSON.parse(data.otherInfo);
-        // debugger
         this.$set(this.inforForm, "otherInfo", JSON.parse(data.otherInfo));
       }
       if (data.caseCauseName == "车辆在公路上擅自超限行驶") {
@@ -2667,41 +2892,41 @@ export default {
           return;
         }
       }
-      if (idCard === this.driverOrAgentInfoList[0].zhengjianNumber) {
-      }
-      let iden = idCard;
-      let val = idCard.length;
-      let sex = null;
-      let myDate = new Date();
-      let month = myDate.getMonth() + 1;
-      let day = myDate.getDate();
-      let age = 0;
-      if (val === 18) {
-        age = myDate.getFullYear() - iden.substring(6, 10) - 1;
-        sex = iden.substring(16, 17);
-        if (
-          iden.substring(10, 12) < month ||
-          (iden.substring(10, 12) == month && iden.substring(12, 14) <= day)
-        )
-          age++;
-      }
-      if (val === 15) {
-        age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
-        sex = iden.substring(13, 14);
-        if (
-          iden.substring(8, 10) < month ||
-          (iden.substring(8, 10) == month && iden.substring(10, 12) <= day)
-        )
-          age++;
-      }
+      if (idCard === this.driverOrAgentInfoList[index].zhengjianNumber){
+        let iden = idCard;
+        let val = idCard.length;
+        let sex = null;
+        let myDate = new Date();
+        let month = myDate.getMonth() + 1;
+        let day = myDate.getDate();
+        let age = 0;
+        if (val === 18) {
+          age = myDate.getFullYear() - iden.substring(6, 10) - 1;
+          sex = iden.substring(16, 17);
+          if (
+            iden.substring(10, 12) < month ||
+            (iden.substring(10, 12) == month && iden.substring(12, 14) <= day)
+          )
+            age++;
+        }
+        if (val === 15) {
+          age = myDate.getFullYear() - iden.substring(6, 8) - 1901;
+          sex = iden.substring(13, 14);
+          if (
+            iden.substring(8, 10) < month ||
+            (iden.substring(8, 10) == month && iden.substring(10, 12) <= day)
+          )
+            age++;
+        }
 
-      if (sex % 2 === 0) {
-        sex = 1;
-      } else {
-        sex = 0;
+        if (sex % 2 === 0) {
+          sex = 1;
+        } else {
+          sex = 0;
+        }
+        this.driverOrAgentInfoList[index].age = age;
+        this.driverOrAgentInfoList[index].sex = sex;
       }
-      this.driverOrAgentInfoList[index].age = age;
-      this.driverOrAgentInfoList[index].sex = sex;
     },
     noFue(val) {
       this.inforForm.partyAge = val >= 0 ? val : 0;
@@ -3188,7 +3413,6 @@ export default {
     this.inforForm.caseType = someCaseInfo.caseType;
     this.inforForm.caseTypeId = someCaseInfo.caseTypeId;
     this.inforForm.zfmlId = someCaseInfo.cateId;
-    // debugger
     if (this.inforForm.zfmlId === "1002000100000000") {
       this.afddFlag = true;
     } else {

@@ -59,9 +59,12 @@ export default {
 
     showModal(businessType) {
       this.visible = true;
+      var myDate = new Date();
+        myDate.toLocaleDateString();  
       let data={
         cateId:businessType,
-         current:this.currentPage,
+        startTime:myDate.toLocaleDateString().replaceAll(/\//g,"-"), 
+        current:this.currentPage,
         size:this.pageSize
       }
        getScheduleListApi(data).then(res => {

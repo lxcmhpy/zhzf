@@ -30,6 +30,7 @@
 
 
 <script>
+  import loadScript from "@/common/js/loadScript.js";
 import VueAMap from "vue-amap"
 import {spaceApi} from '@/api/analysis/analysisManage.js'
 import Vue from "vue";
@@ -76,7 +77,7 @@ export default {
     initMap(){
       this.map = new AMap.Map("container", {
         resizeEnable: true,
-        center: [116.191031, 39.988585],
+        center: [115.906044,28.557908],
         zoom: 11,
         mapStyle: 'amap://styles/grey', // 极夜蓝
         //自定义地图样式：https://lbs.amap.com/dev/mapstyle/index
@@ -194,6 +195,9 @@ export default {
   mounted() {
     this.getData(this.date)
   },
+  created() {
+    loadScript('https://webapi.amap.com/maps?v=1.4.15&key="2fab5dfd6958addd56c89e58df8cbb37"').then(() => this.initMap());
+  }
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

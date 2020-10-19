@@ -4,62 +4,16 @@
     :show-close="false" width="30%" class= "detailDialog" :append-to-body="true">
       <div>
         <div style="float: left;width: 45%">
-          <!-- <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          multiple>
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text"><em>点击上传附件</em></div>
-          <div class="el-upload__tip" slot="tip" style="text-align: center">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload> -->
         <el-form ref="form" :model="form">
-          <!-- <img :src="host+form.evPath" width="430px" height="400" align="center"/> -->
-          <img v-if="form.storageId" :src="host+form.storageId"  width="430px" height="400" align="center"/>
-          <img v-if="form.evType =='照片'" :src="host+form.evPath"  width="430px" height="400" align="center"/>
-          <video v-if="form.evType =='音视频'" :src="host+form.evPath" controls="controls" width="400px" height="380">your browser does not support the video tag</video>
+         
+          <!-- <img v-if="form.storageId" :src="host+form.storageId"  width="430px" height="400" align="center"/> -->
+          <img v-if="form.evType =='照片'" :src="form.myFileUrl"  width="430px" height="400" align="center"/>
+          <video v-if="form.evType =='音视频'" :src="form.videoStreamSrc" controls="controls" width="400px" height="380">your browser does not support the video tag</video>
         </el-form>
         </div>
-        <!-- <div style="float: right;width: 55%">
-          <el-form ref="form" :model="form">
-            <el-form-item label="证据类型" prop="evType" label-width="113px">
-              <el-input v-model="form.evType" placeholder="请输入" disabled></el-input>
-            </el-form-item>
-            <el-form-item label="证据名称" prop="evName" label-width="113px">
-              <el-input v-model="form.evName" placeholder="请输入" disabled></el-input>
-            </el-form-item>
-            <el-form-item label="记 录 人" prop="userName" label-width="113px">
-              <el-input v-model="form.userName" placeholder="请输入" disabled></el-input>
-            </el-form-item>
-            <el-form-item label="记录时间" prop="createTime" label-width="113px" >
-              <el-date-picker
-                v-model="form.createTime"
-                type="datetime"
-                placeholder="选择日期时间" style="width: 100%" disabled>
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="取证地点" prop="recordPlace" label-width="113px">
-              <el-input v-model="form.recordPlace" placeholder="请输入" disabled></el-input>
-            </el-form-item>
-            <el-form-item label="状  态" prop="status" label-width="113px">
-              <el-radio-group v-model="form.status">
-                <el-radio :label="0">有效</el-radio>
-                <el-radio :label="1">无效</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="备  注" prop="note" label-width="113px">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
-                placeholder="请输入"
-                v-model="form.note" disabled>
-              </el-input>
-            </el-form-item>
-          </el-form>
-        </div> -->
       </div>
     </el-dialog> 
-    <!-- <evidenceCatalogue @showEvidenceDetail="showEvidenceDetail"></evidenceCatalogue> -->
+   
 </div>
 </template>
 <script>
@@ -68,8 +22,7 @@ export default {
     data(){        
         return{
             visible: false,
-            form:{},
-            host:""
+            form:{}
         }
     },
     methods:{
@@ -87,12 +40,13 @@ export default {
                 createTime: data.createTime,
                 recordPlace: data.recordPlace,
                 status: data.status,
-                note: data.note
+                note: data.note,
+                myFileUrl:data.myFileUrl,
+                videoStreamSrc:data.videoStreamSrc
             };
         },
     },
     mounted(){
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     }
 }
 </script>

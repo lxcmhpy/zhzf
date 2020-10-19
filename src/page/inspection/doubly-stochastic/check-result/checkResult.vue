@@ -14,6 +14,11 @@
               <el-form-item label="检查类型" prop='checkType' v-if="searchForm.taskArea=='省交通运输厅领域'">
                 <el-input v-model="searchForm.checkType"></el-input>
               </el-form-item>
+              <el-form-item label="查询范围" prop='selectValue'>
+                <el-select v-model="searchForm.selectValue">
+                  <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
             </el-form>
             <div class="search-btns">
               <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button> -->
@@ -38,11 +43,12 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+        <el-table :data="tableData" key="table1" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
-          <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
+          <el-table-column prop="matchPerson" label="检查人员" align="center"></el-table-column>
+          <!-- <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column> -->
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
           <el-table-column prop="checkMode" label="抽查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkItem" label="抽查内容" align="center"></el-table-column>
@@ -63,6 +69,7 @@
               {{scope.row.checkResult}}
             </template>
           </el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text" :disabled="!scope.row.objectName">附件管理</el-button>
@@ -72,12 +79,16 @@
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
-          <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
+        <el-table :data="tableData" key="table2" stripe style="width: 100%" height="100%">
+          <!-- <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column> -->
+          <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
-          <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
-          <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column>
-          <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column>
+              <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
+          <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
+          <el-table-column prop="matchPerson" label="检查人员" align="center"></el-table-column>
+          <!-- <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column> -->
+          <!-- <el-table-column prop="checkObject" label="检查对象" align="center"></el-table-column> -->
+          <!-- <el-table-column prop="checkSubject" label="检查主体" align="center"></el-table-column> -->
           <el-table-column prop="checkMode" label="检查方式" align="center"></el-table-column><!-- 显示模板标题 -->
           <el-table-column prop="checkBasis" label="抽查依据" align="center"></el-table-column>
           <el-table-column label="任务周期" align="center">
@@ -96,6 +107,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="checkResult" label="检查结果" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center">
+          </el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text" :disabled="!scope.row.objectName">附件管理</el-button>
@@ -235,7 +248,9 @@ export default {
       searchForm: {
         checkSubject: "",
         taskName: '',
-        taskArea: '省交通运输厅领域'
+        checkType: '',
+        taskArea: '省交通运输厅领域',
+        selectValue: 0,
       },
       isShow: false,
       addForm: {
@@ -293,7 +308,8 @@ export default {
       fileList: [],
       pdfVisible: false,
       pdfUrl: '',
-      currentData: ''
+      currentData: '',
+      searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
     }
   },
   methods: {
@@ -304,7 +320,8 @@ export default {
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.checkType,
         taskArea: this.searchForm.taskArea,
-        organName : iLocalStroage.gets("userInfo").organName,//机构名称
+        organName: iLocalStroage.gets("userInfo").organName,//机构名称
+        organId: this.searchForm.selectValue == 1 ? iLocalStroage.gets("userInfo").organId : '',
         current: this.currentPage,
         size: this.pageSize,
       };

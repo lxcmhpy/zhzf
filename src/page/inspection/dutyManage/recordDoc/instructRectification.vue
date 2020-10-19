@@ -9,7 +9,20 @@
         :model="formData"
       >
         <div class="doc_topic">路政巡查监督责令整改通知书</div>
-        <div class="doc_number">{{ formData.tempNo }}号</div>
+        <div
+          class="doc_number"
+        >
+        {{formData.orgName}}
+        函告[
+        <el-form-item prop="yearNo"  style="width: 50px;">
+          <el-input v-model="formData.yearNo"></el-input>
+        </el-form-item>
+        ]&nbsp;&nbsp;第
+        <el-form-item prop="numberNo"  style="width: 150px;">
+          <el-input v-model="formData.numberNo" placeholder="XXXX"></el-input>
+        </el-form-item>
+        号</div>
+        <span class="top-split-line"></span>
         <p class="partyBox">
           <span class="width_file">
             <el-form-item prop="companyName">
@@ -146,6 +159,7 @@
 <script>
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
+import { getCheParameterInfoApi, getOrganInfoApi } from "@/api/supervision";
 
 export default {
   props: {
@@ -166,11 +180,12 @@ export default {
     };
     return {
       formData: {
-        tempNo: "整改001",
-        companyName: "责令某单位",
-        orgName: "机构名称",
+        // tempNo: "整改001",
+        numberNo: "",
+        companyName: "",
+        orgName: "",
         inspectionTime: "",
-        afdd: "路段名称",
+        afdd: "",
         contextInfo: "问题内容",
         days: 15,
         endTime: "",
@@ -217,6 +232,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.docFormRef.validate((valid, noPass) => {
           if (valid) {
+            this.formData.pName = this.formData.orgName;
             const reportData = JSON.stringify(this.formData);
             resolve({ code: 200, data: reportData });
           } else {
@@ -241,15 +257,39 @@ export default {
       const day = date.getDate();
       this.formData.createTime = `${year}-${month}-${day}`;
       this.formData.monitorUnit = this.UserInfo.orgName;
+      this.formData.yearNo = `${year}`;
     },
+    getCheParameterInfo() {
+      const params = { codeInfo: 'record_case_doc_code' };
+      getCheParameterInfoApi(params).then(
+        res => this.formData.numberNo = res.data
+      );
+    },
+    getOrganInfo() {
+      getOrganInfoApi().then(
+        res => {
+          const data = {};
+          data.orgName = res.data.orgName;
+          this.formData = Object.assign(data,this.formData);
+        }
+      )
+    }
   },
 
   mounted() {},
   created() {
-    this.getCurrentDay();
-    this.caseDocData = JSON.parse(this.caseDocData);
-    if(Object.keys(this.caseDocData).length > 0){
-      this.formData = this.caseDocData;
+    const caseDocData = JSON.parse(this.caseDocData);
+    if(!caseDocData.yearNo) {
+      this.getCurrentDay();
+    }
+    if(!caseDocData.numberNo) {
+      this.getCheParameterInfo();
+    }
+    if(!caseDocData.orgName && !caseDocData.porgName) {
+      this.getOrganInfo();
+    }
+    if(Object.keys(caseDocData).length > 0){
+      this.formData = Object.assign(caseDocData);
     }
   },
 };
@@ -259,6 +299,15 @@ export default {
 .instruct-notice {
   #instructNoticePanel {
     margin-top: 10px;
+    .top-split-line{
+        display: block;
+        border: 1px solid #dcdfe6;
+        margin: 20px 0;
+      }
+    
+    .doc_number {
+      line-height: 40px;
+    }
     .partyBox {
       text-indent: 0;
     }
