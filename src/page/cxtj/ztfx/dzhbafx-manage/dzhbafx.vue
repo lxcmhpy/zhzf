@@ -10,6 +10,8 @@
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              value-format="yyyyMM" @change="select"
+              style="width:400px"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -227,67 +229,78 @@ export default {
         ]
       });
     },
-    search1(val) {
-      this.currentPage = val;
+   //查询-----------------------------------------------------------------------------------------------------    
+    search1(start,end) {
+    
       let data = {
-        // year:2018
+        start:start,
+       end:end
       };
       let _this = this;
       // this.$store.dispatch("dzhbafx", data).then(res => {
      dzhbafx(data).then(res => {
-        console.log(res);
-         var map={};
+        if(res.length!=0){
+          var map={};
          res.forEach(item =>{
               map[item[0]]=item[1];  
                 
          });
-        console.log(map);
-        var arr=[];
-        // arr.push({value:res[]})
+        
          this.data1=[ {value:res[0][1], name:res[0][0]},{value:res[1][1], name:res[1][0]}
          ,{value:res[2][1], name:res[2][0]},{value:res[3][1], name:res[3][0]}
          ,{value:res[4][1], name:res[4][0]},{value:res[5][1], name:res[5][0]}
          ];
-          this.drawLine1();
-
-          this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
+         this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
           this.data3=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
-           this.drawLine2();
+        }
+         
+          this.drawLine1();
+          this.drawLine2();
       });
       err => {
         console.log(err);
       };
     },
-    search2(val) {
-      this.currentPage = val;
+    search2(start,end) {
+   
       let data = {
-        // year:2018
+       start:start,
+       end:end
       };
       let _this = this;
-      // this.$store.dispatch("dzhbafxry", data).then(res => {
       dzhbafxry(data).then(res => {
-      
-        console.log(res);
+      if(res.length!=0){
          var map={};
          res.forEach(item =>{
               map[item[0]]=item[1];  
                 
          });
-        console.log(map);
-        
-
           this.data4=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
           this.data5=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
+      }
+        
            this.drawLine3();
       });
       err => {
         console.log(err);
       };
     },
+    select(val){ 
+     if(val!=null){
+      this.data1=[];
+      this.data2=[];
+      this.data3=[];
+      this.data4=[];
+      this.data5=[];
+     this.search1(val[0],val[1]); 
+      this.search2(val[0],val[1]); 
+     }
+     
+   },
   },
   mounted() {
-    this.search1();
-    this.search2();
+    this.search1(202001,202012);
+    this.search2(202001,202012);
     // this.drawLine2();
     // this.drawLine3();
   },

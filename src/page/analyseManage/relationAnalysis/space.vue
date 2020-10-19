@@ -34,6 +34,7 @@
 import VueAMap from "vue-amap"
 import {spaceApi} from '@/api/analysis/analysisManage.js'
 import Vue from "vue";
+import axios from "axios";
 
 export default {
   data() {
@@ -66,22 +67,22 @@ export default {
 
           })
           setTimeout(() => {
-            this.initMap();
             this.createHeatMap()
           }, 1000);
         }
       });
-
-
     },
     initMap(){
-      this.map = new AMap.Map("container", {
-        resizeEnable: true,
-        center: [115.906044,28.557908],
-        zoom: 11,
-        mapStyle: 'amap://styles/grey', // 极夜蓝
-        //自定义地图样式：https://lbs.amap.com/dev/mapstyle/index
-      });
+      axios.get('/static/json/map/changeMap.json').then(res => {
+        this.map = new AMap.Map("container", {
+          resizeEnable: true,
+          // center: [115.906044,28.557908],
+          center: res.data.centerPoint,
+          zoom: 11,
+          mapStyle: 'amap://styles/grey', // 极夜蓝
+          //自定义地图样式：https://lbs.amap.com/dev/mapstyle/index
+        });
+      })
     },
     //判断浏览区是否支持canvas
     isSupportCanvas() {

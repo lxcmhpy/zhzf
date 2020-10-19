@@ -55,7 +55,7 @@
   export default {
     data() {
       return {
-        date: [],
+        date: ['2019-09','2020-09'],
         logForm: {},
         isShow: false,
         mapData: [],
@@ -122,7 +122,7 @@
             {
               name: "案发数量",
               type: "map",
-              mapType: "江西",
+              mapType: "宁夏",
               roam: true,
               label: {
                 normal: {

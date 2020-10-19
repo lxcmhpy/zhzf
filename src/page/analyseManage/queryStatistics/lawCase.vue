@@ -7,7 +7,7 @@
             <div class="dptitle_1 dptitle_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="dptitle_2" style="margin-left: 13px;">
-            江西执法数据分析研判系统
+            {{ mapTitle }}
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;">
             <div class="dptitle_3 dptitle_font" @click="zbpage()">人员装备</div>
@@ -127,7 +127,7 @@
 
 <script>
   import echarts from "echarts";
-  import {JxMap} from '@/common/js/mapType.js'
+  import * as mapTypes from '@/common/js/mapType.js'
   import "echarts/map/js/china.js";
   import "echarts/map/js/province/jiangxi.js";
   import "echarts/map/json/province/jiangxi.json";
@@ -140,10 +140,12 @@
   import "echarts/lib/component/tooltip";
   import "../../../../static/css/animate.min.css";
   import {lawCaseApi} from '@/api/analysis/analysisManage.js'
+  import axios from "axios";
 
   export default {
     data() {
       return {
+        mapTitle: '',
         vehicle: '',
         penalty: '',
         all: '',
@@ -267,7 +269,10 @@
               that.carSortXData =[]
             }
             that.mapData = res.data.mapdata
-            JxMap(that.mapData,'案件数量')
+            axios.get('/static/json/map/changeMap.json').then(res => {
+              mapTypes[res.data.mapType](that.mapData,'案件数量')
+              this.mapTitle = res.data.mapTitle
+            })
             that.trend()    //年度案发趋势
             that.caseStatus()   //案件状态
             that.caseNumberFun()   //执法机构案件数量
@@ -1930,10 +1935,8 @@
         }, 5000);
       }
     },
-    mounted() {
-      this.getData()
-    },
     created() {
+      this.getData()
       this.timer();
     },
 //   destroyed() {
@@ -2097,6 +2100,7 @@
 
   .count {
     width: 58px;
+    height: 26px;
     font-size: 22px;
     font-family: DINCond-Bold, DINCond;
     font-weight: bold;
