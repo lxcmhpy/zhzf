@@ -263,8 +263,9 @@
     }
 
     function SaveWebFile() {
-      var fileName = getParam(0).split("/");
-      var fileId = fileName[fileName.length - 1];
+      // var fileName = getParam(0).split("/");
+      // var fileId = fileName[fileName.length - 1];
+      var fileId = getParam(0);
       var url = "http://124.192.215.6:9000/case/sys/file/uploadDocDzqz/" + fileId;
       // var url = "http://172.16.170.50:9000/case/sys/file/uploadDocDzqz/" + fileId;
       PDFReader.SaveFile(3, url, "");
