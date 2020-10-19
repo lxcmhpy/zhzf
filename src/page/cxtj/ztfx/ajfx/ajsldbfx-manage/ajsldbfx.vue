@@ -35,7 +35,7 @@
 <script>
 import echarts from "echarts";
 import {
-      ajsldbfxpbc,ajsldbfxcf,ajsldbfxcffa
+      ajsldbfxpbc,ajsldbfxpbcfa,ajsldbfxcf,ajsldbfxcffa
     } from '@/api/fxyp.js'
 export default {
   data() {
@@ -218,30 +218,28 @@ export default {
         ]
       });
     },
-    //赔补偿
+    //查询-----------------------------------------------------------------------------------------------------
+    //赔补偿  结案
    search(val) {
-      this.currentPage = val;
       let data = {
         // year:2018
       };
       let _this = this;
-      // this.$store.dispatch("ajsldbfxpbc", data).then(res => {
       ajsldbfxpbc(data).then(res => {
-      
-        // console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];       
+              map[item[0]]=item[1]; 
          });
-        // console.log(map);
-          this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data2=
-          [map["交通运输部"]=undefined?0:map["交通运输部"],
-          map["固原综合执法支队"]=undefined?0:map["固原综合执法支队"],
-          map["江西交通厅"]=undefined?0:map["江西交通厅"],
-          map["新疆交通厅"]=undefined?0:map["新疆交通厅"]]; 
-
-          // this.drawLine1();
+         console.log(map);
+       for(var i=0;i<this.t1.length;i++){
+          if(map[this.t1[i]]==undefined){
+            this.data2.push(0);
+          }else{
+            this.data2.push(map[this.t1[i]]);
+          }
+       }
+       console.log(this.data2);
+          this.drawLine1();
       });
       err => {
         console.log(err);
@@ -249,76 +247,59 @@ export default {
     },
      //赔补偿 案发
    searchfa(val) {
-      this.currentPage = val;
       let data = {
         // year:2018
       };
       let _this = this;
-      // this.$store.dispatch("ajsldbfxpbcfa", data).then(res => {
-      ajsldbfxpbc(data).then(res => {
-       console.log(res);
-         var map={};
-         res.forEach(item =>{
-              map[item[0]]=item[1];       
-         });
-        console.log(map);
-           this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data1=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-          
+      ajsldbfxpbcfa(data).then(res => {
+         res.forEach(item =>{   
+              this.t1.push(item[0]);
+                    this.data1.push(item[1]); 
+         });       
           this.drawLine1();
       });
       err => {
         console.log(err);
       };
     },
-     //处罚
+     //处罚  结案
    search2(val) {
-      this.currentPage = val;
       let data = {
         // year:2018
       };
       let _this = this;
-      // this.$store.dispatch("ajsldbfxcf", data).then(res => {
       ajsldbfxcf(data).then(res => {
         console.log(res);
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];       
+              map[item[0]]=item[1];   
          });
-        console.log(map);      
-           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data4=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-         
-         
-
-          
-          // this.drawLine2();
+        console.log(map);   
+          for(var i=0;i<this.t2.length;i++){
+          if(map[this.t2[i]]==undefined){
+            this.data4.push(0);
+          }else{
+            this.data4.push(map[this.t2[i]]);
+          }
+       }         
+          this.drawLine2();
       });
       err => {
         console.log(err);
       };
     },
-    //处罚
+    //处罚  案发
    search2fa(val) {
-      this.currentPage = val;
       let data = {
         // year:2018
       };
       let _this = this;
-      // this.$store.dispatch("ajsldbfxcffa", data).then(res => {
       ajsldbfxcffa(data).then(res => {
       console.log(res);
-         var map={};
-         res.forEach(item =>{
-              map[item[0]]=item[1];       
-         });
-        console.log(map);      
-           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data3=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-      
-         
-
-          
+         res.forEach(item =>{  
+              this.t2.push(item[0]);
+              this.data3.push(item[1]);    
+         });     
           this.drawLine2();
       });
       err => {
@@ -328,6 +309,12 @@ export default {
   },
   
   mounted() {
+    this.t1=[];
+    this.t2=[];
+    this.data1=[];
+    this.data2=[];
+    this.data3=[];
+    this.data4=[];
     this.search();
     this.searchfa();
     this.search2();

@@ -16,14 +16,14 @@
            <el-col :span="4" style="height:60px;margin-left:-30px;margin-top: 35px;" >
               <div class="title_4" >
                   <span class="right_font0">执法人员：</span>
-                  <span class="right_font1">536人</span>
+                  <span class="right_font1">{{zfrysl}}人</span>
               </div>
                
           </el-col>
            <el-col :span="4" style="height:60px;margin-left:0px;margin-top: 35px;" >
               <div class="title_5" >
                   <span class="right_font0">执法装备：</span>
-                  <span class="right_font1">862件</span>
+                  <span class="right_font1">{{zfzbsl}}件</span>
               </div>
                
           </el-col>
@@ -115,6 +115,11 @@ import "echarts/lib/component/legend";
 import "echarts/lib/chart/heatmap";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
+
+
+import {
+      gwfb,bzfb,rysl,zfry,zfzb,zbsl,zblx,zztb
+    } from '@/api/fxyp.js'
 export default {
   data() {
     return {
@@ -131,7 +136,18 @@ export default {
         startTime: "",
         endTime: "",
         dateArray: ""
-      }
+      },
+      data1:[],
+      data2:[],
+      data3:[],
+      data4:[],
+      data5:[],
+      data6:[],
+      data7:[],
+      data8:[],
+      data9:[],
+      zfrysl:"",
+      zfzbsl:"",
     };
   },
   methods:{
@@ -575,7 +591,7 @@ echarts.extendsMap = function(id, opt){
                 var res = "";
                 var name = params.name;
                 var value = params.value[2];
-                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
+                res = "<span style='color:#fff;'>" + name + "</span><br/>装备数量：" + value;
                 return res;
    }
   },
@@ -865,19 +881,20 @@ $.getJSON(jiangxi, function(geoJson){
                 show: false
             },
 
-            data: [{
-                    value: 10,
-                    name: '执法岗'
-                }, {
-                    value: 20,
-                    name: '非执法岗'
-                },
-                {
-                    value: 40,
-                    name: '监督岗'
-                },
+            data: this.data1
+            // [{
+            //         value: 10,
+            //         name: '执法岗'
+            //     }, {
+            //         value: 20,
+            //         name: '非执法岗'
+            //     },
+            //     {
+            //         value: 40,
+            //         name: '监督岗'
+            //     },
               
-            ]
+            // ]
         },
 
         {
@@ -913,19 +930,20 @@ $.getJSON(jiangxi, function(geoJson){
                 }
             },
 
-            data: [{
-                    value: 10,
-                    name: '执法岗'
-                }, {
-                    value: 20,
-                    name: '非执法岗'
-                },
-                {
-                    value: 40,
-                    name: '监督岗'
-                },
+            data: this.data1
+            // [{
+            //         value: 10,
+            //         name: '执法岗'
+            //     }, {
+            //         value: 20,
+            //         name: '非执法岗'
+            //     },
+            //     {
+            //         value: 40,
+            //         name: '监督岗'
+            //     },
                
-            ]
+            // ]
         }
     ]
        });
@@ -960,19 +978,20 @@ $.getJSON(jiangxi, function(geoJson){
     ],
     series: [
       {
-        name: "点位统计",
+        name: "",
         type: "pie",
         // 如果radius是百分比则必须加引号
         radius: ["10%", "70%"],
         center: ["50%", "42%"],
         roseType: "radius",
-        data: [
-          { value: 20, name: "公务员编制" },
-          { value: 16, name: "参照公务员管理编制" },
-          { value: 24, name: "事业编制" },
-          { value: 25, name: "其他" },
+        data: this.data2,
+        // [
+        //   { value: 20, name: "公务员编制" },
+        //   { value: 16, name: "参照公务员管理编制" },
+        //   { value: 24, name: "事业编制" },
+        //   { value: 25, name: "其他" },
        
-        ],
+        // ],
         // 修饰饼形图文字相关的样式 label对象
         label: {
           fontSize: 10
@@ -1010,7 +1029,8 @@ drawBottom1() {
 				xAxis: [{
 					type: 'category',
 					color: '#59588D',
-					data: ['执法 机构一', '执法 机构二', '执法 机构三', '执法 机构四', '执法 机构五', '执法 机构六', '执法 机构七', '执法 机构八'],
+                    data:this.data3,
+                    //  ['执法 机构一', '执法 机构二', '执法 机构三', '执法 机构四', '执法 机构五', '执法 机构六', '执法 机构七', '执法 机构八'],
 					axisLabel: {
 						margin: 10,
 						color: '#999',
@@ -1057,7 +1077,8 @@ drawBottom1() {
 				}],
 				series: [{
 					type: 'bar',
-					data: [40, 65, 50, 36, 30, 35, 40, 60],
+                    data: this.data4,
+                    // [40, 65, 50, 36, 30, 35, 40, 60],
 					barWidth: '16px',
 					itemStyle: {
 						normal: {
@@ -1148,7 +1169,8 @@ this.chartColumn.setOption({
 				xAxis: [{
 					type: 'category',
 					color: '#59588D',
-					data: ['执法 机构一', '执法 机构二', '执法 机构三', '执法 机构四', '执法 机构五', '执法 机构六', '执法 机构七', '执法 机构八'],
+                    data: this.data5,
+                    // ['执法 机构一', '执法 机构二', '执法 机构三', '执法 机构四', '执法 机构五', '执法 机构六', '执法 机构七', '执法 机构八'],
 					axisLabel: {
 						margin: 10,
 						color: '#999',
@@ -1222,7 +1244,8 @@ this.chartColumn.setOption({
 						}
 					}
 				}, {
-					data: [40, 60, 40, 36, 30, 35, 40, 60],
+                    data: this.data6,
+                    // [40, 60, 40, 36, 30, 35, 40, 60],
 					type: 'line',
 					smooth: true,
 					name: '折线图',
@@ -1280,7 +1303,8 @@ drawRight1() {
 		right: '8%'
 	},
     xAxis: {
-        data: ['通讯 指挥类', '稽查 取证类', '基础 办案类', '安全 防护类', '安防 监控类','辅助 设备类' ],
+        data:this.data7,
+        //  ['通讯 指挥类', '稽查 取证类', '基础 办案类', '安全 防护类', '安防 监控类','辅助 设备类' ],
        axisTick: {
 			show: false
 		},
@@ -1371,7 +1395,8 @@ drawRight1() {
 				opacity: 1
 			}
         },
-        data: [123, 60, 25, 18, 12,11],
+        data: this.data8,
+        // [123, 60, 25, 18, 12,11],
         z: 10
     }]
       });
@@ -1503,7 +1528,8 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
     series: [{
         name: '人员增长比',
         type: 'line',
-        data: [11, 12, 12, 18, 30],
+        data: this.data9,
+        // [11, 12, 12, 18, 30],
         symbolSize: 1,
         symbol: 'circle',
         smooth: true,
@@ -1536,22 +1562,170 @@ const xData = ['2015 年', '2016 年', '2017 年', '2018 年', '2019 年']
       });
       
     },
+//查询-----------------------------------------------------------------------------------------------------
+//执法人员岗位分布
+search1() {
+      let data = {
+        // year:val
+      };
+      console.log();
+      gwfb(data).then(res => {  
+          console.log(res);  
+          var v=0;  
+           res.forEach(item =>{
+             v=v+item[1];
+         });
+         console.log(v);  
+           this.data1.push({value: (res[0][1]/v*100).toFixed(2),name:res[0][0]});   
+           this.data1.push({value: (res[1][1]/v*100).toFixed(2),name:res[1][0]});        
+           this.data1.push({value: (res[2][1]/v*100).toFixed(2),name:res[2][0]});   
+        console.log(res[1][1]/v*100); 
+       this.drawLeft1();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//执法人员编制分布
+search2() {
+      let data = {
+        // year:val
+      };
+      bzfb(data).then(res => {    
+         res.forEach(item =>{
+             this.data2.push({value: item[1],name:item[0]});
+         });
+       this.drawLeft2();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//执法机构人员数量
+search3() {
+      let data = {
+        // year:val
+      };
 
-
-
-
-
-   
-    
-   
+      rysl(data).then(res => {   
+           this.data3.push(res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]);
+             this.data4.push(res[0][1],res[1][1],res[2][1],res[3][0],res[4][0]);
+        
+        //  res.forEach(item =>{
+        //      this.data3.push(item[0]);
+        //      this.data4.push(item[1]);
+        //  });
+        
+       this.drawBottom1();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//执法机构装备数量
+search4() {
+      let data = {
+        // year:val
+      };
+      zbsl(data).then(res => {               
+         res.forEach(item =>{
+             this.data5.push(item[0]);
+             this.data6.push(item[1]);
+         });       
+       this.drawBottom2();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+   //执法人员
+search5() {
+      let data = {
+        // year:val
+      };
+      zfry(data).then(res => {   
+        var map={};
+         res.forEach(item =>{
+             map[item[0]]=item[1];        
+         });
+        this.zfrysl=map['执法人员'];
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    //执法装备
+search6() {
+      let data = {
+        // year:val
+      };
+      zfzb(data).then(res => {   
+        var map={};
+         res.forEach(item =>{
+             map[item[0]]=item[1];   
+         });
+      this.zfzbsl=map['执法装备'];
+      });
+      err => {
+        console.log(err);
+      };
+    },
+   //装备类型
+search7() {
+      let data = {
+        // year:val
+      };
+      zblx(data).then(res => {   
+         res.forEach(item =>{
+            this.data7.push(item[0]);
+             this.data8.push(item[1]);    
+         });
+        
+      this.drawRight1();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+     //执法人员增长同比
+search8() {
+      let data = {
+        // year:val
+      };
+      zztb(data).then(res => {   
+          console.log(res);
+       var map={};
+         res.forEach(item =>{
+             map[item[0]]=item[1];      
+         });
+         console.log(map);
+        this.data9.push(((map[2015]-map[2014])/(map[2014]==0?1:map[2014])).toFixed(2));
+        this.data9.push(((map[2016]-map[2015])/(map[2015]==0?1:map[2015])).toFixed(2));
+        this.data9.push(((map[2017]-map[2016])/(map[2016]==0?1:map[2016])).toFixed(2));
+        this.data9.push(((map[2018]-map[2017])/(map[2017]==0?1:map[2017])).toFixed(2));
+        this.data9.push(((map[2019]-map[2018])/(map[2018]==0?1:map[2018])).toFixed(2));
+      this.drawRight2();
+      });
+      err => {
+        console.log(err);
+      };
+    },
   },
   mounted() {
-    this.drawLeft1();
-    this.drawLeft2();
-    this.drawBottom1();
-    this.drawBottom2();
-    this.drawRight1();
-    this.drawRight2();
+     this.search1();
+     this.search2();
+     this.search3();
+     this.search4();
+     this.search5();
+     this.search6();
+     this.search7();
+     this.search8();
+    // this.drawLeft1();
+    // this.drawLeft2();
+    // this.drawBottom1();
+    // this.drawBottom2();
+    // this.drawRight1();
+    // this.drawRight2();
     this.map();
   },
   created() {}
