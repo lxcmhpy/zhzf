@@ -105,7 +105,7 @@
               </el-row>
               <el-row style="text-align:center;">
                 <el-row class="mt24">
-                  <el-col :span="12"><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;">
+                  <el-col :span="12"><img src="../../../../static/images/map/处罚金额.png" style="height:100px;width:100px;">
 
                   </el-col>
                   <el-col :span="12">

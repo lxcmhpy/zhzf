@@ -1338,9 +1338,9 @@ export default {
             name: "点位统计",
             type: "pie",
             // 如果radius是百分比则必须加引号
-            radius: ["10%", "70%"],
+            radius: ["50%", "70%"],
             center: ["50%", "42%"],
-            roseType: "radius",
+            // roseType: "radius",
             data: this.preparedBy,
             // 修饰饼形图文字相关的样式 label对象
             label: {
