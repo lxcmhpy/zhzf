@@ -265,7 +265,7 @@ export default {
       systemTitleLogin: null,
       loginImgSrc: '',
       appDownHref: '',
-      isShow: true,//是否有登录滑动验证
+      isShow: false,//是否有登录滑动验证
       // 滑动验证
       beginClientX: 0,           /*距离屏幕左端距离*/
       mouseMoveStata: false,     /*触发拖动状态  判断*/
