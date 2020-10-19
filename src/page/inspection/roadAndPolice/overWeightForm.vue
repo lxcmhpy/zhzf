@@ -1053,6 +1053,8 @@ export default {
     //   this.inforForm.afdd = address;
     //   this.hasLatitudeAndLongitude = true;
     // },
+
+    
     getDrawerList(data) {
       let _this = this
       data.forEach(element => {
@@ -1070,8 +1072,9 @@ export default {
       });
 
     },
+
+    //根据数据字典查询
     getDictInfo(name, codeName) {
-      //根据数据字典查询
       let _this = this;
       if (_this[codeName].length) {
         return false;
@@ -1096,12 +1099,15 @@ export default {
         )
         .catch(() => { });
     },
+
     //获取坐标
     getLngLat(lngLatStr, address) {
       this.form.eventCoordinate = lngLatStr;
       this.form.eventAddress = address;
       this.hasLatitudeAndLongitude = true;
     },
+
+    // 根据车辆轴数计算限重数
     weightLimit(data) {
       switch (Number(data)) {
         case 2: this.$set(this.carInfo.firstCheck, 'weightLimit', 18); break;
@@ -1113,6 +1119,8 @@ export default {
       this.firstCheckOverWeight()
     },
     saveFileData() { },
+
+    // 搜索车辆号牌
     searchNumber() {
       let _this = this
       // 查询车辆号牌
@@ -1163,6 +1171,8 @@ export default {
         this.$message.error('请正确输入车辆颜色和车牌号码');
       }
     },
+
+    // 点击保存按钮是否验证
     saveDataBtn(handleType) {
       let _this = this
       if (handleType == 0) {
@@ -1192,6 +1202,8 @@ export default {
 
       }
     },
+
+    // 重置表单
     refForm(formName, err) {
       let that = this; 
       let result = new Promise(function (resolve, reject) {
@@ -1205,6 +1217,8 @@ export default {
       })
       that.resultArr.push(result)
     },
+
+    // 调用保存接口
     saveMethod() {
       let data = JSON.parse(JSON.stringify(this.carInfo))
       // 处理%
@@ -1240,6 +1254,8 @@ export default {
 
         })
     },
+
+    // 获取车辆信息ID
     genID() {
       var originStr = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
         originChar = '0123456789abcdef',
@@ -1248,6 +1264,8 @@ export default {
         return originChar.charAt(Math.floor(Math.random() * len))
       })
     },
+
+    // 获取车辆信息
     getData(id) {
       let _this = this
       findCarInfoByIdApi(_this.inspectionOverWeightId.id || id).then(
@@ -1277,6 +1295,7 @@ export default {
     // saveFile(param) {
     //   this.fileListUpload.push(param)
     // },
+
     //上传附件
     uploadFile(param) {
       var fd = new FormData()
@@ -1297,9 +1316,13 @@ export default {
         }
       );
     },
+
+    // 删除文件前的钩子
     beforeRemoveFile(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
+
+    // 删除文件
     handleRemoveFile(file, fileList) {
       if (file.storageId) {
         deleteFileByIdApi(file.storageId).then(
@@ -1314,6 +1337,8 @@ export default {
         return;
       }
     },
+
+    // 删除文件
     removeFile(file) {
       this.$confirm('确认删除吗？', '提示', {
         confirmButtonText: '确定',
@@ -1335,6 +1360,8 @@ export default {
         .catch(() => { })
 
     },
+
+    // 获取文件
     getFile() {
       if (this.carinfoId) {
         let data = {
@@ -1355,10 +1382,13 @@ export default {
         );
       }
     },
+
     /* 置顶后锚点回到第一个 */
     backTop() {
       this.activeA = [true, false, false, false, false];
     },
+
+    // 预览图片弹框
     handlePictureCardPreview(file) {
       this.pdfUrl = this.dialogImageUrl = ''
       let fileType = this.$util.getFileType(file.name);
@@ -1376,6 +1406,7 @@ export default {
         this.$message.error('当前文件格式不支持预览');
       }
     },
+
     //根据stroagId请求文件流
     getFileStream(storageId) {
       //设置地址
@@ -1388,6 +1419,7 @@ export default {
           console.log(err);
         });
     },
+
     // 将返回的流数据转换为url
     getObjectURL(file) {
       let url = null;
@@ -1413,6 +1445,8 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+
+    // 初检计算超出重量
     overLimit() {
       if (this.carInfo.firstCheck.weightLimit && this.carInfo.firstCheck.totalWeight) {
         this.carInfo.firstCheck.overWeight = Number(this.carInfo.firstCheck.totalWeight) - Number(this.carInfo.firstCheck.weightLimit)
@@ -1425,12 +1459,18 @@ export default {
         }
       }
     },
+
+    //选择职务
     chooseOccupation(data) {
       this.$set(this.carInfo.drivePerson, 'occupation', data)
     },
+
+    //改变状态为编辑
     changeEdit() {
       this.isCanEdit = true
     },
+
+    //初检计算超出比例
     firstCheckOverWeight(type) {
       
       if (this.carInfo.firstCheck.overWeight && this.carInfo.firstCheck.weightLimit) {
@@ -1448,6 +1488,8 @@ export default {
         this.cuntUnloadWeight()
       }
     },
+
+    //复检计算超出比例
     secondCheckOverWeight() {
       if (this.carInfo.secondCheck.secondCheckWeight && this.carInfo.firstCheck.weightLimit && this.carInfo.secondCheck.secondCheckWeight - this.carInfo.firstCheck.weightLimit > 0) {
         let number = (this.carInfo.secondCheck.secondCheckWeight - this.carInfo.firstCheck.weightLimit) / this.carInfo.firstCheck.weightLimit * 100;
@@ -1458,6 +1500,8 @@ export default {
         this.$set(this.carInfo.secondCheck, 'overRatio', '')
       }
     },
+
+
     checkSure(item) {
       if (this.currentStation == 1) {
         this.carInfo.firstCheck.firstCheckStation = item.name
@@ -1468,6 +1512,8 @@ export default {
       }
       this.checkStationVisible = false
     },
+
+    //选择初检站点
     checkFirstCheckStation(type) {
       let _this = this
       this.currentStation = type
@@ -1492,6 +1538,8 @@ export default {
           console.log(err);
         });
     },
+
+    //复检质量变化
     cuntUnloadWeight() {
       if (this.carInfo.firstCheck.totalWeight && this.carInfo.secondCheck.secondCheckWeight && this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight > 0) {
         let number = this.carInfo.firstCheck.totalWeight - this.carInfo.secondCheck.secondCheckWeight
