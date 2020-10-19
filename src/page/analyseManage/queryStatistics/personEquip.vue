@@ -111,7 +111,7 @@
 
 <script>
 import echarts from "echarts";
-import {JxMap} from '@/common/js/mapType.js'
+import {NxMap} from '@/common/js/mapType.js'
 import "echarts/map/js/china.js";
 import "echarts/map/js/province/jiangxi.js";
 import "echarts/map/json/province/jiangxi.json";
@@ -187,7 +187,7 @@ export default {
             that.equipmentTypeXData.push(item.name);
           });
           that.mapData = res.data.mapdata;
-          JxMap(that.mapData,'执法人员')
+          NxMap(that.mapData,'执法人员')
         }
         that.job();
         that.preparedByFun();

@@ -127,7 +127,7 @@
 
 <script>
   import echarts from "echarts";
-  import {JxMap} from '@/common/js/mapType.js'
+  import {NxMap} from '@/common/js/mapType.js'
   import "echarts/map/js/china.js";
   import "echarts/map/js/province/jiangxi.js";
   import "echarts/map/json/province/jiangxi.json";
@@ -267,7 +267,7 @@
               that.carSortXData =[]
             }
             that.mapData = res.data.mapdata
-            JxMap(that.mapData,'案件数量')
+            NxMap(that.mapData,'案件数量')
             that.trend()    //年度案发趋势
             that.caseStatus()   //案件状态
             that.caseNumberFun()   //执法机构案件数量
