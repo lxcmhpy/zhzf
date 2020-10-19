@@ -55,7 +55,7 @@
   export default {
     data() {
       return {
-        date: [],
+        date: ['2019-09','2020-09'],
         logForm: {},
         isShow: false,
         mapData: [],
