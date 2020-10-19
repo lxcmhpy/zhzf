@@ -26,6 +26,7 @@
               start-placeholder="开始月份"
               end-placeholder="结束月份"
               value-format="yyyyMM"
+               style="width:400px"
             ></el-date-picker>
           </el-form-item>
           

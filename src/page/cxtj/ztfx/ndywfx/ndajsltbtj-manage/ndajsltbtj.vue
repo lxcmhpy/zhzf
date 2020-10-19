@@ -131,15 +131,15 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(42,170,227)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(42,170,227)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           },
           {
             name: this.value3+"年",
@@ -148,15 +148,15 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(25,46,94)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(25,46,94)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           }
         ]
       });
