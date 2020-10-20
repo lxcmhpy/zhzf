@@ -118,7 +118,7 @@ export default {
     // 判断用户名是否已存在
     var validateUsername = (rule, value, callback) => {
       this.$store.dispatch("hasUsername", value).then(res => {
-        if(res.id){
+        if(res.id && this.dialogStatus == "addEquipment"){
           callback('当前用户名已被使用');
         }else{
           callback();
