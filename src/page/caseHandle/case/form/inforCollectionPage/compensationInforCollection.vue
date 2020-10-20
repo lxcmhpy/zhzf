@@ -78,13 +78,13 @@
             </el-form-item>
           </div>
         </div>
-        <div>
+        <!-- <div>
           <div class="itemOne">
             <el-form-item label="违法行为">
               <el-input v-model="inforForm.caseCauseName" :disabled="true"></el-input>
             </el-form-item>
           </div>
-        </div>
+        </div> -->
         <div>
           <div class="item">
             <el-form-item label="程序类型">
@@ -737,7 +737,13 @@
         <div>
           <div class="itemOne">
             <el-form-item label="违法行为" label-width="122px">
-              <el-input v-model="inforForm.caseCauseNameCopy" :disabled="true" ></el-input>
+              <el-input v-model="inforForm.caseCauseNameCopy" :disabled="true" >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="chooseIllegalAct"
+                ></el-button>
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -813,6 +819,8 @@
     </el-backtop>
     <choosePathLoss ref="choosePathLossRef" @selectData="selectRoadData"></choosePathLoss>
     <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
+    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
+
   </div>
 </template>
 <script>
@@ -820,6 +828,7 @@ import { inforCollectionCommonMixins } from "@/common/js/caseHandle/inforCollect
 import choosePathLoss from "./diag/choosePathLoss";
 import mapDiag from "./diag/mapDiag";
 import {mapGetters} from "vuex";
+
 export default {
   mixins: [inforCollectionCommonMixins],
   data() {
@@ -831,7 +840,7 @@ export default {
   // computed: {...mapGetters(['caseId','openTab','caseHandle'])},
   components: {
     choosePathLoss,
-    mapDiag
+    mapDiag,
   },
   computed: {
     payTotal() {

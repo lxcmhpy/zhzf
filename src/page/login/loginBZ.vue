@@ -265,7 +265,7 @@ export default {
       systemTitleLogin: null,
       loginImgSrc: '',
       appDownHref: '',
-      isShow: false,//是否有登录滑动验证
+      isShow: true,//是否有登录滑动验证
       // 滑动验证
       beginClientX: 0,           /*距离屏幕左端距离*/
       mouseMoveStata: false,     /*触发拖动状态  判断*/
@@ -510,6 +510,14 @@ export default {
       } catch (error) {
         throw new Error(error);
       }
+
+      //是否显示滑动验证
+      let dataRes = await getDictListDetailByNameApi('登录滑动验证');
+      console.log('是否显示滑动验证',dataRes)
+      if(dataRes.data.length>0){
+        this.isShow = Number(dataRes.data[0].name) ? true : false;
+      }
+      
     },
     loadImg() {
       this.$store.dispatch("setLoadingState", { flag: false });
@@ -600,7 +608,6 @@ export default {
   },
   mounted() {
     this.showLogin = true;
-    this.isShow = true;
     this.maxwidth = 390;
     document.getElementsByTagName('html')[0].addEventListener('mousemove', this.mouseMoveFn);
     document.getElementsByTagName('html')[0].addEventListener('mouseup', this.moseUpFn)
