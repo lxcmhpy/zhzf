@@ -152,7 +152,7 @@
                   :disabled="fieldDisabled(propertyFeatures['organTel'])"
                 ></el-input>
               </el-form-item>
-              <u v-if="lineStyleFlag">{{formData.partyTel}}</u>
+              <u v-if="lineStyleFlag">{{formData.organTel}}</u>
             </p>
           </el-col>
         </el-row>
