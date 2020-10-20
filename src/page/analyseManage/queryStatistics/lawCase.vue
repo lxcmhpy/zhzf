@@ -2164,7 +2164,7 @@
   }
 
   .main {
-    background-image: url("../../../../static/images/map/边框.png");
+    background-image: url("../../../../static/images/map/边框1.png");
     background-size: 100% 100%;
   }
 
