@@ -1481,7 +1481,7 @@ export default {
         console.log(number)
         this.$set(this.carInfo.firstCheck, 'overRatio', number)
       } else {
-        this.$set(this.carInfo.firstCheck, 'overRatio', '')
+        this.$set(this.carInfo.firstCheck, 'overRatio', 0)
       }
       this.secondCheckOverWeight()
       if (type == 1) {
@@ -1497,7 +1497,7 @@ export default {
         number = Number(number); // number = 12.3321
         this.$set(this.carInfo.secondCheck, 'overRatio', number)
       } else {
-        this.$set(this.carInfo.secondCheck, 'overRatio', '')
+        this.$set(this.carInfo.secondCheck, 'overRatio', 0)
       }
     },
 
