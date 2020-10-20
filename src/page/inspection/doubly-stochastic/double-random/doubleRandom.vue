@@ -1,5 +1,5 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
+  <div class="com_searchAndpageBoxPadding doubleRandom">
     <div class="searchAndpageBox inspection-info" id="roleBox" style="height:calc(100% - 22px)">
       <div class="handlePart">
         <div class="search toggleBox">
@@ -595,3 +595,10 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
+<style lang="scss">
+.doubleRandom{
+  #roleBox{
+        overflow: auto;
+  }
+}
+</style>
