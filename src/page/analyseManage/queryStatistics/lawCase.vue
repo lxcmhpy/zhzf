@@ -2100,7 +2100,6 @@
 
   .count {
     width: 58px;
-    height: 26px;
     font-size: 22px;
     font-family: DINCond-Bold, DINCond;
     font-weight: bold;
@@ -2199,4 +2198,11 @@
   .afd *{
   white-space: pre;
   }
+</style>
+
+<style lang="scss" scoped>
+// 避免打包后全局样式互相影响
+.count{
+  height: 26px;
+}
 </style>
