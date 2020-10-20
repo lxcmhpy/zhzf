@@ -30,7 +30,7 @@
             <el-form-item label="当事人" prop="party">
               <el-input v-model="dicSearchForm.party"></el-input>
             </el-form-item>
-            <el-form-item label="受案时间" style="width:435px"> 
+            <el-form-item label="受案时间" style="width:450px"> 
               <el-date-picker
                 v-model="dicSearchForm.daterange"
                 type="daterange"

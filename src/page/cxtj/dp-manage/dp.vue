@@ -7,7 +7,7 @@
               <div class="title_1 title_font"  @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="title_2" >
-               江西省执法数据分析研判系统
+               <!-- 江西省执法数据分析研判系统 -->
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -520px;margin-top: 28px;" >
               <div class="title_3 title_font" @click="zbpage()" >人员装备</div>
@@ -984,9 +984,9 @@ $.getJSON(jiangxi, function(geoJson){
         name: "",
         type: "pie",
         // 如果radius是百分比则必须加引号
-        radius: ["10%", "70%"],
+        radius: ["50%", "70%"],
         center: ["50%", "42%"],
-        roseType: "radius",
+        // roseType: "radius",
 
         data: this.data2,
         // [

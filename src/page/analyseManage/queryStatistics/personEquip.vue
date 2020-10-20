@@ -10,7 +10,7 @@
             <div class="title_1 title_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="title_2" style="margin-left: 13px">
-            江西执法数据分析研判系统
+            <!-- 宁夏执法数据分析研判系统 -->
           </el-col>
           <el-col
             :span="6"
@@ -111,7 +111,7 @@
 
 <script>
 import echarts from "echarts";
-import {NxMap} from '@/common/js/mapType.js'
+import * as mapTypes from '@/common/js/mapType.js'
 import "echarts/map/js/china.js";
 import "echarts/map/js/province/jiangxi.js";
 import "echarts/map/json/province/jiangxi.json";
@@ -123,6 +123,7 @@ import "echarts/lib/chart/heatmap";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
 import { personEquipApi } from "@/api/analysis/analysisManage.js";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -187,7 +188,9 @@ export default {
             that.equipmentTypeXData.push(item.name);
           });
           that.mapData = res.data.mapdata;
-          NxMap(that.mapData,'执法人员')
+          axios.get('/static/json/map/changeMap.json').then(res => {
+            mapTypes[res.data.mapType](that.mapData,'执法人员')
+          })
         }
         that.job();
         that.preparedByFun();
@@ -1333,9 +1336,9 @@ export default {
             name: "点位统计",
             type: "pie",
             // 如果radius是百分比则必须加引号
-            radius: ["10%", "70%"],
+            radius: ["50%", "70%"],
             center: ["50%", "42%"],
-            roseType: "radius",
+            // roseType: "radius",
             data: this.preparedBy,
             // 修饰饼形图文字相关的样式 label对象
             label: {
@@ -1944,10 +1947,9 @@ export default {
       });
     },
   },
-  mounted() {
+  created() {
     this.getData();
   },
-  created() {},
 };
 </script>
 <style scoped>
@@ -2130,7 +2132,7 @@ export default {
   background: none;
 }
 .main {
-  background-image: url("../../../../static/images/map/边框.png");
+  background-image: url("../../../../static/images/map/baseBorder.png");
   background-size: 100% 100%;
 }
 .right_font0 {

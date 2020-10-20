@@ -41,6 +41,8 @@
   import echarts from "echarts";
 
   import "echarts/map/js/china.js";
+  import "echarts/map/js/province/gansu.js";
+  import "echarts/map/json/province/gansu.json";
   import "echarts/map/js/province/jiangxi.js";
   import "echarts/map/json/province/jiangxi.json";
   import "echarts/map/js/province/ningxia.js";
@@ -50,12 +52,14 @@
   import "echarts/lib/chart/heatmap";
   import "echarts/lib/component/toolbox";
   import "echarts/lib/component/tooltip";
-  import {caseAddressApi} from '@/api/analysis/analysisManage.js'
+  import {caseAddressApi} from '@/api/analysis/analysisManage.js';
+  import axios from "axios";
 
   export default {
     data() {
       return {
-        date: [],
+        mapName: "",
+        date: ['2019-09','2020-09'],
         logForm: {},
         isShow: false,
         mapData: [],
@@ -71,6 +75,9 @@
         this.searchDraw(val)
       },
       searchDraw(date) {
+        axios.get('/static/json/map/changeMap.json').then(res => {
+          this.mapName = res.data.mapName
+        })
         let param = {
           year: date[0],
           year2: date[1]
@@ -122,7 +129,7 @@
             {
               name: "案发数量",
               type: "map",
-              mapType: "江西",
+              mapType: this.mapName,
               roam: true,
               label: {
                 normal: {

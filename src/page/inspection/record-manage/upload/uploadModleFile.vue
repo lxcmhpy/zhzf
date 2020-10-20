@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="upload-something">
     <p class="border-title">图片</p>
     <el-upload ref="upload" :disabled="addOrEiditFlag=='view'?true:false" class="upload-demo modle-upload" action="https://jsonplaceholder.typicode.com/posts/" :http-request="saveImg" :on-progress='imgProgress' :on-preview="handlePreviewImg" :on-remove="handleRemoveImg" :before-remove="beforeRemoveImg" multiple :limit="3" :on-exceed="handleExceedImg" :file-list="imgList" accept="image/*">
       <el-button size="small" type="primary" :style="addOrEiditFlag=='view'?' color: #fff;background-color: #909399;border-color: #909399;':''">上传图片</el-button>
@@ -221,3 +221,10 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
+<style lang="scss" >
+#upload-something{
+  .border-title{
+    margin-bottom: 10px;
+  }
+}
+</style>

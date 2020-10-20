@@ -5,7 +5,7 @@
         <div class="search toggleBox search-mini" style="width:100%">
           <div
             class="handlePart caseHandleSearchPart"
-            :class="isShow?'autoHeight':'aaa'"
+            :class="isShow ? 'autoHeight' : 'aaa'"
             style="margin:0;"
           >
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
@@ -14,7 +14,10 @@
                 <el-input v-model="searchForm.personName"></el-input>
               </el-form-item>
               <el-form-item label="在岗情况" prop="stationStatusName">
-                <el-select v-model="searchForm.stationStatusName" placeholder="请选择">
+                <el-select
+                  v-model="searchForm.stationStatusName"
+                  placeholder="请选择"
+                >
                   <el-option label="在岗" value="在岗"></el-option>
                   <el-option label="调岗中" value="调岗中"></el-option>
                   <el-option label="退休" value="退休"></el-option>
@@ -33,8 +36,8 @@
               ></el-button>
               <el-button
                 size="medium"
-                :title="isShow? '点击收缩':'点击展开'"
-                :icon="isShow? 'iconfont law-top': 'iconfont law-down'"
+                :title="isShow ? '点击收缩' : '点击展开'"
+                :icon="isShow ? 'iconfont law-top' : 'iconfont law-down'"
                 @click="isShow = !isShow"
               ></el-button>
             </div>
@@ -49,14 +52,15 @@
                 <el-button
                   size="medium"
                   type="primary"
-                  @click="exportMethod('exportPerson','执法人员表.xls')"
-                >导出所有人员</el-button>
+                  @click="exportMethod('exportPerson', '执法人员表.xls')"
+                  >导出所有人员</el-button
+                >
               </el-form-item>
             </div>
           </el-form>
         </div>
       </div>
-      <div class="tablePart">
+      <div class="tablePart left-table-person">
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -67,13 +71,42 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="personName" label="姓名" align="center"></el-table-column>
-          <el-table-column prop="sex" label="性别" align="center" :formatter="sexFormat"></el-table-column>
-          <el-table-column prop="stationName" label="岗位" align="center"></el-table-column>
-          <el-table-column prop="stationStatusName" label="状态" align="center"></el-table-column>
-          <el-table-column prop="staffingName" label="编制" align="center"></el-table-column>
-          <el-table-column prop="postName" label="职务" align="center"></el-table-column>
-          <el-table-column prop="oname" label="单位" align="center"></el-table-column>
+          <el-table-column
+            prop="personName"
+            label="姓名"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="sex"
+            label="性别"
+            align="center"
+            :formatter="sexFormat"
+          ></el-table-column>
+          <el-table-column
+            prop="stationName"
+            label="岗位"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="stationStatusName"
+            label="状态"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="staffingName"
+            label="编制"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="postName"
+            label="职务"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="oname"
+            label="单位"
+            align="center"
+          ></el-table-column>
         </el-table>
       </div>
       <div class="paginationBox">
@@ -94,10 +127,15 @@
         <br />复制
       </div>
     </div>
-    <div style="width:calc(50% - 20px);" class="height100 inspector-left">
+    <div style="width:calc(50% - 20px);" class="height100 inspector-left oa">
       <publicInspectors :freshFlag="freshFlag"></publicInspectors>
     </div>
-    <el-dialog title="人员详情" :close-on-click-modal="false" :visible.sync="dialogFormVisible" style="width:auto">
+    <el-dialog
+      title="人员详情"
+      :close-on-click-modal="false"
+      :visible.sync="dialogFormVisible"
+      style="width:auto"
+    >
       <el-form ref="form" :model="personInfoDetailForm" label-width="155px">
         <!--基本信息 -->
         <div class="info_box">
@@ -115,96 +153,142 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="姓名：">{{personInfoDetailForm.personName}}</el-form-item>
+                  <el-form-item label="姓名：">{{
+                    personInfoDetailForm.personName
+                  }}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="身份证号：">{{personInfoDetailForm.idNo}}</el-form-item>
+                  <el-form-item label="身份证号：">{{
+                    personInfoDetailForm.idNo
+                  }}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="性别：">{{personInfoDetailForm.sexName}}</el-form-item>
+                  <el-form-item label="性别：">{{
+                    personInfoDetailForm.sexName
+                  }}</el-form-item>
                 </el-col>
 
                 <el-col :span="12">
-                  <el-form-item label="民族：">{{personInfoDetailForm.nationName}}</el-form-item>
+                  <el-form-item label="民族：">{{
+                    personInfoDetailForm.nationName
+                  }}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="所学专业：">{{personInfoDetailForm.majorName}}</el-form-item>
+                  <el-form-item label="所学专业：">{{
+                    personInfoDetailForm.majorName
+                  }}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="文化程度：">{{personInfoDetailForm.degreeName}}</el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="政治面貌：">{{personInfoDetailForm.politicalStatusName}}</el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="用户职务：">{{personInfoDetailForm.postName}}</el-form-item>
+                  <el-form-item label="文化程度：">{{
+                    personInfoDetailForm.degreeName
+                  }}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="出生日期：">{{personInfoDetailForm.birthDate}}</el-form-item>
+                  <el-form-item label="政治面貌：">{{
+                    personInfoDetailForm.politicalStatusName
+                  }}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="参加工作日期：">{{personInfoDetailForm.workDate}}</el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="入党日期：">{{personInfoDetailForm.admissionDate}}</el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="参加执法工作日期：">{{personInfoDetailForm.enfoceDate}}</el-form-item>
+                  <el-form-item label="用户职务：">{{
+                    personInfoDetailForm.postName
+                  }}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="毕业学校：">{{personInfoDetailForm.school}}</el-form-item>
+                  <el-form-item label="出生日期：">{{
+                    personInfoDetailForm.birthDate
+                  }}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="毕业证书编号：">{{personInfoDetailForm.graduationNo}}</el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="分配渠道：">{{personInfoDetailForm.disChannelName}}</el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="人员编制：">{{personInfoDetailForm.staffingName}}</el-form-item>
+                  <el-form-item label="参加工作日期：">{{
+                    personInfoDetailForm.workDate
+                  }}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="执法区域：">{{personInfoDetailForm.area}}</el-form-item>
+                  <el-form-item label="入党日期：">{{
+                    personInfoDetailForm.admissionDate
+                  }}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="执法领域：">{{personInfoDetailForm.branchName}}</el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="资格证书编号：">{{personInfoDetailForm.qualificationNo}}</el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="现持省内执法证号：">{{personInfoDetailForm.provinceNo}}</el-form-item>
+                  <el-form-item label="参加执法工作日期：">{{
+                    personInfoDetailForm.enfoceDate
+                  }}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="现持部级执法证号：">{{personInfoDetailForm.ministerialNo}}</el-form-item>
+                  <el-form-item label="毕业学校：">{{
+                    personInfoDetailForm.school
+                  }}</el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="现持海事执法证号：">{{personInfoDetailForm.maritimeNo}}</el-form-item>
+                  <el-form-item label="毕业证书编号：">{{
+                    personInfoDetailForm.graduationNo
+                  }}</el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="执法岗位：">{{personInfoDetailForm.stationName}}</el-form-item>
+                  <el-form-item label="分配渠道：">{{
+                    personInfoDetailForm.disChannelName
+                  }}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="人员编制：">{{
+                    personInfoDetailForm.staffingName
+                  }}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="执法区域：">{{
+                    personInfoDetailForm.area
+                  }}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="执法领域：">{{
+                    personInfoDetailForm.branchName
+                  }}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="资格证书编号：">{{
+                    personInfoDetailForm.qualificationNo
+                  }}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="现持省内执法证号：">{{
+                    personInfoDetailForm.provinceNo
+                  }}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="现持部级执法证号：">{{
+                    personInfoDetailForm.ministerialNo
+                  }}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="现持海事执法证号：">{{
+                    personInfoDetailForm.maritimeNo
+                  }}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="执法岗位：">{{
+                    personInfoDetailForm.stationName
+                  }}</el-form-item>
                 </el-col>
               </el-row>
             </div>
@@ -220,7 +304,7 @@ import {
   getAllPersonApi,
   getDictListDetailByNameApi,
   addMorePublicPersonApi,
-  exportAllPersonApi,
+  exportAllPersonApi
 } from "@/api/inspection";
 // import { getAllPersonApi, } from "@/api/person";
 import iLocalStroage from "@/common/js/localStroage";
@@ -230,7 +314,7 @@ import { mixinInspection } from "@/common/js/inspectionComm";
 export default {
   mixins: [mixinPerson, mixinInspection],
   components: {
-    publicInspectors,
+    publicInspectors
   },
   data() {
     return {
@@ -243,7 +327,7 @@ export default {
         otherUser: "",
         title: "",
         defaultDisplay: true,
-        name: "",
+        name: ""
       },
       personImg: "@/../static/images/img/personInfo/upload_bg.png",
       currentPage: 1, //当前页
@@ -256,13 +340,13 @@ export default {
       rules: {
         pass: [{ required: true, message: "必填项", trigger: "change" }],
         checkPass: [{ required: true, message: "必填项", trigger: "change" }],
-        age: [{ required: true, message: "必填项", trigger: "change" }],
+        age: [{ required: true, message: "必填项", trigger: "change" }]
       },
       zzmmList: [],
       zcList: [],
       workStatusList: [],
       options: [],
-      freshFlag: 1,
+      freshFlag: 1
     };
   },
   methods: {
@@ -277,15 +361,15 @@ export default {
         // stationStatusName: '在岗',
         // oName: '固原综合执法支队',
         current: this.currentPage,
-        size: this.pageSize,
+        size: this.pageSize
       };
       getAllPersonApi(data).then(
-        (res) => {
+        res => {
           console.log(res);
           this.tableData = res.data.records;
           this.totalPage = res.data.total;
         },
-        (error) => {
+        error => {
           // reject(error);
         }
       );
@@ -314,10 +398,10 @@ export default {
     // 导出
     exportMethod(methodName, fileName) {
       let data = {
-        organId: iLocalStroage.gets("userInfo").organId,
+        organId: iLocalStroage.gets("userInfo").organId
       };
       exportAllPersonApi(data)
-        .then((res) => {
+        .then(res => {
           //浏览器兼容，Google和火狐支持a标签的download，IE不支持
           //其他浏览器
           let link = document.createElement("a"); // 创建a标签
@@ -328,7 +412,7 @@ export default {
           link.click();
           URL.revokeObjectURL(objectUrl);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
@@ -337,10 +421,10 @@ export default {
     getDrawerList(data) {
       let _this = this;
       getDictListDetailByNameApi(data).then(
-        (res) => {
+        res => {
           _this.options = res.data;
         },
-        (error) => {
+        error => {
           // reject(error);
         }
       );
@@ -349,7 +433,7 @@ export default {
       // 走公开人员的添加接口
       let _this = this;
       if (this.multipleSelection.length > 0) {
-        this.multipleSelection.forEach((element) => {
+        this.multipleSelection.forEach(element => {
           element.company = iLocalStroage.gets("userInfo").organName;
           // 删除是否在岗
           if (element.stationStatusName) {
@@ -357,14 +441,14 @@ export default {
           }
         });
         addMorePublicPersonApi(this.multipleSelection).then(
-          (res) => {
+          res => {
             if (res.code == 200) {
               _this.freshFlag += JSON.parse(JSON.stringify(_this.freshFlag));
               _this.toggleSelection();
               _this.$message({ type: "success", message: res.msg });
             }
           },
-          (error) => {
+          error => {
             // reject(error);
           }
         );
@@ -374,30 +458,39 @@ export default {
     },
     toggleSelection(rows) {
       if (rows) {
-        rows.forEach((row) => {
+        rows.forEach(row => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });
       } else {
         this.$refs.multipleTable.clearSelection();
       }
-    },
+    }
   },
   mounted() {
     this.getTableData();
     // 获取抽屉
     this.getDrawerList("在岗情况");
-  },
+  }
 };
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
-<style lang="scss" >
+<style lang="scss">
 #inspectorBox {
+  
+  .left-table-person{
+    .el-table__body-wrapper {
+    height: calc(100% - 34px) !important;
+  }
+  }
+  
   .inspector-left {
     float: left;
     border-right: 1px solid #e4e7ed;
     box-sizing: border-box;
+    overflow: auto;
   }
+  
   .inspector-center {
     width: 40px;
     text-align: center;
@@ -410,5 +503,6 @@ export default {
   // .el-form-item {
   //   margin-bottom: 0;
   // }
+  
 }
 </style>

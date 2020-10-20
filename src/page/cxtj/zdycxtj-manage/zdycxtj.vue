@@ -7,7 +7,7 @@
               <div class="dptitle_1 dptitle_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="dptitle_2" >
-               江西省执法数据分析研判系统
+               <!-- 江西省执法数据分析研判系统 -->
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;" >
               <div class="dptitle_3 dptitle_font" @click="zbpage()">人员装备</div>
@@ -123,8 +123,8 @@
               </el-row>
               <el-row style="text-align:center;">
                  <el-row>
-                       <el-col :span="12" ><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;"></el-col>
-                       <el-col :span="12" ><img src="../../../../static/images/map/执行金额.png" style="height:80px;width:100px;"></el-col>
+                       <el-col :span="12" ><img src="../../../../static/images/map/处罚金额.png" style="height:100px;width:100px;"></el-col>
+                       <el-col :span="12" ><img src="../../../../static/images/map/执行金额.png" style="height:100px;width:100px;"></el-col>
                       
                   </el-row>
                   <el-row >

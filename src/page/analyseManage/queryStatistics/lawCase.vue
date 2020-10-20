@@ -7,7 +7,7 @@
             <div class="dptitle_1 dptitle_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="dptitle_2" style="margin-left: 13px;">
-            江西执法数据分析研判系统
+            <!-- 宁夏执法数据分析研判系统 -->
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;">
             <div class="dptitle_3 dptitle_font" @click="zbpage()">人员装备</div>
@@ -105,7 +105,7 @@
               </el-row>
               <el-row style="text-align:center;">
                 <el-row class="mt24">
-                  <el-col :span="12"><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;">
+                  <el-col :span="12"><img src="../../../../static/images/map/处罚金额.png" style="height:100px;width:100px;">
 
                   </el-col>
                   <el-col :span="12">
@@ -127,7 +127,7 @@
 
 <script>
   import echarts from "echarts";
-  import {NxMap} from '@/common/js/mapType.js'
+  import * as mapTypes from '@/common/js/mapType.js'
   import "echarts/map/js/china.js";
   import "echarts/map/js/province/jiangxi.js";
   import "echarts/map/json/province/jiangxi.json";
@@ -140,6 +140,7 @@
   import "echarts/lib/component/tooltip";
   import "../../../../static/css/animate.min.css";
   import {lawCaseApi} from '@/api/analysis/analysisManage.js'
+  import axios from "axios";
 
   export default {
     data() {
@@ -267,7 +268,9 @@
               that.carSortXData =[]
             }
             that.mapData = res.data.mapdata
-            NxMap(that.mapData,'案件数量')
+            axios.get('/static/json/map/changeMap.json').then(res => {
+              mapTypes[res.data.mapType](that.mapData,'案件数量')
+            })
             that.trend()    //年度案发趋势
             that.caseStatus()   //案件状态
             that.caseNumberFun()   //执法机构案件数量
@@ -1930,10 +1933,8 @@
         }, 5000);
       }
     },
-    mounted() {
-      this.getData()
-    },
     created() {
+      this.getData()
       this.timer();
     },
 //   destroyed() {
@@ -2160,7 +2161,7 @@
   }
 
   .main {
-    background-image: url("../../../../static/images/map/边框.png");
+    background-image: url("../../../../static/images/map/baseBorder.png");
     background-size: 100% 100%;
   }
 
@@ -2195,4 +2196,11 @@
   .afd *{
   white-space: pre;
   }
+</style>
+
+<style lang="scss" scoped>
+// 避免打包后全局样式互相影响
+.count{
+  height: 26px;
+}
 </style>

@@ -103,7 +103,23 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="单位" prop="company">
-              <el-input v-model="addForm.company"></el-input>
+               <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
+                <div class="departOrUserTree" style="width:600px;height:436px">
+                  <div class="treeBox" style="height: 100%;">
+                    <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
+                      <span class="custom-tree-node" slot-scope="{ node,data }">
+                        <span>
+                          <i :class="data.children && data.children.length>0 ? 'iconfont law-icon_shou_bag' : ''"></i>
+                          <span :class="data.children ? '' : 'hasMarginLeft'">{{ node.label }}</span>
+                        </span>
+                      </span>
+                    </el-tree>
+                  </div>
+                </div>
+                <el-input slot="reference" v-model="addForm.company" placeholder="请选择机构" :disabled="true" style="width:100%">
+                </el-input>
+              </el-popover>
+              <!-- <el-input v-model="addForm.company"></el-input> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -231,6 +247,13 @@ export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
     return {
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      organData: [],//机构列表
+      defaultExpandedKeys: [],
+      visiblePopover: false,
       multipleSelection: [],
       searchForm: {
         company: "",
@@ -243,6 +266,7 @@ export default {
         sex: '',
         expertNum: '',
         company: '',
+        companyId: '',
         politicalStatus: '',
         birthDate: '',
         unitAddress: '',
@@ -296,6 +320,45 @@ export default {
     }
   },
   methods: {
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    nodeExpand(data, node, jq) {
+      console.log(data);
+      console.log(node);
+      console.log(jq);
+    },
+    // 获取机构
+    getAllOrgan(organId) {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
+            : res.data[0].label;
+          if (res.data[0].children && res.data[0].children.length > 0) {
+            res.data[0].children.forEach(item => {
+              _this.defaultExpandedKeys.push(item.id);
+            });
+          }
+          _this.organData = res.data;
+          if (organId == "root") {
+            _this.currentOrganId = res.data[0].id;
+          } else {
+            _this.currentOrganId = organId;
+          }
+        },
+        err => {
+        }
+      );
+    },
+    handleNodeClick1(data) {
+      this.addForm.company = data.label;
+      this.addForm.companyId = data.id;
+      this.visiblePopover = false;
+    },
     // 查询列表时
     getTableData() {
       let data = {
@@ -413,6 +476,7 @@ export default {
       { name: '职称', option: 2 },
       { name: '专业领域', option: 3 },
       { name: '人员信息-政治面貌', option: 4 }])
+    this.getAllOrgan('root');
   }
 }
 </script>
