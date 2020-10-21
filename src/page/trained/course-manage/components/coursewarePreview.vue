@@ -16,7 +16,7 @@
     </div>
     <div v-if="currentCourse.type === '1'" class="course-content">
       <!-- <iframe :src="currentCourse.src" frameborder="0" style="width: 100%; height: 100%"></iframe> -->
-      <embed
+      <!-- <embed
         name="plugin"
         id="plugin"
         :src="currentCourse.src"
@@ -24,7 +24,12 @@
         internalinstanceid="29"
         class="print_info"
         style="padding: 0px; width: 100%; height:100%; position: relative;"
-      />
+      /> -->
+      <iframe
+        :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(currentCourse.src)"
+        frameborder="0"
+        style="padding: 0px; width: 100%; height:100%; position: relative;">
+      </iframe>
     </div>
     <div class="course-catalog">
       <div class="drawer-btn-wrap" :class="{'hideDrawer': !drawer}">
@@ -135,11 +140,12 @@ export default {
       }
       this.currentCourse.cpId = course.cpId;
       this.currentCourse.couId = course.couId;
-      this.currentCourse.src = course.path;
+      // this.currentCourse.src = course.path;
       // this.currentCourse.src = this.baseUrl + course.path;
-      // this.$util.com_getFileStream(course.path).then( res => {
-      //   this.currentCourse.src = res;
-      // });
+      this.$util.com_getFileStream(course.path).then( res => {
+        console.log(res);
+        this.currentCourse.src = res;
+      });
 
       this.currentCourse.flag = course.flag;
       this.currentCourse.accTime = course.unitTime;

@@ -11,15 +11,22 @@
             :model="formInline"
           >
             <el-row>
-              <el-form-item label="省份" prop="province">
+              <!-- <el-form-item label="省份" prop="province">
                 <el-select v-model="formInline.province" placeholder="省份" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
                 <el-option value="新疆">新疆</el-option>
                 <el-option value="宁夏">宁夏</el-option>
                 </el-select>
-              </el-form-item>
-              <el-form-item label="二级单位" prop="oName">
-                <el-input v-model="formInline.oName"></el-input>
-              </el-form-item>
+              </el-form-item> -->
+             <el-form-item label="所属机构" prop="oid">
+                        <elSelectTree
+                          ref="elSelectTreeObj"
+                          :options="tableDataTree"
+                          :accordion="true"
+                          :props="{'label': 'label', 'value': 'id'}"
+                          @getValue="handleChanged"
+                        ></elSelectTree>
+                        <el-input style="display:none" v-model="formInline.oid"></el-input>
+                      </el-form-item>
               <el-form-item label="执法领域" prop="branchId">
                 <el-select
                   v-model="formInline.branchId"
@@ -35,12 +42,12 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-             <el-form-item label="是否发证" prop="certStatus">
+             <!-- <el-form-item label="是否发证" prop="certStatus">
                 <el-select v-model="formInline.certStatus" placeholder="是否发证" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
                 <el-option value="1">已发证</el-option>
                 <el-option value="0">未发证</el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label=" " label-width="13px">
                 <el-button
                   title="搜索"
@@ -97,12 +104,20 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
+import { mixinPerson } from "@/common/js/personComm.js";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
 export default {
+  mixins: [ mixinPerson ],
+  components: { elSelectTree },
   data() {
     return {
       branchIdsInfo: [], //执法领域列表
       oidsInfo: [], //所属机构列表
+      oids:[],//存放所属机构
+      oName:[],//存放所属机构
+      tableDataTree: [], //所属机构下拉列表值***
       formInline: {
+        oid:"",//所属机构
         oName: "", //所属单位
         province: "", //省份
         branchName: "", //执法门类
@@ -126,7 +141,7 @@ export default {
       let _this = this;
       let data = {
         province: _this.formInline.province,
-        oName: _this.formInline.oName,
+        oid: _this.formInline.oid,
         branchId: _this.formInline.branchId,
         certStatus: _this.formInline.certStatus,
       };
@@ -143,6 +158,10 @@ export default {
         }
       );
     },
+      handleChanged(val) {
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+      this.formInline.oid = val;
+    },
     //性别转换
     sexFormat(row, column) {
       if (row.sex === "0") {
@@ -151,6 +170,29 @@ export default {
         return "女";
       }
     },
+        selectOid(val){
+            let obj={};
+            obj=this.oids.find((item)=>{
+                return item.id=val;
+            })
+            this.formInline.oid=val;    
+        },
+    getDegreeInfo(pid){
+                if(this.oids.length===0){
+                    this.$store.dispatch("findOrganTreeByCurrUser",pid).then(    //根据pid查询字典数据
+                        res=>{
+                            if(res.code===200){
+                                this.oids = res.data;
+                            }else{  
+                                console.info("没有查询到数据");
+                            }
+                        },
+                        err => {
+                            console.log(err);
+                        }
+                    ).catch(()=>{});
+                }
+        },
     //更改每页显示的条数
     handleSizeChange(val) {
       this.pageSize = val;
@@ -191,6 +233,7 @@ export default {
   },
   created() {
     this.getPersonList();
+    this.searchTable();
   }
 };
 </script>
