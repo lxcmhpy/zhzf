@@ -11,15 +11,22 @@
             :model="formInline"
           >
             <el-row>
-              <el-form-item label="省份" prop="province">
+              <!-- <el-form-item label="省份" prop="province">
                 <el-select v-model="formInline.province" placeholder="省份" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
                 <el-option value="新疆">新疆</el-option>
                 <el-option value="宁夏">宁夏</el-option>
                 </el-select>
-              </el-form-item>
-              <el-form-item label="二级单位" prop="oName">
-                <el-input v-model="formInline.oName"></el-input>
-              </el-form-item>
+              </el-form-item> -->
+              <el-form-item label="所属机构" prop="oid">
+                        <elSelectTree
+                          ref="elSelectTreeObj"
+                          :options="tableDataTree"
+                          :accordion="true"
+                          :props="{'label': 'label', 'value': 'id'}"
+                          @getValue="handleChanged"
+                        ></elSelectTree>
+                        <el-input style="display:none" v-model="formInline.oid"></el-input>
+                      </el-form-item>
               <el-form-item label="所属门类" prop="branchId">
                 <el-select
                   v-model="formInline.branchId"
@@ -35,12 +42,12 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-            <el-form-item label="是否发证" prop="certStatus">
+            <!-- <el-form-item label="是否发证" prop="certStatus">
                 <el-select v-model="formInline.certStatus" placeholder="是否发证" remote  @focus="getDepatements('人员信息-所属机构','oidsInfo')">
                 <el-option value="1">已发证</el-option>
                 <el-option value="0">未发证</el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label=" " label-width="13px">
                 <el-button
                   title="搜索"
@@ -97,15 +104,21 @@
 </template>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
 <script>
+import { mixinPerson } from "@/common/js/personComm.js";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
 export default {
+   mixins: [ mixinPerson ],
+  components: { elSelectTree },
   data() {
     return {
       branchIdsInfo: [], //执法领域列表
       oidsInfo: [], //所属机构列表
+      tableDataTree: [], //所属机构下拉列表值***
       formInline: {
+        oid:"",//所属机构
+        oName: "", //所属单位
        ministerialNo: "", //执法证号
         province: "", //省份
-        oid: "", //所属单位
         branchId: "", //执法门类
         certStatus:"", //发证状态
       },
@@ -126,10 +139,10 @@ export default {
     getPersonList() {
       let _this = this;
       let data = {
-        oName :_this.formInline.oName,
-        province :_this.formInline.province,
-        branchId :_this.formInline.branchId,
-        certStatus :_this.formInline.certStatus
+         province: _this.formInline.province,
+        oid: _this.formInline.oid,
+        branchId: _this.formInline.branchId,
+        certStatus: _this.formInline.certStatus,
       };
       this.tableLoading = true;
       _this.$store.dispatch("statisticByChannel", data).then(
@@ -143,6 +156,10 @@ export default {
           this.$message({ type: "error", message: err.msg || "" });
         }
       );
+    },
+        handleChanged(val) {
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+      this.formInline.oid = val;
     },
     //性别转换
     sexFormat(row, column) {
@@ -192,6 +209,7 @@ export default {
   },
   created() {
     this.getPersonList();
+    this.searchTable();
   }
 };
 </script>

@@ -1233,3 +1233,28 @@ export function getVersionApi(data){
     
   });
 }
+
+//保存发证信息并生成pdf
+export function savePersonCardApi(data){
+  return  request({
+    url:  "/inter/issue/saveIssueLicence",
+    method:  "get",
+    showloading: false,
+    params: data,
+    cancelToken:  setCancelSource()
+    
+  });
+}
+
+//导出发证pdf
+export function exportPersonPdfApi(data){
+  return request({
+      responseType:'blob',
+      url: "/inter/issue/printPersonCard",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource(),
+    //  baseUrlType:"LOCALADDR"
+  })
+}
