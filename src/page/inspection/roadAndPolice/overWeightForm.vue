@@ -922,6 +922,7 @@ export default {
     jump(index) {
       this.activeA = [false, false, false, false, false];
       this.activeA[index - 1] = true;
+      // debugger
       if (index >= 1) {
         let numTotal = 0;
         for (let i = 0; i < index; i++) {
@@ -1020,19 +1021,19 @@ export default {
       this.activeA = [true, false, false, false, false];
     },
     scrool2() {
-      let scrolled = this.$refs.link_1.scrollTop;
+      let scrolled = this.$refs.link_2.scrollTop;
       this.activeA = [false, true, false, false, false];
     },
     scrool3() {
-      let scrolled = this.$refs.link_1.scrollTop;
+      let scrolled = this.$refs.link_3.scrollTop;
       this.activeA = [false, false, true, false, false];
     },
     scrool4() {
-      let scrolled = this.$refs.link_1.scrollTop;
+      let scrolled = this.$refs.link_4.scrollTop;
       this.activeA = [false, false, false, true, false];
     },
     scrool5() {
-      let scrolled = this.$refs.link_1.scrollTop;
+      let scrolled = this.$refs.link_5.scrollTop;
       this.activeA = [false, false, false, false, true];
     },
     // 锚点回显-end
@@ -1220,6 +1221,7 @@ export default {
 
     // 调用保存接口
     saveMethod() {
+      // debugger  
       let data = JSON.parse(JSON.stringify(this.carInfo))
       // 处理%
       // console.log(data.secondCheck.overRatio)
@@ -1551,6 +1553,22 @@ export default {
       }
       this.secondCheckOverWeight()
     },
+
+    //格式化时间
+    formatDateTime (date) {  
+      var y = date.getFullYear();  
+      var m = date.getMonth() + 1;  
+      m = m < 10 ? ('0' + m) : m;  
+      var d = date.getDate();  
+      d = d < 10 ? ('0' + d) : d;  
+      var h = date.getHours();  
+      h=h < 10 ? ('0' + h) : h;  
+      var minute = date.getMinutes();  
+      minute = minute < 10 ? ('0' + minute) : minute;  
+      // var second=date.getSeconds();  
+      // second=second < 10 ? ('0' + second) : second;  
+      return y + '-' + m + '-' + d+' '+h+':'+minute;  
+  }
   },
 
   mounted() {
@@ -1591,7 +1609,8 @@ export default {
         this.carinfoId = this.genID()
         this.carInfo.id = this.carinfoId
         this.setLawPersonCurrentP();
-        this.carInfo.firstCheck.firstCheckTime=new Date();
+        this.carInfo.firstCheck.firstCheckTime=this.formatDateTime(new Date) ;
+
       }
       this.$store.commit("set_inspection_OverWeightFresh", false);
       if (!this.inspectionOverWeightId.id) {
