@@ -12,7 +12,7 @@ import {
     getUserListApi, addUserApi, updateUserApi, getUserdeleteApi, getUserdeletesApi, getUserresetApi, getUserallApi, getloglistApi, userBindRoleApi, queryUserBindRoleApi,
     getCaseTypesApi,addOrUpdateCaseTypeApi,deleteCaseTypeApi,getAllFlowApi,getRoadLcDeployApi,addOrUpdateRoadLcDeployApi,saveLawOfficelApi,getRouteListApi,addOrUpdateRouteApi,deleteRouteApi,
     getSectionListApi,addOrUpdateSectionApi,deleteSectionApi,deleteRoadLcDeployApi,getCountryApi,getDrawerListApi,countryTreeApi,getAllGroupOrganApi,getDataListApi,
-    uploadApi,deleteFileByIdApi
+    uploadApi,deleteFileByIdApi,hasUsernameApi
 } from "@/api/system";
 
 import { getLawCategoryListApi, getBannerListApi,addOrEditBannerApi, deleteBannerApi } from "@/api/caseDeploy";

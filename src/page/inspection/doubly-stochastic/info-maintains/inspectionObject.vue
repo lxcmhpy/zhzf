@@ -1,10 +1,10 @@
 <template>
-  <div class="height100">
+  <div class="height100 inspection-object">
     <div class="handlePart">
       <div class="search toggleBox">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
-            <el-form-item label="主体名称：" prop='objectName'>
+            <el-form-item label="对象名称：" prop='objectName'>
               <el-input v-model="searchForm.objectName"></el-input>
             </el-form-item>
             <el-form-item label="项目名称：" prop='projectName'>
@@ -140,7 +140,7 @@
         <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox-aline organClass">
           <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
             <div class="departOrUserTree" style="width:600px;height:436px">
-              <div class="treeBox">
+              <div class="treeBox" style="height: 100%;">
                 <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
                   <span class="custom-tree-node" slot-scope="{ node,data }">
                     <span>

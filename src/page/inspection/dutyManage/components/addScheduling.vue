@@ -283,10 +283,11 @@ export default {
         const lawEnforcementOfficialsIds = data.lawEnforcementOfficialsIds.split(";");
         formData.lawPersonListIndex = [];
         this.lawPersonList && this.lawPersonList.forEach((item, index) => {
-          if(lawEnforcementOfficialsIds.indexOf(item.id) > -1){
+          if(lawEnforcementOfficialsIds.indexOf(item.userId) > -1){
             formData.lawPersonListIndex.push(index);
           }
         });
+        formData.patrolRoute =  formData.patrolRoute ? formData.patrolRoute.split(";") : [];
       }
       
       this.schedulingDay = data.day;

@@ -82,7 +82,7 @@
                   v-bind:class="{ over_flow:formData.organAddress && formData.organAddress.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['organAddress'])"
                 ></el-input>
               </el-form-item>
@@ -99,7 +99,7 @@
                   v-bind:class="{ over_flow:formData.organZipCode && formData.organZipCode.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['organZipCode'])"
                 ></el-input>
               </el-form-item>
@@ -118,7 +118,7 @@
                   v-bind:class="{ over_flow:formData.organContactor && formData.organContactor.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['organContactor'])"
                 ></el-input>
               </el-form-item>
@@ -135,11 +135,11 @@
                   v-bind:class="{ over_flow:formData.organTel && formData.organTel.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxLength="maxLength"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['organTel'])"
                 ></el-input>
               </el-form-item>
-              <u v-if="lineStyleFlag">{{formData.partyTel}}</u>
+              <u v-if="lineStyleFlag">{{formData.organTel}}</u>
             </p>
           </el-col>
         </el-row>

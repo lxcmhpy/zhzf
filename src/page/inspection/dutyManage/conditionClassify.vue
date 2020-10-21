@@ -174,11 +174,11 @@ export default {
         //添加节点
         appendTreeNode() {
             event.stopPropagation();
-            if(this.curTreeNodeNode){
-                this.$refs.addProcessTypeRef.showModal('add',);
-            }else{
-                this.$message({ type: "warning", message: "请选择情况分类！" });
-            }
+            // if(this.curTreeNodeNode){
+                this.$refs.addProcessTypeRef.showModal('add');
+            // }else{
+            //     this.$message({ type: "warning", message: "请选择情况分类！" });
+            // }
         },
         //修改节点
         editTreeNode(nodeData, parent) {
@@ -242,7 +242,7 @@ export default {
         },
         removeTreeNode(nodeData) {
             event.stopPropagation();
-            this.$confirm("确定要删除吗?", "提示", {
+            this.$confirm("确定要删除所选节点及其子节点吗??", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 iconClass: "custom-question",
@@ -353,7 +353,7 @@ export default {
                 customClass: "custom-confirm",
                 }).then(() => {
 
-                    deleteProcessApi(ids).then(
+                    deleteProcessApi({ processTypeId: this.curTypeNode.id, ids }).then(
                         res => {
                             if(res.code == 200) {
                                 this.$message({  type: "success", message: "删除成功"});

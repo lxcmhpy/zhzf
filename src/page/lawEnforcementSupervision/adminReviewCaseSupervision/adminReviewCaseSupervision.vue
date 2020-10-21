@@ -216,6 +216,7 @@ import { queryLawCateByOrganIdApi } from "@/api/caseDeploy";
 import iLocalStroage from "@/common/js/localStroage";
 import markCase from "./dialog/markCase";
 import { caseSupervisionCommonMixins } from "@/common/js/caseHandle/caseSupervisionCommonMixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -246,6 +247,9 @@ export default {
   },
   components: {
     markCase,
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   mixins: [caseSupervisionCommonMixins],
   methods: {
@@ -280,6 +284,9 @@ export default {
       this.$store.commit("setCaseNumber", row.caseNumber);
       this.$store.commit("setIsLawEnforcementSupervision", true);
       this.$store.commit("setLawEnforcementSupervisionType", 'adminCaseSupervision');
+      //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
       this.$router.push({
         name: "case_handle_flowChart",
       });

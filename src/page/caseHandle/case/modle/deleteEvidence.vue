@@ -21,7 +21,7 @@
                 v-bind:class="{ over_flow:docData.party.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
               ></el-input>
             </el-form-item>
           </span>
@@ -36,6 +36,7 @@
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
                 value-format="yyyy-MM-dd"
+                @blur="starttime"
               ></el-date-picker>
             </el-form-item>
           </span>对你（单位）采取了证据登记保存，《证据登记保存清单》案号为：
@@ -47,7 +48,7 @@
                 v-bind:class="{ over_flow:docData.caseNumberCopy.length>12?true:false }"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
               ></el-input>
             </el-form-item>
           </span>。依照《中华人民共和国行政处罚法》第三十七条第二款的规定，本机关决定自
@@ -59,6 +60,7 @@
                 format="yyyy年MM月dd日"
                 placeholder="    年  月  日"
                 value-format="yyyy-MM-dd"
+                @blur="starttime"
               ></el-date-picker>
             </el-form-item>
           </span>起解除该证据登记保存。
@@ -154,6 +156,23 @@ export default {
     }
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.saveDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.saveDate = '';
+      }
+      if (Date.parse(this.docData.relieveDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.relieveDate = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

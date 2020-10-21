@@ -208,7 +208,7 @@ export default {
       formData.append("file", this.coursewareFileList[0].raw);
       formData.append("lessonId", this.addCourseForm.lessonId);
       request({
-        url:  "/system/sys/file/uploadCommon",
+        url:  "/case/sys/file/uploadCommon",
         method:  "POST",
         data: formData,
         contentType: 'multipart/form-data;',

@@ -17,6 +17,7 @@ export const mixinInspection = {
         //--------------------------双随机-开始
         // 查询
         searchTableData() {
+            this.tableData=[]
             this.currentPage = 1;
             this.getTableData()
         },

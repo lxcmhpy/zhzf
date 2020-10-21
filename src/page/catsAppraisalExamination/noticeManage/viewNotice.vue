@@ -33,7 +33,8 @@
                 </div>
             </template>
             <iframe class="print_info" style="padding:0px;width: 960px;margin:0 auto;height:500px" title="dd"
-                :src="storagePath"></iframe>
+                :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(storagePath)"
+                ></iframe>
             <div slot="footer" class="dialog-footer" v-show="showBtn">
                 <el-button type="primary" @click="read">
                     <i class="el-icon-position"></i> 已阅，发送回执
@@ -84,8 +85,6 @@
                 this.$util.com_getFileStream(row.storageId).then((res) => {
                     this.storagePath = res;
                   });
-                // this.storagePath = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + row.storageId + '?time=' +
-                //     new Date().getTime();
                     console.log(this.storagePath)
                 this.visible1 = true;
             },

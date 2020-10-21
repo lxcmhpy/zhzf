@@ -117,14 +117,15 @@ export default {
   data() {
     // 判断用户名是否已存在
     var validateUsername = (rule, value, callback) => {
-      this.$store
-        .dispatch("hasUsername", value)
-        .then(response => {
+      this.$store.dispatch("hasUsername", value).then(res => {
+        if(res.id && this.dialogStatus == "addEquipment"){
+          callback('当前用户名已被使用');
+        }else{
           callback();
-        })
-        .catch(error => {
-          callback('用户名重复');
-        });
+        } 
+      },err => {
+        this.$message({ type: "error", message: err.msg || '' });
+      });
     };
     return {
       depss: [], //数据部门数据
@@ -161,7 +162,7 @@ export default {
           username: [
           { required: true, message: "请输入登录用户名", trigger: "blur" },
           { min: 4, message: "长度大于4个字符", trigger: "blur" },
-          // { validator: validateUsername, trigger: "blur" },
+          { validator: validateUsername, trigger: "blur" },
         ],
         nickName: [
             { required: true, message: "请输入真实姓名", trigger: "blur" },

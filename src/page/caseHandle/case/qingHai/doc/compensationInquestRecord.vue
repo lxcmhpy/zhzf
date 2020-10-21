@@ -27,7 +27,7 @@
                     v-model="docData.caseName"
                     :disabled="fieldDisabled(propertyFeatures['caseName'])"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
             </td>
@@ -115,7 +115,7 @@
                     v-model="docData.partyName"
                     :disabled="fieldDisabled(propertyFeatures['partyName'])"
                     :autosize="{ minRows: 1, maxRows: 2}"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
             </td>
@@ -158,7 +158,7 @@
                     v-model="docData.staffUnitAndPosition1"
                     v-bind:class="{ over_flow:docData.staffUnitAndPosition1 && docData.staffUnitAndPosition1.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['staffUnitAndPosition1'])"
                   ></el-input>
                 </el-form-item>
@@ -202,7 +202,7 @@
                     v-model="docData.staffUnitAndPosition2"
                     v-bind:class="{ over_flow:docData.staffUnitAndPosition2 && docData.staffUnitAndPosition2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}"
-                    placeholder="\"
+                    placeholder="/"
                     maxlength="35"
                     :disabled="fieldDisabled(propertyFeatures['staffUnitAndPosition2'])"
                   ></el-input>
@@ -222,7 +222,7 @@
                     v-model="docData.partyPeople"
                     :disabled="fieldDisabled(propertyFeatures['partyPeople'])"
                     :maxlength="nameLength"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
             </td>
@@ -240,7 +240,7 @@
                     :disabled="fieldDisabled(propertyFeatures['partyPeopleUnitAndPosition'])"
                     :autosize="{ minRows: 1, maxRows: 2}"
                     :maxlength="nameLength"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
             </td>
@@ -259,7 +259,7 @@
                     v-model="docData.pNamePeople"
                     :disabled="fieldDisabled(propertyFeatures['pNamePeople'])"
                     :maxlength="nameLength"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
             </td>
@@ -276,7 +276,7 @@
                     v-model="docData.pNamePeopleUnitAndPosition"
                     :disabled="fieldDisabled(propertyFeatures['pNamePeopleUnitAndPosition'])"
                     :autosize="{ minRows: 1, maxRows: 2}"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
             </td>
@@ -292,7 +292,7 @@
                 >
                   <el-input
                     v-model="docData.invited"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['invited'])"
                   ></el-input>
                 </el-form-item>
@@ -310,7 +310,7 @@
                     v-model="docData.invitedUnitAndPosition"
                     v-bind:class="{ over_flow:docData.invitedUnitAndPosition && docData.invitedUnitAndPosition.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['invitedUnitAndPosition'])"
                   ></el-input>
                 </el-form-item>
@@ -329,7 +329,7 @@
                     class="inline-input"
                     v-model="docData.recorder"
                     :fetch-suggestions="querySearch"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['recorder'])"
                   ></el-autocomplete>
                 </el-form-item>
@@ -345,7 +345,7 @@
                   <el-input
                     v-model="docData.recorderUnitAndPosition"
                     
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['recorderUnitAndPosition'])"
                   ></el-input>
                 </el-form-item>
@@ -364,7 +364,7 @@
                     :disabled="fieldDisabled(propertyFeatures['inquestResult'])"
                     :autosize="{ minRows: 1, maxRows: 10}"
                     maxlength="300"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
                 <p>勘验结果如下：</p>
@@ -378,7 +378,7 @@
                     :disabled="fieldDisabled(propertyFeatures['result'])"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     maxlength="100"
-                    placeholder="\"
+                    placeholder="/"
                   ></el-input>
                 </el-form-item>
             </td>
@@ -422,6 +422,18 @@ export default {
     var validateStartTime = (rule, value, callback) => {
       let parseInquestStartTime = this.docData.inquestStartTime;
       let parseinquestEndTime = this.docData.inquestEndTime;
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.inquestStartTime = ""
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if (Date.parse(parseInquestStartTime) > Date.parse(parseinquestEndTime)) {
         this.$message({
           showClose: true,

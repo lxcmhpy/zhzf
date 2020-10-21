@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box printNumbers_box" id="adminCoerciveMeasure-print" style="width:790px; margin:0 auto;">
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
@@ -25,7 +25,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -38,7 +38,7 @@
                   v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
               </el-form-item>
@@ -55,7 +55,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -66,7 +66,7 @@
                   v-model="formData.partyTel"
                   :maxLength="maxLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -80,7 +80,7 @@
                   v-model="formData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -93,7 +93,7 @@
                   v-model="formData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -107,7 +107,7 @@
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -118,7 +118,7 @@
                   v-model="formData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -131,7 +131,7 @@
                   v-model="formData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -139,7 +139,7 @@
         </table>
         <p>
           <el-form-item prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])" class="pdf_datapick" style="width: 150px">
-            <el-date-picker :disabled="fieldDisabled(propertyFeatures['afsj'])" v-model="formData.afsj" type="date"
+            <el-date-picker @blur="startTime2" :disabled="fieldDisabled(propertyFeatures['afsj'])" v-model="formData.afsj" type="date"
                             format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -184,7 +184,7 @@
                 </span>至
           <span>
                   <el-form-item prop="measureEndDate" :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])" style="width: 150px" class="pdf_datapick">
-                    <el-date-picker v-model="formData.measureEndDate" type="date" format="yyyy年MM月dd日"
+                    <el-date-picker v-model="formData.measureEndDate" type="date" @blur="startTime1" format="yyyy年MM月dd日"
                                     value-format="yyyy-MM-dd" placeholder="  年  月  日" :disabled="fieldDisabled(propertyFeatures['measureEndDate'])">
                     </el-date-picker>
                   </el-form-item>
@@ -216,7 +216,7 @@
         <div class="pdf_seal">
           <span>交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker @blur="startTime2" v-model="formData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -289,8 +289,12 @@
               <el-table-column prop="spec" label="规格" align="center">
                 <template slot-scope="scope">
                   <el-select v-model="scope.row.spec" placeholder="">
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label">
-                    </el-option>
+                    <el-option
+                      v-for="item in options" 
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
+                    ></el-option>
                   </el-select>
                 </template>
               </el-table-column>
@@ -335,6 +339,9 @@
 import {
   testApi
 } from "@/api/caseHandle";
+import {
+  getDictListDetailByNameApi
+} from "@/api/system";
   export default {
     components: {
       casePageFloatBtns
@@ -360,7 +367,7 @@ import {
         var diff = new Date(value).getTime() - new Date(this.formData.measureStartDate).getTime();
         var days = diff / 24 / 60 / 60 / 1000;
         console.log("差几天", days)
-        if (days > 30) {
+        if (days > 29) {
           return callback("措施起止期限不得超过30日");
         }
         if (days <= 0) {
@@ -489,30 +496,6 @@ import {
           }
         ],
         options: [
-          {
-            value: '1',
-            label: ' '
-          },
-          // {
-          //   value: '1',
-          //   label: '(空)'
-          // },
-          {
-            value: '2',
-            label: '份'
-          },
-          {
-            value: '3',
-            label: '套'
-          },
-          {
-            value: '4',
-            label: '个'
-          },
-          {
-            value: '5',
-            label: '件'
-          }
         ],
         measurOptions: [
           {
@@ -628,7 +611,42 @@ import {
       },
       startTime() {
         if (this.formData.measureStartDate) {
-          this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 30 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+          if (Date.parse(this.formData.measureStartDate) < Date.parse(this.formData.lasj)) {
+            this.$message({
+              message: '开始时间不得小于立案时间',
+              type: 'warning'
+            });
+            this.formData.measureStartDate = '';
+            return;
+          }
+          this.$set(this.formData, 'measureEndDate', new Date(new Date(this.formData.measureStartDate).getTime() + 29 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+        }
+      },
+      startTime1(){
+        if (Date.parse(this.formData.measureEndDate) < Date.parse(this.formData.measureStartDate)) {
+          this.$message({
+            message: '结束时间不得小于开始时间',
+            type: 'warning'
+          });
+          this.formData.measureEndDate = '';
+          this.formData.measureStartDate = '';
+        }
+      },
+      starttime2(){
+        console.log('案发时间=='+this.formData.lasj)
+        if (Date.parse(this.formData.makeDate) < Date.parse(this.formData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.formData.makeDate = '';
+        }
+        if (Date.parse(this.formData.afsj) < Date.parse(this.formData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.formData.afsj = '';
         }
       },
       //根据用户的组织机构ID获取复议机构和诉讼机构
@@ -676,6 +694,15 @@ import {
            this.formData.measureStartDate = new Date().format('yyyy-MM-dd');
            this.startTime();
         }
+      },
+      //获取规格单位
+      getUnit(){
+        getDictListDetailByNameApi('扣押物品规格').then(res=>{
+          console.log('规格',res);
+          this.options = res.data;
+          //添加一个空的数据
+          this.options.unshift({name:' ',note:' ',id:'123'})
+        }).catch(err=>{throw new Error(err)})
       }
 
 
@@ -686,6 +713,7 @@ import {
     created() {
       this.isOverStatus();
       this.setData();
+      this.getUnit()
     }
   }
 </script>

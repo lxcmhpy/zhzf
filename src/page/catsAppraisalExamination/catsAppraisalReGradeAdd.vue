@@ -260,8 +260,7 @@
                 this.$util.com_getFileStream(this.form.storageId).then((res) => {
                     storagePath = res;
                   });
-                // window.open(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + this.form.storageId + '?time=' +
-                //     new Date().getTime(), '_blank')
+                
                 window.open(storagePath,'_blank');
             },
             commitData() {

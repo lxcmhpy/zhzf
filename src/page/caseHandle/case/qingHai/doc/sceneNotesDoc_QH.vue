@@ -26,10 +26,10 @@
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
                     error
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['afdd'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
                 </el-form-item>
               </td>
               <td>执法时间</td>
@@ -125,7 +125,7 @@
                     v-bind:class="{ over_flow:docData.recorder.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="adressLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['recorder'])"
                   ></el-input>
                 </el-form-item>
@@ -163,7 +163,7 @@
                     type="textarea"
                     v-model="docData.certificateId2"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}"
                     :disabled="fieldDisabled(propertyFeatures['certificateId2'])"
@@ -187,7 +187,7 @@
                   <el-input
                     v-model="docData.scenePeopelName"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     @input="changeScenePeopelName"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopelName'])"
                   ></el-input>
@@ -202,7 +202,7 @@
                   <el-select
                     v-model="docData.scenePeopelSex"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopelSex'])"
                   >
                     <el-option :value="0" label="男"></el-option>
@@ -222,7 +222,7 @@
                     type="textarea"
                     v-model="docData.scenePeopelIdNo"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     v-bind:class="{ over_flow:docData.scenePeopelIdNo.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopelIdNo'])"
@@ -238,7 +238,7 @@
                   <el-select
                     v-model="docData.scenePeopeRelation"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     @change="changeRelationWithCase"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeRelation'])"
                   >
@@ -265,7 +265,7 @@
                     v-bind:class="{ over_flow:docData.scenePeopeUnitPosition.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeUnitPosition'])"
                   ></el-input>
                 </el-form-item>
@@ -280,7 +280,7 @@
                     v-model="docData.scenePeopeTel"
                     minlength="11"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeTel'])"
                   ></el-input>
                 </el-form-item>
@@ -297,7 +297,7 @@
                     v-model="docData.scenePeopeAddress"
                     minlength="11"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeAddress'])"
                   ></el-input>
                 </el-form-item>
@@ -307,7 +307,7 @@
               <td>车(船)号</td>
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item prop="vehicleShipId" :rules="fieldRules('vehicleShipId',propertyFeatures['vehicleShipId'])">
-                  <el-input v-model="docData.vehicleShipId" :maxLength="maxLength" placeholder="\" :disabled="fieldDisabled(propertyFeatures['vehicleShipId'])"></el-input>
+                  <el-input v-model="docData.vehicleShipId" :maxLength="maxLength" placeholder="/" :disabled="fieldDisabled(propertyFeatures['vehicleShipId'])"></el-input>
                 </el-form-item>
               </td>
               <td>车(船)型</td>
@@ -335,7 +335,7 @@
                         v-model="docData.illegalFacts"
                         rows="4"
                         maxlength="400"
-                        placeholder="\"
+                        placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
                       <span class="overflow_describe_JX" style="padding-bottom:-6px;">现场情况：</span>
@@ -399,7 +399,7 @@
                     :autosize="{ minRows: 1, maxRows: 3}"
                     maxlength="60"
                     v-model="docData.note"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['note'])"
                   ></el-input>
                 </el-form-item>
@@ -462,6 +462,17 @@ export default {
         .replace("分", "");
       let a = parseInquestStartTime.split(" ");
       let parseinquestEndTime = a[0] + " " + this.docData.enforceEndTime;
+      if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.enforceStartTime = "";
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if (Date.parse(parseInquestStartTime) > Date.parse(new Date())) {
         this.$message({
           showClose: true,

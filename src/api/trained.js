@@ -612,3 +612,55 @@ export function setTrainResult(data){
       cancelToken: setCancelSource()
   })
 }
+
+// 上传培训课程相关文件
+export function uploadTrainedFile(data){
+  return  request({
+    url:  "/person/fileUploadDownHdfs/uploadFileHdfs",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+
+//获取文件流
+const getFileStreamByFileNameApi = function(fileName) {
+  return request({
+    url: "/person/fileUploadDownHdfs/downFileHdfs",
+    method: "post",
+    data: vm.$qs.stringify({ filePath: fileName }),
+    showloading: true,
+    loadingType: 'loadPart',
+    responseType:'blob',
+    cancelToken: setCancelSource()
+    // url: `/person/fileUploadDownHdfs/previewHdfs`,
+    // method: "get",
+    // params: { filePath: fileName },
+    // showloading: true,
+    // loadingType: 'loadPart',
+    // responseType:'blob',
+    // cancelToken: setCancelSource()
+  });
+}
+
+export async function getFileStream (fileName) {
+  let fileStreamRes;
+  try{
+    fileStreamRes = await getFileStreamByFileNameApi(fileName);
+  }catch(err){throw new Error(err);}
+  let url = null;
+  if (window.createObjectURL != undefined) { // basic
+    url = window.createObjectURL(fileStreamRes);
+  } else if (window.webkitURL != undefined) { // webkit or chrome
+    try {
+      url = window.webkitURL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  } else if (window.URL != undefined) { // mozilla(firefox)
+    try {
+      url = window.URL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  }
+  return url;
+}

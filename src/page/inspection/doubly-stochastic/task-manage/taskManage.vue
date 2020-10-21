@@ -60,6 +60,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod1(scope.row)" type="text">修改</el-button>
@@ -86,6 +87,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="checkRange" label="检查范围" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="200px">
             <template slot-scope="scope">
               <el-button @click="editMethod2(scope.row)" type="text">修改</el-button>
@@ -242,8 +244,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('addForm',0)">暂存</el-button>
-          <el-button type="primary" @click="submitForm('addForm',1)">保存</el-button>
+          <el-button type="primary" @click="submitForm('addForm',0)" v-if="!viewFlag">暂存</el-button>
+          <el-button type="primary" @click="submitForm('addForm',1)" v-if="!viewFlag">保存</el-button>
         </div>
       </el-dialog>
       <el-dialog :title='dialogStatus2+"省市场监管领域任务"' :visible.sync="dialogFormVisible2" @close="resetForm('addForm2')" width="70%">
@@ -390,8 +392,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm2('addForm2',0)">暂存</el-button>
-          <el-button type="primary" @click="submitForm2('addForm2',1)">保存</el-button>
+          <el-button type="primary" @click="submitForm2('addForm2',0)" v-if="!viewFlag">暂存</el-button>
+          <el-button type="primary" @click="submitForm2('addForm2',1)" v-if="!viewFlag">保存</el-button>
         </div>
       </el-dialog>
     </div>
@@ -482,7 +484,7 @@ export default {
         checkSubject: "",
         taskName: '',
         taskArea: '省交通运输厅领域',
-        selectValue:0
+        selectValue: 0
       },
       isShow: false,
       addForm: {
@@ -634,6 +636,7 @@ export default {
       LawOfficerList: [],//执法人员列表
       alreadyChooseAdminPerson: [],//已选择管理人员列表
       searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
+      viewFlag: false
     }
   },
   methods: {
@@ -644,7 +647,7 @@ export default {
         taskName: this.searchForm.taskName,
         taskArea: this.searchForm.taskArea,
         organName: iLocalStroage.gets("userInfo").organName,//机构名称
-        organId: this.searchForm.selectValue==1?iLocalStroage.gets("userInfo").organId:'',
+        organId: this.searchForm.selectValue == 1 ? iLocalStroage.gets("userInfo").organId : '',
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -799,6 +802,7 @@ export default {
     },
     editMethod1(row) {
       this.eidtFlag = true;
+      this.viewFlag = false;
       this.getCountByOrganName(1)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
@@ -813,6 +817,7 @@ export default {
     },
     viewMethod(row) {
       this.eidtFlag = false;
+      this.viewFlag = true;
       this.getCountByOrganName(1)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
@@ -828,6 +833,7 @@ export default {
     // 修改
     editMethod2(row) {
       this.eidtFlag = true;
+      this.viewFlag = false;
       this.getCountByOrganName(2)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []
@@ -844,6 +850,7 @@ export default {
     },
     viewMethod2(row) {
       this.eidtFlag = false;
+      this.viewFlag = true;
       this.getCountByOrganName(2)
       let data = JSON.parse(JSON.stringify(row))
       data.timeList = []

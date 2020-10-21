@@ -121,9 +121,9 @@
             </el-form-item>
           </div>
           <div class="item" v-if="caseState != 'myApproval'">
-            <el-form-item label="受案时间" prop="acceptTimeArray">
+            <el-form-item label="受案时间">
               <el-date-picker
-                v-model="caseSearchForm.acceptTimeArray"
+                v-model="acceptTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -192,7 +192,6 @@ export default {
         applyEndTime: "",
         endCaseStartTime: "",
         endCaseEndTime: "",
-        acceptTimeArray: [],
         endCaseTimeArray: [],
         applyTimeArray: [],
       },
@@ -201,7 +200,9 @@ export default {
       caseTypeList:[],//类型
       caseStateList:[],//状态
       dictId: this.caseState=="waitDeal" ?  "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
-      approvalInglinkList:['立案登记','案件调查报告','结案报告']
+      approvalInglinkList:['立案登记','案件调查报告','结案报告'],
+      acceptTimeArray: [],
+
     };
   },
   computed: {
@@ -256,8 +257,8 @@ export default {
         this.caseSearchForm.applyStartTime = this.caseSearchForm.applyTimeArray[0]
         this.caseSearchForm.applyEndTime = this.caseSearchForm.applyTimeArray[1]
 
-        this.caseSearchForm.acceptStartTime = this.caseSearchForm.acceptTimeArray[0]
-        this.caseSearchForm.acceptEndTime = this.caseSearchForm.acceptTimeArray[1]
+        this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0]
+        this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
 
         this.caseSearchForm.endCaseStartTime = this.caseSearchForm.endCaseTimeArray[0]
         this.caseSearchForm.endCaseEndTime = this.caseSearchForm.endCaseTimeArray[1]

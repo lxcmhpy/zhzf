@@ -9,7 +9,7 @@
             <td rowspan="3">案由</td>
             <td rowspan="3" colspan="4" class="color_DBE4EF">
               <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input type="textarea" v-model="formData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 6}" maxlength="90" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 6}" maxlength="90" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td rowspan="3" style="width:40px">案件承办人</td>
@@ -40,7 +40,7 @@
             </td>
             <td class="color_DBE4EF">
               <el-form-item prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
-                <el-input type="textarea" v-model="formData.certificateId2" :maxLength='maxLength' placeholder="\" :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
+                <el-input type="textarea" v-model="formData.certificateId2" :maxLength='maxLength' placeholder="/" :autosize="{ minRows: 1, maxRows: 2}" :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -48,7 +48,7 @@
             <td colspan="9" class="color_DBE4EF">
               赔（补）偿决定：
               <el-form-item prop="decision" :rules="fieldRules('decision',propertyFeatures['decision'])">
-                <el-input type="textarea" v-model="formData.decision" :rows="15" :disabled="fieldDisabled(propertyFeatures['decision'])" maxlength="300" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.decision" :rows="15" :disabled="fieldDisabled(propertyFeatures['decision'])" maxlength="300" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -56,7 +56,7 @@
             <td colspan="9" class="color_DBE4EF table_seal">
               执行情况：<br />
               <el-form-item prop="process" :rules="fieldRules('process',propertyFeatures['process'])">
-                <el-input type="textarea" v-model="formData.process" :rows="7" :disabled="fieldDisabled(propertyFeatures['process'])" maxlength="300" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.process" :rows="7" :disabled="fieldDisabled(propertyFeatures['process'])" maxlength="300" placeholder="/"></el-input>
               </el-form-item>
               <div class="pdf_seal">
                 <p>签名：{{formData.approvePeo}}</p>
@@ -71,7 +71,7 @@
             <td colspan="9" class="color_DBE4EF">
               备注：
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'])" style="width: calc(100% - 50px);">
-                <el-input type="textarea" v-model="formData.note" :rows="4" maxlength="100" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.note" :rows="4" maxlength="100" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>

@@ -14,7 +14,7 @@
             ref="addProcessTypeRef"
             :rules="rules"
         >
-            <el-row v-if="handelType == 'add'">
+            <el-row v-if="handelType == 'add' && curTreeNodeNode">
                 <el-form-item label="分类等级" prop="levelsType">
                     <el-select :disabled="handelType == 'edit'" v-model="processTypeForm.levelsType" @change="levelsTypeChange" placeholder="请选择">
                         <el-option label="同级" value="1" >同级</el-option>
@@ -170,10 +170,11 @@ export default {
                 // const fromData = { pName: data.name, levels: parseInt(data.levels) + 1, parentId: data.id};
                 this.dialogTitle = "新增情况分类";
                 this.processTypeForm.levelsType = "1";
-                this.processTypeForm.levels = this.curTreeNodeNode.data.levels + "";
-                this.processTypeForm.parentId = this.curTreeNodeNode.parent.data.id;
+                this.processTypeForm.levels = data ? this.curTreeNodeNode.data.levels + "" : "1";
+                this.processTypeForm.parentId = data ? this.curTreeNodeNode.parent.data.id : "";
                 this.getProcessTypeByLevels(parseInt(this.processTypeForm.levels)-1);
             }else{//修改
+                data.children = [];
                 const levels = parseInt(data.levels);
                 levels != 1 && this.getProcessTypeByLevels(levels - 1);
                 const fromData = data;

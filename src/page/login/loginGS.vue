@@ -36,7 +36,7 @@
                   </el-collapse-transition>
                 </div>
                 <el-form-item class="codeInputBox" v-if="isShow">
-                  <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
+                  <vue-simple-verify ref="verify" :width='386' tips='向右滑动完成验证' @success="pass()" />
                 </el-form-item>
                 <div class="forgetPass">
                   <div v-show="errorMessage" class="error-pwd">{{errorMessage}}</div>
@@ -46,13 +46,14 @@
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
                 </div>
                 <div class="login_btm">
-                  <!-- <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link> -->
-                  <div class="left_float margin24 wechat_box">
+                  <!-- <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link>  -->
+                  <el-link type="primary" :underline="false" class="left_float"  download="执法app">APP下载</el-link> 
+                  <!-- <div class="left_float margin24 wechat_box">
                     <span @mouseenter="enter" @mouseleave="leave" class="wechat-text">微信公众号</span>
                     <div class="wechat" v-show="weChatFlag">
                       <img src="../../../static/images/img/login/weChat.png" alt="">
                     </div>
-                  </div>
+                  </div> -->
                   <el-link type="primary" :underline="false" class="right_float" @click="resetChange(true)">忘记密码</el-link>
 
                 </div>
@@ -60,7 +61,7 @@
               </el-form>
             </div>
             <div class="formC1" v-if="!check">
-              <div>请使用<span class="blue">执法APP</span>扫码登录</div>
+              <div>请使用<span class="blue-text">执法APP</span>扫码登录</div>
               <div class="code_box">
                 <img src="../../../static/images/img/login/loginCode.png" alt="">
               </div>
@@ -68,6 +69,7 @@
             </div>
           </div>
           <div class="footer">
+            <div class="myline"></div>
             <center>
               <span class="blue-text">使用教程</span>
               |
@@ -104,6 +106,7 @@
             </div>
           </div>
           <div class="footer">
+            
             <center>
               <span class="blue-text">使用教程</span>
               |
@@ -530,42 +533,83 @@ export default {
 </style>
 <style lang="scss" src="@/assets/css/verify.scss">
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
  #loginBgGS{
    background-image: url('../../../static/images/img/login/login_gs.jpg');
    background-repeat: no-repeat;
     background-size: cover;
     display: block;
     .rightC{
-      margin-top: 15%;
+      margin-top: 12.5%;
+      background: #fff;
+      margin-right: 5%;
+      width: 480px;
+      height: 500px;
+      box-shadow: 0 6px 27px 0px rgba(30,46,77,0.3);
+      border-radius: 8px;
       .form_box{
         min-height: auto;
+        width: 386px;
         .back{
           display: none;
         }
       }
-      .checkText{
-        font-size: 26px;
+      input:-webkit-autofill{
+        -webkit-box-shadow:0 0 0 1000px white inset !important;
       }
       .title{
         margin-bottom: 20px;
+        margin-top: 45px;
+        font-size: 20px;
+        color:#828795;
       }
-      .formC1 .login_btm{
-        height: 70px;
+      .checkText{
+        font-size: 26px;
+        color: #242729;
       }
-      .formC1 .wechat_box{
-        height: 70px;
-        .wechat{
-          width:80px;
-          height: 80px;
-          img{
-            width: 100%;
+      .formC1 {
+        .el-input .el-input__prefix{
+          top: 3px;
+          left: 8px;
+        }
+        .el-input__inner{
+          border-top: 1px solid #DAE0E8;
+          border-bottom: 1px solid #DAE0E8;
+          border-left: 1px solid #DAE0E8;
+          border-right: 1px solid #DAE0E8;
+        }
+        button{
+          margin-top: 0;
+        }
+        .login_btm{
+          height: 70px;
+        }
+        .wechat_box{
+          height: 70px;
+          .wechat{
+            width:80px;
+            height: 80px;
+            img{
+              width: 100%;
+            }
           }
         }
       }
+      
     }
     .footer{
       margin-top: 0;
+      .myline{
+        height: 1px;
+        background: #4B4F5A;
+        opacity: 0.1;
+        width: 386px;
+        margin: auto;
+        margin-bottom: 25px;
+      }
+      .blue-text{
+        color: #999999;
+      }
     }
  }
 </style>

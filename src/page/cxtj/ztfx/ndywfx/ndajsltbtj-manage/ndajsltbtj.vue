@@ -131,15 +131,15 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(42,170,227)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(42,170,227)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           },
           {
             name: this.value3+"年",
@@ -148,26 +148,25 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(25,46,94)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(25,46,94)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           }
         ]
       });
     },
 
-    
+   //查询-----------------------------------------------------------------------------------------------------
     search(val) {
       let data = {
         year:val
       };
-      let _this = this;
       ndajsltbtj(data).then(res => {   
       
          var map={};
@@ -188,12 +187,7 @@ export default {
              map2.push(0);
           }
         }
-       
-        
           this.data1=map2; 
-         
-
-          
           this.drawLine();
       });
       err => {
@@ -204,7 +198,6 @@ export default {
       let data = {
         year:val
       };
-      let _this = this;
       ndajsltbtj(data).then(res => {   
     
          var map={};
@@ -235,8 +228,11 @@ export default {
       };
     },
      select(val){
-     this.search(val-1);
-     this.search2(val);
+       if(val!=null){
+         this.search(val-1);
+          this.search2(val);
+       }
+     
    }
   },
   mounted() {

@@ -81,17 +81,17 @@
           },
           {
             activeName: 'dayView',
-            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
+            value: String(new Date().getFullYear()) + '-' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))),
             type: "month",
             placeholder: "选择月",
-            valueFormat: "yyyy MM"
+            valueFormat: "yyyy-MM"
           },
           {
             activeName: 'hoursView',
-            value: String(new Date().getFullYear()) + ' ' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + ' ' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
+            value: String(new Date().getFullYear()) + '-' + ((new Date().getMonth() + 1) > 9 ? String((new Date().getMonth() + 1)) : ('0'+String((new Date().getMonth() + 1)))) + '-' + (new Date().getDate() > 9 ? String(new Date().getDate()) : ('0'+String(new Date().getDate()))),
             type: "date",
             placeholder: "选择日期",
-            valueFormat: "yyyy MM dd"
+            valueFormat: "yyyy-MM-dd"
           },
         ],
         tabPans: [
@@ -151,8 +151,8 @@
       handleSelect() {
         let valMap = new Map([
           [ 'monthView', this.dateList[0].value ],
-          [ 'dayView', this.dateList[1].value.split(" ") ],
-          [ 'hoursView', this.dateList[2].value.split(" ") ],
+          [ 'dayView', this.dateList[1].value ],
+          [ 'hoursView', this.dateList[2].value ],
         ])
         let mechanism = this.logForm.mechanism
         let category = this.logForm.category
@@ -166,22 +166,19 @@
           params = {
             mechanism,
             category,
-            year: valMap.get(this.activeName)
+            data: valMap.get(this.activeName)
           }
         } else if (this.activeName === 'dayView') {
           params = {
             mechanism,
             category,
-            year: valMap.get(this.activeName)[0],
-            month: valMap.get(this.activeName)[1]
+            data: valMap.get(this.activeName),
           }
         } else if (this.activeName === 'hoursView') {
           params = {
             mechanism,
             category,
-            year: valMap.get(this.activeName)[0],
-            month: valMap.get(this.activeName)[1],
-            day: valMap.get(this.activeName)[2],
+            data: valMap.get(this.activeName),
           }
         }
         this.getData(params)
@@ -210,7 +207,7 @@
               let echartsData = []
               Object.keys(data).map(key => {
                 if(data[key].length === 0) {
-                  echartsData.push({years:key, value: 0})
+                  echartsData.push({name:key, value: 0})
                 } else {
                   echartsData.push(data[key][0])
                 }
@@ -230,10 +227,10 @@
         let type = this.activeName
         // 时间折线图横坐标写死
         if(type === 'hoursView') {
-          xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12']
+          xAxis = ['1时','2时','3时','4时','5时','6时','7时','8时','9时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时','24时',]
           xAxis.map(item => {
             data.map(dataItem => {
-              if(dataItem.hours === item) {
+              if(dataItem.name === item.substring(0, item.length - 1)) {
                 series.push(dataItem.value)
               } else {
                 series.push(0)
@@ -242,17 +239,12 @@
           })
         } else {
           data.map(item => {
-            let years = item.years || '-',
-            month = item.month || '-',
-            day = item.day || '-'
-            // hours = item.hours || '-'
-
             if(type === 'yearView') {
-              xAxis.push(years)
+              xAxis.push(item.name+'年')
             } else if (type === 'monthView') {
-              xAxis.push((years + '/' + month))
+              xAxis.push(item.name+'月')
             } else if (type === 'dayView') {
-              xAxis.push((years + '/' + month + '/' + day))
+              xAxis.push(item.name+'日')
             }
             series.push(item.value || 0)
           })
@@ -264,6 +256,12 @@
        * 折线图数据格式
        */
       drawCharts({ xAxis, series }) {
+        // if(this.activeName === 'hoursView') {
+        //   xAxis.map(item => {
+        //     item = item + '时'
+        //   })
+        // }
+
         let idMap = new Map([
           [ 'yearView', 'yearChart' ],
           [ 'monthView', 'monthChart' ],
@@ -288,7 +286,8 @@
             },
             xAxis: {
               type: "category",
-              data: xAxis
+              boundaryGap: false,
+              data: xAxis,
             },
             yAxis: {
               type: "value"

@@ -78,13 +78,13 @@
             </el-form-item>
           </div>
         </div>
-        <div>
+        <!-- <div>
           <div class="itemOne">
             <el-form-item label="违法行为">
               <el-input v-model="inforForm.caseCauseName" :disabled="true"></el-input>
             </el-form-item>
           </div>
-        </div>
+        </div> -->
         <div>
           <div class="item">
             <el-form-item label="程序类型">
@@ -245,7 +245,7 @@
         </div>
         <div v-show="partyTypePerson=='1'">
           <div class="itemThird">
-            <el-form-item label="性别">
+            <el-form-item label="性别" prop="partySex">
               <el-select
                 placeholder="请选择"
                 v-model="inforForm.partySex"
@@ -275,7 +275,7 @@
         </div>
         <div v-show="partyTypePerson=='1'">
         <div class="itemThird">
-            <el-form-item label="省/市/区">
+            <el-form-item label="省/市/区" prop="provincesAddressArray">
                 <el-cascader
                     ref="areaCascader"
                     v-model="inforForm.provincesAddressArray"
@@ -288,7 +288,7 @@
             </el-form-item>
           </div>
           <div class="itemThird">
-            <el-form-item label="详细地址">
+            <el-form-item label="详细地址" prop="partyAddress">
               <el-input v-model="inforForm.partyAddress"></el-input>
             </el-form-item>
           </div>
@@ -335,7 +335,7 @@
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemSmall">
-            <el-form-item label="统一社会信用代码" class="lable-height18px">
+            <el-form-item label="统一社会信用代码" prop="socialCreditCode" class="lable-height18px">
               <el-input v-model="inforForm.socialCreditCode"></el-input>
             </el-form-item>
           </div>
@@ -352,14 +352,14 @@
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="法定代表人">
+            <el-form-item label="法定代表人" prop="partyManager">
               <el-input v-model="inforForm.partyManager" maxlength="20"></el-input>
             </el-form-item>
           </div>
         </div>
         <div v-show="partyTypePerson!='1'">
           <div class="itemOne">
-            <el-form-item label="地址">
+            <el-form-item label="地址" prop="partyUnitAddress">
               <el-input v-model="inforForm.partyUnitAddress" maxlength="40"></el-input>
             </el-form-item>
           </div>
@@ -451,11 +451,12 @@
               </el-form-item>
             </div>
             <div class="item appendSelect">
-              <el-form-item label="证件类型" prop="partyIdNo">
+              <el-form-item label="证件类型">
                 <el-input
                   ref="partyIdNo"
                   placeholder="请输入内容"
                   v-model="driverOrAgentInfo.zhengjianNumber"
+                  @input="changePartyIdType2Index = index"
                   @change="changePartyIdType2(driverOrAgentInfo.zhengjianNumber,index)"
                   class="input-with-select hasMargintop"
                   :disabled="index==0&&relationWithPartyIsOne[index]"
@@ -736,7 +737,13 @@
         <div>
           <div class="itemOne">
             <el-form-item label="违法行为" label-width="122px">
-              <el-input v-model="inforForm.caseCauseNameCopy" :disabled="true" ></el-input>
+              <el-input v-model="inforForm.caseCauseNameCopy" :disabled="true" >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="chooseIllegalAct"
+                ></el-button>
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -812,6 +819,8 @@
     </el-backtop>
     <choosePathLoss ref="choosePathLossRef" @selectData="selectRoadData"></choosePathLoss>
     <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
+    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
+
   </div>
 </template>
 <script>
@@ -819,6 +828,7 @@ import { inforCollectionCommonMixins } from "@/common/js/caseHandle/inforCollect
 import choosePathLoss from "./diag/choosePathLoss";
 import mapDiag from "./diag/mapDiag";
 import {mapGetters} from "vuex";
+
 export default {
   mixins: [inforCollectionCommonMixins],
   data() {
@@ -830,7 +840,7 @@ export default {
   // computed: {...mapGetters(['caseId','openTab','caseHandle'])},
   components: {
     choosePathLoss,
-    mapDiag
+    mapDiag,
   },
   computed: {
     payTotal() {

@@ -67,15 +67,8 @@
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
               <img
-                v-if="scope.row.evType =='照片'"
-                :src="host+scope.row.evPath"
-                width="40"
-                height="40"
-                @click.stop="imgDetail(scope.row)"
-              />
-              <img
-                v-if="scope.row.evType =='音视频'"
-                :src="host+scope.row.thumbnailsStoragePath"
+                v-if="scope.row.evType =='照片' || scope.row.evType =='音视频'"
+                :src="scope.row.myFileUrl"
                 width="40"
                 height="40"
                 @click.stop="imgDetail(scope.row)"
@@ -214,22 +207,22 @@
       :visible.sync="editVisible"
       width="60%"
       v-loading="editLoading"
-      :before-close="handleClose"
+      :before-close="handleCloseEdit"
     >
       <div>
         <div style="float: left;width: 45%">
           <el-form :model="uForm">
-            <!-- <img :src="host+uForm.evPath" width="350px" height="400" align="center"/> -->
+            
             <img
               v-if="uForm.evType =='照片'"
-              :src="host+uForm.evPath"
+              :src="uForm.myFileUrl"
               width="350px"
               height="400"
               align="center"
             />
             <video
               v-if="uForm.evType =='音视频'"
-              :src="host+uForm.evPath"
+              :src="uForm.videoStreamSrc"
               controls="controls"
               width="350px"
               height="400"
@@ -315,10 +308,10 @@ import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import { mapGetters } from "vuex";
 import evidenceCatalogue from "./evidenceCatalogue";
 import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
-
 import {
   getCaseBasicInfoApi,
   getFileStreamByStorageIdApi,
+  getEvidenceApi,
 } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage.js";
 import evidenceDetail from "./evidenceDetail";
@@ -336,7 +329,6 @@ export default {
     };
     return {
       fileList: [],
-      host: "",
       evfile: "",
       evTypeOptions: [],
       statusOptions: [],
@@ -430,6 +422,13 @@ export default {
         })
         .catch((_) => {});
     },
+    handleCloseEdit() {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          this.editVisible = false;
+        })
+        .catch((_) => {});
+    },
     handleAdd(index, row) {
       this.form = {};
       this.addVisible = true;
@@ -448,11 +447,13 @@ export default {
         recordPlace: item.recordPlace,
         status: item.status,
         note: item.note,
+        myFileUrl:item.myFileUrl, 
+        videoStreamSrc:item.videoStreamSrc || ''
       };
       this.editVisible = true;
     },
     //表单筛选
-    getEviList() {
+    async getEviList() {
       let data = {
         caseId: this.caseId,
         category: "证据",
@@ -464,10 +465,25 @@ export default {
       };
       console.log("证据目录参数", data);
       let _this = this;
-      this.$store.dispatch("getEvidence", data).then((res) => {
-        console.log("res", res);
-        _this.tableData = res.data.records;
-      });
+      // this.$store.dispatch("getEvidence", data).then((res) => {
+      //   console.log("res", res);
+      //   _this.tableData = res.data.records;
+      // });
+       
+      let getEvidenceRes = await getEvidenceApi(data);
+      for(let eviListItem of getEvidenceRes.data.records){
+          let getFileStreamRes = '';
+          if(eviListItem.evType == '照片'){
+              getFileStreamRes = await this.$util.com_getFileStream(eviListItem.evPath)
+          }else if(eviListItem.evType == '音视频'){
+              getFileStreamRes = await this.$util.com_getFileStream(eviListItem.thumbnailsStoragePath);
+              eviListItem.videoStreamSrc = await this.$util.com_getFileStream(eviListItem.evPath)
+          } 
+          eviListItem.myFileUrl = getFileStreamRes
+      }
+      this.tableData = getEvidenceRes.data.records;
+
+
     },
     saveFile(param) {
       console.log(param);
@@ -765,7 +781,6 @@ export default {
     },
   },
   mounted() {
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
   },
   created() {
     this.getEviList();

@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box">
     <div class="print_info" id="hearingRecordDoc_print">
@@ -269,6 +269,18 @@
       //验证开始时间
     var validateStartTime = (rule, value, callback) => {
       console.log(Date.parse(value),Date.parse(this.docData.hearingEndTime))
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.hearingStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.hearingStartTime = "";
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if(Date.parse(this.docData.hearingStartTime)>Date.parse(this.docData.hearingEndTime)){
         this.$message({
               showClose: true,
