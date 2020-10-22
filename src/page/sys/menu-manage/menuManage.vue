@@ -11,16 +11,19 @@
         <el-button type="primary" size="medium" icon="el-icon-plus" @click="addItem">新增菜单</el-button>
       </div>
     </div>
+     
     <div class="tablePart">
       <el-table
-        :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+        :data="tableData"
         stripe
-        
+        lazy
+        :load="load"
         row-key="id"
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+        :default-expand-all="false"
+        :tree-props="{children: 'children', hasChildren: 'expand'}"
         height="100%"
       >
-        <el-table-column prop="title" label="名称" align="center"></el-table-column>
+        <el-table-column prop="title" label="名称" width="200"></el-table-column>
         <el-table-column prop="icon" label="图标" align="center">
           <!--<template slot-scope="scope">-->
           <!--<i></i>-->
@@ -44,7 +47,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="paginationBox">
+    <!-- <div class="paginationBox">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -55,7 +58,7 @@
         layout="prev, pager, next,sizes,jumper"
         :total="total"
       ></el-pagination>
-    </div>
+    </div> -->
     <el-dialog
       :title="dialogTitle"
       :visible.sync="isShowDialog"
@@ -108,7 +111,7 @@
           <el-form-item label="上级菜单" prop="parentId">
             <elSelectTree
               ref="elSelectTreeObj"
-              :options="tableData"
+              :options="allMenu"
               :accordion="true"
               :props="props"
               @getValue="hindleChanged"
@@ -158,9 +161,8 @@
 
 <script>
   import elSelectTree from '../../../components/elSelectTree/elSelectTree'
-
+import {getPermissionByLevelApi ,getPermissionByParentIdApi} from "@/api/system"
   export default {
-    watch: {},
     data() {
       return {
         tableData: [],
@@ -197,7 +199,8 @@
           value: "id"
         },
         parentData: [],
-        haha:''
+        haha:'' ,
+        allMenu:[],
       };
     },
     components: {},
@@ -208,13 +211,25 @@
         this.$store.dispatch("getTreePermission").then(
           res => {
             console.log(res);
-            _this.tableData = res.data;
-            _this.total = res.data.length
+            // _this.tableData = res.data;
+            // _this.tableData.push(res.data[0]) ;
+            this.allMenu = res.data;
+            // _this.total = res.data.length
           },
           err => {
             console.log(err);
           }
         );
+        getPermissionByLevelApi(0).then(res=>{
+          console.log('第一级菜单',res);
+          _this.tableData = res.data;
+          // this.$nextTick(()=>{
+					//     document.getElementsByClassName('el-table__expand-icon')[0].click();
+					// });
+        }).catch(err=>{
+          console.log(err);
+        })
+
       },
       tableAdd(row) {
         this.dialogTitle = '新增'
@@ -267,7 +282,7 @@
         if (this.verifyAcceptObj()) {
           let that = this
           if (that.dialogTitle === '新增' && that.addItemObj.type === -1) {
-            that.addItemObj.pLevel = 0
+            that.addItemObj.pLevel = 0;
           }
           that.addItemObj.buttonType = that.addItemObj.buttonType.join(',')
           this.$store.dispatch("addPermission", that.addItemObj).then(
@@ -278,7 +293,7 @@
                   type: "success",
                   message: that.dialogTitle + '成功！'
                 });
-                that.searchTable()
+                that.reload()
               }
             },
             err => {
@@ -381,6 +396,36 @@
         this.$refs['addItemObj'].resetFields()
       })
     },
+      handleNodeClick(data, node) {
+        // data为当前节点的数据
+        // node为当前节点
+        // this.axios.get(`......?userId=${this.userId}& parentCatalogId=${data.catalogId}`)
+        // .then((res) => {
+        //   node.data.subCatalogDatailTree = res.data.data;
+        // })
+        console.log(data,node)
+        getPermissionByParentIdApi().then(res=>{
+          console.log('第一级菜单',res);
+          _this.tableData = res.data;
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      load(tree, treeNode, resolve) {
+        console.log('treeNode',treeNode)
+        console.log('tree',tree)
+
+        getPermissionByParentIdApi(tree.id).then(res=>{
+          // console.log('第一级菜单',res);
+          // _this.tableData = res.data;
+          res.data.forEach(item=>{
+            if(item.type === 1) item.expand = false;
+          })
+          resolve(res.data)
+        }).catch(err=>{
+          console.log(err);
+        })
+      }
     },
     mounted() {
     },
@@ -419,8 +464,36 @@
       }
     }
   };
+
+
+
+
+
+
+//   <el-tree
+//   :data="data"
+//   show-checkbox
+//   @check-change="handleCheckChange"
+//   node-key="catalogId"  
+//   @node-click="handleNodeClick"
+//   :props="defaultProps" 
+// >
+// </el-tree>
+
+  // handleNodeClick(data, node) {
+  // 	// data为当前节点的数据
+  // 	// node为当前节点
+  // 	this.axios.get(`......?userId=${this.userId}& parentCatalogId=${data.catalogId}`)
+  // 	.then((res) => {
+  // 		// 把获取到的数据赋给当前节点数据的children
+  // 		node.data.subCatalogDatailTree = res.data.data;
+  // 	})
+  // }
 </script>
 
 <style lang="scss" src="@/assets/css/systemManage.scss">
 /* @import "@/assets/css/systemManage.scss"; */
 </style>
+
+
+
