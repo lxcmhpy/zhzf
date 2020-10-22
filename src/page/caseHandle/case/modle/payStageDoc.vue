@@ -261,7 +261,7 @@
       },
       //保存文书信息
       saveData(handleType) {
-        this.dealCheck()
+        // this.dealCheck()
 //        console.log('caseBasicinfoId', this.caseDocDataForm.caseBasicinfoId)
         if (this.disabledOne && this.disabledTwo && this.disabledThree) {
           this.$message("请选择分期延期决定");
