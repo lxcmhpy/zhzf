@@ -13,6 +13,7 @@
                   action="#"
                   :show-file-list="false"
                   :http-request="saveImageFile"
+                  accept=".jpg,.png"
                 >
                   <el-image v-if="form.titleImg" :src="imgUrl" fit="fill"></el-image>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
