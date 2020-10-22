@@ -10,6 +10,7 @@ import {
   getDictListDetailByNameApi, findHistoryBySignApi, findRouteManageByOrganIdApi
 } from "@/api/system";
 import {findLawOfficerListApi} from "@/api/caseHandle";
+import chooseillegalAct from "@/page/chooseIllegegaDialog.vue";
 
 export const inforCollectionCommonMixins = {
   data() {
@@ -368,7 +369,9 @@ export const inforCollectionCommonMixins = {
   components: {
     chooseLawPerson,
     punishDiag,
-    caseSlideMenu
+    caseSlideMenu,
+    chooseillegalAct
+
   },
   computed: {...mapGetters(['caseId','openTab','caseHandle'])},
   methods: {
@@ -1443,6 +1446,22 @@ export const inforCollectionCommonMixins = {
             console.log(err);
           }
     )},
+    //选择违法行为弹窗 （需求更改：违法行为可以修改 --连鹏飞）
+    chooseIllegalAct() {
+      let lawCate = {
+        cateId: this.inforForm.zfmlId,
+        cateName: this.inforForm.zfml,
+      };
+      this.$refs.chooseillegalActRef.showModal(lawCate);
+    },
+    //设置违法行为
+    setIllegaAct(val) {
+      this.inforForm.caseCauseNameCopy = this.inforForm.caseCauseName = val.strContent;
+      this.inforForm.caseCauseId = val.id;
+      this.inforForm.illegalLaw = "";
+      this.inforForm.punishLaw =  "";
+      this.getPunishList()
+    },
 
   },
 

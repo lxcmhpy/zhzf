@@ -9,7 +9,7 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
     ,getProvinceCode,deleteExamInfoByIdApi,updateExamInfoApi,deleteTrainInfoByIdApi,updateTrainInfoApi,addTrainInfoApi,trainInfoPageListApi, initAllApprove, personEdabled,uploadMaterial,
     savePersonMaterial, getAllOrigin, savePersonPhoto,getScheduleJobPageApi,addScheduleJobApi,updateScheduleJobApi,cacheQuestionRedisApi,resumeScheduleJobInfoApi,deleteScheduleJobApi,repauseAllJobApi,pauseAllJobApi,
     resumejobApi,pausejobApi,getJxExamListApi,getJxExamMesageApi,getJxTrainListApi,getJxTrainMessageApi,statisticByAgeApi,statisticByChannelApi,statisticByYearAddApi,statisticByEducationLevelApi,statisticByBranchApi,statisticByMajorApi,
-    deleteVersionApi,addVersionApi,updateVersionApi,getVersionApi
+    deleteVersionApi,addVersionApi,updateVersionApi,getVersionApi,savePersonCardApi,exportPersonPdfApi
   } from "@/api/person";
   
   const person = {
@@ -172,6 +172,31 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
           })
   })
   },
+  
+  savePersonCard({commit},data){
+    return new Promise((resolve, reject) => {
+        savePersonCardApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+    })
+    },
+   
+    exportPersonPdf({commit},data){
+        return new Promise((resolve, reject) => {
+            exportPersonPdfApi(data).then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+        })
+        },
+
   deleteAwardModudle({commit},data){
   return new Promise((resolve, reject) => {
     deleteAwardApi(data).then(
