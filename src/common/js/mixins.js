@@ -662,7 +662,7 @@ export const mixinGetCaseApiList = {
         this.propertyFeatures = resdata;
       })
       if (this.needClick) {
-        this.click()
+        this.dealCheck();
       }
     },
     //查询环节是否生成了pdf
