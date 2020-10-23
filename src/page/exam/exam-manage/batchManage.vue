@@ -391,6 +391,18 @@ export default {
     },
     //删除考试
     deleteExamBatchInfo() {
+      let status = 0;
+      this.selectTrainIdList.forEach(item =>{
+          this.tableData.forEach(element => {
+            if(item === element.examId && element.isConfigOver == '1'){
+                _this.$message({ type: "warning",message: "配置完成的考试不允许删除！"});
+                status = '1'
+            }
+      });
+      })
+      if(status === 1){
+        return;
+      }
       let _this = this;
       if (
         _this.selectUserIdList == undefined ||
@@ -400,15 +412,10 @@ export default {
           type: "warning",
           message: "请选择一条考试信息"
         });
-      } else if (_this.selectUserIdList.length > 1) {
-        _this.$message({
-          type: "warning",
-          message: "只能选择一条考试信息"
-        });
       } else {
-        let examId = _this.selectUserIdList[0];
+        let examId = _this.selectUserIdList;
         let data = {
-          examId: examId
+          ids: examId
         };
         _this
           .$confirm("确认删除吗？", "提示", {

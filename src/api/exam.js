@@ -149,7 +149,7 @@ export function deleteExamBantchApi(data){
     return request({
         url: "/exam/examManage/deleteExamManageById",
         method: "get",
-        params: data,
+        params: vm.$qs.stringify(data),
         showloading: false,
         cancelToken: setCancelSource()
     })
