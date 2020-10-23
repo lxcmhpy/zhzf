@@ -17,12 +17,8 @@
           </el-form-item>
         </el-form>
       </div>
-      <div >
-        <el-row>
-          <div style="width:100%;height: 550px;" id="container">
-
-          </div>
-        </el-row>
+      <div class="mapBox" style="height:100%;">
+        <div id="container" style="width:100%; height:100%;"></div>
       </div>
     </div>
   </div>
