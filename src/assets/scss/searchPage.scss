@@ -1,5 +1,16 @@
 @import "./in/base/variables.scss";
 
+.com_searchAndpageBoxPadding {
+  height: 100%;
+  .searchPage {
+    .handlePart {
+      >>> .el-date-editor.el-input__inner {
+        padding: 0 10px;
+      }
+    }
+  }
+}
+
 //搜索
 .toggleBox {
     .handlePart {
