@@ -1,6 +1,6 @@
 <template>
     <div class="cats-layout-page-content">
-        <div class="searchAndpageBox toggleBox">
+        <div class="searchAndpageBox toggleBox catsAppraisalExamPersonUpload">
             <div style="margin-left: 0px;">
                 <viewNotice ref="viewNoticeRef"></viewNotice>
                 <div class="search">
@@ -759,4 +759,7 @@
   .cats-f-left{
       width: auto;
   }
+  .catsAppraisalExamPersonUpload .el-input, .catsAppraisalExamPersonUpload .el-select {
+    width: 100% !important;
+}
 </style>

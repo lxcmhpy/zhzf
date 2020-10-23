@@ -1,6 +1,6 @@
 <template>
     <div class="cats-layout-page-content">
-        <div class="searchAndpageBox toggleBox">
+        <div class="searchAndpageBox toggleBox catsAppraisalExamPersonUpload">
             <!-- <div class="handlePart" style="margin-left: 0px;"> -->
             <div  style="margin-left: 0px;">
                 <viewNotice ref="viewNoticeRef"></viewNotice>
@@ -868,5 +868,8 @@
 .tips i {
     color: #189f95;
     font-size: 18px;
+}
+.catsAppraisalExamPersonUpload .el-input, .catsAppraisalExamPersonUpload .el-select {
+    width: 100% !important;
 }
 </style>
