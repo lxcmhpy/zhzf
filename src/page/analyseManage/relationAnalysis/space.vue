@@ -198,14 +198,3 @@ export default {
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
-<style lang="scss">
-.com_searchAndpageBoxPadding {
-  .searchPage {
-    .handlePart {
-      .el-date-editor.el-input__inner {
-        padding: 0 10px;
-      }
-    }
-  }
-}
-</style>
