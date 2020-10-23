@@ -80,6 +80,10 @@
             <el-table-column label="操作项" width="160" align="center">
               <template slot-scope="scope">
                 <el-button type="text" @click="handleEdit(scope.row)">颁发</el-button>
+                 <el-button
+                  type="text"
+                  @click="exist(scope.row)"
+                >生成pdf</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -160,6 +164,36 @@ export default {
           this.tableLoading = false;
           _this.tableData = res.data.records;
           _this.totalPage = res.data.total;
+        },
+        err => {
+          this.tableLoading = false;
+          this.$message({ type: "error", message: err.msg || "" });
+        }
+      );
+    },
+    //保存导出pdf文件
+    exist(row){
+      let _this = this;
+      let data = {
+        personName:row.personName,
+        sex: row.sex,
+        birthDate: row.birthDate,
+        oid: row.oid,
+        oName: row.oname,
+        post: row.post,
+        area: row.area,
+        branchId:row.branchId,
+        branchName:row.branchName,
+        ministerialNo:row.ministerialNo,
+        enfoceDate:row.enfoceDate,
+        photoUrl:row.photoUrl,
+        certId:row.certId
+      };
+      this.tableLoading = true;
+      _this.$store.dispatch("savePersonCard", data).then(
+        res => {
+          this.tableLoading = false;
+          this.$message({ type: "success", message:"保存成功" });
         },
         err => {
           this.tableLoading = false;

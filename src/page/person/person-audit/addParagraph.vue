@@ -18,7 +18,9 @@
       </el-row> -->
       <el-row>
         <el-form-item label="审批意见"  prop="approveInfo">
-          <el-input v-model="approveForm.approveInfo"  type="textarea" rows="3"></el-input>
+          <el-input
+          maxlength="25"
+           v-model="approveForm.approveInfo"  type="textarea" rows="3"></el-input>
         </el-form-item>
       </el-row>
       <el-row ><div style="text-align:center;color:red">附：常用快捷短语</div></el-row>
@@ -46,10 +48,11 @@
   </el-dialog>
 </template>
 <script>
-
+import {isSpecialChar } from "@/common/js/validator";
 export default {
   data(){
     return{
+      isSpecialChar: isSpecialChar,
       searchType:[{value:0,label:'本机构'},{value:1,label:'本机构及子机构'}],
       visible: false,
       approveForm: {
@@ -66,7 +69,7 @@ export default {
       errorName: false, //添加name时的验证
       btnDisabled: false,
       rules: {
-        approveInfo: [{ required: true, message: "审核意见必须填写", trigger: "blur" }]
+        approveInfo: [{ required: true, message: "审核意见必须填写", trigger: "blur" },{ validator: isSpecialChar, trigger: 'blur' }]
       }
     }
   },
