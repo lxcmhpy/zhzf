@@ -70,6 +70,7 @@
 <script>
 import iLocalStroage from "@/common/js/localStroage";
 import { addCourseInfo, uploadCourseFile } from "@/api/trained";
+const AllowImageType = ['image/jpeg', 'image/png'];
 
 export default {
   data() {
@@ -169,6 +170,14 @@ export default {
     // 选择课程封面
     handleCoverChange(file, fileList) {
       const isGt2M = file.size / 1024 / 1024 > 2;
+      if (AllowImageType.indexOf(file.raw.type) < 0) {
+        this.catsMessage({
+          message: '上传封面格式错误，只支持上传jpg或png格式',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
       if (isGt2M) {
         this.$message({
           message: "封面图片大小不能超过 2MB!",
