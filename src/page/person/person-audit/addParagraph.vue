@@ -19,7 +19,7 @@
       <el-row>
         <el-form-item label="审批意见"  prop="approveInfo">
           <el-input
-          maxlength="25"
+          maxlength="50"
            v-model="approveForm.approveInfo"  type="textarea" rows="3"></el-input>
         </el-form-item>
       </el-row>

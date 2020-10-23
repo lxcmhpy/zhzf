@@ -368,12 +368,13 @@ export default {
       this.selectTrainIdList.forEach(item =>{
           this.tableData.forEach(element => {
             if(item === element.branchId && element.isConfigOver == '1'){
-                _this.$message({ type: "warning",message: "配置完成的培训不允许删除！"});
+                
+                this.$message({ type: "warning",message: "配置完成的培训不允许删除！"});
                 status = '1'
             }
       });
       })
-      if(status === 1){
+      if(status =='1' ){
         return;
       }
       let data =  {

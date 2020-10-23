@@ -30,11 +30,11 @@ export function addTrainedBatchList(data, type){
   })
 }
 // 删除培训批次
-export function deleteTrainedBatch(trainId){
+export function deleteTrainedBatch(data){
   return request({
     url: `/train/manage/deleteTrainManageById`,
-    method: "get",
-    params: vm.$qs.stringify(trainId),
+    method: "post",
+    data: vm.$qs.stringify(data),
     showloading: false,
     cancelToken: setCancelSource()
   })
@@ -335,8 +335,8 @@ export function addBatchPerson(data){
 export function deleteTrainPerson(data){
   return request({
     url: `/train/manage/deleteTrainPersonById`,
-    method: "get",
-    params: vm.$qs.stringify(data),
+    method: "post",
+    data: vm.$qs.stringify(data),
     showloading: false,
     cancelToken: setCancelSource()
   })

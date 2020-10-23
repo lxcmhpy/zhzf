@@ -211,6 +211,9 @@ export default {
       ) {
         this.$message({ type: "warning", message: "请选择一条考生信息" });
       } else {
+        let data = {
+          ids:this.selectUserIdList
+        }
         this.$confirm("确认移除吗？", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -218,7 +221,7 @@ export default {
           customClass: "custom-confirm"
         })
           .then(() => {
-            deleteTrainPerson(this.selectUserIdList).then(
+            deleteTrainPerson(data).then(
               res => {
                 if (res.code === 200) {
                   this.$message({ type: "success", message: "移除成功!" });

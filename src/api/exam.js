@@ -148,8 +148,8 @@ export function updateExamBatchApi(data){
 export function deleteExamBantchApi(data){
     return request({
         url: "/exam/examManage/deleteExamManageById",
-        method: "get",
-        params: vm.$qs.stringify(data),
+        method: "post",
+        data: vm.$qs.stringify(data),
         showloading: false,
         cancelToken: setCancelSource()
     })
