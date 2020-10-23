@@ -289,4 +289,7 @@
     .onlineBox{
         height: 100% !important;
     }
+    .departOrUserTree .treeBox{
+        overflow: initial !important;
+    }
 </style>
