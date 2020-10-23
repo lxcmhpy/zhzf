@@ -18,6 +18,7 @@
             :props="defaultProps"
             node-key="id"
             :filter-node-method="filterNode"
+            :expand-on-click-node="false"
             :default-expanded-keys="defaultExpandedKeys"
             ref="tree"
             @node-click="handleNodeClick"
