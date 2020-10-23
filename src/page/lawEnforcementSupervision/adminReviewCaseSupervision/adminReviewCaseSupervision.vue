@@ -170,7 +170,7 @@
             <template slot-scope="scope">
               <el-tooltip  v-if="scope.row.warContent" placement="top-start" effect="light">
                 <div slot="content" class="warn-li">
-                  <li v-for="(item,index) in scope.row.warContent" :key="index">
+                  <li v-for="(item,index) in JSON.parse(scope.row.warContent)" :key="index">
                     <span v-if="item.warType=='1'"  style="color:#FF0000"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
                     <span v-if="item.warType=='2'"  style="color:#FF6600"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
                     <span v-if="item.warType=='3'"  style="color:#0084FF"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>

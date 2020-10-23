@@ -61,14 +61,15 @@ export const caseSupervisionCommonMixins = {
                 });
         },
         //获取机构树
-        getAllOrigins() {
+        async getAllOrigins() {
             getAllOrganApi()
                 .then((res) => {
                     console.log("获取机构树", res);
                     this.organTreeData = res.data;
                     // this.selectOrganId = res.data[0].id;
                     this.$refs.elSelectTreeObj.valueTitle = res.data[0].label
-                    this.$refs.elSelectTreeObj.valueId = res.data[0].id
+                    this.$refs.elSelectTreeObj.valueId = res.data[0].id;
+                    this.caseSearchForm.organId = res.data[0].id;
                     this.findLawOfficerList(res.data[0].id);
 
                 })
@@ -86,6 +87,7 @@ export const caseSupervisionCommonMixins = {
         handleOrgan(val) {
             this.$refs.elSelectTreeObj.$children[0].handleClose();
             this.caseSearchForm.organId = val;
+            this.caseSearchForm.staffId = '';
             //根据机构获取执法人员
             this.findLawOfficerList(val);
         },
@@ -100,15 +102,19 @@ export const caseSupervisionCommonMixins = {
                     throw new Error(err);
                 });
         },
-        resetSearchForm() {
+        async resetSearchForm() {
             this.$refs["caseSearchForm"].resetFields();
+             
             this.acceptTimeArray = [];
+            await this.getAllOrigins();
+            this.caseSearchForm.organId = iLocalStroage.gets("userInfo").organId;
             this.searchCase();
         },
     },
-    created() {
-        this.getEnforceLawType();
-        this.getAllOrigins();
 
+    async mounted() {
+        await this.getEnforceLawType();
+        await this.getAllOrigins();
+        this.searchCase();
     }
 }
