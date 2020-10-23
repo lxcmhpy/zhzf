@@ -96,8 +96,7 @@ export  function  hasOrganNameApi(name)  {
   return  request({
     url:  "/system/sys/organ/findByName/"  +  name,
     method:  "get",
-    showloading:  true,
-    loadingType:'loadPart',
+    showloading:  false,
     cancelToken:  setCancelSource()
   });
 }
@@ -1353,3 +1352,27 @@ export function getFileStreamApi(storageId) {
       cancelToken: setCancelSource()
     });
   }
+
+
+//获取顶级层级菜单
+export function getPermissionByLevelApi(level) {
+  return request({
+    url: "/system/sys/permission/getPermissionByLevel/" + level,
+    method: "GET",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource(),
+  });
+}
+//根据父菜单获取它下面的一级子菜单
+export function getPermissionByParentIdApi(parentId) {
+  return request({
+    url: "/system/sys/permission/getByParentId/" + parentId,
+    method: "GET",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource(),
+  });
+}

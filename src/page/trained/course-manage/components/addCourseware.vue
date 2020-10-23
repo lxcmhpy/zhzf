@@ -166,6 +166,24 @@ export default {
     },
     // 选择文件变化
     handleFileChange(file, fileList){
+      console.log(file.raw.name);
+      let fileType = file.raw.type;
+      if (this.addCourseForm.couType === '1' && fileType !== 'application/pdf') {
+        this.catsMessage({
+          message: '文档类课件只支持上传pdf格式文件',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
+      if (this.addCourseForm.couType === '2' && !/(.*)\.(mp4|wmv|avi)$/.test(file.raw.name)) {
+        this.catsMessage({
+          message: '视频类课件只支持上传mp4或wmv或avi格式文件',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
       this.coursewareFileList.splice(0, 1, file);
       fileList.splice(0, 1);
       if(this.addCourseForm.couType === '2'){
@@ -208,7 +226,7 @@ export default {
       formData.append("file", this.coursewareFileList[0].raw);
       formData.append("lessonId", this.addCourseForm.lessonId);
       request({
-        url:  "/person/fileUploadDownHdfs/uploadFileHdfs",
+        url:  "/case/sys/file/uploadCommon",
         method:  "POST",
         data: formData,
         contentType: 'multipart/form-data;',
@@ -222,18 +240,23 @@ export default {
         this.inProgress = false;
         this.uploadProgress = 0;
         if(res.code === 200){
-          this.addCourseForm.path = res.data;
+          this.addCourseForm.path = res.data[0].storageId;
           this.addCourseForm.name = this.coursewareFileList[0].name;
+          this.addCourseForm.id = res.data[0].id;
           this.$message({ type: 'success', message: '课件上传成功' });
+        }
+        if(typeof res.data === 'string'){
+          this.$message({ type: 'success', message: res.data });
         }
       }, err => {
         this.inProgress = false;
         this.uploadProgress = 0;
+        this.$message({ type: 'error', message: '文件上传失败!' });
       });
     },
     //提交
     submit() {
-      if(!this.addCourseForm.path){
+      if(!this.addCourseForm.id){
         this.$message({ type: 'info', message: '请上传课件文件' });
         return false;
       }

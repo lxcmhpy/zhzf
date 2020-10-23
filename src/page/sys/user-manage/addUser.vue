@@ -23,6 +23,7 @@
             <el-input
               ref="username"
               :disabled="dialogStatus === 'editEquipment'"
+              maxlength="20"
               v-model="addUserForm.username"
             ></el-input>
           </el-form-item>
@@ -37,7 +38,7 @@
         <p class="titleP">基本信息</p>
         <div class="item">
           <el-form-item label="真实姓名" prop="nickName">
-            <el-input v-model="addUserForm.nickName" ref="nickName"></el-input>
+            <el-input v-model="addUserForm.nickName" ref="nickName" maxlength="20"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -57,15 +58,22 @@
         </div>
         <div class="item">
           <el-form-item label="执法机构" prop="organId">
-            <!-- <el-input v-model="addUserForm.organTitle"></el-input> -->
-            <el-select v-model="addUserForm.organId" placeholder="请选择执法机构" @change="getDepartment">
+            <!-- <el-select v-model="addUserForm.organId" placeholder="请选择执法机构" @change="getDepartment">
               <el-option
                 v-for="item in getOrganList"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
               ></el-option>
-            </el-select>
+            </el-select> -->
+            <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="getOrganList"
+                  :accordion="true"
+                  :props="myprops"
+                  :value="selectOrganId"
+                  @getValue="handleOrgan"
+                ></elSelectTree>
           </el-form-item>
         </div>
         <div class="item">
@@ -78,6 +86,11 @@
                 :value="item.id"
               ></el-option>
             </el-select>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="状态" prop="status">
+            <el-switch v-model="addUserForm.status" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           </el-form-item>
         </div>
       </div>
@@ -113,12 +126,15 @@
 </template>
 <script>
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
+import { getAllOrganApi } from "@/api/system";
+
 export default {
   data() {
     // 判断用户名是否已存在
     var validateUsername = (rule, value, callback) => {
       this.$store.dispatch("hasUsername", value).then(res => {
-        if(res.id){
+        if(res.id && this.dialogStatus == "addEquipment"){
           callback('当前用户名已被使用');
         }else{
           callback();
@@ -156,7 +172,8 @@ export default {
         provincial: "",
         ministerial: "",
         maritime: "",
-        other: ""
+        other: "",
+        status:true,
       },
       rules: {
           username: [
@@ -176,10 +193,18 @@ export default {
       },
       rowData:'',
       isDisabled:false,
+      myprops: {
+          label: "label",
+          value: "id",
+      },
+      selectOrganId: "", //默认选中机构的id
+
     };
   },
   mounted() {},
-
+  components: {
+        elSelectTree,
+  },
   methods: {
     //新增
     showModal(data) {
@@ -219,6 +244,8 @@ export default {
       this.getDepartment(data.organId)
       // this.rowData = data;
       this.addUserForm = data;
+      this.addUserForm.status = this.addUserForm.status === 0  ? true : false;
+
     },
     //用户详情，不可编辑
     showUserDetail(row){
@@ -249,19 +276,36 @@ export default {
     },
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {  
-      let _this = this
-      this.$store.dispatch("getCurrentAndNextOrgan",this.parentNode.parentNodeId).then(
-        res => {
+      // let _this = this
+      // this.$store.dispatch("getCurrentAndNextOrgan",this.parentNode.parentNodeId).then(
+      //   res => {
 
-          console.log(res);
-          _this.getOrganList = res.data;
-          // this.addUserForm = this.rowData;
-          //this.addUserForm.organId  = this.rowData.organId;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      //     console.log(res);
+      //     _this.getOrganList = res.data;
+      //   },
+      //   err => {
+      //     console.log(err);
+      //   }
+      // );
+      getAllOrganApi().then((res) => {
+            console.log("获取机构树", res);
+            this.getOrganList = res.data;
+            this.addUserForm.organId = this.selectOrganId = res.data[0].id;
+            this.$refs.elSelectTreeObj.valueTitle = res.data[0].label
+            this.$refs.elSelectTreeObj.valueId = res.data[0].id
+
+        })
+        .catch((err) => {
+            throw new Error(err);
+        });
+    },
+    //获取选中的机构
+    handleOrgan(val) {
+        this.$refs.elSelectTreeObj.$children[0].handleClose();
+        this.addUserForm.organId = val;
+        // this.caseSearchForm.organId = val;
+        //根据机构获取执法人员
+        // this.findLawOfficerList(val);
     },
     //获取选中的机构下的部门
     getDepartment(data1) {
@@ -287,6 +331,7 @@ export default {
       let _this = this
       this.$refs["addUserForm"].validate(valid => {
         if (valid) {
+          this.addUserForm.status = this.addUserForm.status  ? 0 : -1;
           if (_this.dialogStatus === "addEquipment") {
             console.log("this.addUserForm", _this.addUserForm);
             _this.$store

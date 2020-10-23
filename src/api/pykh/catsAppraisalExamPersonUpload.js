@@ -108,7 +108,7 @@ export function randomSamplingStaffByPage(oId, batchId) {
 export function confirmSubmissionStaff(oId) {
     return request({
         url: "/pykh/staff/confirmSubmissionStaff/" + oId,
-        method: "post",
+        method: "get",
         showloading: true,
         loadingType: 'loadPart',
         params: null,

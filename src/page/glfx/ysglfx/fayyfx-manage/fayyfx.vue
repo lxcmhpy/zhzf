@@ -10,6 +10,8 @@
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              value-format="yyyyMM" @change="select"
+              style="width:400px"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -126,15 +128,19 @@ export default {
         ]
       });
     },
-     searchDraw() {
+   //查询-----------------------------------------------------------------------------------------------------
+     searchDraw(start,end) {
       let data = {
-        
+        start:start,
+        end:end
       };
       let _this = this
       // this.$store.dispatch("getFayyfx", data).then(res => {
       getFayyfx(data).then(res => {
       
-        console.log(res[0][1]);
+        console.log(res);
+        if(res.length!=0){
+
          _this.t1 = res[0][1];
          _this.t2 = res[1][1];
           _this.t3 = res[2][1];
@@ -156,15 +162,47 @@ export default {
          _this.n8 = res[7][0];
           _this.n9 = res[8][0];
          _this.n10= res[9][0];
+         
+        }else{
+          _this.t1 ="";
+         _this.t2 = "";
+          _this.t3 = "";
+         _this.t4 = "";
+          _this.t5 = "";
+         _this.t6 = "";
+          _this.t7 = "";
+         _this.t8 = "";
+          _this.t9 = "";
+         _this.t10= "";
+
+         _this.n1 = "";
+         _this.n2 = "";
+          _this.n3 = "";
+         _this.n4 = "";
+          _this.n5 = "";
+         _this.n6 = "";
+          _this.n7 = "";
+         _this.n8 = "";
+          _this.n9 = "";
+         _this.n10="";
+        }
          this.drawLine();
       });
       err => {
         console.log(err);
       };
     },
+    select(val){
+      console.log(val);
+     if(val!=null){
+      this.searchDraw(val[0],val[1]);
+    
+     }
+     
+   }
   },
   mounted() {
-    this.searchDraw();
+    this.searchDraw(202001,202012);
     // this.drawLine();
   },
   created() {

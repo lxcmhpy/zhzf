@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box printNumbers_box" id="adminCoerciveMeasure-print" style="width:790px; margin:0 auto;">
     <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
@@ -25,7 +25,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -38,7 +38,7 @@
                   v-bind:class="{ over_flow:docData.partyIdNo.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 2}"
                   maxlength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
               </el-form-item>
@@ -55,7 +55,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="adressLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -66,7 +66,7 @@
                   v-model="docData.partyTel"
                   :maxLength="maxLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -80,7 +80,7 @@
                   v-model="docData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -93,7 +93,7 @@
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -107,7 +107,7 @@
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -118,7 +118,7 @@
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -131,7 +131,7 @@
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -139,7 +139,7 @@
         </table>
         <p>
           <el-form-item prop="afsj" :rules="fieldRules('afsj',propertyFeatures['afsj'])" class="pdf_datapick" style="width: 150px">
-            <el-date-picker :disabled="fieldDisabled(propertyFeatures['afsj'])" v-model="docData.afsj" type="date"
+            <el-date-picker @blur="startTime2" :disabled="fieldDisabled(propertyFeatures['afsj'])" v-model="docData.afsj" type="date"
                             format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
@@ -184,7 +184,7 @@
                 </span>至
           <span>
                   <el-form-item prop="measureEndDate" :rules="fieldRules('measureEndDate',propertyFeatures['measureEndDate'])" style="width: 150px" class="pdf_datapick">
-                    <el-date-picker v-model="docData.measureEndDate" type="date" format="yyyy年MM月dd日"
+                    <el-date-picker v-model="docData.measureEndDate" type="date" @blur="startTime1" format="yyyy年MM月dd日"
                                     value-format="yyyy-MM-dd" placeholder="  年  月  日" :disabled="fieldDisabled(propertyFeatures['measureEndDate'])">
                     </el-date-picker>
                   </el-form-item>
@@ -216,7 +216,7 @@
         <div class="pdf_seal">
           <span >交通运输执法部门(印章)</span><br>
           <el-form-item prop="makeDate" class="pdf_datapick">
-            <el-date-picker v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
+            <el-date-picker @blur="startTime2" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="  年  月  日"  value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
         </div>
@@ -289,8 +289,12 @@
               <el-table-column prop="spec" label="规格" align="center">
                 <template slot-scope="scope">
                   <el-select v-model="scope.row.spec" placeholder="">
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label">
-                    </el-option>
+                    <el-option
+                      v-for="item in options" 
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
+                    ></el-option>
                   </el-select>
                 </template>
               </el-table-column>
@@ -328,13 +332,14 @@
 <script>
   import overflowInput from "@/page/caseHandle/case/modle/overflowInput.vue";
   import {mixinGetCaseApiList} from "@/common/js/mixins";
-  import {getOrganDetailApi, getOrganIdApi} from "@/api/system";
+  import {getOrganDetailApi, getOrganIdApi,getDictListDetailByNameApi} from "@/api/system";
   import {mapGetters} from "vuex";
   import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
   import {validateIDNumber, validatePhone, validateZIP} from '@/common/js/validator'
 import {
   testApi
 } from "@/api/caseHandle";
+
   export default {
     components: {
       casePageFloatBtns
@@ -489,26 +494,6 @@ import {
           }
         ],
         options: [
-          {
-            value: '1',
-            label: ' '
-          },
-          {
-            value: '2',
-            label: '份'
-          },
-          {
-            value: '3',
-            label: '套'
-          },
-          {
-            value: '4',
-            label: '个'
-          },
-          {
-            value: '5',
-            label: '件'
-          }
         ],
         measurOptions: [
           {
@@ -625,7 +610,42 @@ import {
 
       startTime() {
         if (this.docData.measureStartDate) {
+          if (Date.parse(this.docData.measureStartDate) < Date.parse(this.docData.lasj)) {
+            this.$message({
+              message: '开始时间不得小于立案时间',
+              type: 'warning'
+            });
+            this.docData.measureStartDate = '';
+            return;
+          }
           this.$set(this.docData, 'measureEndDate', new Date(new Date(this.docData.measureStartDate).getTime() + 29 * 24 * 3600 * 1000).format("yyyy-MM-dd"));
+        }
+      },
+      startTime1(){
+        if (Date.parse(this.docData.measureEndDate) < Date.parse(this.docData.measureStartDate)) {
+          this.$message({
+            message: '结束时间不得小于开始时间',
+            type: 'warning'
+          });
+          this.docData.measureEndDate = '';
+          this.docData.measureStartDate = '';
+        }
+      },
+      starttime2(){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.makeDate = '';
+        }
+        if (Date.parse(this.docData.afsj) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '当前时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.afsj = '';
         }
       },
       //根据用户的组织机构ID获取复议机构和诉讼机构
@@ -680,19 +700,22 @@ import {
         // this.$set(this.docData, 'measureStartDate', new Date());
         this.docData.measureStartDate = new Date().format('yyyy-MM-dd');
         this.startTime();
+      },
+       //获取规格单位
+      getUnit(){
+        getDictListDetailByNameApi('扣押物品规格').then(res=>{
+          console.log('规格',res);
+          this.options = res.data;
+          //添加一个空的数据
+          this.options.unshift({name:' ',note:' ',id:'123'})
+        }).catch(err=>{throw new Error(err)})
       }
-
-
-    },
-    mounted() {
-      // this.$set(this.docData, 'measureStartDate', new Date());
-      // console.log('this.docData.measureStartDate',this.docData.measureStartDate)
-      // this.startTime();
     },
     created() {
       this.isOverStatus();
       this.getOrganDetailOptions();
       this.getDocDataByCaseIdAndDocId();
+      this.getUnit();
     }
   }
 </script>

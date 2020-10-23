@@ -139,7 +139,9 @@ export default {
           this.getFile()
       },
       getFile() {
-        this.getFileStream(this.pdfId)
+          if(this.pdfId){
+              this.getFileStream(this.pdfId)
+          }
       },
       //根据stroagId请求文件流
       getFileStream(storageId){

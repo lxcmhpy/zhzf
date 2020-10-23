@@ -1,7 +1,7 @@
 <template>
   <div class="print_box">
     <!-- sdmaskjdnsjdns -->
-    <el-button type="primary"  id="editCaseInfoBtn" @click="gotoEditCase">修改基本信息</el-button>
+    <el-button type="primary"  id="editCaseInfoBtn" @click="gotoEditCase" v-if="showEditInfo">修改基本信息</el-button>
     <div class="print_info" id="establish-print">
       <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData">
         <div class="doc_topic">立案登记表</div>
@@ -26,26 +26,26 @@
                   <p>
                     <el-checkbox label="上级交办"> 3.上级机关
                       <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
-                        <el-input v-model="caseSourceText3" :maxLength="maxLength" placeholder="\" disabled></el-input>
+                        <el-input v-model="caseSourceText3" :maxLength="maxLength" placeholder="/" disabled></el-input>
                       </el-form-item>交办的；
                     </el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="下级报请"> 4.下级机关
                       <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
-                        <el-input v-model="caseSourceText4" :maxLength="maxLength" placeholder="\" disabled></el-input>
+                        <el-input v-model="caseSourceText4" :maxLength="maxLength" placeholder="/" disabled></el-input>
                       </el-form-item>报请查处的；</el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="部门移送"> 5.有关部门
                       <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
-                        <el-input v-model="caseSourceText5" :maxLength="maxLength" placeholder="\" disabled></el-input>
+                        <el-input v-model="caseSourceText5" :maxLength="maxLength" placeholder="/" disabled></el-input>
                       </el-form-item>移送的；</el-checkbox>
                   </p>
                   <p>
                     <el-checkbox label="其他途径">6.其他途径发现的：
                       <el-form-item v-if="!lineStyleFlag" prop="reconsiderationOrgan" style="margin-top:-8px;border-bottom:1px solid black">
-                        <el-input v-model="caseSourceText6" :maxLength="maxLength" placeholder="\" disabled></el-input>
+                        <el-input v-model="caseSourceText6" :maxLength="maxLength" placeholder="/" disabled></el-input>
                       </el-form-item>
                     </el-checkbox>
                   </p>
@@ -58,7 +58,7 @@
             <td rowspan="2">案由</td>
             <td rowspan="2" colspan="8" class="color_DBE4EF">
               <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                <el-input  type="textarea" v-model="formData.caseName"  :disabled="fieldDisabled(propertyFeatures['caseName'])" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>  
+                <el-input  type="textarea" v-model="formData.caseName"  :disabled="fieldDisabled(propertyFeatures['caseName'])" v-bind:class="{ over_flow:formData.caseName.length>14?true:false }" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="/"></el-input>  
               </el-form-item>
             </td>
           </tr>
@@ -88,13 +88,13 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-                <el-input type="textarea" v-model="formData.party" :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.party" :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>性别</td>
             <td class="color_DBE4EF">
               <el-form-item prop="partySex" v-if="!approval" :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)">
-                <el-select v-model="formData.partySex" :disabled="!isParty || fieldDisabled(propertyFeatures['partySex'])" placeholder="\">
+                <el-select v-model="formData.partySex" :disabled="!isParty || fieldDisabled(propertyFeatures['partySex'])" placeholder="/">
                   <el-option value="0" label="男"></el-option>
                   <el-option value="1" label="女"></el-option>
                 </el-select>
@@ -106,7 +106,7 @@
               <el-form-item prop="partyAge" :rules="fieldRules('partyAge',propertyFeatures['partyAge'],'',isParty)">
                 <el-input type="textarea" v-model="formData.partyAge" 
                 :disabled="!isParty || fieldDisabled(propertyFeatures['partyAge'])"
-                v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="3" placeholder="\"></el-input>
+                v-bind:class="{ over_flow:formData.partyAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="3" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -116,7 +116,7 @@
                 
               <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
                 <el-input  type="textarea" v-model="formData.partyAddress" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])" 
-                v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"
+                v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"
                 ></el-input>
                
               </el-form-item>
@@ -127,13 +127,13 @@
             </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
-                <el-input type="textarea" v-model="formData.partyIdNo" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.partyIdNo" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])" v-bind:class="{ over_flow:formData.partyIdNo.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
-                <el-input type="textarea" v-model="formData.partyTel" :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])" v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.partyTel" :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])" v-bind:class="{ over_flow:formData.partyTel.length>6?true:false }" :autosize="{ minRows: 2, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -142,7 +142,7 @@
             <td>名称</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
-                <el-input type="textarea" v-model="formData.partyName" :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.partyName" :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" v-bind:class="{ over_flow:formData.partyName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>
@@ -151,7 +151,7 @@
             </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
-                <el-input type="textarea" v-model="formData.partyManager" :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])" v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="10" placeholder="\" ></el-input>
+                <el-input type="textarea" v-model="formData.partyManager" :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])" v-bind:class="{ over_flow:formData.partyManager.length>3?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="10" placeholder="/" ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -159,13 +159,13 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
-                <el-input type="textarea" v-model="formData.partyUnitAddress" :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="45" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.partyUnitAddress" :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])" v-bind:class="{ over_flow:formData.partyUnitAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 2}" maxlength="45" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td style="width:50px">联系电话</td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyUnitTel" :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)">
-                <el-input type="textarea" v-model="formData.partyUnitTel" :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])" v-bind:class="{ over_flow:formData.partyUnitTel.length>6?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.partyUnitTel" :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])" v-bind:class="{ over_flow:formData.partyUnitTel.length>6?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -173,7 +173,7 @@
             <td colspan="2">统一社会信用代码</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
-                <el-input type="textarea" v-model="formData.socialCreditCode" :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])" v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.socialCreditCode" :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])" v-bind:class="{ over_flow:formData.socialCreditCode.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -186,7 +186,7 @@
               <el-form-item prop="caseSituation" :rules="fieldRules('caseSituation',propertyFeatures['caseSituation'])">
                 <el-input type='textarea' v-model="formData.caseSituation" 
                 :disabled="fieldDisabled(propertyFeatures['caseSituation'])"
-                v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="1000" placeholder="\"></el-input>
+                v-bind:class="{ over_flow:formData.caseSituation && formData.caseSituation.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 5}" maxlength="1000" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -246,7 +246,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="note">
-                <el-input type="textarea" v-model="formData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="formData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -413,6 +413,7 @@ export default {
       needDealData:true,
       editCaseInfo:'', //修改案件基本信息需要传的数据
       propertyFeatures:'', //字段属性配置
+      showEditInfo:true, //显示按钮
     };
   },
   components: {
@@ -466,6 +467,7 @@ export default {
       } else {
         this.isParty = false;
       }
+      
     },
     //获取案件基本信息
     getCaseInfo(){

@@ -182,11 +182,11 @@
             <template slot-scope="scope">
               <el-tooltip  v-if="scope.row.warContent" placement="top-start" effect="light">
                 <div slot="content" class="warn-li">
-                  <li v-for="(item,index) in scope.row.warContent" :key="index">
+                  <li v-for="(item,index) in JSON.parse(scope.row.warContent)" :key="index">
                     <span v-if="item.warType=='1'"  style="color:#FF0000"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
                     <span v-if="item.warType=='2'"  style="color:#FF6600"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
                     <span v-if="item.warType=='3'"  style="color:#0084FF"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
-                    </li>
+                    </li> 
                 </div>
                 <div class="warn-box" v-if="scope.row.warType=='1'" style="background:#FF0000">警</div>
                 <div class="warn-box" v-if="scope.row.warType=='2'" style="background:#FF6600">警</div>
@@ -229,6 +229,7 @@ import caseCheckDialog from "./dialog/caseCheckDialog";
 // import elSelectTree from "../../../components/elSelectTree/elSelectTree";
 import caseInfoDia from "@/page/lawEnforcementSupervision/components/caseInfoDia";
 import { caseSupervisionCommonMixins } from "@/common/js/caseHandle/caseSupervisionCommonMixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -243,7 +244,7 @@ export default {
         // acceptTime: "",
         caseStatus: "",
         zfmlId: "",
-        organId: "",
+        organId: iLocalStroage.gets("userInfo").organId,
         illegalLaw: "",
         partyType:'',
         sjNum:'',
@@ -268,6 +269,9 @@ export default {
       allStaff: [],
     };
   },
+  computed: {
+        ...mapGetters(["openTab"])
+  },
   components: {
     caseCheckDialog,
     caseInfoDia,
@@ -279,6 +283,7 @@ export default {
       if(currentPage) this.currentPage = 1;
       this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0];
       this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1];
+      // this.caseSearchForm.organId = this.selectOrganId;
       let sentData = {
         ...this.caseSearchForm,
         current: this.currentPage,
@@ -305,6 +310,9 @@ export default {
       this.$store.commit("setCaseNumber", row.caseNumber);
       this.$store.commit("setIsLawEnforcementSupervision", true);
       this.$store.commit("setLawEnforcementSupervisionType", "caseSupervision");
+       //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
       this.$router.push({
         name: "case_handle_flowChart",
       });
@@ -327,7 +335,7 @@ export default {
     }
   },
   created() {
-    this.searchCase();
+    // this.searchCase();
   },
 };
 </script>

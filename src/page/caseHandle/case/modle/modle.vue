@@ -16,15 +16,15 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
+                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
               </el-form-item>
 
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo">
-                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyIdNo" :maxLength='maxLength' placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -32,13 +32,13 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="adressLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel">
-                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyTel" :maxLength='maxLength' placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -47,7 +47,7 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyName" :maxLength='maxLength' placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -55,7 +55,7 @@
             <td>地址</td>
             <td colspan="4" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -63,13 +63,13 @@
             <td>联系电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td class="color_DBE4EF">
               <el-form-item prop="partyManager">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.partyManager" :maxLength='maxLength' placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -79,7 +79,7 @@
             </td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="\"></el-input>
+                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -100,7 +100,7 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="illegalFactsEvidence">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.illegalFactsEvidence" rows="3" maxLength='90' placeholder="\"></el-input>
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.illegalFactsEvidence" rows="3" maxLength='90' placeholder="/"></el-input>
               <span class="overflow_describe">违法事实及依据：</span>
               <span  class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span v-for="item in overFlowEditList" :key="item.id" class="span_bg" @click="overFlowEdit">&nbsp;</span>
@@ -114,18 +114,18 @@
         <p>你(单位)的行为违反了<span>
             <el-form-item prop="illegalLaw">
               <el-input type='textarea' :rules="[
-      { required: true, trigger: 'blur' }]" v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.illegalLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+      { required: true, trigger: 'blur' }]" v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.illegalLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>的规定，依据
           <span contenteditable="true">
             <el-form-item prop="punishLaw">
-              <el-input type='textarea' class="big_error" v-bind:class="{ over_flow:docData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input type='textarea' class="big_error" v-bind:class="{ over_flow:docData.punishLaw.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>的规定，决定给予
           <span>
             <el-form-item prop="tempPunishAmount">
-              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.tempPunishAmount.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
-              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <el-input type='textarea' v-model="docData.tempPunishAmount" v-bind:class="{ over_flow:docData.tempPunishAmount.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input>
+              <!-- <el-input v-model="docData.tempPunishAmount" :maxLength='maxLength' placeholder="/"></el-input> -->
             </el-form-item>
           </span>的行政处罚。
         </p>
@@ -138,22 +138,22 @@
         <p>
           <el-checkbox></el-checkbox>自收到本决定书之日起十五日内缴至<span>
             <el-form-item prop="bank">
-              <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.bank" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>，账号<span>
             <el-form-item prop="account">
-              <el-input v-model="docData.account" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.account" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>，到期不缴纳罚款的，本机关可以每日按罚款数额的百分之三加处罚款，加处罚款的数额不超过罚款本数。
         </p>
         <p>
           如果不服本处罚决定，可以在六十日内依法向<span>
             <el-form-item prop="reconsiderationOrgan">
-              <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.reconsiderationOrgan" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>申请行政复议，或者在六个月内依法向<span>
             <el-form-item prop="litigationOrgan">
-              <el-input v-model="docData.litigationOrgan" :maxLength='maxLength' placeholder="\"></el-input>
+              <el-input v-model="docData.litigationOrgan" :maxLength='maxLength' placeholder="/"></el-input>
             </el-form-item>
           </span>人民法院提起行政诉讼，但本决定不停止执行，法律另有规定的除外。逾期不申请行政复议、不提起行政诉讼又不履行的，本机关将依法申请人民法院强制执行。
         </p>

@@ -20,6 +20,7 @@
                 value-format="yyyy-MM-dd HH:mm"
                 placeholder="    年  月  日  时  分"
                 :disabled="fieldDisabled(propertyFeatures['inspectStartTime'])"
+                @blur="starttime"
               ></el-date-picker>
             </el-form-item>
           </span>至
@@ -36,6 +37,7 @@
                 value-format="yyyy-MM-dd HH:mm"
                 placeholder="    年  月  日  时  分"
                 :disabled="fieldDisabled(propertyFeatures['inspectEndTime'])"
+                @blur="endtime"
               ></el-date-picker>
             </el-form-item>
           </span>
@@ -436,6 +438,42 @@ export default {
     };
   },
   methods: {
+    starttime(){
+      if (this.docData.inspectEndTime){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.inspectStartTime) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '开始时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.inspectStartTime = '';
+        }else if(this.docData.inspectStartTime > this.docData.inspectEndTime){
+          this.$message({
+            message: '开始时间不能大于结束时间',
+            type: 'warning'
+          });
+          this.docData.inspectStartTime = '';
+        }
+      }
+    },
+    endtime(){
+      if (this.docData.inspectStartTime){
+        console.log('案发时间=='+this.docData.lasj)
+        if (Date.parse(this.docData.inspectStartTime) < Date.parse(this.docData.lasj)) {
+          this.$message({
+            message: '开始时间不得小于立案时间',
+            type: 'warning'
+          });
+          this.docData.inspectStartTime = '';
+        }else if(this.docData.inspectStartTime > this.docData.inspectEndTime){
+          this.$message({
+            message: '结束时间不能小于开始时间',
+            type: 'warning'
+          });
+          this.docData.inspectEndTime = '';
+        }
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

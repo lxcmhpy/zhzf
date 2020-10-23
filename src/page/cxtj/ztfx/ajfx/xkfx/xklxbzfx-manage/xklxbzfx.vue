@@ -10,6 +10,7 @@
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              style="width:400px"
             ></el-date-picker>
           </el-form-item>
         </el-form>

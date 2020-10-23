@@ -98,9 +98,9 @@
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">有效期起</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.CertificateBeginDate}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.ValidBeginDate}}</td>
                     <td class="tg-y93n" colspan="2">有效期止</td>
-                    <td class="tg-cly1" colspan="2">{{yyclForm.CertificateExpireDate}}</td>
+                    <td class="tg-cly1" colspan="2">{{yyclForm.ExpireDate}}</td>
                 </tr>
                 <tr>
                     <td class="tg-y93n" colspan="2">经营状态</td>

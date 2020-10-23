@@ -1,5 +1,5 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
+  <div class="com_searchAndpageBoxPadding doubleRandom">
     <div class="searchAndpageBox inspection-info" id="roleBox" style="height:calc(100% - 22px)">
       <div class="handlePart">
         <div class="search toggleBox">
@@ -149,8 +149,8 @@
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="legalPerson" label="法人名称" align="center"></el-table-column>
           <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
-          <el-table-column prop="matchPerson" label="匹配人员" align="center"></el-table-column>
-          <el-table-column prop="matchExpert" label="匹配专家" align="center"></el-table-column>
+          <el-table-column prop="matchPerson" label="检查人员" align="center"></el-table-column>
+          <el-table-column prop="matchExpert" label="检查专家" align="center"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
           <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -437,6 +437,7 @@ export default {
       this.isObjectTrue = false
       this.isFinishFlag = false
       this.randomResult = []
+      this.randomContent=''
       // 执行删除方法
       resetRandomByIdApi(this.currentId).then(
         res => {
@@ -445,6 +446,7 @@ export default {
               type: "success",
               message: res.msg
             });
+            
           }
         },
         error => {
@@ -593,3 +595,10 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
+<style lang="scss">
+.doubleRandom{
+  #roleBox{
+        overflow: auto;
+  }
+}
+</style>

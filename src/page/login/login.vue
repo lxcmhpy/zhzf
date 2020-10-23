@@ -31,7 +31,7 @@ export default {
     async whichProvince(){
       let res = await getDictListDetailByNameApi("系统标题");
       if(res.data[2]){
-        this.province = res.data[2].name
+        this.province = res.data[2].name;
       }else{
         alert('未设置省份！')
       }

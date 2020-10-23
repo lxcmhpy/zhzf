@@ -1,9 +1,9 @@
 <template>
 <div>
-<el-dialog title="缴纳凭证" :modal="false" :visible.sync="visible"
-    :show-close="false" width="30%" class= "detailDialog" :append-to-body="true">
+<el-dialog title="文件预览" :modal="false" :visible.sync="visible"
+    :show-close="false" width="820px" height="400px" class= "detailDialog" :append-to-body="true">
       <div>
-        <div style="float: left;width: 45%">
+        <div>
           <!-- <el-upload
           class="upload-demo"
           drag
@@ -13,8 +13,9 @@
           <div class="el-upload__text"><em>点击上传附件</em></div>
           <div class="el-upload__tip" slot="tip" style="text-align: center">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload> -->
-        <el-form ref="form" :model="form">
-          <img :src="myFileUrl" width="430px" height="400" align="center"/>
+        <el-form ref="form" :model="form" style="width: 800px; height:400px;text-align: center;">
+          <imgPreview :imgSrc="myFileUrl" :imgBoxWidth="800" :imgBoxHeight="400"></imgPreview>
+          <!-- <img :src="myFileUrl" width="430px" height="400" align="center"/> -->
           <!-- <img v-if="form.evType =='照片'" :src="host+form.storageId"  width="430px" height="400" align="center"/> -->
           <!-- <video v-if="form.evType =='音视频'" :src="host+form.storageId" controls="controls" width="400px" height="380">your browser does not support the video tag</video> -->
         </el-form>
@@ -26,6 +27,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+import imgPreview from "@/components/imgPreview.vue"
 export default {
     data(){        
         return{
@@ -34,6 +36,9 @@ export default {
             host:"",
             myFileUrl:'',
         }
+    },
+    components:{
+      imgPreview
     },
     methods:{
         showModal(data) {

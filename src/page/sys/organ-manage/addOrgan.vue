@@ -149,7 +149,7 @@
             <el-input v-model="addOrganForm.enforcementOrgan2"></el-input>
           </el-form-item>
         </div>
-        <div>
+        <div class="item">
           <el-form-item label="行政区划" prop="administrativeDivision">
             <el-cascader
                 ref="areaCascader"
@@ -210,6 +210,8 @@
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA';
 import {getAttachedPropertyByConditionApi,addAttachedPropertyValueApi} from "@/api/caseHandle";
 import {getCurrentAndNextOrganApi} from "@/api/system";
+import { validatePhone } from "@/common/js/validator";
+
 export default {
   data() {
     return {
@@ -246,7 +248,8 @@ export default {
       // propertyForm:{
       // },
       rules: {
-        name: [{ required: true, message: "请输入机构名称", trigger: "blur" }]
+        name: [{ required: true, message: "请输入机构名称", trigger: "blur" }],
+        telephone:[{ validator: validatePhone, trigger: "blur" }]
       },
       parentNode: "", //新增机构时的上级机构
       dialogTitle: "", //弹出框title

@@ -20,7 +20,7 @@
                     <p>
                       <el-radio :label="3">其他原因
                         <el-form-item prop="otherReason" class="otherReasonCon">
-                          <el-input  v-model="formData.otherReason" :disabled="disabledOne" :maxLength='maxLength' placeholder="\"></el-input>
+                          <el-input  v-model="formData.otherReason" :disabled="disabledOne" :maxLength='maxLength' placeholder="/"></el-input>
                         </el-form-item>
                       </el-radio>
                     </p>
@@ -35,7 +35,6 @@
                   <el-upload
                       action="https://jsonplaceholder.typicode.com/posts/" 
                       :http-request="uploadFile"
-                      :limit="3"
                       :show-file-list="false"
                       :on-change='fileChange'
                       :before-upload="uploadFileValidat"
@@ -46,7 +45,7 @@
                   <ul class="el-upload-list el-upload-list--text">
                     <li v-for="item in fileListArr" :key="item.id" class="el-upload-list__item is-ready" @click.stop="evidenceDetail(item)">
                       <i class="el-icon-document"></i>
-                      <span>{{item.fileName}}</span><span @click="deleteFile(item)">
+                      <span>{{item.fileName}}</span><span @click.stop="deleteFile(item)">
                         <i class="el-icon-close" style="float:right"></i>
                         </span>
                       </li>
@@ -360,7 +359,7 @@ export default {
     }
     .otherReasonCon{
       display: inline-block;
-      width: 600px;
+      width: 550px;
     }
   }
   .upLoadNumSpan{

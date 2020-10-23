@@ -31,7 +31,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :maxlength="nameLength"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -45,7 +45,7 @@
                   type="textarea"
                   v-model="docData.partyIdNo"
                   :maxLength="18"
-                  placeholder="\"
+                  placeholder="/"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
                 ></el-input>
@@ -66,7 +66,7 @@
                   :autosize="{ minRows: 1, maxRows: 3}"
                   maxlength="30"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -79,7 +79,7 @@
                 <el-input
                   v-model="docData.partyTel"
                   maxlength="11"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"
                 ></el-input>
               </el-form-item>
@@ -97,7 +97,7 @@
                   v-model="docData.partyName"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -113,7 +113,7 @@
                   v-model="docData.partyUnitAddress"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -130,7 +130,7 @@
                   minlength="11"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -144,7 +144,7 @@
                   v-model="docData.partyManager"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -160,7 +160,7 @@
                   v-model="docData.socialCreditCode"
                   :maxLength="maxLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])"
-                  placeholder="\"
+                  placeholder="/"
                 ></el-input>
               </el-form-item>
             </td>
@@ -182,7 +182,7 @@
                   v-bind:class="{ over_flow:docData.basicSituation && docData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
-                  placeholder="\"
+                  placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
                 ></el-input>
               </el-form-item>
@@ -205,7 +205,7 @@
                   >
                     <el-date-picker
                       v-model="docData.startDate"
-                      @change="startTime"
+                      @blur="starttime"
                       type="date"
                       format="yyyy年MM月dd日"
                       value-format="yyyy-MM-dd"
@@ -236,6 +236,7 @@
                       value-format="yyyy-MM-dd"
                       placeholder="      年 月 日"
                       :clearable="false"
+                      @blur="starttime"
                     ></el-date-picker>
                   </span>
                 </p>
@@ -279,7 +280,7 @@
       </el-form>
     </div>
     <casePageFloatBtns
-      :pageDomId="removeEvidenceRegApprovalForm_print"
+      :pageDomId="pageDomId"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
     ></casePageFloatBtns>
@@ -412,11 +413,29 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "removeEvidenceRegApprovalForm_print"
       },
+      pageDomId: "removeEvidenceRegApprovalForm_print",
       approvalOver: false, //审核完成
       propertyFeatures: ""
     };
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.startDate) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.startDate = '';
+      }
+      if (Date.parse(this.docData.staffSignTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.staffSignTime = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

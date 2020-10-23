@@ -221,14 +221,7 @@ export default  [
             },
             component: () => import("@/page/glfx/kjglfx-manage/kjglfx.vue")
           },
-          {
-            name: "违法行为关联分析",
-            path: "/wfxwglfx-manage",
-            meta: {
-              title: "违法行为关联分析"
-            },
-            component: () => import("@/page/glfx/wfxwglfx-manage/wfxwglfx.vue")
-          },
+        
           {
             name: "趋势关联分析",
             path: "/qsglfx-manage",

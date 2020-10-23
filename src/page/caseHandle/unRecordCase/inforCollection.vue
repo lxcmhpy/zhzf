@@ -94,7 +94,7 @@
             </el-form-item>
           </div>
         </div>
-        <div>
+        <!-- <div>
           <div class="itemOne">
             <el-form-item label="违法行为">
               <el-input
@@ -103,7 +103,7 @@
               ></el-input>
             </el-form-item>
           </div>
-        </div>
+        </div> -->
         <div>
           <div class="item">
             <el-form-item label="程序类型">
@@ -1176,7 +1176,13 @@
               <el-input
                 v-model="inforForm.caseCauseNameCopy"
                 :disabled="true"
-              ></el-input>
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="chooseIllegalAct"
+                ></el-button>
+              </el-input>
             </el-form-item>
           </div>
         </div>
@@ -1381,6 +1387,8 @@
       </div>
     </el-backtop>
     <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
+    <chooseillegalAct ref="chooseillegalActRef" @setIllegaAct="setIllegaAct"></chooseillegalAct>
+
   </div>
 </template>
 <script>
@@ -1410,6 +1418,7 @@ import {
   findJudgFreedomListApi,
   findLawOfficerListApi,
 } from "@/api/caseHandle";
+import chooseillegalAct from "@/page/chooseIllegegaDialog.vue";
 
 export default {
   data() {
@@ -1605,33 +1614,33 @@ export default {
           { required: true, message: "请选择处罚依据", trigger: "change" },
         ],
         partyZipCode: [{ validator: validateZIP, trigger: "blur" }],
-        provincesAddressArray: [{ required: true, message: "省市区不能为空", trigger: "change"}],
+        provincesAddressArray: [{ required: true, validator: validatePart, trigger: "change" }],
         partyIdNo: [
-          { required: true, message: "身份证号不能为空", trigger: "blur" },
+          { required: true, validator: validatePart, trigger: "blur" },
           { validator: checkIdNoPassSort, trigger: "blur" }
         ],
         partyTel: [
-          { required: true, message: "联系电话不能为空", trigger: "blur" },
+          { required: true, validator: validatePart, trigger: "blur" },
           { validator: validatePhone, trigger: "blur" },
         ],
         partyAddress: [
-          { required: true, message: "住址不能为空", trigger: "blur" },
+          { required: true, validator: validatePart, trigger: "blur" },
         ],
         partyAge: [
           { validator: validateAge, trigger: "blur" }
         ],
         partyManager: [
-          { required: true, message: "法人不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         partyUnitAddress: [
-          { required: true, message: "单位地址不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         partyUnitTel: [
-          { required: true, message: "单位联系电话不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
           { validator: validatePhone, trigger: "blur" },
         ],
         socialCreditCode: [
-          { required: true, message: "社会信用代码不能为空", trigger: "blur" },
+          { required: true, validator: validatePartName, trigger: "blur" },
         ],
         highwayRoute: [
           {
@@ -1800,6 +1809,7 @@ export default {
     punishDiag,
     mapDiag,
     caseSlideMenu,
+    chooseillegalAct,
   },
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId", "openTab", "caseHandle"]) },
@@ -3093,93 +3103,7 @@ export default {
       this.inforForm.afdd = address;
       this.hasLatitudeAndLongitude = true;
     },
-    //与案件关系
-    /* getCaseRelation() {
-        this.$store.dispatch("getDictListDetail", "1736c6fcb82ca70f0f71681c3be964a5").then(
-          res => {
-            console.log("字典值列表", res);
-            res.data.forEach(p=>{
-                this.allRelationWithCase.push({label:p.name,value:p.sort})
-            })
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }, */
-    //与案件关系(企业组织)
-    /* getQYCaseRelation() {
-        this.$store.dispatch("getDictListDetail", "c130153daef2f222f138995fa04e8b84").then(
-          res => {
-            console.log("字典值列表", res);
-            res.data.forEach(p=>{
-                this.allQYRelationWithCase.push({label:p.name,value:p.sort})
-            })
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }, */
-    //与当事人关系
-    /* getPartyRelation() {
-        this.$store.dispatch("getDictListDetail", "36606c561616a5937a1951975af89923").then(
-          res => {
-            console.log("字典值列表", res);
-            res.data.forEach(p=>{
-                this.allRelationWithParty.push({label:p.name,value:p.sort})
-                if(p.sort!="1"){
-                    this.allRelationWithParty_.push({label:p.name,value:p.sort})
-                }
-            })
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }, */
-    //与当事人关系(企业组织)
-    /* getQYPartyRelation() {
-        this.$store.dispatch("getDictListDetail", "27fc92deb37ffe10410f2598e8747603").then(
-          res => {
-            console.log("字典值列表", res);
-            res.data.forEach(p=>{
-                this.allQYRelationWithParty.push({label:p.name,value:p.sort})
-            })
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }, */
-    //车牌颜色
-    /* getVehicleIdColor() {
-        this.$store.dispatch("getDictListDetail", "388c5ac24cde480df1a54bc97829a481").then(
-          res => {
-            console.log("字典值列表", res);
-            res.data.forEach(p=>{
-                this.allVehicleIdColor.push({label:p.name,value:p.sort})
-            })
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }, */
-    //车辆类型
-    /* getVehicleShipType() {
-        this.$store.dispatch("getDictListDetail", "758832d166deeeb0b533de2ec0303507").then(
-          res => {
-            console.log("字典值列表", res);
-            res.data.forEach(p=>{
-                this.allVehicleShipType.push({label:p.name,value:p.name})
-            })
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }, */
+    
     handleSelect(node) {
       if (node) {
         let data = this.$refs["areaCascader"].panel.getNodeByValue(
@@ -3315,19 +3239,7 @@ export default {
         }
       );
     },
-    /* getCredentialType(){
-          this.$store.dispatch("getDictListDetail", "09a17db149f76b306c4803abb2faccb5").then(
-          res => {
-            console.log("字典值列表", res);
-            res.data.forEach(p=>{
-                this.credentialType.push({label:p.name,value:p.sort})
-            })
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      }, */
+    
     //超限长宽高限值自动计算
     countOverLength() {
       if (
@@ -3385,6 +3297,22 @@ export default {
       } else {
         this.inforForm.otherInfo.overHeight = "";
       }
+    },
+    //选择违法行为弹窗 （需求更改：违法行为可以修改 --连鹏飞）
+    chooseIllegalAct() {
+        let lawCate = {
+          cateId: this.inforForm.zfmlId,
+          cateName: this.inforForm.zfml,
+        };
+        this.$refs.chooseillegalActRef.showModal(lawCate);
+    },
+    //设置违法行为
+    setIllegaAct(val) {
+      this.inforForm.caseCauseNameCopy = this.inforForm.caseCauseName = val.strContent;
+      this.inforForm.caseCauseId = val.id;
+      this.inforForm.illegalLaw = "";
+      this.inforForm.punishLaw =  "";
+      this.getPunishList()
     },
   },
 
