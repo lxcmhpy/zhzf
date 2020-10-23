@@ -11,7 +11,6 @@
           <el-form-item label="起始年月">
             <el-date-picker
               v-model="logForm.date"
-              size="small"
               type="monthrange"
               range-separator="至"
               start-placeholder="开始月份"
