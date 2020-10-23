@@ -64,6 +64,7 @@
         <div class="statistics-content-table">
 
           <el-table  
+              v-loading="loading"
               :data="tableData"
               row-key="id"
               border
@@ -103,7 +104,7 @@ export default {
       },
       dateArray: [new Date(new Date().getFullYear(), 0), new Date()], //今年1月-至今
       tableData: [],
-
+      loading: false
     };
   },
   components: {},
@@ -145,7 +146,7 @@ export default {
       );
     },
     getStatisticsData() {
-
+      this.loading = true;
       let startYear = this.dateArray[0].getFullYear()
       let startMonth = this.dateArray[0].getMonth() + 1;
       this.filterForm.startTime = startYear + "-" + startMonth + "-01 00:00:00";
@@ -208,9 +209,8 @@ export default {
           tableData.push(bj);
           if(res.data.sublevel && res.data.sublevel.length > 0) tableData.push(xjhz);
 
-        this.tableData = tableData;
-
-
+          this.tableData = tableData;
+          this.loading = false;
         }
       )
     }
