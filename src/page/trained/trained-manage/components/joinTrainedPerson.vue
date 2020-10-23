@@ -210,8 +210,6 @@ export default {
         this.selectUserIdList.length == 0
       ) {
         this.$message({ type: "warning", message: "请选择一条考生信息" });
-      } else if (this.selectUserIdList.length > 1) {
-        this.$message({ type: "warning", message: "只能选择一条考生信息" });
       } else {
         this.$confirm("确认移除吗？", "提示", {
           confirmButtonText: "确定",
@@ -220,7 +218,7 @@ export default {
           customClass: "custom-confirm"
         })
           .then(() => {
-            deleteTrainPerson(this.selectUserIdList[0]).then(
+            deleteTrainPerson(this.selectUserIdList).then(
               res => {
                 if (res.code === 200) {
                   this.$message({ type: "success", message: "移除成功!" });

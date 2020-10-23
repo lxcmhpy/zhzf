@@ -55,6 +55,12 @@
     // }
     .handlePart {
         flex-shrink:0;
+        >>> .el-input__icon {
+          line-height: 0;
+        }
+        >>> .el-date-editor.el-input__inner {
+          padding: 0 10px;
+        }
     }
     .tablePart {
         flex-shrink:1;
