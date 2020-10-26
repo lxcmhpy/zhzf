@@ -583,7 +583,7 @@
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="道路经营许可证" class="lable-height18px">
+            <el-form-item label="经营许可证" class="lable-height18px">
               <el-input v-model="inforForm.roadTransportLicense"></el-input>
             </el-form-item>
           </div>
