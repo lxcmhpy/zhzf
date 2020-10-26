@@ -41,7 +41,7 @@
   </el-dialog>
 </template>
 <script>
-import { validatePhone, isSpecialChar } from '@/common/js/validator';
+import { validateContact, isSpecialChar } from '@/common/js/validator';
 import { addTrainedOrgan } from '@/api/trained';
 
 export default {
@@ -67,7 +67,7 @@ export default {
         ],
         contactNo: [
           { required: true, message: "请输入联系方式", trigger: "blur" },
-          { validator: validatePhone, trigger: "blur" }
+          { validator: validateContact, trigger: "blur" }
         ]
       },
       dialogTitle: "", //弹出框title
