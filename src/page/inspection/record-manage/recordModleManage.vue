@@ -1,7 +1,7 @@
 <template>
   <div class="com_searchAndpageBoxPadding recordModleManage">
     <div class="searchAndpageBox" id="roleBox">
-      <div class="handlePart">
+      <div class="">
         <div class="search toggleBox">
           <div
             class="handlePart caseHandleSearchPart"
@@ -357,6 +357,11 @@ export default {
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
 <style lang="scss">
 .recordModleManage {
+  .toggleBox {
+    .handlePart{
+      padding-left: 0px;
+    }
+  }
   #roleBox {
     height: inherit;
     .tablePart-no {

@@ -3,7 +3,7 @@
         <div class="select-avatar">
             <span class="select-prompt">选择本地照片，上传编辑自己的头像；支持jpg、png格式的图片</span>
             <el-upload class="upload-person-img" list-type="picture-card" action="" :show-file-list="false"
-                :auto-upload="false" :on-change="handleChange">
+                accept=".jpg, .png" :auto-upload="false" :on-change="handleChange">
                 <el-button size="cats-common">上传照片</el-button>
             </el-upload>
             <div class="cropper">
@@ -25,6 +25,8 @@
     import {
         VueCropper
     } from 'vue-cropper';
+
+    const AllowImageType = ['image/jpeg', 'image/png'];
 
     export default {
         name: 'UploadPersonAvatar',
@@ -64,7 +66,14 @@
             },
             // 选择照片
             handleChange(file, fileList) {
-                const isGt2M = file.size / 1024 / 1024 > 2
+                const isGt2M = file.size / 1024 / 1024 > 2;
+                if (AllowImageType.indexOf(file.raw.type) < 0) {
+                    this.catsMessage({
+                        message: '上传图片格式错误，只支持上传jpg或png格式',
+                        type: 'info'
+                    })
+                    return
+                }
                 if (isGt2M) {
                     this.catsMessage({
                         message: '上传文件大小不能超过 2MB!',

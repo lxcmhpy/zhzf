@@ -32,6 +32,8 @@
   </div>
 </template>
 <script>
+const AllowImageType = ['image/jpeg', 'image/png'];
+
 export default {
   name: 'materialIdNo', //身份证证明材料
   props: {
@@ -111,12 +113,21 @@ export default {
     },
     handleChange(file, fileList) {
       const fileIndex = fileList.findIndex(item => item.uid === file.uid)
-      const isGt2M = file.size / 1024 / 1024 > 2
+      const isGt2M = file.size / 1024 / 1024 > 2;
+      if (AllowImageType.indexOf(file.raw.type) < 0) {
+        this.catsMessage({
+          message: '上传图片格式错误，只支持上传jpg或png格式',
+          type: 'info'
+        })
+        fileList.splice(fileIndex, 1);
+        return
+      }
       if (isGt2M) {
         this.catsMessage({
           message: '上传文件大小不能超过 2MB!',
           type: 'warning'
         })
+        return
         fileList.splice(fileIndex, 1)
       }
       this.idNoFiles = fileList
@@ -175,13 +186,22 @@ export default {
     // 修改图片重新选择图片
     handleEditChange(file, fileList) {
       const currentFile = this.idNoFiles.filter(item => item.uid === file.uid)
-      const isGt2M = file.size / 1024 / 1024 > 2
+      const isGt2M = file.size / 1024 / 1024 > 2;
+      if (AllowImageType.indexOf(file.raw.type) < 0) {
+        this.catsMessage({
+          message: '上传图片格式错误，只支持上传jpg或png格式',
+          type: 'info'
+        })
+        fileList.splice(this.editImgIndex, 1);
+        return
+      }
       if (isGt2M) {
         this.catsMessage({
           message: '上传文件大小不能超过 2MB!',
           type: 'warning'
         })
-        fileList.splice(fileIndex, 1)
+        fileList.splice(this.editImgIndex, 1);
+        return
       } else {
         fileList.splice(0, fileList.length)
         this.idNoFiles.splice(this.editImgIndex, 1, file)

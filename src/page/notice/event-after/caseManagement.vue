@@ -2,36 +2,81 @@
   <div class="com_searchAndpageBoxPadding case-management">
     <div class="searchAndpageBox searchAndpageBox2">
       <div class="handlePart caseHandleSearchPart">
-        <el-form :model="searchForm" ref="searchForm" style="width:100%" size="small">
+        <el-form
+          :model="searchForm"
+          ref="searchForm"
+          style="width: 100%"
+          size="small"
+        >
           <el-row>
             <el-col :span="8">
-              <el-form-item label="处罚决定书文号（案号）" prop="caseNumber" label-width="170px">
+              <el-form-item
+                label="处罚决定书文号（案号）"
+                prop="caseNumber"
+                label-width="170px"
+              >
                 <el-input v-model="searchForm.caseNumber"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="7">
-              <el-form-item label="行政相对人名称" prop="party" label-width="140px">
+              <el-form-item
+                label="行政相对人名称"
+                prop="party"
+                label-width="140px"
+              >
                 <el-input v-model="searchForm.party"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
               <el-form-item label="状态" prop="state" label-width="50px">
-                <el-select v-model="searchForm.state" placeholder="请选择" clearable>
-                  <el-option v-for="(item,key) in allStatus" :key="key" :label="item" :value="key"></el-option>
+                <el-select
+                  v-model="searchForm.state"
+                  placeholder="请选择"
+                  clearable
+                >
+                  <el-option
+                    v-for="(item, key) in allStatus"
+                    :key="key"
+                    :label="item"
+                    :value="key"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="4">
               <el-form-item label-width="10px">
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-search"
+                  @click="searchEmit"
+                ></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-refresh-left"
+                  @click="reset"
+                ></el-button>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row style="margin-bottom:10px;">
-            <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
-            <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
-            <el-button v-if="canApprove" type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
+          <el-row style="margin-bottom: 10px">
+            <el-button
+              type="primary"
+              size="medium"
+              @click="dialogVisible = true"
+              >添加</el-button
+            >
+            <el-button type="primary" size="medium" @click="onDeleteBatch"
+              >删除</el-button
+            >
+            <el-button
+              v-if="canApprove"
+              type="primary"
+              size="medium"
+              @click="onApproveBatch"
+              >批量审核</el-button
+            >
           </el-row>
         </el-form>
       </div>
@@ -45,8 +90,17 @@
           @selection-change="handleSelectionChange"
         >
           >
-          <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="caseNumber" label="行政处罚决定书文号（案号）" width="150" align="center"></el-table-column>
+          <el-table-column
+            type="selection"
+            width="50"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="caseNumber"
+            label="行政处罚决定书文号（案号）"
+            width="150"
+            align="center"
+          ></el-table-column>
           <el-table-column
             prop="caseCauseName"
             label="处罚名称（违法行为）"
@@ -54,12 +108,31 @@
             align="center"
             :show-overflow-tooltip="true"
           ></el-table-column>
-          <el-table-column prop="party" label="行政相对人名称（当事人）" width="130" align="center"></el-table-column>
-          <el-table-column prop="organName" label="受案单位" align="center"></el-table-column>
-          <el-table-column prop="subjectName" label="处罚单位" align="center"></el-table-column>
-          <el-table-column prop="punishDate" label="处罚时间" align="center"></el-table-column>
+          <el-table-column
+            prop="party"
+            label="行政相对人名称（当事人）"
+            width="130"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="organName"
+            label="受案单位"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="subjectName"
+            label="处罚单位"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="punishDate"
+            label="处罚时间"
+            align="center"
+          ></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
-            <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
+            <template slot-scope="scope">{{
+              allStatus[scope.row.state]
+            }}</template>
           </el-table-column>
           <el-table-column
             prop="auditComment"
@@ -69,17 +142,21 @@
           ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
+              <el-button type="text" @click="onDetail(scope.row)"
+                >详情</el-button
+              >
               <el-button
-                v-if="scope.row.state===1 || scope.row.state===4"
+                v-if="scope.row.state === 1 || scope.row.state === 4"
                 type="text"
                 @click="onSubmit(scope.row)"
-              >提交</el-button>
+                >提交</el-button
+              >
               <el-button
-                v-if="scope.row.state===2 && canApprove"
+                v-if="scope.row.state === 2 && canApprove"
                 type="text"
                 @click="onApprove(scope.row)"
-              >审核</el-button>
+                >审核</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -105,57 +182,59 @@
       width="50%"
       class="detail-dialog"
     >
-      <div style="height:400px;overflow: auto;">
+      <div style="height: 400px; overflow: auto">
         <table class="table" width="100%" cellspacing="0">
           <tr>
             <td width="15%" class="title">行政处罚决定书文号</td>
-            <td width="35%">{{form.caseNumber}}</td>
+            <td width="35%">{{ form.caseNumber }}</td>
           </tr>
           <tr>
             <td class="title">处罚名称</td>
-            <td>{{form.caseCauseName}}</td>
+            <td>{{ form.caseCauseName }}</td>
           </tr>
           <tr>
             <td class="title">处罚类型</td>
-            <td>{{form.punishType}}</td>
+            <td>{{ form.punishType }}</td>
           </tr>
           <tr>
             <td class="title">处罚事由</td>
-            <td>{{form.caseInfo}}</td>
+            <td>{{ form.caseInfo }}</td>
           </tr>
           <tr>
             <td class="title">处罚依据</td>
-            <td>{{form.punishLaw}}</td>
+            <td>{{ form.punishLaw }}</td>
           </tr>
           <tr>
             <td class="title">行政相对人名称</td>
-            <td>{{form.party}}</td>
+            <td>{{ form.party }}</td>
           </tr>
           <tr>
             <td class="title">统一社会信用代码</td>
-            <td>{{form.socialCreditCode}}</td>
+            <td>{{ form.socialCreditCode }}</td>
           </tr>
           <tr>
             <td class="title">身份证号</td>
-            <td>{{form.partyIdNo}}</td>
+            <td>{{ form.partyIdNo }}</td>
           </tr>
           <tr>
             <td class="title">处罚结果</td>
-            <td>{{form.punishDecision}}</td>
+            <td>{{ form.punishDecision }}</td>
           </tr>
           <tr>
             <td class="title">处罚决定日期</td>
-            <td>{{form.punishDate}}</td>
+            <td>{{ form.punishDate }}</td>
           </tr>
           <tr>
             <td class="title">处罚单位</td>
-            <td>{{form.subjectName}}</td>
+            <td>{{ form.subjectName }}</td>
           </tr>
         </table>
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="detailVisible = false">关闭</el-button>
+        <el-button type="primary" @click="detailVisible = false"
+          >关闭</el-button
+        >
       </span>
     </el-dialog>
 
@@ -299,7 +378,10 @@ export default {
      * 点击确定
      */
     handleSubmit(data) {
-      debugger;
+      if (data.length < 1) {
+        this.$message({ type: "warning", message: "请选择记录!" });
+        return;
+      }
       data.forEach((item) => {
         item.caseID = item.id;
         if (item.docData) item.caseInfo = JSON.parse(item.docData).illegalFact;

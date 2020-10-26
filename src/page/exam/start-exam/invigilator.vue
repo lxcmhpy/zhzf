@@ -74,6 +74,13 @@
                 size="medium"
                 @click="editUserInfo"
               >修改信息</el-button>
+<!-- 
+               <el-button
+                type="info"
+                icon="el-icon-edit-outline"
+                size="medium"
+                @click="unExamRecord"
+              >未考试</el-button> -->
             </div>
             <div class="exam-status">
               <el-radio-group v-model="searchForm.status" @change="searchByStatus">
@@ -143,6 +150,8 @@
     </el-row>
     <!-- 考场记录 -->
     <examRoomRecord ref="examRoomRecord" />
+    <!-- 未参考记录 -->
+    <existExamRecord ref="existExamRecord" />
     <windowsPage ref="windowsPage" @reloadTable="currentPage = 1;getExamPerson();"></windowsPage>
     <!-- 修改信息 -->
     <editInvigilator ref="editInvigilator" />
@@ -151,10 +160,11 @@
 
 <script>
 import examRoomRecord from "./examRoomRecord";
+import existExamRecord from "./existExamRecord";
 import windowsPage from "./windowsPage";
 import editInvigilator from "./editInvigilator";
 export default {
-  components: { examRoomRecord, windowsPage, editInvigilator },
+  components: { examRoomRecord, windowsPage, editInvigilator,existExamRecord },
   data() {
     return {
       searchForm: { idNo: "", status: "" },
@@ -224,7 +234,7 @@ export default {
       let examEnd = new Date(this.examInfo.examEnd).getTime();
       let diffTime = 0;
       let endTime = 0;
-      if (examEnd - newTime < 0) {
+      if (examEnd - newTime > 0) {
         this.countText = "考试已结束";
         clearInterval(this.intervalTime);
         return false;
@@ -244,6 +254,10 @@ export default {
         this.countDownFun(endTime);
       }
     },
+    //未考试
+    unExamRecord(){
+       this.$refs.existExamRecord.showModal(this.examInfo.examId,this.invigilatorId,this.invigilatorInfo.invigilatorInfo.roomId, this.examperIds);
+    },
     // 倒计时方法
     countDownFun(examEnd) {
       this.intervalTime = setInterval(() => {
@@ -254,6 +268,7 @@ export default {
         let diffTime = endTime - newTime;
         this.countDownList = "";
         if (diffTime < 0 || diffTime === 0) {
+          this. unExamRecord();
           this.countText = "考试已结束";
           clearInterval(this.intervalTime);
         } else {
