@@ -3,7 +3,7 @@
         <div style="margin:0 auto;width:690px">
             <object >
                 <embed class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                :src="docSrc" type="application/pdf" internalinstanceid="29">
+                :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(docSrc)" type="application/pdf" internalinstanceid="29">
             </object>
         </div>
         <div style="position:fixed;bottom:150px;right: 60px;width:100px;">

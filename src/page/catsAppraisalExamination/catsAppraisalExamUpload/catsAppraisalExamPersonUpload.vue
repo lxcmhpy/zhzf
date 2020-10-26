@@ -1,6 +1,6 @@
 <template>
     <div class="cats-layout-page-content">
-        <div class="searchAndpageBox toggleBox">
+        <div class="searchAndpageBox toggleBox catsAppraisalExamPersonUpload">
             <div style="margin-left: 0px;">
                 <viewNotice ref="viewNoticeRef"></viewNotice>
                 <div class="search">
@@ -551,10 +551,7 @@
                             _this.fetchData({})
                             _this.getCountInfo()
                         } else {
-                            _this.catsMessage({
-                                type: 'error',
-                                message: res.msg
-                            })
+                            this.$message.error(res.msg);
                         }
                     },
                     error => {
@@ -596,10 +593,7 @@
                                 _this.fetchData({})
                                 _this.getCountInfo()
                             }else{
-                              _this.catsMessage({
-                                  type: 'error',
-                                  message: res.msg
-                              })
+                                this.$message.error(res.msg);
                             }
                         })
                     } else {
@@ -616,7 +610,7 @@
                 var that = this
                 let staffId = data.staffId
                 deletePykhStaff(staffId).then(res => {
-                    if (res.code == 200) {
+                    if (res.code === 200) {
                         that.catsMessage({
                             type: 'success',
                             message: res.msg
@@ -624,10 +618,7 @@
                         that.fetchData({})
                         that.getCountInfo()
                     } else {
-                        that.catsMessage({
-                            type: 'error',
-                            message: res.msg
-                        })
+                        this.$message.error(res.msg);
                     }
                 })
             },
@@ -646,15 +637,11 @@
             clickBaosong() {
                 let _this = this
                 confirmSubmissionStaff(this.organId).then(res => {
-                    if (res.code == 200) {
-                        // this.catsMessage({type: "success",message: res.msg});
+                    if (res.code === 200) {
                         _this.findPersonBsStatus()
                         _this.fetchData({})
                     } else {
-                        _this.catsMessage({
-                            type: 'error',
-                            message: res.msg
-                        })
+                        this.$message.error(res.msg);
                     }
                 })
             },
@@ -663,15 +650,11 @@
             },
             getCountInfo() {
                 getCountInfo().then(res => {
-                    if (res.code == 200) {
-                        // this.catsMessage({type: "success",message: res.msg});
+                    if (res.code === 200) {
                         this.tjData = res.data
                         this.showEcharts()
                     } else {
-                        this.catsMessage({
-                            type: 'error',
-                            message: res.msg
-                        })
+                        this.$message.error(res.msg);
                     }
                 })
             },
@@ -734,10 +717,7 @@
                     if (res.code == 200) {
                         _this.provinceDivisionList=res.data;
                     } else {
-                        _this.catsMessage({
-                            type: 'error',
-                            message: res.msg
-                        })
+                        this.$message.error(res.msg);
                     }
                 })
             }
@@ -779,4 +759,7 @@
   .cats-f-left{
       width: auto;
   }
+  .catsAppraisalExamPersonUpload .el-input, .catsAppraisalExamPersonUpload .el-select {
+    width: 100% !important;
+}
 </style>

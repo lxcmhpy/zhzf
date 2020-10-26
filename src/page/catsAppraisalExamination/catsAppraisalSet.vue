@@ -131,7 +131,7 @@
          <el-drawer title="考核要求" modal-append-to-body :before-close="(done)=>resetClose('pykhObj',done)" direction="rtl"
              size="450px" customClass="amap-drawer" :modal="false" :visible.sync="drawer">
              <el-form :model="pykhObj" ref="pykhObj" :rules="rules" class="checkSearchForm" label-width="120px">
-                 <div style="width:400px">
+                 <div style="width:400px;display:block;">
                     <div class="item">
                          <el-form-item label="指标类型配置" prop="oneType">
                              <el-select v-model="pykhObj.oneTypeId" class="w-220"
@@ -160,7 +160,7 @@
          <el-drawer title="考核指标" modal-append-to-body :before-close="(done)=>resetClose('zbObj',done)" direction="rtl"
              size="450px" customClass="amap-drawer" :modal="false" :visible.sync="drawer1">
              <el-form :model="zbObj" ref="zbObj" :rules="rules1" class="checkSearchForm" label-width="120px">
-                 <div v-if="zbObj" style="width:400px">
+                 <div v-if="zbObj" style="width:400px;display:block;">
                      <div class="item">
                          <el-form-item label="二级考核指标" prop="indexTwo">
                              <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 10}" v-model="zbObj.indexTwo"
@@ -188,7 +188,7 @@
              size="500px" customClass="amap-drawer" :modal="false" :visible.sync="drawer2">
              <div style="padding:0px 0px 35px 45px;min-width:620px;">
                  <el-form :model="xzObj" ref="xzObj" :rules="rules2" class="checkSearchForm" label-width="150px">
-                     <div v-if="xzObj" style="width:400px">
+                     <div v-if="xzObj" style="width:400px;display:block;">
                          <!-- <div class="item">
                         <el-form-item label="评查类别" prop="indexTwo">
                             <el-input v-model="xzObj.reviewType" placeholder="请输入评查类别"></el-input>
@@ -1058,3 +1058,4 @@
      };
 
  </script>
+

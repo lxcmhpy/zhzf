@@ -13,6 +13,7 @@
                   action="#"
                   :show-file-list="false"
                   :http-request="saveImageFile"
+                  :before-upload="beforeAvatarUpload"
                 >
                   <el-image v-if="form.titleImg" :src="imgUrl" fit="fill"></el-image>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -184,6 +185,23 @@ export default {
     };
   },
   methods: {
+    /**
+     * 控制上传格式和大小
+     */
+    beforeAvatarUpload(file) {
+      console.log(file)
+      const isJPG = file.type
+      const isLt500Kb = file.size / 1024 / 1024 < .5;
+
+      if (isJPG !== 'image/png' && isJPG !== 'image/jpg') {
+        this.$message.error('只能上传jpg/png文件!');
+      }
+      if (!isLt500Kb) {
+        this.$message.error('上传图片大小不能超过 500kb!');
+      }
+      return isJPG && isLt500Kb;
+    },
+
     saveImageFile(param) {
       let _this = this;
       if (this.form.titleImg) {

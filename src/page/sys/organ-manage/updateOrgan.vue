@@ -28,7 +28,7 @@
         </div>
         <div class="item">
           <el-form-item label="上级机构" prop="pidName">
-            <el-input v-model="addOrganForm.pidName"></el-input>
+            <el-input v-model="addOrganForm.pidName" disabled></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -205,6 +205,8 @@
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA';
 import {getAttachedPropertyByConditionApi,getAttachedPropertyAnsValueApi,addAttachedPropertyValueApi} from "@/api/caseHandle";
 import {getCurrentAndNextOrganApi} from "@/api/system";
+import { validatePhone } from "@/common/js/validator";
+
 export default {
   inject: ["page"],
   data() {
@@ -239,7 +241,9 @@ export default {
         propertyValue:{}
       },
       rules: {
-        name: [{ required: true, message: "请输入机构名称", trigger: "blur" }]
+        name: [{ required: true, message: "请输入机构名称", trigger: "blur" }],
+        telephone:[{ validator: validatePhone, trigger: "blur" }]
+
       },
       parentNode: "", //新增机构时的上级机构
       dialogTitle: "", //弹出框title

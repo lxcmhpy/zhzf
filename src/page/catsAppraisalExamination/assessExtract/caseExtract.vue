@@ -200,6 +200,8 @@
                             });
                             _this.value = [];
                         }
+                    }else{
+                        this.$message.error(res.msg);
                     }
                 });
             },
@@ -225,6 +227,8 @@
                                     }
                                 });
                             }
+                        }else{
+                            this.$message.error(res.msg);
                         }
                     });
                 }

@@ -166,6 +166,24 @@ export default {
     },
     // 选择文件变化
     handleFileChange(file, fileList){
+      console.log(file.raw.name);
+      let fileType = file.raw.type;
+      if (this.addCourseForm.couType === '1' && fileType !== 'application/pdf') {
+        this.catsMessage({
+          message: '文档类课件只支持上传pdf格式文件',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
+      if (this.addCourseForm.couType === '2' && !/(.*)\.(mp4|wmv|avi)$/.test(file.raw.name)) {
+        this.catsMessage({
+          message: '视频类课件只支持上传mp4或wmv或avi格式文件',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
       this.coursewareFileList.splice(0, 1, file);
       fileList.splice(0, 1);
       if(this.addCourseForm.couType === '2'){
