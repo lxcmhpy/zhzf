@@ -216,5 +216,13 @@ export default  [
     },
     component: () => import("@/page/analyseManage/report/index.vue")
   },
+  {
+    name: "reportView",
+    path: "/reportView",
+    meta: {
+      title: "报告查看"
+    },
+    component: () => import("@/page/analyseManage/report/viewFile.vue")
+  },
 
 ]
