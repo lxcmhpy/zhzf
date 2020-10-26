@@ -62,8 +62,8 @@
                     placeholder="不能手填，要求先选择关联记录，人员自动带出"
                   ></el-input>
                 </el-form-item> -->
-               <el-form-item label="执法人员" prop="lawEnforcementOfficialsIds" > 
-                 <el-select
+              <el-form-item label="执法人员" prop="lawEnforcementOfficialsIds" > 
+                <el-select
                   v-model="baseInfoForm.lawEnforcementOfficialsIds"
                   multiple
                   @remove-tag="removeRelation"
@@ -76,7 +76,7 @@
                       :disabled="relationType === '1' || PageType === 'handover'|| handelType === '5'"
                     ></el-option>
                   </el-select>
-               </el-form-item>
+              </el-form-item>
               </el-col>
               
               <el-col :span="12">
@@ -106,25 +106,25 @@
                     placeholder="不能手填，要求先选择关联记录，人员自动带出"
                   ></el-input>
                 </el-form-item> -->
-               <el-form-item label="巡查路线" prop="patrolRoute"> 
-                 <el-select v-model="baseInfoForm.patrolRoute"  multiple  
+              <el-form-item label="巡查路线" prop="patrolRoute"> 
+                <el-select v-model="baseInfoForm.patrolRoute"  multiple  
                 :class="{'disabled': relationType === '1' || PageType === 'handover' || handelType === '5'}">
                     <el-option
                       v-for="(item, index) in patrolRouteList"
                       :key="item"
                       :label="item"
                       :value="item"
-                     :disabled="relationType === '1' || PageType === 'handover'|| handelType === '5'"
+                    :disabled="relationType === '1' || PageType === 'handover'|| handelType === '5'"
                     ></el-option>
                   </el-select>
-               </el-form-item> 
+              </el-form-item> 
               </el-col>
               <el-col :span="12">
                 <el-form-item prop="inspectionLength" label-width="0">
                   <el-input
                     v-model="baseInfoForm.inspectionLength"
                     class="inspection-length-input"
-                     :disabled="PageType === 'handover' || handelType === '5'"
+                    :disabled="PageType === 'handover' || handelType === '5'"
                   >
                     <template slot="append" >km</template>
                   </el-input>
@@ -155,12 +155,12 @@
           >
             <el-table-column type="selection" align="center"></el-table-column>
             <el-table-column prop="recordNum" label="记录编号" align="center"  >
-               <template slot-scope="scope" class="person-table-onerow">
+              <template slot-scope="scope" class="person-table-onerow">
                   <div @click="getDetials(scope.row)" style="color:#0000CD;">{{scope.row.recordNum}}</div>
               </template>
-             </el-table-column>   
+            </el-table-column>   
             <el-table-column prop="checkStartTime" label="巡查时间" align="center" min-width="140px">
-               <template slot-scope="scope" class="person-table-onerow">
+              <template slot-scope="scope" class="person-table-onerow">
                   <div >{{scope.row.checkStartTime}}</div>
                   <div >{{scope.row.checkEndTime}}</div>
                 </template>
@@ -215,7 +215,7 @@
             ref="changeShiftsRef"
             :rules="rules"
             label-width="110px"
-           
+          
           >
             <el-row :gutter="20"  v-if="PageType === 'handover' || handelType === '5' ">
               <el-col :span="24">
@@ -318,13 +318,13 @@
         <i class="el-icon-circle-close"></i>
         <br />保存
       </el-button>
-       <el-button class="edit_btn" type="info" @click="toClose">
+      <el-button class="edit_btn" type="info" @click="toClose">
         <i class="el-icon-circle-close"></i>
         <br />取消
       </el-button>
     </div>
     <div v-if="handelType == '5'" class="float-btns">
-       <el-button class="edit_btn" type="info" @click="toClose">
+      <el-button class="edit_btn" type="info" @click="toClose">
         <i class="el-icon-circle-close"></i>
         <br />关闭
       </el-button>
@@ -341,6 +341,7 @@ import { findRouteManageByOrganIdApi } from "@/api/system";
 import RelationScheduling from "@/page/inspection/dutyManage/components/relationScheduling.vue";
 import RelationRecord from "@/page/inspection/dutyManage/components/relationRecord.vue";
 import { saveRecordApi,getCheChecklogPageList,updateRecordApi,getCheRecordLogApi,delCheRecordTemplateApi,addCheShiftchangeApi} from '@/api/supervision';
+import { validateIsNumber } from "@/common/js/validator";
 export default {
   components: { RelationScheduling, RelationRecord },
   data() {
@@ -403,6 +404,9 @@ export default {
         includingPeople: [
           { required: true, message: "请选择交班人", trigger: "blur" },
         ],
+        inspectionLength: [
+          { validator: validateIsNumber, trigger: "change" }
+        ]
       },
       relationType:"0",
       pageType:"",
@@ -419,7 +423,7 @@ export default {
   },
   computed: {
     checklogId(){
-       return this.$route.params.checklogId;
+      return this.$route.params.checklogId;
     },
     pageName(){
       return this.$route.name;
@@ -447,7 +451,7 @@ export default {
         this.getCheckLogInfo();
         this.getRecordMsg();
     }
-   
+  
   },
   methods: {
     //查询修改的日志信息
@@ -455,7 +459,7 @@ export default {
       let data={
         checklogId:this.checklogId,
       };
-       getCheChecklogPageList(data).then(res => {
+      getCheChecklogPageList(data).then(res => {
         if (res.code == "200") {
         this.baseInfoForm.title = res.data.records[0].title,
         this.baseInfoForm.patrolType = res.data.records[0].patrolType,
@@ -484,7 +488,7 @@ export default {
         this.baseInfoForm.schedulePersonnel=res.data.records[0].schedulePersonnel,//排班人
         this.baseInfoForm.schedulePersonnelId=res.data.records[0].schedulePersonnelId//排班人ID
         
-       }
+      }
       }, err => {
         this.$message({ type: 'error', message: err.msg || '' });
       });
@@ -512,7 +516,7 @@ export default {
           this.tableData = res.data;
           res.data.forEach((element,index) => {
             this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
-     });
+    });
         }
       }, err => {
         this.$message({ type: 'error', message: err.msg || '' });
@@ -537,9 +541,9 @@ export default {
         this.tableData.splice(this.tableData.length,1,element)
       })
 
-     data.forEach((element,index) => {
-       this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
-     });
+    data.forEach((element,index) => {
+      this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
+    });
     },
     // 关联排班
     relationScheduFun() {
@@ -557,16 +561,16 @@ export default {
         this.baseInfoForm.lawEnforcementOfficials=[];
         this.baseInfoForm.lawEnforcementOfficialsIds.forEach((item,index1)=>{
           this.lawPersonList.forEach((element,index)=>{
-               if(item == element.userId){
-                 this.baseInfoForm.lawEnforcementOfficials[this.baseInfoForm.lawEnforcementOfficials.length] = element.lawOfficerName;
-               }
+              if(item == element.userId){
+                this.baseInfoForm.lawEnforcementOfficials[this.baseInfoForm.lawEnforcementOfficials.length] = element.lawOfficerName;
+              }
           })
         })
         this.baseInfoForm.recordsIds=[];
           this.tableData.forEach((element,index) => {
             this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
-     });
-               let data = {
+    });
+              let data = {
                   recordsIds:this.baseInfoForm.recordsIds,
                   checkStartTime:this.baseInfoForm.startCheckTime,
                   checkEndTime:this.baseInfoForm.endCheckTime,
@@ -593,10 +597,10 @@ export default {
       }else{
         this.selectList.forEach(item =>{
           this.tableData.forEach((element,index) => {
-               if(element.recordId === item){
-                   this.tableData.splice(index,1)
-               }
-             });
+              if(element.recordId === item){
+                  this.tableData.splice(index,1)
+              }
+            });
         })
       }
 
@@ -680,7 +684,7 @@ export default {
     },
     //查看记录详情
     getDetials(row){
-       this.$router.push({
+      this.$router.push({
         name: "record_detail",
         params: { page: 'detail', cheRecord: row }
       });
@@ -706,15 +710,15 @@ export default {
         this.baseInfoForm.lawEnforcementOfficials=[];
         this.baseInfoForm.lawEnforcementOfficialsIds.forEach((item,index1)=>{
           this.lawPersonList.forEach((element,index)=>{
-               if(item == element.userId){
-                 this.baseInfoForm.lawEnforcementOfficials[this.baseInfoForm.lawEnforcementOfficials.length] = element.lawOfficerName;
-               }
+              if(item == element.userId){
+                this.baseInfoForm.lawEnforcementOfficials[this.baseInfoForm.lawEnforcementOfficials.length] = element.lawOfficerName;
+              }
           })
         })
         this.baseInfoForm.recordsIds=[];
         this.tableData.forEach((element,index) => {
           this.baseInfoForm.recordsIds[this.baseInfoForm.recordsIds.length] = element.recordId;
-       });
+      });
       //新增
       if(this.handelType == '1'){
         var data={
@@ -736,7 +740,7 @@ export default {
         schedulePersonnel:this.baseInfoForm.schedulePersonnel,//排班人
         schedulePersonnelId:this.baseInfoForm.schedulePersonnelId//排班人ID
       }
-         saveRecordApi(data).then(res => {
+        saveRecordApi(data).then(res => {
         if (res.code == "200") {
           this.$message({
               type: "success",
@@ -765,7 +769,7 @@ export default {
         scheduleId:this.baseInfoForm.scheduleId,
         other:this.baseInfoForm.other,
         recordsIds:this.baseInfoForm.recordsIds.join(","),
-         isUseCar:this.baseInfoForm.isUseCar,
+        isUseCar:this.baseInfoForm.isUseCar,
         plateNumbers:this.baseInfoForm.plateNumbers,
         lawEnforcementOfficials:this.baseInfoForm.lawEnforcementOfficials.join(","),
         lawEnforcementOfficialsIds:this.baseInfoForm.lawEnforcementOfficialsIds.join(","),
@@ -775,7 +779,7 @@ export default {
       }
         updateRecordApi(data).then(res => {
         if (res.code == "200") {
-         this.$message({
+        this.$message({
               type: "success",
               message: "修改成功",
               onClose: () => {

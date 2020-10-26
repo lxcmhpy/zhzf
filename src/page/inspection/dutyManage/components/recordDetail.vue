@@ -287,6 +287,7 @@
                   v-if="
                     abnormal.firstType !== undefined &&
                     abnormal.firstType !== null &&
+                    cheProcesTypeTree[abnormal.firstType] &&
                     cheProcesTypeTree[abnormal.firstType]['children'] &&
                     cheProcesTypeTree[abnormal.firstType]['children'].length > 0
                   "
@@ -318,6 +319,7 @@
                     abnormal.firstType !== null &&
                     abnormal.secondType !== undefined &&
                     abnormal.secondType !== null &&
+                    cheProcesTypeTree[abnormal.firstType] &&
                     cheProcesTypeTree[abnormal.firstType]['children'] &&
                     cheProcesTypeTree[abnormal.firstType]['children'][
                       abnormal.secondType

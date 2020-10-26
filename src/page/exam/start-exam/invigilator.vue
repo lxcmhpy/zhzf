@@ -74,13 +74,13 @@
                 size="medium"
                 @click="editUserInfo"
               >修改信息</el-button>
-
+<!-- 
                <el-button
                 type="info"
                 icon="el-icon-edit-outline"
                 size="medium"
                 @click="unExamRecord"
-              >未考试</el-button>
+              >未考试</el-button> -->
             </div>
             <div class="exam-status">
               <el-radio-group v-model="searchForm.status" @change="searchByStatus">
@@ -234,7 +234,7 @@ export default {
       let examEnd = new Date(this.examInfo.examEnd).getTime();
       let diffTime = 0;
       let endTime = 0;
-      if (examEnd - newTime < 0) {
+      if (examEnd - newTime > 0) {
         this.countText = "考试已结束";
         clearInterval(this.intervalTime);
         return false;
@@ -268,6 +268,7 @@ export default {
         let diffTime = endTime - newTime;
         this.countDownList = "";
         if (diffTime < 0 || diffTime === 0) {
+          this. unExamRecord();
           this.countText = "考试已结束";
           clearInterval(this.intervalTime);
         } else {
