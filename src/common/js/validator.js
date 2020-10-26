@@ -78,6 +78,16 @@ export function validatePhone(rule, value, callback) {
     callback();
 }
 
+/* 严格校验联系方式 */
+export function validateContact(rule, value, callback) {
+    var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\d3)|(\d{3}\-))?(1[35879]\d{9})$)/;
+
+    if (!reg.test(value) && value) {
+        callback(new Error('联系电话格式错误'));
+    }
+    callback();
+}
+
 /* 护照检验 */
 export function checkPassport(rule, value, callback){
   var reg = /^((1[45]\d{7})|(G\d{8})|(P\d{7})|(S\d{7,8}))?$/
