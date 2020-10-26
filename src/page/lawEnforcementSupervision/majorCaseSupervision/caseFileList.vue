@@ -50,7 +50,6 @@
                 :src="scope.row.myFileUrl"
                 width="40"
                 height="40"
-                @click.stop="imgDetail(scope.row)"
               />
             </template>
           </el-table-column>
@@ -101,8 +100,8 @@
             :http-request="saveFile"
             :file-list="fileList"
             action="https://jsonplaceholder.typicode.cmo/posts/"
-            multiple
             style="position: absolute;left: 0; top: 0;z-index:2"
+            :on-change="handleChange"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -436,7 +435,7 @@
                 getFileStreamRes = await this.$util.com_getFileStream(eviListItem.evPath)
             }else if(eviListItem.evType == '音视频'){
                 getFileStreamRes = await this.$util.com_getFileStream(eviListItem.thumbnailsStoragePath);
-                eviListItem.videoStreamSrc = await this.$util.com_getFileStream(eviListItem.evPath)
+                // eviListItem.videoStreamSrc = await this.$util.com_getFileStream(eviListItem.evPath)
             } 
             eviListItem.myFileUrl = getFileStreamRes
         }
@@ -444,6 +443,8 @@
       },
       saveFile(param) {
         console.log(param);
+        // this.fileList = this.fileList.slice(this.fileList.length-1);
+        console.log(this.fileList);
         // this.formUpload = {
         (this.form.file = param.file),
           (this.form.caseId = this.caseId),
@@ -737,7 +738,12 @@
           this.$message({ type: "success", message: "删除成功!"});
           this.getEviList();
         }).catch(err=>{throw new Error(err)})
-      }
+      },
+      handleChange(file, fileList) {
+          if (fileList.length > 0) {
+              this.fileList = [fileList[fileList.length - 1]]  
+          }
+      },
     },
     created() {
       this.getEviList();

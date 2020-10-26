@@ -188,7 +188,7 @@
               type="info"
               icon="iconfont law-weizhi"
               size="mini"
-              disabled
+              @click="showMap"
               v-else
               >已获取坐标</el-button
             >
@@ -211,7 +211,7 @@
                     <el-button
                       icon="iconfont law-weizhi"
                       size="mini"
-                      disabled
+                      @click="showMap"
                       v-else
                       >已获取坐标</el-button
                     >
