@@ -493,7 +493,11 @@ export default {
       submitMockExam(submitData).then(
         res => {
           loading.close();
-          this.quitExam("提交成功！", true);
+          if(res.data && res.data.data){
+            this.successSubmitPage("交卷成功，您的得分是", res.data.data);
+          }else{
+            this.quitExam("提交成功！", true);
+          }
         },
         err => {
           loading.close();
@@ -520,6 +524,31 @@ export default {
         iconClass: "iconfont law-success",
         customClass: "custom-confirm",
         showCancelButton: false
+      })
+        .then(() => {
+          if(closePage){
+            this.closeAnswerPage();
+          }
+        })
+        .catch(() => {
+          if(closePage){
+            this.closeAnswerPage();
+          }
+        });
+    },
+    // 交卷成功后显示成绩
+    successSubmitPage(msg, score){
+      let messageHtml = msg;
+      if (score !== undefined && score !== null) {
+        messageHtml = `<div style="text-align:center;"><p style="font-weight:560;">${msg}</p>
+          <p style="font-size: 58px;font-weight:600;;color:#17C062; margin-top:30px;">${score}</p></div>`;
+      }
+      this.$confirm(messageHtml, "提示", {
+        confirmButtonText: "确定",
+        iconClass: score !== undefined && score !== null ? "" : "iconfont law-success",
+        customClass: "custom-confirm",
+        showCancelButton: false,
+        dangerouslyUseHTMLString: true,
       })
         .then(() => {
           if(closePage){
@@ -621,6 +650,7 @@ export default {
             background: url("../../../../static/images/img/trained/icon_suspend.svg")
               no-repeat 10px center;
             cursor: pointer;
+            box-sizing: content-box;
             &:hover {
               color: #4d89ff;
               border: 1px solid #4d89ff;
