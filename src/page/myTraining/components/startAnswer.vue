@@ -54,7 +54,7 @@
               <span class="count-down" style="margin-left: 20px;">{{ countTime.hours }}</span>
               <span class="count-down">{{ countTime.minutes }}</span>
               <span class="count-down">{{ countTime.second }}</span>
-              <a class="suspend-exam-btn" @click="timeoutAnswer">暂停</a>
+              <a class="suspend-exam-btn" @click="timeoutAnswer">&nbsp;暂停</a>
             </div>
             <div v-if="personInfo.personId" class="time-info pserson-info">
               <div class="examinee-photo">
