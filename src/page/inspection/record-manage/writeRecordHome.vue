@@ -32,8 +32,9 @@
               v-for="item in menuList"
               :key="item.id"
             >
-              <span slot="title">
-                <span class="menu-item-img"></span>
+              <div slot="title">
+                <!-- <span class="menu-item-img"></span> -->
+                <span :class="item.iconClass"></span>
                 <span class="menu-item-text">
                   {{ item.domain }}
                 </span>
@@ -41,7 +42,7 @@
                 <span class="count-text" v-if="item.templateList"
                   >({{ item.templateList.length }})</span
                 >
-              </span>
+              </div>
             </el-menu-item>
           </el-menu>
         </div>
@@ -49,7 +50,7 @@
           <ul>
             <li class="mould-item" v-for="item in currentList" :key="item.id">
               <div :class="item.bgcName" @click="writeRecord(item)">
-                <span :class="item.bgStar"></span>
+                <span :class="{'star':item.isCollect==1}"></span>
                 <span class="text" :title="item.title">
                   {{ item.title }}
                 </span>
@@ -74,7 +75,7 @@
           <ul>
             <li class="mould-item" v-for="item in searchList" :key="item.id">
               <div :class="item.bgcName" @click="writeRecord(item)">
-                <span :class="item.bgStar"></span>
+                <span :class="{'star':item.isCollect==1}"></span>
                 <span class="text" :title="item.title">
                   {{ item.title }}
                 </span>
@@ -119,6 +120,7 @@ import {
 import Vue from "vue";
 import { mapGetters } from "vuex";
 const strMap = {
+  常用模板: "bgc0",
   公路路政: "bgc1",
   水路运政: "bgc2",
   道路运政: "bgc3",
@@ -184,13 +186,8 @@ export default {
     //改变模块背景色
     addClassName(arr) {
       arr.forEach((item) => {
-        if (item.domain === "常用模板") {
-          item.templateList.forEach((it) => {
-            it.bgStar = "star";
-          });
-        }
+        item.iconClass = strMap[item.domain] + " menu-item-img";
         item.templateList.forEach((it) => {
-          // debugger
           it.bgcName = strMap[it.domain];
         });
       });
@@ -431,10 +428,77 @@ export default {
       height: 100%;
       background: rgb(236, 242, 255);
       overflow: auto;
-      el-menu-item {
+
+      .el-menu-item {
         padding-left: 65px;
-        .menu-item-img {
+        &.is-active {
+          .bgc0 {
+            background-image: url("../../../../static/images/img/record/0-80@2x.png");
+          }
+          .bgc1 {
+            background-image: url("../../../../static/images/img/record/0-81@2x.png");
+          }
+          .bgc2 {
+            background-image: url("../../../../static/images/img/record/0-82@2x.png");
+          }
+          .bgc3 {
+            background-image: url("../../../../static/images/img/record/0-83@2x.png");
+          }
+          .bgc4 {
+            background-image: url("../../../../static/images/img/record/0-84@2x.png");
+          }
+          .bgc5 {
+            background-image: url("../../../../static/images/img/record/0-85@2x.png");
+          }
+          .bgc6 {
+            background-image: url("../../../../static/images/img/record/0-86@2x.png");
+          }
+          .bgc7 {
+            background-image: url("../../../../static/images/img/record/0-87@2x.png");
+          }
+          .bgc8 {
+            background-image: url("../../../../static/images/img/record/0-88@2x.png");
+          }
         }
+        & > div {
+          position: relative;
+          .menu-item-img {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            // background: url("../../../../static/images/img/record/icon_gl.png")
+            // no-repeat;
+            background-size: 25px;
+          }
+          .bgc0 {
+            background-image: url("../../../../static/images/img/record/80@2x.png");
+          }
+          .bgc1 {
+            background-image: url("../../../../static/images/img/record/81@2x.png");
+          }
+          .bgc2 {
+            background-image: url("../../../../static/images/img/record/82@2x.png");
+          }
+          .bgc3 {
+            background-image: url("../../../../static/images/img/record/83@2x.png");
+          }
+          .bgc4 {
+            background-image: url("../../../../static/images/img/record/84@2x.png");
+          }
+          .bgc5 {
+            background-image: url("../../../../static/images/img/record/85@2x.png");
+          }
+          .bgc6 {
+            background-image: url("../../../../static/images/img/record/86@2x.png");
+          }
+          .bgc7 {
+            background-image: url("../../../../static/images/img/record/87@2x.png");
+          }
+          .bgc8 {
+            background-image: url("../../../../static/images/img/record/88@2x.png");
+          }
+        }
+
         .count-text {
         }
       }
