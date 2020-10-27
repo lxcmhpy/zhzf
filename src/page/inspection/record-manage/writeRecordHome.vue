@@ -50,7 +50,7 @@
           <ul>
             <li class="mould-item" v-for="item in currentList" :key="item.id">
               <div :class="item.bgcName" @click="writeRecord(item)">
-                <span :class="{'star':item.isCollect==1}"></span>
+                <span :class="{ star: item.isCollect == 1 }"></span>
                 <span class="text" :title="item.title">
                   {{ item.title }}
                 </span>
@@ -72,10 +72,15 @@
           </ul>
         </div>
         <div class="mould-list-box" v-show="!showMenu">
+          <div class="search-title">
+            <span class="back-btn" @click="handleSearchBack"> <i class="icon el-icon-arrow-left"></i>返回 </span>
+            <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="handleSearchBack">返回</el-button> -->
+            <span>搜索结果({{ searchList.length }})</span>
+          </div>
           <ul>
             <li class="mould-item" v-for="item in searchList" :key="item.id">
               <div :class="item.bgcName" @click="writeRecord(item)">
-                <span :class="{'star':item.isCollect==1}"></span>
+                <span :class="{ star: item.isCollect == 1 }"></span>
                 <span class="text" :title="item.title">
                   {{ item.title }}
                 </span>
@@ -163,6 +168,10 @@ export default {
     // 	let currentPage = currentUrl.split('/')[3].replace('#', '')
     // 	this.currentMenu = currentPage
     // },
+    handleSearchBack() {
+      this.searchModleName = "";
+      this.handleSearch();
+    },
     handleOpen() {},
     handleClose() {},
     handleMenuChange(val) {
@@ -514,6 +523,19 @@ export default {
       height: 100%;
       flex: 1;
       overflow-y: auto;
+      .search-title{
+        margin: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #979797;
+        height: 38px;
+        line-height: 38px;
+        .back-btn{
+          color:#646974;
+          font-size: 14px;
+          cursor: pointer;
+        }
+      }
       & > ul {
         display: flex;
         flex-wrap: wrap;
