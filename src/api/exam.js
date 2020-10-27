@@ -678,6 +678,16 @@ export function addRoomManageApi (data){
         cancelToken: setCancelSource()
     })
 }
+//修改考场
+export function updateRoomManageApi (data){
+    return request({
+        url: "/exam/roomManage/updateRoomManage",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
 
 //查询考场list
 export function roomManageListApi (data){
@@ -745,8 +755,8 @@ export function addExamDispatchApi (data){
 export function removeDispatchApi (data){
     return request({
         url: "/exam/examDispatch/removeDispatch",
-        method: "get",
-        params: data,
+        method: "post",
+        data: vm.$qs.stringify(data),
         showloading: false,
         cancelToken: setCancelSource()
     })
@@ -755,6 +765,17 @@ export function removeDispatchApi (data){
 export function autoDispatchApi (data){
     return request({
         url: "/exam/examDispatch/autoDispatch",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
+
+//自动分配考场
+export function clearDispatchApi (data){
+    return request({
+        url: "/exam/examDispatch/clearDispatch",
         method: "get",
         params: data,
         showloading: false,

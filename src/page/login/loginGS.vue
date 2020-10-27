@@ -240,8 +240,8 @@ export default {
           { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
         ],
         repetPassword: [
-          { required: true, message: '请重复输入新密码', trigger: 'blur' },
-          { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
+          // { required: true, message: '请重复输入新密码', trigger: 'blur' },
+          // { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
         ],
       },
       hasUserError: false,
@@ -263,6 +263,7 @@ export default {
     };
   },
   computed: { ...mapGetters(['systemTitle']) },
+  inject: ['reload'],
   methods: {
     // 切换登录方式
     changeType(type) {

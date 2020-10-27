@@ -576,7 +576,7 @@ export function getDictListDetailByNameApi(name) {
     url: "/system/sys/drawer/findAllDrawerByName/" + name,
     method: "get",
     showloading: true,
-    loadingType: name =='系统标题'||name =='loginBg' ||name =='显示综合执法平台' ? 'loadFull' : 'loadPart',
+    loadingType: name =='系统标题'||name =='loginBg' ||name =='显示综合执法平台' || name =='登录滑动验证' ? 'loadFull' : 'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -1380,5 +1380,18 @@ export function getPermissionByParentIdApi(parentId) {
     loadingType: 'loadPart',
     baseUrlType: 'CAPTCHA_HOST',
     cancelToken: setCancelSource(),
+  });
+}
+
+
+//获取机构下绑定的角色
+export function getOrganRoleByRoleNameApi(data) {
+  return request({
+    url: "/system/sys/role/queryRoleByOrganIdAndRoleName",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
   });
 }

@@ -200,8 +200,8 @@ export default {
       let canSelectableFlag = true;
 
       for (let index2 in this.alreadyAddData) {
-          console.log('item',this.alreadyAddData[index2]);
-          console.log('row',row);
+          // console.log('item',this.alreadyAddData[index2]);
+          // console.log('row',row);
         if (this.alreadyAddData[index2].id == row.id) {
           canSelectableFlag = false;
           // this.$nextTick(function(){
