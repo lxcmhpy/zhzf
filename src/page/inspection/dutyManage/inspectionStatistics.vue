@@ -32,9 +32,9 @@
                       : ''
                   "
                 ></i>
-                <span :class="data.children ? '' : 'hasMarginLeft'">{{
-                  node.label
-                }}</span>
+                <span :class="data.children ? '' : 'hasMarginLeft'">
+                  {{node.label}}
+                </span>
               </span>
             </span>
           </el-tree>
