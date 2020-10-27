@@ -179,7 +179,7 @@
                 type="info"
                 icon="iconfont law-weizhi"
                 size="mini"
-                disabled
+                @click="showMap"
                 v-else
                 >已获取坐标</el-button
               >
@@ -202,7 +202,7 @@
                       <el-button
                         icon="iconfont law-weizhi"
                         size="mini"
-                        disabled
+                        @click="showMap"
                         v-else
                         >已获取坐标</el-button
                       >
@@ -322,7 +322,7 @@
                       <el-button
                         icon="iconfont law-weizhi"
                         size="mini"
-                        disabled
+                        @click="showMap"
                         v-else
                         >已获取坐标</el-button
                       >
@@ -349,7 +349,7 @@
                       <el-button
                         icon="iconfont law-weizhi"
                         size="mini"
-                        disabled
+                        @click="showMap"
                         v-else
                         >已获取坐标</el-button
                       >
@@ -583,7 +583,7 @@
             </el-form-item>
           </div>
           <div class="itemBig">
-            <el-form-item label="道路经营许可证" class="lable-height18px">
+            <el-form-item label="经营许可证">
               <el-input v-model="inforForm.roadTransportLicense"></el-input>
             </el-form-item>
           </div>
@@ -1077,9 +1077,9 @@
                 >
                   <el-option
                     v-for="item in loadLineList"
-                    :key="item.value"
+                    :key="item.name"
                     :label="item.label"
-                    :value="item.value"
+                    :value="item.name"
                   ></el-option>
                 </el-select>
               </el-input>
@@ -1118,9 +1118,9 @@
               <el-select v-model="inforForm.harbourType">
                 <el-option
                   v-for="item in portTypeList"
-                  :key="item.value"
+                  :key="item.name"
                   :label="item.label"
-                  :value="item.value"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -2218,7 +2218,8 @@ export default {
         this.driverOrAgentInfoList[0].relationWithParty == "近亲戚" ||
         this.driverOrAgentInfoList[0].relationWithParty == "车辆所有人" ||
         this.driverOrAgentInfoList[0].relationWithParty == "其它" ||
-        this.driverOrAgentInfoList[0].relationWithCase == "当事人" ||
+        this.driverOrAgentInfoList[0].relationWithCase == "当事人(船员)" ||
+        this.driverOrAgentInfoList[0].relationWithCase == "当事人(驾驶人)" ||
         this.driverOrAgentInfoList[0].relationWithCase == "实际所有者"
       ) {
         this.driverOrAgentInfoList[0].relationWithParty = "";
@@ -2242,7 +2243,12 @@ export default {
     changeDriverOrAgentInfo(type) {
       let val = this.driverOrAgentInfoList[0].relationWithParty;
       if (val === "同一人" && this.partyTypePerson == "1") {
-        this.driverOrAgentInfoList[0].relationWithCase = "当事人";
+        // this.driverOrAgentInfoList[0].relationWithCase = "当事人";
+        if(this.cateNameType){
+          this.driverOrAgentInfoList[0].relationWithCase = "当事人(驾驶人)";
+        }else{
+          this.driverOrAgentInfoList[0].relationWithCase = "当事人(船员)";
+        }
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
         this.driverOrAgentInfoList[0].zhengjianType = this.inforForm.partyIdType;
         this.driverOrAgentInfoList[0].zhengjianNumber = this.inforForm.partyIdNo;
@@ -2265,7 +2271,11 @@ export default {
       let val = this.driverOrAgentInfoList[index].relationWithParty;
       if (val === "同一人") {
         console.log(val);
-        this.driverOrAgentInfoList[index].relationWithCase = "当事人";
+        if(this.cateNameType){
+          this.driverOrAgentInfoList[index].relationWithCase = "当事人(驾驶人)";
+        }else{
+          this.driverOrAgentInfoList[index].relationWithCase = "当事人(船员)";
+        }
         this.driverOrAgentInfoList[index].name = this.inforForm.party;
         this.driverOrAgentInfoList[
           index
@@ -3371,6 +3381,8 @@ export default {
           _this.directionSite = res.data.directionSite;
           _this.shipType = res.data.shipType;
           _this.locationList = res.data.locationList;
+          _this.loadLineList = res.data.loadLineList;
+          _this.portTypeList = res.data.portTypeList;
           _this.allTrailerTypeType = res.data.allTrailerTypeType;
           res.data.allRelationWithCase.forEach((p) => {
             if (_this.cateNameType) {
@@ -3409,19 +3421,6 @@ export default {
           });
           res.data.allQYRelationWithCase.forEach((p) => {
             _this.allQYRelationWithCase.push({ label: p.name, value: p.sort });
-          });
-          // res.data.directionSite.forEach((p) => {
-          //   _this.directionSite.push({ label: p.name, value: p.sort });
-          // });
-          // console.log(_this.directionSite);
-          // res.data.shipType.forEach((p) => {
-          //   _this.shipType.push({ label: p.name, value: p.sort });
-          // });
-          res.data.loadLineList.forEach((p) => {
-            _this.loadLineList.push({ label: p.name, value: p.sort });
-          });
-          res.data.portTypeList.forEach((p) => {
-            _this.portTypeList.push({ label: p.name, value: p.sort });
           });
         },
         (err) => {

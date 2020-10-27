@@ -18,6 +18,7 @@
             :props="defaultProps"
             node-key="id"
             :filter-node-method="filterNode"
+            :expand-on-click-node="false"
             :default-expanded-keys="defaultExpandedKeys"
             ref="tree"
             @node-click="handleNodeClick"
@@ -31,9 +32,9 @@
                       : ''
                   "
                 ></i>
-                <span :class="data.children ? '' : 'hasMarginLeft'">{{
-                  node.label
-                }}</span>
+                <span :class="data.children ? '' : 'hasMarginLeft'">
+                  {{node.label}}
+                </span>
               </span>
             </span>
           </el-tree>

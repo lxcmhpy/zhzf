@@ -418,12 +418,6 @@ export default {
                                 message:res.msg
                             });
                         }
-                    },
-                    err =>{
-                        _this.$message({
-                                type: "error",
-                                message:err.msg
-                            });
                     }
                 );
             }

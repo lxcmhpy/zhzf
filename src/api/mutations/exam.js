@@ -757,6 +757,17 @@ export function autoDispatchApi(data) {
         cancelToken: setCancelSource()
     })
 }
+
+//清空分配考场
+export function claerDispatchApi(data) {
+    return request({
+        url: "/exam/examDispatch/clearDispatch",
+        method: "get",
+        params: data,
+        showloading: false,
+        cancelToken: setCancelSource()
+    })
+}
 // 查询答题结果
 export function getExamAnswerReport(data) {
     return request({

@@ -131,6 +131,7 @@
                   <el-button v-if="scope.row.isConfigOver === '1'" type="text" @click="getSendResultlInfo(scope.row,'0')">报送成绩</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="roomDispathInfo(scope.row,'0')">考场分配</el-button>
                   <el-button v-if="scope.row.isScoring === '0'" type="text" @click="scoreManageInfo(scope.row,'0')">评分人员</el-button>
+                  <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="updateExamRoom(scope.row)">修改考场</el-button>
                   <el-button v-if="scope.row.isConfigOver === '0'" type="text" @click="disposeInfo(scope.row,'0')">配置完成</el-button>
                 </p>
               </template>
@@ -175,6 +176,8 @@
     <scorePerson ref="scorePersonCompRef" @getbatchManageComp="getExamBatchList"></scorePerson>
     <examDetail ref="examDetailCompRef" @getbatchManageComp="getExamBatchList"></examDetail>
     <roomDispath ref="roomDispathCompRef" @getbatchManageComp="getExamBatchList"></roomDispath>
+    <updateRoomDispath ref="updateRoomDispathCompRef" @getbatchManageComp="getExamBatchList"></updateRoomDispath>
+
   </div>
 </template>
 <script>
@@ -186,6 +189,7 @@ import scorePerson from "./scorePerson";
 import sendResult from "./sendResult";
 import examDetail from "./examDetail";
 import roomDispath from "./roomDispath";
+import updateRoomDispath from "./updateRoomDispath";
 import { mixinPerson } from "@/common/js/personComm";
 
 export default {
@@ -227,7 +231,8 @@ export default {
     examPerson,
     scorePerson,
     examDetail,
-    roomDispath
+    roomDispath,
+    updateRoomDispath
   },
   methods: {
     //点击下拉框的时查询考试类型
@@ -364,6 +369,11 @@ export default {
       //考场分配
       let _this = this;
       _this.$refs.roomDispathCompRef.showModal(row,1);
+    },
+    //修改考场
+    updateExamRoom(row){
+       let _this = this;
+      _this.$refs.updateRoomDispathCompRef.showModal(row,1);
     },
     //根据查询条件查询人员基本信息
     getExamBatchList() {
