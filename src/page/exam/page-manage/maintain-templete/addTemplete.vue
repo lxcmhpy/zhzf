@@ -157,6 +157,9 @@ export default {
     verificationForm() {
       const validatePromise = [];
       for (const key in this.$refs) {
+        if(this.$refs[key].length === 0){
+          break
+        }
         const validate = new Promise((resolve, reject) => {
           if (key === "tempForm") {
             this.$refs.tempForm.validate(valid => {
