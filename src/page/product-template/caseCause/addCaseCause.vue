@@ -9,13 +9,18 @@
   >
     <el-form
       :model="addCaseCauseForm"
+      :rules="rules"
       ref="addCaseCauseForm"
       class="errorTipForm"
       label-width="110px"
-      prop="addCaseCauseForm"
     >
+      <div class="item" style="display:none">
+        <el-form-item  prop="id">
+            <el-input v-model="addCaseCauseForm.id"  style = "width:100%"></el-input>
+          </el-form-item>
+      </div>
       <div class="item">
-        <el-form-item label="业 务 领 域" prop="categoryId" v-if="isAdd" class="is-required">
+        <el-form-item label="业 务 领 域" prop="categoryId" v-if="isAdd">
           <el-select
             v-model="addCaseCauseForm.categoryId"
             style="width:100%"
@@ -40,7 +45,7 @@
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="行 业 类 别" prop="hyType">
+        <el-form-item label="行 业 类 别" prop="hyTypeId">
           <el-select v-model="addCaseCauseForm.hyTypeId" style="width:100%" placeholder="请选择行业类别">
             <el-option
               v-for="item in hyTypeList"
@@ -60,17 +65,17 @@
         </el-form-item> -->
       </div>
       <div class="item">
-        <el-form-item label="违法行为编码" prop="strNumber" class="is-required">
+        <el-form-item label="违法行为编码" prop="strNumber">
           <el-input v-model="addCaseCauseForm.strNumber"></el-input>
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="违法行为内容" prop="strContent" class="is-required">
+        <el-form-item label="违法行为内容" prop="strContent">
           <el-input v-model="addCaseCauseForm.strContent" type="textarea"></el-input>
         </el-form-item>
       </div>
       <div class="item">
-        <el-form-item label="说  明 " prop="strRemark" class="is-required">
+        <el-form-item label="说  明 " prop="strRemark">
           <el-input v-model="addCaseCauseForm.strRemark"></el-input>
         </el-form-item>
       </div>
@@ -103,6 +108,20 @@ export default {
       },
       lawCateList: [],
       hyTypeList: [],
+      rules: {
+        categoryId: [
+          { required: true, message: "业务领域不能为空", trigger: "change" }
+        ],
+        strNumber: [
+          { required: true, message: "违法行为编码不能为空", trigger: "blur" }
+        ],
+        // hyTypeId: [
+        //   { required: true, message: "行业类别不能为空", trigger: "change" }
+        // ],
+        strContent: [
+          { required: true, message: "违法行为内容不能为空", trigger: "blur" }
+        ]
+      },
       dialogTitle: "", //弹出框title
       errorName: false, //添加name时的验证
       handelType: 0, //添加 0  修改2
@@ -123,7 +142,8 @@ export default {
         console.log(data);
         this.isAdd = true;
         this.dialogTitle = "新增";
-        this.addCaseCauseForm = {};
+        this.$refs['addCaseCauseForm'].resetFields();
+        // this.addCaseCauseForm = {};
       } else if (type == 2) {
         console.log("111",data);
         this.isAdd = false;
@@ -148,6 +168,8 @@ export default {
       };
       let _this = this;
       _this.addCaseCauseForm.hyType = "";
+      _this.addCaseCauseForm.hyTypeId = "";
+      console.log("111111",_this.addCaseCauseForm.hyTypeId)
       getLawCategoryApi(data).then(res => {
         console.log("res", res);
         _this.hyTypeList = res.data;

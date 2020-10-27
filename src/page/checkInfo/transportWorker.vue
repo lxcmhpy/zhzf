@@ -332,7 +332,6 @@ export default {
     },
     //获取违法行为条数
     async getIllegalData(checkData){
-      alert(1111)
       for(let item of checkData){
         let data = {party:this.checkData.staffName,partyEcertId:this.checkData.certificateCode}
         let illeagalRes = await checkWithilleaglApi(data);
