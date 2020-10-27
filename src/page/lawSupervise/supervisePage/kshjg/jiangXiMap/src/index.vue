@@ -376,7 +376,7 @@ export default {
     this.getTree()
   },
   mounted(){
-      this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST;
+      this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
       this.$nextTick(() => {
       //  debugger;
       window.PhoneCallModule.initialize();

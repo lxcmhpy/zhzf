@@ -6,10 +6,10 @@
       :visible.sync="visible"
       @close="closeDialog"
       :close-on-click-modal="false"
-      width="72%"
+      width="30%"
     >
       <el-row type="flex">
-        <el-col :span="7">
+        <el-col >
           <div class="room-wrap">
             <div class="room-wrap-title">
               <span class="wrap-title">考场</span>
@@ -26,107 +26,10 @@
                 <span style="width: 40%;">{{item.alreadyNum}}/{{item.roomSum}}</span>
                 <span>
                   <el-button type="text" @click.stop="deleteRoom(item.roomId)">删除</el-button>
+                  <el-button type="text" @click.stop="updateRoom(item)">修改</el-button>
                 </span>
               </div>
               <el-button class="add-room" icon="el-icon-plus" @click="addRoomInfo">添加考场</el-button>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="17" style="border-left: 1px solid #D6DBE3;">
-          <div class="room-wrap">
-            <div class="room-wrap-title">
-              <span class="wrap-title">考生</span>
-              <div class="top-handle">
-                <span class="assign-total">尚有{{unDispachNum}}人未分配</span>
-                <el-button type="primary" size="medium" @click="autoDispath()">自动分配</el-button>
-                <el-button type="primary" size="medium" @click="cleanDispath()">清空考场分配</el-button>
-              </div>
-            </div>
-            <!-- 主体内容 -->
-            <div class="search-panel">
-              <el-form
-                :inline="true"
-                ref="roomDispathFormRef"
-                :model="roomDispathForm"
-                label-width="68px"
-              >
-                <el-form-item prop="personName" label="姓名">
-                  <el-input v-model="roomDispathForm.personName" placeholder="请输入姓名"></el-input>
-                </el-form-item>
-                <el-form-item prop="idNo" label="身份证号">
-                  <el-input v-model="roomDispathForm.idNo" placeholder="请输入身份证号码"></el-input>
-                </el-form-item>
-                <el-form-item prop="oname" label="所属机构">
-                  <el-input v-model="roomDispathForm.oname" placeholder="请输入所属机构"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button
-                    title="搜索"
-                    class="commonBtn searchBtn"
-                    size="medium"
-                    icon="iconfont law-sousuo"
-                    @click="currentPage = 1;getNowRoomPerson();"
-                  ></el-button>
-                  <el-button
-                    title="重置"
-                    class="commonBtn searchBtn"
-                    size="medium"
-                    icon="iconfont law-zhongzhi"
-                    @click="resetLog"
-                  ></el-button>
-                </el-form-item>
-                <el-form-item>
-                  <el-button
-                    type="primary"
-                    icon="el-icon-plus"
-                    size="medium"
-                    @click="addPerson"
-                  >新增人员</el-button>
-                  <el-button
-                    type="info"
-                    icon="el-icon-delete-solid"
-                    size="medium"
-                    @click="removePerson"
-                  >移除人员</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
-            <div>
-              <el-table
-                :data="tableData"
-                resizable
-                stripe
-                @selection-change="selectUser"
-                v-loading="tableLoading"
-                element-loading-spinner="car-loading"
-                element-loading-text="加载中..."
-                :max-height="320"
-              >
-                <el-table-column type="selection" align="center" width="58px"></el-table-column>
-                <el-table-column prop="personName" label="姓名" min-width="100px" align="left"></el-table-column>
-                <el-table-column
-                  prop="sex"
-                  label="性别"
-                  width="60px"
-                  align="center"
-                  :formatter="sexFormat"
-                ></el-table-column>
-                <el-table-column prop="idNo" label="身份证号" width="174px" align="center"></el-table-column>
-                <el-table-column prop="oname" label="所属机构" align="center"></el-table-column>
-                <el-table-column prop="postName" label="职务" width="100px" align="center"></el-table-column>
-                <el-table-column prop="area" label="执法领域" align="left"></el-table-column>
-              </el-table>
-              <div class="dialog-pagination">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="currentPage"
-                  background
-                  :page-sizes="[10, 20, 30, 40, 50]"
-                  layout="prev, pager, next,sizes,jumper"
-                  :total="totalPage"
-                ></el-pagination>
-              </div>
             </div>
           </div>
         </el-col>
@@ -218,16 +121,14 @@ export default {
           type: "warning",
           message: "请选择一个考生"
         });
-      } 
-      // else if (_this.selectUserIdList.length > 1) {
-      //   _this.$message({
-      //     type: "warning",
-      //     message: "只能选择一个考生"
-      //   });
-      // } 
-      else {
+      } else if (_this.selectUserIdList.length > 1) {
+        _this.$message({
+          type: "warning",
+          message: "只能选择一个考生"
+        });
+      } else {
         let data = {
-          selectedPersonIds: _this.selectUserIdList
+          dispatchId: _this.selectUserIdList[0]
         };
         _this.$store.dispatch("removeDispatch", data).then(
           res => {
@@ -338,6 +239,9 @@ export default {
     addRoomInfo() {
       this.$refs.addRoomCompRef.showModal(this.middleDate, 1);
     },
+    updateRoom(item){
+       this.$refs.addRoomCompRef.showModal(item, 2);
+    },
     //获取选中的user
     selectUser(val) {
       let _this = this;
@@ -388,50 +292,8 @@ export default {
         })
         .catch(() => {});
     },
-    //清空考场分配
-    cleanDispath(){
-      let _this = this;
-      let data = {
-        examId: _this.middleDate.examId
-      };
-      _this
-        .$confirm("是否确认清空考场分配", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          iconClass: "custom-question",
-          customClass: "custom-confirm"
-        })
-        .then(() => {
-          const loading = _this.$loading({
-            lock: true,
-            text: "正在清空",
-            spinner: "car-loading",
-            customClass: "loading-box",
-            background: "rgba(234,237,244, 0.8)"
-          });
-          _this.$store.dispatch("clearDispatch", data).then(
-            res => {
-              loading.close();
-              if (res.code === 200) {
-                _this.$message({
-                  type: "success",
-                  message: "清空成功"
-                });
-                _this.getRoomList();
-                _this.getNowRoomPerson();
-                _this.getunDispachNum();
-              }
-            },
-            err => {
-              loading.close();
-              _this.$message({ type: "error", message: err.msg || "" });
-            }
-          );
-        })
-        .catch(() => {});
-    },
     resetLog() {
-      this.$refs["roomDispathFormRef"].resetFields();
+      // this.$refs["roomDispathFormRef"].resetFields();
       this.currentPage = 1;
       this.getNowRoomPerson();
     },
@@ -443,7 +305,7 @@ export default {
       this.selectUserIdList &&
         this.selectUserIdList.splice(0, this.selectUserIdList.length);
       this.visible = false;
-      this.$refs["roomDispathFormRef"].resetFields();
+      // this.$refs["roomDispathFormRef"].resetFields();
     }
   }
 };

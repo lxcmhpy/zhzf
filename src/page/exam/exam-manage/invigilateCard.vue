@@ -116,7 +116,7 @@ export default {
       this.addExamBatchForm.examTime =
         examMsg.examBegin.substring(0, 4) +
         "年" +
-        examMsg.examBegin.substring(6, 7) +
+        examMsg.examBegin.substring(5, 7) +
         "月" +
         examMsg.examBegin.substring(8, 10) +
         "日" +

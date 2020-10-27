@@ -775,7 +775,8 @@ export default {
         lawEnforcementOfficialsIds:this.baseInfoForm.lawEnforcementOfficialsIds.join(","),
         patrolRoute:this.baseInfoForm.patrolRoute.join(","),
         schedulePersonnel:this.baseInfoForm.schedulePersonnel,//排班人
-        schedulePersonnelId:this.baseInfoForm.schedulePersonnelId//排班人ID
+        schedulePersonnelId:this.baseInfoForm.schedulePersonnelId,//排班人ID
+        inspectionLength:this.baseInfoForm.inspectionLength
       }
         updateRecordApi(data).then(res => {
         if (res.code == "200") {

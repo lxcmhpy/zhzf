@@ -2,7 +2,7 @@
   <div class="print_box" id="caseInvest-print" style="width:790px; margin:0 auto;">
     <div class="print_info" id="deliverCertificate-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
-        <div class="doc_topic">送达回证</div>
+        <div class="doc_topic">送达回证</div> 
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <div>案由:<el-form-item prop="caseName" style="width:585px">
             <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/" disabled style="height:36px;"></el-input>
@@ -377,7 +377,7 @@ export default {
             deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote,//备注
             makeDate:this.docData.makeDate,
-
+            status : handleType
       };
       console.log('送达回证',data);
       if (handleType==1) {

@@ -80,10 +80,10 @@
             <el-table-column label="操作项" width="160" align="center">
               <template slot-scope="scope">
                 <el-button type="text" @click="handleEdit(scope.row)">颁发</el-button>
-                 <el-button
+                 <!-- <el-button
                   type="text"
                   @click="exist(scope.row)"
-                >生成pdf</el-button>
+                >生成pdf</el-button> -->
               </template>
             </el-table-column>
           </el-table>
