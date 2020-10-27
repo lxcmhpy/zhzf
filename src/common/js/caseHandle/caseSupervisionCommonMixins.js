@@ -74,7 +74,8 @@ export const caseSupervisionCommonMixins = {
 
                 })
                 .catch((err) => {
-                    throw new Error(err);
+                    // throw new Error(err);
+                    console.log(err)
                 });
         },
         //显示案件总览弹窗

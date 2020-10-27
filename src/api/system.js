@@ -1376,3 +1376,16 @@ export function getPermissionByParentIdApi(parentId) {
     cancelToken: setCancelSource(),
   });
 }
+
+
+//获取机构下绑定的角色
+export function getOrganRoleByRoleNameApi(data) {
+  return request({
+    url: "/system/sys/role/queryRoleByOrganIdAndRoleName",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
