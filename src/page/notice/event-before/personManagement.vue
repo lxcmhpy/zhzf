@@ -357,6 +357,10 @@ export default {
      * 点击确定
      */
     handleSubmit(data) {
+      if (data.length < 1) {
+        this.$message({ type: "warning", message: "请选择记录!" });
+        return;
+      }
       let _this = this;
       saveOrUpdateBatch(data).then(
         (res) => {

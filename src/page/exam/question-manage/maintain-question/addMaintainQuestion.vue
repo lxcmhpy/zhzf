@@ -125,7 +125,7 @@
             <span>{{ questionTypeDesc }}</span>
           </el-form-item>
         </el-row>
-        <el-table class="option-table" :data="addMaintainQuestionForm.pqoList" key="0">
+        <el-table ref="questionOptionTable" class="option-table" :data="addMaintainQuestionForm.pqoList" key="0">
           <el-table-column min-width="12%" prop="optionNum">
             <template slot-scope="scope">
               <el-radio
@@ -156,17 +156,17 @@
           <el-table-column min-width="22%">
             <template slot-scope="scope">
               <div
-                v-if="scope.row.optionPicture"
+                v-if="scope.row.file && scope.row.file.url"
                 class="upload-question-img stem"
                 :key="scope.$index"
               >
                 <ul class="el-upload-list el-upload-list--picture-card" style="display:block;">
                   <li class="el-upload-list__item is-ready">
-                    <img :src="scope.row.optionPicture" class="el-upload-list__item-thumbnail" />
+                    <img :src="scope.row.file.url" class="el-upload-list__item-thumbnail" />
                     <span class="el-upload-list__item-actions">
                       <span
                         class="el-upload-list__item-preview"
-                        @click="handlePictureCardPreview(scope.row.optionPicture)"
+                        @click="handlePictureCardPreview(scope.row.file.url)"
                       >
                         <i class="el-icon-zoom-in"></i>
                       </span>
@@ -261,6 +261,7 @@
   </el-dialog>
 </template>
 <script>
+const AllowImageType = ['image/jpeg', 'image/png'];
 
 export default {
   data() {
@@ -280,6 +281,7 @@ export default {
         questionType: "",
         questionLevel: "",
         answer: "",
+        questionPicture: ""
       },
       rules: {
         questionType: [
@@ -370,6 +372,14 @@ export default {
     // 问题描述图片上传
     handleDescImgChange(file, fileList) {
       const isGt2M = this.checkImageSize(file);
+      if (AllowImageType.indexOf(file.raw.type) < 0) {
+        this.catsMessage({
+          message: '上传图片格式错误，只支持上传jpg或png格式',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
       if (isGt2M) {
         fileList.splice(0, 1);
         this.descImages.splice(0, 1);
@@ -387,6 +397,14 @@ export default {
       const row = JSON.parse(
         JSON.stringify(this.addMaintainQuestionForm.pqoList[index])
       );
+      if (AllowImageType.indexOf(file.raw.type) < 0) {
+        this.catsMessage({
+          message: '上传图片格式错误，只支持上传jpg或png格式',
+          type: 'info'
+        })
+        fileList.splice(fileIndex, 1);
+        return
+      }
       fileList.splice(0, fileList.length);
       if (isGt2M) {
         fileList.splice(fileIndex, 1);
@@ -573,6 +591,7 @@ export default {
         questionType: this.addMaintainQuestionForm.questionType,
         questionLevel: this.addMaintainQuestionForm.questionLevel,
         answer: this.addMaintainQuestionForm.answer,
+        questionPicture: this.addMaintainQuestionForm.questionPicture
       };
       let dispatchType = "addExamQuestionInfo",
         successMsg = "添加成功!";
@@ -693,6 +712,7 @@ export default {
                   this.addMaintainQuestionForm[key] = res.data[key];
                 }
               }
+              this.setOptionImageUrl();
               this.changeType(true);
             }
           },
@@ -701,6 +721,22 @@ export default {
             this.$message({ type: "error", message: err.msg || "" });
           }
         );
+      }
+    },
+    // 选项图片回显
+    setOptionImageUrl(){
+      if(this.addMaintainQuestionForm.pqoList && this.addMaintainQuestionForm.pqoList.length){
+        this.addMaintainQuestionForm.pqoList.forEach((item, index) => {
+          let itemFile = { status: "success", storageId: item.optionPicture };
+          if (item.optionPicture) {
+            this.$util.com_getFileStream(item.optionPicture).then((res) => {
+              itemFile.url = res;
+              item.url = res;
+              this.$set(this.addMaintainQuestionForm.pqoList, index, item);
+            });
+          }
+          item.file = itemFile;
+        })
       }
     },
     // 处理选项图片回显
@@ -712,17 +748,6 @@ export default {
             storageId: data.questionPicture,
             status: "success",
           });
-        });
-      }
-      if (data.pqoList && data.pqoList.length) {
-        data.pqoList.forEach((item) => {
-          let itemFile = { status: "success", storageId: item.optionPicture };
-          if (item.optionPicture) {
-            this.$util.com_getFileStream(item.optionPicture).then((res) => {
-              itemFile.url = res;
-            });
-          }
-          item.file = itemFile;
         });
       }
     },

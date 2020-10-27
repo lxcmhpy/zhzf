@@ -272,6 +272,10 @@ export default {
       this.multipleSelection.forEach((item) => {
         ids.push(item.id);
       });
+      if(ids.length==0){
+          this.$message({ type: "warning", message: "请选择需要删除的记录!" });
+          return;
+      }
       let _this = this;
       deleteNumberByIds(ids).then(
         (res) => {
