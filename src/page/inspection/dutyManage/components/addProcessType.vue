@@ -170,8 +170,8 @@ export default {
                 // const fromData = { pName: data.name, levels: parseInt(data.levels) + 1, parentId: data.id};
                 this.dialogTitle = "新增情况分类";
                 this.processTypeForm.levelsType = "1";
-                this.processTypeForm.levels = data ? this.curTreeNodeNode.data.levels + "" : "1";
-                this.processTypeForm.parentId = data ? this.curTreeNodeNode.parent.data.id : "";
+                this.processTypeForm.levels = this.curTreeNodeNode ? this.curTreeNodeNode.data.levels + "" : "1";
+                this.processTypeForm.parentId = this.curTreeNodeNode ? this.curTreeNodeNode.parent.data.id : "";
                 this.getProcessTypeByLevels(parseInt(this.processTypeForm.levels)-1);
             }else{//修改
                 data.children = [];
