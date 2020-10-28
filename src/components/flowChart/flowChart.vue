@@ -81,6 +81,7 @@ export default {
       }catch(err){
         this.$message('获取案件流程失败！')
       }
+      alert(this.currentFlow.data.flowUrl)
       if(this.currentFlow.data.flowUrl == 'commonGraphData'){
          _this.graphData = graphData.commonGraphData;
       }else if(this.currentFlow.data.flowUrl == 'compensationGraphData'){
@@ -91,6 +92,8 @@ export default {
          _this.graphData = graphData.compensationGraphData_QH;
       }else if(this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
          _this.graphData = graphData.commonGraphData_QH;
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+         _this.graphData = graphData.commonGraphData_SC;
       }
 
       

@@ -16,6 +16,7 @@ import '@/common/js/directives.js';
 import {BASIC_DATA_SYS} from '@/common/js/BASIC_DATA.js';
 import {BASIC_DATA_JX} from '@/common/js/BASIC_DATA_JX.js';
 import {BASIC_DATA_QH} from '@/common/js/BASIC_DATA_QH.js';
+import {BASIC_DATA_SC} from '@/common/js/BASIC_DATA_SC.js';
 
 import { messageOne } from '@/common/js/resetMessage';
 import { mixinsCommon } from "@/common/js/mixinsCommon";
@@ -31,6 +32,8 @@ Vue.prototype.$qs = qs;
 Vue.prototype.BASIC_DATA_SYS = BASIC_DATA_SYS;
 Vue.prototype.BASIC_DATA_JX = BASIC_DATA_JX;
 Vue.prototype.BASIC_DATA_QH = BASIC_DATA_QH;
+Vue.prototype.BASIC_DATA_SC = BASIC_DATA_SC;
+
 Vue.mixin(mixinsCommon);
 
 /* eslint-disable no-new */
