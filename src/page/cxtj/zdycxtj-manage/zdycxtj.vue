@@ -166,7 +166,7 @@ import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
 import "../../../../static/css/animate.min.css";
 import {
-      ndajsltbtj,ajlx,ajzt,zfjgajsl,fmkx,bdcl,wdcl,afddfb,map
+      ndajsltbtj,ajlx,ajzt,zfjgajsl,fmkx,bdcl,wdcl,afddfb,map,mapybaj,mapcfaj,mappbcaj,mapcxcz
     } from '@/api/fxyp.js'
 export default {
   data() {
@@ -193,18 +193,107 @@ export default {
       data6:[],
       data7:[],
       data8:[],
-      datamap:[],
-    //   nc:"",
-    //   jj:"",
-    //   sr:"",
-    //   fz:"",
-    //   yc:"",
-    //   ja:"",
-    //   gz:"",
-    //   jdz:"",
-    //   px:"",
-    //   xy:"",
-    //   yt:"",
+      datamap:
+       [{
+    		name: '南昌',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '九江',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 2
+    	}, {
+    		name: '上饶',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 3
+    	}, {
+    		name: '抚州',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 2
+    	}, {
+    		name: '宜春',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '吉安',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '赣州',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '景德镇',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '萍乡',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '新余',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '鹰潭',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}],
+      nc:0,
+      jj:0,
+      sr:0,
+      fz:0,
+      yc:0,
+      ja:0,
+      gz:0,
+      jdz:0,
+      px:0,
+      xy:0,
+      yt:0,
     };
   },
   methods:{
@@ -214,7 +303,15 @@ export default {
       zbpage(){
            this.$router.push({ path:'/personEqpt'  })
       },
-    map() {
+    //   watch: {
+    //     datamap:{
+    //         handler(newVal) {
+    //         this.map();
+    //         },
+    //         deep: true //对象内部属性的监听，关键。
+    //     }
+    //     },
+    map(datamap) {
       var jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
     var yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
     var yichun = "../../../../static/json/map/data-1518338852969-Hy677KTIf.json";
@@ -510,7 +607,11 @@ echarts.extendsMap = function(id, opt){
                 if(geoCoord){
                     temp.push({
                         name: data[i].name,
-                        value: geoCoord.concat(data[i].value, data[i].level)
+                        value: geoCoord.concat(data[i].value, data[i].level),
+                        value1: geoCoord.concat(data[i].value1, data[i].level),
+                        value2: geoCoord.concat(data[i].value2, data[i].level),
+                        value3: geoCoord.concat(data[i].value3, data[i].level),
+                        value4: geoCoord.concat(data[i].value4, data[i].level),
                     });
                 }
             };
@@ -734,7 +835,16 @@ echarts.extendsMap = function(id, opt){
                 var res = "";
                 var name = params.name;
                 var value = params.value[2];
-                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
+                var value1 = params.data.value1[2];
+                var value2 = params.data.value2[2];
+                var value3 = params.data.value3[2];
+                var value4 = params.data.value4[2];
+                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value
+                +"<br/>一般案件：" + value1
+                +"<br/>处罚案件：" + value2
+                +"<br/>赔补偿案件：" + value3
+                +"<br/>超限超载：" + value4
+                ;
                 return res;
    }
   },
@@ -911,75 +1021,64 @@ $.getJSON(jiangxi, function(geoJson){
            myChart.setOption(option);
     	},
         // 数据展示            	
-        data: 
-        // this.datamap,
-        [{
-    		name: '南昌',
-            value: 
-            // this.nc,
-            951,
-    		level: 1
-    	}, {
-    		name: '景德镇',
-            value: 
-            // this.jdz,
-            0,
-    		level: 2
-    	}, {
-    		name: '萍乡',
-            value:
-            //  this.px,
-            0,
-    		level: 3
-    	}, {
-    		name: '赣州',
-            value: 
-            // this.gz,
-            0,
-    		level: 2
-    	}, {
-    		name: '吉安',
-            value: 
-            // this.ja,
-            0,
-    		level: 1
-    	}, {
-    		name: '九江',
-            value: 
-            // this.jj,
-            0,
-    		level: 1
-    	}, {
-    		name: '新余',
-            value: 
-            // this.xy,
-            0,
-    		level: 1
-    	}, {
-    		name: '鹰潭',
-            value: 
-            // this.yt,
-            0,
-    		level: 1
-    	}, {
-    		name: '宜春',
-            value: 
-            // this.yc,
-            0,
-    		level: 1
-    	}, {
-    		name: '抚州',
-            value: 
-            // this.fz,
-            0,
-    		level: 1
-    	}, {
-    		name: '上饶',
-            value: 
-            // this.sr,
-            0,
-    		level: 1
-    	}]
+        data: datamap,
+        // [{
+    	// 	name: '南昌',
+        //     value: 
+        //     951,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '景德镇',
+        //     value: 
+        //     0,
+    	// 	level: 2
+    	// }, {
+    	// 	name: '萍乡',
+        //     value:
+        //     0,
+    	// 	level: 3
+    	// }, {
+    	// 	name: '赣州',
+        //     value: 
+        //     0,
+    	// 	level: 2
+    	// }, {
+    	// 	name: '吉安',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '九江',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '新余',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '鹰潭',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '宜春',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '抚州',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '上饶',
+        //     value: 
+        //     0,
+    	// 	level: 1
+        // }]
+        
     });
 })
 
@@ -1899,167 +1998,666 @@ searchMap(start,end) {
       };
       
          map(data).then(res => {
-        console.log(res);
-        var map={};
-         res.forEach(item =>{
-         
-              map[item[0]]=item[1];       
-         });
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
         if(res.length!=0){
             if(map['南昌市']!=undefined){
-                this.datamap.push({
-                    name: '南昌',
-                    value:map['南昌市'],
-                    level: 1
-                });
-               
+                this.datamap[0].value=map['南昌市'];
             }else{
-                this.datamap.push({
-                    name: '南昌',
-                    value:0,
-                    level: 1
-                });
+                this.datamap[0].value=0;
             }
             if(map['九江市']!=undefined){
-                this.datamap.push({
-                    name: '九江',
-                    value:map['九江市'],
-                    level: 1
-                });
+                this.datamap[1].value=map['九江市'];
             }else{
-               this.datamap.push({
-                    name: '九江',
-                    value:0,
-                    level: 1
-                });
+               this.datamap[1].value=0;
             }
             if(map['上饶市']!=undefined){
-                this.datamap.push({
-                    name: '上饶',
-                    value:map['上饶市'],
-                    level: 1
-                });
+               this.datamap[2].value=map['上饶市'];
             }else{
-                this.datamap.push({
-                    name: '上饶',
-                    value:0,
-                    level: 1
-                });
+                this.datamap[2].value=0;
             }
             if(map['抚州市']!=undefined){
-               this.datamap.push({
-                    name: '抚州',
-                    value:map['抚州市'],
-                    level: 1
-                });
+               this.datamap[3].value=map['抚州市'];
             }else{
-                this.datamap.push({
-                    name: '抚州',
-                    value:0,
-                    level: 1
-                });
+               this.datamap[3].value=0;
             }
             if(map['宜春市']!=undefined){
-               this.datamap.push({
-                    name: '宜春',
-                    value:map['宜春市'],
-                    level: 1
-                });
+              this.datamap[4].value=map['抚州市'];
             }else{
-               this.datamap.push({
-                    name: '宜春',
-                    value:0,
-                    level: 1
-                });
+              this.datamap[4].value=0;
             }
             if(map['吉安市']!=undefined){
-                this.datamap.push({
-                    name: '吉安',
-                    value:map['吉安市'],
-                    level: 1
-                });
+                this.datamap[5].value=map['吉安市'];
             }else{
-                this.datamap.push({
-                    name: '吉安',
-                    value:0,
-                    level: 1
-                });
+              this.datamap[5].value=0;
             }
             if(map['赣州市']!=undefined){
-                this.datamap.push({
-                    name: '赣州',
-                    value:map['赣州市'],
-                    level: 1
-                });
+               this.datamap[6].value=map['赣州市'];
             }else{
-                 this.datamap.push({
-                    name: '赣州',
-                    value:0,
-                    level: 1
-                });
+                 this.datamap[6].value=0;
             }
             if(map['景德镇市']!=undefined){
-               this.datamap.push({
-                    name: '景德镇',
-                    value:map['景德镇市'],
-                    level: 1
-                });
+              this.datamap[7].value=map['景德镇市'];
             }else{
-               this.datamap.push({
-                    name: '景德镇',
-                    value:0,
-                    level: 1
-                });
+              this.datamap[7].value=0;
             }
             if(map['萍乡市']!=undefined){
-               this.datamap.push({
-                    name: '萍乡',
-                    value:map['萍乡市'],
-                    level: 1
-                });
+               this.datamap[8].value=map['萍乡市'];
             }else{
-                 this.datamap.push({
-                    name: '萍乡',
-                    value:0,
-                    level: 1
-                });
+                this.datamap[8].value=0;
             }
             if(map['新余市']!=undefined){
-               this.datamap.push({
-                    name: '新余',
-                    value:map['新余市'],
-                    level: 1
-                });
+              this.datamap[9].value=map['新余市'];
             }else{
-               this.datamap.push({
-                    name: '新余',
-                    value:0,
-                    level: 1
-                });
+               this.datamap[9].value=0;
             }
             if(map['鹰潭市']!=undefined){
-                this.datamap.push({
-                    name: '鹰潭',
-                    value:map['鹰潭市'],
-                    level: 1
-                });
+               this.datamap[10].value=map['鹰潭市'];
             }else{
-                this.datamap.push({
-                    name: '鹰潭',
-                    value:0,
-                    level: 1
-                });
-            }
+               this.datamap[10].value=0;
+            } 
+       this.map(this.datamap);
         }
-        this.map();
-       
       });
       err => {
         console.log(err);
       };
+    //   mapybaj(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value1=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value1=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value1=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value1=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value1=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value1=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value1=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value1=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value1=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value1=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value1=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value1=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value1=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value1=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value1=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value1=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value1=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value1=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value1=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value1=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value1=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value1=0;
+    //         } 
+   
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+    //   mapcfaj(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value2=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value2=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value2=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value2=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value2=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value2=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value2=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value2=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value2=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value2=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value2=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value2=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value2=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value2=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value2=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value2=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value2=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value2=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value2=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value2=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value2=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value2=0;
+    //         } 
+   
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+    //   mappbcaj(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value3=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value3=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value3=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value3=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value3=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value3=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value3=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value3=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value3=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value3=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value3=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value3=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value3=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value3=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value3=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value3=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value3=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value3=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value3=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value3=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value3=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value3=0;
+    //         } 
+            
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+    //   mapcxcz(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value4=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value4=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value4=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value4=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value4=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value4=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value4=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value4=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value4=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value4=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value4=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value4=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value4=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value4=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value4=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value4=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value4=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value4=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value4=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value4=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value4=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value4=0;
+    //         } 
+            
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+  
     },
-
-
+searchMap1(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+     
+      mapybaj(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value1=map['南昌市'];
+            }else{
+                this.datamap[0].value1=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value1=map['九江市'];
+            }else{
+               this.datamap[1].value1=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value1=map['上饶市'];
+            }else{
+                this.datamap[2].value1=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value1=map['抚州市'];
+            }else{
+               this.datamap[3].value1=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value1=map['抚州市'];
+            }else{
+              this.datamap[4].value1=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value1=map['吉安市'];
+            }else{
+              this.datamap[5].value1=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value1=map['赣州市'];
+            }else{
+                 this.datamap[6].value1=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value1=map['景德镇市'];
+            }else{
+              this.datamap[7].value1=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value1=map['萍乡市'];
+            }else{
+                this.datamap[8].value1=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value1=map['新余市'];
+            }else{
+               this.datamap[9].value1=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value1=map['鹰潭市'];
+            }else{
+               this.datamap[10].value1=0;
+            } 
+   this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+     
+    },
+    searchMap2(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+       
+      mapcfaj(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value2=map['南昌市'];
+            }else{
+                this.datamap[0].value2=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value2=map['九江市'];
+            }else{
+               this.datamap[1].value2=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value2=map['上饶市'];
+            }else{
+                this.datamap[2].value2=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value2=map['抚州市'];
+            }else{
+               this.datamap[3].value2=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value2=map['抚州市'];
+            }else{
+              this.datamap[4].value2=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value2=map['吉安市'];
+            }else{
+              this.datamap[5].value2=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value2=map['赣州市'];
+            }else{
+                 this.datamap[6].value2=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value2=map['景德镇市'];
+            }else{
+              this.datamap[7].value2=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value2=map['萍乡市'];
+            }else{
+                this.datamap[8].value2=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value2=map['新余市'];
+            }else{
+               this.datamap[9].value2=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value2=map['鹰潭市'];
+            }else{
+               this.datamap[10].value2=0;
+            } 
+   this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+     
+    },
+    searchMap3(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+      mappbcaj(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value3=map['南昌市'];
+            }else{
+                this.datamap[0].value3=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value3=map['九江市'];
+            }else{
+               this.datamap[1].value3=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value3=map['上饶市'];
+            }else{
+                this.datamap[2].value3=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value3=map['抚州市'];
+            }else{
+               this.datamap[3].value3=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value3=map['抚州市'];
+            }else{
+              this.datamap[4].value3=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value3=map['吉安市'];
+            }else{
+              this.datamap[5].value3=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value3=map['赣州市'];
+            }else{
+                 this.datamap[6].value3=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value3=map['景德镇市'];
+            }else{
+              this.datamap[7].value3=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value3=map['萍乡市'];
+            }else{
+                this.datamap[8].value3=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value3=map['新余市'];
+            }else{
+               this.datamap[9].value3=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value3=map['鹰潭市'];
+            }else{
+               this.datamap[10].value3=0;
+            } 
+            this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+   
+    },
+    searchMap4(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+      
+      mapcxcz(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value4=map['南昌市'];
+            }else{
+                this.datamap[0].value4=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value4=map['九江市'];
+            }else{
+               this.datamap[1].value4=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value4=map['上饶市'];
+            }else{
+                this.datamap[2].value4=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value4=map['抚州市'];
+            }else{
+               this.datamap[3].value4=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value4=map['抚州市'];
+            }else{
+              this.datamap[4].value4=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value4=map['吉安市'];
+            }else{
+              this.datamap[5].value4=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value4=map['赣州市'];
+            }else{
+                 this.datamap[6].value4=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value4=map['景德镇市'];
+            }else{
+              this.datamap[7].value4=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value4=map['萍乡市'];
+            }else{
+                this.datamap[8].value4=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value4=map['新余市'];
+            }else{
+               this.datamap[9].value4=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value4=map['鹰潭市'];
+            }else{
+               this.datamap[10].value4=0;
+            } 
+            this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+   
+    },
+    mapAll(){
+        this.searchMap(202001,202012);
+        this.searchMap1(202001,202012);
+        this.searchMap2(202001,202012);
+        this.searchMap3(202001,202012);
+        this.searchMap4(202001,202012);
+        // console.log(this.datamap);
+        // this.map(this.datamap);
+    },
 
 
 
@@ -2118,27 +2716,29 @@ searchMap(start,end) {
     this.search7(2020);
     this.search8(2020);
     this.search9('南昌市',202001,202012);
-     this.search9('九江市',202001,202012);
-     this.search9('上饶市',202001,202012);
-     this.search9('抚州市',202001,202012);
-     this.search9('宜春市',202001,202012);
-     this.search9('吉安市',202001,202012);
-     this.search9('赣州市',202001,202012);
-     this.search9('景德镇市',202001,202012);
-     this.search9('萍乡市',202001,202012);
-     this.search9('新余市',202001,202012);
-     this.search9('鹰潭市',202001,202012);
-    // this.searchMap(202001,202012);
+    this.search9('九江市',202001,202012);
+    this.search9('上饶市',202001,202012);
+    this.search9('抚州市',202001,202012);
+    this.search9('宜春市',202001,202012);
+    this.search9('吉安市',202001,202012);
+    this.search9('赣州市',202001,202012);
+    this.search9('景德镇市',202001,202012);
+    this.search9('萍乡市',202001,202012);
+    this.search9('新余市',202001,202012);
+    this.search9('鹰潭市',202001,202012);
+    //  this.map();
+  
     // this.drawLeft2();
     // this.drawLeft3();
     // this.drawCenter2();
-    this.map();
     // this.drawRight1();
     // this.drawRight2();
     
   },
   created() {
        this.timer();
+       this.mapAll();
+        
   },
 
 };

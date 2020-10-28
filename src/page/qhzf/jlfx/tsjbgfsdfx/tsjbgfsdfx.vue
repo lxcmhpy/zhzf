@@ -3,21 +3,21 @@
     <div class="searchPage toggleBox">
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form-item label="统计日期" prop>
-            <el-date-picker
-              v-model="value1"
-              type="date"
-              placeholder="选择日期"
-              style="width:150px">
-            </el-date-picker>
+          <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
+            <el-form-item label="统计日期" prop>
+            <el-date-picker  style="width:60%" v-model="value3" type="date" placeholder="选择日期" value-format="yyyyMMdd" @change="select"  ></el-date-picker>
           </el-form-item>
-         
+           <!-- <el-form-item label="执法门类" prop>
+            <el-select size="small" v-model="state" placeholder="执法门类">
+              <el-option label="全部" value></el-option>
+             
+            </el-select>
+          </el-form-item> -->
+          </el-form>
         </el-form>
       </div>
-      <div class="tablePart">
-         <div id="chartDay" style="width: 1000px; height: 400px;"></div>
-     
-      </div>
+
+      <div id="chartColumn" style="width: 100%; height: 400px;"></div>
     </div>
   </div>
 </template>
@@ -25,14 +25,14 @@
 
 <script>
 import echarts from "echarts";
+import {
+      qsglfx,
+    } from '@/api/fxyp.js'
 export default {
   data() {
     return {
       value3: "",
       value2: "",
-      value1: "",
-      state: "",
-      checked: true,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -46,35 +46,73 @@ export default {
         endTime: "",
         dateArray: ""
       },
-      data1:[],
-      data2:[],
-      data3:[],
-      data4:[],
+      logType: [
+        {
+          value: null,
+          label: "全部"
+        },
+        {
+          value: 0,
+          label: "操作日志"
+        },
+        {
+          value: 1,
+          label: "登录日志"
+        }
+      ],
+      data4:[]
     };
   },
   methods: {
-  
-    drawLine3() {
-      this.chartColumn = echarts.init(document.getElementById("chartDay"));
+    drawLine() {
+      this.chartColumn = echarts.init(document.getElementById("chartColumn"));
 
       this.chartColumn.setOption({
-         title: {
-          text: "投诉举报高发时段分析",
-          left: "center"
+        title: {
+          text: ""
         },
         tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            // 坐标轴指示器，坐标轴触发有效
-            type: "line" // 默认为直线，可选为：'line' | 'shadow'
-          }
+          trigger: "axis"
+        },
+        // legend: {
+        //   data: ["2018年每月案发数量", "2019年每月案发数量"]
+        // },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
         },
         xAxis: {
           type: "category",
-          // data: this.data3
-          data:[
-            "0时","1时","2时","3时","4时","5时","6时","7时","8时","9时","10时","11时",
-            "12时","13时","14时","15时","16时","17时","18时","19时","20时","21时","22时","23时",
+          boundaryGap: false,
+          data: 
+          // this.data3
+          [
+            "1时",
+            "2时",
+            "3时",
+            "4时",
+            "5时",
+            "6时",
+            "7时",
+            "8时",
+            "9时",
+            "10时",
+            "11时",
+            "12时",
+            "13时",
+            "14时",
+            "15时",
+            "16时",
+            "17时",
+            "18时",
+            "19时",
+            "20时",
+            "21时",
+            "22时",
+            "23时",
+            "24时"
           ]
         },
         yAxis: {
@@ -82,47 +120,193 @@ export default {
         },
         series: [
           {
-            // data: this.data4,
-            data:[
-            "12","1","22","14","15","11","10","5","7","25","13","11",
-            "17","12","5","16","20","13","15","16","20","11","2","1",
-          ],
-            type: "line"
-          }
+            name: "案发数量",
+            type: "line",
+            stack: "总量",
+            data: this.data4
+            // [
+            //   120,
+            //   132,
+            //   101,
+            //   134,
+            //   90,
+            //   230,
+            //   210,
+            //   132,
+            //   101,
+            //   134,
+            //   90,
+            //   230,
+            //   120,
+            //   132,
+            //   101,
+            //   134,
+            //   90,
+            //   230,
+            //   210,
+            //   132,
+            //   101,
+            //   134,
+            //   90,
+            //   230
+            // ]
+          },
+          
         ]
       });
     },
-    
-    search3(val) {
-      this.currentPage = val;
+    //查询-----------------------------------------------------------------------------------------------------
+    search1(val) {
       let data = {
-        // year:2018
+        day:val
       };
-      let _this = this;
-      this.$store.dispatch("sjglfxday", data).then(res => {
-        console.log(res);
-         var arr1=[];
-         var arr2=[];
+      qsglfx(data).then(res => {
+         var map={};
          res.forEach(item =>{
-               arr1.push(item[0]);
-               arr2.push(item[1]);
+           map[item[0]]=item[1];   
          });
         
-        this.data3=arr1;
-        this.data4=arr2;
-           this.drawLine3();
+         
+           if(map['01时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['01时']);
+            }
+            if(map['02时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['02时']);
+            }
+            if(map['03时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['03时']);
+            }
+            if(map['04时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['04时']);
+            }
+            if(map['05时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['05时']);
+            }
+            if(map['06时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['06时']);
+            }
+            if(map['07时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['07时']);
+            }
+            if(map['08时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['08时']);
+            }
+            if(map['09时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['09时']);
+            }
+            if(map['10时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['10时']);
+            }
+            if(map['11时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['11时']);
+            }
+            if(map['12时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['12时']);
+            }
+            if(map['13时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['13时']);
+            }
+            if(map['14时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['14时']);
+            }
+            if(map['15时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['15时']);
+            }
+            if(map['16时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['16时']);
+            }
+            if(map['17时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['17时']);
+            }
+            if(map['18时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['18时']);
+            }
+            if(map['19时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['19时']);
+            }
+            if(map['20时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['20时']);
+            }
+            if(map['21时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['21时']);
+            }
+            if(map['22时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['22时']);
+            }
+            if(map['23时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['23时']);
+            }
+            if(map['24时']==undefined){
+              this.data4.push(0);
+            }else{
+              this.data4.push(map['24时']);
+            }
+           this.drawLine();
       });
       err => {
         console.log(err);
       };
     },
+    select(val){ 
+     if(val!=null){
+       this.data4=[];
+       this.search1(val); 
+     }
+     
+   },
   },
-  mounted() { 
-    // this.search3();  
-    this.drawLine3();
+  mounted() {
+    // this.drawLine();
+    this.search1(20200508);
   },
   created() {
-   
+    
   }
 };
 </script>
