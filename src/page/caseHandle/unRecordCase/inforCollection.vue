@@ -1854,10 +1854,10 @@ export default {
             {required: true, message: "请选择案件关系", trigger: "change"}
           ], */
         illegalLaw: [
-          { required: false, message: "请选择违法条款", trigger: "change" },
+          { required: true, message: "请选择违法条款", trigger: "change" },
         ],
         punishLaw: [
-          { required: false, message: "请选择处罚依据", trigger: "change" },
+          { required: true, message: "请选择处罚依据", trigger: "change" },
         ],
         partyZipCode: [{ validator: validateZIP, trigger: "blur" }],
         provincesAddressArray: [
