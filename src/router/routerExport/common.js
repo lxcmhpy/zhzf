@@ -3,6 +3,8 @@ import Layout from '@/page/lagout/mainLagout' //Layout 是架构组件，不在�
 import caseHandleRouterJson from './routerJson/caseHandleRouterJson'
 import caseHandleRouterJson_JX from './routerJson/caseHandleRouterJson_JX'
 import caseHandleRouterJson_QH from './routerJson/caseHandleRouterJson_QH'
+import caseHandleRouterJson_SC from './routerJson/caseHandleRouterJson_SC'
+
 import lawSuperviseJson from './routerJson/lawSuperviseJson'
 import caseCenterJson from './routerJson/caseCenterJson'
 import {
@@ -81,7 +83,8 @@ const route = [
         children: [
           ...caseHandleRouterJson,
           ...caseHandleRouterJson_JX,
-          ...caseHandleRouterJson_QH
+          ...caseHandleRouterJson_QH,
+          ...caseHandleRouterJson_SC
 
         ]
       },

@@ -576,7 +576,7 @@ export function getDictListDetailByNameApi(name) {
     url: "/system/sys/drawer/findAllDrawerByName/" + name,
     method: "get",
     showloading: true,
-    loadingType: name =='系统标题'||name =='loginBg' ||name =='显示综合执法平台' ? 'loadFull' : 'loadPart',
+    loadingType: name =='系统标题'||name =='loginBg' ||name =='显示综合执法平台' || name =='登录滑动验证' ? 'loadFull' : 'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -865,11 +865,14 @@ export function addeLawCognizanceApi(data) {
 }
 //违法行为绑定法条
 export function bindCauseLawRegulationsApi(data) {
-  data = vm.$qs.stringify(data);
+  // data = vm.$qs.stringify(data);
   return request({
     url: "/bnslaw/sys/bnslawCause/bindCauseLawRegulations",
     method: "post",
     data: data,
+    headers: {
+      "Content-Type": "application/json"
+    },
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -934,11 +937,14 @@ export function getlawRegulationsListApi(data) {
 
 //解除绑定法条
 export function unbindCauseLawRegulationsApi(data) {
-  data = vm.$qs.stringify(data);
+  // data = vm.$qs.stringify(data);
   return request({
     url: "/bnslaw/sys/bnslawCause/unbindCauseLawRegulations",
     method: "post",
     data: data,
+    headers: {
+      "Content-Type": "application/json"
+    },
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()

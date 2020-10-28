@@ -150,6 +150,7 @@ export default {
     },
     //获取选中的机构下的案件类型
     getDepartment() {
+      this.addCaseNumberForm.caseTypeId = '';
       let _this = this
       getOrganNotInCaseNumberApi().then(
         res => {

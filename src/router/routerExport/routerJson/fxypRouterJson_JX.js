@@ -103,7 +103,6 @@ export default  [
             },
             component: () => import("@/page/analyseManage/caseAnalysis/trend.vue")
           },
-
           {
             name: "proportion",
             path: "/proportion",
