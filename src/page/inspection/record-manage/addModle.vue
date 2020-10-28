@@ -141,6 +141,10 @@
                                 label="表达式"
                                 value="表达式"
                               ></el-option>
+                              <el-option
+                                label="图片型"
+                                value="图片型"
+                              ></el-option>
                             </el-select>
                           </el-form-item>
                           <!-- <i class="el-icon-remove-outline" @click="delField(field,item.fieldList)" style="margin-left:18px;margin-top:-38px;float:right"></i> -->
@@ -192,7 +196,7 @@
                             v-model="field.required"
                             true-label="true"
                             false-label="false"
-                            >必填</el-checkbox
+                            >必填1</el-checkbox
                           >
                         </el-form-item>
                       </el-col>
@@ -272,6 +276,10 @@
                             <el-option
                               label="表达式"
                               value="表达式"
+                            ></el-option>
+                            <el-option
+                              label="图片型"
+                              value="图片型"
                             ></el-option>
                           </el-select>
                         </el-form-item>
@@ -385,7 +393,8 @@
                         field.type == '数字型' ||
                         field.type == '表达式' ||
                         field.type == '地址型' ||
-                        field.type == '引用型'
+                        field.type == '引用型' ||
+                        field.type == '图片型'
                       "
                     >
                       <el-col
@@ -405,7 +414,58 @@
                           </el-input>
                         </el-form-item>
                       </el-col>
+
+                      <el-col
+                        v-if="field.field == 'party'"
+                        :span="22"
+                        :offset="2"
+                        class="card-bg-content min-lable"
+                      >
+                        <el-form-item
+                          label="移动端功能(多选)："
+                          label-width="165px"
+                        >
+                          <el-checkbox-group
+                            v-model="mobileFuncList"
+                            @change="handleMobileFuncChange"
+                          >
+                            <el-checkbox
+                              v-for="item in mobileFuncOption"
+                              :label="item.label"
+                              :key="item.label"
+                              >{{ item.value }}</el-checkbox
+                            >
+                          </el-checkbox-group>
+                        </el-form-item>
+                      </el-col>
+                      <el-col
+                        v-if="field.field == 'vehicleShipId'"
+                        :span="22"
+                        :offset="2"
+                        class="card-bg-content min-lable"
+                      >
+                        <el-form-item
+                          label="移动端功能(多选)："
+                          label-width="165px"
+                        >
+                          <el-checkbox-group
+                            v-model="mobileFuncList"
+                            @change="handleMobileFuncChange2"
+                          >
+                            <el-checkbox
+                              v-for="item in mobileFuncOption2"
+                              :label="item.label"
+                              :key="item.label"
+                              >{{ item.value }}</el-checkbox
+                            >
+                          </el-checkbox-group>
+                        </el-form-item>
+                      </el-col>
                     </el-row>
+                    <!-- <el-row class="mimi-content">
+                      <el-col :span="12" :offset="0"></el-col>
+                      <el-col :span="12" :offset="0"></el-col>
+                    </el-row> -->
                   </el-form>
 
                   <!-- </div> -->
@@ -489,7 +549,24 @@
               ></el-radio>
             </el-radio-group>
           </el-form-item>
-
+          <el-form-item
+            label="折叠展示"
+            class="modle-radio chose-mine"
+            prop="fold"
+          >
+            <el-radio-group v-model="formData.fold">
+              <el-radio
+                label="是"
+                value="是"
+                @click.native.prevent="clickitem4('是')"
+              ></el-radio>
+              <el-radio
+                label="否"
+                value="否"
+                @click.native.prevent="clickitem4('否')"
+              ></el-radio>
+            </el-radio-group>
+          </el-form-item>
           <p class="border-title card-title-margin">应用权限</p>
           <el-form-item label="模板图标">
             <el-popover
@@ -727,6 +804,23 @@ export default {
   },
   data() {
     return {
+      mobileFuncList: ["1"],
+      mobileFuncOption: [
+        {
+          value: "支持OCR识别",
+          label: "1",
+        },
+        {
+          value: "支持扫一扫功能",
+          label: "2",
+        },
+      ],
+      mobileFuncOption2: [
+        {
+          value: "支持OCR识别",
+          label: "1",
+        },
+      ],
       drawerTitle: "创建模板",
       titileText: "",
       newModleTable: false,
@@ -749,8 +843,8 @@ export default {
       iconList: [
         //图标库
         {
-          icon: "icon_yzt",
-          name: "运政通用记录",
+          value: "icon_yzt",
+          label: "运政通用记录",
         },
         {
           icon: "icon_hyj",
@@ -825,11 +919,12 @@ export default {
           },
         ],
         count: 0,
-        operateRecords: "",
-        releventRecords: "",
-        documentFill: "",
-        documentNames: "",
-        documentNameIds: "",
+        documentFill: "", //文书填报
+        releventRecords: "", //相关记录
+        operateRecords: "", //操作记录
+        fold: "", //折叠展示
+        documentNames: "", //文书的名字合集
+        documentNameIds: "", //文书id合集
         vehicleShipIdFlag: false, //车辆字段
         partyFlag: false, //当事人字段
       },
@@ -887,11 +982,10 @@ export default {
           { required: true, message: "请选择指定机构", trigger: "change" },
         ],
       },
-      dialogTableVisible: false,
-      fileList: [],
-      multipleSelection: [],
-      multipleSelectionId: [],
-      selectFieldList: [],
+      dialogTableVisible: false, //文书弹框显示
+      fileList: [], //所有的文书数据
+      multipleSelection: [], //文书的名字数组
+      multipleSelectionId: [], //文书的id数组
     };
   },
   computed: {
@@ -932,6 +1026,21 @@ export default {
     },
   },
   methods: {
+    
+    handleMobileFuncChange(val) {
+      console.log("handleMobileFuncChange -> val", val);
+      console.log(
+        "handleMobileFuncChange -> mobileFuncList",
+        this.mobileFuncList
+      );
+    },
+    handleMobileFuncChange2(val) {
+      console.log("handleMobileFuncChange2 -> val", val);
+      console.log(
+        "handleMobileFuncChange2 -> mobileFuncList",
+        this.mobileFuncList
+      );
+    },
     showModal(editdata) {
       if (editdata) {
         this.editId = editdata.id;
@@ -1227,7 +1336,6 @@ export default {
                 if (data.templateUser.substr(0, 1) == ",") {
                   data.templateUser = data.templateUser.substr(1);
                 }
-                console.log("data.documentNames", data.documentNames);
                 // debugger
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 data.templateFieldList = JSON.stringify(data.templateFieldList);
@@ -1376,6 +1484,7 @@ export default {
 
     // 修改字段类型
     changeFieldType(field) {
+      console.log("changeFieldType -> field", field);
       if (field.type == "日期型") {
         //   // 默认日期类型
         field.options[0].value = "yyyy-MM-dd HH:mm:ss";
@@ -1388,7 +1497,7 @@ export default {
       let defaut = this.commonGroupFieldList.find(
         (item) => item.classs === group.classs
       );
-      console.log(" -> defaut", defaut)
+      console.log(" -> defaut", defaut);
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList;
@@ -1443,7 +1552,6 @@ export default {
       //   }
       // });
     },
-
 
     changeDisabledStatus(field) {
       console.log("执行");
@@ -1539,19 +1647,37 @@ export default {
     changeUser(val) {
       this.$forceUpdate();
     },
+
+    // 选择文书填报
     changeFile(val) {
-      // 选择文书填报
       console.log("选择", this.formData.documentFill);
       if (this.formData.documentFill == "是") {
         this.dialogTableVisible = true;
         this.delAlreadyFile();
       }
     },
+
+    // 删除已选的文书
+    delAlreadyFile() {
+      if (this.multipleSelection.length > 0) {
+        this.$nextTick(() => {
+          this.multipleSelection.forEach((element) => {
+            this.fileList.forEach((item) => {
+              if (element == item.id) {
+                this.$refs.multipleTable.toggleRowSelection(item);
+                return;
+              }
+            });
+          });
+        });
+      }
+    },
+
+    //选择文书列表变化
     handleSelectionChange(val) {
       this.multipleSelection = [];
       this.multipleSelectionId = [];
       val.forEach((element) => {
-        console.log(element);
         this.multipleSelectionId.push(element.id);
         this.multipleSelection.push(element.docName);
       });
@@ -1621,21 +1747,7 @@ export default {
         (error) => {}
       );
     },
-    delAlreadyFile() {
-      if (this.multipleSelection.length > 0) {
-        this.$nextTick(() => {
-          this.multipleSelection.forEach((element) => {
-            this.fileList.forEach((item) => {
-              if (element == item.id) {
-                console.log(item, element);
-                this.$refs.multipleTable.toggleRowSelection(item);
-                return;
-              }
-            });
-          });
-        });
-      }
-    },
+
     changeAdmin() {
       this.$forceUpdate();
     },
@@ -1645,15 +1757,21 @@ export default {
         ? (this.formData.documentFill = "")
         : (this.formData.documentFill = e);
     },
+
+    clickitem2(e) {
+      e === this.formData.releventRecords
+        ? (this.formData.releventRecords = "")
+        : (this.formData.releventRecords = e);
+    },
     clickitem3(e) {
       e === this.formData.operateRecords
         ? (this.formData.operateRecords = "")
         : (this.formData.operateRecords = e);
     },
-    clickitem2(e) {
-      e === this.formData.releventRecords
-        ? (this.formData.releventRecords = "")
-        : (this.formData.releventRecords = e);
+    clickitem4(e) {
+      e === this.formData.fold
+        ? (this.formData.fold = "")
+        : (this.formData.fold = e);
     },
     changeScopeOfUse() {
       let _this = this;
