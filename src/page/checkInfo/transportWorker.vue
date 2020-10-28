@@ -95,8 +95,8 @@ export default {
 // ProvinceCode:110000
     return {
       checkData: {
-        certificateCode: '371427198609163735',
-        staffName: '陈法冰',
+        certificateCode: '',
+        staffName: '',
         provinceCode: ''
       },
       radio: '1',
