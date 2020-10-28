@@ -95,8 +95,8 @@ export default {
 // ProvinceCode:110000
     return {
       checkData: {
-        certificateCode: '371427198609163735',
-        staffName: '陈法冰',
+        certificateCode: '',
+        staffName: '',
         provinceCode: ''
       },
       radio: '1',
@@ -332,7 +332,6 @@ export default {
     },
     //获取违法行为条数
     async getIllegalData(checkData){
-      alert(1111)
       for(let item of checkData){
         let data = {party:this.checkData.staffName,partyEcertId:this.checkData.certificateCode}
         let illeagalRes = await checkWithilleaglApi(data);

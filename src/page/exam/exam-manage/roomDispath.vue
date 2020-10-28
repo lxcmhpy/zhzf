@@ -349,6 +349,13 @@ export default {
     //自动分配考场
     autoDispath() {
       let _this = this;
+      if(_this.roomList == undefined || _this.roomList == null || _this.roomList.length <= 0){
+         _this.$message({
+                  type: "warning",
+                  message: "请先添加考场!"
+                });
+             return;   
+      }
       let data = {
         examId: _this.middleDate.examId
       };
