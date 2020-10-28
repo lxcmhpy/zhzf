@@ -368,16 +368,7 @@ export function wdcl(data) {
     cancelToken:  setCancelSource(),
   });
 }
-//执法案件  地图
-export function map(data) {
-  return  request({
-    url: "/fxyp/map",
-    method:  "post",
-    showloading: false,
-    params:data,
-    cancelToken:  setCancelSource(),
-  });
-}
+
 //人员装备   执法人员岗位分布
 export function gwfb(data) {
   return  request({
@@ -482,6 +473,146 @@ export function zjal(data) {
 export function zfmlajsl(data) {
   return  request({
     url: "/fxyp/zfmlajsl",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//执法人员统计报表   执法人员统计
+export function zfrytj(data) {
+  return  request({
+    url: "/fxyp/zfrytj",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//被处罚人统计报表    被处罚人统计
+export function bcfrtj(data) {
+  return  request({
+    url: "/fxyp/bcfrtj",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//关联分析     违法行为用户画像   案件数量
+export function yhhx(data) {
+  return  request({
+    url: "/fxyp/yhhx",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//关联分析     违法行为用户画像   案件数量24时
+export function yhhxhour(data) {
+  return  request({
+    url: "/fxyp/yhhxhour",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//关联分析     违法行为用户画像   案件数量24时   个人
+export function yhhxhourOne(data) {
+  return  request({
+    url: "/fxyp/yhhxhourOne",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//关联分析     违法行为用户画像   案件数量案件类型
+export function yhhxajlx(data) {
+  return  request({
+    url: "/fxyp/yhhxajlx",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//关联分析     违法行为用户画像   案件数量案件类型   个人
+export function yhhxajlxOne(data) {
+  return  request({
+    url: "/fxyp/yhhxajlxOne",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//源头治超管理分析     企业信息
+export function qyxx(data) {
+  return  request({
+    url: "/fxyp/qyxx",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//执法案件  地图   总数
+export function map(data) {
+  return  request({
+    url: "/fxyp/map",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//执法案件  地图   一般案件
+export function mapybaj(data) {
+  return  request({
+    url: "/fxyp/mapybaj",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//执法案件  地图   处罚案件
+export function mapcfaj(data) {
+  return  request({
+    url: "/fxyp/mapcfaj",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//执法案件  地图  赔补偿案件
+export function mappbcaj(data) {
+  return  request({
+    url: "/fxyp/mappbcaj",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//执法案件  地图  超限超载
+export function mapcxcz(data) {
+  return  request({
+    url: "/fxyp/mapcxcz",
+    method:  "post",
+    showloading: false,
+    params:data,
+    cancelToken:  setCancelSource(),
+  });
+}
+//重点路段研判     路段信息
+export function ldxx(data) {
+  return  request({
+    url: "/fxyp/ldxx",
     method:  "post",
     showloading: false,
     params:data,

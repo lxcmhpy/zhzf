@@ -3,17 +3,28 @@
     <div class="searchPage toggleBox">
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form-item label="立案机构" prop>
-            <el-select size="small" v-model="state" placeholder="立案机构">
+          <!-- <el-form-item label="立案机构" prop>
+            <el-select size="small" v-model="lajg" placeholder="立案机构">
               <el-option label="全部" value></el-option>
               
             </el-select>
-          </el-form-item>
-          <el-form-item label="执法门类" prop>
-            <el-select size="small" v-model="state" placeholder="执法门类">
-              <el-option label="全部" value></el-option>
-             
+          </el-form-item> -->
+          <!-- <el-form-item label="执法门类" prop>
+            <el-select size="small" v-model="zfml" placeholder="执法门类">
+              <el-option label="公路路政" value></el-option>
+              <el-option label="道路路政" value></el-option>
             </el-select>
+          </el-form-item> -->
+          <el-form-item label="起始年月" prop>
+            <el-date-picker
+              v-model="value"
+              type="monthrange"
+              range-separator="至"
+              start-placeholder="开始月份"
+              end-placeholder="结束月份"
+               value-format="yyyyMM" @change="select"
+               style="width:400px"
+            ></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
@@ -40,6 +51,9 @@ import {
 export default {
   data() {
     return {
+      value:"",
+      lajg:[],
+      zfml:[],
       value3: "",
       value2: "",
       value1: "",
@@ -219,18 +233,34 @@ export default {
       });
     },
     //查询-----------------------------------------------------------------------------------------------------
-    //赔补偿  结案
-   search(val) {
+     //赔补偿 案发
+   searchfa(start,end) {    
       let data = {
-        // year:2018
+       start:start,
+       end:end
       };
-      let _this = this;
+      ajsldbfxpbcfa(data).then(res => {
+         res.forEach(item =>{   
+              this.t1.push(item[0]);
+                    this.data1.push(item[1]); 
+         });       
+          this.drawLine1();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    //赔补偿  结案
+   search(start,end) {    
+      let data = {
+       start:start,
+       end:end
+      };
       ajsldbfxpbc(data).then(res => {
          var map={};
          res.forEach(item =>{
               map[item[0]]=item[1]; 
          });
-         console.log(map);
        for(var i=0;i<this.t1.length;i++){
           if(map[this.t1[i]]==undefined){
             this.data2.push(0);
@@ -245,36 +275,34 @@ export default {
         console.log(err);
       };
     },
-     //赔补偿 案发
-   searchfa(val) {
+    //处罚  案发
+   search2fa(start,end) {    
       let data = {
-        // year:2018
+       start:start,
+       end:end
       };
-      let _this = this;
-      ajsldbfxpbcfa(data).then(res => {
-         res.forEach(item =>{   
-              this.t1.push(item[0]);
-                    this.data1.push(item[1]); 
-         });       
-          this.drawLine1();
+      ajsldbfxcffa(data).then(res => {
+         res.forEach(item =>{  
+              this.t2.push(item[0]);
+              this.data3.push(item[1]);    
+         });     
+          this.drawLine2();
       });
       err => {
         console.log(err);
       };
     },
      //处罚  结案
-   search2(val) {
+   search2(start,end) {    
       let data = {
-        // year:2018
+       start:start,
+       end:end
       };
-      let _this = this;
       ajsldbfxcf(data).then(res => {
-        console.log(res);
          var map={};
          res.forEach(item =>{
               map[item[0]]=item[1];   
          });
-        console.log(map);   
           for(var i=0;i<this.t2.length;i++){
           if(map[this.t2[i]]==undefined){
             this.data4.push(0);
@@ -288,24 +316,23 @@ export default {
         console.log(err);
       };
     },
-    //处罚  案发
-   search2fa(val) {
-      let data = {
-        // year:2018
-      };
-      let _this = this;
-      ajsldbfxcffa(data).then(res => {
-      console.log(res);
-         res.forEach(item =>{  
-              this.t2.push(item[0]);
-              this.data3.push(item[1]);    
-         });     
-          this.drawLine2();
-      });
-      err => {
-        console.log(err);
-      };
-    },
+    
+     select(val){
+      if(val!=null){
+        this.t1=[];
+        this.t2=[];
+        this.data1=[];
+        this.data2=[];
+        this.data3=[];
+        this.data4=[];
+        this.searchfa(val[0],val[1]);
+        this.search(val[0],val[1]);
+         this.search2fa(val[0],val[1]);
+        this.search2(val[0],val[1]);
+       
+      }
+     
+     }
   },
   
   mounted() {
@@ -315,10 +342,11 @@ export default {
     this.data2=[];
     this.data3=[];
     this.data4=[];
-    this.search();
-    this.searchfa();
-    this.search2();
-    this.search2fa();
+    this.searchfa(202001,202012);
+    this.search(202001,202012);
+    this.search2fa(202001,202012);
+    this.search2(202001,202012);
+    
   },
   created() {
    

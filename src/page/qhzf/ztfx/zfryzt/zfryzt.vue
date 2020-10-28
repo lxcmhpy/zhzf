@@ -10,24 +10,28 @@
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              value-format="yyyyMM" @change="select"
+              style="width:400px"
             ></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
-      <div id="chart1" style="width: 100%; height: 50%;"></div>
-      <div style="margin-top:30px;margin-bottom:30px">
+      <div style="margin-top:30px">
         <el-row>
-          <el-col :span="6">
-            <div id="chart2" style="width: 100%; height: 100%;"></div>
+          <el-col :span="12">
+            <div id="chart1" style="width: 400px; height: 400px;"></div>
           </el-col>
-          <el-col :span="6">
-            <div id="chart3" style="width: 100%; height: 100%;"></div>
-          </el-col>
-          <el-col :span="6">
-            <div id="chart4" style="width: 100%; height: 100%;"></div>
-          </el-col>
-          <el-col :span="6">
-            <div id="chart5" style="width: 100%; height: 100%;"></div>
+          <el-col :span="12">
+            <el-row>
+              <el-col :span="6">
+                <div id="chart2" style="width: 400px; height: 200px;"></div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <div id="chart3" style="width: 400px; height: 200px;"></div>
+              </el-col>
+            </el-row>
           </el-col>
         </el-row>
       </div>
@@ -38,6 +42,9 @@
 
 <script>
 import echarts from "echarts";
+import {
+      dzhbafx,dzhbafxry
+    } from '@/api/fxyp.js'
 export default {
   data() {
     return {
@@ -57,7 +64,11 @@ export default {
         dateArray: ""
       },
       data1:[],
-       data2:[],
+      data2:[],
+      data3:[],
+      data4:[],
+      data5:[],
+      isShow: false
     };
   },
   methods: {
@@ -66,10 +77,50 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "执法人员数量",
+          text: "办案数量TOP机构排名",
           left: "center"
         },
-        color: ["#3398DB"],
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        // legend: {
+        //     left: 'center',
+        //     top: 'bottom',
+        //     data: ['操作不当', '未按规定安全驾驶', '交通事故', '车辆失控', '逃避公路车辆通行费','轮胎爆裂','疲劳驾驶',
+        //     '闯卡逃逸','大厢板封闭不严,抛洒杂物','其他原因',]
+        // },
+        series: [
+          {
+            name: "",
+            type: "pie",
+            radius: "55%",
+            center: ["50%", "60%"],
+            data: this.data1,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
+      });
+       this.chartColumn.on('click', function (params) {
+        
+            var value = params.name;
+           console.log(value);
+        });
+    },
+    drawLine2() {
+      this.chartColumn = echarts.init(document.getElementById("chart2"));
+
+      this.chartColumn.setOption({
+        title: {
+          text: "县市(市辖区)级办案数量TOP5机构",
+          left: "center"
+        },
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -77,20 +128,21 @@ export default {
             type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
           }
         },
+        // legend: {
+        //     left: 'center',
+        //      top: 'bottom',
+        //     data: ['2018年1-12月', ]
+        // },
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom: "15%",
           containLabel: true
         },
         xAxis: [
           {
             type: "category",
-            // data: this.data1,
-              data:["西宁市交通局","海东市交通局","玉树交通局","海西交通局","果洛交通局",],
-            axisTick: {
-              alignWithLabel: true
-            }
+            data: this.data2,
           }
         ],
         yAxis: [
@@ -102,189 +154,158 @@ export default {
           {
             name: "",
             type: "bar",
-            barWidth: "60%",
-            // data: this.data2
-            data:[200,105,112,163,158]
-          }
-        ]
-      });
-    },
-
-    drawLine2() {
-      this.chartColumn = echarts.init(document.getElementById("chart2"));
-
-      this.chartColumn.setOption({
-        title: {
-          text: "年龄段组成",
-          left: "center"
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        series: [
-          {
-            name: "",
-            type: "pie",
-            radius: "75%",
-            center: ["50%", "60%"],
-            data: [
-              { value: 310, name: "24岁以下" },
-              { value: 335, name: "25-29岁" },             
-              { value: 234, name: "30-34岁" },
-              { value: 310, name: "35-39岁" },
-              { value: 335, name: "40-44岁" },             
-              { value: 234, name: "45-49岁" },
-              { value: 234, name: "50-54岁" },
-              { value: 234, name: "55岁以上" },
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
+            data: this.data3,
+            //设置柱子的宽度
+            barWidth: 30,
+            //配置样式
+            itemStyle: {
+              //通常情况下：
+              normal: {
+                color: function(params) {
+                  var colorList = ["rgb(42,170,227)"];
+                  return colorList[0];
+                }
               }
             }
           }
         ]
       });
     },
-
     drawLine3() {
       this.chartColumn = echarts.init(document.getElementById("chart3"));
 
       this.chartColumn.setOption({
         title: {
-          text: "性别组成",
+          text: "执法人员办案数量TOP5",
           left: "center"
         },
         tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        series: [
-          {
-            name: "",
-            type: "pie",
-            radius: ["50%", "80%"],
-            center: ["50%", "60%"],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            },
-
-            data: [
-              { value: 335, name: "男" },
-              { value: 310, name: "女" }
-            ]
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
           }
-        ]
-      });
-    },
-
-    drawLine4() {
-      this.chartColumn = echarts.init(document.getElementById("chart4"));
-
-      this.chartColumn.setOption({
-        title: {
-          text: "学历组成",
-          left: "center"
         },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        // legend: {
+        //     left: 'center',
+        //      top: 'bottom',
+        //     data: ['2018年1-12月', ]
+        // },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "15%",
+          containLabel: true
         },
+        xAxis: [
+          {
+            type: "category",
+            data: this.data4,
+          }
+        ],
+        yAxis: [
+          {
+            type: "value"
+          }
+        ],
         series: [
           {
             name: "",
-            type: "pie",
-            radius: "75%",
-            center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "高中及以下" },
-              { value: 335, name: "大学专科" },
-              { value: 310, name: "大学本科" },
-              { value: 234, name: "硕士研究生" },
-              { value: 310, name: "博士及以上" },
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
+            type: "bar",
+            data: this.data5,
+            //设置柱子的宽度
+            barWidth: 30,
+            //配置样式
+            itemStyle: {
+              //通常情况下：
+              normal: {
+                color: function(params) {
+                  var colorList = ["rgb(42,170,227)"];
+                  return colorList[0];
+                }
               }
             }
           }
         ]
       });
     },
-
-    drawLine5() {
-      this.chartColumn = echarts.init(document.getElementById("chart5"));
-
-      this.chartColumn.setOption({
-        title: {
-          text: "职称组成",
-          left: "center"
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        series: [
-          {
-            name: "",
-            type: "pie",
-            radius: "75%",
-            center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "科员" },
-              { value: 150, name: "副科" },
-              { value: 134, name: "正科" },
-              { value: 50, name: "副处" },
-              { value: 30, name: "正处" }
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
-      });
-    },
-    search1(val) {
-      this.currentPage = val;
+   //查询-----------------------------------------------------------------------------------------------------    
+    search1(start,end) {
+    
       let data = {
-        // year:2018
+        start:start,
+       end:end
       };
       let _this = this;
-      this.$store.dispatch("ryglfx", data).then(res => {
-        console.log(res);
+      // this.$store.dispatch("dzhbafx", data).then(res => {
+     dzhbafx(data).then(res => {
+        if(res.length!=0){
+          var map={};
+         res.forEach(item =>{
+              map[item[0]]=item[1];  
+                
+         });
+        
+         this.data1=[ {value:res[0][1], name:res[0][0]},{value:res[1][1], name:res[1][0]}
+         ,{value:res[2][1], name:res[2][0]},{value:res[3][1], name:res[3][0]}
+         ,{value:res[4][1], name:res[4][0]},{value:res[5][1], name:res[5][0]}
+         ];
          this.data2=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
-          this.data1=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
-           this.drawLine1();
+          this.data3=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
+        }
+         
+          this.drawLine1();
+          this.drawLine2();
       });
       err => {
         console.log(err);
       };
     },
+    search2(start,end) {
+   
+      let data = {
+       start:start,
+       end:end
+      };
+      let _this = this;
+      dzhbafxry(data).then(res => {
+      if(res.length!=0){
+         var map={};
+         res.forEach(item =>{
+              map[item[0]]=item[1];  
+                
+         });
+          this.data4=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
+          this.data5=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
+      }
+        
+           this.drawLine3();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    select(val){ 
+     if(val!=null){
+      this.data1=[];
+      this.data2=[];
+      this.data3=[];
+      this.data4=[];
+      this.data5=[];
+     this.search1(val[0],val[1]); 
+      this.search2(val[0],val[1]); 
+     }
+     
+   },
   },
   mounted() {
-    this.drawLine1();
-    // this.search1();
-    this.drawLine2();
-    this.drawLine3();
-    this.drawLine4();
-    this.drawLine5();
+    this.search1(202001,202012);
+    this.search2(202001,202012);
+    // this.drawLine2();
+    // this.drawLine3();
   },
   created() {
-    // this.getLogList();
+    
   }
 };
 </script>

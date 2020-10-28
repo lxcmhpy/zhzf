@@ -95,7 +95,6 @@ export default {
             let type = this.addPersonForm.type;
             if(type == 1){ //挂失
                 this.$store.dispatch("lossDocMoudle", data).then(res => {
-                    console.log("返回参数"+JSON.stringify(res));console.log("返回参数"+JSON.stringify(res));
                     this.visible = false;
                     if(res.code == '200'){
                         this.$emit("getAllPersons");
@@ -115,7 +114,6 @@ export default {
                     });
             }else if(type == 2){ //暂扣
                  this.$store.dispatch("withholdMoudle", data).then(res => {
-                     console.log("返回参数"+JSON.stringify(res));
                     this.visible = false;
                     if(res.code == '200'){
                         this.$emit("getAllPersons");
@@ -135,7 +133,6 @@ export default {
                  });
             }else if(type == 3){ //解除暂扣
                 this.$store.dispatch("unWithholdMoudle", data).then(res => {
-                    console.log("返回参数"+JSON.stringify(res));
                     this.visible = false;
                     if(res.code == '200'){
                         this.$emit("getAllPersons");
@@ -156,6 +153,7 @@ export default {
             }else if(type == 4){ //注销
                 this.$store.dispatch("logoffMoudle", data).then(res => {
                     if(res.code == '200'){
+                        this.visible = false;
                         this.$emit("getAllPersons");
                         this.$message({
                             type: "success",
