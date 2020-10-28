@@ -1063,12 +1063,13 @@ export default {
         );
     },
     //身份证号码校验(需要走后台做重复验证)
-    async vailidIdNo(rule, value, callback) {
+    vailidIdNo(rule, value, callback) {
       let _this = this;
       // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
-      let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+      let reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
       if (reg.test(value)) {
-        await _this.getValidIdNo(value.length);
+        _this.getValidIdNo(value.length);
+        callback();
       } else {
         callback(new Error("身份证格式错误"));
       }

@@ -5,7 +5,7 @@
         <el-form
           :model="searchForm"
           ref="searchForm"
-          style="width:100%"
+          style="width: 100%"
           label-width="50px"
           size="small"
         >
@@ -17,22 +17,54 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="状态" prop="state">
-                <el-select v-model="searchForm.state" placeholder="请选择" clearable>
-                  <el-option v-for="(item,key) in allStatus" :key="key" :label="item" :value="key"></el-option>
+                <el-select
+                  v-model="searchForm.state"
+                  placeholder="请选择"
+                  clearable
+                >
+                  <el-option
+                    v-for="(item, key) in allStatus"
+                    :key="key"
+                    :label="item"
+                    :value="key"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label-width="10px">
-                <el-button type="primary" size="medium" icon="el-icon-search" @click="searchEmit"></el-button>
-                <el-button type="primary" size="medium" icon="el-icon-refresh-left" @click="reset"></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-search"
+                  @click="searchEmit"
+                ></el-button>
+                <el-button
+                  type="primary"
+                  size="medium"
+                  icon="el-icon-refresh-left"
+                  @click="reset"
+                ></el-button>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row style="margin-bottom:10px;">
-            <el-button type="primary" size="medium" @click="dialogVisible = true">添加</el-button>
-            <el-button type="primary" size="medium" @click="onDeleteBatch">删除</el-button>
-            <el-button v-if="canApprove" type="primary" size="medium" @click="onApproveBatch">批量审核</el-button>
+          <el-row style="margin-bottom: 10px">
+            <el-button
+              type="primary"
+              size="medium"
+              @click="dialogVisible = true"
+              >添加</el-button
+            >
+            <el-button type="primary" size="medium" @click="onDeleteBatch"
+              >删除</el-button
+            >
+            <el-button
+              v-if="canApprove"
+              type="primary"
+              size="medium"
+              @click="onApproveBatch"
+              >批量审核</el-button
+            >
           </el-row>
         </el-form>
       </div>
@@ -46,19 +78,43 @@
           @selection-change="handleSelectionChange"
         >
           >
-          <el-table-column type="selection" width="50" align="center"></el-table-column>
-          <el-table-column prop="strName" label="名称" align="center" :show-overflow-tooltip="true"></el-table-column>
-          <el-table-column prop="strNumber" label="文号" align="center" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column
+            type="selection"
+            width="50"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="strName"
+            label="名称"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
+          <el-table-column
+            prop="strNumber"
+            label="文号"
+            align="center"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
           <el-table-column
             prop="strOrgan"
             label="发布机关"
             align="center"
             :show-overflow-tooltip="true"
           ></el-table-column>
-          <el-table-column prop="dtmDate" label="发布日期" align="center"></el-table-column>
-          <el-table-column prop="shiDate" label="实施日期" align="center"></el-table-column>
+          <el-table-column
+            prop="dtmDate"
+            label="发布日期"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="shiDate"
+            label="实施日期"
+            align="center"
+          ></el-table-column>
           <el-table-column prop="state" label="状态" align="center">
-            <template slot-scope="scope">{{allStatus[scope.row.state]}}</template>
+            <template slot-scope="scope">{{
+              allStatus[scope.row.state]
+            }}</template>
           </el-table-column>
           <el-table-column
             prop="auditComment"
@@ -68,17 +124,21 @@
           ></el-table-column>
           <el-table-column prop="op" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="onDetail(scope.row)">详情</el-button>
+              <el-button type="text" @click="onDetail(scope.row)"
+                >详情</el-button
+              >
               <el-button
-                v-if="scope.row.state===1 || scope.row.state===4"
+                v-if="scope.row.state === 1 || scope.row.state === 4"
                 type="text"
                 @click="onSubmit(scope.row)"
-              >提交</el-button>
+                >提交</el-button
+              >
               <el-button
-                v-if="scope.row.state===2 && canApprove"
+                v-if="scope.row.state === 2 && canApprove"
                 type="text"
                 @click="onApprove(scope.row)"
-              >审核</el-button>
+                >审核</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -116,53 +176,55 @@
         <el-form-item label="时效性">{{form.status===0?"有效":"1无效"}}</el-form-item>
         <el-form-item label="题注">{{form.strNote}}</el-form-item>
       </el-form>-->
-      <div style="height:400px;overflow: auto;">
+      <div style="height: 400px; overflow: auto">
         <table class="table" width="100%" cellspacing="0">
           <tr>
             <td width="15%" class="title">法规标题</td>
-            <td width="35%">{{form.strName}}</td>
+            <td width="35%">{{ form.strName }}</td>
           </tr>
           <tr>
             <td class="title">发布文号</td>
-            <td>{{form.strNumber}}</td>
+            <td>{{ form.strNumber }}</td>
           </tr>
           <tr>
             <td class="title">发布机关</td>
-            <td>{{form.strOrgan}}</td>
+            <td>{{ form.strOrgan }}</td>
           </tr>
           <tr>
             <td class="title">法规效力</td>
-            <td>{{form.drawerName}}</td>
+            <td>{{ form.drawerName }}</td>
           </tr>
           <tr>
             <td class="title">网站链接</td>
-            <td>{{form.webLink}}</td>
+            <td>{{ form.webLink }}</td>
             <!-- <td><a :href="form.webLink" target="_blank">{{form.webLink}}</a></td> -->
           </tr>
           <tr>
             <td class="title">行业类型</td>
-            <td>{{form.industryType}}</td>
+            <td>{{ form.industryType }}</td>
           </tr>
           <tr>
             <td class="title">发布时间</td>
-            <td>{{form.dtmDate}}</td>
+            <td>{{ form.dtmDate }}</td>
           </tr>
           <tr>
             <td class="title">实施时间</td>
-            <td>{{form.shiDate}}</td>
+            <td>{{ form.shiDate }}</td>
           </tr>
           <tr>
             <td class="title">时效性</td>
-            <td>{{form.status===0?"有效":"1无效"}}</td>
+            <td>{{ form.status === 0 ? "有效" : "1无效" }}</td>
           </tr>
           <tr>
             <td class="title">题注</td>
-            <td>{{form.strNote}}</td>
+            <td>{{ form.strNote }}</td>
           </tr>
         </table>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="detailVisible = false">关闭</el-button>
+        <el-button type="primary" @click="detailVisible = false"
+          >关闭</el-button
+        >
       </span>
     </el-dialog>
 
@@ -295,6 +357,10 @@ export default {
      * 点击确定
      */
     handleSubmit(data) {
+      if (data.length < 1) {
+        this.$message({ type: "warning", message: "请选择记录!" });
+        return;
+      }
       data.forEach((item) => {
         item.strId = item.id;
       });

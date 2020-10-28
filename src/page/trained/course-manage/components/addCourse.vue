@@ -69,7 +69,8 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { addCourseInfo, uploadTrainedFile, getFileStream } from "@/api/trained";
+import { addCourseInfo, uploadCourseFile } from "@/api/trained";
+const AllowImageType = ['image/jpeg', 'image/png'];
 
 export default {
   data() {
@@ -128,9 +129,11 @@ export default {
       if (coverImage && coverImage.status === "ready") {
         const formData = new FormData();
         formData.append("file", coverImage.raw);
-        uploadTrainedFile(formData).then(res => {
+        this.$store.dispatch('uploadMaterial', formData).then(res => {
           if(res.code === 200){
-            this.addCourseForm.picId = res.data;
+            if(res.data && res.data.length){
+              this.addCourseForm.lessonPic = res.data[0].storageId;
+            }
             this.descImages.forEach(item => item.status = 'success');
             this.saveCourseInfo(loading);
           }
@@ -167,6 +170,14 @@ export default {
     // 选择课程封面
     handleCoverChange(file, fileList) {
       const isGt2M = file.size / 1024 / 1024 > 2;
+      if (AllowImageType.indexOf(file.raw.type) < 0) {
+        this.catsMessage({
+          message: '上传封面格式错误，只支持上传jpg或png格式',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
       if (isGt2M) {
         this.$message({
           message: "封面图片大小不能超过 2MB!",
@@ -216,7 +227,7 @@ export default {
         }
         if(row.picId){
           let picObj = { url: '', status: 'success' };
-          getFileStream(row.picId).then( res => {
+          this.$util.com_getFileStream(row.picId).then( res => {
             picObj.url = res;
           });
           this.descImages.push(picObj);

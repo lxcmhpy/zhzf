@@ -277,16 +277,11 @@
                 <template slot-scope="props">
                   <ul class="moreDocList">
                     <li
-                      v-for="(item,index) in props.row.path =='case_handle_payStage' ? allAskDocList : allApprovalDocList"
+                      v-for="(item,index) in props.row.path =='case_handle_payStageDoc_JX' ? allAskDocList : allApprovalDocList"
                       :key="index"
                     >
                       <div>{{item.note}}</div>
                       <div>
-                        <!-- <span v-if="item.status == '1' || item.status == '2'">已完成</span>
-                        <span v-if="item.status == '0'">未完成</span>-->
-
-                        <!-- <template slot-scope="scope"> -->
-
                         <span v-if="item.status == '1' || item.status == '2'">
                           <template v-if="item.docProcessStatus=='待审批'">待审批</template>
                           <template v-if="item.docProcessStatus=='审批中'">审批中</template>
@@ -350,7 +345,6 @@
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                   <span class="tableHandelcase" v-if="scope.row.openRow">
-                    <!-- <i class="iconfont law-add" @click="viewDoc(scope.row)"></i> -->
                     <span @click="addMoreDoc(scope.row)">添加</span>
                   </span>
                   <span v-if="!scope.row.openRow">
@@ -499,7 +493,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: "", //表单类型IDer
+        caseLinktypeId: this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId, //表单类型IDer
         //表单数据
         formData: "",
         status: ""
@@ -898,7 +892,7 @@ export default {
           name: "分期（延期）缴纳罚款通知书",
           status: "询问",
           openRow: true,
-          path: "case_handle_payStage",
+          path: "case_handle_payStageDoc_JX",
           docId: this.BASIC_DATA_JX.payStageDoc_JX_caseDocTypeId,
           note: "",
           isRequired:payStageDoc_JXRequire

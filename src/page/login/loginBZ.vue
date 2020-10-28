@@ -245,10 +245,10 @@ export default {
           { required: true, message: '请输入新密码', trigger: 'blur' },
           { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
         ],
-        repetPassword: [
-          { required: true, message: '请重复输入新密码', trigger: 'blur' },
-          { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
-        ],
+        // repetPassword: [
+        //   { required: true, message: '请重复输入新密码', trigger: 'blur' },
+        //   { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
+        // ],
       },
       hasUserError: false,
       haspasswordError: false,
@@ -275,6 +275,7 @@ export default {
     };
   },
   computed: { ...mapGetters(['systemTitle']) },
+  inject: ['reload'],
   methods: {
     // 切换登录方式
     changeType(type) {
@@ -423,9 +424,9 @@ export default {
                 _this.$message({
                   type: "success",
                   message: "修改成功，请返回登录"
-
                 });
                 console.log(res);
+               
               } else {
                 this.$message({ type: 'error', message: res.message });
               }
@@ -462,7 +463,8 @@ export default {
                       type: "success",
                       message: res.msg
                     });
-                    this.editFlag = false
+                    this.editFlag = false;
+                    this.reload();
                   } else {
                     this.$message.error(res.msg);
                   }
@@ -510,6 +512,14 @@ export default {
       } catch (error) {
         throw new Error(error);
       }
+
+      //是否显示滑动验证
+      let dataRes = await getDictListDetailByNameApi('登录滑动验证');
+      console.log('是否显示滑动验证',dataRes)
+      if(dataRes.data.length>0){
+        this.isShow = Number(dataRes.data[0].name) ? true : false;
+      }
+      
     },
     loadImg() {
       this.$store.dispatch("setLoadingState", { flag: false });
@@ -600,7 +610,6 @@ export default {
   },
   mounted() {
     this.showLogin = true;
-    this.isShow = true;
     this.maxwidth = 390;
     document.getElementsByTagName('html')[0].addEventListener('mousemove', this.mouseMoveFn);
     document.getElementsByTagName('html')[0].addEventListener('mouseup', this.moseUpFn)

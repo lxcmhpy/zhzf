@@ -4,7 +4,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="25%"
+    width="30%"
   >
     <el-form :inline="true" :model="submitMsg" :rules="rules" label-position="right" label-width="100px" ref="editExamineeForm">
       <!-- 强制收卷 -->

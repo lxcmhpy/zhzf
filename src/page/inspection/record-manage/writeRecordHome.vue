@@ -1,130 +1,106 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
-    <div class="searchAndpageBox" style="overflow: hidden;">
-      <div style="margin-bottom:24px">
+  <div class="com_searchAndpageBoxPadding write-record-home-wrapper">
+    <div class="out-box">
+      <div class="search-input-left-box">
+        <span class="mould-name"> 模板名称 </span>
+        <span class="search-input-right">
+          <el-input v-model="searchModleName"></el-input>
+        </span>
         <el-button
-          icon="el-icon-plus"
+          class="search-btn"
+          icon="el-icon-search"
           type="primary"
           size="medium"
-          @click="addNewModle"
-          v-if="isHome"
-          >新增模板</el-button
-        >
-        <div class="search-input-right-box">
-          模板名称
-          <span class="search-input-right">
-            <el-input v-model="searchModleName"></el-input>
-          </span>
-          <el-button
-            icon="el-icon-search"
-            type="primary"
-            size="medium"
-            @click="searchListByName"
-          ></el-button>
-        </div>
+          @click="handleSearch"
+        ></el-button>
       </div>
       <!-- 收藏 -->
-      <div class="card-content">
-        <div
-          class="card-title"
-          style="justify-content: flex-start;"
-          v-if="showSave"
-        >
-          常用模板
-          <span v-if="modleSaveList">({{ modleSaveList.length || 0 }})</span>
-          <span
-            v-if="modleSaveList && modleSaveListFlag"
-            @click="modleSaveListFlag = !modleSaveListFlag"
-            class="show-icon"
-            ><i class="el-icon-arrow-down"></i
-          ></span>
-          <span
-            v-if="modleSaveList && !modleSaveListFlag"
-            @click="modleSaveListFlag = !modleSaveListFlag"
-            class="show-icon"
-            ><i class="el-icon-arrow-up"></i
-          ></span>
+      <div class="content-box">
+        <div class="menu-box" v-show="showMenu">
+          <el-menu
+            :default-active="currentMenu"
+            class="mould-left-menu"
+            @open="handleOpen"
+            @close="handleClose"
+            @select="handleMenuChange"
+            background-color="rgb(236, 242, 255)"
+            text-color="#667589"
+            active-text-color="rgb(69, 115, 208)"
+          >
+            <el-menu-item
+              :index="item.domain"
+              v-for="item in menuList"
+              :key="item.id"
+            >
+              <div slot="title">
+                <!-- <span class="menu-item-img"></span> -->
+                <span :class="item.iconClass"></span>
+                <span class="menu-item-text">
+                  {{ item.domain }}
+                </span>
+
+                <span class="count-text" v-if="item.templateList"
+                  >({{ item.templateList.length }})</span
+                >
+              </div>
+            </el-menu-item>
+          </el-menu>
         </div>
-        <ul class="card-ul" v-if="modleSaveListFlag">
-          <li v-for="(modle, index) in modleSaveList" :key="index">
-            <div :class="modle.bgcName" @click="writeRecord(modle)">
-              <div class="card-img-content-box">
-                <div class="card-img-content">
-                  <img
-                    v-if="modle.icon"
-                    :src="'./static/images/img/record/' + modle.icon + '.png'"
-                    alt=""
-                  />
-                  <span v-else style="color: #667589;font-size: 36px;">{{
-                    modle.title.charAt(0)
-                  }}</span>
+        <div class="mould-list-box" v-show="showMenu">
+          <ul>
+            <li class="mould-item" v-for="item in currentList" :key="item.id">
+              <div :class="item.bgcName" @click="writeRecord(item)">
+                <span :class="{ star: item.isCollect == 1 }"></span>
+                <span class="text" :title="item.title">
+                  {{ item.title }}
+                </span>
+                <span class="bottom-img"></span>
+                <div class="btns-box">
+                  <span
+                    style="color: blue; font-size: 14px"
+                    @click="editModle(modle)"
+                    >修改</span
+                  >&emsp;
+                  <span
+                    style="color: blue; font-size: 14px"
+                    @click="delModle(modle)"
+                    >删除</span
+                  >
                 </div>
               </div>
-              <div class="card-des">{{ modle.title }}</div>
-            </div>
-            <!-- <div class="box-card-img-content">
-              <span style="color: blue;font-size: 14px;" @click="editModle(modle)">修改模板</span>
-              <span style="color: blue;font-size: 14px;" @click="delModle(modle)">删除模板</span>
-            </div> -->
-          </li>
-        </ul>
-      </div>
-      <div
-        v-for="(item, index1) in modleList"
-        :key="item.domain"
-        class="card-content"
-      >
-        <div
-          class="card-title"
-          style="justify-content: flex-start;"
-          v-if="item.domain"
-        >
-          {{ item.domain }}
-          <span v-if="item.templateList">({{ item.templateList.length }})</span>
-          <span
-            v-if="item.templateList && item.showFlag"
-            @click="changeUp(index1)"
-            class="show-icon"
-            ><i class="el-icon-arrow-down"></i
-          ></span>
-          <span
-            v-if="item.templateList && !item.showFlag"
-            @click="changeUp(index1)"
-            class="show-icon"
-            ><i class="el-icon-arrow-up"></i
-          ></span>
+            </li>
+          </ul>
         </div>
-        <ul class="card-ul" v-if="item.showFlag">
-          <li v-for="(modle, index) in item.templateList" :key="index">
-            <div :class="modle.bgcName" @click="writeRecord(modle)">
-              <div class="card-img-content-box">
-                <div class="card-img-content">
-                  <img
-                    v-if="modle.icon"
-                    :src="'./static/images/img/record/' + modle.icon + '.png'"
-                    alt=""
-                  />
-                  <span v-else style="color: #667589;font-size: 36px;">{{
-                    modle.title.charAt(0)
-                  }}</span>
+        <div class="mould-list-box" v-show="!showMenu">
+          <div class="search-title">
+            <span class="back-btn" @click="handleSearchBack"> <i class="icon el-icon-arrow-left"></i>返回 </span>
+            <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="handleSearchBack">返回</el-button> -->
+            <span>搜索结果({{ searchList.length }})</span>
+          </div>
+          <ul>
+            <li class="mould-item" v-for="item in searchList" :key="item.id">
+              <div :class="item.bgcName" @click="writeRecord(item)">
+                <span :class="{ star: item.isCollect == 1 }"></span>
+                <span class="text" :title="item.title">
+                  {{ item.title }}
+                </span>
+                <span class="bottom-img"></span>
+                <div class="btns-box">
+                  <span
+                    style="color: blue; font-size: 14px"
+                    @click="editModle(modle)"
+                    >修改</span
+                  >&emsp;
+                  <span
+                    style="color: blue; font-size: 14px"
+                    @click="delModle(modle)"
+                    >删除</span
+                  >
                 </div>
               </div>
-              <div class="card-des">{{ modle.title }}</div>
-            </div>
-            <div class="box-card-img-content">
-              <span
-                style="color: blue;font-size: 14px;"
-                @click="editModle(modle)"
-                >修改模板</span
-              >&emsp;
-              <span
-                style="color: blue;font-size: 14px;"
-                @click="delModle(modle)"
-                >删除模板</span
-              >
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <preview ref="previewRef" @userList="getPreviewList"></preview>
@@ -136,6 +112,7 @@ import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import preview from "./previewDialog.vue";
 import addModle from "./addModle.vue";
+import cloneDeep from "lodash";
 import {
   findRecordlModleByNameApi,
   findRecordModleByIdApi,
@@ -143,17 +120,35 @@ import {
   findRecordModleByNameIdApi,
   findRecordModleByPersonApi,
   findUserCollectTemplateApi,
-  removeMoleCollectByIdApi
+  removeMoleCollectByIdApi,
 } from "@/api/inspection";
 import Vue from "vue";
 import { mapGetters } from "vuex";
+const strMap = {
+  常用模板: "bgc0",
+  公路路政: "bgc1",
+  水路运政: "bgc2",
+  道路运政: "bgc3",
+  海事行政: "bgc4",
+  // 运政通用型检查记录:'bgc4',
+  航道行政: "bgc5",
+  港口行政: "bgc6",
+  工程质量监督: "bgc7",
+  其他: "bgc8",
+};
 export default {
   components: {
     preview,
-    addModle
+    addModle,
   },
   data() {
     return {
+      searchList: [],
+      showMenu: true,
+      menuList: [],
+      listMap: {},
+      currentList: [], //右侧当前展示的模板列表
+      currentMenu: "",
       isHome: true,
       searchModleName: "",
       compData: [],
@@ -164,25 +159,31 @@ export default {
       currentUserLawId: "",
       modleSaveListFlag: true,
       showSave: true,
-      cardBoxClass: "card-box",
-      strMap: {
-        公路路政: "bgc1",
-        水路运政: "bgc2",
-        道路运政: "bgc3",
-        海事行政: "bgc4",
-        // 运政通用型检查记录:'bgc4',
-        航道行政: "bgc5",
-        港口行政: "bgc6",
-        工程质量监督: "bgc7"
-      }
     };
   },
   methods: {
+    //   getCurrentMenu () {
+    // 	// 获取当前页面 菜单刷新后能自动选中
+    // 	let currentUrl = window.location.href
+    // 	let currentPage = currentUrl.split('/')[3].replace('#', '')
+    // 	this.currentMenu = currentPage
+    // },
+    handleSearchBack() {
+      this.searchModleName = "";
+      this.handleSearch();
+    },
+    handleOpen() {},
+    handleClose() {},
+    handleMenuChange(val) {
+      console.log("handleMenuChange -> val", val);
+      this.currentList = this.listMap[val];
+      console.log(" -> this.currentList", this.currentList);
+    },
     addNewModle() {
       this.$refs.addModleRef.showModal();
     },
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
         } else {
           console.log("error submit!!");
@@ -190,26 +191,27 @@ export default {
         }
       });
     },
+
     //改变模块背景色
     addClassName(arr) {
-      arr.forEach(item => {
-        item.bgcName = this.strMap[item.domain] + " " + this.cardBoxClass;
+      arr.forEach((item) => {
+        item.iconClass = strMap[item.domain] + " menu-item-img";
+        item.templateList.forEach((it) => {
+          it.bgcName = strMap[it.domain];
+        });
       });
     },
 
-    //改变模块背景色
-    addClassNameOtherModle(arr) {
-      arr.forEach(item=>{
-        item.templateList.forEach(it=>{
-          it.bgcName = this.strMap[item.domain] + " " + this.cardBoxClass;
-        })
-      })
+    //搜索结果添加类名
+    addClassNameSearch(arr) {
+      arr.forEach((item) => {
+        item.bgcName = strMap[item.domain];
+      });
     },
-
     //查询
     getAddModle(list) {
       console.log("getAddModle", list);
-      this.searchList();
+      this.getOtherMouldList();
     },
     //查询
     getPreviewList(list) {
@@ -225,8 +227,8 @@ export default {
         // query: { id: item.id, addOrEiditFlag: 'add' }
         params: {
           id: item.id,
-          addOrEiditFlag: "add"
-        }
+          addOrEiditFlag: "add",
+        },
       });
 
       // this.$store.commit("set_inspection_orderId", item.id);
@@ -242,27 +244,27 @@ export default {
       this.$confirm("确认删除？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(() => {
         console.log("删除", item.id);
         let data = {
           id: item.id,
-          userId: iLocalStroage.gets("userInfo").id
+          userId: iLocalStroage.gets("userInfo").id,
         };
 
         removeMoleByIdApi(data).then(
-          res => {
+          (res) => {
             console.log(res);
             if (res.code == 200) {
               this.$message({
                 type: "success",
-                message: res.msg
+                message: res.msg,
               });
-              this.searchList();
-              this.searchSaveList();
+              this.getOtherMouldList();
+              this.getUserCollectMouldList();
             }
           },
-          error => {
+          (error) => {
             // reject(error);
           }
         );
@@ -278,82 +280,73 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    searchList() {
+
+    //获取收藏模板列表（常用列表）
+    getUserCollectMouldList() {
+      let data = iLocalStroage.gets("userInfo").id;
+      return new Promise((resolve, reject) => {
+        findUserCollectTemplateApi(data).then(
+          (res) => {
+            if (res.data) {
+              this.modleSaveList = res.data;
+              this.modleSaveListDefaut = JSON.parse(JSON.stringify(res.data));
+              resolve(res);
+            }
+          },
+          (error) => {
+            // reject(error);
+          }
+        );
+      });
+    },
+
+    // 获取模板列表（常用列表除外）
+    getOtherMouldList() {
       let data = {
         organId: iLocalStroage.gets("userInfo").organId,
         // templateUserId: this.currentUserLawId
-        templateUserId: iLocalStroage.gets("userInfo").id
+        templateUserId: iLocalStroage.gets("userInfo").id,
       };
-      findRecordModleByPersonApi(data).then(
-        res => {
-          // debugger
-          console.log(res);
-          if (res.data) {
-            this.modleList = res.data;
-            this.addClassNameOtherModle(this.modleList);
-            this.modleList.forEach(element => {
-              element.showFlag = true;
-            });
-          }
-        },
-        error => {
-          // reject(error);
-        }
-      );
-    },
-    searchSaveList() {
-      let data = iLocalStroage.gets("userInfo").id;
-      findUserCollectTemplateApi(data).then(
-        res => {
-          console.log(res);
-          if (res.data) {
-            this.modleSaveList = res.data;
-            this.addClassName(this.modleSaveList);
-            console.log(
-              "searchSaveList -> this.modleSaveList",
-              this.modleSaveList
-            );
-            this.modleSaveListDefaut = JSON.parse(JSON.stringify(res.data));
-          }
-        },
-        error => {
-          // reject(error);
-        }
-      );
-    },
-    searchListByName() {
-      if (this.searchModleName == "") {
-        this.showSave = true;
-        this.modleSaveList = JSON.parse(
-          JSON.stringify(this.modleSaveListDefaut)
+      return new Promise((resolve, reject) => {
+        findRecordModleByPersonApi(data).then(
+          (res) => {
+            if (res.data) {
+              this.modleList = res.data;
+
+              resolve(res);
+            }
+          },
+          (error) => {}
         );
-        this.searchList();
+      });
+    },
+
+    //点击搜索
+    handleSearch() {
+      if (this.searchModleName == "") {
+        this.showMenu = true;
       } else {
-        this.showSave = false;
+        this.showMenu = false;
         this.modleSaveList = [];
         let data = {
           title: this.searchModleName,
           templateUserId: iLocalStroage.gets("userInfo").id,
-          organId: iLocalStroage.gets("userInfo").organId
+          organId: iLocalStroage.gets("userInfo").organId,
         };
         findRecordModleByNameIdApi(data).then(
-          res => {
-            console.log(res);
+          (res) => {
             if (res.code == 200) {
-              this.modleList = [{ templateList: [] }];
-              if (res.data.length != 0) {
-                this.modleList[0].templateList = res.data;
-                this.modleList.forEach(element => {
-                  element.showFlag = true;
-                });
+              if (res.data && res.data.length) {
+                this.showMenu = false;
+                this.addClassNameSearch(res.data);
+                this.searchList = res.data;
               } else {
+                this.searchList = [];
                 this.$message({ message: "暂无内容", type: "warning" });
               }
             }
           },
-          error => {
-            // reject(error);
-          }
+          (error) => {}
         );
       }
     },
@@ -371,7 +364,7 @@ export default {
     //             item.userId == iLocalStroage.gets("userInfo").id
     //           ) {
     //             _this.currentUserLawId = item.id;
-    //             _this.searchList()
+    //             _this.getOtherMouldList()
     //           }
     //         });
     //       },
@@ -380,18 +373,263 @@ export default {
     //       }
     //     );
     // },
-    changeUp(item) {
-      console.log(item);
-      this.modleList[item].showFlag = !this.modleList[item].showFlag;
 
-      console.log(this.modleList.slice());
-      this.modleList = this.modleList.slice(); //更新视图
-    }
+    //获取列表数据后拼凑数据
+    getMenuList() {
+      Promise.all([
+        this.getUserCollectMouldList(),
+        this.getOtherMouldList(),
+      ]).then((res) => {
+        let arr = [
+          {
+            domain: "常用模板",
+            templateList: this.modleSaveList,
+          },
+          ...this.modleList,
+        ];
+        arr.forEach((item) => {
+          this.listMap[item.domain] = item.templateList;
+        });
+        this.menuList = arr;
+        this.addClassName(this.menuList);
+
+        this.currentMenu = "常用模板";
+        this.currentList = this.modleSaveList;
+      });
+    },
   },
-  mounted() {
-    this.searchList();
-    this.searchSaveList();
-  }
+  created() {
+    this.getMenuList();
+  },
 };
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
+<style lang="scss">
+.write-record-home-wrapper {
+  & > .out-box {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 22px;
+    padding: 20px;
+    height: 100%;
+    background: #fff;
+    -webkit-box-shadow: 0px 6px 4px 0px rgba(94, 137, 181, 0.1);
+    box-shadow: 0px 6px 4px 0px rgba(94, 137, 181, 0.1);
+  }
+  .searchAndpageBox {
+    height: 100%;
+  }
+  .search-input-left-box {
+    .mould-name {
+      color: #7b7b7b;
+    }
+    .search-btn {
+      margin-left: 10px;
+    }
+  }
+  .content-box {
+    border: 1px solid #bec5d4;
+    margin-top: 15px;
+    height: calc(100% - 49px);
+    display: flex;
+    .menu-box {
+      width: 200px;
+      height: 100%;
+      background: rgb(236, 242, 255);
+      overflow: auto;
+
+      .el-menu-item {
+        padding-left: 65px;
+        &.is-active {
+          .bgc0 {
+            background-image: url("../../../../static/images/img/record/0-80@2x.png");
+          }
+          .bgc1 {
+            background-image: url("../../../../static/images/img/record/0-81@2x.png");
+          }
+          .bgc2 {
+            background-image: url("../../../../static/images/img/record/0-82@2x.png");
+          }
+          .bgc3 {
+            background-image: url("../../../../static/images/img/record/0-83@2x.png");
+          }
+          .bgc4 {
+            background-image: url("../../../../static/images/img/record/0-84@2x.png");
+          }
+          .bgc5 {
+            background-image: url("../../../../static/images/img/record/0-85@2x.png");
+          }
+          .bgc6 {
+            background-image: url("../../../../static/images/img/record/0-86@2x.png");
+          }
+          .bgc7 {
+            background-image: url("../../../../static/images/img/record/0-87@2x.png");
+          }
+          .bgc8 {
+            background-image: url("../../../../static/images/img/record/0-88@2x.png");
+          }
+        }
+        & > div {
+          position: relative;
+          .menu-item-img {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            // background: url("../../../../static/images/img/record/icon_gl.png")
+            // no-repeat;
+            background-size: 25px;
+          }
+          .bgc0 {
+            background-image: url("../../../../static/images/img/record/80@2x.png");
+          }
+          .bgc1 {
+            background-image: url("../../../../static/images/img/record/81@2x.png");
+          }
+          .bgc2 {
+            background-image: url("../../../../static/images/img/record/82@2x.png");
+          }
+          .bgc3 {
+            background-image: url("../../../../static/images/img/record/83@2x.png");
+          }
+          .bgc4 {
+            background-image: url("../../../../static/images/img/record/84@2x.png");
+          }
+          .bgc5 {
+            background-image: url("../../../../static/images/img/record/85@2x.png");
+          }
+          .bgc6 {
+            background-image: url("../../../../static/images/img/record/86@2x.png");
+          }
+          .bgc7 {
+            background-image: url("../../../../static/images/img/record/87@2x.png");
+          }
+          .bgc8 {
+            background-image: url("../../../../static/images/img/record/88@2x.png");
+          }
+        }
+
+        .count-text {
+        }
+      }
+      .is-active {
+        background-color: #fff !important;
+      }
+      .mould-left-menu {
+      }
+    }
+    // .cl-right {
+    // height: 100%;
+    .mould-list-box {
+      height: 100%;
+      flex: 1;
+      overflow-y: auto;
+      .search-title{
+        margin: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #979797;
+        height: 38px;
+        line-height: 38px;
+        .back-btn{
+          color:#646974;
+          font-size: 14px;
+          cursor: pointer;
+        }
+      }
+      & > ul {
+        display: flex;
+        flex-wrap: wrap;
+        .mould-item {
+          padding: 7px;
+          margin: 20px;
+          width: 103px;
+          height: 113px;
+          background: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0px 2px 5px 0px rgba(30, 50, 92, 0.16);
+          & > div:hover {
+            .btns-box {
+              display: block;
+            }
+          }
+          & > div {
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+
+            .text {
+              width: 77px;
+              line-height: 16px;
+              color: #20232b;
+              word-wrap: break-word;
+              text-align: center;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+            }
+            .bottom-img {
+              width: 27px;
+              height: 27px;
+              position: absolute;
+              bottom: 0;
+              background-image: url("../../../../static/images/img/record/mould-foot.png");
+              background-size: 27px;
+              background-repeat: no-repeat;
+            }
+            .star {
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 25px;
+              height: 25px;
+              background-image: url("../../../../static/images/img/record/star.png");
+              background-size: 25px;
+              background-repeat: no-repeat;
+            }
+
+            .btns-box {
+              margin-bottom: 0px;
+              position: absolute;
+              display: none;
+              bottom: 0px;
+              height: 20px;
+              text-align: center;
+            }
+          }
+          .bgc1 {
+            background: linear-gradient(45deg, #cdddf1, #f4faff);
+          }
+          .bgc2 {
+            background: linear-gradient(45deg, #f1dbcd, #fbf4ef);
+          }
+          .bgc3 {
+            background: linear-gradient(45deg, #c9bbe1, #fbf0fd);
+          }
+          .bgc4 {
+            background: linear-gradient(45deg, #eef1cd, #f7f8ec);
+          }
+          .bgc5 {
+            background: linear-gradient(45deg, #cecdf1, #efeef9);
+          }
+          .bgc6 {
+            background: linear-gradient(45deg, #bedfc0, #f1f9f1);
+          }
+          .bgc7 {
+            background: linear-gradient(45deg, #f1cdcd, #fdf2f2);
+          }
+          .bgc8 {
+            background: linear-gradient(45deg, #e6e6e6, #fafafa);
+          }
+        }
+      }
+    }
+    // }
+  }
+}
+</style>

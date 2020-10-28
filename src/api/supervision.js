@@ -444,3 +444,16 @@ export function createRecordDocPdfApi(doc) {
     // baseUrlType:"DUTY_HOST"
   })
 }
+
+//巡查执行统计
+export function getChecklogStatisticsApi(data) {
+  return request({
+    url: "/check/checklog/statistics",
+    // url: "/checklog/statistics",
+    method: "post",
+    data: data,
+    showloading: true,
+    cancelToken: setCancelSource(),
+    // baseUrlType:"DUTY_HOST"
+  })
+}

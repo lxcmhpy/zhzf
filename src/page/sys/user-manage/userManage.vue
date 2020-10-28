@@ -49,14 +49,14 @@
                          @click="getUserList(1)"></el-button>
               <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi"
                          @click="reset"></el-button>
-              <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-adduser" title="添加用户"
-                         @click="addUser"></el-button>
-              <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-link" title="绑定权限"
-                         @click="bindRole"></el-button>
-              <el-button size="medium" class="commonBtn searchBtn" icon="iconfont law-submit-o" title="转执法人员"
-                         @click="saveLawOfficel"></el-button>
               <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'"
                          :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="showSomeSearch"></el-button>
+               <el-button size="medium"  type="primary"
+                         @click="addUser">添加用户</el-button>
+              <el-button size="medium" class="" type="primary"
+                         @click="bindRole">绑定角色</el-button>
+              <el-button size="medium" class="" type="primary"
+                         @click="saveLawOfficel">转执法人员</el-button>
             </el-form-item>
             <el-collapse-transition>
               <div v-show="isShow" :class="{'ransition-box':true}">
@@ -106,23 +106,27 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="nickName" label="姓名"></el-table-column>
-            <el-table-column prop="ministerial" label="执法证号"></el-table-column>
-            <el-table-column prop="mobile" label="联系电话"></el-table-column>
-            <el-table-column prop="roleNames" label="角色"></el-table-column>
-            <el-table-column prop="userOrgan" label="所属机构"></el-table-column>
-            <el-table-column prop="userDeparment" label="所属部门"></el-table-column>
-            <el-table-column width="50" prop="status" label="状态">
+            <el-table-column prop="nickName" label="姓名" align="center"></el-table-column>
+            <el-table-column prop="ministerial" label="执法证号" align="center"></el-table-column>
+            <el-table-column prop="mobile" label="联系电话" align="center"></el-table-column>
+            <el-table-column prop="roleNames" label="角色" align="center"></el-table-column>
+            <el-table-column prop="userOrgan" label="所属机构" align="center"></el-table-column>
+            <el-table-column prop="userDeparment" label="所属部门" align="center"></el-table-column>
+            <el-table-column width="50" prop="status" label="状态" align="center">
               <template slot-scope="scope">
-                <div>{{scope.row.status === 0?'正常':scope.row.status === -1?'拉黑':'待激活'}}</div>
+                <!-- <div>{{scope.row.status === 0?'正常':scope.row.status === -1?'拉黑':'待激活'}}</div> -->
+                <div>
+                  <span v-if="scope.row.status === 0">正常</span>
+                  <span v-else style="color:red">停用</span>
+                </div>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="160">
+            <el-table-column label="操作" width="180" align="center">
               <template slot-scope="scope">
-                <div style="width:160px">
-                  <el-button type="text"  @click.stop="handleEdit(scope.$index, scope.row)">修改</el-button>
-                  <el-button type="text"  @click.stop="handleDelete(scope.row)">删除</el-button>
-                  <el-button type="text"  @click.stop="Initialization(scope.row)">初始化</el-button>
+                <div style="width:180px">
+                  <el-button type="text" size="small"  @click.stop="handleEdit(scope.$index, scope.row)">修改</el-button>
+                  <el-button type="text" size="small" @click.stop="handleDelete(scope.row)">删除</el-button>
+                  <el-button type="text" size="small" @click.stop="Initialization(scope.row)">初始化密码</el-button>
                 </div>
               </template>
             </el-table-column>
@@ -171,7 +175,7 @@
           enforceNo: "",
           username: "",
           mobile: "",
-          selectValue: "",
+          selectValue: 1,
           region: ""
         },
         searchType: [{value: 1, label: '本机构'}, {value: 0, label: '本机构及子机构'}],

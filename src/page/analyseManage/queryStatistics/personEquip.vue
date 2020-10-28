@@ -10,7 +10,7 @@
             <div class="title_1 title_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="title_2" style="margin-left: 13px">
-            {{ mapTitle }}
+            <!-- 宁夏执法数据分析研判系统 -->
           </el-col>
           <el-col
             :span="6"
@@ -127,7 +127,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      mapTitle: '',
       personNum: "",
       equNum: "",
       distributed: [],
@@ -191,7 +190,6 @@ export default {
           that.mapData = res.data.mapdata;
           axios.get('/static/json/map/changeMap.json').then(res => {
             mapTypes[res.data.mapType](that.mapData,'执法人员')
-            this.mapTitle = res.data.mapTitle
           })
         }
         that.job();
@@ -1338,9 +1336,9 @@ export default {
             name: "点位统计",
             type: "pie",
             // 如果radius是百分比则必须加引号
-            radius: ["10%", "70%"],
+            radius: ["50%", "70%"],
             center: ["50%", "42%"],
-            roseType: "radius",
+            // roseType: "radius",
             data: this.preparedBy,
             // 修饰饼形图文字相关的样式 label对象
             label: {
@@ -2134,7 +2132,7 @@ export default {
   background: none;
 }
 .main {
-  background-image: url("../../../../static/images/map/边框.png");
+  background-image: url("../../../../static/images/map/baseBorder.png");
   background-size: 100% 100%;
 }
 .right_font0 {

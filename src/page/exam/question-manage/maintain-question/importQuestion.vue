@@ -90,6 +90,14 @@ export default {
     // 选择文件变化
     fileChange(file, fileList) {
       const isGt5M = file.size / 1024 / 1024 > 5;
+      if (!/(.*)\.(xls|xlsx)$/.test(file.raw.name)) {
+        this.catsMessage({
+          message: '文件格式错误，只能上传xls/xlsx文件',
+          type: 'info'
+        })
+        fileList.splice(0, 1);
+        return
+      }
       if (isGt5M) {
         this.$message({
           message: "上传文件大小不能超过 5MB!",

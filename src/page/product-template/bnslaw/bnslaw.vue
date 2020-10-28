@@ -88,7 +88,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="实施时间" prop="shiDate">
-            <el-date-picker v-model="addBtnlawForm.shiDate" type="date" placeholder="选择发布时间" value-format="yyyy-MM-dd">
+            <el-date-picker v-model="addBtnlawForm.shiDate" type="date" placeholder="选择实施时间" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="时效性" prop="status">

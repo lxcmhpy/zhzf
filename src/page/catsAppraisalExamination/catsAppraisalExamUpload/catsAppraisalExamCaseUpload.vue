@@ -1,6 +1,6 @@
 <template>
     <div class="cats-layout-page-content">
-        <div class="searchAndpageBox toggleBox">
+        <div class="searchAndpageBox toggleBox catsAppraisalExamPersonUpload">
             <!-- <div class="handlePart" style="margin-left: 0px;"> -->
             <div  style="margin-left: 0px;">
                 <viewNotice ref="viewNoticeRef"></viewNotice>
@@ -603,10 +603,7 @@
                                 _this.fetchData({})
                                 _this.getCountInfo()
                             } else {
-                                _this.catsMessage({
-                                    type: 'error',
-                                    message: res.data
-                                })
+                                this.$message.error(res.data);
                             }
                         })
                     } else {
@@ -647,10 +644,7 @@
                             }
                             _this.getCountInfo()
                         } else {
-                            this.catsMessage({
-                                type: 'error',
-                                message: res.msg
-                            })
+                            this.$message.error(res.msg);
                         }
                     },
                     error => {
@@ -663,7 +657,7 @@
                 data.oId = this.organId
                 data.bsStatus = 1
                 findPykhCaseByPage(data).then(res => {
-                    if (res.code == 200) {
+                    if (res.code === 200) {
                         if (res.data.total > 0) {
                             this.baosongStatus = false
                         }
@@ -678,7 +672,7 @@
                 let _this=this;
                 confirmSubmissionCase(_this.organId).then(res => {
                     console.log(res)
-                    if (res.code == 200) {
+                    if (res.code === 200) {
                         _this.catsMessage({
                             type: 'success',
                             message: res.msg
@@ -686,25 +680,19 @@
                         _this.findCaseBsStatus()
                         _this.fetchData({})
                     } else {
-                        _this.catsMessage({
-                            type: 'error',
-                            message: res.msg
-                        })
+                        _this.$message.error(res.msg);
                     }
                 })
             },
             getCountInfo() {
                 getCountInfo().then(res => {
-                    if (res.code == 200) {
+                    if (res.code === 200) {
                         // this.catsMessage({type: "success",message: res.msg});
                         this.tjData = res.data
                         this.showTypeChart()
                         this.showAreaChart()
                     } else {
-                        this.catsMessage({
-                            type: 'error',
-                            message: res.msg
-                        })
+                        this.$message.error(res.msg);
                     }
                 })
             },
@@ -823,10 +811,7 @@
                     if (res.code == 200) {
                         this.provinceDivisionList = res.data;
                     } else {
-                        this.catsMessage({
-                            type: 'error',
-                            message: res.msg
-                        })
+                        this.$message.error(res.msg);
                     }
                 })
             }
@@ -883,5 +868,8 @@
 .tips i {
     color: #189f95;
     font-size: 18px;
+}
+.catsAppraisalExamPersonUpload .el-input, .catsAppraisalExamPersonUpload .el-select {
+    width: 100% !important;
 }
 </style>

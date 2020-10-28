@@ -352,7 +352,7 @@
           caseName: "",
           hearingOrgan: "",
           hearingPlace: "",
-          hearingStartTime: new Date(),
+          hearingStartTime: new Date().format('yyyy-MM-dd HH:mm'),
           hearingEndTime: "",
           persidingHearer: "",
           hearingOfficer: "",

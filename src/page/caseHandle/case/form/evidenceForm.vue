@@ -116,8 +116,8 @@
             :http-request="saveFile"
             :file-list="fileList"
             action="https://jsonplaceholder.typicode.cmo/posts/"
-            multiple
             style="position: absolute;left: 0; top: 0;z-index:2"
+            :on-change="handleChange"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -433,7 +433,7 @@ export default {
       this.form = {};
       this.addVisible = true;
     },
-    handleEdit(index, row) {
+    async handleEdit(index, row) {
       const item = this.tableData[index];
       console.log("编辑证据", item);
       this.uForm = {
@@ -450,6 +450,9 @@ export default {
         myFileUrl:item.myFileUrl, 
         videoStreamSrc:item.videoStreamSrc || ''
       };
+      if(item.evType == '音视频'){
+         this.uForm.videoStreamSrc = await this.$util.com_getFileStream(item.evPath)
+      }
       this.editVisible = true;
     },
     //表单筛选
@@ -475,9 +478,10 @@ export default {
           let getFileStreamRes = '';
           if(eviListItem.evType == '照片'){
               getFileStreamRes = await this.$util.com_getFileStream(eviListItem.evPath)
-          }else if(eviListItem.evType == '音视频'){
+          }
+          else if(eviListItem.evType == '音视频'){
               getFileStreamRes = await this.$util.com_getFileStream(eviListItem.thumbnailsStoragePath);
-              eviListItem.videoStreamSrc = await this.$util.com_getFileStream(eviListItem.evPath)
+              // eviListItem.videoStreamSrc = await this.$util.com_getFileStream(eviListItem.evPath)
           } 
           eviListItem.myFileUrl = getFileStreamRes
       }
@@ -779,6 +783,11 @@ export default {
       // 然后移除
       document.body.removeChild(eleLink);
     },
+    handleChange(file, fileList) {
+          if (fileList.length > 0) {
+              this.fileList = [fileList[fileList.length - 1]]  
+          }
+      },
   },
   mounted() {
   },

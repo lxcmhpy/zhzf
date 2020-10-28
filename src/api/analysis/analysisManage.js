@@ -272,3 +272,38 @@ export function jgzlfxyp({
     cancelToken: setCancelSource(),
   });
 }
+
+//生成pdf
+export function createPDF(id) {
+    return request({
+      url: "/sjfx/export/pdf/" + id,
+      method: "GET",
+      showloading: true,
+      loadingType: 'loadPart',
+      cancelToken: setCancelSource(),
+    });
+  }
+
+//根据CaseId查询图片列表
+export function findImageByCaseId(id) {
+    return request({
+      url: "/sjfx/sys/file/findImageByCaseId/" + id,
+      method: "GET",
+      showloading: true,
+      loadingType: 'loadPart',
+      cancelToken: setCancelSource(),
+    });
+  }
+
+//获取文件流
+export function getFileStreamByStorageId(storageId) {
+    return request({
+      url: "/sjfx/sys/file/getFileStreamByStorageId/"+storageId,
+      method: "get",
+      showloading: true,
+      loadingType: 'loadPart',
+      baseUrlType:  'CAPTCHA_HOST',
+      responseType:'blob',
+      cancelToken: setCancelSource()
+    });
+  }

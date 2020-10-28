@@ -59,6 +59,10 @@ export default {
       getDictListDetailByNameApi("重大案件金额标准")
         .then((res) => {
           console.log(res);
+          if(res.data.length == 0){
+            this.$message('数据字典未配置重大案件金额标准');
+            return
+          }
           this.moneyData = res.data;
           this.caseSearchForm.partMoney = res.data[0].name;
           this.caseSearchForm.compMoney = res.data[1].name;

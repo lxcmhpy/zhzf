@@ -984,9 +984,9 @@ $.getJSON(jiangxi, function(geoJson){
         name: "",
         type: "pie",
         // 如果radius是百分比则必须加引号
-        radius: ["10%", "70%"],
+        radius: ["50%", "70%"],
         center: ["50%", "42%"],
-        roseType: "radius",
+        // roseType: "radius",
 
         data: this.data2,
         // [

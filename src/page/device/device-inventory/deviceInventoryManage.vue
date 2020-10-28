@@ -736,6 +736,9 @@
                         this.$refs.addFormDeviceTypeTreeObj.$children[0].handleClose();
                         this.$set(this.addForm,'deviceType',val)
                     }
+                }else{
+                     this.$refs.addFormDeviceTypeTreeObj.$children[0].handleClose();
+                    this.$set(this.addForm,'deviceType',val)
                 }
             },
             addFormUseUnitClick(val) {
@@ -743,6 +746,11 @@
                     this.$refs.addFormUseUnitTreeObj.$children[0].handleClose();
                     this.$set(this.addForm,'useUnit',val)
                     this.getUserDataList(val)
+                    this.$set(this.addForm,'userId','')
+                }else{
+                    this.$refs.addFormUseUnitTreeObj.$children[0].handleClose();
+                    this.$set(this.addForm,'useUnit',val)
+                    this.userList=[]
                     this.$set(this.addForm,'userId','')
                 }
             },

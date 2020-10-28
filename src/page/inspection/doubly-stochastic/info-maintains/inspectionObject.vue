@@ -1,5 +1,5 @@
 <template>
-  <div class="height100">
+  <div class="height100 inspection-object">
     <div class="handlePart">
       <div class="search toggleBox">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
@@ -140,7 +140,7 @@
         <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox-aline organClass">
           <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
             <div class="departOrUserTree" style="width:600px;height:436px">
-              <div class="treeBox">
+              <div class="treeBox" style="height: 100%;">
                 <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
                   <span class="custom-tree-node" slot-scope="{ node,data }">
                     <span>

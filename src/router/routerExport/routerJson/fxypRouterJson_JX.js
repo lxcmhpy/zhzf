@@ -103,7 +103,6 @@ export default  [
             },
             component: () => import("@/page/analyseManage/caseAnalysis/trend.vue")
           },
-
           {
             name: "proportion",
             path: "/proportion",
@@ -215,6 +214,14 @@ export default  [
       title: "专题报告"
     },
     component: () => import("@/page/analyseManage/report/index.vue")
+  },
+  {
+    name: "reportView",
+    path: "/reportView",
+    meta: {
+      title: "报告查看"
+    },
+    component: () => import("@/page/analyseManage/report/viewFile.vue")
   },
 
 ]

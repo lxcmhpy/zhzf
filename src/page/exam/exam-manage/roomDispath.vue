@@ -38,7 +38,8 @@
               <span class="wrap-title">考生</span>
               <div class="top-handle">
                 <span class="assign-total">尚有{{unDispachNum}}人未分配</span>
-                <el-button type="primary" size="medium" @click="autoDispath">自动分配</el-button>
+                <el-button type="primary" size="medium" @click="autoDispath()">自动分配</el-button>
+                <el-button type="primary" size="medium" @click="cleanDispath()">清空考场分配</el-button>
               </div>
             </div>
             <!-- 主体内容 -->
@@ -217,14 +218,16 @@ export default {
           type: "warning",
           message: "请选择一个考生"
         });
-      } else if (_this.selectUserIdList.length > 1) {
-        _this.$message({
-          type: "warning",
-          message: "只能选择一个考生"
-        });
-      } else {
+      } 
+      // else if (_this.selectUserIdList.length > 1) {
+      //   _this.$message({
+      //     type: "warning",
+      //     message: "只能选择一个考生"
+      //   });
+      // } 
+      else {
         let data = {
-          dispatchId: _this.selectUserIdList[0]
+          selectedPersonIds: _this.selectUserIdList
         };
         _this.$store.dispatch("removeDispatch", data).then(
           res => {
@@ -346,6 +349,13 @@ export default {
     //自动分配考场
     autoDispath() {
       let _this = this;
+      if(_this.roomList == undefined || _this.roomList == null || _this.roomList.length <= 0){
+         _this.$message({
+                  type: "warning",
+                  message: "请先添加考场!"
+                });
+             return;   
+      }
       let data = {
         examId: _this.middleDate.examId
       };
@@ -371,6 +381,48 @@ export default {
                 _this.$message({
                   type: "success",
                   message: "自动分配成功"
+                });
+                _this.getRoomList();
+                _this.getNowRoomPerson();
+                _this.getunDispachNum();
+              }
+            },
+            err => {
+              loading.close();
+              _this.$message({ type: "error", message: err.msg || "" });
+            }
+          );
+        })
+        .catch(() => {});
+    },
+    //清空考场分配
+    cleanDispath(){
+      let _this = this;
+      let data = {
+        examId: _this.middleDate.examId
+      };
+      _this
+        .$confirm("是否确认清空考场分配", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          iconClass: "custom-question",
+          customClass: "custom-confirm"
+        })
+        .then(() => {
+          const loading = _this.$loading({
+            lock: true,
+            text: "正在清空",
+            spinner: "car-loading",
+            customClass: "loading-box",
+            background: "rgba(234,237,244, 0.8)"
+          });
+          _this.$store.dispatch("clearDispatch", data).then(
+            res => {
+              loading.close();
+              if (res.code === 200) {
+                _this.$message({
+                  type: "success",
+                  message: "清空成功"
                 });
                 _this.getRoomList();
                 _this.getNowRoomPerson();

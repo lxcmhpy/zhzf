@@ -204,6 +204,8 @@ export default {
               message: res.data
             })
           }
+        }else{
+          this.$message.error(res.msg);
         }
       })
     },
@@ -226,6 +228,8 @@ export default {
                 }
               })
             }
+          }else{
+            this.$message.error(res.msg);
           }
         })
       }
