@@ -32,7 +32,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="业户名称" v-if="checkType==1">
+        <el-form-item v-if="checkType==1">
+          <span slot="label">业户名称<span style="color: red;">(个体户除外)</span></span>
           <el-input v-model="checkData.ownerName" placeholder="输入业户名称"></el-input>
         </el-form-item>
         <el-form-item label="经营许可证号" v-if="checkType==2">

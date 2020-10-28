@@ -64,6 +64,7 @@
                 :auto-upload="false"
                 :file-list="fileList"
                 :on-change="handleChange"
+                :on-exceed="exceedFun"
               >
                 <el-button size="small" type="primary">选取文件</el-button>
                 <span slot="tip" class="upload-tips">(最多上传3个附件)</span>
@@ -206,11 +207,13 @@ export default {
     };
   },
   created() {
+    console.log(this.selectCase.detail);
     if (this.selectCase.detail) {
       this.caseData.explain = this.selectCase.detail.explain;
       this.caseData.targetOrgan = this.selectCase.detail.targetOrgan;
       this.organType = this.selectCase.detail.organType;
       this.fileList = this.selectCase.detail.fileList;
+      this.lawOrganName = this.caseData.targetOrgan;
     }
   },
   methods: {
@@ -228,12 +231,30 @@ export default {
     handleChange(file, fileList){
       this.fileList = fileList;
     },
+    // 选择附件超过3个
+    exceedFun(files, fileList){
+      this.$message.error(
+        `最多上传3个附件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      )
+    },
     // 下一步
     nextStep(step) {
       if (step === 2) {
         this.$refs.caseDataRef.validate((isVaild) => {
           if (isVaild) {
-            this.uploadFile(step);
+            if (this.fileList && this.fileList.length) {
+              let fileStatus = this.fileList.map(item => item.status);
+              console.log(fileStatus);
+              if (fileStatus.indexOf('ready') > -1) {
+                this.uploadFile(step);
+              } else {
+                this.nextSubmitForm(step);
+              }
+            } else {
+              this.nextSubmitForm(step);
+            }
           }
         });
       } else {
@@ -242,38 +263,34 @@ export default {
     },
     // 上传附件
     uploadFile(step) {
-      if (this.fileList && this.fileList.length) {
-        var fd = new FormData();
-        this.fileList.forEach(item => {
-          if(item.status === 'ready'){
-            fd.append('file', item.raw)
-          }
-        })
-        fd.append("userId", this.UserInfo.id);
-        fd.append("category", "协查案件-发起");
-        fd.append("fileType", ".pdf");
-        fd.append("caseId", this.selectCase.case.caseId);
-        const loading = this.$loading({
-          lock: true,
-          text: "正在上传",
-          spinner: "car-loading",
-          customClass: "loading-box",
-          background: "rgba(234,237,244, 0.8)",
-        });
-        uploadCommon(fd).then(
-          (res) => {
-            loading.close();
-            this.$message({ type: "success", message: "附件上传成功" });
-            this.nextSubmitForm(step);
-          },
-          (error) => {
-            loading.close();
-            this.$message({ type: "error", message: "附件上传失败" });
-          }
-        );
-      } else {
-        this.nextSubmitForm(step);
-      }
+      var fd = new FormData();
+      this.fileList.forEach(item => {
+        if(item.status === 'ready'){
+          fd.append('file', item.raw)
+        }
+      })
+      fd.append("userId", this.UserInfo.id);
+      fd.append("category", "协查案件-发起");
+      fd.append("fileType", ".pdf");
+      fd.append("caseId", this.selectCase.case.caseId);
+      const loading = this.$loading({
+        lock: true,
+        text: "正在上传",
+        spinner: "car-loading",
+        customClass: "loading-box",
+        background: "rgba(234,237,244, 0.8)",
+      });
+      uploadCommon(fd).then(
+        (res) => {
+          loading.close();
+          this.$message({ type: "success", message: "附件上传成功" });
+          this.nextSubmitForm(step);
+        },
+        (error) => {
+          loading.close();
+          this.$message({ type: "error", message: "附件上传失败" });
+        }
+      );
     },
     // 上传附件同时缓存数据
     nextSubmitForm(step) {
