@@ -136,7 +136,7 @@ export default {
             this.$message('获取案件流程失败！')
           }
       
-          if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH',].indexOf(currentFlow.data.flowUrl)!=-1){
+          if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH','commonGraphData_SC'].indexOf(currentFlow.data.flowUrl)!=-1){
             docTypeId = this.BASIC_DATA_SYS.establish_huanjieAndDocId;
             linkId = this.BASIC_DATA_SYS.establish_caseLinktypeId;
           }else if(currentFlow.data.flowUrl == 'commonGraphData_JX'){

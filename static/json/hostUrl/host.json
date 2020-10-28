@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "SC",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -145,14 +145,14 @@
     "QZ_SOCKET_HOST": "ws://124.192.215.4:8083",
     "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
   },
-  "sc": {
+  "SC": {
     "CAPTCHA_HOST": "http://172.16.170.72:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API": "http://172.16.170.91:8081",
     "QZ_SOCKET_HOST": "ws://172.16.170.44:8083",
     "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
   },
-  "scw": {
+  "SCW": {
     "CAPTCHA_HOST": "http://124.192.215.12:9000",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",

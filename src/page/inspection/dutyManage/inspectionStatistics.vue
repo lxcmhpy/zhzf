@@ -166,13 +166,13 @@ export default {
           let bj = {};
           let xjhz = {};
           if(res.data.organId){
-            bjhz.id = 1;
+            bjhz.id = this.getUUID();
             bjhz.name = "本级汇总";
             
 
             bj = res.data;
             bj.name = "本级";
-            bj.id = 2;
+            bj.id = this.getUUID();
 
           }
           if(res.data.sublevel) {
@@ -192,7 +192,7 @@ export default {
             xjhz = {total,inspectionLengthTotal,inspectionTime,bindTimeTotal,timeTotal,newNumber};
 
             xjhz.name = "下级汇总";
-            xjhz.id = 3;
+            xjhz.id = this.getUUID();
             xjhz.children = res.data.sublevel;
             xjhz.finshRate = bindTimeTotal == 0 || timeTotal == 0 ? "0" : (bindTimeTotal*100/timeTotal).toFixed(2) + "%";
 
@@ -214,6 +214,12 @@ export default {
           this.loading = false;
         }
       )
+    },
+    getUUID() {
+      var temp_url = URL.createObjectURL(new Blob());
+      var uuid = temp_url.toString(); // blob:https://xxx.com/b250d159-e1b6-4a87-9002-885d90033be3
+      URL.revokeObjectURL(temp_url);
+      return uuid.substr(uuid.lastIndexOf("/") + 1);
     }
   },
 };
