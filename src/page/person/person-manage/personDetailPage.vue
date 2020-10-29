@@ -73,6 +73,7 @@ import annualReview from '@/components/personComponents/annualReview'
 import adjustingPosts from '@/components/personComponents/adjustingPosts'
 import material from '@/components/personComponents/material'
 import newCss from '@/page/person/person-manage/newCss.vue'
+import { mapGetters } from "vuex";
 
 export default {
   name: "personInfo",//人员详情总页面
@@ -89,8 +90,12 @@ export default {
         eduPic: '',
         otherPic: ''
       },
-      showMenu: true
+      showMenu: true,
+      pageTabIndex: ''
     }
+  },
+  computed: {
+    ...mapGetters(["activeIndexSto"])
   },
   components: {
     personDetailInfo,
@@ -117,6 +122,8 @@ export default {
       }));
     }
     this.initPage();
+    sessionStorage.removeItem('LeavePersonInfoPage');
+    this.pageTabIndex = this.activeIndexSto;
   },
   watch: {
     '$route.path'(newVal,oldVal){
@@ -209,6 +216,22 @@ export default {
   destroyed() {
     if(localStorage.getItem('NewRouter')){
       localStorage.removeItem('NewRouter');
+    }
+    if(sessionStorage.getItem('LeavePersonInfoPage')){
+      sessionStorage.removeItem('LeavePersonInfoPage')
+    }
+  },
+  async beforeRouteLeave(to, from, next){
+    let leavelPage = await this.$store.dispatch('leaveEditPersonInfo', '当前信息尚未保存，是否确认跳转？');
+    if(leavelPage){
+      next();
+      console.log('1');
+    }else{
+      if(to.path.indexOf('login') > -1){
+        next();
+      }else{
+        this.$store.commit("SET_ACTIVE_INDEX_STO", this.pageTabIndex);
+      }
     }
   }
 }

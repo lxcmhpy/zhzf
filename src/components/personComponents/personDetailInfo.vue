@@ -806,6 +806,12 @@ export default {
       },
       deep: true,
     },
+    isShowAddPerson: {
+      handler: function(val, oldVal){
+        let leave = val ? '1' : '0';
+        sessionStorage.setItem('LeavePersonInfoPage', leave);
+      }
+    }
   },
   components: {
     elSelectTree,
@@ -1205,7 +1211,7 @@ export default {
         )
         .catch(() => {});
     },
-  },
+  }
 };
 </script>
 
