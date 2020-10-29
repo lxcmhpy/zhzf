@@ -243,6 +243,20 @@ export function findRecordLogListApi(data) {
     });
 }
 
+//导出记录统计列表
+export function excelExportRecordLogListApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/excelExport",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
 //添加或修改记录
 export function saveOrUpdateRecordApi(data) {
     data = vm.$qs.stringify(data);
