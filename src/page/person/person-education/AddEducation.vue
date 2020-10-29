@@ -105,7 +105,7 @@ export default {
             rules: {
                 graduationDate: [{ required: true, message: "毕业时间必须填写", trigger: "blur" }],
                 school: [{ required: true, message: "毕业学校必须填写", trigger: "blur" }],
-                majorName: [{ required: true, message: "毕业专业必须填写", trigger: "blur" }],
+                // majorName: [{ required: true, message: "毕业专业必须填写", trigger: "blur" }],
                 degreeName: [{ required: true, message: "学历必须填写", trigger: "change" }]
             },
             dialogTitle: "", //弹出框title

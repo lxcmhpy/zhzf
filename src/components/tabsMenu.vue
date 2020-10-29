@@ -60,12 +60,15 @@ export default {
 
     },
     //移除tab标签
-    tabRemove(targetName) {
+    async tabRemove(targetName) {
       //首页不删
       let routerName = sessionStorage.getItem('HOME_PAGE_ROUTER_NAME');
       if (targetName == routerName) {
         return;
       }
+      // 编辑人员信息没有保存时禁止页面跳转
+      let leavelPage = await this.$store.dispatch('leaveEditPersonInfo', '当前信息尚未保存，是否确认移除标签？');
+      if(!leavelPage){ return; }
       //关闭可视化监管，重新打开需要刷新
       /* if(targetName.indexOf('law_supervise_lawSupervise') > -1 && this.$route.meta.keepAlive){
         this.$route.meta.keepAlive = false;
