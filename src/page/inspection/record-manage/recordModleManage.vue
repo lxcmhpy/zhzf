@@ -286,7 +286,7 @@ export default {
       );
     },
     searchSaveList() {
-      let data = iLocalStroage.gets("userInfo").id;
+     let  data={userId:iLocalStroage.gets("userInfo").id};
       findUserCollectTemplateApi(data).then(
         res => {
           console.log(res);
