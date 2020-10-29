@@ -145,8 +145,8 @@
         </div>
       </div>
 
-      <addUser ref="addUserRef" @uploadaaa="getUserList()"></addUser>
-      <bindRole ref="bindRoleRef"></bindRole>
+      <addUser ref="addUserRef" @getUserList="getUserList()"></addUser>
+      <bindRole ref="bindRoleRef"  @getUserList="getUserList()"></bindRole>
     </div>
   </div>
 </template>
@@ -194,6 +194,7 @@
         totalPage: 0, //总数
         departments: [], //机构下的部门
         currentOrganId: "",
+        organId: "",
         selectUserIdList: [] //选中的userid
       };
     },
@@ -208,7 +209,8 @@
       },
       reset() {
         this.$refs["userForm"].resetFields();
-        this.getUserList();
+        this.currentOrganId = this.organId;
+        this.getUserList(1);
       },
       //展开
       showSomeSearch() {
@@ -220,6 +222,7 @@
         this.selectCurrentTreeName = data.label;
         this.tableData = [];
         this.currentOrganId = data.id;
+        this.formInline.selectValue = 1;
         console.log(this.currentOrganId);
         this.getUserList(1);
         // this.getDepartment();
@@ -241,6 +244,7 @@
             console.log(_this.defaultExpandedKeys);
             console.log(_this.organData);
             _this.currentOrganId = res.data[0].id;
+            _this.organId = res.data[0].id;
             _this.selectCurrentTreeName = res.data[0].label;
             _this.getUserList(1);
             //this.getDepartment();
@@ -252,7 +256,9 @@
       },
       //表单筛选
       getUserList(val) {
-        this.currentPage = val
+        if(val){
+          this.currentPage = val
+        }
         let data = {
           mobile: this.formInline.mobile,
           username: this.formInline.username,
@@ -322,7 +328,8 @@
           .then(() => {
             _this.$store.dispatch("getUserdelete", row.id).then(
               res => {
-                _this.getAllOrgan(_this.$refs.addUserRef.id);
+                // _this.getAllOrgan(_this.$refs.addUserRef.id);
+                _this.getUserList();
                 _this.$message({
                   type: "success",
                   message: "删除成功!"
@@ -349,7 +356,8 @@
             console.log('row,',row)
             _this.$store.dispatch("getUserreset", row).then(
               res => {
-                _this.getAllOrgan(_this.$refs.addUserRef.id);
+                // _this.getAllOrgan(_this.$refs.addUserRef.id);
+                _this.getUserList();
                 _this.$message({
                   type: "success",
                   message: "密码初始化成功!"
@@ -394,7 +402,8 @@
           };
         _this.$store.dispatch("saveLawOfficel", data).then(
             res => {
-                _this.getAllOrgan(_this.$refs.addUserRef.id);
+                // _this.getAllOrgan(_this.$refs.addUserRef.id);
+                _this.getUserList();
                 _this.$message({
                     type: "success",
                     message: "转执法人员成功!"

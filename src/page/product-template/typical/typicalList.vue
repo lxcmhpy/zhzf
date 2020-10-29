@@ -30,8 +30,16 @@
                   ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="受案机构">
-              <el-select
+            <el-form-item label="受案机构" prop="organName">
+              <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="organList"
+                  :accordion="true"
+                  :props="myprops"
+                  :value="selectOrganId"
+                  @getName="handleOrgan"
+                ></elSelectTree>
+              <!-- <el-select
                   v-model="dicSearchForm.organName"
                   placeholder="请选择">
                   <el-option
@@ -40,7 +48,7 @@
                   :label="item.label"
                   :value="item.id"
                   ></el-option>
-              </el-select>
+              </el-select> -->
             </el-form-item>
             <el-form-item label="案由" >
               <el-input
@@ -91,6 +99,8 @@
 <script>
 import {getQueryCaseTypeListApi,findTypicalCaseList} from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
+import { getAllOrganApi } from "@/api/system";
 export default {
   data() {
     return {
@@ -105,9 +115,17 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
+      myprops: {
+          label: "label",
+          value: "id",
+      },
+      selectOrganId: "", //默认选中机构的id
     };
   },
   inject: ["reload"],
+  components: {
+        elSelectTree,
+  },
   methods: {
     //编辑案件类型
     lookCaseType(row) {
@@ -162,22 +180,30 @@ export default {
       );
     },
     //获取机构
-    getAllOrgan(organId) {
+    getAllOrgan() {
       let _this = this
-      this.$store.dispatch("getAllOrgan").then(
-        res => {
-          _this.organList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      getAllOrganApi().then((res) => {
+        console.log(res)
+        this.organList = res.data;
+        this.dicSearchForm.organName = this.selectOrganId = res.data[0].label;
+        this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
+        this.$refs.elSelectTreeObj.valueId = res.data[0].id;
+
+      })
+      .catch((err) => {
+          throw new Error(err);
+      });
+    },
+    //获取选中的机构
+    handleOrgan(val) {
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+      this.dicSearchForm.organName = val;
     },
   },
   created() {
     this.getCaseTypes();
     this.getQueryCaseTypeList();
-    this.getAllOrgan("root");
+    this.getAllOrgan();
   }
 };
 </script>

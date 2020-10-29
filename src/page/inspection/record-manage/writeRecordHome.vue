@@ -296,7 +296,8 @@ export default {
 
     //获取收藏模板列表（常用列表）
     getUserCollectMouldList() {
-      let data = iLocalStroage.gets("userInfo").id;
+      let userId = iLocalStroage.gets("userInfo").id;
+      let data={userId:userId};
       return new Promise((resolve, reject) => {
         findUserCollectTemplateApi(data).then(
           (res) => {

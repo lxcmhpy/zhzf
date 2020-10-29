@@ -8,25 +8,18 @@
           label-width="100px"
           ref="logForm"
         >
-          <el-form
-            :inline="true"
-            :model="logForm"
-            label-width="100px"
-            ref="logForm"
-          >
-            <el-form-item label="统计周期" prop>
-              <el-date-picker
-                v-model="logForm.date"
-                type="monthrange"
-                range-separator="至"
-                start-placeholder="开始月份"
-                end-placeholder="结束月份"
-                format="yyyy-MM"
-                value-format="yyyy-MM"
-                @change="handleSelect"
-              ></el-date-picker>
-            </el-form-item>
-          </el-form>
+          <el-form-item label="统计周期" prop>
+            <el-date-picker
+              v-model="logForm.date"
+              type="monthrange"
+              range-separator="至"
+              start-placeholder="开始月份"
+              end-placeholder="结束月份"
+              format="yyyy-MM"
+              value-format="yyyy-MM"
+              @change="handleSelect"
+            ></el-date-picker>
+          </el-form-item>
         </el-form>
       </div>
       <div style="margin-top: 30px">

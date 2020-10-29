@@ -226,6 +226,9 @@ export default {
         socialCode: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        regulatoryUnit: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         objectType: [
           { required: true, message: "必填项", trigger: "change" }
         ],
@@ -332,7 +335,7 @@ export default {
     findProvence() {
       this.provenceList = []
       let _this = this
-      let data = '530000'//云南
+      let data = '640000'//云南
       findByAddressCode(data).then(
         res => {
           // this.provenceList.push(res.data)

@@ -75,7 +75,21 @@
           </div>
         </div>
       </div>
-
+      <div></div>
+      <div class="handlePart">
+        <div class="search" style="width: 100%">
+          <el-form :inline="true">
+            <el-form-item>
+              <el-button
+                type="primary"
+                size="medium"
+                @click="exportMethod('记录统计表.xls')"
+                >导出</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
       <div class="tablePart">
         <el-table
           :data="tableData"
@@ -123,7 +137,10 @@
   </div>
 </template>
 <script>
-import { findRecordLogListApi } from "@/api/inspection";
+import {
+  findRecordLogListApi,
+  excelExportRecordLogListApi,
+} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -148,6 +165,43 @@ export default {
     };
   },
   methods: {
+    // 导出
+    exportMethod(fileName) {
+      let data = {
+        startTime: this.timeList[0],
+        endTime: this.timeList[1],
+        title: this.searchForm.title,
+        currentOrgan: this.searchForm.currentOrgan,
+        createUser: this.searchForm.name == "1",
+        userId:
+          this.searchForm.currentOrgan == "保存" &&
+          this.searchForm.title == "" &&
+          this.searchForm.domain == "" &&
+          this.timeList.length == 0
+            ? ""
+            : iLocalStroage.gets("userInfo").id,
+        domain: this.searchForm.domain,
+        current: this.currentPage,
+        size: this.pageSize,
+        organId: iLocalStroage.gets("userInfo").organId,
+      };
+      excelExportRecordLogListApi(data)
+        .then((res) => {
+          //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+          //其他浏览器
+          let link = document.createElement("a"); // 创建a标签
+          link.style.display = "none";
+          link.setAttribute("download", fileName); //必须要重命名
+          let objectUrl = URL.createObjectURL(res);
+          link.href = objectUrl;
+          link.click();
+          URL.revokeObjectURL(objectUrl);
+        })
+        .catch((err) => {
+          console.log(err);
+          throw new Error(err);
+        });
+    },
     // 查询列表时
     getTableData() {
       //   console.log("time,creatUser", this.timeList, this.searchForm.createUser);

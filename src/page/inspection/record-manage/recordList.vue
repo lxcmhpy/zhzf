@@ -302,7 +302,8 @@ export default {
     },
 
     getRecordTitleList() {
-      let data = iLocalStroage.gets("userInfo").organId
+      let organId = iLocalStroage.gets("userInfo").organId;
+      let data={organId:organId};
       // debugger
       console.log(data)
       findAllModleNameApi(data).then(

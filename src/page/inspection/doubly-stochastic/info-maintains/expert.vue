@@ -291,6 +291,9 @@ export default {
         sex: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        company: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         politicalStatus: [
           { required: true, message: "必填项", trigger: "change" }
         ],
