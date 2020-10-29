@@ -25,12 +25,24 @@
           end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
+      <el-form-item style="margin-top:1px; margin-left: 15px;">
+        <el-button
+                title="搜索"
+                class="commonBtn searchBtn"
+                size="medium"
+                icon="iconfont law-sousuo"
+                @click="handleFind"/>
+        <el-button
+                title="重置"
+                class="commonBtn searchBtn"
+                size="medium"
+                icon="iconfont law-zhongzhi"
+                @click="handleReset"/>
+    </el-form-item>
     </el-form>
 
     <!-- 按钮 -->
     <div class="eventManage-buttonList">
-      <el-button @click="handleFind" type="primary" icon="el-icon-search" size="small">查询</el-button>
-      <el-button @click="handleReset" type="primary" icon="el-icon-refresh-left" size="small">重置</el-button>
       <el-button @click="addEvent" type="primary" icon="el-icon-plus" size="small">新增事件</el-button>
     </div>
 
@@ -95,6 +107,7 @@
               type="text"
               @click="handleUpdate(scope.row)">编辑</el-button>
             <el-button
+              v-if="scope.row.state===1"
               size="mini"
               type="text"
               @click="handleDelete(scope.row)">删除</el-button>
@@ -217,6 +230,7 @@ export default {
       this.form.isemphasis = ''
       this.form.startDate = ''
       this.form.endDate = ''
+      this.getData(this.form)
     },
 
     /**

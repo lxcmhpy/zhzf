@@ -612,3 +612,13 @@ export function findDueryFixedSitePage(data) {
       cancelToken: setCancelSource()
     })
   }
+
+export function findUserByOrganId(id) {
+    return  request({
+      url:  "/zfjg/sysUser/findByOrganId/"+id,
+      method:  "GET",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource(),
+    });
+  }

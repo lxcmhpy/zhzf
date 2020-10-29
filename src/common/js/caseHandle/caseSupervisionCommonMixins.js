@@ -69,7 +69,9 @@ export const caseSupervisionCommonMixins = {
                     // this.selectOrganId = res.data[0].id;
                     this.$refs.elSelectTreeObj.valueTitle = res.data[0].label
                     this.$refs.elSelectTreeObj.valueId = res.data[0].id;
-                    this.caseSearchForm.organId = res.data[0].id;
+                    if(this.caseSearchForm) this.caseSearchForm.organId = res.data[0].id;
+                    if(this.checkSearchForm) this.checkSearchForm.organId = res.data[0].id
+
                     this.findLawOfficerList(res.data[0].id);
 
                 })

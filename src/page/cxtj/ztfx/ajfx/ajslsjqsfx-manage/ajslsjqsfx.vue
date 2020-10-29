@@ -107,7 +107,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "",
+           text: "案发数量分析(年)",
           left: "center"
         },
         tooltip: {
@@ -138,7 +138,7 @@ export default {
 
       this.chartColumn.setOption({
          title: {
-          text: "",
+          text: "案发数量分析(月)",
           left: "center"
         },
         tooltip: {
@@ -182,7 +182,7 @@ export default {
 
       this.chartColumn.setOption({
          title: {
-          text: "",
+          text: "案发数量分析(日)",
           left: "center"
         },
         tooltip: {
@@ -218,7 +218,8 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: ""
+           text: "案发数量分析(时)",
+          left: "center"
         },
         tooltip: {
           trigger: "axis"

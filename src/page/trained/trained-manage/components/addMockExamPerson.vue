@@ -223,7 +223,7 @@ export default {
           },
           err => {
             loading.close();
-            this.$message({ type: "error", message: err.msg || "" });
+            // this.$message({ type: "error", message: err.msg || "" });
           }
         );
     },
@@ -260,7 +260,7 @@ export default {
         }
       }, err => {
         this.tableLoading = false;
-        this.$message({ type: 'warning', message: err.msg || '' });
+        // this.$message({ type: 'warning', message: err.msg || '' });
       })
     },
     //更改每页显示的条数
