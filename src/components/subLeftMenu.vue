@@ -44,10 +44,12 @@ import { mapGetters } from "vuex";
       changeMenu(key, keyPath) {
           // debugger;
         //   debugger;
-        if(this.$store.state.system.activeIndexSto.indexOf(key)==-1){
-          this.$store.commit('SET_ACTIVE_INDEX_STO', key);
-          this.$router.push({name: key});
-        }
+        this.$store.commit('SET_ACTIVE_INDEX_STO', key);
+        this.$router.push({name: key});
+        // if(this.$store.state.system.activeIndexSto.indexOf(key)==-1){
+        //   this.$store.commit('SET_ACTIVE_INDEX_STO', key);
+        //   this.$router.push({name: key});
+        // }
       },
       //展开菜单
       handleOpen(key, keyPath) {

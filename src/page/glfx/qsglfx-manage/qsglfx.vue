@@ -69,7 +69,8 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: ""
+          text: "案发数量分析(时)",
+          left: "center"
         },
         tooltip: {
           trigger: "axis"

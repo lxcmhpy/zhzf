@@ -230,6 +230,19 @@ export function findRecordListApi(data) {
     });
 }
 
+//查询记录统计列表
+export function findRecordLogListApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/pcQueryOrderPage",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
 //添加或修改记录
 export function saveOrUpdateRecordApi(data) {
     data = vm.$qs.stringify(data);
