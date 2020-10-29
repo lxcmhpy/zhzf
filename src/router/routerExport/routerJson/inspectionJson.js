@@ -61,6 +61,15 @@ export default  [
                 component: () => import("@/page/inspection/record-manage/recordModleManage.vue")
             },
             {
+                path: "/recordLog",
+                name: "record_log",
+                meta: {
+                title: "记录统计",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/record-log/recordLog.vue")
+            },
+            {
                 // 历史检查列表
                 path: "/viewRecord",
                 name: "inspection_viewRecord",
