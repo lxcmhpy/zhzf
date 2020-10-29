@@ -116,6 +116,7 @@
                           :multiple="true"
                           :file-list="fileList"
                           :on-change="handleChange"
+                          :on-exceed="exceedFun"
                         >
                           <el-button size="small" type="primary">选取文件</el-button>
                           <span slot="tip" class="upload-tips">(最多上传3个附件)</span>
@@ -276,6 +277,14 @@ export default {
     // 选择附件
     handleChange(file, fileList){
       this.fileList = fileList;
+    },
+    // 选择附件超过3个
+    exceedFun(files, fileList){
+      this.$message.error(
+        `最多上传3个附件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      )
     },
 
     // 上传附件

@@ -308,6 +308,7 @@
             },
             reset() {
                 this.$refs["queryForm"].resetFields();
+                this.queryData(1);
             },
             //表单筛选
             queryData(val) {

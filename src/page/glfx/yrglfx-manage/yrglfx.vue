@@ -20,10 +20,10 @@
       <div style="margin-top:30px;margin-bottom:30px">
         <el-row>
           <el-col :span="12">
-            <div id="chart2" style="width: 100%; height: 100%;"></div>
+            <div id="chart2" style="width: 100%; height: 150px;"></div>
           </el-col>
           <el-col :span="12">
-            <div id="chart3" style="width: 100%; height: 100%;"></div>
+            <div id="chart3" style="width: 100%; height: 150px;"></div>
           </el-col>
           
         </el-row>
@@ -34,10 +34,10 @@
         <el-row>
          
           <el-col :span="12">
-            <div id="chart4" style="width: 100%; height: 100%;"></div>
+            <div id="chart4" style="width: 100%; height: 150px;"></div>
           </el-col>
           <el-col :span="12">
-            <div id="chart5" style="width: 100%; height: 100%;"></div>
+            <div id="chart5" style="width: 100%; height: 150px;"></div>
           </el-col>
         </el-row>
       </div>
