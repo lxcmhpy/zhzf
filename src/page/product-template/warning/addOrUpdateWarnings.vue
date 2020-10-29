@@ -124,10 +124,15 @@ export default {
         status: "",
       },
       rules: {
-        warName: [{ required: true, message: "必填项", trigger: "change" }],
+        warName: [{ required: true, message: "预警名称不能为空", trigger: "blur" }],
+        warType: [{ required: true, message: "预警类型不能为空", trigger: "change" }],
+        taskType: [{ required: true, message: "任务类型不能为空", trigger: "change" }],
+        configType: [{ required: true, message: "配置类型不能为空", trigger: "change" }],
+        status: [{ required: true, message: "预警状态不能为空", trigger: "change" }],
       },
       dialogTitle: "", //弹出框title
       handelType: 0, //添加 0  修改2
+      canAdd: false,
       editRouteId: '',
       bindPdfFieldList: [], //分项指标列表
       pdfFieldList: [], //指标项列表
@@ -196,9 +201,49 @@ export default {
     },
     //新增案件类型 修改案件类型
     submitWarn(formName) {
-      let _this = this
+      let _this = this;
+      if (_this.addList.length > 0) {
+        for (let i = 0; i < _this.addList.length; i++) {
+          if (!_this.addList[i].type) {
+            this.$message({message: '分项指标不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (this.addOrUpdateForm.configType!='1' && !_this.addList[i].indexInfo) {
+            this.$message({message: '指标项不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (!_this.addList[i].condition) {
+            this.$message({message: '条件不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (!_this.addList[i].val) {
+            this.$message({message: '值不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (!_this.addList[i].tipContent) {
+            this.$message({message: '提醒内容不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if(_this.addList[i].type && _this.addList[i].tipContent && _this.addList[i].val && _this.addList[i].condition ){
+            if(this.addOrUpdateForm.configType!='1' && _this.addList[i].indexInfo){
+              _this.canAdd = true;
+            }else if(this.addOrUpdateForm.configType=='1'){
+              _this.canAdd = true;
+            }else{
+              _this.canAdd = false;
+            }
+          }
+          
+        }
+      }
       this.$refs[formName].validate(valid => {
-        if (valid) {
+        debugger
+        if (valid && _this.canAdd) {
           _this.addOrUpdateForm.warInformation = JSON.stringify(_this.addList) || ''
           _this.addOrUpdateForm.cycleTime = _this.addOrUpdateForm.cycleTime1 + '_' + _this.addOrUpdateForm.cycleTime2
           console.log('add', _this.addOrUpdateForm)

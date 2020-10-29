@@ -124,6 +124,7 @@ export default {
       this.valueTitle = node[this.props.label];
       this.valueId = node[this.props.value];
       this.$emit("getValue", this.valueId);
+      this.$emit("getName", this.valueTitle);
       this.defaultExpandedKey = [];
     },
     // 失去焦点触发搜索
@@ -138,6 +139,7 @@ export default {
       this.defaultExpandedKey = [];
       this.clearSelected();
       this.$emit("getValue", null);
+      this.$emit("getName", null);
       this.initHandle();
     },
     // 可搜索下，输入值发生变化时

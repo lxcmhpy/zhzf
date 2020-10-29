@@ -32,6 +32,7 @@
             v-else
             class="handleLatLng already"
             slot="append"
+            @click="showMap"
           ><i class="iconfont law-weizhi" />已获取坐标</div>
         </el-input>
       </el-form-item>

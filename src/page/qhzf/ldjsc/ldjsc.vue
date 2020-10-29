@@ -805,62 +805,257 @@ $.getJSON(qinghai, function(geoJson){
 
          console.log(name);
           if(name=="西宁市"){
-              option.series[0].data.push({name: "大通回族土族自治县",value:[101.67, 36.92,35,3]});
-              option.series[0].data.push({name: "湟中县",value:[101.57, 36.49, 35, 1]});
-              option.series[0].data.push({name: "甘德县",value:[101.28, 36.72, 35, 2]});
+              option.series[0].data.push({name: "大通回族土族自治县",value:[101.67, 36.92,0,3],
+              value1:[101.67, 36.92,0,3],
+              value2:[101.67, 36.92,0,3],
+              value3:[101.67, 36.92,0,3],
+              value4:[101.67, 36.92,0,3]
+              });
+              option.series[0].data.push({name: "湟中县",value:[101.57, 36.49, 0, 1],
+              value1:[101.57, 36.49,0,3],
+              value2:[101.57, 36.49,0,3],
+              value3:[101.57, 36.49,0,3],
+              value4:[101.57, 36.49,0,3]
+              });
+              option.series[0].data.push({name: "甘德县",value:[101.28, 36.72, 0, 2],
+              value1:[101.28, 36.72,0,3],
+              value2:[101.28, 36.72,0,3],
+              value3:[101.28, 36.72,0,3],
+              value4:[101.28, 36.72,0,3]
+              });
 
          }
          if(name=="海东市"){
-              option.series[0].data.push({name: "乐都区",value:[102.38, 36.49, 35, 1]});
-              option.series[0].data.push({name: "民和回族土族自治县",value:[102.8, 36.3, 35, 2]});
-              option.series[0].data.push({name: "互助土族自治县",value:[101.95, 36.84, 35, 2]});
-              option.series[0].data.push({name: "化隆回族自治县",value:[102.3, 36.11, 35, 2]});
-              option.series[0].data.push({name: "循化撒拉族自治县",value:[102.46, 35.84, 35, 2]});
-              option.series[0].data.push({name: "平安区",value:[102.09, 36.47, 35,3]});
+              option.series[0].data.push({name: "乐都区",value:[102.38, 36.49, 0, 1],
+              value1:[102.38, 36.49,0,3],
+              value2:[102.38, 36.49,0,3],
+              value3:[102.38, 36.49,0,3],
+              value4:[102.38, 36.49,0,3]
+              });
+              option.series[0].data.push({name: "民和回族土族自治县",value:[102.8, 36.3, 0, 2],
+              value1:[102.8, 36.3,0,3],
+              value2:[102.8, 36.3,0,3],
+              value3:[102.8, 36.3,0,3],
+              value4:[102.8, 36.3,0,3]
+              });
+              option.series[0].data.push({name: "互助土族自治县",value:[101.95, 36.84, 0, 2],
+              value1:[101.95, 36.84,0,3],
+              value2:[101.95, 36.84,0,3],
+              value3:[101.95, 36.84,0,3],
+              value4:[101.95, 36.84,0,3]
+              });
+              option.series[0].data.push({name: "化隆回族自治县",value:[102.3, 36.11, 0, 2],
+              value1:[102.3, 36.11,0,3],
+              value2:[102.3, 36.11,0,3],
+              value3:[102.3, 36.11,0,3],
+              value4:[102.3, 36.11,0,3]
+              });
+              option.series[0].data.push({name: "循化撒拉族自治县",value:[102.46, 35.84, 0, 2],
+              value1:[102.46, 35.84,0,3],
+              value2:[102.46, 35.84,0,3],
+              value3:[102.46, 35.84,0,3],
+              value4:[102.46, 35.84,0,3]
+              });
+              option.series[0].data.push({name: "平安区",value:[102.09, 36.47, 0,3],
+              value1:[102.09, 36.47,0,3],
+              value2:[102.09, 36.47,0,3],
+              value3:[102.09, 36.47,0,3],
+              value4:[102.09, 36.47,0,3]
+              });
          }
          if(name=="黄南藏族自治州"){
-              option.series[0].data.push({name: "同仁县",value:[102, 35.54, 35, 2]});
-              option.series[0].data.push({name: "尖扎县",value:[102, 35.92, 35, 2]});
-              option.series[0].data.push({name: "泽库县",value:[101.5, 35.03, 35, 1]});
-              option.series[0].data.push({name: "河南蒙古族自治县",value:[101.62, 34.75, 35, 2]});
+              option.series[0].data.push({name: "同仁县",value:[102, 35.54, 0, 2],
+              value1:[102, 35.54,0,3],
+              value2:[102, 35.54,0,3],
+              value3:[102, 35.54,0,3],
+              value4:[102, 35.54,0,3]
+              });
+              option.series[0].data.push({name: "尖扎县",value:[102, 35.92, 0, 2],
+              value1:[102, 35.92,0,3],
+              value2:[102, 35.92,0,3],
+              value3:[102, 35.92,0,3],
+              value4:[102, 35.92,0,3]
+              });
+              option.series[0].data.push({name: "泽库县",value:[101.5, 35.03, 0, 1],
+              value1:[101.5, 35.03,0,3],
+              value2:[101.5, 35.03,0,3],
+              value3:[101.5, 35.03,0,3],
+              value4:[101.5, 35.03,0,3]
+              });
+              option.series[0].data.push({name: "河南蒙古族自治县",value:[101.62, 34.75, 0, 2],
+              value1:[101.62, 34.75,0,3],
+              value2:[101.62, 34.75,0,3],
+              value3:[101.62, 34.75,0,3],
+              value4:[101.62, 34.75,0,3]
+              });
 
          }
          if(name=="海南藏族自治州"){
-              option.series[0].data.push({name: "共和县",value:[100.61, 36.27, 35, 3]});
-              option.series[0].data.push({name: "同德县",value:[100.63, 35.24, 15,1]});
-              option.series[0].data.push({name: "贵德县",value:[101.47, 36.02, 35, 2]});
-              option.series[0].data.push({name: "兴海县",value:[99.99, 35.6, 25, 2]});
-              option.series[0].data.push({name: "贵南县",value:[100.75, 35.57, 15, 2]});
+              option.series[0].data.push({name: "共和县",value:[100.61, 36.27, 0, 3],
+              value1:[100.61, 36.27,0,3],
+              value2:[100.61, 36.27,0,3],
+              value3:[100.61, 36.27,0,3],
+              value4:[100.61, 36.27,0,3]
+              });
+              option.series[0].data.push({name: "同德县",value:[100.63, 35.24, 0,1],
+              value1:[100.63, 35.24,0,3],
+              value2:[100.63, 35.24,0,3],
+              value3:[100.63, 35.24,0,3],
+              value4:[100.63, 35.24,0,3]
+              });
+              option.series[0].data.push({name: "贵德县",value:[101.47, 36.02, 0, 2],
+              value1:[101.47, 36.02,0,3],
+              value2:[101.47, 36.02,0,3],
+              value3:[101.47, 36.02,0,3],
+              value4:[101.47, 36.02,0,3]
+              });
+              option.series[0].data.push({name: "兴海县",value:[99.99, 35.6, 0, 2],
+              value1:[99.99, 35.6,0,3],
+              value2:[99.99, 35.6,0,3],
+              value3:[99.99, 35.6,0,3],
+              value4:[99.99, 35.6,0,3]
+              });
+              option.series[0].data.push({name: "贵南县",value:[100.75, 35.57, 0, 2],
+              value1:[100.75, 35.57,0,3],
+              value2:[100.75, 35.57,0,3],
+              value3:[100.75, 35.57,0,3],
+              value4:[100.75, 35.57,0,3]
+              });
          }
          if(name=="海北藏族自治州"){
-              option.series[0].data.push({name: "门源回族自治县",value:[101.62, 37.37, 15, 2]});
-              option.series[0].data.push({name: "祁连县",value:[100.22, 38.2, 35,1]});
-              option.series[0].data.push({name: "海晏县",value:[100.99, 36.89, 35, 2]});
-              option.series[0].data.push({name: "刚察县",value:[100.17, 37.32, 25, 2]});
+              option.series[0].data.push({name: "门源回族自治县",value:[101.62, 37.37, 0, 2],
+              value1:[101.62, 37.37,0,3],
+              value2:[101.62, 37.37,0,3],
+              value3:[101.62, 37.37,0,3],
+              value4:[101.62, 37.37,0,3]
+              });
+              option.series[0].data.push({name: "祁连县",value:[100.22, 38.2, 0,1],
+              value1:[100.22, 38.2,0,3],
+              value2:[100.22, 38.2,0,3],
+              value3:[100.22, 38.2,0,3],
+              value4:[100.22, 38.2,0,3]
+              });
+              option.series[0].data.push({name: "海晏县",value:[100.99, 36.89, 0, 2],
+              value1:[100.99, 36.89,0,3],
+              value2:[100.99, 36.89,0,3],
+              value3:[100.99, 36.89,0,3],
+              value4:[100.99, 36.89,0,3]
+              });
+              option.series[0].data.push({name: "刚察县",value:[100.17, 37.32, 0, 2],
+              value1:[100.17, 37.32,0,3],
+              value2:[100.17, 37.32,0,3],
+              value3:[100.17, 37.32,0,3],
+              value4:[100.17, 37.32,0,3]
+              });
          }
          if(name=="果洛藏族自治州"){
-               option.series[0].data.push({name: "玛沁县",value:[100.26,34.49,32,2]});
-              option.series[0].data.push({name: "班玛县",value:[100.73,32.92,34,1]});
-              option.series[0].data.push({name: "甘德县",value:[99.89,33.95,32,1]});
-              option.series[0].data.push({name: "达日县",value:[99.68,33.74,31,2]});
-              option.series[0].data.push({name: "久治县",value:[101.47,33.46,25,2]});
-              option.series[0].data.push({name: "玛多县",value:[98.26,34.92,15,3]});
+               option.series[0].data.push({name: "玛沁县",value:[100.26,34.49,0,2],
+              value1:[100.26,34.49,0,3],
+              value2:[100.26,34.49,0,3],
+              value3:[100.26,34.49,0,3],
+              value4:[100.26,34.49,0,3]
+              });
+              option.series[0].data.push({name: "班玛县",value:[100.73,32.92,0,1],
+              value1:[100.73,32.92,0,3],
+              value2:[100.73,32.92,0,3],
+              value3:[100.73,32.92,0,3],
+              value4:[100.73,32.92,0,3]
+              });
+              option.series[0].data.push({name: "甘德县",value:[99.89,33.95,0,1],
+              value1:[99.89,33.95,0,3],
+              value2:[99.89,33.95,0,3],
+              value3:[99.89,33.95,0,3],
+              value4:[99.89,33.95,0,3]
+              });
+              option.series[0].data.push({name: "达日县",value:[99.68,33.74,0,2],
+              value1:[99.68,33.74,0,3],
+              value2:[99.68,33.74,0,3],
+              value3:[99.68,33.74,0,3],
+              value4:[99.68,33.74,0,3]
+              });
+              option.series[0].data.push({name: "久治县",value:[101.47,33.46,0,2],
+              value1:[101.47,33.46,0,3],
+              value2:[101.47,33.46,0,3],
+              value3:[101.47,33.46,0,3],
+              value4:[101.47,33.46,0,3]
+              });
+              option.series[0].data.push({name: "玛多县",value:[98.26,34.92,0,3],
+              value1:[98.26,34.92,0,3],
+              value2:[98.26,34.92,0,3],
+              value3:[98.26,34.92,0,3],
+              value4:[98.26,34.92,0,3]
+              });
          }
          if(name=="海西蒙古族藏族自治州"){
-               option.series[0].data.push({name: "格尔木市",value:[94.9, 36.41,32,2]});
-              option.series[0].data.push({name: "乌兰县",value:[98.46, 36.9,34,1]});
-              option.series[0].data.push({name: "都兰县",value:[98.13, 36.3,32,1]});
-              option.series[0].data.push({name: "天峻县",value:[99.03, 37.28,31,2]});
-               option.series[0].data.push({name: "德令哈市",value:[97.36084,37.36946,11,2]});
+               option.series[0].data.push({name: "格尔木市",value:[94.9,36.41,0,2],
+              value1:[94.9,36.41,0,3],
+              value2:[94.9,36.41,0,3],
+              value3:[94.9,36.41,0,3],
+              value4:[94.9,36.41,0,3]
+              });
+              option.series[0].data.push({name: "乌兰县",value:[98.46,36.9,0,1],
+              value1:[98.46,36.9,0,3],
+              value2:[98.46,36.9,0,3],
+              value3:[98.46,36.9,0,3],
+              value4:[98.46,36.9,0,3]
+              });
+              option.series[0].data.push({name: "都兰县",value:[98.13,36.3,0,1],
+              value1:[98.13,36.3,0,3],
+              value2:[98.13,36.3,0,3],
+              value3:[98.13,36.3,0,3],
+              value4:[98.13,36.3,0,3]
+              });
+              option.series[0].data.push({name: "天峻县",value:[99.03,37.28,0,2],
+              value1:[99.03,37.28,0,3],
+              value2:[99.03,37.28,0,3],
+              value3:[99.03,37.28,0,3],
+              value4:[99.03,37.28,0,3]
+              });
+               option.series[0].data.push({name: "德令哈市",value:[97.36084,37.36946,0,2],
+              value1:[97.36084,37.36946,0,3],
+              value2:[97.36084,37.36946,0,3],
+              value3:[97.36084,37.36946,0,3],
+              value4:[97.36084,37.36946,0,3]
+              });
 
          }
          if(name=="玉树藏族自治州"){
-               option.series[0].data.push({name: "玉树市",value:[96.97, 33.03,32,2]});
-              option.series[0].data.push({name: "杂多县",value:[95.3, 32.92,34,1]});
-              option.series[0].data.push({name: "称多县",value:[97.12, 33.35,32,1]});
-              option.series[0].data.push({name: "治多县",value:[95.6, 33.86,31,2]});
-              option.series[0].data.push({name: "囊谦县",value:[96.47, 32.23,25,2]});
-              option.series[0].data.push({name: "曲麻菜县",value:[95.50,34.52,25,2]});
+               option.series[0].data.push({name: "玉树市",value:[96.97,33.03,0,2],
+              value1:[96.97,33.03,0,3],
+              value2:[96.97,33.03,0,3],
+              value3:[96.97,33.03,0,3],
+              value4:[96.97,33.03,0,3]
+              });
+              option.series[0].data.push({name: "杂多县",value:[95.3,32.92,0,1],
+              value1:[95.3,32.92,0,3],
+              value2:[95.3,32.92,0,3],
+              value3:[95.3,32.92,0,3],
+              value4:[95.3,32.92,0,3]
+              });
+              option.series[0].data.push({name: "称多县",value:[97.12,33.35,0,1],
+              value1:[97.12,33.35,0,3],
+              value2:[97.12,33.35,0,3],
+              value3:[97.12,33.35,0,3],
+              value4:[97.12,33.35,0,3]
+              });
+              option.series[0].data.push({name: "治多县",value:[95.6,33.86,0,2],
+              value1:[95.6,33.86,0,3],
+              value2:[95.6,33.86,0,3],
+              value3:[95.6,33.86,0,3],
+              value4:[95.6,33.86,0,3]
+              });
+              option.series[0].data.push({name: "囊谦县",value:[96.47,32.23,0,2],
+              value1:[96.47,32.23,0,3],
+              value2:[96.47,32.23,0,3],
+              value3:[96.47,32.23,0,3],
+              value4:[96.47,32.23,0,3]
+              });
+              option.series[0].data.push({name: "曲麻菜县",value:[95.50,34.52,0,2],
+              value1:[95.50,34.52,0,3],
+              value2:[95.50,34.52,0,3],
+              value3:[95.50,34.52,0,3],
+              value4:[95.50,34.52,0,3]
+              });
          }
 
            myChart.setOption(option);
