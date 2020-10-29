@@ -250,7 +250,8 @@ export default {
         sjNum:'',
         caseNumber2:'',
         acceptStartTime:'',
-        acceptEndTime:''
+        acceptEndTime:'',
+        organId:''
       },
       hideSomeSearch: true,
       tableData: [],
