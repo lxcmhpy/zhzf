@@ -349,7 +349,8 @@ export const mixinGetCaseApiList = {
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
           //多文书列表
-          let moreDoc = [this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId, this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId, this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, this.BASIC_DATA_SYS.forceExecute_caseLinktypeId, this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId, this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId];
+          let moreDoc = [this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId, this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId, this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, this.BASIC_DATA_SYS.forceExecute_caseLinktypeId, this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId, this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId,
+            this.BASIC_DATA_SC.caseDoc_SC_caseLinktypeId];
           if (moreDoc.includes(params.linkTypeId)) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
           }
@@ -797,7 +798,7 @@ export const mixinGetCaseApiList = {
 
       flowUrl = currentFlow.data.flowUrl;
       // if(flowUrl == '处罚流程' || flowUrl == '赔补偿流程' || flowUrl == '青海赔补偿流程' || flowUrl == '青海处罚流程'){
-      if (['commonGraphData', 'compensationGraphData', 'compensationGraphData_QH', 'commonGraphData_QH',].indexOf(flowUrl) != -1) {
+      if (['commonGraphData', 'compensationGraphData', 'compensationGraphData_QH', 'commonGraphData_QH','commonGraphData_SC'].indexOf(flowUrl) != -1) {
         if (name == '立案登记') {
           routeName = 'case_handle_establish'
         }

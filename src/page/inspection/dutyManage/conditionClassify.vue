@@ -400,6 +400,9 @@ export default {
             padding-left: 10px;
             margin-bottom: 18px;
             border-left: 4px solid #4573d0;
+
+            float: left;
+            width: 60%;
         }
         .record-condition-tree {
             position: relative;
@@ -424,9 +427,8 @@ export default {
             }
 
             .condition-tree-addButton{
-                position: absolute;
-                right: 20px;
-                top: 20px;
+                float: left;
+                width: 30%;
             }
         }
 

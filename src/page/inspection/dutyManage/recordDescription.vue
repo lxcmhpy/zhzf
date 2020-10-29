@@ -27,44 +27,49 @@
             </el-col>
             <el-col :span="19" class="record-description-template">
                 <el-card shadow="never" style="height: 100%;">
-                    <h3 class="form-tab-title">描述详情</h3>
-                    <el-breadcrumb separator-class="el-icon-arrow-right">
-                        <el-breadcrumb-item>{{this.parentNodeData.name}}</el-breadcrumb-item>
-                        <el-breadcrumb-item>详情</el-breadcrumb-item>
-                    </el-breadcrumb>
+                    <div class="description-template-header">
+                        <h3 class="form-tab-title">描述详情</h3>
+                        <el-breadcrumb separator-class="el-icon-arrow-right">
+                            <el-breadcrumb-item>{{this.parentNodeData.name}}</el-breadcrumb-item>
+                            <el-breadcrumb-item>详情</el-breadcrumb-item>
+                        </el-breadcrumb>
+                    </div>
 
-                    <el-form 
-                        class="record-description-template-from"
-                        ref="templateFromRef" 
-                        :model="templateFrom" 
-                        label-width="80px">
-                        <el-form-item label="模板名称:" prop="name">
-                            <el-input v-model="templateFrom.name"></el-input>
-                        </el-form-item>
-                        <el-form-item prop="roadCondition">
-                            <el-radio-group disabled v-model="templateFrom.roadCondition">
-                            <el-radio :label="1">正常情况</el-radio>
-                            <el-radio :label="2">异常情况</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="模板内容:" prop="content">
-                            <el-input 
-                                id="tempContent"
-                                type="textarea"
-                                v-model="templateFrom.content"
-                                :autosize="{ minRows: 3, maxRows: 5}"
-                                ></el-input>
-                        </el-form-item>
-                        <el-form-item label="基本信息:">
-                            <el-button v-for="(item, key) in baseInfo" @click="tmpButtonClick(item)" :key="key" type="success" size="small" plain>{{item.name}}</el-button>
-                        </el-form-item>
-                        <el-form-item label="检查内容:">
-                            <el-button v-for="(item, key) in checkContent" @click="tmpButtonClick(item)" :key="key" type="success" size="small" plain>{{item.name}}</el-button>
-                        </el-form-item>
-                    </el-form>
-                    <div class="record-description-template-button">
-                        <el-button type="primary" @click="onSubmit">保存</el-button>
-                        <el-button type="danger" @click="onReset">重置</el-button>
+                    <div  class="description-template-content">
+                        <el-form 
+                            class="record-description-template-from"
+                            ref="templateFromRef" 
+                            :model="templateFrom" 
+                            label-width="80px">
+                            <el-form-item label="模板名称:" prop="name">
+                                <el-input v-model="templateFrom.name"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="roadCondition">
+                                <el-radio-group disabled v-model="templateFrom.roadCondition">
+                                <el-radio :label="1">正常情况</el-radio>
+                                <el-radio :label="2">异常情况</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label="模板内容:" prop="content">
+                                <el-input 
+                                    id="tempContent"
+                                    type="textarea"
+                                    v-model="templateFrom.content"
+                                    :autosize="{ minRows: 3, maxRows: 5}"
+                                    ></el-input>
+                            </el-form-item>
+                            <el-form-item label="基本信息:">
+                                <el-button v-for="(item, key) in baseInfo" @click="tmpButtonClick(item)" :key="key" type="success" size="small" plain>{{item.name}}</el-button>
+                            </el-form-item>
+                            <el-form-item label="检查内容:">
+                                <el-button v-for="(item, key) in checkContent" @click="tmpButtonClick(item)" :key="key" type="success" size="small" plain>{{item.name}}</el-button>
+                            </el-form-item>
+                        </el-form>
+                        
+                        <div class="record-description-template-button">
+                            <el-button type="primary" @click="onSubmit">保存</el-button>
+                            <el-button type="danger" @click="onReset">重置</el-button>
+                        </div>
                     </div>
                 </el-card>
             </el-col>
@@ -293,6 +298,10 @@ export default {
 
         .record-description-template {
 
+            >>> .el-card__body {
+                height: calc(100% - 40px);
+            }
+
             >>> .el-breadcrumb{
                 margin: 20px 30px;
             }
@@ -309,10 +318,22 @@ export default {
 
             &-button {
                 text-align: center;
-                position: absolute;
-                bottom: 30px;
                 width: 750px;
             }
+
+            .description-template-header {
+                height: 60px;
+            }
+
+            .description-template-content {
+                overflow: auto;
+                height: calc(100% - 60px);
+
+                .record-description-template-button {
+                    padding: 20px;
+                }
+            }
+
         }
 
     }

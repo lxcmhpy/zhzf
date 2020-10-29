@@ -13,7 +13,7 @@
               @getValue="handleMechanism"
             />
           </el-form-item>
-          <el-form-item label="执法门类" prop>
+          <el-form-item label="业务领域" prop>
             <el-select v-model="logForm.category" clearable placeholder="请选择">
               <el-option
                 v-for="item in categoryOption"

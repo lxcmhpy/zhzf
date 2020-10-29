@@ -170,7 +170,7 @@ export default {
           throw new Error(err);
         }
         flowUrl = currentFlow.data.flowUrl;
-        if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH'].includes(flowUrl)){
+        if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH','commonGraphData_SC'].includes(flowUrl)){
           try {
             await approvalPdfQzApi(data);
           } catch (err) {
