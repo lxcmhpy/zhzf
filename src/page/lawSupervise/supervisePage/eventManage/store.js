@@ -1,6 +1,5 @@
 import { findData, deleteById, findById } from "@/api/eventManage";
-import { getOrganTree } from "@/api/lawSupervise.js";
-import iLocalStroage from '@/common/js/localStroage';
+import { findUserByOrganId } from "@/api/lawSupervise";
 
 export default {
   methods: {
@@ -19,21 +18,19 @@ export default {
       })
     },
     getPerson(organId){
-        let param = {
-            organId: organId,
-            type: 0
-          }
-          getOrganTree(param).then(res => {
+        findUserByOrganId(organId).then(res => {
             if(res.code === 200) {
               return res.data
             } else {
               throw new Error("getOrganTree()::::::接口数据错误")
             }
           }).then(data => {
-            this.config.peopleOptions = data.map(item => {
-              item.label = item.nickName
-              item.value = item.id
-              return item
+            data.forEach(item => {
+                if(item.provincial || item.ministerial || item.maritime){
+                    item.label = item.nickName
+                    item.value = item.id
+                    this.config.peopleOptions.push(item)
+                }
             })
           })
     },

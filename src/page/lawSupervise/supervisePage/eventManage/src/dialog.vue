@@ -69,6 +69,9 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="处理意见:" :label-width="formLabelWidth" prop="note">
+        <el-input v-model="form.note" autocomplete="off"></el-input>
+      </el-form-item>
       <el-form-item label="事件附件:" :label-width="formLabelWidth">
         <el-upload
           action="#"
@@ -170,7 +173,8 @@ export default {
         disposePerson: '', // 选择的人员 id
         storageIds: [], // 附件 id 列表
         eventAddress:'',
-        eventCoordinate:''
+        eventCoordinate:'',
+        note:''
       },
       dialogImageUrl: '',
       dialogVisible: false,
