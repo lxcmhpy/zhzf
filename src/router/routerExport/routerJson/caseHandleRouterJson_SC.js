@@ -7,7 +7,23 @@ export default [
           title: "案件调查-四川"
         },
         component: () => import("@/page/caseHandle/case/siChuan/form/caseDoc_SC")
-      },
+    },
+    {
+        path: "/caseInvestigReport_SC",
+        name: "case_handle_caseInvestigReport_SC",
+        meta: {
+          title: "案件调查报告-四川"
+        },
+        component: () => import("@/page/caseHandle/case/siChuan/doc/caseInvestigReport_SC")
+    },
+    {
+        path: "/transfer_SC",
+        name: "case_handle_transfer_SC",
+        meta: {
+          title: "移交移送-四川"
+        },
+        component: () => import("@/page/caseHandle/case/siChuan/form/transfer_SC")
+    },
    
     
     
