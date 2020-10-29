@@ -1,5 +1,5 @@
 {
-  "CURRENT": "JX",
+  "CURRENT": "QH",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
   "PS": {
@@ -83,7 +83,7 @@
     "CAPTCHA_HOST": "http://172.16.170.50:9000",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "CHECK_API": "http://172.16.170.91:8081",
-    "MAP_HOST": "http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile",
+    "MAP_HOST": "http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}",
     "QZ_SOCKET_HOST": "ws://172.16.170.44:8083",
     "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
   },
@@ -105,7 +105,7 @@
     "CAPTCHA_HOST": "http://124.192.215.6:8898",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "CHECK_API": "http://124.192.215.11:8081",
-    "MAP_HOST": "http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile",
+    "MAP_HOST": "http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JXMAP_2020/MapServer/tile/{z}/{y}/{x}",
     "QZ_SOCKET_HOST": "ws://124.192.215.4:8083",
     "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
   },

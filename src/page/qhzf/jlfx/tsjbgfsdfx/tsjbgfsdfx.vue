@@ -69,7 +69,8 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: ""
+          text: "投诉举报高发时段分析",
+           left: "left"
         },
         tooltip: {
           trigger: "axis"
