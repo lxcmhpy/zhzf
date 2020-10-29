@@ -132,7 +132,7 @@ export default {
               }
             },
             err => {
-              this.$message({ type: "error", message: err.msg || "" });
+              // this.$message({ type: "error", message: err.msg || "" });
             }
           );
         })
