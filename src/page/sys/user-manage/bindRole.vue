@@ -85,7 +85,8 @@ export default {
             type: "success"
           });
           _this.visible = false;
-          _this.reload();
+          _this.$emit("getUserList");
+          // _this.reload();
         },
         err => {
           console.log(err);
