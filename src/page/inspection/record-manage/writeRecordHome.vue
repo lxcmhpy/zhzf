@@ -58,12 +58,12 @@
                 <div class="btns-box">
                   <span
                     style="color: blue; font-size: 14px"
-                    @click="editModle(modle)"
+                    @click.stop="editModle(item)"
                     >修改</span
                   >&emsp;
                   <span
                     style="color: blue; font-size: 14px"
-                    @click="delModle(modle)"
+                    @click.stop="delModle(item)"
                     >删除</span
                   >
                 </div>
@@ -73,7 +73,9 @@
         </div>
         <div class="mould-list-box" v-show="!showMenu">
           <div class="search-title">
-            <span class="back-btn" @click="handleSearchBack"> <i class="icon el-icon-arrow-left"></i>返回 </span>
+            <span class="back-btn" @click="handleSearchBack">
+              <i class="icon el-icon-arrow-left"></i>返回
+            </span>
             <!-- <el-button type="primary" icon="el-icon-arrow-left" @click="handleSearchBack">返回</el-button> -->
             <span>搜索结果({{ searchList.length }})</span>
           </div>
@@ -88,12 +90,12 @@
                 <div class="btns-box">
                   <span
                     style="color: blue; font-size: 14px"
-                    @click="editModle(modle)"
+                    @click.stop="editModle(item)"
                     >修改</span
                   >&emsp;
                   <span
                     style="color: blue; font-size: 14px"
-                    @click="delModle(modle)"
+                    @click.stop="delModle(item)"
                     >删除</span
                   >
                 </div>
@@ -143,6 +145,7 @@ export default {
   },
   data() {
     return {
+      delTag: "",
       searchList: [],
       showMenu: true,
       menuList: [],
@@ -176,6 +179,7 @@ export default {
     handleClose() {},
     handleMenuChange(val) {
       console.log("handleMenuChange -> val", val);
+      this.currentMenu = val;
       this.currentList = this.listMap[val];
       console.log(" -> this.currentList", this.currentList);
     },
@@ -240,7 +244,10 @@ export default {
     },
     // 删除模板
     delModle(item) {
-      console.log("选中的模板", item);
+      this.delTag = this.currentMenu;
+      // console.log("caidan", this.currentMenu);
+      // console.log("选中的模板", item);
+      // console.log("menuList", this.menuList);
       this.$confirm("确认删除？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -260,8 +267,14 @@ export default {
                 type: "success",
                 message: res.msg,
               });
-              this.getOtherMouldList();
-              this.getUserCollectMouldList();
+              this.getMenuList().then((res) => {
+                this.currentMenu = this.delTag;
+                this.menuList.forEach((item) => {
+                  if (item.domain == this.currentMenu) {
+                    this.currentList = item.templateList;
+                  }
+                });
+              });
             }
           },
           (error) => {
@@ -375,8 +388,8 @@ export default {
     // },
 
     //获取列表数据后拼凑数据
-    getMenuList() {
-      Promise.all([
+    async getMenuList() {
+      await Promise.all([
         this.getUserCollectMouldList(),
         this.getOtherMouldList(),
       ]).then((res) => {
@@ -523,15 +536,15 @@ export default {
       height: 100%;
       flex: 1;
       overflow-y: auto;
-      .search-title{
+      .search-title {
         margin: 0 20px;
         display: flex;
         justify-content: space-between;
         border-bottom: 1px solid #979797;
         height: 38px;
         line-height: 38px;
-        .back-btn{
-          color:#646974;
+        .back-btn {
+          color: #646974;
           font-size: 14px;
           cursor: pointer;
         }
