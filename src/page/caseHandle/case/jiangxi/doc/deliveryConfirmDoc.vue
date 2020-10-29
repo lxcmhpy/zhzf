@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="print_box">
-      <div id="delivery-print" class="print_info">
+      <div id="delivery-print" class="print_info" style="height:auto">
         <el-form
           :rules="rules"
           ref="docForm"

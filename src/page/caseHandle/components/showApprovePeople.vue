@@ -81,7 +81,7 @@
         }catch(err){
           this.$message('获取案件流程失败！')
         }
-        if(currentFlow.data.flowUrl == 'commonGraphData' || currentFlow.data.flowUrl == 'commonGraphData_JX' || currentFlow.data.flowUrl == 'commonGraphData_QH'){
+        if(currentFlow.data.flowUrl == 'commonGraphData' || currentFlow.data.flowUrl == 'commonGraphData_JX' || currentFlow.data.flowUrl == 'commonGraphData_QH' || currentFlow.data.flowUrl == 'commonGraphData_SC'){
           data.flag = 0;
         }else if(currentFlow.data.flowUrl == 'compensationGraphData'|| currentFlow.data.flowUrl == 'compensationGraphData_QH'){
           data.flag = 1;
