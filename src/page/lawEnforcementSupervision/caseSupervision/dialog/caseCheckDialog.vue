@@ -142,6 +142,8 @@ export default {
       this.visible = true;
       this.getEnforceLawType();
       this.getAllOrigins();
+    //  alert(this.selectOrganId)
+      // this.checkSearchForm.organId = this.selectOrganId
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -157,7 +159,7 @@ export default {
       this.visible = false;
       // this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0];
       // this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1];
-      this.$emit('setNewSearchCondition',this.checkSearchForm);
+      this.$emit('setNewSearchCondition',this.checkSearchForm); 
     },
   },
 };

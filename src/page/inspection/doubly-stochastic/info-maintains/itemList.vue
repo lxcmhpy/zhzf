@@ -294,6 +294,9 @@ export default {
         checkBasis: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        checkType: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         checkItem: [
           { required: true, message: "必填项", trigger: "change" }
         ],

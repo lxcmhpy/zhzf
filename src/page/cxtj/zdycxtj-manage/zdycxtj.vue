@@ -896,127 +896,607 @@ $.getJSON(jiangxi, function(geoJson){
     	callback: function(name, option, instance){
     		console.log(name);
           if(name=="南昌市"){
-              option.series[0].data.push({name: "安义县",value:[115.55,28.86,35,3]});
-              option.series[0].data.push({name: "东湖区",value:[115.9 ,28.68, 35, 1]});
-              option.series[0].data.push({name: "西湖区",value:[115.87, 28.67, 35, 2]});
-              option.series[0].data.push({name: "青云谱区",value:[115.92 ,28.63,35,3]});
-              option.series[0].data.push({name: "湾里区",value:[115.73 ,28.72, 35, 1]});
-              option.series[0].data.push({name: "青山湖区",value:[115.95, 28.68, 35, 2]});
-              option.series[0].data.push({name: "南昌县",value:[115.93, 28.55,35,3]});
-              option.series[0].data.push({name: "新建县",value:[115.82, 28.7, 35, 1]});
-              option.series[0].data.push({name: "进贤县",value:[116.27 ,28.37, 35, 2]});
+              option.series[0].data.push({name: "安义县",value:[115.55,28.86,0,3],
+              value1:[115.55,28.86,0,3],
+              value2:[115.55,28.86,0,3],
+              value3:[115.55,28.86,0,3],
+              value4:[115.55,28.86,0,3]
+              });
+              option.series[0].data.push({name: "东湖区",value:[115.9 ,28.68, 0, 1],
+              value1:[115.9 ,28.68,0,3],
+              value2:[115.9 ,28.68,0,3],
+              value3:[115.9 ,28.68,0,3],
+              value4:[115.9 ,28.68,0,3]
+              });
+              option.series[0].data.push({name: "西湖区",value:[115.87, 28.67, 0, 2],
+              value1:[115.87, 28.67,0,3],
+              value2:[115.87, 28.67,0,3],
+              value3:[115.87, 28.67,0,3],
+              value4:[115.87, 28.67,0,3]
+              });
+              option.series[0].data.push({name: "青云谱区",value:[115.92 ,28.63,0,3],
+              value1:[115.92 ,28.63,0,3],
+              value2:[115.92 ,28.63,0,3],
+              value3:[115.92 ,28.63,0,3],
+              value4:[115.92 ,28.63,0,3]
+              });
+              option.series[0].data.push({name: "湾里区",value:[115.73 ,28.72, 0, 1],
+              value1:[115.73 ,28.72,0,3],
+              value2:[115.73 ,28.72,0,3],
+              value3:[115.73 ,28.72,0,3],
+              value4:[115.73 ,28.72,0,3]
+              });
+              option.series[0].data.push({name: "青山湖区",value:[115.95, 28.68, 0, 2],
+              value1:[115.95, 28.68,0,3],
+              value2:[115.95, 28.68,0,3],
+              value3:[115.95, 28.68,0,3],
+              value4:[115.95, 28.68,0,3]
+              });
+              option.series[0].data.push({name: "南昌县",value:[115.93, 28.55,0,3],
+              value1:[115.93, 28.55,0,3],
+              value2:[115.93, 28.55,0,3],
+              value3:[115.93, 28.55,0,3],
+              value4:[115.93, 28.55,0,3]
+              });
+              option.series[0].data.push({name: "新建县",value:[115.82, 28.7, 0, 1],
+              value1:[115.82, 28.7,0,3],
+              value2:[115.82, 28.7,0,3],
+              value3:[115.82, 28.7,0,3],
+              value4:[115.82, 28.7,0,3]
+              });
+              option.series[0].data.push({name: "进贤县",value:[116.27 ,28.37, 0, 2],
+              value1:[116.27 ,28.37,0,3],
+              value2:[116.27 ,28.37,0,3],
+              value3:[116.27 ,28.37,0,3],
+              value4:[116.27 ,28.37,0,3]
+              });
 
          }
          if(name=="景德镇市"){
-              option.series[0].data.push({name: "昌江区",value:[117.17, 29.27, 35, 1]});
-              option.series[0].data.push({name: "珠山区 ",value:[117.2 ,29.3, 35, 2]});
-              option.series[0].data.push({name: "浮梁县",value:[117.25 ,29.37, 35, 2]});
-              option.series[0].data.push({name: "乐平市",value:[117.12 ,28.97, 35, 2]});
+              option.series[0].data.push({name: "昌江区",value:[117.17, 29.27, 0, 1],
+              value1:[117.17, 29.27,0,3],
+              value2:[117.17, 29.27,0,3],
+              value3:[117.17, 29.27,0,3],
+              value4:[117.17, 29.27,0,3]
+              });
+              option.series[0].data.push({name: "珠山区 ",value:[117.2 ,29.3, 0, 2],
+              value1:[117.2 ,29.3,0,3],
+              value2:[117.2 ,29.3,0,3],
+              value3:[117.2 ,29.3,0,3],
+              value4:[117.2 ,29.3,0,3]
+              });
+              option.series[0].data.push({name: "浮梁县",value:[117.25 ,29.37, 0, 2],
+              value1:[117.25 ,29.37,0,3],
+              value2:[117.25 ,29.37,0,3],
+              value3:[117.25 ,29.37,0,3],
+              value4:[117.25 ,29.37,0,3]
+              });
+              option.series[0].data.push({name: "乐平市",value:[117.12 ,28.97, 0, 2],
+              value1:[117.12 ,28.97,0,3],
+              value2:[117.12 ,28.97,0,3],
+              value3:[117.12 ,28.97,0,3],
+              value4:[117.12 ,28.97,0,3]
+              });
               
          }
          if(name=="萍乡市"){
-              option.series[0].data.push({name: "安源区",value:[113.87, 27.65, 35, 2]});
-              option.series[0].data.push({name: "湘东区",value:[113.73, 27.65, 35, 2]});
-              option.series[0].data.push({name: "莲花县",value:[113.95, 27.13, 35, 1]});
-              option.series[0].data.push({name: "上栗县",value:[113.8 ,27.88, 35, 2]});
-              option.series[0].data.push({name: "芦溪县",value:[114.03, 27.63, 35, 2]});
+              option.series[0].data.push({name: "安源区",value:[113.87, 27.65, 0, 2],
+              value1:[113.87, 27.65,0,3],
+              value2:[113.87, 27.65,0,3],
+              value3:[113.87, 27.65,0,3],
+              value4:[113.87, 27.65,0,3]
+              });
+              option.series[0].data.push({name: "湘东区",value:[113.73, 27.65, 0, 2],
+              value1:[113.73, 27.65,0,3],
+              value2:[113.73, 27.65,0,3],
+              value3:[113.73, 27.65,0,3],
+              value4:[113.73, 27.65,0,3]
+              });
+              option.series[0].data.push({name: "莲花县",value:[113.95, 27.13, 0, 1],
+              value1:[113.95, 27.13,0,3],
+              value2:[113.95, 27.13,0,3],
+              value3:[113.95, 27.13,0,3],
+              value4:[113.95, 27.13,0,3]
+              });
+              option.series[0].data.push({name: "上栗县",value:[113.8 ,27.88, 0, 2],
+              value1:[113.8 ,27.88,0,3],
+              value2:[113.8 ,27.88,0,3],
+              value3:[113.8 ,27.88,0,3],
+              value4:[113.8 ,27.88,0,3]
+              });
+              option.series[0].data.push({name: "芦溪县",value:[114.03, 27.63, 0, 2],
+              value1:[114.03, 27.63,0,3],
+              value2:[114.03, 27.63,0,3],
+              value3:[114.03, 27.63,0,3],
+              value4:[114.03, 27.63,0,3]
+              });
          }
          if(name=="九江市"){
-              option.series[0].data.push({name: "庐山区",value:[115.98, 29.68, 35, 3]});
-              option.series[0].data.push({name: "浔阳区",value:[115.98, 29.73, 15,1]});
-              option.series[0].data.push({name: "九江县",value:[115.88, 29.62, 35, 2]});
-              option.series[0].data.push({name: "武宁县",value:[115.1 ,29.27, 25, 2]});
-              option.series[0].data.push({name: "修水县",value:[114.57 ,29.03, 15, 2]});
-              option.series[0].data.push({name: "永修县",value:[115.8 ,29.03, 35, 3]});
-              option.series[0].data.push({name: "德安县",value:[115.77, 29.33, 15,1]});
-              option.series[0].data.push({name: "星子县",value:[116.03, 29.45, 35, 2]});
-              option.series[0].data.push({name: "都昌县 ",value:[116.18, 29.27, 25, 2]});
-              option.series[0].data.push({name: "湖口县",value:[116.22, 29.73, 15, 2]});
-              option.series[0].data.push({name: "彭泽县 ",value:[116.55 ,29.9, 25, 2]});
-              option.series[0].data.push({name: "瑞昌市",value:[115.67 ,29.68, 15, 2]});
+              option.series[0].data.push({name: "庐山区",value:[115.98, 29.68, 0, 3],
+              value1:[115.98, 29.68,0,3],
+              value2:[115.98, 29.68,0,3],
+              value3:[115.98, 29.68,0,3],
+              value4:[115.98, 29.68,0,3]
+              });
+              option.series[0].data.push({name: "浔阳区",value:[115.98, 29.73, 0,1],
+              value1:[115.98, 29.73,0,3],
+              value2:[115.98, 29.73,0,3],
+              value3:[115.98, 29.73,0,3],
+              value4:[115.98, 29.73,0,3]
+              });
+              option.series[0].data.push({name: "九江县",value:[115.88, 29.62, 0, 2],
+              value1:[115.88, 29.62,0,3],
+              value2:[115.88, 29.62,0,3],
+              value3:[115.88, 29.62,0,3],
+              value4:[115.88, 29.62,0,3]
+              });
+              option.series[0].data.push({name: "武宁县",value:[115.1 ,29.27, 0, 2],
+              value1:[115.1 ,29.27,0,3],
+              value2:[115.1 ,29.27,0,3],
+              value3:[115.1 ,29.27,0,3],
+              value4:[115.1 ,29.27,0,3]
+              });
+              option.series[0].data.push({name: "修水县",value:[114.57 ,29.03, 0, 2],
+              value1:[114.57 ,29.03,0,3],
+              value2:[114.57 ,29.03,0,3],
+              value3:[114.57 ,29.03,0,3],
+              value4:[114.57 ,29.03,0,3]
+              });
+              option.series[0].data.push({name: "永修县",value:[115.8 ,29.03, 0, 3],
+              value1:[115.8 ,29.03,0,3],
+              value2:[115.8 ,29.03,0,3],
+              value3:[115.8 ,29.03,0,3],
+              value4:[115.8 ,29.03,0,3]
+              });
+              option.series[0].data.push({name: "德安县",value:[115.77, 29.33, 0,1],
+              value1:[115.77, 29.33,0,3],
+              value2:[115.77, 29.33,0,3],
+              value3:[115.77, 29.33,0,3],
+              value4:[115.77, 29.33,0,3]
+              });
+              option.series[0].data.push({name: "星子县",value:[116.03, 29.45, 0, 2],
+              value1:[116.03, 29.45,0,3],
+              value2:[116.03, 29.45,0,3],
+              value3:[116.03, 29.45,0,3],
+              value4:[116.03, 29.45,0,3]
+              });
+              option.series[0].data.push({name: "都昌县 ",value:[116.18, 29.27, 0, 2],
+              value1:[116.18, 29.27,0,3],
+              value2:[116.18, 29.27,0,3],
+              value3:[116.18, 29.27,0,3],
+              value4:[116.18, 29.27,0,3]
+              });
+              option.series[0].data.push({name: "湖口县",value:[116.22, 29.73, 0, 2],
+              value1:[116.22, 29.73,0,3],
+              value2:[116.22, 29.73,0,3],
+              value3:[116.22, 29.73,0,3],
+              value4:[116.22, 29.73,0,3]
+              });
+              option.series[0].data.push({name: "彭泽县 ",value:[116.55 ,29.9, 0, 2],
+              value1:[116.55 ,29.9,0,3],
+              value2:[116.55 ,29.9,0,3],
+              value3:[116.55 ,29.9,0,3],
+              value4:[116.55 ,29.9,0,3]
+              });
+              option.series[0].data.push({name: "瑞昌市",value:[115.67 ,29.68, 0, 2],
+              value1:[115.67 ,29.68,0,3],
+              value2:[115.67 ,29.68,0,3],
+              value3:[115.67 ,29.68,0,3],
+              value4:[115.67 ,29.68,0,3]
+              });
          }
          if(name=="新余市"){
-              option.series[0].data.push({name: "渝水区 ",value:[114.93, 27.8, 15, 2]});
-              option.series[0].data.push({name: "分宜县",value:[114.67 ,27.82, 35,1]});
+              option.series[0].data.push({name: "渝水区 ",value:[114.93, 27.8, 0, 2],
+              value1:[114.93, 27.8,0,3],
+              value2:[114.93, 27.8,0,3],
+              value3:[114.93, 27.8,0,3],
+              value4:[114.93, 27.8,0,3]
+              });
+              option.series[0].data.push({name: "分宜县",value:[114.67 ,27.82, 0,1],
+              value1:[114.67 ,27.82,0,3],
+              value2:[114.67 ,27.82,0,3],
+              value3:[114.67 ,27.82,0,3],
+              value4:[114.67 ,27.82,0,3]
+              });
               
          }
          if(name=="鹰潭市"){
-               option.series[0].data.push({name: "月湖区",value:[117.05, 28.23,32,2]});
-              option.series[0].data.push({name: "余江县",value:[116.82 ,28.2,34,1]});
-              option.series[0].data.push({name: "贵溪市",value:[117.22 ,28.28,32,1]});
+               option.series[0].data.push({name: "月湖区",value:[117.05, 28.23,0,2],
+              value1:[117.05, 28.23,0,3],
+              value2:[117.05, 28.23,0,3],
+              value3:[117.05, 28.23,0,3],
+              value4:[117.05, 28.23,0,3]
+              });
+              option.series[0].data.push({name: "余江县",value:[116.82 ,28.2,0,1],
+              value1:[116.82 ,28.2,0,3],
+              value2:[116.82 ,28.2,0,3],
+              value3:[116.82 ,28.2,0,3],
+              value4:[116.82 ,28.2,0,3]
+              });
+              option.series[0].data.push({name: "贵溪市",value:[117.22 ,28.28,0,1],
+              value1:[117.22 ,28.28,0,3],
+              value2:[117.22 ,28.28,0,3],
+              value3:[117.22 ,28.28,0,3],
+              value4:[117.22 ,28.28,0,3]
+              });
               
          }
          if(name=="赣州市"){
-               option.series[0].data.push({name: "章贡区",value:[114.93 ,25.87,32,2]});
-               option.series[0].data.push({name: "赣县",value:[115.0 ,25.87,34,1]});
-               option.series[0].data.push({name: "信丰县",value:[114.93, 25.38,32,1]});
-               option.series[0].data.push({name: "大余县",value:[114.35 ,25.4,31,2]});
-               option.series[0].data.push({name: "上犹县",value:[114.53, 25.8,11,2]});
-               option.series[0].data.push({name: "崇义县",value:[114.3, 25.7,32,2]});
-               option.series[0].data.push({name: "安远县",value:[115.38 ,25.13,34,1]});
-               option.series[0].data.push({name: "龙南县",value:[114.78 ,24.92,32,1]});
-               option.series[0].data.push({name: "定南县",value:[115.03 ,24.78,31,2]});
-               option.series[0].data.push({name: "全南县",value:[114.52, 24.75,11,2]});
-               option.series[0].data.push({name: "宁都县",value:[116.02, 26.48,32,2]});
-               option.series[0].data.push({name: "于都县",value:[115.42 ,25.95,34,1]});
-               option.series[0].data.push({name: "兴国县",value:[115.35, 26.33,32,1]});
-               option.series[0].data.push({name: "会昌县",value:[115.78 ,25.6,31,2]});
-               option.series[0].data.push({name: "寻乌县",value:[115.65 ,24.95,11,2]});
-               option.series[0].data.push({name: " 石城县",value:[116.33 ,26.33,32,1]});
-               option.series[0].data.push({name: "瑞金市",value:[116.03 ,25.88,31,2]});
-               option.series[0].data.push({name: "南康市",value:[114.75, 25.65,11,2]});
+               option.series[0].data.push({name: "章贡区",value:[114.93 ,25.87,0,2],
+              value1:[114.93 ,25.87,0,3],
+              value2:[114.93 ,25.87,0,3],
+              value3:[114.93 ,25.87,0,3],
+              value4:[114.93 ,25.87,0,3]
+              });
+               option.series[0].data.push({name: "赣县",value:[115.0 ,25.87,0,1],
+              value1:[115.0 ,25.87,0,3],
+              value2:[115.0 ,25.87,0,3],
+              value3:[115.0 ,25.87,0,3],
+              value4:[115.0 ,25.87,0,3]
+              });
+               option.series[0].data.push({name: "信丰县",value:[114.93, 25.38,0,1],
+              value1:[114.93, 25.38,0,3],
+              value2:[114.93, 25.38,0,3],
+              value3:[114.93, 25.38,0,3],
+              value4:[114.93, 25.38,0,3]
+              });
+               option.series[0].data.push({name: "大余县",value:[114.35 ,25.4,0,2],
+              value1:[114.35 ,25.4,0,3],
+              value2:[114.35 ,25.4,0,3],
+              value3:[114.35 ,25.4,0,3],
+              value4:[114.35 ,25.4,0,3]
+              });
+               option.series[0].data.push({name: "上犹县",value:[114.53, 25.8,0,2],
+              value1:[114.53, 25.8,0,3],
+              value2:[114.53, 25.8,0,3],
+              value3:[114.53, 25.8,0,3],
+              value4:[114.53, 25.8,0,3]
+              });
+               option.series[0].data.push({name: "崇义县",value:[114.3, 25.7,0,2],
+              value1:[114.3, 25.7,0,3],
+              value2:[114.3, 25.7,0,3],
+              value3:[114.3, 25.7,0,3],
+              value4:[114.3, 25.7,0,3]
+              });
+               option.series[0].data.push({name: "安远县",value:[115.38 ,25.13,0,1],
+              value1:[115.38 ,25.13,0,3],
+              value2:[115.38 ,25.13,0,3],
+              value3:[115.38 ,25.13,0,3],
+              value4:[115.38 ,25.13,0,3]
+              });
+               option.series[0].data.push({name: "龙南县",value:[114.78 ,24.92,0,1],
+              value1:[114.78 ,24.92,0,3],
+              value2:[114.78 ,24.92,0,3],
+              value3:[114.78 ,24.92,0,3],
+              value4:[114.78 ,24.92,0,3]
+              });
+               option.series[0].data.push({name: "定南县",value:[115.03 ,24.78,0,2],
+              value1:[115.03 ,24.78,0,3],
+              value2:[115.03 ,24.78,0,3],
+              value3:[115.03 ,24.78,0,3],
+              value4:[115.03 ,24.78,0,3]
+              });
+               option.series[0].data.push({name: "全南县",value:[114.52, 24.75,0,2],
+              value1:[114.52, 24.75,0,3],
+              value2:[114.52, 24.75,0,3],
+              value3:[114.52, 24.75,0,3],
+              value4:[114.52, 24.75,0,3]
+              });
+               option.series[0].data.push({name: "宁都县",value:[116.02, 26.48,0,2],
+              value1:[116.02, 26.48,0,3],
+              value2:[116.02, 26.48,0,3],
+              value3:[116.02, 26.48,0,3],
+              value4:[116.02, 26.48,0,3]
+              });
+               option.series[0].data.push({name: "于都县",value:[115.42 ,25.95,0,1],
+              value1:[115.42 ,25.95,0,3],
+              value2:[115.42 ,25.95,0,3],
+              value3:[115.42 ,25.95,0,3],
+              value4:[115.42 ,25.95,0,3]
+              });
+               option.series[0].data.push({name: "兴国县",value:[115.35, 26.33,0,1],
+              value1:[115.35, 26.33,0,3],
+              value2:[115.35, 26.33,0,3],
+              value3:[115.35, 26.33,0,3],
+              value4:[115.35, 26.33,0,3]
+              });
+               option.series[0].data.push({name: "会昌县",value:[115.78 ,25.6,0,2],
+              value1:[115.78 ,25.6,0,3],
+              value2:[115.78 ,25.6,0,3],
+              value3:[115.78 ,25.6,0,3],
+              value4:[115.78 ,25.6,0,3]
+              });
+               option.series[0].data.push({name: "寻乌县",value:[115.65 ,24.95,0,2],
+              value1:[115.65 ,24.95,0,3],
+              value2:[115.65 ,24.95,0,3],
+              value3:[115.65 ,24.95,0,3],
+              value4:[115.65 ,24.95,0,3]
+              });
+               option.series[0].data.push({name: " 石城县",value:[116.33 ,26.33,0,1],
+              value1:[116.33 ,26.33,0,3],
+              value2:[116.33 ,26.33,0,3],
+              value3:[116.33 ,26.33,0,3],
+              value4:[116.33 ,26.33,0,3]
+              });
+               option.series[0].data.push({name: "瑞金市",value:[116.03 ,25.88,0,2],
+              value1:[116.03 ,25.88,0,3],
+              value2:[116.03 ,25.88,0,3],
+              value3:[116.03 ,25.88,0,3],
+              value4:[116.03 ,25.88,0,3]
+              });
+               option.series[0].data.push({name: "南康市",value:[114.75, 25.65,0,2],
+              value1:[114.75, 25.65,0,3],
+              value2:[114.75, 25.65,0,3],
+              value3:[114.75, 25.65,0,3],
+              value4:[114.75, 25.65,0,3]
+              });
 
          }
          if(name=="吉安市"){
-               option.series[0].data.push({name: "吉州区",value:[114.98, 27.12,32,2]});
-              option.series[0].data.push({name: "青原区",value:[115.0 ,27.1,34,1]});
-              option.series[0].data.push({name: "吉安县",value:[114.9 ,27.05,32,1]});
-              option.series[0].data.push({name: "吉水县 ",value:[115.13 ,27.22,31,2]});
-              option.series[0].data.push({name: "峡江县",value:[115.33, 27.62,25,2]});
-              option.series[0].data.push({name: "新干县",value:[115.4, 27.77,25,2]});
-              option.series[0].data.push({name: "永丰县 ",value:[115.43 ,27.32,32,2]});
-              option.series[0].data.push({name: "泰和县",value:[114.88 ,26.8,34,1]});
-              option.series[0].data.push({name: "遂川县",value:[114.52 ,26.33,32,1]});
-              option.series[0].data.push({name: "万安县 ",value:[114.78, 26.47,31,2]});
-              option.series[0].data.push({name: "安福县",value:[114.62 ,27.38,25,2]});
-              option.series[0].data.push({name: "永新县",value:[114.23, 26.95,25,2]});
-               option.series[0].data.push({name: "井冈山市",value:[114.27 ,26.72,25,2]});
+               option.series[0].data.push({name: "吉州区",value:[114.98, 27.12,32,2],
+              value1:[114.98, 27.12,0,3],
+              value2:[114.98, 27.12,0,3],
+              value3:[114.98, 27.12,0,3],
+              value4:[114.98, 27.12,0,3]
+              });
+              option.series[0].data.push({name: "青原区",value:[115.0 ,27.1,34,1],
+              value1:[115.0 ,27.1,0,3],
+              value2:[115.0 ,27.1,0,3],
+              value3:[115.0 ,27.1,0,3],
+              value4:[115.0 ,27.1,0,3]
+              });
+              option.series[0].data.push({name: "吉安县",value:[114.9 ,27.05,32,1],
+              value1:[114.9 ,27.05,0,3],
+              value2:[114.9 ,27.05,0,3],
+              value3:[114.9 ,27.05,0,3],
+              value4:[114.9 ,27.05,0,3]
+              });
+              option.series[0].data.push({name: "吉水县 ",value:[115.13 ,27.22,31,2],
+              value1:[115.13 ,27.22,0,3],
+              value2:[115.13 ,27.22,0,3],
+              value3:[115.13 ,27.22,0,3],
+              value4:[115.13 ,27.22,0,3]
+              });
+              option.series[0].data.push({name: "峡江县",value:[115.33, 27.62,25,2],
+              value1:[115.33, 27.62,0,3],
+              value2:[115.33, 27.62,0,3],
+              value3:[115.33, 27.62,0,3],
+              value4:[115.33, 27.62,0,3]
+              });
+              option.series[0].data.push({name: "新干县",value:[115.4, 27.77,25,2],
+              value1:[115.4, 27.77,0,3],
+              value2:[115.4, 27.77,0,3],
+              value3:[115.4, 27.77,0,3],
+              value4:[115.4, 27.77,0,3]
+              });
+              option.series[0].data.push({name: "永丰县 ",value:[115.43 ,27.32,32,2],
+              value1:[115.43 ,27.32,0,3],
+              value2:[115.43 ,27.32,0,3],
+              value3:[115.43 ,27.32,0,3],
+              value4:[115.43 ,27.32,0,3]
+              });
+              option.series[0].data.push({name: "泰和县",value:[114.88 ,26.8,34,1],
+              value1:[114.88 ,26.8,0,3],
+              value2:[114.88 ,26.8,0,3],
+              value3:[114.88 ,26.8,0,3],
+              value4:[114.88 ,26.8,0,3]
+              });
+              option.series[0].data.push({name: "遂川县",value:[114.52 ,26.33,32,1],
+              value1:[114.52 ,26.33,0,3],
+              value2:[114.52 ,26.33,0,3],
+              value3:[114.52 ,26.33,0,3],
+              value4:[114.52 ,26.33,0,3]
+              });
+              option.series[0].data.push({name: "万安县 ",value:[114.78, 26.47,31,2],
+              value1:[114.78, 26.47,0,3],
+              value2:[114.78, 26.47,0,3],
+              value3:[114.78, 26.47,0,3],
+              value4:[114.78, 26.47,0,3]
+              });
+              option.series[0].data.push({name: "安福县",value:[114.62 ,27.38,25,2],
+              value1:[114.62 ,27.38,0,3],
+              value2:[114.62 ,27.38,0,3],
+              value3:[114.62 ,27.38,0,3],
+              value4:[114.62 ,27.38,0,3]
+              });
+              option.series[0].data.push({name: "永新县",value:[114.23, 26.95,25,2],
+              value1:[114.23, 26.95,0,3],
+              value2:[114.23, 26.95,0,3],
+              value3:[114.23, 26.95,0,3],
+              value4:[114.23, 26.95,0,3]
+              });
+               option.series[0].data.push({name: "井冈山市",value:[114.27 ,26.72,25,2],
+              value1:[114.27 ,26.72,0,3],
+              value2:[114.27 ,26.72,0,3],
+              value3:[114.27 ,26.72,0,3],
+              value4:[114.27 ,26.72,0,3]
+              });
          }
          if(name=="宜春市"){
-               option.series[0].data.push({name: "袁州区",value:[114.38, 27.8,32,2]});
-              option.series[0].data.push({name: "奉新县",value:[115.38, 28.7,34,1]});
-              option.series[0].data.push({name: "万载县",value:[114.43, 28.12,32,1]});
-              option.series[0].data.push({name: "上高县",value:[114.92, 28.23,31,2]});
-              option.series[0].data.push({name: "宜丰县",value:[114.78, 28.38,25,2]});
-              option.series[0].data.push({name: "靖安县 ",value:[115.35, 28.87,25,2]});
-               option.series[0].data.push({name: "铜鼓县",value:[114.37, 28.53,32,1]});
-              option.series[0].data.push({name: "丰城市",value:[115.78, 28.2,31,2]});
-              option.series[0].data.push({name: "樟树市",value:[115.53, 28.07,25,2]});
-              option.series[0].data.push({name: "高安市 ",value:[115.37 ,28.42,25,2]});
+               option.series[0].data.push({name: "袁州区",value:[114.38, 27.8,32,2],
+              value1:[114.38, 27.8,0,3],
+              value2:[114.38, 27.8,0,3],
+              value3:[114.38, 27.8,0,3],
+              value4:[114.38, 27.8,0,3]
+              });
+              option.series[0].data.push({name: "奉新县",value:[115.38, 28.7,34,1],
+              value1:[115.38, 28.7,0,3],
+              value2:[115.38, 28.7,0,3],
+              value3:[115.38, 28.7,0,3],
+              value4:[115.38, 28.7,0,3]
+              });
+              option.series[0].data.push({name: "万载县",value:[114.43, 28.12,32,1],
+              value1:[114.43, 28.12,0,3],
+              value2:[114.43, 28.12,0,3],
+              value3:[114.43, 28.12,0,3],
+              value4:[114.43, 28.12,0,3]
+              });
+              option.series[0].data.push({name: "上高县",value:[114.92, 28.23,31,2],
+              value1:[114.92, 28.23,0,3],
+              value2:[114.92, 28.23,0,3],
+              value3:[114.92, 28.23,0,3],
+              value4:[114.92, 28.23,0,3]
+              });
+              option.series[0].data.push({name: "宜丰县",value:[114.78, 28.38,25,2],
+              value1:[114.78, 28.38,0,3],
+              value2:[114.78, 28.38,0,3],
+              value3:[114.78, 28.38,0,3],
+              value4:[114.78, 28.38,0,3]
+              });
+              option.series[0].data.push({name: "靖安县 ",value:[115.35, 28.87,25,2],
+              value1:[115.35, 28.87,0,3],
+              value2:[115.35, 28.87,0,3],
+              value3:[115.35, 28.87,0,3],
+              value4:[115.35, 28.87,0,3]
+              });
+               option.series[0].data.push({name: "铜鼓县",value:[114.37, 28.53,32,1],
+              value1:[114.37, 28.53,0,3],
+              value2:[114.37, 28.53,0,3],
+              value3:[114.37, 28.53,0,3],
+              value4:[114.37, 28.53,0,3]
+              });
+              option.series[0].data.push({name: "丰城市",value:[115.78, 28.2,31,2],
+              value1:[115.78, 28.2,0,3],
+              value2:[115.78, 28.2,0,3],
+              value3:[115.78, 28.2,0,3],
+              value4:[115.78, 28.2,0,3]
+              });
+              option.series[0].data.push({name: "樟树市",value:[115.53, 28.07,25,2],
+              value1:[115.53, 28.07,0,3],
+              value2:[115.53, 28.07,0,3],
+              value3:[115.53, 28.07,0,3],
+              value4:[115.53, 28.07,0,3]
+              });
+              option.series[0].data.push({name: "高安市 ",value:[115.37 ,28.42,25,2],
+              value1:[115.37 ,28.42,0,3],
+              value2:[115.37 ,28.42,0,3],
+              value3:[115.37 ,28.42,0,3],
+              value4:[115.37 ,28.42,0,3]
+              });
          }
          if(name=="抚州市"){
-               option.series[0].data.push({name: "临川区",value:[116.35, 27.98,32,2]});
-              option.series[0].data.push({name: "南城县",value:[116.63 ,27.55,34,1]});
-              option.series[0].data.push({name: "黎川县",value:[116.92 ,27.3,32,1]});
-              option.series[0].data.push({name: "南丰县",value:[116.53 ,27.22,31,2]});
-              option.series[0].data.push({name: "崇仁县 ",value:[116.05, 27.77,25,2]});
-              option.series[0].data.push({name: " 乐安县",value:[115.83, 27.43,25,2]});
-               option.series[0].data.push({name: "宜黄县",value:[116.22, 27.55,34,1]});
-              option.series[0].data.push({name: "金溪县",value:[116.77, 27.92,32,1]});
-              option.series[0].data.push({name: "资溪县",value:[117.07, 27.7,31,2]});
-              option.series[0].data.push({name: "东乡县  ",value:[116.62 ,28.23,25,2]});
-              option.series[0].data.push({name: " 广昌县 ",value:[116.32 ,26.83,25,2]});
+               option.series[0].data.push({name: "临川区",value:[116.35, 27.98,32,2],
+              value1:[116.35, 27.98,0,3],
+              value2:[116.35, 27.98,0,3],
+              value3:[116.35, 27.98,0,3],
+              value4:[116.35, 27.98,0,3]
+              });
+              option.series[0].data.push({name: "南城县",value:[116.63 ,27.55,34,1],
+              value1:[116.63 ,27.55,0,3],
+              value2:[116.63 ,27.55,0,3],
+              value3:[116.63 ,27.55,0,3],
+              value4:[116.63 ,27.55,0,3]
+              });
+              option.series[0].data.push({name: "黎川县",value:[116.92 ,27.3,32,1],
+              value1:[116.92 ,27.3,0,3],
+              value2:[116.92 ,27.3,0,3],
+              value3:[116.92 ,27.3,0,3],
+              value4:[116.92 ,27.3,0,3]
+              });
+              option.series[0].data.push({name: "南丰县",value:[116.53 ,27.22,31,2],
+              value1:[116.53 ,27.22,0,3],
+              value2:[116.53 ,27.22,0,3],
+              value3:[116.53 ,27.22,0,3],
+              value4:[116.53 ,27.22,0,3]
+              });
+              option.series[0].data.push({name: "崇仁县 ",value:[116.05, 27.77,25,2],
+              value1:[116.05, 27.77,0,3],
+              value2:[116.05, 27.77,0,3],
+              value3:[116.05, 27.77,0,3],
+              value4:[116.05, 27.77,0,3]
+              });
+              option.series[0].data.push({name: " 乐安县",value:[115.83, 27.43,25,2],
+              value1:[115.83, 27.43,0,3],
+              value2:[115.83, 27.43,0,3],
+              value3:[115.83, 27.43,0,3],
+              value4:[115.83, 27.43,0,3]
+              });
+               option.series[0].data.push({name: "宜黄县",value:[116.22, 27.55,34,1],
+              value1:[116.22, 27.55,0,3],
+              value2:[116.22, 27.55,0,3],
+              value3:[116.22, 27.55,0,3],
+              value4:[116.22, 27.55,0,3]
+              });
+              option.series[0].data.push({name: "金溪县",value:[116.77, 27.92,32,1],
+              value1:[116.77, 27.92,0,3],
+              value2:[116.77, 27.92,0,3],
+              value3:[116.77, 27.92,0,3],
+              value4:[116.77, 27.92,0,3]
+              });
+              option.series[0].data.push({name: "资溪县",value:[117.07, 27.7,31,2],
+              value1:[117.07, 27.7,0,3],
+              value2:[117.07, 27.7,0,3],
+              value3:[117.07, 27.7,0,3],
+              value4:[117.07, 27.7,0,3]
+              });
+              option.series[0].data.push({name: "东乡县  ",value:[116.62 ,28.23,25,2],
+              value1:[116.62 ,28.23,0,3],
+              value2:[116.62 ,28.23,0,3],
+              value3:[116.62 ,28.23,0,3],
+              value4:[116.62 ,28.23,0,3]
+              });
+              option.series[0].data.push({name: " 广昌县 ",value:[116.32 ,26.83,25,2],
+              value1:[116.32 ,26.83,0,3],
+              value2:[116.32 ,26.83,0,3],
+              value3:[116.32 ,26.83,0,3],
+              value4:[116.32 ,26.83,0,3]
+              });
          }
         if(name=="上饶市"){
-               option.series[0].data.push({name: "信州区",value:[117.95, 28.43,32,2]});
-              option.series[0].data.push({name: "上饶县",value:[117.92, 28.43,34,1]});
-              option.series[0].data.push({name: "广丰县",value:[118.18, 28.43,32,1]});
-              option.series[0].data.push({name: "玉山县",value:[118.25, 28.68,31,2]});
-              option.series[0].data.push({name: "铅山县",value:[117.7, 28.32,25,2]});
-              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
-               option.series[0].data.push({name: "戈阳县",value:[117.43, 28.4,31,2]});
-              option.series[0].data.push({name: "余干县",value:[116.68, 28.7,25,2]});
-              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
+               option.series[0].data.push({name: "信州区",value:[117.95, 28.43,32,2],
+              value1:[117.95, 28.43,0,3],
+              value2:[117.95, 28.43,0,3],
+              value3:[117.95, 28.43,0,3],
+              value4:[117.95, 28.43,0,3]
+              });
+              option.series[0].data.push({name: "上饶县",value:[117.92, 28.43,34,1],
+              value1:[117.92, 28.43,0,3],
+              value2:[117.92, 28.43,0,3],
+              value3:[117.92, 28.43,0,3],
+              value4:[117.92, 28.43,0,3]
+              });
+              option.series[0].data.push({name: "广丰县",value:[118.18, 28.43,32,1],
+              value1:[118.18, 28.43,0,3],
+              value2:[118.18, 28.43,0,3],
+              value3:[118.18, 28.43,0,3],
+              value4:[118.18, 28.43,0,3]
+              });
+              option.series[0].data.push({name: "玉山县",value:[118.25, 28.68,31,2],
+              value1:[118.25, 28.68,0,3],
+              value2:[118.25, 28.68,0,3],
+              value3:[118.25, 28.68,0,3],
+              value4:[118.25, 28.68,0,3]
+              });
+              option.series[0].data.push({name: "铅山县",value:[117.7, 28.32,25,2],
+              value1:[117.7, 28.32,0,3],
+              value2:[117.7, 28.32,0,3],
+              value3:[117.7, 28.32,0,3],
+              value4:[117.7, 28.32,0,3]
+              });
+              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2],
+              value1:[117.6, 28.42,0,3],
+              value2:[117.6, 28.42,0,3],
+              value3:[117.6, 28.42,0,3],
+              value4:[117.6, 28.42,0,3]
+              });
+               option.series[0].data.push({name: "戈阳县",value:[117.43, 28.4,31,2],
+              value1:[117.43, 28.4,0,3],
+              value2:[117.43, 28.4,0,3],
+              value3:[117.43, 28.4,0,3],
+              value4:[117.43, 28.4,0,3]
+              });
+              option.series[0].data.push({name: "余干县",value:[116.68, 28.7,25,2],
+              value1:[116.68, 28.7,0,3],
+              value2:[116.68, 28.7,0,3],
+              value3:[116.68, 28.7,0,3],
+              value4:[116.68, 28.7,0,3]
+              });
+              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2],
+              value1:[117.6, 28.42,0,3],
+              value2:[117.6, 28.42,0,3],
+              value3:[117.6, 28.42,0,3],
+              value4:[117.6, 28.42,0,3]
+              });
          }
            myChart.setOption(option);
     	},

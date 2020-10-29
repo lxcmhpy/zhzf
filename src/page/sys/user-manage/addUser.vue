@@ -71,7 +71,6 @@
                   :options="getOrganList"
                   :accordion="true"
                   :props="myprops"
-                  :value="selectOrganId"
                   @getValue="handleOrgan"
                 ></elSelectTree>
           </el-form-item>
@@ -119,7 +118,7 @@
       </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="resetForm">取 消</el-button>
+      <el-button @click="closeDialog">取 消</el-button>
       <el-button type="primary" @click="save">保存</el-button>
     </span>
   </el-dialog>
@@ -166,6 +165,7 @@ export default {
         idNumber: "",
         category: "",
         organId: "",
+        userOrgan: "",
         organTitle: "",
         departmentId: "",
         departmentTitle: "",
@@ -212,21 +212,31 @@ export default {
       this.visible = true;
       this.isDisabled = false;
       this.dialogStatus = "addEquipment";
-      let _this = this
-      //新增弹框标题
-      this.$nextTick(() => {
-        _this.$refs["addUserForm"].resetFields();
-      });
+      this.addUserForm = {
+          id: "",
+          username: "",
+          password: "123456",
+          mobile: "",
+          nickName: "",
+          idNumber: "",
+          category: "",
+          organId: "",
+          organTitle: "",
+          departmentId: "",
+          departmentTitle: "",
+          provincial: "",
+          ministerial: "",
+          maritime: "",
+          other: "",
+          status:true
+        };
       this.parentNode = data;
       this.getCurrentOrganAndChild();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
-      this.visible = false;
-      // this.$nextTick(() => {
-      //   this.$refs["addUserForm"].resetFields();
-      // });
       this.$refs["addUserForm"].resetFields();
+      this.visible = false;
     },
     //编辑
     handelEdit(data) {
@@ -276,43 +286,29 @@ export default {
     },
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {  
-      // let _this = this
-      // this.$store.dispatch("getCurrentAndNextOrgan",this.parentNode.parentNodeId).then(
-      //   res => {
-
-      //     console.log(res);
-      //     _this.getOrganList = res.data;
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   }
-      // );
+      let _this = this
       getAllOrganApi().then((res) => {
-            console.log("获取机构树", res);
-            this.getOrganList = res.data;
-            this.addUserForm.organId = this.selectOrganId = res.data[0].id;
-            this.$refs.elSelectTreeObj.valueTitle = res.data[0].label
-            this.$refs.elSelectTreeObj.valueId = res.data[0].id
-
-        })
-        .catch((err) => {
-            throw new Error(err);
-        });
+        console.log("获取机构树", res);
+        _this.getOrganList = res.data;
+        _this.$refs.elSelectTreeObj.valueTitle = _this.addUserForm.userOrgan ?_this.addUserForm.userOrgan :"";
+        _this.$refs.elSelectTreeObj.valueId = _this.addUserForm.organId ?_this.addUserForm.organId:"";
+      })
+      .catch((err) => {
+          throw new Error(err);
+      });
     },
     //获取选中的机构
     handleOrgan(val) {
         this.$refs.elSelectTreeObj.$children[0].handleClose();
-        this.addUserForm.organId = val;
-        // this.caseSearchForm.organId = val;
-        //根据机构获取执法人员
-        // this.findLawOfficerList(val);
+        this.addUserForm.organId = val ? val : "";
+        this.getDepartment(val)
     },
     //获取选中的机构下的部门
     getDepartment(data1) {
-      console.log(data1);
+      console.log('11111111',data1);
       this.addUserForm.departmentId = "";
       let data = {
-        organId: data1
+        organId: data1 ? data1 : ""
       };
       let _this = this
       console.log("获取选中的机构下的部门", data);
@@ -343,7 +339,7 @@ export default {
                   type: "success"
                 });
                 _this.visible = false;
-                _this.$emit("uploadaaa", "1");
+                _this.$emit("getUserList", "1");
               })
               .catch(err => {
                 _this.$message({
@@ -378,7 +374,7 @@ export default {
                   message: "修改用户成功",
                   type: "success"
                 });
-                _this.$emit("uploadaaa");
+                _this.$emit("getUserList");
                 _this.visible = false;
               })
               .catch(err => {
@@ -420,29 +416,6 @@ export default {
     //   }
     // },
   },
-  watch: {
-    visible(val) {
-      if (val === false) {
-        this.addUserForm = {
-          id: "",
-          username: "",
-          password: "123456",
-          mobile: "",
-          nickName: "",
-          idNumber: "",
-          category: "",
-          organId: "",
-          organTitle: "",
-          departmentId: "",
-          departmentTitle: "",
-          provincial: "",
-          ministerial: "",
-          maritime: "",
-          other: ""
-        };
-      }
-    }
-  }
 };
 </script>
 

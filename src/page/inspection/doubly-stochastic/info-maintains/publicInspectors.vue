@@ -557,7 +557,7 @@ export default {
         certEndTime: "",
         isSupervisor: "",
         isLawProfession: "",
-        stationStatusName: "",
+        stationStatusName: "在岗",
         remark: "",
         name: "",
         certStartTime: "",
