@@ -222,13 +222,18 @@ export default {
     }
   },
   async beforeRouteLeave(to, from, next){
+    if(sessionStorage.getItem('LeavePersonInfoPage') === null){
+      next((vm) => {});
+      return;
+    }
     let leavelPage = await this.$store.dispatch('leaveEditPersonInfo', '当前信息尚未保存，是否确认跳转？');
     if(leavelPage){
-      next();
-      console.log('1');
+      next((vm) => {});
+      return;
     }else{
       if(to.path.indexOf('login') > -1){
-        next();
+        next((vm) => {});
+        return;
       }else{
         this.$store.commit("SET_ACTIVE_INDEX_STO", this.pageTabIndex);
       }
