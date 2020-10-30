@@ -179,8 +179,6 @@ export default {
         validatePromise.push(validate);
       }
       Promise.all(validatePromise).then(values => {
-        console.log(values);
-        console.log(this.tableData);
         if (values.indexOf(false) < 0) {
           const types = [];
           this.tableData.map(item => {
@@ -286,6 +284,7 @@ export default {
       this.handelType = type;
       this.addTempleteForm.templeteName = "";
       this.addTempleteForm.templeteId = "";
+      this.deleteDate.splice(0, this.deleteDate.length);
       if (type == 1) {
         //新增
         this.dialogTitle = "新增模板";
@@ -296,7 +295,6 @@ export default {
         this.addTempleteForm.templeteId = row.templeteId;
         this.getTempletMsg(row);
       }
-      console.log(this.$refs);
     },
     //查询模板节段信息
     getTempletMsg(row) {
