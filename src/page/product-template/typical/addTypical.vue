@@ -30,7 +30,7 @@
             <el-form-item label="当事人" prop="party">
               <el-input v-model="dicSearchForm.party"></el-input>
             </el-form-item>
-            <el-form-item label="受案时间" style="width:450px"> 
+            <el-form-item label="受案时间"> 
               <el-date-picker
                 v-model="dicSearchForm.daterange"
                 type="daterange"
@@ -43,16 +43,14 @@
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="受案机构">
-              <el-select
-                  v-model="dicSearchForm.organName"
-                  placeholder="请选择">
-                  <el-option
-                  v-for="item in organList"
-                  :key="item.id"
-                  :label="item.label"
-                  :value="item.id"
-                  ></el-option>
-              </el-select>
+              <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="organList"
+                  :accordion="true"
+                  :props="myprops"
+                  :value="selectOrganId"
+                  @getName="handleOrgan"
+                ></elSelectTree>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-search" @click="getCaseTypes">查询</el-button>
@@ -103,6 +101,8 @@
 <script>
 import {getQueryCaseTypeListApi,findClosCaseList,markTypicalCase} from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
+import { getAllOrganApi } from "@/api/system";
 import typeicalDetail from "./typeicalDetail";
 export default {
   data() {
@@ -123,12 +123,18 @@ export default {
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       checkBoxData:[],
-      visible:false
+      visible:false,
+      myprops: {
+          label: "label",
+          value: "id",
+      },
+      selectOrganId: "", //默认选中机构的id
       
     };
   },
   components: {
-    typeicalDetail
+    typeicalDetail,
+    elSelectTree
   },
   inject: ["reload"],
   methods: {
@@ -173,6 +179,26 @@ export default {
     showModal(){
       this.getCaseTypes();
       this.visible = true;
+    },
+    //获取机构
+    getAllOrgan() {
+      let _this = this
+      getAllOrganApi().then((res) => {
+        console.log(res)
+        this.organList = res.data;
+        this.dicSearchForm.organName = this.selectOrganId = res.data[0].label;
+        this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
+        this.$refs.elSelectTreeObj.valueId = res.data[0].id;
+
+      })
+      .catch((err) => {
+          throw new Error(err);
+      });
+    },
+    //获取选中的机构
+    handleOrgan(val) {
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+      this.dicSearchForm.organName = val;
     },
     getCaseTypes() {
       let acceptStartTime=this.dicSearchForm.daterange[0];
