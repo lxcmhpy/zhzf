@@ -234,7 +234,6 @@ export default {
       }
     },
     async getData() {
-      debugger;
       this.logForm.startTime = this.value1[0];
       this.logForm.endTime = this.value1[1];
       let res = await reportStatisticApi(this.logForm);
@@ -298,7 +297,6 @@ export default {
     this.getData();
   },
   created() {
-    // this.getLogList();
   },
 };
 </script>
