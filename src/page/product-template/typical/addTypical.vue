@@ -10,7 +10,7 @@
     <div class="searchAndpageBox" id="roleBox">
       <div class="handlePart">
         <div class="search">
-          <el-form :inline="true" :model="dicSearchForm" class>
+          <el-form ref="searchFormRef" :inline="true" :model="dicSearchForm" class>
             <el-form-item label="案件编号" prop="caseNumber">
               <el-input v-model="dicSearchForm.caseNumber"></el-input>
             </el-form-item>
@@ -30,7 +30,7 @@
             <el-form-item label="当事人" prop="party">
               <el-input v-model="dicSearchForm.party"></el-input>
             </el-form-item>
-            <el-form-item label="受案时间"> 
+            <el-form-item label="受案时间" prop="daterange"> 
               <el-date-picker
                 v-model="dicSearchForm.daterange"
                 type="daterange"
@@ -42,7 +42,7 @@
                 :default-time="['00:00:00', '23:59:59']"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="受案机构">
+            <el-form-item label="受案机构" prop="organName">
               <elSelectTree
                   ref="elSelectTreeObj"
                   :options="organList"
@@ -149,6 +149,7 @@ export default {
       this.dicSearchForm.organName="";
       this.dicSearchForm.caseNumber="";
       this.dicSearchForm.daterange=[];
+      this.$refs.elSelectTreeObj.clearHandle();
       this.tableData=[];
     },
     //重置
@@ -157,11 +158,13 @@ export default {
       this.pageSize = 10;
       this.totalPage = 0;
       this.tableData=[];
-      this.dicSearchForm.zfml="";
-      this.dicSearchForm.party="";
-      this.dicSearchForm.organName="";
-      this.dicSearchForm.caseNumber="";
-      this.dicSearchForm.daterange=[];
+      // this.dicSearchForm.zfml="";
+      // this.dicSearchForm.party="";
+      // this.dicSearchForm.organName="";
+      // this.dicSearchForm.caseNumber="";
+      // this.dicSearchForm.daterange=[];
+      this.$refs["searchFormRef"].resetFields();
+      this.$refs.elSelectTreeObj.clearHandle();
       this.getCaseTypes();
     },
     //更改每页显示的条数
@@ -186,9 +189,9 @@ export default {
       getAllOrganApi().then((res) => {
         console.log(res)
         this.organList = res.data;
-        this.dicSearchForm.organName = this.selectOrganId = res.data[0].label;
-        this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
-        this.$refs.elSelectTreeObj.valueId = res.data[0].id;
+        // this.dicSearchForm.organName = this.selectOrganId = res.data[0].label;
+        // this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
+        // this.$refs.elSelectTreeObj.valueId = res.data[0].id;
 
       })
       .catch((err) => {

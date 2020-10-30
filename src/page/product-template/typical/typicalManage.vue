@@ -197,8 +197,8 @@ export default {
         console.log(res)
         this.organList = res.data;
         // this.searchForm.organName = this.selectOrganId = res.data[0].label;
-        this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
-        this.$refs.elSelectTreeObj.valueId = res.data[0].id;
+        // this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
+        // this.$refs.elSelectTreeObj.valueId = res.data[0].id;
 
       })
       .catch((err) => {
@@ -231,6 +231,7 @@ export default {
     //重置
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.$refs.elSelectTreeObj.clearHandle();
       this.getCaseTypes();
     },
   },
