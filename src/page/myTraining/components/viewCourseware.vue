@@ -16,7 +16,7 @@
             </p>
             <p class="progress-inner-bg" :style="{ 'width': `${progressData.progress}%` }"></p>
           </div>
-          <span class="progress">已学{{ progressData.progress }}%</span>
+          <span class="progress">已学{{ progressData.progress > 100 ? 100 : progressData.progress}}%</span>
         </el-col>
       </el-row>
     </div>
@@ -62,6 +62,7 @@ export default {
         this.progressData.text.min =  data.text.min;
         this.progressData.text.sec =  data.text.sec;
       }
+      console.log(data.progress);
       this.progressData.progress =  data.progress;
     }
   }
