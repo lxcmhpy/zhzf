@@ -259,7 +259,7 @@ export default {
               },
               err => {
                 loading.close();
-                this.$message({ type: "error", message: err.msg || "" });
+                // this.$message({ type: "error", message: err.msg || "" });
               }
             );
         })
@@ -304,7 +304,7 @@ export default {
               },
               err => {
                 loading.close();
-                this.$message({ type: "error", message: err.msg || "" });
+                // this.$message({ type: "error", message: err.msg || "" });
               }
             );
         })

@@ -139,7 +139,7 @@ export default {
           this.$message({ type: "error", message: "选择失败！" });
         }
       }, err => {
-        this.$message({ type: 'warning', message: err.msg || '' });
+        // this.$message({ type: 'warning', message: err.msg || '' });
       });
     },
     getPageAllInfo() {

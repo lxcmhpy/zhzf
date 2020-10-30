@@ -179,6 +179,8 @@ export default {
         validatePromise.push(validate);
       }
       Promise.all(validatePromise).then(values => {
+        console.log(values);
+        console.log(this.tableData);
         if (values.indexOf(false) < 0) {
           const types = [];
           this.tableData.map(item => {
@@ -226,7 +228,6 @@ export default {
           },
           err => {
             loading.close();
-            _this.$message({ type: "error", message: err.msg || "" });
           }
         );
       } else if (_this.handelType == 2) {
@@ -276,7 +277,6 @@ export default {
           },
           err => {
             loading.close();
-            _this.$message({ type: "error", message: err.msg || "" });
           }
         );
       }
