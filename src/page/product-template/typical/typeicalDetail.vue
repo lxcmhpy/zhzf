@@ -154,8 +154,10 @@ export default {
       this.updateCaseTypeForm.caseName = data.caseName;
       this.updateCaseTypeForm.zfml = data.zfml;
       this.updateCaseTypeForm.caseId = data.caseId;
+      this.updateCaseTypeForm.id = data.id;
       if(this.updateCaseTypeForm.reviews!=""){
         this.dialogTitle = "修改案件点评";
+        this.reviewsType=false;
       }else{
         this.dialogTitle = "新增案件点评";
         this.reviewsType=true;
