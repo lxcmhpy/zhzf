@@ -28,12 +28,12 @@
       </div>
        <div class="tablePart">
         <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" stripe resizable border style="width: 100%;height:100%;">
-          <el-table-column prop="lxmc" label="路线名称" align="center"></el-table-column>
-          <el-table-column prop="gldj" label="公路等级" align="center"></el-table-column>
-           <el-table-column prop="glxzjb" label="公路行政级别" align="center"></el-table-column>
+          <el-table-column prop="afdd" label="案发地点" align="center"></el-table-column>
+          <el-table-column prop="ajsl" label="案件数量" align="center"></el-table-column>
+          <!-- <el-table-column prop="glxzjb" label="公路行政级别" align="center"></el-table-column>
           <el-table-column prop="qsdd" label="起始地点" align="center"></el-table-column>
           <el-table-column prop="jsdd" label="结束地点" align="center"></el-table-column>
-         <!-- <el-table-column prop="zfly" label="执法领域" align="center"></el-table-column> -->
+          <el-table-column prop="zfly" label="执法领域" align="center"></el-table-column> -->
         </el-table>
          <el-pagination class="fy"
               layout="prev, pager, next"
@@ -91,11 +91,11 @@ export default {
          res.forEach(item =>{
              this.tableData.push(
                {
-                lxmc: item[0],
-                gldj:item[1],
-                glxzjb:item[2],
-                qsdd:item[3],
-                jsdd:item[4],
+                afdd: item[0],
+                ajsl:item[1],
+                // glxzjb:item[2],
+                // qsdd:item[3],
+                // jsdd:item[4],
               }
         );
          });

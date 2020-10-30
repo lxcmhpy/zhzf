@@ -35,7 +35,7 @@ export default {
     },
       //根据stroagId请求文件流
       getFileStream(storageId){
-        getFileStreamByStorageIdApi(storageId).then(res=>{
+        getFileStreamByStorageId(storageId).then(res=>{
           this.getObjectURL(res);
         }).catch(err=>{
           console.log(err);
