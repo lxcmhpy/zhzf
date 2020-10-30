@@ -568,14 +568,14 @@ export default {
         //   { required: true, message: "必填项", trigger: "change" }
         // ],
         checkObjectNum: [
-          { validator: validateCheckObjectNum, trigger: "change" },
+          { required: true, validator: validateCheckObjectNum, trigger: "change" },
         ],
         expertNum: [
           { validator: validateExpertNum, trigger: "change" },
           // { type: 'number', message: "须为数字", trigger: "change" },
         ],
         lawEnforceNum: [
-          { validator: validateLawEnforceNum, trigger: "change" },
+          { required: true, validator: validateLawEnforceNum, trigger: "change" },
           // { type: 'number', message: "须为数字", trigger: "change" },
         ],
       },
