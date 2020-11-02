@@ -43,6 +43,7 @@ export default {
       );
     },
     async createPDF() {
+      await this.deleteAllFile();
       let id = JSON.parse(localStorage.getItem("userInfo")).organId;
       await createPDF(id);
       await this.getFile();
