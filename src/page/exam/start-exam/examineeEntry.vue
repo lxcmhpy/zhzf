@@ -92,6 +92,9 @@
 
 <script>
 import iLocalStroage from "@/common/js/localStroage.js";
+import {
+  getFileStreamByStorageIdApi,
+} from "@/api/joinExam"; 
 
 export default {
   data() {
@@ -129,10 +132,32 @@ export default {
     // 获取用户照片
     getPersonPhoto() {
       if (this.examineePersonInfo.photoUrl) {
-        this.$util.com_getFileStream(this.examineePersonInfo.photoUrl).then((res) => {
+        this.getFileStream(this.examineePersonInfo.photoUrl).then((res) => {
           this.photoUrl = res;
         });
       }
+    },
+
+    async getFileStream (storageId) {
+      let fileStreamRes;
+      try {
+        fileStreamRes = await getFileStreamByStorageIdApi(storageId);
+      } catch (err) {
+        throw new Error(err);
+      }
+      let url = null;
+      if (window.createObjectURL != undefined) { // basic
+        url = window.createObjectURL(fileStreamRes);
+      } else if (window.webkitURL != undefined) { // webkit or chrome
+        try {
+          url = window.webkitURL.createObjectURL(fileStreamRes);
+        } catch (error) {}
+      } else if (window.URL != undefined) { // mozilla(firefox)
+        try {
+          url = window.URL.createObjectURL(fileStreamRes);
+        } catch (error) {}
+      }
+      return url;
     },
     // 获取系统当前时间
     getSystemTime() {

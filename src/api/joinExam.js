@@ -330,6 +330,18 @@ export function saveScoreResult(data) {
     });
 }
 
+//获取文件流
+export function getFileStreamByStorageIdApi(storageId) {
+    return request({
+      url: "/exam/fileStream/getfileStream/"+storageId,
+      method: "get",
+      showloading: true,
+      loadingType: 'loadPart',
+      responseType:'blob',
+      cancelToken: setCancelSource()
+    });
+  }
+
 /*************************** 阅卷End ***************************/
 
 // 下载后台返回二进制流文件
