@@ -982,6 +982,11 @@ export default {
         customClass: "loading-box",
         background: "rgba(234,237,244, 0.8)",
       });
+      
+      //base64加密
+      let Base64 = require('js-base64').Base64;
+      _this.personInfoDetailForm.idNo = Base64.encode(_this.personInfoDetailForm.idNo);
+      
       _this.$store
         .dispatch(methodSaveOrUpdate, _this.personInfoDetailForm)
         .then(
