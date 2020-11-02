@@ -1,8 +1,8 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
-    <div class="searchPage toggleBox">
+    <div class="searchAndpageBox searchAndpageBox2">
       <div class="handlePart">
-        <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
+        <el-form :inline="true" :model="logForm" label-width="70px" ref="logForm">
           <el-form-item label="统计周期" prop>
             <el-date-picker
               v-model="value3"
@@ -16,33 +16,35 @@
           </el-form-item>
         </el-form>
       </div>
-      <!-- <div id="chart1" style="width: 100%; height: 50%;"></div> -->
-      <div style="margin-top:30px;margin-bottom:30px">
-        <el-row>
-          <el-col :span="12">
-            <div id="chart2" style="width: 100%; height: 150px;"></div>
-          </el-col>
-          <el-col :span="12">
-            <div id="chart3" style="width: 100%; height: 150px;"></div>
-          </el-col>
-          
-        </el-row>
-       
-      </div>
-      <div style="margin-top:60px;margin-bottom:30px">
-       
-        <el-row>
-         
-          <el-col :span="12">
-            <div id="chart4" style="width: 100%; height: 150px;"></div>
-          </el-col>
-          <el-col :span="12">
-            <div id="chart5" style="width: 100%; height: 150px;"></div>
-          </el-col>
-        </el-row>
+      <el-row :gutter="20" style="min-height: 50%">
+        <el-col :span="12" style="height: 100%">
+          <el-card class="box-card">
+            <div id="chart2" class="chart-box"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12" style="height: 100%">
+          <el-card class="box-card">
+            <div id="chart3" class="chart-box"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" style="margin-top:20px;min-height: 50%">
+        <el-col :span="12" style="height: 100%">
+          <el-card class="box-card">
+
+            <div id="chart4" class="chart-box"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card class="box-card" style="height: 100%">
+
+            <div id="chart5" class="chart-box"></div>
+          </el-card>
+        </el-col>
+      </el-row>
       </div>
     </div>
-  </div>
+  
 </template>
 
 
@@ -347,3 +349,13 @@ export default {
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>
+<style scoped>
+  .box-card {
+    min-height: 50%;
+  }
+
+  .chart-box {
+    width: 500px;
+    height: 350px;
+  }
+</style>

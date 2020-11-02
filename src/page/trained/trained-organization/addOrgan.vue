@@ -25,7 +25,7 @@
       </el-row>
       <el-row>
         <el-form-item label="联系电话" prop="contactNo" class="form-class">
-          <el-input v-model="addOrganForm.contactNo" maxlength="11"></el-input>
+          <el-input v-model="addOrganForm.contactNo" maxlength="12"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -100,7 +100,7 @@ export default {
             },
             err => {
               loading.close();
-              this.$message({ type: "error", message: err.msg || "" });
+              // this.$message({ type: "error", message: err.msg || "" });
             }
           );
         } else {

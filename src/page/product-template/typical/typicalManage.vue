@@ -196,9 +196,9 @@ export default {
       getAllOrganApi().then((res) => {
         console.log(res)
         this.organList = res.data;
-        this.searchForm.organName = this.selectOrganId = res.data[0].label;
-        this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
-        this.$refs.elSelectTreeObj.valueId = res.data[0].id;
+        // this.searchForm.organName = this.selectOrganId = res.data[0].label;
+        // this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
+        // this.$refs.elSelectTreeObj.valueId = res.data[0].id;
 
       })
       .catch((err) => {
@@ -216,7 +216,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-            deleteByCaseId(row.caseId).then(
+            deleteByCaseId(row.id).then(
               res => {
                 this.$message({ type: "success", message: "删除成功!"});
                 this.getCaseTypes();
@@ -231,6 +231,7 @@ export default {
     //重置
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.$refs.elSelectTreeObj.clearHandle();
       this.getCaseTypes();
     },
   },

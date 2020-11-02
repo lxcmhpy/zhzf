@@ -15,7 +15,6 @@
       ></video>
     </div>
     <div v-if="currentCourse.type === '1'" class="course-content">
-      <!-- <iframe :src="currentCourse.src" frameborder="0" style="width: 100%; height: 100%"></iframe> -->
       <!-- <embed
         name="plugin"
         id="plugin"
@@ -107,7 +106,8 @@ export default {
       viewInterval: null,
       videoPlayLastTime: 0,
       startUploadVideoCredit: false,
-      uploadCredit: false
+      uploadCredit: false,
+      playTime: 0
     };
   },
   components: { },
@@ -140,10 +140,7 @@ export default {
       }
       this.currentCourse.cpId = course.cpId;
       this.currentCourse.couId = course.couId;
-      // this.currentCourse.src = course.path;
-      // this.currentCourse.src = this.baseUrl + course.path;
       this.$util.com_getFileStream(course.path).then( res => {
-        console.log(res);
         this.currentCourse.src = res;
       });
 
@@ -166,7 +163,6 @@ export default {
       const courseTotalTime = this.currentCourse.couTime * 60 * 1000;
       const surplusTime = courseTotalTime - this.viewTime;
       const viewPercentage = Math.floor((this.viewTime / courseTotalTime) * 100);
-      console.log(surplusTime);
       if(surplusTime < 0){
         this.$emit('refreshProgress', { text: null, progress: 100 });
       }else{
@@ -179,13 +175,9 @@ export default {
       clearInterval(this.updateInterval);
       this.updateNum = Math.ceil(this.currentCourse.couTime / this.currentCourse.accTime);
       this.updateInterval = setInterval(() => {
-        if(this.updateNum === 0){
-          this.sendUpdateCredits(true);
-          clearInterval(this.updateInterval);
-          this.$message({ type: 'success', message: '学习完成!' });
-        }
         this.updateNum -= 1;
-        this.sendUpdateCredits();
+        let last = this.updateNum === 0;
+        this.sendUpdateCredits(last);
       }, this.currentCourse.accTime * 60 * 1000)
     },
     // 发送更新学分请求
@@ -196,11 +188,15 @@ export default {
       delete params.couTime;
       if(last){
         params.lastFlag = '1';
+        clearInterval(this.updateInterval);
       }
       updateMyCredits(params).then(res => {
         console.log(res);
+        if(res.code === 200 && last){
+          this.$message({ type: 'success', message: '学习完成!' });
+        }
       }, err => {
-        this.$message({ type: 'error', message: err.msg || '' });
+        // this.$message({ type: 'error', message: err.msg });
       })
       if(this.uploadCredit){
         const openUpload = setTimeout(() => {
@@ -215,6 +211,7 @@ export default {
       this.viewInterval = setInterval(() => {
         const surplusTime = courseTotalTime - this.viewTime;
         const viewPercentage = Math.floor((this.viewTime / courseTotalTime) * 100);
+        this.playTime = viewPercentage;
         if(surplusTime < 0){
           this.$emit('refreshProgress', { text: null, progress: 100 });
           clearInterval(this.viewInterval);
