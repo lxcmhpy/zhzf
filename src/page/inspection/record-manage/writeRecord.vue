@@ -821,10 +821,11 @@ export default {
       }
     },
     dealFieldData(element, viewFlag) {
+      // debugger
       console.log('viewFlag', viewFlag)
       // 字段
       element.fieldList.forEach(item => {
-
+// debugger
         // 用于预览，避免重复
         if (viewFlag) {
           item.id = this.globalId.toString()
@@ -1141,7 +1142,7 @@ export default {
       console.log(`选择违法行为`);
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
-      debugger
+      // debugger
       // 查看更多违法行为
       let cate = "";
       // this.options.forEach(element => {

@@ -1053,6 +1053,33 @@ export default {
         }
       });
     },
+
+    // 构建ocr识别多选框回显数据
+    buildMobileFuncShow(item){
+
+      if(item.field==='party'){
+        let arr=JSON.parse(item.mobileFunc);
+        this.mobileFuncListParty=[]
+        arr.forEach(it=>{
+          if(it.value==='支持OCR识别'&&it.isChecked==='1'){
+            // "[{"label":"1","value":"支持OCR识别","isChecked":"1"},{"label":"2","value":"支持扫一扫功能","isChecked":"1"}]"
+              this.mobileFuncListParty.push('1')
+          }
+          if(it.value==='支持扫一扫功能'&&it.isChecked==='1'){
+              this.mobileFuncListParty.push('2')
+          }
+        })
+      }
+      if(item.field==="vehicleShipId"){
+        let arr=JSON.parse(item.mobileFunc);
+        this.mobileFuncListCar=[]
+        arr.forEach(it=>{
+          if(it.value==='支持OCR识别'&&it.isChecked==='1'){
+              this.mobileFuncListCar.push('1')
+          }
+        })
+      }
+    },
     //人员的OCR配置
     handleMobileFuncPartyChange(val) {
       console.log("handleMobileFuncPartyChange -> val", val);
@@ -1096,12 +1123,15 @@ export default {
       let _this = this;
       findRecordlModleFieldByIdeApi(this.editId).then(
         (res) => {
+          // debugger
           let list = res.data;
+          console.log("findDataByld -> list", list)
           let sort = 0;
           list.forEach((element) => {
             element.sort = sort;
             sort++;
             element.fieldList.forEach((item) => {
+              this.buildMobileFuncShow(item)
               if (item.options) {
                 item.options = JSON.parse(item.options);
               }
@@ -1115,6 +1145,7 @@ export default {
               if (res.code == 200) {
                 // _this.formData ={..._this.formData, ...res.data}
                 _this.formData = res.data;
+                console.log("findDataByld -> res.data", res.data)
                 _this.$set(_this.formData, "templateFieldList", list);
                 // _this.formData.templateFieldList = list
                 this.globalContGroup = _this.formData.templateFieldList.length;
@@ -1160,7 +1191,7 @@ export default {
                 _this.multipleSelection = _this.formData.documentNameIds
                   ? _this.formData.documentNameIds.split(",")
                   : [];
-                _this.getFileList();
+                _this.getFileList();//获取文书数据
               }
             },
             (error) => {}
