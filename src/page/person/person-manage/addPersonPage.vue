@@ -580,6 +580,11 @@ export default {
         },
         //提交怎么
         submitPerson() {
+
+            //base64加密
+            let Base64 = require('js-base64').Base64;
+            this.addPersonForm.idNo = Base64.encode(this.addPersonForm.idNo);
+
             if(this.handelType==1){
                 this.$store.dispatch("addPersonInfo", this.addPersonForm).then(res => {
                     this.$emit("getAllPersons");
