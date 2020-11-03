@@ -1,5 +1,5 @@
 <template>
-  <div class="jiangXiMap">
+  <div class="gzMap">
     <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" />
     <TopInFo />
     <Search
@@ -507,9 +507,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.jiangXiMap {
+.gzMap {
   width: 100%;
   height: 100%;
   position: relative;
+  background: white;
 }
 </style>

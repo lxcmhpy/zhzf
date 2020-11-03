@@ -983,12 +983,13 @@ export default {
         background: "rgba(234,237,244, 0.8)",
       });
       
+      let params = JSON.parse(JSON.stringify(_this.personInfoDetailForm));
       //base64加密
       let Base64 = require('js-base64').Base64;
-      _this.personInfoDetailForm.idNo = Base64.encode(_this.personInfoDetailForm.idNo);
+      params.idNo = Base64.encode(params.idNo);
       
       _this.$store
-        .dispatch(methodSaveOrUpdate, _this.personInfoDetailForm)
+        .dispatch(methodSaveOrUpdate,params)
         .then(
           (res) => {
             if (res.code === 200) {
@@ -1000,7 +1001,7 @@ export default {
             }
           },
           (err) => {
-            _this.$message.error(err.msg || "");
+            // _this.$message.error(err.msg || "");
             loading.close();
           }
         );
