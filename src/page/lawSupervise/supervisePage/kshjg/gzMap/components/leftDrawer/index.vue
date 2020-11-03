@@ -80,7 +80,7 @@
       </el-tab-pane>
       <el-tab-pane label="通讯录" name="second">
          <div class="input-with-select">
-          <el-input placeholder="请输入群组名称" v-model="input" clearable>
+          <el-input placeholder="请输入人员或机构名称" v-model="input" clearable>
             <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
           </el-input>
         </div>
@@ -110,7 +110,7 @@
                <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u110.svg" alt="">
           </span>
         </div>
-        <div v-show="!flag" v-for="(item,index) in selectedArrT" :key="index+2" >
+        <div v-show="!flag" v-for="(item,index) in selectedArrT" :key="index+12" >
           {{item}}
           <span @click="delPT(item)">
               <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u110.svg" alt="">
@@ -230,14 +230,14 @@ export default {
     delPQ(val){
       for (let i = 0; i <  this.selectedArrQ.length; i++) {
          if(val == this.selectedArrQ[i]){
-           this.selectedArrQ.splice(i)
+           this.selectedArrQ.splice(i,1)
         }
       }
     },
     delPT(val){
       for (let i = 0; i <  this.selectedArrT.length; i++) {
          if(val == this.selectedArrT[i]){
-           this.selectedArrT.splice(i)
+           this.selectedArrT.splice(i,1)
         }
       }
     },
@@ -250,13 +250,9 @@ export default {
         console.log(tab, event);
     },
     handleSelectionChange(val){
-      if(val){
         for (let i = 0; i < val.length; i++) {
           this.selectedArrQ.push(val[i].name)
         }
-      }else{
-         this.selectedArrQ.splice(val[i].name)
-      }
     },
 },
 
