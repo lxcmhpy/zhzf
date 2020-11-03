@@ -338,8 +338,10 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="从事执法日期" prop="enfoceDate">
-                      <!--<el-input v-model="personInfoDetailForm.enfoceDate"></el-input>-->
+                    <el-form-item
+                      label="从事执法日期"
+                      prop="enfoceDate"
+                      :rules="[ { required: rules.branchName !== undefined, message: '执法区域不能为空', trigger: 'blur'}]">
                       <el-date-picker
                         v-model="personInfoDetailForm.enfoceDate"
                         format="yyyy-MM-dd"

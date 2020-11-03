@@ -120,6 +120,9 @@ export const mixinPerson={
      * @param type // 'edit' 新增
      *  */
     openPersonDetail(row, type) {
+      if(sessionStorage.getItem('LeavePersonInfoPage')){
+        sessionStorage.removeItem('LeavePersonInfoPage')
+      }
       const addRoutes = PersonRouter[0].children[0].children;
       addRoutes.splice(0, addRoutes.length);
       const currentRoute = addRoutes.findIndex(item => item.path === `/personDetailPage/${type}/${row.personId}`);
