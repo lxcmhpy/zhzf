@@ -1,7 +1,14 @@
 <template>
   <div class="gzMap-search">
-    <p class="title">选择参会人员</p>
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <div class="drawerBackground" @click="drawer = true" type="primary">
+      <i class="el-icon-arrow-left" />
+    </div>
+    <el-drawer
+       :direction="direction"
+      :visible.sync="drawer"
+      :with-header="false">
+      <p class="title">选择参会人员</p>
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="群组" name="first">
         <div class="input-with-select">
           <el-input placeholder="请输入群组名称" v-model="input" clearable>
@@ -63,16 +70,18 @@
       <el-tab-pane label="通讯录" name="second">
         通讯录
       </el-tab-pane>
-    </el-tabs>
-    <div>
-      <p class="title">已选择人员</p>
-      <div v-show="flag" v-for="(item,index) in selectedArrQ" :key="index+1" >
-        {{item}}
-        <span @click="delP(item)">
-          <i class="el-icon-close"></i>
-        </span>
+      </el-tabs>
+      <div>
+        <p class="title">已选择人员</p>
+        <div v-show="flag" v-for="(item,index) in selectedArrQ" :key="index+1" >
+          {{item}}
+          <span @click="delP(item)">
+            <i class="el-icon-close"></i>
+          </span>
+        </div>
       </div>
-    </div>
+    </el-drawer>
+    
 
     <header class="input-with-select" @click="handleShowSearch">
       <el-input
@@ -135,6 +144,8 @@ export default {
   },
   data() {
     return {
+      direction: 'ltr',
+      drawer: false,
       flag:true,
       activeName: 'first',
       input:'',
@@ -143,13 +154,13 @@ export default {
       projectName: "",
       placeholder: "",
       tableData: [{
-          name: '1好滋好味鸡',
+          name: '测试1',
         }, {
-          name: '2好滋好味鸡',
+          name: '测试2',
         }, {
-          name: '3好滋好味鸡',
+          name: '测试3',
         }, {
-          name: '4好滋好味鸡',
+          name: '测试4',
         }],
       selectedArrQ:[],
       selectedArrT:[],
@@ -455,15 +466,24 @@ export default {
   }
 }
 .gzMap-search {
+  position: absolute;
+  top: 20px;
+  width: 369px;
+  box-sizing: border-box;
   .title{
     font-size: 18px;
     margin: 10px 0;
   }
-  position: absolute;
-  top: 40px;
-  left: 5px;
-  width: 369px;
-  box-sizing: border-box;
+  .drawerBackground{
+    transform: rotate(180deg); 
+    width: 26px;
+    height: 89px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/static/images/img/lawSupervise/btn_norshouqi2.png') no-repeat;
+    background-size:cover;
+  }
   .input-with-select {
     display: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
