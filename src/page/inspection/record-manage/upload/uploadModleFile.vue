@@ -148,11 +148,14 @@ export default {
       // this.$refs.upload.submit();
     },
     saveImg(param) {
+      console.log("saveImg -> param", param)
       // debugger
       this.imgListUpload.push(param);
     },
     //上传图片
     uploadImg(param) {
+    console.log("uploadImg -> param", param)
+      
       // console.log(param);
       var fd = new FormData();
       fd.append("file", param.file);

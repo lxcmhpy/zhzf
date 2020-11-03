@@ -247,6 +247,7 @@ export function findRecordLogListApi(data) {
 
 //导出记录统计列表
 export function excelExportRecordLogListApi(data) {
+    data = vm.$qs.stringify(data);
     return request({
         url: "/xzjc/templateOrder/excelExport",
         method: "post",
