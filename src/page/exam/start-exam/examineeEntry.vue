@@ -92,6 +92,7 @@
 
 <script>
 import iLocalStroage from "@/common/js/localStroage.js";
+import { getFileStreamByStorageIdApi } from "@/api/joinExam"; 
 
 export default {
   data() {
@@ -127,9 +128,10 @@ export default {
   },
   methods: {
     // 获取用户照片
+        // 获取用户照片
     getPersonPhoto() {
       if (this.examineePersonInfo.photoUrl) {
-        this.$util.com_getFileStream(this.examineePersonInfo.photoUrl).then((res) => {
+        getFileStreamByStorageIdApi(this.examineePersonInfo.photoUrl).then((res) => {
           this.photoUrl = res;
         });
       }
