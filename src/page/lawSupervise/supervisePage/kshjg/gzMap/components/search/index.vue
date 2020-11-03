@@ -1,5 +1,5 @@
 <template>
-  <div class="jiangXiMap-search">
+  <div class="gzMap-search">
     <header class="input-with-select" @click="handleShowSearch">
       <el-input
         v-model="inputModel"
@@ -57,7 +57,7 @@ export default {
     Window2,
     Window3,
     Window4,
-    Window5
+    Window5,
   },
   data() {
     return {
@@ -326,17 +326,28 @@ export default {
 </script>
 
 <style lang="scss">
-.jiangXiMap-search {
-  position: absolute;
-  top: 40px;
-  left: 30px;
-  width: 369px;
-  box-sizing: border-box;
+.participants_table{
+  .openSel{
+    display: flex;
+    margin-top: 5px;
+    justify-content: space-around;
+  }
+  // .clickImg{
+  //   margin-left: 45px;
+  // }
+  .TreeWord{
+    margin-left: 90px;
+  }
+}
+.gzMap-search {
+    position: absolute;
+    top: 40px;
+    left: 30px;
+    width: 369px;
   .input-with-select {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-bottom: 5px;
     .el-input__inner {
-      width: 311px;
       height: 40px;
       border-radius: 4px 0 0 4px;
     }

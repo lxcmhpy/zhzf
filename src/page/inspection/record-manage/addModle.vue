@@ -1058,6 +1058,10 @@ export default {
     buildMobileFuncShow(item){
 
       if(item.field==='party'){
+        //没有的会返回空字符串，加个判断
+        if(!item.mobileFunc){
+          return
+        }
         let arr=JSON.parse(item.mobileFunc);
         this.mobileFuncListParty=[]
         arr.forEach(it=>{
@@ -1071,6 +1075,10 @@ export default {
         })
       }
       if(item.field==="vehicleShipId"){
+        //没有的会返回空字符串，加个判断
+        if(!item.mobileFunc){
+          return
+        }
         let arr=JSON.parse(item.mobileFunc);
         this.mobileFuncListCar=[]
         arr.forEach(it=>{

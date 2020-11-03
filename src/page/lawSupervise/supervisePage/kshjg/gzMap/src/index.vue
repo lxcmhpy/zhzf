@@ -1,7 +1,8 @@
 <template>
-  <div class="jiangXiMap">
+  <div class="gzMap">
     <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" />
     <TopInFo />
+    <LeftDrawer ref='LeftDrawer'/>
     <Search
       ref="Search"
       :config="searchWindowData"
@@ -25,6 +26,7 @@ import { mapGetters } from "vuex";
 import JkyBaseAMap from "@/components/jky-baseAMap";
 import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
+import LeftDrawer from "../components/leftDrawer/index.vue";
 import Drawer from "../components/drawer/index.vue";
 import TopInFo from "../components/topInfo/index.vue";
 import store from "../store.js";
@@ -42,6 +44,7 @@ export default {
     Select,
     Drawer,
     TopInFo,
+    LeftDrawer
   },
   watch: {
     makePhoneStatus (val, oldVal) {
@@ -507,7 +510,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.jiangXiMap {
+.gzMap {
   width: 100%;
   height: 100%;
   position: relative;
