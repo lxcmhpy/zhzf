@@ -258,6 +258,7 @@ export default {
         this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
         this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0]
         this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
+        this.caseSearchForm.resetCurrent = 1;
         this.$emit('searchCase',this.caseSearchForm);
     },
     //重置

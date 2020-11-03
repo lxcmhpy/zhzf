@@ -72,7 +72,7 @@ export default {
     async showModal(data) { 
       console.log(data);
       this.visible = true;
-      this.caseData = data;
+      this.caseData = data; 
       this.approvalForm.executeHandle = data.oldExecuteHandle || data.oldExecuteHandle === 0 ? data.oldExecuteHandle : 1;
       this.approvalForm.approveOpinions = data.oldApprovalOpion ? data.oldApprovalOpion : '同意';
       this.approvalForm.approvalTime = data.oldApprovalTime ? data.oldApprovalTime : new Date().format("yyyy年MM月dd日");
