@@ -184,6 +184,7 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
         organId: iLocalStroage.gets("userInfo").organId,
+        organName: iLocalStroage.gets("userInfo").organName,
       };
       excelExportRecordLogListApi(data)
         .then((res) => {

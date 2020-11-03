@@ -44,38 +44,47 @@
       <div class="random-table-title">开启预警条件</div>
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
-          <el-form-item label="分项指标" v-if="addOrUpdateForm.configType!='1'">
+          <el-form-item
+            label="分项指标"
+            v-if="addOrUpdateForm.configType!='1'"
+            :rules="{ required: true, message: '请选择分项指标' }">
             <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type,index)">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="分项指标" v-else>
+          <el-form-item label="分项指标" v-else :rules="{ required: true, message: '请选择分项指标' }">
             <el-select v-model="item.type" placeholder="请选择">
               <el-option v-for="item in bindPdfFieldList" :key="item.id" :label="item.linkName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5" v-if="addOrUpdateForm.configType!='1'">
-          <el-form-item label="指标项" label-width="80px">
+          <el-form-item
+            label="指标项"
+            label-width="80px"
+            :rules="{ required: true, message: '请选择' }">
             <el-select v-model="item.indexInfo" placeholder="请选择">
               <el-option v-for="item in pdfFieldList[index]" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item label="条件" label-width="60px">
+          <el-form-item label="条件" label-width="60px"
+            :rules="{ required: true, message: '请选择' }">
             <el-select v-model="item.condition" placeholder="请选择">
               <el-option v-for="item in standerList" :key="item.name" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="值" label-width="60px">
+          <el-form-item label="值" label-width="60px"
+            :rules="{ required: true, message: '请填写' }">
             <el-input v-model="item.val"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="提醒内容" label-width="90px">
+          <el-form-item label="提醒内容" label-width="90px"
+            :rules="{ required: true, message: '请填写' }">
             <el-input type="textarea" :rows="1" v-model="item.tipContent"></el-input>
           </el-form-item>
         </el-col>
