@@ -330,18 +330,6 @@ export function saveScoreResult(data) {
     });
 }
 
-//获取文件流
-export function getFileStreamByStorageIdApi(storageId) {
-    return request({
-      url: "/exam/fileStream/getfileStream/"+storageId,
-      method: "get",
-      showloading: true,
-      loadingType: 'loadPart',
-      responseType:'blob',
-      cancelToken: setCancelSource()
-    });
-  }
-
 /*************************** 阅卷End ***************************/
 
 // 下载后台返回二进制流文件
@@ -372,4 +360,37 @@ export function downLoadFile(data, fileName) {
         }
         URL.revokeObjectURL(objectUrl)
     }
+}
+
+// 考试获取文件流
+function getFileByStream(storageId){
+    return request({
+        url: "/exam/fileStream/getfileStream/"+storageId,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
+        tokenType: 'Stream',
+        cancelToken: setCancelSource()
+    });
+}
+
+export async function getFileStreamByStorageIdApi(storageId) {
+    let fileStreamRes;
+    try{
+      fileStreamRes = await getFileByStream(storageId);
+    }catch(err){throw new Error(err);}
+    let url = null;
+    if (window.createObjectURL != undefined) { // basic
+      url = window.createObjectURL(fileStreamRes);
+    } else if (window.webkitURL != undefined) { // webkit or chrome
+      try {
+        url = window.webkitURL.createObjectURL(fileStreamRes);
+      } catch (error) {}
+    } else if (window.URL != undefined) { // mozilla(firefox)
+      try {
+        url = window.URL.createObjectURL(fileStreamRes);
+      } catch (error) {}
+    }
+    return url;
 }

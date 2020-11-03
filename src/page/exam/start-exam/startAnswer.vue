@@ -32,6 +32,7 @@
               ref="questionItem"
               :question="questionData.firstQuestion"
               :fontSize="fontSizeClone"
+              :isExam="true"
               @setQuestionStatus="setQuestionStatus"
             />
           </div>
@@ -140,6 +141,7 @@
 <script>
 import questionItem from "@/components/examComponents/questionItem";
 import iLocalStroage from "@/common/js/localStroage";
+import { getFileStreamByStorageIdApi } from "@/api/joinExam"; 
 
 export default {
   components: { questionItem },
@@ -177,7 +179,7 @@ export default {
     // 获取用户照片
     getPersonPhoto() {
       if (this.examPerInfo.personInfo.photoUrl) {
-        this.$util.com_getFileStream(this.examPerInfo.personInfo.photoUrl).then((res) => {
+        getFileStreamByStorageIdApi(this.examPerInfo.personInfo.photoUrl).then((res) => {
           this.photoUrl = res;
         });
       }
