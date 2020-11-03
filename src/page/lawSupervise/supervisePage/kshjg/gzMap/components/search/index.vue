@@ -1,88 +1,5 @@
 <template>
   <div class="gzMap-search">
-    <div class="drawerBackground" @click="drawer = true" type="primary">
-      <i class="el-icon-arrow-left" />
-    </div>
-    <el-drawer
-       :direction="direction"
-      :visible.sync="drawer"
-      :with-header="false">
-      <p class="title">选择参会人员</p>
-      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-      <el-tab-pane label="群组" name="first">
-        <div class="input-with-select">
-          <el-input placeholder="请输入群组名称" v-model="input" clearable>
-            <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
-          </el-input>
-        </div>
-        <div class="participants_table">
-          <el-table
-             ref="multipleTable"
-            :data="tableData"
-            :header-cell-style="{'text-align':'center'}"
-             @selection-change="handleSelectionChange"
-            style="width: 100%">
-             <el-table-column
-                type="selection"
-                width="55">
-              </el-table-column>
-            <el-table-column type="expand" align="right">
-              <template slot-scope="props">
-                <el-form label-position="center" inline class="demo-table-expand">
-                  <div class="openSelBig">
-                    <div class="openSel">
-                      <span class="TreeWord">{{ props.row.name }}</span>
-                      <span class="clickImg">
-                        <i class="el-icon-plus"  @click="selectP(props.row.name)"></i>
-                        <i class="el-icon-delete"></i>
-                        <i class="el-icon-video-camera"></i>
-                      </span>
-                    </div>
-                    <div class="openSel">
-                      <span class="TreeWord">{{ props.row.name }}</span>
-                      <span class="clickImg">
-                        <i class="el-icon-plus" @click="selectP(props.row.name)"></i>
-                        <i class="el-icon-delete"></i>
-                        <i class="el-icon-video-camera"></i>
-                      </span>
-                    </div>
-                  </div>
-                </el-form>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="left"
-              label="名称"
-              prop="name">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="操作"
-             >
-              <template slot-scope="scope">
-                  <i class="el-icon-delete"></i>
-                  <i class="el-icon-video-camera"></i>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="通讯录" name="second">
-        通讯录
-      </el-tab-pane>
-      </el-tabs>
-      <div>
-        <p class="title">已选择人员</p>
-        <div v-show="flag" v-for="(item,index) in selectedArrQ" :key="index+1" >
-          {{item}}
-          <span @click="delP(item)">
-            <i class="el-icon-close"></i>
-          </span>
-        </div>
-      </div>
-    </el-drawer>
-    
-
     <header class="input-with-select" @click="handleShowSearch">
       <el-input
         v-model="inputModel"
@@ -109,6 +26,7 @@
         />
       </keep-alive>
     </div>
+    <info-order ref="orderInfo" :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
   </div>
 </template>
 
@@ -144,56 +62,13 @@ export default {
   },
   data() {
     return {
-      direction: 'ltr',
-      drawer: false,
-      flag:true,
-      activeName: 'first',
-      input:'',
       inputModel: "",
       showCom: "",
       projectName: "",
       placeholder: "",
-      tableData: [{
-          name: '测试1',
-        }, {
-          name: '测试2',
-        }, {
-          name: '测试3',
-        }, {
-          name: '测试4',
-        }],
-      selectedArrQ:[],
-      selectedArrT:[],
     }
   },
   methods: {
-    selectP(val){
-      this.selectedArrQ.push(val)
-    },
-    delP(val){
-      for (let i = 0; i <  this.selectedArrQ.length; i++) {
-         if(val == this.selectedArrQ[i]){
-           this.selectedArrQ.splice(i)
-        }
-      }
-    },
-    handleClick(tab, event) {
-      if(tab.label == "通讯录"){
-        this.flag = false
-      }else{
-        this.flag = true
-      }
-        console.log(tab, event);
-    },
-    handleSelectionChange(val){
-      if(val){
-        for (let i = 0; i < val.length; i++) {
-          this.selectedArrQ.push(val[i].name)
-        }
-      }else{
-         this.selectedArrQ.splice(val[i].name)
-      }
-    },
     /**
      * 单独获取执法人员的数据，为了在执法人员专题下单独显示
      */
@@ -466,30 +341,14 @@ export default {
   }
 }
 .gzMap-search {
-  position: absolute;
-  top: 20px;
-  width: 369px;
-  box-sizing: border-box;
-  .title{
-    font-size: 18px;
-    margin: 10px 0;
-  }
-  .drawerBackground{
-    transform: rotate(180deg); 
-    width: 26px;
-    height: 89px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url('/static/images/img/lawSupervise/btn_norshouqi2.png') no-repeat;
-    background-size:cover;
-  }
+    position: absolute;
+    top: 40px;
+    left: 30px;
+    width: 369px;
   .input-with-select {
-    display: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-bottom: 5px;
     .el-input__inner {
-      width: 311px;
       height: 40px;
       border-radius: 4px 0 0 4px;
     }
