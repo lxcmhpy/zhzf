@@ -26,7 +26,6 @@
         />
       </keep-alive>
     </div>
-    <info-order ref="orderInfo" :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
   </div>
 </template>
 
