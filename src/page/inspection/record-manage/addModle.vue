@@ -426,8 +426,8 @@
                           label-width="165px"
                         >
                           <el-checkbox-group
-                            v-model="mobileFuncList"
-                            @change="handleMobileFuncChange"
+                            v-model="mobileFuncListParty"
+                            @change="handleMobileFuncPartyChange"
                           >
                             <el-checkbox
                               v-for="item in mobileFuncOption"
@@ -449,8 +449,8 @@
                           label-width="165px"
                         >
                           <el-checkbox-group
-                            v-model="mobileFuncList"
-                            @change="handleMobileFuncChange2"
+                            v-model="mobileFuncListCar"
+                            @change="handleMobileFuncCarChange"
                           >
                             <el-checkbox
                               v-for="item in mobileFuncOption2"
@@ -462,13 +462,7 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <!-- <el-row class="mimi-content">
-                      <el-col :span="12" :offset="0"></el-col>
-                      <el-col :span="12" :offset="0"></el-col>
-                    </el-row> -->
                   </el-form>
-
-                  <!-- </div> -->
                 </el-collapse-item>
                 <span
                   class="card-add-ziduan"
@@ -804,7 +798,8 @@ export default {
   },
   data() {
     return {
-      mobileFuncList: ["1"],
+      mobileFuncListParty: ["1"],
+      mobileFuncListCar: ["1"],
       mobileFuncOption: [
         {
           value: "支持OCR识别",
@@ -1026,22 +1021,92 @@ export default {
     },
   },
   methods: {
-    
-    handleMobileFuncChange(val) {
-      console.log("handleMobileFuncChange -> val", val);
+    //提交之前构建ocr配置数据
+    buildMobileFunc(arr) {
+      arr.forEach((item) => {
+        // debugger
+        if (item.classs == "个人") {
+          // alert('geren')
+          item.fieldList.forEach((it) => {
+            if (it.field === "party") {
+              // alert('aparty')
+              // debugger
+              let func = JSON.parse(it.mobileFunc);
+              func[0]["isChecked"] =
+                this.mobileFuncListParty[0] === "1" ? "1" : "0";
+              func[1]["isChecked"] =
+                this.mobileFuncListParty[1] === "2" ? "1" : "0";
+              it.mobileFunc = JSON.stringify(func);
+            }
+          });
+        }
+        if (item.classs == "车辆信息") {
+          item.fieldList.forEach((it) => {
+            if (it.field === "vehicleShipId") {
+              // debugger
+              let func = JSON.parse(it.mobileFunc);
+              func[0]["isChecked"] =
+                this.mobileFuncListCar[0] === "1" ? "1" : "0";
+              it.mobileFunc = JSON.stringify(func);
+            }
+          });
+        }
+      });
+    },
+
+    // 构建ocr识别多选框回显数据
+    buildMobileFuncShow(item){
+
+      if(item.field==='party'){
+        //没有的会返回空字符串，加个判断
+        if(!item.mobileFunc){
+          return
+        }
+        let arr=JSON.parse(item.mobileFunc);
+        this.mobileFuncListParty=[]
+        arr.forEach(it=>{
+          if(it.value==='支持OCR识别'&&it.isChecked==='1'){
+            // "[{"label":"1","value":"支持OCR识别","isChecked":"1"},{"label":"2","value":"支持扫一扫功能","isChecked":"1"}]"
+              this.mobileFuncListParty.push('1')
+          }
+          if(it.value==='支持扫一扫功能'&&it.isChecked==='1'){
+              this.mobileFuncListParty.push('2')
+          }
+        })
+      }
+      if(item.field==="vehicleShipId"){
+        //没有的会返回空字符串，加个判断
+        if(!item.mobileFunc){
+          return
+        }
+        let arr=JSON.parse(item.mobileFunc);
+        this.mobileFuncListCar=[]
+        arr.forEach(it=>{
+          if(it.value==='支持OCR识别'&&it.isChecked==='1'){
+              this.mobileFuncListCar.push('1')
+          }
+        })
+      }
+    },
+    //人员的OCR配置
+    handleMobileFuncPartyChange(val) {
+      console.log("handleMobileFuncPartyChange -> val", val);
       console.log(
-        "handleMobileFuncChange -> mobileFuncList",
-        this.mobileFuncList
+        "handleMobileFuncPartyChange -> mobileFuncListParty",
+        this.mobileFuncListParty
       );
     },
-    handleMobileFuncChange2(val) {
-      console.log("handleMobileFuncChange2 -> val", val);
+
+    // 车辆的OCR配置
+    handleMobileFuncCarChange(val) {
+      console.log("handleMobileFuncCarChange -> val", val);
       console.log(
-        "handleMobileFuncChange2 -> mobileFuncList",
-        this.mobileFuncList
+        "handleMobileFuncCarChange -> mobileFuncListCar",
+        this.mobileFuncListCar
       );
     },
     showModal(editdata) {
+      // debugger
       if (editdata) {
         this.editId = editdata.id;
         this.findDataByld();
@@ -1061,17 +1126,20 @@ export default {
       this.getPerson();
       this.newModleTable = true;
     },
-    // 根据id查找
+    // 根据id查找回显的数据
     findDataByld() {
       let _this = this;
       findRecordlModleFieldByIdeApi(this.editId).then(
         (res) => {
+          // debugger
           let list = res.data;
+          console.log("findDataByld -> list", list)
           let sort = 0;
           list.forEach((element) => {
             element.sort = sort;
             sort++;
             element.fieldList.forEach((item) => {
+              this.buildMobileFuncShow(item)
               if (item.options) {
                 item.options = JSON.parse(item.options);
               }
@@ -1085,6 +1153,7 @@ export default {
               if (res.code == 200) {
                 // _this.formData ={..._this.formData, ...res.data}
                 _this.formData = res.data;
+                console.log("findDataByld -> res.data", res.data)
                 _this.$set(_this.formData, "templateFieldList", list);
                 // _this.formData.templateFieldList = list
                 this.globalContGroup = _this.formData.templateFieldList.length;
@@ -1130,7 +1199,7 @@ export default {
                 _this.multipleSelection = _this.formData.documentNameIds
                   ? _this.formData.documentNameIds.split(",")
                   : [];
-                _this.getFileList();
+                _this.getFileList();//获取文书数据
               }
             },
             (error) => {}
@@ -1338,6 +1407,11 @@ export default {
                 }
                 // debugger
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
+                this.buildMobileFunc(data.templateFieldList);
+                console.log(
+                  "handleSubmitForm -> data.templateFieldList",
+                  data.templateFieldList
+                );
                 data.templateFieldList = JSON.stringify(data.templateFieldList);
                 console.log("提交的字段", data);
                 // 提醒未添加字段

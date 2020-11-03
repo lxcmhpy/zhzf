@@ -167,7 +167,7 @@
       //删除人员
       deleteCurrentUser(tag,tagKind){
         if(tagKind.approveUserVo.length == 1){
-          this.$message('至少有一个审批人员哦！');
+          this.$message('至少有一个审批人员！');
           return;
         }
         for(let item of this.approvalPeopleList){

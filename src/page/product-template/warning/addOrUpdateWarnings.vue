@@ -44,38 +44,47 @@
       <div class="random-table-title">开启预警条件</div>
       <el-row v-for="(item,index) in addList" :key="index">
         <el-col :span="5">
-          <el-form-item label="分项指标" v-if="addOrUpdateForm.configType!='1'">
+          <el-form-item
+            label="分项指标"
+            v-if="addOrUpdateForm.configType!='1'"
+            :rules="{ required: true, message: '请选择分项指标' }">
             <el-select v-model="item.type" placeholder="请选择" @change="changeType(item.type,index)">
               <el-option v-for="item in bindPdfList" :key="item.id" :label="item.name" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="分项指标" v-else>
+          <el-form-item label="分项指标" v-else :rules="{ required: true, message: '请选择分项指标' }">
             <el-select v-model="item.type" placeholder="请选择">
               <el-option v-for="item in bindPdfFieldList" :key="item.id" :label="item.linkName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5" v-if="addOrUpdateForm.configType!='1'">
-          <el-form-item label="指标项" label-width="80px">
+          <el-form-item
+            label="指标项"
+            label-width="80px"
+            :rules="{ required: true, message: '请选择' }">
             <el-select v-model="item.indexInfo" placeholder="请选择">
               <el-option v-for="item in pdfFieldList[index]" :key="item.id" :label="item.itemValue" :value="item.bindProperty"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item label="条件" label-width="60px">
+          <el-form-item label="条件" label-width="60px"
+            :rules="{ required: true, message: '请选择' }">
             <el-select v-model="item.condition" placeholder="请选择">
               <el-option v-for="item in standerList" :key="item.name" :label="item.name" :value="item.name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="值" label-width="60px">
+          <el-form-item label="值" label-width="60px"
+            :rules="{ required: true, message: '请填写' }">
             <el-input v-model="item.val"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="提醒内容" label-width="90px">
+          <el-form-item label="提醒内容" label-width="90px"
+            :rules="{ required: true, message: '请填写' }">
             <el-input type="textarea" :rows="1" v-model="item.tipContent"></el-input>
           </el-form-item>
         </el-col>
@@ -124,10 +133,15 @@ export default {
         status: "",
       },
       rules: {
-        warName: [{ required: true, message: "必填项", trigger: "change" }],
+        warName: [{ required: true, message: "预警名称不能为空", trigger: "blur" }],
+        warType: [{ required: true, message: "预警类型不能为空", trigger: "change" }],
+        taskType: [{ required: true, message: "任务类型不能为空", trigger: "change" }],
+        configType: [{ required: true, message: "配置类型不能为空", trigger: "change" }],
+        status: [{ required: true, message: "预警状态不能为空", trigger: "change" }],
       },
       dialogTitle: "", //弹出框title
       handelType: 0, //添加 0  修改2
+      canAdd: false,
       editRouteId: '',
       bindPdfFieldList: [], //分项指标列表
       pdfFieldList: [], //指标项列表
@@ -196,9 +210,49 @@ export default {
     },
     //新增案件类型 修改案件类型
     submitWarn(formName) {
-      let _this = this
+      let _this = this;
+      if (_this.addList.length > 0) {
+        for (let i = 0; i < _this.addList.length; i++) {
+          if (!_this.addList[i].type) {
+            this.$message({message: '分项指标不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (this.addOrUpdateForm.configType!='1' && !_this.addList[i].indexInfo) {
+            this.$message({message: '指标项不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (!_this.addList[i].condition) {
+            this.$message({message: '条件不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (!_this.addList[i].val) {
+            this.$message({message: '值不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if (!_this.addList[i].tipContent) {
+            this.$message({message: '提醒内容不能为空！', type: 'warning'});
+            _this.canAdd = false;
+            break;
+          }
+          if(_this.addList[i].type && _this.addList[i].tipContent && _this.addList[i].val && _this.addList[i].condition ){
+            if(this.addOrUpdateForm.configType!='1' && _this.addList[i].indexInfo){
+              _this.canAdd = true;
+            }else if(this.addOrUpdateForm.configType=='1'){
+              _this.canAdd = true;
+            }else{
+              _this.canAdd = false;
+            }
+          }
+          
+        }
+      }
       this.$refs[formName].validate(valid => {
-        if (valid) {
+        debugger
+        if (valid && _this.canAdd) {
           _this.addOrUpdateForm.warInformation = JSON.stringify(_this.addList) || ''
           _this.addOrUpdateForm.cycleTime = _this.addOrUpdateForm.cycleTime1 + '_' + _this.addOrUpdateForm.cycleTime2
           console.log('add', _this.addOrUpdateForm)

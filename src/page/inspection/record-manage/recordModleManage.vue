@@ -81,12 +81,12 @@
             align="center"
           ></el-table-column>
           <el-table-column
-            prop="title"
+            prop="templateAdmin"
             label="模板管理者"
             align="center"
           ></el-table-column>
           <el-table-column
-            prop="title"
+            prop="documentNames"
             label="关联文书"
             align="center"
           ></el-table-column>
@@ -94,7 +94,9 @@
             prop="isTransferToCase"
             label="转立案"
             align="center"
-          ></el-table-column>
+          > 
+          
+          </el-table-column>
           <el-table-column label="操作" align="center" width="300">
             <template slot-scope="scope">
               <!-- <el-button @click="viewRecord(scope.row)" type="text">查看</el-button> -->
@@ -110,10 +112,10 @@
               <el-button @click="editModle(scope.row)" type="text"
                 >复制模板</el-button
               >
-              <el-button @click="editModle(scope.row)" type="text"
+              <el-button @click="setDocumentNames(scope.row)" type="text"
                 >文书配置</el-button
               >
-              <el-button @click="editModle(scope.row)" type="text"
+              <el-button @click="transferToCase(scope.row)" type="text"
                 >转立案</el-button
               >
             </template>
@@ -182,6 +184,12 @@ export default {
     };
   },
   methods: {
+    transferToCase(){
+      alert('此功能未开发')
+    },
+    setDocumentNames(){
+      alert('此功能未开发')
+    },
     addNewModle() {
       this.$refs.addModleRef.showModal();
     },
@@ -286,7 +294,7 @@ export default {
       );
     },
     searchSaveList() {
-      let data = iLocalStroage.gets("userInfo").id;
+     let  data={userId:iLocalStroage.gets("userInfo").id};
       findUserCollectTemplateApi(data).then(
         res => {
           console.log(res);

@@ -580,8 +580,14 @@ export default {
         },
         //提交怎么
         submitPerson() {
+
+            let params = JSON.parse(JSON.stringify(this.addPersonForm));
+            //base64加密
+            let Base64 = require('js-base64').Base64;
+            params.idNo = Base64.encode(params.idNo);
+
             if(this.handelType==1){
-                this.$store.dispatch("addPersonInfo", this.addPersonForm).then(res => {
+                this.$store.dispatch("addPersonInfo", params).then(res => {
                     this.$emit("getAllPersons");
                         this.$message({
                             type: "success",
@@ -594,7 +600,7 @@ export default {
                         console.log(err);
                 };
             }else if(this.handelType==2){
-                this.$store.dispatch("updatePersonInfo", this.addPersonForm).then(res => {
+                this.$store.dispatch("updatePersonInfo", params).then(res => {
                     this.$emit("getAllPersons");
                         this.$message({
                             type: "success",

@@ -493,8 +493,8 @@ export default {
       submitMockExam(submitData).then(
         res => {
           loading.close();
-          if(res.data && res.data.data){
-            this.successSubmitPage("交卷成功，您的得分是", res.data.data);
+          if(res.code == '200'){
+            this.successSubmitPage("交卷成功，您的得分是:", res.data+"分");
           }else{
             this.quitExam("提交成功！", true);
           }

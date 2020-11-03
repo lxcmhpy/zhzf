@@ -306,7 +306,7 @@ export default {
               }
             },
             err => {
-              _this.$message({ type: "error", message: err.msg || "" });
+              // _this.$message({ type: "error", message: err.msg || "" });
             }
           );
         })
@@ -344,7 +344,7 @@ export default {
             },
             err => {
               loading.close();
-              _this.$message({ type: "error", message: err.msg || "" });
+              // _this.$message({ type: "error", message: err.msg || "" });
             }
           );
         })
@@ -396,7 +396,7 @@ export default {
         }
       }, err => {
         _this.tableLoading = false;
-        _this.$message({ type: 'error', message: err.msg || '' });
+        // _this.$message({ type: 'error', message: err.msg || '' });
       });
     },
     //删除考试
@@ -444,7 +444,7 @@ export default {
                 }
               },
               err => {
-                _this.$message({ type: "error", message: err.msg || "" });
+                // _this.$message({ type: "error", message: err.msg || "" });
               }
             );
           })

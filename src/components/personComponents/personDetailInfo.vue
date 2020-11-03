@@ -338,8 +338,10 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="从事执法日期" prop="enfoceDate">
-                      <!--<el-input v-model="personInfoDetailForm.enfoceDate"></el-input>-->
+                    <el-form-item
+                      label="从事执法日期"
+                      prop="enfoceDate"
+                      :rules="[ { required: rules.branchName !== undefined, message: '执法区域不能为空', trigger: 'blur'}]">
                       <el-date-picker
                         v-model="personInfoDetailForm.enfoceDate"
                         format="yyyy-MM-dd"
@@ -806,6 +808,12 @@ export default {
       },
       deep: true,
     },
+    isShowAddPerson: {
+      handler: function(val, oldVal){
+        let leave = val ? '1' : '0';
+        sessionStorage.setItem('LeavePersonInfoPage', leave);
+      }
+    }
   },
   components: {
     elSelectTree,
@@ -976,8 +984,14 @@ export default {
         customClass: "loading-box",
         background: "rgba(234,237,244, 0.8)",
       });
+      
+      let params = JSON.parse(JSON.stringify(_this.personInfoDetailForm));
+      //base64加密
+      let Base64 = require('js-base64').Base64;
+      params.idNo = Base64.encode(params.idNo);
+      
       _this.$store
-        .dispatch(methodSaveOrUpdate, _this.personInfoDetailForm)
+        .dispatch(methodSaveOrUpdate,params)
         .then(
           (res) => {
             if (res.code === 200) {
@@ -989,7 +1003,7 @@ export default {
             }
           },
           (err) => {
-            _this.$message.error(err.msg || "");
+            // _this.$message.error(err.msg || "");
             loading.close();
           }
         );
@@ -1205,7 +1219,7 @@ export default {
         )
         .catch(() => {});
     },
-  },
+  }
 };
 </script>
 

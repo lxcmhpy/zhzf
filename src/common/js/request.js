@@ -61,10 +61,14 @@ service.interceptors.request.use(
         showFullScreenLoading(loadingType);
       }
       if (getToken("TokenKey")) {
-        if(config.tokenType === 'EXAM'){
-          config.headers["Authorization_k"] = "Bearer " + getToken("TokenKey");
-        }else{
-          config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
+        switch(config.tokenType){
+          case 'EXAM':
+            config.headers["Authorization_k"] = "Bearer " + getToken("TokenKey");
+            break
+          case 'Stream':
+            break;
+          default:
+            config.headers["Authorization"] = "Bearer " + getToken("TokenKey");
         }
       }
 

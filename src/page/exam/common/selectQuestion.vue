@@ -228,7 +228,7 @@ export default {
         },
         err => {
           _this.treeLoading = false;
-          _this.$message({ type: "error", message: err.msg || "" });
+          // _this.$message({ type: "error", message: err.msg || "" });
           console.log(err);
         }
       );
@@ -288,7 +288,7 @@ export default {
         },
         err => {
           loading.close();
-          this.$message({ type: "error", message: err.msg || "" });
+          // this.$message({ type: "error", message: err.msg || "" });
         }
       );
     },

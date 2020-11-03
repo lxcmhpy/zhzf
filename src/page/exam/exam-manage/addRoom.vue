@@ -84,7 +84,7 @@ export default {
           _this.visible = false;
           }
         }, err => {
-          _this.$message({ type: 'error', message: err.msg || '' });
+          // _this.$message({ type: 'error', message: err.msg || '' });
         });
       }else if(_this.handelType==2){
         if(_this.addRoomForm.roomSum < _this.alreadyNum){
@@ -110,7 +110,7 @@ export default {
           _this.visible = false;
           }
         }, err => {
-          _this.$message({ type: 'error', message: err.msg || '' });
+          // _this.$message({ type: 'error', message: err.msg || '' });
         });
       }
     },

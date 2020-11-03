@@ -69,7 +69,7 @@ export default {
       errorName: false, //添加name时的验证
       btnDisabled: false,
       rules: {
-        approveInfo: [{ required: true, message: "审核意见必须填写", trigger: "blur" },{ validator: isSpecialChar, trigger: 'blur' }]
+        approveInfo: [{ required: true, message: "审核意见必须填写", trigger: "blur" }]
       }
     }
   },

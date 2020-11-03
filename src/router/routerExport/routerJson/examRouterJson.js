@@ -22,6 +22,12 @@ export const examRouterJson = [
         path: "/score-manage",
         meta: { title: "评分管理", loading: false },
         component: () => import("@/page/exam/score-manage/scoreManage.vue")
+      },
+      {
+        name: "planManage",
+        path: "/plan-manage",
+        meta: { title: "计划管理", loading: false },
+        component: () => import("@/page/exam/exam-manage/batchManage.vue")
       }
     ]
   },

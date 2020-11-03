@@ -52,7 +52,7 @@ export default {
         },
         err => {
           _this.tableLoading = false;
-          _this.$message({ type: "error", message: err.msg || "" });
+          // _this.$message({ type: "error", message: err.msg || "" });
         }
       );
     }

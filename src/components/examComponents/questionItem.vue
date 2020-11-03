@@ -117,6 +117,7 @@
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
+import { getFileStreamByStorageIdApi } from "@/api/joinExam"; 
 
 export default {
   name: "pageDetail",
@@ -134,6 +135,10 @@ export default {
       type: Number,
       default: 16,
     },
+    isExam: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -174,9 +179,15 @@ export default {
         answer = this.question.answer ? this.question.answer.split(",") : [];
       }
       if(this.question.questionPicture){
-        this.$util.com_getFileStream(this.question.questionPicture).then((res) => {
+        if(this.isExam){
+          getFileStreamByStorageIdApi(this.question.questionPicture).then((res) => {
             this.questionStemImage = res;
-        });
+          });
+        } else{
+          this.$util.com_getFileStream(this.question.questionPicture).then((res) => {
+              this.questionStemImage = res;
+          });
+        }
       }
       this.defaultChecked.splice(0, this.defaultChecked.length);
       if (this.question.listPo && this.question.listPo.length) {
@@ -198,10 +209,17 @@ export default {
             }
           }
           if (item.optionPicture) {
-            this.$util.com_getFileStream(item.optionPicture).then((res) => {
-              item.url = res;
-              item.showPicture = true;
-            });
+            if(this.isExam){
+              getFileStreamByStorageIdApi(item.optionPicture).then((res) => {
+                item.url = res;
+                item.showPicture = true;
+              });
+            } else{
+              this.$util.com_getFileStream(item.optionPicture).then((res) => {
+                item.url = res;
+                item.showPicture = true;
+              });
+            }
           }
         });
         this.questionOptioList = [].concat(optioLists);

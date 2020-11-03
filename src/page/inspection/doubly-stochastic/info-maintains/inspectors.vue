@@ -435,10 +435,10 @@ export default {
       if (this.multipleSelection.length > 0) {
         this.multipleSelection.forEach(element => {
           element.company = iLocalStroage.gets("userInfo").organName;
-          // 删除是否在岗
-          if (element.stationStatusName) {
-            this.$delete(element, "stationStatusName");
+          if (!element.oname) {
+            element.oname=iLocalStroage.gets("userInfo").organName;
           }
+          element.stationStatusName="在岗";
         });
         addMorePublicPersonApi(this.multipleSelection).then(
           res => {
