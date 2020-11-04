@@ -310,7 +310,7 @@ export default {
               res => {
                 // 登录成功
                 // 清除定时器
-                _this.getCurrentUser();
+                
                 // 重置验证
                 _this.success = false;
                 this.beginClientX = 0
@@ -326,6 +326,7 @@ export default {
 
                 document.getElementsByTagName('html')[0].addEventListener('mousemove', this.mouseMoveFn);
                 document.getElementsByTagName('html')[0].addEventListener('mouseup', this.moseUpFn)
+                _this.getCurrentUser();
               }
             );
           } else {
@@ -363,7 +364,7 @@ export default {
     //获取当前登录用户的信息
     getCurrentUser() {
       let _this = this;
-      new Promise((resolve, reject) => {
+      // new Promise((resolve, reject) => {
         getCurrentUserApi().then(res => {
           if (res.data.passwordStatus == '0') {
             // 判断是否修改过密码
@@ -382,7 +383,7 @@ export default {
         }, err => {
           console.log(err);
         })
-      })
+      // })
     },
     blueUsername() {
       this.hasUserError = false;

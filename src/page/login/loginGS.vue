@@ -346,7 +346,7 @@ export default {
     //获取当前登录用户的信息
     getCurrentUser() {
       let _this = this;
-      new Promise((resolve, reject) => {
+      // new Promise((resolve, reject) => {
         getCurrentUserApi().then(res => {
           if (res.data.passwordStatus == '0') {
             // 判断是否修改过密码
@@ -366,7 +366,7 @@ export default {
         }, err => {
           console.log(err);
         })
-      })
+      // })
     },
     blueUsername() {
       this.hasUserError = false;

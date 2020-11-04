@@ -31,30 +31,30 @@
             </td>
             <td rowspan="2">案件调查人员</td>
             <td colspan="2" class="color_DBE4EF" style="min-width:80px">
-              <el-form-item prop="staff" :rules="fieldRules('staff',propertyFeatures['staff'])">
+              <el-form-item prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
                 <el-input
                   type="textarea"
-                  v-model="docData.staff"
-                  v-bind:class="{ over_flow:docData.staff && docData.staff.length>14?true:false }"
+                  v-model="docData.staff1"
+                  v-bind:class="{ over_flow:docData.staff1 && docData.staff1.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 4}"
                   maxlength="32"
                   placeholder="/"
-                  :disabled="fieldDisabled(propertyFeatures['staff'])"
+                  :disabled="fieldDisabled(propertyFeatures['staff1'])"
                 ></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td colspan="2" class="color_DBE4EF" style="min-width:80px">
-              <el-form-item prop="staff" :rules="fieldRules('staff',propertyFeatures['staff'])">
+              <el-form-item prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
                 <el-input
                   type="textarea"
-                  v-model="docData.staff"
-                  v-bind:class="{ over_flow:docData.staff && docData.staff.length>14?true:false }"
+                  v-model="docData.staff2"
+                  v-bind:class="{ over_flow:docData.staff2 && docData.staff2.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 4}"
                   maxlength="32"
                   placeholder="/"
-                  :disabled="fieldDisabled(propertyFeatures['staff'])"
+                  :disabled="fieldDisabled(propertyFeatures['staff2'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -73,7 +73,7 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-                <el-input type="textarea" v-model="docData.party" :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
+                <el-input type="textarea" v-model="docData.party" :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" v-bind:class="{ over_flow:docData.party.length>12?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>性别</td>
@@ -217,16 +217,16 @@
               <p>见</p>
             </td>
             <td colspan="10" class="color_DBE4EF">
-              <el-form-item prop="approveOpinions">
+              <el-form-item prop="lawOfficeOpinions">
                 <el-input style="float:left;margin-top:10px;" 
-                  type="textarea" v-model="docData.approveOpinions"
-                  v-bind:class="{ over_flow:docData.approveOpinions && docData.approveOpinions.length>14?true:false }"
+                  type="textarea" v-model="docData.lawOfficeOpinions"
+                  v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}" maxlength="340" placeholder="/"></el-input> 
               </el-form-item>
               <div class="pdf_seal alginLast" style="white-space:nowrap;width:auto;margin-top:120px;margin-right:80px;">
-                <p>执法人员签名:{{docData.staffSign}}</p>
+                <p>执法人员签名:{{docData.lawOfficeName}}</p>
                 <p>
-                  <el-date-picker v-model="docData.approveTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
+                  <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
                     class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
                 </p>
               </div>
@@ -245,9 +245,9 @@
               <p>见</p>
             </td>
             <td colspan="10" class="color_DBE4EF">
-              <p class="approveDiv">{{docData.secondApproveOpinions}}</p>
+              <p class="approveDiv">{{docData.approveOpinions}}</p>
               <div class="pdf_seal alginLast" style="white-space:nowrap;width:auto;margin-top:160px;margin-right:80px;">
-                <p>签名:{{docData.staffSign}}</p>
+                <p>签名:{{docData.approvePeo}}</p>
                 <p>
                   <el-date-picker v-model="docData.approveTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
                     class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
@@ -376,6 +376,8 @@ export default {
         caseNumber: "",
         caseName: "",
         staff: "",
+        staff1: "",
+        staff2: "",
         party: "",
         partySex:'',
         partyAge: "",
@@ -391,13 +393,10 @@ export default {
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
-        secondApproveOpinions: "",
-        secondApprovePeo: "",
-        secondApproveTime: "",
         evidenceList: [], //证据材料
         lawOfficeOpinions: "",
         lawOfficeName: "",
-        lawOfficeApprovalTime: "",
+        lawOfficeTime: "",
         note: ""
       },
       caseDocDataForm: {
@@ -425,7 +424,10 @@ export default {
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" },
         ],
-        staff: [
+        staff1: [
+          { required: true, message: "案件调查人员不能为空", trigger: "blur" },
+        ],
+        staff2: [
           { required: true, message: "案件调查人员不能为空", trigger: "blur" },
         ],
         party: [
@@ -465,7 +467,10 @@ export default {
           { required: true, message: '社会信用代码不能为空', trigger: 'blur' },
         ],
         illegalFact: [
-          { required: true, message: "请输入案件调查经过", trigger: "blur" },
+          { required: true, message: "案件调查经过不能为空", trigger: "blur" },
+        ],
+        lawOfficeOpinions: [
+          { required: true, message: "调查人员处理意见不能为空", trigger: "blur" },
         ],
       },
       approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入
@@ -484,7 +489,6 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "caseInvest-print",
       },
-      huanjieAndDocId: this.BASIC_DATA_SYS.caseInvestig_huanjieAndDocId, //案件调查报告的文书id
       approvalOver: false, //审核完成
       nameLength: 10,
       sexLength: 2,
@@ -508,12 +512,12 @@ export default {
   },
   methods: {
     starttime(){
-      if (Date.parse(this.docData.lawOfficeApprovalTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj)) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
-        this.docData.lawOfficeApprovalTime = '';
+        this.docData.lawOfficeTime = '';
       }
     },
     //根据案件ID和文书Id获取数据
@@ -630,7 +634,10 @@ export default {
     },
     //对原始数据做一下处理
     getDataAfter() {
-      console.log(this.docData);
+      if(!this.docData.staff1){
+        this.docData.staff1 = this.docData.staff.split(',')[0];
+        this.docData.staff2 = this.docData.staff.split(',')[1];
+      }
       if (!this.docData.evidenceList.length) {
         this.docData.evidenceList = [
           { resNo: "", name: "", num: "", des: "", note: "" },

@@ -530,7 +530,9 @@ export default {
       propertyFeatures: "", //字段属性配置
       needFilterDocTableDatas:true,
       allVehicleShipType: [],
-      docTableDatasCopy:[]
+      docTableDatasCopy:[],
+      needDealData:true,
+      allRelationWithCase:[]
     };
   },
   computed: {
@@ -686,9 +688,13 @@ export default {
       //行政强制措施决定书、行政强制措施审批表
       let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasureApproval_SC");
       if(index1 ==-1) this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC"));
-      let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasureDoc");
-      if(index2 ==-1) this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureDoc"))
+      let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasure");
+      if(index2 ==-1) this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure"))
     },
+    getDataAfter(){
+      //通过案件id和表单类型Id查询已绑定文书
+      this.getDocListByCaseIdAndFormId();
+    }
     
   },
   async created() {
@@ -696,10 +702,8 @@ export default {
     this.allRelationWithCase = data1.data;
     let  data2 = await getDictListDetailByNameApi('车辆类型');
     this.allVehicleShipType = data2.data;
-    
     this.setFormData();
-    //通过案件id和表单类型Id查询已绑定文书
-    this.getDocListByCaseIdAndFormId();
+    
   }
 };
 </script>

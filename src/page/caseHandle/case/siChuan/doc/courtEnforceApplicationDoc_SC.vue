@@ -203,7 +203,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "caseInvest-print"
+        pageDomId: "courtEnforceApplication-print"
       },
       needDealData: true,
       propertyFeatures:''
