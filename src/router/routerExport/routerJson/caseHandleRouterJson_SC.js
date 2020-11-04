@@ -81,6 +81,22 @@ export default [
       component: () => import("@/page/caseHandle/case/siChuan/form/forceExecuteForm_SC")
     },
     {
+      path: "/cancelCase_SC",
+      name: "case_handle_cancelCase_SC",
+      meta: {
+        title: "撤销立案-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/cancelCase_SC")
+    },
+    {
+      path: "/adminCoerciveMeasure_SC",
+      name: "case_handle_adminCoerciveMeasure_SC",
+      meta: {
+        title: "行政强制措施-四川",
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/adminCoerciveMeasure_SC.vue")
+    },
+    {
       path: "/adminCoerciveMeasureApproval_SC",
       name: "case_handle_adminCoerciveMeasureApproval_SC",
       meta: {
@@ -111,6 +127,14 @@ export default [
         title: "行政强制执行审批表-四川"
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/enforceDecideApprovalForm_SC.vue")
+    },
+    {
+      path: "/courtEnforceApplicationDoc_SC",
+      name: "case_handle_courtEnforceApplicationDoc_SC",
+      meta: {
+        title: "申请法院强制执行申请书"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/courtEnforceApplicationDoc_SC.vue")
     },
    
     

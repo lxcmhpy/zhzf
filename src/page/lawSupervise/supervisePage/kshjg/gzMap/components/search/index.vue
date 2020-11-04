@@ -326,19 +326,6 @@ export default {
 </script>
 
 <style lang="scss">
-.participants_table{
-  .openSel{
-    display: flex;
-    margin-top: 5px;
-    justify-content: space-around;
-  }
-  // .clickImg{
-  //   margin-left: 45px;
-  // }
-  .TreeWord{
-    margin-left: 90px;
-  }
-}
 .gzMap-search {
     position: absolute;
     top: 40px;
