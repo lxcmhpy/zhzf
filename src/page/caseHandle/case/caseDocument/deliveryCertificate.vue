@@ -113,7 +113,7 @@
               <el-table-column label="送达文书名称,文号" align="center">
                 <template slot-scope="scope">
                   <!-- <el-input v-model="scope.row.docName"></el-input> -->
-                  <el-select v-model="scope.row.docName" placeholder="请选择">
+                  <el-select v-model="scope.row.docName" placeholder="请选择" filterable  @blur="selectBlurDocName">
                     <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
@@ -141,7 +141,7 @@
 
               <el-table-column prop="servedType" label="送达方式" align="center">
                 <template slot-scope="scope">
-                  <el-select v-model="scope.row.servedType" :clearable="true">
+                  <el-select v-model="scope.row.servedType" :clearable="true" filterable  @blur="selectBlurType">
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
@@ -152,7 +152,7 @@
                 <template slot-scope="scope">
                   <!-- {{scope.row.deliveryMaster}} -->
                   <!-- <el-input v-model="scope.row.deliveryMaster" v-on:click.native="chooseStaff(scope.row)"></el-input> -->
-                  <el-select v-model="scope.row.deliveryMaster" multiple placeholder="请选择" style="width:200px">
+                  <el-select v-model="scope.row.deliveryMaster" multiple placeholder="请选择" style="width:200px" filterable  @blur="selectBlurMaster">
                     <el-option
                       v-for="item in staffData"
                       :key="item.certificateId"
@@ -328,7 +328,16 @@ export default {
     }
   },
   methods: {
-  //根据案件ID和文书Id获取数据
+     selectBlurDocName(e){
+      this.options2 = e.target.value
+    },
+     selectBlurType(e){
+      this.servedType = e.target.value
+    },
+     selectBlurMaster(e){
+      this.saveWardForm.wardCode = e.target.value
+    },
+  //根据案件ID和书Id获取数据
     getDocDataByCaseIdAndDocId() {
       // debugger
       this.caseDocDataForm.caseBasicinfoId = this.caseId;
