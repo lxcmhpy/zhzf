@@ -10,6 +10,9 @@
         </el-tooltip>
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
+        
+        <el-button type="primary" size="medium" v-if="showForceCorrect">责令改正</el-button>
+
         <el-button type="primary" size="medium" @click="linkBack" v-if="showLinkBackBtn">环节回退</el-button>
 
       </div>
@@ -67,6 +70,7 @@ export default {
       showAdminCoerciveMeasureBtn:false,
       currentFlow:'',
       showLinkBackBtn:false,  //环节回退按钮
+      showForceCorrect:false, //责令改正按钮
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -753,7 +757,12 @@ export default {
       //   }
       // })
 
-      if(hasEstablish && !hasFinishCaseReport) this.showAdminCoerciveMeasureBtn = true;
+      if(hasEstablish && !hasFinishCaseReport) {
+        this.showAdminCoerciveMeasureBtn = true;
+        if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+          this.showForceCorrect = true;
+        }
+      }
     },
     //获取强制措施时间
     getMeasuerTime() {

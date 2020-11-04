@@ -124,9 +124,17 @@ export default [
       path: "/enforceDecideApprovalForm_SC",
       name: "case_handle_enforceDecideApprovalForm_SC",
       meta: {
-        title: "行政强制执行审批表"
+        title: "行政强制执行审批表-四川"
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/enforceDecideApprovalForm_SC.vue")
+    },
+    {
+      path: "/courtEnforceApplicationDoc_SC",
+      name: "case_handle_courtEnforceApplicationDoc_SC",
+      meta: {
+        title: "申请法院强制执行申请书"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/courtEnforceApplicationDoc_SC.vue")
     },
    
     

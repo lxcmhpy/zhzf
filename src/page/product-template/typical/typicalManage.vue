@@ -112,7 +112,7 @@ export default {
       organList:[],//受案机构
       selectLoading: false,
       caseTypeList:[],//案件类型
-      branchInfo:['公路路政','道路运政','水路运政','航道运政','港口行政','航道行政','海事行政','工程质量安全监督','其他'],//业务领域
+      branchInfo:['公路路政','道路运政','水路运政','航道运政','港口行政','航道行政','海事行政','工程质量监督','其他'],//业务领域
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数

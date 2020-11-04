@@ -86,7 +86,7 @@ export default {
       },
       organList:[],
       selectLoading: false,
-      branchInfo:['公路路政','道路运政','水路运政','航道运政','港口行政','航道行政','海事行政','工程质量安全监督','其他'],
+      branchInfo:['公路路政','道路运政','水路运政','航道运政','港口行政','航道行政','海事行政','工程质量监督','其他'],
       caseTypeList:[],
       rules: {
         reviews: [{ required: true, message: "请输入案件点评", trigger: "blur" }],
