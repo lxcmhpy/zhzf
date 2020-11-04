@@ -148,6 +148,7 @@ export default {
     return {
       tableData: [], //表格数据
       tableData1: [],
+      datas: [],
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
@@ -176,7 +177,7 @@ export default {
   methods: {
     showModal(data) {
       console.log("违法行为", data);
-      this.visible = true;
+      this.visible = true; 
       this.caseCauseId = data.causeId;
       this.dialogTitle = "绑定法条";
     },
@@ -280,18 +281,28 @@ export default {
       );
     },
     handleLawCognizanceChange(val) {
-      console.log("选中的数据", val);
+      // console.log("选中的数据", val);
+      // val.forEach(item => {
+      //   this.bnslawIdCogBind = item.id;
+      // });
+      let _this = this;
+      let arr = [];
       val.forEach(item => {
-        this.bnslawIdCogBind = item.id;
+        arr.push({
+          causeId:this.caseCauseId,
+          regulaId: item.id,
+          createTime: new Date().format("yyyy-MM-dd HH:mm:ss")
+        });
       });
+      this.datas = JSON.stringify(arr);
     },
     bind() {
-      let data = {
-        causeId: this.caseCauseId,
-        regulaId: this.bnslawIdCogBind
-      };
-      console.log("1111",data);
-      bindCauseLawRegulationsApi(data).then(
+      // let data = {
+      //   causeId: this.caseCauseId,
+      //   regulaId: this.bnslawIdCogBind
+      // };
+      console.log("1111",this.datas);
+      bindCauseLawRegulationsApi(this.datas).then(
         res => {
           console.log("123", res);
           this.$message({

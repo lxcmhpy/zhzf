@@ -30,16 +30,14 @@
               </el-select>
             </el-form-item>
             <el-form-item label="受案机构" prop="organName">
-              <el-select
-                  v-model="searchForm.organName"
-                  placeholder="请选择">
-                  <el-option
-                  v-for="item in organList"
-                  :key="item.id"
-                  :label="item.label"
-                  :value="item.label"
-                  ></el-option>
-              </el-select>
+              <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="organList"
+                  :accordion="true"
+                  :props="myprops"
+                  :value="selectOrganId"
+                  @getName="handleOrgan"
+                ></elSelectTree>
             </el-form-item>
             <el-form-item label="案由" prop="caseName">
               <el-input
@@ -102,6 +100,8 @@ import {getQueryCaseTypeListApi,findTypicalCaseList,deleteByCaseId} from "@/api/
 import iLocalStroage from "@/common/js/localStroage";
 import updateCaseType from "./updateCaseType";
 import addTypical from "./addTypical";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
+import { getAllOrganApi } from "@/api/system";
 export default {
   data() {
     return {
@@ -116,12 +116,17 @@ export default {
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
-      
+      myprops: {
+          label: "label",
+          value: "id",
+      },
+      selectOrganId: "", //默认选中机构的id
     };
   },
   components: {
     updateCaseType,
-    addTypical
+    addTypical,
+    elSelectTree
   },
   inject: ["reload"],
   methods: {
@@ -188,14 +193,22 @@ export default {
     //获取机构
     getAllOrgan() {
       let _this = this
-      this.$store.dispatch("getAllOrgan").then(
-        res => {
-          _this.organList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      getAllOrganApi().then((res) => {
+        console.log(res)
+        this.organList = res.data;
+        // this.searchForm.organName = this.selectOrganId = res.data[0].label;
+        // this.$refs.elSelectTreeObj.valueTitle = res.data[0].label;
+        // this.$refs.elSelectTreeObj.valueId = res.data[0].id;
+
+      })
+      .catch((err) => {
+          throw new Error(err);
+      });
+    },
+    //获取选中的机构
+    handleOrgan(val) {
+      this.$refs.elSelectTreeObj.$children[0].handleClose();
+      this.searchForm.organName = val;
     },
     deleteCaseType(row) {
       this.$confirm("是否删除选中案件【案件编号："+row.caseNumber+"】【案由："+row.caseName+"】", "提示",{
@@ -203,7 +216,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-            deleteByCaseId(row.caseId).then(
+            deleteByCaseId(row.id).then(
               res => {
                 this.$message({ type: "success", message: "删除成功!"});
                 this.getCaseTypes();
@@ -218,6 +231,7 @@ export default {
     //重置
     reset() {
       this.$refs["searchForm"].resetFields();
+      this.$refs.elSelectTreeObj.clearHandle();
       this.getCaseTypes();
     },
   },

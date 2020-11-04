@@ -25,10 +25,10 @@
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm"
                 placeholder=" 年 月 日 时 分"
-                format="yyyy年MM月dd日HH时mm分"
+                format="yyyy-MM-dd HH:mm" 
                 :disabled="fieldDisabled(propertyFeatures['askdataStart'])"
               ></el-date-picker>
-              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="docData.askdataStart"></el-input>
+              <el-input class="replaceTime" placeholder=" 年 月 日 时 分" v-model="getEvidenceTime"></el-input>
             </el-form-item>至
             <el-form-item
               prop="askdataEnd"
@@ -55,7 +55,7 @@
               <el-input
                 v-model="docData.askRecordNumber"
                 maxlength="2"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['askRecordNumber'])"
               ></el-input>
             </el-form-item>次询问
@@ -72,7 +72,7 @@
               <el-input
                 v-model="docData.inquiryAddress"
                 maxlength="40"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['inquiryAddress'])"
               ></el-input>
             </el-form-item>
@@ -88,8 +88,8 @@
                   class="width212"
                   :rules="fieldRules('inquiryStaff',propertyFeatures['inquiryStaff'])"
                 >
-                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
                   <el-select
                     v-model="docData.inquiryStaff"
                     :maxLength="maxLength"
@@ -112,11 +112,11 @@
                 <el-form-item
                   v-if="!lineStyleFlag"
                   prop="recordStaff"
-                  style="width:246px"
+                  style="width:241px"
                   :rules="fieldRules('recordStaff',propertyFeatures['recordStaff'])"
                 >
-                  <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
                   <el-select
                     v-model="docData.recordStaff"
                     :maxLength="maxLength"
@@ -144,13 +144,13 @@
                   class="width188"
                   :rules="fieldRules('inquiried',propertyFeatures['inquiried'])"
                 >
-                  <!-- <el-input type='textarea' v-model="docData.inquiried" v-bind:class="{ over_flow:docData.inquiried.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.inquiried" v-bind:class="{ over_flow:docData.inquiried.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
                   <el-input
                     type="textarea"
                     v-model="docData.inquiried"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['inquiried'])"
                   ></el-input>
                 </el-form-item>
@@ -162,7 +162,7 @@
                 与案件关系：
                 <!-- <el-form-item v-if="!lineStyleFlag" prop="inquiriedRelation" class="width182">
 
-                  <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input>
+                  <el-input type='textarea' v-model="docData.inquiriedRelation" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input>
                 </el-form-item>-->
                 <el-form-item
                   prop="inquiriedRelation"
@@ -197,12 +197,12 @@
                   class="width228"
                   :rules="fieldRules('inquiriedSex',propertyFeatures['inquiriedSex'])"
                 >
-                  <!-- <el-input type='textarea' v-model="docData.inquiriedSex" v-bind:class="{ over_flow:docData.inquiriedSex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
-                  <!-- <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedSex" v-bind:class="{ over_flow:docData.inquiriedSex.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedSex" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
                   <el-select
                     v-model.number="docData.inquiriedSex"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['inquiriedSex'])"
                   >
                     <el-option :value="0" label="男"></el-option>
@@ -218,16 +218,16 @@
                 <el-form-item
                   v-if="!lineStyleFlag"
                   prop="inquiriedAge"
-                  style="width:262px"
+                  style="width:257px"
                   :rules="fieldRules('inquiriedAge',propertyFeatures['inquiriedAge'])"
                 >
-                  <!-- <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+                  <!-- <el-input type='textarea' v-model="docData.inquiriedAge" v-bind:class="{ over_flow:docData.inquiriedAge.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
                   <el-input
                     type="textarea"
                     v-model="docData.inquiriedAge"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['inquiriedAge'])"
                   ></el-input>
                 </el-form-item>
@@ -250,7 +250,7 @@
                     v-model="docData.inquiriedIdNo"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxLength="18"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['inquiriedIdNo'])"
                   ></el-input>
                 </el-form-item>
@@ -263,7 +263,7 @@
                 <el-form-item
                   v-if="!lineStyleFlag"
                   prop="inquiriedTel"
-                  style="width:230px"
+                  style="width:225px"
                   :rules="fieldRules('inquiriedTel',propertyFeatures['inquiriedTel'],validatePhone)"
                 >
                   <el-input
@@ -271,7 +271,7 @@
                     v-model="docData.inquiriedTel"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxLength="maxLength"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['inquiriedTel'])"
                   ></el-input>
                 </el-form-item>
@@ -292,7 +292,7 @@
                 v-model="docData.inquiriedUnitPosition"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['inquiriedUnitPosition'])"
               ></el-input>
             </el-form-item>
@@ -311,7 +311,7 @@
                 v-model="docData.inquiriedAddress"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['inquiriedAddress'])"
               ></el-input>
             </el-form-item>
@@ -329,7 +329,7 @@
                 v-model="docData.organName"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['organName'])"
               ></el-input>
             </el-form-item>
@@ -338,7 +338,7 @@
             <el-form-item
               v-if="!lineStyleFlag"
               prop="staff1"
-              style="width:100px"
+              style="width:78px"
               :rules="fieldRules('staff1',propertyFeatures['staff1'])"
             >
               <!-- <el-input
@@ -346,7 +346,7 @@
                 v-model="docData.staff1"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['staff1'])"
               ></el-input> -->
                <el-select
@@ -371,7 +371,7 @@
               style="width:100px"
               :rules="fieldRules('staff2',propertyFeatures['staff2'])"
             >
-              <!-- <el-input type='textarea' v-model="docData.staff2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\"></el-input> -->
+              <!-- <el-input type='textarea' v-model="docData.staff2" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
               <el-select
                 v-model="docData.staff2"
                 :maxLength="maxLength"
@@ -400,7 +400,7 @@
                 v-model="docData.certificateId1"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['certificateId1'])"
               ></el-input>
             </el-form-item>
@@ -416,7 +416,7 @@
                 v-model="docData.certificateId2"
                 :autosize="{ minRows: 1, maxRows: 3}"
                 :maxLength="maxLength"
-                placeholder="\"
+                placeholder="/"
                 :disabled="fieldDisabled(propertyFeatures['certificateId2'])"
               ></el-input>
             </el-form-item>
@@ -495,7 +495,18 @@ export default {
         .replace("分", "");
       let a = parseInquestStartTime.split(" ");
       let parseinquestEndTime = a[0] + " " + this.docData.askdataEnd;
-
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          showClose: true,
+          message: "开始时间不得小于立案时间",
+          type: "error",
+          offset: 100,
+          customClass: "validateErrorTip",
+        });
+        this.docData.askdataStart = "";
+        return callback(new Error("开始时间不得小于立案时间"));
+      }
       if (
         Date.parse(parseInquestStartTime) > Date.parse(parseinquestEndTime) &&
         this.docData.askdataEnd
@@ -701,7 +712,14 @@ export default {
   },
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(["caseId", "currentFileData"]) },
+  computed: { 
+    ...mapGetters(["caseId", "currentFileData"]),
+      getEvidenceTime() {
+          if (this.docData.askdataStart) {
+            return new Date(this.docData.askdataStart).format('yyyy年MM月dd日HH时mm分')
+          }
+      }
+     },
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -1004,10 +1022,10 @@ export default {
     width: 100px;
   }
   .inquiriedUnitPositionBox {
-    width: calc(100% - 130px);
+    width: calc(100% - 137px);
   }
   .inquiriedAddressBox {
-    width: calc(100% - 80px);
+    width: calc(100% - 88px);
   }
   .print_info p .span_bg {
     height: 23px;

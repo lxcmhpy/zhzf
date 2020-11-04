@@ -25,7 +25,7 @@
       </el-row>
       <el-row>
         <el-form-item label="联系电话" prop="contactNo" class="form-class">
-          <el-input v-model="addOrganForm.contactNo" maxlength="11"></el-input>
+          <el-input v-model="addOrganForm.contactNo" maxlength="12"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
@@ -41,7 +41,7 @@
   </el-dialog>
 </template>
 <script>
-import { validatePhone, isSpecialChar } from '@/common/js/validator';
+import { validateContact, isSpecialChar } from '@/common/js/validator';
 import { addTrainedOrgan } from '@/api/trained';
 
 export default {
@@ -67,7 +67,7 @@ export default {
         ],
         contactNo: [
           { required: true, message: "请输入联系方式", trigger: "blur" },
-          { validator: validatePhone, trigger: "blur" }
+          { validator: validateContact, trigger: "blur" }
         ]
       },
       dialogTitle: "", //弹出框title
@@ -100,7 +100,7 @@ export default {
             },
             err => {
               loading.close();
-              this.$message({ type: "error", message: err.msg || "" });
+              // this.$message({ type: "error", message: err.msg || "" });
             }
           );
         } else {

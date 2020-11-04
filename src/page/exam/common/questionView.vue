@@ -17,7 +17,7 @@
               </div>
               <div
                 class="question-option"
-                v-for="itemSon in question.optionList"
+                v-for="(itemSon, index) in questionOptioList"
                 :key="itemSon.optionNum"
               >
                 <el-row>
@@ -36,10 +36,9 @@
                       disabled
                     >{{itemSon.optionNum}}:{{itemSon.optionName}}</el-checkbox>
                   </el-col>
-                  <el-col v-if="itemSon.optionPicture" :span="8">
+                  <el-col v-if="itemSon.showPicture" :span="8">
                     <div>
-                      <!-- <el-image :src="baseUrl + itemSon.optionPicture"></el-image> -->
-                      <el-image src="../../../../static/images/img/temp/tempImg.jpg"></el-image>
+                      <el-image :src="itemSon.optionPicture" :key="index"></el-image>
                     </div>
                   </el-col>
                 </el-row>
@@ -135,7 +134,8 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       questionLevelNume: ["简单", "一般", "困难"],
-      questionPicture: ''
+      questionPicture: '',
+      questionOptioList: []
     };
   },
   computed: {
@@ -168,6 +168,28 @@ export default {
         this.$util.com_getFileStream(this.question.questionPicture).then( res => {
           this.questionPicture = res;
         });
+      }
+      if(this.question.optionList && this.question.optionList.length){
+        let optionLists = JSON.parse(JSON.stringify(this.question.optionList));
+        optionLists.forEach(item => {
+          item.showPicture = false;
+          if(item.optionPicture){
+            this.$util.com_getFileStream(item.optionPicture).then( res => {
+              item.optionPicture = res;
+              item.showPicture = true;
+            });
+          }
+        })
+        this.questionOptioList = [].concat(optionLists);
+      }
+    },
+    // 获取题目选项图片
+    async getOptipnImageUrl(imgId){
+      try{
+        let imgUrl = await this.$util.com_getFileStream(imgId);
+        return imgUrl;
+      }catch(err){
+        return '';
       }
     },
     // 查看大图
@@ -237,7 +259,7 @@ export default {
               },
               err => {
                 loading.close();
-                this.$message({ type: "error", message: err.msg || "" });
+                // this.$message({ type: "error", message: err.msg || "" });
               }
             );
         })
@@ -282,7 +304,7 @@ export default {
               },
               err => {
                 loading.close();
-                this.$message({ type: "error", message: err.msg || "" });
+                // this.$message({ type: "error", message: err.msg || "" });
               }
             );
         })

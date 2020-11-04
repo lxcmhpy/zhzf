@@ -123,7 +123,7 @@
           <div class="item" v-if="caseState != 'myApproval'">
             <el-form-item label="受案时间" prop="acceptTimeArray">
               <el-date-picker
-                v-model="caseSearchForm.acceptTimeArray"
+                v-model="acceptTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -137,7 +137,7 @@
           <div class="item" v-if="caseState == 'waitArchive'">
             <el-form-item label="结案时间" prop="endCaseTimeArray">
               <el-date-picker
-                v-model="caseSearchForm.endCaseTimeArray"
+                v-model="endCaseTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -151,7 +151,7 @@
           <div class="item" v-if="caseState == 'myApproval'" >
             <el-form-item label="申请时间" prop="applyTimeArray">
               <el-date-picker
-                v-model="caseSearchForm.applyTimeArray"
+                v-model="applyTimeArray"
                 type="daterange"
                 range-separator="-"
                 start-placeholder="开始日期"
@@ -192,16 +192,16 @@ export default {
         applyEndTime: "",
         endCaseStartTime: "",
         endCaseEndTime: "",
-        acceptTimeArray: [],
-        endCaseTimeArray: [],
-        applyTimeArray: [],
       },
+      endCaseTimeArray: [],
+      applyTimeArray: [],
+      acceptTimeArray: [],
       hideSomeSearch: true,
       linkList:[], //环节
       caseTypeList:[],//类型
       caseStateList:[],//状态
       dictId: this.caseState=="waitDeal" ?  "ef38274ddea12be26e9a8c1bf23cd401" : "324701f1633dd65ca79a28fbc79c1628",
-      approvalInglinkList:['立案登记','案件调查报告','结案报告']
+      approvalInglinkList:['立案登记','案件调查报告','结案报告'],
     };
   },
   computed: {
@@ -252,20 +252,20 @@ export default {
     },
     //搜索
     searchCaseEmit(){
-        console.log('点击')
-        this.caseSearchForm.applyStartTime = this.caseSearchForm.applyTimeArray[0]
-        this.caseSearchForm.applyEndTime = this.caseSearchForm.applyTimeArray[1]
-
-        this.caseSearchForm.acceptStartTime = this.caseSearchForm.acceptTimeArray[0]
-        this.caseSearchForm.acceptEndTime = this.caseSearchForm.acceptTimeArray[1]
-
-        this.caseSearchForm.endCaseStartTime = this.caseSearchForm.endCaseTimeArray[0]
-        this.caseSearchForm.endCaseEndTime = this.caseSearchForm.endCaseTimeArray[1]
-
+        this.caseSearchForm.applyStartTime = this.applyTimeArray[0]
+        this.caseSearchForm.applyEndTime = this.applyTimeArray[1]
+        this.caseSearchForm.acceptStartTime = this.acceptTimeArray[0]
+        this.caseSearchForm.acceptEndTime = this.acceptTimeArray[1]
+        this.caseSearchForm.endCaseStartTime = this.endCaseTimeArray[0]
+        this.caseSearchForm.endCaseEndTime = this.endCaseTimeArray[1]
+        this.caseSearchForm.resetCurrent = 1;
         this.$emit('searchCase',this.caseSearchForm);
     },
     //重置
     reset() {
+      this.endCaseTimeArray = [];
+      this.applyTimeArray = [];
+      this.acceptTimeArray =[];
       this.$refs["caseSearchForm"].resetFields();
       this.searchCaseEmit();
     },

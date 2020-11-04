@@ -6,6 +6,7 @@
 // import {menuList} from "@/common/data/menu";
 import {
   getFileStreamByStorageIdApi,
+  getFileStreamNoLoadingByStorageIdApi
 } from "@/api/caseHandle";
 import {
     getFileStreamApi,
@@ -523,6 +524,28 @@ util.com_getFileStream = async function (storageId) {
   try{
     fileStreamRes = await getFileStreamByStorageIdApi(storageId);
   }catch(err){throw new Error(err);}
+  let url = null;
+  if (window.createObjectURL != undefined) { // basic
+    url = window.createObjectURL(fileStreamRes);
+  } else if (window.webkitURL != undefined) { // webkit or chrome
+    try {
+      url = window.webkitURL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  } else if (window.URL != undefined) { // mozilla(firefox)
+    try {
+      url = window.URL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  }
+  return url;
+}
+// 不加载loading
+util.partLoading_getFileStream = async function (storageId) {
+  let fileStreamRes;
+  try {
+    fileStreamRes = await getFileStreamNoLoadingByStorageIdApi(storageId);
+  } catch (err) {
+    throw new Error(err);
+  }
   let url = null;
   if (window.createObjectURL != undefined) { // basic
     url = window.createObjectURL(fileStreamRes);

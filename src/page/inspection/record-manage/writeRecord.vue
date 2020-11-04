@@ -18,7 +18,7 @@
 
       </div>
       <!-- 动态生成表单 -->
-      <form-create :class="isCopyStyle?'copy-style-text':''" v-model="$data.$f" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
+      <form-create :class="isCopyStyle?'copy-style-text':''" v-model="$data.$f" ref="formC" :rule="rule" @on-submit="onSubmit" :option="options" class="form-create-sty" test-on-change="onChange">
       </form-create>
       <uploadTmp ref="uploadRef" :recordMsg='recordMsg' :defautImgList='defautImgList' :defautFileList='defautFileList' :addOrEiditFlag='addOrEiditFlag'></uploadTmp>
       <chooseLawPerson ref="chooseLawPersonRef" @setLawPer="setLawPerson" @userList="getAllUserList"></chooseLawPerson>
@@ -101,6 +101,8 @@ export default {
   },
   data() {
     return {
+      actionUrl:localStorage.getItem('baseURL') + "/case/sys/file/uploadCommon",
+      // actionUrl:"/case/sys/file/uploadCommon",
       defaultRuleData: [],
       addOrEiditFlag: '',
       fileEiditFlag: '',
@@ -420,47 +422,49 @@ export default {
       delete (this.formData["pictureList"]);
       delete (this.formData["attachedList"]);
       console.log('formdata', this.formData)
-      saveOrUpdateRecordApi(this.formData).then(
-        res => {
-          // console.log(res)
-          if (res.code == 200) {
-            this.addOrEiditFlag = 'view'
-            this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
-            this.$message({
-              type: "success",
-              message: res.msg
-            });
-            this.rule.forEach(element => {
-              console.log(element)
-              this.$data.$f.updateRule(element.field, {
-                props: { disabled: true }
-              }, true);
-            });
-            this.formOrDocData.pageDomId = res.data
+      debugger
 
-            // 判断跳转1还是继续作文书2
-            if (fileSaveType == 1) {
-              this.$store.commit("set_inspection_orderId", res.data);
-              this.$nextTick(() => {
-                // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-                this.$router.push({
-                  name: 'inspection_recordList',
-                });
-              })
-              this.$store.commit("set_inspection_fileEdit", true);
+      // saveOrUpdateRecordApi(this.formData).then(
+      //   res => {
+      //     // console.log(res)
+      //     if (res.code == 200) {
+      //       this.addOrEiditFlag = 'view'
+      //       this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
+      //       this.$message({
+      //         type: "success",
+      //         message: res.msg
+      //       });
+      //       this.rule.forEach(element => {
+      //         console.log(element)
+      //         this.$data.$f.updateRule(element.field, {
+      //           props: { disabled: true }
+      //         }, true);
+      //       });
+      //       this.formOrDocData.pageDomId = res.data
 
-            } else {
-              this.$store.commit("set_inspection_orderId", res.data);
-              this.fileEiditFlag = true
-              this.$store.commit("set_inspection_fileEdit", true);
-            }
-          } else {
-            this.$message.error(res.msg);
-          }
-        },
-        error => {
-        })
-      this.isCopyStyle = false;//变颜色
+      //       // 判断跳转1还是继续作文书2
+      //       if (fileSaveType == 1) {
+      //         this.$store.commit("set_inspection_orderId", res.data);
+      //         this.$nextTick(() => {
+      //           // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      //           this.$router.push({
+      //             name: 'inspection_recordList',
+      //           });
+      //         })
+      //         this.$store.commit("set_inspection_fileEdit", true);
+
+      //       } else {
+      //         this.$store.commit("set_inspection_orderId", res.data);
+      //         this.fileEiditFlag = true
+      //         this.$store.commit("set_inspection_fileEdit", true);
+      //       }
+      //     } else {
+      //       this.$message.error(res.msg);
+      //     }
+      //   },
+      //   error => {
+      //   })
+      // this.isCopyStyle = false;//变颜色
     },
     // 暂存
     onSaveRecord(noRouter) {
@@ -613,6 +617,34 @@ export default {
     },
     viewRecord() {
       this.options = {
+        upload:{
+        "onPreview": function (file) {
+        }, //点击文件列表中已上传的文件时的钩子
+          "onRemove": function (file, fileList) {
+          }, //文件列表移除文件时的钩子
+          "onSuccess": function () {
+            return 'http://file.lotkk.com/form-create.jpeg';
+          }, //文件上传成功时的钩子，返回字段为 response, file, fileList
+          "onError": function (err, file, fileList) {
+            console.log("viewRecord -> err, file, fileList", err, file, fileList)
+            
+          },// 文件上传失败时的钩子
+          "onProgress": function (event, file, fileList) {
+            console.log("viewRecord -> event, file, fileList", event, file, fileList)
+          },// 文件上传失败时的钩子
+          "onChange": function (file, fileList) {
+          },// 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
+          "beforeUpload": function (file) {
+          },// 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
+          "beforeRemove": function (file, fileList) {
+          },// 删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止上传。
+          //辅助操作按钮的图标 ,设置为false将不显示
+          handleIcon:'ios-eye-outline',
+          //点击辅助操作按钮事件
+          onHandle:(src)=>{},
+          //是否可删除,设置为false是不显示删除按钮
+          allowRemove:true,
+        },
         // submitBtn: false,
         onSubmit: (formData) => {
           // alert(JSON.stringify(formData));
@@ -821,10 +853,11 @@ export default {
       }
     },
     dealFieldData(element, viewFlag) {
+      // debugger
       console.log('viewFlag', viewFlag)
       // 字段
       element.fieldList.forEach(item => {
-
+// debugger
         // 用于预览，避免重复
         if (viewFlag) {
           item.id = this.globalId.toString()
@@ -1047,12 +1080,80 @@ export default {
               },
             ],
             inject: true,
-            // on: {
-            //   'focus': this.focusMethod(item.field)
-            // },
+            on: {
+              'focus': this.focusMethod(item.field)
+            },
           })
 
 
+        }else if (item.type == '图片型') {
+          debugger
+          console.log("dealFieldData -> item", item)
+          item.type = 'upload';
+          this.rule.push({
+            type: 'upload',
+            field: item.id || item.field,//id用于传值，field用于预览
+            title: item.title,
+              // value: item.imgs,
+            value: [],
+            props: {
+              showFileList:true,
+              type: "select",
+              uploadType: "image", // file
+              name: "", // name属性
+              multiple: true, // 是否可多选
+              allowRemove: true,
+              accept: "image/jpeg,image/jpg", // 上传文件类型
+              format: ["jpg", "jpeg"], // 上传文件格式
+              maxSize: 2048, // 上传文件大小最大值
+              maxLength: 5, // 上传文件数量最大值
+              action:'', // 上传后端接收API接口
+              // fileList:[],
+              httpRequest:function(aaa){
+              console.log("dealFieldData -> aaa,b,c", aaa)
+                
+              },
+              "onRemove": function (file, fileList) {
+              console.log("onRemove -> file, fileList", file, fileList)
+    	},
+              "onChange": function (file, fileList) {
+              console.log("onChange -> file, fileList", file, fileList,item)
+              console.log('aaaaaa',this.$refs)
+    	},
+              'onSuccess': function(res) {
+              console.log("onSuccess -> res", res)
+                alert('scsss')
+                return ""; // 上传成功回调函数
+              },
+              onError(err){
+              console.log("onError -> err", err)
+
+              }
+            },
+            
+             validate: [
+              {
+                // required: item.required == 'true' ? true : false,
+                required: false,
+                type: "array",
+                min: 1,
+                message: "请最少上传1张图片",
+                trigger: "change"
+              }
+            ],
+            // children: [
+            //   {
+            //     type: 'i',
+            //     class: 'iconfont law-weizhi',
+            //     slot: 'suffix',
+
+            //   }
+            // ],
+            // inject: true,
+            // on: {
+            //   'change': this.changeAdress
+            // },
+          })
         }
 
         if (item.field == 'party') {
@@ -1141,7 +1242,7 @@ export default {
       console.log(`选择违法行为`);
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
-      debugger
+      // debugger
       // 查看更多违法行为
       let cate = "";
       // this.options.forEach(element => {
@@ -1284,6 +1385,7 @@ export default {
       this.dealFormData()
     }
   }
+
 }
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>

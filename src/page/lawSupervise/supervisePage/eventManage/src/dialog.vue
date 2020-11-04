@@ -32,6 +32,7 @@
             v-else
             class="handleLatLng already"
             slot="append"
+            @click="showMap"
           ><i class="iconfont law-weizhi" />已获取坐标</div>
         </el-input>
       </el-form-item>
@@ -68,6 +69,9 @@
             :value="item.value">
           </el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="处理意见:" :label-width="formLabelWidth" prop="note">
+        <el-input v-model="form.note" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="事件附件:" :label-width="formLabelWidth">
         <el-upload
@@ -170,7 +174,8 @@ export default {
         disposePerson: '', // 选择的人员 id
         storageIds: [], // 附件 id 列表
         eventAddress:'',
-        eventCoordinate:''
+        eventCoordinate:'',
+        note:''
       },
       dialogImageUrl: '',
       dialogVisible: false,

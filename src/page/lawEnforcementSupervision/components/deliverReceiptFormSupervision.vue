@@ -83,7 +83,6 @@ export default {
       mlList: "",
       pdfVisible: false,
       // doccloseDialog: false,
-      host: "",
       getData: false,
       pdfUrl: "",
     };
@@ -179,7 +178,6 @@ export default {
     },
   },
   mounted() {
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
     let class1 = document.getElementsByClassName("deliverSupervisionCaBox");
     let class2 = class1[0].parentNode;
     class2.style.right = "60px";

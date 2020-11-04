@@ -90,7 +90,7 @@ export default {
       docId: null,
       uploadPics: [],
       editAble: true,
-      baseUrl: iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
+      
     };
   },
   computed: {

@@ -86,7 +86,7 @@
             console.log('地址1',res);
             //单份文书取一个
             if (res.length == 1) {
-              _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[0].storageId)
+              _that.storagePath.push(res[0].storageId)
               this.getFileStream(res[0].storageId)
             }else{
               //多份文书按照docDataId取地址
@@ -94,7 +94,7 @@
                 if (this.$route.params.docDataId && this.$route.params.docDataId == res[i].docDataId) {
                   console.log('res[i].storageId', res[i].storageId);
                   this.getFileStream(res[i].storageId)
-                  _that.storagePath.push(iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res[i].storageId)
+                  _that.storagePath.push(res[i].storageId)
                   break;
                 }
               }
@@ -189,10 +189,10 @@
         let currentApproveRes = await getCurrentApproveApi(this.docDataId);
         console.log('几级审批',currentApproveRes);
         if(currentApproveRes.data.currentIndex == "1"){  //一级审批
-              oldApprovalOpion = currentDocData.old_approveOpinions; 
+              oldApprovalOpion = currentDocData.old_approveOpinions;
               oldApprovalTime = currentDocData.old_approveTime;
-              oldExecuteHandle = currentDocData.approveExecuteHandle;
-        }else if(currentApproveRes.data.currentIndex == "2"){
+              oldExecuteHandle = currentDocData.old_approveExecuteHandle;
+        }else if(currentApproveRes.data.currentIndex == "2"){ 
               oldApprovalOpion = currentDocData.old_secondApproveOpinions;
               oldApprovalTime = currentDocData.old_secondApproveTime;
               oldExecuteHandle = currentDocData.old_secondApproveExecuteHandle;
@@ -205,7 +205,7 @@
         let caseData={
             caseId:this.caseId,
             currentApproval:currentApproveRes.data.currentIndex, //当前是几级审批
-            approvalNumber:currentApproveRes.data.amount ,  //共几级审批
+            approvalNumber:currentApproveRes.data.amount,  //共几级审批
             oldApprovalOpion:oldApprovalOpion, //环节回退或修改文书之后自动带入旧的审批
             oldApprovalTime:oldApprovalTime,
             oldExecuteHandle:oldExecuteHandle

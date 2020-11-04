@@ -67,15 +67,8 @@
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
               <img
-                v-if="scope.row.evType =='照片'"
-                :src="host+scope.row.evPath"
-                width="40"
-                height="40"
-                @click.stop="imgDetail(scope.row)"
-              />
-              <img
-                v-if="scope.row.evType =='音视频'"
-                :src="host+scope.row.thumbnailsStoragePath"
+                v-if="scope.row.evType =='照片' || scope.row.evType =='音视频'"
+                :src="scope.row.myFileUrl"
                 width="40"
                 height="40"
                 @click.stop="imgDetail(scope.row)"
@@ -123,8 +116,8 @@
             :http-request="saveFile"
             :file-list="fileList"
             action="https://jsonplaceholder.typicode.cmo/posts/"
-            multiple
             style="position: absolute;left: 0; top: 0;z-index:2"
+            :on-change="handleChange"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -204,7 +197,7 @@
         </div>
         <div style="margin-left: 42%">
           <el-button size="medium" type="primary" @click="submitForm('form')">提 交</el-button>
-          <el-button size="medium" @click="addVisible=false">取 消</el-button>
+          <el-button size="medium" @click="handleClose">取 消</el-button>
         </div>
       </div>
     </el-dialog>
@@ -214,22 +207,22 @@
       :visible.sync="editVisible"
       width="60%"
       v-loading="editLoading"
-      :before-close="handleClose"
+      :before-close="handleCloseEdit"
     >
       <div>
         <div style="float: left;width: 45%">
           <el-form :model="uForm">
-            <!-- <img :src="host+uForm.evPath" width="350px" height="400" align="center"/> -->
+            
             <img
               v-if="uForm.evType =='照片'"
-              :src="host+uForm.evPath"
+              :src="uForm.myFileUrl"
               width="350px"
               height="400"
               align="center"
             />
             <video
               v-if="uForm.evType =='音视频'"
-              :src="host+uForm.evPath"
+              :src="uForm.videoStreamSrc"
               controls="controls"
               width="350px"
               height="400"
@@ -315,10 +308,10 @@ import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import { mapGetters } from "vuex";
 import evidenceCatalogue from "./evidenceCatalogue";
 import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
-
 import {
   getCaseBasicInfoApi,
   getFileStreamByStorageIdApi,
+  getEvidenceApi,
 } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage.js";
 import evidenceDetail from "./evidenceDetail";
@@ -336,7 +329,6 @@ export default {
     };
     return {
       fileList: [],
-      host: "",
       evfile: "",
       evTypeOptions: [],
       statusOptions: [],
@@ -421,14 +413,19 @@ export default {
         }
       });
     },
-    handleClose(done) {
+    handleClose() {
       this.$confirm("确认关闭？")
         .then((_) => {
-          done();
-          this.$nextTick(() => {
-            this.$refs["form"].resetFields();
-            this.fileList = [];
-          });
+          this.$refs["form"].resetFields();
+          this.fileList = [];
+          this.addVisible = false;
+        })
+        .catch((_) => {});
+    },
+    handleCloseEdit() {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          this.editVisible = false;
         })
         .catch((_) => {});
     },
@@ -436,7 +433,7 @@ export default {
       this.form = {};
       this.addVisible = true;
     },
-    handleEdit(index, row) {
+    async handleEdit(index, row) {
       const item = this.tableData[index];
       console.log("编辑证据", item);
       this.uForm = {
@@ -450,11 +447,16 @@ export default {
         recordPlace: item.recordPlace,
         status: item.status,
         note: item.note,
+        myFileUrl:item.myFileUrl, 
+        videoStreamSrc:item.videoStreamSrc || ''
       };
+      if(item.evType == '音视频'){
+         this.uForm.videoStreamSrc = await this.$util.com_getFileStream(item.evPath)
+      }
       this.editVisible = true;
     },
     //表单筛选
-    getEviList() {
+    async getEviList() {
       let data = {
         caseId: this.caseId,
         category: "证据",
@@ -466,10 +468,26 @@ export default {
       };
       console.log("证据目录参数", data);
       let _this = this;
-      this.$store.dispatch("getEvidence", data).then((res) => {
-        console.log("res", res);
-        _this.tableData = res.data.records;
-      });
+      // this.$store.dispatch("getEvidence", data).then((res) => {
+      //   console.log("res", res);
+      //   _this.tableData = res.data.records;
+      // });
+       
+      let getEvidenceRes = await getEvidenceApi(data);
+      for(let eviListItem of getEvidenceRes.data.records){
+          let getFileStreamRes = '';
+          if(eviListItem.evType == '照片'){
+              getFileStreamRes = await this.$util.com_getFileStream(eviListItem.evPath)
+          }
+          else if(eviListItem.evType == '音视频'){
+              getFileStreamRes = await this.$util.com_getFileStream(eviListItem.thumbnailsStoragePath);
+              // eviListItem.videoStreamSrc = await this.$util.com_getFileStream(eviListItem.evPath)
+          } 
+          eviListItem.myFileUrl = getFileStreamRes
+      }
+      this.tableData = getEvidenceRes.data.records;
+
+
     },
     saveFile(param) {
       console.log(param);
@@ -544,9 +562,13 @@ export default {
           });
           _this.addVisible = false;
           _this.currentPage = 1;
+          _this.$refs["form"].resetFields();
+          _this.fileList = [];
           _this.getEviList();
         } else {
           _this.$message.error("出现异常，添加失败！");
+          _this.$refs["form"].resetFields();
+          _this.fileList = [];
         }
       });
     },
@@ -592,7 +614,6 @@ export default {
         status: this.uForm.status,
         note: this.uForm.note,
       };
-      debugger;
       let _this = this;
       this.$store.dispatch("saveOrUpdateEvidence", data).then((res) => {
         if (res.code == 200) {
@@ -762,9 +783,13 @@ export default {
       // 然后移除
       document.body.removeChild(eleLink);
     },
+    handleChange(file, fileList) {
+          if (fileList.length > 0) {
+              this.fileList = [fileList[fileList.length - 1]]  
+          }
+      },
   },
   mounted() {
-    this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
   },
   created() {
     this.getEviList();

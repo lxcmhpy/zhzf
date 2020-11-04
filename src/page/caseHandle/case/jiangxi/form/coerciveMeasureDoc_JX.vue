@@ -476,10 +476,10 @@
                 <template slot-scope="scope">
                   <el-select v-model="scope.row.spec" placeholder>
                     <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.label"
+                      v-for="item in options" 
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </template>
@@ -553,6 +553,8 @@ import {
 } from "@/common/js/validator";
 import resetDocDia from "@/page/caseHandle/components/resetDocDia";
 import saveFormDia from "@/page/caseHandle/components/saveFormDia";
+import {getDictListDetailByNameApi} from "@/api/system";
+
 export default {
   components: {
     checkDocAllFinish,
@@ -644,28 +646,7 @@ export default {
           { required: true, message: "统一社会信用代码", trigger: "blur" }
         ]
       },
-      options: [
-        {
-          value: "1",
-          label: " "
-        },
-        {
-          value: "2",
-          label: "份"
-        },
-        {
-          value: "3",
-          label: "套"
-        },
-        {
-          value: "4",
-          label: "个"
-        },
-        {
-          value: "5",
-          label: "件"
-        }
-      ],
+      options: [],
       addVisible: false,
       addLoading: false,
       isParty: true, //当事人类型为个人
@@ -878,12 +859,22 @@ export default {
     backBtn() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.go(-1);
+    },
+    //获取规格单位
+    getUnit(){
+      getDictListDetailByNameApi('扣押物品规格').then(res=>{
+        console.log('规格',res);
+        this.options = res.data;
+        //添加一个空的数据
+        this.options.unshift({name:' ',note:' ',id:'123'})
+      }).catch(err=>{throw new Error(err)})
     }
   },
   created() {
     this.setFormData();
     //通过案件id和表单类型Id查询已绑定文书
     this.getDocListByCaseIdAndFormId();
+    this.getUnit();
   }
 };
 </script>

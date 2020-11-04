@@ -130,8 +130,9 @@ export function findRecordModleByPersonApi(data) {
 //查询登录人收藏的模板
 export function findUserCollectTemplateApi(data) {
     return request({
-        url: "/xzjc/template/findUserCollectTemplate/" + data,
+        url: "/xzjc/template/findUserCollectTemplate/",
         method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType: 'CAPTCHA_HOST',
@@ -209,8 +210,9 @@ export function findRecordModleByNameIdApi(data) {
 //查询所有模板名称
 export function findAllModleNameApi(data) {
     return request({
-        url: "/xzjc/template/queryAlltemplateName/" + data,
+        url: "/xzjc/template/queryAlltemplateName/" ,
         method: "get",
+        params: data,
         showloading: true,
         loadingType: 'loadPart',
         baseUrlType: 'CAPTCHA_HOST',
@@ -225,6 +227,34 @@ export function findRecordListApi(data) {
         params: data,
         showloading: true,
         loadingType: 'loadPart',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//查询记录统计列表
+export function findRecordLogListApi(data) {
+    return request({
+        url: "/xzjc/templateOrder/pcQueryOrderPage",
+        method: "get",
+        params: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+//导出记录统计列表
+export function excelExportRecordLogListApi(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/templateOrder/excelExport",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        responseType:'blob',
         baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });

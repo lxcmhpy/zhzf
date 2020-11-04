@@ -26,7 +26,7 @@
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
                     error
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['caseName'])"
                   ></el-input>
                 </el-form-item>
@@ -92,10 +92,10 @@
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
                     error
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['party'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
                 </el-form-item>
               </td>
             </tr>
@@ -113,7 +113,7 @@
                         v-model="docData.hearingSummary"
                         rows="4"
                         maxlength="400"
-                        placeholder="\"
+                        placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['hearingSummary'])"
                       ></el-input>
                       <span
@@ -157,7 +157,7 @@
                     v-bind:class="{ over_flow:docData.hearingResult.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="100"
-                    placeholder="\"
+                    placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['hearingResult'])"
                   ></el-input>
                 </el-form-item>
@@ -199,7 +199,7 @@
             </td>
             <td colspan="8" class="color_DBE4EF">
               <el-form-item prop="note">
-                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.note" :autosize="{ minRows: 1, maxRows: 2}" maxlength="30" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>

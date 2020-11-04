@@ -10,18 +10,6 @@
       </div>
 
       <div id="chartColumn" style="width: 100%; height: 500px;margin-bottom:20px"></div>
-
-      <!-- <div class="tablePart">
-        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;">
-          <el-table-column prop="time" label="日期" align="center"></el-table-column>
-          <el-table-column prop="lscf" label="路损处罚" align="center"></el-table-column>
-          <el-table-column prop="cxcf" label="超限处罚" align="center"></el-table-column>
-          <el-table-column prop="slxk" label="涉路许可" align="center"></el-table-column>
-          <el-table-column prop="cxxk" label="超限许可" align="center"></el-table-column>
-          <el-table-column prop="lspc" label="路损赔偿" align="center"></el-table-column>
-          <el-table-column prop="zs" label="总数" align="center"></el-table-column>
-        </el-table>
-      </div> -->
     </div>
   </div>
 </template>
@@ -37,10 +25,9 @@ export default {
   data() {
     return {
       value3: "2020",
-      value2: "",
-      currentPage: 1, //当前页
-      pageSize: 10, //pagesize
-      totalPage: 0, //总页数
+      value2: [],
+      value1:[],
+     
       ybaj:"",
       cxcz:"",
       cfaj:"",
@@ -73,17 +60,18 @@ export default {
         legend: {
           left: "center",
           top: "bottom",
-          data: [
-            "公路路政",
-            "道路运政",
-            "水路运政",
-            "航道行政",
-            "港口行政",
-            "海事行政",
-            "工程质量安全监督",
-            "其他",
-            "综合执法",
-          ]
+          data: this.value1
+          // [
+          //   "公路路政",
+          //   "道路运政",
+          //   "水路运政",
+          //   "航道行政",
+          //   "港口行政",
+          //   "海事行政",
+          //   "工程质量安全监督",
+          //   "其他",
+          //   "综合执法",
+          // ]
         },
         series: [
           {
@@ -91,17 +79,18 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "50%"],
-            data: [
-              { value: 20, name: "公路路政" },
-              { value: 30, name: "道路运政" },
-              { value: 40, name: "水路运政" },
-              { value: 10, name: "航道行政" },
-              { value: 30, name: "港口行政" },
-              { value: 20, name: "海事行政" },
-              { value: 10, name: "工程质量安全监督" },
-              { value: 30, name: "其他" },
-              { value: 20, name: "综合执法" },
-            ],
+            data:this.value2,
+            //  [
+            //   { value: 20, name: "公路路政" },
+            //   { value: 30, name: "道路运政" },
+            //   { value: 40, name: "水路运政" },
+            //   { value: 10, name: "航道行政" },
+            //   { value: 30, name: "港口行政" },
+            //   { value: 20, name: "海事行政" },
+            //   { value: 10, name: "工程质量安全监督" },
+            //   { value: 30, name: "其他" },
+            //   { value: 20, name: "综合执法" },
+            // ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -114,25 +103,19 @@ export default {
       });
     },
 
-    
+    //查询-----------------------------------------------------------------------------------------------------
     search(val) {    
       let data = {
        year:val
       };
-      let _this = this;
-      // this.$store.dispatch("ndajsllxslbztj", data).then(res => {
+    
       ndajsllxslbztj(data).then(res => { 
-         var map={};
+         this.value1=[];
+         this.value2=[];
        res.forEach(item =>{
-          map[item[0]]=item[1]
-          
+          this.value1.push(item[0]);
+          this.value2.push({value:item[1],name:item[0] })
          });
-         console.log(map);
-            this.ybaj=map["一般案件"];      
-            this.cfaj=map["处罚案件"];         
-            this.pbcaj=map["赔补偿案件"];
-            this.cxcz=map["超限超载"];
-                             
             this.drawLine();
        
       });
@@ -141,7 +124,10 @@ export default {
       };
     },
    select(val){
-     this.search(val);
+     if(val!=null){
+      this.search(val);
+     }
+     
    }
   },
   mounted() {

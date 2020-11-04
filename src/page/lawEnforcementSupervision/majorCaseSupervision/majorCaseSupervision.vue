@@ -173,7 +173,7 @@
             <template slot-scope="scope">
               <el-tooltip  v-if="scope.row.warContent" placement="top-start" effect="light">
                 <div slot="content" class="warn-li">
-                  <li v-for="(item,index) in scope.row.warContent" :key="index">
+                  <li v-for="(item,index) in JSON.parse(scope.row.warContent)" :key="index">
                     <span v-if="item.warType=='1'"  style="color:#FF0000"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
                     <span v-if="item.warType=='2'"  style="color:#FF6600"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
                     <span v-if="item.warType=='3'"  style="color:#0084FF"><i class="iconfont law-yuan"></i>{{item.warContent}}</span>
@@ -220,6 +220,7 @@ import iLocalStroage from "@/common/js/localStroage";
 import setMajorCaseMoney from "./dialog/setMajorCaseMoney";
 import { getDictListDetailByNameApi } from "@/api/system";
 import { caseSupervisionCommonMixins } from "@/common/js/caseHandle/caseSupervisionCommonMixins";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -249,6 +250,9 @@ export default {
   },
   components: {
     setMajorCaseMoney,
+  },
+  computed: {
+        ...mapGetters(["openTab"])
   },
   mixins: [caseSupervisionCommonMixins],
   methods: {
@@ -289,6 +293,9 @@ export default {
       this.$store.commit("setCaseId", row.id);
       this.$store.commit("setCaseNumber", row.caseNumber);
       this.$store.commit("setIsLawEnforcementSupervision", true);
+      //防止出现多个案件tab
+      let newOpenTab = this.openTab.filter(item => {return item.isCase == false })
+      this.$store.commit("reset_ALLTABS", newOpenTab);
       this.$store.commit(
         "setLawEnforcementSupervisionType",
         "majorCaseSupervision"

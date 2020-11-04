@@ -30,10 +30,11 @@ export function addTrainedBatchList(data, type){
   })
 }
 // 删除培训批次
-export function deleteTrainedBatch(trainId){
+export function deleteTrainedBatch(data){
   return request({
-    url: `/train/manage/deleteTrainManageById/${trainId}`,
-    method: "get",
+    url: `/train/manage/deleteTrainManageById`,
+    method: "post",
+    data: vm.$qs.stringify(data),
     showloading: false,
     cancelToken: setCancelSource()
   })
@@ -331,10 +332,11 @@ export function addBatchPerson(data){
   })
 }
 // 移除参考人员
-export function deleteTrainPerson(teperId){
+export function deleteTrainPerson(data){
   return request({
-    url: `/train/manage/deleteTrainPersonById/${teperId}`,
-    method: "get",
+    url: `/train/manage/deleteTrainPersonById`,
+    method: "post",
+    data: vm.$qs.stringify(data),
     showloading: false,
     cancelToken: setCancelSource()
   })
@@ -611,4 +613,56 @@ export function setTrainResult(data){
       showloading: false,
       cancelToken: setCancelSource()
   })
+}
+
+// 上传培训课程相关文件
+export function uploadTrainedFile(data){
+  return  request({
+    url:  "/person/fileUploadDownHdfs/uploadFileHdfs",
+    method:  "POST",
+    data: data,
+    contentType: 'multipart/form-data;',
+    showloading: false,
+    cancelToken:  setCancelSource(),
+  });
+}
+
+//获取文件流
+const getFileStreamByFileNameApi = function(fileName) {
+  return request({
+    url: "/person/fileUploadDownHdfs/downFileHdfs",
+    method: "post",
+    data: vm.$qs.stringify({ filePath: fileName }),
+    showloading: true,
+    loadingType: 'loadPart',
+    responseType:'blob',
+    cancelToken: setCancelSource()
+    // url: `/person/fileUploadDownHdfs/previewHdfs`,
+    // method: "get",
+    // params: { filePath: fileName },
+    // showloading: true,
+    // loadingType: 'loadPart',
+    // responseType:'blob',
+    // cancelToken: setCancelSource()
+  });
+}
+
+export async function getFileStream (fileName) {
+  let fileStreamRes;
+  try{
+    fileStreamRes = await getFileStreamByFileNameApi(fileName);
+  }catch(err){throw new Error(err);}
+  let url = null;
+  if (window.createObjectURL != undefined) { // basic
+    url = window.createObjectURL(fileStreamRes);
+  } else if (window.webkitURL != undefined) { // webkit or chrome
+    try {
+      url = window.webkitURL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  } else if (window.URL != undefined) { // mozilla(firefox)
+    try {
+      url = window.URL.createObjectURL(fileStreamRes);
+    } catch (error) {}
+  }
+  return url;
 }

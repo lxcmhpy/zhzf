@@ -157,6 +157,9 @@ export default {
     verificationForm() {
       const validatePromise = [];
       for (const key in this.$refs) {
+        if(this.$refs[key].length === 0){
+          break
+        }
         const validate = new Promise((resolve, reject) => {
           if (key === "tempForm") {
             this.$refs.tempForm.validate(valid => {
@@ -223,7 +226,6 @@ export default {
           },
           err => {
             loading.close();
-            _this.$message({ type: "error", message: err.msg || "" });
           }
         );
       } else if (_this.handelType == 2) {
@@ -273,7 +275,6 @@ export default {
           },
           err => {
             loading.close();
-            _this.$message({ type: "error", message: err.msg || "" });
           }
         );
       }
@@ -283,6 +284,7 @@ export default {
       this.handelType = type;
       this.addTempleteForm.templeteName = "";
       this.addTempleteForm.templeteId = "";
+      this.deleteDate.splice(0, this.deleteDate.length);
       if (type == 1) {
         //新增
         this.dialogTitle = "新增模板";
@@ -293,7 +295,6 @@ export default {
         this.addTempleteForm.templeteId = row.templeteId;
         this.getTempletMsg(row);
       }
-      console.log(this.$refs);
     },
     //查询模板节段信息
     getTempletMsg(row) {

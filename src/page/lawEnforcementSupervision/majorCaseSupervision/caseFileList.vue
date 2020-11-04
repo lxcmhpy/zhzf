@@ -39,14 +39,18 @@
         </div>
       </div>
       <div class="tablePartF">
-        <el-table :data="tableData" stripe height="100%" @row-click="evidenceDetail">
+        <el-table :data="tableData" stripe height="100%" >
           <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
           <el-table-column prop="evName" label="材料名称" align="center"></el-table-column>
           <el-table-column prop="evType" label="材料类型" align="center"></el-table-column>
           <el-table-column prop="evPath" label="附件" align="center">
             <template slot-scope="scope">
-                <img v-if="scope.row.evType =='照片'" :src="host+scope.row.evPath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>
-                <img v-if="scope.row.evType =='音视频'" :src="host+scope.row.thumbnailsStoragePath" width="40" height="40" @click.stop="imgDetail(scope.row)"/>  
+              <img
+                v-if="scope.row.evType =='照片' || scope.row.evType =='音视频'"
+                :src="scope.row.myFileUrl"
+                width="40"
+                height="40"
+              />
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" fixed="right">
@@ -61,7 +65,7 @@
             </template> -->
             <template slot-scope="scope">
               <el-button type="text" @click="getFileStream(scope.row,scope.row.evPath)">下载
-                <!-- <el-link type="primary" :underline="false" :href="host.PDF_HOST+scope.row.evPath" :download="scope.row.evName">下载</el-link> -->
+               
               </el-button>
               <el-button @click="deleteEvFile(scope.row.id)" type="text" v-show="isMyOrgan">删除</el-button>
             </template>
@@ -96,8 +100,8 @@
             :http-request="saveFile"
             :file-list="fileList"
             action="https://jsonplaceholder.typicode.cmo/posts/"
-            multiple
             style="position: absolute;left: 0; top: 0;z-index:2"
+            :on-change="handleChange"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -181,9 +185,21 @@
       <div>
         <div style="float: left;width: 45%">
           <el-form :model="uForm">
-            <!-- <img :src="host+uForm.evPath" width="350px" height="400" align="center"/> -->
-            <img v-if="uForm.evType =='照片'" :src="host+uForm.evPath"  width="350px" height="400" align="center"/>
-            <video v-if="uForm.evType =='音视频'" :src="host+uForm.evPath" controls="controls" width="350px" height="400">your browser does not support the video tag</video>
+         
+            <img
+              v-if="uForm.evType =='照片'"
+              :src="uForm.myFileUrl"
+              width="350px"
+              height="400"
+              align="center"
+            />
+            <video
+              v-if="uForm.evType =='音视频'"
+              :src="uForm.videoStreamSrc"
+              controls="controls"
+              width="350px"
+              height="400"
+            >your browser does not support the video tag</video>
             <div v-if="uForm.evType=='其他附件'" style="text-align: center;margin-top:100px;">
                 <div><i class="el-icon-document" style="font-size:45px;"></i></div>
                 <div style="margin: 15px;line-height: 35px">{{uForm.evName}}</div>
@@ -259,7 +275,7 @@
   // import evidenceCatalogue from "./evidenceCatalogue";
   import {uploadEvApi, findFileByIdApi, uploadEvdence} from "@/api/upload";
 
-  import {getCaseBasicInfoApi,getFileStreamByStorageIdApi,deleteEvFileApi} from "@/api/caseHandle";
+  import {getCaseBasicInfoApi,getFileStreamByStorageIdApi,deleteEvFileApi,getEvidenceApi} from "@/api/caseHandle";
   import iLocalStroage from "@/common/js/localStroage.js";
   
   import {uploadLawSupervisionFile,queryFileUploadConditionApi} from "@/api/lawEnforcementSupervision";
@@ -278,7 +294,6 @@
       };
       return {
         fileList: [],
-        host: "",
         evfile: "",
         evTypeOptions: [],
         statusOptions: [],
@@ -397,7 +412,7 @@
         this.editVisible = true;
       },
       //表单筛选
-      getEviList() {
+      async getEviList() {
         let data = {
           caseId: this.caseId,
           category:this.lawEnforcementSupervisionType, 
@@ -408,14 +423,28 @@
           size: this.pageSize
         };
         console.log("材料目录参数", data);
-        let _this = this;
-        this.$store.dispatch("getEvidence", data).then(res => {
-          console.log('res',res)
-          _this.tableData = res.data.records;
-        });
+        // let _this = this;
+        // this.$store.dispatch("getEvidence", data).then(res => {
+        //   console.log('res',res)
+        //   _this.tableData = res.data.records;
+        // });
+        let getEvidenceRes = await getEvidenceApi(data);
+        for(let eviListItem of getEvidenceRes.data.records){
+            let getFileStreamRes = '';
+            if(eviListItem.evType == '照片'){
+                getFileStreamRes = await this.$util.com_getFileStream(eviListItem.evPath)
+            }else if(eviListItem.evType == '音视频'){
+                getFileStreamRes = await this.$util.com_getFileStream(eviListItem.thumbnailsStoragePath);
+                // eviListItem.videoStreamSrc = await this.$util.com_getFileStream(eviListItem.evPath)
+            } 
+            eviListItem.myFileUrl = getFileStreamRes
+        }
+        this.tableData = getEvidenceRes.data.records;
       },
       saveFile(param) {
         console.log(param);
+        // this.fileList = this.fileList.slice(this.fileList.length-1);
+        console.log(this.fileList);
         // this.formUpload = {
         (this.form.file = param.file),
           (this.form.caseId = this.caseId),
@@ -607,10 +636,10 @@
         this.evfile = file.raw;
       },
       //显示材料详情
-      evidenceDetail(row) {
-        console.log("材料详情", row)
-        this.$refs.evidenceDetailRef.showModal(row);
-      },
+      // evidenceDetail(row) {
+      //   console.log("材料详情", row)
+      //   this.$refs.evidenceDetailRef.showModal(row);
+      // },
       imgDetail(row) {
         this.$refs.evidenceImageDetailRef.showModal(row);
       },
@@ -709,10 +738,12 @@
           this.$message({ type: "success", message: "删除成功!"});
           this.getEviList();
         }).catch(err=>{throw new Error(err)})
-      }
-    },
-    mounted() {
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
+      },
+      handleChange(file, fileList) {
+          if (fileList.length > 0) {
+              this.fileList = [fileList[fileList.length - 1]]  
+          }
+      },
     },
     created() {
       this.getEviList();

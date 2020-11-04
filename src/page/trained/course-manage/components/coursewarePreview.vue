@@ -15,8 +15,7 @@
       ></video>
     </div>
     <div v-if="currentCourse.type === '1'" class="course-content">
-      <!-- <iframe :src="currentCourse.src" frameborder="0" style="width: 100%; height: 100%"></iframe> -->
-      <embed
+      <!-- <embed
         name="plugin"
         id="plugin"
         :src="currentCourse.src"
@@ -24,7 +23,12 @@
         internalinstanceid="29"
         class="print_info"
         style="padding: 0px; width: 100%; height:100%; position: relative;"
-      />
+      /> -->
+      <iframe
+        :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(currentCourse.src)"
+        frameborder="0"
+        style="padding: 0px; width: 100%; height:100%; position: relative;">
+      </iframe>
     </div>
     <div class="course-catalog">
       <div class="drawer-btn-wrap" :class="{'hideDrawer': !drawer}">
@@ -93,24 +97,6 @@ export default {
   data() {
     return {
       drawer: false,
-      catalog: [
-        { index: 1, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 2, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 3, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 4, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 5, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 6, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 7, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 8, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 9, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 10, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 11, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 12, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 13, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 14, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 15, text: "Procreate 入门教程！NO.01 界面、工具" },
-        { index: 16, text: "Procreate 入门教程！NO.01 界面、工具" }
-      ],
       videoRef: null,
       playTimeout: null,
       currentCourse: { type: "1", src: "", cpId: "", flag: '', accTime: '', personLessonId: '', couTime: 0, unitTimeCredits: 0 },
@@ -120,15 +106,12 @@ export default {
       viewInterval: null,
       videoPlayLastTime: 0,
       startUploadVideoCredit: false,
-      uploadCredit: false
+      uploadCredit: false,
+      playTime: 0
     };
   },
   components: { },
-  computed: {
-    baseUrl(){
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    }
-  },
+  computed: {},
   mounted() {
     this.$nextTick(() => {
       this.videoRef = document.getElementById("courseVideo");
@@ -157,10 +140,9 @@ export default {
       }
       this.currentCourse.cpId = course.cpId;
       this.currentCourse.couId = course.couId;
-      this.currentCourse.src = this.baseUrl + course.path;
-      // this.$util.com_getFileStream(course.path).then( res => {
-      //   this.currentCourse.src = res;
-      // });
+      this.$util.com_getFileStream(course.path).then( res => {
+        this.currentCourse.src = res;
+      });
 
       this.currentCourse.flag = course.flag;
       this.currentCourse.accTime = course.unitTime;
@@ -181,7 +163,6 @@ export default {
       const courseTotalTime = this.currentCourse.couTime * 60 * 1000;
       const surplusTime = courseTotalTime - this.viewTime;
       const viewPercentage = Math.floor((this.viewTime / courseTotalTime) * 100);
-      console.log(surplusTime);
       if(surplusTime < 0){
         this.$emit('refreshProgress', { text: null, progress: 100 });
       }else{
@@ -194,13 +175,9 @@ export default {
       clearInterval(this.updateInterval);
       this.updateNum = Math.ceil(this.currentCourse.couTime / this.currentCourse.accTime);
       this.updateInterval = setInterval(() => {
-        if(this.updateNum === 0){
-          this.sendUpdateCredits(true);
-          clearInterval(this.updateInterval);
-          this.$message({ type: 'success', message: '学习完成!' });
-        }
         this.updateNum -= 1;
-        this.sendUpdateCredits();
+        let last = this.updateNum === 0;
+        this.sendUpdateCredits(last);
       }, this.currentCourse.accTime * 60 * 1000)
     },
     // 发送更新学分请求
@@ -211,11 +188,15 @@ export default {
       delete params.couTime;
       if(last){
         params.lastFlag = '1';
+        clearInterval(this.updateInterval);
       }
       updateMyCredits(params).then(res => {
         console.log(res);
+        if(res.code === 200 && last){
+          this.$message({ type: 'success', message: '学习完成!' });
+        }
       }, err => {
-        this.$message({ type: 'error', message: err.msg || '' });
+        // this.$message({ type: 'error', message: err.msg });
       })
       if(this.uploadCredit){
         const openUpload = setTimeout(() => {
@@ -230,6 +211,7 @@ export default {
       this.viewInterval = setInterval(() => {
         const surplusTime = courseTotalTime - this.viewTime;
         const viewPercentage = Math.floor((this.viewTime / courseTotalTime) * 100);
+        this.playTime = viewPercentage;
         if(surplusTime < 0){
           this.$emit('refreshProgress', { text: null, progress: 100 });
           clearInterval(this.viewInterval);

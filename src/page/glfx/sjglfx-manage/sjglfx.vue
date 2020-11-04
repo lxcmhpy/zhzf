@@ -28,7 +28,7 @@
                     <el-date-picker
                       v-model="value1"
                       type="year"
-                      
+                      value-format="yyyy" @change="select2"
                     ></el-date-picker>
                   </el-form-item>
                   
@@ -40,9 +40,9 @@
                   
                   <el-form-item label="年份月份" prop>
                     <el-date-picker
-                      v-model="value1"
+                      v-model="value2"
                       type="month"
-                      
+                      value-format="yyyyMM" @change="select3"
                     ></el-date-picker>
                   </el-form-item>
                 </el-form>
@@ -63,9 +63,9 @@ import {
 export default {
   data() {
     return {
+      value1: "2020",
+      value2: "202005",
       value3: "",
-      value2: "",
-      value1: "",
       state: "",
       checked: true,
       currentPage: 1, //当前页
@@ -93,7 +93,7 @@ export default {
 
       this.chartColumn.setOption({
         title: {
-          text: "",
+          text: "案发数量分析(年)",
           left: "center"
         },
         tooltip: {
@@ -112,8 +112,8 @@ export default {
         },
         series: [
           {
-            // data: this.data1,
-            data:[0,0,0,0,0,1569],
+            data: this.data1,
+            // data:[0,0,0,0,0,1569],
             type: "line"
           }
         ]
@@ -124,7 +124,7 @@ export default {
 
       this.chartColumn.setOption({
          title: {
-          text: "",
+          text: "案发数量分析(月)",
           left: "center"
         },
         tooltip: {
@@ -156,8 +156,8 @@ export default {
         },
         series: [
           {
-            // data: this.data2,
-            data:[156,123,226,186,223,178,226,269,259,365,369,302],
+            data: this.data2,
+            // data:[156,123,226,186,223,178,226,269,259,365,369,302],
             type: "line"
           }
         ]
@@ -168,7 +168,7 @@ export default {
 
       this.chartColumn.setOption({
          title: {
-          text: "",
+          text: "案发数量分析(日)",
           left: "center"
         },
         tooltip: {
@@ -180,46 +180,43 @@ export default {
         },
         xAxis: {
           type: "category",
-          // data: this.data3
-           data:['0801','0802','0803','0804','0805','0806','0807','0808','0809','0810',
-           '0811','0812','0813','0814','0815','0816','0817','0818','0819','0820',
-           '0821','0822','0823','0824','0825','0826','0827','0828','0829','0830','0831'],
+          data: this.data3
+          //  data:['0801','0802','0803','0804','0805','0806','0807','0808','0809','0810',
+          //  '0811','0812','0813','0814','0815','0816','0817','0818','0819','0820',
+          //  '0821','0822','0823','0824','0825','0826','0827','0828','0829','0830','0831'],
         },
         yAxis: {
           type: "value"
         },
         series: [
           {
-            // data: this.data4,
-            data:[2,3,1,4,1,7,8,3,2,1,
-           1,2,3,5,5,5,6,3,2,1,
-           1,2,3,4,6,7,8,1,1,2,3],
+            data: this.data4,
+          //   data:[2,3,1,4,1,7,8,3,2,1,
+          //  1,2,3,5,5,5,6,3,2,1,
+          //  1,2,3,4,6,7,8,1,1,2,3],
             type: "line"
           }
         ]
       });
     },
+   //查询-----------------------------------------------------------------------------------------------------
     search1(val) {
-      this.currentPage = val;
       let data = {
-        // year:2018
       };
       let _this = this;
       // this.$store.dispatch("sjglfx", data).then(res => {
       sjglfx(data).then(res => {
-        console.log(res);
          var map={};
          res.forEach(item =>{
               map[item[0]]=item[1];  
                 
          });
-        console.log(map);
-        this.data1=[map[2015]=undefined?0:map[2015],
-        map[2016]=undefined?0:map[2016]
-        ,map[2017]=undefined?0:map[2017],
-        map[2018]=undefined?0:map[2018],
-        map[2019]=undefined?0:map[2019],
-        map[2020]=undefined?0:map[2020]
+        this.data1=[map[2015]==undefined?0:map[2015],
+        map[2016]==undefined?0:map[2016],
+        map[2017]==undefined?0:map[2017],
+        map[2018]==undefined?0:map[2018],
+        map[2019]==undefined?0:map[2019],
+        map[2020]==undefined?0:map[2020]
         ]
            this.drawLine1();
       });
@@ -228,14 +225,12 @@ export default {
       };
     },
     search2(val) {
-      this.currentPage = val;
       let data = {
-        // year:2018
+        year:val
       };
       let _this = this;
       // this.$store.dispatch("sjglfxmonth", data).then(res => {
       sjglfxmonth(data).then(res => {
-        console.log(res);
           var map={};
          res.forEach(item =>{
          var tmp=item[0];
@@ -263,11 +258,9 @@ export default {
       };
     },
     search3(val) {
-      this.currentPage = val;
       let data = {
-        // year:2018
+        yearMonth:val
       };
-      let _this = this;
       // this.$store.dispatch("sjglfxday", data).then(res => {
       sjglfxday(data).then(res => {
         console.log(res);
@@ -280,23 +273,34 @@ export default {
         
         this.data3=arr1;
         this.data4=arr2;
-           this.drawLine3();
+        this.drawLine3();
       });
       err => {
         console.log(err);
       };
     },
+    select2(val){ 
+     if(val!=null){
+     this.search2(val) 
+     }
+     
+   },
+    select3(val){
+     if(val!=null){
+       this.search3(val) 
+     }
+     
+   }
   },
   mounted() {
-    this.drawLine1();
-    this.drawLine2();
-    this.drawLine3();
-    // this.search1();
-    // this.search2();
-    // this.search3();
+    // this.drawLine1();
+    // this.drawLine2();
+    // this.drawLine3();
+    this.search1();
+    this.search2(2020);
+    this.search3(202005);
   },
   created() {
-    // this.getLogList();
   }
 };
 </script>

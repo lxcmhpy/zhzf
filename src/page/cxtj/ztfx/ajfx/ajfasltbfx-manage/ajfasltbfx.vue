@@ -121,13 +121,13 @@ export default {
         ]
       });
     },
+//查询-----------------------------------------------------------------------------------------------------
 
    search(val) {
       let data = {
         year:val
       };
       let _this = this;
-      // this.$store.dispatch("ajfasltbfx", data).then(res => {
       ajfasltbfx(data).then(res => {  
          var map={};
          res.forEach(item =>{
@@ -147,12 +147,7 @@ export default {
              map2.push(0);
           }
         }
-       
-        
           this.data1=map2; 
-         
-
-          
           this.drawLine();
       });
       err => {
@@ -164,7 +159,6 @@ export default {
         year:val
       };
       let _this = this;
-      // this.$store.dispatch("ajfasltbfx", data).then(res => {
       ajfasltbfx(data).then(res => {     
          var map={};
          res.forEach(item =>{
@@ -174,8 +168,6 @@ export default {
          }
               map[tmp]=item[1];       
          });
-
-        
         var map2=[];
         for(var i=1;i<=12;i++){
           if(map[i]!=undefined){
@@ -194,8 +186,11 @@ export default {
       };
     },
      select(val){
-     this.search(val-1);
+       if(val!=null){
+         this.search(val-1);
      this.search2(val);
+       }
+     
    }
   },
   mounted() {

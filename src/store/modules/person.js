@@ -9,8 +9,10 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
     ,getProvinceCode,deleteExamInfoByIdApi,updateExamInfoApi,deleteTrainInfoByIdApi,updateTrainInfoApi,addTrainInfoApi,trainInfoPageListApi, initAllApprove, personEdabled,uploadMaterial,
     savePersonMaterial, getAllOrigin, savePersonPhoto,getScheduleJobPageApi,addScheduleJobApi,updateScheduleJobApi,cacheQuestionRedisApi,resumeScheduleJobInfoApi,deleteScheduleJobApi,repauseAllJobApi,pauseAllJobApi,
     resumejobApi,pausejobApi,getJxExamListApi,getJxExamMesageApi,getJxTrainListApi,getJxTrainMessageApi,statisticByAgeApi,statisticByChannelApi,statisticByYearAddApi,statisticByEducationLevelApi,statisticByBranchApi,statisticByMajorApi,
-    deleteVersionApi,addVersionApi,updateVersionApi,getVersionApi
+    deleteVersionApi,addVersionApi,updateVersionApi,getVersionApi,savePersonCardApi,exportPersonPdfApi
   } from "@/api/person";
+
+import { MessageBox } from 'element-ui';
   
   const person = {
   state:{
@@ -172,6 +174,31 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
           })
   })
   },
+  
+  savePersonCard({commit},data){
+    return new Promise((resolve, reject) => {
+        savePersonCardApi(data).then(
+            res => {
+                resolve(res);
+            },
+            error => {
+                reject(error);
+            })
+    })
+    },
+   
+    exportPersonPdf({commit},data){
+        return new Promise((resolve, reject) => {
+            exportPersonPdfApi(data).then(
+                res => {
+                    resolve(res);
+                },
+                error => {
+                    reject(error);
+                })
+        })
+        },
+
   deleteAwardModudle({commit},data){
   return new Promise((resolve, reject) => {
     deleteAwardApi(data).then(
@@ -1353,8 +1380,31 @@ import { getAllPersonApi,addPersonApi,updatePersonApi,deletePersonApi,deletePers
                 reject(error);
             })
         })
-        },           
-  }
+        },
+    // 修改人员信息时切换tabsMenu提示
+    leaveEditPersonInfo({commit}, confirmMsg){
+        return new Promise((resolve, reject) => {
+            let leave = sessionStorage.getItem('LeavePersonInfoPage');
+            if(leave && leave === '1'){
+                MessageBox.confirm(confirmMsg, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    iconClass: 'el-icon-question',
+                    customClass: 'custom-confirm'
+                  })
+                    .then(() => {
+                      resolve(true);
+                    })
+                    .catch(() => {
+                      resolve(false);
+                    })
+            } else {
+                resolve(true);
+            }
+        })
+    }
+
+    }
   }
   export default person
   

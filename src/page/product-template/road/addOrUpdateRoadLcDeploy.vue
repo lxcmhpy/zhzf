@@ -23,7 +23,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="单价(元)" prop="roadLcPrice">
-           <el-input v-model="addOrUpdateRoadLcDeployForm.roadLcPrice" v-on:blur="value=onlyNum(addOrUpdateRoadLcDeployForm.roadLcPrice)"></el-input>
+           <el-input v-model="addOrUpdateRoadLcDeployForm.roadLcPrice" ></el-input>
+           <!-- v-on:blur="value=onlyNum(addOrUpdateRoadLcDeployForm.roadLcPrice)" -->
         </el-form-item>
         <el-form-item label="单位" prop="roadLcUnit">
            <el-select v-model="addOrUpdateRoadLcDeployForm.roadLcUnit" placeholder="请选择">

@@ -1,5 +1,5 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
+  <div class="com_searchAndpageBoxPadding doubleRandom">
     <div class="searchAndpageBox inspection-info" id="roleBox" style="height:calc(100% - 22px)">
       <div class="handlePart">
         <div class="search toggleBox">
@@ -13,6 +13,11 @@
               </el-form-item>
               <el-form-item label="检查类型" prop='checkType' v-if="searchForm.taskArea=='省交通运输厅领域'">
                 <el-input v-model="searchForm.checkType"></el-input>
+              </el-form-item>
+              <el-form-item label="查询范围" prop='selectValue'>
+                <el-select v-model="searchForm.selectValue">
+                  <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
               </el-form-item>
             </el-form>
             <div class="search-btns">
@@ -38,7 +43,7 @@
         </div>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省交通运输厅领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+        <el-table :data="tableData" key="table1" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="任务名称" align="center"></el-table-column>
           <el-table-column prop="checkSubject" label="抽查主体" align="center"></el-table-column>
           <el-table-column prop="checkType" label="检查类型" align="center"></el-table-column>
@@ -58,6 +63,7 @@
           </el-table-column>
           <el-table-column prop="operatePerson" label="操作人员" align="center"></el-table-column>
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.extractStatus==1">抽取</el-button>
@@ -67,7 +73,7 @@
         </el-table>
       </div>
       <div class="tablePart" v-if="searchForm.taskArea=='省市场监管领域'">
-        <el-table :data="tableData" stripe style="width: 100%" height="100%">
+        <el-table :data="tableData" key="table2" stripe style="width: 100%" height="100%">
           <el-table-column prop="taskName" label="抽查类别" align="center"></el-table-column>
           <el-table-column prop="checkItem" label="抽查事项" align="center"></el-table-column>
           <el-table-column prop="itemType" label="事项类别" align="center"></el-table-column>
@@ -87,6 +93,7 @@
           </el-table-column>
           <el-table-column prop="operatePerson" label="操作人员" align="center"></el-table-column>
           <el-table-column prop="supervisePerson" label="监督人员" align="center"></el-table-column>
+          <el-table-column prop="organName" label="单位" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button @click="editMethod(scope.row)" type="text" :disabled="scope.row.extractStatus==1">抽取</el-button>
@@ -142,8 +149,8 @@
           <el-table-column prop="objectName" label="对象名称" align="center"></el-table-column>
           <el-table-column prop="legalPerson" label="法人名称" align="center"></el-table-column>
           <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
-          <el-table-column prop="matchPerson" label="匹配人员" align="center"></el-table-column>
-          <el-table-column prop="matchExpert" label="匹配专家" align="center"></el-table-column>
+          <el-table-column prop="matchPerson" label="检查人员" align="center"></el-table-column>
+          <el-table-column prop="matchExpert" label="检查专家" align="center"></el-table-column>
         </el-table>
         <div slot="footer" class="dialog-footer">
           <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -173,6 +180,7 @@ export default {
         checkSubject: "",
         taskName: '',
         taskArea: '省交通运输厅领域',
+        selectValue: 0,
       },
       isShow: false,
       dialogFormVisible: false,
@@ -230,7 +238,8 @@ export default {
       isPersonNameTrue: false,
       isObjectTrue: false,
       isFinishFlag: false,
-      errorFlag: false
+      errorFlag: false,
+      searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
     }
   },
   methods: {
@@ -243,7 +252,8 @@ export default {
         taskName: this.searchForm.taskName,
         checkSubject: this.searchForm.checkSubject,
         checkType: this.searchForm.taskArea == '省交通运输厅领域' ? this.searchForm.checkType : '',
-        organName : iLocalStroage.gets("userInfo").organName,//机构名称
+        organName: iLocalStroage.gets("userInfo").organName,//机构名称
+        organId: this.searchForm.selectValue == 1 ? iLocalStroage.gets("userInfo").organId : '',
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -427,6 +437,7 @@ export default {
       this.isObjectTrue = false
       this.isFinishFlag = false
       this.randomResult = []
+      this.randomContent=''
       // 执行删除方法
       resetRandomByIdApi(this.currentId).then(
         res => {
@@ -435,6 +446,7 @@ export default {
               type: "success",
               message: res.msg
             });
+            
           }
         },
         error => {
@@ -583,3 +595,10 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
+<style lang="scss">
+.doubleRandom{
+  #roleBox{
+        overflow: auto;
+  }
+}
+</style>

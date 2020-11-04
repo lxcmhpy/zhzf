@@ -9,7 +9,8 @@
     padding: 15px 0 15px 17px;
     border-right: 1px solid #EEEEEE;
     position: relative;
-    overflow-y: hidden;
+    overflow: auto;
+    // overflow-y: hidden;
 
     .el-input {
         padding-right: 20px;
@@ -276,7 +277,7 @@
     }
 
     .treeBox {
-        max-height: 400px;
+        // max-height: 400px;
         overflow-y: auto;
     }
 
@@ -326,7 +327,7 @@
     }
 
     .treeBox {
-        max-height: 400px;
+        // max-height: 400px;
         overflow-y: auto;
     }
 

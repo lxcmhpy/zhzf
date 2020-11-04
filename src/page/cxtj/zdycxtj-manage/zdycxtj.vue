@@ -7,7 +7,7 @@
               <div class="dptitle_1 dptitle_font" @click="ajpage()">执法案件</div>
           </el-col>
           <el-col :span="4" class="dptitle_2" >
-               江西省执法数据分析研判系统
+               <!-- 江西省执法数据分析研判系统 -->
           </el-col>
           <el-col :span="6" style="height:60px;margin-left: -505px;margin-top: 35px;" >
               <div class="dptitle_3 dptitle_font" @click="zbpage()">人员装备</div>
@@ -16,7 +16,7 @@
           <el-col :span="6" style="height:60px;margin-left:50px;margin-top: 35px;" >
               <div class="dptitle_4" >
                   <span class="dpright_font0">涉案本地车辆：</span>
-                  <span class="dpright_font1">2568辆</span>
+                  <span class="dpright_font1">{{bdcl}}辆</span>
               </div>
                
           </el-col>
@@ -76,9 +76,9 @@
                     </el-row>
                       <el-row  >
                              <div style="width:200px" >
-                                 <span class="sl">3829</span>
+                                 <span class="sl">{{ja}}</span>
                                  <span class="dw" style="margin-left:0px;">例/</span>
-                                 <span class="sl2">5283</span>
+                                 <span class="sl2">{{af}}</span>
                                  <span class="dw" style="margin-left:0px;">例</span>
                             </div>                         
                         </el-row>
@@ -123,8 +123,8 @@
               </el-row>
               <el-row style="text-align:center;">
                  <el-row>
-                       <el-col :span="12" ><img src="../../../../static/images/map/处罚金额.png" style="height:80px;width:100px;"></el-col>
-                       <el-col :span="12" ><img src="../../../../static/images/map/执行金额.png" style="height:80px;width:100px;"></el-col>
+                       <el-col :span="12" ><img src="../../../../static/images/map/处罚金额.png" style="height:100px;width:100px;"></el-col>
+                       <el-col :span="12" ><img src="../../../../static/images/map/执行金额.png" style="height:100px;width:100px;"></el-col>
                       
                   </el-row>
                   <el-row >
@@ -133,13 +133,13 @@
                        
                   </el-row>
                   <el-row>
-                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">32682</div></el-col>
-                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">248292</div></el-col>
+                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">{{cfje}}</div></el-col>
+                       <el-col :span="12" ><div class="count" style="height:40px;width:100px;margin-left:25px;">{{zxje}}</div></el-col>
                        
                   </el-row>
                   <el-row>
-                       <el-col :span="12" ><div class="dw2" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
-                       <el-col :span="12" ><div class="dw2" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
+                       <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
+                       <el-col :span="12" ><div class="dw" style="height:30px;width:100px;margin-left:25px;">万元</div></el-col>
                      
                   </el-row>
               </el-row>
@@ -166,17 +166,134 @@ import "echarts/lib/component/toolbox";
 import "echarts/lib/component/tooltip";
 import "../../../../static/css/animate.min.css";
 import {
-      ndajsltbtj
+      ndajsltbtj,ajlx,ajzt,zfjgajsl,fmkx,bdcl,wdcl,afddfb,map,mapybaj,mapcfaj,mappbcaj,mapcxcz
     } from '@/api/fxyp.js'
 export default {
   data() {
     return {
-      ybaj:"4306",
-      cxcz:"9372",
-      cfaj:"769",
-      pbcaj:"19273",
+    //   ybaj:"4306",
+    //   cxcz:"9372",
+    //   cfaj:"769",
+    //   pbcaj:"9273",
+      ybaj:"",
+      cxcz:"",
+      cfaj:"",
+      pbcaj:"",
       data1:[],
       data2:[],
+      ja:"",
+      af:"",
+      jal:"",
+      data3:[],
+      data4:[],
+      cfje:"",
+      zxje:"",
+      bdcl:"",
+      data5:[],
+      data6:[],
+      data7:[],
+      data8:[],
+      datamap:
+       [{
+    		name: '南昌',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '九江',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 2
+    	}, {
+    		name: '上饶',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 3
+    	}, {
+    		name: '抚州',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 2
+    	}, {
+    		name: '宜春',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '吉安',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '赣州',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '景德镇',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '萍乡',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '新余',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}, {
+    		name: '鹰潭',
+            value: 0,
+            value1: 0,
+            value2: 0,
+            value3: 0,
+            value4: 0,
+    		level: 1
+    	}],
+      nc:0,
+      jj:0,
+      sr:0,
+      fz:0,
+      yc:0,
+      ja:0,
+      gz:0,
+      jdz:0,
+      px:0,
+      xy:0,
+      yt:0,
     };
   },
   methods:{
@@ -186,8 +303,16 @@ export default {
       zbpage(){
            this.$router.push({ path:'/personEqpt'  })
       },
-    map() {
-     var jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
+    //   watch: {
+    //     datamap:{
+    //         handler(newVal) {
+    //         this.map();
+    //         },
+    //         deep: true //对象内部属性的监听，关键。
+    //     }
+    //     },
+    map(datamap) {
+      var jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
     var yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
     var yichun = "../../../../static/json/map/data-1518338852969-Hy677KTIf.json";
     var xinyu = "../../../../static/json/map/data-1518338838010-SyAzQYTIf.json";
@@ -482,7 +607,11 @@ echarts.extendsMap = function(id, opt){
                 if(geoCoord){
                     temp.push({
                         name: data[i].name,
-                        value: geoCoord.concat(data[i].value, data[i].level)
+                        value: geoCoord.concat(data[i].value, data[i].level),
+                        value1: geoCoord.concat(data[i].value1, data[i].level),
+                        value2: geoCoord.concat(data[i].value2, data[i].level),
+                        value3: geoCoord.concat(data[i].value3, data[i].level),
+                        value4: geoCoord.concat(data[i].value4, data[i].level),
                     });
                 }
             };
@@ -706,7 +835,16 @@ echarts.extendsMap = function(id, opt){
                 var res = "";
                 var name = params.name;
                 var value = params.value[2];
-                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value;
+                var value1 = params.data.value1[2];
+                var value2 = params.data.value2[2];
+                var value3 = params.data.value3[2];
+                var value4 = params.data.value4[2];
+                res = "<span style='color:#fff;'>" + name + "</span><br/>案件数量：" + value
+                +"<br/>一般案件：" + value1
+                +"<br/>处罚案件：" + value2
+                +"<br/>赔补偿案件：" + value3
+                +"<br/>超限超载：" + value4
+                ;
                 return res;
    }
   },
@@ -758,176 +896,669 @@ $.getJSON(jiangxi, function(geoJson){
     	callback: function(name, option, instance){
     		console.log(name);
           if(name=="南昌市"){
-              option.series[0].data.push({name: "安义县",value:[115.55,28.86,35,3]});
-              option.series[0].data.push({name: "东湖区",value:[115.9 ,28.68, 35, 1]});
-              option.series[0].data.push({name: "西湖区",value:[115.87, 28.67, 35, 2]});
-              option.series[0].data.push({name: "青云谱区",value:[115.92 ,28.63,35,3]});
-              option.series[0].data.push({name: "湾里区",value:[115.73 ,28.72, 35, 1]});
-              option.series[0].data.push({name: "青山湖区",value:[115.95, 28.68, 35, 2]});
-              option.series[0].data.push({name: "南昌县",value:[115.93, 28.55,35,3]});
-              option.series[0].data.push({name: "新建县",value:[115.82, 28.7, 35, 1]});
-              option.series[0].data.push({name: "进贤县",value:[116.27 ,28.37, 35, 2]});
+              option.series[0].data.push({name: "安义县",value:[115.55,28.86,0,3],
+              value1:[115.55,28.86,0,3],
+              value2:[115.55,28.86,0,3],
+              value3:[115.55,28.86,0,3],
+              value4:[115.55,28.86,0,3]
+              });
+              option.series[0].data.push({name: "东湖区",value:[115.9 ,28.68, 0, 1],
+              value1:[115.9 ,28.68,0,3],
+              value2:[115.9 ,28.68,0,3],
+              value3:[115.9 ,28.68,0,3],
+              value4:[115.9 ,28.68,0,3]
+              });
+              option.series[0].data.push({name: "西湖区",value:[115.87, 28.67, 0, 2],
+              value1:[115.87, 28.67,0,3],
+              value2:[115.87, 28.67,0,3],
+              value3:[115.87, 28.67,0,3],
+              value4:[115.87, 28.67,0,3]
+              });
+              option.series[0].data.push({name: "青云谱区",value:[115.92 ,28.63,0,3],
+              value1:[115.92 ,28.63,0,3],
+              value2:[115.92 ,28.63,0,3],
+              value3:[115.92 ,28.63,0,3],
+              value4:[115.92 ,28.63,0,3]
+              });
+              option.series[0].data.push({name: "湾里区",value:[115.73 ,28.72, 0, 1],
+              value1:[115.73 ,28.72,0,3],
+              value2:[115.73 ,28.72,0,3],
+              value3:[115.73 ,28.72,0,3],
+              value4:[115.73 ,28.72,0,3]
+              });
+              option.series[0].data.push({name: "青山湖区",value:[115.95, 28.68, 0, 2],
+              value1:[115.95, 28.68,0,3],
+              value2:[115.95, 28.68,0,3],
+              value3:[115.95, 28.68,0,3],
+              value4:[115.95, 28.68,0,3]
+              });
+              option.series[0].data.push({name: "南昌县",value:[115.93, 28.55,0,3],
+              value1:[115.93, 28.55,0,3],
+              value2:[115.93, 28.55,0,3],
+              value3:[115.93, 28.55,0,3],
+              value4:[115.93, 28.55,0,3]
+              });
+              option.series[0].data.push({name: "新建县",value:[115.82, 28.7, 0, 1],
+              value1:[115.82, 28.7,0,3],
+              value2:[115.82, 28.7,0,3],
+              value3:[115.82, 28.7,0,3],
+              value4:[115.82, 28.7,0,3]
+              });
+              option.series[0].data.push({name: "进贤县",value:[116.27 ,28.37, 0, 2],
+              value1:[116.27 ,28.37,0,3],
+              value2:[116.27 ,28.37,0,3],
+              value3:[116.27 ,28.37,0,3],
+              value4:[116.27 ,28.37,0,3]
+              });
 
          }
          if(name=="景德镇市"){
-              option.series[0].data.push({name: "昌江区",value:[117.17, 29.27, 35, 1]});
-              option.series[0].data.push({name: "珠山区 ",value:[117.2 ,29.3, 35, 2]});
-              option.series[0].data.push({name: "浮梁县",value:[117.25 ,29.37, 35, 2]});
-              option.series[0].data.push({name: "乐平市",value:[117.12 ,28.97, 35, 2]});
+              option.series[0].data.push({name: "昌江区",value:[117.17, 29.27, 0, 1],
+              value1:[117.17, 29.27,0,3],
+              value2:[117.17, 29.27,0,3],
+              value3:[117.17, 29.27,0,3],
+              value4:[117.17, 29.27,0,3]
+              });
+              option.series[0].data.push({name: "珠山区 ",value:[117.2 ,29.3, 0, 2],
+              value1:[117.2 ,29.3,0,3],
+              value2:[117.2 ,29.3,0,3],
+              value3:[117.2 ,29.3,0,3],
+              value4:[117.2 ,29.3,0,3]
+              });
+              option.series[0].data.push({name: "浮梁县",value:[117.25 ,29.37, 0, 2],
+              value1:[117.25 ,29.37,0,3],
+              value2:[117.25 ,29.37,0,3],
+              value3:[117.25 ,29.37,0,3],
+              value4:[117.25 ,29.37,0,3]
+              });
+              option.series[0].data.push({name: "乐平市",value:[117.12 ,28.97, 0, 2],
+              value1:[117.12 ,28.97,0,3],
+              value2:[117.12 ,28.97,0,3],
+              value3:[117.12 ,28.97,0,3],
+              value4:[117.12 ,28.97,0,3]
+              });
               
          }
          if(name=="萍乡市"){
-              option.series[0].data.push({name: "安源区",value:[113.87, 27.65, 35, 2]});
-              option.series[0].data.push({name: "湘东区",value:[113.73, 27.65, 35, 2]});
-              option.series[0].data.push({name: "莲花县",value:[113.95, 27.13, 35, 1]});
-              option.series[0].data.push({name: "上栗县",value:[113.8 ,27.88, 35, 2]});
-              option.series[0].data.push({name: "芦溪县",value:[114.03, 27.63, 35, 2]});
+              option.series[0].data.push({name: "安源区",value:[113.87, 27.65, 0, 2],
+              value1:[113.87, 27.65,0,3],
+              value2:[113.87, 27.65,0,3],
+              value3:[113.87, 27.65,0,3],
+              value4:[113.87, 27.65,0,3]
+              });
+              option.series[0].data.push({name: "湘东区",value:[113.73, 27.65, 0, 2],
+              value1:[113.73, 27.65,0,3],
+              value2:[113.73, 27.65,0,3],
+              value3:[113.73, 27.65,0,3],
+              value4:[113.73, 27.65,0,3]
+              });
+              option.series[0].data.push({name: "莲花县",value:[113.95, 27.13, 0, 1],
+              value1:[113.95, 27.13,0,3],
+              value2:[113.95, 27.13,0,3],
+              value3:[113.95, 27.13,0,3],
+              value4:[113.95, 27.13,0,3]
+              });
+              option.series[0].data.push({name: "上栗县",value:[113.8 ,27.88, 0, 2],
+              value1:[113.8 ,27.88,0,3],
+              value2:[113.8 ,27.88,0,3],
+              value3:[113.8 ,27.88,0,3],
+              value4:[113.8 ,27.88,0,3]
+              });
+              option.series[0].data.push({name: "芦溪县",value:[114.03, 27.63, 0, 2],
+              value1:[114.03, 27.63,0,3],
+              value2:[114.03, 27.63,0,3],
+              value3:[114.03, 27.63,0,3],
+              value4:[114.03, 27.63,0,3]
+              });
          }
          if(name=="九江市"){
-              option.series[0].data.push({name: "庐山区",value:[115.98, 29.68, 35, 3]});
-              option.series[0].data.push({name: "浔阳区",value:[115.98, 29.73, 15,1]});
-              option.series[0].data.push({name: "九江县",value:[115.88, 29.62, 35, 2]});
-              option.series[0].data.push({name: "武宁县",value:[115.1 ,29.27, 25, 2]});
-              option.series[0].data.push({name: "修水县",value:[114.57 ,29.03, 15, 2]});
-              option.series[0].data.push({name: "永修县",value:[115.8 ,29.03, 35, 3]});
-              option.series[0].data.push({name: "德安县",value:[115.77, 29.33, 15,1]});
-              option.series[0].data.push({name: "星子县",value:[116.03, 29.45, 35, 2]});
-              option.series[0].data.push({name: "都昌县 ",value:[116.18, 29.27, 25, 2]});
-              option.series[0].data.push({name: "湖口县",value:[116.22, 29.73, 15, 2]});
-              option.series[0].data.push({name: "彭泽县 ",value:[116.55 ,29.9, 25, 2]});
-              option.series[0].data.push({name: "瑞昌市",value:[115.67 ,29.68, 15, 2]});
+              option.series[0].data.push({name: "庐山区",value:[115.98, 29.68, 0, 3],
+              value1:[115.98, 29.68,0,3],
+              value2:[115.98, 29.68,0,3],
+              value3:[115.98, 29.68,0,3],
+              value4:[115.98, 29.68,0,3]
+              });
+              option.series[0].data.push({name: "浔阳区",value:[115.98, 29.73, 0,1],
+              value1:[115.98, 29.73,0,3],
+              value2:[115.98, 29.73,0,3],
+              value3:[115.98, 29.73,0,3],
+              value4:[115.98, 29.73,0,3]
+              });
+              option.series[0].data.push({name: "九江县",value:[115.88, 29.62, 0, 2],
+              value1:[115.88, 29.62,0,3],
+              value2:[115.88, 29.62,0,3],
+              value3:[115.88, 29.62,0,3],
+              value4:[115.88, 29.62,0,3]
+              });
+              option.series[0].data.push({name: "武宁县",value:[115.1 ,29.27, 0, 2],
+              value1:[115.1 ,29.27,0,3],
+              value2:[115.1 ,29.27,0,3],
+              value3:[115.1 ,29.27,0,3],
+              value4:[115.1 ,29.27,0,3]
+              });
+              option.series[0].data.push({name: "修水县",value:[114.57 ,29.03, 0, 2],
+              value1:[114.57 ,29.03,0,3],
+              value2:[114.57 ,29.03,0,3],
+              value3:[114.57 ,29.03,0,3],
+              value4:[114.57 ,29.03,0,3]
+              });
+              option.series[0].data.push({name: "永修县",value:[115.8 ,29.03, 0, 3],
+              value1:[115.8 ,29.03,0,3],
+              value2:[115.8 ,29.03,0,3],
+              value3:[115.8 ,29.03,0,3],
+              value4:[115.8 ,29.03,0,3]
+              });
+              option.series[0].data.push({name: "德安县",value:[115.77, 29.33, 0,1],
+              value1:[115.77, 29.33,0,3],
+              value2:[115.77, 29.33,0,3],
+              value3:[115.77, 29.33,0,3],
+              value4:[115.77, 29.33,0,3]
+              });
+              option.series[0].data.push({name: "星子县",value:[116.03, 29.45, 0, 2],
+              value1:[116.03, 29.45,0,3],
+              value2:[116.03, 29.45,0,3],
+              value3:[116.03, 29.45,0,3],
+              value4:[116.03, 29.45,0,3]
+              });
+              option.series[0].data.push({name: "都昌县 ",value:[116.18, 29.27, 0, 2],
+              value1:[116.18, 29.27,0,3],
+              value2:[116.18, 29.27,0,3],
+              value3:[116.18, 29.27,0,3],
+              value4:[116.18, 29.27,0,3]
+              });
+              option.series[0].data.push({name: "湖口县",value:[116.22, 29.73, 0, 2],
+              value1:[116.22, 29.73,0,3],
+              value2:[116.22, 29.73,0,3],
+              value3:[116.22, 29.73,0,3],
+              value4:[116.22, 29.73,0,3]
+              });
+              option.series[0].data.push({name: "彭泽县 ",value:[116.55 ,29.9, 0, 2],
+              value1:[116.55 ,29.9,0,3],
+              value2:[116.55 ,29.9,0,3],
+              value3:[116.55 ,29.9,0,3],
+              value4:[116.55 ,29.9,0,3]
+              });
+              option.series[0].data.push({name: "瑞昌市",value:[115.67 ,29.68, 0, 2],
+              value1:[115.67 ,29.68,0,3],
+              value2:[115.67 ,29.68,0,3],
+              value3:[115.67 ,29.68,0,3],
+              value4:[115.67 ,29.68,0,3]
+              });
          }
          if(name=="新余市"){
-              option.series[0].data.push({name: "渝水区 ",value:[114.93, 27.8, 15, 2]});
-              option.series[0].data.push({name: "分宜县",value:[114.67 ,27.82, 35,1]});
+              option.series[0].data.push({name: "渝水区 ",value:[114.93, 27.8, 0, 2],
+              value1:[114.93, 27.8,0,3],
+              value2:[114.93, 27.8,0,3],
+              value3:[114.93, 27.8,0,3],
+              value4:[114.93, 27.8,0,3]
+              });
+              option.series[0].data.push({name: "分宜县",value:[114.67 ,27.82, 0,1],
+              value1:[114.67 ,27.82,0,3],
+              value2:[114.67 ,27.82,0,3],
+              value3:[114.67 ,27.82,0,3],
+              value4:[114.67 ,27.82,0,3]
+              });
               
          }
          if(name=="鹰潭市"){
-               option.series[0].data.push({name: "月湖区",value:[117.05, 28.23,32,2]});
-              option.series[0].data.push({name: "余江县",value:[116.82 ,28.2,34,1]});
-              option.series[0].data.push({name: "贵溪市",value:[117.22 ,28.28,32,1]});
+               option.series[0].data.push({name: "月湖区",value:[117.05, 28.23,0,2],
+              value1:[117.05, 28.23,0,3],
+              value2:[117.05, 28.23,0,3],
+              value3:[117.05, 28.23,0,3],
+              value4:[117.05, 28.23,0,3]
+              });
+              option.series[0].data.push({name: "余江县",value:[116.82 ,28.2,0,1],
+              value1:[116.82 ,28.2,0,3],
+              value2:[116.82 ,28.2,0,3],
+              value3:[116.82 ,28.2,0,3],
+              value4:[116.82 ,28.2,0,3]
+              });
+              option.series[0].data.push({name: "贵溪市",value:[117.22 ,28.28,0,1],
+              value1:[117.22 ,28.28,0,3],
+              value2:[117.22 ,28.28,0,3],
+              value3:[117.22 ,28.28,0,3],
+              value4:[117.22 ,28.28,0,3]
+              });
               
          }
          if(name=="赣州市"){
-               option.series[0].data.push({name: "章贡区",value:[114.93 ,25.87,32,2]});
-               option.series[0].data.push({name: "赣县",value:[115.0 ,25.87,34,1]});
-               option.series[0].data.push({name: "信丰县",value:[114.93, 25.38,32,1]});
-               option.series[0].data.push({name: "大余县",value:[114.35 ,25.4,31,2]});
-               option.series[0].data.push({name: "上犹县",value:[114.53, 25.8,11,2]});
-               option.series[0].data.push({name: "崇义县",value:[114.3, 25.7,32,2]});
-               option.series[0].data.push({name: "安远县",value:[115.38 ,25.13,34,1]});
-               option.series[0].data.push({name: "龙南县",value:[114.78 ,24.92,32,1]});
-               option.series[0].data.push({name: "定南县",value:[115.03 ,24.78,31,2]});
-               option.series[0].data.push({name: "全南县",value:[114.52, 24.75,11,2]});
-               option.series[0].data.push({name: "宁都县",value:[116.02, 26.48,32,2]});
-               option.series[0].data.push({name: "于都县",value:[115.42 ,25.95,34,1]});
-               option.series[0].data.push({name: "兴国县",value:[115.35, 26.33,32,1]});
-               option.series[0].data.push({name: "会昌县",value:[115.78 ,25.6,31,2]});
-               option.series[0].data.push({name: "寻乌县",value:[115.65 ,24.95,11,2]});
-               option.series[0].data.push({name: " 石城县",value:[116.33 ,26.33,32,1]});
-               option.series[0].data.push({name: "瑞金市",value:[116.03 ,25.88,31,2]});
-               option.series[0].data.push({name: "南康市",value:[114.75, 25.65,11,2]});
+               option.series[0].data.push({name: "章贡区",value:[114.93 ,25.87,0,2],
+              value1:[114.93 ,25.87,0,3],
+              value2:[114.93 ,25.87,0,3],
+              value3:[114.93 ,25.87,0,3],
+              value4:[114.93 ,25.87,0,3]
+              });
+               option.series[0].data.push({name: "赣县",value:[115.0 ,25.87,0,1],
+              value1:[115.0 ,25.87,0,3],
+              value2:[115.0 ,25.87,0,3],
+              value3:[115.0 ,25.87,0,3],
+              value4:[115.0 ,25.87,0,3]
+              });
+               option.series[0].data.push({name: "信丰县",value:[114.93, 25.38,0,1],
+              value1:[114.93, 25.38,0,3],
+              value2:[114.93, 25.38,0,3],
+              value3:[114.93, 25.38,0,3],
+              value4:[114.93, 25.38,0,3]
+              });
+               option.series[0].data.push({name: "大余县",value:[114.35 ,25.4,0,2],
+              value1:[114.35 ,25.4,0,3],
+              value2:[114.35 ,25.4,0,3],
+              value3:[114.35 ,25.4,0,3],
+              value4:[114.35 ,25.4,0,3]
+              });
+               option.series[0].data.push({name: "上犹县",value:[114.53, 25.8,0,2],
+              value1:[114.53, 25.8,0,3],
+              value2:[114.53, 25.8,0,3],
+              value3:[114.53, 25.8,0,3],
+              value4:[114.53, 25.8,0,3]
+              });
+               option.series[0].data.push({name: "崇义县",value:[114.3, 25.7,0,2],
+              value1:[114.3, 25.7,0,3],
+              value2:[114.3, 25.7,0,3],
+              value3:[114.3, 25.7,0,3],
+              value4:[114.3, 25.7,0,3]
+              });
+               option.series[0].data.push({name: "安远县",value:[115.38 ,25.13,0,1],
+              value1:[115.38 ,25.13,0,3],
+              value2:[115.38 ,25.13,0,3],
+              value3:[115.38 ,25.13,0,3],
+              value4:[115.38 ,25.13,0,3]
+              });
+               option.series[0].data.push({name: "龙南县",value:[114.78 ,24.92,0,1],
+              value1:[114.78 ,24.92,0,3],
+              value2:[114.78 ,24.92,0,3],
+              value3:[114.78 ,24.92,0,3],
+              value4:[114.78 ,24.92,0,3]
+              });
+               option.series[0].data.push({name: "定南县",value:[115.03 ,24.78,0,2],
+              value1:[115.03 ,24.78,0,3],
+              value2:[115.03 ,24.78,0,3],
+              value3:[115.03 ,24.78,0,3],
+              value4:[115.03 ,24.78,0,3]
+              });
+               option.series[0].data.push({name: "全南县",value:[114.52, 24.75,0,2],
+              value1:[114.52, 24.75,0,3],
+              value2:[114.52, 24.75,0,3],
+              value3:[114.52, 24.75,0,3],
+              value4:[114.52, 24.75,0,3]
+              });
+               option.series[0].data.push({name: "宁都县",value:[116.02, 26.48,0,2],
+              value1:[116.02, 26.48,0,3],
+              value2:[116.02, 26.48,0,3],
+              value3:[116.02, 26.48,0,3],
+              value4:[116.02, 26.48,0,3]
+              });
+               option.series[0].data.push({name: "于都县",value:[115.42 ,25.95,0,1],
+              value1:[115.42 ,25.95,0,3],
+              value2:[115.42 ,25.95,0,3],
+              value3:[115.42 ,25.95,0,3],
+              value4:[115.42 ,25.95,0,3]
+              });
+               option.series[0].data.push({name: "兴国县",value:[115.35, 26.33,0,1],
+              value1:[115.35, 26.33,0,3],
+              value2:[115.35, 26.33,0,3],
+              value3:[115.35, 26.33,0,3],
+              value4:[115.35, 26.33,0,3]
+              });
+               option.series[0].data.push({name: "会昌县",value:[115.78 ,25.6,0,2],
+              value1:[115.78 ,25.6,0,3],
+              value2:[115.78 ,25.6,0,3],
+              value3:[115.78 ,25.6,0,3],
+              value4:[115.78 ,25.6,0,3]
+              });
+               option.series[0].data.push({name: "寻乌县",value:[115.65 ,24.95,0,2],
+              value1:[115.65 ,24.95,0,3],
+              value2:[115.65 ,24.95,0,3],
+              value3:[115.65 ,24.95,0,3],
+              value4:[115.65 ,24.95,0,3]
+              });
+               option.series[0].data.push({name: " 石城县",value:[116.33 ,26.33,0,1],
+              value1:[116.33 ,26.33,0,3],
+              value2:[116.33 ,26.33,0,3],
+              value3:[116.33 ,26.33,0,3],
+              value4:[116.33 ,26.33,0,3]
+              });
+               option.series[0].data.push({name: "瑞金市",value:[116.03 ,25.88,0,2],
+              value1:[116.03 ,25.88,0,3],
+              value2:[116.03 ,25.88,0,3],
+              value3:[116.03 ,25.88,0,3],
+              value4:[116.03 ,25.88,0,3]
+              });
+               option.series[0].data.push({name: "南康市",value:[114.75, 25.65,0,2],
+              value1:[114.75, 25.65,0,3],
+              value2:[114.75, 25.65,0,3],
+              value3:[114.75, 25.65,0,3],
+              value4:[114.75, 25.65,0,3]
+              });
 
          }
          if(name=="吉安市"){
-               option.series[0].data.push({name: "吉州区",value:[114.98, 27.12,32,2]});
-              option.series[0].data.push({name: "青原区",value:[115.0 ,27.1,34,1]});
-              option.series[0].data.push({name: "吉安县",value:[114.9 ,27.05,32,1]});
-              option.series[0].data.push({name: "吉水县 ",value:[115.13 ,27.22,31,2]});
-              option.series[0].data.push({name: "峡江县",value:[115.33, 27.62,25,2]});
-              option.series[0].data.push({name: "新干县",value:[115.4, 27.77,25,2]});
-              option.series[0].data.push({name: "永丰县 ",value:[115.43 ,27.32,32,2]});
-              option.series[0].data.push({name: "泰和县",value:[114.88 ,26.8,34,1]});
-              option.series[0].data.push({name: "遂川县",value:[114.52 ,26.33,32,1]});
-              option.series[0].data.push({name: "万安县 ",value:[114.78, 26.47,31,2]});
-              option.series[0].data.push({name: "安福县",value:[114.62 ,27.38,25,2]});
-              option.series[0].data.push({name: "永新县",value:[114.23, 26.95,25,2]});
-               option.series[0].data.push({name: "井冈山市",value:[114.27 ,26.72,25,2]});
+               option.series[0].data.push({name: "吉州区",value:[114.98, 27.12,32,2],
+              value1:[114.98, 27.12,0,3],
+              value2:[114.98, 27.12,0,3],
+              value3:[114.98, 27.12,0,3],
+              value4:[114.98, 27.12,0,3]
+              });
+              option.series[0].data.push({name: "青原区",value:[115.0 ,27.1,34,1],
+              value1:[115.0 ,27.1,0,3],
+              value2:[115.0 ,27.1,0,3],
+              value3:[115.0 ,27.1,0,3],
+              value4:[115.0 ,27.1,0,3]
+              });
+              option.series[0].data.push({name: "吉安县",value:[114.9 ,27.05,32,1],
+              value1:[114.9 ,27.05,0,3],
+              value2:[114.9 ,27.05,0,3],
+              value3:[114.9 ,27.05,0,3],
+              value4:[114.9 ,27.05,0,3]
+              });
+              option.series[0].data.push({name: "吉水县 ",value:[115.13 ,27.22,31,2],
+              value1:[115.13 ,27.22,0,3],
+              value2:[115.13 ,27.22,0,3],
+              value3:[115.13 ,27.22,0,3],
+              value4:[115.13 ,27.22,0,3]
+              });
+              option.series[0].data.push({name: "峡江县",value:[115.33, 27.62,25,2],
+              value1:[115.33, 27.62,0,3],
+              value2:[115.33, 27.62,0,3],
+              value3:[115.33, 27.62,0,3],
+              value4:[115.33, 27.62,0,3]
+              });
+              option.series[0].data.push({name: "新干县",value:[115.4, 27.77,25,2],
+              value1:[115.4, 27.77,0,3],
+              value2:[115.4, 27.77,0,3],
+              value3:[115.4, 27.77,0,3],
+              value4:[115.4, 27.77,0,3]
+              });
+              option.series[0].data.push({name: "永丰县 ",value:[115.43 ,27.32,32,2],
+              value1:[115.43 ,27.32,0,3],
+              value2:[115.43 ,27.32,0,3],
+              value3:[115.43 ,27.32,0,3],
+              value4:[115.43 ,27.32,0,3]
+              });
+              option.series[0].data.push({name: "泰和县",value:[114.88 ,26.8,34,1],
+              value1:[114.88 ,26.8,0,3],
+              value2:[114.88 ,26.8,0,3],
+              value3:[114.88 ,26.8,0,3],
+              value4:[114.88 ,26.8,0,3]
+              });
+              option.series[0].data.push({name: "遂川县",value:[114.52 ,26.33,32,1],
+              value1:[114.52 ,26.33,0,3],
+              value2:[114.52 ,26.33,0,3],
+              value3:[114.52 ,26.33,0,3],
+              value4:[114.52 ,26.33,0,3]
+              });
+              option.series[0].data.push({name: "万安县 ",value:[114.78, 26.47,31,2],
+              value1:[114.78, 26.47,0,3],
+              value2:[114.78, 26.47,0,3],
+              value3:[114.78, 26.47,0,3],
+              value4:[114.78, 26.47,0,3]
+              });
+              option.series[0].data.push({name: "安福县",value:[114.62 ,27.38,25,2],
+              value1:[114.62 ,27.38,0,3],
+              value2:[114.62 ,27.38,0,3],
+              value3:[114.62 ,27.38,0,3],
+              value4:[114.62 ,27.38,0,3]
+              });
+              option.series[0].data.push({name: "永新县",value:[114.23, 26.95,25,2],
+              value1:[114.23, 26.95,0,3],
+              value2:[114.23, 26.95,0,3],
+              value3:[114.23, 26.95,0,3],
+              value4:[114.23, 26.95,0,3]
+              });
+               option.series[0].data.push({name: "井冈山市",value:[114.27 ,26.72,25,2],
+              value1:[114.27 ,26.72,0,3],
+              value2:[114.27 ,26.72,0,3],
+              value3:[114.27 ,26.72,0,3],
+              value4:[114.27 ,26.72,0,3]
+              });
          }
          if(name=="宜春市"){
-               option.series[0].data.push({name: "袁州区",value:[114.38, 27.8,32,2]});
-              option.series[0].data.push({name: "奉新县",value:[115.38, 28.7,34,1]});
-              option.series[0].data.push({name: "万载县",value:[114.43, 28.12,32,1]});
-              option.series[0].data.push({name: "上高县",value:[114.92, 28.23,31,2]});
-              option.series[0].data.push({name: "宜丰县",value:[114.78, 28.38,25,2]});
-              option.series[0].data.push({name: "靖安县 ",value:[115.35, 28.87,25,2]});
-               option.series[0].data.push({name: "铜鼓县",value:[114.37, 28.53,32,1]});
-              option.series[0].data.push({name: "丰城市",value:[115.78, 28.2,31,2]});
-              option.series[0].data.push({name: "樟树市",value:[115.53, 28.07,25,2]});
-              option.series[0].data.push({name: "高安市 ",value:[115.37 ,28.42,25,2]});
+               option.series[0].data.push({name: "袁州区",value:[114.38, 27.8,32,2],
+              value1:[114.38, 27.8,0,3],
+              value2:[114.38, 27.8,0,3],
+              value3:[114.38, 27.8,0,3],
+              value4:[114.38, 27.8,0,3]
+              });
+              option.series[0].data.push({name: "奉新县",value:[115.38, 28.7,34,1],
+              value1:[115.38, 28.7,0,3],
+              value2:[115.38, 28.7,0,3],
+              value3:[115.38, 28.7,0,3],
+              value4:[115.38, 28.7,0,3]
+              });
+              option.series[0].data.push({name: "万载县",value:[114.43, 28.12,32,1],
+              value1:[114.43, 28.12,0,3],
+              value2:[114.43, 28.12,0,3],
+              value3:[114.43, 28.12,0,3],
+              value4:[114.43, 28.12,0,3]
+              });
+              option.series[0].data.push({name: "上高县",value:[114.92, 28.23,31,2],
+              value1:[114.92, 28.23,0,3],
+              value2:[114.92, 28.23,0,3],
+              value3:[114.92, 28.23,0,3],
+              value4:[114.92, 28.23,0,3]
+              });
+              option.series[0].data.push({name: "宜丰县",value:[114.78, 28.38,25,2],
+              value1:[114.78, 28.38,0,3],
+              value2:[114.78, 28.38,0,3],
+              value3:[114.78, 28.38,0,3],
+              value4:[114.78, 28.38,0,3]
+              });
+              option.series[0].data.push({name: "靖安县 ",value:[115.35, 28.87,25,2],
+              value1:[115.35, 28.87,0,3],
+              value2:[115.35, 28.87,0,3],
+              value3:[115.35, 28.87,0,3],
+              value4:[115.35, 28.87,0,3]
+              });
+               option.series[0].data.push({name: "铜鼓县",value:[114.37, 28.53,32,1],
+              value1:[114.37, 28.53,0,3],
+              value2:[114.37, 28.53,0,3],
+              value3:[114.37, 28.53,0,3],
+              value4:[114.37, 28.53,0,3]
+              });
+              option.series[0].data.push({name: "丰城市",value:[115.78, 28.2,31,2],
+              value1:[115.78, 28.2,0,3],
+              value2:[115.78, 28.2,0,3],
+              value3:[115.78, 28.2,0,3],
+              value4:[115.78, 28.2,0,3]
+              });
+              option.series[0].data.push({name: "樟树市",value:[115.53, 28.07,25,2],
+              value1:[115.53, 28.07,0,3],
+              value2:[115.53, 28.07,0,3],
+              value3:[115.53, 28.07,0,3],
+              value4:[115.53, 28.07,0,3]
+              });
+              option.series[0].data.push({name: "高安市 ",value:[115.37 ,28.42,25,2],
+              value1:[115.37 ,28.42,0,3],
+              value2:[115.37 ,28.42,0,3],
+              value3:[115.37 ,28.42,0,3],
+              value4:[115.37 ,28.42,0,3]
+              });
          }
          if(name=="抚州市"){
-               option.series[0].data.push({name: "临川区",value:[116.35, 27.98,32,2]});
-              option.series[0].data.push({name: "南城县",value:[116.63 ,27.55,34,1]});
-              option.series[0].data.push({name: "黎川县",value:[116.92 ,27.3,32,1]});
-              option.series[0].data.push({name: "南丰县",value:[116.53 ,27.22,31,2]});
-              option.series[0].data.push({name: "崇仁县 ",value:[116.05, 27.77,25,2]});
-              option.series[0].data.push({name: " 乐安县",value:[115.83, 27.43,25,2]});
-               option.series[0].data.push({name: "宜黄县",value:[116.22, 27.55,34,1]});
-              option.series[0].data.push({name: "金溪县",value:[116.77, 27.92,32,1]});
-              option.series[0].data.push({name: "资溪县",value:[117.07, 27.7,31,2]});
-              option.series[0].data.push({name: "东乡县  ",value:[116.62 ,28.23,25,2]});
-              option.series[0].data.push({name: " 广昌县 ",value:[116.32 ,26.83,25,2]});
+               option.series[0].data.push({name: "临川区",value:[116.35, 27.98,32,2],
+              value1:[116.35, 27.98,0,3],
+              value2:[116.35, 27.98,0,3],
+              value3:[116.35, 27.98,0,3],
+              value4:[116.35, 27.98,0,3]
+              });
+              option.series[0].data.push({name: "南城县",value:[116.63 ,27.55,34,1],
+              value1:[116.63 ,27.55,0,3],
+              value2:[116.63 ,27.55,0,3],
+              value3:[116.63 ,27.55,0,3],
+              value4:[116.63 ,27.55,0,3]
+              });
+              option.series[0].data.push({name: "黎川县",value:[116.92 ,27.3,32,1],
+              value1:[116.92 ,27.3,0,3],
+              value2:[116.92 ,27.3,0,3],
+              value3:[116.92 ,27.3,0,3],
+              value4:[116.92 ,27.3,0,3]
+              });
+              option.series[0].data.push({name: "南丰县",value:[116.53 ,27.22,31,2],
+              value1:[116.53 ,27.22,0,3],
+              value2:[116.53 ,27.22,0,3],
+              value3:[116.53 ,27.22,0,3],
+              value4:[116.53 ,27.22,0,3]
+              });
+              option.series[0].data.push({name: "崇仁县 ",value:[116.05, 27.77,25,2],
+              value1:[116.05, 27.77,0,3],
+              value2:[116.05, 27.77,0,3],
+              value3:[116.05, 27.77,0,3],
+              value4:[116.05, 27.77,0,3]
+              });
+              option.series[0].data.push({name: " 乐安县",value:[115.83, 27.43,25,2],
+              value1:[115.83, 27.43,0,3],
+              value2:[115.83, 27.43,0,3],
+              value3:[115.83, 27.43,0,3],
+              value4:[115.83, 27.43,0,3]
+              });
+               option.series[0].data.push({name: "宜黄县",value:[116.22, 27.55,34,1],
+              value1:[116.22, 27.55,0,3],
+              value2:[116.22, 27.55,0,3],
+              value3:[116.22, 27.55,0,3],
+              value4:[116.22, 27.55,0,3]
+              });
+              option.series[0].data.push({name: "金溪县",value:[116.77, 27.92,32,1],
+              value1:[116.77, 27.92,0,3],
+              value2:[116.77, 27.92,0,3],
+              value3:[116.77, 27.92,0,3],
+              value4:[116.77, 27.92,0,3]
+              });
+              option.series[0].data.push({name: "资溪县",value:[117.07, 27.7,31,2],
+              value1:[117.07, 27.7,0,3],
+              value2:[117.07, 27.7,0,3],
+              value3:[117.07, 27.7,0,3],
+              value4:[117.07, 27.7,0,3]
+              });
+              option.series[0].data.push({name: "东乡县  ",value:[116.62 ,28.23,25,2],
+              value1:[116.62 ,28.23,0,3],
+              value2:[116.62 ,28.23,0,3],
+              value3:[116.62 ,28.23,0,3],
+              value4:[116.62 ,28.23,0,3]
+              });
+              option.series[0].data.push({name: " 广昌县 ",value:[116.32 ,26.83,25,2],
+              value1:[116.32 ,26.83,0,3],
+              value2:[116.32 ,26.83,0,3],
+              value3:[116.32 ,26.83,0,3],
+              value4:[116.32 ,26.83,0,3]
+              });
          }
         if(name=="上饶市"){
-               option.series[0].data.push({name: "信州区",value:[117.95, 28.43,32,2]});
-              option.series[0].data.push({name: "上饶县",value:[117.92, 28.43,34,1]});
-              option.series[0].data.push({name: "广丰县",value:[118.18, 28.43,32,1]});
-              option.series[0].data.push({name: "玉山县",value:[118.25, 28.68,31,2]});
-              option.series[0].data.push({name: "铅山县",value:[117.7, 28.32,25,2]});
-              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
-               option.series[0].data.push({name: "戈阳县",value:[117.43, 28.4,31,2]});
-              option.series[0].data.push({name: "余干县",value:[116.68, 28.7,25,2]});
-              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2]});
+               option.series[0].data.push({name: "信州区",value:[117.95, 28.43,32,2],
+              value1:[117.95, 28.43,0,3],
+              value2:[117.95, 28.43,0,3],
+              value3:[117.95, 28.43,0,3],
+              value4:[117.95, 28.43,0,3]
+              });
+              option.series[0].data.push({name: "上饶县",value:[117.92, 28.43,34,1],
+              value1:[117.92, 28.43,0,3],
+              value2:[117.92, 28.43,0,3],
+              value3:[117.92, 28.43,0,3],
+              value4:[117.92, 28.43,0,3]
+              });
+              option.series[0].data.push({name: "广丰县",value:[118.18, 28.43,32,1],
+              value1:[118.18, 28.43,0,3],
+              value2:[118.18, 28.43,0,3],
+              value3:[118.18, 28.43,0,3],
+              value4:[118.18, 28.43,0,3]
+              });
+              option.series[0].data.push({name: "玉山县",value:[118.25, 28.68,31,2],
+              value1:[118.25, 28.68,0,3],
+              value2:[118.25, 28.68,0,3],
+              value3:[118.25, 28.68,0,3],
+              value4:[118.25, 28.68,0,3]
+              });
+              option.series[0].data.push({name: "铅山县",value:[117.7, 28.32,25,2],
+              value1:[117.7, 28.32,0,3],
+              value2:[117.7, 28.32,0,3],
+              value3:[117.7, 28.32,0,3],
+              value4:[117.7, 28.32,0,3]
+              });
+              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2],
+              value1:[117.6, 28.42,0,3],
+              value2:[117.6, 28.42,0,3],
+              value3:[117.6, 28.42,0,3],
+              value4:[117.6, 28.42,0,3]
+              });
+               option.series[0].data.push({name: "戈阳县",value:[117.43, 28.4,31,2],
+              value1:[117.43, 28.4,0,3],
+              value2:[117.43, 28.4,0,3],
+              value3:[117.43, 28.4,0,3],
+              value4:[117.43, 28.4,0,3]
+              });
+              option.series[0].data.push({name: "余干县",value:[116.68, 28.7,25,2],
+              value1:[116.68, 28.7,0,3],
+              value2:[116.68, 28.7,0,3],
+              value3:[116.68, 28.7,0,3],
+              value4:[116.68, 28.7,0,3]
+              });
+              option.series[0].data.push({name: "横峰县",value:[117.6, 28.42,25,2],
+              value1:[117.6, 28.42,0,3],
+              value2:[117.6, 28.42,0,3],
+              value3:[117.6, 28.42,0,3],
+              value4:[117.6, 28.42,0,3]
+              });
          }
            myChart.setOption(option);
     	},
         // 数据展示            	
-    	data: [{
-    		name: '南昌',
-    		value: 10,
-    		level: 1
-    	}, {
-    		name: '景德镇',
-    		value: 12,
-    		level: 2
-    	}, {
-    		name: '萍乡',
-    		value: 11,
-    		level: 3
-    	}, {
-    		name: '赣州',
-    		value: 16,
-    		level: 2
-    	}, {
-    		name: '吉安',
-    		value: 12,
-    		level: 1
-    	}, {
-    		name: '九江',
-    		value: 12,
-    		level: 1
-    	}, {
-    		name: '新余',
-    		value: 12,
-    		level: 1
-    	}, {
-    		name: '鹰潭',
-    		value: 12,
-    		level: 1
-    	}, {
-    		name: '宜春',
-    		value: 12,
-    		level: 1
-    	}, {
-    		name: '抚州',
-    		value: 12,
-    		level: 1
-    	}, {
-    		name: '上饶',
-    		value: 12,
-    		level: 1
-    	}]
+        data: datamap,
+        // [{
+    	// 	name: '南昌',
+        //     value: 
+        //     951,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '景德镇',
+        //     value: 
+        //     0,
+    	// 	level: 2
+    	// }, {
+    	// 	name: '萍乡',
+        //     value:
+        //     0,
+    	// 	level: 3
+    	// }, {
+    	// 	name: '赣州',
+        //     value: 
+        //     0,
+    	// 	level: 2
+    	// }, {
+    	// 	name: '吉安',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '九江',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '新余',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '鹰潭',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '宜春',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '抚州',
+        //     value: 
+        //     0,
+    	// 	level: 1
+    	// }, {
+    	// 	name: '上饶',
+        //     value: 
+        //     0,
+    	// 	level: 1
+        // }]
+        
     });
 })
 
@@ -1058,8 +1689,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     series: [{
         name: '2018',
         type: 'line',
-        data: [10, 10, 30, 12, 15, 3, 7, 30, 12, 15, 3, 7],
-        // data:this.data1,
+        // data: [10, 10, 30, 12, 15, 3, 7, 30, 12, 15, 3, 7],
+        data:this.data1,
         symbolSize: 1,
         symbol: 'circle',
         smooth: true,
@@ -1089,8 +1720,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     }, {
         name: '2019',
         type: 'line',
-        data: [5, 12, 11, 14, 25, 16, 10, 20, 13, 5, 13, 17],
-        //  data:this.data2,
+        // data: [5, 12, 11, 14, 25, 16, 10, 20, 13, 5, 13, 17],
+         data:this.data2,
         symbolSize: 1,
         symbol: 'circle',
         smooth: true,
@@ -1123,7 +1754,8 @@ const xData = ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月','8 
     },
 drawLeft3() {
       this.chartColumn = echarts.init(document.getElementById("ajzt"));
-     let value = 55.33;
+     let value = this.jal;
+    //  55.33;
       let title = '';
       let int = value.toFixed(2).split('.')[0];
       let float = value.toFixed(2).split('.')[1];
@@ -1271,9 +1903,10 @@ const insetShadowUrl = DOMURL.createObjectURL(svg);
 const dataSet = [
     // ['江西省 交通运输厅', '江西省公路 路政管理总队', '新余高速公路 路政管理支队',
     //  '南昌高速公路 路政管理支队', '高速公路 管理局', '赣州高速公路 路政管理支队', '吉安高速公路 路政管理支队'],
-     ['交通 运输厅', '路政 管理总队', '新余 高速公路',
-     '南昌 高速公路',  '赣州 高速公路', '吉安 高速公路'],
-    [120, 200, 150, 70, 110, 130]
+    //  ['交通 运输厅', '路政 管理总队', '新余 高速公路',
+    //  '南昌 高速公路',  '赣州 高速公路', '吉安 高速公路'],
+    // [120, 200, 150, 70, 110, 130]
+    this.data3,this.data4
 ];
 
       this.chartColumn.setOption({
@@ -1385,7 +2018,8 @@ drawRight1() {
 		right: '8%'
 	},
     xAxis: {
-        data: ['湖南省', '福建省', '云南省', '山东省', '山西省' ],
+        data:this.data5,
+        //  ['湖南省', '福建省', '云南省', '山东省', '山西省' ],
        axisTick: {
 			show: false
 		},
@@ -1470,7 +2104,8 @@ drawRight1() {
 				opacity: 1
 			}
         },
-        data: [123, 60, 25, 18, 12],
+        data: this.data6,
+        // [123, 60, 25, 18, 12],
         z: 10
     }]
       });
@@ -1498,7 +2133,8 @@ drawRight1() {
 				xAxis: [{
 					type: 'category',
 					color: '#59588D',
-					data: ['南昌市', '九江市', '吉安市', '新余市', '萍乡市', '宜春市', '抚州市', '上饶市'],
+                    data: this.data7,
+                    // ['南昌市', '九江市', '吉安市', '新余市', '萍乡市', '宜春市', '抚州市', '上饶市'],
 					axisLabel: {
 						margin: 10,
 						color: '#999',
@@ -1545,7 +2181,8 @@ drawRight1() {
 				}],
 				series: [{
 					type: 'bar',
-					data: [40, 65, 50, 36, 30, 35, 40, 60],
+                    data:this.data8, 
+                    // [40, 65, 50, 36, 30, 35, 40, 60],
 					barWidth: '16px',
 					itemStyle: {
 						normal: {
@@ -1611,13 +2248,14 @@ drawRight1() {
       });
      
     },
+//查询-----------------------------------------------------------------------------------------------------
+//案件类型
  search1(val) {    
       let data = {
        year:2020
       };
       
-      this.$store.dispatch("ndajsllxslbztj", data).then(res => {
-        
+       ajlx(data).then(res => {   
          var map={};
        res.forEach(item =>{
           map[item[0]]=item[1]
@@ -1636,12 +2274,11 @@ drawRight1() {
         console.log(err);
       };
     },
-search2(val) {
+    //2018年案件数量
+    search2(val) {
       let data = {
         year:2018
       };
-      let _this = this;
-    //   this.$store.dispatch("ndajsltbtj", data).then(res => { 
       ndajsltbtj(data).then(res => {   
          var map={};
          res.forEach(item =>{
@@ -1668,6 +2305,7 @@ search2(val) {
         console.log(err);
       };
     },
+      //2019年案件数量
     search3(val) {
       let data = {
         year:2019
@@ -1701,6 +2339,821 @@ search2(val) {
         console.log(err);
       };
     },
+    //案件状态  
+    search4(val) {
+      let data = {
+        year:val
+      };
+     ajzt(data).then(res => {
+         var map={};
+         console.log(res);
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+            this.af=map['案发'];
+            this.ja=map['结案'];
+            this.jal=map['结案']/map['案发'];
+             console.log(this.jal);
+          this.drawLeft3();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    //执法机构案件数量  
+    search5(val) {
+      let data = {
+        year:val
+      };
+     zfjgajsl(data).then(res => {
+        //  var map={};
+         console.log(res);
+         this.data3.push(res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]);
+         this.data4.push(res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]);
+        //  res.forEach(item =>{
+         
+        //     //   map[item[0]]=item[1];       
+        //  });
+            // console.log(map);
+          this.drawCenter2();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//罚没款项
+    search6(val) {
+      let data = {
+        year:val
+      };
+     fmkx(data).then(res => {
+         var map={};
+         console.log(res);
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+            this.cfje=map['处罚金额'];
+            this.zxje="0";
+         
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//本地车辆
+    search7(val) {
+      let data = {
+        year:val
+      };
+     bdcl(data).then(res => {
+         var map={};
+         console.log(res);
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+            this.bdcl=map['赣'];
+            
+         
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//外地车辆
+    search8(val) {
+      let data = {
+        year:val
+      };
+     wdcl(data).then(res => {
+         this.data5.push(res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]);
+         this.data6.push(res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]);
+         this.drawRight1();
+         
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//案发地
+search9(province,start,end) {
+      
+      let data = {
+        province:province,
+        start:start,
+        end:end
+      };
+      
+         afddfb(data).then(res => {
+        console.log(res);
+        var map={};
+         res.forEach(item =>{
+         
+              map[item[0]]=item[1];       
+         });
+        if(res.length!=0){
+            this.data7.push(province);        
+            this.data8.push(res[0][1]==undefined?0:res[0][1] );
+        }else{       
+            this.data7.push(province);        
+            this.data8.push(0);
+        }
+       this.drawRight2();
+      
+       
+       
+      });
+      err => {
+        console.log(err);
+      };
+    },
+//地图
+searchMap(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+         map(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value=map['南昌市'];
+            }else{
+                this.datamap[0].value=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value=map['九江市'];
+            }else{
+               this.datamap[1].value=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value=map['上饶市'];
+            }else{
+                this.datamap[2].value=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value=map['抚州市'];
+            }else{
+               this.datamap[3].value=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value=map['抚州市'];
+            }else{
+              this.datamap[4].value=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value=map['吉安市'];
+            }else{
+              this.datamap[5].value=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value=map['赣州市'];
+            }else{
+                 this.datamap[6].value=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value=map['景德镇市'];
+            }else{
+              this.datamap[7].value=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value=map['萍乡市'];
+            }else{
+                this.datamap[8].value=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value=map['新余市'];
+            }else{
+               this.datamap[9].value=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value=map['鹰潭市'];
+            }else{
+               this.datamap[10].value=0;
+            } 
+       this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+    //   mapybaj(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value1=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value1=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value1=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value1=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value1=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value1=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value1=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value1=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value1=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value1=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value1=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value1=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value1=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value1=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value1=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value1=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value1=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value1=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value1=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value1=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value1=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value1=0;
+    //         } 
+   
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+    //   mapcfaj(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value2=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value2=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value2=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value2=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value2=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value2=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value2=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value2=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value2=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value2=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value2=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value2=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value2=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value2=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value2=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value2=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value2=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value2=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value2=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value2=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value2=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value2=0;
+    //         } 
+   
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+    //   mappbcaj(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value3=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value3=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value3=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value3=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value3=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value3=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value3=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value3=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value3=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value3=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value3=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value3=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value3=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value3=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value3=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value3=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value3=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value3=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value3=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value3=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value3=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value3=0;
+    //         } 
+            
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+    //   mapcxcz(data).then(res => {
+    //         console.log(res);
+    //         var map={};
+    //         res.forEach(item =>{
+    //             map[item[0]]=item[1];       
+    //         });
+    //     if(res.length!=0){
+    //         if(map['南昌市']!=undefined){
+    //             this.datamap[0].value4=map['南昌市'];
+    //         }else{
+    //             this.datamap[0].value4=0;
+    //         }
+    //         if(map['九江市']!=undefined){
+    //             this.datamap[1].value4=map['九江市'];
+    //         }else{
+    //            this.datamap[1].value4=0;
+    //         }
+    //         if(map['上饶市']!=undefined){
+    //            this.datamap[2].value4=map['上饶市'];
+    //         }else{
+    //             this.datamap[2].value4=0;
+    //         }
+    //         if(map['抚州市']!=undefined){
+    //            this.datamap[3].value4=map['抚州市'];
+    //         }else{
+    //            this.datamap[3].value4=0;
+    //         }
+    //         if(map['宜春市']!=undefined){
+    //           this.datamap[4].value4=map['抚州市'];
+    //         }else{
+    //           this.datamap[4].value4=0;
+    //         }
+    //         if(map['吉安市']!=undefined){
+    //             this.datamap[5].value4=map['吉安市'];
+    //         }else{
+    //           this.datamap[5].value4=0;
+    //         }
+    //         if(map['赣州市']!=undefined){
+    //            this.datamap[6].value4=map['赣州市'];
+    //         }else{
+    //              this.datamap[6].value4=0;
+    //         }
+    //         if(map['景德镇市']!=undefined){
+    //           this.datamap[7].value4=map['景德镇市'];
+    //         }else{
+    //           this.datamap[7].value4=0;
+    //         }
+    //         if(map['萍乡市']!=undefined){
+    //            this.datamap[8].value4=map['萍乡市'];
+    //         }else{
+    //             this.datamap[8].value4=0;
+    //         }
+    //         if(map['新余市']!=undefined){
+    //           this.datamap[9].value4=map['新余市'];
+    //         }else{
+    //            this.datamap[9].value4=0;
+    //         }
+    //         if(map['鹰潭市']!=undefined){
+    //            this.datamap[10].value4=map['鹰潭市'];
+    //         }else{
+    //            this.datamap[10].value4=0;
+    //         } 
+            
+    //     }
+    //   });
+    //   err => {
+    //     console.log(err);
+    //   };
+  
+    },
+searchMap1(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+     
+      mapybaj(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value1=map['南昌市'];
+            }else{
+                this.datamap[0].value1=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value1=map['九江市'];
+            }else{
+               this.datamap[1].value1=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value1=map['上饶市'];
+            }else{
+                this.datamap[2].value1=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value1=map['抚州市'];
+            }else{
+               this.datamap[3].value1=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value1=map['抚州市'];
+            }else{
+              this.datamap[4].value1=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value1=map['吉安市'];
+            }else{
+              this.datamap[5].value1=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value1=map['赣州市'];
+            }else{
+                 this.datamap[6].value1=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value1=map['景德镇市'];
+            }else{
+              this.datamap[7].value1=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value1=map['萍乡市'];
+            }else{
+                this.datamap[8].value1=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value1=map['新余市'];
+            }else{
+               this.datamap[9].value1=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value1=map['鹰潭市'];
+            }else{
+               this.datamap[10].value1=0;
+            } 
+   this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+     
+    },
+    searchMap2(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+       
+      mapcfaj(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value2=map['南昌市'];
+            }else{
+                this.datamap[0].value2=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value2=map['九江市'];
+            }else{
+               this.datamap[1].value2=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value2=map['上饶市'];
+            }else{
+                this.datamap[2].value2=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value2=map['抚州市'];
+            }else{
+               this.datamap[3].value2=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value2=map['抚州市'];
+            }else{
+              this.datamap[4].value2=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value2=map['吉安市'];
+            }else{
+              this.datamap[5].value2=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value2=map['赣州市'];
+            }else{
+                 this.datamap[6].value2=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value2=map['景德镇市'];
+            }else{
+              this.datamap[7].value2=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value2=map['萍乡市'];
+            }else{
+                this.datamap[8].value2=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value2=map['新余市'];
+            }else{
+               this.datamap[9].value2=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value2=map['鹰潭市'];
+            }else{
+               this.datamap[10].value2=0;
+            } 
+   this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+     
+    },
+    searchMap3(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+      mappbcaj(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value3=map['南昌市'];
+            }else{
+                this.datamap[0].value3=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value3=map['九江市'];
+            }else{
+               this.datamap[1].value3=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value3=map['上饶市'];
+            }else{
+                this.datamap[2].value3=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value3=map['抚州市'];
+            }else{
+               this.datamap[3].value3=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value3=map['抚州市'];
+            }else{
+              this.datamap[4].value3=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value3=map['吉安市'];
+            }else{
+              this.datamap[5].value3=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value3=map['赣州市'];
+            }else{
+                 this.datamap[6].value3=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value3=map['景德镇市'];
+            }else{
+              this.datamap[7].value3=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value3=map['萍乡市'];
+            }else{
+                this.datamap[8].value3=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value3=map['新余市'];
+            }else{
+               this.datamap[9].value3=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value3=map['鹰潭市'];
+            }else{
+               this.datamap[10].value3=0;
+            } 
+            this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+   
+    },
+    searchMap4(start,end) {
+      
+      let data = {
+        start:start,
+        end:end
+      };
+      
+      
+      mapcxcz(data).then(res => {
+            console.log(res);
+            var map={};
+            res.forEach(item =>{
+                map[item[0]]=item[1];       
+            });
+        if(res.length!=0){
+            if(map['南昌市']!=undefined){
+                this.datamap[0].value4=map['南昌市'];
+            }else{
+                this.datamap[0].value4=0;
+            }
+            if(map['九江市']!=undefined){
+                this.datamap[1].value4=map['九江市'];
+            }else{
+               this.datamap[1].value4=0;
+            }
+            if(map['上饶市']!=undefined){
+               this.datamap[2].value4=map['上饶市'];
+            }else{
+                this.datamap[2].value4=0;
+            }
+            if(map['抚州市']!=undefined){
+               this.datamap[3].value4=map['抚州市'];
+            }else{
+               this.datamap[3].value4=0;
+            }
+            if(map['宜春市']!=undefined){
+              this.datamap[4].value4=map['抚州市'];
+            }else{
+              this.datamap[4].value4=0;
+            }
+            if(map['吉安市']!=undefined){
+                this.datamap[5].value4=map['吉安市'];
+            }else{
+              this.datamap[5].value4=0;
+            }
+            if(map['赣州市']!=undefined){
+               this.datamap[6].value4=map['赣州市'];
+            }else{
+                 this.datamap[6].value4=0;
+            }
+            if(map['景德镇市']!=undefined){
+              this.datamap[7].value4=map['景德镇市'];
+            }else{
+              this.datamap[7].value4=0;
+            }
+            if(map['萍乡市']!=undefined){
+               this.datamap[8].value4=map['萍乡市'];
+            }else{
+                this.datamap[8].value4=0;
+            }
+            if(map['新余市']!=undefined){
+              this.datamap[9].value4=map['新余市'];
+            }else{
+               this.datamap[9].value4=0;
+            }
+            if(map['鹰潭市']!=undefined){
+               this.datamap[10].value4=map['鹰潭市'];
+            }else{
+               this.datamap[10].value4=0;
+            } 
+            this.map(this.datamap);
+        }
+      });
+      err => {
+        console.log(err);
+      };
+   
+    },
+    mapAll(){
+        this.searchMap(202001,202012);
+        this.searchMap1(202001,202012);
+        this.searchMap2(202001,202012);
+        this.searchMap3(202001,202012);
+        this.searchMap4(202001,202012);
+        // console.log(this.datamap);
+        // this.map(this.datamap);
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     timer() {
         return  setInterval(() => {
           this.font();
@@ -1725,7 +3178,8 @@ search2(val) {
         setTimeout(function(){
             $('#cxcz').removeClass('flipOutX animated infinite');
         }, 5000);
-      }
+      },
+
 
 
    
@@ -1733,22 +3187,40 @@ search2(val) {
    
   },
   mounted() {
-    // this.search1();
-    // this.search2();
-    // this.search3();
-    this.drawLeft2();
-    this.drawLeft3();
-    this.drawCenter2();
-    this.drawRight1();
-    this.drawRight2();
-    this.map();
+    this.search1();
+    this.search2();
+    this.search3();
+    this.search4(2020);
+    this.search5(2020);
+    this.search6(2020);
+    this.search7(2020);
+    this.search8(2020);
+    this.search9('南昌市',202001,202012);
+    this.search9('九江市',202001,202012);
+    this.search9('上饶市',202001,202012);
+    this.search9('抚州市',202001,202012);
+    this.search9('宜春市',202001,202012);
+    this.search9('吉安市',202001,202012);
+    this.search9('赣州市',202001,202012);
+    this.search9('景德镇市',202001,202012);
+    this.search9('萍乡市',202001,202012);
+    this.search9('新余市',202001,202012);
+    this.search9('鹰潭市',202001,202012);
+    //  this.map();
+  
+    // this.drawLeft2();
+    // this.drawLeft3();
+    // this.drawCenter2();
+    // this.drawRight1();
+    // this.drawRight2();
+    
   },
   created() {
        this.timer();
+       this.mapAll();
+        
   },
-//   destroyed() {
-//   clearTimeout(this.timer)
-//     }
+
 };
 </script>
 <style>
@@ -1758,15 +3230,15 @@ search2(val) {
 .dptitle_1{
   background-image: url("../../../../static/images/map/选中.png");
   background-size: 100%;
-  height: 3.7rem;
-  width: 10rem;
+  height: 58px;
+  width: 160px;
   text-align: center;
   line-height: 60px;
   cursor: pointer;
 }
 .dptitle_font{
-    
-font-size:1rem;
+     
+font-size:18px;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:500;
 color:rgba(92,216,255,1);
@@ -1775,9 +3247,9 @@ text-shadow:0px 0px 24px rgba(14,40,100,1);
 
 }
 .dptitle_2{
-width:24rem;
-height:5rem;
-font-size:1.25rem;
+width:380px;
+height:42px;
+font-size:20px;
 font-family:PingFangSC-Medium,PingFang SC;
 font-weight:300;
 color:rgba(255,255,255,1);
@@ -1789,8 +3261,8 @@ text-align: center;
   background-image: url("../../../../static/images/map/导航-未选.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 3.7rem;
-  width: 10rem;
+  height: 58px;
+  width: 150px;
   text-align: center;
   line-height: 45px;
   cursor: pointer;
@@ -1799,23 +3271,23 @@ text-align: center;
   background-image: url("../../../../static/images/map/右侧边框.png");
   background-size: 100%;
   background-repeat: no-repeat;
-  height: 5rem;
-  width: 15rem;
+  height: 58px;
+  width: 230px;
   text-align: center;
   line-height: 45px;
   cursor: pointer;
 }
 .left_1{
-width: 18.8rem;
-height: 12rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
 margin-left: 30px;
 }
 .left_2{
-width: 18.8rem;
-height: 13rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1823,8 +3295,8 @@ margin-left: 30px;
 margin-top: 5px;
 }
 .left_3{
-width: 18.8rem;
-height: 12.3rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1834,27 +3306,27 @@ margin-top: 5px;
 .center_1{
   background-image: url("../../../../static/images/map/地图bg.png");
   background-size: 100%;
-  height: 25.5rem;
+  height: 410px;
 }
 .center_2{
-width: 30rem;
-height: 12.3rem;
+width:480px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
 margin-left: 0px;
 }
 .right_1{
-width: 18.8rem;
-height: 12rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
 margin-left: 5px;
 }
 .right_2{
-width: 18.8rem;
-height: 13rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1862,8 +3334,8 @@ margin-left: 5px;
 margin-top: 5px;
 }
 .right_3{
-width: 18.8rem;
-height: 12.3rem;
+width:300px;
+height:200px;
 background:rgba(13,18,38,0.1);
 box-shadow:0px 0px 4px 1px rgba(12,81,149,0.5);
 border:1px solid rgba(14,101,187,0.5);
@@ -1872,8 +3344,8 @@ margin-top: 5px;
 }
 .bt{
 width:100%;
-height: 1.5rem;
-font-size: 1rem;
+height:22px;
+font-size:16px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(4,241,248,1);
@@ -1881,18 +3353,19 @@ line-height:22px;
 padding-left: 10px;
 }
 .type{
-width: 5rem;
-height: 1.5rem;
-font-size: 0.9rem;
+width:66px;
+height:20px;
+font-size:13px;
 font-family:PingFangSC-Regular,PingFang SC;
+
 font-weight:400;
 color:rgba(255,255,255,1);
 line-height:20px;
 }
 .count{
-width: 5rem;
-height: 1.5rem;
-font-size: 1.3rem;
+width:58px;
+height:42px;
+font-size:22px;
 font-family:DINCond-Bold,DINCond;
 font-weight:bold;
 color:rgba(4,241,248,1);
@@ -1900,20 +3373,9 @@ line-height:42px;
 margin-left: 5px;
 }
 .dw{
-width: 2rem;
-height: 1.5rem;
-font-size: 0.9rem;
-font-family:PingFangSC-Regular,PingFang SC;
-font-weight:400;
-color:rgba(255,255,255,1);
-line-height:50px;
-margin-left: 15px;
-margin-left: 25px;
-}
-.dw2{
-width: 2rem;
-height: 1.5rem;
-font-size: 0.9rem;
+width:14px;
+height:20px;
+font-size:14px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
@@ -1922,27 +3384,27 @@ margin-left: 15px;
 margin-left: 25px;
 }
 .ajbjl{
-width: 5rem;
-height: 1rem;
-font-size: 0.9rem;
+width:70px;
+height:19px;
+font-size:14px;
 font-family:MicrosoftYaHei;
 color:rgba(255,255,255,1);
 line-height:19px;
 margin-top: 50px;
 }
 .sl{
-width: 1rem;
-height: 2rem;
-font-size: 1.3rem;
+width:190px;
+height:51px;
+font-size:23px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:rgba(4,241,248,1);
 line-height:61px;  
 }
 .sl2{
-width: 1rem;
-height: 2rem;
-font-size: 1rem;
+width:190px;
+height:51px;
+font-size:17px;
 font-family:DINCondensed-Bold,DINCondensed;
 font-weight:bold;
 color:#FFFFFF;
@@ -1961,18 +3423,18 @@ line-height:61px;
     background-size: 100% 100%;
 }
 .dpright_font0{
-width: 1rem;
-height: 2rem;
-font-size: 1.3rem;
+width:196px;
+height:28px;
+font-size:20px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:rgba(255,255,255,1);
 line-height:28px;
 }
 .dpright_font1{
-width: 1rem;
-height: 2rem;
-font-size: 1.3rem;
+width:196px;
+height:28px;
+font-size:18px;
 font-family:PingFangSC-Regular,PingFang SC;
 font-weight:400;
 color:#FF9703;

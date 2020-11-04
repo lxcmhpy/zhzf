@@ -1,14 +1,19 @@
 <template>
-  <div class="height100">
+  <div class="height100 inspection-object">
     <div class="handlePart">
       <div class="search toggleBox">
         <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
           <el-form :inline="true" :model="searchForm" class ref="searchForm">
-            <el-form-item label="主体名称：" prop='objectName'>
+            <el-form-item label="对象名称：" prop='objectName'>
               <el-input v-model="searchForm.objectName"></el-input>
             </el-form-item>
             <el-form-item label="项目名称：" prop='projectName'>
               <el-input v-model="searchForm.projectName"></el-input>
+            </el-form-item>
+            <el-form-item label="查询范围" prop='selectValue'>
+              <el-select v-model="searchForm.selectValue">
+                <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <div class="search-btns">
@@ -135,7 +140,7 @@
         <el-form-item label="监管单位" prop="regulatoryUnit" class="lawPersonBox-aline organClass">
           <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
             <div class="departOrUserTree" style="width:600px;height:436px">
-              <div class="treeBox">
+              <div class="treeBox" style="height: 100%;">
                 <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
                   <span class="custom-tree-node" slot-scope="{ node,data }">
                     <span>
@@ -173,8 +178,10 @@
   </div>
 </template>
 <script>
-import { getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi,
- findByAddressCode, importObjectExcelApi ,exportObjectApi } from "@/api/inspection";
+import {
+  getAllRandomObjectApi, addInspectionObjectApi, getDictListDetailByNameApi, delRandomObjectApi,
+  findByAddressCode, importObjectExcelApi, exportObjectApi
+} from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinInspection } from "@/common/js/inspectionComm";
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
@@ -186,6 +193,7 @@ export default {
       searchForm: {
         objectName: "",
         projectName: '',
+        selectValue: 0
       },
       isShow: false,
       dialogFormVisible: false,
@@ -218,6 +226,9 @@ export default {
         socialCode: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        regulatoryUnit: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         objectType: [
           { required: true, message: "必填项", trigger: "change" }
         ],
@@ -248,16 +259,18 @@ export default {
         label: "label"
       },
       visiblePopover: false,
+      searchType: [{ value: 0, label: '本机构' }, { value: 1, label: '本机构及子机构' }],
     }
   },
   methods: {
     // 查询列表时
     getTableData() {
+      this.tableData=[]
       let data = {
         projectName: this.searchForm.projectName,
         objectName: this.searchForm.objectName,
         regulatoryUnit: iLocalStroage.gets("userInfo").organName,
-        organId: iLocalStroage.gets("userInfo").organId,
+        organId:  this.searchForm.selectValue==1?iLocalStroage.gets("userInfo").organId:'',
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -278,7 +291,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = JSON.parse(JSON.stringify(_this.addForm))
-          data.adminDivision = _this.addForm.adminDivision?_this.addForm.adminDivision.join(','):''
+          data.adminDivision = _this.addForm.adminDivision ? _this.addForm.adminDivision.join(',') : ''
           addInspectionObjectApi(data).then(
             res => {
               if (res.code == 200) {
@@ -322,7 +335,7 @@ export default {
     findProvence() {
       this.provenceList = []
       let _this = this
-      let data = '530000'//云南
+      let data = '640000'//云南
       findByAddressCode(data).then(
         res => {
           // this.provenceList.push(res.data)

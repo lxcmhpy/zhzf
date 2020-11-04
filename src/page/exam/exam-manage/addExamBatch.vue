@@ -246,7 +246,7 @@ export default {
               },
               (err) => {
                 loading.close();
-                _this.$message({ type: "error", message: err.msg || "" });
+                // _this.$message({ type: "error", message: err.msg || "" });
               }
             );
           } else if (_this.handelType == 2) {
@@ -261,7 +261,7 @@ export default {
                 },
                 (err) => {
                   loading.close();
-                  _this.$message({ type: "error", message: err.msg || "" });
+                  // _this.$message({ type: "error", message: err.msg || "" });
                 }
               );
           }

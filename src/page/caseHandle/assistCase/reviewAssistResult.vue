@@ -81,7 +81,7 @@
                       <li v-for="(item,index) in launchList" :key="index">
                         <el-link
                           type="primary"
-                          :href="host+item.storageId"
+                          :href="item.storageStreamPath"
                           :underline="false"
                           :target="['.jpg','.png','.jpeg'].includes(item.fileType) ? '_blank':'_self'"
                         >
@@ -92,7 +92,7 @@
                     </ul>
                   </div>
                   <div
-                    v-if="pageType === 'received' && caseData.status ==='待回复'"
+                    v-if="pageType === 'received' && caseData.status ==='0'"
                     style="clear:both;"
                   >
                     <div>
@@ -116,6 +116,7 @@
                           :multiple="true"
                           :file-list="fileList"
                           :on-change="handleChange"
+                          :on-exceed="exceedFun"
                         >
                           <el-button size="small" type="primary">选取文件</el-button>
                           <span slot="tip" class="upload-tips">(最多上传3个附件)</span>
@@ -129,7 +130,7 @@
                 </div>
               </el-timeline-item>
               <el-timeline-item
-                v-if="caseData.status === '已完成'"
+                v-if="caseData.status === '1'"
                 :timestamp="caseData.replyTime"
                 placement="top"
                 icon="el-icon-time"
@@ -168,7 +169,7 @@
                       <li v-for="(item,index) in replyFileList" :key="index">
                         <el-link
                           type="primary"
-                          :href="host+item.storageId"
+                          :href="item.storageStreamPath"
                           :underline="false"
                           :target="['.jpg','.png','.jpeg'].includes(item.fileType) ? '_blank':'_self'"
                         >
@@ -214,9 +215,6 @@ export default {
     UserInfo() {
       return iLocalStroage.gets("userInfo");
     },
-    host() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    },
   },
   data() {
     return {
@@ -259,7 +257,13 @@ export default {
       };
       getAssistFile(data).then(
         (res) => {
-          this[type] = res.data;
+          let fileListData = res.data;
+          fileListData.forEach(item => {
+            this.$util.com_getDeviceFileStream(item.storageId).then(res=>{
+              item['storageStreamPath'] = res;
+            });
+          })
+          this[type] = fileListData;
         },
         (error) => {
           console.log(error);
@@ -273,6 +277,14 @@ export default {
     // 选择附件
     handleChange(file, fileList){
       this.fileList = fileList;
+    },
+    // 选择附件超过3个
+    exceedFun(files, fileList){
+      this.$message.error(
+        `最多上传3个附件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      )
     },
 
     // 上传附件

@@ -23,6 +23,7 @@
             <el-input
               ref="username"
               :disabled="dialogStatus === 'editEquipment'"
+              maxlength="20"
               v-model="addUserForm.username"
             ></el-input>
           </el-form-item>
@@ -37,7 +38,7 @@
         <p class="titleP">基本信息</p>
         <div class="item">
           <el-form-item label="真实姓名" prop="nickName">
-            <el-input v-model="addUserForm.nickName" ref="nickName"></el-input>
+            <el-input v-model="addUserForm.nickName" ref="nickName" maxlength="20"></el-input>
           </el-form-item>
         </div>
         <div class="item">
@@ -57,15 +58,21 @@
         </div>
         <div class="item">
           <el-form-item label="执法机构" prop="organId">
-            <!-- <el-input v-model="addUserForm.organTitle"></el-input> -->
-            <el-select v-model="addUserForm.organId" placeholder="请选择执法机构" @change="getDepartment">
+            <!-- <el-select v-model="addUserForm.organId" placeholder="请选择执法机构" @change="getDepartment">
               <el-option
                 v-for="item in getOrganList"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
               ></el-option>
-            </el-select>
+            </el-select> -->
+            <elSelectTree
+                  ref="elSelectTreeObj"
+                  :options="getOrganList"
+                  :accordion="true"
+                  :props="myprops"
+                  @getValue="handleOrgan"
+                ></elSelectTree>
           </el-form-item>
         </div>
         <div class="item">
@@ -78,6 +85,11 @@
                 :value="item.id"
               ></el-option>
             </el-select>
+          </el-form-item>
+        </div>
+        <div class="item">
+          <el-form-item label="状态" prop="status">
+            <el-switch v-model="addUserForm.status" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           </el-form-item>
         </div>
       </div>
@@ -106,25 +118,29 @@
       </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="resetForm">取 消</el-button>
+      <el-button @click="closeDialog">取 消</el-button>
       <el-button type="primary" @click="save">保存</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
+import elSelectTree from "@/components/elSelectTree/elSelectTree";
+import { getAllOrganApi } from "@/api/system";
+
 export default {
   data() {
     // 判断用户名是否已存在
     var validateUsername = (rule, value, callback) => {
-      this.$store
-        .dispatch("hasUsername", value)
-        .then(response => {
+      this.$store.dispatch("hasUsername", value).then(res => {
+        if(res.id && this.dialogStatus == "addEquipment"){
+          callback('当前用户名已被使用');
+        }else{
           callback();
-        })
-        .catch(error => {
-          callback('用户名重复');
-        });
+        } 
+      },err => {
+        this.$message({ type: "error", message: err.msg || '' });
+      });
     };
     return {
       depss: [], //数据部门数据
@@ -149,19 +165,21 @@ export default {
         idNumber: "",
         category: "",
         organId: "",
+        userOrgan: "",
         organTitle: "",
         departmentId: "",
         departmentTitle: "",
         provincial: "",
         ministerial: "",
         maritime: "",
-        other: ""
+        other: "",
+        status:true,
       },
       rules: {
           username: [
           { required: true, message: "请输入登录用户名", trigger: "blur" },
           { min: 4, message: "长度大于4个字符", trigger: "blur" },
-          // { validator: validateUsername, trigger: "blur" },
+          { validator: validateUsername, trigger: "blur" },
         ],
         nickName: [
             { required: true, message: "请输入真实姓名", trigger: "blur" },
@@ -175,10 +193,18 @@ export default {
       },
       rowData:'',
       isDisabled:false,
+      myprops: {
+          label: "label",
+          value: "id",
+      },
+      selectOrganId: "", //默认选中机构的id
+
     };
   },
   mounted() {},
-
+  components: {
+        elSelectTree,
+  },
   methods: {
     //新增
     showModal(data) {
@@ -186,21 +212,31 @@ export default {
       this.visible = true;
       this.isDisabled = false;
       this.dialogStatus = "addEquipment";
-      let _this = this
-      //新增弹框标题
-      this.$nextTick(() => {
-        _this.$refs["addUserForm"].resetFields();
-      });
+      this.addUserForm = {
+          id: "",
+          username: "",
+          password: "123456",
+          mobile: "",
+          nickName: "",
+          idNumber: "",
+          category: "",
+          organId: "",
+          organTitle: "",
+          departmentId: "",
+          departmentTitle: "",
+          provincial: "",
+          ministerial: "",
+          maritime: "",
+          other: "",
+          status:true
+        };
       this.parentNode = data;
       this.getCurrentOrganAndChild();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
-      this.visible = false;
-      // this.$nextTick(() => {
-      //   this.$refs["addUserForm"].resetFields();
-      // });
       this.$refs["addUserForm"].resetFields();
+      this.visible = false;
     },
     //编辑
     handelEdit(data) {
@@ -218,6 +254,8 @@ export default {
       this.getDepartment(data.organId)
       // this.rowData = data;
       this.addUserForm = data;
+      this.addUserForm.status = this.addUserForm.status === 0  ? true : false;
+
     },
     //用户详情，不可编辑
     showUserDetail(row){
@@ -249,25 +287,28 @@ export default {
     //获取当前机构及其子机构
     getCurrentOrganAndChild() {  
       let _this = this
-      this.$store.dispatch("getCurrentAndNextOrgan",this.parentNode.parentNodeId).then(
-        res => {
-
-          console.log(res);
-          _this.getOrganList = res.data;
-          // this.addUserForm = this.rowData;
-          //this.addUserForm.organId  = this.rowData.organId;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      getAllOrganApi().then((res) => {
+        console.log("获取机构树", res);
+        _this.getOrganList = res.data;
+        _this.$refs.elSelectTreeObj.valueTitle = _this.addUserForm.userOrgan ?_this.addUserForm.userOrgan :"";
+        _this.$refs.elSelectTreeObj.valueId = _this.addUserForm.organId ?_this.addUserForm.organId:"";
+      })
+      .catch((err) => {
+          throw new Error(err);
+      });
+    },
+    //获取选中的机构
+    handleOrgan(val) {
+        this.$refs.elSelectTreeObj.$children[0].handleClose();
+        this.addUserForm.organId = val ? val : "";
+        this.getDepartment(val)
     },
     //获取选中的机构下的部门
     getDepartment(data1) {
-      console.log(data1);
+      console.log('11111111',data1);
       this.addUserForm.departmentId = "";
       let data = {
-        organId: data1
+        organId: data1 ? data1 : ""
       };
       let _this = this
       console.log("获取选中的机构下的部门", data);
@@ -286,6 +327,7 @@ export default {
       let _this = this
       this.$refs["addUserForm"].validate(valid => {
         if (valid) {
+          this.addUserForm.status = this.addUserForm.status  ? 0 : -1;
           if (_this.dialogStatus === "addEquipment") {
             console.log("this.addUserForm", _this.addUserForm);
             _this.$store
@@ -297,7 +339,7 @@ export default {
                   type: "success"
                 });
                 _this.visible = false;
-                _this.$emit("uploadaaa", "1");
+                _this.$emit("getUserList", "1");
               })
               .catch(err => {
                 _this.$message({
@@ -332,7 +374,7 @@ export default {
                   message: "修改用户成功",
                   type: "success"
                 });
-                _this.$emit("uploadaaa");
+                _this.$emit("getUserList");
                 _this.visible = false;
               })
               .catch(err => {
@@ -374,29 +416,6 @@ export default {
     //   }
     // },
   },
-  watch: {
-    visible(val) {
-      if (val === false) {
-        this.addUserForm = {
-          id: "",
-          username: "",
-          password: "123456",
-          mobile: "",
-          nickName: "",
-          idNumber: "",
-          category: "",
-          organId: "",
-          organTitle: "",
-          departmentId: "",
-          departmentTitle: "",
-          provincial: "",
-          ministerial: "",
-          maritime: "",
-          other: ""
-        };
-      }
-    }
-  }
 };
 </script>
 

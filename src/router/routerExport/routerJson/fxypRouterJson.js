@@ -36,20 +36,28 @@ export default  [
         component: MainContent,
         children: [
           {
-            name: "路政业务统计报表",
-            path: "/lzywtjbb-manage",
-            meta: {
-              title: "路政业务统计报表"
-            },
-            component: () => import("@/page/cxtj/bbtj/lzywtjbb-manage/lzywtjbb.vue")
-          },
-          {
             name: "路政案件统计报表",
             path: "/lzajtjbb-manage",
             meta: {
               title: "路政案件统计报表"
             },
             component: () => import("@/page/cxtj/bbtj/lzajtjbb-manage/lzajtjbb.vue")
+          },
+          {
+            name: "执法人员统计报表",
+            path: "/zfrytjbb",
+            meta: {
+              title: "执法人员统计报表"
+            },
+            component: () => import("@/page/cxtj/bbtj/zfrytjbb/zfrytjbb.vue")
+          },
+          {
+            name: "被处罚人统计报表",
+            path: "/bcfrtjbb",
+            meta: {
+              title: "被处罚人统计报表"
+            },
+            component: () => import("@/page/cxtj/bbtj/bcfrtjbb/bcfrtjbb.vue")
           }
         ],
       },
@@ -222,20 +230,36 @@ export default  [
             component: () => import("@/page/glfx/kjglfx-manage/kjglfx.vue")
           },
           {
-            name: "违法行为关联分析",
-            path: "/wfxwglfx-manage",
-            meta: {
-              title: "违法行为关联分析"
-            },
-            component: () => import("@/page/glfx/wfxwglfx-manage/wfxwglfx.vue")
-          },
-          {
             name: "趋势关联分析",
             path: "/qsglfx-manage",
             meta: {
               title: "趋势关联分析"
             },
             component: () => import("@/page/glfx/qsglfx-manage/qsglfx.vue")
+          },
+          {
+            name: "涉嫌违法行为用户画像",
+            path: "/wfxwyhhx",
+            meta: {
+              title: "涉嫌违法行为用户画像"
+            },
+            component: () => import("@/page/glfx/wfxwyhhx/wfxwyhhx.vue")
+          },
+          {
+            name: "源头治超管理分析",
+            path: "/ytzcglfx",
+            meta: {
+              title: "源头治超管理分析"
+            },
+            component: () => import("@/page/glfx/ytzcglfx/ytzcglfx.vue")
+          },
+          {
+            name: "重点路段研判",
+            path: "/zdldyp",
+            meta: {
+              title: "重点路段研判"
+            },
+            component: () => import("@/page/glfx/zdldyp/zdldyp.vue")
           }
         ]
       },

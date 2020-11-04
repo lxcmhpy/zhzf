@@ -81,6 +81,7 @@ export default {
       }catch(err){
         this.$message('获取案件流程失败！')
       }
+     
       if(this.currentFlow.data.flowUrl == 'commonGraphData'){
          _this.graphData = graphData.commonGraphData;
       }else if(this.currentFlow.data.flowUrl == 'compensationGraphData'){
@@ -91,6 +92,8 @@ export default {
          _this.graphData = graphData.compensationGraphData_QH;
       }else if(this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
          _this.graphData = graphData.commonGraphData_QH;
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+         _this.graphData = graphData.commonGraphData_SC;
       }
 
       
@@ -105,7 +108,7 @@ export default {
           //是否显示解除（延长）强制措施按钮
           _this.showRemoveOrExtendBtn(res.data.completeLink);
           //是否显示行政强制措施按钮
-          if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){ //江西流程
+          if(this.currentFlow.data.flowUrl == 'commonGraphData_JX' || this.currentFlow.data.flowUrl == 'commonGraphData_SC'){ //江西流程 四川流程
             _this.showAdminCoerciveMeasureBtnByFlow(res.data);
           }
           //显示强制时间
@@ -617,7 +620,7 @@ export default {
       if(this.currentFlow.data.flowUrl == 'commonGraphData' || this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
         let updataLinkData = {
           caseId:this.caseId,
-          linkTypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
+          linkTypeId: this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
         }
         try{
           await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
@@ -828,14 +831,18 @@ export default {
       if(this.IsLawEnforcementSupervision) return
       let updataLinkData = {
           caseId:this.caseId,
-          linkTypeId:this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId
+          linkTypeId:this.currentFlow.data.flowUrl == 'commonGraphData_JX' ? this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId : this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId
       }
        try{
         await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
       }catch(err){
         this.$message('更改流程图状态失败！')
       }
-      this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
+      if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
+        this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+        this.$router.push({name:'case_handle_adminCoerciveMeasure_SC',params:{isComplete:this.showREBtn}})
+      }
     },
     //显示环节回退弹窗
     linkBack(){
@@ -868,7 +875,7 @@ export default {
       let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
       //立案登记下一环节状态
                                                                                                                    
-      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId,this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId];
+      let establishAfterLink_caseLinktypeIdArr = [this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,this.BASIC_DATA_SYS.caseDoc_caseLinktypeId,this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId,this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId,this.BASIC_DATA_SC.caseDoc_SC_caseLinktypeId];
       let establishDoing,establishNextComplet,finishCaseReport = false;
       //立案登记为进行中
       for(let item of establish_caseLinktypeIdArr){

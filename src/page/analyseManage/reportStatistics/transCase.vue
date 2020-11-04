@@ -59,7 +59,6 @@
                   size="medium"
                   icon="el-icon-setting"
                   v-popover:popover4
-                  @click="lineSelect()"
                   >列过滤</el-button
                 >
               </el-form-item>
@@ -72,7 +71,7 @@
               width="200"
               trigger="click"
             >
-              <el-checkbox-group v-model="checkboxVal" v-show="showSelect">
+              <el-checkbox-group v-model="checkboxVal">
                 <el-checkbox label="新增案件量" style="display: block">
                   新增案件量
                 </el-checkbox>
@@ -174,7 +173,6 @@ export default {
       checkboxVal: defaultFormThead, // checkboxVal
       formThead: defaultFormThead, // 默认表头
       value1: [new Date(new Date().getFullYear(), 0), new Date()], //今年1月-至今
-      showSelect: false,
       checked: true,
       organData: [],
       defaultProps: {
@@ -200,9 +198,6 @@ export default {
     },
   },
   methods: {
-    lineSelect() {
-      this.showSelect = !this.showSelect;
-    },
     //获取机构
     getAllOrgan() {
       let _this = this;
@@ -239,7 +234,6 @@ export default {
       }
     },
     async getData() {
-      debugger;
       this.logForm.startTime = this.value1[0];
       this.logForm.endTime = this.value1[1];
       let res = await reportStatisticApi(this.logForm);
@@ -303,7 +297,6 @@ export default {
     this.getData();
   },
   created() {
-    // this.getLogList();
   },
 };
 </script>

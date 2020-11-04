@@ -7,8 +7,13 @@
             <el-form-item label="姓名：" prop='name'>
               <el-input v-model="searchForm.name"></el-input>
             </el-form-item>
-            <el-form-item label="单位：" prop='company'>
-              <el-input v-model="searchForm.company"></el-input>
+            <el-form-item label="单位：" prop='selectValue'>
+              <!-- <el-input v-model="searchForm.company"></el-input>
+            </el-form-item>
+            <el-form-item label="查询范围" prop='selectValue'> -->
+              <el-select v-model="searchForm.selectValue">
+                <el-option v-for="item in searchType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <div class="search-btns">
@@ -44,7 +49,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportExpert','检查专家表.xls')">导出所有对象</el-button>
+              <el-button type="primary" size="medium" icon="el-icon-search" @click="exportMethod('exportExpert','检查专家表.xls')">导出所有专家</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -98,7 +103,23 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="单位" prop="company">
-              <el-input v-model="addForm.company"></el-input>
+               <el-popover placement="bottom" trigger="click" style="z-index:3300" v-model="visiblePopover">
+                <div class="departOrUserTree" style="width:600px;height:436px">
+                  <div class="treeBox" style="height: 100%;">
+                    <el-tree class="filter-tree" :data="organData" :props="defaultProps" node-key="id" :filter-node-method="filterNode" :default-expanded-keys="defaultExpandedKeys" @node-expand="nodeExpand" ref="tree" @node-click="handleNodeClick1">
+                      <span class="custom-tree-node" slot-scope="{ node,data }">
+                        <span>
+                          <i :class="data.children && data.children.length>0 ? 'iconfont law-icon_shou_bag' : ''"></i>
+                          <span :class="data.children ? '' : 'hasMarginLeft'">{{ node.label }}</span>
+                        </span>
+                      </span>
+                    </el-tree>
+                  </div>
+                </div>
+                <el-input slot="reference" v-model="addForm.company" placeholder="请选择机构" :disabled="true" style="width:100%">
+                </el-input>
+              </el-popover>
+              <!-- <el-input v-model="addForm.company"></el-input> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -221,15 +242,23 @@ import { getAllExpertApi, addExpertApi, getDictListDetailByNameApi, delExpertApi
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinPerson } from "@/common/js/personComm";
 import { mixinInspection } from "@/common/js/inspectionComm";
-import { validatePhone,validateIDNumber  } from "@/common/js/validator";
+import { validatePhone, validateIDNumber } from "@/common/js/validator";
 export default {
   mixins: [mixinPerson, mixinInspection],
   data() {
     return {
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
+      organData: [],//机构列表
+      defaultExpandedKeys: [],
+      visiblePopover: false,
       multipleSelection: [],
       searchForm: {
         company: "",
-        name: ''
+        name: '',
+        selectValue: 0
       },
       isShow: false,
       addForm: {
@@ -237,6 +266,7 @@ export default {
         sex: '',
         expertNum: '',
         company: '',
+        companyId: '',
         politicalStatus: '',
         birthDate: '',
         unitAddress: '',
@@ -261,6 +291,9 @@ export default {
         sex: [
           { required: true, message: "必填项", trigger: "change" }
         ],
+        company: [
+          { required: true, message: "必填项", trigger: "change" }
+        ],
         politicalStatus: [
           { required: true, message: "必填项", trigger: "change" }
         ],
@@ -277,23 +310,64 @@ export default {
           { required: true, message: "必填项", trigger: "change" }
         ],
         contactType: [
-         { validator:validatePhone , trigger: "blur" }
+          { validator: validatePhone, trigger: "blur" }
         ],
         fixedTelephone: [
-         { validator:validatePhone , trigger: "blur" }
+          { validator: validatePhone, trigger: "blur" }
         ],
       },
       optionsZC: [],
       optionsZZMM: [],
       optionsZYLY: [],
+      searchType: [{ value: 0, label: '本单位' }, { value: 1, label: '本单位及子单位' }],
     }
   },
   methods: {
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    nodeExpand(data, node, jq) {
+      console.log(data);
+      console.log(node);
+      console.log(jq);
+    },
+    // 获取机构
+    getAllOrgan(organId) {
+      let _this = this
+      this.$store.dispatch("getAllOrgan").then(
+        res => {
+          _this.defaultExpandedKeys.push(res.data[0].id);
+          _this.selectCurrentTreeName = _this.selectCurrentTreeName
+            ? _this.selectCurrentTreeName
+            : res.data[0].label;
+          if (res.data[0].children && res.data[0].children.length > 0) {
+            res.data[0].children.forEach(item => {
+              _this.defaultExpandedKeys.push(item.id);
+            });
+          }
+          _this.organData = res.data;
+          if (organId == "root") {
+            _this.currentOrganId = res.data[0].id;
+          } else {
+            _this.currentOrganId = organId;
+          }
+        },
+        err => {
+        }
+      );
+    },
+    handleNodeClick1(data) {
+      this.addForm.company = data.label;
+      this.addForm.companyId = data.id;
+      this.visiblePopover = false;
+    },
     // 查询列表时
     getTableData() {
       let data = {
         name: this.searchForm.name,
-        company: this.searchForm.company,
+        company: iLocalStroage.gets("userInfo").organName,
+        organId: this.searchForm.selectValue==1?iLocalStroage.gets("userInfo").organId:'',
         current: this.currentPage,
         size: this.pageSize,
       };
@@ -405,6 +479,7 @@ export default {
       { name: '职称', option: 2 },
       { name: '专业领域', option: 3 },
       { name: '人员信息-政治面貌', option: 4 }])
+    this.getAllOrgan('root');
   }
 }
 </script>

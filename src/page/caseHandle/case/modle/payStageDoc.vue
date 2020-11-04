@@ -6,7 +6,7 @@
         <div class="doc_topic"> 分期（延期）缴纳罚款通知书</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <p class="p_begin">
-          当事人（个人姓名或单位名称）
+          当事人（个人姓名或单位名称） 
           <span>
             <el-form-item prop="party" class="width220"
                           :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
@@ -222,32 +222,6 @@
       checkChinese3(val){
         this.docData.debtFine=this.docData.debtFine.replace(/[^\u4e00-\u9fa5]/g,'')
       },
-      //根据案件ID和文书Id获取数据
-      // getDocDataByCaseIdAndDocId() {
-      //   this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      //   let data = {
-      //     caseId: this.caseId,
-      //     docId: this.$route.params.docId
-      //   };
-      //   //有多份询问笔录时，如果点击添加获取案件信息，如果点击的时查看，则根据id获取文书详情
-      //   let addMoreData = JSON.parse(this.$route.params.addMoreData);
-      //   if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
-      //     //设置询问笔录名称
-      //    console.log('添加')
-      //     this.caseDocDataForm.note = "询问笔录（" + addMoreData.askData.peopleType + ")(第" + addMoreData.askData.askNum + "次)";
-      //     this.com_getCaseBasicInfo(data.caseId, data.docId);
-      //   } else {
-      //    console.log('修改')
-      //     let currentDocDataId = this.currentFileData.docDataId;
-      //     if (currentDocDataId) {
-      //       this.getDocDetailById(currentDocDataId)
-      //     } else {
-      //       this.getDocDetailById(this.$route.params.docDataId)
-      //       // this.docData.checknames=this.docData.checknames
-      //     }
-      //   }
-
-      // },
       //保存文书信息
       addDocData(handleType) {
         this.com_addDocData(handleType, 'docForm');
@@ -261,13 +235,10 @@
       },
       //保存文书信息
       saveData(handleType) {
-        this.dealCheck()
-//        console.log('caseBasicinfoId', this.caseDocDataForm.caseBasicinfoId)
         if (this.disabledOne && this.disabledTwo && this.disabledThree) {
           this.$message("请选择分期延期决定");
           return
         }
-        console.log('shuju',this.docData,this.docData.debtFine,this.docData.payFine)
         this.docData.checknames = JSON.parse(JSON.stringify(this.docData.checknames))
         this.com_addDocData(handleType, "docForm");
       },
@@ -368,24 +339,24 @@
       },
       click() {
         this.clearData()
-//        console.log('this.docData.checknames', this.docData.checknames)
         this.dealCheck()
       },
       dealCheck(){
          if (this.docData.checknames.length > 1) {
           this.docData.checknames.shift();
         }
-        console.log('this.docData.checknames',this.docData.checknames)
-        if (this.docData.checknames == '1') {
+        if (this.docData.checknames[0] == '1') {
           this.disabledOne = false;
           this.disabledTwo = true;
           this.disabledThree = true;
-        } else if (this.docData.checknames == '2') {
+        } else if (this.docData.checknames[0] == '2') {
           this.disabledOne = true;
           this.disabledTwo = false;
           this.disabledThree = true;
-          this.docData.instalmentNum = '1'
-        } else if (this.docData.checknames == '3') {
+          if(!this.docData.instalmentNum){
+            this.docData.instalmentNum = '1'
+          }
+        } else if (this.docData.checknames[0] == '3') {
           this.disabledOne = true;
           this.disabledTwo = true;
           this.disabledThree = false;
@@ -429,28 +400,20 @@
         docId: this.$route.params.docId
       };
       let addMoreData = JSON.parse(this.$route.params.addMoreData);
-
-        if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
-          //设置询问笔录名称
-         console.log('添加')
-          this.com_getCaseBasicInfo(data.caseId, data.docId);
+      if (addMoreData.handelType == 'isAddMore' && !iLocalStroage.get("currentDocDataId")) {
+        console.log('添加')
+        this.com_getCaseBasicInfo(data.caseId, data.docId);
+      } else {
+        let currentDocDataId = iLocalStroage.get("currentDocDataId")||this.currentFileData.docDataId;
+        if (currentDocDataId) {
+          this.getDocDetailById(currentDocDataId);
         } else {
-         console.log('修改')
-         
-          let currentDocDataId = this.currentFileData.docDataId;
-          if (currentDocDataId) {
-            this.getDocDetailById(currentDocDataId)
-          } else {
-            this.getDocDetailById(this.$route.params.docDataId)
-            // this.docData.checknames=this.docData.checknames
-          }
+          this.getDocDetailById(this.$route.params.docDataId);
         }
-
-//      console.log('this.$route.params.approvalForm', this.$route.params.approvalForm.executeHandle)
+      }
       if(addMoreData.approvalForm){
         if(addMoreData.approvalForm.executeHandle == '0'){  
           // 拒绝
-  //        console.log('拒绝')
           this.docData.checknames.push("3")
           this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（拒绝）";
         }else {
@@ -458,18 +421,15 @@
             // 分期
             this.docData.checknames.push("2")
             this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（分期）";
-
           }
           if (addMoreData.approvalForm.executeType === 0) {
             // 延期
             this.docData.checknames.push("1")
             this.caseDocDataForm.note = "分期（延期）缴纳罚款通知书（延期）";
-
           }
         }
-      this.click()
       }
-     
+      this.dealCheck();
     },
     created() {
       this.isOverStatus();

@@ -3,8 +3,8 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
     addPageTempleteApi,deletePageTempleteByIdApi,updatePageTempleteApi,getOutlineQuestionListApi,addExamQuestionInfoApi,deleteExamQuestionInfoApi,updateExamQuestionInfoApi,selectExamQuestionInfoApi,disposeInfoApi,
     updateExamBatchApi,getUnSelectedPersonApi,addExamPersonApi,selectExamPersonApi,removeExamPersonApi,isCanUpdateTempleteApi,pageTempleteApi,updateTempleteApi,getAddInvigilatorApi,
     getExamPersonsSearchInfoApi,setBatchExamDelayedInfoApi,getpersonExamInfoListApi,getpersonExamQuestionApi,updateStatusApi,setExamResultApi
-    ,getAllTempleteForSelectedApi,addRoomManageApi,roomManageListApi,deleteRoomManageByIdApi,getUnDispatchCountApi,addExamDispatchApi,getUnDispatchPersonByRoomIdApi,
-    getDispatchPersonByRoomIdApi,removeDispatchApi,autoDispatchApi,getPageListApi,disPapersApi,examDetialApi,previewPageApi,exportInvigilatorApi,exportExamPersonApi,exporExamtDetailApi
+    ,getAllTempleteForSelectedApi,addRoomManageApi,updateRoomManageApi,roomManageListApi,deleteRoomManageByIdApi,getUnDispatchCountApi,addExamDispatchApi,getUnDispatchPersonByRoomIdApi,
+    getDispatchPersonByRoomIdApi,removeDispatchApi,autoDispatchApi,clearDispatchApi,getPageListApi,disPapersApi,examDetialApi,previewPageApi,exportInvigilatorApi,exportExamPersonApi,exporExamtDetailApi
     ,getExamAnswerReport,changeQuestionIsUse,applyPageVerifyApi,pageVerifyListByPageIdApi,verifyApi,awaitPageVerifyListApi,getExamManageScheduleApi,addExamScorerApi,getExamScorerListApi,
     changeQuestionLock,randomQuestion,randomParagraphQuestion
     ,saveReplaceQuestion,getSystemParams,updateExamScorerApi,deleteExamScorerByIdApi,getDisScorerListApi,getUnDisScorerListApi,addExamDisScorerApi,deleteExamDisScorerByIdsApi,questionDistributionApi,
@@ -613,8 +613,15 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
                     error => { reject(error); })
             })
         },
+       //修改考场
        
-    
+       updateRoomManage({commit},data){
+        return new Promise((resolve, reject) => {
+            updateRoomManageApi(data).then(
+                res => {  resolve(res);   },
+                error => { reject(error); })
+        })
+    },
         
          //查询未分配考场的考生
          getUnDispatchPersonByRoomId({commit},data){
@@ -652,6 +659,14 @@ import {examOutlineTreeAllApi,examOutlineTreeByParentIdApi,getSystemParamApi,add
         autoDispatch({commit},data){
             return new Promise((resolve, reject) => {
                 autoDispatchApi(data).then(
+                    res => {  resolve(res);   },
+                    error => { reject(error); })
+            })
+        },
+        //清空考场分配
+        clearDispatch({commit},data){
+            return new Promise((resolve, reject) => {
+                clearDispatchApi(data).then(
                     res => {  resolve(res);   },
                     error => { reject(error); })
             })

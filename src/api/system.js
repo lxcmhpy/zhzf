@@ -96,8 +96,7 @@ export  function  hasOrganNameApi(name)  {
   return  request({
     url:  "/system/sys/organ/findByName/"  +  name,
     method:  "get",
-    showloading:  true,
-    loadingType:'loadPart',
+    showloading:  false,
     cancelToken:  setCancelSource()
   });
 }
@@ -577,7 +576,7 @@ export function getDictListDetailByNameApi(name) {
     url: "/system/sys/drawer/findAllDrawerByName/" + name,
     method: "get",
     showloading: true,
-    loadingType: name =='系统标题'||name =='loginBg' ||name =='显示综合执法平台' ? 'loadFull' : 'loadPart',
+    loadingType: name =='系统标题'||name =='loginBg' ||name =='显示综合执法平台' || name =='登录滑动验证' ? 'loadFull' : 'loadPart',
     cancelToken: setCancelSource()
   });
 }
@@ -866,11 +865,14 @@ export function addeLawCognizanceApi(data) {
 }
 //违法行为绑定法条
 export function bindCauseLawRegulationsApi(data) {
-  data = vm.$qs.stringify(data);
+  // data = vm.$qs.stringify(data);
   return request({
     url: "/bnslaw/sys/bnslawCause/bindCauseLawRegulations",
     method: "post",
     data: data,
+    headers: {
+      "Content-Type": "application/json"
+    },
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -935,11 +937,14 @@ export function getlawRegulationsListApi(data) {
 
 //解除绑定法条
 export function unbindCauseLawRegulationsApi(data) {
-  data = vm.$qs.stringify(data);
+  // data = vm.$qs.stringify(data);
   return request({
     url: "/bnslaw/sys/bnslawCause/unbindCauseLawRegulations",
     method: "post",
     data: data,
+    headers: {
+      "Content-Type": "application/json"
+    },
     showloading: true,
     loadingType:'loadPart',
     cancelToken: setCancelSource()
@@ -1353,3 +1358,40 @@ export function getFileStreamApi(storageId) {
       cancelToken: setCancelSource()
     });
   }
+
+
+//获取顶级层级菜单
+export function getPermissionByLevelApi(level) {
+  return request({
+    url: "/system/sys/permission/getPermissionByLevel/" + level,
+    method: "GET",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource(),
+  });
+}
+//根据父菜单获取它下面的一级子菜单
+export function getPermissionByParentIdApi(parentId) {
+  return request({
+    url: "/system/sys/permission/getByParentId/" + parentId,
+    method: "GET",
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource(),
+  });
+}
+
+
+//获取机构下绑定的角色
+export function getOrganRoleByRoleNameApi(data) {
+  return request({
+    url: "/system/sys/role/queryRoleByOrganIdAndRoleName",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType:'loadPart',
+    cancelToken: setCancelSource()
+  });
+}

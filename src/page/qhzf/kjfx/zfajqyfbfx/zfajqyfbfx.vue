@@ -10,6 +10,8 @@
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              value-format="yyyyMM" @change="select"
+              style="width:400px"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -36,7 +38,9 @@
 
 <script>
 import echarts from "echarts";
-
+import {
+      kjglfx,
+    } from '@/api/fxyp.js'
 import "echarts/map/js/china.js";
 import "echarts/map/js/province/qinghai.js";
 import "echarts/map/json/province/qinghai.json";
@@ -60,6 +64,8 @@ export default {
           number: 3
         }
       ],
+      data1:[],
+      data2:[],
       logForm: {
         organ: "",
         type: "",
@@ -72,7 +78,7 @@ export default {
       isShow: false,
       data1:[],
       data2:[],
-      
+      data3:[],
     };
   },
   methods: {
@@ -115,26 +121,17 @@ export default {
               show: false
             }
           },
-          data: [
-            { name: "西宁市", value: "87" },
-            { name: "海东市", value:  "95"},
-            { name: "玉树藏族自治州", value: "79" },
-            { name: "黄南藏族自治州", value: "60" },
-            { name: "海西蒙古族藏族自治州", value: "53" },
-            { name: "海南藏族自治州", value: "92"},
-            { name: "海北藏族自治州", value: "79" },
-            { name: "果洛藏族自治州", value: "60" },
-            
-          ] 
+          data: this.data1
         }
       ]
       });
     },
     drawLine2() {
       this.chartColumn = echarts.init(document.getElementById("chart2"));
-    var yData = ["西宁市","海东市","玉树藏族自治州","黄南藏族自治州","海西蒙古族自治州","海南藏族自治州","海北藏族自治州","果洛藏族自治州"];
-  var dataArr = [87, 95, 79, 60, 53, 92, 79, 60];
-  var allDataArr = [100, 100, 100, 100, 100, 100, 100, 100];
+       var yData = this.data3;
+       var dataArr = this.data2;
+  // [87, 95, 79, 60, 53, 92, 79, 60, 53, 92,26];
+  var allDataArr = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100,100];
 
 this.chartColumn.setOption({
    backgroundColor: '#fff',
@@ -149,8 +146,8 @@ this.chartColumn.setOption({
           }
       },
       grid: {
-          left: 130,
-          right: 28,
+          left: 160,
+          right: 48,
           top: 0,
           bottom: 0
       },
@@ -222,36 +219,66 @@ this.chartColumn.setOption({
       ]
       });
     },
-    // search1(val) {
-    //   this.currentPage = val;
-    //   let data = {
-    //     // year:2018
-    //   };
-    //   let _this = this;
-    //   this.$store.dispatch("afddfb", data).then(res => {
-    //     console.log(res);
-    //     //  var map={};
-    //     //  res.forEach(item =>{
-    //     //       map[item[0]]=item[1];  
-                
-    //     //  });
-    //     // console.log(map);
-        
-
-    //       this.data1=[res[0][0],res[1][0],res[2][0],res[3][0],res[4][0]];  
-    //       this.data2=[res[0][1],res[1][1],res[2][1],res[3][1],res[4][1]]; 
-    //        this.drawLine2();
-    //   });
-    //   err => {
-    //     console.log(err);
-    //   };
-    // },
+    //查询-----------------------------------------------------------------------------------------------------
+    search1(province,start,end) {
+      
+      let data = {
+        province:province,
+        start:start,
+        end:end
+      };
+      
+         kjglfx(data).then(res => {
+        if(res.length!=0){
+            this.data1.push({name: province, value: res[0][1]==null?0:res[0][1] });            
+            this.data2.push(res[0][1]==null?0:res[0][1] );
+            this.data3.push(province);
+        }else{
+          this.data1.push({name: province, value: 0});
+            this.data2.push(0);
+            this.data3.push(province);
+        }
+        this.drawLine1();
+        this.drawLine2();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    select(val){
+      
+     if(val!=null){
+      this.data1=[];
+      this.data2=[];
+      this.data3=[];
+      this.search1('西宁市',val[0],val[1]);
+      this.search1('海东市',val[0],val[1]);
+      this.search1('玉树藏族自治州',val[0],val[1]);
+      this.search1('黄南藏族自治州',val[0],val[1]);
+      this.search1('海西蒙古族藏族自治州',val[0],val[1]);
+      this.search1('海南藏族自治州',val[0],val[1]);
+      this.search1('海北藏族自治州',val[0],val[1]);
+      this.search1('果洛藏族自治州',val[0],val[1]);
+     }
+     
+   }
   },
   mounted() {
-     this.drawLine1();
-    this.drawLine2();
+     this.data1=[];
+     this.data2=[];
+     this.data3=[];
+     this.search1('西宁市',202001,202012);
+     this.search1('海东市',202001,202012);
+     this.search1('玉树藏族自治州',202001,202012);
+     this.search1('黄南藏族自治州',202001,202012);
+     this.search1('海西蒙古族藏族自治州',202001,202012);
+     this.search1('海南藏族自治州',202001,202012);
+     this.search1('海北藏族自治州',202001,202012);
+     this.search1('果洛藏族自治州',202001,202012);
+    // this.drawLine1();
     // this.drawLine2();
-    // this.drawLine3();
+    
+ 
   },
   created() {}
 };

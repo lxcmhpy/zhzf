@@ -16,7 +16,7 @@
         </div>
         <div class="datapick_style">
           <p class="line-h-16">
-            <span class="assist-span-bg">{{ reportData.targetOrgan }}</span>:
+            <span class="assist-span-bg">{{ reportData.party }}</span>:
           </p>
         </div>
         <div class="overflow_lins_style">
@@ -30,7 +30,7 @@
                 v-model="reportData.caseName"
                 rows="2"
                 maxlength="100"
-                placeholder="\"
+                placeholder="/"
               ></el-input>
               <span class="overflow_describe begin-space" style="text-indent:0">为查清</span>
               <span class="span_bg span_bg_top">&nbsp;</span>
@@ -42,11 +42,11 @@
         </div>
         <div class="overflow_lins_style">
           <div class="overflow_lins" style="width:95%; margin-left:5%;">
-            <el-form-item prop="assistProblem">
+            <el-form-item prop="investQuestion">
               <el-input
                 class="overflow_lins_textarea"
                 type="textarea"
-                v-model="reportData.assistProblem"
+                v-model="reportData.investQuestion"
                 rows="4"
                 maxlength="150"
                 placeholder
@@ -145,9 +145,9 @@ export default {
       validateIDNumber: validateIDNumber,
       reportData: {
         caseNumber: "", // 案号
-        targetOrgan: "", // 目标机构名称
+        party: "", // 目标机构名称
         caseName: "", // 案由
-        assistProblem: "", // 需要协查的问题
+        investQuestion: "", // 需要协查的问题
         organContactor: "", // 联系人
         organTel: "", // 联系电话
         makeDate: "", // 时间
@@ -164,7 +164,7 @@ export default {
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" },
         ],
-        assistProblem: [
+        investQuestion: [
           {
             required: true,
             message: "需要协查的问题不能为空",
@@ -201,7 +201,7 @@ export default {
     showCaseBaseInfo() {
       if (this.selectCase.detail && !this.selectCase.report) {
         this.reportData.caseNumber = this.selectCase.case.caseNumber;
-        this.reportData.targetOrgan = this.selectCase.detail.targetOrgan;
+        this.reportData.party = this.selectCase.detail.targetOrgan;
         this.reportData.caseName = `${
           this.selectCase.case.party || this.selectCase.case.partyName
         }${this.selectCase.case.caseCauseName}`;
@@ -329,7 +329,7 @@ export default {
     saveReportData(){
       const reportData = {
         applicant: this.reportData.organContactor,
-        targetOrgan: this.reportData.targetOrgan,
+        targetOrgan: this.reportData.party,
         createStartTime: this.reportData.makeDate
       };
       sessionStorage.setItem(

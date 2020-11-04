@@ -338,8 +338,10 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="从事执法日期" prop="enfoceDate">
-                      <!--<el-input v-model="personInfoDetailForm.enfoceDate"></el-input>-->
+                    <el-form-item
+                      label="从事执法日期"
+                      prop="enfoceDate"
+                      :rules="[ { required: rules.branchName !== undefined, message: '执法区域不能为空', trigger: 'blur'}]">
                       <el-date-picker
                         v-model="personInfoDetailForm.enfoceDate"
                         format="yyyy-MM-dd"
@@ -806,6 +808,12 @@ export default {
       },
       deep: true,
     },
+    isShowAddPerson: {
+      handler: function(val, oldVal){
+        let leave = val ? '1' : '0';
+        sessionStorage.setItem('LeavePersonInfoPage', leave);
+      }
+    }
   },
   components: {
     elSelectTree,
@@ -976,8 +984,14 @@ export default {
         customClass: "loading-box",
         background: "rgba(234,237,244, 0.8)",
       });
+      
+      let params = JSON.parse(JSON.stringify(_this.personInfoDetailForm));
+      //base64加密
+      let Base64 = require('js-base64').Base64;
+      params.idNo = Base64.encode(params.idNo);
+      
       _this.$store
-        .dispatch(methodSaveOrUpdate, _this.personInfoDetailForm)
+        .dispatch(methodSaveOrUpdate,params)
         .then(
           (res) => {
             if (res.code === 200) {
@@ -989,7 +1003,7 @@ export default {
             }
           },
           (err) => {
-            _this.$message.error(err.msg || "");
+            // _this.$message.error(err.msg || "");
             loading.close();
           }
         );
@@ -1063,12 +1077,13 @@ export default {
         );
     },
     //身份证号码校验(需要走后台做重复验证)
-    async vailidIdNo(rule, value, callback) {
+    vailidIdNo(rule, value, callback) {
       let _this = this;
       // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
-      let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+      let reg = /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/;
       if (reg.test(value)) {
-        await _this.getValidIdNo(value.length);
+        _this.getValidIdNo(value.length);
+        callback();
       } else {
         callback(new Error("身份证格式错误"));
       }
@@ -1204,7 +1219,7 @@ export default {
         )
         .catch(() => {});
     },
-  },
+  }
 };
 </script>
 

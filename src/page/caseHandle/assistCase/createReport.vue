@@ -32,9 +32,6 @@ export default {
       const caseInfo = JSON.parse(sessionStorage.getItem("AssistData"));
       return caseInfo;
     },
-    hostUrl() {
-      return iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-    },
     UserInfo() {
       return iLocalStroage.gets("userInfo");
     },
@@ -138,12 +135,11 @@ export default {
         var string = test.split("/");
         var path = string[0] + "//" + string[2] + "/";
         // path +
-        var ActivexURL =
-          path +
-          "/static/js/iWebPDFEditor.html?pdfPath=" +
-          _this.hostUrl +
-          _this.pdfId;
-        window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+        this.$util.com_getDeviceFileStream(this.pdfId).then(res=>{
+          var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + res
+          console.log(ActivexURL);
+          window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
+        });
       }
 
       function getParam(paramName) {

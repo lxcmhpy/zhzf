@@ -8,7 +8,7 @@
             <td colspan="4" class="color_DBE4EF">
               <p>
                 案由:<el-form-item style="width: calc(100% - 45px);" prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
-                  <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="\"></el-input>
+                  <el-input type="textarea" v-model="docData.caseName" :disabled="fieldDisabled(propertyFeatures['caseName'])" :autosize="{ minRows: 2, maxRows: 3}" maxlength="90" placeholder="/"></el-input>
                 </el-form-item>
               </p>
             </td>
@@ -27,7 +27,7 @@
             <td>案发地点</td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payTime" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
-                <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.afdd" :disabled="fieldDisabled(propertyFeatures['afdd'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -35,7 +35,7 @@
             <td>缴费单位</td>
             <td colspan="3" class="color_DBE4EF">
               <el-form-item prop="payParty" :rules="fieldRules('payParty',propertyFeatures['payParty'])">
-                <el-input type="textarea" v-model="docData.payParty" :disabled="fieldDisabled(propertyFeatures['payParty'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.payParty" :disabled="fieldDisabled(propertyFeatures['payParty'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -51,7 +51,7 @@
             <td colspan="3">收费凭证号数</td>
             <td class="color_DBE4EF">
               <el-form-item prop="payNumber" :rules="fieldRules('payNumber',propertyFeatures['payNumber'])">
-                <el-input type="textarea" v-model="docData.payNumber" :disabled="fieldDisabled(propertyFeatures['payNumber'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.payNumber" :disabled="fieldDisabled(propertyFeatures['payNumber'])" :autosize="{ minRows: 2, maxRows: 2}" maxlength="90" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -84,7 +84,7 @@
             </td>
             <td colspan="3" class="color_DBE4EF table_seal">
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'])">
-                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 4, maxRows: 4}" maxlength="50" placeholder="\"></el-input>
+                <el-input type="textarea" v-model="docData.note" :disabled="fieldDisabled(propertyFeatures['note'])" :autosize="{ minRows: 4, maxRows: 4}" maxlength="50" placeholder="/"></el-input>
               </el-form-item>
               <!-- <div class="pdf_seal">
                 <p>粘贴人:</p>
@@ -295,7 +295,11 @@ export default {
       uploadEvdence(fd).then(
         res => {
           this.getBase64(res.data.storageId, 1)
-          this.docData.picturesUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId
+          // let imgSrc = this.$util.com_getFileStream(res.data.storageId)
+          this.$util.com_getFileStream(res.data.storageId).then(res => {
+            this.docData.picturesUrl = res
+          });
+          
         },
         error => {
         }
@@ -312,8 +316,12 @@ export default {
       fd.append("evType", param.file.type);
       uploadEvdence(fd).then(
         res => {
-          this.getBase64(res.data.storageId, 2)
-          this.$set(this.docData, 'picturesUrl2', iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data.storageId)
+          this.getBase64(res.data.storageId, 2);
+          // let imgSrc = this.$util.com_getFileStream(res.data.storageId)
+          this.$util.com_getFileStream(res.data.storageId).then(res => {
+            this.$set(this.docData, 'picturesUrl2', res)
+          });
+          
         },
         error => {
         }

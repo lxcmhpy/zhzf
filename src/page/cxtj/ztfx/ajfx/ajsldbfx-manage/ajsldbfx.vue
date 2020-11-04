@@ -3,17 +3,28 @@
     <div class="searchPage toggleBox">
       <div class="handlePart">
         <el-form :inline="true" :model="logForm" label-width="100px" ref="logForm">
-          <el-form-item label="立案机构" prop>
-            <el-select size="small" v-model="state" placeholder="立案机构">
+          <!-- <el-form-item label="立案机构" prop>
+            <el-select size="small" v-model="lajg" placeholder="立案机构">
               <el-option label="全部" value></el-option>
               
             </el-select>
-          </el-form-item>
-          <el-form-item label="执法门类" prop>
-            <el-select size="small" v-model="state" placeholder="执法门类">
-              <el-option label="全部" value></el-option>
-             
+          </el-form-item> -->
+          <!-- <el-form-item label="执法门类" prop>
+            <el-select size="small" v-model="zfml" placeholder="执法门类">
+              <el-option label="公路路政" value></el-option>
+              <el-option label="道路路政" value></el-option>
             </el-select>
+          </el-form-item> -->
+          <el-form-item label="起始年月" prop>
+            <el-date-picker
+              v-model="value"
+              type="monthrange"
+              range-separator="至"
+              start-placeholder="开始月份"
+              end-placeholder="结束月份"
+               value-format="yyyyMM" @change="select"
+               style="width:400px"
+            ></el-date-picker>
           </el-form-item>
         </el-form>
       </div>
@@ -35,11 +46,14 @@
 <script>
 import echarts from "echarts";
 import {
-      ajsldbfxpbc,ajsldbfxcf,ajsldbfxcffa
+      ajsldbfxpbc,ajsldbfxpbcfa,ajsldbfxcf,ajsldbfxcffa
     } from '@/api/fxyp.js'
 export default {
   data() {
     return {
+      value:"",
+      lajg:[],
+      zfml:[],
       value3: "",
       value2: "",
       value1: "",
@@ -114,15 +128,15 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(42,170,227)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(42,170,227)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           },
           {
             name: "结案数",
@@ -131,15 +145,15 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(25,46,94)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(25,46,94)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           }
         ]
       });
@@ -189,15 +203,15 @@ export default {
             //设置柱子的宽度
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(42,170,227)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(42,170,227)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           },
           {
             name: "结案数",
@@ -205,133 +219,134 @@ export default {
             data: this.data4,
             barWidth: 30,
             //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal: {
-                color: function(params) {
-                  var colorList = ["rgb(25,46,94)"];
-                  return colorList[0];
-                }
-              }
-            }
+            // itemStyle: {
+            //   //通常情况下：
+            //   normal: {
+            //     color: function(params) {
+            //       var colorList = ["rgb(25,46,94)"];
+            //       return colorList[0];
+            //     }
+            //   }
+            // }
           }
         ]
       });
     },
-    //赔补偿
-   search(val) {
-      this.currentPage = val;
-      let data = {
-        // year:2018
-      };
-      let _this = this;
-      // this.$store.dispatch("ajsldbfxpbc", data).then(res => {
-      ajsldbfxpbc(data).then(res => {
-      
-        // console.log(res);
-         var map={};
-         res.forEach(item =>{
-              map[item[0]]=item[1];       
-         });
-        // console.log(map);
-          this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data2=
-          [map["交通运输部"]=undefined?0:map["交通运输部"],
-          map["固原综合执法支队"]=undefined?0:map["固原综合执法支队"],
-          map["江西交通厅"]=undefined?0:map["江西交通厅"],
-          map["新疆交通厅"]=undefined?0:map["新疆交通厅"]]; 
-
-          // this.drawLine1();
-      });
-      err => {
-        console.log(err);
-      };
-    },
+    //查询-----------------------------------------------------------------------------------------------------
      //赔补偿 案发
-   searchfa(val) {
-      this.currentPage = val;
+   searchfa(start,end) {    
       let data = {
-        // year:2018
+       start:start,
+       end:end
       };
-      let _this = this;
-      // this.$store.dispatch("ajsldbfxpbcfa", data).then(res => {
-      ajsldbfxpbc(data).then(res => {
-       console.log(res);
-         var map={};
-         res.forEach(item =>{
-              map[item[0]]=item[1];       
-         });
-        console.log(map);
-           this.t1=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data1=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-          
+      ajsldbfxpbcfa(data).then(res => {
+         res.forEach(item =>{   
+              this.t1.push(item[0]);
+                    this.data1.push(item[1]); 
+         });       
           this.drawLine1();
       });
       err => {
         console.log(err);
       };
     },
-     //处罚
-   search2(val) {
-      this.currentPage = val;
+    //赔补偿  结案
+   search(start,end) {    
       let data = {
-        // year:2018
+       start:start,
+       end:end
       };
-      let _this = this;
-      // this.$store.dispatch("ajsldbfxcf", data).then(res => {
-      ajsldbfxcf(data).then(res => {
-        console.log(res);
+      ajsldbfxpbc(data).then(res => {
          var map={};
          res.forEach(item =>{
-              map[item[0]]=item[1];       
+              map[item[0]]=item[1]; 
          });
-        console.log(map);      
-           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data4=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-         
-         
-
-          
-          // this.drawLine2();
+       for(var i=0;i<this.t1.length;i++){
+          if(map[this.t1[i]]==undefined){
+            this.data2.push(0);
+          }else{
+            this.data2.push(map[this.t1[i]]);
+          }
+       }
+       console.log(this.data2);
+          this.drawLine1();
       });
       err => {
         console.log(err);
       };
     },
-    //处罚
-   search2fa(val) {
-      this.currentPage = val;
+    //处罚  案发
+   search2fa(start,end) {    
       let data = {
-        // year:2018
+       start:start,
+       end:end
       };
-      let _this = this;
-      // this.$store.dispatch("ajsldbfxcffa", data).then(res => {
       ajsldbfxcffa(data).then(res => {
-      console.log(res);
-         var map={};
-         res.forEach(item =>{
-              map[item[0]]=item[1];       
-         });
-        console.log(map);      
-           this.t2=["交通运输部","固原综合执法支队","江西交通厅","新疆交通厅"]; 
-          this.data3=[map["交通运输部"],map["固原综合执法支队"],map["江西交通厅"],map["新疆交通厅"]]; 
-      
-         
-
-          
+         res.forEach(item =>{  
+              this.t2.push(item[0]);
+              this.data3.push(item[1]);    
+         });     
           this.drawLine2();
       });
       err => {
         console.log(err);
       };
     },
+     //处罚  结案
+   search2(start,end) {    
+      let data = {
+       start:start,
+       end:end
+      };
+      ajsldbfxcf(data).then(res => {
+         var map={};
+         res.forEach(item =>{
+              map[item[0]]=item[1];   
+         });
+          for(var i=0;i<this.t2.length;i++){
+          if(map[this.t2[i]]==undefined){
+            this.data4.push(0);
+          }else{
+            this.data4.push(map[this.t2[i]]);
+          }
+       }         
+          this.drawLine2();
+      });
+      err => {
+        console.log(err);
+      };
+    },
+    
+     select(val){
+      if(val!=null){
+        this.t1=[];
+        this.t2=[];
+        this.data1=[];
+        this.data2=[];
+        this.data3=[];
+        this.data4=[];
+        this.searchfa(val[0],val[1]);
+        this.search(val[0],val[1]);
+         this.search2fa(val[0],val[1]);
+        this.search2(val[0],val[1]);
+       
+      }
+     
+     }
   },
   
   mounted() {
-    this.search();
-    this.searchfa();
-    this.search2();
-    this.search2fa();
+    this.t1=[];
+    this.t2=[];
+    this.data1=[];
+    this.data2=[];
+    this.data3=[];
+    this.data4=[];
+    this.searchfa(202001,202012);
+    this.search(202001,202012);
+    this.search2fa(202001,202012);
+    this.search2(202001,202012);
+    
   },
   created() {
    

@@ -12,12 +12,9 @@
                             <i class="el-icon-document"></i> {{item.fileName}}
                         </div>
                         <div> &nbsp;&nbsp;
-                            <a class="download" :href="item.storagePath" target="_blank">
-                                下载
-                            </a>
+                            <a class="download" :href="item.storagePath" target="_blank">下载</a>
                             &nbsp;&nbsp;
-                            <a class="delete" href="javascript:void(0)"
-                                @click="deleteFile(item,index)">删除</a>
+                            <a class="delete" href="javascript:void(0)" @click="deleteFile(item,index)">删除</a>
                         </div>
                     </li>
                 </ul>
@@ -30,9 +27,7 @@
                             <i class="el-icon-document"></i> {{item.fileName}}
                         </div>
                         <div> &nbsp;&nbsp;
-                            <a class="download" :href="item.storagePath" target="_blank">
-                                下载
-                            </a>
+                            <a class="download" :href="item.storagePath" target="_blank">下载</a>
                         </div>
                     </li>
                 </ul>
@@ -110,33 +105,46 @@
         methods: {
             async findStaffOrCaseFile() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileList=[];
+                this.fileListOne=[];
+                this.fileListTwo=[];
+                this.fileListOneId=[];
                 for (let i = 0; i < list.length; i++) {
                     if (list[i].businessTypeId == 2) {
-                        this.fileList.push(list[i]);
+                        this.fileListOne.push(list[i]);
+                        if(list[i].organStatus==1){
+                            this.fileList.push(list[i]);
+                        }else{
+                            this.fileListTwo.push(list[i]);
+                            this.fileListOneId.push(list[i].storageId);
+                        }
                     }
                 }
-                this.fileListOne=[];
-                this.fileListOneId=[];
-                this.fileListTwo=[];
             },
             async findStaffOrCaseFile1() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileList2=[];
-                for (let i = 0; i < list.length; i++) {
-                    if (list[i].businessTypeId == 5) {
-                        this.fileList2.push(list[i]);
-                    }
-                }
                 this.fileListFour=[];
                 this.fileListThree=[];
                 this.fileListThreeId=[];
+                for (let i = 0; i < list.length; i++) {
+                    if (list[i].businessTypeId == 5) {
+                        this.fileListThree.push(list[i]);
+                        if(list[i].organStatus==1){
+                            this.fileList2.push(list[i]);
+                        }else{
+                            this.fileListFour.push(list[i]);
+                            this.fileListThreeId.push(list[i].storageId);
+                        }
+                    }
+                }
+                
             },
             async findStaffOrCaseFileOne() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileListOne=[];
                 this.fileListTwo=[];
                 for (let i = 0; i < list.length; i++) {
@@ -154,7 +162,7 @@
             },
             async findStaffOrCaseFileTwo() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileListThree=[];
                 this.fileListFour=[];
                 for (let i = 0; i < list.length; i++) {
@@ -212,8 +220,16 @@
                 }
             },
             async confirmUpload() {
+                let form=[];
                 if (this.fileListTwo.length > 0) {
-                    await confirmUpload(this.userInfo.organId);
+                    for(let i=0;i<this.fileListTwo.length;i++){
+                        let obj={};
+                        obj.organId=this.userInfo.organId;
+                        obj.batchId=this.fileListTwo[i].batchId;
+                        obj.fileId=this.fileListTwo[i].id;
+                        form.push(obj);
+                    }
+                    await confirmUpload(form);
                     this.status = 1;
                     this.findStaffOrCaseFile();
                 } else {
@@ -221,8 +237,16 @@
                 }
             },
             async confirmUploadOne(){
+                let form1=[];
                 if (this.fileListFour.length > 0) {
-                    await confirmUpload(this.userInfo.organId);
+                    for(let i=0;i<this.fileListFour.length;i++){
+                        let obj={};
+                        obj.organId=this.userInfo.organId;
+                        obj.batchId=this.fileListFour[i].batchId;
+                        obj.fileId=this.fileListFour[i].id;
+                        form1.push(obj);
+                    }
+                    await confirmUpload(form1);
                     this.status = 1;
                     this.findStaffOrCaseFile1();
                 } else {

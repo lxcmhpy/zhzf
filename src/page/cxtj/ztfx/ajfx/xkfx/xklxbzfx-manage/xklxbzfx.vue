@@ -10,6 +10,7 @@
               range-separator="至"
               start-placeholder="开始月份"
               end-placeholder="结束月份"
+              style="width:400px"
             ></el-date-picker>
           </el-form-item>
         </el-form>
@@ -62,7 +63,7 @@ export default {
         },
         series: [
           {
-            name: "访问来源",
+            name: "",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],

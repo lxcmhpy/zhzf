@@ -220,17 +220,20 @@
                     pfstatus: this.form.pfStatus
                 };
                 let _this = this;
-                updateScoreState(data).then(
+                updateScoreBatch(this.form.pykhScoreDetailsVos).then(
                     res => {
-                        _this.catsMessage({
-                            type: "success",
-                            message: "提交成功!"
-                        });
-                        // _this.dialogVisible = false;
-                        this.form.pfStatus = "2";
-                    },
-                    err => {
-                        console.log(err);
+                        updateScoreState(data).then(
+                            res => {
+                                _this.catsMessage({
+                                    type: "success",
+                                    message: "提交成功!"
+                                });
+                                this.form.pfStatus = "2";
+                            },
+                            err => {
+                                console.log(err);
+                            }
+                        );
                     }
                 );
             },
@@ -288,5 +291,8 @@
 <style>
     .onlineBox{
         height: 100% !important;
+    }
+    .departOrUserTree .treeBox{
+        overflow: initial !important;
     }
 </style>

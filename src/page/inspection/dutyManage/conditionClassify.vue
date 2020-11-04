@@ -154,7 +154,7 @@ export default {
                 <span class="process-type-node">
                     <span>
                         <span>
-                            <i class="el-icon-menu"> {data.name} </i>
+                            <i class="el-icon-menu" title={data.name}> {data.name} </i>
                         </span>
                     </span>
                     <span>
@@ -174,11 +174,11 @@ export default {
         //添加节点
         appendTreeNode() {
             event.stopPropagation();
-            if(this.curTreeNodeNode){
-                this.$refs.addProcessTypeRef.showModal('add',);
-            }else{
-                this.$message({ type: "warning", message: "请选择情况分类！" });
-            }
+            // if(this.curTreeNodeNode){
+                this.$refs.addProcessTypeRef.showModal('add');
+            // }else{
+            //     this.$message({ type: "warning", message: "请选择情况分类！" });
+            // }
         },
         //修改节点
         editTreeNode(nodeData, parent) {
@@ -242,7 +242,7 @@ export default {
         },
         removeTreeNode(nodeData) {
             event.stopPropagation();
-            this.$confirm("确定要删除吗?", "提示", {
+            this.$confirm("确定要删除所选节点及其子节点吗??", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 iconClass: "custom-question",
@@ -353,7 +353,7 @@ export default {
                 customClass: "custom-confirm",
                 }).then(() => {
 
-                    deleteProcessApi(ids).then(
+                    deleteProcessApi({ processTypeId: this.curTypeNode.id, ids }).then(
                         res => {
                             if(res.code == 200) {
                                 this.$message({  type: "success", message: "删除成功"});
@@ -400,10 +400,13 @@ export default {
             padding-left: 10px;
             margin-bottom: 18px;
             border-left: 4px solid #4573d0;
+
+            float: left;
+            width: 60%;
         }
         .record-condition-tree {
             position: relative;
-
+            min-width: 320px;
             .record-description-search {
     
                 >>> .el-button {
@@ -420,13 +423,20 @@ export default {
                     justify-content: space-between;
                     font-size: 14px;
                     padding-right: 8px;
+                    .el-icon-menu{
+                        display: inline-block;
+                        max-width: 120px;
+                        min-width: 80px;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
+                    }
                 }
             }
 
             .condition-tree-addButton{
-                position: absolute;
-                right: 20px;
-                top: 20px;
+                float: left;
+                width: 30%;
             }
         }
 

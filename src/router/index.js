@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 
 // 路由拦截
 // 需要鉴权
-const whiteList = ["/login", "/register", "/service", "/user", '/flowChart', '/case_handle_modle', '/case_handle_othermodle', "/examLogin",'/loginByToken']; //免登录白名单
+const whiteList = ["/login", "/register", "/service", "/user",  "/examLogin",'/loginByToken']; //免登录白名单
 const regularList = {
     loginByToken: /\/loginByToken\/[a-zA-Z0-9\_\-\.]+\/\d+$/g
 }

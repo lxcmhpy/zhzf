@@ -6,7 +6,6 @@
           <el-form-item label="起始年月">
             <el-date-picker
               v-model="logForm.date"
-              size="small"
               type="monthrange"
               range-separator="至"
               start-placeholder="开始月份"
@@ -28,7 +27,7 @@
 
 <script>
 import echarts from "echarts";
-import {flfgfxyp} from '@/api/fxyp.js'
+import {flfgfxyp} from '@/api/analysis/analysisManage.js'
 export default {
   data() {
     return {
@@ -98,7 +97,7 @@ export default {
         },
         series: [
           {
-            name: "访问来源",
+            name: "",
             type: "pie",
             radius: "55%",
             center: ["30%", "60%"],

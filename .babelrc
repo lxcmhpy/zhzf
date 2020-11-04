@@ -12,6 +12,7 @@
   "env": {
     "test": {
       "presets": ["env", "stage-2"],
+      // @babel/plugin-proposal-nullish-coalescing-operator
       "plugins": ["transform-vue-jsx", "transform-es2015-modules-commonjs", "dynamic-import-node"]
     },
     // 解决热编译卡在75%的问题

@@ -88,7 +88,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="实施时间" prop="shiDate">
-            <el-date-picker v-model="addBtnlawForm.shiDate" type="date" placeholder="选择发布时间" value-format="yyyy-MM-dd">
+            <el-date-picker v-model="addBtnlawForm.shiDate" type="date" placeholder="选择实施时间" value-format="yyyy-MM-dd">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="时效性" prop="status">
@@ -160,7 +160,7 @@ import { mapGetters } from "vuex";
 import {
   getBnsLawListApi, addBnsLawApi, deleteBnslawApi, getDictListDetailByNameApi, getBnsLawByIdApi
 } from "@/api/system";
-import { getIndustryCategoryApi} from "@/api/caseHandle.js";
+import { getIndustryCategoryApi } from "@/api/caseHandle.js";
 import { uploadCommon, getFile } from "@/api/upload.js";
 export default {
   data() {
@@ -419,8 +419,8 @@ export default {
       // );
       let dataCate = {};
       getIndustryCategoryApi(dataCate).then(res => {
-        console.log("业务领域",res.data);
-       this.lawCateList = res.data;
+        console.log("业务领域", res.data);
+        this.lawCateList = res.data;
       }, err => {
         console.log(err);
       });
@@ -438,7 +438,7 @@ export default {
       }
       getFile(data).then(
         res => {
-          let id = res.data.length > 0?res.data[0].id:''
+          let id = res.data.length > 0 ? res.data[0].id : ''
           var fd = new FormData()
           fd.append("file", param.file);
           fd.append("category", '法规法条');
@@ -465,7 +465,7 @@ export default {
 
     },
     previewBtnlaw(id) {
-      this.pdfUrl =''
+      this.pdfUrl = ''
       this.previewVisible = true;
       let data = {
         caseId: id,
@@ -474,7 +474,9 @@ export default {
       getFile(data).then(
         res => {
           if (res.data.length > 0) {
-            this.pdfUrl = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST + res.data[0].storageId
+            this.$util.com_getFileStream(res.data[0].storageId).then(res => {
+              pthis.pdfUrl = res;
+            });
           }
         },
         error => {

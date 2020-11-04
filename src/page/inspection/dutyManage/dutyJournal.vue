@@ -46,8 +46,8 @@
                 <el-form-item label="任务类型" prop="patrolType">
                   <el-select v-model="searchForm.patrolType" placeholder="请选择">
                     <el-option label="全部" value=""></el-option>
-                    <el-option label="路巡" value="1"></el-option>
-                    <el-option label="网巡" value="2"></el-option>
+                    <el-option label="路巡" value="路巡"></el-option>
+                    <el-option label="网巡" value="网巡"></el-option>
                   </el-select>
                 </el-form-item>
                 <!-- <el-form-item label="任务状态" prop="status">
@@ -72,9 +72,9 @@
       <div class="tableHandle">
         <el-button type="primary" icon="el-icon-plus" size="medium" @click="addJournalFun">新增</el-button>
         <el-button type="info" icon="el-icon-delete-solid" size="medium" @click="deleteJournalFun">删除</el-button>
-        <el-button type="warning" size="medium" @click="handoverFun">
+        <!-- <el-button type="warning" size="medium" @click="handoverFun">
           <i class="icon-handover"></i>交接班
-        </el-button>
+        </el-button> -->
       </div>
       <div class="tablePart">
         <el-table
@@ -93,11 +93,11 @@
           <el-table-column prop="title" label="日志名称" align="left" ></el-table-column>
           <el-table-column prop="oname" label="执法机构" align="left" ></el-table-column>
           <el-table-column prop="schedulePersonnel" label="排班人员" align="center"></el-table-column>
-          <el-table-column prop="createTime" label="填报日期" align="center" width="150px;"></el-table-column>
-          <el-table-column prop="plateNumbers" label="车牌/船舶号" align="center" width="120px"></el-table-column>
-          <el-table-column prop="patrolRoute" label="巡查地点/线路" align="center" min-width="180px"></el-table-column>
+          <el-table-column prop="createTime" label="填报日期" align="center" ></el-table-column>
+          <!-- <el-table-column prop="plateNumbers" label="车牌/船舶号" align="center" ></el-table-column> -->
+          <el-table-column prop="patrolRoute" label="巡查地点/线路" align="center" ></el-table-column>
           <el-table-column prop="lawEnforcementOfficials" label="执法人员" align="center"></el-table-column>
-          <el-table-column prop="patrolType" label="任务类型" align="center" :formatter="getPatroType"></el-table-column>
+          <el-table-column prop="patrolType" label="任务类型" align="center" ></el-table-column>
           <!-- <el-table-column prop="status" label="任务状态" align="center">
             <template slot-scope="scope">
               <span
@@ -113,8 +113,9 @@
           </el-table-column> -->
           <el-table-column prop="opt" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" @click="checkConcat(scope.row)">交接班</el-button>
-              <el-button type="text" @click="editJournalInfo(scope.row)">修改</el-button>
+              <el-button :disabled="scope.row.shiftchangeId != null && scope.row.shiftchangeId != undefined && scope.row.shiftchangeId != ''" type="text" @click="handoverFun(scope.row)">交接班</el-button>
+              <el-button type="text" @click="editJournalInfo(scope.row,'5')">查看</el-button>
+              <el-button type="text" @click="editJournalInfo(scope.row,'2')">修改</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -151,6 +152,7 @@ export default {
         patrolType:"",//任务类型
         status:"",//任务状态
         createTime:"",//填
+        businessType:""
 
       },
       tableData: [],
@@ -164,6 +166,7 @@ export default {
   components: { SelectLawCategory },
   created() {
     this.getJournalList();
+    this.getEnforceLawType();
   },
   methods: {
     // 获取日志列表
@@ -177,7 +180,7 @@ export default {
         lawEnforcementOfficials:this.searchForm.lawEnforcementOfficials,
         patrolType:this.searchForm.patrolType,
         status:this.searchForm.status,
-        createTime:this.searchForm.createTimethis,
+        createTime:this.searchForm.createTime,
         current: this.currentPage,
         size: this.pageSize
 
@@ -191,16 +194,26 @@ export default {
         this.$message({ type: 'error', message: err.msg || '' });
       });
     },
-    getPatroType(row, column){
-      if (row.patrolType === '0') {
-        return '路巡'
-      } else if (row.patrolType === '1') {
-        return '网巡'
-      } 
-    },
+  
     // 新增
     addJournalFun() {
-      this.$refs.selectLawCategoryRef.showModal("1","");
+          this.$router.push({
+            name: 'add_duty_journal',
+            params: { type: this.searchForm.businessType, page: 'journal',handelType:"1" }
+          });
+    },
+     // 获取执法门类
+    getEnforceLawType() {
+      this.$store.dispatch("getEnforceLawType", "1").then(
+        (res) => {
+          res.data.forEach(element =>{
+            if(element.cateName == "公路路政"){
+              this.searchForm.businessType = element.cateId;
+            }
+          })
+        },
+        (err) => {}
+      );
     },
     // 删除
     deleteJournalFun(){
@@ -217,6 +230,7 @@ export default {
         }).then(() => {
               deleteRecordApi(this.selectList[0]).then(res => {
             if (res.code == "200") {
+               this.$message({ type: 'success', message: '删除成功' });
               this.getJournalList();
             }
           }, err => {
@@ -226,17 +240,17 @@ export default {
       }
     },
     // 交接班
-    handoverFun(){
-        if (this.selectList.length === 0) {
-        this.$message({ type: 'warning', message: '请选择一条日志' });
-      } else if(this.selectList.length > 1){
-        this.$message({ type: 'warning', message: '每次只能选择一条日志' });
-      }else{
+    handoverFun(row){
+      //   if (this.selectList.length === 0) {
+      //   this.$message({ type: 'warning', message: '请选择一条日志' });
+      // } else if(this.selectList.length > 1){
+      //   this.$message({ type: 'warning', message: '每次只能选择一条日志' });
+      // }else{
          this.$router.push({
           name: "journal_handover",
-        params: { page: "handover",checklogId:this.selectList[0],handelType:"3" },
+          params: { page: "handover",checklogId:row.checklogId,handelType:"3" },
       });
-      }
+      // }
      
     },
     // 查看交接班
@@ -247,10 +261,10 @@ export default {
       });
     },
     // 修改日志
-    editJournalInfo(row) {
+    editJournalInfo(row,type) {
       this.$router.push({
             name: 'add_duty_journal',
-            params: { type: "11111",checklogId:row.checklogId, page: 'journal',handelType:"2" }
+            params: { type:this.searchForm.businessType,checklogId:row.checklogId, page: 'journal',handelType:type }
           });
     },
     // 日志查询

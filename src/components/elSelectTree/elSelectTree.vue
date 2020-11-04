@@ -6,6 +6,7 @@
     :clearable="clearable"
     :filter-method="filterMethod"
     @clear="clearHandle"
+    @blur="selectBlur"
   >
     <el-option :value="valueTitle" :label="valueTitle">
       <el-tree
@@ -123,15 +124,22 @@ export default {
       this.valueTitle = node[this.props.label];
       this.valueId = node[this.props.value];
       this.$emit("getValue", this.valueId);
+      this.$emit("getName", this.valueTitle);
       this.defaultExpandedKey = [];
+    },
+    // 失去焦点触发搜索
+    selectBlur(){
+      this.$refs.selectTree.filter('');
     },
     // 清除选中
     clearHandle() {
       this.valueTitle = "";
-      this.valueId = this.value;
+      // this.valueId = this.value;
+      this.valueId = '';
       this.defaultExpandedKey = [];
       this.clearSelected();
       this.$emit("getValue", null);
+      this.$emit("getName", null);
       this.initHandle();
     },
     // 可搜索下，输入值发生变化时

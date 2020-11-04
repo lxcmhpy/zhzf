@@ -69,9 +69,9 @@
           </div>
         </el-form>
       </el-dialog>
-
+      <viewNotice ref="viewNoticeRef"></viewNotice>
       <el-dialog title="案卷材料" v-dialogDrag :visible.sync="pdfVisible" :close-on-click-modal="false" width="1000px" height="700px" :modal="false" append-to-body>
-        <iframe class="print_info" style="padding:0px;width: 960px;margin:0 auto;height:500px" title="dd" :src="storagePath"></iframe>
+        <iframe :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(storagePath)" frameborder="0" style="width:790px;height:1119px"></iframe>
       </el-dialog>
     </div>
   </div>
@@ -85,8 +85,12 @@ import {
   updateScoreBatch,
   updateScoreState
 } from '@/api/pykh/appraisalExam.js'
+import viewNotice from './noticeManage/viewNotice'
 import iLocalStroage from '@/common/js/localStroage'
 export default {
+  components: {
+            viewNotice
+        },
   data() {
     return {
       userInfo: null,
@@ -240,18 +244,14 @@ export default {
       )
     },
     viewFile(row) {
-      // this.storagePath =
-      //   iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST +
-      //   row.storageId +
-      //   '?time=' +
-      //   new Date().getTime()
-      // this.pdfVisible = true
-      window.open(
-        iLocalStroage.gets('CURRENT_BASE_URL').PDF_HOST +
-          row.storageId +
-          '?time=' +
-          new Date().getTime()
-      )
+      console.log(row)
+      let routerData = {
+          isRead: false,
+          id: row.id,
+          title: "查看案卷",
+          storageId:row.storageId
+      }
+      this.$refs.viewNoticeRef.showPDF(row)
     }
   },
   mounted() {

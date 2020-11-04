@@ -61,6 +61,15 @@ export default  [
                 component: () => import("@/page/inspection/record-manage/recordModleManage.vue")
             },
             {
+                path: "/recordLog",
+                name: "record_log",
+                meta: {
+                title: "记录统计",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/record-manage/record-log/recordLog.vue")
+            },
+            {
                 // 历史检查列表
                 path: "/viewRecord",
                 name: "inspection_viewRecord",
@@ -313,7 +322,7 @@ export default  [
                 component: () => import("@/page/inspection/dutyManage/components/recordDetail.vue")
             },
 
-            // 记录管理--添加记录
+            // 记录管理--流水号管理
             {
                 path: "/serialManage",
                 name: "serial-manage",
@@ -322,6 +331,16 @@ export default  [
                 oneTab:true,
                 },
                 component: () => import("@/page/inspection/serial-number/serialManage.vue")
+            },
+            // 记录管理--巡查执行统计
+            {
+                path: "/inspectionStatistics",
+                name: "inspection_statistics",
+                meta: {
+                title: "巡查执行统计",
+                oneTab:true,
+                },
+                component: () => import("@/page/inspection/dutyManage/inspectionStatistics.vue")
             },
         ]
     }, 

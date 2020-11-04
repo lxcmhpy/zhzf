@@ -13,16 +13,25 @@
                   action="#"
                   :show-file-list="false"
                   :http-request="saveImageFile"
+                  :before-upload="beforeAvatarUpload"
                 >
-                  <el-image v-if="form.titleImg" :src="imgUrl" fit="fill"></el-image>
+                  <el-image
+                    v-if="form.titleImg"
+                    :src="imgUrl"
+                    fit="fill"
+                  ></el-image>
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label-width="10px">
-                <span v-if="!form.titleImg" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</span>
-                <span v-else class="el-upload__tip">点击图片更换，只能上传jpg/png文件，且不超过500kb</span>
+                <span v-if="!form.titleImg" class="el-upload__tip"
+                  >只能上传jpg/png文件，且不超过500kb</span
+                >
+                <span v-else class="el-upload__tip"
+                  >点击图片更换，只能上传jpg/png文件，且不超过500kb</span
+                >
               </el-form-item>
             </el-col>
           </el-row>
@@ -31,7 +40,10 @@
               <el-form-item label="标识链接">
                 <template slot="label">
                   <el-col :span="10">
-                    <img src="/static/images/img/notice/logo_pic_2.png" height="40" />
+                    <img
+                      src="/static/images/img/notice/logo_pic_2.png"
+                      height="40"
+                    />
                   </el-col>
                   <el-col :span="14">
                     <span>标识链接</span>
@@ -87,7 +99,7 @@
             </el-col>
           </el-row>
         </el-form>
-        <div style="text-align:right">
+        <div style="text-align: right">
           <el-button type="primary" @click="save()">保存</el-button>
         </div>
       </div>
@@ -108,49 +120,64 @@
               <el-form-item>
                 <template slot="label">
                   <el-col :span="10">
-                    <img src="/static/images/img/notice/logo_pic_2.png" height="40" />
+                    <img
+                      src="/static/images/img/notice/logo_pic_2.png"
+                      height="40"
+                    />
                   </el-col>
                   <el-col :span="14">
                     <span>标识链接</span>
                   </el-col>
                 </template>
-                {{form.titleLink}}
+                {{ form.titleLink }}
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="主办单位">{{form.directOrgan}}</el-form-item>
+              <el-form-item label="主办单位">{{
+                form.directOrgan
+              }}</el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="承办单位">{{form.undertakeOrgan}}</el-form-item>
+              <el-form-item label="承办单位">{{
+                form.undertakeOrgan
+              }}</el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="备案序号">{{form.recordNumber}}</el-form-item>
+              <el-form-item label="备案序号">{{
+                form.recordNumber
+              }}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="链接地址">{{form.recordLink}}</el-form-item>
+              <el-form-item label="链接地址">{{
+                form.recordLink
+              }}</el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="政府网站标识码">{{form.websiteCode}}</el-form-item>
+              <el-form-item label="政府网站标识码">{{
+                form.websiteCode
+              }}</el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="公网安备案号">{{form.securityRecordation}}</el-form-item>
+              <el-form-item label="公网安备案号">{{
+                form.securityRecordation
+              }}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="链接地址">{{form.security}}</el-form-item>
+              <el-form-item label="链接地址">{{ form.security }}</el-form-item>
             </el-col>
           </el-row>
         </el-form>
-        <div style="text-align:right">
+        <div style="text-align: right">
           <el-button type="primary" @click="onEdit()">修改</el-button>
         </div>
       </div>
@@ -184,15 +211,32 @@ export default {
     };
   },
   methods: {
+    /**
+     * 控制上传格式和大小
+     */
+    beforeAvatarUpload(file) {
+      console.log(file);
+      const isJPG = file.type;
+      const isLt500Kb = file.size / 1024 / 1024 < 0.5;
+
+      if (isJPG !== "image/png" && isJPG !== "image/jpg" && isJPG !== 'image/jpeg') {
+        this.$message.error("只能上传jpg/png文件!");
+      }
+      if (!isLt500Kb) {
+        this.$message.error("上传图片大小不能超过 500kb!");
+      }
+      return isJPG && isLt500Kb;
+    },
+
     saveImageFile(param) {
       let _this = this;
-      if (this.form.titleImg) {
-        this.deleteFile().then((res) => {
-          _this.saveFile(param);
-        });
-      } else {
-        _this.saveFile(param);
-      }
+      //   if (this.form.titleImg) {
+      //     this.deleteFile().then((res) => {
+      //       _this.saveFile(param);
+      //     });
+      //   } else {
+      _this.saveFile(param);
+      //   }
     },
     saveFile(param) {
       var fd = new FormData();

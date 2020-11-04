@@ -4,7 +4,7 @@
     custom-class="leftDialog leftDialog2 archiveCatalogueBox evidenceCatalogueBox"
     :visible.sync="visible"
     @close="closeDialog"
-    :top="fatherCom==='inforCollection' ? '95px':'0px'"
+    :top="fatherCom==='inforCollection' ? '95px':'33px'"
     width="405px"
     :modal="false"
     :show-close="false"
@@ -19,9 +19,9 @@
         <el-table bordercolor="black" width="100%" cellspacing="0" :data="eviList">
             <el-table-column prop="evPath" align="center">
               <template slot-scope="scope">
-          　　　　<img v-if="scope.row.evType=='照片'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"/>
-          　　　　<video v-if="scope.row.evType=='音视频'" :src="host+scope.row.evPath" width="200" height="120" @click="evidenceDetail(scope.row)"></video>
-                 <iframe v-if="scope.row.evName=='非现场执法电子证据单.pdf'" class="print_info" :src="host+scope.row.evPath" frameborder="0"></iframe>
+          　　　　<img v-if="scope.row.evType=='照片'" :src="scope.row.myFileUrl" width="200" height="120" @click="evidenceDetail(scope.row)"/>
+          　　　　<video v-if="scope.row.evType=='音视频'" :src="scope.row.myFileUrl" width="200" height="120" @click="evidenceDetail(scope.row)"></video>
+                 <iframe v-if="scope.row.evName=='非现场执法电子证据单.pdf'" class="print_info" :src="scope.row.myFileUrl" frameborder="0"></iframe>
                  <div v-if="scope.row.evType=='其他附件'" @click="evidenceDetail(scope.row)" style="text-align: center;">
                     <div style="line-height: 25px"><i class="el-icon-document" style="font-size:20px;"></i> &nbsp;{{scope.row.evName}}</div>
                  </div>
@@ -29,17 +29,21 @@
             </el-table-column>
         </el-table>
     </div>
-    <span slot="footer" class="dialog-footer">
-      <el-upload
-        class="upload-demo"
-        :http-request="saveFile"
-        :on-change="uploadChange"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        multiple
-        >
-        <el-button size="small" type="primary" @click="hidden" v-show="!caseApproval && !IsLawEnforcementSupervision">上传证据</el-button>
-    </el-upload>
-    </span>
+    <div
+      :style="fatherCom==='inforCollection' ? 'margin-top: -80px':'margin-top: -35px'"
+      style="text-align:center">
+      <span slot="footer" class="dialog-footer">
+        <el-upload
+          class="upload-demo"
+          :http-request="saveFile"
+          :on-change="uploadChange"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          multiple
+          >
+          <el-button size="small" type="primary" @click="hidden" v-show="!caseApproval && !IsLawEnforcementSupervision">上传证据</el-button>
+        </el-upload>
+      </span>
+    </div>
   </el-dialog>
   <evidenceDetail ref="evidenceDetailRef"></evidenceDetail>
 
@@ -56,10 +60,12 @@ import {
  findFileByIdApi,
  uploadEvdence
 } from "@/api/upload";
+import {
+  getEvidenceApi,
+} from "@/api/caseHandle";
 export default {
   data() {
     return {
-      host:"",
       visible: false,
       eviList:[],
       evfile:"",
@@ -111,7 +117,7 @@ export default {
       this.visible = false;
     },
     //查询证据列表
-    getEviList() {
+    async getEviList() {
       this.getData = true;
         let data = {
             caseId:this.caseId,
@@ -124,11 +130,20 @@ export default {
         };
         console.log("证据目录参数",data);
         let _this = this
-        this.$store.dispatch("getEvidence", data).then(res => {
-            _this.eviList = res.data.records;
-            console.log("111",_this.eviList);
-            this.$emit("getEvidenceEmit");
-        });
+        // this.$store.dispatch("getEvidence", data).then(res => {
+        //     _this.eviList = res.data.records;
+        //     console.log("111",_this.eviList);
+        //     this.$emit("getEvidenceEmit");
+        // });
+
+      let getEvidenceRes = await getEvidenceApi(data);
+      for(let eviListItem of getEvidenceRes.data.records){
+          eviListItem.myFileUrl = await this.$util.com_getFileStream(eviListItem.evPath)
+      }
+      this.eviList = getEvidenceRes.data.records;
+      this.$emit("getEvidenceEmit");
+
+
 
     },
     //显示证据详情
@@ -202,8 +217,6 @@ export default {
       class2.style.right = '60px';
       class2.style.top = '60px';
       class2.style.overflow = 'hidden';
-      this.host = iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST;
-      console.log(this.host);
   }
 };
 </script>

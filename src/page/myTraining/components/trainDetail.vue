@@ -83,7 +83,7 @@ export default {
         this.progressData.text.min =  data.text.min;
         this.progressData.text.sec =  data.text.sec;
       }
-      this.progressData.progress =  data.progress;
+      this.progressData.progress =  data.progress > 100 ? 100 : data.progress;
     }
   }
 };

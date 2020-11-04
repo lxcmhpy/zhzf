@@ -8,7 +8,7 @@
               <el-date-picker
                 v-model="value3"
                 type="year"
-              
+               value-format="yyyy" @change="select"
               ></el-date-picker>
             </el-form-item>
           </el-form>
@@ -23,10 +23,13 @@
 
 <script>
 import echarts from "echarts";
+import {
+      ajfasltbfx,
+    } from '@/api/fxyp.js'
 export default {
   data() {
     return {
-      value3: "",
+      value3: "2019",
       value2: "",
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
@@ -61,7 +64,7 @@ export default {
         legend: {
           // left: "center",
           // top: "bottom",
-          data: ["2018年每月案发数量", "2019年每月案发数量"]
+          data: [(this.value3-1)+"年每月案发数量", (this.value3)+"年每月案发数量"]
         },
         grid: {
           left: "3%",
@@ -92,11 +95,10 @@ export default {
         },
         series: [
           {
-            name: "2018年每月案发数量",
+            name: (this.value3-1)+"年每月案发数量",
             type: "line",
             stack: "总量",
-            // data: this.data1,
-            data:[10,20,15,14,16,19,12,18,16,14,11,5],
+            data: this.data1,
             itemStyle: {
               //通常情况下：
               normal: {
@@ -105,11 +107,10 @@ export default {
             }
           },
           {
-            name: "2019年每月案发数量",
+            name: (this.value3)+"年每月案发数量",
             type: "line",
             stack: "总量",
-            // data: this.data2,
-             data:[11,21,12,13,11,14,12,18,16,14,11,15],
+            data: this.data2,
             itemStyle: {
               //通常情况下：
               normal: {
@@ -120,15 +121,14 @@ export default {
         ]
       });
     },
+//查询-----------------------------------------------------------------------------------------------------
 
    search(val) {
-      
       let data = {
-        year:2018
+        year:val
       };
       let _this = this;
-      this.$store.dispatch("ajfasltbfx", data).then(res => {
-        
+      ajfasltbfx(data).then(res => {  
          var map={};
          res.forEach(item =>{
          var tmp=item[0];
@@ -147,12 +147,7 @@ export default {
              map2.push(0);
           }
         }
-       
-        
           this.data1=map2; 
-         
-
-          
           this.drawLine();
       });
       err => {
@@ -160,13 +155,11 @@ export default {
       };
     },
     search2(val) {
-      
       let data = {
-        year:2019
+        year:val
       };
       let _this = this;
-      this.$store.dispatch("ajfasltbfx", data).then(res => {
-         
+      ajfasltbfx(data).then(res => {     
          var map={};
          res.forEach(item =>{
          var tmp=item[0];
@@ -175,8 +168,6 @@ export default {
          }
               map[tmp]=item[1];       
          });
-
-        
         var map2=[];
         for(var i=1;i<=12;i++){
           if(map[i]!=undefined){
@@ -194,12 +185,17 @@ export default {
         console.log(err);
       };
     },
-    
+     select(val){
+       if(val!=null){
+         this.search(val-1);
+     this.search2(val);
+       }
+     
+   }
   },
   mounted() {
-    // this.search();
-    // this.search2();
-    this.drawLine();
+    this.search(2018);
+    this.search2(2019);
   },
   created() {
   

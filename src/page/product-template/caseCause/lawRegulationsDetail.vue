@@ -72,6 +72,7 @@ export default {
   data() {
     return {
       tableData: [], //表格数据
+      datas: [],
     //   tableData1: [],
     //   currentPage: 1, //当前页
     //   pageSize: 10, //pagesize
@@ -121,20 +122,24 @@ export default {
       );
     },
     handleLawCognizanceChange(val) {
-      console.log("选中的数据", val);
+      let _this = this;
+      let arr = [];
       val.forEach(item => {
-        this.bnslawIdPunBind = item.id;
+        arr.push({
+          causeId:this.caseCauseId,
+          regulaId: item.id
+        });
       });
+      this.datas = JSON.stringify(arr);
     },
     removeBind() {
-      let data = {
-        causeId: this.caseCauseId,
-        regulaId: this.bnslawIdPunBind
-      };
-      console.log("需要解绑的数据",data);
-      unbindCauseLawRegulationsApi(data).then(
+      // let data = {
+      //   causeId: this.caseCauseId,
+      //   regulaId: this.bnslawIdPunBind
+      // };
+      console.log("需要解绑的数据",this.datas);
+      unbindCauseLawRegulationsApi(this.datas).then(
         res => {
-          console.log("123", res);
           this.$message({
             type: "success",
             message: "解绑成功!"

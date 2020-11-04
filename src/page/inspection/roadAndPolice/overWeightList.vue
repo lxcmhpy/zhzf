@@ -1,31 +1,72 @@
 <template>
   <div class="com_searchAndpageBoxPadding">
     <div class="searchAndpageBox" style="overflow: hidden;">
-      <div class="handlePart">
-        <div class="search toggleBox">
-          <div class="handlePart caseHandleSearchPart" :class="isShow?'autoHeight':'aaa'">
+      <div class="handlePart" style="margin-left:0">
+        <div class="search toggleBox btn-style" style="width: 100%;">
+          <div
+            class="handlePart caseHandleSearchPart"
+            :class="isShow ? 'autoHeight' : 'aaa'"
+            style="width：100%;margin-left:-6px;right: 0;"
+          >
             <el-form :inline="true" :model="searchForm" class ref="searchForm">
               <el-form-item label-width="0">
-                <el-button size="medium" class="commonBtn searchBtn" type="primary" @click="addRecordDialog()">添加记录</el-button>
+                <el-button
+                  size="medium"
+                  class="commonBtn searchBtn"
+                  type="primary"
+                  @click="addRecordDialog()"
+                  >添加记录</el-button
+                >
               </el-form-item>
-              <el-form-item label="业务类型" prop='checkType'>
+              <el-form-item label="业务类型" prop="checkType">
                 <el-select v-model="searchForm.checkType" placeholder="请选择">
-                  <el-option v-for="(item,index) in domainList" :key="index" :label="item.name" :value="item.name"></el-option>
+                  <el-option
+                    v-for="(item, index) in domainList"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.name"
+                  ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="处置状态" prop='fileStatus'>
+              <el-form-item label="处置状态" prop="fileStatus">
                 <el-select v-model="searchForm.fileStatus" placeholder="请选择">
-                  <el-option v-for="(item,index) in statusList" :key="index" :label="item.name" :value="item.value"></el-option>
+                  <el-option
+                    v-for="(item, index) in statusList"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.value"
+                  ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="车牌号" prop='vehicleShipId'>
-                <el-input v-model="searchForm.vehicleShipId" placeholder="请输入车牌号"></el-input>
+              <el-form-item label="车牌号" prop="vehicleShipId">
+                <el-input
+                  v-model="searchForm.vehicleShipId"
+                  placeholder="请输入车牌号"
+                ></el-input>
               </el-form-item>
             </el-form>
             <div class="search-btns">
-              <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="getTableData()"></el-button>
-              <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="resetForm('searchForm')"></el-button>
-              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+              <el-button
+                size="medium"
+                class="commonBtn searchBtn"
+                title="搜索"
+                icon="iconfont law-sousuo"
+                @click="getTableData()"
+              ></el-button>
+              <el-button
+                size="medium"
+                class="commonBtn searchBtn"
+                title="重置"
+                icon="iconfont law-zhongzhi"
+                @click="resetForm('searchForm')"
+              ></el-button>
+              <el-button
+                size="medium"
+                class="commonBtn toogleBtn"
+                :title="isShow ? '点击收缩' : '点击展开'"
+                :icon="isShow ? 'iconfont law-top' : 'iconfont law-down'"
+                @click="isShow = !isShow"
+              >
               </el-button>
             </div>
           </div>
@@ -34,20 +75,88 @@
 
       <div class="tablePart" style="clear: both;">
         <el-table :data="recordList" stripe style="width: 100%" height="100%">
-          <el-table-column type="index" label="序号" align="center" width="55"></el-table-column>
-          <el-table-column prop="vehicleShipId" label="车牌号" align="center"></el-table-column>
-          <el-table-column prop="checkType" label="类型" align="center"></el-table-column>
-          <el-table-column prop="detectStation" label="检测站" align="center"></el-table-column>
-          <el-table-column prop="totalWeight" label="初检车货总重" align="center"></el-table-column>
-          <el-table-column prop="overRatio" label="初检超载率" align="center"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="55"
+          ></el-table-column>
+          <!-- <el-table-column prop="vehicleShipId" label="车牌号" align="center"></el-table-column> -->
+          <el-table-column label="车牌号" align="center" width="120">
+            <template slot-scope="scope">
+              <div
+                class="otherColor"
+                :class="vehicleColorObj[scope.row.vehicleIdColor]"
+              >
+                <div class="border">
+                  {{ scope.row.vehicleShipId }}
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="checkType"
+            label="类型"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="firstCheckStation"
+            label="检测站"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="totalWeight"
+            label="初检车货总重"
+            align="center"
+            sortable
+          ></el-table-column>
+          <el-table-column
+            prop="firstCheckTime"
+            label="初检时间"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="overRatio"
+            label="初检超载率"
+            align="center"
+            sortable
+          >
+            <template slot-scope="scope">
+              {{
+                scope.row.overRatio &&
+                scope.row.overRatio != "0%" &&
+                scope.row.overRatio != "%"
+                  ? scope.row.overRatio
+                  : ""
+              }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="overRatio2"
+            label="复检超限率"
+            align="center"
+            sortable
+          >
+            <template slot-scope="scope">
+              {{
+                scope.row.overRatio2 &&
+                scope.row.overRatio2 != "0%" &&
+                scope.row.overRatio2 != "%"
+                  ? scope.row.overRatio2
+                  : ""
+              }}
+            </template>
+          </el-table-column>
           <el-table-column prop="fileStatus" label="处置状态" align="center">
             <template slot-scope="scope">
-              {{scope.row.fileStatus==0?'进行中':'已归档'}}
+              {{ scope.row.fileStatus == 0 ? "进行中" : "待归档" }}
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button @click="viewRecord(scope.row)" type="text">查看</el-button>
+              <el-button @click="viewRecord(scope.row)" type="text"
+                >查看</el-button
+              >
               <!-- <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button> -->
             </template>
           </el-table-column>
@@ -60,77 +169,111 @@
           <div class="noMore" v-else>没有更多了</div>
         </div> -->
       <div class="paginationBox">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" background :page-sizes="[10, 20, 30, 40]" layout="prev, pager, next,sizes,jumper" :total="totalPage"></el-pagination>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          background
+          :page-sizes="[10, 20, 30, 40]"
+          layout="prev, pager, next,sizes,jumper"
+          :total="totalPage"
+        ></el-pagination>
       </div>
-      <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-        <el-form :inline="true" :model="recordType" class ref="recordType" :rules="typerule">
-          <el-form-item prop='type'>
-            <el-radio-group v-model="recordType.type">
-              <ul class="notice-icon-list">
-                <li v-for="(item,index) in checkList" :key="index">
-                  <i class="iconfont" :class="item.iconName"></i><br />
-                  <el-radio :label="item.label">{{item.label}}</el-radio>
-                </li>
-              </ul>
-            </el-radio-group>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addRecord('recordType')">确 定</el-button>
-        </span>
+      <el-dialog
+        title="添加超限超载记录"
+        :visible.sync="dialogVisible"
+        width="424px"
+      >
+        <ul class="notice-icon-list">
+          <li
+            v-for="(item, index) in checkList"
+            :key="index"
+            @click="addRecord(item.label)"
+          >
+            <i class="iconfont" :class="item.iconName" :style="item.color"></i
+            ><br />
+            <span class="icon-dec-text">{{ item.label }}</span>
+          </li>
+        </ul>
       </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import iLocalStroage from "@/common/js/localStroage";
-import { getPcQueryCarInfoApi, changeFileStatus, delDocumentById, getDictListDetailByNameApi } from "@/api/inspection";
+import {
+  getPcQueryCarInfoApi,
+  changeFileStatus,
+  delDocumentById,
+  getDictListDetailByNameApi
+} from "@/api/inspection";
 export default {
-
   data() {
     return {
       compData: [],
       viewFlag: [],
       recordList: [],
-      currentFileId: '',
+      currentFileId: "",
       total: 0,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
       fileList: [],
-      domainList: [{ name: '全部', value: 0 }, { name: '路警联合', value: 1 }, { name: '绿通车', value: 2 },
-      { name: '危化品', value: 3 }, { name: '大件许可', value: 14 }, { name: '不足1吨', value: 5 }, { name: '特种车', value: 6 },],
-      statusList: [{ name: '进行中', value: 0 }, { name: '已归档', value: 1 }],
-      checkList: [{ label: '特种车', iconName: 'law-btn_te' }, { label: '大件许可', iconName: 'law-btn_daj' }, { label: '绿通车', iconName: 'law-btn_lv' },
-      { label: '不足1t', iconName: 'law-btn_1t' }, { label: '危化车', iconName: 'law-btn_v' }, { label: '路警联合', iconName: 'law-btn_luj' }],
+      domainList: [
+        { name: "全部", value: 0 },
+        { name: "路警联合", value: 1 },
+        { name: "绿通车", value: 2 },
+        { name: "危化品", value: 3 },
+        { name: "大件许可", value: 14 },
+        { name: "不足1吨", value: 5 },
+        { name: "特种车", value: 6 }
+      ],
+      statusList: [
+        { name: "全部", value: 3 },
+        { name: "进行中", value: 0 },
+        { name: "已归档", value: 2 },
+        { name: "待归档", value: 1 },
+      ],
+      checkList: [
+        { label: "特种车", iconName: "law-btn_te", color: "color:#4382e6" },
+        { label: "绿通车", iconName: "law-btn_lv", color: "color:#23aa98" },
+        { label: "危化车", iconName: "law-btn_v", color: "color:#e65b59" },
+        { label: "不足1t", iconName: "law-btn_1t", color: "color:#00bbe8" },
+        { label: "路警联合", iconName: "law-btn_luj", color: "color:#4573d0" },
+        { label: "大件许可", iconName: "law-btn_daj", color: "color:#009fff" }
+      ],
+      vehicleColorObj: {
+        黑色: "vehicle-black",
+        白色: "vehicle-white",
+        黄色: "vehicle-yellow",
+        红色: "vehicle-red",
+        蓝色: "vehicle-blue",
+        绿色: "vehicle-green",
+        灰色: "vehicle-gray",
+        渐变绿: "vehicle-gradient-green",
+        黄绿色: "vehicle-yelloe-green"
+      },
       searchForm: {
         vehicleShipId: "",
-        fileStatus: "",
-        checkType: "",
+        fileStatus: 3,
+        checkType: ""
       },
       isShow: false,
       dialogVisible: false,
-      recordType: {
-        type: ''
-      },
       typerule: {
-        type: [
-          { required: true, message: '请选择记录类型', trigger: 'blur' }
-        ],
+        type: [{ required: true, message: "请选择记录类型", trigger: "blur" }]
       }
-    }
+    };
   },
   methods: {
     addNewModle() {
       this.$refs.addModleRef.showModal();
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
@@ -138,67 +281,64 @@ export default {
     // 选择模板
     editRecord(item) {
       // 写文书
-      if (item.pdfStorageId && item.status != '暂存') {
-        // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+      if (item.pdfStorageId && item.status != "暂存") {
         this.$router.push({
           name: "inspection_myPDF",
           params: { id: item.id, storagePath: item.pdfStorageId }
         });
       } else {
-        this.$store.commit("set_inspection_fileId", item.id)
-        // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+        this.$store.commit("set_inspection_fileId", item.id);
         this.$router.push({
           name: item.path,
-          params: { id: item.id, addOrEiditFlag: 'add' }
+          params: { id: item.id, addOrEiditFlag: "add" }
           // query: { id: item.id, addOrEiditFlag: 'add' }
         });
         // 写表单
-        this.$emit('changeModleId', item);
+        this.$emit("changeModleId", item);
       }
     },
     // 查看模板
     viewRecord(item) {
-      this.$store.commit("set_inspection_fileId", item.id)
-      // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$store.commit("set_inspection_OverWeightId", { id: item.id, firstcheckId: item.firstCheckId });
       this.$router.push({
-        name: "inspection_overWeightForm",
-        params: {
-          isRefresh: true,
-        }
+        name: "inspection_overWeightForm"
       });
+      this.$store.commit("set_inspection_fileId", item.id);
+      this.$store.commit("set_inspection_OverWeightId", {
+        id: item.id,
+        firstcheckId: item.firstCheckId
+      });
+      this.$store.commit("set_inspection_OverWeightFresh", false);
     },
     // 修改模板
     editModle(item) {
-      console.log('选中的模板', item)
-      this.$store.commit("set_inspection_fileId", item.id)
+      console.log("选中的模板", item);
+      this.$store.commit("set_inspection_fileId", item.id);
       this.$refs.addModleRef.showModal(item);
     },
     // 删除模板
     delModle(item) {
-      console.log('选中的模板', item)
-      this.$confirm('确认删除当前记录文书？', "删除记录文书", {
+      console.log("选中的模板", item);
+      this.$confirm("确认删除当前记录文书？", "删除记录文书", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
         delDocumentById(item).then(
           res => {
-            console.log(res)
+            console.log(res);
             if (res.code == 200) {
               this.$message({
                 type: "success",
                 message: res.msg
               });
-              this.getTableData()
+              this.getTableData();
             }
           },
           error => {
             // reject(error);
-          })
-
-      })
-
+          }
+        );
+      });
     },
     // 预览
     preview() {
@@ -206,28 +346,33 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.getTableData()
+      this.getTableData();
     },
     getTableData() {
-      this.recordList = []
+      this.recordList = [];
+
       let data = {
         checkType: this.searchForm.checkType,
         fileStatus: this.searchForm.fileStatus,
         vehicleShipId: this.searchForm.vehicleShipId,
         current: this.currentPage,
-        size: this.pageSize,
+        size: this.pageSize
       };
+      if (this.searchForm.fileStatus == 3) {
+        data.fileStatus = "";
+      }
       getPcQueryCarInfoApi(data).then(
         res => {
-          console.log(res)
+          console.log(res);
           if (res.code == 200) {
-            this.recordList = res.data.records
-            this.total = res.data.total
+            this.recordList = res.data.records;
+            this.totalPage = res.data.total;
           }
         },
         error => {
           // reject(error);
-        })
+        }
+      );
     },
     //更改每页显示的条数
     handleSizeChange(val) {
@@ -241,45 +386,41 @@ export default {
       this.getTableData();
     },
     addRecordDialog() {
-      this.dialogVisible = true
+      this.dialogVisible = true;
     },
-    addRecord(formName) {
-      let _this = this
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          if (_this.recordType.type == '路警联合') {
-            console.log('yanzheng')
-            this.$store.commit("set_inspection_OverWeightId", '');
-            this.$router.push({
-              name: 'inspection_overWeightForm',
-              params: {
-                isRefresh: true,
-              }
-            });
-          }
-          else {
-            this.$message({ type: "error", message: '暂未开发' })
-          }
-        }
-      })
+    addRecord(label) {
+      let _this = this;
+      console.log("yanzheng", label);
+      if (label == "路警联合") {
+        console.log("yanzheng");
+        this.$store.commit("set_inspection_OverWeightId", "");
+        this.$router.push({
+          name: "inspection_overWeightForm"
+        });
+        this.$store.commit("set_inspection_OverWeightFresh", true);
+      }
     },
     getDrawerList(data) {
-      let _this = this
+      let _this = this;
       data.forEach(element => {
         getDictListDetailByNameApi(element.name).then(
           res => {
             switch (element.option) {
-              case 1: _this.domainList = res.data; break;//业务类型
-              case 2: _this.statusList = res.data; break;//处置状态
+              case 1:
+                _this.domainList = res.data;
+                break; //业务类型
+              case 2:
+                _this.statusList = res.data;
+                break; //处置状态
             }
           },
 
           error => {
             // reject(error);
-          })
+          }
+        );
       });
-
-    },
+    }
   },
   mounted() {
     this.getTableData();
@@ -287,7 +428,16 @@ export default {
     //   { name: '路警联合-业务类型', option: 1 },
     //   { name: '路警联合-处置状态', option: 2 }])
   }
-}
+};
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
 <style lang="scss" src="@/assets/css/searchPage.scss"></style>
+<style lang="scss" src="@/assets/css/cluesReview.scss"></style>
+<style lang="scss">
+.btn-style {
+  .el-button {
+    background: #4573d0;
+    color: white;
+  }
+}
+</style>

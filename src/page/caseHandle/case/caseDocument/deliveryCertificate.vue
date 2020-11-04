@@ -2,10 +2,10 @@
   <div class="print_box" id="caseInvest-print" style="width:790px; margin:0 auto;">
     <div class="print_info" id="deliverCertificate-print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
-        <div class="doc_topic">送达回证</div>
+        <div class="doc_topic">送达回证</div> 
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <!-- <div>案由:<el-form-item prop="caseName" style="width:585px">
-            <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="\" disabled style="height:36px;"></el-input>
+            <el-input type="textarea" v-model="docData.caseName" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/" disabled style="height:36px;"></el-input>
           </el-form-item>
         </div> -->
         <div class="doc_cause" style="padding-bottom:10px;">
@@ -18,7 +18,7 @@
             </td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="servedOrg" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.servedOrg" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.servedOrg" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
 
             </td>
@@ -29,7 +29,7 @@
             </td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="server" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.server" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.server" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
 
             </td>
@@ -40,7 +40,7 @@
             </td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="collector" class="pdf_datapick">
-                <el-input type='textarea' v-model="docData.collector" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.collector" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
 
             </td>
@@ -86,7 +86,7 @@
           <tr>
             <td colspan="6" class="color_DBE4EF remark">
               <el-form-item label='备注:'>
-                <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="\"></el-input>
+                <el-input type='textarea' v-model="docData.docNote" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -165,11 +165,11 @@
                 </template>
               </el-table-column>
 
-              <!-- <el-table-column width="52%" >
+              <el-table-column width="52%" >
                 <template slot-scope="scope">
-                  <el-button size="mini" icon="el-icon-circle-close" circle @click="handleRow(scope.row)"></el-button>
+                  <el-button size="mini" icon="el-icon-circle-close" circle @click="deleteRes(scope.row,scope.$index)"></el-button>
                 </template>
-              </el-table-column> -->
+              </el-table-column>
             </el-table>
             <el-button icon="el-icon-circle-plus-outline" @click="addTableData" circle type="info" style="margin-left: 50%;margin-top: 10px"></el-button>
           </el-form>
@@ -386,7 +386,7 @@ export default {
             deliveryCertificatelist:newdeliveryCertificatelist,//送达文书列表
             docNote: this.docData.docNote,//备注
             makeDate:this.docData.makeDate,
-
+            status : handleType
       };
       console.log('送达回证',data);
       if (handleType==1) {
@@ -516,10 +516,10 @@ export default {
             })
             .catch(_ => {});
     },
-    //删除当前添加行的数据
-    // handleRow(row) {
-
-    // },
+    //删除一行
+    deleteRes(row,index) {
+      this.tableDatas.splice(index, 1);
+    },
     submitForm(formName){
       console.log('数组11',this.tableDatas)
       let canAdd = true;

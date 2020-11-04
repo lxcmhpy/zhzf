@@ -67,7 +67,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="selectSure">确 定</el-button>
+        <el-button type="primary" @click="selectSure" :disabled="!visible">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -200,8 +200,8 @@ export default {
       let canSelectableFlag = true;
 
       for (let index2 in this.alreadyAddData) {
-          console.log('item',this.alreadyAddData[index2]);
-          console.log('row',row);
+          // console.log('item',this.alreadyAddData[index2]);
+          // console.log('row',row);
         if (this.alreadyAddData[index2].id == row.id) {
           canSelectableFlag = false;
           // this.$nextTick(function(){

@@ -104,6 +104,11 @@ export const mixinGetCaseApiList = {
             console.log(res.data);
             this.caseLinkDataForm.status = res.data.status;
             console.log('this.propertyFeatures', this.propertyFeatures);
+            //立案登记表 暂存状态不显示修改信息按钮
+            if(this.showEditInfo){
+              this.showEditInfo = false;
+            }
+           
             if (this.propertyFeatures != undefined) {
               let data = {
                 caseBasicInfoId: caseId,
@@ -344,9 +349,13 @@ export const mixinGetCaseApiList = {
           this.docTableDatasCopy = this.docTableDatasCopy ? JSON.parse(JSON.stringify(this.docTableDatas)) : '';
           console.log('文书列表', this.docTableDatas);
           //多文书列表
-          let moreDoc = [this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId, this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId, this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, this.BASIC_DATA_SYS.forceExecute_caseLinktypeId, this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId, this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId];
+          let moreDoc = [this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId, this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId, this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, this.BASIC_DATA_SYS.forceExecute_caseLinktypeId, this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId, this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId,
+            this.BASIC_DATA_SC.caseDoc_SC_caseLinktypeId,this.BASIC_DATA_SC.forceExecute_SC_caseLinktypeId];
           if (moreDoc.includes(params.linkTypeId)) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
+          }
+          if(this.needFilterDocTableDatas){
+            this.filterDocTableDatas()
           }
         },
         err => {
@@ -571,7 +580,8 @@ export const mixinGetCaseApiList = {
         //行政强制措施即将到期,从零点开始提示
         console.log('this.measureDateEndTime', new Date(this.measureDateEndTime).format('yyyy-MM-dd hh:mm:ss'))
         let measureDateEndTimeStart = new Date(new Date(new Date(this.measureDateEndTime).toLocaleDateString()).getTime());
-        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart)) {
+        
+        if (this.showREBtn && Date.parse(new Date()) >= Date.parse(measureDateEndTimeStart) && !this.alReadyFinishCoerciveM) {
           this.$refs.pleaseRemoveMDiaRef.showModal();
           return;
         }
@@ -656,7 +666,7 @@ export const mixinGetCaseApiList = {
         this.propertyFeatures = resdata;
       })
       if (this.needClick) {
-        this.click()
+        this.dealCheck();
       }
     },
     //查询环节是否生成了pdf
@@ -791,7 +801,7 @@ export const mixinGetCaseApiList = {
 
       flowUrl = currentFlow.data.flowUrl;
       // if(flowUrl == '处罚流程' || flowUrl == '赔补偿流程' || flowUrl == '青海赔补偿流程' || flowUrl == '青海处罚流程'){
-      if (['commonGraphData', 'compensationGraphData', 'compensationGraphData_QH', 'commonGraphData_QH',].indexOf(flowUrl) != -1) {
+      if (['commonGraphData', 'compensationGraphData', 'compensationGraphData_QH', 'commonGraphData_QH','commonGraphData_SC'].indexOf(flowUrl) != -1) {
         if (name == '立案登记') {
           routeName = 'case_handle_establish'
         }

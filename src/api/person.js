@@ -90,7 +90,21 @@ export function exportPersonInfoApi(data){
       method: "get",
       params: data,
       showloading: false,
-      cancelToken: setCancelSource()
+      cancelToken: setCancelSource(),
+     /// baseUrlType:"LOCALADDR"
+  })
+}
+
+//导出人员图片
+export function personPictureApi(data){
+  return request({
+      responseType:'blob',
+      url: "/person/person/personPicture",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource(),
+    //  baseUrlType:"LOCALADDR"
   })
 }
 
@@ -945,7 +959,7 @@ export function personEdabled(data){
 // 上传证明材料文件
 export function uploadMaterial(data){
   return  request({
-    url:  "/system/sys/file/uploadCommon",
+    url:  "/case/sys/file/uploadCommon",
     method:  "POST",
     data: data,
     contentType: 'multipart/form-data;',
@@ -1218,4 +1232,29 @@ export function getVersionApi(data){
     cancelToken:  setCancelSource()
     
   });
+}
+
+//保存发证信息并生成pdf
+export function savePersonCardApi(data){
+  return  request({
+    url:  "/inter/issue/saveIssueLicence",
+    method:  "get",
+    showloading: false,
+    params: data,
+    cancelToken:  setCancelSource()
+    
+  });
+}
+
+//导出发证pdf
+export function exportPersonPdfApi(data){
+  return request({
+      responseType:'blob',
+      url: "/inter/issue/printPersonCard",
+      method: "get",
+      params: data,
+      showloading: false,
+      cancelToken: setCancelSource(),
+    //  baseUrlType:"LOCALADDR"
+  })
 }

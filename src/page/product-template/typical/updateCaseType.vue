@@ -81,7 +81,8 @@ export default {
         organName:"",
         caseName:"",
         zfml:"",
-        caseId:""
+        caseId:"",
+        id:''
       },
       organList:[],
       selectLoading: false,
@@ -97,6 +98,7 @@ export default {
   inject: ["reload"],
   methods: {
     showModal(data) {
+      console.log(data)
       this.visible = true;
       this.dialogTitle = "修改案件点评";
       this.updateCaseTypeForm.caseNumber = data.caseNumber;
@@ -106,6 +108,7 @@ export default {
       this.updateCaseTypeForm.caseName = data.caseName;
       this.updateCaseTypeForm.zfml = data.zfml;
       this.updateCaseTypeForm.caseId = data.caseId;
+      this.updateCaseTypeForm.id = data.id;
     },
     //关闭弹窗的时候清除数据
     closeDialog() {

@@ -3,7 +3,7 @@
         <div style="margin:0 auto;width:690px">
             <object >
                 <embed class="print_info" style="padding:0px;width: 690px;margin:0 auto;height:1150px !important" name="plugin" id="plugin"
-                :src="docSrc" type="application/pdf" internalinstanceid="29">
+                :src="'/static/pdf/web/viewer.html?file='+encodeURIComponent(docSrc)" type="application/pdf" internalinstanceid="29">
             </object>
         </div>
         <div style="position:fixed;bottom:150px;right: 60px;width:100px;">
@@ -68,7 +68,6 @@ export default {
     return {
         caseList:[],
         docSrc:"",
-        host:iLocalStroage.gets("CURRENT_BASE_URL").PDF_HOST,
         nowShowPdfIndex:0,
         dialogTitle:"修改案件点评",
         selectElement: '',
@@ -105,7 +104,10 @@ export default {
               return a.num - b.num;
             });
             this.caseList = res.data;
-            this.docSrc = this.host + this.caseList[0].storageId;
+            // this.docSrc = this.host + this.caseList[0].storageId;
+            this.$util.com_getFileStream(this.caseList[0].storageId).then(res => {
+                this.docSrc = res;
+              });
             this.nowShowPdfIndex = 0;
          },
          err=>{
@@ -118,12 +120,18 @@ export default {
       if(flag == 'last'){
         if(this.nowShowPdfIndex){
           this.nowShowPdfIndex--;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          // this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId).then(res => {
+            this.docSrc = res
+          });
         }
       }else{
         if(this.nowShowPdfIndex != this.caseList.length-1){
           this.nowShowPdfIndex++;
-          this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          // this.docSrc = this.host + this.caseList[this.nowShowPdfIndex].storageId;
+          this.$util.com_getFileStream(this.caseList[this.nowShowPdfIndex].storageId).then(res => {
+            this.docSrc = res
+          });
         }
       }
     },
@@ -146,8 +154,10 @@ export default {
       this.updateCaseTypeForm.caseName = data.caseName;
       this.updateCaseTypeForm.zfml = data.zfml;
       this.updateCaseTypeForm.caseId = data.caseId;
+      this.updateCaseTypeForm.id = data.id;
       if(this.updateCaseTypeForm.reviews!=""){
         this.dialogTitle = "修改案件点评";
+        this.reviewsType=false;
       }else{
         this.dialogTitle = "新增案件点评";
         this.reviewsType=true;

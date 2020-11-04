@@ -17,10 +17,8 @@
           </el-form-item>
         </el-form>
       </div>
-      <div >
-        <el-row>
-          <div id="chart1" style="width:100%;height: 550px;"></div>
-        </el-row>
+      <div class="mapBox" style="height:100%;">
+        <div id="container" style="width:100%; height:100%;"></div>
       </div>
     </div>
   </div>
@@ -28,17 +26,12 @@
 
 
 <script>
-import echarts from "echarts";
-
-import "echarts/map/js/china.js";
-import "echarts/map/js/province/jiangxi.js";
-import "echarts/map/json/province/jiangxi.json";
-import "echarts/lib/component/title";
-import "echarts/lib/component/legend";
-import "echarts/lib/chart/heatmap";
-import "echarts/lib/component/toolbox";
-import "echarts/lib/component/tooltip";
+  import loadScript from "@/common/js/loadScript.js";
+import VueAMap from "vue-amap"
 import {spaceApi} from '@/api/analysis/analysisManage.js'
+import Vue from "vue";
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -48,7 +41,9 @@ export default {
       addressCon:[],
       mapData:[],
       addressName:[],
-      addressValue:[]
+      addressValue:[],
+      map: null,
+      heatmap: null
     };
   },
   methods: {
@@ -61,19 +56,60 @@ export default {
         startTime: time[0],
         endTime:time[1]
       };
-      let json={}
       spaceApi(param).then(res => {
         if (res.code == 200) {
           res.data.forEach(v=>{
-            json['value'] = v.split(',').map(val => parseFloat(val))
-            this.addressCon.push({value:v.split(',').map(val => parseFloat(val))})
+            this.addressCon.push({'lng':v.name.split(',').map(val => parseFloat(val))[0],'lat':v.name.split(',').map(val => parseFloat(val))[1],'count':v.value})
+
           })
-          this.drawLine1()
+          setTimeout(() => {
+            this.createHeatMap()
+          }, 1000);
         }
       });
-
     },
-    drawLine1() {
+    initMap(){
+      axios.get('/static/json/map/changeMap.json').then(res => {
+        this.map = new AMap.Map("container", {
+          resizeEnable: true,
+          // center: [115.906044,28.557908],
+          center: res.data.centerPoint,
+          zoom: 11,
+          mapStyle: 'amap://styles/grey', // 极夜蓝
+          //自定义地图样式：https://lbs.amap.com/dev/mapstyle/index
+        });
+      })
+    },
+    //判断浏览区是否支持canvas
+    isSupportCanvas() {
+      let elem = document.createElement("canvas");
+      return !!(elem.getContext && elem.getContext("2d"));
+    },
+    createHeatMap() {
+      /**
+       * http://gaode.com)
+       */
+      let heatmapData = this.addressCon;
+      if (!this.isSupportCanvas()) {
+        return this.$msg.error(
+          "热力图仅对支持canvas的浏览器适用,您所使用的浏览器不能使用热力图功能,请换个浏览器试试。"
+        );
+      }
+      let __this = this;
+      this.map.plugin(["AMap.Heatmap"], function() {
+        //初始化heatmap对象
+        __this.heatmap = new AMap.Heatmap(__this.map, {
+          radius: 25, //给定半径
+          opacity: [0, 0.8],
+        });
+        //设置数据集：该数据为北京部分“公园”数据
+        __this.heatmap.setDataSet({
+          data: heatmapData,
+          max: 5
+        });
+      });
+    }
+    /*drawLine1() {
       let myChart = echarts.init(document.getElementById("chart1"));
      myChart.setOption({
          title: {
@@ -151,12 +187,14 @@ export default {
          }]
        }
      )
-    }
+    }*/
   },
   mounted() {
     this.getData(this.date)
   },
-  created() {}
+  created() {
+    loadScript('https://webapi.amap.com/maps?v=1.4.15&key="2fab5dfd6958addd56c89e58df8cbb37"').then(() => this.initMap());
+  }
 };
 </script>
 <style src="@/assets/css/searchPage.scss" lang="scss" scoped></style>

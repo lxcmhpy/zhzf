@@ -81,7 +81,7 @@
         }catch(err){
           this.$message('获取案件流程失败！')
         }
-        if(currentFlow.data.flowUrl == 'commonGraphData' || currentFlow.data.flowUrl == 'commonGraphData_JX' || currentFlow.data.flowUrl == 'commonGraphData_QH'){
+        if(currentFlow.data.flowUrl == 'commonGraphData' || currentFlow.data.flowUrl == 'commonGraphData_JX' || currentFlow.data.flowUrl == 'commonGraphData_QH' || currentFlow.data.flowUrl == 'commonGraphData_SC'){
           data.flag = 0;
         }else if(currentFlow.data.flowUrl == 'compensationGraphData'|| currentFlow.data.flowUrl == 'compensationGraphData_QH'){
           data.flag = 1;
@@ -114,15 +114,25 @@
         }
         console.log('判断环节是否生成pdf',huanjieData);
 
+        let cantSubmit = false;
         _this.approvalPeopleList.forEach((item,index)=>{
           let ids=[];
+          if(item.approveUserVo.length == 0){
+            cantSubmit = true;
+            return
+          }
           item.approveUserVo.forEach(user=>{
             ids.push(user.userId)
           })
           this.handleperson['userIds'+(index+1)] = ids.join(',');
         })
-        console.log('this.handleperson',this.handleperson)
 
+        if(cantSubmit){
+          this.$message('请配置相关角色的用户！')
+          return 
+        }
+        console.log('this.handleperson',this.handleperson)
+        
         let data = {
           caseId: this.caseId,
           caseLinktypeId:this.caseLinktypeId,
@@ -157,7 +167,7 @@
       //删除人员
       deleteCurrentUser(tag,tagKind){
         if(tagKind.approveUserVo.length == 1){
-          this.$message('至少有一个审批人员哦！');
+          this.$message('至少有一个审批人员！');
           return;
         }
         for(let item of this.approvalPeopleList){

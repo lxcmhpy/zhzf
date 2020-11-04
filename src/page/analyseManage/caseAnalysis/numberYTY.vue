@@ -25,7 +25,7 @@
   export default {
     data() {
       return {
-        year: "2020",
+        year: new Date().getFullYear().toString(),
         logForm: {},
         trendYear:'',
         trendYearNew:'',
@@ -74,7 +74,7 @@
 
         this.chartColumn.setOption({
           title: {
-            text: this.year+"年度案件数量同期对比",
+            text: this.year+"年度案件类型数量同期对比",
             left: "center"
           },
           tooltip: {
@@ -108,7 +108,7 @@
           ],
           series: [
             {
-              name: this.trendYear,
+              name: this.trendYear+'年每月案发数量',
               type: "bar",
               data: this.trendYearDate,
               //设置柱子的宽度
@@ -125,7 +125,7 @@
               }
             },
             {
-              name: this.trendYearNew,
+              name: this.trendYearNew+'年每月案发数量',
               type: "bar",
               data:  this.trendYearDateNew,
               //设置柱子的宽度
@@ -146,7 +146,7 @@
       }
     },
     mounted() {
-      this.searchDraw('2020')
+      this.searchDraw( new Date().getFullYear().toString())
     }
   };
 </script>

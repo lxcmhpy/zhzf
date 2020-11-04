@@ -141,7 +141,7 @@ export default {
           { required: true, message: "培训类型不能为空", trigger: "change" }
         ],
         qualifiedCredits: [
-          { required: true, message: "培训人数不能为空", trigger: "blur" }
+          { required: true, message: "合格学分不能为空", trigger: "blur" }
         ],
         beginTime: [
           { required: true, validator: validateBeginTime, trigger: "blur" }
@@ -187,7 +187,7 @@ export default {
             },
             err => {
               loading.close();
-              this.$message({ type: "error", message: err.msg || "" });
+              // this.$message({ type: "error", message: err.msg || "" });f
             }
           );
         } else {

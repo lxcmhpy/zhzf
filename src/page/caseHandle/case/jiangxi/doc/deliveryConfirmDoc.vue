@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="print_box">
-      <div id="delivery-print" class="print_info">
+      <div id="delivery-print" class="print_info" style="height:auto">
         <el-form
           :rules="rules"
           ref="docForm"
@@ -351,6 +351,7 @@
                         format="yyyy年MM月dd日"
                         placeholder="    年  月  日"
                         value-format="yyyy-MM-dd"
+                        @blur="starttime"
                       ></el-date-picker>
                     </el-form-item>
                   </p>
@@ -432,6 +433,7 @@ export default {
       validateIDNumber: validateIDNumber,
       isOverflow: false,
       isOverLine: false,
+      isParty: true,
       docData: {
         caseNumber: "",
         caseName: "",
@@ -551,6 +553,16 @@ export default {
     casePageFloatBtns
   },
   methods: {
+    starttime(){
+      console.log('案发时间=='+this.docData.lasj)
+      if (Date.parse(this.docData.adminSign) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.adminSign = '';
+      }
+    },
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
       this.caseDocDataForm.caseBasicinfoId = this.caseId;

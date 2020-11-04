@@ -72,7 +72,7 @@ export default {
     async showModal(data) { 
       console.log(data);
       this.visible = true;
-      this.caseData = data;
+      this.caseData = data; 
       this.approvalForm.executeHandle = data.oldExecuteHandle || data.oldExecuteHandle === 0 ? data.oldExecuteHandle : 1;
       this.approvalForm.approveOpinions = data.oldApprovalOpion ? data.oldApprovalOpion : '同意';
       this.approvalForm.approvalTime = data.oldApprovalTime ? data.oldApprovalTime : new Date().format("yyyy年MM月dd日");
@@ -170,7 +170,7 @@ export default {
           throw new Error(err);
         }
         flowUrl = currentFlow.data.flowUrl;
-        if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH'].includes(flowUrl)){
+        if(['commonGraphData','compensationGraphData','compensationGraphData_QH','commonGraphData_QH','commonGraphData_SC'].includes(flowUrl)){
           try {
             await approvalPdfQzApi(data);
           } catch (err) {

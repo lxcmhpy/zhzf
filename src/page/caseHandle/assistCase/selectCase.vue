@@ -107,6 +107,7 @@ export default {
         current: this.currentPage,
         size: this.pageSize,
       });
+      this.nextStepFlag = false;
       getSelectCaseList(queryData).then(res => {
         if(res.code === 200){
           this.tableData = res.data.records;
@@ -134,8 +135,13 @@ export default {
     },
     // 下一步
     nextStep() {
-      this.$emit('selectedCase', this.caseData);
-      this.$emit('nextStep', 1);
+      console.log(this.caseData);
+      if(!this.caseData){
+        this.$message.info('请选择需要协查的案件');
+      } else {
+        this.$emit('selectedCase', this.caseData);
+        this.$emit('nextStep', 1);
+      }
     },
     chexkCase(caseData) {
       this.caseData = caseData;
