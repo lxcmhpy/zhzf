@@ -82,6 +82,7 @@ import {
   saveOrUpdateRecordApi, findRecordModleByIdApi, findRecordlModleFieldByIdeApi,
   findMyRecordByIdApi, findRecordModleTimeByIdApi, delDocumentModifyOrderById
 } from "@/api/inspection";
+import { upload, deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
 
@@ -101,6 +102,7 @@ export default {
   },
   data() {
     return {
+      imgObj:{},
       actionUrl:localStorage.getItem('baseURL') + "/case/sys/file/uploadCommon",
       // actionUrl:"/case/sys/file/uploadCommon",
       defaultRuleData: [],
@@ -166,6 +168,7 @@ export default {
           { required: true, message: '请选择', trigger: 'blur' }
         ]
       },
+      fileList: [],
       partyNameTitle: '',
       parsonNameTitle: '',
       iligalName: '',//违法行为
@@ -194,6 +197,7 @@ export default {
           let list = JSON.parse(JSON.stringify(res.data))
 
           _this.baseData = JSON.parse(JSON.stringify(res.data))
+          this.addImgListForBaseData(_this.baseData)
           let sort = 0
           list.forEach(element => {
             element.sort = sort;
@@ -227,12 +231,26 @@ export default {
         })
 
     },
+
+    //添加数组，存储图片文件
+    addImgListForBaseData(arr){
+      arr.forEach(item=>{
+        item.fieldList.forEach(it=>{
+          if(it.type==='图片型'){
+            it.imgList=[]
+          }
+        })
+      })
+    },
+
     // 查找已有记录-修改
     findRecordDataByld() {
       let _this = this
       findMyRecordByIdApi(this.recordId).then(
         res => {
+          debugger
           _this.baseData = JSON.parse(res.data.layout)
+          this.addImgListForBaseData(_this.baseData)
           let list = JSON.parse(res.data.layout)
           // console.log('res', res.data)
           let sort = 0
@@ -352,7 +370,6 @@ export default {
       this.formData.status = '保存';
       this.$data.$f.validate((valid, object) => {
         if (valid) {
-          // alert(JSON.stringify(formData));
           this.submitMethod(fileSaveType)
         } else {
           // 验证不通过，定位
@@ -468,6 +485,7 @@ export default {
     },
     // 暂存
     onSaveRecord(noRouter) {
+      // debugger
       // console.log('rule', this.rule)
       this.rule.forEach(element => {
         // 去掉验证
@@ -493,7 +511,8 @@ export default {
             }
           });
         });
-        submitData = JSON.stringify(submitData)
+        console.log("onSaveRecord -> submitData", submitData)
+        // submitData = JSON.stringify(submitData)
         this.formData.layout = submitData
         this.formData.templateFieldList = '';
         this.formData.createTime = '';
@@ -505,14 +524,22 @@ export default {
         this.formData.objectType = this.$data.$f.getValue('personOrParty')
         delete (this.formData["pictureList"]);
         delete (this.formData["attachedList"]);
-        console.log('formdata', this.formData)
+        
+        console.log("dealFormData -> this.defaultRuleData", this.defaultRuleData)
+        console.log(" -> this.imgObj", this.imgObj)
+        this.setImgDataToFormData(this.formData.layout);
+        // console.log('layout',JSON.parse(this.formData.layout) )
+        debugger
+        return
+
         saveOrUpdateRecordApi(this.formData).then(
           res => {
             // console.log(res)
             if (res.code == 200) {
               // this.recordMsg = res.data;//根据返回id上传文件
               this.recordMsg = this.formData.id ? this.formData.id : res.data;//根据返回id上传文件
-              this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
+              // this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
+              this.handleImgListToUpload();
               this.$message({
                 type: "success",
                 message: res.msg
@@ -550,6 +577,94 @@ export default {
       })
 
     },
+
+    //把图片信息传到formdata里面
+    setImgDataToFormData(layout){
+      // let layout= this.formData.layout
+      layout.forEach(item=>{
+        item.fieldList.forEach(ite=>{
+          if(ite.type==='图片型'){
+            if(this.imgObj[ite.title]){
+              ite.imgList=this.imgObj[ite.title]
+              // let arr=[]
+              // ite.imgList.forEach(tt=>{
+              //   this.uploadImg(tt,ite,arr)
+              // })
+
+               let arr=[]
+              ite.imgList.forEach(tt=>{
+                var fd = new FormData();
+                fd.append("file", tt.raw);
+                fd.append("category", "行政检查"); 
+                fd.append("fileName", tt.name);
+                fd.append("status", "图片"); //传记录id
+                fd.append("caseId", this.recordMsg); //传记录id
+                fd.append("docId", this.recordMsg); //传记录id
+                // debugger
+                uploadCommon(fd).then(
+                  res => {
+                    // console.log("uploadImg -> res", res)
+                    res.data.forEach(itt=>{
+                      arr.push({
+                        storageId:itt.storageId,
+                        storagePath:itt.storagePath,
+                      })
+                    })
+                    // debugger
+                    ite.text=JSON.stringify(arr)
+                  },
+                  error => {
+                  }
+                );
+              })
+            }
+          }
+        })
+      })
+
+      
+
+      this.formData.layout=JSON.stringify(layout)
+      debugger
+      console.log("setImgDataToFormData -> layout", layout)
+      
+    },
+
+    //上传图片接口
+    uploadImg(tt,ite,arr) {
+      // console.log("uploadImg -> tt", tt)
+      var fd = new FormData();
+      fd.append("file", tt.raw);
+      fd.append("category", "行政检查"); 
+      fd.append("fileName", tt.name);
+      fd.append("status", "图片"); //传记录id
+      fd.append("caseId", this.recordMsg); //传记录id
+      fd.append("docId", this.recordMsg); //传记录id
+      // debugger
+      uploadCommon(fd).then(
+        res => {
+          // console.log("uploadImg -> res", res)
+          res.data.forEach(item=>{
+            arr.push({
+              storageId:item.storageId,
+              storagePath:item.storagePath,
+            })
+          })
+          // debugger
+          ite.text=JSON.stringify(arr)
+        },
+        error => {
+        }
+      );
+    },
+
+//处理图片数组，构建item.text信息数组
+    handleImgListToUpload(){
+      console.log('formData···········',this.formData)
+      console.log('submitData',this.submitData)
+
+    },
+
     // 复制添加-可修改-创建人换成登录账号-附件删除，id清空
     copySave() {
       this.$confirm('复制当前记录表单内容，重新创建表单？', "复制当前记录表单", {
@@ -617,34 +732,34 @@ export default {
     },
     viewRecord() {
       this.options = {
-        upload:{
-        "onPreview": function (file) {
-        }, //点击文件列表中已上传的文件时的钩子
-          "onRemove": function (file, fileList) {
-          }, //文件列表移除文件时的钩子
-          "onSuccess": function () {
-            return 'http://file.lotkk.com/form-create.jpeg';
-          }, //文件上传成功时的钩子，返回字段为 response, file, fileList
-          "onError": function (err, file, fileList) {
-            console.log("viewRecord -> err, file, fileList", err, file, fileList)
+        // upload:{
+        // "onPreview": function (file) {
+        // }, //点击文件列表中已上传的文件时的钩子
+        //   "onRemove": function (file, fileList) {
+        //   }, //文件列表移除文件时的钩子
+        //   "onSuccess": function () {
+        //     return 'http://file.lotkk.com/form-create.jpeg';
+        //   }, //文件上传成功时的钩子，返回字段为 response, file, fileList
+        //   "onError": function (err, file, fileList) {
+        //     console.log("viewRecord -> err, file, fileList", err, file, fileList)
             
-          },// 文件上传失败时的钩子
-          "onProgress": function (event, file, fileList) {
-            console.log("viewRecord -> event, file, fileList", event, file, fileList)
-          },// 文件上传失败时的钩子
-          "onChange": function (file, fileList) {
-          },// 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
-          "beforeUpload": function (file) {
-          },// 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
-          "beforeRemove": function (file, fileList) {
-          },// 删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止上传。
-          //辅助操作按钮的图标 ,设置为false将不显示
-          handleIcon:'ios-eye-outline',
-          //点击辅助操作按钮事件
-          onHandle:(src)=>{},
-          //是否可删除,设置为false是不显示删除按钮
-          allowRemove:true,
-        },
+        //   },// 文件上传失败时的钩子
+        //   "onProgress": function (event, file, fileList) {
+        //     console.log("viewRecord -> event, file, fileList", event, file, fileList)
+        //   },// 文件上传失败时的钩子
+        //   "onChange": function (file, fileList) {
+        //   },// 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
+        //   "beforeUpload": function (file) {
+        //   },// 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
+        //   "beforeRemove": function (file, fileList) {
+        //   },// 删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止上传。
+        //   //辅助操作按钮的图标 ,设置为false将不显示
+        //   handleIcon:'ios-eye-outline',
+        //   //点击辅助操作按钮事件
+        //   onHandle:(src)=>{},
+        //   //是否可删除,设置为false是不显示删除按钮
+        //   allowRemove:true,
+        // },
         // submitBtn: false,
         onSubmit: (formData) => {
           // alert(JSON.stringify(formData));
@@ -683,8 +798,7 @@ export default {
 
         this.rule = []
       let data = JSON.parse(JSON.stringify(this.defaultRuleData.templateFieldList))
-      // console.log('ruleData', data)
-      let ruleData = []
+      console.log("dealFormData -> data", data)
       let _this = this
       // 处理当事人信息和企业组织信息
       let personFlag = false
@@ -847,12 +961,14 @@ export default {
               )
             }
           }
-
           this.dealFieldData(element, viewFlag)
+
         })
       }
     },
     dealFieldData(element, viewFlag) {
+      debugger;
+      let vm=this;
       // debugger
       console.log('viewFlag', viewFlag)
       // 字段
@@ -1090,72 +1206,112 @@ export default {
           debugger
           console.log("dealFieldData -> item", item)
           item.type = 'upload';
-          this.rule.push({
+          let _this = this;
+          let rules =  {
             type: 'upload',
-            field: item.id || item.field,//id用于传值，field用于预览
-            title: item.title,
+            field: "aa",//id用于传值，field用于预览
+            title:"bb",
+            value: ['www.baidu.com'],
+            
               // value: item.imgs,
-            value: [],
             props: {
-              showFileList:true,
+              
+              fileList: [],
+              showFileList:false,
               type: "select",
-              uploadType: "image", // file
+              uploadType: "file", // file
               name: "", // name属性
               multiple: true, // 是否可多选
+              limit: 5,
               allowRemove: true,
               accept: "image/jpeg,image/jpg", // 上传文件类型
               format: ["jpg", "jpeg"], // 上传文件格式
               maxSize: 2048, // 上传文件大小最大值
-              maxLength: 5, // 上传文件数量最大值
-              action:'', // 上传后端接收API接口
-              // fileList:[],
-              httpRequest:function(aaa){
-              console.log("dealFieldData -> aaa,b,c", aaa)
-                
+              handleIcon: true, //首先设为true
+              autoUpload: true,
+              onHandle: (file) => { //这里就是预览按钮的事件了
+                console.log("dealFieldData -> file", file)
               },
+              action:"",
               "onRemove": function (file, fileList) {
-              console.log("onRemove -> file, fileList", file, fileList)
-    	},
+                console.log("onRemove -> file, fileList", file, fileList)
+                vm.imgObj[item.title]=fileList;
+
+                // debugger
+              },
+              render(h,ctx){
+                debugger;
+              },
+              httpRequest: function(file) {
+                debugger;
+                var fd = new FormData();
+                fd.append("file", file.file);
+                fd.append("category", "行政检查"); 
+                fd.append("fileName", file.name);
+                fd.append("status", "图片"); //传记录id
+                fd.append("caseId", this.recordMsg); //传记录id
+                fd.append("docId", this.recordMsg); //传记录id
+                let __this = this;
+                // debugger
+                uploadCommon(fd).then(
+                  res => {
+                    debugger;
+                    _this.fileList.push(res.data[0].storagePath);
+                    // this.uploadFiles[1].url="http://172.16.170.54:9332/11,4bc7cc59fc4e"
+                    // fileList[fileList.length -1].url = res.data[0].storagePath;
+                  },
+                  error => {
+                  }
+                );
+              },
               "onChange": function (file, fileList) {
-              console.log("onChange -> file, fileList", file, fileList,item)
-              console.log('aaaaaa',this.$refs)
-    	},
+                  console.log(_this.$refs.formC);
+                  debugger;
+  
+                // var fd = new FormData();
+                // fd.append("file", file.file);
+                // fd.append("category", "行政检查"); 
+                // fd.append("fileName", file.name);
+                // fd.append("status", "图片"); //传记录id
+                // fd.append("caseId", this.recordMsg); //传记录id
+                // fd.append("docId", this.recordMsg); //传记录id
+                // debugger
+                  fileList[0].url="http://172.16.170.54:9332/11,4bc7cc59fc4e";
+                  rules.value = ["http://172.16.170.54:9332/11,4bc7cc59fc4e","http://172.16.170.54:9332/11,4bc7cc59fc4e"];
+
+                    this.$nextTick(() => {
+                      _this.$refs.formC.$f.setValue("aa",["http://172.16.170.54:9332/11,4bc7cc59fc4e","http://172.16.170.54:9332/11,4bc7cc59fc4e"])
+                      _this.$refs.formC.$f.sync("aa")
+                    })
+
+                  // _this.$refs.formC.$f.reload(rules);
+                  // _this.$refs.formC.$f.updateRule
+                // uploadCommon(fd).then(
+                //   res => {
+                //     debugger;
+                //     _this.fileList.push(res.data[0].storagePath);
+                //     // fileList[fileList.length -1].url = res.data[0].storagePath;
+                //   },
+                //   error => {
+                //   }
+                // );
+                  debugger;
+    	        },
               'onSuccess': function(res) {
-              console.log("onSuccess -> res", res)
-                alert('scsss')
-                return ""; // 上传成功回调函数
+         debugger;
+                return _this.fileList; // 上传成功回调函数
               },
               onError(err){
-              console.log("onError -> err", err)
-
+                console.log("onError -> err", err)
               }
             },
-            
-             validate: [
-              {
-                // required: item.required == 'true' ? true : false,
-                required: false,
-                type: "array",
-                min: 1,
-                message: "请最少上传1张图片",
-                trigger: "change"
-              }
-            ],
-            // children: [
-            //   {
-            //     type: 'i',
-            //     class: 'iconfont law-weizhi',
-            //     slot: 'suffix',
-
-            //   }
-            // ],
-            // inject: true,
-            // on: {
-            //   'change': this.changeAdress
-            // },
-          })
+          }
+          this.rule.push(rules);
+            this.$nextTick(() => {
+               _this.$refs.formC.$f.setValue("aa",["http://172.16.170.54:9332/11,4bc7cc59fc4e","http://172.16.170.54:9332/11,4bc7cc59fc4e"])
+               _this.$refs.formC.$f.sync("aa")
+            })
         }
-
         if (item.field == 'party') {
           this.savePartyNameId = item.id;// 执企业组织信息员字段名
         }
@@ -1175,6 +1331,7 @@ export default {
         }
       });
     },
+
     //查询执企业组织信息员
     getAllUserList(list) {
       this.allUserList = list;

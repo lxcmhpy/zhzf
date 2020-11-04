@@ -19,7 +19,7 @@
           <el-table-column prop="hdxz" label="航道行政" align="center"></el-table-column>
           <el-table-column prop="gkxz" label="港口行政" align="center"></el-table-column>
           <el-table-column prop="hsxz" label="海事行政" align="center"></el-table-column>
-           <el-table-column prop="gczlaqjd" label="工程质量安全监督" align="center"></el-table-column>
+           <el-table-column prop="gczlaqjd" label="工程质量监督" align="center"></el-table-column>
             <!-- <el-table-column prop="qt" label="其他" align="center"></el-table-column>
              <el-table-column prop="zhzf" label="综合执法" align="center"></el-table-column> -->
         </el-table>
@@ -88,7 +88,7 @@ export default {
           //   "航道行政",
           //   "港口行政",
           //   "海事行政",
-          //   "工程质量安全监督",
+          //   "工程质量监督",
           //   "其他",
           //   "综合执法",
           // ]
@@ -107,7 +107,7 @@ export default {
             //   { value: 10, name: "航道行政" },
             //   { value: 30, name: "港口行政" },
             //   { value: 20, name: "海事行政" },
-            //   { value: 10, name: "工程质量安全监督" },
+            //   { value: 10, name: "工程质量监督" },
             //   { value: 30, name: "其他" },
             //   { value: 20, name: "综合执法" },
             // ],
@@ -145,7 +145,7 @@ export default {
         this.tableData[0].hdxz=map["航道行政"]==null?0:map["航道行政"];
         this.tableData[0].gkxz=map["港口行政"]==null?0:map["港口行政"];
         this.tableData[0].hsxz=map["海事行政"]==null?0:map["海事行政"];
-        this.tableData[0].gczlaqjd=map["工程质量安全监督"]==null?0:map["工程质量安全监督"];
+        this.tableData[0].gczlaqjd=map["工程质量监督"]==null?0:map["工程质量监督"];
         // this.tableData[0].qt=map["其他"]==null?0:map["其他"];
         // this.tableData[0].zhzf=map["综合执法"]==null?0:map["综合执法"];
        

@@ -785,7 +785,7 @@ export default {
     
       });
       }
-      if(zfml=='工程质量安全监督'){
+      if(zfml=='工程质量监督'){
         zfmlajsl(data).then(res => {   
           console.log(res);
        var map={};
@@ -857,7 +857,7 @@ export default {
         this.search3('航道行政',v[0],v[1]);
         this.search3('港口行政',v[0],v[1]);
         this.search3('海事行政',v[0],v[1]);
-        this.search3('工程质量安全监督',v[0],v[1]);
+        this.search3('工程质量监督',v[0],v[1]);
       }
       
     }
@@ -872,7 +872,7 @@ export default {
     this.search3('航道行政',202001,202012);
     this.search3('港口行政',202001,202012);
     this.search3('海事行政',202001,202012);
-    this.search3('工程质量安全监督',202001,202012);
+    this.search3('工程质量监督',202001,202012);
     this.getOrgan();
   },
   created() {
