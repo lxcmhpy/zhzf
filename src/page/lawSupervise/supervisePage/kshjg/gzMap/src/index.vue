@@ -175,7 +175,9 @@ export default {
             [116.483633, 39.998935],
             [116.48367, 39.998968],
             [116.484648, 39.999861]
-        ]
+        ],
+        con_id:'',
+        param_uid1:'65550'
     }
   },
   methods: {
@@ -488,23 +490,55 @@ export default {
       },
       stopAnimation() {
         this.marker.stopMove();
-      }
+      },
+      login(){
+            let _this = this
+            websdk.request.authRequest.logon('121.89.209.103', '80', '1', 'rsy', '123456', null, 2, function (rsp) {
+                console.log('demo_req_logon result:', rsp);
+                if (rsp.cmd_status === 0) {
+                    // XXX 设置当前调度台账号的ID，其他接口会使用此ID
+                    _this.con_id = rsp.uid;
+                } else {
+                }
+            }, 'demo_req_logon');
+        },
+        showDailog(){
+                websdk.request.videoRequest.playVideo(this.con_id, this.param_uid1, null, null, 0, 0, 0, function (rsp) {
+                console.log('demo_req_play_video result:{}', rsp);
+            }, 'demo_req_play_video');//
+        },
+        closeDailog(){
+                websdk.request.videoRequest.stopPlayVideo(this.con_id, this.param_uid1, null, null, 0, 0, 0, function (rsp) {
+                console.log('demo_req_stop_video result:{}', rsp);
+            }, 'demo_req_stop_video');//
+        },
+        showUserModal(){
+            websdk.view.showUserModal(this.param_uid1, null, function (result) {
+                console.log('showUserModal result:{}', result);
+            });
+        },
+        showGroupModal() {
+            websdk.view.showGroupModal(global_data.param_tgid1, function (result) {
+                console.log('showGroupModal result:{}', result);
+            });
+        }
   },
   activated() {
     this.getTree()
   },
   mounted(){
       this.$nextTick(() => {
-      //  debugger;
-      window.PhoneCallModule.initialize();
-      if (!window.PhoneCallModule.getRegistered()) {
-        // window.PhoneCallModule.sipRegister();
-        let displayName = 'ecds04';
-        let privateIdentity = '100006';
-        let password = '1234';
-        window.PhoneCallModule.sipRegister(displayName, privateIdentity, password);
-      }
+        websdk.init(function (result) {
+            console.log('websdk.init result:', result);
+            //设置关闭视频时的操作: 1:询问, 2:只关闭视频窗口, 3:关闭视频窗口并结束推流
+            websdk.websdkui && websdk.websdkui.configApi.set_video_close_action(1);
+            //只针对终端主动推的视频 0：与set_video_close_action一致，1:询问, 2:只关闭视频窗口, 3:关闭视频窗口并结束推流
+            websdk.websdkui && websdk.websdkui.configApi.set_video_push_close_action(3);
+            //只针对调度台拉取的视频 0：与set_video_close_action一致，1:询问, 2:只关闭视频窗口, 3:关闭视频窗口并结束推流
+            websdk.websdkui && websdk.websdkui.configApi.set_video_pull_close_action(3);
+        });
     })
+    this.login()
   }
 }
 </script>

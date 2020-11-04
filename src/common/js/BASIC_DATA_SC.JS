@@ -14,8 +14,10 @@ export const BASIC_DATA_SC = {
     penaltyExecution_SC_caseLinktypeId:'adb151c01264c1223220d14c937d920e',
     //强制执行
     forceExecute_SC_caseLinktypeId:'6ea9a839618b1783423278582e7228b5',
-
-
+    //撤销立案
+    cancelCase_SC_caseLinktypeId:'db8081cab22aa3316eafe51e1985887f',
+    //行政强制措施
+    adminCoerciveMeasure_SC_caseLinktypeId:'aa8e772d42a2ae77c4d26a03884f6f49',
 
     
     //行政强制措施 环节id caseLinktypeId
