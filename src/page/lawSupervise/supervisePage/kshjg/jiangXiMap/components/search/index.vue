@@ -93,7 +93,7 @@ export default {
           // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
           if(item.peState && item.peState===1) {
             item.peStateColor = '#67C23A'
-          } 
+          }
           if (item.padState && item.padState === 1) {
             item.padStateColor = '#409EFF'
           }
@@ -140,7 +140,7 @@ export default {
             // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
             if(item.peState && item.peState===1) {
                 item.peStateColor = '#67C23A'
-            } 
+            }
             if (item.padState && item.padState === 1) {
                 item.padStateColor = '#409EFF'
             }
@@ -265,6 +265,7 @@ export default {
     clickImg(name) {
       this.projectName = name
       this.config.window2.option = []
+      this.config.window2.topicType = name
       if(name === "执法机构") {
         this.placeholder = '搜索执法机构'
         this.getTree()

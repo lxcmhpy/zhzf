@@ -39,6 +39,30 @@ export function lawCaseApi(data) {
     cancelToken: setCancelSource()
   });
 }
+// 机构地图县级数据
+export function caseQueryMore(data) {
+  return request({
+    url: "/sjfx/query/statistic/case/queryMore",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+// 人员地图县级数据
+export function personQueryMore(data) {
+  return request({
+    url: "/sjfx/query/statistic/person/queryMore",
+    method: "get",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource()
+  });
+}
 //执法人员
 export function personEquipApi(data) {
   return request({

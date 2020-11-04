@@ -1,4 +1,6 @@
 import echarts from "echarts";
+import {caseQueryMore, personQueryMore} from '@/api/analysis/analysisManage.js'
+import { nextTick } from "vuedraggable";
 
 export function JxMap(mapData,tip) {
     let jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
@@ -13,6 +15,14 @@ export function JxMap(mapData,tip) {
     let jian = "../../../../static/json/map/data-1518338772507-BJnAMKTIz.json";
     let ganzhou = "../../../../static/json/map/data-1518338763250-S17RfKpLM.json";
     let fuzhou = "../../../../static/json/map/data-1518338684239-S1EFGtp8f.json";
+
+    let apiType = ''
+    console.log(tip)
+    if(tip === '案件数量') {
+      apiType = caseQueryMore
+    } else {
+      apiType = personQueryMore
+    }
 
     echarts.extendsMap = function (id, opt) {
       // 实例
@@ -454,7 +464,6 @@ export function JxMap(mapData,tip) {
           if (cityMap[params.name]) {
             var url = cityMap[params.name];
             $.get(url, function (response) {
-              // console.log(response);
               curGeoJson = response;
               echarts.registerMap(params.name, response);
               handleEvents.resetOption(_self, option, params.name);
@@ -470,7 +479,6 @@ export function JxMap(mapData,tip) {
         if (citySource) {
           var url = './map/' + citySource + '.json';
           $.get(url, function (response) {
-            // console.log(response);
             curGeoJson = response;
             echarts.registerMap(mapName, response);
             handleEvents.resetOption(_self, option, mapName);
@@ -488,8 +496,51 @@ export function JxMap(mapData,tip) {
         mapName: '江西',    // 地图名
         goDown: true,       // 是否下钻
         // 下钻回调
-        callback: function (name, option, instance) {
-          console.log(name, option, instance);
+        callback: function(name, option, instance){
+          let theMap = {
+            "南昌市": nanchang,
+            "景德镇市": jingdezhen,
+            "萍乡市": pingxiang,
+            "九江市": jiujiang,
+            "新余市": xinyu,
+            "鹰潭市": yingtan,
+            "赣州市": ganzhou,
+            "吉安市": jian,
+            "宜春市": yichun,
+            "抚州市": fuzhou,
+            "上饶市": shangrao
+          }
+          mapData.map(mapDataItem => {
+            if(name === mapDataItem.name) {
+              // 获取json数据，得到每个县的坐标
+              if(theMap[name]) {
+                var url = theMap[name];
+                $.get(url, function (response) {
+                  const params = {
+                    id: mapDataItem.id,
+                    type: "district"
+                  }
+                  // 获取县级数据
+                  apiType(params).then(res => {
+                    if(res.code === 200) {
+                      res.data.mapdata.map(item => {
+                        response.features.map(countyItem => {
+                          if(countyItem.properties.name === item.name) {
+                            countyItem.geometry.coordinates[0][0][0][2] = item.value
+                            option.series[0].data.push({
+                              name: item.name,
+                              value: countyItem.geometry.coordinates[0][0][0]
+                            })
+                          }
+                        })
+                      })
+                      myChart.setOption(option)
+                    }
+                  })
+                })
+              }
+            }
+          })
         },
         // 数据展示
         data: mapData
@@ -920,7 +971,6 @@ export function NxMap(mapData,tip) {
         if (cityMap[params.name]) {
           var url = cityMap[params.name];
           $.get(url, function (response) {
-            // console.log(response);
             curGeoJson = response;
             echarts.registerMap(params.name, response);
             handleEvents.resetOption(_self, option, params.name);
@@ -936,7 +986,6 @@ export function NxMap(mapData,tip) {
       if (citySource) {
         var url = './map/' + citySource + '.json';
         $.get(url, function (response) {
-          // console.log(response);
           curGeoJson = response;
           echarts.registerMap(mapName, response);
           handleEvents.resetOption(_self, option, mapName);
@@ -955,8 +1004,45 @@ export function NxMap(mapData,tip) {
       mapName: '宁夏',    // 地图名
       goDown: true,       // 是否下钻
       // 下钻回调
-      callback: function (name, option, instance) {
-        console.log(name, option, instance);
+      callback: function(name, option, instance){
+        let theMap = {
+          "固原市": guyuan,
+          "石嘴山市": shizuishan,
+          "吴忠市": wuzhong,
+          "银川市": yinchuan,
+          "中卫市": zhongwei
+        }
+        mapData.map(mapDataItem => {
+          if(name === mapDataItem.name) {
+            // 获取json数据，得到每个县的坐标
+            if(theMap[name]) {
+              var url = theMap[name];
+              $.get(url, function (response) {
+                const params = {
+                  id: mapDataItem.id,
+                  type: "district"
+                }
+                // 获取县级数据
+                apiType(params).then(res => {
+                  if(res.code === 200) {
+                    res.data.mapdata.map(item => {
+                      response.features.map(countyItem => {
+                        if(countyItem.properties.name === item.name) {
+                          countyItem.geometry.coordinates[0][0][0][2] = item.value
+                          option.series[0].data.push({
+                            name: item.name,
+                            value: countyItem.geometry.coordinates[0][0][0]
+                          })
+                        }
+                      })
+                    })
+                    myChart.setOption(option)
+                  }
+                })
+              })
+            }
+          }
+        })
       },
       // 数据展示
       data: mapData
@@ -1453,8 +1539,53 @@ export function GsMap(mapData,tip) {
       mapName: '甘肃',    // 地图名
       goDown: true,       // 是否下钻
       // 下钻回调
-      callback: function (name, option, instance) {
-        console.log(name, option, instance);
+      callback: function(name, option, instance){
+        let theMap = {
+          "张掖市": zhangye,
+          "酒泉市": jiuquan,
+          "金昌市": jinchang,
+          "武威市": wuwei,
+          "白银市": baiyin,
+          "兰州市": lanzhou,
+          "临夏回族自治州": linixa,
+          "甘南藏族自治州": gannan,
+          "陇南市": longnan,
+          "天水市": tianshui,
+          "平凉市": pingliang,
+          "庆阳市": qingyang,
+          "定西市": dingxi
+        }
+        mapData.map(mapDataItem => {
+          if(name === mapDataItem.name) {
+            // 获取json数据，得到每个县的坐标
+            if(theMap[name]) {
+              var url = theMap[name];
+              $.get(url, function (response) {
+                const params = {
+                  id: mapDataItem.id,
+                  type: "district"
+                }
+                // 获取县级数据
+                apiType(params).then(res => {
+                  if(res.code === 200) {
+                    res.data.mapdata.map(item => {
+                      response.features.map(countyItem => {
+                        if(countyItem.properties.name === item.name) {
+                          countyItem.geometry.coordinates[0][0][0][2] = item.value
+                          option.series[0].data.push({
+                            name: item.name,
+                            value: countyItem.geometry.coordinates[0][0][0]
+                          })
+                        }
+                      })
+                    })
+                    myChart.setOption(option)
+                  }
+                })
+              })
+            }
+          }
+        })
       },
       // 数据展示
       data: mapData

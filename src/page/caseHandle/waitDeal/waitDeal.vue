@@ -89,7 +89,7 @@ export default {
       let data = searchData;
       data.flag = 0;
       data.userId = iLocalStroage.gets("userInfo").id;
-      data.current = this.currentPage;
+      data.current = data.resetCurrent ? data.resetCurrent : this.currentPage;
       data.size = this.pageSize; 
       this.getCaseList(data);
     },
@@ -118,8 +118,6 @@ export default {
         let setCaseNumber = row.caseNumber != '' ? row.caseNumber : '案件'
         this.$store.commit("setCaseNumber", setCaseNumber);
       }
-
-
     },
     //更改每页显示的条数
     handleSizeChange(val) {

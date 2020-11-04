@@ -5,10 +5,20 @@ export const BASIC_DATA_SC = {
     
     //调查取证
     caseDoc_SC_caseLinktypeId:'225104abe84023ce073b871367159e48',
-    
-    
-    
-    
+    //移交移送
+    transfei_SC_caseLinktypeId:'fbe7cb1a9b604cb0f3e42a48a2fdbed2',
+    transfei_SC_huanjieAndDocId:'da38d8106dbbf881be4d99e719481c6c',
+    //当事人权利
+    partyRights_SC_caseLinktypeId:'775aee2b45c0b3ddc6ce945c15fba961',
+    //决定执行
+    penaltyExecution_SC_caseLinktypeId:'adb151c01264c1223220d14c937d920e',
+    //强制执行
+    forceExecute_SC_caseLinktypeId:'6ea9a839618b1783423278582e7228b5',
+    //撤销立案
+    cancelCase_SC_caseLinktypeId:'db8081cab22aa3316eafe51e1985887f',
+    //行政强制措施
+    adminCoerciveMeasure_SC_caseLinktypeId:'aa8e772d42a2ae77c4d26a03884f6f49',
+
     
     //行政强制措施 环节id caseLinktypeId
     adminCoerciveMeasure_JX_caseLinktypeId:'c9493b367f429c2b55eea4bbb3627e36',
@@ -50,7 +60,7 @@ export const BASIC_DATA_SC = {
     finishCaseReport_JX_caseLinktypeId:'40cc145c41b6392db1080ce4fe2db1dd',
     //结案报告 docId
     finishCaseReport_JX_huanjieAndDocId:'63c5b014da18b4f64d5dd8a49bd0c3b9',
-
+    
 
 
     //文书ID

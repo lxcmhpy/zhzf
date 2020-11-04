@@ -219,7 +219,7 @@ export default {
       const isJPG = file.type;
       const isLt500Kb = file.size / 1024 / 1024 < 0.5;
 
-      if (isJPG !== "image/png" && isJPG !== "image/jpg") {
+      if (isJPG !== "image/png" && isJPG !== "image/jpg" && isJPG !== 'image/jpeg') {
         this.$message.error("只能上传jpg/png文件!");
       }
       if (!isLt500Kb) {
