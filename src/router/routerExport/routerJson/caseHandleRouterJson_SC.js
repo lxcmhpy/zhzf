@@ -112,6 +112,14 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/enforceDecideApprovalForm_SC.vue")
     },
+    {
+      path: "/courtEnforceApplicationDoc_SC",
+      name: "case_handle_courtEnforceApplicationDoc_SC",
+      meta: {
+        title: "申请法院强制执行申请书"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/courtEnforceApplicationDoc_SC.vue")
+    },
    
     
     
