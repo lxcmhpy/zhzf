@@ -1,6 +1,5 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import "babel-polyfill";
 import Vue from "vue";
 import store from "./store";
 import ElementUI from "element-ui";
@@ -20,6 +19,11 @@ import {BASIC_DATA_SC} from '@/common/js/BASIC_DATA_SC.js';
 
 import { messageOne } from '@/common/js/resetMessage';
 import { mixinsCommon } from "@/common/js/mixinsCommon";
+
+if (!global._babelPolyfill) {
+	require('babel-polyfill');
+}
+
 Vue.use(ElementUI);
 Vue.use(hasPermission);
 Vue.prototype.$messageOne = messageOne;
