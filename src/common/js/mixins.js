@@ -350,9 +350,12 @@ export const mixinGetCaseApiList = {
           console.log('文书列表', this.docTableDatas);
           //多文书列表
           let moreDoc = [this.BASIC_DATA_SYS.compensationCaseDoc_caseLinktypeId, this.BASIC_DATA_SYS.caseDoc_caseLinktypeId, this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId, this.BASIC_DATA_SYS.penaltyExecution_caseLinktypeId, this.BASIC_DATA_SYS.forceExecute_caseLinktypeId, this.BASIC_DATA_JX.punishExecute_JX_caseLinktypeId, this.BASIC_DATA_JX.forceExecute_JX_caseLinktypeId,
-            this.BASIC_DATA_SC.caseDoc_SC_caseLinktypeId];
+            this.BASIC_DATA_SC.caseDoc_SC_caseLinktypeId,this.BASIC_DATA_SC.forceExecute_SC_caseLinktypeId];
           if (moreDoc.includes(params.linkTypeId)) { //调查类文书和分期延期缴纳、强制执行
             this.setMoreDocTableTitle();
+          }
+          if(this.needFilterDocTableDatas){
+            this.filterDocTableDatas()
           }
         },
         err => {

@@ -154,7 +154,7 @@ export default {
                 <span class="process-type-node">
                     <span>
                         <span>
-                            <i class="el-icon-menu"> {data.name} </i>
+                            <i class="el-icon-menu" title={data.name}> {data.name} </i>
                         </span>
                     </span>
                     <span>
@@ -406,7 +406,7 @@ export default {
         }
         .record-condition-tree {
             position: relative;
-
+            min-width: 320px;
             .record-description-search {
     
                 >>> .el-button {
@@ -423,6 +423,14 @@ export default {
                     justify-content: space-between;
                     font-size: 14px;
                     padding-right: 8px;
+                    .el-icon-menu{
+                        display: inline-block;
+                        max-width: 120px;
+                        min-width: 80px;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
+                    }
                 }
             }
 

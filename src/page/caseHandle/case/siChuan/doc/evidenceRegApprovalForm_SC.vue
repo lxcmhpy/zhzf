@@ -6,6 +6,55 @@
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
         <table class="print_table prolong_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
+            <td rowspan="2">案
+              <br />由</td>
+            <td rowspan="2" colspan="9">
+              <el-form-item
+                prop="caseName"
+                :rules="fieldRules('caseName',propertyFeatures['caseName'])"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.caseName"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :maxlength="nameLength"
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['caseName'])"
+                  placeholder="/"
+                ></el-input>
+              </el-form-item></td>
+            <td rowspan="2" colspan="2">执法人员</td>
+            <td colspan="2">
+              <el-form-item
+                prop="partyOne"
+                :rules="fieldRules('partyOne',propertyFeatures['partyOne'])"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.partyOne"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :maxlength="nameLength"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyOne'])"
+                ></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <el-form-item
+                prop="partyTwo"
+                :rules="fieldRules('partyTwo',propertyFeatures['partyTwo'])"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.partyTwo"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :maxlength="nameLength"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyTwo'])"
+                ></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
             <td rowspan="6">
               当
               <br />事
@@ -16,7 +65,7 @@
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="party"
-                :rules="fieldRules('party',propertyFeatures['party'],'',isParty)"
+                :rules="fieldRules('party',propertyFeatures['party'])"
               >
                 <el-input
                   type="textarea"
@@ -27,7 +76,6 @@
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])"
                   placeholder="/"
                 ></el-input>
-                <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
               </el-form-item>
             </td>
             <td colspan="2">身份证件号</td>
@@ -43,6 +91,22 @@
                   placeholder="/"
                   :autosize="{ minRows: 1, maxRows: 3}"
                   :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"
+                ></el-input>
+              </el-form-item>
+            </td>
+            <td colspan="2">年龄</td>
+            <td colspan="2" class="color_DBE4EF">
+              <el-form-item
+                prop="partyAge"
+                :rules="fieldRules('partyAge',propertyFeatures['partyAge'],isParty)"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="docData.partyAge"
+                  :maxLength="18"
+                  placeholder="/"
+                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partyAge'])"
                 ></el-input>
               </el-form-item>
             </td>
@@ -79,11 +143,27 @@
                 ></el-input>
               </el-form-item>
             </td>
+            <td colspan="2">性别</td>
+            <td colspan="2" class="color_DBE4EF">
+              <el-form-item
+                prop="partySex"
+                :rules="fieldRules('partySex',propertyFeatures['partySex'],isParty)"
+              >
+                <el-select
+                  placeholder="/"
+                  v-model="docData.partySex"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
+                >
+                  <el-option :value="0" label="男"></el-option>
+                  <el-option :value="1" label="女"></el-option>
+                </el-select>
+              </el-form-item>
+            </td>
           </tr>
           <tr>
             <td rowspan="4">单位</td>
             <td colspan="2">名称</td>
-            <td colspan="6" class="color_DBE4EF">
+            <td colspan="10" class="color_DBE4EF">
               <el-form-item
                 prop="partyName"
                 :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)"
@@ -99,7 +179,7 @@
           </tr>
           <tr>
             <td colspan="2">地址</td>
-            <td colspan="6" class="color_DBE4EF">
+            <td colspan="10" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitAddress"
                 :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)"
@@ -115,7 +195,7 @@
           </tr>
           <tr>
             <td colspan="2">联系电话</td>
-            <td colspan="2" class="color_DBE4EF">
+            <td colspan="4" class="color_DBE4EF">
               <el-form-item
                 prop="partyUnitTel"
                 :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)"
@@ -130,7 +210,7 @@
               </el-form-item>
             </td>
             <td colspan="2">法定代表人</td>
-            <td class="color_DBE4EF" colspan="2">
+            <td class="color_DBE4EF" colspan="4">
               <el-form-item
                 prop="partyManager"
                 :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)"
@@ -145,8 +225,8 @@
             </td>
           </tr>
           <tr>
-            <td colspan="3">统一社会信用代码</td>
-            <td colspan="5" class="color_DBE4EF">
+            <td colspan="4">统一社会信用代码</td>
+            <td colspan="8" class="color_DBE4EF">
               <el-form-item
                 prop="socialCreditCode"
                 :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)"
@@ -162,11 +242,9 @@
           </tr>
           <tr>
             <td rowspan="2">
-              <p>案件</p>
-              <p>基本</p>
-              <p>情况</p>
+              <p>案件调查经过及违法事实</p>
             </td>
-            <td rowspan="2" colspan="9" class="color_DBE4EF">
+            <td rowspan="2" colspan="13" class="color_DBE4EF">
               <el-form-item
                 prop="basicSituation"
                 :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
@@ -188,7 +266,7 @@
             <td rowspan="2">
               <p>实施证据登记保存理由</p>
             </td>
-            <td rowspan="2" colspan="9" class="color_DBE4EF">
+            <td rowspan="2" colspan="13" class="color_DBE4EF">
               <el-form-item
                 prop="reason"
                 :rules="fieldRules('reason',propertyFeatures['reason'])"
@@ -207,93 +285,44 @@
           </tr>
           <tr></tr>
           <tr>
-            <td rowspan="2">
-              <p>承办人意见</p>
+            <td :rowspan="docData.evdenceList.length==0?2:docData.evdenceList.length+1">
+              <p>登记保存的证据</p>
             </td>
-            <td rowspan="2" colspan="9" class="color_DBE4EF">
-              <p> &nbsp;&nbsp;根据《中华人民共和国行政处罚法》第三十七条第二款的规定，拟对下列物品
-                <el-form-item
-                prop="detainGoods"
-                :rules="fieldRules('detainGoods',propertyFeatures['detainGoods'])"
+            <td colspan="2">序号</td>
+            <td colspan="4">名称</td>
+            <td colspan="4">规格</td>
+            <td colspan="3">数量</td>
+          </tr>
+          <tr v-if="docData.evdenceList.length==0"  @click="handleAdd">
+            <td colspan="2"></td>
+            <td colspan="4"></td>
+            <td colspan="4"></td>
+            <td colspan="3"></td>
+          </tr>
+          <tr v-for="(item,index) in docData.evdenceList" :key="index"  @click="handleAdd">
+            <td colspan="2" class="color_DBE4EF">{{item.evidenceNo}}</td>
+            <td colspan="4" class="color_DBE4EF">{{item.evidenceName}}</td>
+            <td colspan="4" class="color_DBE4EF">{{item.spec}}</td>
+            <td colspan="3" class="color_DBE4EF">{{item.amount}}</td>
+          </tr>
+          <tr>
+            <td rowspan="2">
+              <p>调查人员意见</p>
+            </td>
+            <td rowspan="2" colspan="13" class="color_DBE4EF">
+              <el-form-item
+                prop="secondApproveOpinions"
+                :rules="fieldRules('secondApproveOpinions',propertyFeatures['secondApproveOpinions'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.detainGoods"
-                  v-bind:class="{ over_flow:docData.detainGoods && docData.detainGoods.length>14?true:false }"
+                  v-model="docData.secondApproveOpinions"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="/"
-                  :disabled="fieldDisabled(propertyFeatures['detainGoods'])"
+                  :disabled="fieldDisabled(propertyFeatures['secondApproveOpinions'])"
                 ></el-input>
               </el-form-item>
-                予以先行登记保存
-                <el-form-item
-                prop="days"
-                style="width: 45px"
-                :rules="fieldRules('days',propertyFeatures['days'])"
-              >
-                <el-input
-                  v-model="docData.days"
-                  placeholder="/"
-                  disabled
-                ></el-input>
-              </el-form-item>
-                日（自
-                <span>
-                  <el-form-item
-                    prop="startDate"
-                    :rules="fieldRules('startDate',propertyFeatures['startDate'])"
-                    style="width: 150px"
-                    class="pdf_datapick"
-                  >
-                    <el-date-picker
-                      v-model="docData.startDate"
-                      @change="starttime"
-                      type="date"
-                      format="yyyy年MM月dd日"
-                      value-format="yyyy-MM-dd"
-                      placeholder="  年  月  日"
-                      :disabled="fieldDisabled(propertyFeatures['startDate'])"
-                    ></el-date-picker>
-                  </el-form-item>
-                </span>
-                <span>至</span>
-                <span>
-                  <el-form-item
-                    prop="endDate"
-                    :rules="fieldRules('endDate',propertyFeatures['endDate'])"
-                    style="width: 150px"
-                    class="pdf_datapick"
-                  >
-                    <el-date-picker
-                      v-model="docData.endDate"
-                      @change="endtime"
-                      type="date"
-                      format="yyyy年MM月dd日"
-                      value-format="yyyy-MM-dd"
-                      placeholder="  年  月  日"
-                      :disabled="fieldDisabled(propertyFeatures['endDate'])"
-                    ></el-date-picker>
-                  </el-form-item>
-                </span>
-                ）。
-              </p> 
-              <div class="pdf_seal">
-                <p>签名：{{docData.approvePeo}}</p>
-                <p>
-                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
-                </p>
-              </div>
-            </td>
-          </tr>
-          <tr></tr>
-          <tr>
-            <td rowspan="2">
-              <p>承办机构意见</p>
-            </td>
-            <td rowspan="2" colspan="9" class="color_DBE4EF">
-              {{docData.secondApproveOpinions}}
               <div class="pdf_seal">
                 <p>签名：{{docData.secondApprovePeo}}</p>
                 <p>
@@ -306,12 +335,12 @@
           <tr></tr>
           <tr>
             <td rowspan="2">
-              <p>行政机关负责人意见</p>
+              <p>执法机关负责人意见</p>
             </td>
-            <td rowspan="2" colspan="9" class="color_DBE4EF">
+            <td rowspan="2" colspan="13" class="color_DBE4EF">
               {{docData.threeApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.threeApprovePeo}}</p>
+                <p>签章：{{docData.threeApprovePeo}}</p>
                 <p>
                   <span v-if="docData.threeApproveTime">{{docData.threeApproveTime}}</span>
                   <span v-else>年 月 日</span>
@@ -321,8 +350,59 @@
           </tr>
           <tr></tr>
         </table>
+        <el-form-item  prop="evidenceLength" style="visibility:hidden">
+          <el-input v-model="docData.evidenceLength"></el-input>
+        </el-form-item>
       </el-form>
     </div>
+    <el-dialog title="登记保存的证据" :visible.sync="addVisible" append-to-body width="60%" v-loading="addLoading">
+      <div>
+        <div class="fullscreen">
+          <el-form ref="addEvidenceFormRef">
+            <el-table :data="tableDatas" stripe border style="width: 100%">
+              <el-table-column  prop="evidenceNo" label="序号" align="center">
+              </el-table-column>
+
+              <el-table-column label="名称" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.evidenceName"></el-input>
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="spec" label="规格" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.spec"></el-input>
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="amount" label="数量" align="center">
+                <template slot-scope="scope">
+                  <el-input-number size="mini" v-model="scope.row.amount" :min="1"  label="描述文字"></el-input-number>
+                </template>
+              </el-table-column>
+
+              <!-- <el-table-column label="抽样地点" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.savePlace"></el-input>
+                </template>
+              </el-table-column> -->
+
+              <el-table-column width="52%">
+                <template slot-scope="scope">
+                  <el-button class="evdence-form" size="mini" icon="el-icon-circle-close" circle @click="deleteEvidence(scope.row)" style="border-radius: 50px;"></el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+
+            <el-button icon="el-icon-circle-plus-outline"  circle type="info" @click="addTableData" style="margin-left: 50%;margin-top: 10px"></el-button>
+          </el-form>
+        </div>
+        <div style="margin-left: 45%;margin-top: 10px">
+            <el-button size="medium" type="primary" @click="addEvidenceSure('addEvidenceFormRef')">确 定</el-button>
+            <el-button size="medium" @click="addVisible=false">取  消</el-button>
+        </div>
+      </div>
+    </el-dialog>
     <casePageFloatBtns
       :pageDomId="'evidenceRegApprovalForm_print'"
       :formOrDocData="formOrDocData"
@@ -342,26 +422,40 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
   data() {
+    //验证是否填写证据
+    var validateEvidencLength = (rule, value, callback) => {
+      if (this.docData.evdenceList.length == 0) {
+        return callback(new Error("至少填写一个证据物品"));
+      }
+      callback();
+    };
     return {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
       isOverflow: false,
+      addVisible:false,
+      addLoading: false,
       docData: {
+        evdenceList: [],
         caseNumber: "",
-        caseName: "",
         party: "",
         partyIdNo: "",
+        partyAge:"",
         partyAddress: "",
         partyTel: "",
+        partySex:"",
         partyName: "",
         partyUnitAddress: "",
         partyUnitTel: "",
         partyManager: "",
         socialCreditCode: "",
-        party: "",
+        caseName: "",
         partyManager: "",
         basicSituation: "",
         reason: "",
+        party:"",
+        partyOne:"",
+        partyTwo:"",
         detainGoods: "",
         days: "",
         startDate: "",
@@ -375,6 +469,7 @@ export default {
         threeApprovePeo: "",
         threeApproveTime: "",
       },
+      evidenceLength:0,
       isParty: false,
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -389,8 +484,24 @@ export default {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
         ],
+        caseName: [
+          { required: true, message: "案由不能为空", trigger: "blur" }
+        ],
+        partyOne: [
+          { required: true, message: "执法人员1不能为空", trigger: "blur" }
+        ],
+        partyTwo: [
+          { required: true, message: "执法人员2不能为空", trigger: "blur" }
+        ],
         partyIdNo: [
-          { required: true, message: "当事人身份证件号不能为空", trigger: "blur" }
+          { required: true, message: "当事人身份证件号不能为空", trigger: "blur" },
+          { validator: validateIDNumber, trigger: "blur" }
+        ],
+        partyAge: [
+          { required: true, message: "当事人年龄不能为空", trigger: "blur" }
+        ],
+        partySex: [
+          { required: true, message: "当事人性别不能为空", trigger: "blur" }
         ],
         socialCreditCode: [
           { required: true, message: "单位统一社会信用代码不能为空", trigger: "blur" }
@@ -423,7 +534,7 @@ export default {
           { required: true, message: "基本情况不能为空", trigger: "blur" }
         ],
         reason: [
-          { required: true, message: "保存理由不能为空不能为空", trigger: "blur" }
+          { required: true, message: "保存理由不能为空", trigger: "blur" }
         ],
         detainGoods: [
           { required: true, message: "保存物品详情不能为空", trigger: "blur" }
@@ -431,11 +542,14 @@ export default {
         days: [
           { required: true, message: "保存时长不能为空", trigger: "blur" }
         ],
-        startDate: [
-          { required: true, message: "开始日期不能为空", trigger: "change" }
-        ],
-        endDate: [
-          { required: true, message: "结束日期不能为空", trigger: "change" }
+        // startDate: [
+        //   { required: true, message: "开始日期不能为空", trigger: "change" }
+        // ],
+        // endDate: [
+        //   { required: true, message: "结束日期不能为空", trigger: "change" }
+        // ],
+        evidenceLength: [
+           { validator: validateEvidencLength,trigger: "blur" }
         ],
       },
       nameLength: 23,
@@ -461,59 +575,69 @@ export default {
       approvalOver: false, //审核完成
       propertyFeatures: "",
       needDealData:true,
+      tableDatas:[]
     };
   },
   methods: {
     starttime(){
-      if (this.docData.endDate){
-        console.log('案发时间=='+this.docData.lasj)
-        if (Date.parse(this.docData.startDate) < Date.parse(this.docData.lasj)) {
-          this.$message({
-            message: '开始时间不得小于立案时间',
-            type: 'warning'
-          });
-          this.docData.startDate = '';
-        }else if(this.docData.startDate > this.docData.endDate){
-          this.$message({
-            message: '开始时间不能大于结束时间',
-            type: 'warning'
-          });
-          this.docData.startDate = '';
-          this.docData.days = '';
-        }else{
-          this.docData.days = new Date(this.docData.endDate) - new Date(this.docData.startDate);
-          this.docData.days = Math.abs(this.docData.days)
-          this.docData.days = this.docData.days / (24 * 3600 * 1000);
-          this.docData.days = Math.floor(this.docData.days) ;
-          this.$set(this.docData, 'days',  this.docData.days);
-        }
+      if (Date.parse(this.docData.secondApproveTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.secondApproveTime = '';
+      }
+      if (Date.parse(this.docData.threeApproveTime) < Date.parse(this.docData.lasj)) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.threeApproveTime = '';
       }
     },
-    endtime(){
-      if (this.docData.startDate){
-        console.log('案发时间=='+this.docData.lasj)
-        if (Date.parse(this.docData.startDate) < Date.parse(this.docData.lasj)) {
-          this.$message({
-            message: '开始时间不得小于立案时间',
-            type: 'warning'
-          });
-          this.docData.startDate = '';
-        }else  if(this.docData.startDate > this.docData.endDate){
-          this.$message({
-            message: '结束时间不能小于开始时间',
-            type: 'warning'
-          });
-          this.docData.endDate = '';
-          this.docData.days = '';
-        }else{
-          this.docData.days = new Date(this.docData.endDate) - new Date(this.docData.startDate);
-          this.docData.days = Math.abs(this.docData.days)
-          this.docData.days = this.docData.days / (24 * 3600 * 1000);
-          this.docData.days = Math.floor(this.docData.days) ;
-          this.$set(this.docData, 'days',  this.docData.days);
-
+    handleAdd(evidenceNo, row) {
+        this.tableDatas = JSON.parse(JSON.stringify(this.docData.evdenceList));
+        this.addVisible = true;
+        if(this.tableDatas.length == 0){
+        this.tableDatas.push({'evidenceNo': 1, 'amount' : 1});
         }
+    },
+    addTableData(){
+      console.log(this.tableDatas)
+      let length = this.tableDatas.length;
+      if(length == 0){
+        this.tableDatas.push({'amount' : 1});
+      }else{
+        this.tableDatas.push({'evidenceNo': Number(this.tableDatas[length - 1].evidenceNo) + 1, 'amount' : 1});
       }
+    },
+    //删除一行证据
+    deleteEvidence(row) {
+        for(let i=0; i<this.tableDatas.length; i++){
+          if(this.tableDatas[i].evidenceNo > row.evidenceNo){
+            this.tableDatas[i].evidenceNo = this.tableDatas[i].evidenceNo - 1;
+          }
+        }
+        this.tableDatas.splice(row.evidenceNo-1, 1)
+        console.log('newLing',this.tableDatas);
+    },
+    addEvidenceSure(formName){
+      let canAdd = true;
+      for(let i=0; i<this.tableDatas.length; i++){
+          if(!this.tableDatas[i].evidenceName || !this.tableDatas[i].spec || !this.tableDatas[i].amount){
+            this.$message({
+              message: '数据至少有一项不为空！',
+              type: 'warning'
+            });
+            canAdd = false;
+            break;
+          }
+        }
+        if(canAdd){
+          this.docData.evdenceList = this.tableDatas;
+          this.addVisible = false;
+        }
+    
     },
   //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {
@@ -527,7 +651,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      // this.printContent()
+      console.log(this.docData)
       this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态

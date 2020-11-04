@@ -43,6 +43,17 @@ export default  [
         component: () => import("@/page/lawSupervise/supervisePage/kshjg/amap"),
       },
       {
+        //执法监管
+        path: '/guiZhouMap',
+        name: 'gui_zhou_map',
+        meta: {
+          title: "贵州可视化地图",
+          oneTab:true,
+          keepAlive: true
+        },
+        component: () => import("@/page/lawSupervise/supervisePage/kshjg/gzMap"),
+      },
+      {
         //称重数据手工同步
         path: '/weightDataSync',
         name: 'weightDataSync',

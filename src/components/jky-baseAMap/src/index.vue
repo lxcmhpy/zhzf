@@ -152,7 +152,9 @@ export default {
 
 <style lang="scss">
 .jky-baseAMap {
-  width: 100%;
+  width: 75%;
   height: 100%;
+  background: white !important;
+  float: right;
 }
 </style>

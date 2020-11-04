@@ -90,9 +90,10 @@ export default {
     //获取待我审批的数据
     getMyApprovalCase(searchData) {
       let data = searchData;
+      console.log('searchData',data)
       data.flag = 4;
       data.userId = iLocalStroage.gets("userInfo").id;
-      data.current = this.currentPage;
+      data.current = data.resetCurrent ? data.resetCurrent : this.currentPage;
       data.size = this.pageSize;
       this.getCaseList(data);
     },
@@ -100,12 +101,18 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
+      if(this.$refs.caseListSearch.caseSearchForm){
+        this.$refs.caseListSearch.caseSearchForm.resetCurrent = 0
+      }
       this.getMyApprovalCase(this.$refs.caseListSearch.caseSearchForm);
 
     },
     //更换页码
     handlePageSizeChange(val) {
       this.currentPage = val;
+      if(this.$refs.caseListSearch.caseSearchForm){
+        this.$refs.caseListSearch.caseSearchForm.resetCurrent = 0
+      }
       this.getMyApprovalCase(this.$refs.caseListSearch.caseSearchForm);
     },
     //展开

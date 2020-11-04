@@ -25,12 +25,60 @@ export default [
         component: () => import("@/page/caseHandle/case/siChuan/form/transfer_SC")
     },
     {
-    path: "/evidenceRegApprovalForm_SC",
-    name: "case_handle_evidenceRegApprovalForm_SC",
-    meta: {
-        title: "证据登记保存审批表-四川"
+      path: "/evidenceRegApprovalForm_SC",
+      name: "case_handle_evidenceRegApprovalForm_SC",
+      meta: {
+          title: "证据登记保存审批表-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/evidenceRegApprovalForm_SC")
     },
-    component: () => import("@/page/caseHandle/case/siChuan/doc/evidenceRegApprovalForm_SC")
+    {
+      path: "/importantCaseTeamDissDoc_SC",
+      name: "case_handle_importantCaseTeamDissDoc_SC",
+      meta: {
+          title: "重大案件集体讨论记录"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/importantCaseTeamDissDoc_SC")
+    },
+    {
+      path: "/importantCaseCheckOpinion_SC",
+      name: "case_handle_importantCaseCheckOpinion_SC",
+      meta: {
+          title: "重大行政处罚法制审核意见书"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/importantCaseCheckOpinion_SC")
+    },
+    {
+      path: "/partyRightsForm_SC",
+      name: "case_handle_partyRightsForm_SC",
+      meta: {
+        title: "当事人权利-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/partyRightsForm_SC")
+    },
+    {
+      path: "/PenaltyExecutionForm_SC",
+      name: "case_handle_PenaltyExecutionForm_SC",
+      meta: {
+        title: "决定执行-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/PenaltyExecutionForm_SC")
+    },
+    {
+      path: "/remindLetterDoc_SC",
+      name: "case_handle_remindLetterDoc_SC",
+      meta: {
+        title: "催告书-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/remindLetterDoc_SC")
+    },
+    {
+      path: "/forceExecute_SC",
+      name: "case_handle_forceExecute_SC",
+      meta: {
+        title: "强制执行-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/forceExecuteForm_SC")
     },
     {
       path: "/adminCoerciveMeasureApproval_SC",
