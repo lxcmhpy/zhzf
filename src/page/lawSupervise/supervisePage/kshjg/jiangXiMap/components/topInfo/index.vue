@@ -16,7 +16,6 @@
 import Dialog from "./dialog.vue";
 import { findData, findById } from "@/api/eventManage";
 import { getOrganTree } from "@/api/lawSupervise.js";
-import iLocalStroage from '@/common/js/localStroage';
 export default {
   components: {
     Dialog
@@ -32,7 +31,6 @@ export default {
      */
     handleDialog(id) {
       event.stopPropagation()
-      console.log('askdnklansdjanskj')
       // 打开弹窗
       this.$refs.dialog.dialogFormVisible = true
       // 获取详情数据
@@ -74,44 +72,44 @@ export default {
           this.$refs.dialog.form[key] = data[key]
         })
         if(data.disposeOrgan){
-            this.getPerson(data.disposeOrgan)
+          this.getPerson(data.disposeOrgan)
         }
         if(data.eventFileDataUp.length > 0) {
           data.eventFileDataUp.map(item => {
             this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
-                item.url = res
-                this.$refs.dialog.eventFileDataUp.push(item)
+              item.url = res
+              this.$refs.dialog.eventFileDataUp.push(item)
             });
           })
         }
         if(data.eventFileDataDown.length > 0) {
           data.eventFileDataDown.map(item => {
             this.$util.com_getZfjgFileStream(item.storageId).then(res=>{
-                item.url = res
-                this.$refs.dialog.eventFileDataDown.push(item)
+              item.url = res
+              this.$refs.dialog.eventFileDataDown.push(item)
             });
           })
         }
       })
     },
     getPerson(organId){
-        let param = {
-            organId: organId,
-            type: 0
-          }
-          getOrganTree(param).then(res => {
-            if(res.code === 200) {
-              return res.data
-            } else {
-              throw new Error("getOrganTree()::::::接口数据错误")
-            }
-          }).then(data => {
-            this.$refs.dialog.peopleOptions = data.map(item => {
-              item.label = item.nickName
-              item.value = item.id
-              return item
-            })
-          })
+      let param = {
+        organId: organId,
+        type: 0
+      }
+      getOrganTree(param).then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("getOrganTree()::::::接口数据错误")
+        }
+      }).then(data => {
+        this.$refs.dialog.peopleOptions = data.map(item => {
+          item.label = item.nickName
+          item.value = item.id
+          return item
+        })
+      })
     },
   },
   created() {
