@@ -374,11 +374,12 @@ export function deleteFile(id) {
         cancelToken: setCancelSource()
     });
 }
-export function confirmUpload(id) {
+export function confirmUpload(data) {
     return request({
-        url: "/pykh/file/confirmUpload/" + id,
-        method: "get",
+        url: "/pykh/file/confirmUpload/",
+        method: "post",
         showloading: false,
+        data:data,
         baseUrlType: "CAPTCHA_HOST",
         cancelToken: setCancelSource()
     });
