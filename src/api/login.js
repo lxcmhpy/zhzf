@@ -102,7 +102,7 @@ export function getCurrentUserApi() {
   return request({
     url: "/system/sys/user/findCurrentUser",
     method: "get",
-    showloading: false,
+    showloading: true,
     loadingType:'loadFull',
     cancelToken: setCancelSource()
 
