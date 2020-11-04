@@ -664,37 +664,45 @@ export default {
       }
       let obtaineEvidenceFormItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_obtaineEvidenceForm")
       if(showCY){ //抽样取证
-        if(this.docTableDatas.indexOf(obtaineEvidenceFormItem) ==-1)
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_obtaineEvidenceForm");
+        if(index1 ==-1)
         this.docTableDatas.push(obtaineEvidenceFormItem)
       }else{
-        if(this.docTableDatas.indexOf(obtaineEvidenceFormItem) !=-1)
-        this.docTableDatas.splice(this.docTableDatas.indexOf(obtaineEvidenceFormItem),1);
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_obtaineEvidenceForm");
+        if(index1 !=-1)
+        this.docTableDatas.splice(index1,1);
       }
       console.log('this.docTableDatas', this.docTableDatas)
       let evidenceListDocItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_evidenceListDoc")
       // 还有一个审批表
       if(showBCZJ){ //抽样取证
-        if(this.docTableDatas.indexOf(evidenceListDocItem) ==-1)
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceListDoc");
+        if(index1 ==-1)
         this.docTableDatas.push(evidenceListDocItem)
       }else{
-        if(this.docTableDatas.indexOf(evidenceListDocItem) !=-1)
-        this.docTableDatas.splice(this.docTableDatas.indexOf(evidenceListDocItem),1);
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceListDoc");
+        if(index1 !=-1)
+        this.docTableDatas.splice(index1,1);
       }
       let deleteEvidenceItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_deleteEvidence")
       if(showJCZJ){ //抽样取证
-        if(this.docTableDatas.indexOf(deleteEvidenceItem) ==-1)
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_deleteEvidence");
+        if(index1 ==-1)
         this.docTableDatas.push(deleteEvidenceItem)
       }else{
-        if(this.docTableDatas.indexOf(deleteEvidenceItem) !=-1)
-        this.docTableDatas.splice(this.docTableDatas.indexOf(deleteEvidenceItem),1);
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_deleteEvidence");
+        if(index1 !=-1)
+        this.docTableDatas.splice(index1,1);
       }
       let importantCaseTeamDissDocItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_importantCaseTeamDissDoc")
       if(showZDAJ){ //抽样取证
-        if(this.docTableDatas.indexOf(importantCaseTeamDissDocItem) ==-1)
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc");
+        if(index1 ==-1)
         this.docTableDatas.push(importantCaseTeamDissDocItem)
       }else{
-        if(this.docTableDatas.indexOf(importantCaseTeamDissDocItem) !=-1)
-        this.docTableDatas.splice(this.docTableDatas.indexOf(importantCaseTeamDissDocItem),1);
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc");
+        if(index1 !=-1)
+        this.docTableDatas.splice(index1,1);
       }
     },
     changeFilterDoc(valArr){
