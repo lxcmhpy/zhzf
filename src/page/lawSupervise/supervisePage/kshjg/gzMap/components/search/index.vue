@@ -326,23 +326,10 @@ export default {
 </script>
 
 <style lang="scss">
-.participants_table{
-  .openSel{
-    display: flex;
-    margin-top: 5px;
-    justify-content: space-around;
-  }
-  // .clickImg{
-  //   margin-left: 45px;
-  // }
-  .TreeWord{
-    margin-left: 90px;
-  }
-}
 .gzMap-search {
     position: absolute;
     top: 40px;
-    left: 30px;
+    left: 400px;
     width: 369px;
   .input-with-select {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);

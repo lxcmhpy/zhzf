@@ -1,12 +1,12 @@
 <template>
   <div class="leftDrawer">
-    <div class="drawerBackground" @click="drawer = true" type="primary">
+    <!-- <div class="drawerBackground" @click="drawer = true" type="primary">
       <i class="el-icon-arrow-left" />
-    </div>
-    <el-drawer
+    </div> -->
+    <!-- <el-drawer
        :direction="direction"
       :visible.sync="drawer"
-      :with-header="false">
+      :with-header="false"> -->
       <p class="title">选择参会人员</p>
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="群组" name="first">
@@ -21,6 +21,8 @@
             :data="tableData"
             :header-cell-style="{'text-align':'center'}"
              @selection-change="handleSelectionChange"
+             border
+             height="200"
             style="width: 100%">
              <el-table-column
                 type="selection"
@@ -33,23 +35,21 @@
                     <div class="openSel">
                       <span class="TreeWord">{{ props.row.name }}</span>
                       <span class="clickImg">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u157.svg" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u120.svg" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u123.svg" 
-                        @click="selectP(props.row.name)" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u124.svg" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u122.svg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  @click="selectP(props.row.name)" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
                       </span>
                     </div>
                     <div class="openSel">
                       <span class="TreeWord">{{ props.row.name }}</span>
-                       <span class="clickImg">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u157.svg" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u120.svg" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u123.svg" 
-                        @click="selectP(props.row.name)" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u124.svg" alt="">
-                        <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u122.svg" alt="">
+                      <span class="clickImg">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  @click="selectP(props.row.name)" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
                       </span>
                     </div>
                   </div>
@@ -66,13 +66,18 @@
               label="操作"
              >
               <template slot-scope="scope">
-                <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u157.svg" alt="">
-                <span class="videoImg">
+                <div class="operationImg">
+                  <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
+                  <img src="/static/images/img/lawSupervise/gzMapLeftD/audio.jpg" alt="">
+                  <img src="/static/images/img/lawSupervise/gzMapLeftD/del.jpg" alt="">
+                </div>
+               
+                <!-- <span class="videoImg">
                     <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u152.svg" alt="">
                 </span>
                 <span class="videoImg">
                     <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u147.png" alt="">
-                </span>
+                </span> -->
               </template>
             </el-table-column>
           </el-table>
@@ -84,37 +89,37 @@
             <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
           </el-input>
         </div>
-        <el-tree
-          :data="data"
-          show-checkbox
-          node-key="label"
-          ref="tree"
-          highlight-current
-          :props="defaultProps">
-        </el-tree>
-        <div class="bottomBtn">
-          <div>
-            <el-button type="primary" plain  @click="getCheckedKeys">确认</el-button>
-          </div>
-          <div>
-            <el-button type="primary" plain  @click="resetChecked">重选</el-button>
+        <div class="treeT">
+          <el-tree
+            :data="data"
+            show-checkbox
+            node-key="label"
+            ref="tree"
+            highlight-current
+            :props="defaultProps">
+          </el-tree>
+        </div>
+        <div>
+          <div class="bottomBtn1">
+            <div>
+              <el-button type="primary" size="mini"   @click="getCheckedKeys">确认</el-button>
+            </div>
+            <div class="lastBtn">
+              <el-button type="primary" size="mini"  @click="resetChecked">重选</el-button>
+            </div>
           </div>
         </div>
       </el-tab-pane>
       </el-tabs>
       <div>
         <p class="title">已选择人员</p>
-        <div v-show="flag" v-for="(item,index) in selectedArrQ" :key="index+1" >
-          {{item}}
-          <span @click="delPQ(item)">
-               <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u110.svg" alt="">
-          </span>
-        </div>
-        <div v-show="!flag" v-for="(item,index) in selectedArrT" :key="index+12" >
-          {{item}}
-          <span @click="delPT(item)">
-              <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u110.svg" alt="">
-          </span>
+        <div class="selectedBox">
+          <div class="selected"  v-for="(item,index) in selectedArrQ" :key="index+1" >
+            {{item}}
+            <span @click="delPQ(item)">
+                <img src="/static/images/img/lawSupervise/gzMapLeftD/del3.jpg" alt="">
+            </span>
+          </div>
         </div>
       </div>
       <div class="bottomBtn">
@@ -125,7 +130,7 @@
           <el-button type="primary" plain>发起会商</el-button>
         </div>
       </div>
-    </el-drawer>
+    <!-- </el-drawer> -->
     
 
     <info-order ref="orderInfo" :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
@@ -182,8 +187,6 @@ export default {
 
       inforVisible: false,
       direction: 'ltr',
-      drawer: false,
-      flag:true,
       activeName: 'first',
       input:'',
       inputModel: "",
@@ -211,11 +214,23 @@ export default {
     // 确认
     getCheckedKeys(){
       this.selectedArrT = this.$refs.tree.getCheckedKeys()
+      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
+      console.log(this.$refs.tree.getCheckedKeys())
+      for (let i = 0; i < this.selectedArrT.length; i++) {
+        this.selectedArrQ.push(this.selectedArrT[i])
+      }
+      this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 重选
     resetChecked(){
-      this.selectedArrT = []
-      this.$refs.tree.setCheckedKeys([]);
+        for (let j = 0; j < this.selectedArrQ.length; j++) {
+          for (let i = 0; i < this.selectedArrT.length; i++) {
+            if(this.selectedArrQ[j] == this.selectedArrT[i]){
+              this.selectedArrQ.splice(j,1)
+            }
+          }
+        }
+       this.$refs.tree.setCheckedKeys([]);
     },
     //创建群组
     addGroup(){
@@ -234,25 +249,18 @@ export default {
         }
       }
     },
-    delPT(val){
-      for (let i = 0; i <  this.selectedArrT.length; i++) {
-         if(val == this.selectedArrT[i]){
-           this.selectedArrT.splice(i,1)
-        }
-      }
-    },
     handleClick(tab, event) {
-      if(tab.label == "通讯录"){
-        this.flag = false
-      }else{
-        this.flag = true
-      }
         console.log(tab, event);
     },
     handleSelectionChange(val){
         for (let i = 0; i < val.length; i++) {
           this.selectedArrQ.push(val[i].name)
         }
+        this.selectedArrQ = this.unique(this.selectedArrQ)
+    },
+    // 去重
+    unique(arr) {
+        return Array.from(new Set(arr));
     },
 },
 
@@ -261,12 +269,18 @@ export default {
 
 <style lang="scss">
 .leftDrawer {
-  position: absolute;
-  top: 50px;
+  width: 25%;
+  background:white;
   box-sizing: border-box;
+  margin-top: 29px;
+  height: 100%;
   .title{
     font-size: 18px;
     margin: 10px 0;
+    font-weight: bold;
+    background: #f6f5fa;
+    font-size: 24px;
+    padding: 5px;
   }
   .drawerBackground{
     transform: rotate(180deg); 
@@ -277,6 +291,15 @@ export default {
     align-items: center;
     background: url('/static/images/img/lawSupervise/btn_norshouqi2.png') no-repeat;
     background-size:cover;
+  }
+  .selectedBox{
+    overflow: auto;
+    height: 155px;
+  }
+  .treeT{
+    height: 197px;
+    overflow: auto;
+    margin-top: 10px;
   }
   .input-with-select {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
@@ -301,23 +324,46 @@ export default {
   .bottomBtn{
     display: flex;
     justify-content:space-around;
-    margin-top: 20px;
+    margin: 12px 0px;
+  }
+  .bottomBtn1{
+     display: flex;
+     justify-content: center;
+     .lastBtn{
+        margin-left: 20px;
+     }
   }
     .participants_table{
+      margin: 12px 0px;
         .openSel{
             display: flex;
-            margin-top: 5px;
+            margin: 11px 0px;
             justify-content: space-around;
         }
-        // .clickImg{
-        //   margin-left: 45px;
-        // }
+        .clickImg{
+          img{
+            margin-right: 5px;
+          }
+          margin-left: 45px;
+        }
         .TreeWord{
-            margin-left: 90px;
+            margin-left: 110px;
+        }
+        .operationImg{
+          img{
+            margin-right: 10px;
+          }
         }
     }
     .videoImg img{
         width: 8%;
+    }
+    .selected{
+      margin: 15px 0 15px 30px;
+      img{
+        margin-left: 25px;
+        width: 5%;
+      }
     }
 }
 </style>
