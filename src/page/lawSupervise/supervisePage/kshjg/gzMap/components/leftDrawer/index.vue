@@ -100,12 +100,12 @@
           </el-tree>
         </div>
         <div>
-          <div class="bottomBtn">
+          <div class="bottomBtn1">
             <div>
-              <el-button type="primary" plain  @click="getCheckedKeys">确认</el-button>
+              <el-button type="primary" size="mini"   @click="getCheckedKeys">确认</el-button>
             </div>
-            <div>
-              <el-button type="primary" plain  @click="resetChecked">重选</el-button>
+            <div class="lastBtn">
+              <el-button type="primary" size="mini"  @click="resetChecked">重选</el-button>
             </div>
           </div>
         </div>
@@ -114,15 +114,9 @@
       <div>
         <p class="title">已选择人员</p>
         <div class="selectedBox">
-          <div class="selected" v-show="flag" v-for="(item,index) in selectedArrQ" :key="index+1" >
+          <div class="selected"  v-for="(item,index) in selectedArrQ" :key="index+1" >
             {{item}}
             <span @click="delPQ(item)">
-                <img src="/static/images/img/lawSupervise/gzMapLeftD/del3.jpg" alt="">
-            </span>
-          </div>
-          <div class="selected" v-show="!flag" v-for="(item,index) in selectedArrT" :key="index+12" >
-            {{item}}
-            <span @click="delPT(item)">
                 <img src="/static/images/img/lawSupervise/gzMapLeftD/del3.jpg" alt="">
             </span>
           </div>
@@ -193,8 +187,6 @@ export default {
 
       inforVisible: false,
       direction: 'ltr',
-      drawer: false,
-      flag:true,
       activeName: 'first',
       input:'',
       inputModel: "",
@@ -222,11 +214,23 @@ export default {
     // 确认
     getCheckedKeys(){
       this.selectedArrT = this.$refs.tree.getCheckedKeys()
+      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
+      console.log(this.$refs.tree.getCheckedKeys())
+      for (let i = 0; i < this.selectedArrT.length; i++) {
+        this.selectedArrQ.push(this.selectedArrT[i])
+      }
+      this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 重选
     resetChecked(){
-      this.selectedArrT = []
-      this.$refs.tree.setCheckedKeys([]);
+        for (let j = 0; j < this.selectedArrQ.length; j++) {
+          for (let i = 0; i < this.selectedArrT.length; i++) {
+            if(this.selectedArrQ[j] == this.selectedArrT[i]){
+              this.selectedArrQ.splice(j,1)
+            }
+          }
+        }
+       this.$refs.tree.setCheckedKeys([]);
     },
     //创建群组
     addGroup(){
@@ -245,25 +249,18 @@ export default {
         }
       }
     },
-    delPT(val){
-      for (let i = 0; i <  this.selectedArrT.length; i++) {
-         if(val == this.selectedArrT[i]){
-           this.selectedArrT.splice(i,1)
-        }
-      }
-    },
     handleClick(tab, event) {
-      if(tab.label == "通讯录"){
-        this.flag = false
-      }else{
-        this.flag = true
-      }
         console.log(tab, event);
     },
     handleSelectionChange(val){
         for (let i = 0; i < val.length; i++) {
           this.selectedArrQ.push(val[i].name)
         }
+        this.selectedArrQ = this.unique(this.selectedArrQ)
+    },
+    // 去重
+    unique(arr) {
+        return Array.from(new Set(arr));
     },
 },
 
@@ -300,7 +297,7 @@ export default {
     height: 155px;
   }
   .treeT{
-    height: 150px;
+    height: 197px;
     overflow: auto;
     margin-top: 10px;
   }
@@ -329,11 +326,18 @@ export default {
     justify-content:space-around;
     margin: 12px 0px;
   }
+  .bottomBtn1{
+     display: flex;
+     justify-content: center;
+     .lastBtn{
+        margin-left: 20px;
+     }
+  }
     .participants_table{
       margin: 12px 0px;
         .openSel{
             display: flex;
-            margin-top: 5px 0px;
+            margin: 11px 0px;
             justify-content: space-around;
         }
         .clickImg{
@@ -343,7 +347,7 @@ export default {
           margin-left: 45px;
         }
         .TreeWord{
-            margin-left: 55px;
+            margin-left: 110px;
         }
         .operationImg{
           img{

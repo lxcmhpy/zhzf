@@ -20,9 +20,9 @@ import {BASIC_DATA_SC} from '@/common/js/BASIC_DATA_SC.js';
 import { messageOne } from '@/common/js/resetMessage';
 import { mixinsCommon } from "@/common/js/mixinsCommon";
 
-// if (!global._babelPolyfill) {
-// 	require('babel-polyfill');
-// }
+/* if (!global._babelPolyfill) {
+	require('babel-polyfill');
+} */
 
 Vue.use(ElementUI);
 Vue.use(hasPermission);
