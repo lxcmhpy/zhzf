@@ -32,6 +32,38 @@ export default [
     },
     component: () => import("@/page/caseHandle/case/siChuan/doc/evidenceRegApprovalForm_SC")
     },
+    {
+      path: "/adminCoerciveMeasureApproval_SC",
+      name: "case_handle_adminCoerciveMeasureApproval_SC",
+      meta: {
+        title: "行政强制措施审批表-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/adminCoerciveMeasureApproval_SC.vue")
+    },
+    {
+      path: "/prolongAdminCoerciveMeasureApproval_SC",
+      name: "case_handle_prolongAdminCoerciveMeasureApproval_SC",
+      meta: {
+        title: "延长行政强制措施审批表-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/prolongAdminCoerciveMeasureApproval_SC.vue")
+    },
+    {
+      path: "/removeAdminCoerciveMeasureApproval_SC",
+      name: "case_handle_removeAdminCoerciveMeasureApproval_SC",
+      meta: {
+        title: "解除行政强制措施审批表-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/removeAdminCoerciveMeasureApproval_SC.vue")
+    },
+    {
+      path: "/enforceDecideApprovalForm_SC",
+      name: "case_handle_enforceDecideApprovalForm_SC",
+      meta: {
+        title: "行政强制执行审批表"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/enforceDecideApprovalForm_SC.vue")
+    },
    
     
     
