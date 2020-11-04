@@ -179,7 +179,7 @@ let flowGraphData = {
       { id: "temp7", source: "temp3", target: "10", linkID: 'temp7', name: "", position: { x: 3, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       // { id: "temp17", source: "temp6", target: "4_3", linkID: 'temp17', name: "", position: { x: 2, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
-      { id: "4_2", source: "4_2", target: "8", linkID: BASIC_DATA_SYS.forceCorrect_caseLinktypeId, name: "撤销立案", linkName: 'case_handle_forceCorrect', docId: BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, position: { x: 4, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_07' } },
+      { id: "4_2", source: "4_2", target: "8", linkID: BASIC_DATA_SC.cancelCase_SC_caseLinktypeId, name: "撤销立案", linkName: 'case_handle_cancelCase_SC', docId: BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, position: { x: 4, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_07' } },
       // { id: "temp4_2_1", source: 'temp4_2_1', target: "temp4_2_2", linkID: 'temp4_2_1', name: "", position: { x: 2, y: 6.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       // { id: "temp4_2_2", source: 'temp4_2_2', target: "7_1", linkID: 'temp4_2_2', name: "", position: { x: 1, y: 6.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       { id: "4_3", source: "temp6", target: "temp9", linkID: BASIC_DATA_SYS.noPenalty_caseLinktypeId, name: "不予处罚", linkName: 'case_handle_noPenalty', position: { x: 2, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_09' } },
@@ -188,7 +188,7 @@ let flowGraphData = {
       { id: "temp8", source: 'temp8', target: "temp10", linkID: 'temp8', name: "", position: { x: 2.2, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       // { id: "temp9", source: 'temp8', target: "5", linkID: 'temp9', name: "", position: { x: 1, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       { id: "temp10", source: 'temp10', target: "temp11", linkID: 'temp10', name: "", position: { x: 4, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
-      { id: "temp11", source: 'temp10', target: "8", linkID: 'temp11', name: "", position: { x: 4, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      // { id: "temp11", source: 'temp10', target: "8", linkID: 'temp11', name: "", position: { x: 4, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
       
       
@@ -208,13 +208,13 @@ let flowGraphData = {
       { id: "6", source: '6', target: "7_1", linkID: BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId, name: "处罚决定", linkName: 'case_handle_punishDecisionDoc', docId: BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId, position: { x: 1, y: 5 }, itemStyleColor: "", attributes: { modularity_class: 'lct_11' } },
       { id: "7_1", source: '7_1', target: "temp7_1_1", linkID: BASIC_DATA_SC.penaltyExecution_SC_caseLinktypeId, name: "决定执行", linkName: 'case_handle_PenaltyExecutionForm_SC', position: { x: 1, y: 6 }, itemStyleColor: "", attributes: { modularity_class: 'lct_12' } },
       { id: "temp7_1_1", source: '7_1', target: "temp7_1_1", linkID: 'temp7_1_1', name: "", position: { x: 1, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
-      { id: "temp7_1_2", source: 'temp7_1_1', target: "temp7_1_2", linkID: 'temp7_1_2', name: "", position: { x: 2, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      { id: "temp7_1_2", source: 'temp7_1_1', target: "8", linkID: 'temp7_1_2', name: "", position: { x: 2, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
       { id: "11", source: '7_1', target: "7_2", linkID: '11', name: "", position: { x: 2, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
       { id: "7_2", source: '7_2', target: "temp7_1_2", linkID: BASIC_DATA_SC.forceExecute_SC_caseLinktypeId, name: "强制执行", linkName: 'case_handle_forceExecute_SC', position: { x: 2, y: 6 }, itemStyleColor: "", attributes: { modularity_class: 'lct_13' } },
-      { id: "temp7_2_1", source: 'temp7_1_2', target: "temp7_2_1", linkID: 'temp7_2_1', name: "", position: { x: 3, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
-      { id: "8", source: "temp7_2_1", target: "8", linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, name: "结案登记", linkName: 'case_handle_finishCaseReport', docId: BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, position: { x: 4, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'lct_14' } }
+      // { id: "temp7_2_1", source: 'temp7_1_2', target: "temp7_2_1", linkID: 'temp7_2_1', name: "", position: { x: 3, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      { id: "8", source: "8", target: "12", linkID: BASIC_DATA_SYS.finishCaseReport_caseLinktypeId, name: "结案登记", linkName: 'case_handle_finishCaseReport', docId: BASIC_DATA_SYS.finishCaseReport_huanjieAndDocId, position: { x: 4, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'lct_14' } }
     ],
     links: []
   },

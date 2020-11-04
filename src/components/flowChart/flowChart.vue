@@ -10,6 +10,9 @@
         </el-tooltip>
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
+        
+        <el-button type="primary" size="medium" v-if="showForceCorrect">责令改正</el-button>
+
         <el-button type="primary" size="medium" @click="linkBack" v-if="showLinkBackBtn">环节回退</el-button>
 
       </div>
@@ -67,6 +70,7 @@ export default {
       showAdminCoerciveMeasureBtn:false,
       currentFlow:'',
       showLinkBackBtn:false,  //环节回退按钮
+      showForceCorrect:false, //责令改正按钮
     }
   },
   mixins: [mixinGetCaseApiList],
@@ -108,7 +112,7 @@ export default {
           //是否显示解除（延长）强制措施按钮
           _this.showRemoveOrExtendBtn(res.data.completeLink);
           //是否显示行政强制措施按钮
-          if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){ //江西流程
+          if(this.currentFlow.data.flowUrl == 'commonGraphData_JX' || this.currentFlow.data.flowUrl == 'commonGraphData_SC'){ //江西流程 四川流程
             _this.showAdminCoerciveMeasureBtnByFlow(res.data);
           }
           //显示强制时间
@@ -620,7 +624,7 @@ export default {
       if(this.currentFlow.data.flowUrl == 'commonGraphData' || this.currentFlow.data.flowUrl == 'commonGraphData_QH'){
         let updataLinkData = {
           caseId:this.caseId,
-          linkTypeId:this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
+          linkTypeId: this.BASIC_DATA_SYS.removeOrPrelong_caseLinktypeId
         }
         try{
           await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
@@ -753,7 +757,12 @@ export default {
       //   }
       // })
 
-      if(hasEstablish && !hasFinishCaseReport) this.showAdminCoerciveMeasureBtn = true;
+      if(hasEstablish && !hasFinishCaseReport) {
+        this.showAdminCoerciveMeasureBtn = true;
+        if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+          this.showForceCorrect = true;
+        }
+      }
     },
     //获取强制措施时间
     getMeasuerTime() {
@@ -831,14 +840,18 @@ export default {
       if(this.IsLawEnforcementSupervision) return
       let updataLinkData = {
           caseId:this.caseId,
-          linkTypeId:this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId
+          linkTypeId:this.currentFlow.data.flowUrl == 'commonGraphData_JX' ? this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId : this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId
       }
        try{
         await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
       }catch(err){
         this.$message('更改流程图状态失败！')
       }
-      this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
+      if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
+        this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+        this.$router.push({name:'case_handle_adminCoerciveMeasure_SC',params:{isComplete:this.showREBtn}})
+      }
     },
     //显示环节回退弹窗
     linkBack(){
