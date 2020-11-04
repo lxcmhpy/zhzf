@@ -159,7 +159,7 @@ export default {
       // console.log(param);
       var fd = new FormData();
       fd.append("file", param.file);
-      fd.append("category", "行政检查");
+      fd.append("category", "行政检查"); 
       fd.append("fileName", param.file.name);
       fd.append("status", "图片"); //传记录id
       fd.append("caseId", this.recordId); //传记录id

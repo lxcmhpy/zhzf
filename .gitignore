@@ -18,3 +18,4 @@ selenium-debug.log
 dist/*
 package-lock.json
 report.*.*.*.*.*.json
+debug.log

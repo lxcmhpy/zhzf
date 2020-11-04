@@ -546,9 +546,9 @@
           <el-form-item
             label="折叠展示"
             class="modle-radio chose-mine"
-            prop="fold"
+            prop="isOpen"
           >
-            <el-radio-group v-model="formData.fold">
+            <el-radio-group v-model="formData.isOpen">
               <el-radio
                 label="是"
                 value="是"
@@ -917,7 +917,7 @@ export default {
         documentFill: "", //文书填报
         releventRecords: "", //相关记录
         operateRecords: "", //操作记录
-        fold: "", //折叠展示
+        isOpen: "", //折叠展示
         documentNames: "", //文书的名字合集
         documentNameIds: "", //文书id合集
         vehicleShipIdFlag: false, //车辆字段
@@ -1031,12 +1031,14 @@ export default {
             if (it.field === "party") {
               // alert('aparty')
               // debugger
-              let func = JSON.parse(it.mobileFunc);
-              func[0]["isChecked"] =
-                this.mobileFuncListParty[0] === "1" ? "1" : "0";
-              func[1]["isChecked"] =
-                this.mobileFuncListParty[1] === "2" ? "1" : "0";
-              it.mobileFunc = JSON.stringify(func);
+              if(it.mobileFunc){
+                let func = JSON.parse(it.mobileFunc);
+                func[0]["isChecked"] =
+                  this.mobileFuncListParty[0] === "1" ? "1" : "0";
+                func[1]["isChecked"] =
+                  this.mobileFuncListParty[1] === "2" ? "1" : "0";
+                it.mobileFunc = JSON.stringify(func);
+              }
             }
           });
         }
@@ -1044,10 +1046,13 @@ export default {
           item.fieldList.forEach((it) => {
             if (it.field === "vehicleShipId") {
               // debugger
-              let func = JSON.parse(it.mobileFunc);
-              func[0]["isChecked"] =
-                this.mobileFuncListCar[0] === "1" ? "1" : "0";
-              it.mobileFunc = JSON.stringify(func);
+              if(it.mobileFunc){
+                let func = JSON.parse(it.mobileFunc);
+                func[0]["isChecked"] =
+                  this.mobileFuncListCar[0] === "1" ? "1" : "0";
+                it.mobileFunc = JSON.stringify(func);
+              }
+              
             }
           });
         }
@@ -1194,8 +1199,8 @@ export default {
                 }
 
                 // 回显文书
-                console.log(_this.formData.documentNameIds);
-
+                console.log('回显文书',_this.formData.documentNameIds);
+debugger
                 _this.multipleSelection = _this.formData.documentNameIds
                   ? _this.formData.documentNameIds.split(",")
                   : [];
@@ -1749,6 +1754,8 @@ export default {
 
     //选择文书列表变化
     handleSelectionChange(val) {
+    console.log("handleSelectionChange -> val", val)
+      
       this.multipleSelection = [];
       this.multipleSelectionId = [];
       val.forEach((element) => {
@@ -1812,6 +1819,7 @@ export default {
       getDocumentNameList().then(
         (res) => {
           if (res.code == 200) {
+            debugger
             _this.fileList = res.data;
             // debugger
           } else {
@@ -1843,9 +1851,9 @@ export default {
         : (this.formData.operateRecords = e);
     },
     clickitem4(e) {
-      e === this.formData.fold
-        ? (this.formData.fold = "")
-        : (this.formData.fold = e);
+      e === this.formData.isOpen
+        ? (this.formData.isOpen = "")
+        : (this.formData.isOpen = e);
     },
     changeScopeOfUse() {
       let _this = this;
