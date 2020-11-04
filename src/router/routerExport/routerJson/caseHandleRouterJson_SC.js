@@ -80,6 +80,22 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/siChuan/form/forceExecuteForm_SC")
     },
+    {
+      path: "/cancelCase_SC",
+      name: "case_handle_cancelCase_SC",
+      meta: {
+        title: "撤销立案-四川"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/cancelCase_SC")
+    },
+    {
+      path: "/adminCoerciveMeasure_SC",
+      name: "case_handle_adminCoerciveMeasure_SC",
+      meta: {
+        title: "行政强制措施-四川",
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/adminCoerciveMeasure_SC.vue")
+    },
    
     
     
