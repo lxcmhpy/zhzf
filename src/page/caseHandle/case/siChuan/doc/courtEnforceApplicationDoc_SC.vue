@@ -120,7 +120,7 @@
         </div>
       </el-form>
     </div>
-    <casePageFloatBtns :pageDomId="'courtEnforceApplication-print'" :formOrDocData="formOrDocData" @saveData="saveData" @backHuanjie="submitData" @submitData="submitData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'courtEnforceApplication-print'" :formOrDocData="formOrDocData" @saveData="saveData" ></casePageFloatBtns>
 
 
   </div>
@@ -222,17 +222,7 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      if(this.docData.makeDate==null){
-        this.docData.makeDate='';
-      }
       this.com_addDocData(handleType, "courtEnforceApplicationForm");
-    },
-    //提交
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
     },
     //是否是完成状态
     isOverStatus() {
