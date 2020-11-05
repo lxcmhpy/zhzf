@@ -133,7 +133,7 @@
     <Dialog :title="title" :config="config" ref="dialog" />
 
     <!-- 指派弹窗 -->
-    <DialogAssigned :config="config" ref="dialogAssigned" />
+    <DialogAssigned :config="config" ref="dialogAssigned" @successDialogAssigned="successDialogAssigned" @handleOpen="handleOpen" />
   </div>
 </template>
 
@@ -174,6 +174,20 @@ export default {
     }
   },
   methods: {
+    /**
+     * 指派成功时的回调
+     */
+    successDialogAssigned() {
+      this.initPage()
+    },
+
+    /**
+     * 打开指派弹窗时的回调, 获取机构数据
+     */
+    handleOpen() {
+      this.getTree()
+    },
+
     /**
      * 页面初始化
      */
@@ -299,7 +313,6 @@ export default {
   },
   created() {
     this.initPage()
-    this.getTree()
   }
 }
 </script>

@@ -105,7 +105,7 @@
         methods: {
             async findStaffOrCaseFile() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileList=[];
                 this.fileListOne=[];
                 this.fileListTwo=[];
@@ -124,7 +124,7 @@
             },
             async findStaffOrCaseFile1() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileList2=[];
                 this.fileListFour=[];
                 this.fileListThree=[];
@@ -144,7 +144,7 @@
             },
             async findStaffOrCaseFileOne() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileListOne=[];
                 this.fileListTwo=[];
                 for (let i = 0; i < list.length; i++) {
@@ -162,7 +162,7 @@
             },
             async findStaffOrCaseFileTwo() {
                 let fileObj = await findStaffOrCaseFile();
-                let list = fileObj.data.fileList;
+                let list = fileObj.data;
                 this.fileListThree=[];
                 this.fileListFour=[];
                 for (let i = 0; i < list.length; i++) {

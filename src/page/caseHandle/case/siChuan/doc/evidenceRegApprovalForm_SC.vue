@@ -24,7 +24,7 @@
               </el-form-item></td>
             <td rowspan="2" colspan="2">执法人员</td>
             <td colspan="2">
-              <el-form-item
+              <!-- <el-form-item
                 prop="partyOne"
                 :rules="fieldRules('partyOne',propertyFeatures['partyOne'])"
               >
@@ -35,12 +35,31 @@
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyOne'])"
                 ></el-input>
-              </el-form-item>
+              </el-form-item> -->
+              <el-form-item
+                  prop="staff1"
+                  :rules="fieldRules('staff1',propertyFeatures['staff1'])"
+                >
+                  <el-select
+                    v-model="docData.staff1"
+                    prop="staff1"
+                    :maxLength="maxLength"
+                    :disabled="fieldDisabled(propertyFeatures['staff1'])"
+                  >
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :value="item"
+                      :label="item"
+                      :disabled="docData.staff2==item"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
             </td>
           </tr>
           <tr>
             <td colspan="2">
-              <el-form-item
+              <!-- <el-form-item
                 prop="partyTwo"
                 :rules="fieldRules('partyTwo',propertyFeatures['partyTwo'])"
               >
@@ -51,7 +70,26 @@
                   :maxlength="nameLength"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partyTwo'])"
                 ></el-input>
-              </el-form-item>
+              </el-form-item> -->
+              <el-form-item
+                  prop="staff2"
+                  :rules="fieldRules('staff2',propertyFeatures['staff2'])"
+                >
+                  <el-select
+                    v-model="docData.staff2"
+                    :maxLength="maxLength"
+                    placeholder="请选择"
+                    :disabled="fieldDisabled(propertyFeatures['staff2'])"
+                  >
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :value="item"
+                      :label="item"
+                      :disabled="docData.staff1==item"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
             </td>
           </tr>
           <tr>
@@ -154,8 +192,8 @@
                   v-model="docData.partySex"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
                 >
-                  <el-option :value="0" label="男"></el-option>
-                  <el-option :value="1" label="女"></el-option>
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
             </td>
@@ -262,7 +300,7 @@
             </td>
           </tr>
           <tr></tr>
-          <tr>
+          <!-- <tr>
             <td rowspan="2">
               <p>实施证据登记保存理由</p>
             </td>
@@ -282,7 +320,7 @@
                 ></el-input>
               </el-form-item>
             </td>
-          </tr>
+          </tr> -->
           <tr></tr>
           <tr>
             <td :rowspan="docData.evdenceList.length==0?2:docData.evdenceList.length+1">
@@ -419,6 +457,7 @@ import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.
 import { validatePhone, validateIDNumber } from "@/common/js/validator";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
+import { findCaseAllBindPropertyApi } from "@/api/caseHandle";
 export default {
   components: {
     casePageFloatBtns
@@ -458,8 +497,8 @@ export default {
         basicSituation: "",
         reason: "",
         party:"",
-        partyOne:"",
-        partyTwo:"",
+        staff1: "",
+        staff2: "",
         detainGoods: "",
         days: "",
         startDate: "",
@@ -484,6 +523,7 @@ export default {
         status: "", //提交状态
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
+      staffList: [],
       rules: {
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
@@ -491,11 +531,11 @@ export default {
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" }
         ],
-        partyOne: [
-          { required: true, message: "执法人员1不能为空", trigger: "blur" }
+        staff1: [
+          { required: true, message: "执法人员不能为空", trigger: "blur" }
         ],
-        partyTwo: [
-          { required: true, message: "执法人员2不能为空", trigger: "blur" }
+        staff2: [
+          { required: true, message: "执法人员不能为空", trigger: "blur" }
         ],
         partyIdNo: [
           { required: true, message: "当事人身份证件号不能为空", trigger: "blur" },
@@ -675,19 +715,68 @@ export default {
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
     },
-    getDataAfter(){
-      let detainGoodsArr = JSON.parse(this.docData.detainGoods);
-      console.log('detainGoodsArr',detainGoodsArr);
-      let detainGoodsNameArr = [];
-      detainGoodsArr.forEach(item => {
-        detainGoodsNameArr.push(item.evidenceName);
-      });
-      this.docData.detainGoods = detainGoodsNameArr.join(' ');
-    }
+    getDataAfter() {
+      console.log( this.docData);
+      this.staffList = this.docData.staff.split(",");
+      this.docData.staff1 = this.docData.staff.split(",")[0];
+      if (this.staffList.length == 2) {
+        this.docData.staff2 = this.docData.staff.split(",")[1];
+        this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+      }
+      this.docData.readState =
+        this.docData.readState == "" ? [] : this.docData.readState;
+      let dailiData = {};
+      // if (this.docData.partyType == "1") {
+      //   //当事人类型为个人
+      //   dailiData = {
+      //     name: this.docData.party,
+      //     sex: this.docData.partySex,
+      //     zhengjianNumber: this.docData.partyIdNo,
+      //     relationWithCase: "当事人",
+      //     company: this.docData.partyUnitPosition,
+      //     position: this.docData.partyUnitPosition,
+      //     tel: this.docData.partyTel,
+      //     adress: this.docData.partyAddress,
+      //   };
+      //   this.originalDocData = JSON.parse(JSON.stringify(dailiData));
+      // } else if (this.docData.partyType == "2") {
+      //   //当事人类型为企业
+      //   dailiData = JSON.parse(this.docData.agentPartyEcertId)[0];
+      //   console.log("代理人信息", dailiData);
+      //   this.originalDocData = JSON.parse(JSON.stringify(dailiData));
+      // }
+      // //标识 1 有自动带入信息：当姓名的内容修改时，清空自动带入的其他指标内容；2 若无自动带入信息，则修改姓名时，其他指标不清空
+      // this.daiRuscenePeopelSex = dailiData.sex !== "" ? true : false;
+      // this.daiRuscenePeopelIdNo = dailiData.zhengjianNumber ? true : false;
+      // this.daiRuscenePeopeRelation = dailiData.relationWithCase ? true : false;
+      // this.daiRuscenePeopeUnitPosition =
+      //   dailiData.company || dailiData.position ? true : false;
+      // this.daiRuscenePeopeTel = dailiData.tel ? true : false;
+      // this.daiRuscenePeopeAddress = dailiData.adress ? true : false;
+      //this.setDataForScenePelple(true, dailiData);
+    },
+    //获取执法人员
+    getLawOfficer() {
+      let data = {
+        caseBasicInfoId: this.caseId,
+        typeId: this.$route.params.docId,
+      };
+      findCaseAllBindPropertyApi(data).then(
+        (res) => {
+          console.log(res);
+          let data2 = JSON.parse(res.data.propertyData);
+          this.staffList = data2.staff.split(",");
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus(); 
+    this.getLawOfficer();
   }
 };
 </script>
