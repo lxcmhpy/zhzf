@@ -1,6 +1,6 @@
 <template>
   <div class="print_box">
-    <div class="print_info" id="evidenceRegApprovalForm_print">
+    <div class="print_info" id="evidenceRegApprovalForm_SC_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">证据登记保存审批表</div>
         <div class="doc_number">案号：{{docData.caseNumber}}</div>
@@ -98,7 +98,7 @@
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partyAge"
-                :rules="fieldRules('partyAge',propertyFeatures['partyAge'],isParty)"
+                :rules="fieldRules('partyAge',propertyFeatures['partyAge'],'',isParty)"
               >
                 <el-input
                   type="textarea"
@@ -147,15 +147,15 @@
             <td colspan="2" class="color_DBE4EF">
               <el-form-item
                 prop="partySex"
-                :rules="fieldRules('partySex',propertyFeatures['partySex'],isParty)"
+                :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)"
               >
                 <el-select
                   placeholder="/"
                   v-model="docData.partySex"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
                 >
-                  <el-option :value="0" label="男"></el-option>
-                  <el-option :value="1" label="女"></el-option>
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
             </td>
@@ -262,7 +262,7 @@
             </td>
           </tr>
           <tr></tr>
-          <tr>
+          <!-- <tr>
             <td rowspan="2">
               <p>实施证据登记保存理由</p>
             </td>
@@ -282,7 +282,7 @@
                 ></el-input>
               </el-form-item>
             </td>
-          </tr>
+          </tr> -->
           <tr></tr>
           <tr>
             <td :rowspan="docData.evdenceList.length==0?2:docData.evdenceList.length+1">
@@ -344,6 +344,10 @@
                 <p>
                   <span v-if="docData.threeApproveTime">{{docData.threeApproveTime}}</span>
                   <span v-else>年 月 日</span>
+                  <!-- <el-form-item prop="makeDate" class="pdf_datapick">
+                    <el-date-picker @blur="starttime" class="big_error" v-model="docData.makeDate" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+                    </el-date-picker>
+                  </el-form-item> -->
                 </p>
               </div>
             </td>
@@ -404,7 +408,7 @@
       </div>
     </el-dialog>
     <casePageFloatBtns
-      :pageDomId="'evidenceRegApprovalForm_print'"
+      :pageDomId="'evidenceRegApprovalForm_SC_print'"
       :formOrDocData="formOrDocData"
       @saveData="saveData"
     ></casePageFloatBtns>
@@ -570,7 +574,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "evidenceRegApprovalForm_print"
+        pageDomId: "evidenceRegApprovalForm_SC_print"
       },
       approvalOver: false, //审核完成
       propertyFeatures: "",

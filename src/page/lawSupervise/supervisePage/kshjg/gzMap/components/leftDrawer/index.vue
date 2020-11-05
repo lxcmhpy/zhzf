@@ -18,9 +18,10 @@
         <div class="participants_table">
           <el-table
              ref="multipleTable"
-            :data="tableData"
+            :data="group_info"
             :header-cell-style="{'text-align':'center'}"
              @selection-change="handleSelectionChange"
+             @expand-change="zydescription"
              border
              height="200"
             style="width: 100%">
@@ -32,7 +33,17 @@
               <template slot-scope="props">
                 <el-form label-position="center" inline class="demo-table-expand">
                   <div class="openSelBig">
-                    <div class="openSel">
+                    <div class="openSel"  v-for="(item,index) in props.row.uids" :key="index+11">
+                      <span class="TreeWord">{{item.display_name}}</span>
+                      <span class="clickImg">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg"  @click="selectP(item)" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" @click="delNum( props.row,item)" alt="">
+                      </span>
+                    </div>
+                    <!-- <div class="openSel">
                       <span class="TreeWord">{{ props.row.name }}</span>
                       <span class="clickImg">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
@@ -41,17 +52,7 @@
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt="">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
                       </span>
-                    </div>
-                    <div class="openSel">
-                      <span class="TreeWord">{{ props.row.name }}</span>
-                      <span class="clickImg">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  @click="selectP(props.row.name)" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
-                      </span>
-                    </div>
+                    </div> -->
                   </div>
                 </el-form>
               </template>
@@ -59,7 +60,10 @@
             <el-table-column
               align="left"
               label="名称"
-              prop="name">
+              prop="tg_name">
+              <template slot-scope="scope">
+                <span>{{scope.row.tg_name}} ({{scope.row.uids.length}})</span>
+              </template>
             </el-table-column>
             <el-table-column
               align="center"
@@ -69,7 +73,7 @@
                 <div class="operationImg">
                   <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
                   <img src="/static/images/img/lawSupervise/gzMapLeftD/audio.jpg" alt="">
-                  <img src="/static/images/img/lawSupervise/gzMapLeftD/del.jpg" alt="">
+                  <img src="/static/images/img/lawSupervise/gzMapLeftD/del.jpg" alt="" @click="delGroup(scope.row)">
                 </div>
                
                 <!-- <span class="videoImg">
@@ -115,7 +119,7 @@
         <p class="title">已选择人员</p>
         <div class="selectedBox">
           <div class="selected"  v-for="(item,index) in selectedArrQ" :key="index+1" >
-            {{item}}
+            {{item.display_name}}
             <span @click="delPQ(item)">
                 <img src="/static/images/img/lawSupervise/gzMapLeftD/del3.jpg" alt="">
             </span>
@@ -133,15 +137,17 @@
     <!-- </el-drawer> -->
     
 
-    <info-order ref="orderInfo" :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
+    <info-order ref="orderInfo" :getLists='getLists' :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
   </div>
 </template>
 
 <script>
-import addGroup from "./addGroup"
+
+import addGroupA from "./addGroup"
 export default {
+  props: ['config','allUsers'],
   components: {
-    'info-order': addGroup,
+    'info-order': addGroupA,
   },
   data() {
     return {
@@ -193,23 +199,88 @@ export default {
       showCom: "",
       projectName: "",
       placeholder: "",
-      tableData: [{
-          name: '测试1',
-        }, {
-          name: '测试2',
-        }, {
-          name: '测试3',
-        }, {
-          name: '测试4',
-        }],
+      group_info: [],
       selectedArrQ:[],
       selectedArrT:[],
+      group_info:[],
+      user_info:[],
     }
+  },
+  watch: {
+    config(o, n){
+      this.group_info = o.group_info
+      console.log('group_info',this.group_info)
+    },
+    allUsers(o,n){
+      this.user_info = o.user_info
+      console.log('user_info',this.user_info)
+    }
+  },
+  created(){
+
+  },
+  mounted(){
   },
   methods: {
     // 搜索
+    //获取群组
+    getLists(){
+      this.getListData()
+      this.selectedArrQ = []
+    },
     handleSearch(){
 
+    },
+    getListData(){
+      this.$parent.req_user_profile()
+    },
+    // 获取群组下的人员
+    zydescription(data){
+        var users = []
+        let uidArr = data.uids
+        for (let i = 0; i < this.user_info.length; i++) {
+          for (let j = 0; j < uidArr.length; j++) {
+            if(this.user_info[i].uid == uidArr[j]){
+              users.push(this.user_info[i])
+            }
+          }
+        }
+        if(users.length > this.group_info.length && users.length !== 0){
+           for (let z = 0; z < users.length; z++) {
+              if(data.tgid == this.group_info[z].tgid){
+                this.group_info[z].uids = users
+              }
+            }
+        }else if(users.length < this.group_info.length && users.length !== 0) {
+          for (let z = 0; z <this.group_info.length; z++) {
+              if(data.tgid == this.group_info[z].tgid){
+                this.group_info[z].uids = users
+              }
+            }
+        }
+    },
+    // 删除群组
+    req_delete_group(tgid) {
+        websdk.request.groupRequest.deleteGroup(tgid, null, function (rsp) {
+            console.log('demo_req_delete_group result:{}', rsp);
+        }, 'demo_req_delete_group');
+    },
+    delGroup(row){
+      this.req_delete_group(row.tgid)
+      this.getListData()
+    },
+    // 删除组成员
+    req_remove_group_member(tgid,uid) {
+        websdk.request.groupRequest.removeGroupMember(tgid, uid, null, function (rsp) {
+            console.log('demo_req_remove_group_member result:{}', rsp);
+            //api_demo.req_grp_profile([global_data.param_tgid1]);
+        }, 'demo_req_remove_group_member');
+    },
+    delNum(row,item){
+      var uidArr = []
+      uidArr.push(item.uid)
+      this.req_remove_group_member(row.tgid,uidArr)
+       this.getListData()
     },
     // 确认
     getCheckedKeys(){
@@ -232,19 +303,19 @@ export default {
         }
        this.$refs.tree.setCheckedKeys([]);
     },
-    //创建群组
     addGroup(){
         this.inforVisible = true
-      //  this.$refs.orderInfo.getAll(this.infoData.tagIds)
+        this.$refs.orderInfo.getGruops(this.selectedArrQ)
     },
     //添加人员
     selectP(val){
       this.selectedArrQ.push(val)
+      this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     //删除人员
     delPQ(val){
       for (let i = 0; i <  this.selectedArrQ.length; i++) {
-         if(val == this.selectedArrQ[i]){
+         if(val.uid == this.selectedArrQ[i].uid){
            this.selectedArrQ.splice(i,1)
         }
       }

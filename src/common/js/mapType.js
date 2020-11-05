@@ -2,6 +2,8 @@ import echarts from "echarts";
 import {caseQueryMore, personQueryMore} from '@/api/analysis/analysisManage.js'
 import { nextTick } from "vuedraggable";
 
+let distrcit =  "../../../../static/json/map/district.json";
+
 export function JxMap(mapData,tip) {
     let jiangxi = "../../../../static/json/map/data-1518338017111-rJK1gtpUM.json";
     let yingtan = "../../../../static/json/map/data-1518338860057-By447tpLf.json";
@@ -237,7 +239,7 @@ export function JxMap(mapData,tip) {
           var zoom = function (per) {
             if (!count) count = per;
             count = count + per;
-            // console.log(per,count);
+            console.log(per,count);
             chart.setOption({
               geo: {
                 zoom: count
@@ -514,7 +516,7 @@ export function JxMap(mapData,tip) {
             if(name === mapDataItem.name) {
               // 获取json数据，得到每个县的坐标
               if(theMap[name]) {
-                var url = theMap[name];
+                var url = distrcit;
                 $.get(url, function (response) {
                   const params = {
                     id: mapDataItem.id,
@@ -524,16 +526,16 @@ export function JxMap(mapData,tip) {
                   apiType(params).then(res => {
                     if(res.code === 200) {
                       res.data.mapdata.map(item => {
-                        response.features.map(countyItem => {
-                          if(countyItem.properties.name === item.name) {
-                            countyItem.geometry.coordinates[0][0][0][2] = item.value
+                        response.eara.map(countyItem => {
+                          if(countyItem.name === item.name) {
                             option.series[0].data.push({
                               name: item.name,
-                              value: countyItem.geometry.coordinates[0][0][0]
+                              value: [countyItem.longitude,countyItem.latitude,item.value,countyItem.level]
                             })
                           }
                         })
                       })
+                      option.geo.zoom = 1;
                       myChart.setOption(option)
                     }
                   })
@@ -1016,7 +1018,8 @@ export function NxMap(mapData,tip) {
           if(name === mapDataItem.name) {
             // 获取json数据，得到每个县的坐标
             if(theMap[name]) {
-              var url = theMap[name];
+            //   var url = theMap[name];
+            var url = distrcit;
               $.get(url, function (response) {
                 const params = {
                   id: mapDataItem.id,
@@ -1024,18 +1027,18 @@ export function NxMap(mapData,tip) {
                 }
                 // 获取县级数据
                 apiType(params).then(res => {
-                  if(res.code === 200) {
-                    res.data.mapdata.map(item => {
-                      response.features.map(countyItem => {
-                        if(countyItem.properties.name === item.name) {
-                          countyItem.geometry.coordinates[0][0][0][2] = item.value
-                          option.series[0].data.push({
-                            name: item.name,
-                            value: countyItem.geometry.coordinates[0][0][0]
-                          })
-                        }
+                    if(res.code === 200) {
+                      res.data.mapdata.map(item => {
+                        response.eara.map(countyItem => {
+                          if(countyItem.name === item.name) {
+                            option.series[0].data.push({
+                              name: item.name,
+                              value: [countyItem.longitude,countyItem.latitude,item.value,countyItem.level]
+                            })
+                          }
+                        })
                       })
-                    })
+                    option.geo.zoom = 1;
                     myChart.setOption(option)
                   }
                 })
@@ -1567,18 +1570,18 @@ export function GsMap(mapData,tip) {
                 }
                 // 获取县级数据
                 apiType(params).then(res => {
-                  if(res.code === 200) {
-                    res.data.mapdata.map(item => {
-                      response.features.map(countyItem => {
-                        if(countyItem.properties.name === item.name) {
-                          countyItem.geometry.coordinates[0][0][0][2] = item.value
-                          option.series[0].data.push({
-                            name: item.name,
-                            value: countyItem.geometry.coordinates[0][0][0]
-                          })
-                        }
+                    if(res.code === 200) {
+                      res.data.mapdata.map(item => {
+                        response.eara.map(countyItem => {
+                          if(countyItem.name === item.name) {
+                            option.series[0].data.push({
+                              name: item.name,
+                              value: [countyItem.longitude,countyItem.latitude,item.value,countyItem.level]
+                            })
+                          }
+                        })
                       })
-                    })
+                    option.geo.zoom = 1;
                     myChart.setOption(option)
                   }
                 })

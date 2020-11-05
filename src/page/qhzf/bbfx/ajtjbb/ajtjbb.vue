@@ -93,8 +93,8 @@
                 <el-checkbox label="港口行政" style="display: block">
                   港口行政
                 </el-checkbox>
-                <el-checkbox label="工程质量安全监督" style="display: block">
-                  工程质量安全监督
+                <el-checkbox label="工程质量监督" style="display: block">
+                  工程质量监督
                 </el-checkbox>
                 <el-checkbox label="海事行政" style="display: block">
                   海事行政
@@ -163,7 +163,7 @@ export default {
         "水路运政",
         "航道行政",
         "港口行政",
-        "工程质量安全监督",
+        "工程质量监督",
         "海事行政",
         "综合执法",
         "其他",

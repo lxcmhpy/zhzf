@@ -124,11 +124,12 @@ export default [
       path: "/enforceDecideApprovalForm_SC",
       name: "case_handle_enforceDecideApprovalForm_SC",
       meta: {
-        title: "行政强制执行审批表"
+        title: "行政强制执行审批表-四川"
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/enforceDecideApprovalForm_SC.vue")
     },
     {
+<<<<<<< HEAD
       path: "/deliveryConfirmDoc_SC",
       name: "case_handle_deliveryConfirmDoc_SC",
       meta: {
@@ -144,6 +145,25 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/sceneNotesDoc_SC.vue")
     },
+=======
+      path: "/courtEnforceApplicationDoc_SC",
+      name: "case_handle_courtEnforceApplicationDoc_SC",
+      meta: {
+        title: "申请法院强制执行申请书"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/courtEnforceApplicationDoc_SC.vue")
+    },
+    {
+      path: "/noPenalty_SC",
+      name: "case_handle_noPenalty_SC",
+      meta: {
+        title: "不予处罚-四川",
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/noPenalty_SC.vue")
+    },
+   
+    
+>>>>>>> 59ba034c439f9638d11561618242a0a476544186
     
     
     

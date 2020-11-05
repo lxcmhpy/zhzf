@@ -770,7 +770,7 @@ export default {
     },
 
     getRowClass: function (row, index) {
-      if (row.row.openRow) {
+      if (row.openRow) {
         return "";
       } else {
         return "myhide-expand";
@@ -829,11 +829,19 @@ export default {
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_enforceInsteadDoc");
         if(index1 !=-1) this.docTableDatas.splice(index1,1)
       }
+
+       if (this.formData.chooseFYQZ) {
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_courtEnforceApplicationDoc_SC");
+         if(index1 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_courtEnforceApplicationDoc_SC"))
+      }else{
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_courtEnforceApplicationDoc_SC");
+        if(index1 !=-1) this.docTableDatas.splice(index1,1)
+      }
     
-        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasureApproval_SC");
-         if(index1 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC"))
-        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasureDoc");
-         if(index2 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureDoc"))
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_enforceDecideApprovalForm_SC");
+         if(index1 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_enforceDecideApprovalForm_SC"))
+        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_enforceDecideDoc");
+         if(index2 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_enforceDecideDoc"))
 
 
       console.log("this.docTableDatas", this.docTableDatas);

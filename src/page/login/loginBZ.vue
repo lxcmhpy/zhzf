@@ -310,22 +310,23 @@ export default {
               res => {
                 // 登录成功
                 // 清除定时器
-                _this.getCurrentUser();
+                
                 // 重置验证
                 _this.success = false;
                 this.beginClientX = 0
-                this.maxwidth = this.$refs.dragDiv.clientWidth - this.$refs.moveDiv.clientWidth;
+                // this.maxwidth = this.$refs.dragDiv.clientWidth - this.$refs.moveDiv.clientWidth;
                 //   重置样式
-                this.$refs.moveDiv.style = 'position: absolute;top: 0px;left: 0px;'
+                // this.$refs.moveDiv.style = 'position: absolute;top: 0px;left: 0px;'
                 // if (type == 1) {
-                this.$refs.textDiv.removeAttribute("class")
-                this.$refs.textDiv.setAttribute("className", "drag_text")
-                document.getElementsByClassName('drag_bg')[0].style.width = 0
-                this.confirmWords = '拖动滑块验证';
+                // this.$refs.textDiv.removeAttribute("class")
+                // this.$refs.textDiv.setAttribute("className", "drag_text")
+                // document.getElementsByClassName('drag_bg')[0].style.width = 0
+                // this.confirmWords = '拖动滑块验证';
                 // }
 
-                document.getElementsByTagName('html')[0].addEventListener('mousemove', this.mouseMoveFn);
-                document.getElementsByTagName('html')[0].addEventListener('mouseup', this.moseUpFn)
+                // document.getElementsByTagName('html')[0].addEventListener('mousemove', this.mouseMoveFn);
+                // document.getElementsByTagName('html')[0].addEventListener('mouseup', this.moseUpFn)
+                _this.getCurrentUser();
               }
             );
           } else {
@@ -363,7 +364,7 @@ export default {
     //获取当前登录用户的信息
     getCurrentUser() {
       let _this = this;
-      new Promise((resolve, reject) => {
+      // new Promise((resolve, reject) => {
         getCurrentUserApi().then(res => {
           if (res.data.passwordStatus == '0') {
             // 判断是否修改过密码
@@ -382,7 +383,7 @@ export default {
         }, err => {
           console.log(err);
         })
-      })
+      // })
     },
     blueUsername() {
       this.hasUserError = false;

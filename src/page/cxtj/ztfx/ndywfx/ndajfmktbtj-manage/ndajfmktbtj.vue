@@ -20,7 +20,7 @@
           <el-table-column prop="hdxz" label="航道行政" align="center"></el-table-column>
           <el-table-column prop="gkxz" label="港口行政" align="center"></el-table-column>
           <el-table-column prop="hsxz" label="海事行政" align="center"></el-table-column>
-           <el-table-column prop="gczlaqjd" label="工程质量安全监督" align="center"></el-table-column>
+           <el-table-column prop="gczlaqjd" label="工程质量监督" align="center"></el-table-column>
         </el-table>
       </div>
       
@@ -118,7 +118,7 @@ export default {
           //   "航道行政",
           //   "港口行政",
           //   "海事行政",
-          //   "工程质量安全监督",
+          //   "工程质量监督",
           //   "其他",
           //   "综合执法",
           // ]
@@ -207,7 +207,7 @@ export default {
     //         "航道行政",
     //         "港口行政",
     //         "海事行政",
-    //         // "工程质量安全监督",
+    //         // "工程质量监督",
     //       //   "其他",
     //       //   "综合执法",
     //       ],
@@ -285,7 +285,7 @@ export default {
         this.tableData[0].hdxz=map["航道行政"]==undefined?0:map["航道行政"];
         this.tableData[0].gkxz=map["港口行政"]==undefined?0:map["港口行政"];
         this.tableData[0].hsxz=map["海事行政"]==undefined?0:map["海事行政"];
-        this.tableData[0].gczlaqjd=map["工程质量安全监督"]==undefined?0:map["工程质量安全监督"];
+        this.tableData[0].gczlaqjd=map["工程质量监督"]==undefined?0:map["工程质量监督"];
          
            
                              
@@ -320,7 +320,7 @@ export default {
         this.tableData[1].hdxz=map["航道行政"]==undefined?0:map["航道行政"];
         this.tableData[1].gkxz=map["港口行政"]==undefined?0:map["港口行政"];
         this.tableData[1].hsxz=map["海事行政"]==undefined?0:map["海事行政"];
-        this.tableData[1].gczlaqjd=map["工程质量安全监督"]==undefined?0:map["工程质量安全监督"];
+        this.tableData[1].gczlaqjd=map["工程质量监督"]==undefined?0:map["工程质量监督"];
        
                              
             this.drawLine();
