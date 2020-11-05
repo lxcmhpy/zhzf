@@ -670,15 +670,15 @@ export default {
         if(index2 !=-1) this.docTableDatas.splice(index2,1)
       }
       
-      let item3 =  this.docTableDatasCopy.find(item=> item.path == "a")
-      let item4 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC")
+      let item3 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC")
+      let item4 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_removeAdminCoerciveMeasureDoc")
       if(this.formData.chooseRemove){
-        let index1  = this.docTableDatas.findIndex(item=>item.path == "a");
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC");
         if(index1 ==-1 && item3) this.docTableDatas.push(item3);
-        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC");
+        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureDoc");
         if(index2 ==-1 && item4) this.docTableDatas.push(item4)
       }else{ 
-        let index1  = this.docTableDatas.findIndex(item=>item.path == "a");                             
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC");                             
         if(index1 !=-1) this.docTableDatas.splice(index1,1)
         let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC");
         if(index2 !=-1) this.docTableDatas.splice(index2,1)

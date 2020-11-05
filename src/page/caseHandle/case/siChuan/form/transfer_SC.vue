@@ -1,23 +1,23 @@
 <template>
   <div class="print_box" id='btnB'>
     <div class="print_info" id='obtanEvidence_print'>
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData" :class="isPdf">
+      <el-form :rules="rules" ref="establishForm" :inline-message="true" :inline="true" :model="formData" :class="isPdf">
         <div class="doc_topic">案件移送书</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td style="width:38px;"><p>移送</p><p>机关</p></td>
             <td colspan="7" style="text-align-last:left;" class="color_DBE4EF">
-              <el-form-item prop="illegalLaw" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'],'',isParty)">
-                <el-input type='textarea' v-model="docData.illegalLaw" v-bind:class="{ over_flow:docData.illegalLaw.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['illegalLaw'])" placeholder="/"></el-input>
+              <el-form-item prop="organName" :rules="fieldRules('organName',propertyFeatures['organName'],'',isParty)">
+                <el-input type='textarea' v-model="formData.organName" v-bind:class="{ over_flow:formData.organName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
+                  :disabled="!isParty || fieldDisabled(propertyFeatures['organName'])" placeholder="/"></el-input>
               </el-form-item>
               <!-- <p>(加盖印章)</p> -->
             </td>
             <td>地址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="transAddress" :rules="fieldRules('transAddress',propertyFeatures['transAddress'],'',isParty)">
-                <el-input type='textarea' v-model="docData.transAddress" :autosize="{ minRows: 1, maxRows: 3}" maxlength="30" :disabled="!isParty || fieldDisabled(propertyFeatures['transAddress'])" placeholder="/"></el-input>
+                <el-input type='textarea' v-model="formData.transAddress" :autosize="{ minRows: 1, maxRows: 3}" maxlength="30" :disabled="!isParty || fieldDisabled(propertyFeatures['transAddress'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -25,14 +25,14 @@
             <td><p>案件</p><p>主办</p><p>人员</p></td>
             <td colspan="7" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="checkedUser" :rules="fieldRules('checkedUser',propertyFeatures['checkedUser'],'',isParty)">
-                <el-input type='textarea' v-model="docData.checkedUser" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" 
+                <el-input type='textarea' v-model="formData.checkedUser" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" 
                   :disabled="!isParty || fieldDisabled(propertyFeatures['checkedUser'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>联系<br>电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyPeopleTel" :rules="fieldRules('partyPeopleTel',propertyFeatures['partyPeopleTel'],validatePhone,isParty)">
-                <el-input v-model="docData.partyPeopleTel" maxLength='11' placeholder="/" :disabled="!isParty || fieldDisabled(propertyFeatures['partyPeopleTel'])"></el-input>
+                <el-input v-model="formData.partyPeopleTel" maxLength='11' placeholder="/" :disabled="!isParty || fieldDisabled(propertyFeatures['partyPeopleTel'])"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -40,7 +40,7 @@
             <td><p>受移</p><p>送机</p><p>构</p></td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="transUnit" :rules="fieldRules('transUnit',propertyFeatures['transUnit'],'',isParty)">
-                <el-input type='textarea' v-model="docData.transUnit" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
+                <el-input type='textarea' v-model="formData.transUnit" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
                   :disabled="!isParty || fieldDisabled(propertyFeatures['transUnit'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
@@ -55,14 +55,14 @@
             <td>姓名</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'],'',isParty)">
-                <el-input type='textarea' v-model="docData.party" v-bind:class="{ over_flow:docData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" 
+                <el-input type='textarea' v-model="formData.party" v-bind:class="{ over_flow:formData.party.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxlength="nameLength" 
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>身份证件号</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
-                <el-input type='textarea' v-model="docData.partyIdNo" :maxLength='18' placeholder="/" :autosize="{ minRows: 1, maxRows: 3}" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"></el-input>
+                <el-input type='textarea' v-model="formData.partyIdNo" :maxLength='18' placeholder="/" :autosize="{ minRows: 1, maxRows: 3}" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"></el-input>
               </el-form-item>
             </td>
             <td>年龄</td>
@@ -73,7 +73,7 @@
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.partyAge"
+                  v-model="formData.partyAge"
                   :maxLength="18"
                   placeholder="/"
                   :autosize="{ minRows: 1, maxRows: 3}"
@@ -86,13 +86,13 @@
             <td>住址</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyAddress" :rules="fieldRules('partyAddress',propertyFeatures['partyAddress'],'',isParty)">
-                <el-input type='textarea' v-model="docData.partyAddress" v-bind:class="{ over_flow:docData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="30" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])" placeholder="/"></el-input>
+                <el-input type='textarea' v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="30" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>联系<br>电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
-                <el-input v-model="docData.partyTel" maxLength='11' placeholder="/" :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"></el-input>
+                <el-input v-model="formData.partyTel" maxLength='11' placeholder="/" :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"></el-input>
               </el-form-item>
             </td>
             <td>性别</td>
@@ -103,7 +103,7 @@
               >
                 <el-select
                   placeholder="/"
-                  v-model="docData.partySex"
+                  v-model="formData.partySex"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
                 >
                   <el-option :value="0" label="男"></el-option>
@@ -117,13 +117,13 @@
             <td>名称</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyName" :rules="fieldRules('partyName',propertyFeatures['partyName'],'',!isParty)">
-                <el-input v-model="docData.partyName" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" placeholder="/"></el-input>
+                <el-input v-model="formData.partyName" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td> 法定代表人 </td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
-                <el-input v-model="docData.partyManager" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])" placeholder="/"></el-input>
+                <el-input v-model="formData.partyManager" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -131,13 +131,13 @@
             <td>地址</td>
             <td colspan="5" class="color_DBE4EF">
               <el-form-item prop="partyUnitAddress" :rules="fieldRules('partyUnitAddress',propertyFeatures['partyUnitAddress'],'',!isParty)">
-                <el-input v-model="docData.partyUnitAddress" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])" placeholder="/"></el-input>
+                <el-input v-model="formData.partyUnitAddress" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitAddress'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
             <td>联系<br>电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyUnitTel" :rules="fieldRules('partyUnitTel',propertyFeatures['partyUnitTel'],validatePhone,!isParty)">
-                <el-input v-model="docData.partyUnitTel" minlength="11" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])" placeholder="/"></el-input>
+                <el-input v-model="formData.partyUnitTel" minlength="11" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyUnitTel'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -147,12 +147,12 @@
             </td>
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
-                <el-input v-model="docData.socialCreditCode" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])" placeholder="/"></el-input>
+                <el-input v-model="formData.socialCreditCode" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
-              <td :rowspan="docData.evdenceList.length==0?2:docData.evdenceList.length+1">
+              <td :rowspan="formData.evdenceList.length==0?2:formData.evdenceList.length+1">
                 涉案<br>物品<br>清单
               </td>
               <td>序号</td>
@@ -161,14 +161,14 @@
               <td colspan="2">特征</td>
               <td colspan="3">存放地</td>
           </tr>
-           <tr v-if="docData.evdenceList.length==0"  @click="handleAdd">
+           <tr v-if="formData.evdenceList.length==0"  @click="handleAdd">
             <td class="color_DBE4EF"></td>
             <td class="color_DBE4EF" colspan="3"></td>
             <td class="color_DBE4EF"></td>
             <td class="color_DBE4EF" colspan="2"></td>
             <td class="color_DBE4EF" colspan="3"></td>
           </tr>
-          <tr v-for="item in docData.evdenceList" :key="item.evidenceNo"  @click="handleAdd">
+          <tr v-for="item in formData.evdenceList" :key="item.evidenceNo"  @click="handleAdd">
             <td class="color_DBE4EF">{{item.evidenceNo}}</td>
             <td class="color_DBE4EF" colspan="3">{{item.evidenceName}}</td>
             <td class="color_DBE4EF">{{item.amount}}</td>
@@ -176,7 +176,7 @@
             <td class="color_DBE4EF" colspan="3"><div style="">{{item.savePlace}}</div></td>
           </tr> 
           <tr>
-            <td :rowspan="docData.evidenceList.length==0?2:docData.evidenceList.length+1">
+            <td :rowspan="formData.evidenceList.length==0?2:formData.evidenceList.length+1">
               移送<br>材料<br>清单
             </td>
             <td>序号</td>
@@ -184,13 +184,13 @@
             <td colspan="4">规格</td>
             <td colspan="3">数量</td>
           </tr>
-          <tr v-if="docData.evidenceList.length==0"  @click="handleAdd1">
+          <tr v-if="formData.evidenceList.length==0"  @click="handleAdd1">
             <td class="color_DBE4EF"></td>
             <td class="color_DBE4EF" colspan="4"></td>
             <td class="color_DBE4EF" colspan="4"></td>
             <td class="color_DBE4EF" colspan="3"></td>
           </tr>
-          <tr v-for="item in docData.evidenceList" :key="item.evidenceName"  @click="handleAdd1">
+          <tr v-for="item in formData.evidenceList" :key="item.evidenceName"  @click="handleAdd1">
             <td class="color_DBE4EF">{{item.evidenceNo}}</td>
             <td colspan="4" class="color_DBE4EF">{{item.evidenceName}}</td>
             <td colspan="4" class="color_DBE4EF">{{item.spec}}</td>
@@ -200,17 +200,27 @@
             <td>涉嫌<br>违法<br>行为<br>或涉<br>嫌犯<br>罪罪<br>名<br></td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="copyReason" :rules="fieldRules('copyReason',propertyFeatures['copyReason'],'',isParty)">
-                <el-input type='textarea' v-model="docData.copyReason" :autosize="{ minRows: 1, maxRows: 3}" maxlength="200" 
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['copyReason'])" placeholder="/"></el-input>
+                <el-input type='textarea' v-model="formData.copyReason" :autosize="{ minRows: 1, maxRows: 3}" maxlength="200" 
+                  :disabled="fieldDisabled(propertyFeatures['copyReason'])"></el-input>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td><p>案件</p><p>调查</p><p>情况</p></td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
-              <el-form-item prop="basicSituation" :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])">
-                <el-input type='textarea' v-model="docData.basicSituation" :autosize="{ minRows: 1, maxRows: 3}" maxlength="200" 
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['basicSituation'])" placeholder="/"></el-input>
+              <el-form-item
+                prop="basicSituation"
+                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="formData.basicSituation"
+                  v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                  placeholder="/"
+                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -218,8 +228,8 @@
             <td>备注</td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'],'',isParty)">
-                <el-input type='textarea' v-model="docData.note" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" 
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['note'])" placeholder="/"></el-input>
+                <el-input type='textarea' v-model="formData.note" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" 
+                  :disabled="fieldDisabled(propertyFeatures['note'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -333,28 +343,28 @@ export default {
   computed: { 
     ...mapGetters(['caseId']),
     getEvidenceTimeEnd() {
-      if (this.docData.getEvidenceTimeEnd) {
-        return new Date(this.docData.getEvidenceTimeEnd).format('dd日HH时mm分')
+      if (this.formData.getEvidenceTimeEnd) {
+        return new Date(this.formData.getEvidenceTimeEnd).format('dd日HH时mm分')
       }
     },
     getEvidenceTime() {
-      if (this.docData.getEvidenceTime) {
-        return new Date(this.docData.getEvidenceTime).format('yyyy年MM月dd日HH时mm分')
+      if (this.formData.getEvidenceTime) {
+        return new Date(this.formData.getEvidenceTime).format('yyyy年MM月dd日HH时mm分')
       }
     }
   },
   data() {
     //验证是否填写证据
     var validateEvidencLength1 = (rule, value, callback) => {
-      if (this.docData.evidenceList.length == 0) {
+      if (this.formData.evidenceList.length == 0) {
         return callback(new Error("至少填写一个移送材料"));
       }
       callback();
     };
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-      console.log('案发时间=='+this.docData.lasj)
-      if (Date.parse(this.docData.getEvidenceTime) < Date.parse(this.docData.lasj)) {
+      console.log('案发时间=='+this.formData.lasj)
+      if (Date.parse(this.formData.getEvidenceTime) < Date.parse(this.formData.lasj)) {
         this.$message({
           showClose: true,
           message: "开始时间不得大于立案时间",
@@ -362,10 +372,10 @@ export default {
           offset: 100,
           customClass: "validateErrorTip",
         });
-        this.docData.getEvidenceTime = ""
+        this.formData.getEvidenceTime = ""
         return callback(new Error("开始时间不得大于立案时间"));
       }
-      if(Date.parse(this.docData.getEvidenceTime)>Date.parse(this.docData.getEvidenceTimeEnd)){
+      if(Date.parse(this.formData.getEvidenceTime)>Date.parse(this.formData.getEvidenceTimeEnd)){
         this.$message({
               showClose: true,
               message: '开始时间不得大于结束时间',
@@ -375,7 +385,7 @@ export default {
         });
         return callback(new Error("开始时间不得大于结束时间"));
       }
-      if(Date.parse(this.docData.getEvidenceTimeEnd)>Date.parse(new Date())){
+      if(Date.parse(this.formData.getEvidenceTimeEnd)>Date.parse(new Date())){
         this.$message({
               showClose: true,
               message: '结束时间不得大于当前时间',
@@ -383,10 +393,10 @@ export default {
               offset: 100,
               customClass: 'validateErrorTip'
         });
-        this.docData.getEvidenceTimeEnd = ""
+        this.formData.getEvidenceTimeEnd = ""
         return callback(new Error("结束时间不得大于当前时间"));
       }
-      if(Date.parse(this.docData.getEvidenceTime)>Date.parse(new Date())){
+      if(Date.parse(this.formData.getEvidenceTime)>Date.parse(new Date())){
         this.$message({
               showClose: true,
               message: '开始时间不得大于当前时间',
@@ -394,7 +404,7 @@ export default {
               offset: 100,
               customClass: 'validateErrorTip'
         });
-        this.docData.getEvidenceTime = ""
+        this.formData.getEvidenceTime = ""
         return callback(new Error("开始时间不得大于当前时间"));
       }
       callback();
@@ -403,7 +413,7 @@ export default {
     return {
       validatePhone:validatePhone,
       validateIDNumber:validateIDNumber,
-      docData: {
+      formData: {
         caseNumber: '',
         // partyType: '',
         party: '',
@@ -411,7 +421,7 @@ export default {
         copyReason:"",
         partyPeopleTel:"",
         checkedUser:"",
-        illegalLaw:"",
+        organName:"",
         transAddress:"",
         partyIdNo: '',
         partyAddress: '',
@@ -432,15 +442,13 @@ export default {
         evidenceLength1:0,
         note:''
       },
-     
-      caseDocDataForm: {
+      caseLinkDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件ID
-        caseDoctypeId: this.$route.params.docId, //文书类型ID
-        //文书数据
-        docData: "",
-        status: "", //提交状态
-        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
+        caseBasicinfoId: "", //案件id
+        caseLinktypeId: this.BASIC_DATA_SC.transfei_SC_caseLinktypeId, //表单类型ID
+        //表单数据
+        formData: "",
+        status: "",      
       },
       rules: {
         party: [
@@ -452,7 +460,7 @@ export default {
         transUnit: [
           { required: true, message: "受移送机构不能为空", trigger: "blur" }
         ],
-        illegalLaw: [
+        organName: [
           { required: true, message: "移送机关不能为空", trigger: "blur" }
         ],
         basicSituation: [
@@ -534,42 +542,24 @@ export default {
     }
   },
   methods: {
-
-    // 日期变化
-    dataChange() {
-      if (this.docData.dataEnd && this.docData.dataStart) {
-        if (this.docData.dataEnd >= this.docData.dataStart) {
-
-        }
-        else {
-          this.$message.error('开始日期不能晚于结束日期');
-          this.docData.dataEnd = this.docData.dataStart = undefined;
-        }
-
-      }
-    },
-    starttime(){
-      console.log('案发时间=='+this.docData.lasj)
-      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
-        this.$message({
-          message: '当前时间不得小于立案时间',
-          type: 'warning'
-        });
-        this.docData.makeDate = '';
-      }
-    },
-    //根据案件ID和文书Id获取数据
-    getDocDataByCaseIdAndDocId() {
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      let data = {
-        caseId: this.caseId,
-        docId: this.$route.params.docId
-      };
-      this.com_getDocDataByCaseIdAndDocId(data)
-    },
     //保存文书信息
     saveData(handleType) {
-      this.com_addDocData(handleType, "docForm");
+      this.com_submitCaseForm(handleType, "establishForm", true);
+    },
+    setData() {
+      console.log('setData');
+      this.$store.commit("setCaseLinktypeId",this.BASIC_DATA_JX.establish_JX_caseLinktypeId);
+      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
+      this.com_getFormDataByCaseIdAndFormId(
+        this.caseLinkDataForm.caseBasicinfoId,
+        this.caseLinkDataForm.caseLinktypeId,
+        false
+      );
+      console.log('获取数据',this.formData)
+      if(this.formData.partyTel==''){
+        console.log('电话flag',this.isPartyPhone)
+        this.isPartyPhone= true;
+      }
     },
     submitData(handleType) {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -589,12 +579,13 @@ export default {
       };
       getOrganDetailApi(orgData).then(
         res => {
-          this.docData.evidenceDepartment = res.data.name;
-          this.docData.evidenceDepartmentPhone = res.data.telephone;
+          console.log(res)
+          // this.formData.evidenceDepartment = res.data.name;
+          // this.formData.evidenceDepartmentPhone = res.data.telephone;
         })
     },
     handleAdd(evidenceNo, row) {
-        this.tableDatas = JSON.parse(JSON.stringify(this.docData.evdenceList));
+        this.tableDatas = JSON.parse(JSON.stringify(this.formData.evdenceList));
         this.addVisible = true;
         if(this.tableDatas.length == 0){
         this.tableDatas.push({'evidenceNo': 1, 'amount' : 1});
@@ -630,12 +621,12 @@ export default {
           }
         }
         if(canAdd){
-          this.docData.evdenceList = this.tableDatas;
+          this.formData.evdenceList = this.tableDatas;
           this.addVisible = false;
         }
     },
     handleAdd1(evidenceNo, row) {
-        this.tableDatas1 = JSON.parse(JSON.stringify(this.docData.evidenceList));
+        this.tableDatas1 = JSON.parse(JSON.stringify(this.formData.evidenceList));
         this.addVisible1 = true;
         if(this.tableDatas1.length == 0){
         this.tableDatas1.push({'evidenceNo': 1, 'amount' : 1});
@@ -671,7 +662,7 @@ export default {
         }
       }
       if(canAdd){
-        this.docData.evidenceList = this.tableDatas1;
+        this.formData.evidenceList = this.tableDatas1;
         this.addVisible1 = false;
       }
     },
@@ -685,13 +676,30 @@ export default {
         this.isShow = true;
       }
       //获取表单数据
-      this.getDocDataByCaseIdAndDocId();
       this.isOverStatus();
-    }
+    },
+    //获取案件基本信息
+    getCaseInfo(){
+      let data = {
+        id: this.caseId
+      };
+      this.$store.dispatch("getCaseBasicInfo", data) 
+      .then(
+        res => {
+          console.log('获取案件信息', res);
+          this.editCaseInfo ={
+            id:res.data.id,
+            tempNo:res.data.tempNo
+          }
+        })
+      .catch(err=>{console.log(err)})
+    },
   },
   mounted() {},
   created() {
+    this.setData();
     this.initData();
+    this.getCaseInfo();
   },
 }
 </script>

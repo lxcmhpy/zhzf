@@ -121,7 +121,7 @@
               <td>证件类型</td>
               <td class="color_DBE4EF">
                 <el-form-item prop="certificateType" :rules="fieldRules('certificateType',propertyFeatures['certificateType'],'',isParty)">
-                  <el-select ref="certificateType" v-model="docData.certificateType" :disabled="!isParty || fieldDisabled(propertyFeatures['certificateType'])">
+                  <el-select ref="certificateType" v-model="docData.certificateType" :disabled="fieldDisabled(propertyFeatures['certificateType'])">
                     <el-option v-for="item in credentialType" :key="item.id" :label="item.value" :value="item.id"></el-option>
                   </el-select>
                 </el-form-item>

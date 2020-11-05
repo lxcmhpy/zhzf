@@ -665,7 +665,7 @@ export default {
       let obtaineEvidenceFormItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_obtaineEvidenceForm")
       if(showCY){ //抽样取证
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_obtaineEvidenceForm");
-        if(index1 ==-1)
+        if(index1 ==-1 && obtaineEvidenceFormItem)
         this.docTableDatas.push(obtaineEvidenceFormItem)
       }else{
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_obtaineEvidenceForm");
@@ -677,7 +677,7 @@ export default {
       // 还有一个审批表
       if(showBCZJ){ //抽样取证
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceListDoc");
-        if(index1 ==-1)
+        if(index1 ==-1 && evidenceListDocItem)
         this.docTableDatas.push(evidenceListDocItem)
       }else{
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceListDoc");
@@ -687,20 +687,20 @@ export default {
       let deleteEvidenceItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_deleteEvidence")
       if(showJCZJ){ //抽样取证
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_deleteEvidence");
-        if(index1 ==-1)
+        if(index1 ==-1 && deleteEvidenceItem)
         this.docTableDatas.push(deleteEvidenceItem)
       }else{
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_deleteEvidence");
         if(index1 !=-1)
         this.docTableDatas.splice(index1,1);
       }
-      let importantCaseTeamDissDocItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_importantCaseTeamDissDoc")
+      let importantCaseTeamDissDocItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_importantCaseTeamDissDoc_SC")
       if(showZDAJ){ //抽样取证
-        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc");
-        if(index1 ==-1)
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc_SC");
+        if(index1 ==-1 && importantCaseTeamDissDocItem)
         this.docTableDatas.push(importantCaseTeamDissDocItem)
       }else{
-        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc");
+        let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc_SC");
         if(index1 !=-1)
         this.docTableDatas.splice(index1,1);
       }
