@@ -2,7 +2,7 @@
   <div class="gzMap">
     <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" />
     <TopInFo />
-    <LeftDrawer ref='LeftDrawer' :config="groups"/>
+    <LeftDrawer ref='LeftDrawer' :config="groups" :allUsers="allUsers"/>
     <Search
       ref="Search"
       :config="searchWindowData"
@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       groups:[],
+      allUsers:[],
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
@@ -499,7 +500,7 @@ export default {
                 if (rsp.cmd_status === 0) {
                     // XXX 设置当前调度台账号的ID，其他接口会使用此ID
                     _this.con_id = rsp.uid;
-                    _this.req_grp_profile()
+                    _this.req_user_profile()
                 } else {
                 }
             }, 'demo_req_logon');
@@ -536,6 +537,17 @@ export default {
               _this.groups = rsp
               console.log('this.group',_this.groups)
           }, 'demo_req_grp_profile');//
+        },
+        //获取所有用户信息
+        req_user_profile: function () {
+          let _this = this;
+          var targets = null;
+          //var targets = [global_data.param_uid1];
+          websdk.request.userRequest.getUserInfo(targets, null, function (rsp) {
+              console.log('demo_req_user_profile result:', rsp);
+               _this.allUsers = rsp
+              _this.req_grp_profile()
+          }, 'demo_req_user_profile');//
         },
   },
   activated() {

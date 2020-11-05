@@ -684,11 +684,12 @@ export default {
         if(index2 !=-1) this.docTableDatas.splice(index2,1)
       }
 
-    
+      let item5 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC")
+      let item6 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure")
       let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasureApproval_SC");
-      if(index1 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC"))
+      if(index1 ==-1 && item5)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC"))
       let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasure");
-      if(index2 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure"))
+      if(index2 ==-1 && item6)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure"))
     },
     getDataAfter(){
       //通过案件id和表单类型Id查询已绑定文书

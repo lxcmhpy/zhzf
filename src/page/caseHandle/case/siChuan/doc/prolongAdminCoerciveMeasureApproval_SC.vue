@@ -225,13 +225,13 @@
               <p>议</p>
             </td>
             <td colspan="10" class="color_DBE4EF">
-              <el-form-item prop="lawOfficeOpinions">
+              <el-form-item prop="lawOfficeOpinions" style="height:72%;">
                 <el-input style="float:left;margin-top:10px;" 
                   type="textarea" v-model="docData.lawOfficeOpinions"
                   v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 10}" maxlength="340" placeholder="/"></el-input> 
               </el-form-item>
-              <div class="pdf_seal alginLast" style="white-space:nowrap;height:80px;width:auto;margin-bottom:15px;margin-right:80px;">
+              <div class="pdf_seal alginLast" style="white-space:nowrap;height:20%;width:auto;margin-bottom:10px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
                 <p>
                   <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
@@ -685,7 +685,7 @@ export default {
   }
   .center{
     text-align: center;
-    text-align-last: center;  
+    text-align-last: center;
   }
 }
 </style>

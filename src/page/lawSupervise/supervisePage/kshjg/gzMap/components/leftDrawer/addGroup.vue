@@ -29,16 +29,13 @@
 </template>
 <script>
 export default {
-  name: '',
-  components: {
-  },
-  filters: {},
-  props:['visibles'],
+  props:['visibles','getLists'],
   data() {
     return {
         form:{
             name:''
-        }
+        },
+        id:[]
     }
   },
   created() { 
@@ -51,8 +48,26 @@ export default {
         this.$emit('update:visibles', false);
     },
     save(){
-        this.$emit('update:visibles', false);
+        // console.log(this.form.name)
+        // console.log(this.id)
+        this.req_create_group(this.form.name,this.id)
     },
+    //创建群组
+    req_create_group(name,id) {
+        let _this = this
+        websdk.request.groupRequest.createGroup(name, id, null, function (rsp) {
+            console.log('demo_req_create_group result:{}', rsp);
+             _this.$emit('update:visibles', false);
+             _this.getLists()
+        }, 'demo_req_create_group');
+    },
+    getGruops(arrs){
+        this.id = []
+        for (let i = 0; i < arrs.length; i++) {
+            this.id.push(arrs[i].uid)
+        }
+    }
+   
   }
 }
 </script>
@@ -84,7 +99,7 @@ export default {
     width: 30% !important;
 }
 .addGroup_alert .el-dialog__body{
-    height: 35% !important;
+    /* height: 35% !important; */
 }
 .addGroup .el-input{
     width: 70%;

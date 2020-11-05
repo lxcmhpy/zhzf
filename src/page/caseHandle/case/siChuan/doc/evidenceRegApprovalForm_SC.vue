@@ -154,8 +154,8 @@
                   v-model="docData.partySex"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
                 >
-                  <el-option :value="0" label="男"></el-option>
-                  <el-option :value="1" label="女"></el-option>
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
             </td>
@@ -262,7 +262,7 @@
             </td>
           </tr>
           <tr></tr>
-          <tr>
+          <!-- <tr>
             <td rowspan="2">
               <p>实施证据登记保存理由</p>
             </td>
@@ -282,7 +282,7 @@
                 ></el-input>
               </el-form-item>
             </td>
-          </tr>
+          </tr> -->
           <tr></tr>
           <tr>
             <td :rowspan="docData.evdenceList.length==0?2:docData.evdenceList.length+1">
