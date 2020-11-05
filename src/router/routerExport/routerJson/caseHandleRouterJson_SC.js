@@ -136,6 +136,14 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/courtEnforceApplicationDoc_SC.vue")
     },
+    {
+      path: "/noPenalty_SC",
+      name: "case_handle_noPenalty_SC",
+      meta: {
+        title: "不予处罚-四川",
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/noPenalty_SC.vue")
+    },
    
     
     

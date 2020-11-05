@@ -159,8 +159,6 @@
       :formOrDocData="formOrDocData"
       @saveData="saveData"
     ></casePageFloatBtns>
-    <!-- <el-alert title="错误提示的文案" type="error"  show-icon>
-    </el-alert>-->
   </div>
 </template>
 <script>
@@ -169,6 +167,7 @@ import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { getOrganDetailApi, getOrganIdApi } from "@/api/system";
 import iLocalStroage from "@/common/js/localStroage";
+
 export default {
   components: {
     casePageFloatBtns
