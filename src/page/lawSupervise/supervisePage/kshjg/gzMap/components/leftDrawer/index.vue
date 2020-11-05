@@ -324,10 +324,11 @@ export default {
         console.log(tab, event);
     },
     handleSelectionChange(val){
-        for (let i = 0; i < val.length; i++) {
-          this.selectedArrQ.push(val[i].name)
-        }
-        this.selectedArrQ = this.unique(this.selectedArrQ)
+      console.log(val)
+        // for (let i = 0; i < val.length; i++) {
+        //   this.selectedArrQ.push(val[i].name)
+        // }
+        // this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 去重
     unique(arr) {
