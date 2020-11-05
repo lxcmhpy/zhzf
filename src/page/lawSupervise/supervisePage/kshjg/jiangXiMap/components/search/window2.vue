@@ -39,7 +39,7 @@ export default {
     },
     defaultProps() {
       return this.window2.defaultProps
-    }
+    },
   },
   methods: {
     /**
@@ -63,10 +63,13 @@ export default {
             />
             <span class="itemLabel">{data.label}</span>
           </div>
-          <span class="slot-right">
-            <el-button size="mini" type="text" on-click={ () => this.handleDetails(data) }>详情</el-button>
-            <el-button size="mini" type="text" on-click={ () => this.removeAssign(data) }>指派</el-button>
-          </span>
+          {
+            this.window2.topicType === '事件' ?
+              <span class="slot-right">
+                <el-button size="mini" type="text" on-click={ () => this.handleDetails(data) }>详情</el-button>
+                <el-button size="mini" type="text" on-click={ () => this.removeAssign(data) }>指派</el-button>
+              </span> : null
+          }
         </div>
       )
     },

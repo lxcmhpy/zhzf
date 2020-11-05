@@ -84,7 +84,7 @@ export default {
             children: 'children',
             label: 'label'
           },
-          option: []
+          option: [],
         },
         window3: {
           title: "",
