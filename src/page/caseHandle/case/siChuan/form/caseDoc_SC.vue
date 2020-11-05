@@ -125,7 +125,7 @@
               </div>
               <div class="col">
                 <el-form-item label="邮编" prop="partyZipCode" :rules="fieldRules('partyZipCode',propertyFeatures['partyZipCode'],'',isParty)">
-                  <el-input ref="partyZipCode" :disabled="isParty || fieldDisabled(propertyFeatures['partyZipCode'])" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入"></el-input>
+                  <el-input ref="partyZipCode" :disabled="!isParty || fieldDisabled(propertyFeatures['partyZipCode'])" clearable class="w-120" v-model="formData.partyZipCode" size="small" placeholder="请输入"></el-input>
                 </el-form-item>
               </div>
             </div>
