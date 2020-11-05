@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="eventManage-dialogAssigned" title="选择指派人员" :visible.sync="dialogAssignedVisible">
+  <el-dialog class="eventManage-dialogAssigned" title="选择指派人员" :visible.sync="dialogAssignedVisible" @open="handleOpen">
     <el-form :model="form" :rules="rules" ref="dialogForm">
       <el-form-item label="机构" label-width="60px" prop="disposeOrgan">
         <ElSelectTree ref="elSelectTree" @getValue="getValue" :options="treeOptions" :props="treeProps" :value="form.disposeOrgan" />
@@ -40,16 +40,6 @@ export default {
       }
     }
   },
-  computed: {
-    // 机构数据
-    treeOptions() {
-      return this.config.treeOptions
-    },
-    // 人员数据
-    peopleOptions() {
-      return this.config.peopleOptions
-    }
-  },
   data() {
     return {
       dialogAssignedVisible: false,
@@ -70,7 +60,24 @@ export default {
       }
     }
   },
+  computed: {
+    // 机构数据
+    treeOptions() {
+      return this.config && this.config.treeOptions
+    },
+    // 人员数据
+    peopleOptions() {
+      return this.config && this.config.peopleOptions
+    }
+  },
   methods: {
+    /**
+     * 打开弹窗时的回调
+     */
+    handleOpen() {
+      this.$emit('handleOpen')
+    },
+
     /**
      * 获取选择到的人员
      */
@@ -92,23 +99,24 @@ export default {
      * 提交表单
      */
     handleSubmit() {
-        this.$refs['dialogForm'].validate(valid => {
-            if (valid) {
-                this.form.disposePerson = JSON.stringify(this.form.disposePerson)
-                assigned(this.form).then(res => {
-                    if(res.code === 200) {
-                    this.dialogAssignedVisible = false
-                    this.$message({
-                        message: res.msg,
-                        type: "success"
-                    })
-                    this.page.initPage()
-                    } else {
-                    this.$message.error(res.msg)
-                    }
-                })
+      this.$refs['dialogForm'].validate(valid => {
+        if (valid) {
+          this.form.disposePerson = JSON.stringify(this.form.disposePerson)
+          assigned(this.form).then(res => {
+            if(res.code === 200) {
+            this.dialogAssignedVisible = false
+            this.$message({
+              message: res.msg,
+              type: "success"
+            })
+            // this.page.initPage()
+            this.$emit('successDialogAssigned')
+            } else {
+              this.$message.error(res.msg)
             }
-        })
+          })
+        }
+      })
     },
   },
 }

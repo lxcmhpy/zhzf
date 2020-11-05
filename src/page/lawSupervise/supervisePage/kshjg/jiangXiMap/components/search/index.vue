@@ -113,110 +113,138 @@ export default {
     },
 
     /**
+     * 获取执法人员数据
+     */
+    getDataZFRY() {
+      let param = {
+        key: this.inputModel,
+        organId: this.indexPage.organId,
+        type: 0
+      }
+      // 搜索执法人员数据
+      getOrganTree(param).then(res => {
+        if(res.code === 200) {
+          this.$message({
+            message: '查询到'+res.data.length+'条数据',
+            type: 'success'
+          });
+          return res.data
+        } else {
+          this.$message.error('getOrganTree()::::::::接口数据错误');
+        }
+      }).then(data => {
+        this.config.window2.option = data.map(item => {
+          item.type = 0
+          item.label = item.nickName
+          // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
+          if(item.peState && item.peState===1) {
+              item.peStateColor = '#67C23A'
+          }
+          if (item.padState && item.padState === 1) {
+              item.padStateColor = '#409EFF'
+          }
+          return item
+        })
+      })
+    },
+
+    /**
+     * 获取执法机构数据
+     */
+    getDataZFJG() {
+      let params = {
+        key: this.inputModel,
+        organId: this.indexPage.organId,
+        type: 1
+      }
+      let _this = this;
+      getOrganTree(params).then(res => {
+          if(res.code === 200) {
+              this.$message({
+                  message: '查询到'+res.data.length+'条数据',
+                  type: 'success'
+              });
+              return res.data
+          } else {
+              this.$message.error('getOrganTree()::::::::接口数据错误');
+          }
+      }).then(data => {
+        this.config.window2.option = data.map(item => {
+          item.type = 1
+          item.label = item.name
+          return item
+        })
+      })
+    },
+
+    /**
+     * 获取事件数据
+     */
+    getDataSJ() {
+      let params = {
+        eventName: this.inputModel
+      }
+      let _this = this;
+      findData(params).then(res => {
+          if(res.code === 200) {
+              this.$message({
+                  message: '查询到'+res.data.records.length+'条数据',
+                  type: 'success'
+              });
+              return res.data.records
+          } else {
+              this.$message.error('getOrganTree()::::::::接口数据错误');
+          }
+      }).then(data => {
+        this.config.window2.option = data.map(item => {
+            item.type = 5
+            item.label = item.eventName
+            item.propertyValue = item.eventCoordinate
+            return item
+        })
+      })
+    },
+
+    /**
+     * 获取非现场站点数据
+     */
+    getDataFXC() {
+      let params = {
+        key: this.inputModel,
+        type: 4
+      }
+      let _this = this;
+      getZfjgLawSupervise(params).then(res => {
+          if(res.code === 200) {
+              this.$message({
+                  message: '查询到'+res.data.length+'条数据',
+                  type: 'success'
+              });
+              return res.data
+          } else {
+              this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
+          }
+      }).then(data => {
+        this.config.window2.option = data.map(item => {
+            item.type = 4
+            item.label = item.name
+            return item
+        })
+      })
+    },
+
+    /**
      * 点击搜索按钮，获取数据
      */
     handleSearch() {
       if(this.projectName === "执法人员") {
-        let param = {
-          key: this.inputModel,
-          organId: this.indexPage.organId,
-          type: 0
-        }
-        // 搜索执法人员数据
-        getOrganTree(param).then(res => {
-          if(res.code === 200) {
-            this.$message({
-              message: '查询到'+res.data.length+'条数据',
-              type: 'success'
-            });
-            return res.data
-          } else {
-            this.$message.error('getOrganTree()::::::::接口数据错误');
-          }
-        }).then(data => {
-          this.config.window2.option = data.map(item => {
-            item.type = 0
-            item.label = item.nickName
-            // 根据该点状态判断小图标颜色，peState为摄像头状态，padState为电话和视频状态; 0=离线 1=在线;
-            if(item.peState && item.peState===1) {
-                item.peStateColor = '#67C23A'
-            }
-            if (item.padState && item.padState === 1) {
-                item.padStateColor = '#409EFF'
-            }
-            return item
-          })
-        })
+        this.getDataZFRY()
       } else if (this.projectName === "执法机构") {
-        let params = {
-          key: this.inputModel,
-          organId: this.indexPage.organId,
-          type: 1
-        }
-        let _this = this;
-        getOrganTree(params).then(res => {
-            if(res.code === 200) {
-                this.$message({
-                    message: '查询到'+res.data.length+'条数据',
-                    type: 'success'
-                });
-                return res.data
-            } else {
-                this.$message.error('getOrganTree()::::::::接口数据错误');
-            }
-        }).then(data => {
-          this.config.window2.option = data.map(item => {
-            item.type = 1
-            item.label = item.name
-            return item
-          })
-        })
+        this.getDataZFJG()
       }else if (this.projectName === "事件") {
-        let params = {
-          eventName: this.inputModel
-        }
-        let _this = this;
-        findData(params).then(res => {
-            if(res.code === 200) {
-                this.$message({
-                    message: '查询到'+res.data.records.length+'条数据',
-                    type: 'success'
-                });
-                return res.data.records
-            } else {
-                this.$message.error('getOrganTree()::::::::接口数据错误');
-            }
-        }).then(data => {
-          this.config.window2.option = data.map(item => {
-              item.type = 5
-              item.label = item.eventName
-              item.propertyValue = item.eventCoordinate
-              return item
-          })
-        })
+        this.getDataSJ()
       }else if (this.projectName === "非现场站点") {
-        let params = {
-          key: this.inputModel,
-          type: 4
-        }
-        let _this = this;
-        getZfjgLawSupervise(params).then(res => {
-            if(res.code === 200) {
-                this.$message({
-                    message: '查询到'+res.data.length+'条数据',
-                    type: 'success'
-                });
-                return res.data
-            } else {
-                this.$message.error('getZfjgLawSupervise()::::::::接口数据错误');
-            }
-        }).then(data => {
-          this.config.window2.option = data.map(item => {
-              item.type = 4
-              item.label = item.name
-              return item
-          })
-        })
+        this.getDataFXC()
       }
     },
 
