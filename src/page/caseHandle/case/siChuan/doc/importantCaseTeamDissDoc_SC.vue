@@ -2,10 +2,10 @@
 <template>
   <div class="print_box">
     <div class="print_info" id="importantCaseTeamDissDoc-print">
-      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="formData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">重大案件集体讨论记录</div>
         <div class="doc_number">
-          <!-- 案号：{{formData.caseNumber}} -->
+          <!-- 案号：{{docData.caseNumber}} -->
           </div>
         <p class="p_begin">
           案件名称：
@@ -16,7 +16,7 @@
               :rules="fieldRules('caseName',propertyFeatures['caseName'])"
             >
               <el-input
-                v-model="formData.caseName"
+                v-model="docData.caseName"
                 maxlength="32"
                 :disabled="fieldDisabled(propertyFeatures['caseName'])"
               ></el-input>
@@ -33,7 +33,7 @@
               :rules="fieldRules('discussionStartTime',propertyFeatures['discussionStartTime'])"
             >
               <el-date-picker
-                v-model="formData.discussionStartTime"
+                v-model="docData.discussionStartTime"
                 type="datetime"
                 value-format="yyyy-MM-dd HH:mm"
                 format="yyyy年MM月dd日HH时mm分"
@@ -42,7 +42,7 @@
               <el-input
                 class="replaceTime"
                 placeholder=" 年 月 日 时 分"
-                v-model="formData.discussionStartTime"
+                v-model="docData.discussionStartTime"
               ></el-input>
             </el-form-item>
           </span> 至
@@ -55,7 +55,7 @@
             >
               <el-time-picker
                 placeholder="  时 分"
-                v-model="formData.discussionEndTime"
+                v-model="docData.discussionEndTime"
                 format="HH时mm分"
                 value-format="HH:mm"
                 :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])"
@@ -72,7 +72,7 @@
               :rules="fieldRules('discussionPlace',propertyFeatures['discussionPlace'])"
             >
               <el-input
-                v-model="formData.discussionPlace"
+                v-model="docData.discussionPlace"
                 maxlength="30"
                 :disabled="fieldDisabled(propertyFeatures['discussionPlace'])"
               ></el-input>
@@ -89,7 +89,7 @@
               :rules="fieldRules('presidingHearer',propertyFeatures['presidingHearer'])"
             >
               <el-input
-                v-model="formData.presidingHearer"
+                v-model="docData.presidingHearer"
                 maxlength="7"
                 :disabled="fieldDisabled(propertyFeatures['presidingHearer'])"
               ></el-input>
@@ -105,7 +105,7 @@
               :rules="fieldRules('presidingHearerPos',propertyFeatures['presidingHearerPos'])"
             >
               <el-input
-                v-model="formData.presidingHearerPos"
+                v-model="docData.presidingHearerPos"
                 maxlength="7"
                 :disabled="fieldDisabled(propertyFeatures['presidingHearerPos'])"
               ></el-input>
@@ -121,7 +121,7 @@
               :rules="fieldRules('recorder',propertyFeatures['recorder'])"
             >
               <el-input
-                v-model="formData.recorder"
+                v-model="docData.recorder"
                 maxlength="7"
                 :disabled="fieldDisabled(propertyFeatures['recorder'])"
               ></el-input>
@@ -138,7 +138,7 @@
               <el-input
                 class="overflow_lins_textarea"
                 type="textarea"
-                v-model="formData.discussionPeople"
+                v-model="docData.discussionPeople"
                 rows="3"
                 maxlength="60"
                 :disabled="fieldDisabled(propertyFeatures['discussionPeople'])"
@@ -162,7 +162,7 @@
               <el-input
                 class="overflow_lins_textarea"
                 type="textarea"
-                v-model="formData.caseInformation"
+                v-model="docData.caseInformation"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['caseInformation'])"
@@ -184,7 +184,7 @@
               <el-input
                 class="overflow_lins_textarea"
                 type="textarea"
-                v-model="formData.discussionOpinionAndReason"
+                v-model="docData.discussionOpinionAndReason"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['discussionOpinionAndReason'])"
@@ -210,9 +210,9 @@
               :rules="fieldRules('conclussionOpinion',propertyFeatures['conclussionOpinion'])"
             >
               <el-input
-                class="text_indent6 overflow_lins_textarea"
+                class=" overflow_lins_textarea"
                 type="textarea"
-                v-model="formData.conclussionOpinion"
+                v-model="docData.conclussionOpinion"
                 rows="3"
                 maxlength="90"
                 :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"
@@ -234,11 +234,8 @@
       </el-form>
     </div>
     <casePageFloatBtns
-      :pageDomId="'importantCaseTeamDissDoc-print'"
       :formOrDocData="formOrDocData"
-      @submitData="submitData"
       @saveData="saveData"
-      @backHuanjie="submitData"
     ></casePageFloatBtns>
   </div>
 </template>
@@ -256,15 +253,15 @@ export default {
   data() {
     //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-      console.log(Date.parse(this.formData.discussionStartTime));
-      console.log(Date.parse(this.formData.discussionEndTime));
-      let parseStartTime = this.formData.discussionStartTime
+      console.log(Date.parse(this.docData.discussionStartTime));
+      console.log(Date.parse(this.docData.discussionEndTime));
+      let parseStartTime = this.docData.discussionStartTime
         .replace("年", "-")
         .replace("月", "-")
         .replace("日", " ")
         .replace("时", ":")
         .replace("分", "");
-      let parseEndTime = this.formData.discussionEndTime
+      let parseEndTime = this.docData.discussionEndTime
         .replace("年", "-")
         .replace("月", "-")
         .replace("日", " ")
@@ -295,7 +292,7 @@ export default {
       callback();
     };
     return {
-      formData: {
+      docData: {
         caseNumber: "",
         caseName: "",
         discussionStartTime: "",
@@ -314,13 +311,14 @@ export default {
         conclussionOpinion: "", //多行编辑内容
       },
       handleType: 0, //0  暂存     1 提交
-      caseLinkDataForm: {
+      caseDocDataForm: {
         id: "", //修改的时候用
-        caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_JX.importCaseDiss_JX_caseLinktypeId, //表单类型ID
-        //表单数据
-        formData: "",
-        status: "",
+        caseBasicinfoId: "", //案件ID
+        caseDoctypeId: this.$route.params.docId, //文书类型ID
+        //文书数据
+        docData: "",
+        status: "", //提交状态
+        linkTypeId: this.$route.params.caseLinkTypeId, //所属环节的id
       },
       rules: {
         caseName: [
@@ -396,31 +394,24 @@ export default {
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         pageDomId: "importantCaseTeamDissDoc-print",
       },
-      huanjieAndDocId: this.BASIC_DATA_JX.importCaseDiss_JX_huanjieAndDocId,
       propertyFeatures: "",
     };
   },
 
   methods: {
-    //加载表单信息
-    setFormData() {
-      this.caseLinkDataForm.caseBasicinfoId = this.caseId;
-      this.com_getFormDataByCaseIdAndFormId(
-        this.caseLinkDataForm.caseBasicinfoId,
-        this.caseLinkDataForm.caseLinktypeId,
-        false
-      );
+    //根据案件ID和文书Id获取数据
+    getDocDataByCaseIdAndDocId() {
+      this.caseDocDataForm.caseBasicinfoId = this.caseId;
+      let data = {
+        caseId: this.caseId,
+        docId: this.$route.params.docId
+      };
+      console.log(data);
+      this.com_getDocDataByCaseIdAndDocId(data);
     },
-    //提交
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url,
-      });
-    },
-    //保存文书信息
     saveData(handleType) {
-      this.com_submitCaseForm(handleType, "docForm", true);
+      // this.printContent()
+      this.com_addDocData(handleType, "docForm");
     },
     //是否是完成状态
     isOverStatus() {
@@ -441,7 +432,7 @@ export default {
     },
   },
   mounted() {
-    this.setFormData();
+    this.getDocDataByCaseIdAndDocId()
   },
   created() {
     this.isOverStatus();

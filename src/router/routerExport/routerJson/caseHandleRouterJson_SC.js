@@ -136,7 +136,31 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/courtEnforceApplicationDoc_SC.vue")
     },
-   
+    {
+      path: "/noPenalty_SC",
+      name: "case_handle_noPenalty_SC",
+      meta: {
+        title: "不予处罚-四川",
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/noPenalty_SC.vue")
+    },
+    {
+      path: "/deliveryConfirmDoc_SC",
+      name: "case_handle_deliveryConfirmDoc_SC",
+      meta: {
+        title: "送达地址确认书"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/deliveryConfirmDoc_SC.vue")
+    },
+    {
+      path: "/sceneNotesDoc_SC",
+      name: "case_handle_sceneNotesDoc_SC",
+      meta: {
+        title: "行政强制措施现场笔录"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/sceneNotesDoc_SC.vue")
+    },
+
     
     
     

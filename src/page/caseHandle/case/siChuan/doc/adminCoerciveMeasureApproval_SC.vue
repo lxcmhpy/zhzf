@@ -193,20 +193,20 @@
               <p>料</p>
             </td>
             <td>序号</td>
-            <td colspan="4">证据名称</td>
-            <td colspan="1">规格</td>
-            <td colspan="1">数量</td>
-            <td colspan="3">备注</td>
+            <td colspan="5" class="center">证据名称</td>
+            <td colspan="2">规格</td>
+            <td colspan="2">数量</td>
+            <!-- <td colspan="3" class="center">备注</td> -->
           </tr>
           <tr @click="handleAdd" v-for="(item,index) in docData.evidenceList" :key="index">
             <td>{{item.resNo}}</td>
-            <td colspan="4">{{item.name}}</td>
-            <td colspan="1">{{item.des}}</td>
-            <td colspan="1">{{item.num}}</td>
-            <td colspan="3">{{item.note}}</td>
+            <td colspan="5" class="center">{{item.name}}</td>
+            <td colspan="2">{{item.des}}</td>
+            <td colspan="2">{{item.num}}</td>
+            <!-- <td colspan="3" class="center">{{item.note}}</td> -->
           </tr>
           <tr>
-            <td class="center">
+            <td class="center" style="height:240px">
               <p>调</p>
               <p>查</p>
               <p>人</p>
@@ -217,13 +217,13 @@
               <p>见</p>
             </td>
             <td colspan="10" class="color_DBE4EF">
-              <el-form-item prop="lawOfficeOpinions">
+              <el-form-item prop="lawOfficeOpinions" style="height:55%;">
                 <el-input style="float:left;margin-top:10px;" 
                   type="textarea" v-model="docData.lawOfficeOpinions"
-                  v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 5}" maxlength="340" placeholder="/"></el-input> 
+                  v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>30?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 10}" maxlength="340" placeholder="/"></el-input> 
               </el-form-item>
-              <div class="pdf_seal alginLast" style="white-space:nowrap;width:auto;margin-top:120px;margin-right:80px;">
+              <div class="pdf_seal alginLast" style="white-space:nowrap;height:30%;width:auto;margin-bottom:25px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
                 <p>
                   <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
@@ -316,11 +316,11 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="备注" align="center">
+              <!-- <el-table-column label="备注" align="center">
                 <template slot-scope="scope">
                   <el-input maxlength="10" v-model="scope.row.note"></el-input>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column width="52%">
                 <template slot-scope="scope">
                   <el-button
@@ -586,7 +586,7 @@ export default {
         name: "",
         num: "",
         des: "",
-        note: "",
+        // note: "",
       });
     },
     //确定添加
@@ -594,9 +594,9 @@ export default {
       let canAdd = true;
       if (this.tableDatas.length > 0) {
         for (let i = 0; i < this.tableDatas.length; i++) {
-          if (!this.tableDatas[i].name || !this.tableDatas[i].des) {
+          if (!this.tableDatas[i].name || !this.tableDatas[i].des || !this.tableDatas[i].num) {
             this.$message({
-              message: "证据名称或规格不能为空！",
+              message: "名称、规格、数量不能为空！",
               type: "warning",
             });
             canAdd = false;
@@ -623,12 +623,12 @@ export default {
         return;
       }
       if (length == 0) {
-        this.tableDatas.push({ resNo: 1, amount: 1 });
+        this.tableDatas.push({ resNo: 1, num: 1 });
       } else {
         this.tableDatas.push({
           resNo: Number(this.tableDatas[length - 1].resNo) + 1,
           num: 1,
-          note: "",
+          // note: "",
         });
       }
     },
@@ -640,12 +640,12 @@ export default {
       }
       if (!this.docData.evidenceList.length) {
         this.docData.evidenceList = [
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
         ];
       }
     },
@@ -678,7 +678,6 @@ export default {
   .center{
     text-align: center;
     text-align-last: center;  
-
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="print_box">
-      <div id="delivery-print" class="print_info" style="height:auto">
+      <div id="deliveryConfirmDoc_SC-print" class="print_info" style="height:auto">
         <el-form
           :rules="rules"
           ref="docForm"
@@ -9,31 +9,29 @@
           :inline="true"
           :model="docData"
         >
-          <div class="doc_topic">执法文书送达地址确认书</div>
-          <div class="doc_number">案号：{{docData.caseNumber}}</div>
-          <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
+          <div class="doc_topic">送达地址确认书</div>
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
-              <td>当事人</td>
-              <td colspan="7" class="color_DBE4EF">
-                <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+              <td>案号</td>
+              <td colspan="3" class="color_DBE4EF">
+                <el-form-item
+                  prop="caseNumber"
+                  :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])"
+                >
                   <el-input
                     type="textarea"
-                    v-model="docData.party"
-                    v-bind:class="{ over_flow:docData.party.length>14?true:false }"
+                    v-model="docData.caseNumber"
+                    v-bind:class="{ over_flow:docData.caseNumber.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
                     :maxlength="nameLength"
                     error
                     placeholder="\"
-                    :disabled="fieldDisabled(propertyFeatures['party'])"
+                    :disabled="fieldDisabled(propertyFeatures['caseNumber'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                 </el-form-item>
               </td>
-            </tr>
-            <tr>
               <td>案由</td>
-              <td colspan="7" class="color_DBE4EF">
+              <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="caseName"
                   :rules="fieldRules('caseName',propertyFeatures['caseName'])"
@@ -52,41 +50,69 @@
                 </el-form-item>
               </td>
             </tr>
+
+            <tr>
+              <td>当事人</td>
+              <td colspan="7" class="color_DBE4EF">
+                <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])">
+                  <el-input
+                    type="textarea"
+                    v-model="docData.party"
+                    v-bind:class="{ over_flow:docData.party.length>14?true:false }"
+                    :autosize="{ minRows: 1, maxRows: 3}"
+                    :maxlength="nameLength"
+                    error
+                    placeholder="\"
+                    :disabled="fieldDisabled(propertyFeatures['party'])"
+                  ></el-input>
+                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
+                </el-form-item>
+              </td>
+            </tr>
+            
             <tr>
               <td>
                 <p>告知</p>
                 <p>事项</p>
               </td>
-              <td colspan="8" class="color_DBE4EF">
+              <td colspan="7" class="color_DBE4EF">
                 <p>
                   1．为便于当事人及时收到交通运输行政执法文书，保证行政执法程序顺利进行，
-                  <br />当事人应当如实提供确切的送达地址或电子送达方式。代理人签署本确认书，视
-                  <br />为所代理的当事人确认。
+                  当事人应当如实提供确切的送达地址或电子送达方式。委托代理人签署本确认书的，视为当事人确认。
                 </p>
                 <p>
-                  2．为提高送达效率，在当事人同意的情况下，交通运输执法部门将优先采用电子
-                  <br />方式送达。无论是否接受电子送达，均应提供联系手机号码。
+                 2.当事人拒绝提供自己的送达地址的，以在交通运输审批、公安机关车辆登记管理等
+                 业务办理系统中记录的地址为送达地址。没有上述地址的，自然人依其户籍登记中的
+                 住所地或者经常居住地为送达地址；法人或者其他组织以其工商登记或者其他依法登
+                 记、备案中的住所地为送达地址。
                 </p>
                 <p>
-                  3．确认的送达地址或电子送达方式适用于行政检查、行政处罚及行政强制程序。
-                  <br />如有变更，应当及时书面告知交通运输执法部门变更后的送达地址或电子送达
-                  <br />方式。
+                 3．为提高送达效率，根据《中华人民共和国民事诉讼法》，最高人民法院《关于进一
+                 步加强民事送达工作的若干意见》的规定，在当事人同意的情况下，我们将按规定采
+                 用电子方式送达除《行政处罚决定书》、《行政强制措施决定书》、《行政强制执行决定
+                 书》以外的法律文书。无论是否接受电子送达，均应提供联系手机号码。
                 </p>
                 <p>
-                  4．如果提供的地址或联系方式不确切，或者不及时告知变更后的地址或联系方式，
-                  <br />使执法文书无法送达或未及时送达，当事人将自行承担由此可能产生的法律后果。
+                 4．确认的送达地址或电子送达方式适用于调查取证、违法行为告知、作出处罚决定、
+                 执行处罚决定等全过程。送达地址如有变更，应当及时书面告知执法机构变更后的送
+                 达地址或电子送达方式。
+                </p>
+                <p>
+                  5．如果当事人及其代理人提供的地址或联系方式不准确，或者不及时告知变更后的
+                  地址或联系方式，或者受送达人的委托代理人、指定代收人拒绝签收使法律文书无法
+                  送达或未及时送达，当事人将自行承担由此可能产生的法律后果。
                 </p>
               </td>
             </tr>
             <tr>
-              <td rowspan="6">
+              <td rowspan="5">
                 <p>送达</p>
                 <p>地址</p>
                 <p>及</p>
                 <p>方式</p>
               </td>
               <td>收件人</td>
-              <td class="color_DBE4EF">
+              <td class="color_DBE4EF" colspan="2">
                 <el-form-item
                   prop="receiver"
                   :rules="fieldRules('receiver',propertyFeatures['receiver'])"
@@ -104,7 +130,7 @@
                 </el-form-item>
               </td>
               <td>与当事人关系</td>
-              <td colspan="5" class="color_DBE4EF" id="checkStyle">
+              <td colspan="3" class="color_DBE4EF" id="checkStyle">
                 <el-form-item
                   prop="withPartyRelation"
                   :rules="fieldRules('withPartyRelation',propertyFeatures['withPartyRelation'])"
@@ -119,30 +145,15 @@
             </tr>
             <tr>
               <td>证件类型</td>
-              <td class="color_DBE4EF">
+              <td class="color_DBE4EF" colspan="2">
                 <el-form-item prop="certificateType" :rules="fieldRules('certificateType',propertyFeatures['certificateType'],'',isParty)">
                   <el-select ref="certificateType" v-model="docData.certificateType" :disabled="fieldDisabled(propertyFeatures['certificateType'])">
                     <el-option v-for="item in credentialType" :key="item.id" :label="item.value" :value="item.id"></el-option>
                   </el-select>
                 </el-form-item>
-                <!-- <el-form-item
-                  prop="certificateType"
-                  :rules="fieldRules('certificateType',propertyFeatures['certificateType'])"
-                >
-                  <el-input
-                    type="textarea"
-                    v-model="docData.certificateType"
-                    v-bind:class="{ over_flow:docData.certificateType.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="nameLength"
-                    error
-                    placeholder="\"
-                    :disabled="fieldDisabled(propertyFeatures['certificateType'])"
-                  ></el-input>
-                </el-form-item> -->
               </td>
               <td>证件号码</td>
-              <td colspan="5" class="color_DBE4EF">
+              <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="certificateNumber"
                   :rules="fieldRules('certificateNumber',propertyFeatures['certificateNumber'])"
@@ -157,7 +168,6 @@
                     placeholder="\"
                     :disabled="fieldDisabled(propertyFeatures['certificateNumber'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="\"></el-input> -->
                 </el-form-item>
               </td>
             </tr>
@@ -167,7 +177,7 @@
                 <p>方式</p>
                 <p>（可多选）</p>
               </td>
-              <td colspan="7" class="color_DBE4EF">
+              <td colspan="6" class="color_DBE4EF">
                 <p>
                   <el-form-item label="是否接受电子送达：">
                     <el-checkbox-group :max="1" v-model="docData.isAcceptElDel">
@@ -179,25 +189,9 @@
                 <el-form-item>
                   <el-checkbox-group v-model="docData.eleDeliveryType">
                     <p>
-                      <el-checkbox label="6">手机（电子送达必选）：</el-checkbox>
+                      <el-checkbox label="6">手机（电子送达必选）</el-checkbox>
                     </p>
                     <p>
-                      <el-checkbox label="7">移动微信：</el-checkbox>
-                      <el-form-item
-                        prop="weChat"
-                        :rules="fieldRules('weChat',propertyFeatures['weChat'])"
-                      >
-                        <el-input
-                          type="textarea"
-                          v-model="docData.weChat"
-                          v-bind:class="{ over_flow:docData.weChat.length>14?true:false }"
-                          :autosize="{ minRows: 1, maxRows: 3}"
-                          :maxlength="nameLength"
-                          style="width:100px;"
-                          placeholder="\"
-                          :disabled="fieldDisabled(propertyFeatures['weChat'])"
-                        ></el-input>
-                      </el-form-item>
                       <el-checkbox label="8">电子邮箱：</el-checkbox>
                       <el-form-item
                         prop="email"
@@ -209,7 +203,7 @@
                           v-bind:class="{ over_flow:docData.email.length>14?true:false }"
                           :autosize="{ minRows: 1, maxRows: 3}"
                           :maxlength="nameLength"
-                          style="width:80px;"
+                          style="width:180px;"
                           placeholder="\"
                           :disabled="fieldDisabled(propertyFeatures['email'])"
                         ></el-input>
@@ -224,11 +218,13 @@
                           v-bind:class="{ over_flow:docData.fax.length>14?true:false }"
                           :autosize="{ minRows: 1, maxRows: 3}"
                           :maxlength="nameLength"
-                          style="width:100px;"
+                          style="width:180px;"
                           placeholder="\"
                           :disabled="fieldDisabled(propertyFeatures['fax'])"
                         ></el-input>
                       </el-form-item>
+                      </p>
+                      <p>
                       <el-checkbox label="10">其他：</el-checkbox>
                       <el-form-item
                         prop="other"
@@ -240,7 +236,7 @@
                           v-bind:class="{ over_flow:docData.other.length>14?true:false }"
                           :autosize="{ minRows: 1, maxRows: 3}"
                           :maxlength="nameLength"
-                          style="width:100px;"
+                          style="width:180px;"
                           placeholder="\"
                           :disabled="fieldDisabled(propertyFeatures['other'])"
                         ></el-input>
@@ -252,23 +248,9 @@
             </tr>
             <tr>
               <td>
-                <p>执法文书</p>
-                <p>送达方式</p>
-              </td>
-              <td colspan="7" class="color_DBE4EF">
-                <el-form-item>
-                  <el-checkbox-group v-model="docData.deliveryWay">
-                    <el-checkbox label="11">电子送达</el-checkbox>
-                    <el-checkbox label="12">线下送达（可多选）</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-              </td>
-            </tr>
-            <tr>
-              <td>
                 <p>邮寄地址</p>
               </td>
-              <td colspan="7" class="color_DBE4EF">
+              <td colspan="6" class="color_DBE4EF">
                 <el-form-item
                   prop="postAddress"
                   :rules="fieldRules('postAddress',propertyFeatures['postAddress'])"
@@ -287,7 +269,7 @@
               </td>
             </tr>
             <tr>
-              <td>手机号码（必填）</td>
+              <td  colspan="2">手机号码（必填）</td>
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="mobile"
@@ -307,7 +289,7 @@
                 </el-form-item>
               </td>
               <td>邮编</td>
-              <td colspan="3" class="color_DBE4EF">
+              <td class="color_DBE4EF">
                 <el-form-item
                   prop="zipCode"
                   :rules="fieldRules('zipCode',propertyFeatures['zipCode'])"
@@ -332,13 +314,9 @@
                 <p>达人</p>
                 <p>确认</p>
               </td>
-              <td colspan="8" class="color_DBE4EF table_seal">
+              <td colspan="7" class="color_DBE4EF table_seal">
                 <p>
-                  我已阅读（听明白）本确认书的告知事项，提供了上栏送达地址和联系方式，
-                  <br />确认了上栏送达方式，并保证所提供的各项内容是正确的、有效的。如在送达过程
-                  <br />中送达地址或联系方式发生变化，将及时通知交通运输执法部门。未经本人书面变
-                  <br />更确认，交通运输执法部门向本人以上确认的送达地址送到文书，不论本人是否实
-                  <br />际收到，均视为已向本人送达，因此产生的一切法律后果均由本人自行承担。
+                 我已阅读（听明白）本确认书的告知事项及法律后果，本人填写的送达地址信息准确无误，承诺遵守告知事项并承担由此产生的法律后果。
                 </p>
                 <div class="pdf_seal">
                   <span>受送达人（签名或盖章）：{{docData.adminOpinion}}</span>
@@ -362,26 +340,8 @@
               <td>
                 <p>备注</p>
               </td>
-              <td colspan="8" class="color_DBE4EF">
-                《行政处罚决定书》《行政强制措施决定书》《行政强制执行决定书》《催告书》
-                <br />不予电子送达。
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>执法人员</p>
-                <p>签名</p>
-              </td>
-              <td colspan="8" class="color_DBE4EF">
-                <el-form-item prop="note">
-                  <el-input
-                    type="textarea"
-                    v-model="docData.staffSign"
-                    :autosize="{ minRows: 1, maxRows: 2}"
-                    maxlength="30"
-                    placeholder="\"
-                  ></el-input>
-                </el-form-item>
+              <td colspan="7" class="color_DBE4EF">
+                
               </td>
             </tr>
           </table>
@@ -397,7 +357,6 @@
   </div>
 </template>
 <script>
-// import overflowInput from "../pdf/overflowInput";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
@@ -523,7 +482,7 @@ export default {
           false,
           false
         ], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
-        pageDomId: "delivery-print"
+        pageDomId: "deliveryConfirmDoc_SC-print"
       },
       needDealData: true,
       propertyFeatures: "" //字段属性配置
@@ -630,13 +589,11 @@ export default {
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
-    // this.getLawOfficer();
   }
 };
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/*  @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 
 .espacle {
   textarea {
@@ -651,7 +608,7 @@ export default {
     margin-right: 0px;
   }
 }
-#delivery-print {
+#deliveryConfirmDoc_SC-print {
   height: 1220px;
   .overflow_lins_style .span_bg {
     display: block;
