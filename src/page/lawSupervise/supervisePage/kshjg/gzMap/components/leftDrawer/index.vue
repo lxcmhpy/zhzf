@@ -23,7 +23,7 @@
              @selection-change="handleSelectionChange"
              @expand-change="zydescription"
              border
-             height="200"
+             height="300"
             style="width: 100%">
              <el-table-column
                 type="selection"
@@ -359,6 +359,7 @@ export default {
   box-sizing: border-box;
   margin-top: 29px;
   height: 100%;
+  overflow: auto;
   .title{
     font-size: 18px;
     margin: 10px 0;
@@ -379,7 +380,7 @@ export default {
   }
   .selectedBox{
     overflow: auto;
-    height: 155px;
+    height: 255px;
   }
   .treeT{
     height: 197px;
@@ -409,7 +410,8 @@ export default {
   .bottomBtn{
     display: flex;
     justify-content:space-around;
-    margin: 12px 0px;
+    margin-bottom: 60px;
+    margin-top: 20px;
   }
   .bottomBtn1{
      display: flex;
