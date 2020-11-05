@@ -157,7 +157,7 @@ export default {
      * 指派成功时的回调
      */
     successDialogAssigned() {
-      this.page.getDataSJ()
+      this.page.getEventData()
     },
 
     /**
