@@ -193,17 +193,17 @@
               <p>料</p>
             </td>
             <td>序号</td>
-            <td colspan="4" class="center">证据名称</td>
-            <td colspan="1">规格</td>
-            <td colspan="1">数量</td>
-            <td colspan="3" class="center">备注</td>
+            <td colspan="5" class="center">证据名称</td>
+            <td colspan="2">规格</td>
+            <td colspan="2">数量</td>
+            <!-- <td colspan="3" class="center">备注</td> -->
           </tr>
           <tr @click="handleAdd" v-for="(item,index) in docData.evidenceList" :key="index">
             <td>{{item.resNo}}</td>
-            <td colspan="4" class="center">{{item.name}}</td>
-            <td colspan="1">{{item.des}}</td>
-            <td colspan="1">{{item.num}}</td>
-            <td colspan="3" class="center">{{item.note}}</td>
+            <td colspan="5" class="center">{{item.name}}</td>
+            <td colspan="2">{{item.des}}</td>
+            <td colspan="2">{{item.num}}</td>
+            <!-- <td colspan="3" class="center">{{item.note}}</td> -->
           </tr>
           <tr>
             <td class="center" style="height:240px">
@@ -316,11 +316,11 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="备注" align="center">
+              <!-- <el-table-column label="备注" align="center">
                 <template slot-scope="scope">
                   <el-input maxlength="10" v-model="scope.row.note"></el-input>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column width="52%">
                 <template slot-scope="scope">
                   <el-button
@@ -586,7 +586,7 @@ export default {
         name: "",
         num: "",
         des: "",
-        note: "",
+        // note: "",
       });
     },
     //确定添加
@@ -594,9 +594,9 @@ export default {
       let canAdd = true;
       if (this.tableDatas.length > 0) {
         for (let i = 0; i < this.tableDatas.length; i++) {
-          if (!this.tableDatas[i].name || !this.tableDatas[i].des) {
+          if (!this.tableDatas[i].name || !this.tableDatas[i].des || !this.tableDatas[i].num) {
             this.$message({
-              message: "证据名称或规格不能为空！",
+              message: "名称、规格、数量不能为空！",
               type: "warning",
             });
             canAdd = false;
@@ -623,12 +623,12 @@ export default {
         return;
       }
       if (length == 0) {
-        this.tableDatas.push({ resNo: 1, amount: 1 });
+        this.tableDatas.push({ resNo: 1, num: 1 });
       } else {
         this.tableDatas.push({
           resNo: Number(this.tableDatas[length - 1].resNo) + 1,
           num: 1,
-          note: "",
+          // note: "",
         });
       }
     },
@@ -640,12 +640,12 @@ export default {
       }
       if (!this.docData.evidenceList.length) {
         this.docData.evidenceList = [
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
-          { resNo: "", name: "", num: "", des: "", note: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
+          { resNo: "", name: "", num: "", des: "" },
         ];
       }
     },
