@@ -11,7 +11,7 @@
         <!-- </div> -->
         <el-button type="primary" size="medium" v-if="alReadyFinishCoerciveM">已解除强制措施</el-button>
         
-        <el-button type="primary" size="medium" v-if="showForceCorrect">责令改正</el-button>
+        <el-button type="primary" size="medium" v-if="showForceCorrect" @click="goToForceCorrect">责令改正</el-button>
 
         <el-button type="primary" size="medium" @click="linkBack" v-if="showLinkBackBtn">环节回退</el-button>
 
@@ -48,6 +48,7 @@ import {
   queryFlowBycaseIdApi,updateLinkInfoByCaseIdAndLinkTypeIdApi,linkBackApi,
 } from "@/api/caseHandle";
 import flowLinkBackDia from './flowLinkBackDia'
+import { getFile } from "@/api/upload";
 
 export default {
   data() {
@@ -914,6 +915,20 @@ export default {
         this.showLinkBackBtn = false;
       }
       
+    },
+    async goToForceCorrect(){
+      let fileres = '';
+      try {
+        fileres = await getFile({ docId: this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, caseId: this.caseId, });
+      } catch (err) {
+        this.$message('查询环节是否生成了pdf失败!')
+      }
+      console.log('查询环节是否生成了pdf', fileres);
+      if (fileres.data.length > 0) {
+        this.$router.push({ name: 'case_handle_myPDF', params: { docId: this.BASIC_DATA_SYS.forceCorrect_huanjieAndDocId, caseLinktypeId: this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId } })
+      } else {
+        this.$router.push({name:'case_handle_forceCorrect'})   
+      }
     }
   },
   created() {

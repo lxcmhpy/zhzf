@@ -47,6 +47,11 @@
       <i class="iconfont law-back"></i>
       <br />返回
     </el-button>
+
+    <!-- <el-button type="primary" @click="backHuanjie2" v-if="formOrDocData.isForceCorrect_SC_caseLinktypeId">
+      <i class="iconfont law-back"></i>
+      <br />返回
+    </el-button> -->
   
 
     <img src="" id="show">

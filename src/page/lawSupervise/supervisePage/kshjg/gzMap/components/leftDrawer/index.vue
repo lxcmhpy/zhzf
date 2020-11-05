@@ -18,7 +18,7 @@
         <div class="participants_table">
           <el-table
              ref="multipleTable"
-            :data="tableData"
+            :data="group_info"
             :header-cell-style="{'text-align':'center'}"
              @selection-change="handleSelectionChange"
              border
@@ -32,8 +32,8 @@
               <template slot-scope="props">
                 <el-form label-position="center" inline class="demo-table-expand">
                   <div class="openSelBig">
-                    <div class="openSel">
-                      <span class="TreeWord">{{ props.row.name }}</span>
+                    <div class="openSel"  v-for="(item,index) in props.row.uids" :key="index+11">
+                      <span class="TreeWord">{{item}}</span>
                       <span class="clickImg">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
@@ -42,7 +42,7 @@
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
                       </span>
                     </div>
-                    <div class="openSel">
+                    <!-- <div class="openSel">
                       <span class="TreeWord">{{ props.row.name }}</span>
                       <span class="clickImg">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
@@ -51,7 +51,7 @@
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt="">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
                       </span>
-                    </div>
+                    </div> -->
                   </div>
                 </el-form>
               </template>
@@ -59,7 +59,10 @@
             <el-table-column
               align="left"
               label="名称"
-              prop="name">
+              prop="tg_name">
+              <template slot-scope="scope">
+                <span>{{scope.row.tg_name}} ({{scope.row.uids.length}})</span>
+              </template>
             </el-table-column>
             <el-table-column
               align="center"
@@ -140,6 +143,7 @@
 <script>
 import addGroup from "./addGroup"
 export default {
+  props: ['config'],
   components: {
     'info-order': addGroup,
   },
@@ -193,23 +197,27 @@ export default {
       showCom: "",
       projectName: "",
       placeholder: "",
-      tableData: [{
-          name: '测试1',
-        }, {
-          name: '测试2',
-        }, {
-          name: '测试3',
-        }, {
-          name: '测试4',
-        }],
+      group_info: [],
       selectedArrQ:[],
       selectedArrT:[],
+      group_info:[]
     }
+  },
+  watch: {
+    config(o, n){
+      this.group_info = o.group_info
+      console.log(this.group_info)
+    }
+  },
+  created(){
+
+  },
+  mounted(){
   },
   methods: {
     // 搜索
     handleSearch(){
-
+      
     },
     // 确认
     getCheckedKeys(){

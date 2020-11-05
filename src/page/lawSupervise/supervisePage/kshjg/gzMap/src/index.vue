@@ -2,7 +2,7 @@
   <div class="gzMap">
     <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" />
     <TopInFo />
-    <LeftDrawer ref='LeftDrawer'/>
+    <LeftDrawer ref='LeftDrawer' :config="groups"/>
     <Search
       ref="Search"
       :config="searchWindowData"
@@ -57,6 +57,7 @@ export default {
   },
   data() {
     return {
+      groups:[],
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
       imgUrl: new Map([
@@ -498,9 +499,11 @@ export default {
                 if (rsp.cmd_status === 0) {
                     // XXX 设置当前调度台账号的ID，其他接口会使用此ID
                     _this.con_id = rsp.uid;
+                    _this.req_grp_profile()
                 } else {
                 }
             }, 'demo_req_logon');
+            
         },
         showDailog(){
                 websdk.request.videoRequest.playVideo(this.con_id, this.param_uid1, null, null, 0, 0, 0, function (rsp) {
@@ -521,13 +524,26 @@ export default {
             websdk.view.showGroupModal(global_data.param_tgid1, function (result) {
                 console.log('showGroupModal result:{}', result);
             });
-        }
+        },
+        //获取群组列表
+        req_grp_profile(targets) {
+          let _this = this;
+          if (!targets) {
+              targets = null;
+          }
+          websdk.request.groupRequest.getGroupInfo(targets, function (rsp) { // [global_data.param_tgid1]
+              console.log('demo_req_grp_profile result:', rsp);
+              _this.groups = rsp
+              console.log('this.group',_this.groups)
+          }, 'demo_req_grp_profile');//
+        },
   },
   activated() {
     this.getTree()
   },
-  mounted(){
-      this.$nextTick(() => {
+ 
+ created(){
+   this.$nextTick(() => {
         websdk.init(function (result) {
             console.log('websdk.init result:', result);
             //设置关闭视频时的操作: 1:询问, 2:只关闭视频窗口, 3:关闭视频窗口并结束推流
@@ -539,6 +555,9 @@ export default {
         });
     })
     this.login()
+},
+  mounted(){
+      
   }
 }
 </script>

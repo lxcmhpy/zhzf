@@ -9,7 +9,6 @@
                        @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall"
                        @showApprovePeopleList="showApprovePeopleList" @showApproval="findCurrentApproval"
                        @editEstablish="editEstablish"></casePageFloatBtns>
-
     <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople>
     <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog>
     <caseSlideMenu :activeIndex="''"></caseSlideMenu>
@@ -29,8 +28,9 @@
   import {mapGetters} from "vuex";
 
   import {
-    updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,getDocDetailByIdApi,updateDocStatusById,
+    updateDocStatusApi,getCurrentApproveApi,getFileStreamByStorageIdApi,getDocDetailByIdApi,updateDocStatusById,queryFlowBycaseIdApi,
   } from "@/api/caseHandle";
+
 
   import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 
@@ -45,7 +45,7 @@
         docFinishQZ:false, //环节下文书是否已完成签章
         pdfUrl:'',
         numPages:0,
-
+        currentFlow:''
       };
     },
     mixins: [mixinGetCaseApiList],
@@ -105,7 +105,7 @@
           }
         );
       },
-      isApproval() { 
+      async isApproval() { 
         //审批
         console.log('this.approvalState',this.approvalState)
         if(this.approvalState == 'approvaling'){
@@ -129,6 +129,20 @@
         //文书预览只有返回按钮
         if (this.$route.params.hasBack && this.$route.params.status == 2) {
           this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+        }
+
+       
+        try{
+          this.currentFlow = await queryFlowBycaseIdApi(this.caseId);
+        }catch(err){
+          this.$message('获取案件流程失败！')
+        }
+        //四川流程中的责令改正环节特殊处理
+        if(this.currentFlow.data.flowUrl == 'commonGraphData_SC' && this.caseLinktypeId == this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId){
+          this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+          // this.formOrDocData.isForceCorrect_SC_caseLinktypeId = true;
+        }else{
+          // this.formOrDocData.isForceCorrect_SC_caseLinktypeId = false;
         }
       },
       showApprovePeopleList() {
@@ -167,8 +181,13 @@
       },
       backHuanjie() {
         console.log('backHuanjie');
-        this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-        this.$router.go(-1);
+        if(this.currentFlow.data.flowUrl == 'commonGraphData_SC' && this.caseLinktypeId == this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId){
+          this.$router.push({name:'case_handle_flowChart'})
+        }else{
+           this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+          this.$router.go(-1);
+        }
+       
       },
 
       //获取当前是几级审批

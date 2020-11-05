@@ -655,13 +655,14 @@ export default {
         this.changeDocList();
     },
     changeDocList(){
+      this.docTableDatas = [];
       let item1 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_prolongAdminCoerciveMeasureApproval_SC")
       let item2 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_prolongAdminCompulsoryDoc")
       if(this.formData.chooseProlong){
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_prolongAdminCoerciveMeasureApproval_SC");
-        if(index1 ==-1) this.docTableDatas.push(item1);
+        if(index1 ==-1 && item1) this.docTableDatas.push(item1);
         let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_prolongAdminCompulsoryDoc");
-        if(index2 ==-1) this.docTableDatas.push(item2)
+        if(index2 ==-1 && item2) this.docTableDatas.push(item2)
       }else{ 
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_prolongAdminCoerciveMeasureApproval_SC");                             
         if(index1 !=-1) this.docTableDatas.splice(index1,1)
@@ -673,23 +674,21 @@ export default {
       let item4 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_removeAdminCoerciveMeasureDoc")
       if(this.formData.chooseRemove){
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC");
-        if(index1 ==-1) this.docTableDatas.push(item3);
+        if(index1 ==-1 && item3) this.docTableDatas.push(item3);
         let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureDoc");
-        if(index2 ==-1) this.docTableDatas.push(item4)
+        if(index2 ==-1 && item4) this.docTableDatas.push(item4)
       }else{ 
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC");                             
         if(index1 !=-1) this.docTableDatas.splice(index1,1)
-        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureDoc");
+        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_removeAdminCoerciveMeasureApproval_SC");
         if(index2 !=-1) this.docTableDatas.splice(index2,1)
       }
 
-      
-
-      //行政强制措施决定书、行政强制措施审批表
+    
       let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasureApproval_SC");
-      if(index1 ==-1) this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC"));
+      if(index1 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC"))
       let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasure");
-      if(index2 ==-1) this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure"))
+      if(index2 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure"))
     },
     getDataAfter(){
       //通过案件id和表单类型Id查询已绑定文书

@@ -18,6 +18,12 @@ export const BASIC_DATA_SC = {
     cancelCase_SC_caseLinktypeId:'db8081cab22aa3316eafe51e1985887f',
     //行政强制措施
     adminCoerciveMeasure_SC_caseLinktypeId:'aa8e772d42a2ae77c4d26a03884f6f49',
+    //不予处罚 环节id caseLinktypeId
+    noPenalty_SC_caseLinktypeId:'e2149ddf5ee554764772da751a2fcbb6',
+
+
+
+
 
     
     //行政强制措施 环节id caseLinktypeId
