@@ -7,17 +7,22 @@
       :render-content="renderSlot"
     >
     </el-tree>
+    <!-- 详情弹窗 -->
     <Dialog ref="dialog" />
+    <!-- 指派弹窗 -->
+    <DialogAssigned :config="config" ref="dialogAssigned" @handleOpen="handleOpen" @successDialogAssigned="successDialogAssigned" />
   </div>
 </template>
 
 <script>
 import { findData, findById } from "@/api/eventManage";
-import { getOrganTree } from "@/api/lawSupervise.js";
+import { getOrganTree, findUserByOrganId } from "@/api/lawSupervise.js";
 import Dialog from "../topInfo/dialog.vue";
+import DialogAssigned from "../../../../eventManage/src/dialogAssigned.vue";
 export default {
   components: {
-    Dialog
+    Dialog,
+    DialogAssigned
   },
   inject: ['page'],
   props: {
@@ -30,7 +35,11 @@ export default {
   },
   data() {
     return {
-      list: []
+      list: [],
+      config: {
+        treeOptions: [],
+        peopleOptions: []
+      },
     }
   },
   computed: {
@@ -145,10 +154,56 @@ export default {
     },
 
     /**
+     * 指派成功时的回调
+     */
+    successDialogAssigned() {
+      this.page.getEventData()
+    },
+
+    /**
+     * 打开指派弹窗时的回调
+     */
+    handleOpen() {
+      this.$store.dispatch("getAllOrgan").then(res => {
+        if(res.code === 200) {
+          return res.data
+        } else {
+          throw new Error("organTreeByCurrUser()::::::数据错误")
+        }
+      }).then(data => {
+        this.config.treeOptions = data
+      })
+    },
+
+    /**
      * 点击指派
      */
-    removeAssign(node, data) {
-      console.log(node, data)
+    removeAssign(data) {
+      // 打开指派弹窗
+      this.$refs.dialogAssigned.dialogAssignedVisible = true
+      this.$refs.dialogAssigned.form.state = data.state
+      this.$refs.dialogAssigned.form.id = data.id
+      if(data.disposeOrgan){
+        findUserByOrganId(data.disposeOrgan).then(res => {
+          if(res.code === 200) {
+            return res.data
+          } else {
+            throw new Error("getOrganTree()::::::接口数据错误")
+          }
+        }).then(data => {
+          data.forEach(item => {
+            if(item.provincial || item.ministerial || item.maritime){
+              item.label = item.nickName
+              item.value = item.id
+              this.config.peopleOptions.push(item)
+            }
+          })
+        })
+        this.$refs.dialogAssigned.form.disposeOrgan = data.disposeOrgan
+        if(data.disposePerson){
+          this.$refs.dialogAssigned.form.disposePerson = JSON.parse(data.disposePerson)
+        }
+      }
     },
 
     /**

@@ -266,8 +266,16 @@ export default {
         }, 'demo_req_delete_group');
     },
     delGroup(row){
-      this.req_delete_group(row.tgid)
-      this.getListData()
+        this.$confirm('确认删除该群组吗?', '删除群组', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.req_delete_group(row.tgid)
+          this.getListData()
+        }).catch(() => {
+
+        });
     },
     // 删除组成员
     req_remove_group_member(tgid,uid) {
@@ -314,20 +322,26 @@ export default {
     },
     //删除人员
     delPQ(val){
-      for (let i = 0; i <  this.selectedArrQ.length; i++) {
-         if(val.uid == this.selectedArrQ[i].uid){
-           this.selectedArrQ.splice(i,1)
-        }
-      }
+        this.$alert('操作成功', '提示信息', {
+          confirmButtonText: '确定',
+          callback: action => {
+            for (let i = 0; i <  this.selectedArrQ.length; i++) {
+              if(val.uid == this.selectedArrQ[i].uid){
+                this.selectedArrQ.splice(i,1)
+              }
+            }
+          }
+        });
     },
     handleClick(tab, event) {
         console.log(tab, event);
     },
     handleSelectionChange(val){
-        for (let i = 0; i < val.length; i++) {
-          this.selectedArrQ.push(val[i].name)
-        }
-        this.selectedArrQ = this.unique(this.selectedArrQ)
+      console.log(val)
+        // for (let i = 0; i < val.length; i++) {
+        //   this.selectedArrQ.push(val[i].name)
+        // }
+        // this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 去重
     unique(arr) {

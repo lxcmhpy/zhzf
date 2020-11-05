@@ -144,7 +144,23 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/siChuan/form/noPenalty_SC.vue")
     },
-   
+    {
+      path: "/deliveryConfirmDoc_SC",
+      name: "case_handle_deliveryConfirmDoc_SC",
+      meta: {
+        title: "送达地址确认书"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/deliveryConfirmDoc_SC.vue")
+    },
+    {
+      path: "/sceneNotesDoc_SC",
+      name: "case_handle_sceneNotesDoc_SC",
+      meta: {
+        title: "行政强制措施现场笔录"
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/doc/sceneNotesDoc_SC.vue")
+    },
+
     
     
     
