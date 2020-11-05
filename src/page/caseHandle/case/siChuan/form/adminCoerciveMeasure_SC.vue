@@ -3,7 +3,7 @@
     <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="130px">
       <div class="content_box">
         <div class="content">
-          <div class="content_title">行政强制措施sc</div>
+          <div class="content_title">行政强制措施</div>
           <div class="border_blue"></div>
           <div class="content_form">
             <div class="row">

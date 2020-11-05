@@ -101,7 +101,7 @@
         <p>
           申请人：
         </p>
-        <div class="pdf_seal">
+        <div class="courtpdf_seal">
           <span>
             负责人签字：</span>
           <br />
@@ -120,7 +120,7 @@
         </div>
       </el-form>
     </div>
-    <casePageFloatBtns :pageDomId="'courtEnforceApplication-print'" :formOrDocData="formOrDocData" @saveData="saveData"></casePageFloatBtns>
+    <casePageFloatBtns :pageDomId="'courtEnforceApplication-print'" :formOrDocData="formOrDocData" @saveData="saveData" ></casePageFloatBtns>
 
 
   </div>
@@ -183,9 +183,9 @@ export default {
         courtName: [
           { required: true, message: '法院名称必须填写', trigger: 'blur' },
         ],
-        makeDate: [
-          { required: true, message: '签字日期必须填写', trigger: 'blur' },
-        ],
+        // makeDate: [
+        //   { required: true, message: '签字日期必须填写', trigger: 'blur' },
+        // ],
       },
       factsAndReasonsLength: 1024,
       maxLength: 23,
@@ -223,13 +223,6 @@ export default {
     //保存文书信息
     saveData(handleType) {
       this.com_addDocData(handleType, "courtEnforceApplicationForm");
-    },
-    //提交
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
     },
     //是否是完成状态
     isOverStatus() {
@@ -279,6 +272,54 @@ export default {
 /* @import "@/assets/css/caseHandle/caseDocModle.scss"; */
 #courtEnforceApplicationDoc-print{
    height:1220px;
-  
+  /* 落款（签章） */
+        .courtpdf_seal {
+            margin-top   : 15px;
+            margin-bottom: 11px;
+            width        : 180px;
+            text-align   : left;
+            font-size    : 16px;
+            font-family  : SimSun;
+            float        : right;
+
+            .el-input__prefix {
+                display: none;
+            }
+
+            & .pdf_datapick {
+                width: 128px;
+
+                .el-input {
+                    padding    : 0;
+                    border     : 0;
+                    width      : 128px;
+                    height     : 18px;
+                    color      : #000000;
+                    font-size  : 16px;
+                    font-family: SimSun;
+
+                }
+
+                .el-input__inner {
+                    padding    : 0;
+                    border     : 0;
+                    height     : 18px;
+                    text-align : center;
+                    background : #DBE4EF;
+                    color      : #000000;
+                    text-indent: 0;
+
+                }
+
+                .el-input__icon {
+                    display: none;
+                }
+
+            }
+
+            &>p {
+                text-align-last: auto;
+            }
+        }
 }
 </style>

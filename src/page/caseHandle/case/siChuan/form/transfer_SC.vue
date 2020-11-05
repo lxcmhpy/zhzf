@@ -10,7 +10,7 @@
             <td colspan="7" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="organName" :rules="fieldRules('organName',propertyFeatures['organName'],'',isParty)">
                 <el-input type='textarea' v-model="formData.organName" v-bind:class="{ over_flow:formData.organName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
-                  :disabled="!isParty || fieldDisabled(propertyFeatures['organName'])" placeholder="/"></el-input>
+                  :disabled="fieldDisabled(propertyFeatures['organName'])" placeholder="/"></el-input>
               </el-form-item>
               <!-- <p>(加盖印章)</p> -->
             </td>
@@ -106,8 +106,8 @@
                   v-model="formData.partySex"
                   :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
                 >
-                  <el-option :value="0" label="男"></el-option>
-                  <el-option :value="1" label="女"></el-option>
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
                 </el-select>
               </el-form-item>
             </td>
@@ -148,6 +148,34 @@
             <td colspan="6" class="color_DBE4EF">
               <el-form-item prop="socialCreditCode" :rules="fieldRules('socialCreditCode',propertyFeatures['socialCreditCode'],'',!isParty)">
                 <el-input v-model="formData.socialCreditCode" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['socialCreditCode'])" placeholder="/"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td>涉嫌<br>违法<br>行为<br>或涉<br>嫌犯<br>罪罪<br>名<br></td>
+            <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
+              <el-form-item prop="copyReason" :rules="fieldRules('copyReason',propertyFeatures['copyReason'],'',isParty)">
+                <el-input type='textarea' v-model="formData.copyReason" :autosize="{ minRows: 1, maxRows: 3}" maxlength="200" 
+                  :disabled="fieldDisabled(propertyFeatures['copyReason'])"></el-input>
+              </el-form-item>
+            </td>
+          </tr>
+          <tr>
+            <td><p>案件</p><p>调查</p><p>情况</p></td>
+            <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
+              <el-form-item
+                prop="basicSituation"
+                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
+              >
+                <el-input
+                  type="textarea"
+                  v-model="formData.basicSituation"
+                  v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
+                  :autosize="{ minRows: 1, maxRows: 5}"
+                  maxlength="200"
+                  placeholder="/"
+                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
+                ></el-input>
               </el-form-item>
             </td>
           </tr>
@@ -195,34 +223,6 @@
             <td colspan="4" class="color_DBE4EF">{{item.evidenceName}}</td>
             <td colspan="4" class="color_DBE4EF">{{item.spec}}</td>
             <td colspan="3" class="color_DBE4EF">{{item.amount}}</td>
-          </tr>
-          <tr>
-            <td>涉嫌<br>违法<br>行为<br>或涉<br>嫌犯<br>罪罪<br>名<br></td>
-            <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
-              <el-form-item prop="copyReason" :rules="fieldRules('copyReason',propertyFeatures['copyReason'],'',isParty)">
-                <el-input type='textarea' v-model="formData.copyReason" :autosize="{ minRows: 1, maxRows: 3}" maxlength="200" 
-                  :disabled="fieldDisabled(propertyFeatures['copyReason'])"></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td><p>案件</p><p>调查</p><p>情况</p></td>
-            <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
-              <el-form-item
-                prop="basicSituation"
-                :rules="fieldRules('basicSituation',propertyFeatures['basicSituation'])"
-              >
-                <el-input
-                  type="textarea"
-                  v-model="formData.basicSituation"
-                  v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
-                  placeholder="/"
-                  :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
-                ></el-input>
-              </el-form-item>
-            </td>
           </tr>
           <tr>
             <td>备注</td>
@@ -445,7 +445,7 @@ export default {
       caseLinkDataForm: {
         id: "", //修改的时候用
         caseBasicinfoId: "", //案件id
-        caseLinktypeId: this.BASIC_DATA_JX.establish_JX_caseLinktypeId, //表单类型ID
+        caseLinktypeId: this.BASIC_DATA_SC.transfei_SC_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
         status: "",      
