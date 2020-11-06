@@ -15,7 +15,7 @@
         >
         <tr>
             <td>执法部门</td>
-            <td colspan="2">
+            <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                 prop="organName"
                 :rules="fieldRules('organName',propertyFeatures['organName'])"
@@ -33,7 +33,7 @@
         </tr>
         <tr>
             <td>案由</td>
-            <td colspan="2">
+            <td colspan="2" algin="center" class="color_DBE4EF">
                 <el-form-item
                 prop="party"
                 :rules="fieldRules('caseName',propertyFeatures['caseName'])"
@@ -51,8 +51,9 @@
         </tr>
         <tr>
             <td>案号</td>
-            <td colspan="2">
-                <el-form-item
+            <td colspan="2" class="center">
+              {{docData.caseNumber}}
+                <!-- <el-form-item
                 prop="caseNumber"
                 :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])"
               >
@@ -62,12 +63,12 @@
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['caseNumber'])"
                 ></el-input>
-              </el-form-item>
+              </el-form-item> -->
             </td>
         </tr>
         <tr>
             <td>案件承办人员</td>
-            <td colspan="2">
+            <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                 prop="staffs"
                 :rules="fieldRules('staffs',propertyFeatures['staffs'])"
@@ -85,7 +86,7 @@
         </tr>
         <tr>
             <td >执法部门处理意见</td>
-            <td colspan="2">
+            <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                 prop="organOpinoin"
                 :rules="fieldRules('organOpinoin',propertyFeatures['organOpinoin'])"
@@ -104,7 +105,7 @@
         <tr>
             <td rowspan="11">审核内容</td>
             <td>是否属于重大行政处罚法制审核范围</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong1"
                 :rules="fieldRules('belong1',propertyFeatures['belong1'])"
@@ -122,7 +123,7 @@
         </tr>
         <tr>
             <td>执法主体是否合法</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong2"
                 :rules="fieldRules('belong2',propertyFeatures['belong2'])"
@@ -140,7 +141,7 @@
         </tr>
         <tr>
             <td>行政执法人员是否具有执法资格</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong3"
                 :rules="fieldRules('belong3',propertyFeatures['belong3'])"
@@ -158,7 +159,7 @@
         </tr>
         <tr>
             <td>执法程序是否合法</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong4"
                 :rules="fieldRules('belong4',propertyFeatures['belong4'])"
@@ -176,7 +177,7 @@
         </tr>
         <tr>
             <td>案件事实是否清楚</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong5"
                 :rules="fieldRules('belong5',propertyFeatures['belong5'])"
@@ -194,7 +195,7 @@
         </tr>
         <tr>
             <td>证据是否合法充分</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong6"
                 :rules="fieldRules('belong6',propertyFeatures['belong6'])"
@@ -212,7 +213,7 @@
         </tr>
         <tr>
             <td>适用法律是否正确</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong7"
                 :rules="fieldRules('belong7',propertyFeatures['belong7'])"
@@ -230,7 +231,7 @@
         </tr>
         <tr>
             <td>裁量基准是否适当</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong8"
                 :rules="fieldRules('belong8',propertyFeatures['belong8'])"
@@ -248,7 +249,7 @@
         </tr>
         <tr>
             <td>是否超越法定权限</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong9"
                 :rules="fieldRules('belong9',propertyFeatures['belong9'])"
@@ -266,7 +267,7 @@
         </tr>
         <tr>
             <td>文书是否规范、完备</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong10"
                 :rules="fieldRules('belong10',propertyFeatures['belong10'])"
@@ -284,7 +285,7 @@
         </tr>
         <tr>
             <td>违法行为是否涉嫌犯罪、需要移送司法机关</td>
-            <td>
+            <td class="color_DBE4EF">
                 <el-form-item
                 prop="belong11"
                 :rules="fieldRules('belong11',propertyFeatures['belong11'])"
@@ -302,7 +303,7 @@
         </tr>
         <tr>
             <td>审核结论</td>
-            <td colspan="2">
+            <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                 prop="checkOpinoin"
                 :rules="fieldRules('checkOpinoin',propertyFeatures['checkOpinoin'])"
@@ -323,11 +324,11 @@
               <p>审核人员签名</p>
             </td>
             <td rowspan="2" colspan="2" class="color_DBE4EF">
-              {{docData.fourApproveOpinions}}
+              {{docData.approveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.fourApprovePeo}}</p>
+                <p>签名：{{docData.approvePeo}}</p>
                 <p>
-                  <span v-if="docData.fourApproveTime">{{docData.fourApproveTime}}</span>
+                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -336,14 +337,14 @@
         <tr></tr>
         <tr>
             <td rowspan="2">
-              <p>法制工作机构</p>
+              <p>法制工作机构</p> 
             </td>
             <td rowspan="2" colspan="2" class="color_DBE4EF">
-              {{docData.fourApproveOpinions}}
+              {{docData.secondApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.fourApprovePeo}}</p>
+                <p>签名：{{docData.secondApprovePeo}}</p>
                 <p>
-                  <span v-if="docData.fourApproveTime">{{docData.fourApproveTime}}</span>
+                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -413,6 +414,12 @@ export default {
         belong10:'',
         belong11:'',
         checkOpinoin:'',
+        approveOpinions:'',
+        approvePeo:'',
+        approveTime:'',
+        secondApproveOpinions:'',
+        secondApprovePeo:'',
+        secondApproveTime:''
       },
       isParty: false,
       handleType: 0, //0  暂存   1 提交
@@ -558,6 +565,10 @@ export default {
     white-space: normal;
     word-wrap: break-word;
     word-break: break-all;
+  }
+  .center{
+    text-align: center;
+    text-align-last: center;  
   }
 }
 </style>

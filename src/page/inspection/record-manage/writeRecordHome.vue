@@ -117,7 +117,7 @@ import addModle from "./addModle.vue";
 import cloneDeep from "lodash";
 import {
   findRecordlModleByNameApi,
-  findRecordModleByIdApi,
+  findRecordModleByIdApi, 
   removeMoleByIdApi,
   findRecordModleByNameIdApi,
   findRecordModleByPersonApi,
@@ -129,13 +129,13 @@ import { mapGetters } from "vuex";
 const strMap = {
   常用模板: "bgc0",
   公路路政: "bgc1",
-  水路运政: "bgc2",
-  道路运政: "bgc3",
-  海事行政: "bgc4",
+  道路运政: "bgc2",
+  水路运政: "bgc3",
+  航道行政: "bgc4",
+  港口行政: "bgc5",
+  工程质量监督: "bgc6",
+  海事行政: "bgc7",
   // 运政通用型检查记录:'bgc4',
-  航道行政: "bgc5",
-  港口行政: "bgc6",
-  工程质量监督: "bgc7",
   其他: "bgc8",
 };
 export default {
@@ -577,6 +577,7 @@ export default {
             .text {
               width: 77px;
               line-height: 16px;
+              font-size: 16px;
               color: #20232b;
               word-wrap: break-word;
               text-align: center;

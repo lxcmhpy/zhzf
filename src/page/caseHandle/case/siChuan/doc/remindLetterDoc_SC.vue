@@ -298,7 +298,7 @@ export default {
         this.caseDocDataForm.note = "催告书 (第" + addMoreData.addNum + "份)";
       } else {
         console.log("修改");
-        let currentDocDataId = this.currentFileData.docDataId;
+        let currentDocDataId = iLocalStroage.get("currentDocDataId")||this.currentFileData.docDataId;
         if (currentDocDataId) {
           this.getDocDetailById(currentDocDataId);
         } else {
