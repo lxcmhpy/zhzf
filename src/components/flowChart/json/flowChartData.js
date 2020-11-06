@@ -208,8 +208,8 @@ let flowGraphData = {
       
       { id: "6", source: '6', target: "7_1", linkID: BASIC_DATA_SYS.punishDecisionDoc_caseLinktypeId, name: "处罚决定", linkName: 'case_handle_punishDecisionDoc', docId: BASIC_DATA_SYS.punishDecisionDoc_huanjieAndDocId, position: { x: 1, y: 5 }, itemStyleColor: "", attributes: { modularity_class: 'lct_11' } },
       { id: "7_1", source: '7_1', target: "temp7_1_1", linkID: BASIC_DATA_SC.penaltyExecution_SC_caseLinktypeId, name: "决定执行", linkName: 'case_handle_PenaltyExecutionForm_SC', position: { x: 1, y: 6 }, itemStyleColor: "", attributes: { modularity_class: 'lct_12' } },
-      { id: "temp7_1_1", source: '7_1', target: "temp7_1_1", linkID: 'temp7_1_1', name: "", position: { x: 1, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
-      { id: "temp7_1_2", source: 'temp7_1_1', target: "8", linkID: 'temp7_1_2', name: "", position: { x: 2, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      { id: "temp7_1_1", source: 'temp7_1_1', target: "8", linkID: 'temp7_1_1', name: "", position: { x: 1, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      { id: "temp7_1_2", source: 'temp7_1_2', target: "8", linkID: 'temp7_1_2', name: "", position: { x: 2, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
       { id: "11", source: '7_1', target: "7_2", linkID: '11', name: "", position: { x: 2, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       

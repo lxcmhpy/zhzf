@@ -35,31 +35,37 @@
               <el-date-picker
                 v-model="docData.discussionStartTime"
                 type="datetime"
-                value-format="yyyy-MM-dd HH:mm"
-                format="yyyy年MM月dd日HH时mm分"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                format="yyyy-MM-dd HH:mm:ss"
                 :disabled="fieldDisabled(propertyFeatures['discussionStartTime'])"
               ></el-date-picker>
               <el-input
                 class="replaceTime"
-                placeholder=" 年 月 日 时 分"
-                v-model="docData.discussionStartTime"
+                placeholder=" 年 月 日 时 分 秒"
+                v-model="replaceInquestStartTime"
               ></el-input>
             </el-form-item>
           </span> 至
           <span>
             <el-form-item
               prop="discussionEndTime"
-              class="pdf_datapick"
-              style="width:220px"
+              class="pdf_datapick inputwidth dataTimeReplaceBox"
+              style="width:240px"
               :rules="fieldRules('discussionEndTime',propertyFeatures['discussionEndTime'])"
             >
-              <el-time-picker
-                placeholder="  时 分"
+              <el-date-picker
+                type="datetime"
+                placeholder=" 年 月 日 时 分 秒"
                 v-model="docData.discussionEndTime"
-                format="HH时mm分"
-                value-format="HH:mm"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 :disabled="fieldDisabled(propertyFeatures['discussionEndTime'])"
-              ></el-time-picker>
+              ></el-date-picker>
+              <el-input
+                class="replaceTime"
+                placeholder=" 年 月 日 时 分 秒"
+                v-model="replaceInquestEndTime"
+              ></el-input>
             </el-form-item>
           </span>
         </p>
@@ -252,23 +258,51 @@ export default {
   computed: { ...mapGetters(["caseId"]) },
   data() {
     //验证开始时间
+    // var validateStartTime = (rule, value, callback) => {
+    //   console.log(Date.parse(this.docData.discussionStartTime));
+    //   console.log(Date.parse(this.docData.discussionEndTime));
+    //   let parseStartTime = this.docData.discussionStartTime
+    //     .replace("年", "-")
+    //     .replace("月", "-")
+    //     .replace("日", " ")
+    //     .replace("时", ":")
+    //     .replace("分", "");
+    //   let parseEndTime = this.docData.discussionEndTime
+    //     .replace("年", "-")
+    //     .replace("月", "-")
+    //     .replace("日", " ")
+    //     .replace("时", ":")
+    //     .replace("分", "");
+    //   console.log('案发时间=='+this.docData.lasj)
+    //   if (Date.parse(parseStartTime) < Date.parse(this.docData.lasj)) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: "开始时间不得小于立案时间",
+    //       type: "error",
+    //       offset: 100,
+    //       customClass: "validateErrorTip",
+    //     });
+    //     this.docData.discussionStartTime = "";
+    //     return callback(new Error("开始时间不得小于立案时间"));
+    //   }
+    //   if (Date.parse(parseStartTime) > Date.parse(parseEndTime)) {
+    //     this.$message({
+    //       showClose: true,
+    //       message: "开始时间不得大于结束时间",
+    //       type: "error",
+    //       offset: 100,
+    //       customClass: "validateErrorTip",
+    //     });
+    //     return callback(new Error("开始时间不得大于结束时间"));
+    //   }
+    //   callback();
+    // };
+    //验证开始时间
     var validateStartTime = (rule, value, callback) => {
-      console.log(Date.parse(this.docData.discussionStartTime));
-      console.log(Date.parse(this.docData.discussionEndTime));
-      let parseStartTime = this.docData.discussionStartTime
-        .replace("年", "-")
-        .replace("月", "-")
-        .replace("日", " ")
-        .replace("时", ":")
-        .replace("分", "");
-      let parseEndTime = this.docData.discussionEndTime
-        .replace("年", "-")
-        .replace("月", "-")
-        .replace("日", " ")
-        .replace("时", ":")
-        .replace("分", "");
+      let parseInquestStartTime = this.docData.discussionStartTime
+      let parseinquestEndTime = this.docData.discussionEndTime
       console.log('案发时间=='+this.docData.lasj)
-      if (Date.parse(parseStartTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
         this.$message({
           showClose: true,
           message: "开始时间不得小于立案时间",
@@ -276,18 +310,40 @@ export default {
           offset: 100,
           customClass: "validateErrorTip",
         });
-        this.docData.discussionStartTime = "";
+        this.docData.inquestStartTime = ""
         return callback(new Error("开始时间不得小于立案时间"));
       }
-      if (Date.parse(parseStartTime) > Date.parse(parseEndTime)) {
+      if (Date.parse(parseInquestStartTime) > Date.parse(parseinquestEndTime)) {
         this.$message({
           showClose: true,
-          message: "开始时间不得大于结束时间",
-          type: "error",
+          message: '开始时间不得大于结束时间',
+          type: 'error',
           offset: 100,
-          customClass: "validateErrorTip",
+          customClass: 'validateErrorTip'
         });
         return callback(new Error("开始时间不得大于结束时间"));
+      }
+      if (Date.parse(parseinquestEndTime) > Date.parse(new Date())) {
+        this.$message({
+          showClose: true,
+          message: '结束时间不得大于当前时间',
+          type: 'error',
+          offset: 100,
+          customClass: 'validateErrorTip'
+        });
+        this.docData.discussionEndTime = ""
+        return callback(new Error("结束时间不得大于当前时间"));
+      }
+      if (Date.parse(parseInquestStartTime) > Date.parse(new Date())) {
+        this.$message({
+          showClose: true,
+          message: '开始时间不得大于当前时间',
+          type: 'error',
+          offset: 100,
+          customClass: 'validateErrorTip'
+        });
+        this.docData.discussionStartTime = ""
+        return callback(new Error("开始时间不得大于当前时间"));
       }
       callback();
     };
@@ -397,7 +453,18 @@ export default {
       propertyFeatures: "",
     };
   },
-
+  computed:{
+    replaceInquestEndTime() {
+      if (this.docData.discussionEndTime) {
+        return new Date(this.docData.discussionEndTime).format('yyyy年MM月dd日HH时mm分ss秒')
+      }
+    },
+    replaceInquestStartTime() {
+      if (this.docData.discussionStartTime) {
+        return new Date(this.docData.discussionStartTime).format('yyyy年MM月dd日HH时mm分ss秒')
+      }
+    }
+  },
   methods: {
     //根据案件ID和文书Id获取数据
     getDocDataByCaseIdAndDocId() {

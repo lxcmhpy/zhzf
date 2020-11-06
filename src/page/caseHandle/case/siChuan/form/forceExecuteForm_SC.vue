@@ -784,8 +784,7 @@ export default {
     },
 
     getRowClass: function (row, index) {
-      console.log('row.openRow',row.openRow)
-      if (row.openRow) {
+      if (row.row.openRow) {
         return "";
       } else {
         return "myhide-expand";

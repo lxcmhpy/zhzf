@@ -248,14 +248,27 @@
         </div>
       </div>
       <div class="content_box">
+        
+        <div class="content">
+          <div class="row">
+
+            <el-form-item prop="isImport" style="display:inline-block;margin-top:9px;margin-right:20px" label-width="0">
+              <el-checkbox
+                v-model="formData.isImport"
+              ></el-checkbox>
+            属于重大行政处罚
+            </el-form-item>
+         
+         
         <el-checkbox-group v-model="formData.dynamicSelectDocArr" @change="changeFilterDoc" style="margin-top:20px">
-          <el-checkbox label="1">属于重大行政处罚</el-checkbox>
+          <!-- <el-checkbox label="1">属于重大行政处罚</el-checkbox> -->
           <el-checkbox label="2">采取抽样取证</el-checkbox>
           <el-checkbox label="3">采取证据登记保存</el-checkbox>
           <el-checkbox label="4">解除证据登记保存</el-checkbox>
           <el-checkbox label="5">重大案件讨论</el-checkbox>
         </el-checkbox-group>
-        <div class="content">
+         
+        </div>
           <el-row :gutter="20">
             <el-col :span="16">
               <div class="second_title">
@@ -430,7 +443,8 @@ export default {
         relationWithCase:"",
         partyUnitPosition: "",
         occupation: "",
-        dynamicSelectDocArr:[]
+        dynamicSelectDocArr:[],
+        isImport:false,
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -639,14 +653,20 @@ export default {
         });
         let askDocListFinishNum = 0;
         this.docTableDatasCopy.forEach(item => {
-          if (item.path != "case_handle_othermodle") {
-            this.docTableDatas.push(item);
-          } else {
+          // if (item.path != "case_handle_othermodle") {
+          //   this.docTableDatas.push(item);
+          // } else {
+          //   if(item.status === 0 || item.status === 1 || item.status === 2)
+          //   this.allAskDocList.push(item);
+
+          //   if(item.status === 1 || item.status === 2) askDocListFinishNum++
+          // }
+          if (item.path == "case_handle_othermodle"){
             if(item.status === 0 || item.status === 1 || item.status === 2)
             this.allAskDocList.push(item);
-
             if(item.status === 1 || item.status === 2) askDocListFinishNum++
           }
+
         });
         if(this.allAskDocList.length>0){
           let askDocAllNumAndFinishTitle = '询问笔录'+'（'+ askDocListFinishNum +'/'+this.allAskDocList.length+')';
@@ -656,15 +676,20 @@ export default {
         console.log("this.allAskDocList", this.allAskDocList);
       }
       console.log('this.formData.dynamicSelectDocArr',this.formData.dynamicSelectDocArr)
-      this.changeFilterDoc(this.formData.dynamicSelectDocArr)
-    },
-    //动态筛选文书
-    filterDoc([showCF,showCY,showBCZJ,showJCZJ,showZDAJ]){
-      if(showCF){ //重大行政处罚
+      // this.changeFilterDoc(this.formData.dynamicSelectDocArr)
 
-      }
+
+      let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_inquestNotesDoc");
+      if(index1 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_inquestNotesDoc"))
+      let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_sceneNotesDoc");
+      if(index2 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_sceneNotesDoc"))
+      let index3  = this.docTableDatas.findIndex(item=>item.path == "case_handle_caseInvestigReport_SC");
+      if(index3 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_caseInvestigReport_SC"))
+      let index4  = this.docTableDatas.findIndex(item=>item.path == "case_handle_deliveryConfirmDoc_SC");
+      if(index4 ==-1)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_deliveryConfirmDoc_SC"))
+
       let obtaineEvidenceFormItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_obtaineEvidenceForm")
-      if(showCY){ //抽样取证
+      if(this.formData.dynamicSelectDocArr.includes("2")){ //抽样取证
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_obtaineEvidenceForm");
         if(index1 ==-1 && obtaineEvidenceFormItem)
         this.docTableDatas.push(obtaineEvidenceFormItem)
@@ -675,18 +700,25 @@ export default {
       }
       console.log('this.docTableDatas', this.docTableDatas)
       let evidenceListDocItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_evidenceListDoc")
+      let evidenceRegApprovalItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_evidenceRegApprovalForm_SC")
       // 还有一个审批表
-      if(showBCZJ){ //抽样取证
+      if(this.formData.dynamicSelectDocArr.includes("3")){ //证据登记
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceListDoc");
         if(index1 ==-1 && evidenceListDocItem)
         this.docTableDatas.push(evidenceListDocItem)
+        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceRegApprovalForm_SC");
+        if(index2 ==-1 && evidenceRegApprovalItem)
+        this.docTableDatas.push(evidenceRegApprovalItem)
       }else{
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceListDoc");
         if(index1 !=-1)
         this.docTableDatas.splice(index1,1);
+        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_evidenceRegApprovalForm_SC");
+        if(index2 !=-1)
+        this.docTableDatas.splice(index2,1);
       }
       let deleteEvidenceItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_deleteEvidence")
-      if(showJCZJ){ //抽样取证
+      if(this.formData.dynamicSelectDocArr.includes("4")){ //抽样取证
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_deleteEvidence");
         if(index1 ==-1 && deleteEvidenceItem)
         this.docTableDatas.push(deleteEvidenceItem)
@@ -696,19 +728,29 @@ export default {
         this.docTableDatas.splice(index1,1);
       }
       let importantCaseTeamDissDocItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_importantCaseTeamDissDoc_SC")
-      if(showZDAJ){ //抽样取证
+      let importantCaseCheckOpinionItem =  this.docTableDatasCopy.find(item=> item.path == "case_handle_importantCaseCheckOpinion_SC")
+      
+      if(this.formData.dynamicSelectDocArr.includes("5")){ //重大案件
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc_SC");
+        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseCheckOpinion_SC");
         if(index1 ==-1 && importantCaseTeamDissDocItem)
-        this.docTableDatas.push(importantCaseTeamDissDocItem)
+        this.docTableDatas.push(importantCaseTeamDissDocItem);
+        if(index2 ==-1 && importantCaseCheckOpinionItem)
+        this.docTableDatas.push(importantCaseCheckOpinionItem);
       }else{
         let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseTeamDissDoc_SC");
+        let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_importantCaseCheckOpinion_SC");
         if(index1 !=-1)
         this.docTableDatas.splice(index1,1);
+        if(index2 !=-1)
+        this.docTableDatas.splice(index2,1);
       }
+
+      
     },
-    changeFilterDoc(valArr){
-      console.log(valArr);
-      this.filterDoc([valArr.includes("1"),valArr.includes("2"),valArr.includes("3"),valArr.includes("4"),valArr.includes("5")])
+    
+    changeFilterDoc(){
+      this.setMoreDocTableTitle()
     },
     getDataAfter(){
       this.getDocListByCaseIdAndFormId();
