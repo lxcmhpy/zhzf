@@ -17,6 +17,7 @@
       @handleCheckAllChange="handleCheckAllChange"
     />
     <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
+    <EventDialogList ref="EventDialogList" :personId="personId" :organId="organId" />
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import Search from "../components/search/index.vue";
 import Select from "../components/select/index.vue";
 import Drawer from "../components/drawer/index.vue";
 import TopInFo from "../components/topInfo/index.vue";
+import EventDialogList from "../components/dialog/eventDialogList.vue";
 import store from "../store.js";
 import iLocalStroage from '@/common/js/localStroage';
 export default {
@@ -42,6 +44,7 @@ export default {
     Select,
     Drawer,
     TopInFo,
+    EventDialogList
   },
   watch: {
     makePhoneStatus (val, oldVal) {
@@ -54,6 +57,8 @@ export default {
   },
   data() {
     return {
+      personId: '', // 人员 id
+      organId: '', // 机构 id
       layerUrl: '',
       organId: "", // 根节点的 ID
       isShowDrawer: false, // 是否显示抽屉组件
@@ -239,6 +244,8 @@ export default {
       this.handleOverLay(data)
       // 如果点位属于执法人员，执法车辆或者执法人员
       if(data.type === 0) {
+        this.personId = data.id
+        this.organId = data.organId
         // 显示弹出框
         this.searchWindowData.window4.title = data.nickName
         this.searchWindowData.window4.info = [
@@ -255,7 +262,8 @@ export default {
             { class: 'iconfont law-shipin' },
             { class: 'iconfont law-jiankong' },
             { class: 'iconfont law-msg-box' },
-            { class: 'iconfont law-xianlu' }
+            { class: 'iconfont law-xianlu' },
+            { class: 'el-icon-circle-plus' }
         ]
         this.$refs.Search.showCom = "Window4"
       } else if (data.type === 2) {
@@ -369,6 +377,10 @@ export default {
         if(data.peStateColor) {
           this.clickPeVideo(data.sn)
         }
+      } else if (index === 5) {
+        // 不管状态如何，打开事件列表选择事件就是
+        this.$refs.EventDialogList.dialogVisible = true
+        console.log('打开事件列表')
       }
     },
   },
