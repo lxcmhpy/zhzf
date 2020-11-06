@@ -42,7 +42,9 @@
       </el-form-item>
       <el-form-item label="事件状态:" :label-width="formLabelWidth">
         <el-radio-group v-model="form.state" disabled>
-          <el-radio :label="1">待处理</el-radio>
+          <el-radio :label="1">待上报</el-radio>
+          <el-radio :label="2">待指派</el-radio>
+          <el-radio :label="3">已指派待处理</el-radio>
           <el-radio :label="2">处理中</el-radio>
           <el-radio :label="3">处理完毕</el-radio>
         </el-radio-group>
@@ -52,11 +54,11 @@
         <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
       </el-form-item>
       <el-form-item label="机构:" :label-width="formLabelWidth" prop="disposeOrgan">
-        <ElSelectTree 
-            ref="elSelectTree" 
-            @getValue="getValue" 
-            :options="treeOptions" 
-            :props="treeProps" 
+        <ElSelectTree
+            ref="elSelectTree"
+            @getValue="getValue"
+            :options="treeOptions"
+            :props="treeProps"
             :value="form.disposeOrgan"
         />
       </el-form-item>
