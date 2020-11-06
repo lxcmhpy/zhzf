@@ -85,7 +85,15 @@
           align="center"
           label="事件状态">
           <template slot-scope="scope">
-            <span>{{ scope.row.state===1?'待处理':scope.row.state===2?'处理中':scope.row.state===3?'处理完毕':null }}</span>
+            <span>
+              {{
+                scope.row.state === 1 ? '待上报'
+                  : scope.row.state === 2 ? '待指派'
+                    : scope.row.state === 3 ? '已指派待处理'
+                      : scope.row.state === 4 ? '处理中'
+                        : scope.row.state === 5 ? '处理完毕' : null
+              }}
+            </span>
           </template>
         </el-table-column>
         <el-table-column

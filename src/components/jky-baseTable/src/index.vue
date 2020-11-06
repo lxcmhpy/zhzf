@@ -78,6 +78,10 @@
         :label="item.label"
         :align="item.align"
         :width="item.width">
+        <template slot-scope="scope">
+          <expand-dom v-if="item.render" :column="item" :row="scope.row" :render="item.render"></expand-dom>
+          <span v-else style="margin-left: 10px">{{ scope.row[item.prop] }}</span>
+        </template>
       </el-table-column>
       <el-table-column v-if="buttons" :label="buttons.label" :align="buttons.align" :width="buttons.width">
         <template slot-scope="scope">
@@ -111,6 +115,29 @@
 <script>
 import { findData } from "../store.js";
 export default {
+  components: {
+    expandDom: {
+      functional: true,
+      props: {
+        row: Object,
+        render: Function,
+        index: Number,
+        column: {
+          type: Object,
+          default: null
+        }
+
+      },
+      render: (h, ctx) => {
+        const params = {
+          row: ctx.props.row,
+          index: ctx.props.index
+        }
+        if (ctx.props.column) params.column = ctx.props.column
+        return ctx.props.render(h, params)
+      }
+    }
+  },
   props: {
     reqAttr: {
       type: Object,

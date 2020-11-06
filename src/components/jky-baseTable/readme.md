@@ -139,6 +139,14 @@ export default {
           label: "时间",
           align: "center",
           prop: 'createTime',
+        },{ // 如果需要根据值来自定义显示内容
+          label: "是否重点事件",
+          align: "center",
+          prop: 'isemphasis',
+          render: (h, params) => {
+            return h('span', { class: { 'order_status_color_orang': true }},
+                      params.row.isemphasis ? '是' : '否')
+          }
         },
       ],
       // 表格中的操作列，不传此参数则不显示操作列
