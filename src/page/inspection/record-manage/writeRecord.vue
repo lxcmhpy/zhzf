@@ -1,5 +1,5 @@
 <template>
-  <div class="com_searchAndpageBoxPadding">
+  <div class="com_searchAndpageBoxPadding write-record-container">
     <div class="searchAndpageBox modle-set">
       <div style="text-align: center; margin-bottom: 18px">
         <span style="font-size: 18px; font-weight: bold">
@@ -115,6 +115,23 @@
       ></floatBtns>
       <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
     </div>
+    <el-dialog
+      title="查看图片"
+      :visible.sync="viewImgDialogVisible"
+      max-width="70%"
+      max-height="70%"
+      :before-close="handleClose"
+    >
+      <div class="pic-box">
+        <img :src="imgUrl" />
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="viewImgDialogVisible = false"
+          >关 闭</el-button
+        >
+      </span>
+    </el-dialog>
+
     <el-dialog title="提示" :visible.sync="fileVisible" width="30%">
       <el-form
         ref="fileForm"
@@ -183,6 +200,8 @@ export default {
   },
   data() {
     return {
+      imgUrl: "",
+      viewImgDialogVisible: false,
       imgObj: {},
       defaultRuleData: {},
       addOrEiditFlag: "",
@@ -265,6 +284,10 @@ export default {
     chooseillegalAct, //违法行为
   },
   methods: {
+    //关闭图片预览
+    handleClose() {
+      this.viewImgDialogVisible = false;
+    },
     // 查找模板-添加
     findDataByld() {
       let _this = this;
@@ -380,7 +403,7 @@ export default {
             // 重置
             this.$data.$f.resetFields();
             this.rule.forEach((element) => {
-              debugger
+              // debugger;
               this.$data.$f.set(element.props, "disabled", false);
               let textName = element.field;
               this.$data.$f.setValue(
@@ -1239,6 +1262,8 @@ export default {
               onHandle: (file) => {
                 //这里就是预览按钮的事件了
                 console.log("dealFieldData -> file", file);
+                this.imgUrl = file.url;
+                this.viewImgDialogVisible = true;
               },
               onRemove: function (file, fileList) {
                 console.log("onRemove -> file, fileList", file, fileList);
@@ -1555,6 +1580,12 @@ export default {
 <style lang="scss" src="@/assets/css/caseHandle/index.scss"></style>
 <style lang="scss" src="@/assets/css/documentForm.scss"></style>
 <style lang="scss">
+.write-record-container {
+  .pic-box {
+    overflow: auto;
+    text-align: center;
+  }
+}
 .copy-style-text {
   .el-textarea__inner {
     color: #f56c6c;
