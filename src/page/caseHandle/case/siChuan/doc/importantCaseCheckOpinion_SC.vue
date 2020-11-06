@@ -536,76 +536,10 @@ export default {
       }
     },
     getDataAfter(){
-      if(this.docData.measureStartDate=='' && this.docData.measureEndDate  ==''){
-          this.docData.days  = "";
-      }else{
-          this.docData.days = new Date(this.docData.measureEndDate) - new Date(this.docData.measureStartDate);
-          this.docData.days = Math.abs(this.docData.days)
-          // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
-          this.docData.days = this.docData.days / (24 * 3600 * 1000);
-          // 取整
-          this.docData.days = Math.floor(this.docData.days) ;
-      }
       this.docData.organName = iLocalStroage.gets("userInfo").organName;
-    },
-    starttime(){
-      console.log('案发时间=='+this.docData.lasj)
-      if (Date.parse(this.docData.measureStartDate) < Date.parse(this.docData.lasj)) {
-        this.$message({
-          message: '开始时间不得小于立案时间',
-          type: 'warning'
-        });
-        this.docData.measureStartDate = '';
-        return;
-      }
-      if (this.docData.measureStartDate){
-        if(this.docData.measureStartDate > this.docData.measureEndDate && this.docData.measureEndDate){
-          this.$message({
-            message: '开始时间不能大于结束时间',
-            type: 'warning'
-          });
-          this.docData.measureStartDate = '';
-          this.docData.days = '';
-        }else{
-          this.docData.days = new Date(this.docData.measureEndDate) - new Date(this.docData.measureStartDate);
-          this.docData.days = Math.abs(this.docData.days)
-          // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
-          this.docData.days = this.docData.days / (24 * 3600 * 1000);
-          // 取整
-          this.docData.days = Math.floor(this.docData.days) ;
-          this.$set(this.docData, 'days',  this.docData.days);
-        }
-      }
-    },
-    endtime(){
-      if (this.docData.measureStartDate){
-        if(this.docData.measureStartDate > this.docData.measureEndDate){
-          this.$message({
-            message: '结束时间不能小于开始时间',
-            type: 'warning'
-          });
-          this.docData.measureEndDate = '';
-          this.docData.days = '';
-        }else{
-          console.log('时间',this.docData.measureStartDate,this.docData.measureEndDate)
-          this.docData.days = new Date(this.docData.measureEndDate) - new Date(this.docData.measureStartDate);
-          this.docData.days = Math.abs(this.docData.days)
-          console.log('this.docData.measureEndDate',this.docData.measureEndDate)
-          // 除以一天的毫秒数（默认时间戳是到毫秒的，就算取到秒级的时间戳后面也带了3个0）
-          this.docData.days = this.docData.days / (24 * 3600 * 1000);
-          // 取整
-          this.docData.days = Math.floor(this.docData.days) ;
-
-          this.$set(this.docData, 'days',  this.docData.days);
-          // 有问题，第一次点击不回显
-          console.log("timestamp", this.docData.days)
-
-        }
-      }
-    },
+    }
   },
   mounted() {
-    this.starttime();
   },
   created(){
     this.getDocDataByCaseIdAndDocId();

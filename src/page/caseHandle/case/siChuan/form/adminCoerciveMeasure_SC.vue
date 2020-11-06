@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="130px">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="130px" :disabled="canGoNextLink">
       <div class="content_box">
         <div class="content">
           <div class="content_title">行政强制措施</div>
@@ -322,7 +322,12 @@
             <div class="table_form">
               <el-table :data="docTableDatas" stripe border style="width: 100%">
                 <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-                <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
+                <el-table-column prop="name" label="材料名称" align="center">
+                  <template slot-scope="scope">
+                    <span v-show="scope.row.isRequired ===0"><span style="color:red">*</span> {{scope.row.name}}</span>
+                    <span v-show="scope.row.isRequired !==0">{{scope.row.name}}</span>
+                </template>
+                </el-table-column>
                 <el-table-column prop="status" label="状态" align="center">
                   <template slot-scope="scope">
                     <!-- <span v-if="scope.row.status == '1' || scope.row.status == '2'">完成</span> -->
@@ -363,9 +368,12 @@
             </div>
           </div>
         </div>
-        <!-- 悬浮按钮 -->
+        
+      </div>
+    </el-form>
+    <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
-          <el-button type="primary" @click="continueHandle" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
+          <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
             <svg
               t="1577515608465"
               class="icon"
@@ -385,7 +393,7 @@
             <br />提交
           </el-button>
 
-          <el-button type="primary" @click="submitCaseDoc(1)" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
+          <el-button type="primary" @click="submitCaseDoc(1)" :disabled="canGoNextLink" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
             <i class="iconfont law-save"></i>
             <br />保存
           </el-button>
@@ -394,13 +402,13 @@
             <br />返回
           </el-button>
         </div>
-      </div>
-    </el-form>
-    <checkDocAllFinish
+    <!-- <checkDocAllFinish
       ref="checkDocAllFinishRef"
       @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"
       @submitCoerciveMeasuer="submitCoerciveMeasuer"
-    ></checkDocAllFinish>
+    ></checkDocAllFinish> -->
+    <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
+
     <saveFormDia ref="saveFormDiaRef"></saveFormDia>
     <resetDocDia
       ref="resetDocDiaRef"
@@ -429,12 +437,15 @@ import saveFormDia from "@/page/caseHandle/components/saveFormDia";
 import {
   getDictListDetailByNameApi
 } from "@/api/system";
+import checkDocFinish from "@/page/caseHandle/components/checkDocFinish.vue";
+
 export default {
   components: {
     checkDocAllFinish,
     caseSlideMenu,
     resetDocDia,
-    saveFormDia
+    saveFormDia,
+    checkDocFinish
   },
   data() {
     //当事人类型为公司时验证
@@ -475,7 +486,8 @@ export default {
         caseLinktypeId: this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId, //表单类型ID
         //表单数据
         formData: "",
-        status: ""
+        status: "",
+        tag:"1"
       },
       saveOrSub: true,
       handleType: 0,
@@ -578,7 +590,8 @@ export default {
       if (canGotoNext && approvalPass) {
         this.com_goToNextLinkTu(
           this.caseId,
-          this.caseLinkDataForm.caseLinktypeId
+          this.caseLinkDataForm.caseLinktypeId,
+          '1'     //后台需要，为了从流程中把它提出来
         );
         // this.$router.push({name:'case_handle_flowChart'})  
       } else if(!canGotoNext){

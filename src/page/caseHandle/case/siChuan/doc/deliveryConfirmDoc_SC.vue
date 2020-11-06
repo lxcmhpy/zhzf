@@ -192,7 +192,7 @@
                       <el-checkbox label="6">手机（电子送达必选）</el-checkbox>
                     </p>
                     <p>
-                      <el-checkbox label="8">电子邮箱：</el-checkbox>
+                      <el-checkbox label="7">电子邮箱：</el-checkbox>
                       <el-form-item
                         prop="email"
                         :rules="fieldRules('email',propertyFeatures['email'])"
@@ -210,7 +210,7 @@
                       </el-form-item>
                     </p>
                     <p>
-                      <el-checkbox label="9">传真：</el-checkbox>
+                      <el-checkbox label="8">传真：</el-checkbox>
                       <el-form-item prop="fax" :rules="fieldRules('fax',propertyFeatures['fax'])">
                         <el-input
                           type="textarea"
@@ -225,7 +225,7 @@
                       </el-form-item>
                       </p>
                       <p>
-                      <el-checkbox label="10">其他：</el-checkbox>
+                      <el-checkbox label="9">其他：</el-checkbox>
                       <el-form-item
                         prop="other"
                         :rules="fieldRules('other',propertyFeatures['other'])"
@@ -341,7 +341,16 @@
                 <p>备注</p>
               </td>
               <td colspan="7" class="color_DBE4EF">
-                
+                <el-form-item
+                  prop="notes"
+                  :rules="fieldRules('notes',propertyFeatures['notes'])"
+                >
+                  <el-input
+                    v-model="docData.notes"
+                    :maxLength="maxLength"
+                    placeholder="/"
+                  ></el-input>
+                </el-form-item>
               </td>
             </tr>
           </table>
@@ -415,7 +424,8 @@ export default {
         zipCode: "",
         adminOpinion: "",
         adminSign: "",
-        staffSign: ""
+        staffSign: "",
+        notes:"",
       },
       rules: {
         caseName: [

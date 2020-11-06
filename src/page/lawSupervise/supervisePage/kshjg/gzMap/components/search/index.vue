@@ -1,5 +1,5 @@
 <template>
-  <div class="gzMap-search">
+  <div :class="searchStyle" class="gzMap-search">
     <header class="input-with-select" @click="handleShowSearch">
       <el-input
         v-model="inputModel"
@@ -50,7 +50,8 @@ export default {
       default() {
         return {}
       }
-    }
+    },
+    searchStyle:Object
   },
   components: {
     Window1,
@@ -327,10 +328,6 @@ export default {
 
 <style lang="scss">
 .gzMap-search {
-    position: absolute;
-    top: 40px;
-    left: 400px;
-    width: 369px;
   .input-with-select {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     margin-bottom: 5px;
