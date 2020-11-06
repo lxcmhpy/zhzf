@@ -1,11 +1,12 @@
 <template>
   <div class="gzMap">
-    <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" />
+    <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" :searchStyle='searchStyle' />
     <TopInFo />
-    <LeftDrawer ref='LeftDrawer' :config="groups" :allUsers="allUsers"/>
+    <LeftDrawer ref='LeftDrawer' :config="groups" :allUsers="allUsers" />
     <Search
       ref="Search"
       :config="searchWindowData"
+      :searchStyle='searchStyle'
       @handleNodeClick="handleNodeClick"
       @handlePerson="handlePerson"
       @handleClickBtns="handleClickBtns"
@@ -57,6 +58,7 @@ export default {
   },
   data() {
     return {
+      searchStyle:{'gzMap-searchs':false,'gzMap-searchCopy':true},
       groups:[],
       allUsers:[],
       organId: "", // 根节点的 ID
@@ -580,4 +582,59 @@ export default {
   height: 100%;
   overflow: hidden;
 }
+.gzMap-searchCopy{
+   position: absolute;
+  top: 40px;
+  left: 30px;
+  width: 369px;
+  box-sizing: border-box;
+  .input-with-select {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    margin-bottom: 5px;
+    .el-input__inner {
+      width: 311px;
+      height: 40px;
+      border-radius: 4px 0 0 4px;
+    }
+    .el-input-group__append {
+      .el-button {
+        .el-icon-search {
+          color: #409EFF;
+        }
+      }
+    }
+    .closeBox {
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
+    }
+  }
+}
+.gzMap-searchs {
+    position: absolute;
+    top: 40px;
+    left: 400px;
+    width: 369px;
+  .input-with-select {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    margin-bottom: 5px;
+    .el-input__inner {
+      height: 40px;
+      border-radius: 4px 0 0 4px;
+    }
+    .el-input-group__append {
+      .el-button {
+        .el-icon-search {
+          color: #409EFF;
+        }
+      }
+    }
+    .closeBox {
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
+    }
+  }
+}
+
 </style>
