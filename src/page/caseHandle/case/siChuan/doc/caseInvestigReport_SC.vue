@@ -391,6 +391,7 @@ export default {
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
+        isImport: "",
         secondApproveOpinions: "",
         secondApprovePeo: "",
         secondApproveTime: "",

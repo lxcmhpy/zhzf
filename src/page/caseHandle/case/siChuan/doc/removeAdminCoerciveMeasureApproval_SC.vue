@@ -683,7 +683,6 @@ export default {
   .center{
     text-align: center;
     text-align-last: center;  
-
   }
 }
 </style>
