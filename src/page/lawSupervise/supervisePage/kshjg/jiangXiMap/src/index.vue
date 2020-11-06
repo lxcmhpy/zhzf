@@ -1,24 +1,27 @@
 <template>
-  <div class="jiangXiMap">
-    <JkyBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
-    <TopInFo />
-    <Search
-      ref="Search"
-      :config="searchWindowData"
-      @handleNodeClick="handleNodeClick"
-      @handlePerson="handlePerson"
-      @handleClickBtns="handleClickBtns"
-    />
-    <Select
-      ref="Select"
-      :config="selectData"
-      @handleChange="handleChange"
-      @handleItemCheck="handleItemCheck"
-      @handleCheckAllChange="handleCheckAllChange"
-    />
-    <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
-    <EventDialogList ref="EventDialogList" :personId="personId" :organId="organId" />
-  </div>
+  <fullscreen ref="fullscreen" @change="fullscreenChange">
+    <div class="jiangXiMap">
+      <JkyBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
+      <TopInFo />
+      <Search
+        ref="Search"
+        :config="searchWindowData"
+        @handleNodeClick="handleNodeClick"
+        @handlePerson="handlePerson"
+        @handleClickBtns="handleClickBtns"
+      />
+      <Select
+        ref="Select"
+        :config="selectData"
+        @handleChange="handleChange"
+        @handleItemCheck="handleItemCheck"
+        @handleCheckAllChange="handleCheckAllChange"
+        @handleFullScreen="handleFullScreen"
+      />
+      <Drawer v-if="isShowDrawer" :config="drawerData" @handleEcforce="handleEcforce" />
+      <EventDialogList ref="EventDialogList" :personId="personId" :organId="organId" />
+    </div>
+  </fullscreen>
 </template>
 
 <script>
@@ -155,10 +158,20 @@ export default {
         noEnforceData: {
           option: []
         }
-      }
+      },
+      fullscreen: false
     }
   },
   methods: {
+    handleFullScreen () {
+      this.$refs['fullscreen'].toggle() // recommended
+      // this.fullscreen = !this.fullscreen // deprecated
+    },
+
+    fullscreenChange (fullscreen) {
+      this.fullscreen = fullscreen
+    },
+
     /**
      * 地图初始化事件
      */
@@ -405,7 +418,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .jiangXiMap {
   width: 100%;
   height: 100%;

@@ -22,6 +22,13 @@ export default {
   },
   methods: {
     /**
+     * 点击全屏按钮
+     */
+    handleFullScreen() {
+      this.$emit('handleFullScreen')
+    },
+
+    /**
      * 点击全选
      */
     handleCheckAllChange(val) {
@@ -143,7 +150,7 @@ export default {
     renderFull() {
       let data = this.list[2]
       return (
-        <div class="jk-mapSelect-box">
+        <div class="jk-mapSelect-box" on-click={this.handleFullScreen}>
           {
             data.imgUrl ? <img src={data.imgUrl} /> : null
           }
@@ -182,13 +189,13 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     img {
       margin-right: 10px;
     }
     .fullScreen {
       font-size: 14px;
       color: #606266;
-      cursor: pointer;
     }
     .selectDown {
       // .myCheckBox {
