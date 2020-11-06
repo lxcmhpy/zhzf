@@ -341,7 +341,16 @@
                 <p>备注</p>
               </td>
               <td colspan="7" class="color_DBE4EF">
-                
+                <el-form-item
+                  prop="notes"
+                  :rules="fieldRules('notes',propertyFeatures['notes'])"
+                >
+                  <el-input
+                    v-model="docData.notes"
+                    :maxLength="maxLength"
+                    placeholder="/"
+                  ></el-input>
+                </el-form-item>
               </td>
             </tr>
           </table>
@@ -415,7 +424,8 @@ export default {
         zipCode: "",
         adminOpinion: "",
         adminSign: "",
-        staffSign: ""
+        staffSign: "",
+        notes:"",
       },
       rules: {
         caseName: [
