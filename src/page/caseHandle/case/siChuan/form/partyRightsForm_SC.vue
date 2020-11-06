@@ -3,7 +3,7 @@
     <el-form ref="caseLinkDataForm">
       <el-input ref="id" type="hidden"></el-input>
     </el-form>
-    <el-form ref="docForm" :rules="rules" :model="formData" label-width="120px">
+    <el-form ref="docForm" :rules="rules" :model="formData" label-width="120px" :disabled="canGoNextLink">
 
       <!-- <div class="header-case">
         <div class="header_left">
@@ -215,7 +215,10 @@
           </div>
         </div>
 
-        <!-- 悬浮按钮 -->
+        
+      </div>
+    </el-form>
+    <!-- 悬浮按钮 -->
         <div class="float-btns ">
 
           <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
@@ -243,8 +246,6 @@
             <br/>返回
           </el-button>
         </div>
-      </div>
-    </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <partyRightsEvidence ref="partyRightsEvidenceRef" @findEvidenceEmit="findEvidence"></partyRightsEvidence>
     <editEvidenceName ref="editEvidenceNameRef" @findEvidenceEmit="findEvidence"></editEvidenceName>

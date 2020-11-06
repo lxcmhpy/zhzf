@@ -1,12 +1,5 @@
 <template>
   <div class="leftDrawer">
-    <!-- <div class="drawerBackground" @click="drawer = true" type="primary">
-      <i class="el-icon-arrow-left" />
-    </div> -->
-    <!-- <el-drawer
-       :direction="direction"
-      :visible.sync="drawer"
-      :with-header="false"> -->
       <p class="title">选择参会人员</p>
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="群组" name="first">
@@ -17,6 +10,9 @@
         </div>
         <div class="participants_table">
           <el-table
+            v-loading = 'pictLoading'
+            element-loading-spinner = "el-icon-loading"
+             empty-text = " " 
              ref="multipleTable"
             :data="group_info"
             :header-cell-style="{'text-align':'center'}"
@@ -190,7 +186,7 @@ export default {
         children: 'children',
         label: 'label'
       },
-
+      pictLoading:true,
       inforVisible: false,
       direction: 'ltr',
       activeName: 'first',
@@ -209,6 +205,7 @@ export default {
   watch: {
     config(o, n){
       this.group_info = o.group_info
+      this.pictLoading = false
       console.log('group_info',this.group_info)
     },
     allUsers(o,n){
@@ -368,16 +365,6 @@ export default {
     font-size: 24px;
     padding: 5px;
   }
-  .drawerBackground{
-    transform: rotate(180deg); 
-    width: 26px;
-    height: 89px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url('/static/images/img/lawSupervise/btn_norshouqi2.png') no-repeat;
-    background-size:cover;
-  }
   .selectedBox{
     overflow: auto;
     height: 255px;
@@ -440,6 +427,9 @@ export default {
           img{
             margin-right: 10px;
           }
+        }
+        .el-loading-spinner{
+          font-size: 30px;
         }
     }
     .videoImg img{

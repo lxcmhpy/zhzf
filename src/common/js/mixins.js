@@ -214,11 +214,12 @@ export const mixinGetCaseApiList = {
           })
       }
     },
-    //点击下一环节和提交按钮都跳转流程图
-    com_goToNextLinkTu(caseBasicinfoId, caseLinktypeId) {
+    //点击下一环节和提交按钮都跳转流程图  tag =1 为了从流程中把它提出来 默认空
+    com_goToNextLinkTu(caseBasicinfoId, caseLinktypeId,tag='') {
       let data = {
         caseId: caseBasicinfoId,
-        caseLinktypeId: caseLinktypeId
+        caseLinktypeId: caseLinktypeId,
+        tag:tag
       };
       console.log(data);
       this.$store.dispatch("submitPdf", data).then(

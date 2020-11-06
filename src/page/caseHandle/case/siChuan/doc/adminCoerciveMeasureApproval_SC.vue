@@ -186,7 +186,7 @@
             </td>
           </tr>
           <tr>
-            <td rowspan="7" class="center">
+            <td :rowspan="docData.evidenceList.length+1" class="center">
               <p>证</p>
               <p>据</p>
               <p>材</p>
@@ -615,13 +615,13 @@ export default {
     //添加一行数据
     addTableData() {
       let length = this.tableDatas.length;
-      if (length == 6) {
-        this.$message({
-          message: "最多输入六行！",
-          type: "warning",
-        });
-        return;
-      }
+      // if (length == 6) {
+      //   this.$message({
+      //     message: "最多输入六行！",
+      //     type: "warning",
+      //   });
+      //   return;
+      // }
       if (length == 0) {
         this.tableDatas.push({ resNo: 1, num: 1 });
       } else {
@@ -640,11 +640,6 @@ export default {
       }
       if (!this.docData.evidenceList.length) {
         this.docData.evidenceList = [
-          { resNo: "", name: "", num: "", des: "" },
-          { resNo: "", name: "", num: "", des: "" },
-          { resNo: "", name: "", num: "", des: "" },
-          { resNo: "", name: "", num: "", des: "" },
-          { resNo: "", name: "", num: "", des: "" },
           { resNo: "", name: "", num: "", des: "" },
         ];
       }

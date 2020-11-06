@@ -1,5 +1,12 @@
 <template>
-  <div class="jky-baseAMap"></div>
+  <div :class="gzMapDrawer">
+    <div v-if="flag" class="drawerBackground"  @click="elDrawerO" type="primary">
+      <i class="el-icon-arrow-left" />
+    </div>
+    <div v-else class="drawerBackground"  @click="elDrawerC" type="primary">
+      <i class="el-icon-arrow-left" />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -11,15 +18,32 @@ export default {
       type: Number,
       default: 5
     },
+    searchStyle:Object
   },
   data() {
     return {
       map: null,
       marker: {}, // 单点数据
       markerList: [], // 多点数据
+      gzMapDrawer:{'jky-baseAMap':false,"jky-baseAMapCopy":true},
+      flag:true
     }
   },
   methods: {
+    elDrawerC(){
+      this.gzMapDrawer["jky-baseAMap"] = false
+      this.gzMapDrawer["jky-baseAMapCopy"] = true
+      this.flag = true
+      this.searchStyle["gzMap-searchs"] = false
+      this.searchStyle["gzMap-searchCopy"] = true
+    },
+    elDrawerO(){
+      this.gzMapDrawer["jky-baseAMap"] = true
+      this.gzMapDrawer["jky-baseAMapCopy"] = false
+      this.flag = false
+      this.searchStyle["gzMap-searchs"] = true
+      this.searchStyle["gzMap-searchCopy"] = false
+    },
     /**
      * 初始化地图
      */
@@ -151,10 +175,40 @@ export default {
 </script>
 
 <style lang="scss">
+.jky-baseAMapCopy {
+  width: 100%;
+  height: 100%;
+  .drawerBackground{
+    transform: rotate(180deg); 
+    width: 26px;
+    height: 89px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/static/images/img/lawSupervise/btn_norshouqi2.png') no-repeat;
+    background-size:cover;
+    position: relative;
+    z-index: 1;
+    top:27px
+  }
+}
 .jky-baseAMap {
   width: 75%;
   height: 100%;
   background: white !important;
   float: right;
+  .drawerBackground{
+    transform: rotate(180deg); 
+    width: 26px;
+    height: 89px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/static/images/img/lawSupervise/btn_norshouqi2.png') no-repeat;
+    background-size:cover;
+    position: relative;
+    z-index: 1;
+    top:27px
+  }
 }
 </style>
