@@ -843,15 +843,16 @@ export default {
           caseId:this.caseId,
           linkTypeId:this.currentFlow.data.flowUrl == 'commonGraphData_JX' ? this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId : this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId
       }
-       try{
-        await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
-      }catch(err){
-        this.$message('更改流程图状态失败！')
-      }
-      if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
+
+      if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+        this.$router.push({name:'case_handle_adminCoerciveMeasure_SC',params:{isComplete:this.showREBtn}});
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
+        try{
+          await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
+        }catch(err){
+          this.$message('更改流程图状态失败！')
+        }
         this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
-      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
-        this.$router.push({name:'case_handle_adminCoerciveMeasure_SC',params:{isComplete:this.showREBtn}})
       }
     },
     //显示环节回退弹窗
