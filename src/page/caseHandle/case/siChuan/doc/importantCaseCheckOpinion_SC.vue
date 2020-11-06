@@ -323,11 +323,11 @@
               <p>审核人员签名</p>
             </td>
             <td rowspan="2" colspan="2" class="color_DBE4EF">
-              {{docData.fourApproveOpinions}}
+              {{docData.approveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.fourApprovePeo}}</p>
+                <p>签名：{{docData.approvePeo}}</p>
                 <p>
-                  <span v-if="docData.fourApproveTime">{{docData.fourApproveTime}}</span>
+                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -336,14 +336,14 @@
         <tr></tr>
         <tr>
             <td rowspan="2">
-              <p>法制工作机构</p>
+              <p>法制工作机构</p> 
             </td>
             <td rowspan="2" colspan="2" class="color_DBE4EF">
-              {{docData.fourApproveOpinions}}
+              {{docData.secondApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.fourApprovePeo}}</p>
+                <p>签名：{{docData.secondApprovePeo}}</p>
                 <p>
-                  <span v-if="docData.fourApproveTime">{{docData.fourApproveTime}}</span>
+                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -413,6 +413,12 @@ export default {
         belong10:'',
         belong11:'',
         checkOpinoin:'',
+        approveOpinions:'',
+        approvePeo:'',
+        approveTime:'',
+        secondApproveOpinions:'',
+        secondApprovePeo:'',
+        secondApproveTime:''
       },
       isParty: false,
       handleType: 0, //0  暂存   1 提交

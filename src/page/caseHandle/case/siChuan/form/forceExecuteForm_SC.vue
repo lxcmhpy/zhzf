@@ -8,6 +8,7 @@
       :model="formData"
       :rules="rules"
       label-width="105px"
+      :disabled="canGoNextLink"
     >
       <div class="content_box">
         <div class="content">
@@ -313,12 +314,22 @@
               </el-table-column>
               <el-table-column prop="status" label="状态" align="center">
                 <template slot-scope="scope">
-                  <span
+                  <!-- <span
                     v-if="scope.row.status == '1' || scope.row.status == '2'"
                     >已完成</span
                   >
                   <span v-if="scope.row.status == '0'">未完成</span>
-                  <span v-if="scope.row.status == ''"></span>
+                  <span v-if="scope.row.status == ''"></span> -->
+                  <span v-if="scope.row.status == '1' || scope.row.status == '2'">
+                      <template v-if="scope.row.docProcessStatus=='待审批'">待审批</template>
+                      <template v-if="scope.row.docProcessStatus=='审批中'">审批中</template>
+                      <template v-if="scope.row.docProcessStatus=='已驳回'">已驳回</template>
+                      <template v-if="scope.row.docProcessStatus==''|| scope.row.docProcessStatus=='已完成'">已完成</template>
+                    </span>
+                  <span v-if="scope.row.status == '0'">暂存</span>
+                  <span
+                    v-if="scope.row.status != '1' && scope.row.status != '0'  && scope.row.status != '2'"
+                  >-</span>
                 </template>
               </el-table-column>
               <el-table-column label="操作" align="center">
@@ -410,7 +421,9 @@
           </div>
         </div>
       </div>
-      <!-- 悬浮按钮 -->
+      
+    </el-form>
+    <!-- 悬浮按钮 -->
       <div class="float-btns">
         <el-button
           type="primary"
@@ -457,7 +470,6 @@
           <br />返回
         </el-button>
       </div>
-    </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <chooseHandleTypeDia
       ref="chooseHandleTypeDiaRef"
@@ -693,11 +705,12 @@ export default {
 
     //查看文书
     viewDoc(row) {
-      row.url = this.$route.name;
-      row.caseBasicinfoId = this.caseBasicinfoId;
-      this.$store.commit("setCurrentFileData", row); //保存文书信息
-      iLocalStroage.removeItem("currentDocDataId");
-      this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
+      // row.url = this.$route.name;
+      // row.caseBasicinfoId = this.caseBasicinfoId;
+      // this.$store.commit("setCurrentFileData", row); //保存文书信息
+      // iLocalStroage.removeItem("currentDocDataId");
+      // this.com_viewDoc(row, this.caseLinkDataForm.caseLinktypeId);
+      this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     addMoreDoc(row) {
       console.log("添加", row);
@@ -723,20 +736,21 @@ export default {
 
     //预览pdf
     viewDocPdf(row) {
-      row.url = this.$route.name;
-      row.caseBasicinfoId = this.caseBasicinfoId;
-      this.$store.commit("setCurrentFileData", row); //保存文书信息
-      let routerData = {
-        hasApprovalBtn: false,
-        docId: row.docId,
-        approvalOver: false,
-        hasBack: true,
-        docDataId: row.docDataId,
-        status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
-      };
-      console.log("routerData,routerData", routerData);
-      this.$store.dispatch("deleteTabs", this.$route.name);
-      this.$router.push({ name: "case_handle_myPDF", params: routerData });
+      this.com_viewDocPdf(row,this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId)
+      // row.url = this.$route.name;
+      // row.caseBasicinfoId = this.caseBasicinfoId;
+      // this.$store.commit("setCurrentFileData", row); //保存文书信息
+      // let routerData = {
+      //   hasApprovalBtn: false,
+      //   docId: row.docId,
+      //   approvalOver: false,
+      //   hasBack: true,
+      //   docDataId: row.docDataId,
+      //   status: row.status, //status状态 0 暂存 1保存未提交  2 保存并提交
+      // };
+      // console.log("routerData,routerData", routerData);
+      // this.$store.dispatch("deleteTabs", this.$route.name);
+      // this.$router.push({ name: "case_handle_myPDF", params: routerData });
     },
 
     getDataAfter() {
@@ -770,6 +784,7 @@ export default {
     },
 
     getRowClass: function (row, index) {
+      console.log('row.openRow',row.openRow)
       if (row.openRow) {
         return "";
       } else {
