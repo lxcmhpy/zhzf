@@ -867,7 +867,7 @@ export default {
       this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
       //询问人默认填写文书的人
       this.docData.inquiryStaff = iLocalStroage.gets("userInfo").nickName;
-      this.docData.organName = iLocalStroage.gets("userInfo").organName;
+      this.docData.organName = iLocalStroage.gets("userInfo").organName; 
       //与案件关系默认为当事人
       // this.docData.inquiriedRelation = "0";
       // this.docData.inquiried = this.docData.party;

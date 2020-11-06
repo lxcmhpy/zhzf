@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="115px" :disabled="canGoNextLink">
       <div class="content_box">
         <div class="content">
           <div class="content_title">调查取证</div>
@@ -338,7 +338,10 @@
             </el-table>
           </div>
         </div>
-        <!-- 悬浮按钮 -->
+        
+      </div>
+    </el-form>
+    <!-- 悬浮按钮 -->
         <div class="float-btns btn-height63">
           <el-button type="primary" @click="continueHandle" :disabled="!canGoNextLink" v-if="!this.$route.params.isComplete && !IsLawEnforcementSupervision">
             <svg
@@ -370,8 +373,6 @@
             <br />返回
           </el-button>
         </div>
-      </div>
-    </el-form>
     <checkDocFinish ref="checkDocFinishRef"></checkDocFinish>
     <chooseAskPeopleDia ref="chooseAskPeopleDiaRef"></chooseAskPeopleDia>
     <resetDocDia ref="resetDocDiaRef" @getDocListByCaseIdAndFormIdEmit="getDocListByCaseIdAndFormId"></resetDocDia>

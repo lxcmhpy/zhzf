@@ -70,7 +70,7 @@ export default {
                   : '/static/images/img/lawSupervise/icon_jc1.png'
               }
             />
-            <span class="itemLabel">{data.label}</span>
+            <span class="itemLabel" style={(data.padState || data.peState) ? 'background:#67C23A' : null}>{data.label}</span>
           </div>
           {
             this.window2.topicType === '事件' ?

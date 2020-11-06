@@ -42,6 +42,19 @@ export function assigned (data) {
 }
 
 /**
+ * 指派多个事件
+ */
+export function assignedMore (data) {
+  return request({
+    url: "/zfjg/event/manage/zhipaiduo",
+    method: "post",
+    showloading: false,
+    data: data,
+    cancelToken: setCancelSource()
+  })
+}
+
+/**
  * 新增、编辑
  */
 export function addUpdate (data) {
