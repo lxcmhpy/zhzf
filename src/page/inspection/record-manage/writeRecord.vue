@@ -229,7 +229,7 @@ export default {
       options: {
         submitBtn: false,
         form: {
-          labelWidth: "240px",
+          labelWidth: "270px",
           disabled: false,
         },
       },
