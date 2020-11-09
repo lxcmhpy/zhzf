@@ -101,6 +101,9 @@ export default {
     },
     // 选择模板
     editRecord(item) {
+      console.log(" -> item", item)
+      // debugger
+      // return
       // 写文书
       if (item.pdfStorageId && item.status != '暂存') {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
@@ -114,7 +117,6 @@ export default {
         this.$router.push({
           name: item.path,
           params: { id: item.id, addOrEiditFlag: 'add' }
-          // query: { id: item.id, addOrEiditFlag: 'add' }
         });
         // 写表单
         this.$emit('changeModleId', item);

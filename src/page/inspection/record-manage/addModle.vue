@@ -548,17 +548,13 @@
             class="modle-radio chose-mine"
             prop="isOpen"
           >
-            <el-radio-group v-model="formData.isOpen">
+            <el-radio-group v-model="formData.isOpen" @change.native.prevent="(isOpen)=>isOpenChange(formData.isOpen)">
               <el-radio
-                label="是"
-                value="是"
-                @click.native.prevent="clickitem4('是')"
-              ></el-radio>
+                label="1"
+              >是</el-radio>
               <el-radio
-                label="否"
-                value="否"
-                @click.native.prevent="clickitem4('否')"
-              ></el-radio>
+                label="0"
+              >否</el-radio>
             </el-radio-group>
           </el-form-item>
           <p class="border-title card-title-margin">应用权限</p>
@@ -917,7 +913,7 @@ export default {
         documentFill: "", //文书填报
         releventRecords: "", //相关记录
         operateRecords: "", //操作记录
-        isOpen: "", //折叠展示
+        isOpen: "0", //折叠展示
         documentNames: "", //文书的名字合集
         documentNameIds: "", //文书id合集
         vehicleShipIdFlag: false, //车辆字段
@@ -1824,10 +1820,9 @@ export default {
         ? (this.formData.operateRecords = "")
         : (this.formData.operateRecords = e);
     },
-    clickitem4(e) {
-      e === this.formData.isOpen
-        ? (this.formData.isOpen = "")
-        : (this.formData.isOpen = e);
+    //折叠展示变化
+    isOpenChange(val) {
+      console.log(" -> val,", typeof(val),val)
     },
     changeScopeOfUse() {
       let _this = this;

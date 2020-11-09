@@ -638,7 +638,7 @@ export default {
             if (res.code == 200) {
               // this.recordMsg = res.data;//根据返回id上传文件
               this.recordMsg = this.formData.id ? this.formData.id : res.data; //根据返回id上传文件
-              // this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
+              this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
               this.$message({
                 type: "success",
                 message: res.msg,
@@ -762,6 +762,7 @@ export default {
       this.findRecordDataByld();
     },
     updateMole(data) {
+      // debugger
       console.log(data);
       this.modleId = data.id;
       this.findDataByld();
