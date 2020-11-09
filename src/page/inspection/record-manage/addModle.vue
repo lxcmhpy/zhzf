@@ -548,17 +548,13 @@
             class="modle-radio chose-mine"
             prop="isOpen"
           >
-            <el-radio-group v-model="formData.isOpen">
+            <el-radio-group v-model="formData.isOpen" @change.native.prevent="(isOpen)=>isOpenChange(formData.isOpen)">
               <el-radio
-                label="是"
-                value="是"
-                @click.native.prevent="clickitem4('是')"
-              ></el-radio>
+                label="1"
+              >是</el-radio>
               <el-radio
-                label="否"
-                value="否"
-                @click.native.prevent="clickitem4('否')"
-              ></el-radio>
+                label="0"
+              >否</el-radio>
             </el-radio-group>
           </el-form-item>
           <p class="border-title card-title-margin">应用权限</p>
@@ -917,7 +913,7 @@ export default {
         documentFill: "", //文书填报
         releventRecords: "", //相关记录
         operateRecords: "", //操作记录
-        isOpen: "", //折叠展示
+        isOpen: "0", //折叠展示
         documentNames: "", //文书的名字合集
         documentNameIds: "", //文书id合集
         vehicleShipIdFlag: false, //车辆字段
@@ -1024,13 +1020,9 @@ export default {
     //提交之前构建ocr配置数据
     buildMobileFunc(arr) {
       arr.forEach((item) => {
-        // debugger
         if (item.classs == "个人") {
-          // alert('geren')
           item.fieldList.forEach((it) => {
             if (it.field === "party") {
-              // alert('aparty')
-              // debugger
               if(it.mobileFunc){
                 let func = JSON.parse(it.mobileFunc);
                 func[0]["isChecked"] =
@@ -1045,7 +1037,6 @@ export default {
         if (item.classs == "车辆信息") {
           item.fieldList.forEach((it) => {
             if (it.field === "vehicleShipId") {
-              // debugger
               if(it.mobileFunc){
                 let func = JSON.parse(it.mobileFunc);
                 func[0]["isChecked"] =
@@ -1111,7 +1102,6 @@ export default {
       );
     },
     showModal(editdata) {
-      // debugger
       if (editdata) {
         this.editId = editdata.id;
         this.findDataByld();
@@ -1136,7 +1126,6 @@ export default {
       let _this = this;
       findRecordlModleFieldByIdeApi(this.editId).then(
         (res) => {
-          // debugger
           let list = res.data;
           console.log("findDataByld -> list", list)
           let sort = 0;
@@ -1200,7 +1189,6 @@ export default {
 
                 // 回显文书
                 console.log('回显文书',_this.formData.documentNameIds);
-debugger
                 _this.multipleSelection = _this.formData.documentNameIds
                   ? _this.formData.documentNameIds.split(",")
                   : [];
@@ -1268,11 +1256,8 @@ debugger
         fieldList: [],
         classId: "",
       });
-      // debugger
       let pushDataList = JSON.parse(JSON.stringify(this.defautfieldList));
       pushDataList.field = "key" + this.globalContGroup;
-      console.log("push", pushDataList);
-      // debugger
       this.formData.templateFieldList[indexSort].fieldList.push(pushDataList);
       this.activeNames.push(this.globalContGroup);
       this.globalContGroup++;
@@ -1359,7 +1344,6 @@ debugger
                       if (item.title) {
                         item.title = item.title.title;
                       }
-                      // debugger
                     }
                     if (item.field == "vehicleShipId") {
                       this.vehicleShipIdFlag = true;
@@ -1406,17 +1390,12 @@ debugger
                 // 文书
                 data.documentNameIds = this.multipleSelectionId.join(",");
                 data.documentNames = this.multipleSelection.join(",");
-                // data.templateUser
                 if (data.templateUser.substr(0, 1) == ",") {
                   data.templateUser = data.templateUser.substr(1);
                 }
-                // debugger
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 this.buildMobileFunc(data.templateFieldList);
-                console.log(
-                  "handleSubmitForm -> data.templateFieldList",
-                  data.templateFieldList
-                );
+                
                 data.templateFieldList = JSON.stringify(data.templateFieldList);
                 console.log("提交的字段", data);
                 // 提醒未添加字段
@@ -1572,7 +1551,6 @@ debugger
 
     // 修改字段组名
     changeGroup(group) {
-      // debugger
       let defaut = this.commonGroupFieldList.find(
         (item) => item.classs === group.classs
       );
@@ -1597,7 +1575,6 @@ debugger
       // info-新选，field-之前的信息
       // console.log('info', info)
       // console.log('field', field)
-      // debugger
       // 如果是通用字段，只改名
       if (field.status == 0 && !info.id) {
         this.$set(field, "title", info);
@@ -1654,14 +1631,10 @@ debugger
           j++;
           // selectedListField.push(element.id)
           this.commonFieldList.forEach((item) => {
-            // item.fieldDisabled = false
             if (element.id == item.field) {
               console.log("item", i, item.field);
               i++;
-              // item.fieldDisabled = true
               this.$set(item, "fieldDisabled", true);
-              console.log(item);
-              // debugger
             }
           });
         });
@@ -1686,7 +1659,6 @@ debugger
 
     // 抽屉关闭前回调
     handleDrawerClose() {
-      // debugger
       this.resetForm("formData");
       this.newModleTable = false;
     },
@@ -1819,9 +1791,7 @@ debugger
       getDocumentNameList().then(
         (res) => {
           if (res.code == 200) {
-            debugger
             _this.fileList = res.data;
-            // debugger
           } else {
             _this.$message.error(res.msg);
           }
@@ -1850,10 +1820,9 @@ debugger
         ? (this.formData.operateRecords = "")
         : (this.formData.operateRecords = e);
     },
-    clickitem4(e) {
-      e === this.formData.isOpen
-        ? (this.formData.isOpen = "")
-        : (this.formData.isOpen = e);
+    //折叠展示变化
+    isOpenChange(val) {
+      console.log(" -> val,", typeof(val),val)
     },
     changeScopeOfUse() {
       let _this = this;

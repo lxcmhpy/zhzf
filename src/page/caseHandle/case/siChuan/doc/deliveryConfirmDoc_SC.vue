@@ -358,9 +358,7 @@
       </div>
       <casePageFloatBtns
         :formOrDocData="formOrDocData"
-        @submitData="submitData"
         @saveData="saveData"
-        @backHuanjie="submitData"
       ></casePageFloatBtns>
     </div>
   </div>
@@ -546,12 +544,6 @@ export default {
     saveData(handleType) {
       // this.printContent()
       this.com_addDocData(handleType, "docForm");
-    },
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
     },
     //是否是完成状态
     isOverStatus() {
