@@ -28,7 +28,7 @@
               <template slot-scope="props">
                 <el-form label-position="center" inline class="demo-table-expand">
                   <div class="openSelBig">
-                    <div class="openSel"  v-for="(item,index) in props.row.uids" :key="index+11">
+                    <div class="openSel"  v-for="(item,index) in props.row.uids" :key="index+101">
                       <span class="TreeWord">{{item.display_name}}</span>
                       <span class="clickImg">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="" @click="videoPel(item)">
@@ -70,12 +70,18 @@
         </div>
         <div class="treeT">
           <el-tree
-            :data="data"
+            :data="treeData"
             show-checkbox
             node-key="label"
             ref="tree"
             highlight-current
+            @node-expand = 'openTree'
             :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node }">
+              <!-- <span class="headImg"><img src="/static/images/img/lawSupervise/icon_04.png" alt=""></span> -->
+              <span class="treeWord">{{ node.label }}</span>
+              <span class="lastImg"><img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt=""></span>
+            </span>
           </el-tree>
         </div>
         <div>
@@ -119,6 +125,7 @@
 <script>
 
 import addGroupA from "./addGroup"
+import { organTreeByCurrUser, getOrganTree,getZfjgLawSupervise } from "@/api/lawSupervise.js";
 export default {
   props: ['config','allUsers'],
   components: {
@@ -126,41 +133,7 @@ export default {
   },
   data() {
     return {
-      data: [{
-          id: 1,
-          label: '一级 1',
-          children: [{
-            id: 4,
-            label: '二级 1-1',
-            children: [{
-              id: 9,
-              label: '三级 1-1-1'
-            }, {
-              id: 10,
-              label: '三级 1-1-2'
-            }]
-          }]
-        }, {
-          id: 2,
-          label: '一级 2',
-          children: [{
-            id: 5,
-            label: '二级 2-1'
-          }, {
-            id: 6,
-            label: '二级 2-2'
-          }]
-        }, {
-          id: 3,
-          label: '一级 3',
-          children: [{
-            id: 7,
-            label: '二级 3-1'
-          }, {
-            id: 8,
-            label: '二级 3-2'
-          }]
-        }],
+      treeData: [],
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -170,10 +143,6 @@ export default {
       direction: 'ltr',
       activeName: 'first',
       gropuName:'',
-      inputModel: "",
-      showCom: "",
-      projectName: "",
-      placeholder: "",
       selectedArrQ:[],
       selectedArrT:[],
       group_info:[],
@@ -263,6 +232,10 @@ export default {
         websdk.request.groupRequest.deleteGroup(tgid, null, function (rsp) {
             console.log('demo_req_delete_group result:{}', rsp);
         }, 'demo_req_delete_group');
+    },
+    openTree(data,node){
+      console.log(data)
+      console.log(node)
     },
     delGroup(row){
         this.$confirm('确认删除该群组吗?', '删除群组', {
@@ -357,10 +330,26 @@ export default {
       }
     },
     handleClick(tab, event) {
-        console.log(tab, event);
+      if(tab.name == "second")
+      this.getTree()
     },
+    // 获取树形数据 
+    getTree() {
+      organTreeByCurrUser().then(res => {
+        if(res.code === 200) {
+          console.log(1,res.data)
+          this.treeData = res.data
+        } else {
+          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
+        }
+      }).then(data => {
+        console.log(2,data)
+      })
+    },
+
     handleSelectionChange(val){
       console.log(val)
+      
         // for (let i = 0; i < val.length; i++) {
         //   this.selectedArrQ.push(val[i].name)
         // }
@@ -465,6 +454,20 @@ export default {
       img{
         margin-left: 25px;
         width: 5%;
+      }
+    }
+    .treeWord{
+      font-size: 15px;
+      margin-right: 15px;
+    }
+    .lastImg{
+      img{
+        vertical-align: bottom;
+      }
+    }
+    .headImg{
+      img{
+        width: 10%;
       }
     }
 }
