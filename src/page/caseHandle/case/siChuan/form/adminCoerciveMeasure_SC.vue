@@ -588,12 +588,12 @@ export default {
         }
       }
       if (canGotoNext && approvalPass) {
-        this.com_goToNextLinkTu(
-          this.caseId,
-          this.caseLinkDataForm.caseLinktypeId,
-          '1'     //后台需要，为了从流程中把它提出来
-        );
-        // this.$router.push({name:'case_handle_flowChart'})  
+        // this.com_goToNextLinkTu(
+        //   this.caseId,
+        //   this.caseLinkDataForm.caseLinktypeId,
+        //   '1'     //后台需要，为了从流程中把它提出来
+        // );
+        this.$router.push({name:'case_handle_flowChart'})  
       } else if(!canGotoNext){
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
       }else if(!approvalPass){
@@ -637,10 +637,12 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     //预览pdf
     viewDocPdf(row) {
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       this.com_viewDocPdf(row,this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId)
     },
     //清空文书

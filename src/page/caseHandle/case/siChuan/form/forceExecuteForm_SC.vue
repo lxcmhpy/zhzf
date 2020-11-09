@@ -643,47 +643,71 @@ export default {
     },
 
     //下一环节
-    continueHandle() {
+    continueHandle() { 
       console.log(this.docTableDatas);
       let caseData = {
         caseBasicinfoId: this.caseLinkDataForm.caseBasicinfoId,
         caseLinktypeId: this.caseLinkDataForm.caseLinktypeId,
       };
       let canGotoNext = true; //是否进入下一环节  isRequired(0必填 1非必填)
+      let approvalPass = true;  //文书审批都通过了
+    
+      // for (let i = 0; i < this.docTableDatas.length; i++) {
+      //   if (this.docTableDatas[i].openRow) {
+      //     //可展开的多文书
+      //     let currentMoreDoc = this.docTableDatasCopy.filter(
+      //       (item) => item.docId == this.docTableDatas[i].docId
+      //     );
+      //     console.log("morcurrentMoreDoceDoc", currentMoreDoc);
+      //     if (this.docTableDatas[i].isRequired === 0) {
+      //       for (let item of currentMoreDoc) {
+      //         if (Number(item.status) == 0) {
+      //           canGotoNext = false;
+      //           break;
+      //         }
+      //       }
+      //     }
+      //   } else {
+      //     if (
+      //       this.docTableDatas[i].isRequired === 0 &&
+      //       Number(this.docTableDatas[i].status) == 0
+      //     ) {
+      //       canGotoNext = false;
+      //       break;
+      //     }
+      //   }
+      // }
+      // if (canGotoNext) {
+      //   console.log("下一环节");
+      //   this.com_goToNextLinkTu(
+      //     this.caseId,
+      //     this.caseLinkDataForm.caseLinktypeId
+      //   );
+      // } else if (!canGotoNext) {
+      //   this.getUnfinishDoc();
+      //   this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
+      // }
       for (let i = 0; i < this.docTableDatas.length; i++) {
-        if (this.docTableDatas[i].openRow) {
-          //可展开的多文书
-          let currentMoreDoc = this.docTableDatasCopy.filter(
-            (item) => item.docId == this.docTableDatas[i].docId
-          );
-          console.log("morcurrentMoreDoceDoc", currentMoreDoc);
-          if (this.docTableDatas[i].isRequired === 0) {
-            for (let item of currentMoreDoc) {
-              if (Number(item.status) == 0) {
-                canGotoNext = false;
-                break;
-              }
-            }
-          }
-        } else {
-          if (
-            this.docTableDatas[i].isRequired === 0 &&
-            Number(this.docTableDatas[i].status) == 0
-          ) {
-            canGotoNext = false;
+        if (
+          this.docTableDatas[i].isRequired === 0 && (Number(this.docTableDatas[i].status) == 0)
+        ) {
+          canGotoNext = false;
+          break;
+        }else if(this.docTableDatas[i].docProcessStatus == '审批中'){
+            //有审批中的环节
+            approvalPass = false;
             break;
-          }
         }
       }
-      if (canGotoNext) {
-        console.log("下一环节");
+      if (canGotoNext && approvalPass) {
         this.com_goToNextLinkTu(
           this.caseId,
           this.caseLinkDataForm.caseLinktypeId
         );
-      } else if (!canGotoNext) {
-        this.getUnfinishDoc();
-        this.$refs.checkDocFinishRef.showModal(this.unfinshDocArr);
+      } else if(!canGotoNext){
+        this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
+      }else if(!approvalPass){
+        this.$message('有文书正在审批中！')
       }
     },
 
@@ -862,32 +886,32 @@ export default {
       console.log("this.enforceDocList", this.enforceDocList);
     },
     //获取本环节必填但是未完成的文书
-    getUnfinishDoc() {
-      this.unfinshDocArr = [];
-      //判断是否为多文书
-      for (let item of this.docTableDatas) {
-        if (item.openRow) {
-          if (item.isRequired === 0) {
-            if (item.docId == this.BASIC_DATA_SYS.enforceDoc_caseDocTypeId) {
-              if (this.enforceDocList.length > 0) {
-                for (let stageDoc of this.enforceDocList) {
-                  if (Number(stageDoc.status) == 0) {
-                    this.unfinshDocArr.push(item);
-                    break;
-                  }
-                }
-              } else {
-                this.unfinshDocArr.push(item);
-              }
-            }
-          }
-        } else {
-          if (item.isRequired === 0 && Number(item.status) == 0)
-            this.unfinshDocArr.push(item);
-        }
-        console.log("this.unfinshDocArr", this.unfinshDocArr);
-      }
-    },
+    // getUnfinishDoc() {
+    //   this.unfinshDocArr = [];
+    //   //判断是否为多文书
+    //   for (let item of this.docTableDatas) {
+    //     if (item.openRow) {
+    //       if (item.isRequired === 0) {
+    //         if (item.docId == this.BASIC_DATA_SYS.enforceDoc_caseDocTypeId) {
+    //           if (this.enforceDocList.length > 0) {
+    //             for (let stageDoc of this.enforceDocList) {
+    //               if (Number(stageDoc.status) == 0) {
+    //                 this.unfinshDocArr.push(item);
+    //                 break;
+    //               }
+    //             }
+    //           } else {
+    //             this.unfinshDocArr.push(item);
+    //           }
+    //         }
+    //       }
+    //     } else {
+    //       if (item.isRequired === 0 && Number(item.status) == 0)
+    //         this.unfinshDocArr.push(item);
+    //     }
+    //     console.log("this.unfinshDocArr", this.unfinshDocArr);
+    //   }
+    // },
     async initData() {
       //查询是哪个流程
       // let currentFlow = await queryFlowBycaseIdApi(this.caseId);
