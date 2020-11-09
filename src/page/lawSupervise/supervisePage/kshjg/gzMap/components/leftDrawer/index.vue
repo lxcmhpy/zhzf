@@ -4,7 +4,7 @@
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="群组" name="first">
         <div class="input-with-select">
-          <el-input placeholder="请输入群组名称" v-model="input" clearable>
+          <el-input placeholder="请输入群组名称" v-model="gropuName" clearable>
             <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
           </el-input>
         </div>
@@ -12,7 +12,6 @@
           <el-table
             v-loading = 'pictLoading'
             element-loading-spinner = "el-icon-loading"
-             empty-text = " " 
              ref="multipleTable"
             :data="group_info"
             :header-cell-style="{'text-align':'center'}"
@@ -85,8 +84,8 @@
       </el-tab-pane>
       <el-tab-pane label="通讯录" name="second">
          <div class="input-with-select">
-          <el-input placeholder="请输入人员或机构名称" v-model="input" clearable>
-            <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
+          <el-input placeholder="请输入人员或机构名称" v-model="gropuName" clearable>
+            <el-button slot="append" icon="el-icon-search" ></el-button>
           </el-input>
         </div>
         <div class="treeT">
@@ -190,12 +189,11 @@ export default {
       inforVisible: false,
       direction: 'ltr',
       activeName: 'first',
-      input:'',
+      gropuName:'',
       inputModel: "",
       showCom: "",
       projectName: "",
       placeholder: "",
-      group_info: [],
       selectedArrQ:[],
       selectedArrT:[],
       group_info:[],
@@ -219,14 +217,25 @@ export default {
   mounted(){
   },
   methods: {
-    // 搜索
     //获取群组
     getLists(){
       this.getListData()
       this.selectedArrQ = []
     },
+    // 搜索
     handleSearch(){
-
+      if(this.gropuName){
+        var reg = new RegExp(this.gropuName)
+        var arr = []
+        for (let i = 0; i < this.group_info.length; i++) {
+            if(reg.test(this.group_info[i].tg_name)){
+                arr.push(this.group_info[i])
+            }
+        }
+        this.group_info = arr
+      }else{
+         this.getListData()
+      }
     },
     getListData(){
       this.$parent.req_user_profile()
@@ -410,18 +419,17 @@ export default {
     .participants_table{
       margin: 12px 0px;
         .openSel{
-            display: flex;
             margin: 11px 0px;
-            justify-content: space-around;
         }
         .clickImg{
           img{
             margin-right: 5px;
           }
-          margin-left: 45px;
         }
         .TreeWord{
-            margin-left: 110px;
+          width: 210px;
+          padding-left: 120px;
+          display: inline-block;
         }
         .operationImg{
           img{
