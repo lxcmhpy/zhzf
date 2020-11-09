@@ -6,7 +6,7 @@
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
-            <td style="width:38px;"><p>移送</p><p>机关</p></td>
+            <td><p>移送</p><p>机关</p></td>
             <td colspan="7" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="organName" :rules="fieldRules('organName',propertyFeatures['organName'],'',isParty)">
                 <el-input type='textarea' v-model="formData.organName" v-bind:class="{ over_flow:formData.organName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
@@ -14,7 +14,7 @@
               </el-form-item>
               <!-- <p>(加盖印章)</p> -->
             </td>
-            <td>地址</td>
+            <td><p>地</p><p>址</p></td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="transAddress" :rules="fieldRules('transAddress',propertyFeatures['transAddress'],'',isParty)">
                 <el-input type='textarea' v-model="formData.transAddress" :autosize="{ minRows: 1, maxRows: 3}" maxlength="30" :disabled="!isParty || fieldDisabled(propertyFeatures['transAddress'])" placeholder="/"></el-input>
@@ -29,7 +29,7 @@
                   :disabled="!isParty || fieldDisabled(propertyFeatures['checkedUser'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
-            <td>联系<br>电话</td>
+            <td><p>联</p><p>系</p><p>电</p><p>话</p></td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyPeopleTel" :rules="fieldRules('partyPeopleTel',propertyFeatures['partyPeopleTel'],validatePhone,isParty)">
                 <el-input v-model="formData.partyPeopleTel" maxLength='11' placeholder="/" :disabled="!isParty || fieldDisabled(propertyFeatures['partyPeopleTel'])"></el-input>
@@ -120,7 +120,7 @@
                 <el-input v-model="formData.partyName" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyName'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
-            <td> 法定代表人 </td>
+            <td>法定代表人</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyManager" :rules="fieldRules('partyManager',propertyFeatures['partyManager'],'',!isParty)">
                 <el-input v-model="formData.partyManager" :maxLength='maxLength' :disabled="isParty || fieldDisabled(propertyFeatures['partyManager'])" placeholder="/"></el-input>
@@ -181,7 +181,12 @@
           </tr>
           <tr>
               <td :rowspan="formData.evdenceList.length==0?2:formData.evdenceList.length+1">
-                涉案<br>物品<br>清单
+                <p>涉</p>
+                <p>案</p>
+                <p>物</p>
+                <p>品</p>
+                <p>清</p>
+                <p>单</p>
               </td>
               <td>序号</td>
               <td colspan="3">名称</td>
@@ -189,14 +194,7 @@
               <td colspan="2">特征</td>
               <td colspan="3">存放地</td>
           </tr>
-           <tr v-if="formData.evdenceList.length==0"  @click="handleAdd">
-            <td class="color_DBE4EF"></td>
-            <td class="color_DBE4EF" colspan="3"></td>
-            <td class="color_DBE4EF"></td>
-            <td class="color_DBE4EF" colspan="2"></td>
-            <td class="color_DBE4EF" colspan="3"></td>
-          </tr>
-          <tr v-for="item in formData.evdenceList" :key="item.evidenceNo"  @click="handleAdd">
+          <tr v-for="(item,index) in formData.evdenceList" :key="index"  @click="handleAdd">
             <td class="color_DBE4EF">{{item.evidenceNo}}</td>
             <td class="color_DBE4EF" colspan="3">{{item.evidenceName}}</td>
             <td class="color_DBE4EF">{{item.amount}}</td>
@@ -205,27 +203,26 @@
           </tr> 
           <tr>
             <td :rowspan="formData.evidenceList.length==0?2:formData.evidenceList.length+1">
-              移送<br>材料<br>清单
+              <p>移</p>
+              <p>送</p>
+              <p>材</p>
+              <p>料</p>
+              <p>清</p>
+              <p>单</p>
             </td>
             <td>序号</td>
             <td colspan="4">移送材料名称</td>
             <td colspan="4">规格</td>
             <td colspan="3">数量</td>
           </tr>
-          <tr v-if="formData.evidenceList.length==0"  @click="handleAdd1">
-            <td class="color_DBE4EF"></td>
-            <td class="color_DBE4EF" colspan="4"></td>
-            <td class="color_DBE4EF" colspan="4"></td>
-            <td class="color_DBE4EF" colspan="3"></td>
-          </tr>
-          <tr v-for="item in formData.evidenceList" :key="item.evidenceName"  @click="handleAdd1">
+          <tr v-for="(item,index) in formData.evidenceList" :key="'ev'+index"  @click="handleAdd1">
             <td class="color_DBE4EF">{{item.evidenceNo}}</td>
             <td colspan="4" class="color_DBE4EF">{{item.evidenceName}}</td>
             <td colspan="4" class="color_DBE4EF">{{item.spec}}</td>
             <td colspan="3" class="color_DBE4EF">{{item.amount}}</td>
           </tr>
           <tr>
-            <td>备注</td>
+            <td><p>备</p><p>注</p></td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'],'',isParty)">
                 <el-input type='textarea' v-model="formData.note" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" 
@@ -246,6 +243,9 @@
           <el-form ref="addEvidenceFormRef">
             <el-table :data="tableDatas" stripe border style="width: 100%">
               <el-table-column  prop="evidenceNo" label="序号" align="center">
+                <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
               </el-table-column>
               <el-table-column label="涉案物品名称" align="center">
                 <template slot-scope="scope">
@@ -289,20 +289,20 @@
           <el-form ref="addEvidenceFormRef">
             <el-table :data="tableDatas1" stripe border style="width: 100%">
               <el-table-column  prop="evidenceNo" label="序号" align="center">
+                <template slot-scope="scope">
+                  <span>{{++scope.$index}}</span>
+                </template>
               </el-table-column>
-
               <el-table-column label="移送材料名称" align="center">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.evidenceName"></el-input>
                 </template>
               </el-table-column>
-
               <el-table-column prop="spec" label="规格" align="center">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.spec"></el-input>
                 </template>
               </el-table-column>
-
               <el-table-column prop="amount" label="数量" align="center">
                 <template slot-scope="scope">
                   <el-input-number size="mini" v-model="scope.row.amount" :min="1"  label="描述文字"></el-input-number>
@@ -440,7 +440,8 @@ export default {
         evdenceList: [],
         evidenceList: [],
         evidenceLength1:0,
-        note:''
+        note:'',
+        transUnit:''
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -451,6 +452,9 @@ export default {
         status: "",      
       },
       rules: {
+        evidenceList:[
+          { required: true, message: "移送材料清单不能为空", trigger: "blur" }
+        ],
         party: [
           { required: true, message: "当事人姓名不能为空", trigger: "blur" }
         ],
@@ -577,36 +581,69 @@ export default {
       let orgData = {
         id: iLocalStroage.gets("userInfo").organId
       };
-      getOrganDetailApi(orgData).then(
-        res => {
-          console.log(res)
-          // this.formData.evidenceDepartment = res.data.name;
-          // this.formData.evidenceDepartmentPhone = res.data.telephone;
-        })
+      // getOrganDetailApi(orgData).then(
+      //   res => {
+      //     console.log(res)
+      //     this.formData.evidenceDepartment = res.data.name;
+      //     this.formData.evidenceDepartmentPhone = res.data.telephone;
+      //   })
+      if (!this.formData.evidenceList.length) {
+        this.formData.evidenceList = [
+          { evidenceNo: "", evidenceNo: "", spec: "", amount: "" },
+          { evidenceNo: "", evidenceNo: "", spec: "", amount: "" },
+          { evidenceNo: "", evidenceNo: "", spec: "", amount: "" },
+          { evidenceNo: "", evidenceNo: "", spec: "", amount: "" },
+        ];
+      }
+      if (!this.formData.evdenceList.length) {
+        this.formData.evdenceList = [
+          { evidenceNo: "", evidenceName: "", spec: "", amount: "" ,savePlace:""},
+          { evidenceNo: "", evidenceName: "", spec: "", amount: "" ,savePlace:""},
+          { evidenceNo: "", evidenceName: "", spec: "", amount: "" ,savePlace:""},
+          { evidenceNo: "", evidenceName: "", spec: "", amount: "" ,savePlace:""},
+        ];
+      }
     },
     handleAdd(evidenceNo, row) {
-        this.tableDatas = JSON.parse(JSON.stringify(this.formData.evdenceList));
-        this.addVisible = true;
-        if(this.tableDatas.length == 0){
-        this.tableDatas.push({'evidenceNo': 1, 'amount' : 1});
+      let tableArr = [];
+      this.formData.evdenceList.forEach((item) => {
+        if (item.evidenceNo != "") {
+          tableArr.push(item);
         }
+      });
+      this.tableDatas = tableArr;
+      this.addVisible = true;
+      if (this.tableDatas.length == 0) {
+        this.tableDatas.push({ evidenceNo: 1, amount: 1 });
+      }
     },
     addTableData(){
       let length = this.tableDatas.length;
-      if(length == 0){
-        this.tableDatas.push({'evidenceNo': 1, 'amount' : 1});
-      }else{
-        this.tableDatas.push({'evidenceNo': Number(this.tableDatas[length - 1].evidenceNo) + 1, 'amount' : 1, 'savePlace': this.tableDatas[0].savePlace});
+      if (length == 0) {
+        this.tableDatas.push({ evidenceNo: 1, amount: 1 });
+      } else {
+        this.tableDatas.push({
+          evidenceNo: Number(this.tableDatas[length - 1].evidenceNo) + 1,
+          amount: 1,
+        });
       }
     },
     //删除一行证据
     deleteEvidence(row) {
-      for(let i=0; i<this.tableDatas.length; i++){
-        if(this.tableDatas[i].evidenceNo > row.evidenceNo){
+      for (let i = 0; i < this.tableDatas.length; i++) {
+        if (this.tableDatas[i].evidenceNo > row.evidenceNo) {
           this.tableDatas[i].evidenceNo = this.tableDatas[i].evidenceNo - 1;
         }
       }
-      this.tableDatas.splice(row.evidenceNo-1, 1)
+      this.tableDatas.splice(row.evidenceNo - 1, 1);
+      this.formData.evdenceList.splice(row.evidenceNo - 1, 1);
+      this.formData.evdenceList.push({
+        evidenceNo: "",
+        evidenceName: "",
+        amount: "",
+        spec: "",
+        savePlace:""
+      });
     },
     addEvidenceSure(formName){
       let canAdd = true;
@@ -621,33 +658,52 @@ export default {
           }
         }
         if(canAdd){
-          this.formData.evdenceList = this.tableDatas;
+          this.tableDatas.forEach((item, index, arr) => {
+            item.evidenceNo = index + 1;
+            this.formData.evdenceList[index] = this.tableDatas[index];
+          });
           this.addVisible = false;
         }
     },
     handleAdd1(evidenceNo, row) {
-        this.tableDatas1 = JSON.parse(JSON.stringify(this.formData.evidenceList));
-        this.addVisible1 = true;
-        if(this.tableDatas1.length == 0){
-        this.tableDatas1.push({'evidenceNo': 1, 'amount' : 1});
+      let tableArr = [];
+      this.formData.evidenceList.forEach((item) => {
+        if (item.evidenceNo != "") {
+          tableArr.push(item);
         }
+      });
+      this.tableDatas1 = tableArr;
+      this.addVisible1 = true;
+      if (this.tableDatas1.length == 0) {
+        this.tableDatas1.push({ evidenceNo: 1, amount: 1 });
+      }
     },
     addTableData1(){
       let length = this.tableDatas1.length;
-      if(length == 0){
-        this.tableDatas1.push({'evidenceNo': 1, 'amount' : 1});
-      }else{
-        this.tableDatas1.push({'evidenceNo': Number(this.tableDatas1[length - 1].evidenceNo) + 1, 'amount' : 1});
+      if (length == 0) {
+        this.tableDatas1.push({ evidenceNo: 1, amount: 1 });
+      } else {
+        this.tableDatas1.push({
+          evidenceNo: Number(this.tableDatas1[length - 1].evidenceNo) + 1,
+          amount: 1,
+        });
       }
     },
     //删除一行证据
     deleteEvidence1(row) {
-        for(let i=0; i<this.tableDatas1.length; i++){
-          if(this.tableDatas1[i].evidenceNo > row.evidenceNo){
-            this.tableDatas1[i].evidenceNo = this.tableDatas1[i].evidenceNo - 1;
-          }
+      for (let i = 0; i < this.tableDatas1.length; i++) {
+        if (this.tableDatas1[i].evidenceNo > row.evidenceNo) {
+          this.tableDatas1[i].evidenceNo = this.tableDatas1[i].evidenceNo - 1;
         }
-        this.tableDatas1.splice(row.evidenceNo-1, 1)
+      }
+      this.tableDatas1.splice(row.evidenceNo - 1, 1);
+      this.formData.evidenceList.splice(row.evidenceNo - 1, 1);
+      this.formData.evidenceList.push({
+        evidenceNo: "",
+        evidenceName: "",
+        amount: "",
+        spec: "",
+      });
     },
     addEvidenceSure1(formName){
       let canAdd = true;
@@ -662,7 +718,10 @@ export default {
         }
       }
       if(canAdd){
-        this.formData.evidenceList = this.tableDatas1;
+        this.tableDatas1.forEach((item, index, arr) => {
+          item.evidenceNo = index + 1;
+          this.formData.evidenceList[index] = this.tableDatas1[index];
+        });
         this.addVisible1 = false;
       }
     },
