@@ -31,23 +31,11 @@
                     <div class="openSel"  v-for="(item,index) in props.row.uids" :key="index+11">
                       <span class="TreeWord">{{item.display_name}}</span>
                       <span class="clickImg">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="" @click="videoPel(item)">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg"  @click="selectP(item)" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" @click="delNum( props.row,item)" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" @click="delNum(props.row,item)" alt="">
                       </span>
                     </div>
-                    <!-- <div class="openSel">
-                      <span class="TreeWord">{{ props.row.name }}</span>
-                      <span class="clickImg">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  @click="selectP(props.row.name)" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
-                      </span>
-                    </div> -->
                   </div>
                 </el-form>
               </template>
@@ -66,17 +54,9 @@
              >
               <template slot-scope="scope">
                 <div class="operationImg">
-                  <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
-                  <img src="/static/images/img/lawSupervise/gzMapLeftD/audio.jpg" alt="">
+                  <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="" @click="videoGroup(scope.row)">
                   <img src="/static/images/img/lawSupervise/gzMapLeftD/del.jpg" alt="" @click="delGroup(scope.row)">
                 </div>
-               
-                <!-- <span class="videoImg">
-                    <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u152.svg" alt="">
-                </span>
-                <span class="videoImg">
-                    <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u147.png" alt="">
-                </span> -->
               </template>
             </el-table-column>
           </el-table>
@@ -126,13 +106,13 @@
           <el-button type="primary" plain  @click="addGroup">创建群组</el-button>
         </div>
         <div>
-          <el-button type="primary" plain>发起会商</el-button>
+          <el-button type="primary" plain @click="speak">发起会商</el-button>
         </div>
       </div>
     <!-- </el-drawer> -->
     
 
-    <info-order ref="orderInfo" :getLists='getLists' :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
+    <info-order ref="orderInfo" :getLists='getLists' :creatGroupData='creatGroupData' :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
   </div>
 </template>
 
@@ -198,18 +178,21 @@ export default {
       selectedArrT:[],
       group_info:[],
       user_info:[],
+      groupCopy:[],
+      newGroup:''
     }
   },
   watch: {
     config(o, n){
       this.group_info = o.group_info
+      this.groupCopy = o.group_info
       this.pictLoading = false
       console.log('group_info',this.group_info)
     },
     allUsers(o,n){
       this.user_info = o.user_info
       console.log('user_info',this.user_info)
-    }
+    },
   },
   created(){
 
@@ -220,16 +203,15 @@ export default {
     //获取群组
     getLists(){
       this.getListData()
-      this.selectedArrQ = []
     },
     // 搜索
     handleSearch(){
       if(this.gropuName){
         var reg = new RegExp(this.gropuName)
         var arr = []
-        for (let i = 0; i < this.group_info.length; i++) {
-            if(reg.test(this.group_info[i].tg_name)){
-                arr.push(this.group_info[i])
+        for (let i = 0; i < this.groupCopy.length; i++) {
+            if(reg.test(this.groupCopy[i].tg_name)){
+                arr.push(this.groupCopy[i])
             }
         }
         this.group_info = arr
@@ -239,6 +221,17 @@ export default {
     },
     getListData(){
       this.$parent.req_user_profile()
+    },
+    // 群组视频
+    videoGroup(val){
+      websdk.view.showGroupModal(val.tgid, function (result) {
+            console.log('showGroupModal result:{}', result);
+      });
+    },
+    videoPel(val){
+      websdk.view.showUserModal(val.uid, null, function (result) {
+            console.log('showUserModal result:{}', result);
+      });
     },
     // 获取群组下的人员
     zydescription(data){
@@ -317,10 +310,6 @@ export default {
         }
        this.$refs.tree.setCheckedKeys([]);
     },
-    addGroup(){
-        this.inforVisible = true
-        this.$refs.orderInfo.getGruops(this.selectedArrQ)
-    },
     //添加人员
     selectP(val){
       this.selectedArrQ.push(val)
@@ -338,6 +327,34 @@ export default {
             }
           }
         });
+    },
+    creatGroupData(data){
+      this.newGroup = data.tgid
+    },
+    // 创建群组
+    addGroup(){
+      if(this.selectedArrQ.length > 0){
+        this.inforVisible = true
+        this.$refs.orderInfo.getGruops(this.selectedArrQ)
+      }else{
+         this.$message({
+          message: '请先添加群组人员',
+          type: 'warning'
+        });
+      }
+    },
+    // 发起会商
+    speak(){
+      if(this.newGroup){
+        websdk.view.showGroupModal(this.newGroup, function (result) {
+             console.log('showGroupModal result:{}', result);
+       });
+      }else{
+        this.$message({
+          message: '请先创建群组',
+          type: 'warning'
+        });
+      }
     },
     handleClick(tab, event) {
         console.log(tab, event);
@@ -427,7 +444,7 @@ export default {
           }
         }
         .TreeWord{
-          width: 210px;
+          width: 248px;
           padding-left: 120px;
           display: inline-block;
         }

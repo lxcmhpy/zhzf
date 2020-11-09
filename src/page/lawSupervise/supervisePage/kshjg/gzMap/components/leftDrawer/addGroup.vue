@@ -29,13 +29,13 @@
 </template>
 <script>
 export default {
-  props:['visibles','getLists'],
+  props:['visibles','getLists','creatGroupData'],
   data() {
     return {
         form:{
             name:''
         },
-        id:[]
+        id:[],
     }
   },
   created() { 
@@ -43,9 +43,11 @@ export default {
   methods: {
     cancelModal(){
       this.$emit('update:visibles', false);
+      this.form.name = ' '
     },
     cancle(){
         this.$emit('update:visibles', false);
+        this.form.name = ' '
     },
     save(){
         // console.log(this.form.name)
@@ -59,6 +61,8 @@ export default {
             console.log('demo_req_create_group result:{}', rsp);
              _this.$emit('update:visibles', false);
              _this.getLists()
+             _this.creatGroupData(rsp)
+             this.form.name = ''
         }, 'demo_req_create_group');
     },
     getGruops(arrs){
@@ -66,8 +70,7 @@ export default {
         for (let i = 0; i < arrs.length; i++) {
             this.id.push(arrs[i].uid)
         }
-    }
-   
+    },
   }
 }
 </script>
