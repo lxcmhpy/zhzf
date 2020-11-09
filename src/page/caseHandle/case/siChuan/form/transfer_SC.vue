@@ -542,6 +542,7 @@ export default {
       addLoading: false,
       addLoading1: false,
       propertyFeatures:'', //字段属性配置
+      huanjieAndDocId: this.BASIC_DATA_SC.transfei_SC_huanjieAndDocId, //案件移送书的文书id
 
     }
   },

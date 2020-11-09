@@ -45,13 +45,13 @@
           <el-radio :label="1">待上报</el-radio>
           <el-radio :label="2">待指派</el-radio>
           <el-radio :label="3">已指派待处理</el-radio>
-          <el-radio :label="2">处理中</el-radio>
-          <el-radio :label="3">处理完毕</el-radio>
+          <el-radio :label="4">处理中</el-radio>
+          <el-radio :label="5">处理完毕</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="是否需要协调:" :label-width="formLabelWidth">
-        <el-radio v-model="form.iscoordinator" :label='1'>是</el-radio>
-        <el-radio v-model="form.iscoordinator" :label='0'>否</el-radio>
+        <el-radio v-model="form.iscoordinator" :label='1' @change="handleChangeRadio">是</el-radio>
+        <el-radio v-model="form.iscoordinator" :label='0' @change="handleChangeRadio">否</el-radio>
       </el-form-item>
       <el-form-item label="机构:" :label-width="formLabelWidth" prop="disposeOrgan">
         <ElSelectTree
@@ -171,7 +171,7 @@ export default {
         eventDate: '',
         isemphasis: 1,
         iscoordinator: 1,
-        state: 1,
+        state: 2,
         disposeOrgan: '', // 选择的机构 id
         disposePerson: '', // 选择的人员 id
         storageIds: [], // 附件 id 列表
@@ -209,6 +209,18 @@ export default {
           this.form[key] = ''
         }
       })
+    },
+
+    /**
+     * 选中是否需要协调
+     * 不需要协调(0)传处理中，需要协调(1)传待指派
+     */
+    handleChangeRadio(val) {
+      if(val === 1) {
+        this.form.state = 2
+      } else if (val === 0) {
+        this.form.state = 4
+      }
     },
 
     /**
