@@ -9,10 +9,9 @@
             <td><p>移送</p><p>机关</p></td>
             <td colspan="7" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="organName" :rules="fieldRules('organName',propertyFeatures['organName'],'',isParty)">
-                <el-input type='textarea' v-model="formData.organName" v-bind:class="{ over_flow:formData.organName.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
-                  :disabled="fieldDisabled(propertyFeatures['organName'])" placeholder="/"></el-input>
+                <el-input type='textarea' v-model="formData.organName" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
+                  :disabled="!isParty" placeholder="/"></el-input>
               </el-form-item>
-              <!-- <p>(加盖印章)</p> -->
             </td>
             <td><p>地</p><p>址</p></td>
             <td colspan="2" class="color_DBE4EF">
@@ -361,67 +360,16 @@ export default {
       }
       callback();
     };
-    //验证开始时间
-    var validateStartTime = (rule, value, callback) => {
-      console.log('案发时间=='+this.formData.lasj)
-      if (Date.parse(this.formData.getEvidenceTime) < Date.parse(this.formData.lasj)) {
-        this.$message({
-          showClose: true,
-          message: "开始时间不得大于立案时间",
-          type: "error",
-          offset: 100,
-          customClass: "validateErrorTip",
-        });
-        this.formData.getEvidenceTime = ""
-        return callback(new Error("开始时间不得大于立案时间"));
-      }
-      if(Date.parse(this.formData.getEvidenceTime)>Date.parse(this.formData.getEvidenceTimeEnd)){
-        this.$message({
-              showClose: true,
-              message: '开始时间不得大于结束时间',
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
-        });
-        return callback(new Error("开始时间不得大于结束时间"));
-      }
-      if(Date.parse(this.formData.getEvidenceTimeEnd)>Date.parse(new Date())){
-        this.$message({
-              showClose: true,
-              message: '结束时间不得大于当前时间',
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
-        });
-        this.formData.getEvidenceTimeEnd = ""
-        return callback(new Error("结束时间不得大于当前时间"));
-      }
-      if(Date.parse(this.formData.getEvidenceTime)>Date.parse(new Date())){
-        this.$message({
-              showClose: true,
-              message: '开始时间不得大于当前时间',
-              type: 'error',
-              offset: 100,
-              customClass: 'validateErrorTip'
-        });
-        this.formData.getEvidenceTime = ""
-        return callback(new Error("开始时间不得大于当前时间"));
-      }
-      callback();
-    };
-    
     return {
       validatePhone:validatePhone,
       validateIDNumber:validateIDNumber,
       formData: {
         caseNumber: '',
-        // partyType: '',
         party: '',
         basicSituation:"",
         copyReason:"",
         partyPeopleTel:"",
         checkedUser:"",
-        organName:"",
         transAddress:"",
         partyIdNo: '',
         partyAddress: '',
@@ -431,7 +379,6 @@ export default {
         partyUnitTel: '',
         partyManager: '',
         socialCreditCode: '',
-
         getEvidenceTime: '',
         getEvidenceTimeEnd:'',
         evidencePlace: '',
@@ -441,7 +388,8 @@ export default {
         evidenceList: [],
         evidenceLength1:0,
         note:'',
-        transUnit:''
+        transUnit:'',
+        organName:'',
       },
       caseLinkDataForm: {
         id: "", //修改的时候用
@@ -487,27 +435,19 @@ export default {
         partyName: [
           { required: true, message: '单位名称不能为空', trigger: 'blur' },
         ],
-        partyManager: [
-          { required: true, message: '法人不能为空', trigger: 'blur' },
-        ],
-        partyUnitAddress: [
-          { required: true, message: '单位地址不能为空', trigger: 'blur' },
-        ],
-        partyUnitTel: [
-          { required: true, message: '单位联系电话不能为空', trigger: 'blur' },
-          { validator: validatePhone, trigger: "blur" }
-        ],
-        socialCreditCode: [
-          { required: true, message: '社会信用代码不能为空', trigger: 'blur' },
-        ],
-        getEvidenceTime: [
-          { required: true, message: '抽样取证时间不能为空', trigger: 'blur' },
-          { validator:validateStartTime , trigger: "blur" }
-        ],
-        getEvidenceTimeEnd: [
-          { required: true, message: '抽样取证结束时间不能为空', trigger: 'blur' },
-          { validator:validateStartTime , trigger: "blur" }
-        ],
+        // partyManager: [
+        //   { required: true, message: '法人不能为空', trigger: 'blur' },
+        // ],
+        // partyUnitAddress: [
+        //   { required: true, message: '单位地址不能为空', trigger: 'blur' },
+        // ],
+        // partyUnitTel: [
+        //   { required: true, message: '单位联系电话不能为空', trigger: 'blur' },
+        //   { validator: validatePhone, trigger: "blur" }
+        // ],
+        // socialCreditCode: [
+        //   { required: true, message: '社会信用代码不能为空', trigger: 'blur' },
+        // ],
         evidencePlace: [
           { required: true, message: '抽样取证地点不能为空', trigger: 'blur' }
         ],
@@ -543,7 +483,6 @@ export default {
       addLoading1: false,
       propertyFeatures:'', //字段属性配置
       huanjieAndDocId: this.BASIC_DATA_SC.transfei_SC_huanjieAndDocId, //案件移送书的文书id
-
     }
   },
   methods: {
