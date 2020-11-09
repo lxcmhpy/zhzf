@@ -46,7 +46,7 @@ export default {
           placeholder: '请选择',
           type: 'select',
           options: [
-            { value: 1, label: '待上报' },
+            { value: '2,3,4,5', label: '全部' },
             { value: 2, label: '待指派' },
             { value: 3, label: '已指派待处理' },
             { value: 4, label: '处理中' },

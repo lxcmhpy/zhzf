@@ -31,7 +31,7 @@ export default {
       },
       visible: false,
       rules: {},
-      psMsg:''
+      psMsg:{}
     }
   },
   methods: {
