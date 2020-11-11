@@ -260,8 +260,7 @@
                     v-model="docData.postAddress"
                     v-bind:class="{ over_flow:docData.postAddress.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="nameLength"
-                    style="width:100px;"
+                    maxlength="50"
                     placeholder="\"
                     :disabled="fieldDisabled(propertyFeatures['postAddress'])"
                   ></el-input>
@@ -404,11 +403,14 @@ export default {
         caseNumber: "",
         caseName: "",
         party: "",
+        partyTel: "",
+        partyZipCode: "",
+        partyAddress: "",
         partyIdNo: "",
         partyIdType: "",
         receiver: "",
         isAcceptElDel: [],
-        withPartyRelation: [], 
+        withPartyRelation: ["1"], 
         certificateType: "",
         certificateNumber: "",
         eleDeliveryType: [],
@@ -566,9 +568,15 @@ export default {
       if(this.docData.withPartyRelation[0] == '1'){
         this.docData.certificateNumber = this.docData.partyIdNo;
         this.docData.certificateType = this.docData.partyIdType;
+        this.docData.mobile = this.docData.partyTel;
+        this.docData.zipCode = this.docData.partyZipCode;
+        this.docData.postAddress = this.docData.partyAddress
       }else{
         this.docData.certificateNumber = "";
         this.docData.certificateType = "";
+        this.docData.mobile = "";
+        this.docData.zipCode = "";
+        this.docData.postAddress = "";
       }
     },
     //设置案件来源
@@ -586,11 +594,13 @@ export default {
         this.docData.deliveryWay =[];
       }
       console.log('this.docData.deliveryWay',this.docData.deliveryWay)
+      this.choosePeo();
     },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
+   
   }
 };
 </script>
