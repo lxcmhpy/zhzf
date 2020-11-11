@@ -153,7 +153,7 @@ export default {
     },
     //上传图片
     uploadImg(param) {
-    console.log(" -> param", param)
+      console.log(" -> param", param)
       var fd = new FormData();
       fd.append("file", param.file);
       fd.append("category", "行政检查"); 
