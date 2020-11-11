@@ -28,26 +28,14 @@
               <template slot-scope="props">
                 <el-form label-position="center" inline class="demo-table-expand">
                   <div class="openSelBig">
-                    <div class="openSel"  v-for="(item,index) in props.row.uids" :key="index+11">
+                    <div class="openSel"  v-for="(item,index) in props.row.uids" :key="index+101">
                       <span class="TreeWord">{{item.display_name}}</span>
                       <span class="clickImg">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="" @click="videoPel(item)">
                         <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg"  @click="selectP(item)" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" @click="delNum( props.row,item)" alt="">
+                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" @click="delNum(props.row,item)" alt="">
                       </span>
                     </div>
-                    <!-- <div class="openSel">
-                      <span class="TreeWord">{{ props.row.name }}</span>
-                      <span class="clickImg">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/tel.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add1.jpg"  @click="selectP(props.row.name)" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt="">
-                        <img src="/static/images/img/lawSupervise/gzMapLeftD/del2.jpg" alt="">
-                      </span>
-                    </div> -->
                   </div>
                 </el-form>
               </template>
@@ -66,17 +54,9 @@
              >
               <template slot-scope="scope">
                 <div class="operationImg">
-                  <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="">
-                  <img src="/static/images/img/lawSupervise/gzMapLeftD/audio.jpg" alt="">
+                  <img src="/static/images/img/lawSupervise/gzMapLeftD/video.jpg" alt="" @click="videoGroup(scope.row)">
                   <img src="/static/images/img/lawSupervise/gzMapLeftD/del.jpg" alt="" @click="delGroup(scope.row)">
                 </div>
-               
-                <!-- <span class="videoImg">
-                    <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u152.svg" alt="">
-                </span>
-                <span class="videoImg">
-                    <img src="http://127.0.0.1:32767/09.39.34/images/%E8%A7%86%E9%A2%91%E4%BC%9A%E5%95%86/u147.png" alt="">
-                </span> -->
               </template>
             </el-table-column>
           </el-table>
@@ -90,12 +70,18 @@
         </div>
         <div class="treeT">
           <el-tree
-            :data="data"
+            :data="treeData"
             show-checkbox
             node-key="label"
             ref="tree"
             highlight-current
+            @node-expand = 'openTree'
             :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node }">
+              <!-- <span class="headImg"><img src="/static/images/img/lawSupervise/icon_04.png" alt=""></span> -->
+              <span class="treeWord">{{ node.label }}</span>
+              <span class="lastImg"><img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt=""></span>
+            </span>
           </el-tree>
         </div>
         <div>
@@ -126,19 +112,20 @@
           <el-button type="primary" plain  @click="addGroup">创建群组</el-button>
         </div>
         <div>
-          <el-button type="primary" plain>发起会商</el-button>
+          <el-button type="primary" plain @click="speak">发起会商</el-button>
         </div>
       </div>
     <!-- </el-drawer> -->
     
 
-    <info-order ref="orderInfo" :getLists='getLists' :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
+    <info-order ref="orderInfo" :getLists='getLists' :creatGroupData='creatGroupData' :v-if="inforVisible" :visibles.sync="inforVisible"></info-order>
   </div>
 </template>
 
 <script>
 
 import addGroupA from "./addGroup"
+import { organTreeByCurrUser, getOrganTree,getZfjgLawSupervise } from "@/api/lawSupervise.js";
 export default {
   props: ['config','allUsers'],
   components: {
@@ -146,41 +133,7 @@ export default {
   },
   data() {
     return {
-      data: [{
-          id: 1,
-          label: '一级 1',
-          children: [{
-            id: 4,
-            label: '二级 1-1',
-            children: [{
-              id: 9,
-              label: '三级 1-1-1'
-            }, {
-              id: 10,
-              label: '三级 1-1-2'
-            }]
-          }]
-        }, {
-          id: 2,
-          label: '一级 2',
-          children: [{
-            id: 5,
-            label: '二级 2-1'
-          }, {
-            id: 6,
-            label: '二级 2-2'
-          }]
-        }, {
-          id: 3,
-          label: '一级 3',
-          children: [{
-            id: 7,
-            label: '二级 3-1'
-          }, {
-            id: 8,
-            label: '二级 3-2'
-          }]
-        }],
+      treeData: [],
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -190,26 +143,25 @@ export default {
       direction: 'ltr',
       activeName: 'first',
       gropuName:'',
-      inputModel: "",
-      showCom: "",
-      projectName: "",
-      placeholder: "",
       selectedArrQ:[],
       selectedArrT:[],
       group_info:[],
       user_info:[],
+      groupCopy:[],
+      newGroup:''
     }
   },
   watch: {
     config(o, n){
       this.group_info = o.group_info
+      this.groupCopy = o.group_info
       this.pictLoading = false
       console.log('group_info',this.group_info)
     },
     allUsers(o,n){
       this.user_info = o.user_info
       console.log('user_info',this.user_info)
-    }
+    },
   },
   created(){
 
@@ -220,16 +172,15 @@ export default {
     //获取群组
     getLists(){
       this.getListData()
-      this.selectedArrQ = []
     },
     // 搜索
     handleSearch(){
       if(this.gropuName){
         var reg = new RegExp(this.gropuName)
         var arr = []
-        for (let i = 0; i < this.group_info.length; i++) {
-            if(reg.test(this.group_info[i].tg_name)){
-                arr.push(this.group_info[i])
+        for (let i = 0; i < this.groupCopy.length; i++) {
+            if(reg.test(this.groupCopy[i].tg_name)){
+                arr.push(this.groupCopy[i])
             }
         }
         this.group_info = arr
@@ -239,6 +190,17 @@ export default {
     },
     getListData(){
       this.$parent.req_user_profile()
+    },
+    // 群组视频
+    videoGroup(val){
+      websdk.view.showGroupModal(val.tgid, function (result) {
+            console.log('showGroupModal result:{}', result);
+      });
+    },
+    videoPel(val){
+      websdk.view.showUserModal(val.uid, null, function (result) {
+            console.log('showUserModal result:{}', result);
+      });
     },
     // 获取群组下的人员
     zydescription(data){
@@ -270,6 +232,10 @@ export default {
         websdk.request.groupRequest.deleteGroup(tgid, null, function (rsp) {
             console.log('demo_req_delete_group result:{}', rsp);
         }, 'demo_req_delete_group');
+    },
+    openTree(data,node){
+      console.log(data)
+      console.log(node)
     },
     delGroup(row){
         this.$confirm('确认删除该群组吗?', '删除群组', {
@@ -317,10 +283,6 @@ export default {
         }
        this.$refs.tree.setCheckedKeys([]);
     },
-    addGroup(){
-        this.inforVisible = true
-        this.$refs.orderInfo.getGruops(this.selectedArrQ)
-    },
     //添加人员
     selectP(val){
       this.selectedArrQ.push(val)
@@ -339,11 +301,55 @@ export default {
           }
         });
     },
-    handleClick(tab, event) {
-        console.log(tab, event);
+    creatGroupData(data){
+      this.newGroup = data.tgid
     },
+    // 创建群组
+    addGroup(){
+      if(this.selectedArrQ.length > 0){
+        this.inforVisible = true
+        this.$refs.orderInfo.getGruops(this.selectedArrQ)
+      }else{
+         this.$message({
+          message: '请先添加群组人员',
+          type: 'warning'
+        });
+      }
+    },
+    // 发起会商
+    speak(){
+      if(this.newGroup){
+        websdk.view.showGroupModal(this.newGroup, function (result) {
+             console.log('showGroupModal result:{}', result);
+       });
+      }else{
+        this.$message({
+          message: '请先创建群组',
+          type: 'warning'
+        });
+      }
+    },
+    handleClick(tab, event) {
+      if(tab.name == "second")
+      this.getTree()
+    },
+    // 获取树形数据 
+    getTree() {
+      organTreeByCurrUser().then(res => {
+        if(res.code === 200) {
+          console.log(1,res.data)
+          this.treeData = res.data
+        } else {
+          throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
+        }
+      }).then(data => {
+        console.log(2,data)
+      })
+    },
+
     handleSelectionChange(val){
       console.log(val)
+      
         // for (let i = 0; i < val.length; i++) {
         //   this.selectedArrQ.push(val[i].name)
         // }
@@ -427,7 +433,7 @@ export default {
           }
         }
         .TreeWord{
-          width: 210px;
+          width: 248px;
           padding-left: 120px;
           display: inline-block;
         }
@@ -448,6 +454,20 @@ export default {
       img{
         margin-left: 25px;
         width: 5%;
+      }
+    }
+    .treeWord{
+      font-size: 15px;
+      margin-right: 15px;
+    }
+    .lastImg{
+      img{
+        vertical-align: bottom;
+      }
+    }
+    .headImg{
+      img{
+        width: 10%;
       }
     }
 }

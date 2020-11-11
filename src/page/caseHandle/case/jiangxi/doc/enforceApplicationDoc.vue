@@ -318,28 +318,28 @@ export default {
   methods: {
     starttime(){
       console.log('案发时间=='+this.formData.lasj)
-      if (Date.parse(this.formData.makeDate) < Date.parse(this.formData.lasj)) {
+      if (Date.parse(this.formData.makeDate) < Date.parse(this.formData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.formData.makeDate = '';
       }
-      if (Date.parse(this.formData.serviceTime) < Date.parse(this.formData.lasj)) {
+      if (Date.parse(this.formData.serviceTime) < Date.parse(this.formData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.formData.serviceTime = '';
       }
-      if (Date.parse(this.formData.reformTime) < Date.parse(this.formData.lasj)) {
+      if (Date.parse(this.formData.reformTime) < Date.parse(this.formData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.formData.reformTime = '';
       }
-      if (Date.parse(this.formData.serviceTime1) < Date.parse(this.formData.lasj)) {
+      if (Date.parse(this.formData.serviceTime1) < Date.parse(this.formData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'

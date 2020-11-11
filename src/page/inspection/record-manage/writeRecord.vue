@@ -229,7 +229,7 @@ export default {
       options: {
         submitBtn: false,
         form: {
-          labelWidth: "240px",
+          labelWidth: "270px",
           disabled: false,
         },
       },
@@ -533,6 +533,8 @@ export default {
 
     // 提交接口
     submitMethod(fileSaveType) {
+      console.log('baocun',this.addOrEiditFlag)
+      return
       console.log("formData", this.formData);
       let submitData = JSON.parse(JSON.stringify(this.baseData));
       this.setText(submitData);
@@ -611,6 +613,8 @@ export default {
 
     // 暂存
     onSaveRecord(noRouter) {
+      console.log('暂存',this.addOrEiditFlag)
+      return
       // console.log('rule', this.rule)
       this.noUseValidate();
       this.formData.status = "暂存";
@@ -638,7 +642,7 @@ export default {
             if (res.code == 200) {
               // this.recordMsg = res.data;//根据返回id上传文件
               this.recordMsg = this.formData.id ? this.formData.id : res.data; //根据返回id上传文件
-              // this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
+              this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
               this.$message({
                 type: "success",
                 message: res.msg,
@@ -762,6 +766,7 @@ export default {
       this.findRecordDataByld();
     },
     updateMole(data) {
+      // debugger
       console.log(data);
       this.modleId = data.id;
       this.findDataByld();

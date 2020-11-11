@@ -71,7 +71,7 @@
     "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
   },
   "WC": {
-    "CAPTCHA_HOST": "http://172.16.159.56:8099",
+    "CAPTCHA_HOST": "http://172.16.170.50:9000",
     "AAA_HOST": "http://172.16.169.56:8099",
     "VIDEO_HOST": "wss://172.16.170.47:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",

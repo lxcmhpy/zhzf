@@ -72,7 +72,7 @@
 
     function LoadPage() {
       var url = getParam(0);
-      var host = "http://124.192.215.10:9332/";
+      var host = "http://172.16.170.54:9332/";
       var divobj = document.createElement("div");
       divobj.setAttribute("id", "objdiv1");
       var obj = "";
@@ -237,9 +237,9 @@
       // var fileName = getParam(0).split("/");
       // var fileId = fileName[fileName.length - 1];
       var fileId = getParam(0);
-      var url = "http://124.192.215.6:9000/case/sys/file/uploadDocDzqz/"+fileId;
+      // var url = "http://124.192.215.6:9000/case/sys/file/uploadDocDzqz/"+fileId;
       // var url = "http://172.16.170.50:9000/case/sys/file/uploadDocDzqz/"+fileId;
-      // var url = "http://172.16.170.96:9000/case/sys/file/uploadDocDzqz/"+fileId;
+      var url = "http://172.16.170.72:9000/case/sys/file/uploadDocDzqz/"+fileId;
       // var url = "http://124.192.215.4:9000/case/sys/file/uploadDocDzqz/" + fileId;
       //var url = "http://127.0.0.1:9003/sys/file/uploadDocDzqz/"+fileId;
       //if(PDFReader.GetSignCount(0, 0, "") == 0){
@@ -254,7 +254,8 @@
     function WebNewRequest(fileId) {
       $.ajax({
         type: "GET",
-        url: "http://124.192.215.4:8083/socket/socket1/" + fileId + "/1",
+        // url: "http://124.192.215.4:8083/socket/socket1/" + fileId + "/1",
+        url: "http://172.16.170.44:8083/socket/socket1/" + fileId + "/1",
         dataType: "json",
         data: {},
         success: function (data) {
