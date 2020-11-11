@@ -2,11 +2,9 @@ import { mapGetters } from "vuex";
 import iLocalStroage from "@/common/js/localStroage";
 import {
   updatePartCaseBasicInfoApi, getDocDetailByIdApi, findBindPropertyRuleApi, queryFlowBycaseIdApi, findDocDataByIdApi,
-  updateLinkInfoByCaseIdAndLinkTypeIdApi, findApprovingDocApi, getLinkTypeInfoByIdApi,getCaseBasicInfoApi,
+  updateLinkInfoByCaseIdAndLinkTypeIdApi, findApprovingDocApi, getLinkTypeInfoByIdApi,getCaseBasicInfoApi,getDocListByCaseIdAndFormIdApi,
 } from "@/api/caseHandle";
 import { getFile } from "@/api/upload";
-import { BASIC_DATA_SYS } from '@/common/js/BASIC_DATA.js';
-import { BASIC_DATA_JX } from '@/common/js/BASIC_DATA_JX.js';
 import {
   getDictListDetailByNameApi
 } from "@/api/system";
@@ -574,6 +572,38 @@ export const mixinGetCaseApiList = {
         let updataLinkData = {
           caseId: this.caseId,
           linkTypeId: data.linkID
+        }
+        /*
+            四川流程的结案登记点击时不走公共的方法，单独做处理，需要去判断行政强制措施中解除行政强制文书有没有做完 （需求不一致）
+         */
+        if(data.linkName == 'case_handle_finishCaseReport' && this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+          let adminCoerciveMeasureData = {
+            casebasicInfoId: this.caseId,
+            linkTypeId: this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId //环节ID
+          };
+          let adminCoerciveResponse= await getDocListByCaseIdAndFormIdApi(adminCoerciveMeasureData)
+          let adminCoerciveResponseData = adminCoerciveResponse.data;
+          let adminCoerciveMeasureComplete , removeAdminCoerciveMeasureDocComplete = false;
+          //判断行政强制决定书是否已完成
+          adminCoerciveResponseData.forEach(item=>{
+            if(item.path == 'case_handle_adminCoerciveMeasure' && (item.status == 1 || item.status == 2)){
+              adminCoerciveMeasureComplete = true;
+              return;
+            } 
+          })
+          //判断解除行政强制决定书是否已完成
+          adminCoerciveResponseData.forEach(item=>{
+            if(item.path == 'case_handle_removeAdminCoerciveMeasureDoc' && (item.status == 1 || item.status == 2)){
+              removeAdminCoerciveMeasureDocComplete = true;
+              return;
+            } 
+          })
+          if(adminCoerciveMeasureComplete && !removeAdminCoerciveMeasureDocComplete){
+            this.$refs.pleaseRemoveMDiaRef.showModal();    
+          }else{
+            this.unLockStateRoute(updataLinkData, data2, data)
+          }
+          return; 
         }
 
 
