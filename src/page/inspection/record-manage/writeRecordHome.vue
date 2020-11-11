@@ -55,7 +55,7 @@
                   {{ item.title }}
                 </span>
                 <span class="bottom-img"></span>
-                <div class="btns-box">
+                <!-- <div class="btns-box">
                   <span
                     style="color: blue; font-size: 14px"
                     @click.stop="editModle(item)"
@@ -66,7 +66,7 @@
                     @click.stop="delModle(item)"
                     >删除</span
                   >
-                </div>
+                </div> -->
               </div>
             </li>
           </ul>
@@ -87,7 +87,7 @@
                   {{ item.title }}
                 </span>
                 <span class="bottom-img"></span>
-                <div class="btns-box">
+                <!-- <div class="btns-box">
                   <span
                     style="color: blue; font-size: 14px"
                     @click.stop="editModle(item)"
@@ -98,7 +98,7 @@
                     @click.stop="delModle(item)"
                     >删除</span
                   >
-                </div>
+                </div> -->
               </div>
             </li>
           </ul>
@@ -106,7 +106,7 @@
       </div>
     </div>
     <preview ref="previewRef" @userList="getPreviewList"></preview>
-    <addModle ref="addModleRef" @getAddModle="getAddModle"></addModle>
+    <addModle ref="addModleRef" @getAddModle="getAddModle" ></addModle>
   </div>
 </template>
 <script>
@@ -145,6 +145,7 @@ export default {
   },
   data() {
     return {
+      showAddModle:false,
       delTag: "",
       searchList: [],
       showMenu: true,
@@ -184,8 +185,10 @@ export default {
       console.log(" -> this.currentList", this.currentList);
     },
     addNewModle() {
+      this.showAddModle=true;
       this.$refs.addModleRef.showModal();
     },
+    
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -212,9 +215,8 @@ export default {
         item.bgcName = strMap[item.domain];
       });
     },
-    //查询
+    //更新非常用模板列表
     getAddModle(list) {
-      console.log("getAddModle", list);
       this.getOtherMouldList();
     },
     //查询

@@ -533,6 +533,8 @@ export default {
 
     // 提交接口
     submitMethod(fileSaveType) {
+      console.log('baocun',this.addOrEiditFlag)
+      return
       console.log("formData", this.formData);
       let submitData = JSON.parse(JSON.stringify(this.baseData));
       this.setText(submitData);
@@ -611,6 +613,8 @@ export default {
 
     // 暂存
     onSaveRecord(noRouter) {
+      console.log('暂存',this.addOrEiditFlag)
+      return
       // console.log('rule', this.rule)
       this.noUseValidate();
       this.formData.status = "暂存";

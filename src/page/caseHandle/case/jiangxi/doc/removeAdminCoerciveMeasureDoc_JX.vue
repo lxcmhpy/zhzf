@@ -336,21 +336,21 @@ export default {
   methods: {
     starttime(){
       console.log('案发时间=='+this.docData.lasj)
-      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.docData.makeDate = '';
       }
-      if (Date.parse(this.docData.dateTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.dateTime) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.docData.dateTime = '';
       }
-      if (Date.parse(this.docData.removeDate) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.removeDate) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
