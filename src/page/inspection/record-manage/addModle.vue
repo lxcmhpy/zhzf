@@ -483,10 +483,7 @@
             class="modle-radio chose-mine"
             prop="documentFill"
           >
-            <el-radio-group
-              v-model="formData.documentFill"
-              @change="changeFile()"
-            >
+            <el-radio-group v-model="formData.documentFill">
               <el-radio
                 label="是"
                 value="是"
@@ -496,7 +493,7 @@
               <el-button
                 type="primary"
                 style="width: 15%; margin-right: 20%"
-                @click="changeFile"
+                @click="handleChooseDocument"
                 :disabled="formData.documentFill == '是' ? false : true"
                 >选择文书</el-button
               >
@@ -548,13 +545,12 @@
             class="modle-radio chose-mine"
             prop="isOpen"
           >
-            <el-radio-group v-model="formData.isOpen" @change.native.prevent="(isOpen)=>isOpenChange(formData.isOpen)">
-              <el-radio
-                label="1"
-              >是</el-radio>
-              <el-radio
-                label="0"
-              >否</el-radio>
+            <el-radio-group
+              v-model="formData.isOpen"
+              @change.native.prevent="(isOpen) => isOpenChange(formData.isOpen)"
+            >
+              <el-radio label="1">是</el-radio>
+              <el-radio label="0">否</el-radio>
             </el-radio-group>
           </el-form-item>
           <p class="border-title card-title-margin">应用权限</p>
@@ -794,6 +790,8 @@ export default {
   },
   data() {
     return {
+      documentTableSelection: [], //文书列表选中变化后的数组
+      currentDocumentList: [], //当前回显的文书数组
       mobileFuncListParty: ["1"],
       mobileFuncListCar: ["1"],
       mobileFuncOption: [
@@ -867,7 +865,6 @@ export default {
         },
       ],
       formData: {
-        // id:'',
         id: "", //修改必传
         templateOrgan: "",
         templateOrganId: "",
@@ -975,7 +972,6 @@ export default {
       },
       dialogTableVisible: false, //文书弹框显示
       fileList: [], //所有的文书数据
-      multipleSelection: [], //文书的名字数组
       multipleSelectionId: [], //文书的id数组
     };
   },
@@ -1023,7 +1019,7 @@ export default {
         if (item.classs == "个人") {
           item.fieldList.forEach((it) => {
             if (it.field === "party") {
-              if(it.mobileFunc){
+              if (it.mobileFunc) {
                 let func = JSON.parse(it.mobileFunc);
                 func[0]["isChecked"] =
                   this.mobileFuncListParty[0] === "1" ? "1" : "0";
@@ -1037,13 +1033,12 @@ export default {
         if (item.classs == "车辆信息") {
           item.fieldList.forEach((it) => {
             if (it.field === "vehicleShipId") {
-              if(it.mobileFunc){
+              if (it.mobileFunc) {
                 let func = JSON.parse(it.mobileFunc);
                 func[0]["isChecked"] =
                   this.mobileFuncListCar[0] === "1" ? "1" : "0";
                 it.mobileFunc = JSON.stringify(func);
               }
-              
             }
           });
         }
@@ -1051,37 +1046,36 @@ export default {
     },
 
     // 构建ocr识别多选框回显数据
-    buildMobileFuncShow(item){
-
-      if(item.field==='party'){
+    buildMobileFuncShow(item) {
+      if (item.field === "party") {
         //没有的会返回空字符串，加个判断
-        if(!item.mobileFunc){
-          return
+        if (!item.mobileFunc) {
+          return;
         }
-        let arr=JSON.parse(item.mobileFunc);
-        this.mobileFuncListParty=[]
-        arr.forEach(it=>{
-          if(it.value==='支持OCR识别'&&it.isChecked==='1'){
+        let arr = JSON.parse(item.mobileFunc);
+        this.mobileFuncListParty = [];
+        arr.forEach((it) => {
+          if (it.value === "支持OCR识别" && it.isChecked === "1") {
             // "[{"label":"1","value":"支持OCR识别","isChecked":"1"},{"label":"2","value":"支持扫一扫功能","isChecked":"1"}]"
-              this.mobileFuncListParty.push('1')
+            this.mobileFuncListParty.push("1");
           }
-          if(it.value==='支持扫一扫功能'&&it.isChecked==='1'){
-              this.mobileFuncListParty.push('2')
+          if (it.value === "支持扫一扫功能" && it.isChecked === "1") {
+            this.mobileFuncListParty.push("2");
           }
-        })
+        });
       }
-      if(item.field==="vehicleShipId"){
+      if (item.field === "vehicleShipId") {
         //没有的会返回空字符串，加个判断
-        if(!item.mobileFunc){
-          return
+        if (!item.mobileFunc) {
+          return;
         }
-        let arr=JSON.parse(item.mobileFunc);
-        this.mobileFuncListCar=[]
-        arr.forEach(it=>{
-          if(it.value==='支持OCR识别'&&it.isChecked==='1'){
-              this.mobileFuncListCar.push('1')
+        let arr = JSON.parse(item.mobileFunc);
+        this.mobileFuncListCar = [];
+        arr.forEach((it) => {
+          if (it.value === "支持OCR识别" && it.isChecked === "1") {
+            this.mobileFuncListCar.push("1");
           }
-        })
+        });
       }
     },
     //人员的OCR配置
@@ -1109,16 +1103,14 @@ export default {
         this.globalCont = editdata.count + 1;
       } else {
         this.drawerTitle = "创建模板";
-        this.$nextTick(() => {
-          this.getFileList();
-        });
       }
-      this.findCommonGroupField();
-      this.findCommonField();
-      this.getEnforceLawType();
+      this.getFileList(); //获取所有文书列表数据
+      this.findCommonGroupField(); //获取所有通用字段组数据
+      this.findCommonField(); //获取通用字段
+      this.getEnforceLawType(); //获取业务领域
       this.setLawPersonCurrentP();
-      this.getAllOrgan("root");
-      this.getPerson();
+      this.getAllOrgan("root"); //获取机构树
+      this.getPerson(); // 获取机构下的人员
       this.newModleTable = true;
     },
     // 根据id查找回显的数据
@@ -1127,13 +1119,13 @@ export default {
       findRecordlModleFieldByIdeApi(this.editId).then(
         (res) => {
           let list = res.data;
-          console.log("findDataByld -> list", list)
+          console.log("findDataByld -> list", list);
           let sort = 0;
           list.forEach((element) => {
             element.sort = sort;
             sort++;
             element.fieldList.forEach((item) => {
-              this.buildMobileFuncShow(item)
+              this.buildMobileFuncShow(item);
               if (item.options) {
                 item.options = JSON.parse(item.options);
               }
@@ -1145,13 +1137,10 @@ export default {
           findRecordModleByIdApi(this.editId).then(
             (res) => {
               if (res.code == 200) {
-                // _this.formData ={..._this.formData, ...res.data}
                 _this.formData = res.data;
-                console.log("findDataByld -> res.data", res.data)
+                console.log("findDataByld -> res.data", res.data);
                 _this.$set(_this.formData, "templateFieldList", list);
-                // _this.formData.templateFieldList = list
                 this.globalContGroup = _this.formData.templateFieldList.length;
-                // _this.formData.templateAdminIdList = _this.formData.templateAdminId.split(",")
                 _this.formData.templateUserIdList = [];
                 _this.formData.templateAdminIdList = [];
                 if (
@@ -1166,6 +1155,10 @@ export default {
                       lawOfficerName: element,
                     });
                   });
+                  console.log(
+                    "findDataByld -> _this.formData.templateUserIdList",
+                    _this.formData.templateUserIdList
+                  );
                 } else {
                   this.changeScopeOfUse();
                 }
@@ -1175,7 +1168,6 @@ export default {
                 let adminId = _this.formData.templateAdminId
                   ? _this.formData.templateAdminId.split(",")
                   : [];
-
                 admin.forEach((element, index) => {
                   _this.formData.templateAdminIdList.push({
                     userId: adminId[index],
@@ -1186,13 +1178,8 @@ export default {
                 if (_this.formData.icon == "" || _this.formData.icon == null) {
                   _this.titileText = _this.formData.title.charAt(0);
                 }
-
-                // 回显文书
-                console.log('回显文书',_this.formData.documentNameIds);
-                _this.multipleSelection = _this.formData.documentNameIds
-                  ? _this.formData.documentNameIds.split(",")
-                  : [];
-                _this.getFileList();//获取文书数据
+                // 获取回显文书
+                _this.getCurrentDocumentList();
               }
             },
             (error) => {}
@@ -1201,6 +1188,54 @@ export default {
         (error) => {}
       );
     },
+
+    //回显的文书数组
+    getCurrentDocumentList() {
+      this.multipleSelectionId = this.formData.documentNameIds
+        ? this.formData.documentNameIds.split(",")
+        : [];
+      if (this.multipleSelectionId.length) {
+        this.fileList.forEach((item) => {
+          this.multipleSelectionId.forEach((it) => {
+            if (item.id === it) {
+              this.currentDocumentList.push(item);
+            }
+          });
+        });
+      }
+    },
+
+    // 点击选择文书
+    handleChooseDocument(val) {
+      if (this.formData.documentFill == "是") {
+        this.dialogTableVisible = true;
+        this.toggleDocumentRowSelection();
+      }
+    },
+
+    //回显文书选中
+    toggleDocumentRowSelection() {
+      let that = this;
+      if (that.fileList.length > 0) {
+        that.$nextTick(() => {
+          that.fileList.forEach((row, i) => {
+            that.currentDocumentList.forEach((r) => {
+              if (row.id === r.id) {
+                that.$refs.multipleTable.toggleRowSelection(
+                  that.fileList[i],
+                  true
+                );
+              }
+            });
+          });
+        });
+      } else {
+        that.$nextTick(() => {
+          that.$refs.multipleTable.clearSelection();
+        });
+      }
+    },
+
     // 获取通用字段组
     findCommonGroupField() {
       findAllCommonGroupFieldApi().then(
@@ -1216,8 +1251,6 @@ export default {
               item.info = itemData.title;
             });
           });
-          // 获取通用字段
-          // this.commonFieldList = this.commonGroupFieldList[3].fieldList
         },
         (error) => {}
       );
@@ -1226,12 +1259,7 @@ export default {
     findCommonField() {
       findAllCandidateFieldApi().then(
         (res) => {
-          // 获取通用字段
           this.commonFieldList = res.data;
-
-          // this.commonFieldList.forEach(element => {
-          //   element.fieldDisabled = false
-          // });
         },
         (error) => {}
       );
@@ -1383,22 +1411,24 @@ export default {
                     data.templateUser = data.templateUser.substr(1);
                   }
                 }
-                data.templateUserIdList = "";
-                data.templateAdminIdList = "";
+                data.templateUserIdList = [];
+                data.templateAdminIdList = [];
                 data.templateUserId =
                   data.scopeOfUse == "指定人员使用" ? data.templateUserId : "";
-                // 文书
-                data.documentNameIds = this.multipleSelectionId.join(",");
-                data.documentNames = this.multipleSelection.join(",");
+                // 文书数据
+                this.setDocumentData(data);
                 if (data.templateUser.substr(0, 1) == ",") {
                   data.templateUser = data.templateUser.substr(1);
                 }
                 // this.formData.templateOrganId = this.organData.find(item => item.templateOrgan === this.formData.templateOrgan);
                 this.buildMobileFunc(data.templateFieldList);
-                
+
                 data.templateFieldList = JSON.stringify(data.templateFieldList);
                 console.log("提交的字段", data);
                 // 提醒未添加字段
+                data.id = this.drawerTitle === "创建模板" ? "" : data.id;
+                console.log("handleSubmitForm -> data", data);
+                // debugger
                 this.noticeMsg(data);
               });
             }
@@ -1412,6 +1442,29 @@ export default {
         }
       });
     },
+
+    //提交之前组成文书相关数据
+    setDocumentData(data) {
+      if (data.documentFill === "是") {
+        if (this.documentTableSelection.length) {
+          let names = [],
+            ids = [];
+          this.documentTableSelection.forEach((item) => {
+            names.push(item.docName);
+            ids.push(item.id);
+          });
+          data.documentNames = names.join(",");
+          data.documentNameIds = ids.join(",");
+        }else{
+          data.documentNames = "";
+          data.documentNameIds = "";
+        }
+      } else {
+        data.documentNames = "";
+        data.documentNameIds = "";
+      }
+    },
+
     //默认设置执法人员为当前用户 需要用用户的id去拿他作为执法人员的id
     setLawPersonCurrentP() {
       let _this = this;
@@ -1421,8 +1474,6 @@ export default {
         .dispatch("findLawOfficerList", iLocalStroage.gets("userInfo").organId)
         .then(
           (res) => {
-            _this.userList = res.data;
-            let currentUserData = {};
             _this.formData.templateUserIdList = [];
             _this.formData.templateAdminIdList = [];
             res.data.forEach((item) => {
@@ -1445,6 +1496,10 @@ export default {
         this.formData.templateUserIdList.push(val);
         this.$message("该执法人员不能删除！");
       }
+      console.log(
+        "removeUsertag -> this.formData.templateUserIdList",
+        this.formData.templateUserIdList
+      );
     },
 
     // 提示模板管理者（当前用户）不可删除
@@ -1554,14 +1609,14 @@ export default {
       let defaut = this.commonGroupFieldList.find(
         (item) => item.classs === group.classs
       );
-      console.log(" -> defaut", defaut);
+      // console.log(" -> defaut", defaut);
       if (defaut) {
         // 通用字段
         group.fieldList = defaut.fieldList;
         group.classId = defaut.classId;
-        console.log("ggroup.fieldList", group);
-        console.log("classId", defaut.classId);
-        console.log("formData", this.formData);
+        // console.log("ggroup.fieldList", group);
+        // console.log("classId", defaut.classId);
+        // console.log("formData", this.formData);
       } else if (!group.fieldList || group.fieldList.length == 0) {
         group.fieldList = [];
         let defautfieldList = JSON.parse(JSON.stringify(this.defautfieldList));
@@ -1572,9 +1627,6 @@ export default {
 
     //修改字段名
     changeField(info, field) {
-      // info-新选，field-之前的信息
-      // console.log('info', info)
-      // console.log('field', field)
       // 如果是通用字段，只改名
       if (field.status == 0 && !info.id) {
         this.$set(field, "title", info);
@@ -1596,21 +1648,9 @@ export default {
           this.$set(field, "title", info);
         }
       }
-      // this.changeDisabledStatus(field)
-
-      // console.log('change！！！！！this.commonFieldList', this.commonFieldList)
-      // console.log('find',this.commonFieldList.find(field))
-      // 判断新选中的和之前的是不是同一个
-      // this.commonFieldList.forEach(element => {
-      //   if (element.field == field.field) {
-      //     console.log('elment.title', element.title)
-      //     element.fieldDisabled = !element.fieldDisabled
-      //   }
-      // });
     },
 
     changeDisabledStatus(field) {
-      console.log("执行");
       // 选中后禁用
       // 判断之前有没有选过
       this.$nextTick(() => {
@@ -1619,7 +1659,6 @@ export default {
         // console.log(document.getElementsByName('filedNameFlag'))
         let selectedList = document.getElementsByName("filedNameFlag");
         console.log("selectedList", selectedList);
-        // let selectedListField = []
         // // 存储已选择id
         let j = 1;
         let i = 1;
@@ -1629,7 +1668,6 @@ export default {
         selectedList.forEach((element) => {
           console.log("对比的element", j, element.id);
           j++;
-          // selectedListField.push(element.id)
           this.commonFieldList.forEach((item) => {
             if (element.id == item.field) {
               console.log("item", i, item.field);
@@ -1638,22 +1676,6 @@ export default {
             }
           });
         });
-        // // console.log('selectedListField', selectedListField)
-
-        // // 比对,置为不可选
-        // this.commonFieldList.forEach(element => {
-        //   element.fieldDisabled = false
-        // });
-        // selectedListField.forEach(item => {
-        //   this.commonFieldList.forEach(element => {
-        //     if (element.field == item) {
-        //       console.log('elment.title', element.title)
-        //       // element.fieldDisabled = true
-        //       this.$set(element, 'fieldDisabled', true)
-        //     }
-        //   });
-        //   console.log('this.commonFieldList', this.commonFieldList)
-        // });
       });
     },
 
@@ -1668,7 +1690,6 @@ export default {
       this.$refs[formName].resetFields();
       this.formData.title = "";
       this.titileText = "";
-      this.multipleSelection = [];
       this.multipleSelectionId = [];
       this.formData.templateFieldList = [
         {
@@ -1699,46 +1720,20 @@ export default {
       this.$forceUpdate();
     },
 
-    // 选择文书填报
-    changeFile(val) {
-      console.log("选择", this.formData.documentFill);
-      if (this.formData.documentFill == "是") {
-        this.dialogTableVisible = true;
-        this.delAlreadyFile();
-      }
-    },
-
-    // 删除已选的文书
-    delAlreadyFile() {
-      if (this.multipleSelection.length > 0) {
-        this.$nextTick(() => {
-          this.multipleSelection.forEach((element) => {
-            this.fileList.forEach((item) => {
-              if (element == item.id) {
-                this.$refs.multipleTable.toggleRowSelection(item);
-                return;
-              }
-            });
-          });
-        });
-      }
-    },
-
     //选择文书列表变化
     handleSelectionChange(val) {
-    console.log("handleSelectionChange -> val", val)
-      
-      this.multipleSelection = [];
-      this.multipleSelectionId = [];
-      val.forEach((element) => {
-        this.multipleSelectionId.push(element.id);
-        this.multipleSelection.push(element.docName);
-      });
-      console.log("this.multipleSelection", this.multipleSelection);
+      console.log("选择文书列表变化 -> val", val);
+      this.documentTableSelection = val;
     },
 
     // 提醒未添加字段
     noticeMsg(data) {
+      if(data.documentFill==='是'){
+        if(data.documentNames.length===0){
+          this.$alert('您已选择文书填报，请选择文书后继续操作！')
+          return;
+        }
+      }
       if (this.formData.releventRecords == "当事人" && !this.partyFlag) {
         // 当事人字段没有
         this.$alert("当前模板没有当事人字段，是否继续发布？", "模板发布", {
@@ -1786,12 +1781,12 @@ export default {
     },
     // 获取文书名称列表
     getFileList() {
-      console.log(this.multipleSelection);
       let _this = this;
       getDocumentNameList().then(
         (res) => {
           if (res.code == 200) {
             _this.fileList = res.data;
+            console.log("getFileList -> _this.fileList", _this.fileList);
           } else {
             _this.$message.error(res.msg);
           }
@@ -1800,7 +1795,12 @@ export default {
       );
     },
 
-    changeAdmin() {
+    changeAdmin(val) {
+      console.log("changeAdmin -> val", val);
+      console.log(
+        "changeAdmin -> formData.templateAdminIdList",
+        this.formData.templateAdminIdList
+      );
       this.$forceUpdate();
     },
     // 清除选择
@@ -1822,7 +1822,8 @@ export default {
     },
     //折叠展示变化
     isOpenChange(val) {
-      console.log(" -> val,", typeof(val),val)
+      console.log(" -> val,", typeof val, val);
+      console.log(" -> formData,", this.formData);
     },
     changeScopeOfUse() {
       let _this = this;
@@ -1834,9 +1835,11 @@ export default {
           userId: iLocalStroage.gets("userInfo").id,
           lawOfficerName: iLocalStroage.gets("userInfo").username,
         });
-        // this.$set()
       }
     },
+  },
+  created() {
+    //
   },
   mounted() {},
 };
