@@ -845,6 +845,8 @@ export default {
       }
 
       if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+         this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId);
+        this.$store.commit("setCaseLinkName", 'case_handle_adminCoerciveMeasure_SC');
         this.$router.push({name:'case_handle_adminCoerciveMeasure_SC',params:{isComplete:this.showREBtn}});
       }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
         try{
@@ -852,6 +854,8 @@ export default {
         }catch(err){
           this.$message('更改流程图状态失败！')
         }
+         this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId);
+        this.$store.commit("setCaseLinkName", 'case_handle_adminCoerciveMeasure_JX');
         this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
       }
     },

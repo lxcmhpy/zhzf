@@ -607,7 +607,7 @@ export default {
     },
     //预览pdf
     viewDocPdf(row) {
-      this.com_viewDocPdf(row,this.BASIC_DATA_JX.caseDoc_JX_caseLinktypeId,1)
+      this.com_viewDocPdf(row,this.BASIC_DATA_SC.caseDoc_SC_caseLinktypeId,1)
     },
     //通过案件id和表单类型Id查询已绑定文书
     getDocListByCaseIdAndFormId() {
