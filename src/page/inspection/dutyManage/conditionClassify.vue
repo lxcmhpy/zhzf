@@ -32,7 +32,7 @@
             <el-col :span="19" class="record-condition-detail">
                 <el-card shadow="never" style="height: 100%;">
                     <el-row class="record-condition-header">
-                        <h3 class="form-tab-title">处理情况</h3>
+                        <h3 class="detail-form-tab-title">处理情况</h3>
                         <el-breadcrumb separator-class="el-icon-arrow-right">
                             <el-breadcrumb-item v-for="name in breadcrumbList" :key="name">{{name}}</el-breadcrumb-item>
                         </el-breadcrumb>
@@ -41,7 +41,7 @@
                     <el-row class="record-condition-content">
                         <el-col :span="6" class="record-condition-classify">
                             <el-card shadow="never" style="height: 100%;">
-                                <div >
+                                <div style="height: 100%;">
                                     <h3 class="process-tab-title">处理情况</h3>
                                     <ul v-if="processList.length > 0" class="process-data">
                                         <li 
@@ -342,30 +342,35 @@ export default {
         deleteProcessFun() {
             const processIds = this.processList.filter(p => p.checked).map(p => p.id);
             const processModeIds = this.processModeList.filter(p => p.checked).map(p => p.id);
-            const processResultsIds = this.processResultList.filter(p => p.checked).map(p => p.id);
+            const processResultsIds =  this.processResultList && this.processResultList.filter(p => p.checked).map(p => p.id);
             let ids = processIds.concat(processModeIds).concat(processResultsIds);
 
             console.log(ids,'deleteIds');
-            this.$confirm("确定要删除所选节点及其子节点吗?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                iconClass: "custom-question",
-                customClass: "custom-confirm",
-                }).then(() => {
+            if(ids.length > 0) {
+                
+                this.$confirm("确定要删除所选节点及其子节点吗?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    iconClass: "custom-question",
+                    customClass: "custom-confirm",
+                    }).then(() => {
 
-                    deleteProcessApi({ processTypeId: this.curTypeNode.id, ids }).then(
-                        res => {
-                            if(res.code == 200) {
-                                this.$message({  type: "success", message: "删除成功"});
-                                this.resetData();
-                                this.getProcessData(this.curTypeNode.id);
-                            }else{
-                                this.$message({  type: "warning", message: res });
-                            }
-                        },
-                        err => console.error(err)
-                    );
-                });
+                        deleteProcessApi({ processTypeId: this.curTypeNode.id, ids }).then(
+                            res => {
+                                if(res.code == 200) {
+                                    this.$message({  type: "success", message: "删除成功"});
+                                    this.resetData();
+                                    this.getProcessData(this.curTypeNode.id);
+                                }else{
+                                    this.$message({  type: "warning", message: res });
+                                }
+                            },
+                            err => console.error(err)
+                        );
+                    });
+            }else{
+                this.$message({  type: "warning", message: "请选择要删除的节点！" });
+            }
         },
         resetData(){
             this.curProcess = undefined;
@@ -407,6 +412,10 @@ export default {
         .record-condition-tree {
             position: relative;
             min-width: 320px;
+
+            >>> .el-card__body{
+                height: 100%;
+            }
             .record-description-search {
     
                 >>> .el-button {
@@ -415,7 +424,9 @@ export default {
             }
 
             .process-type {
-    
+                height: calc(100% - 70px);
+                overflow-y: auto;
+
                 >>> .process-type-node {
                     flex: 1 1 0%;
                     display: flex;
@@ -450,6 +461,16 @@ export default {
 
             .record-condition-header {
                 height: 70px;
+
+                .detail-form-tab-title {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #20232b;
+                    padding-left: 10px;
+                    margin-bottom: 18px;
+                    border-left: 4px solid #4573d0;
+                    width: 100%;
+                }
             }
 
             .record-condition-content {
@@ -483,6 +504,9 @@ export default {
             }
 
             .process-data {
+                height: calc(100% - 40px);
+                overflow-y: auto;
+
                 li {
                     font-size: 14px;
                     padding: 8px 20px;
