@@ -171,7 +171,7 @@
                   v-model="formData.basicSituation"
                   v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
+                  maxlength="500"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
                 ></el-input>
@@ -224,7 +224,7 @@
             <td><p>备</p><p>注</p></td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'],'',isParty)">
-                <el-input type='textarea' v-model="formData.note" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" 
+                <el-input type='textarea' v-model="formData.note" :autosize="{ minRows: 1, maxRows: 3}" maxlength="500" 
                   :disabled="fieldDisabled(propertyFeatures['note'])" placeholder="/"></el-input>
               </el-form-item>
             </td>

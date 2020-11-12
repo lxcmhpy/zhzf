@@ -22,7 +22,7 @@ export default  [
             },
             {
                 // 写记录
-                path: "/writeRecordInfo/id=:id&addOrEiditFlag=:addOrEiditFlag",
+                path: "/writeRecordInfo/id=:id&addOrEiditFlag=:addOrEiditFlag&haveDoc=:haveDoc",
                 name: "inspection_writeInfoRecord",
                 meta: {
                 title: "记录详情",

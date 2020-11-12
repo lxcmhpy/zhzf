@@ -330,7 +330,7 @@
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
-                        maxlength="400"
+                        maxlength="500"
                         placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
@@ -362,7 +362,7 @@
                 >
                   <el-input
                     v-model="docData.attendance"
-                    :maxLength="maxLength"
+                    maxLength="250"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>
@@ -377,7 +377,7 @@
                 >
                   <el-input
                     v-model="docData.information"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>
@@ -392,7 +392,7 @@
                 >
                   <el-input
                     v-model="docData.defense"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>
@@ -406,7 +406,7 @@
                 >
                   <el-input
                     v-model="docData.notes"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item></td>

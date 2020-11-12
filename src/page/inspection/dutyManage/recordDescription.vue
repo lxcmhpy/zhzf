@@ -276,6 +276,10 @@ export default {
 
         .record-description-tree {
 
+            >>> .el-card__body{
+                height: 100%;
+            }
+
             .record-description-search {
     
                 >>> .el-button {
@@ -284,6 +288,9 @@ export default {
             }
             
             .template-tree {
+
+                height: calc(100% - 70px);
+                overflow-y: auto;
     
                 >>> .template-tree-node {
                     flex: 1 1 0%;

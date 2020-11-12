@@ -20,7 +20,7 @@
                     <p>
                       <el-radio :label="3">其他原因
                         <el-form-item prop="otherReason" class="otherReasonCon">
-                          <el-input  v-model="formData.otherReason" :disabled="disabledOne" :maxLength='maxLength' placeholder="/"></el-input>
+                          <el-input  v-model="formData.otherReason" :disabled="disabledOne" maxLength='500' placeholder="/"></el-input>
                         </el-form-item>
                       </el-radio>
                     </p>
