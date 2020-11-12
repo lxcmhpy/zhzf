@@ -139,7 +139,7 @@
         }
         //四川流程中的责令改正环节特殊处理
         if(this.currentFlow.data.flowUrl == 'commonGraphData_SC' && this.caseLinktypeId == this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId){
-          this.formOrDocData.showBtn = [false, false, false, false, false, false, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
+          this.formOrDocData.showBtn = [false, false, false, false, false, true, false, false, false, true]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
         }
       },
       showApprovePeopleList() {
@@ -156,6 +156,12 @@
 
       //文书提交返回环节
       submitData() {
+        //四川责令改正
+        // if(this.currentFlow.data.flowUrl == 'commonGraphData_SC' && this.caseLinktypeId == this.BASIC_DATA_SYS.forceCorrect_caseLinktypeId){
+        //   this.com_goToNextLinkTu(this.caseId, this.$route.params.caseLinktypeId,1)
+        //   return;
+        // }
+
         if (this.$route.params.caseLinktypeId) {
           console.log('退回0000000')
           this.com_goToNextLinkTu(this.caseId, this.$route.params.caseLinktypeId)
