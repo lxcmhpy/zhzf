@@ -42,13 +42,13 @@
         >
         <el-tooltip effect="dark" content="批量打印" placement="top">
           <el-checkbox
-            :style="fatherCom==='inforCollection' ? 'top: -68px':'top: -19px'"
+            :style="fatherCom==='inforCollection' ? 'top: -68px':'top: 15px'"
             :indeterminate="isIndeterminate"
             v-model="checkAll"
             @change="handleCheckAllChange"
           ></el-checkbox>
         </el-tooltip>
-        <el-button :style="fatherCom==='inforCollection' ? 'top: -80px':'top: -33px'" @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
+        <el-button :style="fatherCom==='inforCollection' ? 'top: -80px':'top: 5px'" @click="routerArchiveCatalogueDetail" type="primary">打印</el-button>
       </span>
     </el-dialog>
     <el-dialog
