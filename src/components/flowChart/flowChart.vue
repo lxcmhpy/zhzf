@@ -713,23 +713,10 @@ export default {
         }
       }
 
-      // adminCoerciveMeasure_caseLinktypeIdArr.forEach(item=>{
-      //   if(completeLink.includes(item)){
-      //     adminCoerciveMeasureCompleteFlag = true;
-      //     return
-      //   }
-      // })
-      //如果行政强制已完成 则 显示
-      // if(adminCoerciveMeasureCompleteFlag){
-      //   this.showAdminCoerciveMeasureBtn = true;
-      //   return;
-      // } 
 
       //立案登记数组
-      // let establish_caseLinktypeIdArr = [this.BASIC_DATA_SYS.establish_caseLinktypeId,this.BASIC_DATA_JX.establish_JX_caseLinktypeId];
       let establish_caseLinktypeIdArr = this.BASIC_DATA_JX.getEstablish_caseLinktypeIdArr();
       //结案报告数组
-      // let finishCaseReport_caseLinktypeIdArr = [this.BASIC_DATA_SYS.finishCaseReport_caseLinktypeId,this.BASIC_DATA_JX.finishCaseReport_JX_caseLinktypeId];
       let finishCaseReport_caseLinktypeIdArr = this.BASIC_DATA_JX.getFinishCaseReport_caseLinktypeIdArr();
       
       let hasEstablish,hasFinishCaseReport= false;
@@ -758,12 +745,23 @@ export default {
       //   }
       // })
 
-      if(hasEstablish && !hasFinishCaseReport) {
-        this.showAdminCoerciveMeasureBtn = true;
-        if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
-          this.showForceCorrect = true;
-        }
+      // 先判断四川的
+      if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+           if(hasEstablish) {
+             this.showAdminCoerciveMeasureBtn = true;
+             this.showForceCorrect = true;
+           }
+      }else{
+        if(hasEstablish && !hasFinishCaseReport) this.showAdminCoerciveMeasureBtn = true; 
       }
+      // if(hasEstablish && !hasFinishCaseReport) {
+      //   this.showAdminCoerciveMeasureBtn = true;
+      //   if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+      //     this.showForceCorrect = true;
+      //   }
+      // }
+      
+      
     },
     //获取强制措施时间
     getMeasuerTime() {
@@ -845,6 +843,8 @@ export default {
       }
 
       if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
+         this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId);
+        this.$store.commit("setCaseLinkName", 'case_handle_adminCoerciveMeasure_SC');
         this.$router.push({name:'case_handle_adminCoerciveMeasure_SC',params:{isComplete:this.showREBtn}});
       }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
         try{
@@ -852,6 +852,8 @@ export default {
         }catch(err){
           this.$message('更改流程图状态失败！')
         }
+         this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId);
+        this.$store.commit("setCaseLinkName", 'case_handle_adminCoerciveMeasure_JX');
         this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
       }
     },

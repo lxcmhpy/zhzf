@@ -270,6 +270,7 @@ export default {
         this.searchWindowData.window4.info.padStateColor = data.padStateColor || ''
         this.searchWindowData.window4.info.sn = data.sn || ''
         this.searchWindowData.window4.info.padSn = data.padSn || ''
+        this.searchWindowData.window4.info.id = data.id
         this.searchWindowData.window4.btnList= [
             { class: 'el-icon-phone' },
             { class: 'iconfont law-shipin' },

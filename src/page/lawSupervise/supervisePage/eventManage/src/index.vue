@@ -12,6 +12,15 @@
           <el-option label="否" :value="0"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="事件状态" prop="state">
+        <el-select v-model="form.state" clearable placeholder="请选择">
+          <el-option label="全部" value="2,3,4,5"></el-option>
+          <el-option label="待指派" :value="2"></el-option>
+          <el-option label="已指派待处理" :value="3"></el-option>
+          <el-option label="处理中" :value="4"></el-option>
+          <el-option label="处理完毕" :value="5"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="事件时间" prop="eventDate">
         <el-date-picker
           @change="handleEventDate"
@@ -102,7 +111,7 @@
           label="操作">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.state===1"
+              v-if="scope.row.state===2"
               size="mini"
               type="text"
               @click="handleAssigned(scope.$index, scope.row)">指派</el-button>
@@ -174,6 +183,7 @@ export default {
         current: 1, // 当前页
         size: 8, // 每页显示条数
         eventName: '',
+        state: '',
         isemphasis: '',
         startDate: '', // 开始时间
         endDate: '', // 结束时间

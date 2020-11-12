@@ -5,7 +5,7 @@
       ref="upload"
       :disabled="addOrEiditFlag == 'view' ? true : false"
       class="upload-demo modle-upload"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action=""
       :http-request="saveImg"
       :on-progress="imgProgress"
       :on-preview="handlePreviewImg"
@@ -33,7 +33,7 @@
     <el-upload
       :disabled="addOrEiditFlag == 'view' ? true : false"
       class="upload-demo modle-upload"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action=""
       :http-request="saveFile"
       :on-preview="handlePreviewFile"
       :on-remove="handleRemoveFile"
@@ -148,15 +148,12 @@ export default {
       // this.$refs.upload.submit();
     },
     saveImg(param) {
-      console.log("saveImg -> param", param)
-      // debugger
+      console.log(" -> param", param)
       this.imgListUpload.push(param);
     },
     //上传图片
     uploadImg(param) {
-    console.log("uploadImg -> param", param)
-      
-      // console.log(param);
+      console.log(" -> param", param)
       var fd = new FormData();
       fd.append("file", param.file);
       fd.append("category", "行政检查"); 
@@ -165,7 +162,6 @@ export default {
       fd.append("caseId", this.recordId); //传记录id
       fd.append("docId", this.recordId); //传记录id
       uploadCommon(fd).then(
-        // upload(fd).then(
         res => {
           console.log(res);
         },
@@ -225,7 +221,6 @@ export default {
       fd.append("caseId", this.recordId); //传记录id
       fd.append("docId", this.recordId); //传记录id
       uploadCommon(fd).then(
-        // upload(fd).then(
         res => {
           console.log(res);
         },

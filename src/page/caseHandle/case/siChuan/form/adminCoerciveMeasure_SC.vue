@@ -588,12 +588,12 @@ export default {
         }
       }
       if (canGotoNext && approvalPass) {
-        this.com_goToNextLinkTu(
-          this.caseId,
-          this.caseLinkDataForm.caseLinktypeId,
-          '1'     //后台需要，为了从流程中把它提出来
-        );
-        // this.$router.push({name:'case_handle_flowChart'})  
+        // this.com_goToNextLinkTu(
+        //   this.caseId,
+        //   this.caseLinkDataForm.caseLinktypeId,
+        //   '1'     //后台需要，为了从流程中把它提出来
+        // );
+        this.$router.push({name:'case_handle_flowChart'})  
       } else if(!canGotoNext){
         this.$refs.checkDocFinishRef.showModal(this.docTableDatas, caseData);
       }else if(!approvalPass){
@@ -637,10 +637,12 @@ export default {
     },
     //查看文书
     viewDoc(row) {
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       this.com_viewDoc(row,this.caseLinkDataForm.caseLinktypeId);
     },
     //预览pdf
     viewDocPdf(row) {
+      this.$store.commit("setCurrentFileData", row);//保存文书信息
       this.com_viewDocPdf(row,this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId)
     },
     //清空文书
@@ -699,10 +701,13 @@ export default {
 
       let item5 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC")
       let item6 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure")
+      let item7 =  this.docTableDatasCopy.find(item=> item.path == "case_handle_sceneNotesDoc_SC")
       let index1  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasureApproval_SC");
       if(index1 ==-1 && item5)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasureApproval_SC"))
       let index2  = this.docTableDatas.findIndex(item=>item.path == "case_handle_adminCoerciveMeasure");
       if(index2 ==-1 && item6)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_adminCoerciveMeasure"))
+      let index3  = this.docTableDatas.findIndex(item=>item.path == "case_handle_sceneNotesDoc_SC");
+      if(index3 ==-1 && item7)  this.docTableDatas.push(this.docTableDatasCopy.find(item=> item.path == "case_handle_sceneNotesDoc_SC"))
     },
     getDataAfter(){
       //通过案件id和表单类型Id查询已绑定文书

@@ -1,5 +1,21 @@
 <template>
   <div class="search-window2">
+    <div v-if="window2.topicType === '事件'" class="eventState">
+      <div class="eventListTitle">事件列表</div>
+      <el-select
+        v-model="state"
+        class="eventSelect"
+        size="small"
+        clearable
+        placeholder="请选择"
+        @change="change">
+        <el-option label="全部" value="2,3,4,5"></el-option>
+        <el-option label="待指派" :value="2"></el-option>
+        <el-option label="已指派待处理" :value="3"></el-option>
+        <el-option label="处理中" :value="4"></el-option>
+        <el-option label="处理完毕" :value="5"></el-option>
+      </el-select>
+    </div>
     <el-tree
       :data="option"
       :props="defaultProps"
@@ -40,6 +56,7 @@ export default {
         treeOptions: [],
         peopleOptions: []
       },
+      state: '', // 事件状态
     }
   },
   computed: {
@@ -81,6 +98,25 @@ export default {
           }
         </div>
       )
+    },
+
+    /**
+     * 点击选项触发
+     */
+    change(val) {
+      let params = { current:1, size:2000000, state: val }
+      findData(params).then(res => {
+        if(res.code === 200) {
+          return res.data.records
+        } else {
+          throw new Error('findData:::::接口数据错误')
+        }
+      }).then(data => {
+        this.window2.option = data.map(item => {
+          item.label = item.eventName
+          return item
+        })
+      })
     },
 
     /**
@@ -225,6 +261,21 @@ export default {
   background: #FFFFFF;
   box-sizing: border-box;
   padding: 15px;
+  .eventState {
+    background: #EBEEF5;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .eventListTitle {
+      flex: 1;
+      text-align: center;
+    }
+    .eventSelect {
+      flex: 3;
+      margin-right: 10px;
+    }
+  }
   .el-tree {
     border-radius: 4px;
     .tree-slot-box {

@@ -7,7 +7,7 @@
            type="application/pdf" internalinstanceid="29"> -->
     <!-- </div>  -->
     <xzjcDocFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData" @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall" @showApprovePeopleList="showApprovePeopleList" @showApproval="findCurrentApproval"></xzjcDocFloatBtns>
-    <!-- {{pdfShowUrl}} -->
+    pdfShowUrl{{pdfShowUrl}}
     <!-- <showApprovePeople ref="showApprovePeopleRef"></showApprovePeople> -->
     <!-- <approvalDialog ref="approvalDialogRef" @getNewData="approvalOver"></approvalDialog> -->
 
@@ -75,17 +75,20 @@ export default {
         getDocumentById(this.$route.params.id).then(
           res => {
             if (res.code == 200) {
+              // debugger
               _that.storagePath = res.data.pdfPath || res.data.picPath
               _that.pdfShowUrl = res.data.pdfPath || res.data.picPath
               // 外网专用，发布需要修改
               
 
-              _that.$util.com_getFileStream(res.data.pdfStorageId || res.data.picStorageId).then(res => {
-                _that.pdfShowUrl = res
-              });
-              _that.$util.com_getFileStream(res.data.pdfStorageId || res.data.picStorageId).then(res => {
-                _that.storagePath = res
-              });
+              // _that.$util.com_getFileStream(res.data.pdfStorageId || res.data.picStorageId).then(res => {
+              //   // debugger
+              //   // alert(33)
+              // //   _that.pdfShowUrl = res
+              // });
+              // _that.$util.com_getFileStream(res.data.pdfStorageId || res.data.picStorageId).then(res => {
+              //   _that.storagePath = res
+              // });
               console.log('_that.storagePath', _that.storagePath)
               console.log('_that.storagePath222', this.$route.params.storagePath)
               if (res.data.pdfStorageId) {

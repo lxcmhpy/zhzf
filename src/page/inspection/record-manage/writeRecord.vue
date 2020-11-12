@@ -188,15 +188,19 @@ import merge from "webpack-merge";
 export default {
   props: ["psMsg"],
   watch: {
-    psMsg(val, oldVal) {
-      console.log("监听", this.psMsg, "val", val);
-      if (this.psMsg) {
-        this.defaultRuleData = this.psMsg;
-        this.formData.title = this.psMsg.title;
-        this.personPartyFlag = false;
-        this.dealFormData(true);
-      }
-    },
+    psMsg:{
+      handler(val, oldVal){
+        console.log("监听", this.psMsg, "val", val);
+        if (this.psMsg) {
+          this.defaultRuleData = this.psMsg;
+          this.formData.title = this.psMsg.title;
+          this.personPartyFlag = false;
+          this.dealFormData(true);
+        }
+      },
+      // deep:true,
+      // immediate:true,
+    }
   },
   data() {
     return {
@@ -217,7 +221,7 @@ export default {
         value1: "",
         value2: "",
       },
-      formData: null,
+      formData: {},
       //表单实例对象
       $f: {},
       rule: [],
@@ -225,7 +229,7 @@ export default {
       options: {
         submitBtn: false,
         form: {
-          labelWidth: "240px",
+          labelWidth: "270px",
           disabled: false,
         },
       },
@@ -332,7 +336,6 @@ export default {
       findMyRecordByIdApi(this.recordId).then(
         (res) => {
           _this.baseData = JSON.parse(res.data.layout);
-          // debugger
           let list = JSON.parse(res.data.layout);
           console.log("findRecordDataByld -> list", list);
           let sort = 0;
@@ -384,11 +387,9 @@ export default {
     // 修改
     editRecord() {
       console.log("this.formData", this.formData);
-      // debugger
       if (this.formData.createUser != iLocalStroage.gets("userInfo").nickName) {
         this.$message.error("无修改权限");
       } else {
-        // debugger
         this.editMethod();
       }
     },
@@ -403,7 +404,6 @@ export default {
             // 重置
             this.$data.$f.resetFields();
             this.rule.forEach((element) => {
-              // debugger;
               this.$data.$f.set(element.props, "disabled", false);
               let textName = element.field;
               this.$data.$f.setValue(
@@ -533,6 +533,8 @@ export default {
 
     // 提交接口
     submitMethod(fileSaveType) {
+      console.log('baocun',this.addOrEiditFlag)
+      return
       console.log("formData", this.formData);
       let submitData = JSON.parse(JSON.stringify(this.baseData));
       this.setText(submitData);
@@ -551,15 +553,12 @@ export default {
       // this.formData.party = '111'
       this.formData.party = this.$data.$f.getValue(this.savePartyNameId) || "";
       console.log(this.formData.party);
-      // debugger
       // 当事人信息和企业信息选项的值
       this.formData.objectType = this.$data.$f.getValue("personOrParty");
       delete this.formData["pictureList"];
       delete this.formData["attachedList"];
       console.log("保存的formdata", this.formData);
 
-      // debugger
-      // return
       saveOrUpdateRecordApi(this.formData).then(
         (res) => {
           // console.log(res)
@@ -614,12 +613,12 @@ export default {
 
     // 暂存
     onSaveRecord(noRouter) {
-      // debugger
+      console.log('暂存',this.addOrEiditFlag)
+      return
       // console.log('rule', this.rule)
       this.noUseValidate();
       this.formData.status = "暂存";
       this.$data.$f.submit((formData) => {
-        // debugger
         // console.log("formData", formData)
         let submitData = JSON.parse(JSON.stringify(this.baseData));
         this.setText(submitData);
@@ -637,20 +636,13 @@ export default {
         delete this.formData["pictureList"];
         delete this.formData["attachedList"];
 
-        console.log(
-          "dealFormData -> this.defaultRuleData",
-          this.defaultRuleData
-        );
-
-        // return
-
         saveOrUpdateRecordApi(this.formData).then(
           (res) => {
             // console.log(res)
             if (res.code == 200) {
               // this.recordMsg = res.data;//根据返回id上传文件
               this.recordMsg = this.formData.id ? this.formData.id : res.data; //根据返回id上传文件
-              // this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
+              this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
               this.$message({
                 type: "success",
                 message: res.msg,
@@ -699,7 +691,6 @@ export default {
         }
       ).then(() => {
         this.isCopyStyle = true; //变颜色
-        // debugger
         this.addOrEiditFlag = "add";
         this.fileEiditFlag = false;
         this.formData.id = "";
@@ -756,12 +747,13 @@ export default {
           });
         }
       }
-      console.log(this.rule);
+      console.log("isEdit -> this.rule", this.rule)
+      console.log("isEdit -> this.options", this.options)
     },
     viewRecord() {
       this.options = {
+        submitBtn:false,
         onSubmit: (formData) => {
-          // alert(JSON.stringify(formData));
         },
         global: {
           "*": {
@@ -774,6 +766,7 @@ export default {
       this.findRecordDataByld();
     },
     updateMole(data) {
+      // debugger
       console.log(data);
       this.modleId = data.id;
       this.findDataByld();
@@ -791,6 +784,7 @@ export default {
     },
     // 匹配数据格式
     async dealFormData(viewFlag) {
+      
       // 左侧操作按钮
       (this.formOrDocData.showBtn = [
         this.formData.documentFill == "是" ? true : false,
@@ -970,26 +964,22 @@ export default {
     },
     dealFieldData(element, viewFlag) {
       let vm = this;
-      // debugger
+      // 
       console.log("viewFlag", viewFlag);
       // 字段
       element.fieldList.forEach((item) => {
-        // debugger
         // 用于预览，避免重复
         if (viewFlag) {
           item.id = this.globalId.toString();
           this.globalId++;
           console.log("id", item.id);
-          // debugger
         }
         console.log("item", item, typeof item.title);
         if (typeof item.title == "object") {
           if (item.title) {
             item.title = item.title.title;
           }
-          // debugger
         }
-        // debugger
         if (item.type == "文本型") {
           item.type = "input";
           this.rule.push({
@@ -1150,7 +1140,6 @@ export default {
           this.rule.push({
             type: "input",
             field: item.id || item.field, //id用于传值，field用于预览
-            // title: item.title,
             title: item.title,
             props: {
               type: "text",
@@ -1224,7 +1213,6 @@ export default {
         } else if (item.type == "图片型") {
           console.log("dealFieldData -> item", item);
           // console.log("dealFieldData -> imgObj", this.imgObj)
-          // debugger
           item.type = "upload";
           let _this = this;
           let url = "";
@@ -1323,7 +1311,6 @@ export default {
             JSON.parse(item.text).forEach((vv) => {
               rules.value.push(vv.storagePath);
             });
-            //  debugger
             rules.imgData = this.imgObj[item.title];
           }
           this.rule.push(rules);
@@ -1416,7 +1403,6 @@ export default {
       console.log(`选择违法行为`);
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
-      // debugger
       // 查看更多违法行为
       let cate = "";
       // this.options.forEach(element => {
@@ -1529,7 +1515,6 @@ export default {
     saveFileData() {},
     submitFileData() {},
     focusMethod(field) {
-      // debugger
       // 特殊方法
       // field == 'staff' ? this.changeLaw : this.changeLawId
       field == "staff" ? this.changeLaw : this.changeLawId;
@@ -1546,10 +1531,10 @@ export default {
     },
   },
   mounted() {
+    console.log("mounted -> this.rule", this.rule)
     console.log("id", this.$route.params.id);
     this.addOrEiditFlag = this.$route.params.addOrEiditFlag;
     this.fileEiditFlag = false;
-    // debugger
     if (this.$route.params.id) {
       if (this.$route.params.addOrEiditFlag == "add") {
         this.modleId = this.$route.params.id;

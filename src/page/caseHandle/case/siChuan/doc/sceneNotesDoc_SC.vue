@@ -10,7 +10,7 @@
           :model="docData"
         >
           <div class="doc_topic">行政强制措施现场笔录</div>
-          <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+          <table class="print_table prolong_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>
               <td colspan="3" class="color_DBE4EF">
@@ -29,7 +29,7 @@
                 </el-form-item>
               </td>
               <td>执法时间</td>
-              <td colspan="3" id="scenetimeBox">
+              <td colspan="3" id="scenetimeBox" class="left">
                 <el-form-item
                   prop="enforceStartTime"
                   class="pdf_datapick dataTimeReplaceBox"
@@ -325,7 +325,7 @@
                       :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])"
                     >
                       <el-input
-                        class="text_indent8 overflow_lins_textarea"
+                        class="text_indent2 overflow_lins_textarea"
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
@@ -570,7 +570,6 @@ export default {
         checkBox: "",
         partySign: "",
         partySignTime: "",
-        note: "",
         staffSign: "",
         staff1: "",
         staff2: "",
@@ -831,8 +830,8 @@ export default {
           sex: this.docData.partySex,
           zhengjianNumber: this.docData.partyIdNo,
           relationWithCase: "当事人",
-          company: this.docData.partyUnitPosition,
-          position: this.docData.partyUnitPosition,
+          company: this.docData.partyUnitPosition ? this.docData.partyUnitPosition : this.docData.scenePeopeUnitPosition,
+          position: this.docData.occupation,
           tel: this.docData.partyTel,
           adress: this.docData.partyAddress,
         };
@@ -972,8 +971,19 @@ export default {
 //   width: 200px;
 // }
 #sceneNotesDoc_SC-print {
+  .prolong_table {
+    table-layout: fixed;
+    td, p, span, .el-checkbox {
+      white-space: normal;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+  }
   .overflow_lins_style .span_bg {
     display: block;
+  }
+  .left{
+    text-align-last: left;
   }
   .overflow_lins_style .overflow_lins .overflow_lins_textarea {
     width: calc(100% - 10px);

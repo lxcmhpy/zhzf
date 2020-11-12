@@ -260,8 +260,7 @@
                     v-model="docData.postAddress"
                     v-bind:class="{ over_flow:docData.postAddress.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="nameLength"
-                    style="width:100px;"
+                    maxlength="50"
                     placeholder="\"
                     :disabled="fieldDisabled(propertyFeatures['postAddress'])"
                   ></el-input>
@@ -358,9 +357,7 @@
       </div>
       <casePageFloatBtns
         :formOrDocData="formOrDocData"
-        @submitData="submitData"
         @saveData="saveData"
-        @backHuanjie="submitData"
       ></casePageFloatBtns>
     </div>
   </div>
@@ -406,11 +403,14 @@ export default {
         caseNumber: "",
         caseName: "",
         party: "",
+        partyTel: "",
+        partyZipCode: "",
+        partyAddress: "",
         partyIdNo: "",
         partyIdType: "",
         receiver: "",
         isAcceptElDel: [],
-        withPartyRelation: [], 
+        withPartyRelation: ["1"], 
         certificateType: "",
         certificateNumber: "",
         eleDeliveryType: [],
@@ -524,7 +524,7 @@ export default {
   methods: {
     starttime(){
       console.log('案发时间=='+this.docData.lasj)
-      if (Date.parse(this.docData.adminSign) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.adminSign) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
@@ -547,12 +547,6 @@ export default {
       // this.printContent()
       this.com_addDocData(handleType, "docForm");
     },
-    submitData(handleType) {
-      this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.push({
-        name: this.$route.params.url
-      });
-    },
     //是否是完成状态
     isOverStatus() {
       if (this.$route.params.docStatus == "1") {
@@ -574,9 +568,15 @@ export default {
       if(this.docData.withPartyRelation[0] == '1'){
         this.docData.certificateNumber = this.docData.partyIdNo;
         this.docData.certificateType = this.docData.partyIdType;
+        this.docData.mobile = this.docData.partyTel;
+        this.docData.zipCode = this.docData.partyZipCode;
+        this.docData.postAddress = this.docData.partyAddress
       }else{
         this.docData.certificateNumber = "";
         this.docData.certificateType = "";
+        this.docData.mobile = "";
+        this.docData.zipCode = "";
+        this.docData.postAddress = "";
       }
     },
     //设置案件来源
@@ -594,11 +594,13 @@ export default {
         this.docData.deliveryWay =[];
       }
       console.log('this.docData.deliveryWay',this.docData.deliveryWay)
+      this.choosePeo();
     },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
     this.isOverStatus();
+   
   }
 };
 </script>

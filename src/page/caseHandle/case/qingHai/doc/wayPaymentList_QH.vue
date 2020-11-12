@@ -329,7 +329,7 @@ export default {
         });
         this.docData.time = '';
       }
-      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'

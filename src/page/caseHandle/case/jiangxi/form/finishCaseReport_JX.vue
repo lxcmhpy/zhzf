@@ -532,7 +532,7 @@ export default {
   methods: {
     starttime(){
       console.log('案发时间=='+this.formData.lasj)
-      if (Date.parse(this.formData.staffSignTime) < Date.parse(this.formData.lasj)) {
+      if (Date.parse(this.formData.staffSignTime) < Date.parse(this.formData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
