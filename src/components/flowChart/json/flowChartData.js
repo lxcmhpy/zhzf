@@ -195,7 +195,7 @@ let flowGraphData = {
       
       // { id: "temp4_3_1", source: 'temp4_3_1', target: "temp7_2_1", linkID: 'temp4_3_1', name: "", position: { x: 3, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       { id: "10", source: "10", target: "temp12", linkID: BASIC_DATA_SC.transfei_SC_caseLinktypeId, name: "移交移送", linkName: 'case_handle_transfer_SC', position: { x: 3, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_14' } },
-      { id: "temp12", source: 'temp12', target: "temp13", linkID: 'temp12', name: "", position: { x: 3, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      { id: "temp12", source: 'temp12', target: "temp10", linkID: 'temp12', name: "", position: { x: 3, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       // { id: "temp13", source: 'temp13', target: "8", linkID: 'temp13', name: "", position: { x: 4, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
 

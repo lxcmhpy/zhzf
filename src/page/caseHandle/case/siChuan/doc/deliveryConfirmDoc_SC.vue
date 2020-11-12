@@ -346,7 +346,7 @@
                 >
                   <el-input
                     v-model="docData.notes"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>

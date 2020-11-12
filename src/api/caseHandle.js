@@ -610,7 +610,7 @@ export function updateEvdenceNameApi(data) {
   let data2 = vm.$qs.stringify(data);
   console.log(data2);
   return request({
-    url: "doc/evidence/updateEvdenceName",
+    url: "case/doc/evidence/updateEvdenceName",
     method: "post",
     data: data2,
     showloading: true,
