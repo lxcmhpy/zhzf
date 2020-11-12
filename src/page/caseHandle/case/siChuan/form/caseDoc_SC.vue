@@ -255,8 +255,7 @@
             <el-form-item prop="isImport" style="display:inline-block;margin-top:9px;margin-right:20px" label-width="0">
               <el-checkbox
                 v-model="formData.isImport"
-              ></el-checkbox>
-            属于重大行政处罚
+              >属于重大行政处罚</el-checkbox>
             </el-form-item>
          
          
@@ -769,5 +768,5 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/assets/css/documentForm.scss" scoped>
+<style lang="scss" src="@/assets/css/documentForm.scss">
 </style>

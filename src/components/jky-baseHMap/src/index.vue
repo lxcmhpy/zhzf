@@ -41,6 +41,7 @@ export default {
       pointsLayerName: new Set(), // 多点点位的图层标识
       pointLayerName: new Set(), // 单点点位的图层标识
       informationWindow: '', // 信息窗体
+      lineId: new Set(), // 单线的id标识
     }
   },
   beforeCreate() {
@@ -233,6 +234,47 @@ export default {
         this.map.addPoints(points, options)
       }
     },
+
+    /**
+     * 添加单线
+     */
+    addLine(points, id, layerName) {
+      this.lineId = id
+      const line = {
+        attributes: {
+          id: id
+        },
+        geometry: {
+          paths: [points]
+        },
+      }
+      const options = {
+        geomType: 'EsriJSON',
+        layerName: layerName,
+        zoomToExtent: true,
+        style: {
+          stroke: {
+            strokeColor: '#1b9de8',
+            strokeWidth: 3
+          }
+        },
+        selectStyle: {
+          stroke: {
+            strokeColor: '#D81E06',
+            strokeWidth: 3
+          }
+        }
+      }
+      this.map.addPolyline(line, options)
+    },
+
+    /**
+     * 通过 id 删除单线
+     */
+    removeFeatureById() {
+      if (!Map) return
+      this.map.removeFeatureById(this.lineId)
+    }
   },
   created() {
     loadCss("/static/hmap/hmap.css");

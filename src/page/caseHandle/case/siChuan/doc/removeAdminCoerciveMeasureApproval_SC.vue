@@ -214,8 +214,8 @@
               <p>情</p>
               <p>况</p>
               <p>及</p>
-              <p>延</p>
-              <p>长</p>
+              <p>解</p>
+              <p>除</p>
               <p>强</p>
               <p>制</p>
               <p>措</p>
@@ -522,7 +522,7 @@ export default {
   },
   methods: {
     starttime(){
-      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'

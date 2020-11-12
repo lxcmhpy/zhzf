@@ -47,6 +47,8 @@ export default {
           currentFlow = await queryFlowBycaseIdApi(this.caseId);
           if(currentFlow.data.flowUrl == 'commonGraphData_JX'){
             this.$router.push({name:'case_handle_coerciveMeasureDoc_JX'})
+          }else if(currentFlow.data.flowUrl == 'commonGraphData_SC'){ 
+            this.$router.push({name:'case_handle_adminCoerciveMeasure_SC'})
           }else{
             this.$router.push({name:'case_handle_removeOrPrelong'})
           }

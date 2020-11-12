@@ -170,7 +170,7 @@
                 type="textarea"
                 v-model="docData.caseInformation"
                 rows="3"
-                maxlength="90"
+                maxlength="512"
                 :disabled="fieldDisabled(propertyFeatures['caseInformation'])"
               ></el-input>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
@@ -192,7 +192,7 @@
                 type="textarea"
                 v-model="docData.discussionOpinionAndReason"
                 rows="3"
-                maxlength="90"
+                maxlength="512"
                 :disabled="fieldDisabled(propertyFeatures['discussionOpinionAndReason'])"
               ></el-input>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
@@ -220,7 +220,7 @@
                 type="textarea"
                 v-model="docData.conclussionOpinion"
                 rows="3"
-                maxlength="90"
+                maxlength="512"
                 :disabled="fieldDisabled(propertyFeatures['conclussionOpinion'])"
               ></el-input>
               <span class="span_bg" style="margin-top: 8px;">&nbsp;</span>
@@ -395,7 +395,7 @@ export default {
           { required: true, message: "请输入主持人", trigger: "blur" },
         ],
         presidingHearerPos: [
-          { required: true, message: "请输入职务", trigger: "blur" },
+          { required: true, message: "请输入汇报人", trigger: "blur" },
         ],
         recorder: [
           { required: true, message: "请输入记录人", trigger: "blur" },

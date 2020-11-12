@@ -196,7 +196,7 @@
               <p>据</p>
             </td>
             <td>序号</td>
-            <td colspan="5" class="center">证据名称</td>
+            <td colspan="5" class="center">名称</td>
             <td colspan="2">规格</td>
             <td colspan="2">数量</td>
           </tr>
@@ -493,7 +493,7 @@ export default {
   },
   methods: {
     starttime(){
-      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
