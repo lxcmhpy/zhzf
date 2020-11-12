@@ -14,7 +14,7 @@
                   size="medium"
                   class="commonBtn searchBtn"
                   type="primary"
-                  @click="addRecordDialog()"
+                  @click="addRecordDialog"
                   >添加记录</el-button
                 >
               </el-form-item>
@@ -385,14 +385,16 @@ export default {
       this.currentPage = val;
       this.getTableData();
     },
+
+    // 点击--添加记录
     addRecordDialog() {
       this.dialogVisible = true;
     },
+
     addRecord(label) {
       let _this = this;
       console.log("yanzheng", label);
       if (label == "路警联合") {
-        console.log("yanzheng");
         this.$store.commit("set_inspection_OverWeightId", "");
         this.$router.push({
           name: "inspection_overWeightForm"
