@@ -17,6 +17,8 @@
                   v-model="searchForm.year"
                   type="year"
                   placeholder="选择年"
+                  format="yyyy"
+                  value-format="yyyy"
                   :picker-options="pickerOptions"
                 ></el-date-picker>
               </el-form-item>
@@ -130,8 +132,10 @@ export default {
       };
        _this.$store.dispatch("getJxTrainList", data).then(
         res => {
+            if (res.code === 200) {
           this.tableLoading = false;
           _this.trainList = res.data;
+            }
         },
         err => {
           this.tableLoading = false;
@@ -141,11 +145,13 @@ export default {
 
          _this.$store.dispatch("getJxTrainMessage", data).then(
         res => {
+
           this.tableLoading = false;
-          
+          if (res.code === 200) {
          // _this.tableData = res.data.records;
            this.setExamScore(res.data.records);
           _this.totalPage = res.data.total;
+          }
         },
         err => {
           this.tableLoading = false;
@@ -165,9 +171,8 @@ export default {
             })
           }
         });
-        console.log(data);
-        this.tableData = data;
       }
+        this.tableData = data;
     },
     // 查看考勤详情
     getDetailInfo(row) {
