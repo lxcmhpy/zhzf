@@ -113,7 +113,7 @@
               <el-table-column label="送达文书名称,文号" align="center">
                 <template slot-scope="scope">
                   <!-- <el-input v-model="scope.row.docName"></el-input> -->
-                  <el-select v-model="scope.row.docName" placeholder="请选择" filterable  @blur="selectBlurDocName">
+                  <el-select v-model="scope.row.docName" placeholder="请选择" filterable  >
                     <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
