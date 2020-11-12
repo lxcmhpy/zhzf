@@ -196,7 +196,7 @@
               <p>据</p>
             </td>
             <td>序号</td>
-            <td colspan="5" class="center">证据名称</td>
+            <td colspan="5" class="center">名称</td>
             <td colspan="2">规格</td>
             <td colspan="2">数量</td>
           </tr>

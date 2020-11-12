@@ -10,7 +10,7 @@
           :model="docData"
         >
           <div class="doc_topic">行政强制措施现场笔录</div>
-          <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+          <table class="print_table prolong_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>
               <td colspan="3" class="color_DBE4EF">
@@ -971,6 +971,14 @@ export default {
 //   width: 200px;
 // }
 #sceneNotesDoc_SC-print {
+  .prolong_table {
+    table-layout: fixed;
+    td, p, span, .el-checkbox {
+      white-space: normal;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+  }
   .overflow_lins_style .span_bg {
     display: block;
   }
