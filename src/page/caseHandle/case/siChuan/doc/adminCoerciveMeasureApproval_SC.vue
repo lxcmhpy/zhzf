@@ -178,7 +178,7 @@
                   v-model="docData.illegalFact"
                   v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>30?true:false }"
                   :autosize="{ minRows: 1, maxRows: 10}"
-                  maxlength="300"
+                  maxlength="500"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
                 ></el-input>
@@ -221,7 +221,7 @@
                 <el-input style="float:left;margin-top:10px;" 
                   type="textarea" v-model="docData.lawOfficeOpinions"
                   v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>30?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 10}" maxlength="340" placeholder="/"></el-input> 
+                  :autosize="{ minRows: 1, maxRows: 10}" maxlength="500" placeholder="/"></el-input> 
               </el-form-item>
               <div class="pdf_seal alginLast" style="white-space:nowrap;height:30%;width:auto;margin-bottom:25px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
@@ -268,6 +268,7 @@
                   v-bind:class="{ over_flow:docData.note.length>27?true:false }"
                   :autosize="{ minRows: 1, maxRows: 4}"
                   placeholder="/"
+                  maxlength="500"
                   :disabled="fieldDisabled(propertyFeatures['note'])"
                 ></el-input>
               </el-form-item>
