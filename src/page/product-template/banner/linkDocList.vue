@@ -157,21 +157,26 @@ export default {
           isRequired: 1
         });
       });
-      this.datas = JSON.stringify(arr);
+      this.datas = arr;
     },
     //关联文书
     saveLinkDoc() {
       let _this = this;
       console.log("11111111111111",this.datas)
-      saveOrUpdateCaseLinkDocApi(this.datas).then(
-        res => {
-          this.getLinkDocList();
-          this.getDocList();
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      if(this.datas.length>0){
+        saveOrUpdateCaseLinkDocApi(this.datas).then(
+          res => {
+            this.getLinkDocList();
+            this.getDocList();
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }else{
+        this.$message("请选择要关联的文书");
+      }
+      
     },
     showModal(data) {
       this.visible = true;
