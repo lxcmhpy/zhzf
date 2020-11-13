@@ -70,11 +70,12 @@
         </div>
         <div class="treeT">
           <el-tree
-            :data="treeData"
+            :data="handleTree"
             show-checkbox
             node-key="label"
             ref="tree"
             highlight-current
+            node-collapse = 'closeTree'
             @node-expand = 'openTree'
             :props="defaultProps">
             <span class="custom-tree-node" slot-scope="{ node }">
@@ -148,7 +149,8 @@ export default {
       group_info:[],
       user_info:[],
       groupCopy:[],
-      newGroup:''
+      newGroup:'',
+      handleTree:[],
     }
   },
   watch: {
@@ -232,10 +234,6 @@ export default {
         websdk.request.groupRequest.deleteGroup(tgid, null, function (rsp) {
             console.log('demo_req_delete_group result:{}', rsp);
         }, 'demo_req_delete_group');
-    },
-    openTree(data,node){
-      console.log(data)
-      console.log(node)
     },
     delGroup(row){
         this.$confirm('确认删除该群组吗?', '删除群组', {
@@ -339,6 +337,7 @@ export default {
         if(res.code === 200) {
           console.log(1,res.data)
           this.treeData = res.data
+          this.handleData()
         } else {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
@@ -347,6 +346,41 @@ export default {
       })
     },
 
+    //处理数据
+    handleData(){
+      this.handleTree = this.deleteChildren(this.treeData)
+    },
+    deleteChildren(arr){
+      let childs = arr
+      for (let i = childs.length; i--; i > 0) {
+        if (childs[i].children) {
+          if (childs[i].children.length) {
+            this.deleteChildren(childs[i].children)
+          } else {
+            if(childs[i].label == '执法船舶' || childs[i].label == '执法车辆'){
+              childs.splice(childs[i],1) 
+            }
+          }
+        }
+      }
+      return arr
+      console.log(arr)
+    },
+    // 展开
+    openTree(data){
+      // this.$emit('getPeople',data)
+      //this.$emit('getPeople',data)
+    },
+    getPeopleTree(node) {
+      let param = {
+        organId: node.id,
+        type: node.type
+      }
+      getOrganTree(param).then(res => {
+        return res.data
+        console.log(res)
+      })
+    },
     handleSelectionChange(val){
       console.log(val)
       
