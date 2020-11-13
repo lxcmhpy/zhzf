@@ -86,7 +86,7 @@
         </tr>
         <tr>
             <td >执法部门处理意见</td>
-            <td colspan="2" class="color_DBE4EF">
+            <td colspan="2" class="color_DBE4EF" style="height:120px">
                 <el-form-item
                 prop="organOpinoin"
                 :rules="fieldRules('organOpinoin',propertyFeatures['organOpinoin'])"
@@ -95,7 +95,7 @@
                   type="textarea"
                   v-model="docData.organOpinoin"
                   v-bind:class="{ over_flow:docData.organOpinoin.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :autosize="{ minRows: 3, maxRows: 6}"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['organOpinoin'])"
                 ></el-input>
@@ -303,7 +303,7 @@
         </tr>
         <tr>
             <td>审核结论</td>
-            <td colspan="2" class="color_DBE4EF">
+            <td colspan="2" class="color_DBE4EF" style="height:120px">
                 <el-form-item
                 prop="checkOpinoin"
                 :rules="fieldRules('checkOpinoin',propertyFeatures['checkOpinoin'])"
@@ -312,7 +312,7 @@
                   type="textarea"
                   v-model="docData.checkOpinoin"
                   v-bind:class="{ over_flow:docData.checkOpinoin.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :autosize="{ minRows: 3, maxRows: 6}"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['checkOpinoin'])"
                 ></el-input>
@@ -342,7 +342,7 @@
             <td rowspan="2" colspan="2" class="color_DBE4EF">
               {{docData.secondApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.secondApprovePeo}}</p>
+                <p>签章：{{docData.secondApprovePeo}}</p>
                 <p>
                   <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年 月 日</span>

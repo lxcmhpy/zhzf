@@ -188,7 +188,7 @@ export default {
         // ],
       },
       factsAndReasonsLength: 1024,
-      maxLength: 23,
+      maxLength: 50,
       isParty: true,
       formOrDocData: {
         showBtn: [

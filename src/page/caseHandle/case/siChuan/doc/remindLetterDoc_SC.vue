@@ -190,6 +190,7 @@ export default {
         otherRemindWay: "",
         makeDate: "",
         checknames: [],
+        otherMatter:''
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {
@@ -238,11 +239,15 @@ export default {
         ],
         otherRemindWay: [
           { required: true, message: "请输入其他强制执行方式", trigger: "blur" }
+        ],
+        otherMatter: [
+          { required: true, message: "请输入其他事项", trigger: "blur" }
         ]
+        
       },
       nameLength: 23,
       adressLength: 23,
-      maxLength: 23,
+      maxLength: 50,
       maxLengthOverLine: 122,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节
@@ -259,21 +264,21 @@ export default {
   methods: {
     starttime(){
       console.log('案发时间=='+this.docData.lasj)
-      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.makeDate) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.docData.makeDate = '';
       }
-      if (Date.parse(this.docData.serviceTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.serviceTime) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.docData.serviceTime = '';
       }
-      if (Date.parse(this.docData.decidedTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.decidedTime) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'

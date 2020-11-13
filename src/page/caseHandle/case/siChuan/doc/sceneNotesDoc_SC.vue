@@ -29,7 +29,7 @@
                 </el-form-item>
               </td>
               <td>执法时间</td>
-              <td colspan="3" id="scenetimeBox" class="left">
+              <td colspan="3" id="scenetimeBox" style="text-align-last:left">
                 <el-form-item
                   prop="enforceStartTime"
                   class="pdf_datapick dataTimeReplaceBox"
@@ -59,6 +59,7 @@
                   :rules="fieldRules('enforceEndTime',propertyFeatures['enforceEndTime'])"
                 >
                   <el-time-picker
+                    style="float:left"
                     placeholder="时 分"
                     v-model="docData.enforceEndTime"
                     format="HH时mm分"
@@ -329,7 +330,7 @@
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
-                        maxlength="400"
+                        maxlength="500"
                         placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
@@ -361,7 +362,7 @@
                 >
                   <el-input
                     v-model="docData.attendance"
-                    :maxLength="maxLength"
+                    maxLength="250"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>
@@ -376,7 +377,7 @@
                 >
                   <el-input
                     v-model="docData.information"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>
@@ -391,7 +392,7 @@
                 >
                   <el-input
                     v-model="docData.defense"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>
@@ -405,7 +406,7 @@
                 >
                   <el-input
                     v-model="docData.notes"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item></td>
@@ -956,26 +957,9 @@ export default {
 </script>
 <style lang="scss" src="@/assets/css/caseHandle/caseDocModle.scss"></style>
 <style lang="scss">
-/*  @import "@/assets/css/caseHandle/caseDocModle.scss"; */
-
-.espacle {
-  textarea {
-    min-height: 114px !important;
-    line-height: 25px !important;
-    // margin-top:-4px !important;
-    text-indent: 0px !important;
-  }
-}
-
-// #sceneNotesDoc_SC-print .el-date-editor--datetime{
-//   width: 200px;
-// }
 #sceneNotesDoc_SC-print {
   .overflow_lins_style .span_bg {
     display: block;
-  }
-  .left{
-    text-align-last: left;
   }
   .overflow_lins_style .overflow_lins .overflow_lins_textarea {
     width: calc(100% - 10px);

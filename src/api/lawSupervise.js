@@ -5,6 +5,17 @@ let vm = new Vue();
 import request from "@/common/js/request";
 import { setCancelSource } from "@/common/js/cancelToken";
 
+export function getGpsTraceList(data) {
+  return request({
+    url: "/zfjg/peState/getGpsTraceList",
+    method: "post",
+    data: data,
+    showloading: false,
+    baseUrlType: 'CAPTCHA_HOST',
+    cancelToken: setCancelSource()
+  });
+}
+
 export function getZfjgLawSupervise(data) {
   return request({
     url: "/zfjg/list",
@@ -398,7 +409,7 @@ export function findImageListByWorkNo(id,workNo){
         baseUrlType:  'CAPTCHA_HOST',
         cancelToken: setCancelSource()
       });
-}  
+}
 
 //查询重点企业
 export function queryEmphasisEnterprise(data) {
@@ -587,7 +598,7 @@ export function getZfjgFileStreamByStorageId(storageId) {
         cancelToken: setCancelSource()
     })
  }
-  
+
  //批量删除设备
 export function deleteDeviceByIds(data) {
     return request({

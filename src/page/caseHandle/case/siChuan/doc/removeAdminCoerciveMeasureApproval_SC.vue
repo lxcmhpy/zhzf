@@ -178,7 +178,7 @@
                   v-model="docData.illegalFact"
                   v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>30?true:false }"
                   :autosize="{ minRows: 1, maxRows: 10}"
-                  maxlength="300"
+                  maxlength="500"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
                 ></el-input>
@@ -214,8 +214,8 @@
               <p>情</p>
               <p>况</p>
               <p>及</p>
-              <p>延</p>
-              <p>长</p>
+              <p>解</p>
+              <p>除</p>
               <p>强</p>
               <p>制</p>
               <p>措</p>
@@ -231,7 +231,7 @@
                 <el-input style="float:left;margin-top:10px;" 
                   type="textarea" v-model="docData.lawOfficeOpinions"
                   v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>30?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 10}" maxlength="340" placeholder="/"></el-input> 
+                  :autosize="{ minRows: 1, maxRows: 10}" maxlength="500" placeholder="/"></el-input> 
               </el-form-item>
               <div class="pdf_seal alginLast" style="white-space:nowrap;height:20%;width:auto;margin-bottom:10px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
@@ -522,7 +522,7 @@ export default {
   },
   methods: {
     starttime(){
-      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj)) {
+      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'

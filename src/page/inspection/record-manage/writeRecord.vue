@@ -91,7 +91,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="openFileDialog()"
+          @click="handleSave"
           v-if="addOrEiditFlag == 'add' || addOrEiditFlag == 'temporary'"
         >
           <i class="iconfont law-icon_baocun1"></i>
@@ -152,7 +152,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="fileVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveRecordFileType('fileForm')"
+        <el-button type="primary" @click="saveRecordFileType"
           >确 定</el-button
         >
       </span>
@@ -188,8 +188,8 @@ import merge from "webpack-merge";
 export default {
   props: ["psMsg"],
   watch: {
-    psMsg:{
-      handler(val, oldVal){
+    psMsg: {
+      handler(val, oldVal) {
         console.log("监听", this.psMsg, "val", val);
         if (this.psMsg) {
           this.defaultRuleData = this.psMsg;
@@ -200,10 +200,11 @@ export default {
       },
       // deep:true,
       // immediate:true,
-    }
+    },
   },
   data() {
     return {
+      haveDoc: "",
       imgUrl: "",
       viewImgDialogVisible: false,
       imgObj: {},
@@ -298,7 +299,6 @@ export default {
       findRecordlModleFieldByIdeApi(this.modleId).then(
         (res) => {
           let list = JSON.parse(JSON.stringify(res.data));
-
           _this.baseData = JSON.parse(JSON.stringify(res.data));
           let sort = 0;
           list.forEach((element) => {
@@ -449,13 +449,20 @@ export default {
         (error) => {}
       );
     },
-    openFileDialog() {
-      this.fileVisible = true;
+
+    //点击保存
+    handleSave() {
+      console.log("havedoc", this.haveDoc);
+      if (this.haveDoc) {
+        this.fileVisible = true;
+      } else {
+        this.saveRecord(this.fileForm.fileSaveType);
+      }
     },
 
     // 保存点击
-    saveRecordFileType(formName) {
-      this.$refs[formName].validate((valid) => {
+    saveRecordFileType() {
+      this.$refs.fileForm.validate((valid) => {
         if (valid) {
           console.log(this.fileForm.fileSaveType);
           this.fileVisible = false;
@@ -533,6 +540,8 @@ export default {
 
     // 提交接口
     submitMethod(fileSaveType) {
+      console.log("baocun", this.addOrEiditFlag);
+      return;
       console.log("formData", this.formData);
       let submitData = JSON.parse(JSON.stringify(this.baseData));
       this.setText(submitData);
@@ -611,6 +620,8 @@ export default {
 
     // 暂存
     onSaveRecord(noRouter) {
+      console.log("暂存", this.addOrEiditFlag);
+      return;
       // console.log('rule', this.rule)
       this.noUseValidate();
       this.formData.status = "暂存";
@@ -638,7 +649,7 @@ export default {
             if (res.code == 200) {
               // this.recordMsg = res.data;//根据返回id上传文件
               this.recordMsg = this.formData.id ? this.formData.id : res.data; //根据返回id上传文件
-              this.$refs.uploadRef.temporySaveMethod(this.recordMsg)
+              this.$refs.uploadRef.temporySaveMethod(this.recordMsg);
               this.$message({
                 type: "success",
                 message: res.msg,
@@ -743,14 +754,13 @@ export default {
           });
         }
       }
-      console.log("isEdit -> this.rule", this.rule)
-      console.log("isEdit -> this.options", this.options)
+      console.log("isEdit -> this.rule", this.rule);
+      console.log("isEdit -> this.options", this.options);
     },
     viewRecord() {
       this.options = {
-        submitBtn:false,
-        onSubmit: (formData) => {
-        },
+        submitBtn: false,
+        onSubmit: (formData) => {},
         global: {
           "*": {
             props: {
@@ -762,8 +772,7 @@ export default {
       this.findRecordDataByld();
     },
     updateMole(data) {
-      // debugger
-      console.log(data);
+      // console.log("updateMole -> data", data)
       this.modleId = data.id;
       this.findDataByld();
       this.isChangeModle = false;
@@ -780,7 +789,6 @@ export default {
     },
     // 匹配数据格式
     async dealFormData(viewFlag) {
-      
       // 左侧操作按钮
       (this.formOrDocData.showBtn = [
         this.formData.documentFill == "是" ? true : false,
@@ -960,7 +968,7 @@ export default {
     },
     dealFieldData(element, viewFlag) {
       let vm = this;
-      // 
+      //
       console.log("viewFlag", viewFlag);
       // 字段
       element.fieldList.forEach((item) => {
@@ -1179,6 +1187,7 @@ export default {
             field: item.id || item.field, //id用于传值，field用于预览
             title: item.title,
             props: {
+              autofocus:false,
               type: "text",
               placeholder: item.remark,
               disable: true,
@@ -1396,6 +1405,7 @@ export default {
     },
     // 搜索违法行为
     changeIligalName(inject) {
+      // alert('fouce')
       console.log(`选择违法行为`);
       console.log(`blur: ${inject.self.title}`);
       console.log(`blur: ${inject.self.field}`);
@@ -1406,13 +1416,16 @@ export default {
       //     cate = element.cateId;
       //   }
       // });
-      let lawCate = {
-        cateId: "1002000200000000",
-        cateName: "道路运政",
-        hyTypeId: "",
-        resourse: "writeRecord",
-      };
-      this.$refs.chooseillegalActRef.showModal(lawCate);
+      if(inject.self.title==='违法行为'){
+        let lawCate = {
+          cateId: "1002000200000000",
+          cateName: "道路运政",
+          hyTypeId: "",
+          resourse: "writeRecord",
+        };
+        this.$refs.chooseillegalActRef.showModal(lawCate);
+      }
+      
     },
     //设置违法行为
     toCaseRegister(val) {
@@ -1527,9 +1540,10 @@ export default {
     },
   },
   mounted() {
-    console.log("mounted -> this.rule", this.rule)
+    console.log("mounted -> this.rule", this.rule);
     console.log("id", this.$route.params.id);
     this.addOrEiditFlag = this.$route.params.addOrEiditFlag;
+    this.haveDoc = this.$route.params.haveDoc;
     this.fileEiditFlag = false;
     if (this.$route.params.id) {
       if (this.$route.params.addOrEiditFlag == "add") {

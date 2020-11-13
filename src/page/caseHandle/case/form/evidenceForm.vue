@@ -491,14 +491,13 @@ export default {
     },
     saveFile(param) {
       console.log(param);
-      // this.formUpload = {
-      (this.form.file = param.file),
-        (this.form.caseId = this.caseId),
-        (this.form.docId = "000"),
-        (this.form.category = "证据"),
-        (this.form.userId = iLocalStroage.gets("userInfo").id),
-        (this.form.evName = param.file.name);
-      // }
+      this.form.file = param.file;
+      this.form.caseId = this.caseId;
+      this.form.docId = "000";
+      this.form.category = "证据";
+      this.form.userId = iLocalStroage.gets("userInfo").id;
+      this.$set(this.form, "evName");
+      this.form.evName = param.file.name;
 
       //给证据类型赋值
       let fileType = this.$util.getFileType(param.file.name);
