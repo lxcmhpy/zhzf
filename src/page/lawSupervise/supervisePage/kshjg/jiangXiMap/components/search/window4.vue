@@ -40,11 +40,11 @@
         <el-date-picker
           class="selectTime"
           v-model="historyTime"
-          type="daterange"
+          type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          value-format="yyyy-MM-dd">
+          value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
         <div class="submitBtns">
           <el-button type="primary" plain @click="submitTrack(2)">确认</el-button>
@@ -227,6 +227,7 @@ export default {
         width: 100%;
         .el-range-separator {
           width: 8%;
+          height: unset;
         }
         .el-input__inner {
           padding: unset;
