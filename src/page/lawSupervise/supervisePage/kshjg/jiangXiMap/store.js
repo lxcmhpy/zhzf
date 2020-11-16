@@ -33,6 +33,7 @@ export default {
             message: '查询到'+res.data.length+'条数据',
             type: 'success'
           });
+          console.log(res.data)
           return res.data
         } else {
           this.$message.error('getOrganTree()::::::::接口数据错误');

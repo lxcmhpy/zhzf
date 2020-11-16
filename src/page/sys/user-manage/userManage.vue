@@ -53,7 +53,7 @@
                          :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="showSomeSearch"></el-button>
                <el-button size="medium"  type="primary"
                          @click="addUser">添加用户</el-button>
-              <el-button size="medium" class="" type="primary"
+              <el-button size="medium" class="" type="primary" :disabled='tableSelection.length!=1 '
                          @click="bindRole">绑定角色</el-button>
               <el-button size="medium" class="" type="primary"
                          @click="saveLawOfficel">转执法人员</el-button>
@@ -163,6 +163,7 @@
     },
     data() {
       return {
+        tableSelection:[],
         isShow: false,
         region: [
           {label: '全部', value: ''},
@@ -420,6 +421,7 @@
       //获取选中的user
       selectUser(val) {
         console.log(val);
+        this.tableSelection=val;
         this.selectUserIdList = [];
         let _this = this
         val.forEach(item => {
