@@ -75,14 +75,10 @@
             node-key="label"
             ref="tree"
             highlight-current
+            :render-content="renderSlot"
             node-collapse = 'closeTree'
-            @node-expand = 'openTree'
+            @node-click="handleNodeClick"
             :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node }">
-              <!-- <span class="headImg"><img src="/static/images/img/lawSupervise/icon_04.png" alt=""></span> -->
-              <span class="treeWord">{{ node.label }}</span>
-              <span class="lastImg"><img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt=""></span>
-            </span>
           </el-tree>
         </div>
         <div>
@@ -345,7 +341,24 @@ export default {
         console.log(2,data)
       })
     },
-
+    // tree 图标
+    renderSlot(h,{ node, data, store }) {
+      return (
+        <div class="tree-slot-box">
+          <img class='img1'
+            src={
+              data.label === '执法人员' ?'/static/images/img/lawSupervise/icon_jc11.png': '/static/images/img/lawSupervise/icon_jc1.png'
+            }
+          />
+          <span>{data.label}</span>
+           <img class='img2' on-click={ () => this.addPeople(data) }
+            src={
+              '/static/images/img/lawSupervise/gzMapLeftD/add2.jpg'
+            }
+          />
+        </div>
+      )
+    },
     //处理数据
     handleData(){
       this.handleTree = this.deleteChildren(this.treeData)
@@ -356,30 +369,23 @@ export default {
         if (childs[i].children) {
           if (childs[i].children.length) {
             this.deleteChildren(childs[i].children)
-          } else {
-            if(childs[i].label == '执法船舶' || childs[i].label == '执法车辆'){
-              childs.splice(childs[i],1) 
-            }
+          } else if(childs[i].label == "执法车辆" || childs[i].label == "执法船舶"){
+               childs.splice(i,1) 
           }
         }
       }
       return arr
       console.log(arr)
     },
-    // 展开
-    openTree(data){
-      // this.$emit('getPeople',data)
-      //this.$emit('getPeople',data)
+    // 获取执法人员数据
+    handleNodeClick(data) {
+      console.log(data)
+        if(data.label === "执法人员") {
+          this.$emit('getPeople',data)
+        } 
     },
-    getPeopleTree(node) {
-      let param = {
-        organId: node.id,
-        type: node.type
-      }
-      getOrganTree(param).then(res => {
-        return res.data
-        console.log(res)
-      })
+    addPeople(val){
+      console.log(val)
     },
     handleSelectionChange(val){
       console.log(val)
@@ -504,5 +510,24 @@ export default {
         width: 10%;
       }
     }
+   .el-tree {
+    border-radius: 4px;
+    .tree-slot-box {
+      .img1 {
+        width: 13px;
+        margin-right: 5px;
+      }
+      span {
+        font-size: 12px;
+        color: #606266;
+        font-family: Helvetica,Arial,sans-serif;
+      }
+      .img2{
+        margin-left: 5px;
+        width: 13px;
+        vertical-align: bottom;
+      }
+    }
+  }
 }
 </style>
