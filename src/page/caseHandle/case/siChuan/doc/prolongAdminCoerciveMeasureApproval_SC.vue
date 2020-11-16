@@ -324,12 +324,6 @@
                   <el-input-number size="mini" v-model="scope.row.num" :min="1" label="描述文字"></el-input-number>
                 </template>
               </el-table-column>
-
-              <!-- <el-table-column label="备注" align="center">
-                <template slot-scope="scope">
-                  <el-input maxlength="10" v-model="scope.row.note"></el-input>
-                </template>
-              </el-table-column> -->
               <el-table-column width="52%">
                 <template slot-scope="scope">
                   <el-button
@@ -587,7 +581,7 @@ export default {
           tableArr.push(item);
         }
       });
-      this.tableDatas = tableArr;
+      this.tableDatas = JSON.parse(JSON.stringify(tableArr));
       this.addVisible = true;
       if (this.tableDatas.length == 0) {
         this.tableDatas.push({ resNo: 1, num: 1 });
@@ -602,6 +596,7 @@ export default {
       }
       if(this.tableDatas .length>1){
         this.tableDatas.splice(row.resNo - 1, 1);
+        console.log("111111111",this.docData.evidenceList)
       }else{
         this.$message({
           message: "最少添加一条数据！",
@@ -624,7 +619,7 @@ export default {
           }
         }
         if (canAdd) {
-          this.docData.evidenceList = this.tableDatas;
+          this.docData.evidenceList = this.tableDatas; //JSON.parse(JSON.stringify(this.tableDatas));
           this.docData.evidenceLength = this.docData.evidenceList.length;
           this.addVisible = false;
         }
