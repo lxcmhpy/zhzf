@@ -275,8 +275,8 @@
         </table>
       </div>
       <el-form-item  prop="evidenceLength" :rules="fieldRules('evidenceList',propertyFeatures['evidenceList'])" style="visibility:hidden">
-          <el-input v-model.number="docData.evidenceLength"></el-input>
-        </el-form-item>
+        <el-input v-model.number="docData.evidenceLength"></el-input>
+      </el-form-item>
     </el-form>
     <!-- 添加弹出框 -->
     <el-dialog
