@@ -27,7 +27,7 @@ export const BASIC_DATA_SYS = {
     //行政强制措施决定书 环节id caseLinktypeId
     adminCoerciveMeasure_caseLinktypeId:'2c90293b6c178b55016c17c7ae92000e',
     //行政强制措施决定书 文书id
-    adminCoerciveMeasure_huanjieAndDocId:'4028e4ef63683cd00163684359a10001',
+    // adminCoerciveMeasure_huanjieAndDocId:'4028e4ef63683cd00163684359a10001',
     //调查类文书 环节id caseLinktypeId
     caseDoc_caseLinktypeId:'2c90293b6c178b55016c17c93326000f',
     //调查报告 环节id caseLinktypeId
