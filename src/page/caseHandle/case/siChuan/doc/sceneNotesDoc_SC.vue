@@ -1020,5 +1020,8 @@ export default {
       height: 20px;
     }
   }
+  .is-required .el-input__inner{
+    background: #f7c9cb !important;
+  }
 }
 </style>
