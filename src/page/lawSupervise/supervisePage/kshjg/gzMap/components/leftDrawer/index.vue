@@ -78,6 +78,7 @@
             :render-content="renderSlot"
             node-collapse = 'closeTree'
             @node-click="handleNodeClick"
+            @check-change="handleCheckChange"
             :props="defaultProps">
           </el-tree>
         </div>
@@ -272,6 +273,11 @@ export default {
                 this.selectedArrQ.splice(i,1)
               }
             }
+            for (let j = 0; j < this.selectedArrT.length; j++) {
+              if(val.uid == this.selectedArrT[j].uid){
+                this.selectedArrT.splice(j,1)
+              }
+            }
           }
         });
     },
@@ -360,28 +366,38 @@ export default {
     },
     // 获取执法人员数据
     handleNodeClick(data) {
-      console.log(data)
         if(data.label === "执法人员") {
           this.$emit('getPeople',data)
         } 
     },
     // 添加通讯录人员
     addPeople(obj){
-      this.selectedArrT.push(obj)
+      var tempObj = {uid:(obj.sn)-0,display_name:obj.label} 
+      if(obj.sn){
+        this.selectedArrT.push(tempObj)
+        this.uniqueObj(this.selectedArrT)
+        this.$message.success('已选中');
+      }else{
+        this.$message.error('该用户没有uid');
+      }
+      console.log(this.selectedArrT)
     },
     // 确认
     getCheckedKeys(){
-      this.selectedArrT = this.selectedArrT.map((v)=>{
-        return {uid:v.sn,display_name:v.label}
-      })
-      for (let i = 0; i < this.selectedArrT.length; i++) {
-          if(this.selectedArrT[i].uid){
-              this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
-          }
-      }
-      this.selectedArrQ = this.unique(this.selectedArrQ)
       console.log(this.selectedArrT)
+       this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
+       this.uniqueObj(this.selectedArrQ)
+      // this.selectedArrT = this.selectedArrT.map((v)=>{
+      //   return {uid:v.sn,display_name:v.label}
+      // })
+      // for (let i = 0; i < this.selectedArrT.length; i++) {
+      //     if(this.selectedArrT[i].uid){
+      //         this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
+      //     }
+      // }
+      // this.selectedArrQ = this.unique(this.selectedArrQ)
       console.log(this.selectedArrQ)
+    //  console.log(this.selectedArrQ)
       // this.selectedArrT = this.$refs.tree.getCheckedKeys()
       // console.log(this.$refs.tree.getCheckedKeys())
       // for (let i = 0; i < this.selectedArrT.length; i++) {
@@ -392,23 +408,40 @@ export default {
     },
     // 重选
     resetChecked(){
-        for (let j = 0; j < this.selectedArrQ.length; j++) {
-          for (let i = 0; i < this.selectedArrT.length; i++) {
-            if(this.selectedArrQ[j].sn == this.selectedArrT[i].sn){
-              this.selectedArrQ.splice(j,1)
+      console.log(this.selectedArrQ)
+      console.log(this.selectedArrT)
+      for (var i = 0; i < this.selectedArrT.length; i++) {
+        for (var j = 0; j < this.selectedArrQ.length; j++) {
+            if (this.selectedArrT[i].uid == this.selectedArrQ[j].uid) {
+                this.selectedArrQ.splice(j, 1);
             }
-          }
         }
-       this.$refs.tree.setCheckedKeys([]);
+      }
+      this.selectedArrT = []
+      this.$refs.tree.setCheckedKeys([]);
+    },
+    handleCheckChange(val){
+       this.addPeople(val)
     },
     handleSelectionChange(val){
-      this.addPeople(val)
+      console.log(val)
+    //  this.addPeople(val)
         // for (let i = 0; i < val.length; i++) {
         //   this.selectedArrQ.push(val[i].name)
         // }
         // this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 去重
+    uniqueObj(arr){
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].uid === arr[j].uid) {
+            arr.splice(j, 1);
+            j = j - 1;
+          }
+        }
+      }
+    },
     unique(arr) {
         return Array.from(new Set(arr));
     },
