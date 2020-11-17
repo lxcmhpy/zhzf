@@ -256,27 +256,7 @@ export default {
       this.req_remove_group_member(row.tgid,uidArr)
        this.getListData()
     },
-    // 确认
-    getCheckedKeys(){
-      this.selectedArrT = this.$refs.tree.getCheckedKeys()
-      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
-      console.log(this.$refs.tree.getCheckedKeys())
-      for (let i = 0; i < this.selectedArrT.length; i++) {
-        this.selectedArrQ.push(this.selectedArrT[i])
-      }
-      this.selectedArrQ = this.unique(this.selectedArrQ)
-    },
-    // 重选
-    resetChecked(){
-        for (let j = 0; j < this.selectedArrQ.length; j++) {
-          for (let i = 0; i < this.selectedArrT.length; i++) {
-            if(this.selectedArrQ[j] == this.selectedArrT[i]){
-              this.selectedArrQ.splice(j,1)
-            }
-          }
-        }
-       this.$refs.tree.setCheckedKeys([]);
-    },
+    
     //添加人员
     selectP(val){
       this.selectedArrQ.push(val)
@@ -350,10 +330,11 @@ export default {
               data.label === '执法人员' ?'/static/images/img/lawSupervise/icon_jc11.png': '/static/images/img/lawSupervise/icon_jc1.png'
             }
           />
-          <span>{data.label}</span>
+          <span >{data.label}</span>
            <img class='img2' on-click={ () => this.addPeople(data) }
             src={
-              '/static/images/img/lawSupervise/gzMapLeftD/add2.jpg'
+              // (data.organId || data.label == "执法人员")?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
+              data.organId?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
             }
           />
         </div>
@@ -384,12 +365,44 @@ export default {
           this.$emit('getPeople',data)
         } 
     },
-    addPeople(val){
-      console.log(val)
+    // 添加通讯录人员
+    addPeople(obj){
+      this.selectedArrT.push(obj)
+    },
+    // 确认
+    getCheckedKeys(){
+      this.selectedArrT = this.selectedArrT.map((v)=>{
+        return {uid:v.sn,display_name:v.label}
+      })
+      for (let i = 0; i < this.selectedArrT.length; i++) {
+          if(this.selectedArrT[i].uid){
+              this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
+          }
+      }
+      this.selectedArrQ = this.unique(this.selectedArrQ)
+      console.log(this.selectedArrT)
+      console.log(this.selectedArrQ)
+      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
+      // console.log(this.$refs.tree.getCheckedKeys())
+      // for (let i = 0; i < this.selectedArrT.length; i++) {
+      //   this.selectedArrQ.push(this.selectedArrT[i])
+      // }
+      // this.selectedArrQ = this.unique(this.selectedArrQ)
+      
+    },
+    // 重选
+    resetChecked(){
+        for (let j = 0; j < this.selectedArrQ.length; j++) {
+          for (let i = 0; i < this.selectedArrT.length; i++) {
+            if(this.selectedArrQ[j].sn == this.selectedArrT[i].sn){
+              this.selectedArrQ.splice(j,1)
+            }
+          }
+        }
+       this.$refs.tree.setCheckedKeys([]);
     },
     handleSelectionChange(val){
-      console.log(val)
-      
+      this.addPeople(val)
         // for (let i = 0; i < val.length; i++) {
         //   this.selectedArrQ.push(val[i].name)
         // }
@@ -519,7 +532,6 @@ export default {
       }
       span {
         font-size: 12px;
-        color: #606266;
         font-family: Helvetica,Arial,sans-serif;
       }
       .img2{
