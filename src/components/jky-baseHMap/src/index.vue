@@ -42,6 +42,7 @@ export default {
       pointLayerName: new Set(), // 单点点位的图层标识
       informationWindow: '', // 信息窗体
       lineId: new Set(), // 单线的id标识
+      interval: null
     }
   },
   beforeCreate() {
@@ -147,10 +148,10 @@ export default {
     /**
      * 地图添加点位(单点)
      */
-    addPoint(data, latLng) {
+    addPoint(data, latLng, zoomToExtent) {
       // 打点之前清除地图点位
       this.cleanAll()
-      let _layerName = data.id
+      let _layerName = data.id || ''
       this.pointLayerName.add(_layerName)
       if(!latLng) throw new Error("addPoint():::::::::::没有坐标")
       const point = {
@@ -162,7 +163,7 @@ export default {
       }
       const options = {
         layerName: _layerName,
-        zoomToExtent: true,
+        zoomToExtent: zoomToExtent==='0'?false:true,
         style: {
           image: {
             type: 'icon',
@@ -274,11 +275,35 @@ export default {
     removeFeatureById() {
       if (!Map) return
       this.map.removeFeatureById(this.lineId)
-    }
+      // 删除轨迹图标
+      this.map.removeFeatureById('trackAction')
+      // 清除轨迹动画
+      clearInterval(this.interval)
+    },
+
+    /**
+     * 添加轨迹动画
+     */
+    addTrackAction(data, points) {
+      if(points.length > 0) {
+        let index = 0
+        this.interval = setInterval(() => {
+          if(index < points.length) {
+            this.addPoint(data, points[index], '0')
+            index++
+          } else {
+            index = 0
+          }
+        }, 1000)
+      }
+    },
   },
   created() {
     loadCss("/static/hmap/hmap.css");
     loadScript("/static/hmap/hmap.js").then(() => this.init());
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
   }
 }
 </script>
