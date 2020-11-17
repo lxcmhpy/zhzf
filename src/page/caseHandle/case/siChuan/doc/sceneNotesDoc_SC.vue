@@ -114,10 +114,10 @@
               <td rowspan="2">记录人</td>
               <td rowspan="2" class="color_DBE4EF">
                 <el-form-item
-                  prop="recorder"
-                  :rules="fieldRules('recorder',propertyFeatures['recorder'])"
+                  prop="recorderArr"
+                  :rules="fieldRules('recorderArr',propertyFeatures['recorderArr'])"
                 >
-                  <el-input
+                  <!-- <el-input
                     type="textarea"
                     v-model="docData.recorder"
                     v-bind:class="{ over_flow:docData.recorder.length>14?true:false }"
@@ -125,7 +125,15 @@
                     :maxlength="adressLength"
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['recorder'])"
-                  ></el-input>
+                  ></el-input> -->
+                  <el-select v-model="docData.recorderArr" multiple placeholder="请选择">
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :label="item"
+                      :value="item">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </td>
             </tr>
@@ -182,11 +190,11 @@
                   prop="scenePeopelName"
                   :rules="fieldRules('scenePeopelName',propertyFeatures['scenePeopelName'])"
                 >
+                 <!-- @input="changeScenePeopelName"  -->
                   <el-input
                     v-model="docData.scenePeopelName"
                     :maxLength="maxLength"
                     placeholder="/"
-                    @input="changeScenePeopelName"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopelName'])"
                   ></el-input>
                 </el-form-item>
@@ -233,11 +241,11 @@
                   prop="scenePeopeRelation"
                   :rules="fieldRules('scenePeopeRelation',propertyFeatures['scenePeopeRelation'])"
                 >
+                <!--   @change="changeRelationWithCase" -->
                   <el-select
                     v-model="docData.scenePeopeRelation"
                     :maxLength="maxLength"
                     placeholder="/"
-                    @change="changeRelationWithCase"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeRelation'])"
                   >
                     <el-option
@@ -586,6 +594,7 @@ export default {
         attendance: "",
         information: "",
         defense:"",
+        recorderArr:[]
       },
       rules: {
         certificateId1: [
@@ -676,7 +685,7 @@ export default {
           { required: true, message: "车（船）型不能为空", trigger: "blur" },
         ],
         party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
-        recorder: [
+        recorderArr: [
           { required: true, message: "记录人不能为空", trigger: "blur" },
         ],
         illegalFacts: [
@@ -795,6 +804,7 @@ export default {
     //保存文书信息
     saveData(handleType) {
       // this.printContent()
+      this.docData.recorder = this.docData.recorderArr.join(',');
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -836,9 +846,14 @@ export default {
         this.docData.staff2 = this.docData.staff.split(",")[1];
         this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
       }
+
+      this.docData.recorderArr = this.docData.recorder ? this.docData.recorder.split(',') : [];
       this.docData.readState =
         this.docData.readState == "" ? [] : this.docData.readState;
       let dailiData = {};
+      if(this.caseDocDataForm.status == ''){
+
+       
       if (this.docData.partyType == "1") {
         //当事人类型为个人
         dailiData = {
@@ -867,6 +882,7 @@ export default {
       this.daiRuscenePeopeTel = dailiData.tel ? true : false;
       this.daiRuscenePeopeAddress = dailiData.adress ? true : false;
       this.setDataForScenePelple(true, dailiData);
+       }
     },
     //修改人员
     changeStaff1(val) {

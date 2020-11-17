@@ -200,7 +200,7 @@ let flowGraphData = {
       
 
       { id: "5", source: '5', target: "4_3", linkID: BASIC_DATA_SC.partyRights_SC_caseLinktypeId, name: "当事人\n权利", linkName: 'case_handle_partyRightsForm_SC', position: { x: 1, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'lct_10' } },
-      // { id: "temp14", source: 'temp14', target: "4_3", linkID: 'temp14', name: "", position: { x: 1, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      // { id: "14", source: '14', target: "4_3", linkID: '14', name: "", position: { x: 2, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       // { id: "temp15", source: 'temp14', target: "4_3", linkID: 'temp15', name: "", position: { x: 2, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       { id: "temp16", source: '5', target: "6", linkID: 'temp16', name: "", position: { x: 1, y: 5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
