@@ -72,11 +72,8 @@
           <el-tree
             :data="handleTree"
             show-checkbox
-            node-key="label"
             ref="tree"
-            highlight-current
             :render-content="renderSlot"
-            node-collapse = 'closeTree'
             @node-click="handleNodeClick"
             @check-change="handleCheckChange"
             :props="defaultProps">
