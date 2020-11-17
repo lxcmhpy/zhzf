@@ -10,6 +10,7 @@
           :model="docData"
         >
           <div class="doc_topic">行政强制措施现场笔录</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>
