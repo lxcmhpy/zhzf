@@ -26,7 +26,6 @@
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['afdd'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
                 </el-form-item>
               </td>
               <td>执法时间</td>
@@ -1028,7 +1027,7 @@ export default {
       height: 20px;
     }
   }
-  .is-required .el-input__inner,.el-checkbox{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
     background: #f7c9cb !important;
   }
 }
