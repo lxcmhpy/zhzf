@@ -26,7 +26,6 @@
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['afdd'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
                 </el-form-item>
               </td>
               <td>执法时间</td>
@@ -805,6 +804,15 @@ export default {
     saveData(handleType) {
       // this.printContent()
       this.docData.recorder = this.docData.recorderArr.join(',');
+
+      if(this.docData.readState.length==0){
+        this.$message({
+          type: "error",
+          message: "请选择是否看过上述笔录"
+        });
+        return;
+      }
+
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -1037,7 +1045,7 @@ export default {
       height: 20px;
     }
   }
-  .is-required .el-input__inner{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
     background: #f7c9cb !important;
   }
 }
