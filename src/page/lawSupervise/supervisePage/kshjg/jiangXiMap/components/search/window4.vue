@@ -123,6 +123,17 @@ export default {
     },
 
     /**
+     * 添加轨迹动画
+     */
+    addTrackAction(points) {
+      let data = {
+        id: 'trackAction',
+        imgUrl: '/static/images/img/lawSupervise/map_renyuan.png'
+      }
+      this.indexPage.page.addTrackAction(data, points)
+    },
+
+    /**
      * 获取轨迹数据
      */
     getTrackPoints(params, layerName) {
@@ -137,6 +148,7 @@ export default {
           return [item.x, item.y]
         })
         this.indexPage.page.addLine(points, this.window4.info.id, layerName)
+        this.addTrackAction(points)
       })
     },
 
