@@ -70,18 +70,15 @@
         </div>
         <div class="treeT">
           <el-tree
-            :data="treeData"
+            :data="handleTree"
             show-checkbox
             node-key="label"
             ref="tree"
             highlight-current
-            @node-expand = 'openTree'
+            :render-content="renderSlot"
+            node-collapse = 'closeTree'
+            @node-click="handleNodeClick"
             :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node }">
-              <!-- <span class="headImg"><img src="/static/images/img/lawSupervise/icon_04.png" alt=""></span> -->
-              <span class="treeWord">{{ node.label }}</span>
-              <span class="lastImg"><img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt=""></span>
-            </span>
           </el-tree>
         </div>
         <div>
@@ -148,7 +145,8 @@ export default {
       group_info:[],
       user_info:[],
       groupCopy:[],
-      newGroup:''
+      newGroup:'',
+      handleTree:[],
     }
   },
   watch: {
@@ -233,10 +231,6 @@ export default {
             console.log('demo_req_delete_group result:{}', rsp);
         }, 'demo_req_delete_group');
     },
-    openTree(data,node){
-      console.log(data)
-      console.log(node)
-    },
     delGroup(row){
         this.$confirm('确认删除该群组吗?', '删除群组', {
           confirmButtonText: '确定',
@@ -262,27 +256,7 @@ export default {
       this.req_remove_group_member(row.tgid,uidArr)
        this.getListData()
     },
-    // 确认
-    getCheckedKeys(){
-      this.selectedArrT = this.$refs.tree.getCheckedKeys()
-      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
-      console.log(this.$refs.tree.getCheckedKeys())
-      for (let i = 0; i < this.selectedArrT.length; i++) {
-        this.selectedArrQ.push(this.selectedArrT[i])
-      }
-      this.selectedArrQ = this.unique(this.selectedArrQ)
-    },
-    // 重选
-    resetChecked(){
-        for (let j = 0; j < this.selectedArrQ.length; j++) {
-          for (let i = 0; i < this.selectedArrT.length; i++) {
-            if(this.selectedArrQ[j] == this.selectedArrT[i]){
-              this.selectedArrQ.splice(j,1)
-            }
-          }
-        }
-       this.$refs.tree.setCheckedKeys([]);
-    },
+    
     //添加人员
     selectP(val){
       this.selectedArrQ.push(val)
@@ -339,6 +313,7 @@ export default {
         if(res.code === 200) {
           console.log(1,res.data)
           this.treeData = res.data
+          this.handleData()
         } else {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
@@ -346,10 +321,88 @@ export default {
         console.log(2,data)
       })
     },
-
-    handleSelectionChange(val){
-      console.log(val)
+    // tree 图标
+    renderSlot(h,{ node, data, store }) {
+      return (
+        <div class="tree-slot-box">
+          <img class='img1'
+            src={
+              data.label === '执法人员' ?'/static/images/img/lawSupervise/icon_jc11.png': '/static/images/img/lawSupervise/icon_jc1.png'
+            }
+          />
+          <span >{data.label}</span>
+           <img class='img2' on-click={ () => this.addPeople(data) }
+            src={
+              // (data.organId || data.label == "执法人员")?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
+              data.organId?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
+            }
+          />
+        </div>
+      )
+    },
+    //处理数据
+    handleData(){
+      this.handleTree = this.deleteChildren(this.treeData)
+    },
+    deleteChildren(arr){
+      let childs = arr
+      for (let i = childs.length; i--; i > 0) {
+        if (childs[i].children) {
+          if (childs[i].children.length) {
+            this.deleteChildren(childs[i].children)
+          } else if(childs[i].label == "执法车辆" || childs[i].label == "执法船舶"){
+               childs.splice(i,1) 
+          }
+        }
+      }
+      return arr
+      console.log(arr)
+    },
+    // 获取执法人员数据
+    handleNodeClick(data) {
+      console.log(data)
+        if(data.label === "执法人员") {
+          this.$emit('getPeople',data)
+        } 
+    },
+    // 添加通讯录人员
+    addPeople(obj){
+      this.selectedArrT.push(obj)
+    },
+    // 确认
+    getCheckedKeys(){
+      this.selectedArrT = this.selectedArrT.map((v)=>{
+        return {uid:v.sn,display_name:v.label}
+      })
+      for (let i = 0; i < this.selectedArrT.length; i++) {
+          if(this.selectedArrT[i].uid){
+              this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
+          }
+      }
+      this.selectedArrQ = this.unique(this.selectedArrQ)
+      console.log(this.selectedArrT)
+      console.log(this.selectedArrQ)
+      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
+      // console.log(this.$refs.tree.getCheckedKeys())
+      // for (let i = 0; i < this.selectedArrT.length; i++) {
+      //   this.selectedArrQ.push(this.selectedArrT[i])
+      // }
+      // this.selectedArrQ = this.unique(this.selectedArrQ)
       
+    },
+    // 重选
+    resetChecked(){
+        for (let j = 0; j < this.selectedArrQ.length; j++) {
+          for (let i = 0; i < this.selectedArrT.length; i++) {
+            if(this.selectedArrQ[j].sn == this.selectedArrT[i].sn){
+              this.selectedArrQ.splice(j,1)
+            }
+          }
+        }
+       this.$refs.tree.setCheckedKeys([]);
+    },
+    handleSelectionChange(val){
+      this.addPeople(val)
         // for (let i = 0; i < val.length; i++) {
         //   this.selectedArrQ.push(val[i].name)
         // }
@@ -470,5 +523,23 @@ export default {
         width: 10%;
       }
     }
+   .el-tree {
+    border-radius: 4px;
+    .tree-slot-box {
+      .img1 {
+        width: 13px;
+        margin-right: 5px;
+      }
+      span {
+        font-size: 12px;
+        font-family: Helvetica,Arial,sans-serif;
+      }
+      .img2{
+        margin-left: 5px;
+        width: 13px;
+        vertical-align: bottom;
+      }
+    }
+  }
 }
 </style>

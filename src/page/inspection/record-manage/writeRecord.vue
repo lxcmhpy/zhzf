@@ -152,9 +152,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="fileVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveRecordFileType"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="saveRecordFileType">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -353,9 +351,10 @@ export default {
                   JSON.parse(item.text).forEach((vv) => {
                     _this.imgObj[item.title].push({
                       id: vv.storageId,
-                      url: vv.storagePath,
+                      // url: vv.storagePath,
                     });
                   });
+                  // debugger
                 }
               }
             });
@@ -511,6 +510,7 @@ export default {
 
     //设置text存储需要用的信息
     setText(submitData) {
+      // debugger;
       submitData.forEach((element) => {
         element.fieldList.forEach((item) => {
           if (item.type === "图片型") {
@@ -519,7 +519,7 @@ export default {
               this.imgObj[item.title].forEach((vv) => {
                 arr.push({
                   storageId: vv.id,
-                  storagePath: vv.url,
+                  // storagePath: vv.url,
                 });
               });
               item.text = JSON.stringify(arr);
@@ -540,14 +540,14 @@ export default {
 
     // 提交接口
     submitMethod(fileSaveType) {
-      console.log("baocun", this.addOrEiditFlag);
-      return;
+      // console.log("baocun", this.addOrEiditFlag);
+      // return;
       console.log("formData", this.formData);
       let submitData = JSON.parse(JSON.stringify(this.baseData));
       this.setText(submitData);
 
       submitData = JSON.stringify(submitData);
-      console.log("submitData", submitData);
+      // console.log("submitData", submitData);
       this.formData.layout = submitData;
       this.formData.templateFieldList = "";
       this.formData.createTime = "";
@@ -621,7 +621,7 @@ export default {
     // 暂存
     onSaveRecord(noRouter) {
       console.log("暂存", this.addOrEiditFlag);
-      return;
+      // return;
       // console.log('rule', this.rule)
       this.noUseValidate();
       this.formData.status = "暂存";
@@ -1187,7 +1187,7 @@ export default {
             field: item.id || item.field, //id用于传值，field用于预览
             title: item.title,
             props: {
-              autofocus:false,
+              autofocus: false,
               type: "text",
               placeholder: item.remark,
               disable: true,
@@ -1247,8 +1247,8 @@ export default {
               maxLength: 5,
               limit: 5,
               allowRemove: true,
-              accept: "image/jpeg,image/jpg", // 上传文件类型
-              format: ["jpg", "jpeg"], // 上传文件格式
+              accept: "image/jpeg,image/jpg,image/bmp", // 上传文件类型
+              format: ["jpg", "jpeg", "bmp"], // 上传文件格式
               // maxSize: 2048, // 上传文件大小最大值
               handleIcon: true, //显示预览按钮
               autoUpload: true,
@@ -1262,7 +1262,7 @@ export default {
                 console.log("onRemove -> file, fileList", file, fileList);
                 console.log("dealFieldData -> rules.value", rules.value);
                 rules.imgData.forEach((item, index) => {
-                  if (item.url === file.url) {
+                  if (item.id === file.id) {
                     rules.imgData.splice(index, 1);
                   }
                 });
@@ -1280,11 +1280,14 @@ export default {
                 fd.append("docId", this.recordMsg); //传记录id
                 let res = await uploadCommon(fd);
                 // url = res.data[0].storagePath;
-                if (res.data[0].storagePath) {
-                  url = res.data[0].storagePath;
+                if (res.data[0].storageId) {
+                  let imgPath = await _this.$util.com_getFileStream(
+                    res.data[0].storageId
+                  );
+                  url = imgPath;
                   rules.imgData.push({
                     id: res.data[0].storageId,
-                    url: res.data[0].storagePath,
+                    // url: url,
                   });
                   if (item.required && rules.imgData.length > 0) {
                     _this.$data.$f.clearValidateState(item.id);
@@ -1294,13 +1297,20 @@ export default {
                   this.$message.warning("图片上传失败，请重新上传");
                 }
               },
+              beforeUpload: function (file) {
+                console.log("beforeUpload -> file", file);
+                if (file.type !== "image/jpeg" && file.type !== "image/jpg") {
+                  this.$message.warning("请上传jpg、jpeg格式图片");
+                  return false;
+                }
+              },
+
               onChange: function (file, fileList) {
                 if (url) {
                   rules.value.push(url);
-                  // console.log("dealFieldData -> rules.value", rules.value)
+                  console.log("onChange -> rules.value", rules.value);
                   url = "";
                 }
-                console.log("this", item);
                 _this.imgObj[item.title] = rules.imgData;
                 console.log("onChange -> _this.imgObj", _this.imgObj);
               },
@@ -1314,10 +1324,13 @@ export default {
           };
           if (JSON.parse(item.text) && JSON.parse(item.text).length) {
             JSON.parse(item.text).forEach((vv) => {
-              rules.value.push(vv.storagePath);
+              this.$util.com_getFileStream(vv.storageId).then((imgPath) => {
+                rules.value.push(imgPath);
+                rules.imgData = this.imgObj[item.title];
+              });
             });
-            rules.imgData = this.imgObj[item.title];
           }
+
           this.rule.push(rules);
         }
         if (item.field == "party") {
@@ -1416,7 +1429,7 @@ export default {
       //     cate = element.cateId;
       //   }
       // });
-      if(inject.self.title==='违法行为'){
+      if (inject.self.title === "违法行为") {
         let lawCate = {
           cateId: "1002000200000000",
           cateName: "道路运政",
@@ -1425,7 +1438,6 @@ export default {
         };
         this.$refs.chooseillegalActRef.showModal(lawCate);
       }
-      
     },
     //设置违法行为
     toCaseRegister(val) {

@@ -185,5 +185,12 @@
     "CHECK_API": "http://124.192.215.11:8081",
     "QZ_SOCKET_HOST": "ws://172.16.170.44:8083",
     "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
+  },
+  "BZ": {
+    "CAPTCHA_HOST": "http://172.16.170.54:8083/gateway",
+    "VIDEO_HOST": "wss://172.16.170.47:10062",
+    "CHECK_API": "http://172.16.170.54:8083/check",
+    "QZ_SOCKET_HOST": "ws://172.16.170.54:8083",
+    "VIDEO_UDP_HOST": "udp://172.16.170.47:7766"
   }
 }

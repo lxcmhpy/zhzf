@@ -21,7 +21,7 @@
                     v-model="docData.afdd"
                     v-bind:class="{ over_flow:docData.afdd.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="nameLength"
+                    maxlength="64"
                     error
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['afdd'])"
@@ -219,7 +219,7 @@
                   <el-input
                     type="textarea"
                     v-model="docData.scenePeopelIdNo"
-                    :maxLength="maxLength"
+                    maxLength="18"
                     placeholder="/"
                     v-bind:class="{ over_flow:docData.scenePeopelIdNo.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}"
@@ -276,8 +276,7 @@
                 >
                   <el-input
                     v-model="docData.scenePeopeTel"
-                    minlength="11"
-                    :maxLength="maxLength"
+                    maxLength="11"
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeTel'])"
                   ></el-input>
@@ -294,7 +293,7 @@
                   <el-input
                     v-model="docData.scenePeopeAddress"
                     minlength="11"
-                    :maxLength="maxLength"
+                    maxLength="64"
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeAddress'])"
                   ></el-input>
@@ -589,6 +588,21 @@ export default {
         defense:"",
       },
       rules: {
+        certificateId1: [
+          { required: true, message: "执法证号不能为空", trigger: "blur" },
+        ],
+        certificateId2: [
+          { required: true, message: "执法证号不能为空", trigger: "blur" },
+        ],
+        attendance: [
+          { required: true, message: "当事人到场情况不能为空", trigger: "blur" },
+        ],
+        information: [
+          { required: true, message: "强制措施告知情况不能为空", trigger: "blur" },
+        ],
+        illegalFacts: [
+          { required: true, message: "主要内容不能为空", trigger: "blur" },
+        ],
         afdd: [
           { required: true, message: "执法地点不能为空", trigger: "blur" },
         ],
@@ -1006,6 +1020,9 @@ export default {
       margin: 4px 0;
       height: 20px;
     }
+  }
+  .is-required .el-input__inner{
+    background: #f7c9cb !important;
   }
 }
 </style>

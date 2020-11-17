@@ -662,7 +662,7 @@ export default {
           tableArr.push(item)
         }
       });
-      this.tableDatas = tableArr;
+     this.tableDatas = JSON.parse(JSON.stringify(tableArr));
       this.addVisible = true;
       if (this.tableDatas.length == 0) {
         this.tableDatas.push({ resNo: 1, num: 1 });
