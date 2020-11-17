@@ -334,7 +334,6 @@
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
-                        maxlength="400"
                         placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
@@ -626,6 +625,7 @@ export default {
         ],
         illegalFacts: [
           { required: true, message: "现场情况不能为空", trigger: "blur" },
+          { max: 400, message: "最多400字符", trigger: "blur" }
         ],
         readState: [
           {
