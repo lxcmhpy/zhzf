@@ -91,7 +91,7 @@ export default {
           //   // bnsLawNoteCog: item.bnsLawNoteCog,
           //   // bnsLawNotePun: item.bnsLawNoteCog,
           // };
-          item.bnsLawNotePun = item.bnsLawNoteCog;
+          // item.bnsLawNotePun = item.bnsLawNoteCog;
           item.illageClause =
             "《" + item.bnslawNameCog + "》第" + item.itemCog + "条" + xiang1;
           item.punishClause =

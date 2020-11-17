@@ -29,11 +29,11 @@
         <p>经调查，你（单位）存在下列违法事实：</p>
         <div class="overflow_lins_style">
           <div class="overflow_lins">
-            <el-form-item prop="caseName" :rules="fieldRules('caseName',propertyFeatures['caseName'])">
+            <el-form-item prop="illegalFact" :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])">
               <el-input
                 class="overflow_lins_textarea"
                 type="textarea"
-                v-model="formData.caseName"
+                v-model="formData.illegalFact"
                 rows="3"
                 maxlength="75"
               ></el-input>
@@ -209,6 +209,7 @@ export default {
         litigationOrgan: "",
         makeDate: "",
         caseName:'',
+        illegalFact:''
       },
       reconsiderationOptions: [], //行政复议机构
       enforcementOptions: [], //行政诉讼机构

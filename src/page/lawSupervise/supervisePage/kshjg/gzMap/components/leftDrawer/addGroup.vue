@@ -70,6 +70,7 @@ export default {
         for (let i = 0; i < arrs.length; i++) {
             this.id.push(arrs[i].uid)
         }
+        console.log(this.id)
     },
   }
 }
