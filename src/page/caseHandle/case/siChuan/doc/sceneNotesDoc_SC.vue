@@ -794,6 +794,14 @@ export default {
     //保存文书信息
     saveData(handleType) {
       // this.printContent()
+      if(this.docData.readState.length==0){
+        this.$message({
+          type: "error",
+          message: "请选择是否看过上述笔录"
+        });
+        return;
+      }
+      return;
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -1020,7 +1028,7 @@ export default {
       height: 20px;
     }
   }
-  .is-required .el-input__inner{
+  .is-required .el-input__inner,.el-checkbox{
     background: #f7c9cb !important;
   }
 }
