@@ -73,6 +73,7 @@
             :data="handleTree"
             show-checkbox
             ref="tree"
+            node-key="id"
             :render-content="renderSlot"
             @node-click="handleNodeClick"
             @check-change="handleCheckChange"
