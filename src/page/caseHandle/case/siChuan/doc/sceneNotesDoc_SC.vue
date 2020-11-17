@@ -802,7 +802,6 @@ export default {
         });
         return;
       }
-      return;
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
