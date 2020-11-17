@@ -199,7 +199,7 @@ export default {
       });
     },
     // 获取群组下的人员
-    zydescription(data){
+    getGroupPeople(data){
         var users = []
         let uidArr = data.uids
         for (let i = 0; i < this.user_info.length; i++) {
@@ -222,6 +222,12 @@ export default {
               }
             }
         }
+    },
+    zydescription(data){
+       let _this = this
+       setTimeout(function()  {
+          _this.getGroupPeople(data)
+        }, 100);
     },
     // 删除群组
     req_delete_group(tgid) {
