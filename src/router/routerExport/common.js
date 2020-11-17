@@ -4,6 +4,8 @@ import caseHandleRouterJson from './routerJson/caseHandleRouterJson'
 import caseHandleRouterJson_JX from './routerJson/caseHandleRouterJson_JX'
 import caseHandleRouterJson_QH from './routerJson/caseHandleRouterJson_QH'
 import caseHandleRouterJson_SC from './routerJson/caseHandleRouterJson_SC'
+import caseHandleRouterJson_NX from './routerJson/caseHandleRouterJson_NX'
+
 
 import lawSuperviseJson from './routerJson/lawSuperviseJson'
 import caseCenterJson from './routerJson/caseCenterJson'
@@ -84,7 +86,8 @@ const route = [
           ...caseHandleRouterJson,
           ...caseHandleRouterJson_JX,
           ...caseHandleRouterJson_QH,
-          ...caseHandleRouterJson_SC
+          ...caseHandleRouterJson_SC,
+          ...caseHandleRouterJson_NX
 
         ]
       },

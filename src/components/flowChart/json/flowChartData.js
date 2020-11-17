@@ -9,11 +9,11 @@ let flowGraphData = {
   commonGraphData: {
     nodes: [
       { id: "1", source: '1', target: "2_1", linkID: BASIC_DATA_SYS.establish_caseLinktypeId, name: "立案登记", linkName: 'case_handle_establish', docId: BASIC_DATA_SYS.establish_huanjieAndDocId, position: { x: 1, y: 1 }, itemStyleColor: "", attributes: { modularity_class: 'lct_01' } },
-      { id: "temp1_1", source: '1', target: "temp1_1", linkID: 'temp1_1', name: "", position: { x: 1, y: 1.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
-      { id: "temp1_2", source: 'temp1_1', target: "temp1_2", linkID: 'temp1_2', name: "", position: { x: 2, y: 1.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
-      { id: "temp1_2_1", source: 'temp1_2', target: "2_2", linkID: 'temp1_2_1', name: "", position: { x: 1, y: 1 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      // { id: "temp1_1", source: '1', target: "temp1_1", linkID: 'temp1_1', name: "", position: { x: 1, y: 1.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      // { id: "temp1_2", source: 'temp1_1', target: "temp1_2", linkID: 'temp1_2', name: "", position: { x: 2, y: 1.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
+      // { id: "temp1_2_1", source: 'temp1_2', target: "2_2", linkID: 'temp1_2_1', name: "", position: { x: 1, y: 1 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       { id: "2_1", source: "2_1", target: "3", linkID: BASIC_DATA_SYS.caseDoc_caseLinktypeId, name: "调查类\n文书", linkName: 'case_handle_caseDoc', position: { x: 1, y: 2 }, itemStyleColor: "", attributes: { modularity_class: 'lct_03' } },
-      { id: "2_2", source: "2_2", target: "2_1", linkID: BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId, name: "行政强制\n措施", linkName: 'case_handle_adminCoerciveMeasure', docId: BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId, position: { x: 2, y: 2 }, itemStyleColor: "", attributes: { modularity_class: 'lct_02' } },
+      // { id: "2_2", source: "2_2", target: "2_1", linkID: BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId, name: "行政强制\n措施", linkName: 'case_handle_adminCoerciveMeasure', docId: BASIC_DATA_SYS.adminCoerciveMeasure_huanjieAndDocId, position: { x: 2, y: 2 }, itemStyleColor: "", attributes: { modularity_class: 'lct_02' } },
       { id: "3", source: "3", target: "4_1", linkID: BASIC_DATA_SYS.caseInvestig_caseLinktypeId, name: "调查报告", linkName: 'case_handle_caseInvestig', docId: BASIC_DATA_SYS.caseInvestig_huanjieAndDocId, position: { x: 1, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_04' } },
       { id: "temp3_1", source: '3', target: "temp3_1", linkID: 'temp3_1', name: "", position: { x: 1, y: 3.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       { id: "temp3_2", source: 'temp3_1', target: "temp3_2", linkID: 'temp3_2', name: "", position: { x: 2, y: 3.5 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
@@ -194,7 +194,7 @@ let flowGraphData = {
       
       
       // { id: "temp4_3_1", source: 'temp4_3_1', target: "temp7_2_1", linkID: 'temp4_3_1', name: "", position: { x: 3, y: 7 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
-      { id: "10", source: "10", target: "temp12", linkID: BASIC_DATA_SC.transfei_SC_caseLinktypeId, name: "移交移送", linkName: 'case_handle_transfer_SC', position: { x: 3, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_14' } },
+      { id: "10", source: "10", target: "temp12", linkID: BASIC_DATA_SC.transfei_SC_caseLinktypeId, name: "移交移送", linkName: 'case_handle_transfer_SC', docId: BASIC_DATA_SC.transfei_SC_huanjieAndDocId,position: { x: 3, y: 3 }, itemStyleColor: "", attributes: { modularity_class: 'lct_14' } },
       { id: "temp12", source: 'temp12', target: "temp10", linkID: 'temp12', name: "", position: { x: 3, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       // { id: "temp13", source: 'temp13', target: "8", linkID: 'temp13', name: "", position: { x: 4, y: 4 }, itemStyleColor: "", attributes: { modularity_class: 'hide' } },
       
