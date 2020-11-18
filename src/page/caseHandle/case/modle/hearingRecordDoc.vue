@@ -519,11 +519,13 @@
       getDataAfter() {
         console.log('staff', this.docData.staff)
         this.staffList = this.docData.staff.split(",");
-        this.docData.staff1 = this.docData.staff.split(",")[0];
-        this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
-        if (this.staffList.length == 2) {
-          this.docData.staff2 = this.docData.staff.split(",")[1];
-          this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+        if(this.caseDocDataForm.status == ''){
+          this.docData.staff1 = this.docData.staff.split(",")[0];
+          this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
+          if (this.staffList.length == 2) {
+            this.docData.staff2 = this.docData.staff.split(",")[1];
+            this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
+          }
         }
         // let staffList = this.docData.staff.split(',');
         // let staffIdList = this.docData.staffId.split(',');

@@ -369,7 +369,8 @@ export default {
       console.log(arr)
     },
     // 获取执法人员数据
-    handleNodeClick(data) {
+    handleNodeClick(data,node) {
+       node.checked = !(node.checked)
         if(data.label === "执法人员") {
           this.$emit('getPeople',data)
         } 
