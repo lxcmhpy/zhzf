@@ -12,8 +12,7 @@
           <div class="doc_topic">现场笔录</div>
           <div
             class="doc_number"
-          >赣（{{docData.caseNumber.substring(3,7)}}）交现录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
-          <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
+          >{{docData.caseNumber}}</div>
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>

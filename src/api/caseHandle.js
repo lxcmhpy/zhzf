@@ -852,9 +852,14 @@ export function saveOrUpdatePropertyApi(data) {
   return request({
     url: "/case/doc/propertyBind/saveOrUpdatePropertyBindTemplate",
     method: "POST",
-    params: data,
+    // params: data,
+    // showloading: true,
+    // loadingType: 'loadPart',
+    // cancelToken: setCancelSource()
+    data: data,
     showloading: true,
     loadingType: 'loadPart',
+    contentType: 'application/json',
     cancelToken: setCancelSource()
   });
 }

@@ -192,7 +192,7 @@ import { mapGetters } from "vuex";
 import overflowInput from "../modle/overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateZIP } from "@/common/js/validator";
-import illegalActionPunishDecision from "./illegalActionPunishDecision";
+import illegalActionPunishDecision from "@/page/caseHandle/case/jiangxi/diag/illegalActionPunishDecision";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -334,22 +334,23 @@ export default {
 
     },
     getDataAfter(){
-      //获取机构详情
-      let params = { id: iLocalStroage.gets("userInfo").organId };
-      let _this = this
-      this.$store.dispatch("getOrganDetail", params).then(
-        res => {
-//          console.log("机构", res);
-          let organData = res.data;
-          _this.formData.organContactor = organData.contactor;
-          _this.formData.organAddress = organData.address;
-          _this.formData.organZipCode = organData.zipCode;
-          _this.formData.organTel = organData.telephone;
-        },
-        err => {
-//          console.log(err);
-        }
-      );
+      if(!this.formData.organZipCode){
+        //获取机构详情
+        let params = { id: iLocalStroage.gets("userInfo").organId };
+        let _this = this
+        this.$store.dispatch("getOrganDetail", params).then(
+          res => {
+            let organData = res.data;
+            _this.formData.organContactor = organData.contactor;
+            _this.formData.organAddress = organData.address;
+            _this.formData.organZipCode = organData.zipCode;
+            _this.formData.organTel = organData.telephone;
+          },
+          err => {
+  //          console.log(err);
+          }
+        );
+      }
     }
   },
   created() {
