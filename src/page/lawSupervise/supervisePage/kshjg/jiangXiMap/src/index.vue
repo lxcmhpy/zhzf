@@ -75,7 +75,7 @@ export default {
       ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
-      zoom: 3,
+      zoom: 8,
       center: [115.871344, 28.710709],
       searchWindowData: {
         window1: {
