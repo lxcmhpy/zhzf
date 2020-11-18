@@ -186,7 +186,7 @@
             </div>
           </div>
           <div v-if="inforForm.zfmlId !== '1002000100000000'">
-            <div class="itemOne">
+            <!-- <div class="itemOne">
               <el-form-item label="案发地点">
                 <el-input v-model="inforForm.afdd">
                   <template slot="append">
@@ -210,6 +210,37 @@
                   </template>
                 </el-input>
               </el-form-item>
+            </div> -->
+            <label class="el-form-item__label" style="width: 100px"
+              >案发地点</label
+            >
+            <div class="itemFive2" style="width:60%;">
+              <el-form-item label-width="0" prop="afdd">
+                <el-input
+                  ref="afdd"
+                  v-model="inforForm.afdd"
+                >
+                </el-input>
+              </el-form-item>
+            </div>
+            <div class="showMapBtn" style="padding-top:4px;">
+              <label class="mustTip">*</label>
+              <el-button
+                type="primary"
+                icon="iconfont law-weizhi"
+                size="mini"
+                @click="showMap"
+                v-if="!hasLatitudeAndLongitude"
+                >请获取坐标</el-button
+              >
+              <el-button
+                type="info"
+                icon="iconfont law-weizhi"
+                size="mini"
+                @click="showMap"
+                v-else
+                >已获取坐标</el-button
+              >
             </div>
           </div>
           <div v-if="inforForm.zfmlId === '1002000100000000'">
@@ -333,7 +364,7 @@
             </div>
           </div>
           <div v-if="inforForm.zfmlId == '1002000500000000'">
-            <div class="itemOne">
+            <!-- <div class="itemOne">
               <el-form-item label="案发地点">
                 <el-input v-model="inforForm.afdd">
                   <template slot="append">
@@ -357,6 +388,37 @@
                   </template>
                 </el-input>
               </el-form-item>
+            </div> -->
+            <label class="el-form-item__label" style="width: 100px"
+              >案发地点</label
+            >
+            <div class="itemFive2" style="width:60%;">
+              <el-form-item label-width="0" prop="afdd">
+                <el-input
+                  ref="afdd"
+                  v-model="inforForm.afdd"
+                >
+                </el-input>
+              </el-form-item>
+            </div>
+            <div class="showMapBtn" style="padding-top:4px;">
+              <label class="mustTip">*</label>
+              <el-button
+                type="primary"
+                icon="iconfont law-weizhi"
+                size="mini"
+                @click="showMap"
+                v-if="!hasLatitudeAndLongitude"
+                >请获取坐标</el-button
+              >
+              <el-button
+                type="info"
+                icon="iconfont law-weizhi"
+                size="mini"
+                @click="showMap"
+                v-else
+                >已获取坐标</el-button
+              >
             </div>
           </div>
         </div>
