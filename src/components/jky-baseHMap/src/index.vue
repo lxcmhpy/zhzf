@@ -72,8 +72,8 @@ export default {
           projection: 'EPSG:4326',
           zoom: this.zoom,
           extent: [113.57277, 24.488942, 118.482124, 30.079848],
-          minZoom: 2,
-          maxZoom: 10
+          // minZoom: 2,
+          // maxZoom: 10
         },
         baseLayers: [
           {
@@ -133,7 +133,7 @@ export default {
      * 添加信息窗体
      */
     addOverlay(data, content) {
-      this.map.removeOverlay(this.informationWindow)
+      // this.map.removeOverlay(this.informationWindow)
       let latLng = data.propertyValue.split(',')
       this.informationWindow = new HMap.Popover(this.map.getMap(), {
         offset: [0, -45],
@@ -184,6 +184,9 @@ export default {
         }
       }
       this.map.addPoint(point, options)
+      // 打点同时打开信息窗体
+      let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName || data.eventName
+      this.addOverlay(data, content)
     },
 
     /**
@@ -191,7 +194,7 @@ export default {
      */
     addPoints(arr) {
       if(arr) {
-        this.map.removeOverlay(this.informationWindow)
+        // this.map.removeOverlay(this.informationWindow)
         // 清除单点点位
         this.cleanPoint()
 
@@ -201,6 +204,9 @@ export default {
           let point = (item && item.propertyValue && item.propertyValue.split(',')) || []
           // 点位数据正常
           if(point.length === 2) {
+            // 打开信息窗体
+            let content = item.vehicleNumber || item.label || item.name || item.shipNumber || item.nickName || item.eventName
+            this.addOverlay(item, content)
             return {
               attributes: {
                 id: item.id,

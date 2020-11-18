@@ -145,7 +145,7 @@ export default {
         }
       }).then(data => {
         let points = data.map(item => {
-          return [item.x, item.y]
+          return [Number(item.x), Number(item.y)]
         })
         this.indexPage.page.addLine(points, this.window4.info.id, layerName)
         this.addTrackAction(points)

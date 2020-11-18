@@ -609,6 +609,11 @@ export default {
 .print_box #finishCase_print .doc_cause .caseNameBox span.el-textarea {
   top: -12px;
 }
+#finishCase_print{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
+    background: #f7c9cb !important;
+  }
+}
 .print_box #finishCase_print .doc_cause .caseNameBox span.over_flow {
   top: -8px;
   text-overflow: initial;
