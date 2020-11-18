@@ -338,7 +338,7 @@
               </el-form-item>
             </div>
             <div class="itemOne">
-              <el-form-item label-width="100px">
+              <!-- <el-form-item label-width="100px">
                 <el-input v-model="inforForm.afdd" placeholder="定位点信息">
                   <template slot="append">
                     <div class="showMapBtn" title="点击获取坐标">
@@ -360,7 +360,36 @@
                     </div>
                   </template>
                 </el-input>
-              </el-form-item>
+              </el-form-item> -->
+              <label class="el-form-item__label" style="width: 100px;height:20px;"></label>
+              <div class="itemFive2" style="width:60%;">
+                <el-form-item label-width="0" prop="afdd">
+                  <el-input
+                    ref="afdd"
+                    v-model="inforForm.afdd"
+                  >
+                  </el-input>
+                </el-form-item>
+              </div>
+              <div class="showMapBtn" style="padding-top:4px;">
+                <label class="mustTip">*</label>
+                <el-button
+                  type="primary"
+                  icon="iconfont law-weizhi"
+                  size="mini"
+                  @click="showMap"
+                  v-if="!hasLatitudeAndLongitude"
+                  >请获取坐标</el-button
+                >
+                <el-button
+                  type="info"
+                  icon="iconfont law-weizhi"
+                  size="mini"
+                  @click="showMap"
+                  v-else
+                  >已获取坐标</el-button
+                >
+              </div>
             </div>
           </div>
           <div v-if="inforForm.zfmlId == '1002000500000000'">
