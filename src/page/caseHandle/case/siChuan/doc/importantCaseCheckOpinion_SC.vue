@@ -576,4 +576,9 @@ export default {
     text-align-last: center;  
   }
 }
+#adminCoerciveMeasureApproval_print{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
+    background: #f7c9cb !important;
+  }
+}
 </style>
