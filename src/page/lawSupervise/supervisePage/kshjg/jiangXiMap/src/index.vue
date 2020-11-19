@@ -396,6 +396,7 @@ export default {
         console.log('打开事件列表')
       }
     },
+    
   },
   activated() {
     this.getTree()
@@ -404,16 +405,8 @@ export default {
       this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
       this.organId = iLocalStroage.gets("userInfo").organId;
       this.$nextTick(() => {
-      //  debugger;
-      window.PhoneCallModule.initialize();
-      if (!window.PhoneCallModule.getRegistered()) {
-        // window.PhoneCallModule.sipRegister();
-        let displayName = 'ecds04';
-        let privateIdentity = '100006';
-        let password = '1234';
-        window.PhoneCallModule.sipRegister(displayName, privateIdentity, password);
-      }
-    })
+          this.initWxPhone(iLocalStroage.gets("userInfo").id)
+      })
   }
 }
 </script>
