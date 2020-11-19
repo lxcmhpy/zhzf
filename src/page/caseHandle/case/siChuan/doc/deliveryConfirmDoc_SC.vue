@@ -448,8 +448,7 @@ export default {
           { required: true, message: "证件号不能为空", trigger: "blur" }
         ],
         eleDeliveryType: [
-          { validator: validateAcceptElDel, trigger: "change" },
-          { required: true, message: "电子送达方式不能为空", trigger: "change" }
+          { validator: validateAcceptElDel, trigger: "change" }
         ],
         mobile: [
           { required: true, message: "手机号不能为空", trigger: "blur" }
