@@ -1,7 +1,7 @@
 <template>
 
   <!-- 悬浮按钮 -->
-  <div class="float-btns" style="bottom:250px;">
+  <div class="float-btns" >
       <!-- pdf文书可修改，立案登记和结案登记不可修改 审批中可修改,仅当前环节进行中可修改-->
     <!-- <span v-if="currentFileData"> -->
       <el-button type="primary"  style="margin-bottom: 10px;" @click="backWenshuBtn" v-if="isCanEdit">
@@ -47,11 +47,6 @@
       <i class="iconfont law-back"></i>
       <br />返回
     </el-button>
-
-    <!-- <el-button type="primary" @click="backHuanjie2" v-if="formOrDocData.isForceCorrect_SC_caseLinktypeId">
-      <i class="iconfont law-back"></i>
-      <br />返回
-    </el-button> -->
   
 
     <img src="" id="show">
@@ -241,37 +236,8 @@ export default {
     },
     saveDataBtn(handleType) {
       this.$emit('saveData', handleType);
-      // //当前环节为文书时
-      // if(this.formOrDocData.isHuanjie){
-      //   this.com_submitCaseForm(handleType, this.formOrDocData.formRef, this.formOrDocData.nextShowPdf);
-      // }else{
-      //   //文书保存
-      //   this.com_addDocData(handleType, this.formOrDocData.formRef);
-      // }
     },
-    //保存文书信息
-    //  addDocData(handleType){
-    //   let _this = this
-    //   this.com_addDocData(handleType,'docForm').then(
-    //     res => {
-    //       _this.$message({
-    //         type: "success",
-    //         message: "保存成功",
-    //       });
-    //       _this.$store.dispatch("deleteTabs", _this.$route.name);//关闭当前页签
-    //       _this.$router.push({
-    //         name: 'caseDoc',
-
-    //         params: {
-
-    //         }
-    //       });
-    //     },
-    //     err => {
-    //       console.log(err);
-    //     }
-    //   );
-    // },
+    
     // 跳转到pdf页面
     viewPDF() {
       this.$router.push({ name: "case_handle_viewPDF" })

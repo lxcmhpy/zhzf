@@ -247,7 +247,7 @@ export default {
       },
       nameLength: 23,
       adressLength: 23,
-      maxLength: 23,
+      maxLength: 50,
       maxLengthOverLine: 122,
       formOrDocData: {
         showBtn: [false, true, true, false, false, false, false, false, false], //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节

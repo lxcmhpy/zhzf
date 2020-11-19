@@ -6,14 +6,15 @@
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
-            <td><p>移送</p><p>机关</p></td>
+            <td style="width:50px;"><p>移送</p><p>机关</p></td>
             <td colspan="7" style="text-align-last:left;" class="color_DBE4EF">
-              <el-form-item prop="organName" :rules="fieldRules('organName',propertyFeatures['organName'],'',isParty)">
+              <div style="float:left;line-height:44px;"><span>(加盖印章)</span></div>
+              <div style="float:left;"><el-form-item prop="organName" :rules="fieldRules('organName',propertyFeatures['organName'],'',isParty)">
                 <el-input type='textarea' v-model="formData.organName" :autosize="{ minRows: 1, maxRows: 3}" maxlength="100" 
                   :disabled="!isParty" placeholder="/"></el-input>
-              </el-form-item>
+              </el-form-item></div>
             </td>
-            <td><p>地</p><p>址</p></td>
+            <td><p>地址</p></td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="transAddress" :rules="fieldRules('transAddress',propertyFeatures['transAddress'],'',isParty)">
                 <el-input type='textarea' v-model="formData.transAddress" :autosize="{ minRows: 1, maxRows: 3}" maxlength="30" :disabled="!isParty || fieldDisabled(propertyFeatures['transAddress'])" placeholder="/"></el-input>
@@ -28,7 +29,7 @@
                   :disabled="!isParty || fieldDisabled(propertyFeatures['checkedUser'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
-            <td><p>联</p><p>系</p><p>电</p><p>话</p></td>
+            <td><p>联系</p><p>电话</p></td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyPeopleTel" :rules="fieldRules('partyPeopleTel',propertyFeatures['partyPeopleTel'],validatePhone,isParty)">
                 <el-input v-model="formData.partyPeopleTel" maxLength='11' placeholder="/" :disabled="!isParty || fieldDisabled(propertyFeatures['partyPeopleTel'])"></el-input>
@@ -46,9 +47,7 @@
           </tr>
           <tr>
             <td rowspan="5">
-              当<br>
-              事<br>
-              人
+              <p>涉嫌违法或涉嫌犯罪当事人基本情况</p>
             </td>
             <td rowspan="2">个人</td>
             <td>姓名</td>
@@ -58,10 +57,20 @@
                   :disabled="!isParty || fieldDisabled(propertyFeatures['party'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
-            <td>身份证件号</td>
+            <td>性别</td>
             <td colspan="2" class="color_DBE4EF">
-              <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
-                <el-input type='textarea' v-model="formData.partyIdNo" :maxLength='18' placeholder="/" :autosize="{ minRows: 1, maxRows: 3}" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"></el-input>
+              <el-form-item
+                prop="partySex"
+                :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)"
+              >
+                <el-select
+                  placeholder="/"
+                  v-model="formData.partySex"
+                  :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
+                >
+                  <el-option value="0" label="男"></el-option>
+                  <el-option value="1" label="女"></el-option>
+                </el-select>
               </el-form-item>
             </td>
             <td>年龄</td>
@@ -88,26 +97,16 @@
                 <el-input type='textarea' v-model="formData.partyAddress" v-bind:class="{ over_flow:formData.partyAddress.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" maxlength="30" :disabled="!isParty || fieldDisabled(propertyFeatures['partyAddress'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
+            <td>身份证件号码</td>
+            <td colspan="2" class="color_DBE4EF">
+              <el-form-item prop="partyIdNo" :rules="fieldRules('partyIdNo',propertyFeatures['partyIdNo'],validateIDNumber,isParty)">
+                <el-input type='textarea' v-model="formData.partyIdNo" :maxLength='18' placeholder="/" :autosize="{ minRows: 1, maxRows: 3}" :disabled="!isParty || fieldDisabled(propertyFeatures['partyIdNo'])"></el-input>
+              </el-form-item>
+            </td>
             <td>联系<br>电话</td>
             <td colspan="2" class="color_DBE4EF">
               <el-form-item prop="partyTel" :rules="fieldRules('partyTel',propertyFeatures['partyTel'],validatePhone,isParty)">
                 <el-input v-model="formData.partyTel" maxLength='11' placeholder="/" :disabled="!isParty || fieldDisabled(propertyFeatures['partyTel'])"></el-input>
-              </el-form-item>
-            </td>
-            <td>性别</td>
-            <td colspan="2" class="color_DBE4EF">
-              <el-form-item
-                prop="partySex"
-                :rules="fieldRules('partySex',propertyFeatures['partySex'],'',isParty)"
-              >
-                <el-select
-                  placeholder="/"
-                  v-model="formData.partySex"
-                  :disabled="isParty || fieldDisabled(propertyFeatures['partySex'])"
-                >
-                  <el-option value="0" label="男"></el-option>
-                  <el-option value="1" label="女"></el-option>
-                </el-select>
               </el-form-item>
             </td>
           </tr>
@@ -151,7 +150,7 @@
             </td>
           </tr>
           <tr>
-            <td>涉嫌<br>违法<br>行为<br>或涉<br>嫌犯<br>罪罪<br>名<br></td>
+            <td><p>涉嫌<br>违法<br>行为<br>或涉<br>嫌犯<br>罪罪<br>名<br></p></td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="copyReason" :rules="fieldRules('copyReason',propertyFeatures['copyReason'],'',isParty)">
                 <el-input type='textarea' v-model="formData.copyReason" :autosize="{ minRows: 1, maxRows: 3}" maxlength="200" 
@@ -171,7 +170,7 @@
                   v-model="formData.basicSituation"
                   v-bind:class="{ over_flow:formData.basicSituation && formData.basicSituation.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
-                  maxlength="200"
+                  maxlength="500"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['basicSituation'])"
                 ></el-input>
@@ -224,12 +223,15 @@
             <td><p>备</p><p>注</p></td>
             <td colspan="10" style="text-align-last:left;" class="color_DBE4EF">
               <el-form-item prop="note" :rules="fieldRules('note',propertyFeatures['note'],'',isParty)">
-                <el-input type='textarea' v-model="formData.note" :autosize="{ minRows: 1, maxRows: 3}" maxlength="50" 
+                <el-input type='textarea' v-model="formData.note" :autosize="{ minRows: 1, maxRows: 3}" maxlength="500" 
                   :disabled="fieldDisabled(propertyFeatures['note'])" placeholder="/"></el-input>
               </el-form-item>
             </td>
           </tr>
         </table>
+        <el-form-item prop="evidenceLength1" style="visibility:hidden">
+          <el-input v-model="formData.evidenceLength1"></el-input>
+        </el-form-item>
       </el-form>
     </div>
     <!-- 悬浮按钮 -->
@@ -356,6 +358,15 @@ export default {
     //验证是否填写证据
     var validateEvidencLength1 = (rule, value, callback) => {
       if (this.formData.evidenceList.length == 0) {
+        return callback(new Error("至少填写一个移送材料"));
+      }
+      let evList=[];
+      for(let i=0; i<this.formData.evidenceList.length; i++){
+        if(this.formData.evidenceList[i].evidenceName && this.formData.evidenceList[i].spec && this.formData.evidenceList[i].amount){
+          evList.push(this.formData.evidenceList[i]);
+        }
+      }
+      if (evList.length == 0) {
         return callback(new Error("至少填写一个移送材料"));
       }
       callback();
@@ -551,7 +562,7 @@ export default {
           tableArr.push(item);
         }
       });
-      this.tableDatas = tableArr;
+     this.tableDatas = JSON.parse(JSON.stringify(tableArr));
       this.addVisible = true;
       if (this.tableDatas.length == 0) {
         this.tableDatas.push({ evidenceNo: 1, amount: 1 });
@@ -588,22 +599,22 @@ export default {
     addEvidenceSure(formName){
       let canAdd = true;
       for(let i=0; i<this.tableDatas.length; i++){
-          if(!this.tableDatas[i].evidenceName || !this.tableDatas[i].spec || !this.tableDatas[i].amount || !this.tableDatas[i].savePlace){
-            this.$message({
-              message: '数据至少有一项不为空！',
-              type: 'warning'
-            });
-            canAdd = false;
-            break;
-          }
-        }
-        if(canAdd){
-          this.tableDatas.forEach((item, index, arr) => {
-            item.evidenceNo = index + 1;
-            this.formData.evdenceList[index] = this.tableDatas[index];
+        if(!this.tableDatas[i].evidenceName || !this.tableDatas[i].spec || !this.tableDatas[i].amount || !this.tableDatas[i].savePlace){
+          this.$message({
+            message: '数据至少有一项不为空！',
+            type: 'warning'
           });
-          this.addVisible = false;
+          canAdd = false;
+          break;
         }
+      }
+      if(canAdd){
+        this.tableDatas.forEach((item, index, arr) => {
+          item.evidenceNo = index + 1;
+          this.formData.evdenceList[index] = this.tableDatas[index];
+        });
+        this.addVisible = false;
+      }
     },
     handleAdd1(evidenceNo, row) {
       let tableArr = [];
@@ -734,6 +745,11 @@ export default {
 .evdence-form {
   .el-icon-circle-close {
     color: #7b7b7b !important;
+  }
+}
+#obtanEvidence_print{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
+    background: #f7c9cb !important;
   }
 }
 </style>

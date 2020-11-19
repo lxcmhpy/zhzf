@@ -70,18 +70,14 @@
         </div>
         <div class="treeT">
           <el-tree
-            :data="treeData"
+            :data="handleTree"
             show-checkbox
-            node-key="label"
             ref="tree"
-            highlight-current
-            @node-expand = 'openTree'
+            node-key="id"
+            :render-content="renderSlot"
+            @node-click="handleNodeClick"
+            @check-change="handleCheckChange"
             :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node }">
-              <!-- <span class="headImg"><img src="/static/images/img/lawSupervise/icon_04.png" alt=""></span> -->
-              <span class="treeWord">{{ node.label }}</span>
-              <span class="lastImg"><img src="/static/images/img/lawSupervise/gzMapLeftD/add2.jpg" alt=""></span>
-            </span>
           </el-tree>
         </div>
         <div>
@@ -148,7 +144,8 @@ export default {
       group_info:[],
       user_info:[],
       groupCopy:[],
-      newGroup:''
+      newGroup:'',
+      handleTree:[],
     }
   },
   watch: {
@@ -203,7 +200,7 @@ export default {
       });
     },
     // 获取群组下的人员
-    zydescription(data){
+    getGroupPeople(data){
         var users = []
         let uidArr = data.uids
         for (let i = 0; i < this.user_info.length; i++) {
@@ -227,15 +224,17 @@ export default {
             }
         }
     },
+    zydescription(data){
+       let _this = this
+       setTimeout(function()  {
+          _this.getGroupPeople(data)
+        }, 100);
+    },
     // 删除群组
     req_delete_group(tgid) {
         websdk.request.groupRequest.deleteGroup(tgid, null, function (rsp) {
             console.log('demo_req_delete_group result:{}', rsp);
         }, 'demo_req_delete_group');
-    },
-    openTree(data,node){
-      console.log(data)
-      console.log(node)
     },
     delGroup(row){
         this.$confirm('确认删除该群组吗?', '删除群组', {
@@ -262,27 +261,7 @@ export default {
       this.req_remove_group_member(row.tgid,uidArr)
        this.getListData()
     },
-    // 确认
-    getCheckedKeys(){
-      this.selectedArrT = this.$refs.tree.getCheckedKeys()
-      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
-      console.log(this.$refs.tree.getCheckedKeys())
-      for (let i = 0; i < this.selectedArrT.length; i++) {
-        this.selectedArrQ.push(this.selectedArrT[i])
-      }
-      this.selectedArrQ = this.unique(this.selectedArrQ)
-    },
-    // 重选
-    resetChecked(){
-        for (let j = 0; j < this.selectedArrQ.length; j++) {
-          for (let i = 0; i < this.selectedArrT.length; i++) {
-            if(this.selectedArrQ[j] == this.selectedArrT[i]){
-              this.selectedArrQ.splice(j,1)
-            }
-          }
-        }
-       this.$refs.tree.setCheckedKeys([]);
-    },
+    
     //添加人员
     selectP(val){
       this.selectedArrQ.push(val)
@@ -296,6 +275,11 @@ export default {
             for (let i = 0; i <  this.selectedArrQ.length; i++) {
               if(val.uid == this.selectedArrQ[i].uid){
                 this.selectedArrQ.splice(i,1)
+              }
+            }
+            for (let j = 0; j < this.selectedArrT.length; j++) {
+              if(val.uid == this.selectedArrT[j].uid){
+                this.selectedArrT.splice(j,1)
               }
             }
           }
@@ -339,6 +323,7 @@ export default {
         if(res.code === 200) {
           console.log(1,res.data)
           this.treeData = res.data
+          this.handleData()
         } else {
           throw new Error("organTreeByCurrUser() in jiangXiMap.vue::::::数据错误")
         }
@@ -346,16 +331,122 @@ export default {
         console.log(2,data)
       })
     },
-
+    // tree 图标
+    renderSlot(h,{ node, data, store }) {
+      return (
+        <div class="tree-slot-box">
+          <img class='img1'
+            src={
+              data.label === '执法人员' ?'/static/images/img/lawSupervise/icon_jc11.png': '/static/images/img/lawSupervise/icon_jc1.png'
+            }
+          />
+          <span >{data.label}</span>
+           <img class='img2' on-click={ () => this.addPeople(data) }
+            src={
+              // (data.organId || data.label == "执法人员")?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
+              data.organId?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
+            }
+          />
+        </div>
+      )
+    },
+    //处理数据
+    handleData(){
+      this.handleTree = this.deleteChildren(this.treeData)
+    },
+    deleteChildren(arr){
+      let childs = arr
+      for (let i = childs.length; i--; i > 0) {
+        if (childs[i].children) {
+          if (childs[i].children.length) {
+            this.deleteChildren(childs[i].children)
+          } else if(childs[i].label == "执法车辆" || childs[i].label == "执法船舶"){
+               childs.splice(i,1) 
+          }
+        }
+      }
+      return arr
+      console.log(arr)
+    },
+    // 获取执法人员数据
+    handleNodeClick(data,node) {
+       node.checked = !(node.checked)
+        if(data.label === "执法人员") {
+          this.$emit('getPeople',data)
+        } 
+    },
+    // 添加通讯录人员
+    addPeople(obj){
+      var tempObj = {uid:(obj.sn)-0,display_name:obj.label} 
+      if(obj.sn){
+        this.selectedArrT.push(tempObj)
+        this.uniqueObj(this.selectedArrT)
+        this.$message.success('已选中');
+      }else{
+        this.$message.error('该用户没有uid');
+      }
+      console.log(this.selectedArrT)
+    },
+    // 确认
+    getCheckedKeys(){
+      console.log(this.selectedArrT)
+       this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
+       this.uniqueObj(this.selectedArrQ)
+      // this.selectedArrT = this.selectedArrT.map((v)=>{
+      //   return {uid:v.sn,display_name:v.label}
+      // })
+      // for (let i = 0; i < this.selectedArrT.length; i++) {
+      //     if(this.selectedArrT[i].uid){
+      //         this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
+      //     }
+      // }
+      // this.selectedArrQ = this.unique(this.selectedArrQ)
+      console.log(this.selectedArrQ)
+    //  console.log(this.selectedArrQ)
+      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
+      // console.log(this.$refs.tree.getCheckedKeys())
+      // for (let i = 0; i < this.selectedArrT.length; i++) {
+      //   this.selectedArrQ.push(this.selectedArrT[i])
+      // }
+      // this.selectedArrQ = this.unique(this.selectedArrQ)
+      
+    },
+    // 重选
+    resetChecked(){
+      console.log(this.selectedArrQ)
+      console.log(this.selectedArrT)
+      for (var i = 0; i < this.selectedArrT.length; i++) {
+        for (var j = 0; j < this.selectedArrQ.length; j++) {
+            if (this.selectedArrT[i].uid == this.selectedArrQ[j].uid) {
+                this.selectedArrQ.splice(j, 1);
+            }
+        }
+      }
+      this.selectedArrT = []
+      this.$refs.tree.setCheckedKeys([]);
+    },
+    handleCheckChange(val){
+       this.addPeople(val)
+    },
     handleSelectionChange(val){
       console.log(val)
-      
+    //  this.addPeople(val)
         // for (let i = 0; i < val.length; i++) {
         //   this.selectedArrQ.push(val[i].name)
         // }
         // this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 去重
+    uniqueObj(arr){
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].uid === arr[j].uid) {
+            arr.splice(j, 1);
+            j = j - 1;
+          }
+        }
+      }
+    },
     unique(arr) {
         return Array.from(new Set(arr));
     },
@@ -470,5 +561,23 @@ export default {
         width: 10%;
       }
     }
+   .el-tree {
+    border-radius: 4px;
+    .tree-slot-box {
+      .img1 {
+        width: 13px;
+        margin-right: 5px;
+      }
+      span {
+        font-size: 12px;
+        font-family: Helvetica,Arial,sans-serif;
+      }
+      .img2{
+        margin-left: 5px;
+        width: 13px;
+        vertical-align: bottom;
+      }
+    }
+  }
 }
 </style>

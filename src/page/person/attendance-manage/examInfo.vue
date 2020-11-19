@@ -16,6 +16,8 @@
                 <el-date-picker
                   v-model="searchForm.examYear"
                   type="year"
+                  format="yyyy"
+                  value-format="yyyy"
                   placeholder="选择年"
                   :picker-options="pickerOptions"
                 ></el-date-picker>
@@ -136,8 +138,11 @@ export default {
       };
        _this.$store.dispatch("getJxExamList", data).then(
         res => {
+          if (res.code === 200) {
           this.tableLoading = false;
           _this.examList = res.data;
+        }
+         
         },
         (err) => {
           this.tableLoading = false;
@@ -147,10 +152,13 @@ export default {
 
          _this.$store.dispatch("getJxExamMessage", data).then(
         res => {
-          this.tableLoading = false;
+          if (res.code === 200) {
+              this.tableLoading = false;
           // _this.tableData = res.data.records;
           this.setExamScore(res.data.records);
           _this.totalPage = res.data.total;
+          }
+          
         },
         (err) => {
           this.$message({ type: "error", message: err.msg || "" });
@@ -167,9 +175,10 @@ export default {
             })
           }
         });
-        console.log(data);
-        this.tableData = data;
+       
       }
+       console.log(data);
+        this.tableData = data;
     },
     // 查看考勤详情
     getDetailInfo(row) {

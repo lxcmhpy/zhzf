@@ -135,6 +135,8 @@ export default {
         picturesUrl: '',
         picturesUrl2: '',
         picList:'',
+        picStroage1: "",
+        picStroage2: "",
         // picList: [{ 'pictures-1': '', 'pictures-2':''}]
       },
       caseDocDataForm: {
@@ -190,7 +192,8 @@ export default {
       editCaseInfo: '', //修改案件基本信息需要传的数据
       propertyFeatures: '', //字段属性配置
       imageUrl: '',
-      pic:[{ 'pictures-1': '', 'pictures-2':''}]
+      pic:[{ 'pictures-1': '', 'pictures-2':''}],
+      needDealData: true,
     };
   },
   components: {
@@ -223,12 +226,16 @@ export default {
       this.com_getDocDataByCaseIdAndDocId(data);
     },
     //保存文书信息
-    saveData(handleType) {
+    saveData(handleType) { 
       // let a= [{'pictures-1':this.docData.picList[0]['pictures-1']},{'pictures-2':this.docData.picList[1]['pictures-2']}];
       // this.docData.picList = JSON.stringify(a)
-      this.docData.picList = JSON.stringify(this.pic);
+      // this.docData.picList = JSON.stringify(this.pic);
       // this.docData.picList = JSON.stringify(this.docData.picList)
+      this.docData.picList = JSON.stringify([
+        {'pictures-1':this.pic[0]['pictures-1']},{'pictures-2':this.pic[0]['pictures-2']}
+      ])
       console.log('this.docData.picList',this.docData.picList)
+
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -239,7 +246,8 @@ export default {
     },
     //设置案件来源
     getDataAfter() {
-      this.docData.picList = JSON.parse(this.docData.picList)
+      this.getBase64(this.docData.picStroage1, 1)
+      this.getBase64(this.docData.picStroage2, 2)
     },
     //获取案件基本信息
     getCaseInfo() {
@@ -296,6 +304,8 @@ export default {
         res => {
           this.getBase64(res.data.storageId, 1)
           // let imgSrc = this.$util.com_getFileStream(res.data.storageId)
+           this.docData.picStroage1 =  res.data.storageId;
+
           this.$util.com_getFileStream(res.data.storageId).then(res => {
             this.docData.picturesUrl = res
           });
@@ -318,8 +328,10 @@ export default {
         res => {
           this.getBase64(res.data.storageId, 2);
           // let imgSrc = this.$util.com_getFileStream(res.data.storageId)
+           this.docData.picStroage2 =  res.data.storageId;
           this.$util.com_getFileStream(res.data.storageId).then(res => {
             this.$set(this.docData, 'picturesUrl2', res)
+           
           });
           
         },

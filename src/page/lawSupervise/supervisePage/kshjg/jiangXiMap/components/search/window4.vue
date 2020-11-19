@@ -40,11 +40,11 @@
         <el-date-picker
           class="selectTime"
           v-model="historyTime"
-          type="daterange"
+          type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          value-format="yyyy-MM-dd">
+          value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
         <div class="submitBtns">
           <el-button type="primary" plain @click="submitTrack(2)">确认</el-button>
@@ -123,6 +123,17 @@ export default {
     },
 
     /**
+     * 添加轨迹动画
+     */
+    addTrackAction(points) {
+      let data = {
+        id: 'trackAction',
+        imgUrl: '/static/images/img/lawSupervise/map_renyuan.png'
+      }
+      this.indexPage.page.addTrackAction(data, points)
+    },
+
+    /**
      * 获取轨迹数据
      */
     getTrackPoints(params, layerName) {
@@ -134,9 +145,10 @@ export default {
         }
       }).then(data => {
         let points = data.map(item => {
-          return [item.x, item.y]
+          return [Number(item.x), Number(item.y)]
         })
         this.indexPage.page.addLine(points, this.window4.info.id, layerName)
+        this.addTrackAction(points)
       })
     },
 
@@ -227,6 +239,7 @@ export default {
         width: 100%;
         .el-range-separator {
           width: 8%;
+          height: unset;
         }
         .el-input__inner {
           padding: unset;

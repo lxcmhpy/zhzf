@@ -94,8 +94,7 @@
             prop="isTransferToCase"
             label="转立案"
             align="center"
-          > 
-          
+          >
           </el-table-column>
           <el-table-column label="操作" align="center" width="300">
             <template slot-scope="scope">
@@ -144,14 +143,14 @@ import {
   findRecordModleByNameIdApi,
   findRecordModleByPersonApi,
   findUserCollectTemplateApi,
-  removeMoleCollectByIdApi
+  removeMoleCollectByIdApi,
 } from "@/api/inspection";
 import Vue from "vue";
 import { mapGetters } from "vuex";
 export default {
   components: {
     preview,
-    addModle
+    addModle,
   },
   data() {
     return {
@@ -173,28 +172,28 @@ export default {
       isShow: false,
       lawCateList: [], //业务领域列表
       searchForm: {
-        domain: "",
+        domain: "全部",
         status: "",
         createUser: iLocalStroage.gets("userInfo").nickName,
         otherUser: "",
         title: "",
         defaultDisplay: true,
-        name: ""
-      }
+        name: "",
+      },
     };
   },
   methods: {
-    transferToCase(){
-      alert('此功能未开发')
+    transferToCase() {
+      alert("此功能未开发");
     },
-    setDocumentNames(){
-      alert('此功能未开发')
+    setDocumentNames() {
+      alert("此功能未开发");
     },
     addNewModle() {
       this.$refs.addModleRef.showModal();
     },
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
         } else {
           console.log("error submit!!");
@@ -221,8 +220,8 @@ export default {
         // query: { id: item.id, addOrEiditFlag: 'add' }
         params: {
           id: item.id,
-          addOrEiditFlag: "add"
-        }
+          addOrEiditFlag: "add",
+        },
       });
 
       // this.$store.commit("set_inspection_orderId", item.id);
@@ -233,27 +232,27 @@ export default {
       this.$confirm("确认删除？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).then(() => {
         console.log("删除", item.id);
         let data = {
           id: item.id,
-          userId: iLocalStroage.gets("userInfo").id
+          userId: iLocalStroage.gets("userInfo").id,
         };
 
         removeMoleByIdApi(data).then(
-          res => {
+          (res) => {
             console.log(res);
             if (res.code == 200) {
               this.$message({
                 type: "success",
-                message: res.msg
+                message: res.msg,
               });
               this.getTableData();
               this.searchSaveList();
             }
           },
-          error => {
+          (error) => {
             // reject(error);
           }
         );
@@ -273,13 +272,13 @@ export default {
       let data = {
         organId: iLocalStroage.gets("userInfo").organId,
         templateUserId: iLocalStroage.gets("userInfo").id,
-        domain: this.searchForm.domain, //业务领域
-        title: this.searchForm.title
+        domain: this.searchForm.domain === "全部" ? "" : this.searchForm.domain, //业务领域
+        title: this.searchForm.title,
         // size: this.pageSize,
         // current: this.currentPage,
       };
       findRecordlModleByPageApi(data).then(
-        res => {
+        (res) => {
           // debugger
           console.log(res);
           if (res.data) {
@@ -288,37 +287,27 @@ export default {
             // this.totalPage = res.data.total
           }
         },
-        error => {
+        (error) => {
           // reject(error);
         }
       );
     },
     searchSaveList() {
-     let  data={userId:iLocalStroage.gets("userInfo").id};
+      let data = { userId: iLocalStroage.gets("userInfo").id };
       findUserCollectTemplateApi(data).then(
-        res => {
+        (res) => {
           console.log(res);
           if (res.data) {
             this.modleSaveList = res.data;
             this.modleSaveListDefaut = JSON.parse(JSON.stringify(res.data));
           }
         },
-        error => {
+        (error) => {
           // reject(error);
         }
       );
     },
-    //更改每页显示的条数
-    // handleSizeChange(val) {
-    //   this.pageSize = val;
-    //   this.currentPage = 1;
-    //   this.getTableData();
-    // },
-    //更换页码
-    // handleCurrentChange(val) {
-    //   this.currentPage = val;
-    //   this.getTableData();
-    // }, // 选择数据
+
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log("multipleSelection", this.multipleSelection);
@@ -339,10 +328,21 @@ export default {
     getEnforceLawType() {
       let _this = this;
       this.$store.dispatch("getEnforceLawType", "1").then(
-        res => {
-          _this.lawCateList = res.data;
+        (res) => {
+          // debugger
+          let all = {
+            caseTypeId: "",
+            caseTypeName: "",
+            cateId: "11111",
+            cateName: "全部",
+            createTime: "",
+            id: "",
+            organId: "",
+            organName: "",
+          };
+          _this.lawCateList = [all, ...res.data];
         },
-        err => {
+        (err) => {
           console.log(err);
         }
       );
@@ -351,14 +351,15 @@ export default {
     editModle(item) {
       console.log("选中的模板", item);
       this.$refs.addModleRef.showModal(item);
-    }
+    },
   },
-  mounted() {
+
+  created() {
     this.createUserName = iLocalStroage.gets("userInfo").nickName;
     this.getTableData();
     this.searchSaveList();
     this.getEnforceLawType();
-  }
+  },
 };
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>
@@ -366,7 +367,7 @@ export default {
 <style lang="scss">
 .recordModleManage {
   .toggleBox {
-    .handlePart{
+    .handlePart {
       padding-left: 0px;
     }
   }

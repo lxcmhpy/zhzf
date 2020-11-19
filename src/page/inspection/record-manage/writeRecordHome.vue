@@ -226,18 +226,16 @@ export default {
     },
     // 选择模板
     writeRecord(item) {
+      // debugger
       // 写记录
       this.$router.push({
         name: "inspection_writeInfoRecord",
-        // params: item
-        // query: { id: item.id, addOrEiditFlag: 'add' }
         params: {
           id: item.id,
           addOrEiditFlag: "add",
+          haveDoc:item.documentNames
         },
       });
-
-      // this.$store.commit("set_inspection_orderId", item.id);
     },
     // 修改模板
     editModle(item) {

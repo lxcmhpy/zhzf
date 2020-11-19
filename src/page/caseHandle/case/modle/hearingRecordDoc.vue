@@ -73,17 +73,17 @@
         <p class="p_begin">
           执法人员：
           <span>
-            <el-form-item prop="staff" style="width:254px" :rules="fieldRules('staff',propertyFeatures['staff'])">
-               <el-select v-model="docData.staff1" placeholder="" @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff'])">
-                 <el-option v-for="item in staffList" :key="item.id" :label="item.name" :value="item">
+            <el-form-item prop="staff1" style="width:254px" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
+               <el-select v-model="docData.staff1" placeholder="" @change="changeStaff1" :disabled="fieldDisabled(propertyFeatures['staff1'])">
+                 <el-option v-for="item in staffList" :key="item.id" :label="item.name" :value="item" :disabled="docData.staff2==item">
                 </el-option>
               </el-select>
             </el-form-item>
           </span>
           执法证号：
           <span>
-            <el-form-item prop="staffId" :rules="fieldRules('staffId',propertyFeatures['staffId'])">
-               <el-input v-model="docData.staffId1" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['staffId'])"></el-input>
+            <el-form-item prop="certificateId1" :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])">
+               <el-input v-model="docData.certificateId1" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['certificateId1'])"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -91,15 +91,15 @@
           <span style="margin-left:85px">
             <el-form-item prop="staff2" style="width:254px" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
                <el-select v-model="docData.staff2" placeholder="" @change="changeStaff2" :disabled="fieldDisabled(propertyFeatures['staff2'])">
-                <el-option v-for="item in staffList_" :key="item.id" :label="item.name" :value="item">
+                <el-option v-for="item in staffList" :key="item.id" :label="item.name" :value="item" :disabled="docData.staff1==item" >
                 </el-option>
               </el-select>
             </el-form-item>
           </span>
           执法证号：
           <span>
-            <el-form-item prop="staffId2" :rules="fieldRules('staffId2',propertyFeatures['staffId2'])">
-               <el-input v-model="docData.staffId2" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['staffId2'])"></el-input>
+            <el-form-item prop="certificateId2" :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])">
+               <el-input v-model="docData.certificateId2" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['certificateId2'])"></el-input>
             </el-form-item>
           </span>
         </p>
@@ -357,12 +357,10 @@
           persidingHearer: "",
           hearingOfficer: "",
           hearingClerks: "",
-          staff: "",
-          staffId: "",
           staff1: "",
-          staffId1: "",
           staff2: "",
-          staffId2: "",
+          certificateId1: "",
+          certificateId2: "",
           party: "",
           partyManager: "",
           partyTel: "",
@@ -384,6 +382,8 @@
           hearingOtherSign: "",
           hearingRecord: "", //听证记录,
           noticeMakeDate: "",//听证通知书签章日期
+          certificateId:'',
+          staff:''
         },
         handleType: 0, //0  暂存     1 提交
         caseDocDataForm: {
@@ -425,18 +425,18 @@
           hearingClerks: [
             {required: true, message: '请输入记录员', trigger: 'blur'},
           ],
-          staff: [
-            {required: true, message: '请输入执法人员1', trigger: 'blur'},
-          ],
-          staffId: [
-            {required: true, message: '请输入执法人员1证件号', trigger: 'blur'},
-          ],
-          staff2: [
-            {required: true, message: '请输入执法人员2', trigger: 'blur'},
-          ],
-          staffId2: [
-            {required: true, message: '请输入执法人员2证件号', trigger: 'blur'},
-          ],
+         staff1: [
+          { required: true, message: "执法人员不能为空", trigger: "change" },
+        ],
+        certificateId1: [
+          { required: true, message: "执法证号不能为空", trigger: "blur" },
+        ],
+        staff2: [
+          { required: true, message: "执法人员不能为空", trigger: "change" },
+        ],
+        certificateId2: [
+          { required: true, message: "执法证号不能为空", trigger: "blur" },
+        ],
           party: [
             {required: true, message: '请输入当事人', trigger: 'blur'},
           ],
@@ -518,18 +518,27 @@
       },
       getDataAfter() {
         console.log('staff', this.docData.staff)
-        let staffList = this.docData.staff.split(',');
-        let staffIdList = this.docData.staffId.split(',');
-        for (let i = 0; i < staffList.length; i++) {
-          this.staffList[i] = {
-            name: staffList[i],
-            id: staffIdList[i]
+        this.staffList = this.docData.staff.split(",");
+        if(this.caseDocDataForm.status == ''){
+          this.docData.staff1 = this.docData.staff.split(",")[0];
+          this.docData.certificateId1 = this.docData.certificateId.split(",")[0];
+          if (this.staffList.length == 2) {
+            this.docData.staff2 = this.docData.staff.split(",")[1];
+            this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
           }
         }
-        this.docData.staff1 = this.staffList[0].name;
-        this.docData.staffId1 = this.staffList[0].id;
-        this.staffList_ = JSON.parse(JSON.stringify(this.staffList))
-        this.staffList_.splice(0, 1)
+        // let staffList = this.docData.staff.split(',');
+        // let staffIdList = this.docData.staffId.split(',');
+        // for (let i = 0; i < staffList.length; i++) {
+        //   this.staffList[i] = {
+        //     name: staffList[i],
+        //     id: staffIdList[i]
+        //   }
+        // }
+        // this.docData.staff1 = this.staffList[0].name;
+        // this.docData.staffId1 = this.staffList[0].id;
+        // this.staffList_ = JSON.parse(JSON.stringify(this.staffList))
+        // this.staffList_.splice(0, 1)
         // let index=0
         // this.staffIdList.forEach(element => {
         //   console.log('idlist',element)
@@ -576,19 +585,29 @@
         }
       },
       //修改勘验人员
+      // changeStaff1(val) {
+      //   this.docData.staff1 = val.name;
+      //   this.docData.staffId1 = val.id;
+      //   this.staffList_ = JSON.parse(JSON.stringify(this.staffList))
+      //   this.staffList_.splice(this.staffList.indexOf(val), 1)
+      //   if (this.docData.staff1 === this.docData.staff2) {
+      //     this.docData.staff2 = '';
+      //     this.docData.staffId2 = '';
+      //   }
+      // },
+      //修改人员
       changeStaff1(val) {
-        this.docData.staff1 = val.name;
-        this.docData.staffId1 = val.id;
-        this.staffList_ = JSON.parse(JSON.stringify(this.staffList))
-        this.staffList_.splice(this.staffList.indexOf(val), 1)
-        if (this.docData.staff1 === this.docData.staff2) {
-          this.docData.staff2 = '';
-          this.docData.staffId2 = '';
-        }
+        let staffIndex = this.docData.staff.split(",").indexOf(val);
+        this.docData.certificateId1 = this.docData.certificateId.split(",")[
+          staffIndex
+        ];
       },
       changeStaff2(val) {
-        this.docData.staff2 = val.name;
-        this.docData.staffId2 = val.id;
+        let staffIndex = this.docData.staff.split(",").indexOf(val);
+        this.docData.certificateId2 = this.docData.certificateId.split(",")[
+          staffIndex
+        ];
+        console.log(staffIndex);
       },
     },
     mounted() {

@@ -120,7 +120,7 @@
         <div class="overflow_lins_style">
           <div class="overflow_lins">
             <el-form-item prop="inquestResult" :rules="fieldRules('inquestResult',propertyFeatures['inquestResult'])">
-              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="6" maxLength='500' placeholder="/" :disabled="fieldDisabled(propertyFeatures['inquestResult'])"></el-input>
+              <el-input class='text_indent10 overflow_lins_textarea' type='textarea' v-model="docData.inquestResult" rows="6" placeholder="/" :disabled="fieldDisabled(propertyFeatures['inquestResult'])"></el-input>
               <span class="overflow_describe" style="text-indent:0">勘验情况及结果：</span>
               <span class="span_bg span_bg_top" @click="overFlowEdit">&nbsp;</span>
               <span v-for="i in 5" :key="i" class="span_bg" @click="overFlowEdit">&nbsp;</span>
@@ -254,7 +254,6 @@ export default {
         invitedUnitAndPosition: "",
         recorder: "",
         recorderUnitAndPosition: "",
-        inquestResult: "",
         partySign: "",
         inquestedSign: "",
         invitedSign: "",
@@ -284,7 +283,7 @@ export default {
         invitedUnitAndPosition: [{ required: true, message: "被邀请人单位及职务不能为空", trigger: "blur" }],
         recorder: [{ required: true, message: "记录人不能为空", trigger: "blur" }],
         recorderUnitAndPosition: [{ required: true, message: "记录人单位及职务不能为空", trigger: "blur" }],
-        inquestResult: [{ required: true, message: "勘验情况及结果不能为空", trigger: "blur" }],
+        inquestResult: [{ required: true, message: "勘验情况及结果不能为空", trigger: "blur" },{ max: 500, message: "最多500字符", trigger: "blur" }],
         inquestStartTime: [
           { required: true, message: "开始时间不能为空", trigger: "blur" },
           { validator: validateStartTime, trigger: "blur" }

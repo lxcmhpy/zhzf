@@ -277,9 +277,12 @@ export const mixinGetCaseApiList = {
     },
     // 提交文书表单
     com_addDocData(handleType, docForm) {
+      // this.caseDocDataForm.docData = JSON.stringify(this.docData).replace(/[\\]/g,'');
       this.caseDocDataForm.docData = JSON.stringify(this.docData);
+      
       this.caseDocDataForm.status = handleType;
       console.log('caseDocDataForm', this.caseDocDataForm);
+      console.log('caseDocDataFormDoc', this.caseDocDataForm.docData);
       if (handleType) {
         this.$refs[docForm].validate((valid, noPass) => {
           if (valid) {

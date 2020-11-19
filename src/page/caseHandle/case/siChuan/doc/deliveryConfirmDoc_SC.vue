@@ -179,14 +179,14 @@
               </td>
               <td colspan="6" class="color_DBE4EF">
                 <p>
-                  <el-form-item label="是否接受电子送达：">
-                    <el-checkbox-group :max="1" v-model="docData.isAcceptElDel">
+                  <el-form-item label="是否接受电子送达：" prop="isAcceptElDel">
+                    <el-checkbox-group :max="1" @change="test" v-model="docData.isAcceptElDel">
                       <el-checkbox label="4">是</el-checkbox>
                       <el-checkbox label="5">否</el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
                 </p>
-                <el-form-item>
+                <el-form-item prop="eleDeliveryType">
                   <el-checkbox-group v-model="docData.eleDeliveryType">
                     <p>
                       <el-checkbox label="6">手机（电子送达必选）</el-checkbox>
@@ -346,7 +346,7 @@
                 >
                   <el-input
                     v-model="docData.notes"
-                    :maxLength="maxLength"
+                    maxLength="500"
                     placeholder="/"
                   ></el-input>
                 </el-form-item>
@@ -388,7 +388,7 @@ export default {
       callback();
     };
     var validateAcceptElDel = (rule, value, callback) => {
-      if (this.docData.isAcceptElDel[0] == "是" && value.resLength==0) {
+      if (this.docData.isAcceptElDel[0] == "4" && value.resLength==0) {
         return callback(new Error("电子送达方式不能为空"));
       }
       callback();
@@ -582,7 +582,7 @@ export default {
     //设置案件来源
     getDataAfter() {
       if (this.docData.isAcceptElDel == '') {
-        this.docData.isAcceptElDel =[];
+        this.docData.isAcceptElDel =["5"];
       }
       if (this.docData.withPartyRelation == '') {
         this.docData.withPartyRelation =[];
@@ -596,6 +596,10 @@ export default {
       console.log('this.docData.deliveryWay',this.docData.deliveryWay)
       this.choosePeo();
     },
+    test(val){
+      console.log("111111111122222222",val);
+      console.log("666666666666999999",this.docData.isAcceptElDel)
+    }
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();

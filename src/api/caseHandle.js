@@ -610,7 +610,7 @@ export function updateEvdenceNameApi(data) {
   let data2 = vm.$qs.stringify(data);
   console.log(data2);
   return request({
-    url: "doc/evidence/updateEvdenceName",
+    url: "case/doc/evidence/updateEvdenceName",
     method: "post",
     data: data2,
     showloading: true,
@@ -852,9 +852,14 @@ export function saveOrUpdatePropertyApi(data) {
   return request({
     url: "/case/doc/propertyBind/saveOrUpdatePropertyBindTemplate",
     method: "POST",
-    params: data,
+    // params: data,
+    // showloading: true,
+    // loadingType: 'loadPart',
+    // cancelToken: setCancelSource()
+    data: data,
     showloading: true,
     loadingType: 'loadPart',
+    contentType: 'application/json',
     cancelToken: setCancelSource()
   });
 }

@@ -86,7 +86,7 @@
         </tr>
         <tr>
             <td >执法部门处理意见</td>
-            <td colspan="2" class="color_DBE4EF">
+            <td colspan="2" class="color_DBE4EF" style="height:120px">
                 <el-form-item
                 prop="organOpinoin"
                 :rules="fieldRules('organOpinoin',propertyFeatures['organOpinoin'])"
@@ -95,9 +95,10 @@
                   type="textarea"
                   v-model="docData.organOpinoin"
                   v-bind:class="{ over_flow:docData.organOpinoin.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :autosize="{ minRows: 3, maxRows: 6}"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['organOpinoin'])"
+                  maxlength="512"
                 ></el-input>
               </el-form-item>
             </td>
@@ -303,7 +304,7 @@
         </tr>
         <tr>
             <td>审核结论</td>
-            <td colspan="2" class="color_DBE4EF">
+            <td colspan="2" class="color_DBE4EF" style="height:120px">
                 <el-form-item
                 prop="checkOpinoin"
                 :rules="fieldRules('checkOpinoin',propertyFeatures['checkOpinoin'])"
@@ -312,9 +313,10 @@
                   type="textarea"
                   v-model="docData.checkOpinoin"
                   v-bind:class="{ over_flow:docData.checkOpinoin.length>14?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 3}"
+                  :autosize="{ minRows: 3, maxRows: 6}"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['checkOpinoin'])"
+                  maxlength="512"
                 ></el-input>
               </el-form-item>
             </td>
@@ -342,7 +344,7 @@
             <td rowspan="2" colspan="2" class="color_DBE4EF">
               {{docData.secondApproveOpinions}}
               <div class="pdf_seal">
-                <p>签名：{{docData.secondApprovePeo}}</p>
+                <p>签章：{{docData.secondApprovePeo}}</p>
                 <p>
                   <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
                   <span v-else>年 月 日</span>
@@ -483,6 +485,9 @@ export default {
         belong10: [
           { required: true, message: "文书是否规范、完备不能为空", trigger: "blur" },
         ],
+        checkOpinoin: [
+          { required: true, message: "审核结论不能为空", trigger: "blur" },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -569,6 +574,11 @@ export default {
   .center{
     text-align: center;
     text-align-last: center;  
+  }
+}
+#adminCoerciveMeasureApproval_print{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
+    background: #f7c9cb !important;
   }
 }
 </style>

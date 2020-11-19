@@ -2,7 +2,7 @@
   <div class="gzMap">
     <JkyBaseAMap @init="init" @handleClickPoint="handleClickPoint" :zoom="8" :searchStyle='searchStyle' />
     <TopInFo />
-    <LeftDrawer ref='LeftDrawer' :config="groups" :allUsers="allUsers" />
+    <LeftDrawer ref='LeftDrawer' :config="groups" @getPeople='getPeople'  :allUsers="allUsers" />
     <Search
       ref="Search"
       :config="searchWindowData"
@@ -226,7 +226,9 @@ export default {
 
         this.map.setFitView();
     },
-
+    getPeople(data){
+      this.getPeopleTree(data)
+    },
     /**
      * 点击节点回调函数
      * 1.如果当前节点是执法人员、执法车辆、执法船舶，则发送请求获取子节点数据

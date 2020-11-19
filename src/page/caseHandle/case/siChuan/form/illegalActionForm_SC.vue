@@ -5,7 +5,7 @@
         <div class="doc_topic">违法行为通知书</div>
         <div class="doc_number">案号：{{formData.caseNumber}}</div>
         <p class="side_right_indent">
-          当事人（个人姓名或单位名称）
+          当事人（个人姓名或单位名称）：
           <el-form-item prop="party" :rules="fieldRules('party',propertyFeatures['party'])" style="width: 250px;">
             <el-input
               type="textarea"
@@ -17,7 +17,7 @@
               :disabled="fieldDisabled(propertyFeatures['party'])"
             ></el-input>
             <!-- <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :maxLength='maxLength'></el-input> -->
-          </el-form-item>：
+          </el-form-item>
         </p>
         <p>
           &nbsp;&nbsp;经调查，本机关认为你（单位）
@@ -180,7 +180,7 @@
       :formOrDocData="formOrDocData"
       @saveData="saveData"
     ></casePageFloatBtns>
-    <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput>
+    <!-- <overflowInput ref="overflowInputRef" @overFloeEditInfo="getOverFloeEditInfo"></overflowInput> -->
     <illegalActionPunishDecision ref="illegalActionPunishDecisionRef" @sendPunishDecis="setPunishDecis"></illegalActionPunishDecision>
   </div>
 </template>
@@ -189,10 +189,10 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import { mapGetters } from "vuex";
-import overflowInput from "../modle/overflowInput";
+// import overflowInput from "../modle/overflowInput";
 import casePageFloatBtns from "@/components/casePageFloatBtns/casePageFloatBtns.vue";
 import { validatePhone, validateZIP } from "@/common/js/validator";
-import illegalActionPunishDecision from "@/page/caseHandle/case/jiangxi/diag/illegalActionPunishDecision";
+import illegalActionPunishDecision from "@/page/caseHandle/case/form/illegalActionPunishDecision";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -283,16 +283,16 @@ export default {
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(["caseId"]) },
   components: {
-    overflowInput,
+    // overflowInput,
     casePageFloatBtns,
     illegalActionPunishDecision
   },
   methods: {
     // 多行编辑
-    overFlowEdit() {
-      let maxlength = 122;
-      this.$refs.overflowInputRef.showModal(0, "", maxlength);
-    },
+    // overFlowEdit() {
+    //   let maxlength = 122;
+    //   this.$refs.overflowInputRef.showModal(0, "", maxlength);
+    // },
     // 获取多行编辑内容
     getOverFloeEditInfo(edit) {
       this.formData.illegalFact = edit;
@@ -334,23 +334,22 @@ export default {
 
     },
     getDataAfter(){
-      if(!this.formData.organZipCode){
-        //获取机构详情
-        let params = { id: iLocalStroage.gets("userInfo").organId };
-        let _this = this
-        this.$store.dispatch("getOrganDetail", params).then(
-          res => {
-            let organData = res.data;
-            _this.formData.organContactor = organData.contactor;
-            _this.formData.organAddress = organData.address;
-            _this.formData.organZipCode = organData.zipCode;
-            _this.formData.organTel = organData.telephone;
-          },
-          err => {
-  //          console.log(err);
-          }
-        );
-      }
+      //获取机构详情
+      let params = { id: iLocalStroage.gets("userInfo").organId };
+      let _this = this
+      this.$store.dispatch("getOrganDetail", params).then(
+        res => {
+//          console.log("机构", res);
+          let organData = res.data;
+          _this.formData.organContactor = organData.contactor;
+          _this.formData.organAddress = organData.address;
+          _this.formData.organZipCode = organData.zipCode;
+          _this.formData.organTel = organData.telephone;
+        },
+        err => {
+//          console.log(err);
+        }
+      );
     }
   },
   created() {

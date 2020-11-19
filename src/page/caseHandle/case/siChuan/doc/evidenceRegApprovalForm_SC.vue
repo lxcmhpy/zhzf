@@ -178,7 +178,7 @@
                   v-model="docData.illegalFact"
                   v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>30?true:false }"
                   :autosize="{ minRows: 1, maxRows: 10}"
-                  maxlength="300"
+                  maxlength="500"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
                 ></el-input>
@@ -186,7 +186,7 @@
             </td>
           </tr>
           <tr>
-            <td :rowspan="docData.evidenceList.length+1" class="center">
+            <td :rowspan="docData.evidenceList.length == 0 ?evList.length+1:docData.evidenceList.length+1" class="center">
               <p>登</p>
               <p>记</p>
               <p>保</p>
@@ -200,7 +200,7 @@
             <td colspan="2">规格</td>
             <td colspan="2">数量</td>
           </tr>
-          <tr @click="handleAdd" v-for="(item,index) in docData.evidenceList" :key="index">
+          <tr @click="handleAdd" v-for="(item,index) in docData.evidenceList.length == 0 ? evList :docData.evidenceList" :key="index">
             <td>{{item.resNo}}</td>
             <td colspan="5" class="center">{{item.name}}</td>
             <td colspan="2">{{item.des}}</td>
@@ -221,7 +221,7 @@
                 <el-input style="float:left;margin-top:10px;" 
                   type="textarea" v-model="docData.lawOfficeOpinions"
                   v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>30?true:false }"
-                  :autosize="{ minRows: 1, maxRows: 10}" maxlength="340" placeholder="/"></el-input> 
+                  :autosize="{ minRows: 1, maxRows: 10}" maxlength="500" placeholder="/"></el-input> 
               </el-form-item>
               <div class="pdf_seal alginLast" style="white-space:nowrap;height:30%;width:auto;margin-bottom:25px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
@@ -257,6 +257,9 @@
           </tr>
         </table>
       </div>
+      <el-form-item  prop="evidenceLength" :rules="fieldRules('evidenceList',propertyFeatures['evidenceList'])" style="visibility:hidden">
+        <el-input v-model.number="docData.evidenceLength"></el-input>
+      </el-form-item>
     </el-form>
     <!-- 添加弹出框 -->
     <el-dialog
@@ -351,6 +354,13 @@ import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   data() {
+    //验证是否填写证据
+    var validateEvidencLength = (rule, value, callback) => {
+      if (value == 0) {
+        return callback(new Error("至少填写一条证据"));
+      }
+      callback();
+    };
     return {
       validatePhone: validatePhone,
       validateIDNumber: validateIDNumber,
@@ -379,6 +389,7 @@ export default {
         lawOfficeOpinions: "",
         lawOfficeName: "",
         lawOfficeTime: "",
+        evidenceLength:0,
       },
       caseDocDataForm: {
         id: "", //修改的时候用
@@ -401,6 +412,12 @@ export default {
       addVisible: false,
       addLoading: false,
       tableDatas: [],
+      evList: [
+        { resNo: "", name: "", num: "", des: "" },
+        { resNo: "", name: "", num: "", des: "" },
+        { resNo: "", name: "", num: "", des: "" },
+        { resNo: "", name: "", num: "", des: "" }
+      ],
       rules: {
         caseName: [
           { required: true, message: "案由不能为空", trigger: "blur" },
@@ -452,6 +469,9 @@ export default {
         ],
         lawOfficeOpinions: [
           { required: true, message: "调查人员意见不能为空", trigger: "blur" },
+        ],
+        evidenceLength: [
+          { required: true,validator: validateEvidencLength, trigger: "blur" },
         ],
       },
       approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入
@@ -547,7 +567,7 @@ export default {
           tableArr.push(item);
         }
       });
-      this.tableDatas = tableArr;
+     this.tableDatas = JSON.parse(JSON.stringify(tableArr));
       this.addVisible = true;
       if (this.tableDatas.length == 0) {
         this.tableDatas.push({ resNo: 1, num: 1 });
@@ -560,15 +580,14 @@ export default {
           this.tableDatas[i].resNo = this.tableDatas[i].resNo - 1;
         }
       }
-      this.tableDatas.splice(row.resNo - 1, 1);
-      this.docData.evidenceList.splice(row.resNo - 1, 1);
-      this.docData.evidenceList.push({
-        resNo: "",
-        name: "",
-        num: "",
-        des: "",
-        // note: "",
-      });
+      if(this.tableDatas .length>1){
+        this.tableDatas.splice(row.resNo - 1, 1);
+      }else{
+        this.$message({
+          message: "最少添加一条数据！",
+          type: "warning",
+        });
+      }
     },
     //确定添加
     addResSure(formName) {
@@ -585,24 +604,20 @@ export default {
           }
         }
         if (canAdd) {
-          this.tableDatas.forEach((item, index, arr) => {
-            item.resNo = index + 1;
-            this.docData.evidenceList[index] = this.tableDatas[index];
-          });
+          this.docData.evidenceList = this.tableDatas;
+          this.docData.evidenceLength = this.docData.evidenceList.length;
           this.addVisible = false;
         }
+      }else{
+        this.$message({
+          message: "最少添加一条数据！",
+          type: "warning",
+        });
       }
     },
     //添加一行数据
     addTableData() {
       let length = this.tableDatas.length;
-      // if (length == 6) {
-      //   this.$message({
-      //     message: "最多输入六行！",
-      //     type: "warning",
-      //   });
-      //   return;
-      // }
       if (length == 0) {
         this.tableDatas.push({ resNo: 1, num: 1 });
       } else {
@@ -618,14 +633,6 @@ export default {
       if(!this.docData.staff1){
         this.docData.staff1 = this.docData.staff.split(',')[0];
         this.docData.staff2 = this.docData.staff.split(',')[1];
-      }
-      if (!this.docData.evidenceList.length) {
-        this.docData.evidenceList = [
-          { resNo: "", name: "", num: "", des: "" },
-          { resNo: "", name: "", num: "", des: "" },
-          { resNo: "", name: "", num: "", des: "" },
-          { resNo: "", name: "", num: "", des: "" },
-        ];
       }
     },
   },
