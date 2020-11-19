@@ -270,7 +270,7 @@
               <el-radio-button label="工程质量监督" class="width136px"></el-radio-button>
               <el-radio-button label="港口行政" style="border-left: 1px solid #DCDFE6;"></el-radio-button>
               <el-radio-button label="其他" class="width136px"></el-radio-button> -->
-             
+
               <el-radio-button v-for="item in lawCateList.slice(3,lawCateList.length)" :key="item.id" :label="item.cateName"></el-radio-button>
             </span>
           </el-radio-group>
@@ -459,14 +459,14 @@ export default {
       iLocalStroage.set("stageCaseId",row.id);
       this.$store.commit("setIsLawEnforcementSupervision", false);
       this.$store.commit("setLawEnforcementSupervisionType", '');
-      if (this.moreFlag === "unRecordCase") { 
+      if (this.moreFlag === "unRecordCase") {
         let setCaseNumber = row.caseNumber != "" ? row.caseNumber : row.tempNo;
         this.$store.commit("setCaseNumber", setCaseNumber);
         //暂存案件跳转信息采集
         if(row.state == 0){
           await this.queryFlowBycaseId();
           this.$router.replace({
-            name: this.caseFlowData.basicInfoPage, 
+            name: this.caseFlowData.basicInfoPage,
           });
           return;
         }
@@ -509,11 +509,11 @@ export default {
                     name: res
                   });
                 })
-                
-    
+
+
             }
           })
-          .catch(err=>{console.log(err)}) 
+          .catch(err=>{console.log(err)})
         }
       } else if (this.moreFlag === "waitDeal") {
         if (row.caseStatus === "已移送") {
@@ -554,8 +554,8 @@ export default {
           this.$store.commit('setApprovalState', 'approvaling')
           //设置文书数据的id
           this.$store.commit('setDocDataId', row.docId);
-          this.$router.push({ name: 'case_handle_myPDF', params: { docId: row.docTypeId } }) 
-         
+          this.$router.push({ name: 'case_handle_myPDF', params: { docId: row.docTypeId } })
+
         }
       }
     },
