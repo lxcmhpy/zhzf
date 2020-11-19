@@ -8,6 +8,7 @@ import iLocalStroage from '@/common/js/localStroage'
 // import { sync } from "cross-spawn";
 
 var vue = new Vue();
+import { encrypt,decrypt } from "@/common/js/cryptoAes";
 
 const service = axios.create({
   // "Content-Type": "multipart/form-data;charset=UTF-8",
@@ -98,6 +99,10 @@ service.interceptors.request.use(
       if (response.status == 200) {
         if (response.data.code == 200) {
           tryHideFullScreenLoading();
+          // debugger
+          console.log('response.data',response)
+          //解密
+           response.data.data = JSON.parse(decrypt(response.data.data))
           return response.data;
         } else if (
           response.data.code == 400 || response.data.code == 500) {
