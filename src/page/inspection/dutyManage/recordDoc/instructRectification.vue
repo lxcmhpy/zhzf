@@ -192,6 +192,8 @@ export default {
         monitorUnit: "",
         supervised: "",
         createTime: "",
+        monitorName: "",
+        supervisedName: ""
       },
       rules: {
         companyName: [
