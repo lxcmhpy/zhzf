@@ -9,23 +9,26 @@
         :model="formData"
       >
         <div class="doc_topic">公路安全隐患告知函</div>
-        <div
-          class="doc_number"
-        >{{ formData.orgName }}函告[
-        <el-form-item prop="yearNo" style="width: 50px;">
-          <el-input v-model="formData.yearNo" placeholder=""></el-input>
-        </el-form-item>
-        ]&nbsp;&nbsp;第
-        <el-form-item prop="numberNo" style="width: 150px;">
-          <el-input v-model="formData.numberNo" placeholder=""></el-input>
-        </el-form-item>
-        号</div>
+        <div class="doc_number">
+          {{ formData.orgName }}函告[
+          <el-form-item prop="yearNo" style="width: 50px">
+            <el-input v-model="formData.yearNo" placeholder=""></el-input>
+          </el-form-item>
+          ]&nbsp;&nbsp;第
+          <el-form-item prop="numberNo" style="width: 150px">
+            <el-input v-model="formData.numberNo" placeholder=""></el-input>
+          </el-form-item>
+          号
+        </div>
         <span class="top-split-line"></span>
         <p class="partyBox">
           <span class="width_file">
             <el-form-item prop="informUnit">
-              <el-input v-model="formData.informUnit" placeholder="（须全称）"></el-input>
-            </el-form-item>：
+              <el-input
+                v-model="formData.informUnit"
+                placeholder="（须全称）"
+              ></el-input> </el-form-item
+            >：
           </span>
         </p>
         <p class="t-i-28">
@@ -36,7 +39,7 @@
           </span>
           大队 -->
           <span>
-            <el-form-item prop="orgName" style="width: 200px;">
+            <el-form-item prop="orgName" style="width: 200px">
               <el-input v-model="formData.orgName" placeholder=""></el-input>
             </el-form-item>
           </span>
@@ -49,8 +52,8 @@
               format="yyyy年MM月dd日HH时mm分"
               placeholder="    年  月  日  时  分"
               value-format="yyyy-MM-dd HH:mm"
-            ></el-date-picker>
-          </el-form-item>在路政巡查时，发现以下情况：
+            ></el-date-picker> </el-form-item
+          >在路政巡查时，发现以下情况：
         </p>
         <!-- 多行样式 -->
         <div class="overflow_lins_style p-l-32">
@@ -74,15 +77,20 @@
           鉴于情况严重，影响
           <span>
             <el-form-item prop="influenceInfo" style="width: 280px">
-              <el-input v-model="formData.influenceInfo" placeholder=""></el-input>
-            </el-form-item>
-          </span>安全，请贵单位核实后尽快处置。
+              <el-input
+                v-model="formData.influenceInfo"
+                placeholder=""
+              ></el-input>
+            </el-form-item> </span
+          >安全，请贵单位核实后尽快处置。
         </p>
         <br />
-        <p class="t-i-28">特此函告</p>
+        <el-row :gutter="20">
+          <el-col :span="18">&nbsp;</el-col>
+          <el-col :span="6"><p class="t-i-28">特此函告</p></el-col>
+        </el-row>
         <br />
-        <br />
-        <div style="float: right; line-height: 40px;">
+        <div style="float: right; line-height: 40px">
           <el-form-item prop="createTime" class="pdf_datapick">
             <el-date-picker
               class="big_error"
@@ -91,12 +99,11 @@
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
               value-format="yyyy-MM-dd"
-            ></el-date-picker>
-          </el-form-item>（印章）
+            ></el-date-picker> </el-form-item
+          >（印章）
         </div>
         <br />
-        <br />
-        <el-row :gutter="20" style="clear: both;">
+        <el-row :gutter="20" style="clear: both">
           <el-col :span="12">
             签收人：
             <p class="partyBox d-i-b w-180">
@@ -107,7 +114,7 @@
           </el-col>
           <el-col :span="12">
             送达人：
-            <p class="partyBox d-i-b" style="width: 165px;">
+            <p class="partyBox d-i-b" style="width: 165px">
               <el-form-item prop="toName">
                 <el-input v-model="formData.toName"></el-input>
               </el-form-item>
@@ -147,9 +154,6 @@
           </el-col>
         </el-row>
         <br />
-        <br />
-        <br />
-        <br />
         <div class="notice clear">
           <span>(本文书一式两份：一份存根，一份交当事人或其代理人。)</span>
         </div>
@@ -166,7 +170,7 @@ import iLocalStroage from "@/common/js/localStroage";
 
 export default {
   props: {
-    caseDocData: {}
+    caseDocData: {},
   },
   components: {},
   computed: {
@@ -188,6 +192,8 @@ export default {
         monitorUnit: "",
         supervised: "",
         createTime: "",
+        toName: "",
+        accName: "",
       },
       rules: {
         companyName: [
@@ -244,12 +250,12 @@ export default {
             resolve({ code: 500 });
           }
         });
-      })
+      });
     },
     getCheParameterInfo() {
-      const params = { codeInfo: 'record_case_doc_code' };
+      const params = { codeInfo: "record_case_doc_code" };
       getCheParameterInfoApi(params).then(
-        res => this.formData.numberNo = res.data
+        (res) => (this.formData.numberNo = res.data)
       );
     },
     // 获取当前日期
@@ -260,32 +266,30 @@ export default {
       const day = date.getDate();
       this.formData.createTime = `${year}-${month}-${day}`;
       this.formData.yearNo = `${year}`;
-      this.formData.accName = this.UserInfo.nickName;
+      // this.formData.accName = this.UserInfo.nickName;
     },
     getOrganInfo() {
-      getOrganInfoApi().then(
-        res => {
-          const data = {}
-          data.orgName = res.data.orgName  || '';
-          this.formData = Object.assign(data,this.formData);
-        }
-      )
-    }
+      getOrganInfoApi().then((res) => {
+        const data = {};
+        data.orgName = res.data.orgName || "";
+        this.formData = Object.assign(data, this.formData);
+      });
+    },
   },
 
   mounted() {},
   created() {
     const caseDocData = JSON.parse(this.caseDocData);
-    if(!caseDocData.numberNo) {
+    if (!caseDocData.numberNo) {
       this.getCheParameterInfo();
     }
-    if(!caseDocData.yearNo) {
+    if (!caseDocData.yearNo) {
       this.getCurrentDay();
     }
-    if(!caseDocData.porgNameTop && !caseDocData.orgNameTop) {
+    if (!caseDocData.porgNameTop && !caseDocData.orgNameTop) {
       this.getOrganInfo();
     }
-    if(Object.keys(caseDocData).length > 0){
+    if (Object.keys(caseDocData).length > 0) {
       this.formData = Object.assign(caseDocData);
     }
   },
@@ -296,11 +300,11 @@ export default {
 .danger-notice {
   #dangerNoticePanel {
     margin-top: 10px;
-      .top-split-line{
-        display: block;
-        border: 1px solid #dcdfe6;
-        margin: 20px 0;
-      }
+    .top-split-line {
+      display: block;
+      border: 1px solid #dcdfe6;
+      margin: 20px 0;
+    }
     .doc_number {
       line-height: 40px;
     }
@@ -320,7 +324,7 @@ export default {
       width: 180px;
     }
     .date-time-input {
-        width: 216px;
+      width: 216px;
     }
     .time-limit-input {
       width: 80px;

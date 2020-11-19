@@ -1600,6 +1600,7 @@ export default {
         this.finishedDocs.push(doc);
         this.editDoc(doc,'show');
         this.finishDocIndex = this.finishedDocs.findIndex(d => d.caseDocPdfId == doc.caseDocPdfId);
+        this.activeOffical = "1";
       }else{
         this.finishedDocs.splice(this.finishDocIndex,1,doc);
         this.editDoc(doc,'show',this.finishDocIndex);

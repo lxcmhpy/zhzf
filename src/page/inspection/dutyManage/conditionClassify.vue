@@ -48,6 +48,7 @@
                                             :class="{active: curProcess && item.id == curProcess.id}"
                                             v-for="item in processList" 
                                             :key="item.id"
+                                            :title="item.name"
                                             @dblclick.stop="processDbClick(item)"
                                             @click.stop="processClick(item)">
                                             <input type="checkbox" v-model="item.checked" :checked="item.checked"  @click.stop="" @dblclick.stop=""> 
@@ -68,6 +69,7 @@
                                         :class="{active: curMode && item.id == curMode.id}"
                                         v-for="item in processModeList" 
                                         :key="item.id"
+                                        :title="item.name"
                                         @dblclick.stop="processDbClick(item)"
                                         @click.stop="processClick(item)">
                                         <input type="checkbox" v-model="item.checked" :checked="item.checked" @click.stop="" @dblclick.stop=""> 
@@ -87,6 +89,7 @@
                                         :class="{active: curResult && item.id == curResult.id}"
                                         v-for="item in processResultList" 
                                         :key="item.id"
+                                        :title="item.name"
                                         @dblclick.stop="processDbClick(item)"
                                         @click.stop="processClick(item)">
                                         <input type="checkbox" v-model="item.checked" :checked="item.checked"  @click.stop="" @dblclick.stop=""> 

@@ -87,11 +87,23 @@ export default {
 <style lang="scss" scoped>
 .duty-manage-edit-doc{
     >>>.el-dialog{
-        height: 70%;
+      width: 970px !important;
+      height: 90%;
+      margin-top: 5vh !important;
+
+      .el-dialog__header{
+        height: 55px;
+      }
+
+      .el-dialog__footer{
+        height: 70px;
+      }
     }
+    
     >>>.el-dialog__body{
-        position: relative;
-        height: calc(100% - 190px);
+      position: relative;
+      height: calc(100% - 125px);
+      max-height: none;
     }
 }
 </style>
