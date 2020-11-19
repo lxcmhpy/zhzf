@@ -112,9 +112,9 @@
           <tr style="height:180px">
             <td>领导意见</td>
             <td  colspan="4">
-              <!-- <el-form-item prop="agencyOpinions" :rules="fieldRules('agencyOpinions',propertyFeatures['agencyOpinions'])">
+              <el-form-item prop="agencyOpinions" :rules="fieldRules('agencyOpinions',propertyFeatures['agencyOpinions'])">
                 <el-input type="textarea" v-model="docData.agencyOpinions" :autosize="{ minRows: 5, maxRows: 7}"   :disabled="fieldDisabled(propertyFeatures['agencyOpinions'])" maxlength="500" placeholder="/"></el-input>
-              </el-form-item> -->
+              </el-form-item>
             </td>
           </tr>
           <tr style="height:80px">
@@ -193,7 +193,7 @@ export default {
         //文书数据
         docData: "",
         status: "",   //提交状态
-        note:"",//文书名字 
+        note:"",//文书名字
         docDataId:"", //多份文书的id
         linkTypeId:this.$route.params.caseLinkTypeId //所属环节的id
       },
@@ -349,7 +349,7 @@ export default {
         console.log(res);
         let data2 = JSON.parse(res.data.propertyData);
         this.staffList = data2.defaultStaff.split(',');
-        
+
       }, err => {
         console.log(err);
       })

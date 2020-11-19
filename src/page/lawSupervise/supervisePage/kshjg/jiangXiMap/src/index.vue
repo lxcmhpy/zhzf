@@ -1,7 +1,7 @@
 <template>
   <fullscreen ref="fullscreen" @change="fullscreenChange">
     <div class="jiangXiMap">
-      <JkyBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
+      <JkyBaseHMap @init="init" :center="center" :layerUrl="layerUrl" />
       <TopInFo />
       <Search
         ref="Search"
@@ -75,7 +75,6 @@ export default {
       ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
-      zoom: 8,
       center: [115.871344, 28.710709],
       searchWindowData: {
         window1: {

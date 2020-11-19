@@ -123,7 +123,7 @@
 
         .float-btns {
             width: 48px;
-            height: 100px;
+            // height: 100px;
             position: fixed;
             right: 70px;
             bottom: 70px;

@@ -259,8 +259,10 @@
               <div class="pdf_seal alginLast" style="white-space:nowrap;width:auto;margin-top:160px;margin-right:80px;">
                 <p>签名:{{docData.approvePeo}}</p>
                 <p>
-                  <el-date-picker v-model="docData.approveTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
-                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
+                  <!-- <el-date-picker v-model="docData.approveTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
+                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker> -->
+                    <span v-if="docData.approveTime">{{docData.approveTime}}</span>
+                    <span v-else>    年  月  日</span>
                 </p>
               </div>
             </td>

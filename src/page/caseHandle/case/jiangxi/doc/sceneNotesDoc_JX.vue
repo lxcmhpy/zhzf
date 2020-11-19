@@ -10,20 +10,33 @@
           :model="docData"
         >
           <div class="doc_topic">现场笔录</div>
-          <div
-            class="doc_number"
-          >赣（{{docData.caseNumber.substring(3,7)}}）交现录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
+          <div class="doc_number">
+            赣（{{ docData.caseNumber.substring(3, 7) }}）交现录〔{{
+              docData.caseNumber.substring(8, 13)
+            }}〕号
+          </div>
           <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
-          <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
+          <table
+            class="print_table"
+            border="1"
+            bordercolor="black"
+            width="100%"
+            cellspacing="0"
+          >
             <tr>
               <td>执法地点</td>
               <td colspan="3" class="color_DBE4EF">
-                <el-form-item prop="afdd" :rules="fieldRules('afdd',propertyFeatures['afdd'])">
+                <el-form-item
+                  prop="afdd"
+                  :rules="fieldRules('afdd', propertyFeatures['afdd'])"
+                >
                   <el-input
                     type="textarea"
                     v-model="docData.afdd"
-                    v-bind:class="{ over_flow:docData.afdd.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 3}"
+                    v-bind:class="{
+                      over_flow: docData.afdd.length > 14 ? true : false,
+                    }"
+                    :autosize="{ minRows: 1, maxRows: 3 }"
                     :maxlength="nameLength"
                     error
                     placeholder="/"
@@ -36,38 +49,56 @@
               <td colspan="3" id="scenetimeBox">
                 <el-form-item
                   prop="enforceStartTime"
-                  class="pdf_datapick dataTimeReplaceBox"
-                  :rules="fieldRules('enforceStartTime',propertyFeatures['enforceStartTime'])"
+                  class="pdf_datapick"
+                  :rules="
+                    fieldRules(
+                      'enforceStartTime',
+                      propertyFeatures['enforceStartTime']
+                    )
+                  "
                 >
                   <el-date-picker
                     v-model="docData.enforceStartTime"
                     type="datetime"
                     value-format="yyyy-MM-dd HH:mm"
                     format="yyyy年MM月dd日HH时mm分"
-                    style="width:235px"
+                    placeholder="    年  月  日  时  分"
+                    style="width: 235px"
                     :default-time="defaultStartTime"
-                    :disabled="fieldDisabled(propertyFeatures['enforceStartTime'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['enforceStartTime'])
+                    "
                   ></el-date-picker>
-                  <el-input
+                  <!-- <el-input
                     class="replaceTime"
                     placeholder=" 年 月 日 时 分"
                     v-model="docData.enforceStartTime"
-                  ></el-input>
+                  ></el-input> -->
                 </el-form-item>
                 <br />
-                <span style="display:inline-block;width:20px;margin-top:10px;">至</span>
+                <span
+                  style="display: inline-block; width: 20px; margin-top: 10px"
+                  >至</span
+                >
                 <el-form-item
                   prop="enforceEndTime"
                   class="pdf_datapick"
-                  style="width:100px"
-                  :rules="fieldRules('enforceEndTime',propertyFeatures['enforceEndTime'])"
+                  style="width: 100px"
+                  :rules="
+                    fieldRules(
+                      'enforceEndTime',
+                      propertyFeatures['enforceEndTime']
+                    )
+                  "
                 >
                   <el-time-picker
                     placeholder="时 分"
                     v-model="docData.enforceEndTime"
                     format="HH时mm分"
                     value-format="HH:mm"
-                    :disabled="fieldDisabled(propertyFeatures['enforceEndTime'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['enforceEndTime'])
+                    "
                   ></el-time-picker>
                 </el-form-item>
               </td>
@@ -77,7 +108,7 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="staff1"
-                  :rules="fieldRules('staff1',propertyFeatures['staff1'])"
+                  :rules="fieldRules('staff1', propertyFeatures['staff1'])"
                 >
                   <el-select
                     v-model="docData.staff1"
@@ -87,11 +118,11 @@
                     :disabled="fieldDisabled(propertyFeatures['staff1'])"
                   >
                     <el-option
-                      v-for="(item,index) in staffList"
+                      v-for="(item, index) in staffList"
                       :key="index"
                       :value="item"
                       :label="item"
-                      :disabled="docData.staff2==item"
+                      :disabled="docData.staff2 == item"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -100,7 +131,12 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="certificateId1"
-                  :rules="fieldRules('certificateId1',propertyFeatures['certificateId1'])"
+                  :rules="
+                    fieldRules(
+                      'certificateId1',
+                      propertyFeatures['certificateId1']
+                    )
+                  "
                 >
                   <el-input
                     type="textarea"
@@ -109,7 +145,9 @@
                     v-model="docData.certificateId1"
                     size="small"
                     placeholder="请输入"
-                    :disabled="fieldDisabled(propertyFeatures['certificateId1'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['certificateId1'])
+                    "
                   ></el-input>
                 </el-form-item>
               </td>
@@ -117,13 +155,15 @@
               <td rowspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="recorder"
-                  :rules="fieldRules('recorder',propertyFeatures['recorder'])"
+                  :rules="fieldRules('recorder', propertyFeatures['recorder'])"
                 >
                   <el-input
                     type="textarea"
                     v-model="docData.recorder"
-                    v-bind:class="{ over_flow:docData.recorder.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 3}"
+                    v-bind:class="{
+                      over_flow: docData.recorder.length > 14 ? true : false,
+                    }"
+                    :autosize="{ minRows: 1, maxRows: 3 }"
                     :maxlength="adressLength"
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['recorder'])"
@@ -135,7 +175,7 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="staff2"
-                  :rules="fieldRules('staff2',propertyFeatures['staff2'])"
+                  :rules="fieldRules('staff2', propertyFeatures['staff2'])"
                 >
                   <el-select
                     v-model="docData.staff2"
@@ -145,11 +185,11 @@
                     :disabled="fieldDisabled(propertyFeatures['staff2'])"
                   >
                     <el-option
-                      v-for="(item,index) in staffList"
+                      v-for="(item, index) in staffList"
                       :key="index"
                       :value="item"
                       :label="item"
-                      :disabled="docData.staff1==item"
+                      :disabled="docData.staff1 == item"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -157,16 +197,26 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="certificateId2"
-                  :rules="fieldRules('certificateId2',propertyFeatures['certificateId2'])"
+                  :rules="
+                    fieldRules(
+                      'certificateId2',
+                      propertyFeatures['certificateId2']
+                    )
+                  "
                 >
                   <el-input
                     type="textarea"
                     v-model="docData.certificateId2"
                     :maxLength="maxLength"
                     placeholder="/"
-                    v-bind:class="{ over_flow:docData.certificateId2.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 2}"
-                    :disabled="fieldDisabled(propertyFeatures['certificateId2'])"
+                    v-bind:class="{
+                      over_flow:
+                        docData.certificateId2.length > 14 ? true : false,
+                    }"
+                    :autosize="{ minRows: 1, maxRows: 2 }"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['certificateId2'])
+                    "
                   ></el-input>
                 </el-form-item>
               </td>
@@ -182,14 +232,21 @@
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="scenePeopelName"
-                  :rules="fieldRules('scenePeopelName',propertyFeatures['scenePeopelName'])"
+                  :rules="
+                    fieldRules(
+                      'scenePeopelName',
+                      propertyFeatures['scenePeopelName']
+                    )
+                  "
                 >
                   <el-input
                     v-model="docData.scenePeopelName"
                     :maxLength="maxLength"
                     placeholder="/"
                     @input="changeScenePeopelName"
-                    :disabled="fieldDisabled(propertyFeatures['scenePeopelName'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['scenePeopelName'])
+                    "
                   ></el-input>
                 </el-form-item>
               </td>
@@ -197,13 +254,20 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="scenePeopelSex"
-                  :rules="fieldRules('scenePeopelSex',propertyFeatures['scenePeopelSex'])"
+                  :rules="
+                    fieldRules(
+                      'scenePeopelSex',
+                      propertyFeatures['scenePeopelSex']
+                    )
+                  "
                 >
                   <el-select
                     v-model="docData.scenePeopelSex"
                     :maxLength="maxLength"
                     placeholder="/"
-                    :disabled="fieldDisabled(propertyFeatures['scenePeopelSex'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['scenePeopelSex'])
+                    "
                   >
                     <el-option :value="0" label="男"></el-option>
                     <el-option :value="1" label="女"></el-option>
@@ -216,16 +280,27 @@
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="scenePeopelIdNo"
-                  :rules="fieldRules('scenePeopelIdNo',propertyFeatures['scenePeopelIdNo'],validateIDNumber)"
+                  :rules="
+                    fieldRules(
+                      'scenePeopelIdNo',
+                      propertyFeatures['scenePeopelIdNo'],
+                      validateIDNumber
+                    )
+                  "
                 >
                   <el-input
                     type="textarea"
                     v-model="docData.scenePeopelIdNo"
                     :maxLength="maxLength"
                     placeholder="/"
-                    v-bind:class="{ over_flow:docData.scenePeopelIdNo.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 2}"
-                    :disabled="fieldDisabled(propertyFeatures['scenePeopelIdNo'])"
+                    v-bind:class="{
+                      over_flow:
+                        docData.scenePeopelIdNo.length > 14 ? true : false,
+                    }"
+                    :autosize="{ minRows: 1, maxRows: 2 }"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['scenePeopelIdNo'])
+                    "
                   ></el-input>
                 </el-form-item>
               </td>
@@ -233,14 +308,21 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="scenePeopeRelation"
-                  :rules="fieldRules('scenePeopeRelation',propertyFeatures['scenePeopeRelation'])"
+                  :rules="
+                    fieldRules(
+                      'scenePeopeRelation',
+                      propertyFeatures['scenePeopeRelation']
+                    )
+                  "
                 >
                   <el-select
                     v-model="docData.scenePeopeRelation"
                     :maxLength="maxLength"
                     placeholder="/"
                     @change="changeRelationWithCase"
-                    :disabled="fieldDisabled(propertyFeatures['scenePeopeRelation'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['scenePeopeRelation'])
+                    "
                   >
                     <el-option
                       v-for="item in allRelationWithCase"
@@ -257,16 +339,28 @@
               <td colspan="3" class="color_DBE4EF">
                 <el-form-item
                   prop="scenePeopeUnitPosition"
-                  :rules="fieldRules('scenePeopeUnitPosition',propertyFeatures['scenePeopeUnitPosition'])"
+                  :rules="
+                    fieldRules(
+                      'scenePeopeUnitPosition',
+                      propertyFeatures['scenePeopeUnitPosition']
+                    )
+                  "
                 >
                   <el-input
                     type="textarea"
                     v-model="docData.scenePeopeUnitPosition"
-                    v-bind:class="{ over_flow:docData.scenePeopeUnitPosition.length>14?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 3}"
+                    v-bind:class="{
+                      over_flow:
+                        docData.scenePeopeUnitPosition.length > 14
+                          ? true
+                          : false,
+                    }"
+                    :autosize="{ minRows: 1, maxRows: 3 }"
                     :maxlength="nameLength"
                     placeholder="/"
-                    :disabled="fieldDisabled(propertyFeatures['scenePeopeUnitPosition'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['scenePeopeUnitPosition'])
+                    "
                   ></el-input>
                 </el-form-item>
               </td>
@@ -274,7 +368,13 @@
               <td colspan="2" class="color_DBE4EF">
                 <el-form-item
                   prop="scenePeopeTel"
-                  :rules="fieldRules('scenePeopeTel',propertyFeatures['scenePeopeTel'],validatePhone)"
+                  :rules="
+                    fieldRules(
+                      'scenePeopeTel',
+                      propertyFeatures['scenePeopeTel'],
+                      validatePhone
+                    )
+                  "
                 >
                   <el-input
                     v-model="docData.scenePeopeTel"
@@ -291,14 +391,21 @@
               <td colspan="6" class="color_DBE4EF">
                 <el-form-item
                   prop="scenePeopeAddress"
-                  :rules="fieldRules('scenePeopeAddress',propertyFeatures['scenePeopeAddress'])"
+                  :rules="
+                    fieldRules(
+                      'scenePeopeAddress',
+                      propertyFeatures['scenePeopeAddress']
+                    )
+                  "
                 >
                   <el-input
                     v-model="docData.scenePeopeAddress"
                     minlength="11"
                     :maxLength="maxLength"
                     placeholder="/"
-                    :disabled="fieldDisabled(propertyFeatures['scenePeopeAddress'])"
+                    :disabled="
+                      fieldDisabled(propertyFeatures['scenePeopeAddress'])
+                    "
                   ></el-input>
                 </el-form-item>
               </td>
@@ -327,7 +434,12 @@
                   <div class="overflow_lins">
                     <el-form-item
                       prop="illegalFacts"
-                      :rules="fieldRules('illegalFacts',propertyFeatures['illegalFacts'])"
+                      :rules="
+                        fieldRules(
+                          'illegalFacts',
+                          propertyFeatures['illegalFacts']
+                        )
+                      "
                     >
                       <el-input
                         class="text_indent8 overflow_lins_textarea"
@@ -335,9 +447,15 @@
                         v-model="docData.illegalFacts"
                         rows="4"
                         placeholder="/"
-                        :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
+                        :disabled="
+                          fieldDisabled(propertyFeatures['illegalFacts'])
+                        "
                       ></el-input>
-                      <span class="overflow_describe_JX" style="padding-bottom:-6px;">现场情况：</span>
+                      <span
+                        class="overflow_describe_JX"
+                        style="padding-bottom: -6px"
+                        >现场情况：</span
+                      >
                       <span class="span_bg span_bg_top">&nbsp;</span>
                       <p class="span_bg">&nbsp;</p>
                       <p class="span_bg">&nbsp;</p>
@@ -360,7 +478,9 @@
               <td colspan="7">
                 <el-form-item
                   prop="readState"
-                  :rules="fieldRules('readState',propertyFeatures['readState'])"
+                  :rules="
+                    fieldRules('readState', propertyFeatures['readState'])
+                  "
                 >
                   <el-checkbox-group
                     v-model="docData.readState"
@@ -368,7 +488,9 @@
                     :disabled="fieldDisabled(propertyFeatures['readState'])"
                   >
                     <el-checkbox label="0">上述笔录我已看过</el-checkbox>
-                    <el-checkbox label="1">或已向我宣读过，情况属实无误。</el-checkbox>
+                    <el-checkbox label="1"
+                      >或已向我宣读过，情况属实无误。</el-checkbox
+                    >
                   </el-checkbox-group>
                 </el-form-item>
                 <el-row justify="end">
@@ -390,13 +512,15 @@
                 备注：
                 <el-form-item
                   prop="note"
-                  style="width:480px"
-                  :rules="fieldRules('note',propertyFeatures['note'])"
+                  style="width: 480px"
+                  :rules="fieldRules('note', propertyFeatures['note'])"
                 >
                   <el-input
                     type="textarea"
-                    v-bind:class="{ over_flow:docData.note.length>30?true:false }"
-                    :autosize="{ minRows: 1, maxRows: 3}"
+                    v-bind:class="{
+                      over_flow: docData.note.length > 30 ? true : false,
+                    }"
+                    :autosize="{ minRows: 1, maxRows: 3 }"
                     maxlength="60"
                     v-model="docData.note"
                     placeholder="/"
@@ -462,7 +586,7 @@ export default {
         .replace("分", "");
       let a = parseInquestStartTime.split(" ");
       let parseinquestEndTime = a[0] + " " + this.docData.enforceEndTime;
-      console.log('案发时间=='+this.docData.lasj)
+      console.log("案发时间==" + this.docData.lasj);
       if (Date.parse(parseInquestStartTime) < Date.parse(this.docData.lasj)) {
         this.$message({
           showClose: true,
@@ -627,7 +751,7 @@ export default {
         ],
         illegalFacts: [
           { required: true, message: "现场情况不能为空", trigger: "blur" },
-          { max: 400, message: "最多400字符", trigger: "blur" }
+          { max: 400, message: "最多400字符", trigger: "blur" },
         ],
         readState: [
           {
