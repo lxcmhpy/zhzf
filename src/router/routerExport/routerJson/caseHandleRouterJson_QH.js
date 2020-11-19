@@ -8,6 +8,7 @@ export default [
         },
         component: () => import("@/page/caseHandle/case/qingHai/doc/paymentReceipt.vue")
     },
+    
     {
         path: "/wayPaymentCun_QH",
         name: "case_handle_WayPaymentCun_QH",

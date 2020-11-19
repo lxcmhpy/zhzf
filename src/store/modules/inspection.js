@@ -11,7 +11,9 @@ const inspection = {
         inspectionTempleteId: '', //行政检查模板id
         inspectionFileEdit: '', //行政检查模板id
         inspectionOverWeightId: '', //行政检查超限记录id
+        penaltyDecisionId: '', //行政检查文书对象id
         inspectionOverWeightFresh: '',//行政检查超限记录是否保留缓存
+        carinfoId:''//车辆信息表单id
     },
     mutations: {
         set_inspection_orderId(state, data) {
@@ -28,6 +30,12 @@ const inspection = {
         },
         set_inspection_OverWeightId(state, data) {
             state.inspectionOverWeightId = data;
+        },
+        set_inspection_penaltyDecisionId(state, data) {
+            state.penaltyDecisionId = data;
+        },
+        set_inspection_carinfoId(state, data) {
+            state.carinfoId = data;
         },
         set_inspection_OverWeightFresh(state, data) {
             state.inspectionOverWeightFresh = data;
