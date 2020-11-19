@@ -6,15 +6,19 @@
     <el-menu class="el-menu-vertical-demo" background-color="#545c64" active-background-color="#F3F9F9" text-color="#9EA7B6" active-text-color="#4573D0" :collapse="true">
       <!-- 悬浮按钮 -->
 
-      <el-menu-item @click="clickLink('inspection_inspectionRAPFiles')">
-        <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="changeActive(1)" @mouseout="removeActive(1)"  @click="writeDoc"> -->
-        <div @mouseenter="changeActive(1)" @mouseout="removeActive(1)">文书<br />填报</div>
+      <!-- <el-menu-item @click="handleClickDocumentBtn('inspection_inspectionRAPFiles')"> -->
+      <el-menu-item @click="handleClickDocumentBtn">
+        <!-- <li v-if="formOrDocData.showBtn[0]" @mouseenter="enterItem(1)" @mouseout="leaveItem(1)"  @click="writeDoc"> -->
+        <div @mouseenter="enterItem(1)" @mouseout="leaveItem(1)">文书<br />填报</div>
       </el-menu-item>
-      <el-menu-item @click="clickLink1('inspection_imageMange')">
-        <div @mouseenter="changeActive(2)" @mouseout="removeActive(2)">照片<br />证据</div>
+      <el-menu-item @click="handleClickImgsBtn">
+        <div @mouseenter="enterItem(2)" @mouseout="leaveItem(2)">照片<br />证据</div>
       </el-menu-item>
       <el-menu-item >
-        <div @mouseenter="changeActive(3)" @mouseout="removeActive(3)">操作<br />记录</div>
+        <div @mouseenter="enterItem(3)" @mouseout="leaveItem(3)">操作<br />记录</div>
+      </el-menu-item>
+      <el-menu-item >
+        <div @mouseenter="enterItem(4)" @mouseout="leaveItem(4)">卷宗<br />目录</div>
       </el-menu-item>
     </el-menu>
     <documentSideMenu ref="documentSideMenuRef"></documentSideMenu>
@@ -45,14 +49,9 @@ export default {
     operationRecord
   },
   props: ['formOrDocData', 'storagePath', 'carinfoId'],
-  watch: {
-    carinfoId(val, oldVal) {
-      // debugger
-      console.log(this.carinfoId)
-    },
-  },
+  
   mixins: [mixinGetCaseApiList],
-  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'inspectionOverWeightId']) },
+  computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'inspectionOverWeightId','penaltyDecisionId']) },
   methods: {
     //   打印方法
     async printContent() {
@@ -80,7 +79,7 @@ export default {
       // if (this.addOrEiditFlag == 'add' || !this.formOrDocData.pageDomId) {
       // } else {
       console.log('点击')
-      if (this.inspectionOverWeightId) {
+      if (this.penaltyDecisionId) {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
           name: 'inspection_inspectionRAPFiles',
@@ -111,16 +110,19 @@ export default {
       this.$router.push({ name: "case_handle_viewPDF" })
     },
     // 鼠标移入
-    changeActive(index) {
+    enterItem(index) {
       this.closeAllDialog()
       switch (index) {
-        case 1: this.$refs.documentSideMenuRef.showModal(this.inspectionOverWeightId.firstcheckId ? this.inspectionOverWeightId.firstcheckId : ''); break;
+        case 1:  this.$refs.documentSideMenuRef.showModal(this.penaltyDecisionId); break;
         case 2: this.$refs.relativeRecordRef.showModal(this.inspectionOverWeightId || this.carinfoId); break;
         case 3: this.$refs.operationRecordRef.showModal(); break;
-        default: break;
+        case 4: this.$refs.operationRecordRef.showModal(); break;
+        default: break; 
       }
     },
-    removeActive(index) {
+
+    // 鼠标移出
+    leaveItem(index) {
       // $event.currentTarget.className = "";
       console.log('移出', index)
       //   switch (index) {
@@ -135,11 +137,13 @@ export default {
       this.$refs.relativeRecordRef.closeDialog();
       this.$refs.operationRecordRef.closeDialog();
     },
-    clickLink(name) {
+    // 跳转到文书列表
+    handleClickDocumentBtn() {
+      // debugger
       this.closeAllDialog()
       if (this.inspectionOverWeightId) {
         this.$router.push({
-          name: name,
+          name: 'inspection_inspectionRAPFiles',//文书列表页面
         });
       } else {
         this.$confirm('请先保存记录', "提示", {
@@ -149,15 +153,15 @@ export default {
         }).then(() => { })
       }
     },
-    clickLink1(name) {
-      this.closeAllDialog()
-      let _this = this
-      if (this.inspectionOverWeightId || this.carinfoId) {
 
+    // 跳转到证据照片列表页
+    handleClickImgsBtn() {
+      this.closeAllDialog()
+      if (this.inspectionOverWeightId || this.carinfoId) {
         this.$router.push({
-          name: name,
+          name: 'inspection_imageMange',
           params: {
-            carinfoId: _this.carinfoId,
+            carinfoId: this.carinfoId,
           }
         });
       } else {
