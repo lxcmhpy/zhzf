@@ -174,7 +174,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["caseId", "caseApproval", "inspectionOverWeightId",'carinfoId']),
+    ...mapGetters(["caseId", "caseApproval", "inspectionOverWeightId"]),
   },
   components: {
     caseSlideMenu,
@@ -217,7 +217,7 @@ export default {
     //表单筛选
     getEviList(index) {
       let data = {
-        caseId: this.inspectionOverWeightId || this.carinfoId,
+        caseId: this.inspectionOverWeightId,
         docId: this.evidenceForm.docId,
         current: index || this.currentPage,
         size: this.pageSize,
@@ -284,7 +284,7 @@ export default {
       fd.append("category", '路警联合;图片');
       fd.append("fileName", param.file.name);
       fd.append('status', 1)//传图片状态
-      fd.append('caseId', this.inspectionOverWeightId || this.carinfoId)//传记录id
+      fd.append('caseId', this.inspectionOverWeightId )//传记录id
       fd.append('docId', this.form.radio)//传类型代码
 
       let _this = this;

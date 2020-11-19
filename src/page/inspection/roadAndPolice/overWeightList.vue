@@ -228,8 +228,8 @@ export default {
       statusList: [
         { name: "全部", value: 3 },
         { name: "进行中", value: 0 },
+        { name: "待归档", value: 1 },
         { name: "已归档", value: 2 },
-        { name: "待归档", value: 1 }
       ],
 
       //超限类型
@@ -274,7 +274,7 @@ export default {
       });
       this.$store.commit("set_inspection_fileId", item.id);
       this.$store.commit("set_inspection_OverWeightId", item.id);
-      this.$store.commit("set_inspection_OverWeightFresh", false);
+      this.$store.commit("set_inspection_OverWeight_add", false);
     },
 
     // 重置
@@ -298,7 +298,6 @@ export default {
       }
       getPcQueryCarInfoApi(data).then(
         res => {
-          console.log(res);
           if (res.code == 200) {
             this.recordList = res.data.records;
             this.totalPage = res.data.total;
@@ -324,7 +323,7 @@ export default {
       this.dialogVisible = true;
     },
 
-    //添加哪种
+    //新建
     handleClickAddType(label) {
       console.log(" -> label", label)
       let _this = this;
@@ -333,7 +332,7 @@ export default {
         this.$router.push({
           name: "inspection_overWeightForm"
         });
-        this.$store.commit("set_inspection_OverWeightFresh", true);
+        this.$store.commit("set_inspection_OverWeight_add", true);
       }
     }
   },

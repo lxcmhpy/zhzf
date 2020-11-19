@@ -230,13 +230,11 @@ export default {
     },
     back() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      // this.$router.go(-1);//返回上一层
-      this.$router.push({
-        name: 'inspection_inspectionFiles',
-        // params: { id: this.formOrDocData.pageDomId || this.$route.params.id }
-        // query: { id: this.formOrDocData.pageDomId || this.$route.params.id }
-        params: { id: this.formOrDocData.pageDomId || this.$route.params.id, edit: this.formOrDocData.pageDomId ? false : true }
-      });
+      this.$router.go(-1);//返回上一层
+      // this.$router.push({
+      //   name: 'inspection_inspectionFiles',
+      //   params: { id: this.formOrDocData.pageDomId || this.$route.params.id, edit: this.formOrDocData.pageDomId ? false : true }
+      // });
     },
 
   },

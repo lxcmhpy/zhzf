@@ -282,7 +282,6 @@
         :formOrDocData="formOrDocData"
         @submitData="submitData"
         @saveData="saveData"
-        @backHuanjie="submitData"
       ></floatBtns>
     </div>
 
@@ -301,16 +300,16 @@ import rightMenu from "../compoment/rightMenu/index.vue";
 import { findCaseAllBindPropertyApi } from "@/api/caseHandle";
 import {
   findCarInfoByIdApi,
-  findOverloadDocByIdApi,
-  delOverloadDocById,
-  saveOrUpdateOverloadDocApi
+  // findOverloadDocByIdApi,
+  // delOverloadDocById,
+  createNewPdf
 } from "@/api/inspection";
 
 export default {
   mixins: [mixinGetCaseApiList],
   inject: ["reload"],
   computed: {
-    ...mapGetters(["caseId", "inspectionOverWeightId"])
+    ...mapGetters(["inspectionOverWeightId"])
   },
   components: {
     floatBtns,
@@ -330,15 +329,13 @@ export default {
     //   callback();
     // };
     return {
-      isParty: true,
       oldData: {},
       saveType: "",
       docData: {
-        id: "", //超限超载文书UUID
-        carInfoId: "", //车辆信息ID
+        
         orgName: "", //归档部门名称（机构名）
-        orgWord: "", //机构字
-        orderNum: "", //顺序号
+        orgWord: "机构", //机构字
+        orderNum: "001", //顺序号
         reason: "", //事由
         handledCompany: "", //被处理人(单位)
         testDate: "", //检测日期
@@ -387,16 +384,7 @@ export default {
           { required: true, message: "处理结果不能为空", trigger: "blur" }
         ]
       },
-      caseDocDataForm: {
-        id: "", //修改的时候用
-        caseBasicinfoId: "", //案件ID
-        caseDoctypeId: this.$route.params.docId, //文书类型ID
-        //文书数据
-        docData: "",
-        status: "", //提交状态
-        linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
-      },
-      handleType: "", // 0 暂存  1  提交
+      
 
       nameLength: 23,
       adressLength: 23,
@@ -441,7 +429,7 @@ export default {
       let od = this.oldData;
 
       dd.orgName = JSON.parse(localStorage.getItem("userInfo")).organName;
-      dd.filingDepartment = dd.orgName + "超限检测站";
+      dd.filingDepartment = dd.orgName;
       dd.handledCompany = dd.orgName + "(" + od.vehicleShipId + ")";
       dd.goodsName = od.loadGoods;
       dd.firstCheckWeight = od.firstCheck.totalWeight;
@@ -451,55 +439,60 @@ export default {
       dd.underTakerOne = personArr[0];
       dd.underTakerTwo = personArr[1];
 
-      dd.lawEnforcement = od.orgName;
+      dd.lawEnforcement = dd.orgName;
     },
 
     //根据ID获取数据,构建formParams
     getDocDataByCaseIdAndDocId() {
       findCarInfoByIdApi(this.inspectionOverWeightId).then(res => {
-        console.log("getDocDataByCaseIdAndDocId -> res", res);
+        console.log(" -> res", res);
         this.oldData = res.data;
         this.initDocData();
         // this.findOverloadDocById(res.data);
       });
     },
 
-    //根据ID获取数据,构建formParams
-    getData() {
-      this.caseDocDataForm.caseBasicinfoId = this.caseId;
-      let data = {
-        caseId: this.caseId,
-        docId: this.$route.params.docId
+    //保存接口
+    saveDoc() {
+      let params = {
+        docContent: JSON.stringify(this.docData),
+        docName: "卷宗封面【青海检查】",
+        orderId: this.inspectionOverWeightId,
+        sort: 0,
+        status: this.saveType == 0 ? "暂存" : "保存"
       };
-      console.log(data);
-      this.com_getDocDataByCaseIdAndDocId(data);
-    },
-
-    saveOrUpdateOverloadDoc() {
-      console.log("saveOrUpdateOverloadDoc -> this.docData", this.docData);
-      saveOrUpdateOverloadDocApi(this.docData).then(res => {
-        console.log("saveOrUpdateOverloadDoc -> res", res);
+      console.log(" -> this.docData", this.docData);
+      // debugger;
+      createNewPdf(params).then(res => {
+        console.log(" -> res", res);
         this.$message({
           type: "success",
-          message: res.data
+          message: res.msg
         });
-        if (this.saveType == 0) {
-          //暂存
+        if(res.data.storageId){
+          this.$router.push({
+            name:'inspection_overload_pdf',
+            params:{
+              id: this.inspectionOverWeightId, storageId: res.data.storageId
+            }
+          })
         }
+        
       });
     },
 
     //保存文书信息
     saveData(handleType) {
-      console.log("saveData -> handleType", handleType);
-      console.log("saveData -> docData", this.docData);
+      console.log(" -> handleType", handleType);
       this.saveType = handleType;
-      this.saveOrUpdateOverloadDoc();
+      this.saveDoc();
       // this.printContent()
       // this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
       console.log("submitData -> handleType", handleType);
+      this.saveType = handleType;
+      this.saveDoc();
       // this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       // this.$router.push({
       //   name: this.$route.params.url,
@@ -534,7 +527,6 @@ export default {
   created() {
     this.getDocDataByCaseIdAndDocId();
     // this.getData();
-    // this.isOverStatus();
     // this.getLawOfficer();
   }
 };
