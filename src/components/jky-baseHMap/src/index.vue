@@ -14,11 +14,6 @@ export default {
         return [115.871344, 28.710709];
       }
     },
-    // 放大倍数
-    zoom: {
-      type: Number,
-      default: 5
-    },
     // 底图
     layerUrl: {
       type: String,
@@ -27,6 +22,7 @@ export default {
   },
   data () {
     return {
+      zoom: 8,
       mapConsts: {
         // 江西省范围
         extentJx: [113.57277, 24.488942, 118.482124, 30.079848],
@@ -72,8 +68,8 @@ export default {
           projection: 'EPSG:4326',
           zoom: this.zoom,
           extent: [113.57277, 24.488942, 118.482124, 30.079848],
-          // minZoom: 2,
-          // maxZoom: 10
+          minZoom: 2,
+          maxZoom: 13
         },
         baseLayers: [
           {
@@ -184,9 +180,11 @@ export default {
         }
       }
       this.map.addPoint(point, options)
-      // 打点同时打开信息窗体
-      let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName || data.eventName
-      this.addOverlay(data, content)
+      // 如果不是轨迹点位，则打点同时打开信息窗体
+      if(zoomToExtent !== '0') {
+        let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName || data.eventName || ''
+        this.addOverlay(data, content)
+      }
     },
 
     /**
@@ -239,6 +237,7 @@ export default {
           }
         }
         this.map.addPoints(points, options)
+        this.zoom = 3
       }
     },
 
