@@ -185,7 +185,7 @@ import {
 import {
   getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi, appDownloadApi,
 } from "@/api/system";
-import { encryption, encrypt } from "@/common/js/cryptoAes";
+import { encryption, encrypt ,decrypt,decryption} from "@/common/js/cryptoAes";
 export default {
   data() {
     return {
@@ -376,7 +376,7 @@ export default {
             // 登录后默认跳转至host.json文件中配置的首页
             this.$router.push({ name: sessionStorage.getItem('HOME_PAGE_ROUTER_NAME') })
 
-            res.data.encryptionUserName = encryption(this.loginForm.username)
+            res.data.encryptionUserName = encryption(this.loginForm.username) 
             res.data.encryptionPassword = encryption(this.loginForm.password)
             iLocalStroage.sets('userInfo', res.data);
           }
@@ -488,6 +488,8 @@ export default {
     async getSystemData() {
       // let _this = this;
       let res = await getDictListDetailByNameApi('系统标题');
+      console.log('系统标题',res)
+      console.log('系统标题2',decrypt(res.data))
       this.systemTitleLogin = res.data[0].name;
       this.$store.commit('set_systemTitle', this.systemTitleLogin);
       window.document.title = res.data[0].name;
@@ -499,6 +501,7 @@ export default {
       let imgRes = '';
       try {
         imgRes = await getDictListDetailByNameApi('loginBg');
+        console.log('loginBg',imgRes)
         // this.$store.dispatch("setLoadingState", { flag: true, type: 'loadFull' });
         this.loginImgSrc = './static/images/img/login/' + imgRes.data[0].name + '.jpg';
 
@@ -516,8 +519,15 @@ export default {
 
       //是否显示滑动验证
       let dataRes = await getDictListDetailByNameApi('登录滑动验证');
-      console.log('是否显示滑动验证',dataRes)
+      console.log('是否显示滑动验证',dataRes);
+      let a = encrypt(JSON.stringify('sadsadad'));
+      console.log('加密',a);
+      let b = decrypt(a);
+      console.log('解密',b)
+      // let dataRes2 =JSON.parse(decrypt(dataRes.data));
+      // console.log('dataRes2',dataRes2)
       if(dataRes.data.length>0){
+          // console.log(Number(dataRes2.data[0].name))
         this.isShow = Number(dataRes.data[0].name) ? true : false;
       }
       

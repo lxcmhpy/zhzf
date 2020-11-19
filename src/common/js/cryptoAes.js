@@ -73,7 +73,8 @@ export function encrypt(word, keyStr) {
     return encrypted.toString();
 }
 export function decrypt(word, keyStr) {
-    keyStr = keyStr ? keyStr : 'abcdsxyzhkj12345';
+    // keyStr = keyStr ? keyStr : 'abcdsxyzhkj12345';
+    keyStr = keyStr ? keyStr : 'abcdefgabcdefg12';
     var key = CryptoJS.enc.Utf8.parse(keyStr);
     var decrypt = CryptoJS.AES.decrypt(word, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 });
     return CryptoJS.enc.Utf8.stringify(decrypt).toString();
