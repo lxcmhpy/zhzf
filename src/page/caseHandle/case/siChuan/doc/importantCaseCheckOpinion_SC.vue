@@ -98,6 +98,7 @@
                   :autosize="{ minRows: 3, maxRows: 6}"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['organOpinoin'])"
+                  maxlength="512"
                 ></el-input>
               </el-form-item>
             </td>
@@ -315,6 +316,7 @@
                   :autosize="{ minRows: 3, maxRows: 6}"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['checkOpinoin'])"
+                  maxlength="512"
                 ></el-input>
               </el-form-item>
             </td>
@@ -483,6 +485,9 @@ export default {
         belong10: [
           { required: true, message: "文书是否规范、完备不能为空", trigger: "blur" },
         ],
+        checkOpinoin: [
+          { required: true, message: "审核结论不能为空", trigger: "blur" },
+        ],
       },
       nameLength: 23,
       adressLength: 23,
@@ -569,6 +574,11 @@ export default {
   .center{
     text-align: center;
     text-align-last: center;  
+  }
+}
+#adminCoerciveMeasureApproval_print{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
+    background: #f7c9cb !important;
   }
 }
 </style>

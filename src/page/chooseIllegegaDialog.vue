@@ -17,7 +17,7 @@
           </div>
           <div class="item">
             <el-form-item label="行为代码" prop="strNumber">
-              <el-input v-model="illegalActSearchForm.strNumber" placeholder="请输入违法行为代码" maxlength="7"></el-input>
+              <el-input v-model="illegalActSearchForm.strNumber" placeholder="请输入违法行为代码" maxlength="9"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -47,9 +47,9 @@ export default {
   data() {
     var valiDatLength = (rule, value, callback) => {
       console.log(value)
-      var re = /^[0-9]{7}$/;
+      var re = /^[0-9]*$/;
       if (value && !re.test(value)) {
-        return callback(new Error("请输入7位数字"));
+        return callback(new Error("请输入9位数字"));
       }
       callback();
     }

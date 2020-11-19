@@ -10,6 +10,7 @@
           :model="docData"
         >
           <div class="doc_topic">行政强制措施现场笔录</div>
+        <div class="doc_number">案号：{{docData.caseNumber}}</div>
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>
@@ -20,12 +21,11 @@
                     v-model="docData.afdd"
                     v-bind:class="{ over_flow:docData.afdd.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 3}"
-                    :maxlength="nameLength"
+                    maxlength="64"
                     error
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['afdd'])"
                   ></el-input>
-                  <!-- <el-input v-model="docData.party"  @input="widthCheck($event.target, 23,$event)" maxlength="47" v-bind:class="{over_flow: isOverflow}" placeholder="/"></el-input> -->
                 </el-form-item>
               </td>
               <td>执法时间</td>
@@ -113,10 +113,10 @@
               <td rowspan="2">记录人</td>
               <td rowspan="2" class="color_DBE4EF">
                 <el-form-item
-                  prop="recorder"
-                  :rules="fieldRules('recorder',propertyFeatures['recorder'])"
+                  prop="recorderArr"
+                  :rules="fieldRules('recorderArr',propertyFeatures['recorderArr'])"
                 >
-                  <el-input
+                  <!-- <el-input
                     type="textarea"
                     v-model="docData.recorder"
                     v-bind:class="{ over_flow:docData.recorder.length>14?true:false }"
@@ -124,7 +124,15 @@
                     :maxlength="adressLength"
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['recorder'])"
-                  ></el-input>
+                  ></el-input> -->
+                  <el-select v-model="docData.recorderArr" multiple placeholder="请选择">
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :label="item"
+                      :value="item">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </td>
             </tr>
@@ -181,11 +189,11 @@
                   prop="scenePeopelName"
                   :rules="fieldRules('scenePeopelName',propertyFeatures['scenePeopelName'])"
                 >
+                 <!-- @input="changeScenePeopelName"  -->
                   <el-input
                     v-model="docData.scenePeopelName"
                     :maxLength="maxLength"
                     placeholder="/"
-                    @input="changeScenePeopelName"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopelName'])"
                   ></el-input>
                 </el-form-item>
@@ -218,7 +226,7 @@
                   <el-input
                     type="textarea"
                     v-model="docData.scenePeopelIdNo"
-                    :maxLength="maxLength"
+                    maxLength="18"
                     placeholder="/"
                     v-bind:class="{ over_flow:docData.scenePeopelIdNo.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 2}"
@@ -232,11 +240,11 @@
                   prop="scenePeopeRelation"
                   :rules="fieldRules('scenePeopeRelation',propertyFeatures['scenePeopeRelation'])"
                 >
+                <!--   @change="changeRelationWithCase" -->
                   <el-select
                     v-model="docData.scenePeopeRelation"
                     :maxLength="maxLength"
                     placeholder="/"
-                    @change="changeRelationWithCase"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeRelation'])"
                   >
                     <el-option
@@ -275,8 +283,7 @@
                 >
                   <el-input
                     v-model="docData.scenePeopeTel"
-                    minlength="11"
-                    :maxLength="maxLength"
+                    maxLength="11"
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeTel'])"
                   ></el-input>
@@ -293,7 +300,7 @@
                   <el-input
                     v-model="docData.scenePeopeAddress"
                     minlength="11"
-                    :maxLength="maxLength"
+                    maxLength="64"
                     placeholder="/"
                     :disabled="fieldDisabled(propertyFeatures['scenePeopeAddress'])"
                   ></el-input>
@@ -330,7 +337,6 @@
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
-                        maxlength="500"
                         placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
@@ -586,8 +592,24 @@ export default {
         attendance: "",
         information: "",
         defense:"",
+        recorderArr:[]
       },
       rules: {
+        certificateId1: [
+          { required: true, message: "执法证号不能为空", trigger: "blur" },
+        ],
+        certificateId2: [
+          { required: true, message: "执法证号不能为空", trigger: "blur" },
+        ],
+        attendance: [
+          { required: true, message: "当事人到场情况不能为空", trigger: "blur" },
+        ],
+        information: [
+          { required: true, message: "强制措施告知情况不能为空", trigger: "blur" },
+        ],
+        illegalFacts: [
+          { required: true, message: "主要内容不能为空", trigger: "blur" },
+        ],
         afdd: [
           { required: true, message: "执法地点不能为空", trigger: "blur" },
         ],
@@ -661,11 +683,12 @@ export default {
           { required: true, message: "车（船）型不能为空", trigger: "blur" },
         ],
         party: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
-        recorder: [
+        recorderArr: [
           { required: true, message: "记录人不能为空", trigger: "blur" },
         ],
         illegalFacts: [
           { required: true, message: "现场情况不能为空", trigger: "blur" },
+          { max: 500, message: "最多500字符", trigger: "blur" }
         ],
         readState: [
           {
@@ -780,6 +803,16 @@ export default {
     //保存文书信息
     saveData(handleType) {
       // this.printContent()
+      this.docData.recorder = this.docData.recorderArr.join(',');
+
+      if(this.docData.readState.length==0){
+        this.$message({
+          type: "error",
+          message: "请选择是否看过上述笔录"
+        });
+        return;
+      }
+
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -821,9 +854,14 @@ export default {
         this.docData.staff2 = this.docData.staff.split(",")[1];
         this.docData.certificateId2 = this.docData.certificateId.split(",")[1];
       }
+
+      this.docData.recorderArr = this.docData.recorder ? this.docData.recorder.split(',') : [];
       this.docData.readState =
         this.docData.readState == "" ? [] : this.docData.readState;
       let dailiData = {};
+      if(this.caseDocDataForm.status == ''){
+
+       
       if (this.docData.partyType == "1") {
         //当事人类型为个人
         dailiData = {
@@ -852,6 +890,7 @@ export default {
       this.daiRuscenePeopeTel = dailiData.tel ? true : false;
       this.daiRuscenePeopeAddress = dailiData.adress ? true : false;
       this.setDataForScenePelple(true, dailiData);
+       }
     },
     //修改人员
     changeStaff1(val) {
@@ -1005,6 +1044,9 @@ export default {
       margin: 4px 0;
       height: 20px;
     }
+  }
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
+    background: #f7c9cb !important;
   }
 }
 </style>

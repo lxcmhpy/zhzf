@@ -270,10 +270,10 @@
 /* 悬浮按钮 */
 .float-btns {
     width   : 48px;
-    height  : 100px;
+    // height  : 100px;
     position: fixed;
     right   : 6%;
-    bottom  : 97px;
+    bottom  : 20px;
 
     & .el-button {
         border-radius: 1px;

@@ -562,7 +562,7 @@ export default {
           tableArr.push(item);
         }
       });
-      this.tableDatas = tableArr;
+     this.tableDatas = JSON.parse(JSON.stringify(tableArr));
       this.addVisible = true;
       if (this.tableDatas.length == 0) {
         this.tableDatas.push({ evidenceNo: 1, amount: 1 });
@@ -745,6 +745,11 @@ export default {
 .evdence-form {
   .el-icon-circle-close {
     color: #7b7b7b !important;
+  }
+}
+#obtanEvidence_print{
+  .is-required .el-input__inner,.el-checkbox,.is-required .el-textarea__inner{
+    background: #f7c9cb !important;
   }
 }
 </style>

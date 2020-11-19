@@ -160,6 +160,15 @@ export default [
       },
       component: () => import("@/page/caseHandle/case/siChuan/doc/sceneNotesDoc_SC.vue")
     },
+    //违法行为通知书
+    {
+      path: "/illegalActionForm_SC",
+      name: "case_handle_illegalActionForm_SC",
+      meta: {
+        title: "违法行为通知书-四川",
+      },
+      component: () => import("@/page/caseHandle/case/siChuan/form/illegalActionForm_SC.vue")
+    },
 
     
     

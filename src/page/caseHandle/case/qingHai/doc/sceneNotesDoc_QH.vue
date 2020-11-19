@@ -12,8 +12,7 @@
           <div class="doc_topic">现场笔录</div>
           <div
             class="doc_number"
-          >赣（{{docData.caseNumber.substring(3,7)}}）交现录〔{{docData.caseNumber.substring(8,13)}}〕号</div>
-          <!-- <el-button @click="onSubmit('docForm')">formName</el-button> -->
+          >{{docData.caseNumber}}</div>
           <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
             <tr>
               <td>执法地点</td>
@@ -334,7 +333,6 @@
                         type="textarea"
                         v-model="docData.illegalFacts"
                         rows="4"
-                        maxlength="400"
                         placeholder="/"
                         :disabled="fieldDisabled(propertyFeatures['illegalFacts'])"
                       ></el-input>
@@ -626,6 +624,7 @@ export default {
         ],
         illegalFacts: [
           { required: true, message: "现场情况不能为空", trigger: "blur" },
+          { max: 400, message: "最多400字符", trigger: "blur" }
         ],
         readState: [
           {

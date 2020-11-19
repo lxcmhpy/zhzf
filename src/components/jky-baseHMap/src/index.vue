@@ -42,6 +42,7 @@ export default {
       pointLayerName: new Set(), // 单点点位的图层标识
       informationWindow: '', // 信息窗体
       lineId: new Set(), // 单线的id标识
+      interval: null
     }
   },
   beforeCreate() {
@@ -71,8 +72,8 @@ export default {
           projection: 'EPSG:4326',
           zoom: this.zoom,
           extent: [113.57277, 24.488942, 118.482124, 30.079848],
-          minZoom: 2,
-          maxZoom: 10
+          // minZoom: 2,
+          // maxZoom: 10
         },
         baseLayers: [
           {
@@ -132,7 +133,7 @@ export default {
      * 添加信息窗体
      */
     addOverlay(data, content) {
-      this.map.removeOverlay(this.informationWindow)
+      // this.map.removeOverlay(this.informationWindow)
       let latLng = data.propertyValue.split(',')
       this.informationWindow = new HMap.Popover(this.map.getMap(), {
         offset: [0, -45],
@@ -147,10 +148,10 @@ export default {
     /**
      * 地图添加点位(单点)
      */
-    addPoint(data, latLng) {
+    addPoint(data, latLng, zoomToExtent) {
       // 打点之前清除地图点位
       this.cleanAll()
-      let _layerName = data.id
+      let _layerName = data.id || ''
       this.pointLayerName.add(_layerName)
       if(!latLng) throw new Error("addPoint():::::::::::没有坐标")
       const point = {
@@ -162,7 +163,7 @@ export default {
       }
       const options = {
         layerName: _layerName,
-        zoomToExtent: true,
+        zoomToExtent: zoomToExtent==='0'?false:true,
         style: {
           image: {
             type: 'icon',
@@ -183,6 +184,9 @@ export default {
         }
       }
       this.map.addPoint(point, options)
+      // 打点同时打开信息窗体
+      let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName || data.eventName
+      this.addOverlay(data, content)
     },
 
     /**
@@ -190,7 +194,7 @@ export default {
      */
     addPoints(arr) {
       if(arr) {
-        this.map.removeOverlay(this.informationWindow)
+        // this.map.removeOverlay(this.informationWindow)
         // 清除单点点位
         this.cleanPoint()
 
@@ -200,6 +204,9 @@ export default {
           let point = (item && item.propertyValue && item.propertyValue.split(',')) || []
           // 点位数据正常
           if(point.length === 2) {
+            // 打开信息窗体
+            let content = item.vehicleNumber || item.label || item.name || item.shipNumber || item.nickName || item.eventName
+            this.addOverlay(item, content)
             return {
               attributes: {
                 id: item.id,
@@ -274,11 +281,35 @@ export default {
     removeFeatureById() {
       if (!Map) return
       this.map.removeFeatureById(this.lineId)
-    }
+      // 删除轨迹图标
+      this.map.removeFeatureById('trackAction')
+      // 清除轨迹动画
+      clearInterval(this.interval)
+    },
+
+    /**
+     * 添加轨迹动画
+     */
+    addTrackAction(data, points) {
+      if(points.length > 0) {
+        let index = 0
+        this.interval = setInterval(() => {
+          if(index < points.length) {
+            this.addPoint(data, points[index], '0')
+            index++
+          } else {
+            index = 0
+          }
+        }, 1000)
+      }
+    },
   },
   created() {
     loadCss("/static/hmap/hmap.css");
     loadScript("/static/hmap/hmap.js").then(() => this.init());
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
   }
 }
 </script>

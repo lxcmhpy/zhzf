@@ -735,5 +735,14 @@ export default [{
     },
     component: () => import("@/page/caseHandle/case/form/propertyManage/propertyDetail.vue")
   },
+  {
+    path: "/adminCoerciveMeasure_BZ",
+    name: "case_handle_adminCoerciveMeasure_BZ",
+    meta: {
+      title: "行政强制措施",
+      oneTab: true,
+    },
+    component: () => import("@/page/caseHandle/case/form/adminCoerciveMeasure.vue")
+  },
 
 ]

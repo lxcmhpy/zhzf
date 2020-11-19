@@ -113,9 +113,12 @@ export default {
           //是否显示解除（延长）强制措施按钮
           _this.showRemoveOrExtendBtn(res.data.completeLink);
           //是否显示行政强制措施按钮
-          if(this.currentFlow.data.flowUrl == 'commonGraphData_JX' || this.currentFlow.data.flowUrl == 'commonGraphData_SC'){ //江西流程 四川流程
-            _this.showAdminCoerciveMeasureBtnByFlow(res.data);
-          }
+           _this.showAdminCoerciveMeasureBtnByFlow(res.data);
+          // if(this.currentFlow.data.flowUrl == 'commonGraphData_JX' || this.currentFlow.data.flowUrl == 'commonGraphData_SC'){ //江西流程 四川流程
+          //   _this.showAdminCoerciveMeasureBtnByFlow(res.data);
+          // }
+          
+
           //显示强制时间
           _this.getMeasuerTime();
           //是否显示回退按钮
@@ -839,14 +842,16 @@ export default {
       if(this.IsLawEnforcementSupervision) return
       let updataLinkData = {
           caseId:this.caseId,
-          linkTypeId:this.currentFlow.data.flowUrl == 'commonGraphData_JX' ? this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId : this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId
+          linkTypeId:''
       }
 
       if(this.currentFlow.data.flowUrl == 'commonGraphData_SC'){
          this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId);
         this.$store.commit("setCaseLinkName", 'case_handle_adminCoerciveMeasure_SC');
+        updataLinkData.linkTypeId = this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId
         this.$router.push({name:'case_handle_adminCoerciveMeasure_SC',params:{isComplete:this.showREBtn}});
-      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX'){
+      }else if(this.currentFlow.data.flowUrl == 'commonGraphData_JX' || this.currentFlow.data.flowUrl == 'commonGraphData'){
+        updataLinkData.linkTypeId = this.currentFlow.data.flowUrl == 'commonGraphData_JX' ? this.BASIC_DATA_JX.adminCoerciveMeasure_JX_caseLinktypeId : this.BASIC_DATA_SYS.adminCoerciveMeasure_caseLinktypeId
         try{
           await updateLinkInfoByCaseIdAndLinkTypeIdApi(updataLinkData); 
         }catch(err){
@@ -854,7 +859,11 @@ export default {
         }
          this.$store.commit("setCaseLinktypeId", this.BASIC_DATA_SC.adminCoerciveMeasure_SC_caseLinktypeId);
         this.$store.commit("setCaseLinkName", 'case_handle_adminCoerciveMeasure_JX');
-        this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
+        if(this.currentFlow.data.flowUrl == 'commonGraphData'){
+          this.$router.push({name:'case_handle_adminCoerciveMeasure_BZ',params:{isComplete:this.showREBtn}})
+        }else{
+          this.$router.push({name:'case_handle_adminCoerciveMeasure_JX',params:{isComplete:this.showREBtn}})
+        }
       }
     },
     //显示环节回退弹窗

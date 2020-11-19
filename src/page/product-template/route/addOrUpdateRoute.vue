@@ -117,10 +117,10 @@
                     routeNote: ""
                 },
                 rules: {
-                    startingPileNumberK: [{ required: true, message: "请输入起始桩号K", trigger: "blur" }],
-                    startingPileNumberM : [{ required: true, message: "请输入起始桩号M", trigger: "blur" }],
-                    enddingPileNumberK : [{ required: true, message: "请输入结束桩号K", trigger: "blur" }],
-                    enddingPileNumberM : [{ required: true, message: "请输入结束桩号M", trigger: "blur" }],
+                    // startingPileNumberK: [{ required: true, message: "请输入起始桩号K", trigger: "blur" }],
+                    // startingPileNumberM : [{ required: true, message: "请输入起始桩号M", trigger: "blur" }],
+                    // enddingPileNumberK : [{ required: true, message: "请输入结束桩号K", trigger: "blur" }],
+                    // enddingPileNumberM : [{ required: true, message: "请输入结束桩号M", trigger: "blur" }],
                 },
                 dialogTitle: "", //弹出框title
                 handelType: 0, //添加 0  修改2
