@@ -118,14 +118,21 @@ export default {
           return "其他";
           break;
       }
+    },
+
+    //设置弹窗左偏移
+    setRight() {
+      let class1 = document.getElementsByClassName("documentFormCat");
+      let class2 = class1[0].parentNode;
+      class2.style.right = "60px";
+      class2.style.top = "60px";
+      class2.style.overflow = "hidden";
     }
   },
+  
   mounted() {
-    let class1 = document.getElementsByClassName("documentFormCat");
-    let class2 = class1[0].parentNode;
-    class2.style.right = "60px";
-    class2.style.top = "60px";
-    class2.style.overflow = "hidden";
+    //设置弹窗遮罩层不要遮到右侧快捷菜单
+    this.setRight();
   }
 };
 </script>

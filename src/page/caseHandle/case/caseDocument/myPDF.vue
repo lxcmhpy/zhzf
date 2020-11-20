@@ -4,7 +4,7 @@
     <!-- <embed v-for="(item,index) in storagePath" :key="index" class="print_info"
            style="padding:0px;width: 730px;position:relative" name="plugin" id="plugin" :src="item"
            type="application/pdf" internalinstanceid="29"> -->
-    <!-- </div>  -->
+    <!-- </div>  --> 
     <casePageFloatBtns :storagePath="storagePath" :pageDomId="'establish-print'" :formOrDocData="formOrDocData"
                        @submitData="submitData" @backHuanjie="backHuanjie" @reInstall="reInstall"
                        @showApprovePeopleList="showApprovePeopleList" @showApproval="findCurrentApproval"
@@ -170,13 +170,14 @@
           updateDocStatusApi(this.$route.params.docDataId).then(res=>{
             console.log('更新状态',res);
             this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-            if(this.$route.params.status == 1){
-              console.log('退回11111')
-              this.$router.go(-1);
-            }else{
-              console.log('退回信息采集')
-               this.$router.go(-2);
-            }
+            // if(this.$route.params.status == 1){
+            //   console.log('退回11111')
+            //   this.$router.go(-1);
+            // }else{
+            //   console.log('退回信息采集')
+            //    this.$router.go(-2);
+            // }
+            this.$router.push({name:this.caseLinkName})
 
           }).catch(err=>{console.log(err)})
 

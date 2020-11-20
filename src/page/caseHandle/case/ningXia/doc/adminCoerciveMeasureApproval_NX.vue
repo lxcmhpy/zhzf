@@ -243,10 +243,18 @@
                 </span>的行政强制措施
               </p>
               <div class="pdf_seal">
-                <p>签名：{{docData.approvePeo}}</p>
+                <p>签名：{{docData.lawOfficeName}}</p>
                 <p>
-                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
+                  <el-form-item prop="lawOfficeTime" class="pdf_datapick">
+                    <el-date-picker
+                      v-model="docData.lawOfficeTime"
+                      type="date"
+                      format="yyyy年MM月dd日"
+                      placeholder="    年  月  日"
+                      value-format="yyyy-MM-dd"
+                      @blur="starttime"
+                    ></el-date-picker>
+                  </el-form-item>
                 </p>
               </div>
             </td>
@@ -260,7 +268,7 @@
               <div class="pdf_seal">
                 <p>签名：{{docData.approvePeo}}</p>
                 <p>
-                  <span v-if="docData.secondApproveTime">{{docData.approveTime}}</span>
+                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -344,6 +352,8 @@ export default {
         detainGoods: "",
         enforceMeasure: "",
         notes: "",
+        lawOfficeName: "",
+        lawOfficeTime: "",
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",

@@ -277,6 +277,18 @@ export default {
               }
               updateDocStatusById(data).then(
                 res => {
+                  console.log('currentFileData', this.currentFileData)
+                  this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
+                  this.$router.push({
+                    name: this.currentFileData.path, 
+                    params: {
+                      id: this.currentFileData.id,
+                      //案件ID
+                      caseBasicinfoId: this.currentFileData.caseBasicinfoId,
+                      docId: this.currentFileData.docId,
+                      url: this.currentFileData.url
+                    }
+                  });
                   if (res.code == 200) { }
                   else {
                     _this.$message({
@@ -289,18 +301,7 @@ export default {
                   console.log(err);
                 }
               );
-              console.log('currentFileData', this.currentFileData)
-              this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-              this.$router.push({
-                name: this.currentFileData.path,
-                params: {
-                  id: this.currentFileData.id,
-                  //案件ID
-                  caseBasicinfoId: this.currentFileData.caseBasicinfoId,
-                  docId: this.currentFileData.docId,
-                  url: this.currentFileData.url
-                }
-              });
+              
             }
             else {
               _this.$message({

@@ -1086,7 +1086,6 @@ import util from "@/common/js/util";
 import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson";
 // import chooseLawPerson from "@/page/inspection/record-manage/chooseModlePerson";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
-import floatBtns from "./floatMenu.vue";
 import rightMenu from "@/page/inspection/roadAndPolice/compoment/rightMenu/index.vue";
 
 import iLocalStroage from "@/common/js/localStroage";
@@ -1406,7 +1405,6 @@ export default {
   components: {
     chooseLawPerson,
     mapDiag,
-    floatBtns,
     rightMenu
   },
 
@@ -1808,7 +1806,6 @@ export default {
                   _this.carInfo.drivePerson.partyUnitPosition =
                     res.data[0].OwnerName || "";
                 },
-                error => {}
               );
             } else {
               this.$message.error("未查到数据");
@@ -1818,8 +1815,7 @@ export default {
               _this.carInfo.businessStatus = "";
               _this.carInfo.drivePerson.partyUnitPosition = "";
             }
-          },
-          error => {}
+          }
         );
       } else {
         this.$message.error("请正确输入车辆颜色和车牌号码");
@@ -1926,9 +1922,6 @@ export default {
                 name: "inspection_overloadDocumentDoc_QH"
               });
             }
-            // else {
-            //   this.getPageData(data.id);
-            // }
           } else {
             this.$message.error(res.msg);
           }
@@ -1965,7 +1958,6 @@ export default {
             _this.$message.error(res.msg);
           }
         },
-        error => {}
       );
     },
 
@@ -2004,7 +1996,6 @@ export default {
         res => {
           this.getFile();
         },
-        error => {}
       );
     },
 
@@ -2018,11 +2009,7 @@ export default {
       if (file.storageId) {
         deleteFileByIdApi(file.storageId).then(
           res => {
-            console.log(res);
           },
-          error => {
-            console.log(error);
-          }
         );
       } else {
         return;
@@ -2045,7 +2032,6 @@ export default {
             error => {}
           );
         })
-        .catch(() => {});
     },
 
     // 获取文件
@@ -2062,8 +2048,7 @@ export default {
               element.name = element.fileName;
             });
             this.fileList = res.data;
-          },
-          error => {}
+          }
         );
       }
     },
@@ -2098,9 +2083,6 @@ export default {
         .then(res => {
           this.getObjectURL(res);
         })
-        .catch(err => {
-          console.log(err);
-        });
     },
 
     // 将返回的流数据转换为url
@@ -2237,9 +2219,6 @@ export default {
             this.checkStationVisible = true;
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
     },
 
     //复检质量变化
@@ -2310,7 +2289,9 @@ export default {
       this.carInfo.firstCheck.firstCheckTime = this.formatDateTime(new Date());
     } else {
       this.isEditStatus = false;
-      this.getPageData();
+      if(this.inspectionOverWeightId){
+        this.getPageData();
+      }
     }
 
     this.getDrawerList(this.drawerOption);

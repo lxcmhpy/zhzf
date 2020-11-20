@@ -669,10 +669,22 @@ export function findAskNumApi(params) {
   });
 }
 
-//通过条件查询文书列表
+//通过条件查询文书列表(分页)
 export function getAllPdfListApi(data) {
   return request({
     url: "/case/doc/type/findByCondition",
+    method: "POST",
+    params: data,
+    showloading: true,
+    loadingType: 'loadPart',
+    cancelToken: setCancelSource()
+  });
+}
+
+//通过条件查询文书列表(不分页)
+export function getAllDocListApi(data) {
+  return request({
+    url: "/case/doc/type/findDocTypeList",
     method: "POST",
     params: data,
     showloading: true,
