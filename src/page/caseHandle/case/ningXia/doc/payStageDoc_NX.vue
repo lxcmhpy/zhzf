@@ -3,7 +3,7 @@
     <div class="print_info" style="height: 1200px" id="majorAdminLawEnforceAudit_print">
       <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">分期（延期）缴纳罚款申请书</div>
-        <div class="doc_number">案号：{{docData.caseNumber}}</div>
+        <div class="doc_number">案号:{{docData.caseNumber}}</div>
         <table class="print_table" border="1" bordercolor="black" width="100%" cellspacing="0">
           <tr>
             <td>
@@ -105,45 +105,45 @@
               <p>
                 &nbsp;&nbsp;本人已经充分认识到
                 <el-form-item
-                  prop="illegalFact"
-                  :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])"
+                  prop="caseCauseName"
+                  :rules="fieldRules('caseCauseName',propertyFeatures['caseCauseName'])"
                 >
                   <el-input
                     type="textarea"
-                    v-model="docData.illegalFact"
-                    v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>14?true:false }"
+                    v-model="docData.caseCauseName"
+                    v-bind:class="{ over_flow:docData.caseCauseName && docData.caseCauseName.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 5}"
                     maxlength="200"
                     placeholder="/"
-                    :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
+                    :disabled="fieldDisabled(propertyFeatures['caseCauseName'])"
                   ></el-input>
                 </el-form-item>
                 的危害，愿意接受行政处罚，但确有经济困难。现向
                 <el-form-item
-                  prop="illegalFact"
-                  :rules="fieldRules('illegalFact',propertyFeatures['illegalFact'])"
+                  prop="organName"
+                  :rules="fieldRules('organName',propertyFeatures['organName'])"
                 >
                   <el-input
                     type="textarea"
-                    v-model="docData.illegalFact"
-                    v-bind:class="{ over_flow:docData.illegalFact && docData.illegalFact.length>14?true:false }"
+                    v-model="docData.organName"
+                    v-bind:class="{ over_flow:docData.organName && docData.organName.length>14?true:false }"
                     :autosize="{ minRows: 1, maxRows: 5}"
                     maxlength="200"
                     placeholder="/"
-                    :disabled="fieldDisabled(propertyFeatures['illegalFact'])"
+                    :disabled="fieldDisabled(propertyFeatures['organName'])"
                   ></el-input>
                 </el-form-item>
                 申请延期缴纳罚款，本人承诺于
-                <el-form-item prop="afsj" class="pdf_datapick" :rules="fieldRules('afsj',propertyFeatures['afsj'])">
-                  <el-date-picker @blur="starttime" v-model="docData.afsj" :disabled="fieldDisabled(propertyFeatures['afsj'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
+                <el-form-item prop="stageTime" class="pdf_datapick" :rules="fieldRules('stageTime',propertyFeatures['stageTime'])">
+                  <el-date-picker @blur="starttime" v-model="docData.stageTime" :disabled="fieldDisabled(propertyFeatures['stageTime'])" type="date" format="yyyy年MM月dd日" placeholder="    年  月  日"  value-format="yyyy-MM-dd">
                   </el-date-picker>
                 </el-form-item>
                 前完成罚款缴纳。
               </p>
               <div class="pdf_seal">
-                <p>当事人或其代理人签名：{{docData.approvePeo}}</p>
+                <p>当事人或其代理人签名：{{docData.personName}}</p>
                 <p>
-                  <span v-if="docData.secondApproveTime">{{docData.approveTime}}</span>
+                  <span v-if="docData.personTime">{{docData.personTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -155,24 +155,32 @@
             </td>
             <td colspan="11" class="color_DBE4EF">
               <el-form-item
-                prop="closeResult"
-                :rules="fieldRules('closeResult',propertyFeatures['closeResult'])"
+                prop="lawOfficeOpinions"
+                :rules="fieldRules('lawOfficeOpinions',propertyFeatures['lawOfficeOpinions'])"
               >
                 <el-input
                   type="textarea"
-                  v-model="docData.closeResult"
-                  v-bind:class="{ over_flow:docData.closeResult && docData.closeResult.length>14?true:false }"
+                  v-model="docData.lawOfficeOpinions"
+                  v-bind:class="{ over_flow:docData.lawOfficeOpinions && docData.lawOfficeOpinions.length>14?true:false }"
                   :autosize="{ minRows: 1, maxRows: 5}"
                   maxlength="200"
                   placeholder="/"
-                  :disabled="fieldDisabled(propertyFeatures['closeResult'])"
+                  :disabled="fieldDisabled(propertyFeatures['lawOfficeOpinions'])"
                 ></el-input>
               </el-form-item>
               <div class="pdf_seal">
-                <p>执法人员签名：{{docData.approvePeo}}</p>
+                <p>执法人员签名：{{docData.lawOfficeName}}</p>
                 <p>
-                  <span v-if="docData.secondApproveTime">{{docData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
+                  <el-form-item prop="lawOfficeTime" class="pdf_datapick">
+                    <el-date-picker
+                      v-model="docData.lawOfficeTime"
+                      type="date"
+                      format="yyyy年MM月dd日"
+                      placeholder="    年  月  日"
+                      value-format="yyyy-MM-dd"
+                      @blur="starttime"
+                    ></el-date-picker>
+                  </el-form-item>
                 </p>
               </div>
             </td>
@@ -237,26 +245,25 @@ export default {
       isOverflow: false,
       docData: {
         caseName: "",
+        caseNumber: "",
+        caseNumberCopy: "",
+        caseCauseName: "",
+        organName: "",
+        stageTime: "",
         illegalFact: "",
         party: "",
         partyTel: "",
-        legalAgency: "",
-        enforcePeople: "",
-        lawProcedure: "",
-        caseFacts: "",
-        lawRegulations: "",
-        StatutoryAuth: "",
-        docSpecification: "",
-        selfRights: "",
-        suspicionCrime: "",
-        auditConclusion: "",
+        personName: "",
+        personTime: "",
+        lawOfficeOpinions: "",
+        lawOfficeName: "",
+        lawOfficeTime: "",
         approveOpinions: "",
         approvePeo: "",
         approveTime: "",
         secondApproveOpinions: "",
         secondApprovePeo: "",
         secondApproveTime: "",
-        closeResult:""
       },
       isParty: false,
       handleType: 0, //0  暂存     1 提交
@@ -269,8 +276,11 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
+        caseNumberCopy: [
+          { required: true, message: "处罚决定文号不能为空", trigger: "blur" }
+        ],
         illegalFact: [
-          { required: true, message: "基本违法事实不能为空", trigger: "blur" }
+          { required: true, message: "违法事实及处罚决定不能为空", trigger: "blur" }
         ],
         party: [
           { required: true, message: "承办人不能为空", trigger: "blur" }
@@ -279,33 +289,19 @@ export default {
           { required: true, message: "联系电话不能为空", trigger: "blur" },
           { validator: validatePhone, trigger: "blur" }
         ],
-        legalAgency: [
-          { required: true, message: "执法机关是否合法不能为空", trigger: "blur" }
+        caseCauseName: [
+          { required: true, message: "违法行为不能为空", trigger: "blur" }
         ],
-        enforcePeople: [
-          { required: true, message: "执法人员是否具备执法资格不能为空", trigger: "blur" }
+        organName: [
+          { required: true, message: "执法机构不能为空", trigger: "blur" }
         ],
-        lawProcedure: [
-          { required: true, message: "执法程序是否合法不能为空", trigger: "blur" }
+        stageTime: [
+          { required: true, message: "完成罚款缴纳时间不能为空", trigger: "change" }
         ],
-        caseFacts: [
-          { required: true, message: "案件事实是否准确不能为空", trigger: "blur" }
+        lawOfficeOpinions: [
+          { required: true, message: "执法人员意见不能为空", trigger: "blur" }
         ],
-        lawRegulations: [
-          { required: true, message: "适用法律是否准确不能为空", trigger: "blur" }
-        ],
-        StatutoryAuth: [
-          { required: true, message: "是否超越法定权限不能为空", trigger: "blur" }
-        ],
-        docSpecification: [
-          { required: true, message: "执法文书是否规范不能为空", trigger: "blur" }
-        ],
-        selfRights: [
-          { required: true, message: "当事人权益是否得到保障不能为空", trigger: "blur" }
-        ],
-        suspicionCrime: [
-          { required: true, message: "是否涉嫌犯罪不能为空", trigger: "blur" }
-        ]
+
       },
       nameLength: 23,
       adressLength: 23,
@@ -363,7 +359,28 @@ export default {
           true
         ]; //提交、保存、暂存、打印、编辑、签章、提交审批、审批、下一环节、返回
       }
-    }
+    },
+    starttime(){
+      if (Date.parse(this.docData.stageTime) < Date.parse(this.docData.lasj.substr(0,10))) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.stageTime = '';
+      }
+      if (Date.parse(this.docData.lawOfficeTime) < Date.parse(this.docData.lasj.substr(0,10))) {
+        this.$message({
+          message: '当前时间不得小于立案时间',
+          type: 'warning'
+        });
+        this.docData.lawOfficeTime = '';
+      }
+    },
+    getDataAfter(){
+      if(!this.docData.organName){
+        this.docData.organName = iLocalStroage.gets("userInfo").organName;
+      }
+    },
   },
   mounted() {
     this.getDocDataByCaseIdAndDocId();
