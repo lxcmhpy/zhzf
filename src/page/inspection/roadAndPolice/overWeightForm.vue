@@ -1024,12 +1024,6 @@
     <mapDiag ref="mapDiagRef" @getLngLat="getLngLat"></mapDiag>
     <!-- 右侧菜单 -->
     <rightMenu></rightMenu>
-    <!-- <floatBtns
-      :formOrDocData="formOrDocData"
-      @submitFileData="submitFileData"
-      @saveEileData="saveFileData"
-      :carinfoId="carinfoId"
-    ></floatBtns> -->
 
     <div class="float-btns" style="bottom: 150px">
       <el-button type="primary" @click="handleClickEdit" v-show="!isEditStatus">
@@ -1093,7 +1087,7 @@ import chooseLawPerson from "@/page/caseHandle/unRecordCase/chooseLawPerson";
 // import chooseLawPerson from "@/page/inspection/record-manage/chooseModlePerson";
 import mapDiag from "@/page/caseHandle/case/form/inforCollectionPage/diag/mapDiag";
 import floatBtns from "./floatMenu.vue";
-import rightMenu from "./compoment/rightMenu/index.vue";
+import rightMenu from "@/page/inspection/roadAndPolice/compoment/rightMenu/index.vue";
 
 import iLocalStroage from "@/common/js/localStroage";
 import { mixinGetCaseApiList } from "@/common/js/mixins";
@@ -1252,7 +1246,12 @@ export default {
         penaltyDecision: {}
       },
       fileList: [],
-      routeList: [],
+      drawerOption: [
+        { name: "车牌颜色", option: 1 },
+        { name: "车型", option: 2 },
+        { name: "路警联合-卸载方式", option: 3 }
+      ],
+      // routeList: [],
       directionList: [],
       locationList: [],
       carInfoRules: {
@@ -1372,7 +1371,6 @@ export default {
       ],
       optionsXZFS: [],
       currentPerson: "",
-      carinfoId: "",
       selectLoading: false,
       postInfo: [], //职务
       sfList: [
@@ -1414,13 +1412,7 @@ export default {
 
   mixins: [mixinGetCaseApiList],
   computed: {
-    ...mapGetters([
-      "caseId",
-      "openTab",
-      "caseHandle",
-      "inspectionOverWeightId",
-      "inspectionOverWeightFresh"
-    ])
+    ...mapGetters(["inspectionOverWeightId", "inspectionOverWeightAdd"])
   },
   methods: {
     //选择执法人员
@@ -1660,17 +1652,14 @@ export default {
       cb(a);
     },
     //查找路线
-    findRouteManageByOrganId() {
-      let data = { organId: iLocalStroage.gets("userInfo").organId };
-      findRouteManageByOrganIdApi(data).then(
-        res => {
-          this.routeList = res.data;
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    },
+    // findRouteManageByOrganId() {
+    //   let data = { organId: iLocalStroage.gets("userInfo").organId };
+    //   findRouteManageByOrganIdApi(data).then(
+    //     res => {
+    //       this.routeList = res.data;
+    //     }
+    //   );
+    // },
 
     // 锚点回显-start
     scrool1() {
@@ -1709,24 +1698,19 @@ export default {
     getDrawerList(data) {
       let _this = this;
       data.forEach(element => {
-        getDictListDetailByNameApi(element.name).then(
-          res => {
-            switch (element.option) {
-              case 1:
-                _this.allVehicleIdColor = res.data;
-                break; //车牌颜色
-              case 2:
-                _this.allVehicleShipType = res.data;
-                break; //车型
-              case 3:
-                _this.optionsXZFS = res.data;
-                break; //车型
-            }
-          },
-          error => {
-            // reject(error);
+        getDictListDetailByNameApi(element.name).then(res => {
+          switch (element.option) {
+            case 1:
+              _this.allVehicleIdColor = res.data;
+              break; //车牌颜色
+            case 2:
+              _this.allVehicleShipType = res.data;
+              break; //车型
+            case 3:
+              _this.optionsXZFS = res.data;
+              break; //车型
           }
-        );
+        });
       });
     },
 
@@ -1925,23 +1909,26 @@ export default {
       data.copyingPoliceData = JSON.stringify(data.copyingPoliceData);
       data.penaltyDecision = data.penaltyDecision ? data.penaltyDecision : {};
       data.penaltyDecision = JSON.stringify(data.penaltyDecision);
-      data.id = data.id ? data.id : this.carinfoId;
       saveOrUpdateCarInfoApi(data).then(
         res => {
           if (res.code == 200) {
-            this.$store.commit("set_inspection_OverWeightId",  data.id );
-            this.$store.commit("set_inspection_penaltyDecisionId", res.data.penaltyDecision.id);
-            this.$message({
-              type: "success",
-              message: res.msg
-            });
+            this.$store.commit("set_inspection_OverWeightId", data.id);
+            this.$store.commit(
+              "set_inspection_penaltyDecisionId",
+              res.data.penaltyDecision.id
+            );
+            // this.$message({
+            //   type: "success",
+            //   message: res.msg
+            // });
             if (this.saveType === "1") {
               this.$router.push({
                 name: "inspection_overloadDocumentDoc_QH"
               });
-            } else {
-              this.getPageData(data.id);
             }
+            // else {
+            //   this.getPageData(data.id);
+            // }
           } else {
             this.$message.error(res.msg);
           }
@@ -1961,14 +1948,16 @@ export default {
     },
 
     // 获取页面信息
-    getPageData(id) {
+    getPageData() {
       let _this = this;
-      findCarInfoByIdApi(_this.inspectionOverWeightId || id).then(
+      findCarInfoByIdApi(_this.inspectionOverWeightId).then(
         res => {
           if (res.code == 200) {
             _this.carInfo = res.data;
-            _this.carinfoId = this.inspectionOverWeightId || id;
-            this.$store.commit("set_inspection_penaltyDecisionId", res.data.penaltyDecision.id);
+            this.$store.commit(
+              "set_inspection_penaltyDecisionId",
+              res.data.penaltyDecision.id
+            );
             _this.initOverRatio();
             _this.getFile();
             _this.setLawPersonCurrentP(1);
@@ -2009,7 +1998,7 @@ export default {
       fd.append("category", "路警联合;附件");
       fd.append("fileName", param.file.name);
       fd.append("status", 1); //传图片状态
-      fd.append("caseId", this.carinfoId); //传记录id
+      fd.append("caseId", this.inspectionOverWeightId); //传记录id
       fd.append("docId", "000005"); //传类型代码
       uploadCommon(fd).then(
         res => {
@@ -2051,12 +2040,9 @@ export default {
         .then(() => {
           deleteFileByIdApi(file.storageId).then(
             res => {
-              console.log(res);
               this.getFile();
             },
-            error => {
-              console.log(error);
-            }
+            error => {}
           );
         })
         .catch(() => {});
@@ -2064,9 +2050,9 @@ export default {
 
     // 获取文件
     getFile() {
-      if (this.carinfoId) {
+      if (this.inspectionOverWeightId) {
         let data = {
-          caseId: this.carinfoId,
+          caseId: this.inspectionOverWeightId,
           category: "路警联合;附件",
           docId: "000005"
         };
@@ -2077,9 +2063,7 @@ export default {
             });
             this.fileList = res.data;
           },
-          error => {
-            console.log(error);
-          }
+          error => {}
         );
       }
     },
@@ -2293,70 +2277,58 @@ export default {
       // var second=date.getSeconds();
       // second=second < 10 ? ('0' + second) : second;
       return y + "-" + m + "-" + d + " " + h + ":" + minute;
+    },
+
+    //重置所有表单
+    resetAllForms() {
+      this.resetForm("carInfo");
+      this.resetForm("drivePerson");
+      this.resetForm("firstCheck");
+      this.resetForm("secondCheck");
+    },
+
+    // 添加滚动事件
+    addScollEvent() {
+      // 鼠标滚动
+      this.$refs.link_1.addEventListener("scroll", this.scrool1);
+      this.$refs.link_2.addEventListener("scroll", this.scrool2);
+      this.$refs.link_3.addEventListener("scroll", this.scrool3);
+      this.$refs.link_4.addEventListener("scroll", this.scrool4);
+      this.$refs.link_5.addEventListener("scroll", this.scrool5);
     }
   },
 
   activated() {
-    /* 如果是页面跳转过来的，则isRefresh=true */
-    // inspectionOverWeightFresh===true的时候，是新添加
-    if (this.inspectionOverWeightFresh) {
-      if (this.inspectionOverWeightId) {
-        this.getPageData();
-      } else {
-        this.resetForm("carInfo");
-        this.resetForm("drivePerson");
-        this.resetForm("firstCheck");
-        this.resetForm("secondCheck");
-        this.fileList = [];
-        this.carinfoId = this.generateId();
-        this.carInfo.id = this.carinfoId;
-        this.setLawPersonCurrentP();
-        this.carInfo.firstCheck.firstCheckTime = this.formatDateTime(
-          new Date()
-        );
-      }
-
-      this.$store.commit("set_inspection_OverWeightFresh", false);
-      if (!this.inspectionOverWeightId) {
-        this.isEditStatus = true; //可编辑
-      } else {
-        this.isEditStatus = false;
-      }
+    // 如果是新建
+    if (this.inspectionOverWeightAdd) {
+      this.$store.commit("set_inspection_OverWeight_add", false); //是否新建重置为false
+      this.isEditStatus = true; //可编辑
+      this.resetAllForms();
+      this.fileList = [];
+      this.carInfo.id = this.generateId();
+      this.setLawPersonCurrentP();
+      this.carInfo.firstCheck.firstCheckTime = this.formatDateTime(new Date());
     } else {
-      if (this.inspectionOverWeightId) {
-        this.getPageData();
-        // if(this.isEditStatus){
-        // this.$refs.drivePerson.clearValidate();
-        // }
-      }
+      this.isEditStatus = false;
+      this.getPageData();
     }
-    this.getDrawerList([
-      { name: "车牌颜色", option: 1 },
-      { name: "车型", option: 2 },
-      { name: "路警联合-卸载方式", option: 3 }
-    ]);
-    
+
+    this.getDrawerList(this.drawerOption);
+    this.addScollEvent();
   },
 
   mounted() {
-    console.log("mounted");
-    if (!this.inspectionOverWeightId) {
-      this.isEditStatus = true; //可编辑
-    } else {
-      this.isEditStatus = false;
-    }
-    // 鼠标滚动
-    this.$refs.link_1.addEventListener("scroll", this.scrool1);
-    this.$refs.link_2.addEventListener("scroll", this.scrool2);
-    this.$refs.link_3.addEventListener("scroll", this.scrool3);
-    this.$refs.link_4.addEventListener("scroll", this.scrool4);
-    this.$refs.link_5.addEventListener("scroll", this.scrool5);
+    // debugger;
+    // console.log("mounted");
+    // if (!this.inspectionOverWeightId) {
+    //   this.isEditStatus = true; //可编辑
+    // } else {
+    //   this.isEditStatus = false;
+    // }
   },
 
   created() {
-    this.carinfoId = this.generateId();
-    this.findRouteManageByOrganId();
-    console.log("create", this.carinfoId);
+    // this.findRouteManageByOrganId();
   },
   beforeRouteLeave(to, from, next) {
     console.log("to", to);

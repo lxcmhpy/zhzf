@@ -633,3 +633,13 @@ export function findUserByOrganId(id) {
       cancelToken:  setCancelSource(),
     });
   }
+
+  export function findWxPCSn(id) {
+    return  request({
+      url:  "/zfjg/sysUser/findWxPCSn/"+id,
+      method:  "GET",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource(),
+    });
+  }

@@ -242,6 +242,23 @@ export default {
     },
 
     /**
+     * 添加轨迹动画
+     */
+    addTrackAction(data, points) {
+      if(points.length > 0) {
+        let index = 0
+        this.interval = setInterval(() => {
+          if(index < points.length) {
+            this.addPoint(data, points[index], '0')
+            index++
+          } else {
+            index = 0
+          }
+        }, 1000)
+      }
+    },
+
+    /**
      * 添加单线
      */
     addLine(points, id, layerName) {
@@ -272,6 +289,11 @@ export default {
         }
       }
       this.map.addPolyline(line, options)
+      // 添加轨迹动画
+      this.addTrackAction({
+        id: 'trackAction',
+        imgUrl: '/static/images/img/lawSupervise/map_renyuan.png'
+      }, points)
     },
 
     /**
@@ -284,23 +306,6 @@ export default {
       this.map.removeFeatureById('trackAction')
       // 清除轨迹动画
       clearInterval(this.interval)
-    },
-
-    /**
-     * 添加轨迹动画
-     */
-    addTrackAction(data, points) {
-      if(points.length > 0) {
-        let index = 0
-        this.interval = setInterval(() => {
-          if(index < points.length) {
-            this.addPoint(data, points[index], '0')
-            index++
-          } else {
-            index = 0
-          }
-        }, 1000)
-      }
     },
   },
   created() {

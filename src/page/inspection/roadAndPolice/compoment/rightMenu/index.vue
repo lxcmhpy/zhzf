@@ -48,7 +48,7 @@ export default {
       menuList: []
     };
   },
-  computed: { ...mapGetters(["inspectionOverWeightId", "penaltyDecisionId",'carinfoId']) },
+  computed: { ...mapGetters(["inspectionOverWeightId", "penaltyDecisionId"]) },
   components: {
     documentSideMenu,
     relativeRecord,
@@ -74,7 +74,7 @@ export default {
           break;
         case "photo":
           this.$refs.relativeRecordRef.showModal(
-            this.inspectionOverWeightId || this.carinfoId
+            this.inspectionOverWeightId
           );
           break;
         case "record":
@@ -128,12 +128,9 @@ export default {
     // 跳转到证据照片列表页
     handleClickImgsBtn() {
       this.closeAllDialog();
-      if (this.inspectionOverWeightId || this.carinfoId) {
+      if (this.inspectionOverWeightId ) {
         this.$router.push({
           name: "inspection_imageMange",
-          // params: {
-          //   carinfoId: this.carinfoId
-          // }
         });
       } else {
         this.$confirm("请先保存记录", "提示", {

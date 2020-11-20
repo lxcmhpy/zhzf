@@ -10,7 +10,13 @@
       </p>
       <div class="btns">
         <div class="btnsBox" v-for="(item,index) of window4.btnList" :key="index" @click="handleClickBtns(index)">
-          <i :class="item.class" :style="(index===0 || index===1)?{color:window4.info.padStateColor} : index===2 ? {color:window4.info.peStateColor} : null" />
+          <i :class="item.class"
+          :style="(index===0 || index===1)?{color:window4.info.padStateColor}
+           : index===2 ? {color:window4.info.peStateColor}
+           : (index===4 && window4.info.peStateColor!='')? {color:'#67C23A'}
+           : (index===4 && window4.info.padStateColor!='')? {color:'#67C23A'}
+           : index===5 ? {color:'#67C23A'}
+           : null" />
         </div>
       </div>
     </div>
@@ -20,7 +26,7 @@
         <span>选择模式</span>
         <i class="el-icon-close" @click="clickTrackWindow"></i>
       </div>
-      <div class="track" @click="handleShowTrack(1)">实时轨迹</div>
+      <!-- <div class="track" @click="handleShowTrack(1)">实时轨迹</div> -->
       <div class="track" @click="handleShowTrack(2)">历史轨迹</div>
       <!-- 实时轨迹输入框 -->
       <div class="window" v-if="showTheTime">
@@ -113,24 +119,26 @@ export default {
         this.getTrackPoints(params, layerName)
       } else if (val === 2) { // 历史轨迹表单
         this.showHistory = false
-        let params = {
-          startTime: this.historyTime[0],
-          endTime: this.historyTime[1]
+        let params = {}
+        debugger
+        if(this.window4.info.padSn){
+            params = {
+                startTime: this.historyTime[0],
+                endTime: this.historyTime[1],
+                deviceId: this.window4.info.padSn,
+                deviceType: 0
+            }
+        }else{
+            params = {
+                startTime: this.historyTime[0],
+                endTime: this.historyTime[1],
+                deviceId: this.window4.info.sn,
+                deviceType: 1
+            }
         }
         let layerName = "lsgj"
         this.getTrackPoints(params, layerName)
       }
-    },
-
-    /**
-     * 添加轨迹动画
-     */
-    addTrackAction(points) {
-      let data = {
-        id: 'trackAction',
-        imgUrl: '/static/images/img/lawSupervise/map_renyuan.png'
-      }
-      this.indexPage.page.addTrackAction(data, points)
     },
 
     /**
@@ -148,7 +156,6 @@ export default {
           return [Number(item.x), Number(item.y)]
         })
         this.indexPage.page.addLine(points, this.window4.info.id, layerName)
-        this.addTrackAction(points)
       })
     },
 

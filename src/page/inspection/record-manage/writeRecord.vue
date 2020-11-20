@@ -1247,8 +1247,8 @@ export default {
               maxLength: 5,
               limit: 5,
               allowRemove: true,
-              accept: "image/jpeg,image/jpg,image/bmp", // 上传文件类型
-              format: ["jpg", "jpeg", "bmp"], // 上传文件格式
+              accept: "image/jpeg,image/jpg", // 上传文件类型
+              format: ["jpg", "jpeg"], // 上传文件格式
               // maxSize: 2048, // 上传文件大小最大值
               handleIcon: true, //显示预览按钮
               autoUpload: true,

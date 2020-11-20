@@ -48,7 +48,7 @@ export default {
     relativeRecord,
     operationRecord
   },
-  props: ['formOrDocData', 'storagePath', 'carinfoId'],
+  props: ['formOrDocData', 'storagePath'],
   
   mixins: [mixinGetCaseApiList],
   computed: { ...mapGetters(['caseId', 'docId', 'showQZBtn', 'inspectionOverWeightId','penaltyDecisionId']) },
@@ -114,7 +114,7 @@ export default {
       this.closeAllDialog()
       switch (index) {
         case 1:  this.$refs.documentSideMenuRef.showModal(this.penaltyDecisionId); break;
-        case 2: this.$refs.relativeRecordRef.showModal(this.inspectionOverWeightId || this.carinfoId); break;
+        case 2: this.$refs.relativeRecordRef.showModal(this.inspectionOverWeightId ); break;
         case 3: this.$refs.operationRecordRef.showModal(); break;
         case 4: this.$refs.operationRecordRef.showModal(); break;
         default: break; 
@@ -157,12 +157,9 @@ export default {
     // 跳转到证据照片列表页
     handleClickImgsBtn() {
       this.closeAllDialog()
-      if (this.inspectionOverWeightId || this.carinfoId) {
+      if (this.inspectionOverWeightId ) {
         this.$router.push({
           name: 'inspection_imageMange',
-          params: {
-            carinfoId: this.carinfoId,
-          }
         });
       } else {
         this.$confirm('请先保存记录', "提示", {

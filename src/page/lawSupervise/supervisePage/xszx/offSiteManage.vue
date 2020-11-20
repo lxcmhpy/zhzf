@@ -27,12 +27,12 @@
         
         <div class="orgin">
         <div class="orgin_left">
-          <el-button type="primary" size="medium" @click="getAllOrganDialog()">
+          <!-- <el-button type="primary" size="medium" @click="getAllOrganDialog()">
             <i class="iconfont law-submit-o f12"></i> 预警推送
           </el-button>
           <el-button v-if="tabActiveValue == '已审核'" type="primary" size="medium" @click="routerTransferManage">
             <i class="iconfont law-submit-o f12"></i> 转办
-          </el-button>
+          </el-button> -->
           <el-dialog class="mini-dialog-title" title="预警推送" :visible.sync="yjVisible" :show-close="false" :close-on-click-modal="false" width="800px">
             <el-form :model="form" ref="form" class="checkSearchForm" label-width="120px">
               <p>推送信息</p>
