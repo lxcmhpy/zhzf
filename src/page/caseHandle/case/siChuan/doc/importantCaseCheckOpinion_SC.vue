@@ -326,7 +326,7 @@
               <p>审核人员签名</p>
             </td>
             <td rowspan="2" colspan="2" class="color_DBE4EF">
-              {{docData.approveOpinions}}
+              {{docData.approveOpinions}} 
               <div class="pdf_seal">
                 <p>签名：{{docData.approvePeo}}</p>
                 <p>

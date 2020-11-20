@@ -268,6 +268,7 @@ export default {
       let someCaseInfo = iLocalStroage.gets("someCaseInfo");
       let inforForm ={
         acceptTime: new Date().format('yyyy-MM-dd HH:mm'), //受案时间
+        // acceptTime: '', //受案时间
         partyType: 1, //当事人类型
         partyIdType: "0", //证件类型
         organId: iLocalStroage.gets("userInfo").organId,
@@ -288,6 +289,7 @@ export default {
         certificateId:this.certificateId,
         agentPartyEcertId :JSON.stringify(driverOrAgentInfoList),
       };
+      console.log('inforForm',inforForm)
       this.$store
         .dispatch("saveOrUpdateCaseBasicInfo",inforForm)
         .then(res => {

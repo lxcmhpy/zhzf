@@ -421,6 +421,9 @@ export default {
       this.staffList = this.docData.staff.split(',');
       this.docData.staff1 = this.docData.staff.split(',')[0];
       this.docData.certificateId1 = this.docData.certificateId.split(',')[0];
+      this.docData.staff2 = this.docData.staff.split(',')[1];
+      this.docData.certificateId2 = this.docData.certificateId.split(',')[1];
+      this.docData.recorderUnitAndPosition = iLocalStroage.gets('userInfo').organName;
       let dailiData = {};
       console.log('this.docData', this.docData);
       if (this.docData.partyType == '1') { //当事人类型为个人
@@ -444,6 +447,8 @@ export default {
         lawOfficerCards:this.docData.certificateId1
       }
       this.queryLawOfficerInfo(data,1)
+      this.queryLawOfficerInfo(data,2)
+
       this.setDataForPelple(dailiData);
     },
     //设置禁用

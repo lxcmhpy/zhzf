@@ -520,7 +520,7 @@ export default {
       //是否显示滑动验证
       let dataRes = await getDictListDetailByNameApi('登录滑动验证');
       console.log('是否显示滑动验证',dataRes);
-      let a = encrypt(JSON.stringify('sadsadad'));
+      let a = encrypt(JSON.stringify({acceptTime:'2016-01-11'}));
       console.log('加密',a);
       let b = decrypt(a);
       console.log('解密',b)
