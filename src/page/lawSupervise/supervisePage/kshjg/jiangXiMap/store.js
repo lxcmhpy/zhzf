@@ -397,7 +397,6 @@ export default {
         window.location.href ="alert:"+ActivexURL
     },
     async initWxPhone(id){
-        debugger;
         window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
             let res = await findWxPCSn(id);
