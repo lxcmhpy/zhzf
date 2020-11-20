@@ -145,6 +145,8 @@ export default {
      * 地图添加点位(单点)
      */
     addPoint(data, latLng, zoomToExtent) {
+      // 打点之前清除信息窗体
+      this.map.removeOverlay(this.informationWindow)
       // 打点之前清除地图点位
       this.cleanAll()
       let _layerName = data.id || ''
