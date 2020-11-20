@@ -189,7 +189,7 @@
 
 
 <script>
-import { getAllPdfListApi, findSetListApi, saveOrUpdatePropertyApi, findAllSetListApi, getQueryLinkListApi, delBindApi } from '@/api/caseHandle.js'
+import { getAllDocListApi, findSetListApi, saveOrUpdatePropertyApi, findAllSetListApi, getQueryLinkListApi, delBindApi } from '@/api/caseHandle.js'
 export default {
   data() {
     return {
@@ -534,14 +534,12 @@ export default {
     },
     //  文书抽屉表 
     getPdfList() {
-      let data = {
-        size: 100
-      }
-      getAllPdfListApi(data).then(res => {
+      let data = {}
+      getAllDocListApi(data).then(res => {
         if (res.code == 200) {
           console.log('文书抽屉表', res)
           // this.pdfAndFormList = res.data.records
-          this.bindPdfList = res.data.records
+          this.bindPdfList = res.data
         } else {
           console.log("fail");
         }

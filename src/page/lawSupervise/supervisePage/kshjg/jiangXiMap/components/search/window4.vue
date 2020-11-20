@@ -10,7 +10,7 @@
       </p>
       <div class="btns">
         <div class="btnsBox" v-for="(item,index) of window4.btnList" :key="index" @click="handleClickBtns(index)">
-          <i :class="item.class" 
+          <i :class="item.class"
           :style="(index===0 || index===1)?{color:window4.info.padStateColor}
            : index===2 ? {color:window4.info.peStateColor}
            : (index===4 && window4.info.peStateColor!='')? {color:'#67C23A'}
@@ -142,17 +142,6 @@ export default {
     },
 
     /**
-     * 添加轨迹动画
-     */
-    addTrackAction(points) {
-      let data = {
-        id: 'trackAction',
-        imgUrl: '/static/images/img/lawSupervise/map_renyuan.png'
-      }
-      this.indexPage.page.addTrackAction(data, points)
-    },
-
-    /**
      * 获取轨迹数据
      */
     getTrackPoints(params, layerName) {
@@ -167,7 +156,6 @@ export default {
           return [Number(item.x), Number(item.y)]
         })
         this.indexPage.page.addLine(points, this.window4.info.id, layerName)
-        this.addTrackAction(points)
       })
     },
 

@@ -94,7 +94,7 @@ import {
   delDocumentById,
   updatePicPath,
   findCarInfoByIdApi,
-  findCarInfoFileByIdApi,
+  findCarInfoFileByIdApi
 } from "@/api/inspection";
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 import Vue from "vue";
@@ -104,32 +104,31 @@ export default {
     return {
       searchValue: "",
       tableList: [], //文书列表数据
-      statusList: [],
+      statusList: []
     };
   },
   computed: {
     ...mapGetters([
       "inspectionFileEdit",
       "penaltyDecisionId",
-      "inspectionOverWeightId",
-    ]),
+      "inspectionOverWeightId"
+    ])
   },
   methods: {
-    
     // 编辑文书
     editDocument(item) {
-      debugger
-      console.log(" -> item", item)
+      debugger;
+      console.log(" -> item", item);
       if (this.validateAllCompeleted()) {
-        alert('暂未开发完成')
+        alert("暂未开发完成");
         // this.$router.push({
         //   name: "inspection_myPDF",
         //   params: { id: item.id, storagePath: item.pdfStorageId },
         // });
-        return
+        return;
       } else {
-        this.$message.warning('请将信息填写完整后再试！')
-        return
+        this.$message.warning("请将信息填写完整后再试！");
+        return;
       }
       // debugger
       // if (item.pdfStorageId && item.status != "暂存") {
@@ -151,14 +150,16 @@ export default {
     },
     // 查看文书
     viewDocument(item) {
-      this.$store.commit("set_inspection_fileId", item.id);
+      // this.$store.commit("set_inspection_fileId", item.id);
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       this.$router.push({
-        name: "inspection_myPDF",
-        params: {
-          id: item.id,
-          storagePath: item.pdfStorageId || item.picStorageId,
-        },
+        // name: "inspection_myPDF",
+        // params: {
+        //   id: item.id,
+        //   storagePath: item.pdfStorageId || item.picStorageId,
+        // },
+        name: "inspection_overload_pdf",
+        params: { id: item.id, storageId: item.pdfStorageId }
       });
     },
 
@@ -167,27 +168,27 @@ export default {
       this.$confirm("确认删除当前记录文书？", "删除记录文书", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       }).then(() => {
         delDocumentById(item).then(
-          (res) => {
+          res => {
             console.log(res);
             if (res.code == 200) {
               this.$message({
                 type: "success",
-                message: res.msg,
+                message: res.msg
               });
               this.getTableData();
             }
           },
-          (error) => {}
+          error => {}
         );
       });
     },
 
     //验证是否都填写完成
     validateAllCompeleted() {
-      return this.statusList.every((item) => {
+      return this.statusList.every(item => {
         return item.value === "1";
       });
     },
@@ -199,37 +200,37 @@ export default {
         {
           name: "驾驶人/企业",
           lable: "",
-          value: res.data.drivePerson.required,
+          value: res.data.drivePerson.required
         },
         {
           name: "初检数据",
           lable: "",
-          value: res.data.firstCheck.required,
+          value: res.data.firstCheck.required
         },
         {
           name: "卸货/复检",
           lable: "",
-          value: res.data.secondCheck.required,
-        },
+          value: res.data.secondCheck.required
+        }
       ];
     },
 
     //获取列表数据
     getTableData() {
       findCarInfoByIdApi(this.inspectionOverWeightId).then(
-        (res) => {
+        res => {
           this.setOverList(res);
           findCarInfoFileByIdApi(res.data.penaltyDecision.id).then(
-            (res2) => {
+            res2 => {
               if (res2.code == 200) {
                 this.tableList = res2.data;
                 console.log(" -> this.tableList", this.tableList);
               }
             },
-            (error) => {}
+            error => {}
           );
         },
-        (error) => {}
+        error => {}
       );
     },
 
@@ -241,16 +242,16 @@ export default {
       } else {
         let data = {
           docName: _this.searchValue,
-          orderId: _this.penaltyDecisionId,
+          orderId: _this.penaltyDecisionId
         };
         getDocListByName(data).then(
-          (res) => {
+          res => {
             console.log(res);
             if (res.code == 200) {
               _this.tableList = res.data || [];
             }
           },
-          (error) => {}
+          error => {}
         );
       }
     },
@@ -260,15 +261,15 @@ export default {
     // 点击返回
     goBack() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
-      this.$router.go(-1)
+      this.$router.go(-1);
       // this.$router.push({
       //   name: "inspection_overWeightForm",
       // });
-    },
+    }
   },
   created() {
     this.getTableData();
-  },
+  }
 };
 </script>
 <style lang="scss" src="@/assets/css/card.scss"></style>

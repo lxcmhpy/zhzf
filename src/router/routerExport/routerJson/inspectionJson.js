@@ -229,6 +229,15 @@ export default [
           import("@/page/inspection/roadAndPolice/overWeightForm.vue")
       },
       {
+        path: "/inspection_overload_pdf/id=:id&storageId=:storageId",
+        name: "inspection_overload_pdf",
+        meta: {
+          title: "文书",
+          oneTab: true
+        },
+        component: () =>  import("@/page/inspection/roadAndPolice/viewPdf.vue")
+      },
+      {
         path: "/inspection_overWeightList",
         name: "inspection_overWeightList",
         meta: {

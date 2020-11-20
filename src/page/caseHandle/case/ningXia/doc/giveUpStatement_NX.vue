@@ -2,7 +2,7 @@
 <template>
   <div class="print_box"> 
     <div class="print_info" id="giveUpStatement-print">
-      <el-form :rules="rules" ref="enforceApplicationForm" :inline-message="true" :inline="true" :model="docData">
+      <el-form :rules="rules" ref="docForm" :inline-message="true" :inline="true" :model="docData">
         <div class="doc_topic">放弃陈述申辩及听证权利的说明</div>
         <p class="p_begin">
           <span style="font-size:20px;font-weight: 600;">
@@ -14,8 +14,8 @@
         <p>
           我（单位）
           <span>
-            <el-form-item prop="party" style="width: 270px;" :rules="fieldRules('party',propertyFeatures['party'])">
-              <el-input :disabled="fieldDisabled(propertyFeatures['party'])" ref="party" clearable class="w-120" v-model="docData.party" size="small"></el-input>
+            <el-form-item prop="vehicleShipId" style="width: 270px;" :rules="fieldRules('vehicleShipId',propertyFeatures['vehicleShipId'])">
+              <el-input :disabled="fieldDisabled(propertyFeatures['vehicleShipId'])" ref="vehicleShipId" clearable class="w-120" v-model="docData.vehicleShipId" size="small"></el-input>
             </el-form-item>
           </span>
           于
@@ -27,20 +27,20 @@
           </span>
           在
           <span>
-            <el-form-item prop="caseNumber1" style="width: 405px;" :rules="fieldRules('caseNumber1',propertyFeatures['caseNumber1'])">
-              <el-input v-model="docData.caseNumber1" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber1'])"></el-input>
+            <el-form-item prop="roadTravel" style="width: 405px;" :rules="fieldRules('roadTravel',propertyFeatures['roadTravel'])">
+              <el-input v-model="docData.roadTravel" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['roadTravel'])"></el-input>
             </el-form-item>
           </span>
           过程中，经交通运输行政执法人员检查发现存在
           <span>
-            <el-form-item prop="caseNumber1" style="width: 405px;" :rules="fieldRules('caseNumber1',propertyFeatures['caseNumber1'])">
-              <el-input v-model="docData.caseNumber1" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber1'])"></el-input>
+            <el-form-item prop="caseCauseName" style="width: 405px;" :rules="fieldRules('caseCauseName',propertyFeatures['caseCauseName'])">
+              <el-input v-model="docData.caseCauseName" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseCauseName'])"></el-input>
             </el-form-item>
           </span>
           的行为，违反了
           <span>
-            <el-form-item prop="caseNumber2" style="width: 405px;" :rules="fieldRules('caseNumber2',propertyFeatures['caseNumber2'])">
-              <el-input v-model="docData.caseNumber2" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber2'])"></el-input>
+            <el-form-item prop="illegalLaw" style="width: 405px;" :rules="fieldRules('illegalLaw',propertyFeatures['illegalLaw'])">
+              <el-input v-model="docData.illegalLaw" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['illegalLaw'])"></el-input>
             </el-form-item>
           </span>
            的相关规定。我（单位）于
@@ -52,14 +52,14 @@
           </span>
           接到
           <span>
-            <el-form-item prop="caseNumber2" style="width: 200px;" :rules="fieldRules('caseNumber2',propertyFeatures['caseNumber2'])">
-              <el-input v-model="docData.caseNumber2" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber2'])"></el-input>
+            <el-form-item prop="organNameCopy" style="width: 200px;" :rules="fieldRules('organNameCopy',propertyFeatures['organNameCopy'])">
+              <el-input v-model="docData.organNameCopy" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['organNameCopy'])"></el-input>
             </el-form-item>
           </span>
           送达的交通违法行为通知书（编号
           <span>
-            <el-form-item prop="caseNumber" style="width: 210px;" :rules="fieldRules('caseNumber',propertyFeatures['caseNumber'])">
-              <el-input v-model="docData.caseNumber" :maxLength='maxLength' :disabled="fieldDisabled(propertyFeatures['caseNumber'])"></el-input>
+            <el-form-item prop="caseNumberCopy" style="width: 210px;" :rules="fieldRules('caseNumberCopy',propertyFeatures['caseNumberCopy'])">
+              <el-input v-model="docData.caseNumberCopy" :disabled="fieldDisabled(propertyFeatures['caseNumberCopy'])"></el-input>
             </el-form-item>
           </span>
           ），我（单位）对违法事实及认定无任何异议，愿接受行政处罚，放弃陈述、申辩及要求举行听证的权利。
@@ -103,26 +103,16 @@ export default {
       validatePhone:validatePhone,
       validateIDNumber:validateIDNumber,
       docData: {
-        applicant:'',
-        applicantManager:'',
-        applicantAddress:'',
-        applicantTel:'',
-        respondent:'',
-        respondentManager:'',
-        respondentAddress:'',
-        respondentTel:'',
-        executeMatter:'',
-        otherMatter:'',
-        party:'',
-        caseNumber1:'',
-        caseNumber2:'',
+        lasj:'',
+        organName:'',
+        illegalLaw: '',
+        caseCauseName:'',
+        vehicleShipId:'',
+        roadTravel:'',
+        caseNumberCopy:'',
+        organNameCopy:'',
         afsj:'',
-        serviceTime1:'',
         reformTime:'',
-        checkLaw1:'',
-        checkLaw2:'',
-        courtName:'',
-
         makeDate:''
       },
       handleType: 0, //0  暂存     1 提交
@@ -135,53 +125,32 @@ export default {
         linkTypeId: this.$route.params.caseLinkTypeId //所属环节的id
       },
       rules: {
-        applicant: [
-          { required: true, message: '申请人必须填写', trigger: 'blur' },
+        vehicleShipId: [
+          { required: true, message: '车牌号必须填写', trigger: 'blur' },
         ],
-        applicantManager: [
-          { required: true, message: '申请人法定代表人必须填写', trigger: 'blur' },
+        roadTravel: [
+          { required: true, message: '违法过程必须填写', trigger: 'blur' },
         ],
-        applicantAddress: [
-          { required: true, message: '申请人联系地址必须填写', trigger: 'blur' },
+        illegalLaw: [
+          { required: true, message: '违法条款必须填写', trigger: 'blur' },
         ],
-        applicantTel: [
-          { required: true, message: '申请人联系电话必须填写', trigger: 'blur' },
+        caseCauseName: [
+          { required: true, message: '违法行为必须填写', trigger: 'blur' },
         ],
-        respondent: [
-          { required: true, message: '被申请人必须填写', trigger: 'blur' },
+        organName: [
+          { required: true, message: '执法机构名称必须填写 ', trigger: 'blur' },
         ],
-        respondentManager: [
-          { required: true, message: '被申请人法定代表人必须填写', trigger: 'blur' },
+        organNameCopy: [
+          { required: true, message: '执法机构名称必须填写 ', trigger: 'blur' },
         ],
-        respondentAddress: [
-          { required: true, message: '被申请人地址必须填写', trigger: 'blur' },
-        ],
-        respondentTel: [
-          { required: true, message: '被申请人联系电话必须填写', trigger: 'blur' },
-        ],
-        executeMatter: [
-          { required: true, message: '执行事项必须填写', trigger: 'blur' },
-        ],
-        otherMatter: [
-          { required: true, message: '其他事项必须填写', trigger: 'blur' },
-        ],
-        party: [
-          { required: true, message: '案由必须填写 ', trigger: 'blur' },
-        ],
-        caseNumber1: [
-          { required: true, message: '行政处罚决定书编号必须填写', trigger: 'blur' },
-        ],
-        caseNumber2: [
-          { required: true, message: '催告书编号必须填写', trigger: 'blur' },
+        caseNumberCopy: [
+          { required: true, message: '违法行为通知书编号必须填写', trigger: 'blur' },
         ],
         afsj: [
-          { required: true, message: '行政处罚决定书送达时间必须填写', trigger: 'blur' },
-        ],
-        serviceTime1: [
-          { required: true, message: '催告书送达时间必须填写', trigger: 'blur' },
+          { required: true, message: '案发时间必须填写', trigger: 'blur' },
         ],
         reformTime: [
-          { required: true, message: '责令整改时间必须填写', trigger: 'blur' },
+          { required: true, message: '违法行为通知书通知时间必须填写', trigger: 'blur' },
         ],
       },
       nameLength: 23,
@@ -219,26 +188,12 @@ export default {
         });
         this.docData.makeDate = '';
       }
-      if (Date.parse(this.docData.afsj) < Date.parse(this.docData.lasj.substr(0,10))) {
-        this.$message({
-          message: '当前时间不得小于立案时间',
-          type: 'warning'
-        });
-        this.docData.afsj = '';
-      }
       if (Date.parse(this.docData.reformTime) < Date.parse(this.docData.lasj.substr(0,10))) {
         this.$message({
           message: '当前时间不得小于立案时间',
           type: 'warning'
         });
         this.docData.reformTime = '';
-      }
-      if (Date.parse(this.docData.serviceTime1) < Date.parse(this.docData.lasj.substr(0,10))) {
-        this.$message({
-          message: '当前时间不得小于立案时间',
-          type: 'warning'
-        });
-        this.docData.serviceTime1 = '';
       }
     },
     //根据案件ID和文书Id获取数据
@@ -252,26 +207,14 @@ export default {
     },
     //保存文书信息
     saveData(handleType) {
-      // this.printContent()
       this.com_addDocData(handleType, "docForm");
     },
     getDataAfter(){
-        //获取机构详情
-        let params = { id: iLocalStroage.gets("userInfo").organId };
-        let _this = this
-        this.$store.dispatch("getOrganDetail", params).then(
-            res => {
-                console.log("机构", res);
-                let organData = res.data;
-                _this.docData.applicant = organData.contactor||'';
-                // _this.docData.applicantManager = organData.account||'';
-                _this.docData.applicantAddress=organData.address||'';
-                _this.docData.applicantTel=organData.telephone||'';
-            },
-            err => {
-                console.log(err);
-            }
-        );
+      if(!this.docData.organName){
+        this.docData.organName = iLocalStroage.gets("userInfo").organName;
+        this.docData.organNameCopy = iLocalStroage.gets("userInfo").organName;
+      }
+
     },
     //是否是完成状态
     isOverStatus() {

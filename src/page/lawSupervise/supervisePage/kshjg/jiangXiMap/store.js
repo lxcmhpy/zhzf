@@ -1,4 +1,4 @@
-import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId,getPeVideoUrl } from "@/api/lawSupervise.js";
+import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId,getPeVideoUrl,findWxPCSn } from "@/api/lawSupervise.js";
 import { getOrganDetailApi } from "@/api/system.js";
 import { findData } from "@/api/eventManage";
 export default {
@@ -395,6 +395,16 @@ export default {
         var path = string[0] + "//" + string[2] + "/";
         var ActivexURL = path + "/static/js/PeVideoInfo.html?videoUrl=" + res.data
         window.location.href ="alert:"+ActivexURL
+    },
+    async initWxPhone(id){
+        window.PhoneCallModule.initialize();
+        if (!window.PhoneCallModule.getRegistered()) {
+            let res = await findWxPCSn(id);
+            let displayName = 'ecds04';
+            let privateIdentity = res.data;
+            let password = '1234';
+            window.PhoneCallModule.sipRegister(displayName, privateIdentity, password);
+        }
     },
   }
 }

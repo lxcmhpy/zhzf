@@ -36,10 +36,11 @@
 
 <script>
 import { mapGetters } from "vuex";
-import documentSideMenu from "@/page/inspection/roadAndPolice/compoment/documentSideMenu.vue";
-import operationRecord from "@/page/inspection/record-manage/writeRecordCompoments/operationRecord.vue";
-import relativeRecord from "@/page/inspection/roadAndPolice/compoment/relativeRecord.vue";
-import fileDir from "@/page/inspection/roadAndPolice/compoment/fileDir.vue";
+import documentSideMenu from "@/page/inspection/roadAndPolice/compoment/rightDialog/documentSideMenu.vue";
+import operationRecord from "@/page/inspection/roadAndPolice/compoment/rightDialog/operationRecord.vue";
+import relativeRecord from "@/page/inspection/roadAndPolice/compoment/rightDialog/relativeRecord.vue";
+import fileDir from "@/page/inspection/roadAndPolice/compoment/rightDialog/fileDir.vue";
+
 import { setMenuFn } from "./menuConfig.js";
 export default {
   name:'rightMenu',
@@ -48,7 +49,7 @@ export default {
       menuList: []
     };
   },
-  computed: { ...mapGetters(["inspectionOverWeightId", "penaltyDecisionId",'carinfoId']) },
+  computed: { ...mapGetters(["inspectionOverWeightId", "penaltyDecisionId"]) },
   components: {
     documentSideMenu,
     relativeRecord,
@@ -74,7 +75,7 @@ export default {
           break;
         case "photo":
           this.$refs.relativeRecordRef.showModal(
-            this.inspectionOverWeightId || this.carinfoId
+            this.inspectionOverWeightId
           );
           break;
         case "record":
@@ -128,12 +129,9 @@ export default {
     // 跳转到证据照片列表页
     handleClickImgsBtn() {
       this.closeAllDialog();
-      if (this.inspectionOverWeightId || this.carinfoId) {
+      if (this.inspectionOverWeightId ) {
         this.$router.push({
           name: "inspection_imageMange",
-          // params: {
-          //   carinfoId: this.carinfoId
-          // }
         });
       } else {
         this.$confirm("请先保存记录", "提示", {

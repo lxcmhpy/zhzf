@@ -24,7 +24,7 @@
             <td>页码</td>
           </tr>
           <tr
-            v-for="(item, index) in caseList"
+            v-for="(item, index) in documentList"
             :key="index"
             @click="alertPDF(item)"
             :class="!item.storageId && item.name == '备考表' ? 'activeTd' : ''"
@@ -49,56 +49,33 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-// import { findByCaseBasicInfoIdApi, findByCaseIdAndDocIdApi, findVoByDocCaseIdApi } from "@/api/caseHandle";
-// import { uploadCommon, findCommonFileApi } from "@/api/upload";
+import { getDocListByIdApi } from "@/api/inspection";
+
 export default {
   data() {
     return {
       visible: false,
-      caseList: [],
+      documentList: [],
       getData: false
     };
   },
   inject: ["reload"],
-  computed: { ...mapGetters(["inspectionOverWeightId", "carinfoId"]) },
+  computed: { ...mapGetters(["inspectionOverWeightId"]) },
   methods: {
-    showModal(carinfoId) {
+    showModal() {
       this.visible = true;
-      // if(!this.caseList.length){
-      //   this.getByMlCaseId();
-      // }
-      //   console.log('this.getData',this.getData)
-      //   if(refresh || !this.getData) this.getByMlCaseId();
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
-    getByMlCaseId() {
-      this.getData = true;
-      this.$store.dispatch("getByMlCaseIdNew", this.caseId).then(
-        res => {
-          //   let beikaoFlag = true;
-          //   res.data.forEach(element => {
-          // if (element.name == "备考表") {
-          //   if (beikaoFlag) {
-          //     if (element.storageId === "") {
-          //     } else {
-          //       this.caseList.push(element);
-          //       beikaoFlag = false;
-          //     }
-          //   }
-          // } else {
-          //   this.caseList.push(element);
-          // }
-          //   });
 
-          //   if ((beikaoFlag = true)) {
-          this.caseList = res.data;
-          //   }
-        },
-        err => {}
-      );
+    //获取卷宗目录列表
+    getDocListByIdApi() {
+      getDocListByIdApi(this.inspectionOverWeightId).then(res => {
+        console.log("getDocListByIdApi -> res", res);
+        this.documentList = res.data;
+      });
     },
 
     //点击排序按钮
@@ -130,6 +107,7 @@ export default {
   mounted() {
     //设置弹窗遮罩层不要遮到右侧快捷菜单
     this.setRight();
+    this.getDocListByIdApi();
   }
 };
 </script>

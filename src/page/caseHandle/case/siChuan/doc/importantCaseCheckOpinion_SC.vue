@@ -326,12 +326,19 @@
               <p>审核人员签名</p>
             </td>
             <td rowspan="2" colspan="2" class="color_DBE4EF">
-              {{docData.approveOpinions}} 
               <div class="pdf_seal">
-                <p>签名：{{docData.approvePeo}}</p>
+                <p>签名：</p>
                 <p>
-                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
-                  <span v-else>年 月 日</span>
+                  <el-form-item prop="lawOfficeTime" class="pdf_datapick">
+                    <el-date-picker
+                      v-model="docData.lawOfficeTime"
+                      type="date"
+                      format="yyyy年MM月dd日"
+                      placeholder="    年  月  日"
+                      value-format="yyyy-MM-dd"
+                      @blur="starttime"
+                    ></el-date-picker>
+                  </el-form-item>
                 </p>
               </div>
             </td>
@@ -342,11 +349,11 @@
               <p>法制工作机构</p> 
             </td>
             <td rowspan="2" colspan="2" class="color_DBE4EF">
-              {{docData.secondApproveOpinions}}
+              {{docData.approveOpinions}}
               <div class="pdf_seal">
-                <p>签章：{{docData.secondApprovePeo}}</p>
+                <p>盖章：{{docData.secondApprovePeo}}</p>
                 <p>
-                  <span v-if="docData.secondApproveTime">{{docData.secondApproveTime}}</span>
+                  <span v-if="docData.approveTime">{{docData.approveTime}}</span>
                   <span v-else>年 月 日</span>
                 </p>
               </div>
@@ -419,9 +426,7 @@ export default {
         approveOpinions:'',
         approvePeo:'',
         approveTime:'',
-        secondApproveOpinions:'',
-        secondApprovePeo:'',
-        secondApproveTime:''
+        lawOfficeTime: '',
       },
       isParty: false,
       handleType: 0, //0  暂存   1 提交

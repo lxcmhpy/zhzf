@@ -17,7 +17,8 @@
           <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
-      <div class="userList">
+      <div v-show="tableData.length == 0">暂无照片</div>
+      <div class="userList" v-show="tableData.length">
         <li
           v-for="item in tableData"
           :label="item.storageId"
@@ -60,16 +61,16 @@ export default {
   inject: ["reload"],
   computed: { ...mapGetters(["caseId", "inspectionOverWeightId"]) },
   methods: {
-    showModal(carinfoId) {
+    showModal() {
       this.visible = true;
-      this.getTableData(carinfoId);
+      this.getTableData(this.inspectionOverWeightId);
     },
 
     //获取列表数据
-    getTableData(carinfoId) {
-      if (carinfoId && carinfoId.id) {
+    getTableData(id) {
+      if (id) {
         let data = {
-          caseId: carinfoId.id,
+          caseId: id,
           current: 1,
           size: 20
         };
@@ -117,14 +118,21 @@ export default {
           return "其他";
           break;
       }
+    },
+
+    //设置弹窗左偏移
+    setRight() {
+      let class1 = document.getElementsByClassName("documentFormCat");
+      let class2 = class1[0].parentNode;
+      class2.style.right = "60px";
+      class2.style.top = "60px";
+      class2.style.overflow = "hidden";
     }
   },
+  
   mounted() {
-    let class1 = document.getElementsByClassName("documentFormCat");
-    let class2 = class1[0].parentNode;
-    class2.style.right = "60px";
-    class2.style.top = "60px";
-    class2.style.overflow = "hidden";
+    //设置弹窗遮罩层不要遮到右侧快捷菜单
+    this.setRight();
   }
 };
 </script>

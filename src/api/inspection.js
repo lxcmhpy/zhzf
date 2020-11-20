@@ -1057,33 +1057,33 @@ export function findCarInfoFileByIdApi(data) {
 }
 
 //根据UUID获取超限超载文书数据
-export function findOverloadDocByIdApi(data) {
-    // 用初检记录id
-    return request({
-        url: "/xzjc/overloadDoc/myGetById/" + data,
-        method: "get",
-        baseUrlType: 'CAPTCHA_HOST',
-        cancelToken: setCancelSource()
-    });
-}
+// export function findOverloadDocByIdApi(data) {
+//     // 用初检记录id
+//     return request({
+//         url: "/xzjc/overloadDoc/myGetById/" + data,
+//         method: "get",
+//         baseUrlType: 'CAPTCHA_HOST',
+//         cancelToken: setCancelSource()
+//     });
+// }
 
-// 根据UUID删除超限超载文书数据
-export function delOverloadDocById(data) {
-    return request({
-        url: "/xzjc/overloadDoc/myRemoveById/" + data,
-        method: "get",
-        showloading: true,
-        loadingType: 'loadPart',
-        baseUrlType: 'CAPTCHA_HOST',
-        cancelToken: setCancelSource()
-    });
-}
+// // 根据UUID删除超限超载文书数据
+// export function delOverloadDocById(data) {
+//     return request({
+//         url: "/xzjc/overloadDoc/myRemoveById/" + data,
+//         method: "get",
+//         showloading: true,
+//         loadingType: 'loadPart',
+//         baseUrlType: 'CAPTCHA_HOST',
+//         cancelToken: setCancelSource()
+//     });
+// }
 
-//添加或修改超限超载文书
-export function saveOrUpdateOverloadDocApi(data) {
+//新的文书生成接口
+export function createNewPdf(data) {
     data = vm.$qs.stringify(data);
     return request({
-        url: "/xzjc/overloadDoc/mySaveOrUpdate/",
+        url: "/xzjc/document/createNewPdf",
         method: "post",
         data: data,
         showloading: true,
@@ -1093,3 +1093,14 @@ export function saveOrUpdateOverloadDocApi(data) {
     });
 }
 
+// 查找 卷宗目录列表
+export function getDocListByIdApi(data) {
+    return request({
+        url: "/xzjc/document/getDocListById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
