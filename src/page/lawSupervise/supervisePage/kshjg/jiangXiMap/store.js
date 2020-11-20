@@ -111,6 +111,7 @@ export default {
           // 手动给点位添加图层标识属性
           data.layerName = node.label
           this.page.addPoint(data, latLng)
+          this.handleOverLay(data)
         } else {
           this.$message.error('没有坐标数据')
         }
@@ -147,6 +148,7 @@ export default {
       let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
       node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
       this.page.addPoint(node, latLng)
+      this.handleOverLay(data)
       // 显示弹出框
       this.searchWindowData.window4.title = node.nickName
       this.searchWindowData.window4.info = [

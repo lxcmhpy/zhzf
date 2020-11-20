@@ -190,8 +190,6 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
-      // 清空信息窗体
-      this.map.removeOverlay(this.page.informationWindow)
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
 
@@ -207,6 +205,7 @@ export default {
           // 手动给点位添加图层标识属性
           data.layerName = data.label
           this.page.addPoint(data, latLng)
+          this.handleOverLay(data)
         } else {
           this.$message.error('没有坐标数据')
         }
@@ -358,6 +357,7 @@ export default {
 
       let latLng = data.propertyValue.split(',')
       this.page.addPoint(data, latLng)
+      this.handleOverLay(data)
     },
 
     /**
@@ -396,7 +396,7 @@ export default {
         console.log('打开事件列表')
       }
     },
-    
+
   },
   activated() {
     this.getTree()
