@@ -100,9 +100,9 @@ service.interceptors.request.use(
         if (response.data.code == 200) {
           tryHideFullScreenLoading();
           // debugger
-          console.log('response.data',response)
+          // console.log('response.data',response)
           //解密
-           response.data.data = JSON.parse(decrypt(response.data.data))
+          //  response.data.data = JSON.parse(decrypt(response.data.data))
           return response.data;
         } else if (
           response.data.code == 400 || response.data.code == 500) {
