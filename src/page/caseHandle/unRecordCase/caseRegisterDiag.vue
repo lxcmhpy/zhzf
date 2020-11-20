@@ -132,7 +132,7 @@ export default {
       this.visible = false;
     },
     changeType() {
-      this.caseRegisterForm.caseType = [];
+      this.caseRegisterForm.caseType = "";
       this.getCaseType();
     },
     //选择违法行为弹窗
