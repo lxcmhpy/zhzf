@@ -1093,3 +1093,14 @@ export function createNewPdf(data) {
     });
 }
 
+// 查找 卷宗目录列表
+export function getDocListByIdApi(data) {
+    return request({
+        url: "/xzjc/document/getDocListById/" + data,
+        method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}

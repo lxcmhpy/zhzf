@@ -36,10 +36,11 @@
 
 <script>
 import { mapGetters } from "vuex";
-import documentSideMenu from "@/page/inspection/roadAndPolice/compoment/documentSideMenu.vue";
-import operationRecord from "@/page/inspection/record-manage/writeRecordCompoments/operationRecord.vue";
-import relativeRecord from "@/page/inspection/roadAndPolice/compoment/relativeRecord.vue";
-import fileDir from "@/page/inspection/roadAndPolice/compoment/fileDir.vue";
+import documentSideMenu from "@/page/inspection/roadAndPolice/compoment/rightDialog/documentSideMenu.vue";
+import operationRecord from "@/page/inspection/roadAndPolice/compoment/rightDialog/operationRecord.vue";
+import relativeRecord from "@/page/inspection/roadAndPolice/compoment/rightDialog/relativeRecord.vue";
+import fileDir from "@/page/inspection/roadAndPolice/compoment/rightDialog/fileDir.vue";
+
 import { setMenuFn } from "./menuConfig.js";
 export default {
   name:'rightMenu',
