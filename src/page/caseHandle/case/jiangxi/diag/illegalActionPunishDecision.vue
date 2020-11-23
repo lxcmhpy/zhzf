@@ -71,7 +71,7 @@
             >
             <el-form-item prop="cont4">
               <el-input
-                placeholder="请输入罚款金额,小写金额"
+                placeholder="请输入没收金额,小写金额"
                 @input="handleChangeMoney2"
                 v-model="dialogData.cont4"
                 :disabled="disabledCont4"
@@ -132,6 +132,18 @@
 import until from "@/common/js/util"
 export default {
   data() {
+    var validatedCont1 = (rule, value, callback) => {
+      if (this.dialogData.checkDec.includes('罚款') && !this.dialogData.cont1) {
+        return callback(new Error("请输入罚款金额"));
+      }
+      callback();
+    };
+    var validatedCont4 = (rule, value, callback) => {
+      if(this.dialogData.checkDec.includes('没收违法所得') && !this.dialogData.cont4){
+        return callback(new Error("请输入没收金额"));
+      }
+      callback();
+    };
     return {
       visible: false,
       dialogData: {
@@ -148,11 +160,11 @@ export default {
       },
       rules: {
         cont1: [
-          { required: !this.disabledCont1, message: "罚款金额必须填写", trigger: "blur" },
+          { validator: validatedCont1, trigger: "blur" },
           { pattern: /^\d+(.\d{1,2})?$/, message: "必须为数字(可保留两位小数)", trigger: "blur" }
         ],
         cont4: [
-          { required: !this.disabledCont4, message: "罚款金额必须填写", trigger: "blur" },
+          { validator: validatedCont4, trigger: "blur" },
           { pattern: /^\d+(.\d{1,2})?$/, message: "必须为数字(可保留两位小数)", trigger: "blur" }
         ],
       },
@@ -173,12 +185,12 @@ export default {
       this.visible = false;
     },
     changeCheckDec(val) {
-      console.log("check", val);
       if(val){
         this.disabledCont1 = false;
       }else{
         this.disabledCont1 = true;
       }
+      console.log("check", val,this.disabledCont1);
       this.dialogData.cont1 = "";
       this.dialogData.cont1Show = "";
     },
@@ -188,11 +200,9 @@ export default {
       }else{
         this.disabledCont2 = true;
       }
-      console.log("check", val);
       this.dialogData.cont2 = "";
     },
     changeCheckDec3(val) {
-      console.log("check", val);
       if(val){
         this.disabledCont3 = false;
       }else{
@@ -201,12 +211,13 @@ export default {
       this.dialogData.cont3 = "";
     },
     changeCheckDec4(val) {
-      console.log("check", val);
+      console.log("check", val,this.disabledCont1);
       if(val){
         this.disabledCont4 = false;
       }else{
         this.disabledCont4 = true;
       }
+      console.log("check", val,this.disabledCont1);
       this.dialogData.cont4 = "";
       this.dialogData.cont4Show = "";
     },
@@ -216,7 +227,6 @@ export default {
       }else{
         this.disabledCont5 = true;
       }
-      console.log("check", val);
       this.dialogData.cont5 = "";
     },
     changeCheckDec6(val) {
