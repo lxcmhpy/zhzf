@@ -643,3 +643,14 @@ export function findUserByOrganId(id) {
       cancelToken:  setCancelSource(),
     });
   }
+
+  export function findControl(data) {
+    return  request({
+      url:  "/zfjg/control/list",
+      method:  "GET",
+      params: data,
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource(),
+    });
+  }

@@ -1,4 +1,4 @@
-import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId,getPeVideoUrl,findWxPCSn } from "@/api/lawSupervise.js";
+import { organTreeByCurrUser, getOrganTree, getZfjgLawSupervise, queryAlarmVehiclePage, findImageByCaseId,getPeVideoUrl,findWxPCSn, findControl } from "@/api/lawSupervise.js";
 import { getOrganDetailApi } from "@/api/system.js";
 import { findData } from "@/api/eventManage";
 export default {
@@ -231,7 +231,7 @@ export default {
         ['执法车辆', 2],
         ['执法船舶', 3],
         ['事件地点', 5],
-        ['非现场站点', 4],
+        ['非现场站点', 4]
       ])
       let param = {}, type = typeMap.get(name)
       if (type === 5) {
@@ -317,6 +317,42 @@ export default {
             // 调用地图打点方法
             this.page.addPoints(data)
           })
+        } else if (name === '交通管制') {
+          findControl('1').then(res => {
+            if(res.code === 200) {
+              return res.data
+            } else {
+              throw new Error("findControl('1'):::::接口数据错误")
+            }
+          }).then(data => {
+            data.map(item => {
+              item.propertyValue = item.longitude + ',' + item.latitude
+            })
+            // 手动给数据添加图层唯一标识
+            data.layerName = name
+            // 添加点位图片
+            data.imgUrl = "/static/images/img/lawSupervise/ysgljg.png"
+            // 调用地图打点方法
+            this.page.addPoints(data)
+          })
+        } else if (name === '道路施工') {
+          findControl('2').then(res => {
+            if(res.code === 200) {
+              return res.data
+            } else {
+              throw new Error("findControl('1'):::::接口数据错误")
+            }
+          }).then(data => {
+            data.map(item => {
+              item.propertyValue = item.longitude + ',' + item.latitude
+            })
+            // 手动给数据添加图层唯一标识
+            data.layerName = name
+            // 添加点位图片
+            data.imgUrl = "/static/images/img/lawSupervise/ysgljg.png"
+            // 调用地图打点方法
+            this.page.addPoints(data)
+          })
         } else { // 当取消勾选时，清除对应图层点位
           this.page.cleanPoints(name)
           this.map.removeOverlay(this.page.informationWindow)
@@ -338,10 +374,14 @@ export default {
           { name: '执法船舶', type: 3 },
           { name: '非现场站点', type: 4 },
           { name: '事件地点', type: 5 },
+          { name: '交通管制', type: 6, state: '1' },
+          { name: '道路施工', type: 6, state: '2' }
         ]
         let allPromise = typeMap.map(item => {
           if(item.type === 5) {
             return findData({current: 1, size: 2000000})
+          } else if (item.type === 6) {
+            return findControl(item.state)
           } else {
             let param = {
               organId: this.organId,
@@ -380,6 +420,20 @@ export default {
               arr.imgUrl = this.imgUrl.get(typeMap[index].type)
               // 调用地图打点方法
               this.page.addPoints(arr)
+            } else if (index === 6 || index === 7) {
+              item.data.map(itemLatLong => {
+                itemLatLong.propertyValue = itemLatLong.longitude + ',' + itemLatLong.latitude
+              })
+              // 手动给数据添加图层唯一标识
+              if(index === 6) {
+                item.data.layerName = '交通管制'
+              } else if (index === 7) {
+                item.data.layerName = '道路施工'
+              }
+              // 添加点位图片
+              item.data.imgUrl = "/static/images/img/lawSupervise/ysgljg.png"
+              // 调用地图打点方法
+              this.page.addPoints(item.data)
             }
 
             // 手动给数据添加图层唯一标识
