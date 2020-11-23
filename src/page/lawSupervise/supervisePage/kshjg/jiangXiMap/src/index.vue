@@ -192,6 +192,8 @@ export default {
       console.log(data)
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
+      // 删除轨迹图
+      this.page.removeFeatureById()
 
       if(data.label === "执法人员") {
         this.getPeopleTree(data)
@@ -398,15 +400,15 @@ export default {
     },
 
   },
-  activated() {
+  created() {
     this.getTree()
   },
   mounted(){
-      this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
-      this.organId = iLocalStroage.gets("userInfo").organId;
-      this.$nextTick(() => {
-          this.initWxPhone(iLocalStroage.gets("userInfo").id)
-      })
+    this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
+    this.organId = iLocalStroage.gets("userInfo").organId;
+    this.$nextTick(() => {
+      this.initWxPhone(iLocalStroage.gets("userInfo").id)
+    })
   }
 }
 </script>

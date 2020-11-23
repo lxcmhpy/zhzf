@@ -5,7 +5,7 @@
     :visible.sync="visible"
     @close="closeDialog"
     :close-on-click-modal="false"
-    width="35%"
+    width="40%"
   >
     <el-form
       :model="addBannerForm"
@@ -69,11 +69,16 @@
             type="textarea"
             :autosize="{ minRows: 2 }"
             v-model="domain.question"
-            @focus="canEdit(index)"
             :disabled="cantEditQues"
           ></el-input>
           <span class="handleBtn"
             ><i
+              class="el-icon-search"
+              v-show="addBannerForm.templateType != '0'"
+              type="primary"
+              @click.prevent="canEdit(index)"
+            ></i>
+            <i
               class="el-icon-remove"
               v-show="index != 0"
               type="primary"
@@ -281,7 +286,7 @@ export default {
   width: 100%;
 }
 .questDialog .askAndquestionCon .el-textarea {
-  width: 90%;
+  width: 85%;
 }
 </style>
 

@@ -259,14 +259,25 @@ export default [
       },
       {
         // 文书-列表
-        path: "/inspectionRAPFiles",
-        name: "inspection_inspectionRAPFiles",
+        path: "/inspectionDocumentsList",
+        name: "inspection_documents_list",
         meta: {
           title: "记录文书列表",
           oneTab: true
         },
         component: () =>
-          import("@/page/inspection/roadAndPolice/compoment/fileList.vue")
+          import("@/page/inspection/roadAndPolice/fileList.vue")
+      },
+      {
+        // 卷宗目录页码
+        path: "/inspectionFilePage",
+        name: "inspection_file_page",
+        meta: {
+          title: "卷宗目录",
+          oneTab: true
+        },
+        component: () =>
+          import("@/page/inspection/roadAndPolice/fileDirPage.vue")
       },
       {
         path: "/overloadDocumentDoc",

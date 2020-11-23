@@ -278,11 +278,11 @@ export default {
           var test = window.location.href;
           var string = test.split("/");
           var path = string[0] + "//" + string[2] + "/";
-          _this.$util.com_getDeviceFileStream(_this.pdfId).then(res=>{
-                var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + res
+          /* _this.$util.com_getDeviceFileStream(_this.pdfId).then(res=>{ */
+                var ActivexURL = path + "/static/js/iWebPDFEditor.html?pdfPath=" + _this.pdfId
                 console.log(ActivexURL);
                 window.MultBrowser.openBrowserURL(ActivexURL, "1", callBackBrowserURL);
-            });
+            /* }); */
         }
 
         function getParam(paramName) {

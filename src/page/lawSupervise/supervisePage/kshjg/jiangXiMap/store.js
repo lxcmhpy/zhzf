@@ -223,13 +223,15 @@ export default {
      * 点击单个复选框
      */
     handleItemCheck({val, name}) {
+      // 删除轨迹图
+      this.page.removeFeatureById()
       let typeMap = new Map([
         ['执法人员', 0],
         ['执法机构', 1],
         ['执法车辆', 2],
         ['执法船舶', 3],
         ['事件地点', 5],
-        ['非现场站点', 4],
+        ['非现场站点', 4]
       ])
       let param = {}, type = typeMap.get(name)
       if (type === 5) {
@@ -326,6 +328,8 @@ export default {
      * 获取全部复选框点位数据
      */
     getAllPoints(val) {
+      // 删除轨迹图
+      this.page.removeFeatureById()
       if(val) {
         let typeMap = [
           { name: '执法人员', type: 0 },
