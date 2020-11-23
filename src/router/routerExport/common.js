@@ -32,6 +32,9 @@ import noticeRouterJson from './routerJson/noticeRouterJson'
 import fxypRouterJson from './routerJson/fxypRouterJson'
 import fxypRouterJson_QH from './routerJson/fxypRouterJson_QH'
 import fxypRouterJson_JX from './routerJson/fxypRouterJson_JX'
+
+import externalRouterJson from './routerJson/externalRouterJson'
+
 // 不作为Main组件的子页面展示的页面单独写，如下
 const route = [
   // 登录
@@ -105,7 +108,8 @@ const route = [
       ...noticeRouterJson,
       ...fxypRouterJson,
       ...fxypRouterJson_QH,
-      ...fxypRouterJson_JX
+      ...fxypRouterJson_JX,
+      ...externalRouterJson
     ]
   },
   {

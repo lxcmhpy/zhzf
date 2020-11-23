@@ -743,14 +743,6 @@ export default [{
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/adminCoerciveMeasure.vue")
-  },
-  {
-    path: "/myIframe",
-    name: "myIframe",
-    meta: {
-      title: "测试"
-    },
-    component: () => import("@/page/login/myIframe.vue")
-  },
+  }
 
 ]

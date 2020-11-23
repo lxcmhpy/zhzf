@@ -43,7 +43,8 @@
   position: absolute;
   text-align: center;
   box-shadow: 0 0 5px #ccc;
-  min-height: 760px;
+  // min-height: 760px;
+  overflow: hidden;
   display: flex;
   // box-sizing: border-box;
 
