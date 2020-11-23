@@ -43,10 +43,16 @@ import fileDir from "@/page/inspection/roadAndPolice/compoment/rightDialog/fileD
 
 import { setMenuFn } from "./menuConfig.js";
 export default {
-  name:'rightMenu',
+  name: "rightMenu",
   data() {
     return {
-      menuList: []
+      menuList: [],
+      refMap: {
+        doc: "documentSideMenuRef",
+        photo: "relativeRecordRef",
+        record: "operationRecordRef",
+        dir: "fileDirRef"
+      }
     };
   },
   computed: { ...mapGetters(["inspectionOverWeightId", "penaltyDecisionId"]) },
@@ -54,40 +60,26 @@ export default {
     documentSideMenu,
     relativeRecord,
     operationRecord,
-    fileDir,
+    fileDir
   },
   methods: {
     handleClickMenu(label) {
-      //   this.$emit("clickRightMenu", label);
-      if (label === "doc") {
-        this.handleClickDocumentBtn();
-      }
-      if (label === "photo") {
-        this.handleClickImgsBtn();
-      }
+      console.log(" -> label", label);
+      // this.$emit("clickRightMenu", label);
+      this.goToPage(label);
     },
     enterItem(label) {
       //   this.$emit("enterRightMenu", label);
       this.closeAllDialog();
-      switch (label) {
-        case "doc":
-          this.$refs.documentSideMenuRef.showModal(this.penaltyDecisionId);
-          break;
-        case "photo":
-          this.$refs.relativeRecordRef.showModal(
-            this.inspectionOverWeightId
-          );
-          break;
-        case "record":
-          this.$refs.operationRecordRef.showModal();
-          break;
-        case "dir":
-          this.$refs.fileDirRef.showModal();
-          break;
-        default:
-          break;
-      }
+      this.$refs[this.refMap[label]].showModal();
     },
+
+    closeAllDialog() {
+      Object.keys(this.refMap).forEach(key => {
+        this.$refs[this.refMap[key]].closeDialog();
+      });
+    },
+
     leaveItem(label) {
       console.log("leaveItem -> label", label);
       //   this.$emit("leaveRightMenu", label);
@@ -103,35 +95,19 @@ export default {
     leaveRightMenu(label) {
       console.log("leaveRightMenu -> label", label);
     },
-    closeAllDialog() {
-      this.$refs.documentSideMenuRef.closeDialog();
-      this.$refs.relativeRecordRef.closeDialog();
-      this.$refs.operationRecordRef.closeDialog();
-      this.$refs.fileDirRef.closeDialog();
-    },
-    // 跳转到文书列表
-    handleClickDocumentBtn() {
-      // debugger
+
+    //跳转页面
+    goToPage(label) {
       this.closeAllDialog();
+      const routeMap = {
+        doc: "inspection_documents_list",
+        photo: "inspection_imageMange",
+        record: "inspection_file_page",
+        dir: "inspection_file_page"
+      };
       if (this.inspectionOverWeightId) {
         this.$router.push({
-          name: "inspection_inspectionRAPFiles" //文书列表页面
-        });
-      } else {
-        this.$confirm("请先保存记录", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {});
-      }
-    },
-
-    // 跳转到证据照片列表页
-    handleClickImgsBtn() {
-      this.closeAllDialog();
-      if (this.inspectionOverWeightId ) {
-        this.$router.push({
-          name: "inspection_imageMange",
+          name: routeMap[label]
         });
       } else {
         this.$confirm("请先保存记录", "提示", {

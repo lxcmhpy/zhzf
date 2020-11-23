@@ -57,7 +57,7 @@ export default {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       // this.$router.go(-1); //返回上一层
       this.$router.push({
-        name: "inspection_inspectionRAPFiles"
+        name: "inspection_documents_list"
       });
     }
   },
