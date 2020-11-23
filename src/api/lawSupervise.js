@@ -160,7 +160,18 @@ export function getById(type,id) {
         cancelToken: setCancelSource()
     });
   }
-
+  // 查询机构树
+  export function getAllPeople(data) {
+    return request({
+      url: "/zfjg/sysOrgan/queryLike",
+      method: "get",
+      params:data,
+      showloading: false,
+      // loadingType:'loadFull',
+      baseUrlType:  'CAPTCHA_HOST',
+      cancelToken: setCancelSource()
+    });
+  }
   // 获取机构树
   export function organSysTreeByCurrUser(){
     return request({
