@@ -541,6 +541,7 @@ export default {
           websdk.request.groupRequest.getGroupInfo(targets, function (rsp) { // [global_data.param_tgid1]
               console.log('demo_req_grp_profile result:', rsp);
               _this.groups = rsp
+              this.$refs.LeftDrawer.changeLoading();
               console.log('this.group',_this.groups)
           }, 'demo_req_grp_profile');//
         },
@@ -585,6 +586,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
 }
 .gzMap-searchCopy{
    position: absolute;

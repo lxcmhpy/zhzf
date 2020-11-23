@@ -202,7 +202,11 @@ export default {
       }
     },
     getListData(){
+      this.pictLoading = true
       this.$parent.req_user_profile()
+    },
+    changeLoading(){
+      this.pictLoading = false
     },
     // 群组视频
     videoGroup(val){
