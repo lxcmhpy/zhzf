@@ -73,7 +73,7 @@ export default {
         [4, '/static/images/img/lawSupervise/map_o_gud.png'],
         [5, '/static/images/img/lawSupervise/map_didian.png']
       ]), // 各类型所对应的点位图标
-      page: null, // 地图组件的 this
+      c: null, // 地图组件的 this
       map: null,
       center: [115.871344, 28.710709],
       searchWindowData: {
@@ -192,6 +192,8 @@ export default {
       console.log(data)
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
+      // 删除轨迹图
+      this.page.removeFeatureById()
 
       if(data.label === "执法人员") {
         this.getPeopleTree(data)
