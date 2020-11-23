@@ -224,11 +224,9 @@
     <!--快速入口 -->
     <caseSlideMenu :activeIndex="'archiveCatalogue'"></caseSlideMenu>
     <!-- 卷宗目录 -->
-    <!-- <archiveCatalogue ref="archiveCatalogueRef"></archiveCatalogue> -->
   </div>
 </template>
 <script>
-// import archiveCatalogue from "./archiveCatalogue";
 import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
 import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage.js";
@@ -630,7 +628,6 @@ export default {
   },
   components: {
     caseSlideMenu,
-    // archiveCatalogue
   }
 };
 </script>
