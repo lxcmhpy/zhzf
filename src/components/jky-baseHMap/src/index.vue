@@ -36,7 +36,7 @@ export default {
       },
       pointsLayerName: new Set(), // 多点点位的图层标识
       pointLayerName: new Set(), // 单点点位的图层标识
-      informationWindow: '', // 信息窗体
+      informationWindow: [], // 信息窗体
       lineId: new Set(), // 单线的id标识
       interval: null
     }
@@ -116,6 +116,12 @@ export default {
      * 清除所有点位
      */
     cleanAll() {
+      // 清除点位的时候清除信息弹窗
+      this.informationWindow.map(item => {
+        this.map.removeOverlay(item)
+      })
+      // this.map.removeOverlay(this.informationWindow)
+      // this.map.informationWindow.hide()
       this.cleanPoint()
       // 清除所有多点
       this.pointsLayerName.forEach(item => {
@@ -129,16 +135,16 @@ export default {
      * 添加信息窗体
      */
     addOverlay(data, content) {
-      // this.map.removeOverlay(this.informationWindow)
       let latLng = data.propertyValue.split(',')
-      this.informationWindow = new HMap.Popover(this.map.getMap(), {
+      let window = new HMap.Popover(this.map.getMap(), {
         offset: [0, -45],
         showCloser: true,
         showMarkFeature: false,
         showMinimize: false,
       })
-      this.map.addOverlay(this.informationWindow)
-      this.informationWindow.show(latLng, content)
+      this.map.addOverlay(window)
+      window.show(latLng, content)
+      this.informationWindow.push(window)
     },
 
     /**
@@ -180,11 +186,6 @@ export default {
         }
       }
       this.map.addPoint(point, options)
-      // 如果不是轨迹点位，则打点同时打开信息窗体
-      if(zoomToExtent !== '0') {
-        let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName || data.eventName || ''
-        this.addOverlay(data, content)
-      }
     },
 
     /**
@@ -199,12 +200,12 @@ export default {
         let _layerName = arr.layerName
         this.pointsLayerName.add(_layerName)
         let points = arr.map(item => {
+          // 打开信息弹窗
+          let content = item.vehicleNumber || item.label || item.name || item.shipNumber || item.nickName || item.eventName
+          this.addOverlay(item, content)
           let point = (item && item.propertyValue && item.propertyValue.split(',')) || []
           // 点位数据正常
           if(point.length === 2) {
-            // 打开信息窗体
-            let content = item.vehicleNumber || item.label || item.name || item.shipNumber || item.nickName || item.eventName
-            this.addOverlay(item, content)
             return {
               attributes: {
                 id: item.id,

@@ -2751,6 +2751,7 @@ export default {
 
       this.$store.dispatch("saveOrUpdateCaseBasicInfo", this.inforForm).then(
         (res) => {
+          debugger;
           console.log(this.inforForm);
           this.inforForm.partyAddress = oldPartyAddress;
           if (this.inforForm.otherInfo) {
@@ -2779,6 +2780,7 @@ export default {
       let _this = this;
       this.$store.dispatch("getCaseBasicInfo", data).then(
         (res) => {
+         
           let dataArray = [];
           _this.driverOrAgentInfoList = JSON.parse(res.data.agentPartyEcertId);
           if (res.data.provincesAddress) {

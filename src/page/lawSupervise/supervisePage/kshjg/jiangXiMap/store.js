@@ -111,6 +111,7 @@ export default {
           // 手动给点位添加图层标识属性
           data.layerName = node.label
           this.page.addPoint(data, latLng)
+          this.handleOverLay(data)
         } else {
           this.$message.error('没有坐标数据')
         }
@@ -147,6 +148,7 @@ export default {
       let latLng = (node && node.propertyValue && node.propertyValue.split(',')) || []
       node.imgUrl = "/static/images/img/lawSupervise/icon_jc11.png"
       this.page.addPoint(node, latLng)
+      this.handleOverLay(data)
       // 显示弹出框
       this.searchWindowData.window4.title = node.nickName
       this.searchWindowData.window4.info = [
@@ -221,6 +223,8 @@ export default {
      * 点击单个复选框
      */
     handleItemCheck({val, name}) {
+      // 删除轨迹图
+      this.page.removeFeatureById()
       let typeMap = new Map([
         ['执法人员', 0],
         ['执法机构', 1],
@@ -324,6 +328,8 @@ export default {
      * 获取全部复选框点位数据
      */
     getAllPoints(val) {
+      // 删除轨迹图
+      this.page.removeFeatureById()
       if(val) {
         let typeMap = [
           { name: '执法人员', type: 0 },
@@ -397,7 +403,6 @@ export default {
         window.location.href ="alert:"+ActivexURL
     },
     async initWxPhone(id){
-        debugger;
         window.PhoneCallModule.initialize();
         if (!window.PhoneCallModule.getRegistered()) {
             let res = await findWxPCSn(id);
