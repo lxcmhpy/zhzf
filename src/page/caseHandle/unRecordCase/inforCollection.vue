@@ -2823,7 +2823,6 @@ export default {
           this.initProvincesList(dataArray);
 
           _this.inforForm = res.data;
-           alert(this.inforForm.acceptTime)
           console.log("222222222", _this.inforForm);
           _this.handleCaseData(res.data);
           _this.findJudgFreedomList(res.data.caseCauseId);
