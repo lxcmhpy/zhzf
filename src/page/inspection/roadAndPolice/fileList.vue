@@ -246,7 +246,6 @@ export default {
         };
         getDocListByName(data).then(
           res => {
-            console.log(res);
             if (res.code == 200) {
               _this.tableList = res.data || [];
             }
