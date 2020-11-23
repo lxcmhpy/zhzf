@@ -142,8 +142,6 @@ export default {
               {name: '执法船舶', type: 3},
               {name: '事件地点', type: 5},
               {name: '非现场站点', type: 4},
-              {name: '交通管制', type: 6},
-              {name: '道路施工', type: 6},
             ]
           },
           {

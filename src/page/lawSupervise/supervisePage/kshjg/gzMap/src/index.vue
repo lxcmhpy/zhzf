@@ -139,6 +139,8 @@ export default {
               {name: '执法船舶', type: 3},
               {name: '事件地点', type: 5},
               {name: '非现场站点', type: 4},
+              {name: '交通管制', type: 6},
+              {name: '道路施工', type: 6},
             ]
           },
           {
@@ -508,7 +510,7 @@ export default {
                 } else {
                 }
             }, 'demo_req_logon');
-            
+
         },
         showDailog(){
                 websdk.request.videoRequest.playVideo(this.con_id, this.param_uid1, null, null, 0, 0, 0, function (rsp) {
@@ -557,7 +559,7 @@ export default {
   activated() {
     this.getTree()
   },
- 
+
  created(){
    this.$nextTick(() => {
         websdk.init(function (result) {
@@ -573,7 +575,7 @@ export default {
     this.login()
 },
   mounted(){
-      
+
   }
 }
 </script>
