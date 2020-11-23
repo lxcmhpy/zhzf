@@ -1,27 +1,57 @@
 <template>
   <div class="containerBox box searchPage">
-    <div class="back" >
-      <span @click="router"><i class="el-icon-arrow-left"></i>前往归档页面</span>
-      <el-button type="primary" size="small" @click="editOrder">确认</el-button>
+    <div class="back">
+      <span @click="goBack"><i class="el-icon-arrow-left"></i>返回</span>
+      <!-- <el-button type="primary" size="small" @click="editOrder">确认</el-button> -->
     </div>
     <div class="tablePart">
-      <el-table :data="caseList" border stripe highlight-current-row style="width: 100%">
-        <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
-        <el-table-column prop="name" label="材料名称" align="center"></el-table-column>
+      <el-table
+        :data="caseList"
+        border
+        stripe
+        highlight-current-row
+        style="width: 100%"
+      >
+        <el-table-column
+          width="50"
+          type="index"
+          label="序号"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="name"
+          label="材料名称"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="page" label="起止页数" align="center">
           <!-- <template slot-scope="scope">
               <span>{{currentPages(scope)}}</span>
           </template> -->
         </el-table-column>
-        <el-table-column label="顺序调整" align="center" >
+        <el-table-column label="顺序调整" align="center">
           <template slot-scope="scope">
             <div>
-                <span v-show="!scope.$index" class="iconfont law-desc"></span>
-                <span v-show="scope.$index" @click="byAsc(scope.row,scope.$index)" class="iconfont law-desc blueC"></span>
-                <span v-show="scope.$index == caseList.length-1" class="iconfont law-asc"></span>
-                <span v-show="scope.$index != caseList.length-1" @click="byDesc(scope.row,scope.$index)" class="iconfont law-asc blueC"></span>
-                <!-- 删除 -->
-                <span v-if="scope.row.category == '证据'" @click="deleteEvidence(scope.row,scope.$index)" class="iconfont law-delete blueC"></span>
+              <span v-show="!scope.$index" class="iconfont law-desc"></span>
+              <span
+                v-show="scope.$index"
+                @click="byAsc(scope.row, scope.$index)"
+                class="iconfont law-desc blueC"
+              ></span>
+              <span
+                v-show="scope.$index == caseList.length - 1"
+                class="iconfont law-asc"
+              ></span>
+              <span
+                v-show="scope.$index != caseList.length - 1"
+                @click="byDesc(scope.row, scope.$index)"
+                class="iconfont law-asc blueC"
+              ></span>
+              <!-- 删除 -->
+              <span
+                v-if="scope.row.category == '证据'"
+                @click="deleteEvidence(scope.row, scope.$index)"
+                class="iconfont law-delete blueC"
+              ></span>
             </div>
           </template>
         </el-table-column>
@@ -86,7 +116,12 @@
           </el-upload>
         </div>
         <div style="float:left;width:300px">
-          <el-form ref="evidenceForm" :model="formUpload" :rules="addrules" label-width="100px">
+          <el-form
+            ref="evidenceForm"
+            :model="formUpload"
+            :rules="addrules"
+            label-width="100px"
+          >
             <el-form-item label="证据类型" prop="evType">
               <el-select v-model="formUpload.evType">
                 <el-option
@@ -98,10 +133,16 @@
               </el-select>
             </el-form-item>
             <el-form-item label="证据名称" prop="evName">
-              <el-input v-model="formUpload.evName" placeholder="请输入"></el-input>
+              <el-input
+                v-model="formUpload.evName"
+                placeholder="请输入"
+              ></el-input>
             </el-form-item>
             <el-form-item label="记 录 人" prop="userName">
-              <el-input v-model="formUpload.userName" placeholder="请输入"></el-input>
+              <el-input
+                v-model="formUpload.userName"
+                placeholder="请输入"
+              ></el-input>
             </el-form-item>
             <el-form-item label="记录时间" prop="createTime">
               <el-date-picker
@@ -115,7 +156,10 @@
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="取证地点" prop="recordPlace">
-              <el-input v-model="formUpload.recordPlace" placeholder="请输入"></el-input>
+              <el-input
+                v-model="formUpload.recordPlace"
+                placeholder="请输入"
+              ></el-input>
             </el-form-item>
             <el-form-item label="状  态" prop="status">
               <el-radio-group v-model="formUpload.status">
@@ -126,7 +170,7 @@
             <el-form-item label="备  注" prop="note">
               <el-input
                 type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
+                :autosize="{ minRows: 2, maxRows: 4 }"
                 placeholder="请输入"
                 v-model="formUpload.note"
               ></el-input>
@@ -134,8 +178,15 @@
           </el-form>
         </div>
         <div style="clear:both;text-align:center">
-          <el-button size="medium" type="primary" @click="submitForm('evidenceForm')">提 交</el-button>
-          <el-button size="medium" @click="closeAddEvidenceDialog">取 消</el-button>
+          <el-button
+            size="medium"
+            type="primary"
+            @click="submitForm('evidenceForm')"
+            >提 交</el-button
+          >
+          <el-button size="medium" @click="closeAddEvidenceDialog"
+            >取 消</el-button
+          >
         </div>
       </div>
     </el-dialog>
@@ -144,7 +195,6 @@
       :visible.sync="relationFileVisible"
       custom-class="dialog1 fullscreen"
       size="900px"
-
     >
       <div style="height:100%">
         <div class="relationFileVisibleBox">
@@ -156,15 +206,38 @@
             @selection-change="handleSelectionChange"
             style="width: 100%;height:100%"
           >
-            <el-table-column width="55" type="selection" label="选择" align="center" :selectable="selectable"></el-table-column>
-            <el-table-column width="50" type="index" label="序号" align="center"></el-table-column>
-            <el-table-column prop="evName" label="证据名称" align="center"></el-table-column>
+            <el-table-column
+              width="55"
+              type="selection"
+              label="选择"
+              align="center"
+              :selectable="selectable"
+            ></el-table-column>
+            <el-table-column
+              width="50"
+              type="index"
+              label="序号"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              prop="evName"
+              label="证据名称"
+              align="center"
+            ></el-table-column>
             <el-table-column prop="evType" label="证据类型" align="center">
               <template slot-scope="scope">
-                  <span v-if="scope.row.evType == '照片'"><img src="../../../../static/images/img/icon_tupian.png"></span>
-                  <span v-if="scope.row.evType == '文件'"><img src="../../../../static/images/img/icon_qita.png"></span>
-                  <span v-if="scope.row.evType == '视频'"><img src="../../../../static/images/img/icon_shipin.png"></span>
-                  <span v-if="scope.row.evType == '音频'"><img src="../../../../static/images/img/icon_yinpin.png"></span>
+                <span v-if="scope.row.evType == '照片'"
+                  ><img src="../../../../static/images/img/icon_tupian.png"
+                /></span>
+                <span v-if="scope.row.evType == '文件'"
+                  ><img src="../../../../static/images/img/icon_qita.png"
+                /></span>
+                <span v-if="scope.row.evType == '视频'"
+                  ><img src="../../../../static/images/img/icon_shipin.png"
+                /></span>
+                <span v-if="scope.row.evType == '音频'"
+                  ><img src="../../../../static/images/img/icon_yinpin.png"
+                /></span>
               </template>
             </el-table-column>
             <el-table-column prop="status" label="状态" align="center">
@@ -175,16 +248,37 @@
             </el-table-column>
             <el-table-column label="详情" align="center">
               <template slot-scope="scope">
-                <img v-if="scope.row.evType == '照片'" :src="scope.row.evPath" style="height:50px;">
-                <el-link type="primary" v-if="scope.row.evType != '照片'" :download="scope.row.evPath" :href="scope.row.storagePath">下载</el-link>
+                <img
+                  v-if="scope.row.evType == '照片'"
+                  :src="scope.row.evPath"
+                  style="height:50px;"
+                />
+                <el-link
+                  type="primary"
+                  v-if="scope.row.evType != '照片'"
+                  :download="scope.row.evPath"
+                  :href="scope.row.storagePath"
+                  >下载</el-link
+                >
               </template>
             </el-table-column>
-            <el-table-column label="备注" align="center" prop="note"></el-table-column>
+            <el-table-column
+              label="备注"
+              align="center"
+              prop="note"
+            ></el-table-column>
           </el-table>
         </div>
         <div style="text-align:right;margin-top:17px">
-          <el-button size="medium" type="primary" @click="relationFileVisible=false">取消</el-button>
-          <el-button size="medium" class="greenBg2" @click="next">确认</el-button>
+          <el-button
+            size="medium"
+            type="primary"
+            @click="relationFileVisible = false"
+            >取消</el-button
+          >
+          <el-button size="medium" class="greenBg2" @click="next"
+            >确认</el-button
+          >
         </div>
       </div>
     </el-drawer>
@@ -198,45 +292,57 @@
     >
       <ul class="catalogueDrawerList">
         <li v-for="(item, i) in multipleSelection" :key="i">
-          <img :src="item.evPath" >
-          <div class="evidenceName">{{item.evName}}</div>
+          <img :src="item.evPath" />
+          <div class="evidenceName">{{ item.evName }}</div>
           <div>
             <span>
               <i class="el-icon-user"></i>
-              {{item.userName}}
+              {{ item.userName }}
             </span>
             <span>
               <i class="el-icon-time"></i>
-              {{item.createTime}}
+              {{ item.createTime }}
             </span>
           </div>
           <div>
             <i class="el-icon-location-outline"></i>
-            {{item.recordPlace}}
+            {{ item.recordPlace }}
           </div>
         </li>
       </ul>
       <div class="archiveCataloguebottom">
-        <el-button size="medium" type="primary" @click="enclosureVisible=false">继续添加</el-button>
-        <el-button size="medium" class="greenBg2" @click="addEnclosure">确认</el-button>
+        <el-button
+          size="medium"
+          type="primary"
+          @click="enclosureVisible = false"
+          >继续添加</el-button
+        >
+        <el-button size="medium" class="greenBg2" @click="addEnclosure"
+          >确认</el-button
+        >
       </div>
     </el-drawer>
-    <!--快速入口 -->
-    <caseSlideMenu :activeIndex="'archiveCatalogue'"></caseSlideMenu>
-    <!-- 卷宗目录 -->
+    <rightMenu></rightMenu>
   </div>
 </template>
 <script>
-import caseSlideMenu from "@/page/caseHandle/components/caseSlideMenu";
+import rightMenu from "@/page/inspection/roadAndPolice/compoment/rightMenu/index.vue";
 import { uploadEvApi, findFileByIdApi, uploadEvdence } from "@/api/upload";
 import iLocalStroage from "@/common/js/localStroage.js";
 import { validateRequire } from "@/common/js/validator.js";
 import { BASIC_DATA_SYS } from "@/common/js/BASIC_DATA.js";
 import { mapGetters } from "vuex";
 import {
-  saveOrUpdateDocCatalogList,findEvidencePicApi,deleteDocCatalogEvidenApi,
+  saveOrUpdateDocCatalogList,
+  findEvidencePicApi,
+  deleteDocCatalogEvidenApi
 } from "@/api/caseHandle";
 export default {
+  components: {
+    rightMenu
+  },
+  computed: { ...mapGetters(["caseId"]) },
+  inject: ["reload"],
   data() {
     return {
       caseList: [],
@@ -289,44 +395,42 @@ export default {
         docId: "",
         category: "",
         userId: "",
-        userName:"",//记录人
-        recordPlace:"", //取证地址
+        userName: "", //记录人
+        recordPlace: "" //取证地址
       },
-      handleIndex:0,//附件关联的行
+      handleIndex: 0, //附件关联的行
       // host:"",
-      alreadyAddEvi:[], //已经添加的证据
+      alreadyAddEvi: [] //已经添加的证据
       // isTrue: false
     };
   },
-  computed: { ...mapGetters(["caseId"]) },
-  inject: ['reload'],
+
   methods: {
-    router() {
-    //   this.$router.push({
-    //     name: "case_handle_archiveCover"
-    //   });
+    //返回
+    goBack() {
+      this.$router.go(-1);
     },
-    byDesc(row,rowIndx) {
-        console.log(row);
-        let a = JSON.parse(JSON.stringify(this.caseList))
-        let temp =  a[rowIndx];
-        a[rowIndx] = a[rowIndx+1]
-        a[rowIndx+1] = temp;
-        this.caseList = a;
-        console.log('this.caseList',this.caseList)
+    byDesc(row, rowIndx) {
+      console.log(row);
+      let a = JSON.parse(JSON.stringify(this.caseList));
+      let temp = a[rowIndx];
+      a[rowIndx] = a[rowIndx + 1];
+      a[rowIndx + 1] = temp;
+      this.caseList = a;
+      console.log("this.caseList", this.caseList);
     },
-    byAsc(row,rowIndx) {
-        console.log(row);
-        let a = JSON.parse(JSON.stringify(this.caseList))
-        let temp =  a[rowIndx];
-        a[rowIndx] = a[rowIndx-1]
-        a[rowIndx-1] = temp;
-        this.caseList = a;
-        console.log('this.caseList',this.caseList)
+    byAsc(row, rowIndx) {
+      console.log(row);
+      let a = JSON.parse(JSON.stringify(this.caseList));
+      let temp = a[rowIndx];
+      a[rowIndx] = a[rowIndx - 1];
+      a[rowIndx - 1] = temp;
+      this.caseList = a;
+      console.log("this.caseList", this.caseList);
     },
     handleSelectionChange(val) {
       // debugger
-      console.log('handleSelectionChange',val);
+      console.log("handleSelectionChange", val);
       this.multipleSelection = val;
     },
     // showAddEvidence() {
@@ -348,36 +452,35 @@ export default {
       if (this.multipleSelection.length > 0) {
         this.enclosureVisible = true;
         this.addEvidenceVisible = false;
-      }else{
-        this.$message('请选择要关联的附件')
+      } else {
+        this.$message("请选择要关联的附件");
       }
     },
     addEnclosure() {
-      debugger
-      console.log("111111",this.multipleSelection[0])
+      debugger;
+      console.log("111111", this.multipleSelection[0]);
       if (this.multipleSelection.length > 0) {
         let _that = this;
-         let a = JSON.parse(JSON.stringify(this.caseList));
-          a.forEach(item=>{
-            if(item.num > this.handleIndex+1){
-              item.num+this.multipleSelection.length+1
-            }
-          });
-         this.multipleSelection.forEach((item,index)=>{
-           let addEviData = {
-                 caseBasicInfoId:item.caseId,
-                 fid:item.fileId,
-                 num:this.handleIndex+index+1,
-                 page:1
-            }
-            a.splice(this.handleIndex+index+1,0,addEviData);
-         })
+        let a = JSON.parse(JSON.stringify(this.caseList));
+        a.forEach(item => {
+          if (item.num > this.handleIndex + 1) {
+            item.num + this.multipleSelection.length + 1;
+          }
+        });
+        this.multipleSelection.forEach((item, index) => {
+          let addEviData = {
+            caseBasicInfoId: item.caseId,
+            fid: item.fileId,
+            num: this.handleIndex + index + 1,
+            page: 1
+          };
+          a.splice(this.handleIndex + index + 1, 0, addEviData);
+        });
 
-
-              //  a.splice(this.handleIndex+1,0,addEviData);
-               this.caseList = a;
-                console.log('this.caseList',this.caseList);
-              this.editOrder();
+        //  a.splice(this.handleIndex+1,0,addEviData);
+        this.caseList = a;
+        console.log("this.caseList", this.caseList);
+        this.editOrder();
         // this.$store
         //   .dispatch("saveOrUpdateDocCatalogList", this.multipleSelection)
         //   .then(
@@ -410,9 +513,9 @@ export default {
     },
     submitForm(formName) {
       let _that = this;
-      console.log('_that.formUpload.file',_that.formUpload.file)
-      if(!_that.formUpload.file){
-        this.$message('请上传附件');
+      console.log("_that.formUpload.file", _that.formUpload.file);
+      if (!_that.formUpload.file) {
+        this.$message("请上传附件");
         return;
       }
       this.$refs[formName].validate(valid => {
@@ -433,34 +536,34 @@ export default {
           fd.append("userName", _that.formUpload.userName);
           fd.append("recordPlace", _that.formUpload.recordPlace);
 
-          console.log('上传证据参数recordPlace',fd.get('recordPlace'));
-          console.log('上传证据参数userName',fd.get('userName'));
+          console.log("上传证据参数recordPlace", fd.get("recordPlace"));
+          console.log("上传证据参数userName", fd.get("userName"));
 
           uploadEvdence(fd).then(
             res => {
-              console.log('上传证据',res);
-               console.log('上传证据2',res.data);
-               let eviData = res.data;
+              console.log("上传证据", res);
+              console.log("上传证据2", res.data);
+              let eviData = res.data;
               _that.addEvidenceVisible = false;
               // _that.$refs[formName].reset();
               // this.addEvidence(res.data, param, category, 0)
               // this.formData.payEvidence = res.data;
               // this.formData.payEvidence.push(res.data);
-               let a = JSON.parse(JSON.stringify(this.caseList))
-               let addEviData = {
-                 caseBasicInfoId:eviData.caseId,
-                 fid:eviData.id,
-                 num:this.handleIndex+2,
-                 page:1
-               }
-               a.forEach(item=>{
-                 if(item.num > this.handleIndex){
-                   item.num++
-                 }
-               });
-               a.splice(this.handleIndex+1,0,addEviData);
-               this.caseList = a;
-                console.log('this.caseList',this.caseList);
+              let a = JSON.parse(JSON.stringify(this.caseList));
+              let addEviData = {
+                caseBasicInfoId: eviData.caseId,
+                fid: eviData.id,
+                num: this.handleIndex + 2,
+                page: 1
+              };
+              a.forEach(item => {
+                if (item.num > this.handleIndex) {
+                  item.num++;
+                }
+              });
+              a.splice(this.handleIndex + 1, 0, addEviData);
+              this.caseList = a;
+              console.log("this.caseList", this.caseList);
               this.editOrder();
             },
             error => {
@@ -482,23 +585,22 @@ export default {
     // 绑定已有证据材料
     bindEvidence(row) {
       this.relationFileVisible = true;
-        findEvidencePicApi({caseId:this.caseId})
-        .then(
-          res => {
-              console.log('证据',res);
-            this.evidenceList = res.data;
-            this.evidenceList.forEach((item, index) => {
-              if (item.evPath) {
-                this.$util.com_getFileStream(item.evPath).then(res => {
-                  item.evPath = res
-                });
-              }
-            });
-          },
-          err => {
-            console.log(err);
-          }
-        );
+      findEvidencePicApi({ caseId: this.caseId }).then(
+        res => {
+          console.log("证据", res);
+          this.evidenceList = res.data;
+          this.evidenceList.forEach((item, index) => {
+            if (item.evPath) {
+              this.$util.com_getFileStream(item.evPath).then(res => {
+                item.evPath = res;
+              });
+            }
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     // showDialog(row,handleIndex) {
     //   this.operateVisible = true;
@@ -511,8 +613,8 @@ export default {
     closeDialog1() {
       this.relationFileVisible = false;
     },
-    closeAddEvidenceDialog(){
-      console.log('清空form')
+    closeAddEvidenceDialog() {
+      console.log("清空form");
       this.$refs.evidenceForm.resetFields();
       //清空文件
       this.$refs.uploadEvidenceRef.clearFiles();
@@ -521,15 +623,15 @@ export default {
     getByMlCaseId(caseId) {
       this.$store.dispatch("getByMlCaseIdNew", caseId).then(
         res => {
-            console.log('文书列表',res)
+          console.log("文书列表", res);
           // res.data = res.data.sort(function(a,b){
           //   return a.num - b.num;
           // });
-          res.data.forEach(item=>{
-            if(!item.name){
+          res.data.forEach(item => {
+            if (!item.name) {
               item.name = item.evName;
             }
-          })
+          });
           this.caseList = res.data;
         },
         err => {
@@ -538,48 +640,51 @@ export default {
       );
     },
     //修改目录排序
-    editOrder(){
-        console.log(this.caseList);
-        let data = [];
-        this.caseList.forEach((item,index)=>{
-            let param={
-                caseBasicInfoId:item.caseBasicInfoId,
-                fid:item.fid,
-                id:item.id,
-                num:index+1,
-                page:item.page,
-                paperSize:item.paperSize,
-                docId:item.docId,
-            }
-            data.push(param)
-        })
-        data = data.sort(function(a,b){
-          return a.num - b.num;
-        });
-        let data2={docCatalogFormList:data}
-        console.log(data);
-        saveOrUpdateDocCatalogList(data).then(res=>{
-            console.log(res);
-            this.$message( {type: "success",message:'操作成功'})
-            this.reload();
-        },err=>{
-            console.log(err)
-        })
+    editOrder() {
+      console.log(this.caseList);
+      let data = [];
+      this.caseList.forEach((item, index) => {
+        let param = {
+          caseBasicInfoId: item.caseBasicInfoId,
+          fid: item.fid,
+          id: item.id,
+          num: index + 1,
+          page: item.page,
+          paperSize: item.paperSize,
+          docId: item.docId
+        };
+        data.push(param);
+      });
+      data = data.sort(function(a, b) {
+        return a.num - b.num;
+      });
+      let data2 = { docCatalogFormList: data };
+      console.log(data);
+      saveOrUpdateDocCatalogList(data).then(
+        res => {
+          console.log(res);
+          this.$message({ type: "success", message: "操作成功" });
+          this.reload();
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //是否可以选择
-    selectable(row,index){
+    selectable(row, index) {
       let alreadyAddEvi = [];
       let disAbleRow = true;
-      this.caseList.forEach((item,index)=>{
-        if(item.category == '证据') alreadyAddEvi.push(item)
-      })
-      alreadyAddEvi.forEach(item=>{
-        if(item.fid == row.fileId){
+      this.caseList.forEach((item, index) => {
+        if (item.category == "证据") alreadyAddEvi.push(item);
+      });
+      alreadyAddEvi.forEach(item => {
+        if (item.fid == row.fileId) {
           disAbleRow = false;
           return;
         }
-      })
-      return disAbleRow
+      });
+      return disAbleRow;
     },
     //处理页码
     // currentPages(scope){
@@ -605,29 +710,29 @@ export default {
     // },
 
     //删除绑定的证据
-    deleteEvidence(row,index){
-      console.log('删除绑定的证据',row,index);
-      deleteDocCatalogEvidenApi(row.id).then(res=>{
-        this.$message( {type: "success",message:'删除成功'})
-        this.reload();
-      },err=>{
-        console.log(err)
-      })
+    deleteEvidence(row, index) {
+      console.log("删除绑定的证据", row, index);
+      deleteDocCatalogEvidenApi(row.id).then(
+        res => {
+          this.$message({ type: "success", message: "删除成功" });
+          this.reload();
+        },
+        err => {
+          console.log(err);
+        }
+      );
     },
     //新增证据 删除选择的文件
-    handleRemoveFile(file,fileList){
-      this.formUpload.file = '';
-      this.formUpload.evName = '';
+    handleRemoveFile(file, fileList) {
+      this.formUpload.file = "";
+      this.formUpload.evName = "";
     },
-    handleExceed(file,fileList){
-      this.$message('只能上传一个附件')
-    },
+    handleExceed(file, fileList) {
+      this.$message("只能上传一个附件");
+    }
   },
   mounted() {
     this.getByMlCaseId(this.caseId);
-  },
-  components: {
-    caseSlideMenu,
   }
 };
 </script>
@@ -637,22 +742,22 @@ export default {
 @import "@/assets/css/documentForm.scss";
 @import "@/assets/css/basicStyles/common.scss";
 
-.containerBox{
-    .back{
-        display: flex;
-        cursor: default;
-        justify-content: space-between;
-        &>span{
-            display: inline-block;
-            height: 100%;
-            width: 100px;
-            cursor: pointer;
-        }
-        &>button{
-          height: 30px;
-          margin-top: 12px;
-        }
+.containerBox {
+  .back {
+    display: flex;
+    cursor: default;
+    justify-content: space-between;
+    & > span {
+      display: inline-block;
+      height: 100%;
+      width: 100px;
+      cursor: pointer;
     }
+    & > button {
+      height: 30px;
+      margin-top: 12px;
+    }
+  }
 }
 .archiveCataloguebottom {
   width: 100%;
@@ -716,10 +821,10 @@ export default {
     margin: 40% 16px 30px 16px;
   }
 }
-.el-upload-dragger{
+.el-upload-dragger {
   height: 360px;
 }
-.relationFileVisibleBox{
+.relationFileVisibleBox {
   overflow: auto;
   height: calc(100% - 280px);
 }
