@@ -64,11 +64,11 @@
       </el-tab-pane>
       <el-tab-pane label="通讯录" name="second">
          <div class="input-with-select">
-          <el-input placeholder="请输入人员或机构名称" v-model="gropuName" clearable>
-            <el-button slot="append" icon="el-icon-search" ></el-button>
+          <el-input placeholder="请输入人员" v-model="txlName" @clear='emptyAll' clearable>
+            <el-button slot="append" icon="el-icon-search" @click="getTxl"></el-button>
           </el-input>
         </div>
-        <div class="treeT">
+        <div class="treeT" v-if="flag">
           <el-tree
             id="unSchTree"
             :data="handleTree"
@@ -81,12 +81,21 @@
             :props="defaultProps">
           </el-tree>
         </div>
+        <div class="txlAllBox" v-else>
+          <div class="txlAll"   v-for="(v,index) in txlAll" :key="index+11">
+          <el-checkbox  v-model="v.checked" @change="selTxl(v)">
+            <img src="/static/images/img/lawSupervise/icon_jc1.png" alt="">
+            {{v.display_name}}
+          </el-checkbox>
+          </div>
+        </div>
+        
         <div>
           <div class="bottomBtn1">
             <!-- <div>
               <el-button type="primary" size="mini"   @click="getCheckedKeys">确认</el-button>
             </div> -->
-            <div class="lastBtn">
+            <div class="lastBtn" v-if="flag">
               <el-button type="primary" size="mini"  @click="resetChecked">重选</el-button>
             </div>
           </div>
@@ -122,7 +131,7 @@
 <script>
 
 import addGroupA from "./addGroup"
-import { organTreeByCurrUser, getOrganTree,getZfjgLawSupervise } from "@/api/lawSupervise.js";
+import { organTreeByCurrUser, getOrganTree,getZfjgLawSupervise,getAllPeople } from "@/api/lawSupervise.js";
 export default {
   props: ['config','allUsers'],
   components: {
@@ -140,13 +149,18 @@ export default {
       direction: 'ltr',
       activeName: 'first',
       gropuName:'',
+      txlName:'',
       selectedArrQ:[],
       selectedArrT:[],
+      selectedArrTa:[],
       group_info:[],
       user_info:[],
       groupCopy:[],
       newGroup:'',
       handleTree:[],
+      flag:true,
+      txlAll:[],
+      checkeds:false
     }
   },
   watch: {
@@ -446,6 +460,51 @@ export default {
     unique(arr) {
         return Array.from(new Set(arr));
     },
+    // 选择通讯录checkBox
+    selTxl(data){
+      console.log(data)
+      if(data.checked == true && data.uid !== 'null'){
+        this.selectedArrTa.push(data)
+        this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrTa)
+      }else{
+        for (let i = 0; i < this.selectedArrQ.length; i++) {
+          if(data.uid == this.selectedArrQ[i].uid){
+             this.selectedArrQ.splice(i, 1);
+             this.selectedArrTa.splice(i, 1);
+          }
+        }
+      }
+      this.uniqueObj(this.selectedArrQ)
+      console.log(this.selectedArrTa)
+      console.log(this.selectedArrQ)
+    },
+    emptyAll(){
+      this.flag = true
+    },
+    //查询
+    getTxl(){
+      if(this.txlName){
+        this.flag = false
+        let param = {
+          organId: 1,
+          type: 99,
+          key: this.txlName
+        }
+        getAllPeople(param).then(res => {
+          if(res.code === 200) {
+            console.log(res.data)
+            this.txlAll = res.data.map(v => {
+                return { uid: `${v.id}`, display_name: `${v.label}` ,checked:false};
+            });
+            console.log(this.txlAll)
+          } else {
+            throw new Error("getOrganTree()::::::接口数据错误")
+          }
+        })
+      }else{
+        this.flag = true
+      }
+    },
 },
 
 }
@@ -575,6 +634,18 @@ export default {
       }
     }
   }
+  .txlAllBox{
+    margin-left: 5px;
+    height: 197px;
+    overflow: auto;
+    margin-top: 10px;
+    .txlAll {
+      padding: 2px 5px;
+      img{
+        width: 13px;
+      }
+    }
+  }
   #unSchTree .el-tree-node {
     .is-leaf + .el-checkbox .el-checkbox__inner{
       display: inline-block;
@@ -583,10 +654,5 @@ export default {
       display: none;
     }
   }
-  //  <img class='img2' on-click={ () => this.addPeople(data) }
-  //           src={
-  //             data.organId?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
-  //           }
-  //         />
 }
 </style>
