@@ -1,6 +1,6 @@
 <template>
   <div class="check check_home">
-    <div class="home_top shadow">
+    <!-- <div class="home_top shadow">
       <div class="center_content">
         <span class="titleflag">
         </span>
@@ -11,8 +11,8 @@
         <p class="emty_result_text">暂无内容</p>
       </div>
 
-    </div>
-    <div class="home_bottom shadow">
+    </div> -->
+    <div class="home_bottom shadow" id="checkHome_bottom">
       <div class="center_content">
         <span class="titleflag">
         </span>
@@ -208,5 +208,8 @@ export default {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+.check_home #checkHome_bottom{
+  height: 96% !important;
 }
 </style>
