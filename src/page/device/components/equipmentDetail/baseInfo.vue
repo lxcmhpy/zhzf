@@ -195,7 +195,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="购置价格（元）">
-            <el-input v-model="form.payPrice" placeholder="请输入"></el-input>
+            <el-input-number v-model="form.payPrice" :min="0" :max="1000000000" label="请输入" :controls="false" style="width:100%"></el-input-number>
           </el-form-item>
         </el-col>
       </el-row>
