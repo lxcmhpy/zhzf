@@ -435,8 +435,6 @@ export default {
              this.selectedArrT.splice(i, 1);
           }
         }
-        // const index = this.selectedArrQ.findIndex(d => d.uid === data.uid);
-        // this.selectedArrQ.splice(index, 1);
       }
       console.log(this.selectedArrT)
       this.uniqueObj(this.selectedArrQ)
@@ -444,11 +442,6 @@ export default {
     },
     handleSelectionChange(val){
       console.log(val)
-    //  this.addPeople(val)
-        // for (let i = 0; i < val.length; i++) {
-        //   this.selectedArrQ.push(val[i].name)
-        // }
-        // this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 去重
     uniqueObj(arr){
