@@ -453,7 +453,7 @@ export default {
     starttime(){
       if (this.docData.acceptTreatmentEndDate){
         console.log('案发时间=='+this.docData.lasj)
-        if (Date.parse(this.docData.acceptTreatmentStartDate) < Date.parse(this.docData.lasj)) {
+        if (Date.parse(this.docData.acceptTreatmentStartDate) < Date.parse(this.docData.lasj.substr(0,10))) {
           this.docData.askdataStart = ""
           this.$message({
             message: '开始时间不得小于立案时间',
@@ -486,7 +486,7 @@ export default {
     endtime(){
       if (this.docData.acceptTreatmentStartDate){
         console.log('案发时间=='+this.docData.lasj)
-        if (Date.parse(this.docData.acceptTreatmentStartDate) < Date.parse(this.docData.lasj)) {
+        if (Date.parse(this.docData.acceptTreatmentStartDate) < Date.parse(this.docData.lasj.substr(0,10))) {
           this.docData.askdataStart = ""
           this.$message({
             message: '开始时间不得小于立案时间',
