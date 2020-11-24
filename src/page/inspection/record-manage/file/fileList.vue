@@ -46,7 +46,7 @@
 <script>
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
-import { getDocListById, changeFileStatus, getDocListByName, delDocumentById, updatePicPath } from "@/api/inspection";
+import { getDocListByIdApi, changeFileStatus, getDocListByName, delDocumentById, updatePicPath } from "@/api/inspection";
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 import Vue from 'vue'
 import { mapGetters } from "vuex";
@@ -237,7 +237,7 @@ export default {
     },
     searchList() {
       let data = this.inspectionOrderId
-      getDocListById(data).then(
+      getDocListByIdApi(data).then(
         res => {
           console.log(res)
           if (res.data) {

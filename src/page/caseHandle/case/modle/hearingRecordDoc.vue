@@ -1,4 +1,4 @@
-<!-------长软------->
+<!--长软-->
 <template>
   <div class="print_box">
     <div class="print_info" id="hearingRecordDoc_print">

@@ -102,8 +102,8 @@ export default {
       const routeMap = {
         doc: "inspection_documents_list",
         photo: "inspection_imageMange",
-        record: "inspection_file_page",
-        dir: "inspection_file_page"
+        record: "inspection_documents_list",
+        dir: "inspection_file_order_page"
       };
       if (this.inspectionOverWeightId) {
         this.$router.push({

@@ -79,11 +79,12 @@
               class="avatar-uploader"
               action="#"
               :show-file-list="false"
+              :on-change="changeImage"
               :on-preview="handlePictureCardPreview"
               :http-request="saveImageFile"
               :on-remove="(file, fileList)=>deleteFile(file, fileList,'图片')"
             >
-              <img v-if="inspection.storageId" :src="url" class="avatar" />
+              <img v-if="inspection.storageId" :src="inspection.url" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -176,7 +177,13 @@ export default {
       let res = await findAnnualById(id);
       this.inspection = res.data;
       this.inspection.annual = this.inspection.annual + "";
-      this.njVisible = true;
+      let _this = this;
+      if(this.inspection.storageId){
+            this.$util.com_getDeviceFileStream(this.inspection.storageId).then(res=>{
+                _this.inspection.url = res
+                _this.njVisible = true;
+            });
+        }
     },
     async onDelete(id) {
       let res = await deleteAnnualById(id);
@@ -185,6 +192,9 @@ export default {
         message: "删除成功!",
       });
       this.getData();
+    },
+    changeImage(file, fileList){
+        this.inspection.url = URL.createObjectURL(file.raw);
     },
     saveImageFile(param) {
       this.saveFile(param, "年检图片");
@@ -201,11 +211,10 @@ export default {
       upload(fd).then(
         (res) => {
           _this.inspection.storageId = res.data[0].storageId;
-          _this.$util
-            .com_getDeviceFileStream(res.data[0].storageId)
-            .then((res) => {
-              _this.inspection.url = res;
-            });
+        //   _this.$util.com_getDeviceFileStream(res.data[0].storageId).then((res) => {
+        //       _this.inspection.url = res;
+        //     });
+            // _this.inspection.url = URL.createObjectURL(param.file.raw);
         },
         (error) => {
           console.log(error);
@@ -231,7 +240,7 @@ export default {
     //获取数据
     async getData() {
       let res = await findAnnualByVehicleId(this.$route.params.id);
-
+      debugger;
       if (res.data) {
         let _this = this;
         this.records = [];
